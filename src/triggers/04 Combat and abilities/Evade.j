@@ -94,194 +94,86 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Evade takes nothing returns nothing
 endfunction
-
 function RegisterR11_Evade_Counter_Cost takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Cost=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Evade_Counter_Cost,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Evade_Counter_Cost,Condition(function Trig_Evade_Counter_Cost_Conditions))
-
-call TriggerAddAction(gg_trg_Evade_Counter_Cost,function Trig_Evade_Counter_Cost_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Cost=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Evade_Counter_Cost,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Evade_Counter_Cost,Condition(function Trig_Evade_Counter_Cost_Conditions))
+    call TriggerAddAction(gg_trg_Evade_Counter_Cost,function Trig_Evade_Counter_Cost_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Decay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Decay=CreateTrigger()
-
-call TriggerAddCondition(gg_trg_Evade_Counter_Decay,Condition(function Trig_Evade_Counter_Decay_Conditions))
-
-call TriggerAddAction(gg_trg_Evade_Counter_Decay,function Trig_Evade_Counter_Decay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Decay=CreateTrigger()
+    call TriggerAddCondition(gg_trg_Evade_Counter_Decay,Condition(function Trig_Evade_Counter_Decay_Conditions))
+    call TriggerAddAction(gg_trg_Evade_Counter_Decay,function Trig_Evade_Counter_Decay_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P1=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P1,udg_DodgeFaceTimer[1])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P1,function Trig_Evade_Counter_Reset_P1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P1=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P1,udg_DodgeFaceTimer[1])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P1,function Trig_Evade_Counter_Reset_P1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P2=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P2,udg_DodgeFaceTimer[2])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P2,function Trig_Evade_Counter_Reset_P2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P2=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P2,udg_DodgeFaceTimer[2])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P2,function Trig_Evade_Counter_Reset_P2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P3=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P3,udg_DodgeFaceTimer[3])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P3,function Trig_Evade_Counter_Reset_P3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P3=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P3,udg_DodgeFaceTimer[3])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P3,function Trig_Evade_Counter_Reset_P3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P4 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P4=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P4,udg_DodgeFaceTimer[4])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P4,function Trig_Evade_Counter_Reset_P4_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P4=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P4,udg_DodgeFaceTimer[4])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P4,function Trig_Evade_Counter_Reset_P4_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P5 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P5=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P5,udg_DodgeFaceTimer[5])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P5,function Trig_Evade_Counter_Reset_P5_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P5=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P5,udg_DodgeFaceTimer[5])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P5,function Trig_Evade_Counter_Reset_P5_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P6 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P6=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P6,udg_DodgeFaceTimer[6])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P6,function Trig_Evade_Counter_Reset_P6_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P6=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P6,udg_DodgeFaceTimer[6])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P6,function Trig_Evade_Counter_Reset_P6_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P7 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P7=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P7,udg_DodgeFaceTimer[7])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P7,function Trig_Evade_Counter_Reset_P7_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P7=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P7,udg_DodgeFaceTimer[7])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P7,function Trig_Evade_Counter_Reset_P7_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Evade_Counter_Reset_P8 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Evade_Counter_Reset_P8=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P8,udg_DodgeFaceTimer[8])
-
-call TriggerAddAction(gg_trg_Evade_Counter_Reset_P8,function Trig_Evade_Counter_Reset_P8_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Evade_Counter_Reset_P8=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Evade_Counter_Reset_P8,udg_DodgeFaceTimer[8])
+    call TriggerAddAction(gg_trg_Evade_Counter_Reset_P8,function Trig_Evade_Counter_Reset_P8_Actions)
 endfunction
 
 

@@ -537,164 +537,74 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Vote takes nothing returns nothing
 endfunction
-
 function RegisterR11_Vote_TextSpeed_Show takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_TextSpeed_Show=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_TextSpeed_Show)
-
-call TriggerAddAction(gg_trg_Vote_TextSpeed_Show,function Trig_Vote_TextSpeed_Show_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_TextSpeed_Show=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_TextSpeed_Show)
+    call TriggerAddAction(gg_trg_Vote_TextSpeed_Show,function Trig_Vote_TextSpeed_Show_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_TextSpeed_Click takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_TextSpeed_Click=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_TextSpeed_Click)
-
-call TriggerRegisterDialogEventBJ(gg_trg_Vote_TextSpeed_Click,udg_VoteDialog)
-
-call TriggerAddAction(gg_trg_Vote_TextSpeed_Click,function Trig_Vote_TextSpeed_Click_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_TextSpeed_Click=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_TextSpeed_Click)
+    call TriggerRegisterDialogEventBJ(gg_trg_Vote_TextSpeed_Click,udg_VoteDialog)
+    call TriggerAddAction(gg_trg_Vote_TextSpeed_Click,function Trig_Vote_TextSpeed_Click_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_TextSpeed_Result takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_TextSpeed_Result=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_TextSpeed_Result)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_TextSpeed_Result,udg_VoteTimer)
-
-call TriggerAddAction(gg_trg_Vote_TextSpeed_Result,function Trig_Vote_TextSpeed_Result_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_TextSpeed_Result=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_TextSpeed_Result)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_TextSpeed_Result,udg_VoteTimer)
+    call TriggerAddAction(gg_trg_Vote_TextSpeed_Result,function Trig_Vote_TextSpeed_Result_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_Difficulty_Show takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_Difficulty_Show=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_Difficulty_Show)
-
-call TriggerAddAction(gg_trg_Vote_Difficulty_Show,function Trig_Vote_Difficulty_Show_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_Difficulty_Show=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_Difficulty_Show)
+    call TriggerAddAction(gg_trg_Vote_Difficulty_Show,function Trig_Vote_Difficulty_Show_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_Difficulty_Click takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_Difficulty_Click=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_Difficulty_Click)
-
-call TriggerRegisterDialogEventBJ(gg_trg_Vote_Difficulty_Click,udg_VoteDialog)
-
-call TriggerAddAction(gg_trg_Vote_Difficulty_Click,function Trig_Vote_Difficulty_Click_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_Difficulty_Click=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_Difficulty_Click)
+    call TriggerRegisterDialogEventBJ(gg_trg_Vote_Difficulty_Click,udg_VoteDialog)
+    call TriggerAddAction(gg_trg_Vote_Difficulty_Click,function Trig_Vote_Difficulty_Click_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_Difficulty_Result takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_Difficulty_Result=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_Difficulty_Result)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_Difficulty_Result,udg_VoteTimer)
-
-call TriggerAddAction(gg_trg_Vote_Difficulty_Result,function Trig_Vote_Difficulty_Result_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_Difficulty_Result=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_Difficulty_Result)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_Difficulty_Result,udg_VoteTimer)
+    call TriggerAddAction(gg_trg_Vote_Difficulty_Result,function Trig_Vote_Difficulty_Result_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_GameMode_Show takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_GameMode_Show=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_GameMode_Show)
-
-call TriggerAddAction(gg_trg_Vote_GameMode_Show,function Trig_Vote_GameMode_Show_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_GameMode_Show=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_GameMode_Show)
+    call TriggerAddAction(gg_trg_Vote_GameMode_Show,function Trig_Vote_GameMode_Show_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vote_GameMode_Click takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vote_GameMode_Click=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vote_GameMode_Click)
-
-call TriggerRegisterDialogEventBJ(gg_trg_Vote_GameMode_Click,udg_VoteDialog)
-
-call TriggerAddAction(gg_trg_Vote_GameMode_Click,function Trig_Vote_GameMode_Click_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vote_GameMode_Click=CreateTrigger()
+    call DisableTrigger(gg_trg_Vote_GameMode_Click)
+    call TriggerRegisterDialogEventBJ(gg_trg_Vote_GameMode_Click,udg_VoteDialog)
+    call TriggerAddAction(gg_trg_Vote_GameMode_Click,function Trig_Vote_GameMode_Click_Actions)
 endfunction
 
 

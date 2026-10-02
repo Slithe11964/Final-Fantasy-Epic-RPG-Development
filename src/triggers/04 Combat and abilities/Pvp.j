@@ -40,21 +40,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Pvp takes nothing returns nothing
 endfunction
-
 function RegisterR11_Pvp_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Pvp_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Pvp_Command,Player(0),"-pvp",true)
-
-call TriggerAddAction(gg_trg_Pvp_Command,function Trig_Pvp_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Pvp_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Pvp_Command,Player(0),"-pvp",true)
+    call TriggerAddAction(gg_trg_Pvp_Command,function Trig_Pvp_Command_Actions)
 endfunction
 
 

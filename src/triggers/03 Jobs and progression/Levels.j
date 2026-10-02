@@ -152,35 +152,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Levels takes nothing returns nothing
 endfunction
-
 function RegisterR11_Levels_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Levels_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(0),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(1),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(2),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(3),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(4),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(5),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(6),"-levels",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(7),"-levels",true)
-
-call TriggerAddAction(gg_trg_Levels_Command,function Trig_Levels_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Levels_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(0),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(1),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(2),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(3),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(4),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(5),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(6),"-levels",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(7),"-levels",true)
+    call TriggerAddAction(gg_trg_Levels_Command,function Trig_Levels_Command_Actions)
 endfunction
 
 

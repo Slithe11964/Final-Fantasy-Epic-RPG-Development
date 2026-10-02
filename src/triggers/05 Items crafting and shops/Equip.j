@@ -280,23 +280,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Equip takes nothing returns nothing
 endfunction
-
 function RegisterR11_Equip_Restrictions takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Equip_Restrictions=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Equip_Restrictions,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Equip_Restrictions,Condition(function Trig_Equip_Restrictions_Conditions))
-
-call TriggerAddAction(gg_trg_Equip_Restrictions,function Trig_Equip_Restrictions_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Equip_Restrictions=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Equip_Restrictions,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Equip_Restrictions,Condition(function Trig_Equip_Restrictions_Conditions))
+    call TriggerAddAction(gg_trg_Equip_Restrictions,function Trig_Equip_Restrictions_Actions)
 endfunction
 
 

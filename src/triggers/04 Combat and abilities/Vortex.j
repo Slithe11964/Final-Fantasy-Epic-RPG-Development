@@ -123,63 +123,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Vortex takes nothing returns nothing
 endfunction
-
 function RegisterR11_Vortex_Warning takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vortex_Warning=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Warning,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
-
-call TriggerAddCondition(gg_trg_Vortex_Warning,Condition(function Trig_Vortex_Warning_Conditions))
-
-call TriggerAddAction(gg_trg_Vortex_Warning,function Trig_Vortex_Warning_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vortex_Warning=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Warning,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddCondition(gg_trg_Vortex_Warning,Condition(function Trig_Vortex_Warning_Conditions))
+    call TriggerAddAction(gg_trg_Vortex_Warning,function Trig_Vortex_Warning_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vortex_Suck takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vortex_Suck=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Suck,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Vortex_Suck,Condition(function Trig_Vortex_Suck_Conditions))
-
-call TriggerAddAction(gg_trg_Vortex_Suck,function Trig_Vortex_Suck_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vortex_Suck=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Suck,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Vortex_Suck,Condition(function Trig_Vortex_Suck_Conditions))
+    call TriggerAddAction(gg_trg_Vortex_Suck,function Trig_Vortex_Suck_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vortex_Drain takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vortex_Drain=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Vortex_Drain,udg_VortexTimer)
-
-call TriggerAddAction(gg_trg_Vortex_Drain,function Trig_Vortex_Drain_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vortex_Drain=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Vortex_Drain,udg_VortexTimer)
+    call TriggerAddAction(gg_trg_Vortex_Drain,function Trig_Vortex_Drain_Actions)
 endfunction
 
 

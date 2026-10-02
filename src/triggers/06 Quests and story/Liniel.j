@@ -8,21 +8,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Liniel takes nothing returns nothing
 endfunction
-
 function RegisterR11_Liniel_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Liniel_ShowMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_Liniel_ShowMarker)
-
-call TriggerAddAction(gg_trg_Liniel_ShowMarker,function Trig_Liniel_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Liniel_ShowMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_Liniel_ShowMarker)
+    call TriggerAddAction(gg_trg_Liniel_ShowMarker,function Trig_Liniel_ShowMarker_Actions)
 endfunction
 
 

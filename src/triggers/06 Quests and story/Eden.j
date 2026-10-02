@@ -55,63 +55,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Eden takes nothing returns nothing
 endfunction
-
 function RegisterR11_Eden_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Eden_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Eden_Setup,function Trig_Eden_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Eden_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_Eden_Setup,function Trig_Eden_Setup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Eden_Summon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Eden_Summon=CreateTrigger()
-
-call DisableTrigger(gg_trg_Eden_Summon)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Eden_Summon,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Eden_Summon,Condition(function Trig_Eden_Summon_Conditions))
-
-call TriggerAddAction(gg_trg_Eden_Summon,function Trig_Eden_Summon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Eden_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Eden_Summon)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Eden_Summon,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Eden_Summon,Condition(function Trig_Eden_Summon_Conditions))
+    call TriggerAddAction(gg_trg_Eden_Summon,function Trig_Eden_Summon_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Eden_Despawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Eden_Despawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Eden_Despawn)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Eden_Despawn,udg_EdenTimer)
-
-call TriggerAddAction(gg_trg_Eden_Despawn,function Trig_Eden_Despawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Eden_Despawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Eden_Despawn)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Eden_Despawn,udg_EdenTimer)
+    call TriggerAddAction(gg_trg_Eden_Despawn,function Trig_Eden_Despawn_Actions)
 endfunction
 
 

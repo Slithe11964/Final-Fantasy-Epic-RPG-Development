@@ -188,86 +188,41 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Speedrun takes nothing returns nothing
 endfunction
-
 function RegisterR11_Speedrun_Announce takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Speedrun_Announce=CreateTrigger()
-
-call DisableTrigger(gg_trg_Speedrun_Announce)
-
-call TriggerAddAction(gg_trg_Speedrun_Announce,function Trig_Speedrun_Announce_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Speedrun_Announce=CreateTrigger()
+    call DisableTrigger(gg_trg_Speedrun_Announce)
+    call TriggerAddAction(gg_trg_Speedrun_Announce,function Trig_Speedrun_Announce_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Speedrun_FirstCast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Speedrun_FirstCast=CreateTrigger()
-
-call DisableTrigger(gg_trg_Speedrun_FirstCast)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Speedrun_FirstCast,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_Speedrun_FirstCast,Condition(function Trig_Speedrun_FirstCast_Conditions))
-
-call TriggerAddAction(gg_trg_Speedrun_FirstCast,function Trig_Speedrun_FirstCast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Speedrun_FirstCast=CreateTrigger()
+    call DisableTrigger(gg_trg_Speedrun_FirstCast)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Speedrun_FirstCast,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Speedrun_FirstCast,Condition(function Trig_Speedrun_FirstCast_Conditions))
+    call TriggerAddAction(gg_trg_Speedrun_FirstCast,function Trig_Speedrun_FirstCast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Speedrun_Accolade takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Speedrun_Accolade=CreateTrigger()
-
-call DisableTrigger(gg_trg_Speedrun_Accolade)
-
-call TriggerAddAction(gg_trg_Speedrun_Accolade,function Trig_Speedrun_Accolade_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Speedrun_Accolade=CreateTrigger()
+    call DisableTrigger(gg_trg_Speedrun_Accolade)
+    call TriggerAddAction(gg_trg_Speedrun_Accolade,function Trig_Speedrun_Accolade_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Speedrun_Record takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Speedrun_Record=CreateTrigger()
-
-call DisableTrigger(gg_trg_Speedrun_Record)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Speedrun_Record,udg_AccoladeTimer)
-
-call TriggerAddCondition(gg_trg_Speedrun_Record,Condition(function Trig_Speedrun_Record_Conditions))
-
-call TriggerAddAction(gg_trg_Speedrun_Record,function Trig_Speedrun_Record_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Speedrun_Record=CreateTrigger()
+    call DisableTrigger(gg_trg_Speedrun_Record)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Speedrun_Record,udg_AccoladeTimer)
+    call TriggerAddCondition(gg_trg_Speedrun_Record,Condition(function Trig_Speedrun_Record_Conditions))
+    call TriggerAddAction(gg_trg_Speedrun_Record,function Trig_Speedrun_Record_Actions)
 endfunction
 
 

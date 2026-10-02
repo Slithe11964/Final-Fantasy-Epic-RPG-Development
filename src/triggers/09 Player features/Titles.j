@@ -712,59 +712,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Titles takes nothing returns nothing
 endfunction
-
 function RegisterR11_Titles_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Titles_Init=CreateTrigger()
-
-call DisableTrigger(gg_trg_Titles_Init)
-
-call TriggerAddAction(gg_trg_Titles_Init,function Trig_Titles_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Titles_Init=CreateTrigger()
+    call DisableTrigger(gg_trg_Titles_Init)
+    call TriggerAddAction(gg_trg_Titles_Init,function Trig_Titles_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Titles_CheckAll takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Titles_CheckAll=CreateTrigger()
-
-call DisableTrigger(gg_trg_Titles_CheckAll)
-
-call TriggerAddAction(gg_trg_Titles_CheckAll,function Trig_Titles_CheckAll_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Titles_CheckAll=CreateTrigger()
+    call DisableTrigger(gg_trg_Titles_CheckAll)
+    call TriggerAddAction(gg_trg_Titles_CheckAll,function Trig_Titles_CheckAll_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Titles_CheckBasic takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Titles_CheckBasic=CreateTrigger()
-
-call DisableTrigger(gg_trg_Titles_CheckBasic)
-
-call TriggerAddAction(gg_trg_Titles_CheckBasic,function Trig_Titles_CheckBasic_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Titles_CheckBasic=CreateTrigger()
+    call DisableTrigger(gg_trg_Titles_CheckBasic)
+    call TriggerAddAction(gg_trg_Titles_CheckBasic,function Trig_Titles_CheckBasic_Actions)
 endfunction
 
 

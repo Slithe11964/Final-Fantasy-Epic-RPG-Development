@@ -45,23 +45,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Knot takes nothing returns nothing
 endfunction
-
 function RegisterR11_Knot_Of_Rust takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Knot_Of_Rust=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Knot_Of_Rust,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Knot_Of_Rust,Condition(function Trig_Knot_Of_Rust_Conditions))
-
-call TriggerAddAction(gg_trg_Knot_Of_Rust,function Trig_Knot_Of_Rust_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Knot_Of_Rust=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Knot_Of_Rust,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Knot_Of_Rust,Condition(function Trig_Knot_Of_Rust_Conditions))
+    call TriggerAddAction(gg_trg_Knot_Of_Rust,function Trig_Knot_Of_Rust_Actions)
 endfunction
 
 

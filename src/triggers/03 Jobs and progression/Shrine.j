@@ -561,140 +561,65 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shrine takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shrine_Create takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_Create=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Shrine_Create,2.)
-
-call TriggerAddAction(gg_trg_Shrine_Create,function Trig_Shrine_Create_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_Create=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Shrine_Create,2.)
+    call TriggerAddAction(gg_trg_Shrine_Create,function Trig_Shrine_Create_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shrine_AbilitySwap takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_AbilitySwap=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shrine_AbilitySwap,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_SELL)
-
-call TriggerAddCondition(gg_trg_Shrine_AbilitySwap,Condition(function Trig_Shrine_AbilitySwap_Conditions))
-
-call TriggerAddAction(gg_trg_Shrine_AbilitySwap,function Trig_Shrine_AbilitySwap_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_AbilitySwap=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shrine_AbilitySwap,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Shrine_AbilitySwap,Condition(function Trig_Shrine_AbilitySwap_Conditions))
+    call TriggerAddAction(gg_trg_Shrine_AbilitySwap,function Trig_Shrine_AbilitySwap_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shrine_SelectEnable takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_SelectEnable=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shrine_SelectEnable)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Shrine_SelectEnable,udg_ShrineReselectTimer)
-
-call TriggerAddAction(gg_trg_Shrine_SelectEnable,function Trig_Shrine_SelectEnable_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_SelectEnable=CreateTrigger()
+    call DisableTrigger(gg_trg_Shrine_SelectEnable)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Shrine_SelectEnable,udg_ShrineReselectTimer)
+    call TriggerAddAction(gg_trg_Shrine_SelectEnable,function Trig_Shrine_SelectEnable_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shrine_SelectMenu takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_SelectMenu=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Shrine_SelectMenu,Condition(function Trig_Shrine_SelectMenu_Conditions))
-
-call TriggerAddAction(gg_trg_Shrine_SelectMenu,function Trig_Shrine_SelectMenu_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_SelectMenu=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shrine_SelectMenu,Player(7),true)
+    call TriggerAddCondition(gg_trg_Shrine_SelectMenu,Condition(function Trig_Shrine_SelectMenu_Conditions))
+    call TriggerAddAction(gg_trg_Shrine_SelectMenu,function Trig_Shrine_SelectMenu_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shrine_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_Unlock=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shrine_Unlock)
-
-call TriggerAddAction(gg_trg_Shrine_Unlock,function Trig_Shrine_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_Shrine_Unlock)
+    call TriggerAddAction(gg_trg_Shrine_Unlock,function Trig_Shrine_Unlock_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shrine_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shrine_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shrine_Reveal)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Shrine_Reveal,12.)
-
-call TriggerAddCondition(gg_trg_Shrine_Reveal,Condition(function Trig_Shrine_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Shrine_Reveal,function Trig_Shrine_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shrine_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_Shrine_Reveal)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Shrine_Reveal,12.)
+    call TriggerAddCondition(gg_trg_Shrine_Reveal,Condition(function Trig_Shrine_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Shrine_Reveal,function Trig_Shrine_Reveal_Actions)
 endfunction
 
 

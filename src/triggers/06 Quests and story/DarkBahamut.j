@@ -373,107 +373,50 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkBahamut takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkBahamut_Riddle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBahamut_Riddle=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBahamut_Riddle)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_DarkBahamut_Riddle,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_DarkBahamut_Riddle,Condition(function Trig_DarkBahamut_Riddle_Conditions))
-
-call TriggerAddAction(gg_trg_DarkBahamut_Riddle,function Trig_DarkBahamut_Riddle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBahamut_Riddle=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBahamut_Riddle)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_DarkBahamut_Riddle,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_DarkBahamut_Riddle,Condition(function Trig_DarkBahamut_Riddle_Conditions))
+    call TriggerAddAction(gg_trg_DarkBahamut_Riddle,function Trig_DarkBahamut_Riddle_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkBahamut_DragonDeath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBahamut_DragonDeath=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBahamut_DragonDeath)
-
-call TriggerAddAction(gg_trg_DarkBahamut_DragonDeath,function Trig_DarkBahamut_DragonDeath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBahamut_DragonDeath=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBahamut_DragonDeath)
+    call TriggerAddAction(gg_trg_DarkBahamut_DragonDeath,function Trig_DarkBahamut_DragonDeath_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkBahamut_Phase2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBahamut_Phase2=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBahamut_Phase2)
-
-call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase2,gg_unit_H01W_0039,LESS_THAN,100.)
-
-call TriggerAddAction(gg_trg_DarkBahamut_Phase2,function Trig_DarkBahamut_Phase2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBahamut_Phase2=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBahamut_Phase2)
+    call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase2,gg_unit_H01W_0039,LESS_THAN,100.)
+    call TriggerAddAction(gg_trg_DarkBahamut_Phase2,function Trig_DarkBahamut_Phase2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkBahamut_Phase3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBahamut_Phase3=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBahamut_Phase3)
-
-call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase3,gg_unit_H01X_0038,LESS_THAN,100.)
-
-call TriggerAddAction(gg_trg_DarkBahamut_Phase3,function Trig_DarkBahamut_Phase3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBahamut_Phase3=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBahamut_Phase3)
+    call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase3,gg_unit_H01X_0038,LESS_THAN,100.)
+    call TriggerAddAction(gg_trg_DarkBahamut_Phase3,function Trig_DarkBahamut_Phase3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkBahamut_Phase4 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBahamut_Phase4=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBahamut_Phase4)
-
-call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase4,gg_unit_H01Y_0037,LESS_THAN,100.)
-
-call TriggerAddAction(gg_trg_DarkBahamut_Phase4,function Trig_DarkBahamut_Phase4_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBahamut_Phase4=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBahamut_Phase4)
+    call TriggerRegisterUnitLifeEvent(gg_trg_DarkBahamut_Phase4,gg_unit_H01Y_0037,LESS_THAN,100.)
+    call TriggerAddAction(gg_trg_DarkBahamut_Phase4,function Trig_DarkBahamut_Phase4_Actions)
 endfunction
 
 

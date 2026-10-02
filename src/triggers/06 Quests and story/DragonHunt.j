@@ -111,85 +111,42 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DragonHunt takes nothing returns nothing
 endfunction
-
 function RegisterR11_DragonHunt_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonHunt_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonHunt_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_DragonHunt_Start,Condition(function Trig_DragonHunt_Start_Conditions))
-
-call TriggerAddAction(gg_trg_DragonHunt_Start,function Trig_DragonHunt_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonHunt_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonHunt_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_DragonHunt_Start,Condition(function Trig_DragonHunt_Start_Conditions))
+    call TriggerAddAction(gg_trg_DragonHunt_Start,function Trig_DragonHunt_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonHunt_Count takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonHunt_Count=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonHunt_Count)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonHunt_Count,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_DragonHunt_Count,Condition(function Trig_DragonHunt_Count_Conditions))
-
-call TriggerAddAction(gg_trg_DragonHunt_Count,function Trig_DragonHunt_Count_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonHunt_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonHunt_Count)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonHunt_Count,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_DragonHunt_Count,Condition(function Trig_DragonHunt_Count_Conditions))
+    call TriggerAddAction(gg_trg_DragonHunt_Count,function Trig_DragonHunt_Count_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonHunt_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonHunt_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonHunt_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DragonHunt_Reward,450.,gg_unit_h032_0007)
-
-call TriggerAddCondition(gg_trg_DragonHunt_Reward,Condition(function Trig_DragonHunt_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_DragonHunt_Reward,function Trig_DragonHunt_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonHunt_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonHunt_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DragonHunt_Reward,450.,gg_unit_h032_0007)
+    call TriggerAddCondition(gg_trg_DragonHunt_Reward,Condition(function Trig_DragonHunt_Reward_Conditions))
+    call TriggerAddAction(gg_trg_DragonHunt_Reward,function Trig_DragonHunt_Reward_Actions)
 endfunction
 
 

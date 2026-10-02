@@ -124,127 +124,60 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DefiledFountain takes nothing returns nothing
 endfunction
-
 function RegisterR11_DefiledFountain_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DefiledFountain_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_DefiledFountain_Prepare)
-
-call TriggerAddAction(gg_trg_DefiledFountain_Prepare,function Trig_DefiledFountain_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DefiledFountain_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_DefiledFountain_Prepare)
+    call TriggerAddAction(gg_trg_DefiledFountain_Prepare,function Trig_DefiledFountain_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DefiledFountain_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DefiledFountain_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_DefiledFountain_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_DefiledFountain_Start,Condition(function Trig_DefiledFountain_Start_Conditions))
-
-call TriggerAddAction(gg_trg_DefiledFountain_Start,function Trig_DefiledFountain_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DefiledFountain_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_DefiledFountain_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_DefiledFountain_Start,Condition(function Trig_DefiledFountain_Start_Conditions))
+    call TriggerAddAction(gg_trg_DefiledFountain_Start,function Trig_DefiledFountain_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DefiledFountain_Hoof takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DefiledFountain_Hoof=CreateTrigger()
-
-call DisableTrigger(gg_trg_DefiledFountain_Hoof)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DefiledFountain_Hoof,450.,gg_unit_e007_0154)
-
-call TriggerAddCondition(gg_trg_DefiledFountain_Hoof,Condition(function Trig_DefiledFountain_Hoof_Conditions))
-
-call TriggerAddAction(gg_trg_DefiledFountain_Hoof,function Trig_DefiledFountain_Hoof_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DefiledFountain_Hoof=CreateTrigger()
+    call DisableTrigger(gg_trg_DefiledFountain_Hoof)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DefiledFountain_Hoof,450.,gg_unit_e007_0154)
+    call TriggerAddCondition(gg_trg_DefiledFountain_Hoof,Condition(function Trig_DefiledFountain_Hoof_Conditions))
+    call TriggerAddAction(gg_trg_DefiledFountain_Hoof,function Trig_DefiledFountain_Hoof_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DefiledFountain_PingBulb takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DefiledFountain_PingBulb=CreateTrigger()
-
-call DisableTrigger(gg_trg_DefiledFountain_PingBulb)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_DefiledFountain_PingBulb,15.)
-
-call TriggerAddCondition(gg_trg_DefiledFountain_PingBulb,Condition(function Trig_DefiledFountain_PingBulb_Conditions))
-
-call TriggerAddAction(gg_trg_DefiledFountain_PingBulb,function Trig_DefiledFountain_PingBulb_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DefiledFountain_PingBulb=CreateTrigger()
+    call DisableTrigger(gg_trg_DefiledFountain_PingBulb)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_DefiledFountain_PingBulb,15.)
+    call TriggerAddCondition(gg_trg_DefiledFountain_PingBulb,Condition(function Trig_DefiledFountain_PingBulb_Conditions))
+    call TriggerAddAction(gg_trg_DefiledFountain_PingBulb,function Trig_DefiledFountain_PingBulb_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DefiledFountain_BulbPickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DefiledFountain_BulbPickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_DefiledFountain_BulbPickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_DefiledFountain_BulbPickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_DefiledFountain_BulbPickup,Condition(function Trig_DefiledFountain_BulbPickup_Conditions))
-
-call TriggerAddAction(gg_trg_DefiledFountain_BulbPickup,function Trig_DefiledFountain_BulbPickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DefiledFountain_BulbPickup=CreateTrigger()
+    call DisableTrigger(gg_trg_DefiledFountain_BulbPickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_DefiledFountain_BulbPickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_DefiledFountain_BulbPickup,Condition(function Trig_DefiledFountain_BulbPickup_Conditions))
+    call TriggerAddAction(gg_trg_DefiledFountain_BulbPickup,function Trig_DefiledFountain_BulbPickup_Actions)
 endfunction
 
 

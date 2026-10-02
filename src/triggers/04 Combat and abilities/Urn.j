@@ -32,27 +32,16 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Urn takes nothing returns nothing
 endfunction
-
 function RegisterR11_Urn_Guardians_Count takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Urn_Guardians_Count=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_n014_0174,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_U006_0077,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_H00W_0079,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_U00J_0209,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Urn_Guardians_Count,function Trig_Urn_Guardians_Count_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Urn_Guardians_Count=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_n014_0174,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_U006_0077,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_H00W_0079,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Urn_Guardians_Count,gg_unit_U00J_0209,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Urn_Guardians_Count,function Trig_Urn_Guardians_Count_Actions)
 endfunction
 
 

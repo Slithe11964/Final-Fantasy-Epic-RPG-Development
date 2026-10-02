@@ -87,23 +87,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AbilityTags takes nothing returns nothing
 endfunction
-
 function RegisterR11_AbilityTags_Show takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AbilityTags_Show=CreateTrigger()
-
-call DisableTrigger(gg_trg_AbilityTags_Show)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_AbilityTags_Show,udg_FishingTimer[0])
-
-call TriggerAddAction(gg_trg_AbilityTags_Show,function Trig_AbilityTags_Show_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AbilityTags_Show=CreateTrigger()
+    call DisableTrigger(gg_trg_AbilityTags_Show)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_AbilityTags_Show,udg_FishingTimer[0])
+    call TriggerAddAction(gg_trg_AbilityTags_Show,function Trig_AbilityTags_Show_Actions)
 endfunction
 
 

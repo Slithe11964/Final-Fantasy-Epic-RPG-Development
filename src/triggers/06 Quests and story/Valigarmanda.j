@@ -521,115 +521,54 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Valigarmanda takes nothing returns nothing
 endfunction
-
 function RegisterR11_Valigarmanda_Confront takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valigarmanda_Confront=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valigarmanda_Confront)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,250.,gg_unit_n0MC_0265)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,450.,gg_unit_n0MC_0265)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,700.,gg_unit_n0MC_0265)
-
-call TriggerAddCondition(gg_trg_Valigarmanda_Confront,Condition(function Trig_Valigarmanda_Confront_Conditions))
-
-call TriggerAddAction(gg_trg_Valigarmanda_Confront,function Trig_Valigarmanda_Confront_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valigarmanda_Confront=CreateTrigger()
+    call DisableTrigger(gg_trg_Valigarmanda_Confront)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,250.,gg_unit_n0MC_0265)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,450.,gg_unit_n0MC_0265)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,700.,gg_unit_n0MC_0265)
+    call TriggerAddCondition(gg_trg_Valigarmanda_Confront,Condition(function Trig_Valigarmanda_Confront_Conditions))
+    call TriggerAddAction(gg_trg_Valigarmanda_Confront,function Trig_Valigarmanda_Confront_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valigarmanda_Wave_Cleared takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valigarmanda_Wave_Cleared=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valigarmanda_Wave_Cleared)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Valigarmanda_Wave_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Valigarmanda_Wave_Cleared,EVENT_PLAYER_UNIT_CHANGE_OWNER)
-
-call TriggerAddCondition(gg_trg_Valigarmanda_Wave_Cleared,Condition(function Trig_Valigarmanda_Wave_Cleared_Conditions))
-
-call TriggerAddAction(gg_trg_Valigarmanda_Wave_Cleared,function Trig_Valigarmanda_Wave_Cleared_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valigarmanda_Wave_Cleared=CreateTrigger()
+    call DisableTrigger(gg_trg_Valigarmanda_Wave_Cleared)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Valigarmanda_Wave_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Valigarmanda_Wave_Cleared,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerAddCondition(gg_trg_Valigarmanda_Wave_Cleared,Condition(function Trig_Valigarmanda_Wave_Cleared_Conditions))
+    call TriggerAddAction(gg_trg_Valigarmanda_Wave_Cleared,function Trig_Valigarmanda_Wave_Cleared_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valigarmanda_Wave_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valigarmanda_Wave_Spawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valigarmanda_Wave_Spawn)
-
-call TriggerAddAction(gg_trg_Valigarmanda_Wave_Spawn,function Trig_Valigarmanda_Wave_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valigarmanda_Wave_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Valigarmanda_Wave_Spawn)
+    call TriggerAddAction(gg_trg_Valigarmanda_Wave_Spawn,function Trig_Valigarmanda_Wave_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valigarmanda_Wave_Reset takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valigarmanda_Wave_Reset=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valigarmanda_Wave_Reset)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Valigarmanda_Wave_Reset,udg_ValigarmandaWaveTimer)
-
-call TriggerAddAction(gg_trg_Valigarmanda_Wave_Reset,function Trig_Valigarmanda_Wave_Reset_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valigarmanda_Wave_Reset=CreateTrigger()
+    call DisableTrigger(gg_trg_Valigarmanda_Wave_Reset)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Valigarmanda_Wave_Reset,udg_ValigarmandaWaveTimer)
+    call TriggerAddAction(gg_trg_Valigarmanda_Wave_Reset,function Trig_Valigarmanda_Wave_Reset_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valigarmanda_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valigarmanda_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valigarmanda_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_Valigarmanda_Death,gg_unit_n0MC_0265,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Valigarmanda_Death,function Trig_Valigarmanda_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valigarmanda_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Valigarmanda_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Valigarmanda_Death,gg_unit_n0MC_0265,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Valigarmanda_Death,function Trig_Valigarmanda_Death_Actions)
 endfunction
 
 

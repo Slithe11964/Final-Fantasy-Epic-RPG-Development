@@ -223,23 +223,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cooldown takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cooldown_Scaling takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cooldown_Scaling=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Cooldown_Scaling,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Cooldown_Scaling,Condition(function Trig_Cooldown_Scaling_Conditions))
-
-call TriggerAddAction(gg_trg_Cooldown_Scaling,function Trig_Cooldown_Scaling_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cooldown_Scaling=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Cooldown_Scaling,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Cooldown_Scaling,Condition(function Trig_Cooldown_Scaling_Conditions))
+    call TriggerAddAction(gg_trg_Cooldown_Scaling,function Trig_Cooldown_Scaling_Actions)
 endfunction
 
 

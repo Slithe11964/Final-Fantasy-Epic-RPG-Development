@@ -154,106 +154,51 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_FlanHunt takes nothing returns nothing
 endfunction
-
 function RegisterR11_FlanHunt_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FlanHunt_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_FlanHunt_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_FlanHunt_Start,Condition(function Trig_FlanHunt_Start_Conditions))
-
-call TriggerAddAction(gg_trg_FlanHunt_Start,function Trig_FlanHunt_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FlanHunt_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_FlanHunt_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_FlanHunt_Start,Condition(function Trig_FlanHunt_Start_Conditions))
+    call TriggerAddAction(gg_trg_FlanHunt_Start,function Trig_FlanHunt_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FlanHunt_Count takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FlanHunt_Count=CreateTrigger()
-
-call DisableTrigger(gg_trg_FlanHunt_Count)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_FlanHunt_Count,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_FlanHunt_Count,Condition(function Trig_FlanHunt_Count_Conditions))
-
-call TriggerAddAction(gg_trg_FlanHunt_Count,function Trig_FlanHunt_Count_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FlanHunt_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_FlanHunt_Count)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_FlanHunt_Count,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_FlanHunt_Count,Condition(function Trig_FlanHunt_Count_Conditions))
+    call TriggerAddAction(gg_trg_FlanHunt_Count,function Trig_FlanHunt_Count_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FlanHunt_Fail takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FlanHunt_Fail=CreateTrigger()
-
-call DisableTrigger(gg_trg_FlanHunt_Fail)
-
-call TriggerAddAction(gg_trg_FlanHunt_Fail,function Trig_FlanHunt_Fail_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FlanHunt_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_FlanHunt_Fail)
+    call TriggerAddAction(gg_trg_FlanHunt_Fail,function Trig_FlanHunt_Fail_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FlanHunt_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FlanHunt_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_FlanHunt_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_FlanHunt_Reward,200.,gg_unit_e014_0149)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_FlanHunt_Reward,450.,gg_unit_e014_0149)
-
-call TriggerAddCondition(gg_trg_FlanHunt_Reward,Condition(function Trig_FlanHunt_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_FlanHunt_Reward,function Trig_FlanHunt_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FlanHunt_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_FlanHunt_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_FlanHunt_Reward,200.,gg_unit_e014_0149)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_FlanHunt_Reward,450.,gg_unit_e014_0149)
+    call TriggerAddCondition(gg_trg_FlanHunt_Reward,Condition(function Trig_FlanHunt_Reward_Conditions))
+    call TriggerAddAction(gg_trg_FlanHunt_Reward,function Trig_FlanHunt_Reward_Actions)
 endfunction
 
 

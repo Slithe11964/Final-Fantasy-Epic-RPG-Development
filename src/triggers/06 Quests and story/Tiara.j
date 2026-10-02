@@ -20,25 +20,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Tiara takes nothing returns nothing
 endfunction
-
 function RegisterR11_Tiara_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tiara_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tiara_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Tiara_Ping,15.)
-
-call TriggerAddCondition(gg_trg_Tiara_Ping,Condition(function Trig_Tiara_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_Tiara_Ping,function Trig_Tiara_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tiara_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Tiara_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Tiara_Ping,15.)
+    call TriggerAddCondition(gg_trg_Tiara_Ping,Condition(function Trig_Tiara_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Tiara_Ping,function Trig_Tiara_Ping_Actions)
 endfunction
 
 

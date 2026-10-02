@@ -12,19 +12,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_FallenRanger takes nothing returns nothing
 endfunction
-
 function RegisterR11_FallenRanger_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FallenRanger_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_FallenRanger_Setup,function Trig_FallenRanger_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FallenRanger_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_FallenRanger_Setup,function Trig_FallenRanger_Setup_Actions)
 endfunction
 
 

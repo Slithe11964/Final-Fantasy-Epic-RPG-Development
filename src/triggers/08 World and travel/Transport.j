@@ -13,23 +13,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Transport takes nothing returns nothing
 endfunction
-
 function RegisterR11_Transport_HeroLoaded takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Transport_HeroLoaded=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Transport_HeroLoaded,EVENT_PLAYER_UNIT_LOADED)
-
-call TriggerAddCondition(gg_trg_Transport_HeroLoaded,Condition(function Trig_Transport_HeroLoaded_Conditions))
-
-call TriggerAddAction(gg_trg_Transport_HeroLoaded,function Trig_Transport_HeroLoaded_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Transport_HeroLoaded=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Transport_HeroLoaded,EVENT_PLAYER_UNIT_LOADED)
+    call TriggerAddCondition(gg_trg_Transport_HeroLoaded,Condition(function Trig_Transport_HeroLoaded_Conditions))
+    call TriggerAddAction(gg_trg_Transport_HeroLoaded,function Trig_Transport_HeroLoaded_Actions)
 endfunction
 
 

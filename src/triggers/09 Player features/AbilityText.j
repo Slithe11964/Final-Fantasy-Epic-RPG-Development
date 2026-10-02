@@ -111,35 +111,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AbilityText takes nothing returns nothing
 endfunction
-
 function RegisterR11_AbilityText_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AbilityText_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(0),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(1),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(2),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(3),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(4),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(5),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(6),"-abilitytext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(7),"-abilitytext",false)
-
-call TriggerAddAction(gg_trg_AbilityText_Command,function Trig_AbilityText_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AbilityText_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(0),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(1),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(2),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(3),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(4),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(5),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(6),"-abilitytext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(7),"-abilitytext",false)
+    call TriggerAddAction(gg_trg_AbilityText_Command,function Trig_AbilityText_Command_Actions)
 endfunction
 
 

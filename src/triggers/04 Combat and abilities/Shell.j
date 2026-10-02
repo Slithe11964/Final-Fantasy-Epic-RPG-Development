@@ -82,44 +82,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shell takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shell_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shell_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Shell_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Shell_Cast,Condition(function Trig_Shell_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Shell_Cast,function Trig_Shell_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shell_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shell_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shell_Cast,Condition(function Trig_Shell_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Shell_Cast,function Trig_Shell_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shell_AI_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shell_AI_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Shell_AI_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Shell_AI_Cast,Condition(function Trig_Shell_AI_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Shell_AI_Cast,function Trig_Shell_AI_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shell_AI_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shell_AI_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shell_AI_Cast,Condition(function Trig_Shell_AI_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Shell_AI_Cast,function Trig_Shell_AI_Cast_Actions)
 endfunction
 
 

@@ -258,175 +258,81 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_ArenaExpansion takes nothing returns nothing
 endfunction
-
 function RegisterR11_ArenaExpansion_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_Prepare)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_ArenaExpansion_Prepare,udg_SharedDelayTimer2)
-
-call TriggerAddAction(gg_trg_ArenaExpansion_Prepare,function Trig_ArenaExpansion_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_Prepare)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_ArenaExpansion_Prepare,udg_SharedDelayTimer2)
+    call TriggerAddAction(gg_trg_ArenaExpansion_Prepare,function Trig_ArenaExpansion_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_Start,Condition(function Trig_ArenaExpansion_Start_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_Start,function Trig_ArenaExpansion_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_Start,Condition(function Trig_ArenaExpansion_Start_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_Start,function Trig_ArenaExpansion_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_ShadowStoneSpawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_ShadowStoneSpawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneSpawn)
-
-call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_ShadowStoneSpawn,gg_rct_565)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneSpawn,Condition(function Trig_ArenaExpansion_ShadowStoneSpawn_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneSpawn,function Trig_ArenaExpansion_ShadowStoneSpawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_ShadowStoneSpawn=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneSpawn)
+    call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_ShadowStoneSpawn,gg_rct_565)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneSpawn,Condition(function Trig_ArenaExpansion_ShadowStoneSpawn_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneSpawn,function Trig_ArenaExpansion_ShadowStoneSpawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_ShadowStoneTurnIn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_ShadowStoneTurnIn=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneTurnIn)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_ShadowStoneTurnIn,450.,gg_unit_e008_0132)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneTurnIn,Condition(function Trig_ArenaExpansion_ShadowStoneTurnIn_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneTurnIn,function Trig_ArenaExpansion_ShadowStoneTurnIn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_ShadowStoneTurnIn=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneTurnIn)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_ShadowStoneTurnIn,450.,gg_unit_e008_0132)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneTurnIn,Condition(function Trig_ArenaExpansion_ShadowStoneTurnIn_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneTurnIn,function Trig_ArenaExpansion_ShadowStoneTurnIn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_GatherDust takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_GatherDust=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_GatherDust)
-
-call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_GatherDust,gg_rct_372)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_GatherDust,Condition(function Trig_ArenaExpansion_GatherDust_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_GatherDust,function Trig_ArenaExpansion_GatherDust_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_GatherDust=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_GatherDust)
+    call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_GatherDust,gg_rct_372)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_GatherDust,Condition(function Trig_ArenaExpansion_GatherDust_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_GatherDust,function Trig_ArenaExpansion_GatherDust_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_PingDust takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_PingDust=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_PingDust)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_ArenaExpansion_PingDust,15.)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_PingDust,Condition(function Trig_ArenaExpansion_PingDust_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_PingDust,function Trig_ArenaExpansion_PingDust_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_PingDust=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_PingDust)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_ArenaExpansion_PingDust,15.)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_PingDust,Condition(function Trig_ArenaExpansion_PingDust_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_PingDust,function Trig_ArenaExpansion_PingDust_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaExpansion_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaExpansion_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaExpansion_Complete)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_Complete,450.,gg_unit_e008_0132)
-
-call TriggerAddCondition(gg_trg_ArenaExpansion_Complete,Condition(function Trig_ArenaExpansion_Complete_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaExpansion_Complete,function Trig_ArenaExpansion_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaExpansion_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaExpansion_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_Complete,450.,gg_unit_e008_0132)
+    call TriggerAddCondition(gg_trg_ArenaExpansion_Complete,Condition(function Trig_ArenaExpansion_Complete_Conditions))
+    call TriggerAddAction(gg_trg_ArenaExpansion_Complete,function Trig_ArenaExpansion_Complete_Actions)
 endfunction
 
 

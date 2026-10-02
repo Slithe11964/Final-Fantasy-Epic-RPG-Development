@@ -306,46 +306,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zeromus takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zeromus_Encounter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zeromus_Encounter=CreateTrigger()
-
-call DisableTrigger(gg_trg_Zeromus_Encounter)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Zeromus_Encounter,.05)
-
-call TriggerAddCondition(gg_trg_Zeromus_Encounter,Condition(function Trig_Zeromus_Encounter_Conditions))
-
-call TriggerAddAction(gg_trg_Zeromus_Encounter,function Trig_Zeromus_Encounter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zeromus_Encounter=CreateTrigger()
+    call DisableTrigger(gg_trg_Zeromus_Encounter)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Zeromus_Encounter,.05)
+    call TriggerAddCondition(gg_trg_Zeromus_Encounter,Condition(function Trig_Zeromus_Encounter_Conditions))
+    call TriggerAddAction(gg_trg_Zeromus_Encounter,function Trig_Zeromus_Encounter_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zeromus_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zeromus_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Zeromus_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_Zeromus_Death,gg_unit_U00J_0209,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Zeromus_Death,function Trig_Zeromus_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zeromus_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Zeromus_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Zeromus_Death,gg_unit_U00J_0209,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Zeromus_Death,function Trig_Zeromus_Death_Actions)
 endfunction
 
 

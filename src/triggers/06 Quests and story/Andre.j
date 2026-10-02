@@ -162,76 +162,39 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Andre takes nothing returns nothing
 endfunction
-
 function RegisterR11_Andre_Elysium_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Andre_Elysium_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Andre_Elysium_Reveal)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Andre_Elysium_Reveal,Condition(function Trig_Andre_Elysium_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Andre_Elysium_Reveal,function Trig_Andre_Elysium_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Andre_Elysium_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_Andre_Elysium_Reveal)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(7),true)
+    call TriggerAddCondition(gg_trg_Andre_Elysium_Reveal,Condition(function Trig_Andre_Elysium_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Andre_Elysium_Reveal,function Trig_Andre_Elysium_Reveal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Andre_Legendary_Rules takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Andre_Legendary_Rules=CreateTrigger()
-
-call DisableTrigger(gg_trg_Andre_Legendary_Rules)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Andre_Legendary_Rules,Condition(function Trig_Andre_Legendary_Rules_Conditions))
-
-call TriggerAddAction(gg_trg_Andre_Legendary_Rules,function Trig_Andre_Legendary_Rules_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Andre_Legendary_Rules=CreateTrigger()
+    call DisableTrigger(gg_trg_Andre_Legendary_Rules)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(7),true)
+    call TriggerAddCondition(gg_trg_Andre_Legendary_Rules,Condition(function Trig_Andre_Legendary_Rules_Conditions))
+    call TriggerAddAction(gg_trg_Andre_Legendary_Rules,function Trig_Andre_Legendary_Rules_Actions)
 endfunction
 
 

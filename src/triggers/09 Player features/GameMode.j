@@ -135,23 +135,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GameMode takes nothing returns nothing
 endfunction
-
 function RegisterR11_GameMode_Apply takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GameMode_Apply=CreateTrigger()
-
-call DisableTrigger(gg_trg_GameMode_Apply)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_GameMode_Apply,udg_VoteTimer)
-
-call TriggerAddAction(gg_trg_GameMode_Apply,function Trig_GameMode_Apply_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GameMode_Apply=CreateTrigger()
+    call DisableTrigger(gg_trg_GameMode_Apply)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_GameMode_Apply,udg_VoteTimer)
+    call TriggerAddAction(gg_trg_GameMode_Apply,function Trig_GameMode_Apply_Actions)
 endfunction
 
 

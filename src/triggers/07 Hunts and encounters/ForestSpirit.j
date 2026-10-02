@@ -82,61 +82,30 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_ForestSpirit takes nothing returns nothing
 endfunction
-
 function RegisterR11_ForestSpirit_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ForestSpirit_Spawn=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_ForestSpirit_Spawn,10.)
-
-call TriggerAddAction(gg_trg_ForestSpirit_Spawn,function Trig_ForestSpirit_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ForestSpirit_Spawn=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_ForestSpirit_Spawn,10.)
+    call TriggerAddAction(gg_trg_ForestSpirit_Spawn,function Trig_ForestSpirit_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ForestSpirit_Wander takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ForestSpirit_Wander=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_ForestSpirit_Wander,20.)
-
-call TriggerAddAction(gg_trg_ForestSpirit_Wander,function Trig_ForestSpirit_Wander_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ForestSpirit_Wander=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_ForestSpirit_Wander,20.)
+    call TriggerAddAction(gg_trg_ForestSpirit_Wander,function Trig_ForestSpirit_Wander_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ForestSpirit_Flee takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ForestSpirit_Flee=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_ForestSpirit_Flee,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_ForestSpirit_Flee,Condition(function Trig_ForestSpirit_Flee_Conditions))
-
-call TriggerAddAction(gg_trg_ForestSpirit_Flee,function Trig_ForestSpirit_Flee_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ForestSpirit_Flee=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_ForestSpirit_Flee,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_ForestSpirit_Flee,Condition(function Trig_ForestSpirit_Flee_Conditions))
+    call TriggerAddAction(gg_trg_ForestSpirit_Flee,function Trig_ForestSpirit_Flee_Actions)
 endfunction
 
 

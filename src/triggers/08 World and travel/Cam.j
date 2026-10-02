@@ -42,45 +42,25 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cam takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cam_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cam_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(0),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(1),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(2),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(3),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(4),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(5),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(6),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(7),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(8),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(9),"-cam ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player($A),"-cam ",false) // $A = 10
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player($B),"-cam ",false) // $B = 11
-
-call TriggerAddCondition(gg_trg_Cam_Command,Condition(function Trig_Cam_Command_Conditions))
-
-call TriggerAddAction(gg_trg_Cam_Command,function Trig_Cam_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cam_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(0),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(1),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(2),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(3),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(4),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(5),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(6),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(7),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(8),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(9),"-cam ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player($A),"-cam ",false) // $A = 10
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player($B),"-cam ",false) // $B = 11
+    call TriggerAddCondition(gg_trg_Cam_Command,Condition(function Trig_Cam_Command_Conditions))
+    call TriggerAddAction(gg_trg_Cam_Command,function Trig_Cam_Command_Actions)
 endfunction
 
 

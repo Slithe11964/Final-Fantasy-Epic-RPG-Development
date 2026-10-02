@@ -58,21 +58,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Revive takes nothing returns nothing
 endfunction
-
 function RegisterR11_Revive_Item_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Revive_Item_Cleanup=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Revive_Item_Cleanup,udg_ReviveCleanupTimer)
-
-call TriggerAddAction(gg_trg_Revive_Item_Cleanup,function Trig_Revive_Item_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Revive_Item_Cleanup=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Revive_Item_Cleanup,udg_ReviveCleanupTimer)
+    call TriggerAddAction(gg_trg_Revive_Item_Cleanup,function Trig_Revive_Item_Cleanup_Actions)
 endfunction
 
 

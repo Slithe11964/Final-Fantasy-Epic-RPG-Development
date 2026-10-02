@@ -198,46 +198,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Judgment takes nothing returns nothing
 endfunction
-
 function RegisterR11_Judgment_Attack_Alberich takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Judgment_Attack_Alberich=CreateTrigger()
-
-call DisableTrigger(gg_trg_Judgment_Attack_Alberich)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Judgment_Attack_Alberich,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Judgment_Attack_Alberich,Condition(function Trig_Judgment_Attack_Alberich_Conditions))
-
-call TriggerAddAction(gg_trg_Judgment_Attack_Alberich,function Trig_Judgment_Attack_Alberich_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Judgment_Attack_Alberich=CreateTrigger()
+    call DisableTrigger(gg_trg_Judgment_Attack_Alberich)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Judgment_Attack_Alberich,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Judgment_Attack_Alberich,Condition(function Trig_Judgment_Attack_Alberich_Conditions))
+    call TriggerAddAction(gg_trg_Judgment_Attack_Alberich,function Trig_Judgment_Attack_Alberich_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Judgment_Spare_Alberich takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Judgment_Spare_Alberich=CreateTrigger()
-
-call DisableTrigger(gg_trg_Judgment_Spare_Alberich)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Judgment_Spare_Alberich,udg_SharedDelayTimer5)
-
-call TriggerAddAction(gg_trg_Judgment_Spare_Alberich,function Trig_Judgment_Spare_Alberich_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Judgment_Spare_Alberich=CreateTrigger()
+    call DisableTrigger(gg_trg_Judgment_Spare_Alberich)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Judgment_Spare_Alberich,udg_SharedDelayTimer5)
+    call TriggerAddAction(gg_trg_Judgment_Spare_Alberich,function Trig_Judgment_Spare_Alberich_Actions)
 endfunction
 
 

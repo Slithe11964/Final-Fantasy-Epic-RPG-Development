@@ -18,23 +18,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Spartacus takes nothing returns nothing
 endfunction
-
 function RegisterR11_Spartacus_Summon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spartacus_Summon=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Spartacus_Summon,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Spartacus_Summon,Condition(function Trig_Spartacus_Summon_Conditions))
-
-call TriggerAddAction(gg_trg_Spartacus_Summon,function Trig_Spartacus_Summon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spartacus_Summon=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spartacus_Summon,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spartacus_Summon,Condition(function Trig_Spartacus_Summon_Conditions))
+    call TriggerAddAction(gg_trg_Spartacus_Summon,function Trig_Spartacus_Summon_Actions)
 endfunction
 
 

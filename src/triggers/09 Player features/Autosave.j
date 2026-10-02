@@ -49,35 +49,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Autosave takes nothing returns nothing
 endfunction
-
 function RegisterR11_Autosave_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Autosave_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(0),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(1),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(2),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(3),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(4),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(5),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(6),"-autosave",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(7),"-autosave",false)
-
-call TriggerAddAction(gg_trg_Autosave_Command,function Trig_Autosave_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Autosave_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(0),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(1),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(2),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(3),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(4),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(5),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(6),"-autosave",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(7),"-autosave",false)
+    call TriggerAddAction(gg_trg_Autosave_Command,function Trig_Autosave_Command_Actions)
 endfunction
 
 

@@ -48,23 +48,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Meteor takes nothing returns nothing
 endfunction
-
 function RegisterR11_Meteor_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Meteor_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Meteor_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Meteor_Cast,Condition(function Trig_Meteor_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Meteor_Cast,function Trig_Meteor_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Meteor_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Meteor_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Meteor_Cast,Condition(function Trig_Meteor_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Meteor_Cast,function Trig_Meteor_Cast_Actions)
 endfunction
 
 

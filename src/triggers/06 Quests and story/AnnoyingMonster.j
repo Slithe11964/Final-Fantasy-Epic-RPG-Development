@@ -13,21 +13,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AnnoyingMonster takes nothing returns nothing
 endfunction
-
 function RegisterR11_AnnoyingMonster_DropBelongings takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AnnoyingMonster_DropBelongings=CreateTrigger()
-
-call DisableTrigger(gg_trg_AnnoyingMonster_DropBelongings)
-
-call TriggerAddAction(gg_trg_AnnoyingMonster_DropBelongings,function Trig_AnnoyingMonster_DropBelongings_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AnnoyingMonster_DropBelongings=CreateTrigger()
+    call DisableTrigger(gg_trg_AnnoyingMonster_DropBelongings)
+    call TriggerAddAction(gg_trg_AnnoyingMonster_DropBelongings,function Trig_AnnoyingMonster_DropBelongings_Actions)
 endfunction
 
 

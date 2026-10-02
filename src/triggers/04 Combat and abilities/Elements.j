@@ -24,21 +24,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Elements takes nothing returns nothing
 endfunction
-
 function RegisterR11_Elements_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elements_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Elements_Init,25.)
-
-call TriggerAddAction(gg_trg_Elements_Init,function Trig_Elements_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elements_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Elements_Init,25.)
+    call TriggerAddAction(gg_trg_Elements_Init,function Trig_Elements_Init_Actions)
 endfunction
 
 

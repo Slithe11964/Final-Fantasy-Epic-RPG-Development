@@ -234,35 +234,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AtkSpd takes nothing returns nothing
 endfunction
-
 function RegisterR11_AtkSpd_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AtkSpd_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(0),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(1),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(2),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(3),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(4),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(5),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(6),"-atkspd",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(7),"-atkspd",true)
-
-call TriggerAddAction(gg_trg_AtkSpd_Command,function Trig_AtkSpd_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AtkSpd_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(0),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(1),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(2),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(3),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(4),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(5),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(6),"-atkspd",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(7),"-atkspd",true)
+    call TriggerAddAction(gg_trg_AtkSpd_Command,function Trig_AtkSpd_Command_Actions)
 endfunction
 
 

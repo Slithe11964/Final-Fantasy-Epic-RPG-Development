@@ -6,21 +6,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Reminder takes nothing returns nothing
 endfunction
-
 function RegisterR11_Reminder_Periodic takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Reminder_Periodic=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Reminder_Periodic,2700.)
-
-call TriggerAddAction(gg_trg_Reminder_Periodic,function Trig_Reminder_Periodic_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Reminder_Periodic=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Reminder_Periodic,2700.)
+    call TriggerAddAction(gg_trg_Reminder_Periodic,function Trig_Reminder_Periodic_Actions)
 endfunction
 
 

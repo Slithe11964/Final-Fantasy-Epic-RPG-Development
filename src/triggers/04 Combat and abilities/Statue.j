@@ -12,36 +12,19 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Statue takes nothing returns nothing
 endfunction
-
 function RegisterR11_Statue_Keeper_Anim takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Statue_Keeper_Anim=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Statue_Keeper_Anim,function Trig_Statue_Keeper_Anim_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Statue_Keeper_Anim=CreateTrigger()
+    call TriggerAddAction(gg_trg_Statue_Keeper_Anim,function Trig_Statue_Keeper_Anim_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Statue_Guardian_Anim takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Statue_Guardian_Anim=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Statue_Guardian_Anim,function Trig_Statue_Guardian_Anim_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Statue_Guardian_Anim=CreateTrigger()
+    call TriggerAddAction(gg_trg_Statue_Guardian_Anim,function Trig_Statue_Guardian_Anim_Actions)
 endfunction
 
 

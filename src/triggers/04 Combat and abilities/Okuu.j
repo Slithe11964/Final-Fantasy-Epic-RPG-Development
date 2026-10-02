@@ -21,44 +21,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Okuu takes nothing returns nothing
 endfunction
-
 function RegisterR11_Okuu_Leash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Okuu_Leash=CreateTrigger()
-
-call DisableTrigger(gg_trg_Okuu_Leash)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Okuu_Leash,gg_rct_638)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Okuu_Leash,gg_rct_631)
-
-call TriggerAddCondition(gg_trg_Okuu_Leash,Condition(function Trig_Okuu_Leash_Conditions))
-
-call TriggerAddAction(gg_trg_Okuu_Leash,function Trig_Okuu_Leash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Okuu_Leash=CreateTrigger()
+    call DisableTrigger(gg_trg_Okuu_Leash)
+    call TriggerRegisterEnterRectSimple(gg_trg_Okuu_Leash,gg_rct_638)
+    call TriggerRegisterEnterRectSimple(gg_trg_Okuu_Leash,gg_rct_631)
+    call TriggerAddCondition(gg_trg_Okuu_Leash,Condition(function Trig_Okuu_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Okuu_Leash,function Trig_Okuu_Leash_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Okuu_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Okuu_Death=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Okuu_Death,function Trig_Okuu_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Okuu_Death=CreateTrigger()
+    call TriggerAddAction(gg_trg_Okuu_Death,function Trig_Okuu_Death_Actions)
 endfunction
 
 

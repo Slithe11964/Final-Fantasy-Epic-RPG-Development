@@ -166,96 +166,46 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Wanderer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Wanderer_Quest_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Wanderer_Quest_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Wanderer_Quest_Init,2.)
-
-call TriggerAddAction(gg_trg_Wanderer_Quest_Init,function Trig_Wanderer_Quest_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Wanderer_Quest_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Wanderer_Quest_Init,2.)
+    call TriggerAddAction(gg_trg_Wanderer_Quest_Init,function Trig_Wanderer_Quest_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Wanderer_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Wanderer_Spawn=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Wanderer_Spawn,8.)
-
-call TriggerAddAction(gg_trg_Wanderer_Spawn,function Trig_Wanderer_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Wanderer_Spawn=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Wanderer_Spawn,8.)
+    call TriggerAddAction(gg_trg_Wanderer_Spawn,function Trig_Wanderer_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Wanderer_Request takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Wanderer_Request=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Wanderer_Request,Condition(function Trig_Wanderer_Request_Conditions))
-
-call TriggerAddAction(gg_trg_Wanderer_Request,function Trig_Wanderer_Request_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Wanderer_Request=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(7),true)
+    call TriggerAddCondition(gg_trg_Wanderer_Request,Condition(function Trig_Wanderer_Request_Conditions))
+    call TriggerAddAction(gg_trg_Wanderer_Request,function Trig_Wanderer_Request_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Wanderer_Give_Item takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Wanderer_Give_Item=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Wanderer_Give_Item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Wanderer_Give_Item,Condition(function Trig_Wanderer_Give_Item_Conditions))
-
-call TriggerAddAction(gg_trg_Wanderer_Give_Item,function Trig_Wanderer_Give_Item_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Wanderer_Give_Item=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Wanderer_Give_Item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Wanderer_Give_Item,Condition(function Trig_Wanderer_Give_Item_Conditions))
+    call TriggerAddAction(gg_trg_Wanderer_Give_Item,function Trig_Wanderer_Give_Item_Actions)
 endfunction
 
 

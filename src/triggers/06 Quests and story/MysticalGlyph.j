@@ -154,150 +154,70 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MysticalGlyph takes nothing returns nothing
 endfunction
-
 function RegisterR11_MysticalGlyph_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Prepare)
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Prepare,function Trig_MysticalGlyph_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Prepare)
+    call TriggerAddAction(gg_trg_MysticalGlyph_Prepare,function Trig_MysticalGlyph_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MysticalGlyph_Drop takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Drop=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Drop)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_MysticalGlyph_Drop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_MysticalGlyph_Drop,Condition(function Trig_MysticalGlyph_Drop_Conditions))
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Drop,function Trig_MysticalGlyph_Drop_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Drop=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Drop)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_MysticalGlyph_Drop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_MysticalGlyph_Drop,Condition(function Trig_MysticalGlyph_Drop_Conditions))
+    call TriggerAddAction(gg_trg_MysticalGlyph_Drop,function Trig_MysticalGlyph_Drop_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MysticalGlyph_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Pickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Pickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_MysticalGlyph_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_MysticalGlyph_Pickup,Condition(function Trig_MysticalGlyph_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Pickup,function Trig_MysticalGlyph_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_MysticalGlyph_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_MysticalGlyph_Pickup,Condition(function Trig_MysticalGlyph_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_MysticalGlyph_Pickup,function Trig_MysticalGlyph_Pickup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MysticalGlyph_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_MysticalGlyph_Ping,15.)
-
-call TriggerAddCondition(gg_trg_MysticalGlyph_Ping,Condition(function Trig_MysticalGlyph_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Ping,function Trig_MysticalGlyph_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_MysticalGlyph_Ping,15.)
+    call TriggerAddCondition(gg_trg_MysticalGlyph_Ping,Condition(function Trig_MysticalGlyph_Ping_Conditions))
+    call TriggerAddAction(gg_trg_MysticalGlyph_Ping,function Trig_MysticalGlyph_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MysticalGlyph_Deliver takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Deliver=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Deliver)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_MysticalGlyph_Deliver,450.,gg_unit_n007_0105)
-
-call TriggerAddCondition(gg_trg_MysticalGlyph_Deliver,Condition(function Trig_MysticalGlyph_Deliver_Conditions))
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Deliver,function Trig_MysticalGlyph_Deliver_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_MysticalGlyph_Deliver,450.,gg_unit_n007_0105)
+    call TriggerAddCondition(gg_trg_MysticalGlyph_Deliver,Condition(function Trig_MysticalGlyph_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_MysticalGlyph_Deliver,function Trig_MysticalGlyph_Deliver_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MysticalGlyph_Result takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MysticalGlyph_Result=CreateTrigger()
-
-call DisableTrigger(gg_trg_MysticalGlyph_Result)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(7),true)
-
-call TriggerAddCondition(gg_trg_MysticalGlyph_Result,Condition(function Trig_MysticalGlyph_Result_Conditions))
-
-call TriggerAddAction(gg_trg_MysticalGlyph_Result,function Trig_MysticalGlyph_Result_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MysticalGlyph_Result=CreateTrigger()
+    call DisableTrigger(gg_trg_MysticalGlyph_Result)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(7),true)
+    call TriggerAddCondition(gg_trg_MysticalGlyph_Result,Condition(function Trig_MysticalGlyph_Result_Conditions))
+    call TriggerAddAction(gg_trg_MysticalGlyph_Result,function Trig_MysticalGlyph_Result_Actions)
 endfunction
 
 

@@ -146,86 +146,41 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Geomancer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Geomancer_Enchant_Cycle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Geomancer_Enchant_Cycle=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_Cycle,EVENT_PLAYER_UNIT_ISSUED_ORDER)
-
-call TriggerAddCondition(gg_trg_Geomancer_Enchant_Cycle,Condition(function Trig_Geomancer_Enchant_Cycle_Conditions))
-
-call TriggerAddAction(gg_trg_Geomancer_Enchant_Cycle,function Trig_Geomancer_Enchant_Cycle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Geomancer_Enchant_Cycle=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_Cycle,EVENT_PLAYER_UNIT_ISSUED_ORDER)
+    call TriggerAddCondition(gg_trg_Geomancer_Enchant_Cycle,Condition(function Trig_Geomancer_Enchant_Cycle_Conditions))
+    call TriggerAddAction(gg_trg_Geomancer_Enchant_Cycle,function Trig_Geomancer_Enchant_Cycle_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Geomancer_Enchant_Apply takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Geomancer_Enchant_Apply=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Geomancer_Enchant_Apply,udg_EnchantCycleTimer)
-
-call TriggerAddCondition(gg_trg_Geomancer_Enchant_Apply,Condition(function Trig_Geomancer_Enchant_Apply_Conditions))
-
-call TriggerAddAction(gg_trg_Geomancer_Enchant_Apply,function Trig_Geomancer_Enchant_Apply_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Geomancer_Enchant_Apply=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Geomancer_Enchant_Apply,udg_EnchantCycleTimer)
+    call TriggerAddCondition(gg_trg_Geomancer_Enchant_Apply,Condition(function Trig_Geomancer_Enchant_Apply_Conditions))
+    call TriggerAddAction(gg_trg_Geomancer_Enchant_Apply,function Trig_Geomancer_Enchant_Apply_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Geomancer_Enchant_ClearBuffs takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Geomancer_Enchant_ClearBuffs=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_ClearBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Geomancer_Enchant_ClearBuffs,Condition(function Trig_Geomancer_Enchant_ClearBuffs_Conditions))
-
-call TriggerAddAction(gg_trg_Geomancer_Enchant_ClearBuffs,function Trig_Geomancer_Enchant_ClearBuffs_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Geomancer_Enchant_ClearBuffs=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_ClearBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Geomancer_Enchant_ClearBuffs,Condition(function Trig_Geomancer_Enchant_ClearBuffs_Conditions))
+    call TriggerAddAction(gg_trg_Geomancer_Enchant_ClearBuffs,function Trig_Geomancer_Enchant_ClearBuffs_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Geomancer_GayaRage takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Geomancer_GayaRage=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_GayaRage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Geomancer_GayaRage,Condition(function Trig_Geomancer_GayaRage_Conditions))
-
-call TriggerAddAction(gg_trg_Geomancer_GayaRage,function Trig_Geomancer_GayaRage_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Geomancer_GayaRage=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_GayaRage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Geomancer_GayaRage,Condition(function Trig_Geomancer_GayaRage_Conditions))
+    call TriggerAddAction(gg_trg_Geomancer_GayaRage,function Trig_Geomancer_GayaRage_Actions)
 endfunction
 
 

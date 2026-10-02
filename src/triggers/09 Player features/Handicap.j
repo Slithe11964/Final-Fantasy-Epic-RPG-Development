@@ -8,35 +8,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Handicap takes nothing returns nothing
 endfunction
-
 function RegisterR11_Handicap_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Handicap_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(0),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(1),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(2),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(3),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(4),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(5),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(6),"-handicap",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(7),"-handicap",true)
-
-call TriggerAddAction(gg_trg_Handicap_Command,function Trig_Handicap_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Handicap_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(0),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(1),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(2),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(3),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(4),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(5),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(6),"-handicap",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Handicap_Command,Player(7),"-handicap",true)
+    call TriggerAddAction(gg_trg_Handicap_Command,function Trig_Handicap_Command_Actions)
 endfunction
 
 

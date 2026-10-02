@@ -344,128 +344,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Oracle takes nothing returns nothing
 endfunction
-
 function RegisterR11_Oracle_Jinx takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_Jinx=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Jinx,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_Jinx,Condition(function Trig_Oracle_Jinx_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_Jinx,function Trig_Oracle_Jinx_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_Jinx=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Jinx,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_Jinx,Condition(function Trig_Oracle_Jinx_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_Jinx,function Trig_Oracle_Jinx_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oracle_Blind takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_Blind=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Blind,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_Blind,Condition(function Trig_Oracle_Blind_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_Blind,function Trig_Oracle_Blind_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_Blind=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Blind,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_Blind,Condition(function Trig_Oracle_Blind_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_Blind,function Trig_Oracle_Blind_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oracle_PredictStrength takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_PredictStrength=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictStrength,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_PredictStrength,Condition(function Trig_Oracle_PredictStrength_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_PredictStrength,function Trig_Oracle_PredictStrength_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_PredictStrength=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictStrength,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_PredictStrength,Condition(function Trig_Oracle_PredictStrength_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_PredictStrength,function Trig_Oracle_PredictStrength_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oracle_PredictMagic takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_PredictMagic=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictMagic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_PredictMagic,Condition(function Trig_Oracle_PredictMagic_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_PredictMagic,function Trig_Oracle_PredictMagic_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_PredictMagic=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictMagic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_PredictMagic,Condition(function Trig_Oracle_PredictMagic_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_PredictMagic,function Trig_Oracle_PredictMagic_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oracle_Scourge takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_Scourge=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Scourge,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_Scourge,Condition(function Trig_Oracle_Scourge_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_Scourge,function Trig_Oracle_Scourge_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_Scourge=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Scourge,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_Scourge,Condition(function Trig_Oracle_Scourge_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_Scourge,function Trig_Oracle_Scourge_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oracle_NeoBahamut takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oracle_NeoBahamut=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_NeoBahamut,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oracle_NeoBahamut,Condition(function Trig_Oracle_NeoBahamut_Conditions))
-
-call TriggerAddAction(gg_trg_Oracle_NeoBahamut,function Trig_Oracle_NeoBahamut_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oracle_NeoBahamut=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_NeoBahamut,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oracle_NeoBahamut,Condition(function Trig_Oracle_NeoBahamut_Conditions))
+    call TriggerAddAction(gg_trg_Oracle_NeoBahamut,function Trig_Oracle_NeoBahamut_Actions)
 endfunction
 
 

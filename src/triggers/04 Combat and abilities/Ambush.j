@@ -102,94 +102,45 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ambush takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ambush_Skeletons_1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ambush_Skeletons_1=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ambush_Skeletons_1)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_1,gg_rct_681)
-
-call TriggerAddCondition(gg_trg_Ambush_Skeletons_1,Condition(function Trig_Ambush_Skeletons_1_Conditions))
-
-call TriggerAddAction(gg_trg_Ambush_Skeletons_1,function Trig_Ambush_Skeletons_1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ambush_Skeletons_1=CreateTrigger()
+    call DisableTrigger(gg_trg_Ambush_Skeletons_1)
+    call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_1,gg_rct_681)
+    call TriggerAddCondition(gg_trg_Ambush_Skeletons_1,Condition(function Trig_Ambush_Skeletons_1_Conditions))
+    call TriggerAddAction(gg_trg_Ambush_Skeletons_1,function Trig_Ambush_Skeletons_1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ambush_Skeletons_2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ambush_Skeletons_2=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ambush_Skeletons_2)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_2,gg_rct_683)
-
-call TriggerAddCondition(gg_trg_Ambush_Skeletons_2,Condition(function Trig_Ambush_Skeletons_2_Conditions))
-
-call TriggerAddAction(gg_trg_Ambush_Skeletons_2,function Trig_Ambush_Skeletons_2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ambush_Skeletons_2=CreateTrigger()
+    call DisableTrigger(gg_trg_Ambush_Skeletons_2)
+    call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_2,gg_rct_683)
+    call TriggerAddCondition(gg_trg_Ambush_Skeletons_2,Condition(function Trig_Ambush_Skeletons_2_Conditions))
+    call TriggerAddAction(gg_trg_Ambush_Skeletons_2,function Trig_Ambush_Skeletons_2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ambush_Skeletons_3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ambush_Skeletons_3=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ambush_Skeletons_3)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_3,gg_rct_680)
-
-call TriggerAddCondition(gg_trg_Ambush_Skeletons_3,Condition(function Trig_Ambush_Skeletons_3_Conditions))
-
-call TriggerAddAction(gg_trg_Ambush_Skeletons_3,function Trig_Ambush_Skeletons_3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ambush_Skeletons_3=CreateTrigger()
+    call DisableTrigger(gg_trg_Ambush_Skeletons_3)
+    call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_3,gg_rct_680)
+    call TriggerAddCondition(gg_trg_Ambush_Skeletons_3,Condition(function Trig_Ambush_Skeletons_3_Conditions))
+    call TriggerAddAction(gg_trg_Ambush_Skeletons_3,function Trig_Ambush_Skeletons_3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ambush_Skeletons_4 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ambush_Skeletons_4=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ambush_Skeletons_4)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_4,gg_rct_682)
-
-call TriggerAddCondition(gg_trg_Ambush_Skeletons_4,Condition(function Trig_Ambush_Skeletons_4_Conditions))
-
-call TriggerAddAction(gg_trg_Ambush_Skeletons_4,function Trig_Ambush_Skeletons_4_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ambush_Skeletons_4=CreateTrigger()
+    call DisableTrigger(gg_trg_Ambush_Skeletons_4)
+    call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_4,gg_rct_682)
+    call TriggerAddCondition(gg_trg_Ambush_Skeletons_4,Condition(function Trig_Ambush_Skeletons_4_Conditions))
+    call TriggerAddAction(gg_trg_Ambush_Skeletons_4,function Trig_Ambush_Skeletons_4_Actions)
 endfunction
 
 

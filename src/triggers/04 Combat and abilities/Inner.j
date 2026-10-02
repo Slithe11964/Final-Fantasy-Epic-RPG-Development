@@ -35,23 +35,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Inner takes nothing returns nothing
 endfunction
-
 function RegisterR11_Inner_Fire takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Inner_Fire=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Inner_Fire,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Inner_Fire,Condition(function Trig_Inner_Fire_Conditions))
-
-call TriggerAddAction(gg_trg_Inner_Fire,function Trig_Inner_Fire_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Inner_Fire=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Inner_Fire,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Inner_Fire,Condition(function Trig_Inner_Fire_Conditions))
+    call TriggerAddAction(gg_trg_Inner_Fire,function Trig_Inner_Fire_Actions)
 endfunction
 
 

@@ -456,21 +456,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MagicDefense takes nothing returns nothing
 endfunction
-
 function RegisterR11_MagicDefense_Calc takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicDefense_Calc=CreateTrigger()
-
-call DisableTrigger(gg_trg_MagicDefense_Calc)
-
-call TriggerAddAction(gg_trg_MagicDefense_Calc,function Trig_MagicDefense_Calc_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicDefense_Calc=CreateTrigger()
+    call DisableTrigger(gg_trg_MagicDefense_Calc)
+    call TriggerAddAction(gg_trg_MagicDefense_Calc,function Trig_MagicDefense_Calc_Actions)
 endfunction
 
 

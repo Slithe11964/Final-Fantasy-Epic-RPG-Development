@@ -57,44 +57,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_OrcBase takes nothing returns nothing
 endfunction
-
 function RegisterR11_OrcBase_GateGuard_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OrcBase_GateGuard_Death=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_OrcBase_GateGuard_Death,gg_unit_ncpn_0025,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_OrcBase_GateGuard_Death,function Trig_OrcBase_GateGuard_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OrcBase_GateGuard_Death=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_OrcBase_GateGuard_Death,gg_unit_ncpn_0025,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_OrcBase_GateGuard_Death,function Trig_OrcBase_GateGuard_Death_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OrcBase_Units_Cleared takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OrcBase_Units_Cleared=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_OrcBase_Units_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_OrcBase_Units_Cleared,EVENT_PLAYER_UNIT_CHANGE_OWNER)
-
-call TriggerAddCondition(gg_trg_OrcBase_Units_Cleared,Condition(function Trig_OrcBase_Units_Cleared_Conditions))
-
-call TriggerAddAction(gg_trg_OrcBase_Units_Cleared,function Trig_OrcBase_Units_Cleared_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OrcBase_Units_Cleared=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_OrcBase_Units_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_OrcBase_Units_Cleared,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerAddCondition(gg_trg_OrcBase_Units_Cleared,Condition(function Trig_OrcBase_Units_Cleared_Conditions))
+    call TriggerAddAction(gg_trg_OrcBase_Units_Cleared,function Trig_OrcBase_Units_Cleared_Actions)
 endfunction
 
 

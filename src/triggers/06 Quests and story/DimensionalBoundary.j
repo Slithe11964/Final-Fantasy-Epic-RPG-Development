@@ -160,116 +160,56 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DimensionalBoundary takes nothing returns nothing
 endfunction
-
 function RegisterR11_DimensionalBoundary_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DimensionalBoundary_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_DimensionalBoundary_Init,function Trig_DimensionalBoundary_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DimensionalBoundary_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_DimensionalBoundary_Init,function Trig_DimensionalBoundary_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DimensionalBoundary_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DimensionalBoundary_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_DimensionalBoundary_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_DimensionalBoundary_Start,Condition(function Trig_DimensionalBoundary_Start_Conditions))
-
-call TriggerAddAction(gg_trg_DimensionalBoundary_Start,function Trig_DimensionalBoundary_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DimensionalBoundary_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_DimensionalBoundary_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_DimensionalBoundary_Start,Condition(function Trig_DimensionalBoundary_Start_Conditions))
+    call TriggerAddAction(gg_trg_DimensionalBoundary_Start,function Trig_DimensionalBoundary_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DimensionalBoundary_OpenPortal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DimensionalBoundary_OpenPortal=CreateTrigger()
-
-call DisableTrigger(gg_trg_DimensionalBoundary_OpenPortal)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(7),true)
-
-call TriggerAddCondition(gg_trg_DimensionalBoundary_OpenPortal,Condition(function Trig_DimensionalBoundary_OpenPortal_Conditions))
-
-call TriggerAddAction(gg_trg_DimensionalBoundary_OpenPortal,function Trig_DimensionalBoundary_OpenPortal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DimensionalBoundary_OpenPortal=CreateTrigger()
+    call DisableTrigger(gg_trg_DimensionalBoundary_OpenPortal)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(7),true)
+    call TriggerAddCondition(gg_trg_DimensionalBoundary_OpenPortal,Condition(function Trig_DimensionalBoundary_OpenPortal_Conditions))
+    call TriggerAddAction(gg_trg_DimensionalBoundary_OpenPortal,function Trig_DimensionalBoundary_OpenPortal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DimensionalBoundary_EmptyEnd takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DimensionalBoundary_EmptyEnd=CreateTrigger()
-
-call DisableTrigger(gg_trg_DimensionalBoundary_EmptyEnd)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DimensionalBoundary_EmptyEnd,gg_rct_590)
-
-call TriggerAddCondition(gg_trg_DimensionalBoundary_EmptyEnd,Condition(function Trig_DimensionalBoundary_EmptyEnd_Conditions))
-
-call TriggerAddAction(gg_trg_DimensionalBoundary_EmptyEnd,function Trig_DimensionalBoundary_EmptyEnd_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DimensionalBoundary_EmptyEnd=CreateTrigger()
+    call DisableTrigger(gg_trg_DimensionalBoundary_EmptyEnd)
+    call TriggerRegisterEnterRectSimple(gg_trg_DimensionalBoundary_EmptyEnd,gg_rct_590)
+    call TriggerAddCondition(gg_trg_DimensionalBoundary_EmptyEnd,Condition(function Trig_DimensionalBoundary_EmptyEnd_Conditions))
+    call TriggerAddAction(gg_trg_DimensionalBoundary_EmptyEnd,function Trig_DimensionalBoundary_EmptyEnd_Actions)
 endfunction
 
 

@@ -176,129 +176,61 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_ChocoboRider takes nothing returns nothing
 endfunction
-
 function RegisterR11_ChocoboRider_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ChocoboRider_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_ChocoboRider_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_ChocoboRider_Start,Condition(function Trig_ChocoboRider_Start_Conditions))
-
-call TriggerAddAction(gg_trg_ChocoboRider_Start,function Trig_ChocoboRider_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ChocoboRider_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_ChocoboRider_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ChocoboRider_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_ChocoboRider_Start,Condition(function Trig_ChocoboRider_Start_Conditions))
+    call TriggerAddAction(gg_trg_ChocoboRider_Start,function Trig_ChocoboRider_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ChocoboRider_StartWithChocobo takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ChocoboRider_StartWithChocobo=CreateTrigger()
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_StartWithChocobo,450.,gg_unit_n0KE_0072)
-
-call TriggerAddCondition(gg_trg_ChocoboRider_StartWithChocobo,Condition(function Trig_ChocoboRider_StartWithChocobo_Conditions))
-
-call TriggerAddAction(gg_trg_ChocoboRider_StartWithChocobo,function Trig_ChocoboRider_StartWithChocobo_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ChocoboRider_StartWithChocobo=CreateTrigger()
+    call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_StartWithChocobo,450.,gg_unit_n0KE_0072)
+    call TriggerAddCondition(gg_trg_ChocoboRider_StartWithChocobo,Condition(function Trig_ChocoboRider_StartWithChocobo_Conditions))
+    call TriggerAddAction(gg_trg_ChocoboRider_StartWithChocobo,function Trig_ChocoboRider_StartWithChocobo_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ChocoboRider_Progress takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ChocoboRider_Progress=CreateTrigger()
-
-call DisableTrigger(gg_trg_ChocoboRider_Progress)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_Progress,450.,gg_unit_n0KE_0072)
-
-call TriggerAddCondition(gg_trg_ChocoboRider_Progress,Condition(function Trig_ChocoboRider_Progress_Conditions))
-
-call TriggerAddAction(gg_trg_ChocoboRider_Progress,function Trig_ChocoboRider_Progress_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ChocoboRider_Progress=CreateTrigger()
+    call DisableTrigger(gg_trg_ChocoboRider_Progress)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_Progress,450.,gg_unit_n0KE_0072)
+    call TriggerAddCondition(gg_trg_ChocoboRider_Progress,Condition(function Trig_ChocoboRider_Progress_Conditions))
+    call TriggerAddAction(gg_trg_ChocoboRider_Progress,function Trig_ChocoboRider_Progress_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ChocoboRider_FoundTreasure takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ChocoboRider_FoundTreasure=CreateTrigger()
-
-call DisableTrigger(gg_trg_ChocoboRider_FoundTreasure)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_ChocoboRider_FoundTreasure,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_ChocoboRider_FoundTreasure,Condition(function Trig_ChocoboRider_FoundTreasure_Conditions))
-
-call TriggerAddAction(gg_trg_ChocoboRider_FoundTreasure,function Trig_ChocoboRider_FoundTreasure_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ChocoboRider_FoundTreasure=CreateTrigger()
+    call DisableTrigger(gg_trg_ChocoboRider_FoundTreasure)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_ChocoboRider_FoundTreasure,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_ChocoboRider_FoundTreasure,Condition(function Trig_ChocoboRider_FoundTreasure_Conditions))
+    call TriggerAddAction(gg_trg_ChocoboRider_FoundTreasure,function Trig_ChocoboRider_FoundTreasure_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ChocoboRider_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ChocoboRider_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_ChocoboRider_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_Reward,450.,gg_unit_n0KE_0072)
-
-call TriggerAddCondition(gg_trg_ChocoboRider_Reward,Condition(function Trig_ChocoboRider_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_ChocoboRider_Reward,function Trig_ChocoboRider_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ChocoboRider_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_ChocoboRider_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_ChocoboRider_Reward,450.,gg_unit_n0KE_0072)
+    call TriggerAddCondition(gg_trg_ChocoboRider_Reward,Condition(function Trig_ChocoboRider_Reward_Conditions))
+    call TriggerAddAction(gg_trg_ChocoboRider_Reward,function Trig_ChocoboRider_Reward_Actions)
 endfunction
 
 

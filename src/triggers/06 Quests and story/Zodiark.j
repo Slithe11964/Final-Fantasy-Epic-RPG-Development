@@ -249,82 +249,39 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zodiark takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zodiark_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zodiark_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Zodiark_Prepare,function Trig_Zodiark_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zodiark_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Zodiark_Prepare,function Trig_Zodiark_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zodiark_Encounter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zodiark_Encounter=CreateTrigger()
-
-call DisableTrigger(gg_trg_Zodiark_Encounter)
-
-call TriggerAddCondition(gg_trg_Zodiark_Encounter,Condition(function Trig_Zodiark_Encounter_Conditions))
-
-call TriggerAddAction(gg_trg_Zodiark_Encounter,function Trig_Zodiark_Encounter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zodiark_Encounter=CreateTrigger()
+    call DisableTrigger(gg_trg_Zodiark_Encounter)
+    call TriggerAddCondition(gg_trg_Zodiark_Encounter,Condition(function Trig_Zodiark_Encounter_Conditions))
+    call TriggerAddAction(gg_trg_Zodiark_Encounter,function Trig_Zodiark_Encounter_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zodiark_BanishRay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zodiark_BanishRay=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_BanishRay,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Zodiark_BanishRay,Condition(function Trig_Zodiark_BanishRay_Conditions))
-
-call TriggerAddAction(gg_trg_Zodiark_BanishRay,function Trig_Zodiark_BanishRay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zodiark_BanishRay=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_BanishRay,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Zodiark_BanishRay,Condition(function Trig_Zodiark_BanishRay_Conditions))
+    call TriggerAddAction(gg_trg_Zodiark_BanishRay,function Trig_Zodiark_BanishRay_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zodiark_Darkja takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zodiark_Darkja=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_Darkja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Zodiark_Darkja,Condition(function Trig_Zodiark_Darkja_Conditions))
-
-call TriggerAddAction(gg_trg_Zodiark_Darkja,function Trig_Zodiark_Darkja_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zodiark_Darkja=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_Darkja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Zodiark_Darkja,Condition(function Trig_Zodiark_Darkja_Conditions))
+    call TriggerAddAction(gg_trg_Zodiark_Darkja,function Trig_Zodiark_Darkja_Actions)
 endfunction
 
 

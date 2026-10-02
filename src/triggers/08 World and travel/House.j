@@ -20,23 +20,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_House takes nothing returns nothing
 endfunction
-
 function RegisterR11_House_Options_Switch takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_House_Options_Switch=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_House_Options_Switch,EVENT_PLAYER_UNIT_SPELL_FINISH)
-
-call TriggerAddCondition(gg_trg_House_Options_Switch,Condition(function Trig_House_Options_Switch_Conditions))
-
-call TriggerAddAction(gg_trg_House_Options_Switch,function Trig_House_Options_Switch_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_House_Options_Switch=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_House_Options_Switch,EVENT_PLAYER_UNIT_SPELL_FINISH)
+    call TriggerAddCondition(gg_trg_House_Options_Switch,Condition(function Trig_House_Options_Switch_Conditions))
+    call TriggerAddAction(gg_trg_House_Options_Switch,function Trig_House_Options_Switch_Actions)
 endfunction
 
 

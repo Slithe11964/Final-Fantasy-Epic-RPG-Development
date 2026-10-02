@@ -40,62 +40,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Makenroh takes nothing returns nothing
 endfunction
-
 function RegisterR11_Makenroh_Greet takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Makenroh_Greet=CreateTrigger()
-
-call DisableTrigger(gg_trg_Makenroh_Greet)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Makenroh_Greet,Condition(function Trig_Makenroh_Greet_Conditions))
-
-call TriggerAddAction(gg_trg_Makenroh_Greet,function Trig_Makenroh_Greet_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Makenroh_Greet=CreateTrigger()
+    call DisableTrigger(gg_trg_Makenroh_Greet)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(7),true)
+    call TriggerAddCondition(gg_trg_Makenroh_Greet,Condition(function Trig_Makenroh_Greet_Conditions))
+    call TriggerAddAction(gg_trg_Makenroh_Greet,function Trig_Makenroh_Greet_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Makenroh_ShowTalkIcon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Makenroh_ShowTalkIcon=CreateTrigger()
-
-call DisableTrigger(gg_trg_Makenroh_ShowTalkIcon)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Makenroh_ShowTalkIcon,20.)
-
-call TriggerAddCondition(gg_trg_Makenroh_ShowTalkIcon,Condition(function Trig_Makenroh_ShowTalkIcon_Conditions))
-
-call TriggerAddAction(gg_trg_Makenroh_ShowTalkIcon,function Trig_Makenroh_ShowTalkIcon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Makenroh_ShowTalkIcon=CreateTrigger()
+    call DisableTrigger(gg_trg_Makenroh_ShowTalkIcon)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Makenroh_ShowTalkIcon,20.)
+    call TriggerAddCondition(gg_trg_Makenroh_ShowTalkIcon,Condition(function Trig_Makenroh_ShowTalkIcon_Conditions))
+    call TriggerAddAction(gg_trg_Makenroh_ShowTalkIcon,function Trig_Makenroh_ShowTalkIcon_Actions)
 endfunction
 
 

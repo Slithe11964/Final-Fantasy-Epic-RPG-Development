@@ -64,44 +64,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkJobs takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkJobs_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkJobs_Unlock=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkJobs_Unlock)
-
-call TriggerAddAction(gg_trg_DarkJobs_Unlock,function Trig_DarkJobs_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkJobs_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkJobs_Unlock)
+    call TriggerAddAction(gg_trg_DarkJobs_Unlock,function Trig_DarkJobs_Unlock_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkJobs_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkJobs_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkJobs_Reveal)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_DarkJobs_Reveal,12.)
-
-call TriggerAddCondition(gg_trg_DarkJobs_Reveal,Condition(function Trig_DarkJobs_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_DarkJobs_Reveal,function Trig_DarkJobs_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkJobs_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkJobs_Reveal)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_DarkJobs_Reveal,12.)
+    call TriggerAddCondition(gg_trg_DarkJobs_Reveal,Condition(function Trig_DarkJobs_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_DarkJobs_Reveal,function Trig_DarkJobs_Reveal_Actions)
 endfunction
 
 

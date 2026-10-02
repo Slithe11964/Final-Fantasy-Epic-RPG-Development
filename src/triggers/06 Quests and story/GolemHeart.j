@@ -34,48 +34,25 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GolemHeart takes nothing returns nothing
 endfunction
-
 function RegisterR11_GolemHeart_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GolemHeart_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_GolemHeart_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_GolemHeart_Ping,15.)
-
-call TriggerAddCondition(gg_trg_GolemHeart_Ping,Condition(function Trig_GolemHeart_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_GolemHeart_Ping,function Trig_GolemHeart_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GolemHeart_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_GolemHeart_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_GolemHeart_Ping,15.)
+    call TriggerAddCondition(gg_trg_GolemHeart_Ping,Condition(function Trig_GolemHeart_Ping_Conditions))
+    call TriggerAddAction(gg_trg_GolemHeart_Ping,function Trig_GolemHeart_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_GolemHeart_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GolemHeart_Pickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_GolemHeart_Pickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_GolemHeart_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_GolemHeart_Pickup,Condition(function Trig_GolemHeart_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_GolemHeart_Pickup,function Trig_GolemHeart_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GolemHeart_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_GolemHeart_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_GolemHeart_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_GolemHeart_Pickup,Condition(function Trig_GolemHeart_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_GolemHeart_Pickup,function Trig_GolemHeart_Pickup_Actions)
 endfunction
 
 

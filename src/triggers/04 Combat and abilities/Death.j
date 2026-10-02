@@ -99,126 +99,58 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Death takes nothing returns nothing
 endfunction
-
 function RegisterR11_Death_Watch_Group1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Watch_Group1=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group1,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Death_Watch_Group1,Condition(function Trig_Death_Watch_Group1_Conditions))
-
-call TriggerAddAction(gg_trg_Death_Watch_Group1,function Trig_Death_Watch_Group1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Watch_Group1=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group1,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Death_Watch_Group1,Condition(function Trig_Death_Watch_Group1_Conditions))
+    call TriggerAddAction(gg_trg_Death_Watch_Group1,function Trig_Death_Watch_Group1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Death_Watch_Group2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Watch_Group2=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group2,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Death_Watch_Group2,Condition(function Trig_Death_Watch_Group2_Conditions))
-
-call TriggerAddAction(gg_trg_Death_Watch_Group2,function Trig_Death_Watch_Group2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Watch_Group2=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group2,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Death_Watch_Group2,Condition(function Trig_Death_Watch_Group2_Conditions))
+    call TriggerAddAction(gg_trg_Death_Watch_Group2,function Trig_Death_Watch_Group2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Death_Watch_Group3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Watch_Group3=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group3,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Death_Watch_Group3,Condition(function Trig_Death_Watch_Group3_Conditions))
-
-call TriggerAddAction(gg_trg_Death_Watch_Group3,function Trig_Death_Watch_Group3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Watch_Group3=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group3,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Death_Watch_Group3,Condition(function Trig_Death_Watch_Group3_Conditions))
+    call TriggerAddAction(gg_trg_Death_Watch_Group3,function Trig_Death_Watch_Group3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Death_Explosion_Queue takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Explosion_Queue=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Explosion_Queue,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Death_Explosion_Queue,Condition(function Trig_Death_Explosion_Queue_Conditions))
-
-call TriggerAddAction(gg_trg_Death_Explosion_Queue,function Trig_Death_Explosion_Queue_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Explosion_Queue=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Explosion_Queue,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Death_Explosion_Queue,Condition(function Trig_Death_Explosion_Queue_Conditions))
+    call TriggerAddAction(gg_trg_Death_Explosion_Queue,function Trig_Death_Explosion_Queue_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Death_Explosion_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Explosion_Start=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Death_Explosion_Start,udg_DeathExplodeTimer)
-
-call TriggerAddAction(gg_trg_Death_Explosion_Start,function Trig_Death_Explosion_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Explosion_Start=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Death_Explosion_Start,udg_DeathExplodeTimer)
+    call TriggerAddAction(gg_trg_Death_Explosion_Start,function Trig_Death_Explosion_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Death_Explosion_Blast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Death_Explosion_Blast=CreateTrigger()
-
-call DisableTrigger(gg_trg_Death_Explosion_Blast)
-
-call TriggerAddCondition(gg_trg_Death_Explosion_Blast,Condition(function Trig_Death_Explosion_Blast_Conditions))
-
-call TriggerAddAction(gg_trg_Death_Explosion_Blast,function Trig_Death_Explosion_Blast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Death_Explosion_Blast=CreateTrigger()
+    call DisableTrigger(gg_trg_Death_Explosion_Blast)
+    call TriggerAddCondition(gg_trg_Death_Explosion_Blast,Condition(function Trig_Death_Explosion_Blast_Conditions))
+    call TriggerAddAction(gg_trg_Death_Explosion_Blast,function Trig_Death_Explosion_Blast_Actions)
 endfunction
 
 

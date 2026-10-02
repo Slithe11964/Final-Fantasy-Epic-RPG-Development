@@ -177,44 +177,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HolySwordsman takes nothing returns nothing
 endfunction
-
 function RegisterR11_HolySwordsman_Eclipse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HolySwordsman_Eclipse=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Eclipse,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_HolySwordsman_Eclipse,Condition(function Trig_HolySwordsman_Eclipse_Conditions))
-
-call TriggerAddAction(gg_trg_HolySwordsman_Eclipse,function Trig_HolySwordsman_Eclipse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HolySwordsman_Eclipse=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Eclipse,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_HolySwordsman_Eclipse,Condition(function Trig_HolySwordsman_Eclipse_Conditions))
+    call TriggerAddAction(gg_trg_HolySwordsman_Eclipse,function Trig_HolySwordsman_Eclipse_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HolySwordsman_Finisher takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HolySwordsman_Finisher=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Finisher,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_HolySwordsman_Finisher,Condition(function Trig_HolySwordsman_Finisher_Conditions))
-
-call TriggerAddAction(gg_trg_HolySwordsman_Finisher,function Trig_HolySwordsman_Finisher_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HolySwordsman_Finisher=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Finisher,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_HolySwordsman_Finisher,Condition(function Trig_HolySwordsman_Finisher_Conditions))
+    call TriggerAddAction(gg_trg_HolySwordsman_Finisher,function Trig_HolySwordsman_Finisher_Actions)
 endfunction
 
 

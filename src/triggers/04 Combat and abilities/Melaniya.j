@@ -16,19 +16,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Melaniya takes nothing returns nothing
 endfunction
-
 function RegisterR11_Melaniya_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Melaniya_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Melaniya_Setup,function Trig_Melaniya_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Melaniya_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_Melaniya_Setup,function Trig_Melaniya_Setup_Actions)
 endfunction
 
 

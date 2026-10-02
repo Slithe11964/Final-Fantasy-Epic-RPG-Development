@@ -63,23 +63,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shiva takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shiva_DiamondDust takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shiva_DiamondDust=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Shiva_DiamondDust,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Shiva_DiamondDust,Condition(function Trig_Shiva_DiamondDust_Conditions))
-
-call TriggerAddAction(gg_trg_Shiva_DiamondDust,function Trig_Shiva_DiamondDust_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shiva_DiamondDust=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shiva_DiamondDust,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shiva_DiamondDust,Condition(function Trig_Shiva_DiamondDust_Conditions))
+    call TriggerAddAction(gg_trg_Shiva_DiamondDust,function Trig_Shiva_DiamondDust_Actions)
 endfunction
 
 

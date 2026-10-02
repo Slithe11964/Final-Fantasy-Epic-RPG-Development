@@ -71,21 +71,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Travel takes nothing returns nothing
 endfunction
-
 function RegisterR11_Travel_Dialog_Click takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Travel_Dialog_Click=CreateTrigger()
-
-call TriggerRegisterDialogEvent(gg_trg_Travel_Dialog_Click,udg_WarpDialog)
-
-call TriggerAddAction(gg_trg_Travel_Dialog_Click,function Trig_Travel_Dialog_Click_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Travel_Dialog_Click=CreateTrigger()
+    call TriggerRegisterDialogEvent(gg_trg_Travel_Dialog_Click,udg_WarpDialog)
+    call TriggerAddAction(gg_trg_Travel_Dialog_Click,function Trig_Travel_Dialog_Click_Actions)
 endfunction
 
 

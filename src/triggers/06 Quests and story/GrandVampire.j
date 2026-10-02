@@ -47,57 +47,28 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GrandVampire takes nothing returns nothing
 endfunction
-
 function RegisterR11_GrandVampire_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GrandVampire_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_GrandVampire_Hide,function Trig_GrandVampire_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GrandVampire_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_GrandVampire_Hide,function Trig_GrandVampire_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_GrandVampire_Awaken takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GrandVampire_Awaken=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Awaken,gg_unit_nbsm_0080,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_GrandVampire_Awaken,function Trig_GrandVampire_Awaken_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GrandVampire_Awaken=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Awaken,gg_unit_nbsm_0080,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_GrandVampire_Awaken,function Trig_GrandVampire_Awaken_Actions)
 endfunction
-
-
-
-
 function RegisterR11_GrandVampire_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GrandVampire_Death=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Death,gg_unit_Uvng_0076,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_GrandVampire_Death,function Trig_GrandVampire_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GrandVampire_Death=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Death,gg_unit_Uvng_0076,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_GrandVampire_Death,function Trig_GrandVampire_Death_Actions)
 endfunction
 
 

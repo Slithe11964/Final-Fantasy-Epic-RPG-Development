@@ -275,86 +275,41 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Sorcerer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Sorcerer_Flare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Sorcerer_Flare=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_Flare,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Sorcerer_Flare,Condition(function Trig_Sorcerer_Flare_Conditions))
-
-call TriggerAddAction(gg_trg_Sorcerer_Flare,function Trig_Sorcerer_Flare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Sorcerer_Flare=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_Flare,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Sorcerer_Flare,Condition(function Trig_Sorcerer_Flare_Conditions))
+    call TriggerAddAction(gg_trg_Sorcerer_Flare,function Trig_Sorcerer_Flare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Sorcerer_Holy takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Sorcerer_Holy=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_Holy,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Sorcerer_Holy,Condition(function Trig_Sorcerer_Holy_Conditions))
-
-call TriggerAddAction(gg_trg_Sorcerer_Holy,function Trig_Sorcerer_Holy_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Sorcerer_Holy=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_Holy,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Sorcerer_Holy,Condition(function Trig_Sorcerer_Holy_Conditions))
+    call TriggerAddAction(gg_trg_Sorcerer_Holy,function Trig_Sorcerer_Holy_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Sorcerer_MassCripple takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Sorcerer_MassCripple=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_MassCripple,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Sorcerer_MassCripple,Condition(function Trig_Sorcerer_MassCripple_Conditions))
-
-call TriggerAddAction(gg_trg_Sorcerer_MassCripple,function Trig_Sorcerer_MassCripple_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Sorcerer_MassCripple=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_MassCripple,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Sorcerer_MassCripple,Condition(function Trig_Sorcerer_MassCripple_Conditions))
+    call TriggerAddAction(gg_trg_Sorcerer_MassCripple,function Trig_Sorcerer_MassCripple_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Sorcerer_BahamutZero takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Sorcerer_BahamutZero=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_BahamutZero,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Sorcerer_BahamutZero,Condition(function Trig_Sorcerer_BahamutZero_Conditions))
-
-call TriggerAddAction(gg_trg_Sorcerer_BahamutZero,function Trig_Sorcerer_BahamutZero_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Sorcerer_BahamutZero=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Sorcerer_BahamutZero,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Sorcerer_BahamutZero,Condition(function Trig_Sorcerer_BahamutZero_Conditions))
+    call TriggerAddAction(gg_trg_Sorcerer_BahamutZero,function Trig_Sorcerer_BahamutZero_Actions)
 endfunction
 
 

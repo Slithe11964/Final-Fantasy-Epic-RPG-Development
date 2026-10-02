@@ -657,95 +657,47 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ending takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ending_FrozenWorld takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ending_FrozenWorld=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ending_FrozenWorld)
-
-call TriggerAddAction(gg_trg_Ending_FrozenWorld,function Trig_Ending_FrozenWorld_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ending_FrozenWorld=CreateTrigger()
+    call DisableTrigger(gg_trg_Ending_FrozenWorld)
+    call TriggerAddAction(gg_trg_Ending_FrozenWorld,function Trig_Ending_FrozenWorld_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ending_Wasteland takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ending_Wasteland=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ending_Wasteland)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Ending_Wasteland,Condition(function Trig_Ending_Wasteland_Conditions))
-
-call TriggerAddAction(gg_trg_Ending_Wasteland,function Trig_Ending_Wasteland_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ending_Wasteland=CreateTrigger()
+    call DisableTrigger(gg_trg_Ending_Wasteland)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(7),true)
+    call TriggerAddCondition(gg_trg_Ending_Wasteland,Condition(function Trig_Ending_Wasteland_Conditions))
+    call TriggerAddAction(gg_trg_Ending_Wasteland,function Trig_Ending_Wasteland_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ending_ReturnToStart takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ending_ReturnToStart=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ending_ReturnToStart)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Ending_ReturnToStart,Condition(function Trig_Ending_ReturnToStart_Conditions))
-
-call TriggerAddAction(gg_trg_Ending_ReturnToStart,function Trig_Ending_ReturnToStart_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ending_ReturnToStart=CreateTrigger()
+    call DisableTrigger(gg_trg_Ending_ReturnToStart)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(7),true)
+    call TriggerAddCondition(gg_trg_Ending_ReturnToStart,Condition(function Trig_Ending_ReturnToStart_Conditions))
+    call TriggerAddAction(gg_trg_Ending_ReturnToStart,function Trig_Ending_ReturnToStart_Actions)
 endfunction
 
 

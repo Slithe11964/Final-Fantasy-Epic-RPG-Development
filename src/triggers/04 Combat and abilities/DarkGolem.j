@@ -46,25 +46,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkGolem takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkGolem_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkGolem_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkGolem_Appear)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DarkGolem_Appear,350.,gg_unit_H01V_0041)
-
-call TriggerAddCondition(gg_trg_DarkGolem_Appear,Condition(function Trig_DarkGolem_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkGolem_Appear,function Trig_DarkGolem_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkGolem_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkGolem_Appear)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DarkGolem_Appear,350.,gg_unit_H01V_0041)
+    call TriggerAddCondition(gg_trg_DarkGolem_Appear,Condition(function Trig_DarkGolem_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkGolem_Appear,function Trig_DarkGolem_Appear_Actions)
 endfunction
 
 

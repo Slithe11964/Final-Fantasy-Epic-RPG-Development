@@ -131,65 +131,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Calculator takes nothing returns nothing
 endfunction
-
 function RegisterR11_Calculator_Firaga takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Calculator_Firaga=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Firaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Calculator_Firaga,Condition(function Trig_Calculator_Firaga_Conditions))
-
-call TriggerAddAction(gg_trg_Calculator_Firaga,function Trig_Calculator_Firaga_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Calculator_Firaga=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Firaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Calculator_Firaga,Condition(function Trig_Calculator_Firaga_Conditions))
+    call TriggerAddAction(gg_trg_Calculator_Firaga,function Trig_Calculator_Firaga_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Calculator_Thundaga takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Calculator_Thundaga=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Thundaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Calculator_Thundaga,Condition(function Trig_Calculator_Thundaga_Conditions))
-
-call TriggerAddAction(gg_trg_Calculator_Thundaga,function Trig_Calculator_Thundaga_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Calculator_Thundaga=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Thundaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Calculator_Thundaga,Condition(function Trig_Calculator_Thundaga_Conditions))
+    call TriggerAddAction(gg_trg_Calculator_Thundaga,function Trig_Calculator_Thundaga_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Calculator_Imperil takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Calculator_Imperil=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Imperil,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Calculator_Imperil,Condition(function Trig_Calculator_Imperil_Conditions))
-
-call TriggerAddAction(gg_trg_Calculator_Imperil,function Trig_Calculator_Imperil_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Calculator_Imperil=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Imperil,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Calculator_Imperil,Condition(function Trig_Calculator_Imperil_Conditions))
+    call TriggerAddAction(gg_trg_Calculator_Imperil,function Trig_Calculator_Imperil_Actions)
 endfunction
 
 

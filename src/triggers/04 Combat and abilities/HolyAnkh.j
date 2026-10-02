@@ -24,23 +24,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HolyAnkh takes nothing returns nothing
 endfunction
-
 function RegisterR11_HolyAnkh_Waygate takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HolyAnkh_Waygate=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_HolyAnkh_Waygate,gg_rct_583)
-
-call TriggerAddCondition(gg_trg_HolyAnkh_Waygate,Condition(function Trig_HolyAnkh_Waygate_Conditions))
-
-call TriggerAddAction(gg_trg_HolyAnkh_Waygate,function Trig_HolyAnkh_Waygate_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HolyAnkh_Waygate=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_HolyAnkh_Waygate,gg_rct_583)
+    call TriggerAddCondition(gg_trg_HolyAnkh_Waygate,Condition(function Trig_HolyAnkh_Waygate_Conditions))
+    call TriggerAddAction(gg_trg_HolyAnkh_Waygate,function Trig_HolyAnkh_Waygate_Actions)
 endfunction
 
 

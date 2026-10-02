@@ -41,23 +41,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Bio takes nothing returns nothing
 endfunction
-
 function RegisterR11_Bio_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bio_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bio_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Bio_Cast,Condition(function Trig_Bio_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Bio_Cast,function Trig_Bio_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bio_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bio_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Bio_Cast,Condition(function Trig_Bio_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Bio_Cast,function Trig_Bio_Cast_Actions)
 endfunction
 
 

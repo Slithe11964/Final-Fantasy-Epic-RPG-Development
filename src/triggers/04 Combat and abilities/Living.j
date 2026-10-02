@@ -87,23 +87,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Living takes nothing returns nothing
 endfunction
-
 function RegisterR11_Living_Wall takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Living_Wall=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Living_Wall,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Living_Wall,Condition(function Trig_Living_Wall_Conditions))
-
-call TriggerAddAction(gg_trg_Living_Wall,function Trig_Living_Wall_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Living_Wall=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Living_Wall,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Living_Wall,Condition(function Trig_Living_Wall_Conditions))
+    call TriggerAddAction(gg_trg_Living_Wall,function Trig_Living_Wall_Actions)
 endfunction
 
 

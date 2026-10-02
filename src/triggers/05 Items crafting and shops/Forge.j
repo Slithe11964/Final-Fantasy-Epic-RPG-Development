@@ -539,151 +539,69 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Forge takes nothing returns nothing
 endfunction
-
 function RegisterR11_Forge_Bali_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_Init=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_Init)
-
-call TriggerAddAction(gg_trg_Forge_Bali_Init,function Trig_Forge_Bali_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_Init=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_Init)
+    call TriggerAddAction(gg_trg_Forge_Bali_Init,function Trig_Forge_Bali_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_ItemGiven takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_ItemGiven=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_ItemGiven)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_ItemGiven,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Forge_Bali_ItemGiven,Condition(function Trig_Forge_Bali_ItemGiven_Conditions))
-
-call TriggerAddAction(gg_trg_Forge_Bali_ItemGiven,function Trig_Forge_Bali_ItemGiven_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_ItemGiven=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_ItemGiven)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_ItemGiven,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Forge_Bali_ItemGiven,Condition(function Trig_Forge_Bali_ItemGiven_Conditions))
+    call TriggerAddAction(gg_trg_Forge_Bali_ItemGiven,function Trig_Forge_Bali_ItemGiven_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_ItemTaken takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_ItemTaken=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_ItemTaken)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_ItemTaken,Player(9),EVENT_PLAYER_UNIT_DROP_ITEM)
-
-call TriggerAddCondition(gg_trg_Forge_Bali_ItemTaken,Condition(function Trig_Forge_Bali_ItemTaken_Conditions))
-
-call TriggerAddAction(gg_trg_Forge_Bali_ItemTaken,function Trig_Forge_Bali_ItemTaken_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_ItemTaken=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_ItemTaken)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_ItemTaken,Player(9),EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerAddCondition(gg_trg_Forge_Bali_ItemTaken,Condition(function Trig_Forge_Bali_ItemTaken_Conditions))
+    call TriggerAddAction(gg_trg_Forge_Bali_ItemTaken,function Trig_Forge_Bali_ItemTaken_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_Refresh takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_Refresh=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_Refresh)
-
-call TriggerAddAction(gg_trg_Forge_Bali_Refresh,function Trig_Forge_Bali_Refresh_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_Refresh=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_Refresh)
+    call TriggerAddAction(gg_trg_Forge_Bali_Refresh,function Trig_Forge_Bali_Refresh_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_ClearText takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_ClearText=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Forge_Bali_ClearText,udg_ForgeTextTimer)
-
-call TriggerAddAction(gg_trg_Forge_Bali_ClearText,function Trig_Forge_Bali_ClearText_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_ClearText=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Forge_Bali_ClearText,udg_ForgeTextTimer)
+    call TriggerAddAction(gg_trg_Forge_Bali_ClearText,function Trig_Forge_Bali_ClearText_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_Craft takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_Craft=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_Craft)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_Craft,Player(9),EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Forge_Bali_Craft,Condition(function Trig_Forge_Bali_Craft_Conditions))
-
-call TriggerAddAction(gg_trg_Forge_Bali_Craft,function Trig_Forge_Bali_Craft_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_Craft=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_Craft)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Forge_Bali_Craft,Player(9),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Forge_Bali_Craft,Condition(function Trig_Forge_Bali_Craft_Conditions))
+    call TriggerAddAction(gg_trg_Forge_Bali_Craft,function Trig_Forge_Bali_Craft_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Forge_Bali_PsypherTalk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Forge_Bali_PsypherTalk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Forge_Bali_PsypherTalk)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Forge_Bali_PsypherTalk,450.,gg_unit_Hmbr_0140)
-
-call TriggerAddCondition(gg_trg_Forge_Bali_PsypherTalk,Condition(function Trig_Forge_Bali_PsypherTalk_Conditions))
-
-call TriggerAddAction(gg_trg_Forge_Bali_PsypherTalk,function Trig_Forge_Bali_PsypherTalk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Forge_Bali_PsypherTalk=CreateTrigger()
+    call DisableTrigger(gg_trg_Forge_Bali_PsypherTalk)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Forge_Bali_PsypherTalk,450.,gg_unit_Hmbr_0140)
+    call TriggerAddCondition(gg_trg_Forge_Bali_PsypherTalk,Condition(function Trig_Forge_Bali_PsypherTalk_Conditions))
+    call TriggerAddAction(gg_trg_Forge_Bali_PsypherTalk,function Trig_Forge_Bali_PsypherTalk_Actions)
 endfunction
 
 

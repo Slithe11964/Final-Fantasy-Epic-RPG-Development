@@ -65,46 +65,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Boco takes nothing returns nothing
 endfunction
-
 function RegisterR11_Boco_Feed_Greens takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Boco_Feed_Greens=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Boco_Feed_Greens,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Boco_Feed_Greens,Condition(function Trig_Boco_Feed_Greens_Conditions))
-
-call TriggerAddAction(gg_trg_Boco_Feed_Greens,function Trig_Boco_Feed_Greens_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Boco_Feed_Greens=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boco_Feed_Greens,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boco_Feed_Greens,Condition(function Trig_Boco_Feed_Greens_Conditions))
+    call TriggerAddAction(gg_trg_Boco_Feed_Greens,function Trig_Boco_Feed_Greens_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Boco_Meet_Again takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Boco_Meet_Again=CreateTrigger()
-
-call DisableTrigger(gg_trg_Boco_Meet_Again)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Boco_Meet_Again,700.,gg_unit_n00E_0138)
-
-call TriggerAddCondition(gg_trg_Boco_Meet_Again,Condition(function Trig_Boco_Meet_Again_Conditions))
-
-call TriggerAddAction(gg_trg_Boco_Meet_Again,function Trig_Boco_Meet_Again_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Boco_Meet_Again=CreateTrigger()
+    call DisableTrigger(gg_trg_Boco_Meet_Again)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boco_Meet_Again,700.,gg_unit_n00E_0138)
+    call TriggerAddCondition(gg_trg_Boco_Meet_Again,Condition(function Trig_Boco_Meet_Again_Conditions))
+    call TriggerAddAction(gg_trg_Boco_Meet_Again,function Trig_Boco_Meet_Again_Actions)
 endfunction
 
 

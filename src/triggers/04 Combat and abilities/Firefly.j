@@ -73,72 +73,37 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Firefly takes nothing returns nothing
 endfunction
-
 function RegisterR11_Firefly_Drops takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Firefly_Drops=CreateTrigger()
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0008)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0017)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0002)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0003)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0004)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0060)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0062)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0061)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0006)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0063)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0064)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0065)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbr_0009)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0015)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0066)
-
-call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0067)
-
-call TriggerAddAction(gg_trg_Firefly_Drops,function Trig_Firefly_Drops_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Firefly_Drops=CreateTrigger()
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0008)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0017)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0002)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0003)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0004)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0060)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0062)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0061)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0006)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbs_0063)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0064)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0065)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbr_0009)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0015)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0066)
+    call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0067)
+    call TriggerAddAction(gg_trg_Firefly_Drops,function Trig_Firefly_Drops_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Firefly_Redeem takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Firefly_Redeem=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Firefly_Redeem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Firefly_Redeem,Condition(function Trig_Firefly_Redeem_Conditions))
-
-call TriggerAddAction(gg_trg_Firefly_Redeem,function Trig_Firefly_Redeem_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Firefly_Redeem=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Firefly_Redeem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Firefly_Redeem,Condition(function Trig_Firefly_Redeem_Conditions))
+    call TriggerAddAction(gg_trg_Firefly_Redeem,function Trig_Firefly_Redeem_Actions)
 endfunction
 
 

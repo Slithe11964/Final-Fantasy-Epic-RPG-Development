@@ -317,98 +317,47 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ultima takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ultima_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultima_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Ultima_Cast,Condition(function Trig_Ultima_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Ultima_Cast,function Trig_Ultima_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultima_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Ultima_Cast,Condition(function Trig_Ultima_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Ultima_Cast,function Trig_Ultima_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultima_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultima_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Ultima_Prepare,function Trig_Ultima_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultima_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Ultima_Prepare,function Trig_Ultima_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultima_Possession takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultima_Possession=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ultima_Possession)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Ultima_Possession,Condition(function Trig_Ultima_Possession_Conditions))
-
-call TriggerAddAction(gg_trg_Ultima_Possession,function Trig_Ultima_Possession_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultima_Possession=CreateTrigger()
+    call DisableTrigger(gg_trg_Ultima_Possession)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(7),true)
+    call TriggerAddCondition(gg_trg_Ultima_Possession,Condition(function Trig_Ultima_Possession_Conditions))
+    call TriggerAddAction(gg_trg_Ultima_Possession,function Trig_Ultima_Possession_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultima_Holyja takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultima_Holyja=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Holyja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Ultima_Holyja,Condition(function Trig_Ultima_Holyja_Conditions))
-
-call TriggerAddAction(gg_trg_Ultima_Holyja,function Trig_Ultima_Holyja_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultima_Holyja=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Holyja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Ultima_Holyja,Condition(function Trig_Ultima_Holyja_Conditions))
+    call TriggerAddAction(gg_trg_Ultima_Holyja,function Trig_Ultima_Holyja_Actions)
 endfunction
 
 

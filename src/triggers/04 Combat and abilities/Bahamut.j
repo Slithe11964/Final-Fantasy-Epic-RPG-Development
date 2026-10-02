@@ -77,23 +77,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Bahamut takes nothing returns nothing
 endfunction
-
 function RegisterR11_Bahamut_MegaFlare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bahamut_MegaFlare=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bahamut_MegaFlare,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Bahamut_MegaFlare,Condition(function Trig_Bahamut_MegaFlare_Conditions))
-
-call TriggerAddAction(gg_trg_Bahamut_MegaFlare,function Trig_Bahamut_MegaFlare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bahamut_MegaFlare=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bahamut_MegaFlare,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Bahamut_MegaFlare,Condition(function Trig_Bahamut_MegaFlare_Conditions))
+    call TriggerAddAction(gg_trg_Bahamut_MegaFlare,function Trig_Bahamut_MegaFlare_Actions)
 endfunction
 
 

@@ -246,181 +246,84 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_ArenaResources takes nothing returns nothing
 endfunction
-
 function RegisterR11_ArenaResources_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_Prepare)
-
-call TriggerAddAction(gg_trg_ArenaResources_Prepare,function Trig_ArenaResources_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_Prepare)
+    call TriggerAddAction(gg_trg_ArenaResources_Prepare,function Trig_ArenaResources_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_ArenaResources_Start,Condition(function Trig_ArenaResources_Start_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaResources_Start,function Trig_ArenaResources_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_ArenaResources_Start,Condition(function Trig_ArenaResources_Start_Conditions))
+    call TriggerAddAction(gg_trg_ArenaResources_Start,function Trig_ArenaResources_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_Escort takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_Escort=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_Escort)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(7),true)
-
-call TriggerAddCondition(gg_trg_ArenaResources_Escort,Condition(function Trig_ArenaResources_Escort_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaResources_Escort,function Trig_ArenaResources_Escort_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_Escort=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_Escort)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaResources_Escort,Player(7),true)
+    call TriggerAddCondition(gg_trg_ArenaResources_Escort,Condition(function Trig_ArenaResources_Escort_Conditions))
+    call TriggerAddAction(gg_trg_ArenaResources_Escort,function Trig_ArenaResources_Escort_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_ShipMove takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_ShipMove=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_ShipMove)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_ArenaResources_ShipMove,4.)
-
-call TriggerAddAction(gg_trg_ArenaResources_ShipMove,function Trig_ArenaResources_ShipMove_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_ShipMove=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_ShipMove)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_ArenaResources_ShipMove,4.)
+    call TriggerAddAction(gg_trg_ArenaResources_ShipMove,function Trig_ArenaResources_ShipMove_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_ShipDamaged takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_ShipDamaged=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_ShipDamaged)
-
-call TriggerAddCondition(gg_trg_ArenaResources_ShipDamaged,Condition(function Trig_ArenaResources_ShipDamaged_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaResources_ShipDamaged,function Trig_ArenaResources_ShipDamaged_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_ShipDamaged=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_ShipDamaged)
+    call TriggerAddCondition(gg_trg_ArenaResources_ShipDamaged,Condition(function Trig_ArenaResources_ShipDamaged_Conditions))
+    call TriggerAddAction(gg_trg_ArenaResources_ShipDamaged,function Trig_ArenaResources_ShipDamaged_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_ShipLost takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_ShipLost=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_ShipLost)
-
-call TriggerAddCondition(gg_trg_ArenaResources_ShipLost,Condition(function Trig_ArenaResources_ShipLost_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaResources_ShipLost,function Trig_ArenaResources_ShipLost_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_ShipLost=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_ShipLost)
+    call TriggerAddCondition(gg_trg_ArenaResources_ShipLost,Condition(function Trig_ArenaResources_ShipLost_Conditions))
+    call TriggerAddAction(gg_trg_ArenaResources_ShipLost,function Trig_ArenaResources_ShipLost_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ArenaResources_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ArenaResources_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_ArenaResources_Complete)
-
-call TriggerRegisterEnterRectSimple(gg_trg_ArenaResources_Complete,gg_rct_393)
-
-call TriggerAddCondition(gg_trg_ArenaResources_Complete,Condition(function Trig_ArenaResources_Complete_Conditions))
-
-call TriggerAddAction(gg_trg_ArenaResources_Complete,function Trig_ArenaResources_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ArenaResources_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_ArenaResources_Complete)
+    call TriggerRegisterEnterRectSimple(gg_trg_ArenaResources_Complete,gg_rct_393)
+    call TriggerAddCondition(gg_trg_ArenaResources_Complete,Condition(function Trig_ArenaResources_Complete_Conditions))
+    call TriggerAddAction(gg_trg_ArenaResources_Complete,function Trig_ArenaResources_Complete_Actions)
 endfunction
 
 

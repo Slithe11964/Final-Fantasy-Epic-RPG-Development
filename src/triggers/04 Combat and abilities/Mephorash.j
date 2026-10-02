@@ -83,38 +83,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mephorash takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mephorash_Split takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mephorash_Split=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Mephorash_Split,function Trig_Mephorash_Split_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mephorash_Split=CreateTrigger()
+    call TriggerAddAction(gg_trg_Mephorash_Split,function Trig_Mephorash_Split_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mephorash_Clone_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mephorash_Clone_Death=CreateTrigger()
-
-call TriggerAddCondition(gg_trg_Mephorash_Clone_Death,Condition(function Trig_Mephorash_Clone_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Mephorash_Clone_Death,function Trig_Mephorash_Clone_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mephorash_Clone_Death=CreateTrigger()
+    call TriggerAddCondition(gg_trg_Mephorash_Clone_Death,Condition(function Trig_Mephorash_Clone_Death_Conditions))
+    call TriggerAddAction(gg_trg_Mephorash_Clone_Death,function Trig_Mephorash_Clone_Death_Actions)
 endfunction
 
 

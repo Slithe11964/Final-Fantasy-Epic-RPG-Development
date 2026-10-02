@@ -26,21 +26,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GoblinChief takes nothing returns nothing
 endfunction
-
 function RegisterR11_GoblinChief_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GoblinChief_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_GoblinChief_Death)
-
-call TriggerAddAction(gg_trg_GoblinChief_Death,function Trig_GoblinChief_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GoblinChief_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_GoblinChief_Death)
+    call TriggerAddAction(gg_trg_GoblinChief_Death,function Trig_GoblinChief_Death_Actions)
 endfunction
 
 

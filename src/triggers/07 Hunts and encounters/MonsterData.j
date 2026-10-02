@@ -1832,78 +1832,37 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MonsterData takes nothing returns nothing
 endfunction
-
 function RegisterR11_MonsterData_Init_1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MonsterData_Init_1=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_1,2.)
-
-call TriggerAddAction(gg_trg_MonsterData_Init_1,function Trig_MonsterData_Init_1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MonsterData_Init_1=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_1,2.)
+    call TriggerAddAction(gg_trg_MonsterData_Init_1,function Trig_MonsterData_Init_1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MonsterData_Init_2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MonsterData_Init_2=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_2,2.)
-
-call TriggerAddAction(gg_trg_MonsterData_Init_2,function Trig_MonsterData_Init_2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MonsterData_Init_2=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_2,2.)
+    call TriggerAddAction(gg_trg_MonsterData_Init_2,function Trig_MonsterData_Init_2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MonsterData_Init_3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MonsterData_Init_3=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_3,2.)
-
-call TriggerAddAction(gg_trg_MonsterData_Init_3,function Trig_MonsterData_Init_3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MonsterData_Init_3=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_3,2.)
+    call TriggerAddAction(gg_trg_MonsterData_Init_3,function Trig_MonsterData_Init_3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MonsterData_Init_4 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MonsterData_Init_4=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_4,2.)
-
-call TriggerAddAction(gg_trg_MonsterData_Init_4,function Trig_MonsterData_Init_4_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MonsterData_Init_4=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_MonsterData_Init_4,2.)
+    call TriggerAddAction(gg_trg_MonsterData_Init_4,function Trig_MonsterData_Init_4_Actions)
 endfunction
 
 

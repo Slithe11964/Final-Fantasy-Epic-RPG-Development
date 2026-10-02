@@ -59,37 +59,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Peace takes nothing returns nothing
 endfunction
-
 function RegisterR11_Peace_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Peace_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(0),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(1),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(2),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(3),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(4),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(5),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(6),"-peace",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(7),"-peace",false)
-
-call TriggerAddCondition(gg_trg_Peace_Command,Condition(function Trig_Peace_Command_Conditions))
-
-call TriggerAddAction(gg_trg_Peace_Command,function Trig_Peace_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Peace_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(0),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(1),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(2),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(3),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(4),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(5),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(6),"-peace",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Peace_Command,Player(7),"-peace",false)
+    call TriggerAddCondition(gg_trg_Peace_Command,Condition(function Trig_Peace_Command_Conditions))
+    call TriggerAddAction(gg_trg_Peace_Command,function Trig_Peace_Command_Actions)
 endfunction
 
 

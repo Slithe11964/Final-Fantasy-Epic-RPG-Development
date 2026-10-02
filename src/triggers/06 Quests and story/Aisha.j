@@ -55,62 +55,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Aisha takes nothing returns nothing
 endfunction
-
 function RegisterR11_Aisha_ArtemisTalk_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Aisha_ArtemisTalk_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_Aisha_ArtemisTalk_Prepare)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Aisha_ArtemisTalk_Prepare,udg_AishaTalkTimer)
-
-call TriggerAddCondition(gg_trg_Aisha_ArtemisTalk_Prepare,Condition(function Trig_Aisha_ArtemisTalk_Prepare_Conditions))
-
-call TriggerAddAction(gg_trg_Aisha_ArtemisTalk_Prepare,function Trig_Aisha_ArtemisTalk_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Aisha_ArtemisTalk_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_Aisha_ArtemisTalk_Prepare)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Aisha_ArtemisTalk_Prepare,udg_AishaTalkTimer)
+    call TriggerAddCondition(gg_trg_Aisha_ArtemisTalk_Prepare,Condition(function Trig_Aisha_ArtemisTalk_Prepare_Conditions))
+    call TriggerAddAction(gg_trg_Aisha_ArtemisTalk_Prepare,function Trig_Aisha_ArtemisTalk_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Aisha_ArtemisTale takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Aisha_ArtemisTale=CreateTrigger()
-
-call DisableTrigger(gg_trg_Aisha_ArtemisTale)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Aisha_ArtemisTale,Condition(function Trig_Aisha_ArtemisTale_Conditions))
-
-call TriggerAddAction(gg_trg_Aisha_ArtemisTale,function Trig_Aisha_ArtemisTale_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Aisha_ArtemisTale=CreateTrigger()
+    call DisableTrigger(gg_trg_Aisha_ArtemisTale)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(7),true)
+    call TriggerAddCondition(gg_trg_Aisha_ArtemisTale,Condition(function Trig_Aisha_ArtemisTale_Conditions))
+    call TriggerAddAction(gg_trg_Aisha_ArtemisTale,function Trig_Aisha_ArtemisTale_Actions)
 endfunction
 
 

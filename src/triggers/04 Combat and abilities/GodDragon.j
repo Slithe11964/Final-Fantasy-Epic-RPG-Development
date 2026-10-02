@@ -62,40 +62,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GodDragon takes nothing returns nothing
 endfunction
-
 function RegisterR11_GodDragon_Transfusion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GodDragon_Transfusion=CreateTrigger()
-
-call DisableTrigger(gg_trg_GodDragon_Transfusion)
-
-call TriggerAddAction(gg_trg_GodDragon_Transfusion,function Trig_GodDragon_Transfusion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GodDragon_Transfusion=CreateTrigger()
+    call DisableTrigger(gg_trg_GodDragon_Transfusion)
+    call TriggerAddAction(gg_trg_GodDragon_Transfusion,function Trig_GodDragon_Transfusion_Actions)
 endfunction
-
-
-
-
 function RegisterR11_GodDragon_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GodDragon_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_GodDragon_Death)
-
-call TriggerAddAction(gg_trg_GodDragon_Death,function Trig_GodDragon_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GodDragon_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_GodDragon_Death)
+    call TriggerAddAction(gg_trg_GodDragon_Death,function Trig_GodDragon_Death_Actions)
 endfunction
 
 

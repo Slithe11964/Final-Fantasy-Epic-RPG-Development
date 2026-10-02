@@ -102,59 +102,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Kalm takes nothing returns nothing
 endfunction
-
 function RegisterR11_Kalm_News_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kalm_News_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Kalm_News_Init,5.)
-
-call TriggerAddAction(gg_trg_Kalm_News_Init,function Trig_Kalm_News_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kalm_News_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Kalm_News_Init,5.)
+    call TriggerAddAction(gg_trg_Kalm_News_Init,function Trig_Kalm_News_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Kalm_News_Read takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kalm_News_Read=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Kalm_News_Read,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Kalm_News_Read,Condition(function Trig_Kalm_News_Read_Conditions))
-
-call TriggerAddAction(gg_trg_Kalm_News_Read,function Trig_Kalm_News_Read_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kalm_News_Read=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Kalm_News_Read,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Kalm_News_Read,Condition(function Trig_Kalm_News_Read_Conditions))
+    call TriggerAddAction(gg_trg_Kalm_News_Read,function Trig_Kalm_News_Read_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Kalm_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kalm_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Kalm_Init,function Trig_Kalm_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kalm_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Kalm_Init,function Trig_Kalm_Init_Actions)
 endfunction
 
 

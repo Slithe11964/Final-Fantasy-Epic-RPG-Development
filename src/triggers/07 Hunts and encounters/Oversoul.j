@@ -185,63 +185,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Oversoul takes nothing returns nothing
 endfunction
-
 function RegisterR11_Oversoul_Tables_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oversoul_Tables_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Oversoul_Tables_Init,5)
-
-call TriggerAddAction(gg_trg_Oversoul_Tables_Init,function Trig_Oversoul_Tables_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oversoul_Tables_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Oversoul_Tables_Init,5)
+    call TriggerAddAction(gg_trg_Oversoul_Tables_Init,function Trig_Oversoul_Tables_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oversoul_OnMonsterDeath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oversoul_OnMonsterDeath=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Oversoul_OnMonsterDeath,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Oversoul_OnMonsterDeath,Condition(function Trig_Oversoul_OnMonsterDeath_Conditions))
-
-call TriggerAddAction(gg_trg_Oversoul_OnMonsterDeath,function Trig_Oversoul_OnMonsterDeath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oversoul_OnMonsterDeath=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Oversoul_OnMonsterDeath,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Oversoul_OnMonsterDeath,Condition(function Trig_Oversoul_OnMonsterDeath_Conditions))
+    call TriggerAddAction(gg_trg_Oversoul_OnMonsterDeath,function Trig_Oversoul_OnMonsterDeath_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oversoul_Activate takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oversoul_Activate=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Oversoul_Activate,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Oversoul_Activate,Condition(function Trig_Oversoul_Activate_Conditions))
-
-call TriggerAddAction(gg_trg_Oversoul_Activate,function Trig_Oversoul_Activate_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oversoul_Activate=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Oversoul_Activate,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Oversoul_Activate,Condition(function Trig_Oversoul_Activate_Conditions))
+    call TriggerAddAction(gg_trg_Oversoul_Activate,function Trig_Oversoul_Activate_Actions)
 endfunction
 
 

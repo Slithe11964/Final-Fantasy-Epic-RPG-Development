@@ -74,65 +74,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Momentum takes nothing returns nothing
 endfunction
-
 function RegisterR11_Momentum_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Momentum_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Momentum_Cast,Condition(function Trig_Momentum_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Momentum_Cast,function Trig_Momentum_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Momentum_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Momentum_Cast,Condition(function Trig_Momentum_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Momentum_Cast,function Trig_Momentum_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Momentum_Apply takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Momentum_Apply=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Momentum_Apply,Condition(function Trig_Momentum_Apply_Conditions))
-
-call TriggerAddAction(gg_trg_Momentum_Apply,function Trig_Momentum_Apply_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Momentum_Apply=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Momentum_Apply,Condition(function Trig_Momentum_Apply_Conditions))
+    call TriggerAddAction(gg_trg_Momentum_Apply,function Trig_Momentum_Apply_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Momentum_Decay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Momentum_Decay=CreateTrigger()
-
-call DisableTrigger(gg_trg_Momentum_Decay)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Momentum_Decay,udg_MomentumTimer)
-
-call TriggerAddAction(gg_trg_Momentum_Decay,function Trig_Momentum_Decay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Momentum_Decay=CreateTrigger()
+    call DisableTrigger(gg_trg_Momentum_Decay)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Momentum_Decay,udg_MomentumTimer)
+    call TriggerAddAction(gg_trg_Momentum_Decay,function Trig_Momentum_Decay_Actions)
 endfunction
 
 

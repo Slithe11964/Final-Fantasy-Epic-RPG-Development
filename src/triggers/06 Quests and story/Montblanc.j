@@ -22,25 +22,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Montblanc takes nothing returns nothing
 endfunction
-
 function RegisterR11_Montblanc_Hint_Timer takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Montblanc_Hint_Timer=CreateTrigger()
-
-call DisableTrigger(gg_trg_Montblanc_Hint_Timer)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Montblanc_Hint_Timer,20.)
-
-call TriggerAddCondition(gg_trg_Montblanc_Hint_Timer,Condition(function Trig_Montblanc_Hint_Timer_Conditions))
-
-call TriggerAddAction(gg_trg_Montblanc_Hint_Timer,function Trig_Montblanc_Hint_Timer_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Montblanc_Hint_Timer=CreateTrigger()
+    call DisableTrigger(gg_trg_Montblanc_Hint_Timer)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Montblanc_Hint_Timer,20.)
+    call TriggerAddCondition(gg_trg_Montblanc_Hint_Timer,Condition(function Trig_Montblanc_Hint_Timer_Conditions))
+    call TriggerAddAction(gg_trg_Montblanc_Hint_Timer,function Trig_Montblanc_Hint_Timer_Actions)
 endfunction
 
 

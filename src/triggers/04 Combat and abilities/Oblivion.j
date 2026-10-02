@@ -185,86 +185,41 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Oblivion takes nothing returns nothing
 endfunction
-
 function RegisterR11_Oblivion_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oblivion_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Oblivion_Cast,Condition(function Trig_Oblivion_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Oblivion_Cast,function Trig_Oblivion_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oblivion_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Oblivion_Cast,Condition(function Trig_Oblivion_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Oblivion_Cast,function Trig_Oblivion_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oblivion_Pulse_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oblivion_Pulse_Start=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Oblivion_Pulse_Start,.8)
-
-call TriggerAddCondition(gg_trg_Oblivion_Pulse_Start,Condition(function Trig_Oblivion_Pulse_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Oblivion_Pulse_Start,function Trig_Oblivion_Pulse_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oblivion_Pulse_Start=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Oblivion_Pulse_Start,.8)
+    call TriggerAddCondition(gg_trg_Oblivion_Pulse_Start,Condition(function Trig_Oblivion_Pulse_Start_Conditions))
+    call TriggerAddAction(gg_trg_Oblivion_Pulse_Start,function Trig_Oblivion_Pulse_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oblivion_Pulse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oblivion_Pulse=CreateTrigger()
-
-call DisableTrigger(gg_trg_Oblivion_Pulse)
-
-call TriggerAddCondition(gg_trg_Oblivion_Pulse,Condition(function Trig_Oblivion_Pulse_Conditions))
-
-call TriggerAddAction(gg_trg_Oblivion_Pulse,function Trig_Oblivion_Pulse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oblivion_Pulse=CreateTrigger()
+    call DisableTrigger(gg_trg_Oblivion_Pulse)
+    call TriggerAddCondition(gg_trg_Oblivion_Pulse,Condition(function Trig_Oblivion_Pulse_Conditions))
+    call TriggerAddAction(gg_trg_Oblivion_Pulse,function Trig_Oblivion_Pulse_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Oblivion_Dummy_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Oblivion_Dummy_Death=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Dummy_Death,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Oblivion_Dummy_Death,Condition(function Trig_Oblivion_Dummy_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Oblivion_Dummy_Death,function Trig_Oblivion_Dummy_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Oblivion_Dummy_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Dummy_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Oblivion_Dummy_Death,Condition(function Trig_Oblivion_Dummy_Death_Conditions))
+    call TriggerAddAction(gg_trg_Oblivion_Dummy_Death,function Trig_Oblivion_Dummy_Death_Actions)
 endfunction
 
 

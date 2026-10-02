@@ -20,23 +20,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Vial takes nothing returns nothing
 endfunction
-
 function RegisterR11_Vial_EmptyOnUse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vial_EmptyOnUse=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vial_EmptyOnUse,EVENT_PLAYER_UNIT_USE_ITEM)
-
-call TriggerAddCondition(gg_trg_Vial_EmptyOnUse,Condition(function Trig_Vial_EmptyOnUse_Conditions))
-
-call TriggerAddAction(gg_trg_Vial_EmptyOnUse,function Trig_Vial_EmptyOnUse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vial_EmptyOnUse=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vial_EmptyOnUse,EVENT_PLAYER_UNIT_USE_ITEM)
+    call TriggerAddCondition(gg_trg_Vial_EmptyOnUse,Condition(function Trig_Vial_EmptyOnUse_Conditions))
+    call TriggerAddAction(gg_trg_Vial_EmptyOnUse,function Trig_Vial_EmptyOnUse_Actions)
 endfunction
 
 

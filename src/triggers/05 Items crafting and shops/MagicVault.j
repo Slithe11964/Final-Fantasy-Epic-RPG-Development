@@ -33,40 +33,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MagicVault takes nothing returns nothing
 endfunction
-
 function RegisterR11_MagicVault_Dim takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicVault_Dim=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_MagicVault_Dim,2.)
-
-call TriggerAddAction(gg_trg_MagicVault_Dim,function Trig_MagicVault_Dim_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicVault_Dim=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_MagicVault_Dim,2.)
+    call TriggerAddAction(gg_trg_MagicVault_Dim,function Trig_MagicVault_Dim_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MagicVault_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicVault_Death=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_MagicVault_Death,gg_unit_n03M_0166,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_MagicVault_Death,function Trig_MagicVault_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicVault_Death=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_MagicVault_Death,gg_unit_n03M_0166,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_MagicVault_Death,function Trig_MagicVault_Death_Actions)
 endfunction
 
 

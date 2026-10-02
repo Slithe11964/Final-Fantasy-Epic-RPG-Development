@@ -292,59 +292,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Elysium takes nothing returns nothing
 endfunction
-
 function RegisterR11_Elysium_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elysium_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Elysium_Prepare,function Trig_Elysium_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elysium_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Elysium_Prepare,function Trig_Elysium_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Elysium_AssignLegends takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elysium_AssignLegends=CreateTrigger()
-
-call DisableTrigger(gg_trg_Elysium_AssignLegends)
-
-call TriggerAddAction(gg_trg_Elysium_AssignLegends,function Trig_Elysium_AssignLegends_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elysium_AssignLegends=CreateTrigger()
+    call DisableTrigger(gg_trg_Elysium_AssignLegends)
+    call TriggerAddAction(gg_trg_Elysium_AssignLegends,function Trig_Elysium_AssignLegends_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Elysium_MarkerTick takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elysium_MarkerTick=CreateTrigger()
-
-call DisableTrigger(gg_trg_Elysium_MarkerTick)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Elysium_MarkerTick,udg_UnitUpdateTimer)
-
-call TriggerAddAction(gg_trg_Elysium_MarkerTick,function Trig_Elysium_MarkerTick_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elysium_MarkerTick=CreateTrigger()
+    call DisableTrigger(gg_trg_Elysium_MarkerTick)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Elysium_MarkerTick,udg_UnitUpdateTimer)
+    call TriggerAddAction(gg_trg_Elysium_MarkerTick,function Trig_Elysium_MarkerTick_Actions)
 endfunction
 
 

@@ -1030,99 +1030,46 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Bazaar takes nothing returns nothing
 endfunction
-
 function RegisterR11_Bazaar_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bazaar_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Init,3.)
-
-call TriggerAddAction(gg_trg_Bazaar_Init,function Trig_Bazaar_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bazaar_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Init,3.)
+    call TriggerAddAction(gg_trg_Bazaar_Init,function Trig_Bazaar_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bazaar_Recipes takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bazaar_Recipes=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Recipes,3.)
-
-call TriggerAddAction(gg_trg_Bazaar_Recipes,function Trig_Bazaar_Recipes_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bazaar_Recipes=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Recipes,3.)
+    call TriggerAddAction(gg_trg_Bazaar_Recipes,function Trig_Bazaar_Recipes_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bazaar_PawnMaterial takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bazaar_PawnMaterial=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_PawnMaterial,EVENT_PLAYER_UNIT_PAWN_ITEM)
-
-call TriggerAddAction(gg_trg_Bazaar_PawnMaterial,function Trig_Bazaar_PawnMaterial_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bazaar_PawnMaterial=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_PawnMaterial,EVENT_PLAYER_UNIT_PAWN_ITEM)
+    call TriggerAddAction(gg_trg_Bazaar_PawnMaterial,function Trig_Bazaar_PawnMaterial_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bazaar_UpdateStock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bazaar_UpdateStock=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Bazaar_UpdateStock,udg_BazaarUpdateTimer)
-
-call TriggerAddAction(gg_trg_Bazaar_UpdateStock,function Trig_Bazaar_UpdateStock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bazaar_UpdateStock=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Bazaar_UpdateStock,udg_BazaarUpdateTimer)
+    call TriggerAddAction(gg_trg_Bazaar_UpdateStock,function Trig_Bazaar_UpdateStock_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bazaar_Sell_Bundle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bazaar_Sell_Bundle=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_Sell_Bundle,EVENT_PLAYER_UNIT_SELL_ITEM)
-
-call TriggerAddCondition(gg_trg_Bazaar_Sell_Bundle,Condition(function Trig_Bazaar_Sell_Bundle_Conditions))
-
-call TriggerAddAction(gg_trg_Bazaar_Sell_Bundle,function Trig_Bazaar_Sell_Bundle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bazaar_Sell_Bundle=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_Sell_Bundle,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Bazaar_Sell_Bundle,Condition(function Trig_Bazaar_Sell_Bundle_Conditions))
+    call TriggerAddAction(gg_trg_Bazaar_Sell_Bundle,function Trig_Bazaar_Sell_Bundle_Actions)
 endfunction
 
 

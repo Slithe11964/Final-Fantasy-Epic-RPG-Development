@@ -22,23 +22,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Dismantle takes nothing returns nothing
 endfunction
-
 function RegisterR11_Dismantle_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dismantle_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Dismantle_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Dismantle_Cast,Condition(function Trig_Dismantle_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Dismantle_Cast,function Trig_Dismantle_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dismantle_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Dismantle_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Dismantle_Cast,Condition(function Trig_Dismantle_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Dismantle_Cast,function Trig_Dismantle_Cast_Actions)
 endfunction
 
 

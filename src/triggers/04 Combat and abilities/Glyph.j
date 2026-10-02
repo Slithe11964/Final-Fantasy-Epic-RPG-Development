@@ -18,25 +18,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Glyph takes nothing returns nothing
 endfunction
-
 function RegisterR11_Glyph_Area_Enter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Glyph_Area_Enter=CreateTrigger()
-
-call DisableTrigger(gg_trg_Glyph_Area_Enter)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Glyph_Area_Enter,gg_rct_496)
-
-call TriggerAddCondition(gg_trg_Glyph_Area_Enter,Condition(function Trig_Glyph_Area_Enter_Conditions))
-
-call TriggerAddAction(gg_trg_Glyph_Area_Enter,function Trig_Glyph_Area_Enter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Glyph_Area_Enter=CreateTrigger()
+    call DisableTrigger(gg_trg_Glyph_Area_Enter)
+    call TriggerRegisterEnterRectSimple(gg_trg_Glyph_Area_Enter,gg_rct_496)
+    call TriggerAddCondition(gg_trg_Glyph_Area_Enter,Condition(function Trig_Glyph_Area_Enter_Conditions))
+    call TriggerAddAction(gg_trg_Glyph_Area_Enter,function Trig_Glyph_Area_Enter_Actions)
 endfunction
 
 

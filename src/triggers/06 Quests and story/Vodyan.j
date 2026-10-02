@@ -14,23 +14,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Vodyan takes nothing returns nothing
 endfunction
-
 function RegisterR11_Vodyan_Death_DropTiara takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vodyan_Death_DropTiara=CreateTrigger()
-
-call DisableTrigger(gg_trg_Vodyan_Death_DropTiara)
-
-call TriggerRegisterUnitEvent(gg_trg_Vodyan_Death_DropTiara,gg_unit_n023_0121,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Vodyan_Death_DropTiara,function Trig_Vodyan_Death_DropTiara_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vodyan_Death_DropTiara=CreateTrigger()
+    call DisableTrigger(gg_trg_Vodyan_Death_DropTiara)
+    call TriggerRegisterUnitEvent(gg_trg_Vodyan_Death_DropTiara,gg_unit_n023_0121,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Vodyan_Death_DropTiara,function Trig_Vodyan_Death_DropTiara_Actions)
 endfunction
 
 

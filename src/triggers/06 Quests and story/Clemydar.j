@@ -8,21 +8,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Clemydar takes nothing returns nothing
 endfunction
-
 function RegisterR11_Clemydar_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Clemydar_ShowMarker=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Clemydar_ShowMarker,12.)
-
-call TriggerAddAction(gg_trg_Clemydar_ShowMarker,function Trig_Clemydar_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Clemydar_ShowMarker=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Clemydar_ShowMarker,12.)
+    call TriggerAddAction(gg_trg_Clemydar_ShowMarker,function Trig_Clemydar_ShowMarker_Actions)
 endfunction
 
 

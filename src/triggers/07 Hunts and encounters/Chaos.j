@@ -202,80 +202,38 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Chaos takes nothing returns nothing
 endfunction
-
 function RegisterR11_Chaos_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chaos_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Chaos_Init,function Trig_Chaos_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chaos_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Chaos_Init,function Trig_Chaos_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chaos_Spawn_Chaosjets takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chaos_Spawn_Chaosjets=CreateTrigger()
-
-call DisableTrigger(gg_trg_Chaos_Spawn_Chaosjets)
-
-call TriggerAddAction(gg_trg_Chaos_Spawn_Chaosjets,function Trig_Chaos_Spawn_Chaosjets_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chaos_Spawn_Chaosjets=CreateTrigger()
+    call DisableTrigger(gg_trg_Chaos_Spawn_Chaosjets)
+    call TriggerAddAction(gg_trg_Chaos_Spawn_Chaosjets,function Trig_Chaos_Spawn_Chaosjets_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chaos_Revive_Chaosjets takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chaos_Revive_Chaosjets=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chaos_Revive_Chaosjets,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chaos_Revive_Chaosjets,Condition(function Trig_Chaos_Revive_Chaosjets_Conditions))
-
-call TriggerAddAction(gg_trg_Chaos_Revive_Chaosjets,function Trig_Chaos_Revive_Chaosjets_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chaos_Revive_Chaosjets=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chaos_Revive_Chaosjets,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chaos_Revive_Chaosjets,Condition(function Trig_Chaos_Revive_Chaosjets_Conditions))
+    call TriggerAddAction(gg_trg_Chaos_Revive_Chaosjets,function Trig_Chaos_Revive_Chaosjets_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chaos_Recall_Chaosjets takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chaos_Recall_Chaosjets=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaos_Recall_Chaosjets,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Chaos_Recall_Chaosjets,Condition(function Trig_Chaos_Recall_Chaosjets_Conditions))
-
-call TriggerAddAction(gg_trg_Chaos_Recall_Chaosjets,function Trig_Chaos_Recall_Chaosjets_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chaos_Recall_Chaosjets=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaos_Recall_Chaosjets,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Chaos_Recall_Chaosjets,Condition(function Trig_Chaos_Recall_Chaosjets_Conditions))
+    call TriggerAddAction(gg_trg_Chaos_Recall_Chaosjets,function Trig_Chaos_Recall_Chaosjets_Actions)
 endfunction
 
 

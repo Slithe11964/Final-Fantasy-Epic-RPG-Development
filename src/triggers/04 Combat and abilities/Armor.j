@@ -112,23 +112,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Armor takes nothing returns nothing
 endfunction
-
 function RegisterR11_Armor_Breaker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armor_Breaker=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armor_Breaker,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Armor_Breaker,Condition(function Trig_Armor_Breaker_Conditions))
-
-call TriggerAddAction(gg_trg_Armor_Breaker,function Trig_Armor_Breaker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armor_Breaker=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armor_Breaker,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Armor_Breaker,Condition(function Trig_Armor_Breaker_Conditions))
+    call TriggerAddAction(gg_trg_Armor_Breaker,function Trig_Armor_Breaker_Actions)
 endfunction
 
 

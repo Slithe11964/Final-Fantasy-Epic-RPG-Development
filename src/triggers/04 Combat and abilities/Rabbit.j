@@ -14,23 +14,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Rabbit takes nothing returns nothing
 endfunction
-
 function RegisterR11_Rabbit_Wander takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Rabbit_Wander=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Rabbit_Wander,gg_rct_480)
-
-call TriggerAddCondition(gg_trg_Rabbit_Wander,Condition(function Trig_Rabbit_Wander_Conditions))
-
-call TriggerAddAction(gg_trg_Rabbit_Wander,function Trig_Rabbit_Wander_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Rabbit_Wander=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Rabbit_Wander,gg_rct_480)
+    call TriggerAddCondition(gg_trg_Rabbit_Wander,Condition(function Trig_Rabbit_Wander_Conditions))
+    call TriggerAddAction(gg_trg_Rabbit_Wander,function Trig_Rabbit_Wander_Actions)
 endfunction
 
 

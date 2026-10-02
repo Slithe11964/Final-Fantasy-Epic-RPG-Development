@@ -16,44 +16,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mana takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mana_Restore_Delayed takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mana_Restore_Delayed=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mana_Restore_Delayed)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Mana_Restore_Delayed,udg_ManaRefundTimer)
-
-call TriggerAddAction(gg_trg_Mana_Restore_Delayed,function Trig_Mana_Restore_Delayed_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mana_Restore_Delayed=CreateTrigger()
+    call DisableTrigger(gg_trg_Mana_Restore_Delayed)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Mana_Restore_Delayed,udg_ManaRefundTimer)
+    call TriggerAddAction(gg_trg_Mana_Restore_Delayed,function Trig_Mana_Restore_Delayed_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mana_Spring_Register takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mana_Spring_Register=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mana_Spring_Register,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mana_Spring_Register,Condition(function Trig_Mana_Spring_Register_Conditions))
-
-call TriggerAddAction(gg_trg_Mana_Spring_Register,function Trig_Mana_Spring_Register_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mana_Spring_Register=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mana_Spring_Register,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mana_Spring_Register,Condition(function Trig_Mana_Spring_Register_Conditions))
+    call TriggerAddAction(gg_trg_Mana_Spring_Register,function Trig_Mana_Spring_Register_Actions)
 endfunction
 
 

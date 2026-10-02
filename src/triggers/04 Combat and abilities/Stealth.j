@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Stealth takes nothing returns nothing
 endfunction
-
 function RegisterR11_Stealth_Break_OnAttack takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Stealth_Break_OnAttack=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Stealth_Break_OnAttack,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Stealth_Break_OnAttack,Condition(function Trig_Stealth_Break_OnAttack_Conditions))
-
-call TriggerAddAction(gg_trg_Stealth_Break_OnAttack,function Trig_Stealth_Break_OnAttack_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Stealth_Break_OnAttack=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Stealth_Break_OnAttack,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Stealth_Break_OnAttack,Condition(function Trig_Stealth_Break_OnAttack_Conditions))
+    call TriggerAddAction(gg_trg_Stealth_Break_OnAttack,function Trig_Stealth_Break_OnAttack_Actions)
 endfunction
 
 

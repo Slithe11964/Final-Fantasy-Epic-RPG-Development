@@ -148,44 +148,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Auto takes nothing returns nothing
 endfunction
-
 function RegisterR11_Auto_Potion_AI takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Auto_Potion_AI=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Potion_AI,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Auto_Potion_AI,Condition(function Trig_Auto_Potion_AI_Conditions))
-
-call TriggerAddAction(gg_trg_Auto_Potion_AI,function Trig_Auto_Potion_AI_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Auto_Potion_AI=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Potion_AI,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Auto_Potion_AI,Condition(function Trig_Auto_Potion_AI_Conditions))
+    call TriggerAddAction(gg_trg_Auto_Potion_AI,function Trig_Auto_Potion_AI_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Auto_Crossbow_Volley takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Auto_Crossbow_Volley=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Crossbow_Volley,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Auto_Crossbow_Volley,Condition(function Trig_Auto_Crossbow_Volley_Conditions))
-
-call TriggerAddAction(gg_trg_Auto_Crossbow_Volley,function Trig_Auto_Crossbow_Volley_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Auto_Crossbow_Volley=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Crossbow_Volley,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Auto_Crossbow_Volley,Condition(function Trig_Auto_Crossbow_Volley_Conditions))
+    call TriggerAddAction(gg_trg_Auto_Crossbow_Volley,function Trig_Auto_Crossbow_Volley_Actions)
 endfunction
 
 

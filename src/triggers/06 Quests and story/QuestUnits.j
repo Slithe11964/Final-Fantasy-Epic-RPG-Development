@@ -69,23 +69,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_QuestUnits takes nothing returns nothing
 endfunction
-
 function RegisterR11_QuestUnits_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_QuestUnits_Ping=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_QuestUnits_Ping,15.)
-
-call TriggerAddCondition(gg_trg_QuestUnits_Ping,Condition(function Trig_QuestUnits_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_QuestUnits_Ping,function Trig_QuestUnits_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_QuestUnits_Ping=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_QuestUnits_Ping,15.)
+    call TriggerAddCondition(gg_trg_QuestUnits_Ping,Condition(function Trig_QuestUnits_Ping_Conditions))
+    call TriggerAddAction(gg_trg_QuestUnits_Ping,function Trig_QuestUnits_Ping_Actions)
 endfunction
 
 

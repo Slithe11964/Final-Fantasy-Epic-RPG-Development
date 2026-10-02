@@ -150,65 +150,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Kesha takes nothing returns nothing
 endfunction
-
 function RegisterR11_Kesha_Stones_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kesha_Stones_Spawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Kesha_Stones_Spawn)
-
-call TriggerAddAction(gg_trg_Kesha_Stones_Spawn,function Trig_Kesha_Stones_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kesha_Stones_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Kesha_Stones_Spawn)
+    call TriggerAddAction(gg_trg_Kesha_Stones_Spawn,function Trig_Kesha_Stones_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Kesha_Return_Stones takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kesha_Return_Stones=CreateTrigger()
-
-call DisableTrigger(gg_trg_Kesha_Return_Stones)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Kesha_Return_Stones,250.,gg_unit_Nsjs_0194)
-
-call TriggerAddCondition(gg_trg_Kesha_Return_Stones,Condition(function Trig_Kesha_Return_Stones_Conditions))
-
-call TriggerAddAction(gg_trg_Kesha_Return_Stones,function Trig_Kesha_Return_Stones_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kesha_Return_Stones=CreateTrigger()
+    call DisableTrigger(gg_trg_Kesha_Return_Stones)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Kesha_Return_Stones,250.,gg_unit_Nsjs_0194)
+    call TriggerAddCondition(gg_trg_Kesha_Return_Stones,Condition(function Trig_Kesha_Return_Stones_Conditions))
+    call TriggerAddAction(gg_trg_Kesha_Return_Stones,function Trig_Kesha_Return_Stones_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Kesha_Subscription_Toggle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kesha_Subscription_Toggle=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Kesha_Subscription_Toggle,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Kesha_Subscription_Toggle,Condition(function Trig_Kesha_Subscription_Toggle_Conditions))
-
-call TriggerAddAction(gg_trg_Kesha_Subscription_Toggle,function Trig_Kesha_Subscription_Toggle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kesha_Subscription_Toggle=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Kesha_Subscription_Toggle,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Kesha_Subscription_Toggle,Condition(function Trig_Kesha_Subscription_Toggle_Conditions))
+    call TriggerAddAction(gg_trg_Kesha_Subscription_Toggle,function Trig_Kesha_Subscription_Toggle_Actions)
 endfunction
 
 

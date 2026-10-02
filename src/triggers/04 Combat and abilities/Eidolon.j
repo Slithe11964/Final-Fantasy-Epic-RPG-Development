@@ -90,52 +90,27 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Eidolon takes nothing returns nothing
 endfunction
-
 function RegisterR11_Eidolon_Found_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Eidolon_Found_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Eidolon_Found_Reveal)
-
-call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01I_0070,EVENT_UNIT_DAMAGED)
-
-call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01K_0068,EVENT_UNIT_DAMAGED)
-
-call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01J_0069,EVENT_UNIT_DAMAGED)
-
-call TriggerAddCondition(gg_trg_Eidolon_Found_Reveal,Condition(function Trig_Eidolon_Found_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Eidolon_Found_Reveal,function Trig_Eidolon_Found_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Eidolon_Found_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_Eidolon_Found_Reveal)
+    call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01I_0070,EVENT_UNIT_DAMAGED)
+    call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01K_0068,EVENT_UNIT_DAMAGED)
+    call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01J_0069,EVENT_UNIT_DAMAGED)
+    call TriggerAddCondition(gg_trg_Eidolon_Found_Reveal,Condition(function Trig_Eidolon_Found_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Eidolon_Found_Reveal,function Trig_Eidolon_Found_Reveal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Eidolon_Leviathan_Ambush takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Eidolon_Leviathan_Ambush=CreateTrigger()
-
-call DisableTrigger(gg_trg_Eidolon_Leviathan_Ambush)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Eidolon_Leviathan_Ambush,gg_rct_231)
-
-call TriggerAddCondition(gg_trg_Eidolon_Leviathan_Ambush,Condition(function Trig_Eidolon_Leviathan_Ambush_Conditions))
-
-call TriggerAddAction(gg_trg_Eidolon_Leviathan_Ambush,function Trig_Eidolon_Leviathan_Ambush_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Eidolon_Leviathan_Ambush=CreateTrigger()
+    call DisableTrigger(gg_trg_Eidolon_Leviathan_Ambush)
+    call TriggerRegisterEnterRectSimple(gg_trg_Eidolon_Leviathan_Ambush,gg_rct_231)
+    call TriggerAddCondition(gg_trg_Eidolon_Leviathan_Ambush,Condition(function Trig_Eidolon_Leviathan_Ambush_Conditions))
+    call TriggerAddAction(gg_trg_Eidolon_Leviathan_Ambush,function Trig_Eidolon_Leviathan_Ambush_Actions)
 endfunction
 
 

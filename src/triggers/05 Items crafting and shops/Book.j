@@ -82,23 +82,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Book takes nothing returns nothing
 endfunction
-
 function RegisterR11_Book_TransformGem takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Book_TransformGem=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Book_TransformGem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Book_TransformGem,Condition(function Trig_Book_TransformGem_Conditions))
-
-call TriggerAddAction(gg_trg_Book_TransformGem,function Trig_Book_TransformGem_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Book_TransformGem=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Book_TransformGem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Book_TransformGem,Condition(function Trig_Book_TransformGem_Conditions))
+    call TriggerAddAction(gg_trg_Book_TransformGem,function Trig_Book_TransformGem_Actions)
 endfunction
 
 

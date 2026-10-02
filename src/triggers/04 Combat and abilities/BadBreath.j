@@ -74,23 +74,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BadBreath takes nothing returns nothing
 endfunction
-
 function RegisterR11_BadBreath_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BadBreath_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_BadBreath_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_BadBreath_Cast,Condition(function Trig_BadBreath_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_BadBreath_Cast,function Trig_BadBreath_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BadBreath_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_BadBreath_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_BadBreath_Cast,Condition(function Trig_BadBreath_Cast_Conditions))
+    call TriggerAddAction(gg_trg_BadBreath_Cast,function Trig_BadBreath_Cast_Actions)
 endfunction
 
 

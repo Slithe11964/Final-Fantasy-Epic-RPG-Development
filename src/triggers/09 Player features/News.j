@@ -435,139 +435,66 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_News takes nothing returns nothing
 endfunction
-
 function RegisterR11_News_Morning takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_News_Morning=CreateTrigger()
-
-call DisableTrigger(gg_trg_News_Morning)
-
-call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Morning,EQUAL,6.)
-
-call TriggerAddAction(gg_trg_News_Morning,function Trig_News_Morning_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_News_Morning=CreateTrigger()
+    call DisableTrigger(gg_trg_News_Morning)
+    call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Morning,EQUAL,6.)
+    call TriggerAddAction(gg_trg_News_Morning,function Trig_News_Morning_Actions)
 endfunction
-
-
-
-
 function RegisterR11_News_Evening takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_News_Evening=CreateTrigger()
-
-call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Evening,EQUAL,18.)
-
-call TriggerAddAction(gg_trg_News_Evening,function Trig_News_Evening_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_News_Evening=CreateTrigger()
+    call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Evening,EQUAL,18.)
+    call TriggerAddAction(gg_trg_News_Evening,function Trig_News_Evening_Actions)
 endfunction
-
-
-
-
 function RegisterR11_News_SetTitle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_News_SetTitle=CreateTrigger()
-
-call DisableTrigger(gg_trg_News_SetTitle)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(0),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(1),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(2),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(3),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(4),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(5),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(6),"-news title ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(7),"-news title ",false)
-
-call TriggerAddCondition(gg_trg_News_SetTitle,Condition(function Trig_News_SetTitle_Conditions))
-
-call TriggerAddAction(gg_trg_News_SetTitle,function Trig_News_SetTitle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_News_SetTitle=CreateTrigger()
+    call DisableTrigger(gg_trg_News_SetTitle)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(0),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(1),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(2),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(3),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(4),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(5),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(6),"-news title ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(7),"-news title ",false)
+    call TriggerAddCondition(gg_trg_News_SetTitle,Condition(function Trig_News_SetTitle_Conditions))
+    call TriggerAddAction(gg_trg_News_SetTitle,function Trig_News_SetTitle_Actions)
 endfunction
-
-
-
-
 function RegisterR11_News_SetEntry takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_News_SetEntry=CreateTrigger()
-
-call DisableTrigger(gg_trg_News_SetEntry)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(0),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(1),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(2),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(3),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(4),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(5),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(6),"-news entry ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(7),"-news entry ",false)
-
-call TriggerAddCondition(gg_trg_News_SetEntry,Condition(function Trig_News_SetEntry_Conditions))
-
-call TriggerAddAction(gg_trg_News_SetEntry,function Trig_News_SetEntry_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_News_SetEntry=CreateTrigger()
+    call DisableTrigger(gg_trg_News_SetEntry)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(0),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(1),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(2),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(3),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(4),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(5),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(6),"-news entry ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(7),"-news entry ",false)
+    call TriggerAddCondition(gg_trg_News_SetEntry,Condition(function Trig_News_SetEntry_Conditions))
+    call TriggerAddAction(gg_trg_News_SetEntry,function Trig_News_SetEntry_Actions)
 endfunction
-
-
-
-
 function RegisterR11_News_SubmitEntry takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_News_SubmitEntry=CreateTrigger()
-
-call DisableTrigger(gg_trg_News_SubmitEntry)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_News_SubmitEntry,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_News_SubmitEntry,Condition(function Trig_News_SubmitEntry_Conditions))
-
-call TriggerAddAction(gg_trg_News_SubmitEntry,function Trig_News_SubmitEntry_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_News_SubmitEntry=CreateTrigger()
+    call DisableTrigger(gg_trg_News_SubmitEntry)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_News_SubmitEntry,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_News_SubmitEntry,Condition(function Trig_News_SubmitEntry_Conditions))
+    call TriggerAddAction(gg_trg_News_SubmitEntry,function Trig_News_SubmitEntry_Actions)
 endfunction
 
 

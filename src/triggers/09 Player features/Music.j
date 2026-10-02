@@ -159,19 +159,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Music takes nothing returns nothing
 endfunction
-
 function RegisterR11_Music_Prelude takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Music_Prelude=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Music_Prelude,function Trig_Music_Prelude_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Music_Prelude=CreateTrigger()
+    call TriggerAddAction(gg_trg_Music_Prelude,function Trig_Music_Prelude_Actions)
 endfunction
 
 

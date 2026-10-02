@@ -15,21 +15,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Spirit takes nothing returns nothing
 endfunction
-
 function RegisterR11_Spirit_Create takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spirit_Create=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Spirit_Create,udg_SpiritSpawnTimer)
-
-call TriggerAddAction(gg_trg_Spirit_Create,function Trig_Spirit_Create_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spirit_Create=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Spirit_Create,udg_SpiritSpawnTimer)
+    call TriggerAddAction(gg_trg_Spirit_Create,function Trig_Spirit_Create_Actions)
 endfunction
 
 

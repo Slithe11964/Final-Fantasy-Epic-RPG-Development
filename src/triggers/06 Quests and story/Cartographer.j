@@ -356,157 +356,75 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cartographer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cartographer_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cartographer_Prepare=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Prepare,4.)
-
-call TriggerAddCondition(gg_trg_Cartographer_Prepare,Condition(function Trig_Cartographer_Prepare_Conditions))
-
-call TriggerAddAction(gg_trg_Cartographer_Prepare,function Trig_Cartographer_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cartographer_Prepare=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Prepare,4.)
+    call TriggerAddCondition(gg_trg_Cartographer_Prepare,Condition(function Trig_Cartographer_Prepare_Conditions))
+    call TriggerAddAction(gg_trg_Cartographer_Prepare,function Trig_Cartographer_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cartographer_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cartographer_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cartographer_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Cartographer_Start,Condition(function Trig_Cartographer_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Cartographer_Start,function Trig_Cartographer_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cartographer_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Cartographer_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Cartographer_Start,Condition(function Trig_Cartographer_Start_Conditions))
+    call TriggerAddAction(gg_trg_Cartographer_Start,function Trig_Cartographer_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cartographer_Update takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cartographer_Update=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cartographer_Update)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Update,5.)
-
-call TriggerAddCondition(gg_trg_Cartographer_Update,Condition(function Trig_Cartographer_Update_Conditions))
-
-call TriggerAddAction(gg_trg_Cartographer_Update,function Trig_Cartographer_Update_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cartographer_Update=CreateTrigger()
+    call DisableTrigger(gg_trg_Cartographer_Update)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Update,5.)
+    call TriggerAddCondition(gg_trg_Cartographer_Update,Condition(function Trig_Cartographer_Update_Conditions))
+    call TriggerAddAction(gg_trg_Cartographer_Update,function Trig_Cartographer_Update_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cartographer_Report takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cartographer_Report=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cartographer_Report)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Cartographer_Report,Condition(function Trig_Cartographer_Report_Conditions))
-
-call TriggerAddAction(gg_trg_Cartographer_Report,function Trig_Cartographer_Report_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cartographer_Report=CreateTrigger()
+    call DisableTrigger(gg_trg_Cartographer_Report)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(7),true)
+    call TriggerAddCondition(gg_trg_Cartographer_Report,Condition(function Trig_Cartographer_Report_Conditions))
+    call TriggerAddAction(gg_trg_Cartographer_Report,function Trig_Cartographer_Report_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cartographer_Fail takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cartographer_Fail=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cartographer_Fail)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Cartographer_Fail,Condition(function Trig_Cartographer_Fail_Conditions))
-
-call TriggerAddAction(gg_trg_Cartographer_Fail,function Trig_Cartographer_Fail_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cartographer_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_Cartographer_Fail)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(7),true)
+    call TriggerAddCondition(gg_trg_Cartographer_Fail,Condition(function Trig_Cartographer_Fail_Conditions))
+    call TriggerAddAction(gg_trg_Cartographer_Fail,function Trig_Cartographer_Fail_Actions)
 endfunction
 
 

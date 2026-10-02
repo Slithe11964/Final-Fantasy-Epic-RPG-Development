@@ -15,23 +15,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_WarringTriad takes nothing returns nothing
 endfunction
-
 function RegisterR11_WarringTriad_Freeze takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_WarringTriad_Freeze=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_WarringTriad_Freeze,GetPlayableMapRect())
-
-call TriggerAddCondition(gg_trg_WarringTriad_Freeze,Condition(function Trig_WarringTriad_Freeze_Conditions))
-
-call TriggerAddAction(gg_trg_WarringTriad_Freeze,function Trig_WarringTriad_Freeze_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_WarringTriad_Freeze=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_WarringTriad_Freeze,GetPlayableMapRect())
+    call TriggerAddCondition(gg_trg_WarringTriad_Freeze,Condition(function Trig_WarringTriad_Freeze_Conditions))
+    call TriggerAddAction(gg_trg_WarringTriad_Freeze,function Trig_WarringTriad_Freeze_Actions)
 endfunction
 
 

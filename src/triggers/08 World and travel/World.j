@@ -22,21 +22,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_World takes nothing returns nothing
 endfunction
-
 function RegisterR11_World_AfterDemonAppears takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_World_AfterDemonAppears=CreateTrigger()
-
-call DisableTrigger(gg_trg_World_AfterDemonAppears)
-
-call TriggerAddAction(gg_trg_World_AfterDemonAppears,function Trig_World_AfterDemonAppears_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_World_AfterDemonAppears=CreateTrigger()
+    call DisableTrigger(gg_trg_World_AfterDemonAppears)
+    call TriggerAddAction(gg_trg_World_AfterDemonAppears,function Trig_World_AfterDemonAppears_Actions)
 endfunction
 
 

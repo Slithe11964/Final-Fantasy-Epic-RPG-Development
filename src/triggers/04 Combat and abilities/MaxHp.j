@@ -71,21 +71,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MaxHp takes nothing returns nothing
 endfunction
-
 function RegisterR11_MaxHp_DrainTick takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MaxHp_DrainTick=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_MaxHp_DrainTick,udg_MaxHpDrainTimer)
-
-call TriggerAddAction(gg_trg_MaxHp_DrainTick,function Trig_MaxHp_DrainTick_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MaxHp_DrainTick=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_MaxHp_DrainTick,udg_MaxHpDrainTimer)
+    call TriggerAddAction(gg_trg_MaxHp_DrainTick,function Trig_MaxHp_DrainTick_Actions)
 endfunction
 
 

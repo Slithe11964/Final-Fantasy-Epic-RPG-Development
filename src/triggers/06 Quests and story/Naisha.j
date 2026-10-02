@@ -275,211 +275,96 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Naisha takes nothing returns nothing
 endfunction
-
 function RegisterR11_Naisha_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Naisha_Init,function Trig_Naisha_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Naisha_Init,function Trig_Naisha_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_Prepare)
-
-call TriggerAddAction(gg_trg_Naisha_Prepare,function Trig_Naisha_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_Prepare)
+    call TriggerAddAction(gg_trg_Naisha_Prepare,function Trig_Naisha_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Recruit takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Recruit=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_Recruit)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Naisha_Recruit,Condition(function Trig_Naisha_Recruit_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_Recruit,function Trig_Naisha_Recruit_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Recruit=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_Recruit)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Naisha_Recruit,Player(7),true)
+    call TriggerAddCondition(gg_trg_Naisha_Recruit,Condition(function Trig_Naisha_Recruit_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_Recruit,function Trig_Naisha_Recruit_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Wounded takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Wounded=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_Wounded)
-
-call TriggerRegisterUnitLifeEvent(gg_trg_Naisha_Wounded,gg_unit_ensh_0057,LESS_THAN_OR_EQUAL,200.)
-
-call TriggerAddCondition(gg_trg_Naisha_Wounded,Condition(function Trig_Naisha_Wounded_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_Wounded,function Trig_Naisha_Wounded_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Wounded=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_Wounded)
+    call TriggerRegisterUnitLifeEvent(gg_trg_Naisha_Wounded,gg_unit_ensh_0057,LESS_THAN_OR_EQUAL,200.)
+    call TriggerAddCondition(gg_trg_Naisha_Wounded,Condition(function Trig_Naisha_Wounded_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_Wounded,function Trig_Naisha_Wounded_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_AttackedRetreat takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_AttackedRetreat=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_AttackedRetreat)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Naisha_AttackedRetreat,Player($A),EVENT_PLAYER_UNIT_ATTACKED) // $A = 10
-
-call TriggerAddCondition(gg_trg_Naisha_AttackedRetreat,Condition(function Trig_Naisha_AttackedRetreat_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_AttackedRetreat,function Trig_Naisha_AttackedRetreat_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_AttackedRetreat=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_AttackedRetreat)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Naisha_AttackedRetreat,Player($A),EVENT_PLAYER_UNIT_ATTACKED) // $A = 10
+    call TriggerAddCondition(gg_trg_Naisha_AttackedRetreat,Condition(function Trig_Naisha_AttackedRetreat_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_AttackedRetreat,function Trig_Naisha_AttackedRetreat_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Heal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Heal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_Heal)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Naisha_Heal,udg_NaishaHealTimer)
-
-call TriggerAddCondition(gg_trg_Naisha_Heal,Condition(function Trig_Naisha_Heal_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_Heal,function Trig_Naisha_Heal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Heal=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_Heal)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Naisha_Heal,udg_NaishaHealTimer)
+    call TriggerAddCondition(gg_trg_Naisha_Heal,Condition(function Trig_Naisha_Heal_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_Heal,function Trig_Naisha_Heal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_Naisha_Death,gg_unit_ensh_0057,EVENT_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Naisha_Death,Condition(function Trig_Naisha_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_Death,function Trig_Naisha_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Naisha_Death,gg_unit_ensh_0057,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Naisha_Death,Condition(function Trig_Naisha_Death_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_Death,function Trig_Naisha_Death_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_ArriveLothlorien takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_ArriveLothlorien=CreateTrigger()
-
-call DisableTrigger(gg_trg_Naisha_ArriveLothlorien)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Naisha_ArriveLothlorien,450.,gg_unit_Etyr_0155)
-
-call TriggerAddCondition(gg_trg_Naisha_ArriveLothlorien,Condition(function Trig_Naisha_ArriveLothlorien_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_ArriveLothlorien,function Trig_Naisha_ArriveLothlorien_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_ArriveLothlorien=CreateTrigger()
+    call DisableTrigger(gg_trg_Naisha_ArriveLothlorien)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Naisha_ArriveLothlorien,450.,gg_unit_Etyr_0155)
+    call TriggerAddCondition(gg_trg_Naisha_ArriveLothlorien,Condition(function Trig_Naisha_ArriveLothlorien_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_ArriveLothlorien,function Trig_Naisha_ArriveLothlorien_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Naisha_Whirl takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Naisha_Whirl=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Naisha_Whirl,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Naisha_Whirl,Condition(function Trig_Naisha_Whirl_Conditions))
-
-call TriggerAddAction(gg_trg_Naisha_Whirl,function Trig_Naisha_Whirl_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Naisha_Whirl=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Naisha_Whirl,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Naisha_Whirl,Condition(function Trig_Naisha_Whirl_Conditions))
+    call TriggerAddAction(gg_trg_Naisha_Whirl,function Trig_Naisha_Whirl_Actions)
 endfunction
 
 

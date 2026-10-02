@@ -48,44 +48,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Bravery takes nothing returns nothing
 endfunction
-
 function RegisterR11_Bravery_Caster_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bravery_Caster_Cleanup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Caster_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Bravery_Caster_Cleanup,Condition(function Trig_Bravery_Caster_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_Bravery_Caster_Cleanup,function Trig_Bravery_Caster_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bravery_Caster_Cleanup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Caster_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Bravery_Caster_Cleanup,Condition(function Trig_Bravery_Caster_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Bravery_Caster_Cleanup,function Trig_Bravery_Caster_Cleanup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bravery_Target_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bravery_Target_Cleanup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Target_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Bravery_Target_Cleanup,Condition(function Trig_Bravery_Target_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_Bravery_Target_Cleanup,function Trig_Bravery_Target_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bravery_Target_Cleanup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Target_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Bravery_Target_Cleanup,Condition(function Trig_Bravery_Target_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Bravery_Target_Cleanup,function Trig_Bravery_Target_Cleanup_Actions)
 endfunction
 
 

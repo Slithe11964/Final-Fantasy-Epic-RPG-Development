@@ -61,65 +61,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Vendetta takes nothing returns nothing
 endfunction
-
 function RegisterR11_Vendetta_Stance takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vendetta_Stance=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Stance,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
-
-call TriggerAddCondition(gg_trg_Vendetta_Stance,Condition(function Trig_Vendetta_Stance_Conditions))
-
-call TriggerAddAction(gg_trg_Vendetta_Stance,function Trig_Vendetta_Stance_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vendetta_Stance=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Stance,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddCondition(gg_trg_Vendetta_Stance,Condition(function Trig_Vendetta_Stance_Conditions))
+    call TriggerAddAction(gg_trg_Vendetta_Stance,function Trig_Vendetta_Stance_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vendetta_Release takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vendetta_Release=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Vendetta_Release,Condition(function Trig_Vendetta_Release_Conditions))
-
-call TriggerAddAction(gg_trg_Vendetta_Release,function Trig_Vendetta_Release_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vendetta_Release=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Vendetta_Release,Condition(function Trig_Vendetta_Release_Conditions))
+    call TriggerAddAction(gg_trg_Vendetta_Release,function Trig_Vendetta_Release_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Vendetta_Cancel takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Vendetta_Cancel=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Cancel,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
-
-call TriggerAddCondition(gg_trg_Vendetta_Cancel,Condition(function Trig_Vendetta_Cancel_Conditions))
-
-call TriggerAddAction(gg_trg_Vendetta_Cancel,function Trig_Vendetta_Cancel_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Vendetta_Cancel=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Cancel,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
+    call TriggerAddCondition(gg_trg_Vendetta_Cancel,Condition(function Trig_Vendetta_Cancel_Conditions))
+    call TriggerAddAction(gg_trg_Vendetta_Cancel,function Trig_Vendetta_Cancel_Actions)
 endfunction
 
 

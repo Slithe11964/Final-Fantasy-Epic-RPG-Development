@@ -26,23 +26,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Animal takes nothing returns nothing
 endfunction
-
 function RegisterR11_Animal_Companion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Animal_Companion=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Animal_Companion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Animal_Companion,Condition(function Trig_Animal_Companion_Conditions))
-
-call TriggerAddAction(gg_trg_Animal_Companion,function Trig_Animal_Companion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Animal_Companion=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Animal_Companion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Animal_Companion,Condition(function Trig_Animal_Companion_Conditions))
+    call TriggerAddAction(gg_trg_Animal_Companion,function Trig_Animal_Companion_Actions)
 endfunction
 
 

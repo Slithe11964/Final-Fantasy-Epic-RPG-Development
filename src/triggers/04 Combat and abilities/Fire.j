@@ -270,152 +270,71 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Fire takes nothing returns nothing
 endfunction
-
 function RegisterR11_Fire_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Fire_Cast,Condition(function Trig_Fire_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Cast,function Trig_Fire_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Fire_Cast,Condition(function Trig_Fire_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Cast,function Trig_Fire_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fire_Pawn_Nectar takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Pawn_Nectar=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fire_Pawn_Nectar)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_Nectar,EVENT_PLAYER_UNIT_PAWN_ITEM)
-
-call TriggerAddCondition(gg_trg_Fire_Pawn_Nectar,Condition(function Trig_Fire_Pawn_Nectar_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Pawn_Nectar,function Trig_Fire_Pawn_Nectar_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Pawn_Nectar=CreateTrigger()
+    call DisableTrigger(gg_trg_Fire_Pawn_Nectar)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_Nectar,EVENT_PLAYER_UNIT_PAWN_ITEM)
+    call TriggerAddCondition(gg_trg_Fire_Pawn_Nectar,Condition(function Trig_Fire_Pawn_Nectar_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Pawn_Nectar,function Trig_Fire_Pawn_Nectar_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fire_Pawn_SpiritPotion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Pawn_SpiritPotion=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fire_Pawn_SpiritPotion)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_SpiritPotion,EVENT_PLAYER_UNIT_PAWN_ITEM)
-
-call TriggerAddCondition(gg_trg_Fire_Pawn_SpiritPotion,Condition(function Trig_Fire_Pawn_SpiritPotion_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Pawn_SpiritPotion,function Trig_Fire_Pawn_SpiritPotion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Pawn_SpiritPotion=CreateTrigger()
+    call DisableTrigger(gg_trg_Fire_Pawn_SpiritPotion)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_SpiritPotion,EVENT_PLAYER_UNIT_PAWN_ITEM)
+    call TriggerAddCondition(gg_trg_Fire_Pawn_SpiritPotion,Condition(function Trig_Fire_Pawn_SpiritPotion_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Pawn_SpiritPotion,function Trig_Fire_Pawn_SpiritPotion_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fire_Pawn_BloodEther takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Pawn_BloodEther=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fire_Pawn_BloodEther)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_BloodEther,EVENT_PLAYER_UNIT_PAWN_ITEM)
-
-call TriggerAddCondition(gg_trg_Fire_Pawn_BloodEther,Condition(function Trig_Fire_Pawn_BloodEther_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Pawn_BloodEther,function Trig_Fire_Pawn_BloodEther_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Pawn_BloodEther=CreateTrigger()
+    call DisableTrigger(gg_trg_Fire_Pawn_BloodEther)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_BloodEther,EVENT_PLAYER_UNIT_PAWN_ITEM)
+    call TriggerAddCondition(gg_trg_Fire_Pawn_BloodEther,Condition(function Trig_Fire_Pawn_BloodEther_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Pawn_BloodEther,function Trig_Fire_Pawn_BloodEther_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fire_Pawn_HeroDrink takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Pawn_HeroDrink=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fire_Pawn_HeroDrink)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_HeroDrink,EVENT_PLAYER_UNIT_PAWN_ITEM)
-
-call TriggerAddCondition(gg_trg_Fire_Pawn_HeroDrink,Condition(function Trig_Fire_Pawn_HeroDrink_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Pawn_HeroDrink,function Trig_Fire_Pawn_HeroDrink_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Pawn_HeroDrink=CreateTrigger()
+    call DisableTrigger(gg_trg_Fire_Pawn_HeroDrink)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_HeroDrink,EVENT_PLAYER_UNIT_PAWN_ITEM)
+    call TriggerAddCondition(gg_trg_Fire_Pawn_HeroDrink,Condition(function Trig_Fire_Pawn_HeroDrink_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Pawn_HeroDrink,function Trig_Fire_Pawn_HeroDrink_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fire_Reward_Megalixir takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fire_Reward_Megalixir=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fire_Reward_Megalixir)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Fire_Reward_Megalixir,Condition(function Trig_Fire_Reward_Megalixir_Conditions))
-
-call TriggerAddAction(gg_trg_Fire_Reward_Megalixir,function Trig_Fire_Reward_Megalixir_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fire_Reward_Megalixir=CreateTrigger()
+    call DisableTrigger(gg_trg_Fire_Reward_Megalixir)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(7),true)
+    call TriggerAddCondition(gg_trg_Fire_Reward_Megalixir,Condition(function Trig_Fire_Reward_Megalixir_Conditions))
+    call TriggerAddAction(gg_trg_Fire_Reward_Megalixir,function Trig_Fire_Reward_Megalixir_Actions)
 endfunction
 
 

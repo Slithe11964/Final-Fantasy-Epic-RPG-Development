@@ -215,150 +215,70 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Tentacles takes nothing returns nothing
 endfunction
-
 function RegisterR11_Tentacles_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Tentacles_Start,Condition(function Trig_Tentacles_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Tentacles_Start,function Trig_Tentacles_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Tentacles_Start,Condition(function Trig_Tentacles_Start_Conditions))
+    call TriggerAddAction(gg_trg_Tentacles_Start,function Trig_Tentacles_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Tentacles_Ambush takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Ambush=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Ambush)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Ambush,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Tentacles_Ambush,Condition(function Trig_Tentacles_Ambush_Conditions))
-
-call TriggerAddAction(gg_trg_Tentacles_Ambush,function Trig_Tentacles_Ambush_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Ambush=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Ambush)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Ambush,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Tentacles_Ambush,Condition(function Trig_Tentacles_Ambush_Conditions))
+    call TriggerAddAction(gg_trg_Tentacles_Ambush,function Trig_Tentacles_Ambush_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Tentacles_Yelp takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Yelp=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Yelp)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Yelp,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Tentacles_Yelp,Condition(function Trig_Tentacles_Yelp_Conditions))
-
-call TriggerAddAction(gg_trg_Tentacles_Yelp,function Trig_Tentacles_Yelp_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Yelp=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Yelp)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Yelp,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Tentacles_Yelp,Condition(function Trig_Tentacles_Yelp_Conditions))
+    call TriggerAddAction(gg_trg_Tentacles_Yelp,function Trig_Tentacles_Yelp_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Tentacles_Despawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Despawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Despawn)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Tentacles_Despawn,udg_TentacleTimer)
-
-call TriggerAddAction(gg_trg_Tentacles_Despawn,function Trig_Tentacles_Despawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Despawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Despawn)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Tentacles_Despawn,udg_TentacleTimer)
+    call TriggerAddAction(gg_trg_Tentacles_Despawn,function Trig_Tentacles_Despawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Tentacles_Fail takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Fail=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Fail)
-
-call TriggerAddAction(gg_trg_Tentacles_Fail,function Trig_Tentacles_Fail_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Fail)
+    call TriggerAddAction(gg_trg_Tentacles_Fail,function Trig_Tentacles_Fail_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Tentacles_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tentacles_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_Tentacles_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Tentacles_Reward,200.,gg_unit_e013_0176)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Tentacles_Reward,450.,gg_unit_e013_0176)
-
-call TriggerAddCondition(gg_trg_Tentacles_Reward,Condition(function Trig_Tentacles_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_Tentacles_Reward,function Trig_Tentacles_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tentacles_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_Tentacles_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Tentacles_Reward,200.,gg_unit_e013_0176)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Tentacles_Reward,450.,gg_unit_e013_0176)
+    call TriggerAddCondition(gg_trg_Tentacles_Reward,Condition(function Trig_Tentacles_Reward_Conditions))
+    call TriggerAddAction(gg_trg_Tentacles_Reward,function Trig_Tentacles_Reward_Actions)
 endfunction
 
 

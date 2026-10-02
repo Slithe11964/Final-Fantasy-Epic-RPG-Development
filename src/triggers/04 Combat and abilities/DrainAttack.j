@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DrainAttack takes nothing returns nothing
 endfunction
-
 function RegisterR11_DrainAttack_LevelSync takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DrainAttack_LevelSync=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_DrainAttack_LevelSync,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_DrainAttack_LevelSync,Condition(function Trig_DrainAttack_LevelSync_Conditions))
-
-call TriggerAddAction(gg_trg_DrainAttack_LevelSync,function Trig_DrainAttack_LevelSync_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DrainAttack_LevelSync=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_DrainAttack_LevelSync,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_DrainAttack_LevelSync,Condition(function Trig_DrainAttack_LevelSync_Conditions))
+    call TriggerAddAction(gg_trg_DrainAttack_LevelSync,function Trig_DrainAttack_LevelSync_Actions)
 endfunction
 
 

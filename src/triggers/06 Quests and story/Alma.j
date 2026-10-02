@@ -51,46 +51,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Alma takes nothing returns nothing
 endfunction
-
 function RegisterR11_Alma_Disappear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Alma_Disappear=CreateTrigger()
-
-call DisableTrigger(gg_trg_Alma_Disappear)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Alma_Disappear,udg_AlmaDisappearTimer)
-
-call TriggerAddAction(gg_trg_Alma_Disappear,function Trig_Alma_Disappear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Alma_Disappear=CreateTrigger()
+    call DisableTrigger(gg_trg_Alma_Disappear)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Alma_Disappear,udg_AlmaDisappearTimer)
+    call TriggerAddAction(gg_trg_Alma_Disappear,function Trig_Alma_Disappear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Alma_Missing_Notice takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Alma_Missing_Notice=CreateTrigger()
-
-call DisableTrigger(gg_trg_Alma_Missing_Notice)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Alma_Missing_Notice,550.,gg_unit_Hjai_0093)
-
-call TriggerAddCondition(gg_trg_Alma_Missing_Notice,Condition(function Trig_Alma_Missing_Notice_Conditions))
-
-call TriggerAddAction(gg_trg_Alma_Missing_Notice,function Trig_Alma_Missing_Notice_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Alma_Missing_Notice=CreateTrigger()
+    call DisableTrigger(gg_trg_Alma_Missing_Notice)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Alma_Missing_Notice,550.,gg_unit_Hjai_0093)
+    call TriggerAddCondition(gg_trg_Alma_Missing_Notice,Condition(function Trig_Alma_Missing_Notice_Conditions))
+    call TriggerAddAction(gg_trg_Alma_Missing_Notice,function Trig_Alma_Missing_Notice_Actions)
 endfunction
 
 

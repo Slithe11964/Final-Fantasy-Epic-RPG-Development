@@ -39,23 +39,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mechanical takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mechanical_Drill takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mechanical_Drill=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mechanical_Drill,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mechanical_Drill,Condition(function Trig_Mechanical_Drill_Conditions))
-
-call TriggerAddAction(gg_trg_Mechanical_Drill,function Trig_Mechanical_Drill_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mechanical_Drill=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mechanical_Drill,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mechanical_Drill,Condition(function Trig_Mechanical_Drill_Conditions))
+    call TriggerAddAction(gg_trg_Mechanical_Drill,function Trig_Mechanical_Drill_Actions)
 endfunction
 
 

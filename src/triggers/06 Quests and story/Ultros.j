@@ -93,84 +93,40 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ultros takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ultros_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultros_Spawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ultros_Spawn)
-
-call TriggerAddAction(gg_trg_Ultros_Spawn,function Trig_Ultros_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultros_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Ultros_Spawn)
+    call TriggerAddAction(gg_trg_Ultros_Spawn,function Trig_Ultros_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultros_SummonTentacle takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultros_SummonTentacle=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ultros_SummonTentacle)
-
-call TriggerAddCondition(gg_trg_Ultros_SummonTentacle,Condition(function Trig_Ultros_SummonTentacle_Conditions))
-
-call TriggerAddAction(gg_trg_Ultros_SummonTentacle,function Trig_Ultros_SummonTentacle_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultros_SummonTentacle=CreateTrigger()
+    call DisableTrigger(gg_trg_Ultros_SummonTentacle)
+    call TriggerAddCondition(gg_trg_Ultros_SummonTentacle,Condition(function Trig_Ultros_SummonTentacle_Conditions))
+    call TriggerAddAction(gg_trg_Ultros_SummonTentacle,function Trig_Ultros_SummonTentacle_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultros_TentacleDeath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultros_TentacleDeath=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ultros_TentacleDeath)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ultros_TentacleDeath,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Ultros_TentacleDeath,Condition(function Trig_Ultros_TentacleDeath_Conditions))
-
-call TriggerAddAction(gg_trg_Ultros_TentacleDeath,function Trig_Ultros_TentacleDeath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultros_TentacleDeath=CreateTrigger()
+    call DisableTrigger(gg_trg_Ultros_TentacleDeath)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ultros_TentacleDeath,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Ultros_TentacleDeath,Condition(function Trig_Ultros_TentacleDeath_Conditions))
+    call TriggerAddAction(gg_trg_Ultros_TentacleDeath,function Trig_Ultros_TentacleDeath_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ultros_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ultros_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ultros_Death)
-
-call TriggerAddAction(gg_trg_Ultros_Death,function Trig_Ultros_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ultros_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Ultros_Death)
+    call TriggerAddAction(gg_trg_Ultros_Death,function Trig_Ultros_Death_Actions)
 endfunction
 
 

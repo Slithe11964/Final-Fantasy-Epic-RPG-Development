@@ -125,129 +125,61 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DragonEgg takes nothing returns nothing
 endfunction
-
 function RegisterR11_DragonEgg_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonEgg_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonEgg_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_DragonEgg_Start,Condition(function Trig_DragonEgg_Start_Conditions))
-
-call TriggerAddAction(gg_trg_DragonEgg_Start,function Trig_DragonEgg_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonEgg_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonEgg_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_DragonEgg_Start,Condition(function Trig_DragonEgg_Start_Conditions))
+    call TriggerAddAction(gg_trg_DragonEgg_Start,function Trig_DragonEgg_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonEgg_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonEgg_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonEgg_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_DragonEgg_Ping,15.)
-
-call TriggerAddCondition(gg_trg_DragonEgg_Ping,Condition(function Trig_DragonEgg_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_DragonEgg_Ping,function Trig_DragonEgg_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonEgg_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonEgg_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_DragonEgg_Ping,15.)
+    call TriggerAddCondition(gg_trg_DragonEgg_Ping,Condition(function Trig_DragonEgg_Ping_Conditions))
+    call TriggerAddAction(gg_trg_DragonEgg_Ping,function Trig_DragonEgg_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonEgg_PickUp takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonEgg_PickUp=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonEgg_PickUp)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonEgg_PickUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_DragonEgg_PickUp,Condition(function Trig_DragonEgg_PickUp_Conditions))
-
-call TriggerAddAction(gg_trg_DragonEgg_PickUp,function Trig_DragonEgg_PickUp_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonEgg_PickUp=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonEgg_PickUp)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonEgg_PickUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_DragonEgg_PickUp,Condition(function Trig_DragonEgg_PickUp_Conditions))
+    call TriggerAddAction(gg_trg_DragonEgg_PickUp,function Trig_DragonEgg_PickUp_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonEgg_Fail takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonEgg_Fail=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonEgg_Fail)
-
-call TriggerAddAction(gg_trg_DragonEgg_Fail,function Trig_DragonEgg_Fail_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonEgg_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonEgg_Fail)
+    call TriggerAddAction(gg_trg_DragonEgg_Fail,function Trig_DragonEgg_Fail_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DragonEgg_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DragonEgg_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_DragonEgg_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DragonEgg_Reward,200.,gg_unit_e016_0019)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DragonEgg_Reward,450.,gg_unit_e016_0019)
-
-call TriggerAddCondition(gg_trg_DragonEgg_Reward,Condition(function Trig_DragonEgg_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_DragonEgg_Reward,function Trig_DragonEgg_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DragonEgg_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_DragonEgg_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DragonEgg_Reward,200.,gg_unit_e016_0019)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DragonEgg_Reward,450.,gg_unit_e016_0019)
+    call TriggerAddCondition(gg_trg_DragonEgg_Reward,Condition(function Trig_DragonEgg_Reward_Conditions))
+    call TriggerAddAction(gg_trg_DragonEgg_Reward,function Trig_DragonEgg_Reward_Actions)
 endfunction
 
 

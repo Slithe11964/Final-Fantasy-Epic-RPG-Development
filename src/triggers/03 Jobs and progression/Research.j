@@ -321,23 +321,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Research takes nothing returns nothing
 endfunction
-
 function RegisterR11_Research_Requirements takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Research_Requirements=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Research_Requirements,EVENT_PLAYER_UNIT_RESEARCH_START)
-
-call TriggerAddCondition(gg_trg_Research_Requirements,Condition(function Trig_Research_Requirements_Conditions))
-
-call TriggerAddAction(gg_trg_Research_Requirements,function Trig_Research_Requirements_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Research_Requirements=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Research_Requirements,EVENT_PLAYER_UNIT_RESEARCH_START)
+    call TriggerAddCondition(gg_trg_Research_Requirements,Condition(function Trig_Research_Requirements_Conditions))
+    call TriggerAddAction(gg_trg_Research_Requirements,function Trig_Research_Requirements_Actions)
 endfunction
 
 

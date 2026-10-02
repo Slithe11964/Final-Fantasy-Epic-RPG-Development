@@ -208,46 +208,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkPhoenix takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkPhoenix_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkPhoenix_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkPhoenix_Appear)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_DarkPhoenix_Appear,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_DarkPhoenix_Appear,Condition(function Trig_DarkPhoenix_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkPhoenix_Appear,function Trig_DarkPhoenix_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkPhoenix_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkPhoenix_Appear)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_DarkPhoenix_Appear,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_DarkPhoenix_Appear,Condition(function Trig_DarkPhoenix_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkPhoenix_Appear,function Trig_DarkPhoenix_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkPhoenix_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkPhoenix_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkPhoenix_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkPhoenix_Death,gg_unit_H021_0034,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_DarkPhoenix_Death,function Trig_DarkPhoenix_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkPhoenix_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkPhoenix_Death)
+    call TriggerRegisterUnitEvent(gg_trg_DarkPhoenix_Death,gg_unit_H021_0034,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_DarkPhoenix_Death,function Trig_DarkPhoenix_Death_Actions)
 endfunction
 
 

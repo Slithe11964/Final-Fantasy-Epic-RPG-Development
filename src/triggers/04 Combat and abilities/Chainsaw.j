@@ -39,23 +39,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Chainsaw takes nothing returns nothing
 endfunction
-
 function RegisterR11_Chainsaw_Saw takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chainsaw_Saw=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chainsaw_Saw,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chainsaw_Saw,Condition(function Trig_Chainsaw_Saw_Conditions))
-
-call TriggerAddAction(gg_trg_Chainsaw_Saw,function Trig_Chainsaw_Saw_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chainsaw_Saw=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chainsaw_Saw,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chainsaw_Saw,Condition(function Trig_Chainsaw_Saw_Conditions))
+    call TriggerAddAction(gg_trg_Chainsaw_Saw,function Trig_Chainsaw_Saw_Actions)
 endfunction
 
 

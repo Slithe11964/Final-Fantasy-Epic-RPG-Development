@@ -10,23 +10,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Stop takes nothing returns nothing
 endfunction
-
 function RegisterR11_Stop_Friendly_Attack takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Stop_Friendly_Attack=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Stop_Friendly_Attack,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Stop_Friendly_Attack,Condition(function Trig_Stop_Friendly_Attack_Conditions))
-
-call TriggerAddAction(gg_trg_Stop_Friendly_Attack,function Trig_Stop_Friendly_Attack_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Stop_Friendly_Attack=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Stop_Friendly_Attack,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Stop_Friendly_Attack,Condition(function Trig_Stop_Friendly_Attack_Conditions))
+    call TriggerAddAction(gg_trg_Stop_Friendly_Attack,function Trig_Stop_Friendly_Attack_Actions)
 endfunction
 
 

@@ -10,25 +10,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Seekers takes nothing returns nothing
 endfunction
-
 function RegisterR11_Seekers_TrackEngaged takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Seekers_TrackEngaged=CreateTrigger()
-
-call DisableTrigger(gg_trg_Seekers_TrackEngaged)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Seekers_TrackEngaged,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Seekers_TrackEngaged,Condition(function Trig_Seekers_TrackEngaged_Conditions))
-
-call TriggerAddAction(gg_trg_Seekers_TrackEngaged,function Trig_Seekers_TrackEngaged_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Seekers_TrackEngaged=CreateTrigger()
+    call DisableTrigger(gg_trg_Seekers_TrackEngaged)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Seekers_TrackEngaged,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Seekers_TrackEngaged,Condition(function Trig_Seekers_TrackEngaged_Conditions))
+    call TriggerAddAction(gg_trg_Seekers_TrackEngaged,function Trig_Seekers_TrackEngaged_Actions)
 endfunction
 
 

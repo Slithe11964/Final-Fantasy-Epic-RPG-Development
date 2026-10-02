@@ -878,88 +878,42 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cine takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cine_StoneBreaks takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cine_StoneBreaks=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cine_StoneBreaks)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Cine_StoneBreaks,450.,gg_unit_Hpb1_0013)
-
-call TriggerAddCondition(gg_trg_Cine_StoneBreaks,Condition(function Trig_Cine_StoneBreaks_Conditions))
-
-call TriggerAddAction(gg_trg_Cine_StoneBreaks,function Trig_Cine_StoneBreaks_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cine_StoneBreaks=CreateTrigger()
+    call DisableTrigger(gg_trg_Cine_StoneBreaks)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Cine_StoneBreaks,450.,gg_unit_Hpb1_0013)
+    call TriggerAddCondition(gg_trg_Cine_StoneBreaks,Condition(function Trig_Cine_StoneBreaks_Conditions))
+    call TriggerAddAction(gg_trg_Cine_StoneBreaks,function Trig_Cine_StoneBreaks_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cine_ScryingVision takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cine_ScryingVision=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cine_ScryingVision)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Cine_ScryingVision,udg_StoryEventTimer)
-
-call TriggerAddAction(gg_trg_Cine_ScryingVision,function Trig_Cine_ScryingVision_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cine_ScryingVision=CreateTrigger()
+    call DisableTrigger(gg_trg_Cine_ScryingVision)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Cine_ScryingVision,udg_StoryEventTimer)
+    call TriggerAddAction(gg_trg_Cine_ScryingVision,function Trig_Cine_ScryingVision_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cine_Belias_Gafgarion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cine_Belias_Gafgarion=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cine_Belias_Gafgarion)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Cine_Belias_Gafgarion,gg_rct_409)
-
-call TriggerAddCondition(gg_trg_Cine_Belias_Gafgarion,Condition(function Trig_Cine_Belias_Gafgarion_Conditions))
-
-call TriggerAddAction(gg_trg_Cine_Belias_Gafgarion,function Trig_Cine_Belias_Gafgarion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cine_Belias_Gafgarion=CreateTrigger()
+    call DisableTrigger(gg_trg_Cine_Belias_Gafgarion)
+    call TriggerRegisterEnterRectSimple(gg_trg_Cine_Belias_Gafgarion,gg_rct_409)
+    call TriggerAddCondition(gg_trg_Cine_Belias_Gafgarion,Condition(function Trig_Cine_Belias_Gafgarion_Conditions))
+    call TriggerAddAction(gg_trg_Cine_Belias_Gafgarion,function Trig_Cine_Belias_Gafgarion_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cine_StoneBreaks_Alt takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cine_StoneBreaks_Alt=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cine_StoneBreaks_Alt)
-
-call TriggerAddAction(gg_trg_Cine_StoneBreaks_Alt,function Trig_Cine_StoneBreaks_Alt_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cine_StoneBreaks_Alt=CreateTrigger()
+    call DisableTrigger(gg_trg_Cine_StoneBreaks_Alt)
+    call TriggerAddAction(gg_trg_Cine_StoneBreaks_Alt,function Trig_Cine_StoneBreaks_Alt_Actions)
 endfunction
 
 

@@ -18,35 +18,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MagDef takes nothing returns nothing
 endfunction
-
 function RegisterR11_MagDef_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagDef_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(0),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(1),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(2),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(3),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(4),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(5),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(6),"-magdef",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(7),"-magdef",true)
-
-call TriggerAddAction(gg_trg_MagDef_Command,function Trig_MagDef_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagDef_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(0),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(1),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(2),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(3),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(4),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(5),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(6),"-magdef",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_MagDef_Command,Player(7),"-magdef",true)
+    call TriggerAddAction(gg_trg_MagDef_Command,function Trig_MagDef_Command_Actions)
 endfunction
 
 

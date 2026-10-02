@@ -21,35 +21,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Unstuck takes nothing returns nothing
 endfunction
-
 function RegisterR11_Unstuck_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Unstuck_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(0),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(1),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(2),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(3),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(4),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(5),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(6),"-unstuck",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(7),"-unstuck",true)
-
-call TriggerAddAction(gg_trg_Unstuck_Command,function Trig_Unstuck_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Unstuck_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(0),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(1),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(2),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(3),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(4),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(5),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(6),"-unstuck",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(7),"-unstuck",true)
+    call TriggerAddAction(gg_trg_Unstuck_Command,function Trig_Unstuck_Command_Actions)
 endfunction
 
 

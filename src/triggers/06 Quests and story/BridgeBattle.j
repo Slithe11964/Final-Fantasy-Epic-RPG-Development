@@ -83,85 +83,42 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BridgeBattle takes nothing returns nothing
 endfunction
-
 function RegisterR11_BridgeBattle_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BridgeBattle_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_BridgeBattle_Prepare)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_BridgeBattle_Prepare,15.)
-
-call TriggerAddCondition(gg_trg_BridgeBattle_Prepare,Condition(function Trig_BridgeBattle_Prepare_Conditions))
-
-call TriggerAddAction(gg_trg_BridgeBattle_Prepare,function Trig_BridgeBattle_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BridgeBattle_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_BridgeBattle_Prepare)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_BridgeBattle_Prepare,15.)
+    call TriggerAddCondition(gg_trg_BridgeBattle_Prepare,Condition(function Trig_BridgeBattle_Prepare_Conditions))
+    call TriggerAddAction(gg_trg_BridgeBattle_Prepare,function Trig_BridgeBattle_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BridgeBattle_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BridgeBattle_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_BridgeBattle_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_BridgeBattle_Start,Condition(function Trig_BridgeBattle_Start_Conditions))
-
-call TriggerAddAction(gg_trg_BridgeBattle_Start,function Trig_BridgeBattle_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BridgeBattle_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_BridgeBattle_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_BridgeBattle_Start,Condition(function Trig_BridgeBattle_Start_Conditions))
+    call TriggerAddAction(gg_trg_BridgeBattle_Start,function Trig_BridgeBattle_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BridgeBattle_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BridgeBattle_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_BridgeBattle_Complete)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_BridgeBattle_Complete,450.,gg_unit_n02Y_0052)
-
-call TriggerAddCondition(gg_trg_BridgeBattle_Complete,Condition(function Trig_BridgeBattle_Complete_Conditions))
-
-call TriggerAddAction(gg_trg_BridgeBattle_Complete,function Trig_BridgeBattle_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BridgeBattle_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_BridgeBattle_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_BridgeBattle_Complete,450.,gg_unit_n02Y_0052)
+    call TriggerAddCondition(gg_trg_BridgeBattle_Complete,Condition(function Trig_BridgeBattle_Complete_Conditions))
+    call TriggerAddAction(gg_trg_BridgeBattle_Complete,function Trig_BridgeBattle_Complete_Actions)
 endfunction
 
 

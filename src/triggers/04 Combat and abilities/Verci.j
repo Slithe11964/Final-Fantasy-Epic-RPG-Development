@@ -165,61 +165,30 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Verci takes nothing returns nothing
 endfunction
-
 function RegisterR11_Verci_Awaken takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Verci_Awaken=CreateTrigger()
-
-call DisableTrigger(gg_trg_Verci_Awaken)
-
-call TriggerAddAction(gg_trg_Verci_Awaken,function Trig_Verci_Awaken_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Verci_Awaken=CreateTrigger()
+    call DisableTrigger(gg_trg_Verci_Awaken)
+    call TriggerAddAction(gg_trg_Verci_Awaken,function Trig_Verci_Awaken_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Verci_Phases takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Verci_Phases=CreateTrigger()
-
-call DisableTrigger(gg_trg_Verci_Phases)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Verci_Phases,1.)
-
-call TriggerAddCondition(gg_trg_Verci_Phases,Condition(function Trig_Verci_Phases_Conditions))
-
-call TriggerAddAction(gg_trg_Verci_Phases,function Trig_Verci_Phases_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Verci_Phases=CreateTrigger()
+    call DisableTrigger(gg_trg_Verci_Phases)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Verci_Phases,1.)
+    call TriggerAddCondition(gg_trg_Verci_Phases,Condition(function Trig_Verci_Phases_Conditions))
+    call TriggerAddAction(gg_trg_Verci_Phases,function Trig_Verci_Phases_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Verci_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Verci_Death=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Verci_Death,function Trig_Verci_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Verci_Death=CreateTrigger()
+    call TriggerAddAction(gg_trg_Verci_Death,function Trig_Verci_Death_Actions)
 endfunction
 
 

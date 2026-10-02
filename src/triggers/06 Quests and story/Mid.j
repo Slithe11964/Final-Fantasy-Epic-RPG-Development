@@ -173,123 +173,58 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mid takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mid_Cage_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mid_Cage_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mid_Cage_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Cage_Ping,15.)
-
-call TriggerAddAction(gg_trg_Mid_Cage_Ping,function Trig_Mid_Cage_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mid_Cage_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Mid_Cage_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Cage_Ping,15.)
+    call TriggerAddAction(gg_trg_Mid_Cage_Ping,function Trig_Mid_Cage_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mid_Freed takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mid_Freed=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mid_Freed)
-
-call TriggerRegisterDeathEvent(gg_trg_Mid_Freed,gg_dest_LOcg_0010)
-
-call TriggerAddAction(gg_trg_Mid_Freed,function Trig_Mid_Freed_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mid_Freed=CreateTrigger()
+    call DisableTrigger(gg_trg_Mid_Freed)
+    call TriggerRegisterDeathEvent(gg_trg_Mid_Freed,gg_dest_LOcg_0010)
+    call TriggerAddAction(gg_trg_Mid_Freed,function Trig_Mid_Freed_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mid_Letter_Give takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mid_Letter_Give=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mid_Letter_Give)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Mid_Letter_Give,Condition(function Trig_Mid_Letter_Give_Conditions))
-
-call TriggerAddAction(gg_trg_Mid_Letter_Give,function Trig_Mid_Letter_Give_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mid_Letter_Give=CreateTrigger()
+    call DisableTrigger(gg_trg_Mid_Letter_Give)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(7),true)
+    call TriggerAddCondition(gg_trg_Mid_Letter_Give,Condition(function Trig_Mid_Letter_Give_Conditions))
+    call TriggerAddAction(gg_trg_Mid_Letter_Give,function Trig_Mid_Letter_Give_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mid_Letter_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mid_Letter_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mid_Letter_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Letter_Ping,15.)
-
-call TriggerAddCondition(gg_trg_Mid_Letter_Ping,Condition(function Trig_Mid_Letter_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_Mid_Letter_Ping,function Trig_Mid_Letter_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mid_Letter_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Mid_Letter_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Letter_Ping,15.)
+    call TriggerAddCondition(gg_trg_Mid_Letter_Ping,Condition(function Trig_Mid_Letter_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Mid_Letter_Ping,function Trig_Mid_Letter_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mid_Crossbow_Talk_Enable takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mid_Crossbow_Talk_Enable=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mid_Crossbow_Talk_Enable)
-
-call TriggerAddAction(gg_trg_Mid_Crossbow_Talk_Enable,function Trig_Mid_Crossbow_Talk_Enable_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mid_Crossbow_Talk_Enable=CreateTrigger()
+    call DisableTrigger(gg_trg_Mid_Crossbow_Talk_Enable)
+    call TriggerAddAction(gg_trg_Mid_Crossbow_Talk_Enable,function Trig_Mid_Crossbow_Talk_Enable_Actions)
 endfunction
 
 

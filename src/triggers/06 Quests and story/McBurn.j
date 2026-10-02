@@ -162,128 +162,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_McBurn takes nothing returns nothing
 endfunction
-
 function RegisterR11_McBurn_Arena_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_Arena_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_McBurn_Arena_Hide,function Trig_McBurn_Arena_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_Arena_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_McBurn_Arena_Hide,function Trig_McBurn_Arena_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_McBurn_Arena_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_Arena_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_McBurn_Arena_Appear)
-
-call TriggerAddAction(gg_trg_McBurn_Arena_Appear,function Trig_McBurn_Arena_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_Arena_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_McBurn_Arena_Appear)
+    call TriggerAddAction(gg_trg_McBurn_Arena_Appear,function Trig_McBurn_Arena_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_McBurn_Heat_Color takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_Heat_Color=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_McBurn_Heat_Color,udg_PostReviveTimer)
-
-call TriggerAddAction(gg_trg_McBurn_Heat_Color,function Trig_McBurn_Heat_Color_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_Heat_Color=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_McBurn_Heat_Color,udg_PostReviveTimer)
+    call TriggerAddAction(gg_trg_McBurn_Heat_Color,function Trig_McBurn_Heat_Color_Actions)
 endfunction
-
-
-
-
 function RegisterR11_McBurn_TrueForm_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_TrueForm_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_McBurn_TrueForm_Reveal)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_McBurn_TrueForm_Reveal,800.,gg_unit_U00Q_0023)
-
-call TriggerAddCondition(gg_trg_McBurn_TrueForm_Reveal,Condition(function Trig_McBurn_TrueForm_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_McBurn_TrueForm_Reveal,function Trig_McBurn_TrueForm_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_TrueForm_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_McBurn_TrueForm_Reveal)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_McBurn_TrueForm_Reveal,800.,gg_unit_U00Q_0023)
+    call TriggerAddCondition(gg_trg_McBurn_TrueForm_Reveal,Condition(function Trig_McBurn_TrueForm_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_McBurn_TrueForm_Reveal,function Trig_McBurn_TrueForm_Reveal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_McBurn_Arena_Return takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_Arena_Return=CreateTrigger()
-
-call DisableTrigger(gg_trg_McBurn_Arena_Return)
-
-call TriggerRegisterEnterRectSimple(gg_trg_McBurn_Arena_Return,gg_rct_575)
-
-call TriggerRegisterEnterRectSimple(gg_trg_McBurn_Arena_Return,gg_rct_576)
-
-call TriggerAddCondition(gg_trg_McBurn_Arena_Return,Condition(function Trig_McBurn_Arena_Return_Conditions))
-
-call TriggerAddAction(gg_trg_McBurn_Arena_Return,function Trig_McBurn_Arena_Return_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_Arena_Return=CreateTrigger()
+    call DisableTrigger(gg_trg_McBurn_Arena_Return)
+    call TriggerRegisterEnterRectSimple(gg_trg_McBurn_Arena_Return,gg_rct_575)
+    call TriggerRegisterEnterRectSimple(gg_trg_McBurn_Arena_Return,gg_rct_576)
+    call TriggerAddCondition(gg_trg_McBurn_Arena_Return,Condition(function Trig_McBurn_Arena_Return_Conditions))
+    call TriggerAddAction(gg_trg_McBurn_Arena_Return,function Trig_McBurn_Arena_Return_Actions)
 endfunction
-
-
-
-
 function RegisterR11_McBurn_Volcano takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_McBurn_Volcano=CreateTrigger()
-
-call DisableTrigger(gg_trg_McBurn_Volcano)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_McBurn_Volcano,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_McBurn_Volcano,Condition(function Trig_McBurn_Volcano_Conditions))
-
-call TriggerAddAction(gg_trg_McBurn_Volcano,function Trig_McBurn_Volcano_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_McBurn_Volcano=CreateTrigger()
+    call DisableTrigger(gg_trg_McBurn_Volcano)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_McBurn_Volcano,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_McBurn_Volcano,Condition(function Trig_McBurn_Volcano_Conditions))
+    call TriggerAddAction(gg_trg_McBurn_Volcano,function Trig_McBurn_Volcano_Actions)
 endfunction
 
 

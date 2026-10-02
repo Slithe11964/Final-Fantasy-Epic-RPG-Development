@@ -32,44 +32,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zone6 takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zone6_Leash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone6_Leash=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone6_Leash,gg_rct_365)
-
-call TriggerAddCondition(gg_trg_Zone6_Leash,Condition(function Trig_Zone6_Leash_Conditions))
-
-call TriggerAddAction(gg_trg_Zone6_Leash,function Trig_Zone6_Leash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone6_Leash=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone6_Leash,gg_rct_365)
+    call TriggerAddCondition(gg_trg_Zone6_Leash,Condition(function Trig_Zone6_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Zone6_Leash,function Trig_Zone6_Leash_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zone6_Leash_West takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone6_Leash_West=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone6_Leash_West,gg_rct_043)
-
-call TriggerAddCondition(gg_trg_Zone6_Leash_West,Condition(function Trig_Zone6_Leash_West_Conditions))
-
-call TriggerAddAction(gg_trg_Zone6_Leash_West,function Trig_Zone6_Leash_West_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone6_Leash_West=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone6_Leash_West,gg_rct_043)
+    call TriggerAddCondition(gg_trg_Zone6_Leash_West,Condition(function Trig_Zone6_Leash_West_Conditions))
+    call TriggerAddAction(gg_trg_Zone6_Leash_West,function Trig_Zone6_Leash_West_Actions)
 endfunction
 
 

@@ -50,44 +50,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_LadyCurse takes nothing returns nothing
 endfunction
-
 function RegisterR11_LadyCurse_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_LadyCurse_ShowMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_LadyCurse_ShowMarker)
-
-call TriggerAddAction(gg_trg_LadyCurse_ShowMarker,function Trig_LadyCurse_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_LadyCurse_ShowMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_LadyCurse_ShowMarker)
+    call TriggerAddAction(gg_trg_LadyCurse_ShowMarker,function Trig_LadyCurse_ShowMarker_Actions)
 endfunction
-
-
-
-
 function RegisterR11_LadyCurse_ReturnBelongings takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_LadyCurse_ReturnBelongings=CreateTrigger()
-
-call DisableTrigger(gg_trg_LadyCurse_ReturnBelongings)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_LadyCurse_ReturnBelongings,450.,gg_unit_h01P_0017)
-
-call TriggerAddCondition(gg_trg_LadyCurse_ReturnBelongings,Condition(function Trig_LadyCurse_ReturnBelongings_Conditions))
-
-call TriggerAddAction(gg_trg_LadyCurse_ReturnBelongings,function Trig_LadyCurse_ReturnBelongings_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_LadyCurse_ReturnBelongings=CreateTrigger()
+    call DisableTrigger(gg_trg_LadyCurse_ReturnBelongings)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_LadyCurse_ReturnBelongings,450.,gg_unit_h01P_0017)
+    call TriggerAddCondition(gg_trg_LadyCurse_ReturnBelongings,Condition(function Trig_LadyCurse_ReturnBelongings_Conditions))
+    call TriggerAddAction(gg_trg_LadyCurse_ReturnBelongings,function Trig_LadyCurse_ReturnBelongings_Actions)
 endfunction
 
 

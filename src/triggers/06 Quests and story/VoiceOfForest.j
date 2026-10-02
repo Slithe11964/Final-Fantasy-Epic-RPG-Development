@@ -209,85 +209,42 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_VoiceOfForest takes nothing returns nothing
 endfunction
-
 function RegisterR11_VoiceOfForest_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_VoiceOfForest_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_VoiceOfForest_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_VoiceOfForest_Start,Condition(function Trig_VoiceOfForest_Start_Conditions))
-
-call TriggerAddAction(gg_trg_VoiceOfForest_Start,function Trig_VoiceOfForest_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_VoiceOfForest_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_VoiceOfForest_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_VoiceOfForest_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_VoiceOfForest_Start,Condition(function Trig_VoiceOfForest_Start_Conditions))
+    call TriggerAddAction(gg_trg_VoiceOfForest_Start,function Trig_VoiceOfForest_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_VoiceOfForest_PingCrystal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_VoiceOfForest_PingCrystal=CreateTrigger()
-
-call DisableTrigger(gg_trg_VoiceOfForest_PingCrystal)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_VoiceOfForest_PingCrystal,15.)
-
-call TriggerAddCondition(gg_trg_VoiceOfForest_PingCrystal,Condition(function Trig_VoiceOfForest_PingCrystal_Conditions))
-
-call TriggerAddAction(gg_trg_VoiceOfForest_PingCrystal,function Trig_VoiceOfForest_PingCrystal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_VoiceOfForest_PingCrystal=CreateTrigger()
+    call DisableTrigger(gg_trg_VoiceOfForest_PingCrystal)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_VoiceOfForest_PingCrystal,15.)
+    call TriggerAddCondition(gg_trg_VoiceOfForest_PingCrystal,Condition(function Trig_VoiceOfForest_PingCrystal_Conditions))
+    call TriggerAddAction(gg_trg_VoiceOfForest_PingCrystal,function Trig_VoiceOfForest_PingCrystal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_VoiceOfForest_SummonChaos takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_VoiceOfForest_SummonChaos=CreateTrigger()
-
-call DisableTrigger(gg_trg_VoiceOfForest_SummonChaos)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_VoiceOfForest_SummonChaos,EVENT_PLAYER_UNIT_USE_ITEM)
-
-call TriggerAddCondition(gg_trg_VoiceOfForest_SummonChaos,Condition(function Trig_VoiceOfForest_SummonChaos_Conditions))
-
-call TriggerAddAction(gg_trg_VoiceOfForest_SummonChaos,function Trig_VoiceOfForest_SummonChaos_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_VoiceOfForest_SummonChaos=CreateTrigger()
+    call DisableTrigger(gg_trg_VoiceOfForest_SummonChaos)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_VoiceOfForest_SummonChaos,EVENT_PLAYER_UNIT_USE_ITEM)
+    call TriggerAddCondition(gg_trg_VoiceOfForest_SummonChaos,Condition(function Trig_VoiceOfForest_SummonChaos_Conditions))
+    call TriggerAddAction(gg_trg_VoiceOfForest_SummonChaos,function Trig_VoiceOfForest_SummonChaos_Actions)
 endfunction
 
 

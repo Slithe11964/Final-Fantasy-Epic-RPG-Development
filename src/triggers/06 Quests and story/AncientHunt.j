@@ -131,85 +131,42 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AncientHunt takes nothing returns nothing
 endfunction
-
 function RegisterR11_AncientHunt_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AncientHunt_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_AncientHunt_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_AncientHunt_Start,Condition(function Trig_AncientHunt_Start_Conditions))
-
-call TriggerAddAction(gg_trg_AncientHunt_Start,function Trig_AncientHunt_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AncientHunt_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_AncientHunt_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_AncientHunt_Start,Condition(function Trig_AncientHunt_Start_Conditions))
+    call TriggerAddAction(gg_trg_AncientHunt_Start,function Trig_AncientHunt_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_AncientHunt_Count takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AncientHunt_Count=CreateTrigger()
-
-call DisableTrigger(gg_trg_AncientHunt_Count)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_AncientHunt_Count,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_AncientHunt_Count,Condition(function Trig_AncientHunt_Count_Conditions))
-
-call TriggerAddAction(gg_trg_AncientHunt_Count,function Trig_AncientHunt_Count_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AncientHunt_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_AncientHunt_Count)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_AncientHunt_Count,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_AncientHunt_Count,Condition(function Trig_AncientHunt_Count_Conditions))
+    call TriggerAddAction(gg_trg_AncientHunt_Count,function Trig_AncientHunt_Count_Actions)
 endfunction
-
-
-
-
 function RegisterR11_AncientHunt_Reward takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AncientHunt_Reward=CreateTrigger()
-
-call DisableTrigger(gg_trg_AncientHunt_Reward)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_AncientHunt_Reward,450.,gg_unit_e012_0227)
-
-call TriggerAddCondition(gg_trg_AncientHunt_Reward,Condition(function Trig_AncientHunt_Reward_Conditions))
-
-call TriggerAddAction(gg_trg_AncientHunt_Reward,function Trig_AncientHunt_Reward_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AncientHunt_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_AncientHunt_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_AncientHunt_Reward,450.,gg_unit_e012_0227)
+    call TriggerAddCondition(gg_trg_AncientHunt_Reward,Condition(function Trig_AncientHunt_Reward_Conditions))
+    call TriggerAddAction(gg_trg_AncientHunt_Reward,function Trig_AncientHunt_Reward_Actions)
 endfunction
 
 

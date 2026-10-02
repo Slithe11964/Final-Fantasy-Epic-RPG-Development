@@ -49,23 +49,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_TwoHanded takes nothing returns nothing
 endfunction
-
 function RegisterR11_TwoHanded_Check takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_TwoHanded_Check=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_TwoHanded_Check,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_TwoHanded_Check,Condition(function Trig_TwoHanded_Check_Conditions))
-
-call TriggerAddAction(gg_trg_TwoHanded_Check,function Trig_TwoHanded_Check_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_TwoHanded_Check=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_TwoHanded_Check,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_TwoHanded_Check,Condition(function Trig_TwoHanded_Check_Conditions))
+    call TriggerAddAction(gg_trg_TwoHanded_Check,function Trig_TwoHanded_Check_Actions)
 endfunction
 
 

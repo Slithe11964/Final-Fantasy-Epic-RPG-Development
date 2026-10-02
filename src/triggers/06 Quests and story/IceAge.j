@@ -347,44 +347,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_IceAge takes nothing returns nothing
 endfunction
-
 function RegisterR11_IceAge_FreezeTimeout takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_IceAge_FreezeTimeout=CreateTrigger()
-
-call DisableTrigger(gg_trg_IceAge_FreezeTimeout)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_IceAge_FreezeTimeout,udg_WorldFreezeTimer)
-
-call TriggerAddAction(gg_trg_IceAge_FreezeTimeout,function Trig_IceAge_FreezeTimeout_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_IceAge_FreezeTimeout=CreateTrigger()
+    call DisableTrigger(gg_trg_IceAge_FreezeTimeout)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_IceAge_FreezeTimeout,udg_WorldFreezeTimer)
+    call TriggerAddAction(gg_trg_IceAge_FreezeTimeout,function Trig_IceAge_FreezeTimeout_Actions)
 endfunction
-
-
-
-
 function RegisterR11_IceAge_Victory takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_IceAge_Victory=CreateTrigger()
-
-call DisableTrigger(gg_trg_IceAge_Victory)
-
-call TriggerAddCondition(gg_trg_IceAge_Victory,Condition(function Trig_IceAge_Victory_Conditions))
-
-call TriggerAddAction(gg_trg_IceAge_Victory,function Trig_IceAge_Victory_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_IceAge_Victory=CreateTrigger()
+    call DisableTrigger(gg_trg_IceAge_Victory)
+    call TriggerAddCondition(gg_trg_IceAge_Victory,Condition(function Trig_IceAge_Victory_Conditions))
+    call TriggerAddAction(gg_trg_IceAge_Victory,function Trig_IceAge_Victory_Actions)
 endfunction
 
 

@@ -847,42 +847,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Job takes nothing returns nothing
 endfunction
-
 function RegisterR11_Job_Change takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Job_Change=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Job_Change,EVENT_PLAYER_UNIT_SELL)
-
-call TriggerAddCondition(gg_trg_Job_Change,Condition(function Trig_Job_Change_Conditions))
-
-call TriggerAddAction(gg_trg_Job_Change,function Trig_Job_Change_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Job_Change=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Job_Change,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Job_Change,Condition(function Trig_Job_Change_Conditions))
+    call TriggerAddAction(gg_trg_Job_Change,function Trig_Job_Change_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Job_XP_Handicap takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Job_XP_Handicap=CreateTrigger()
-
-call DisableTrigger(gg_trg_Job_XP_Handicap)
-
-call TriggerAddAction(gg_trg_Job_XP_Handicap,function Trig_Job_XP_Handicap_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Job_XP_Handicap=CreateTrigger()
+    call DisableTrigger(gg_trg_Job_XP_Handicap)
+    call TriggerAddAction(gg_trg_Job_XP_Handicap,function Trig_Job_XP_Handicap_Actions)
 endfunction
 
 

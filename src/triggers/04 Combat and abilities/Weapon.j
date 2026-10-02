@@ -25,23 +25,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Weapon takes nothing returns nothing
 endfunction
-
 function RegisterR11_Weapon_Research takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Weapon_Research=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Weapon_Research,EVENT_PLAYER_UNIT_RESEARCH_FINISH)
-
-call TriggerAddCondition(gg_trg_Weapon_Research,Condition(function Trig_Weapon_Research_Conditions))
-
-call TriggerAddAction(gg_trg_Weapon_Research,function Trig_Weapon_Research_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Weapon_Research=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Weapon_Research,EVENT_PLAYER_UNIT_RESEARCH_FINISH)
+    call TriggerAddCondition(gg_trg_Weapon_Research,Condition(function Trig_Weapon_Research_Conditions))
+    call TriggerAddAction(gg_trg_Weapon_Research,function Trig_Weapon_Research_Actions)
 endfunction
 
 

@@ -277,23 +277,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Freelancer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Freelancer_Stats takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Freelancer_Stats=CreateTrigger()
-
-call DisableTrigger(gg_trg_Freelancer_Stats)
-
-call TriggerAddCondition(gg_trg_Freelancer_Stats,Condition(function Trig_Freelancer_Stats_Conditions))
-
-call TriggerAddAction(gg_trg_Freelancer_Stats,function Trig_Freelancer_Stats_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Freelancer_Stats=CreateTrigger()
+    call DisableTrigger(gg_trg_Freelancer_Stats)
+    call TriggerAddCondition(gg_trg_Freelancer_Stats,Condition(function Trig_Freelancer_Stats_Conditions))
+    call TriggerAddAction(gg_trg_Freelancer_Stats,function Trig_Freelancer_Stats_Actions)
 endfunction
 
 

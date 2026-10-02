@@ -18,35 +18,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Teleporters takes nothing returns nothing
 endfunction
-
 function RegisterR11_Teleporters_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Teleporters_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(0),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(1),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(2),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(3),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(4),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(5),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(6),"-teleporters",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(7),"-teleporters",true)
-
-call TriggerAddAction(gg_trg_Teleporters_Command,function Trig_Teleporters_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Teleporters_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(0),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(1),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(2),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(3),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(4),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(5),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(6),"-teleporters",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(7),"-teleporters",true)
+    call TriggerAddAction(gg_trg_Teleporters_Command,function Trig_Teleporters_Command_Actions)
 endfunction
 
 

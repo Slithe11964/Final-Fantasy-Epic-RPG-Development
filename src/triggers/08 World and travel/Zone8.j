@@ -45,23 +45,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zone8 takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zone8_Heal_Assist takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone8_Heal_Assist=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Zone8_Heal_Assist,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Zone8_Heal_Assist,Condition(function Trig_Zone8_Heal_Assist_Conditions))
-
-call TriggerAddAction(gg_trg_Zone8_Heal_Assist,function Trig_Zone8_Heal_Assist_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone8_Heal_Assist=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Zone8_Heal_Assist,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Zone8_Heal_Assist,Condition(function Trig_Zone8_Heal_Assist_Conditions))
+    call TriggerAddAction(gg_trg_Zone8_Heal_Assist,function Trig_Zone8_Heal_Assist_Actions)
 endfunction
 
 

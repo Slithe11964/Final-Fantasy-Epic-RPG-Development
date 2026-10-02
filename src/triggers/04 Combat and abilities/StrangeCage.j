@@ -27,25 +27,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_StrangeCage takes nothing returns nothing
 endfunction
-
 function RegisterR11_StrangeCage_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_StrangeCage_Unlock=CreateTrigger()
-
-call DisableTrigger(gg_trg_StrangeCage_Unlock)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_StrangeCage_Unlock,200.,gg_unit_nwc1_0187)
-
-call TriggerAddCondition(gg_trg_StrangeCage_Unlock,Condition(function Trig_StrangeCage_Unlock_Conditions))
-
-call TriggerAddAction(gg_trg_StrangeCage_Unlock,function Trig_StrangeCage_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_StrangeCage_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_StrangeCage_Unlock)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_StrangeCage_Unlock,200.,gg_unit_nwc1_0187)
+    call TriggerAddCondition(gg_trg_StrangeCage_Unlock,Condition(function Trig_StrangeCage_Unlock_Conditions))
+    call TriggerAddAction(gg_trg_StrangeCage_Unlock,function Trig_StrangeCage_Unlock_Actions)
 endfunction
 
 

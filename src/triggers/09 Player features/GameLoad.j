@@ -46,21 +46,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GameLoad takes nothing returns nothing
 endfunction
-
 function RegisterR11_GameLoad_RestoreTitles takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GameLoad_RestoreTitles=CreateTrigger()
-
-call TriggerRegisterGameLoadedEventBJ(gg_trg_GameLoad_RestoreTitles)
-
-call TriggerAddAction(gg_trg_GameLoad_RestoreTitles,function Trig_GameLoad_RestoreTitles_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GameLoad_RestoreTitles=CreateTrigger()
+    call TriggerRegisterGameLoadedEventBJ(gg_trg_GameLoad_RestoreTitles)
+    call TriggerAddAction(gg_trg_GameLoad_RestoreTitles,function Trig_GameLoad_RestoreTitles_Actions)
 endfunction
 
 

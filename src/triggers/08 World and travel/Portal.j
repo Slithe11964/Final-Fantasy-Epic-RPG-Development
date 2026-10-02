@@ -55,23 +55,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Portal takes nothing returns nothing
 endfunction
-
 function RegisterR11_Portal_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Portal_Reveal=CreateTrigger()
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Portal_Reveal,512.,gg_unit_nwgt_0142)
-
-call TriggerAddCondition(gg_trg_Portal_Reveal,Condition(function Trig_Portal_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Portal_Reveal,function Trig_Portal_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Portal_Reveal=CreateTrigger()
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Portal_Reveal,512.,gg_unit_nwgt_0142)
+    call TriggerAddCondition(gg_trg_Portal_Reveal,Condition(function Trig_Portal_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Portal_Reveal,function Trig_Portal_Reveal_Actions)
 endfunction
 
 

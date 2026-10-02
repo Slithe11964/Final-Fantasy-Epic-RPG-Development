@@ -130,109 +130,54 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Talk takes nothing returns nothing
 endfunction
-
 function RegisterR11_Talk_PortalGuardian takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Talk_PortalGuardian=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Talk_PortalGuardian,Condition(function Trig_Talk_PortalGuardian_Conditions))
-
-call TriggerAddAction(gg_trg_Talk_PortalGuardian,function Trig_Talk_PortalGuardian_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Talk_PortalGuardian=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(7),true)
+    call TriggerAddCondition(gg_trg_Talk_PortalGuardian,Condition(function Trig_Talk_PortalGuardian_Conditions))
+    call TriggerAddAction(gg_trg_Talk_PortalGuardian,function Trig_Talk_PortalGuardian_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Talk_ForestGuardian takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Talk_ForestGuardian=CreateTrigger()
-
-call DisableTrigger(gg_trg_Talk_ForestGuardian)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Talk_ForestGuardian,Condition(function Trig_Talk_ForestGuardian_Conditions))
-
-call TriggerAddAction(gg_trg_Talk_ForestGuardian,function Trig_Talk_ForestGuardian_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Talk_ForestGuardian=CreateTrigger()
+    call DisableTrigger(gg_trg_Talk_ForestGuardian)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(7),true)
+    call TriggerAddCondition(gg_trg_Talk_ForestGuardian,Condition(function Trig_Talk_ForestGuardian_Conditions))
+    call TriggerAddAction(gg_trg_Talk_ForestGuardian,function Trig_Talk_ForestGuardian_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Talk_Lothlorien_Greet takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Talk_Lothlorien_Greet=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Talk_Lothlorien_Greet,Condition(function Trig_Talk_Lothlorien_Greet_Conditions))
-
-call TriggerAddAction(gg_trg_Talk_Lothlorien_Greet,function Trig_Talk_Lothlorien_Greet_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Talk_Lothlorien_Greet=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(7),true)
+    call TriggerAddCondition(gg_trg_Talk_Lothlorien_Greet,Condition(function Trig_Talk_Lothlorien_Greet_Conditions))
+    call TriggerAddAction(gg_trg_Talk_Lothlorien_Greet,function Trig_Talk_Lothlorien_Greet_Actions)
 endfunction
 
 

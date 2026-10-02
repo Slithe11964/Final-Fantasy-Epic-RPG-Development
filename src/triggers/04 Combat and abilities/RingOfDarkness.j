@@ -38,21 +38,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_RingOfDarkness takes nothing returns nothing
 endfunction
-
 function RegisterR11_RingOfDarkness_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_RingOfDarkness_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_RingOfDarkness_Init,90.)
-
-call TriggerAddAction(gg_trg_RingOfDarkness_Init,function Trig_RingOfDarkness_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_RingOfDarkness_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_RingOfDarkness_Init,90.)
+    call TriggerAddAction(gg_trg_RingOfDarkness_Init,function Trig_RingOfDarkness_Init_Actions)
 endfunction
 
 

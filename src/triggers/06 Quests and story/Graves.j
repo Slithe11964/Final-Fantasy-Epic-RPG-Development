@@ -12,21 +12,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Graves takes nothing returns nothing
 endfunction
-
 function RegisterR11_Graves_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Graves_Reveal=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Graves_Reveal,udg_StoryDelayTimer)
-
-call TriggerAddAction(gg_trg_Graves_Reveal,function Trig_Graves_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Graves_Reveal=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Graves_Reveal,udg_StoryDelayTimer)
+    call TriggerAddAction(gg_trg_Graves_Reveal,function Trig_Graves_Reveal_Actions)
 endfunction
 
 

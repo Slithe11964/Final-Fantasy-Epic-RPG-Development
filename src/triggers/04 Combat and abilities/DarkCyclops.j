@@ -30,25 +30,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkCyclops takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkCyclops_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkCyclops_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkCyclops_Appear)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DarkCyclops_Appear,400.,gg_unit_U00B_0042)
-
-call TriggerAddCondition(gg_trg_DarkCyclops_Appear,Condition(function Trig_DarkCyclops_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkCyclops_Appear,function Trig_DarkCyclops_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkCyclops_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkCyclops_Appear)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DarkCyclops_Appear,400.,gg_unit_U00B_0042)
+    call TriggerAddCondition(gg_trg_DarkCyclops_Appear,Condition(function Trig_DarkCyclops_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkCyclops_Appear,function Trig_DarkCyclops_Appear_Actions)
 endfunction
 
 

@@ -85,21 +85,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Counter takes nothing returns nothing
 endfunction
-
 function RegisterR11_Counter_Attack_Strike takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Counter_Attack_Strike=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Counter_Attack_Strike,udg_DodgeFaceTimer[0])
-
-call TriggerAddAction(gg_trg_Counter_Attack_Strike,function Trig_Counter_Attack_Strike_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Counter_Attack_Strike=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Counter_Attack_Strike,udg_DodgeFaceTimer[0])
+    call TriggerAddAction(gg_trg_Counter_Attack_Strike,function Trig_Counter_Attack_Strike_Actions)
 endfunction
 
 

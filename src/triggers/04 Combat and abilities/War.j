@@ -60,37 +60,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_War takes nothing returns nothing
 endfunction
-
 function RegisterR11_War_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_War_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(0),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(1),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(2),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(3),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(4),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(5),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(6),"-war",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(7),"-war",false)
-
-call TriggerAddCondition(gg_trg_War_Command,Condition(function Trig_War_Command_Conditions))
-
-call TriggerAddAction(gg_trg_War_Command,function Trig_War_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_War_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(0),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(1),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(2),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(3),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(4),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(5),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(6),"-war",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(7),"-war",false)
+    call TriggerAddCondition(gg_trg_War_Command,Condition(function Trig_War_Command_Conditions))
+    call TriggerAddAction(gg_trg_War_Command,function Trig_War_Command_Actions)
 endfunction
 
 

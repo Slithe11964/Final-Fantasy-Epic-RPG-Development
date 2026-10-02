@@ -9,21 +9,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shinra takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shinra_TalkPrepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shinra_TalkPrepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shinra_TalkPrepare)
-
-call TriggerAddAction(gg_trg_Shinra_TalkPrepare,function Trig_Shinra_TalkPrepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shinra_TalkPrepare=CreateTrigger()
+    call DisableTrigger(gg_trg_Shinra_TalkPrepare)
+    call TriggerAddAction(gg_trg_Shinra_TalkPrepare,function Trig_Shinra_TalkPrepare_Actions)
 endfunction
 
 

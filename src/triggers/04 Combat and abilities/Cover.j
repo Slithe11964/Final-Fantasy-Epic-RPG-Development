@@ -30,23 +30,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cover takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cover_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cover_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Cover_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Cover_Cast,Condition(function Trig_Cover_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Cover_Cast,function Trig_Cover_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cover_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Cover_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Cover_Cast,Condition(function Trig_Cover_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Cover_Cast,function Trig_Cover_Cast_Actions)
 endfunction
 
 

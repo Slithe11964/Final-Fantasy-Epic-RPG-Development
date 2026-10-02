@@ -900,312 +900,142 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_KalmSiege3 takes nothing returns nothing
 endfunction
-
 function RegisterR11_KalmSiege3_Call takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Call=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Call)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_Call,udg_SiegeTimer)
-
-call TriggerAddAction(gg_trg_KalmSiege3_Call,function Trig_KalmSiege3_Call_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Call=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Call)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_Call,udg_SiegeTimer)
+    call TriggerAddAction(gg_trg_KalmSiege3_Call,function Trig_KalmSiege3_Call_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_CidTalk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_CidTalk=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_CidTalk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_CidTalk,Condition(function Trig_KalmSiege3_CidTalk_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_CidTalk,function Trig_KalmSiege3_CidTalk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_CidTalk=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_CidTalk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_CidTalk,Player(7),true)
+    call TriggerAddCondition(gg_trg_KalmSiege3_CidTalk,Condition(function Trig_KalmSiege3_CidTalk_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_CidTalk,function Trig_KalmSiege3_CidTalk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_Start,Condition(function Trig_KalmSiege3_Start_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_Start,function Trig_KalmSiege3_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_KalmSiege3_Start,Condition(function Trig_KalmSiege3_Start_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_Start,function Trig_KalmSiege3_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Restart takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Restart=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Restart)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(7),true)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_Restart,Condition(function Trig_KalmSiege3_Restart_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_Restart,function Trig_KalmSiege3_Restart_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Restart=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Restart)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege3_Restart,Player(7),true)
+    call TriggerAddCondition(gg_trg_KalmSiege3_Restart,Condition(function Trig_KalmSiege3_Restart_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_Restart,function Trig_KalmSiege3_Restart_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Begin takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Begin=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Begin)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_Begin,udg_SiegeTimer)
-
-call TriggerAddAction(gg_trg_KalmSiege3_Begin,function Trig_KalmSiege3_Begin_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Begin=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Begin)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_Begin,udg_SiegeTimer)
+    call TriggerAddAction(gg_trg_KalmSiege3_Begin,function Trig_KalmSiege3_Begin_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_DemonArrive takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_DemonArrive=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_DemonArrive)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_DemonArrive,udg_SiegeTimer)
-
-call TriggerAddAction(gg_trg_KalmSiege3_DemonArrive,function Trig_KalmSiege3_DemonArrive_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_DemonArrive=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_DemonArrive)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege3_DemonArrive,udg_SiegeTimer)
+    call TriggerAddAction(gg_trg_KalmSiege3_DemonArrive,function Trig_KalmSiege3_DemonArrive_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_DemonSummon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_DemonSummon=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_DemonSummon)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_KalmSiege3_DemonSummon,4.)
-
-call TriggerAddAction(gg_trg_KalmSiege3_DemonSummon,function Trig_KalmSiege3_DemonSummon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_DemonSummon=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_DemonSummon)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_KalmSiege3_DemonSummon,4.)
+    call TriggerAddAction(gg_trg_KalmSiege3_DemonSummon,function Trig_KalmSiege3_DemonSummon_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_ChiefGuard takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_ChiefGuard=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_ChiefGuard)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_KalmSiege3_ChiefGuard,900.,gg_unit_U00E_0222)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_ChiefGuard,Condition(function Trig_KalmSiege3_ChiefGuard_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_ChiefGuard,function Trig_KalmSiege3_ChiefGuard_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_ChiefGuard=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_ChiefGuard)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_KalmSiege3_ChiefGuard,900.,gg_unit_U00E_0222)
+    call TriggerAddCondition(gg_trg_KalmSiege3_ChiefGuard,Condition(function Trig_KalmSiege3_ChiefGuard_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_ChiefGuard,function Trig_KalmSiege3_ChiefGuard_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_TrackDeaths takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_TrackDeaths=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_TrackDeaths)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_TrackDeaths,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_KalmSiege3_TrackDeaths,EVENT_PLAYER_UNIT_CHANGE_OWNER)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_TrackDeaths,Condition(function Trig_KalmSiege3_TrackDeaths_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_TrackDeaths,function Trig_KalmSiege3_TrackDeaths_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_TrackDeaths=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_TrackDeaths)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_TrackDeaths,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_KalmSiege3_TrackDeaths,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerAddCondition(gg_trg_KalmSiege3_TrackDeaths,Condition(function Trig_KalmSiege3_TrackDeaths_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_TrackDeaths,function Trig_KalmSiege3_TrackDeaths_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Defeat takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Defeat=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Defeat)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_Defeat,Player(9),EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_Defeat,Condition(function Trig_KalmSiege3_Defeat_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_Defeat,function Trig_KalmSiege3_Defeat_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Defeat=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Defeat)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_Defeat,Player(9),EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_KalmSiege3_Defeat,Condition(function Trig_KalmSiege3_Defeat_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_Defeat,function Trig_KalmSiege3_Defeat_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Complete)
-
-call TriggerRegisterUnitEvent(gg_trg_KalmSiege3_Complete,gg_unit_U00E_0222,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_KalmSiege3_Complete,function Trig_KalmSiege3_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Complete)
+    call TriggerRegisterUnitEvent(gg_trg_KalmSiege3_Complete,gg_unit_U00E_0222,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_KalmSiege3_Complete,function Trig_KalmSiege3_Complete_Actions)
 endfunction
-
-
-
-
 function RegisterR11_KalmSiege3_Fail takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_KalmSiege3_Fail=CreateTrigger()
-
-call DisableTrigger(gg_trg_KalmSiege3_Fail)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_Fail,Player(9),EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_KalmSiege3_Fail,Condition(function Trig_KalmSiege3_Fail_Conditions))
-
-call TriggerAddAction(gg_trg_KalmSiege3_Fail,function Trig_KalmSiege3_Fail_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_KalmSiege3_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_KalmSiege3_Fail)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege3_Fail,Player(9),EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_KalmSiege3_Fail,Condition(function Trig_KalmSiege3_Fail_Conditions))
+    call TriggerAddAction(gg_trg_KalmSiege3_Fail,function Trig_KalmSiege3_Fail_Actions)
 endfunction
 
 

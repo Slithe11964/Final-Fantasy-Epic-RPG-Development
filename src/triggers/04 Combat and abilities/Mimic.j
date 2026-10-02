@@ -48,46 +48,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mimic takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mimic_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mimic_Reveal=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Reveal,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Mimic_Reveal,Condition(function Trig_Mimic_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Mimic_Reveal,function Trig_Mimic_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mimic_Reveal=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Reveal,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Mimic_Reveal,Condition(function Trig_Mimic_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Mimic_Reveal,function Trig_Mimic_Reveal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mimic_Death_Loot takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mimic_Death_Loot=CreateTrigger()
-
-call DisableTrigger(gg_trg_Mimic_Death_Loot)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Death_Loot,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Mimic_Death_Loot,Condition(function Trig_Mimic_Death_Loot_Conditions))
-
-call TriggerAddAction(gg_trg_Mimic_Death_Loot,function Trig_Mimic_Death_Loot_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mimic_Death_Loot=CreateTrigger()
+    call DisableTrigger(gg_trg_Mimic_Death_Loot)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Death_Loot,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Mimic_Death_Loot,Condition(function Trig_Mimic_Death_Loot_Conditions))
+    call TriggerAddAction(gg_trg_Mimic_Death_Loot,function Trig_Mimic_Death_Loot_Actions)
 endfunction
 
 

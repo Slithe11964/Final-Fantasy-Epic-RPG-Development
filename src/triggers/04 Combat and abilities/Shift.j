@@ -83,42 +83,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shift takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shift_Elements_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shift_Elements_Start=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Shift_Elements_Start,GetPlayableMapRect())
-
-call TriggerAddCondition(gg_trg_Shift_Elements_Start,Condition(function Trig_Shift_Elements_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Shift_Elements_Start,function Trig_Shift_Elements_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shift_Elements_Start=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Shift_Elements_Start,GetPlayableMapRect())
+    call TriggerAddCondition(gg_trg_Shift_Elements_Start,Condition(function Trig_Shift_Elements_Start_Conditions))
+    call TriggerAddAction(gg_trg_Shift_Elements_Start,function Trig_Shift_Elements_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shift_Elements_Roll takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shift_Elements_Roll=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Shift_Elements_Roll,udg_ShiftElementsTimer)
-
-call TriggerAddAction(gg_trg_Shift_Elements_Roll,function Trig_Shift_Elements_Roll_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shift_Elements_Roll=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Shift_Elements_Roll,udg_ShiftElementsTimer)
+    call TriggerAddAction(gg_trg_Shift_Elements_Roll,function Trig_Shift_Elements_Roll_Actions)
 endfunction
 
 

@@ -26,19 +26,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_InfernalMountain takes nothing returns nothing
 endfunction
-
 function RegisterR11_InfernalMountain_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_InfernalMountain_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_InfernalMountain_Hide,function Trig_InfernalMountain_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_InfernalMountain_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_InfernalMountain_Hide,function Trig_InfernalMountain_Hide_Actions)
 endfunction
 
 

@@ -38,44 +38,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Brothers takes nothing returns nothing
 endfunction
-
 function RegisterR11_Brothers_Alert_Eidolons takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Brothers_Alert_Eidolons=CreateTrigger()
-
-call DisableTrigger(gg_trg_Brothers_Alert_Eidolons)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Eidolons,udg_SharedDelayTimer4)
-
-call TriggerAddAction(gg_trg_Brothers_Alert_Eidolons,function Trig_Brothers_Alert_Eidolons_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Brothers_Alert_Eidolons=CreateTrigger()
+    call DisableTrigger(gg_trg_Brothers_Alert_Eidolons)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Eidolons,udg_SharedDelayTimer4)
+    call TriggerAddAction(gg_trg_Brothers_Alert_Eidolons,function Trig_Brothers_Alert_Eidolons_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Brothers_Alert_Rematch takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Brothers_Alert_Rematch=CreateTrigger()
-
-call DisableTrigger(gg_trg_Brothers_Alert_Rematch)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Rematch,udg_SharedDelayTimer4)
-
-call TriggerAddAction(gg_trg_Brothers_Alert_Rematch,function Trig_Brothers_Alert_Rematch_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Brothers_Alert_Rematch=CreateTrigger()
+    call DisableTrigger(gg_trg_Brothers_Alert_Rematch)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Rematch,udg_SharedDelayTimer4)
+    call TriggerAddAction(gg_trg_Brothers_Alert_Rematch,function Trig_Brothers_Alert_Rematch_Actions)
 endfunction
 
 

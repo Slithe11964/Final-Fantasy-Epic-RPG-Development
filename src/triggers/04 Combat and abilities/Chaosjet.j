@@ -25,23 +25,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Chaosjet takes nothing returns nothing
 endfunction
-
 function RegisterR11_Chaosjet_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chaosjet_Death=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaosjet_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Chaosjet_Death,Condition(function Trig_Chaosjet_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Chaosjet_Death,function Trig_Chaosjet_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chaosjet_Death=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaosjet_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Chaosjet_Death,Condition(function Trig_Chaosjet_Death_Conditions))
+    call TriggerAddAction(gg_trg_Chaosjet_Death,function Trig_Chaosjet_Death_Actions)
 endfunction
 
 

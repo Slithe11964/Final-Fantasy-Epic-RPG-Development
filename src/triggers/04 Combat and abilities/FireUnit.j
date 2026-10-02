@@ -26,44 +26,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_FireUnit takes nothing returns nothing
 endfunction
-
 function RegisterR11_FireUnit_Enter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FireUnit_Enter=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_FireUnit_Enter,GetPlayableMapRect())
-
-call TriggerAddCondition(gg_trg_FireUnit_Enter,Condition(function Trig_FireUnit_Enter_Conditions))
-
-call TriggerAddAction(gg_trg_FireUnit_Enter,function Trig_FireUnit_Enter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FireUnit_Enter=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_FireUnit_Enter,GetPlayableMapRect())
+    call TriggerAddCondition(gg_trg_FireUnit_Enter,Condition(function Trig_FireUnit_Enter_Conditions))
+    call TriggerAddAction(gg_trg_FireUnit_Enter,function Trig_FireUnit_Enter_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FireUnit_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FireUnit_Death=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_FireUnit_Death,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_FireUnit_Death,Condition(function Trig_FireUnit_Death_Conditions))
-
-call TriggerAddAction(gg_trg_FireUnit_Death,function Trig_FireUnit_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FireUnit_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_FireUnit_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_FireUnit_Death,Condition(function Trig_FireUnit_Death_Conditions))
+    call TriggerAddAction(gg_trg_FireUnit_Death,function Trig_FireUnit_Death_Actions)
 endfunction
 
 

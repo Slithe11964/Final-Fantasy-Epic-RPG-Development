@@ -18,44 +18,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Thunderbloom takes nothing returns nothing
 endfunction
-
 function RegisterR11_Thunderbloom_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Thunderbloom_Spawn=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Thunderbloom_Spawn,udg_HerbRespawnTimer[1])
-
-call TriggerAddAction(gg_trg_Thunderbloom_Spawn,function Trig_Thunderbloom_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Thunderbloom_Spawn=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Thunderbloom_Spawn,udg_HerbRespawnTimer[1])
+    call TriggerAddAction(gg_trg_Thunderbloom_Spawn,function Trig_Thunderbloom_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Thunderbloom_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Thunderbloom_Pickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_Thunderbloom_Pickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Thunderbloom_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Thunderbloom_Pickup,Condition(function Trig_Thunderbloom_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_Thunderbloom_Pickup,function Trig_Thunderbloom_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Thunderbloom_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_Thunderbloom_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Thunderbloom_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Thunderbloom_Pickup,Condition(function Trig_Thunderbloom_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Thunderbloom_Pickup,function Trig_Thunderbloom_Pickup_Actions)
 endfunction
 
 

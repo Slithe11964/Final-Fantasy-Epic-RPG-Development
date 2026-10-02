@@ -865,57 +865,28 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Spawn takes nothing returns nothing
 endfunction
-
 function RegisterR11_Spawn_Pools_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spawn_Pools_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Spawn_Pools_Init,function Trig_Spawn_Pools_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spawn_Pools_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Spawn_Pools_Init,function Trig_Spawn_Pools_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Spawn_Gafgarion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spawn_Gafgarion=CreateTrigger()
-
-call DisableTrigger(gg_trg_Spawn_Gafgarion)
-
-call TriggerAddAction(gg_trg_Spawn_Gafgarion,function Trig_Spawn_Gafgarion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spawn_Gafgarion=CreateTrigger()
+    call DisableTrigger(gg_trg_Spawn_Gafgarion)
+    call TriggerAddAction(gg_trg_Spawn_Gafgarion,function Trig_Spawn_Gafgarion_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Spawn_KalmDefenders takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spawn_KalmDefenders=CreateTrigger()
-
-call DisableTrigger(gg_trg_Spawn_KalmDefenders)
-
-call TriggerAddAction(gg_trg_Spawn_KalmDefenders,function Trig_Spawn_KalmDefenders_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spawn_KalmDefenders=CreateTrigger()
+    call DisableTrigger(gg_trg_Spawn_KalmDefenders)
+    call TriggerAddAction(gg_trg_Spawn_KalmDefenders,function Trig_Spawn_KalmDefenders_Actions)
 endfunction
 
 

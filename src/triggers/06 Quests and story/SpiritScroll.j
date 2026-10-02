@@ -60,46 +60,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_SpiritScroll takes nothing returns nothing
 endfunction
-
 function RegisterR11_SpiritScroll_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SpiritScroll_Pickup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_SpiritScroll_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_SpiritScroll_Pickup,Condition(function Trig_SpiritScroll_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_SpiritScroll_Pickup,function Trig_SpiritScroll_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SpiritScroll_Pickup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_SpiritScroll_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_SpiritScroll_Pickup,Condition(function Trig_SpiritScroll_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_SpiritScroll_Pickup,function Trig_SpiritScroll_Pickup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_SpiritScroll_Cleanse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SpiritScroll_Cleanse=CreateTrigger()
-
-call DisableTrigger(gg_trg_SpiritScroll_Cleanse)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_SpiritScroll_Cleanse,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_SpiritScroll_Cleanse,Condition(function Trig_SpiritScroll_Cleanse_Conditions))
-
-call TriggerAddAction(gg_trg_SpiritScroll_Cleanse,function Trig_SpiritScroll_Cleanse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SpiritScroll_Cleanse=CreateTrigger()
+    call DisableTrigger(gg_trg_SpiritScroll_Cleanse)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_SpiritScroll_Cleanse,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_SpiritScroll_Cleanse,Condition(function Trig_SpiritScroll_Cleanse_Conditions))
+    call TriggerAddAction(gg_trg_SpiritScroll_Cleanse,function Trig_SpiritScroll_Cleanse_Actions)
 endfunction
 
 

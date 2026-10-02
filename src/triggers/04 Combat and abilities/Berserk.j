@@ -35,23 +35,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Berserk takes nothing returns nothing
 endfunction
-
 function RegisterR11_Berserk_RemoveBuffs takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Berserk_RemoveBuffs=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Berserk_RemoveBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Berserk_RemoveBuffs,Condition(function Trig_Berserk_RemoveBuffs_Conditions))
-
-call TriggerAddAction(gg_trg_Berserk_RemoveBuffs,function Trig_Berserk_RemoveBuffs_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Berserk_RemoveBuffs=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Berserk_RemoveBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Berserk_RemoveBuffs,Condition(function Trig_Berserk_RemoveBuffs_Conditions))
+    call TriggerAddAction(gg_trg_Berserk_RemoveBuffs,function Trig_Berserk_RemoveBuffs_Actions)
 endfunction
 
 

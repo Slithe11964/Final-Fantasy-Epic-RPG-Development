@@ -13,38 +13,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Kiros takes nothing returns nothing
 endfunction
-
 function RegisterR11_Kiros_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kiros_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Kiros_Hide,function Trig_Kiros_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kiros_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_Kiros_Hide,function Trig_Kiros_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Kiros_ShowTalkIcon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Kiros_ShowTalkIcon=CreateTrigger()
-
-call DisableTrigger(gg_trg_Kiros_ShowTalkIcon)
-
-call TriggerAddAction(gg_trg_Kiros_ShowTalkIcon,function Trig_Kiros_ShowTalkIcon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Kiros_ShowTalkIcon=CreateTrigger()
+    call DisableTrigger(gg_trg_Kiros_ShowTalkIcon)
+    call TriggerAddAction(gg_trg_Kiros_ShowTalkIcon,function Trig_Kiros_ShowTalkIcon_Actions)
 endfunction
 
 

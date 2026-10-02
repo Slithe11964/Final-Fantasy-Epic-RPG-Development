@@ -12,23 +12,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Molotov takes nothing returns nothing
 endfunction
-
 function RegisterR11_Molotov_DamageOnAttack takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Molotov_DamageOnAttack=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Molotov_DamageOnAttack,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Molotov_DamageOnAttack,Condition(function Trig_Molotov_DamageOnAttack_Conditions))
-
-call TriggerAddAction(gg_trg_Molotov_DamageOnAttack,function Trig_Molotov_DamageOnAttack_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Molotov_DamageOnAttack=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Molotov_DamageOnAttack,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Molotov_DamageOnAttack,Condition(function Trig_Molotov_DamageOnAttack_Conditions))
+    call TriggerAddAction(gg_trg_Molotov_DamageOnAttack,function Trig_Molotov_DamageOnAttack_Actions)
 endfunction
 
 

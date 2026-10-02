@@ -38,78 +38,37 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Intro takes nothing returns nothing
 endfunction
-
 function RegisterR11_Intro_LockPlayers takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Intro_LockPlayers=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Intro_LockPlayers,.01)
-
-call TriggerAddAction(gg_trg_Intro_LockPlayers,function Trig_Intro_LockPlayers_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Intro_LockPlayers=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Intro_LockPlayers,.01)
+    call TriggerAddAction(gg_trg_Intro_LockPlayers,function Trig_Intro_LockPlayers_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Intro_StartGameModeVote takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Intro_StartGameModeVote=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Intro_StartGameModeVote,10.)
-
-call TriggerAddAction(gg_trg_Intro_StartGameModeVote,function Trig_Intro_StartGameModeVote_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Intro_StartGameModeVote=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Intro_StartGameModeVote,10.)
+    call TriggerAddAction(gg_trg_Intro_StartGameModeVote,function Trig_Intro_StartGameModeVote_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Intro_WelcomeMessages takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Intro_WelcomeMessages=CreateTrigger()
-
-call DisableTrigger(gg_trg_Intro_WelcomeMessages)
-
-call TriggerAddAction(gg_trg_Intro_WelcomeMessages,function Trig_Intro_WelcomeMessages_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Intro_WelcomeMessages=CreateTrigger()
+    call DisableTrigger(gg_trg_Intro_WelcomeMessages)
+    call TriggerAddAction(gg_trg_Intro_WelcomeMessages,function Trig_Intro_WelcomeMessages_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Intro_FadeToBlack takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Intro_FadeToBlack=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Intro_FadeToBlack,.01)
-
-call TriggerAddAction(gg_trg_Intro_FadeToBlack,function Trig_Intro_FadeToBlack_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Intro_FadeToBlack=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Intro_FadeToBlack,.01)
+    call TriggerAddAction(gg_trg_Intro_FadeToBlack,function Trig_Intro_FadeToBlack_Actions)
 endfunction
 
 

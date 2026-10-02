@@ -13,23 +13,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_GreedIsGood takes nothing returns nothing
 endfunction
-
 function RegisterR11_GreedIsGood_DropStone takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_GreedIsGood_DropStone=CreateTrigger()
-
-call DisableTrigger(gg_trg_GreedIsGood_DropStone)
-
-call TriggerRegisterUnitEvent(gg_trg_GreedIsGood_DropStone,gg_unit_nmgv_0115,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_GreedIsGood_DropStone,function Trig_GreedIsGood_DropStone_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_GreedIsGood_DropStone=CreateTrigger()
+    call DisableTrigger(gg_trg_GreedIsGood_DropStone)
+    call TriggerRegisterUnitEvent(gg_trg_GreedIsGood_DropStone,gg_unit_nmgv_0115,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_GreedIsGood_DropStone,function Trig_GreedIsGood_DropStone_Actions)
 endfunction
 
 

@@ -205,126 +205,58 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Necro takes nothing returns nothing
 endfunction
-
 function RegisterR11_Necro_RaiseDead_Reset takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_RaiseDead_Reset=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_RaiseDead_Reset,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Necro_RaiseDead_Reset,Condition(function Trig_Necro_RaiseDead_Reset_Conditions))
-
-call TriggerAddAction(gg_trg_Necro_RaiseDead_Reset,function Trig_Necro_RaiseDead_Reset_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_RaiseDead_Reset=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_RaiseDead_Reset,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Necro_RaiseDead_Reset,Condition(function Trig_Necro_RaiseDead_Reset_Conditions))
+    call TriggerAddAction(gg_trg_Necro_RaiseDead_Reset,function Trig_Necro_RaiseDead_Reset_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Necro_Release takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_Release=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Necro_Release,Condition(function Trig_Necro_Release_Conditions))
-
-call TriggerAddAction(gg_trg_Necro_Release,function Trig_Necro_Release_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_Release=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Necro_Release,Condition(function Trig_Necro_Release_Conditions))
+    call TriggerAddAction(gg_trg_Necro_Release,function Trig_Necro_Release_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Necro_DeathScreech takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_DeathScreech=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_DeathScreech,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Necro_DeathScreech,Condition(function Trig_Necro_DeathScreech_Conditions))
-
-call TriggerAddAction(gg_trg_Necro_DeathScreech,function Trig_Necro_DeathScreech_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_DeathScreech=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_DeathScreech,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Necro_DeathScreech,Condition(function Trig_Necro_DeathScreech_Conditions))
+    call TriggerAddAction(gg_trg_Necro_DeathScreech,function Trig_Necro_DeathScreech_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Necro_Drain_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_Drain_Start=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Necro_Drain_Start,Condition(function Trig_Necro_Drain_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Necro_Drain_Start,function Trig_Necro_Drain_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_Drain_Start=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Necro_Drain_Start,Condition(function Trig_Necro_Drain_Start_Conditions))
+    call TriggerAddAction(gg_trg_Necro_Drain_Start,function Trig_Necro_Drain_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Necro_Drain_End takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_Drain_End=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_End,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
-
-call TriggerAddCondition(gg_trg_Necro_Drain_End,Condition(function Trig_Necro_Drain_End_Conditions))
-
-call TriggerAddAction(gg_trg_Necro_Drain_End,function Trig_Necro_Drain_End_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_Drain_End=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_End,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
+    call TriggerAddCondition(gg_trg_Necro_Drain_End,Condition(function Trig_Necro_Drain_End_Conditions))
+    call TriggerAddAction(gg_trg_Necro_Drain_End,function Trig_Necro_Drain_End_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Necro_Drain_Tick takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Necro_Drain_Tick=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Necro_Drain_Tick,1.)
-
-call TriggerAddAction(gg_trg_Necro_Drain_Tick,function Trig_Necro_Drain_Tick_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Necro_Drain_Tick=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Necro_Drain_Tick,1.)
+    call TriggerAddAction(gg_trg_Necro_Drain_Tick,function Trig_Necro_Drain_Tick_Actions)
 endfunction
 
 

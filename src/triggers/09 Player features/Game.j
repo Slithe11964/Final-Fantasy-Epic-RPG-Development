@@ -44,21 +44,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Game takes nothing returns nothing
 endfunction
-
 function RegisterR11_Game_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Game_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_Game_Start)
-
-call TriggerAddAction(gg_trg_Game_Start,function Trig_Game_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Game_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Game_Start)
+    call TriggerAddAction(gg_trg_Game_Start,function Trig_Game_Start_Actions)
 endfunction
 
 

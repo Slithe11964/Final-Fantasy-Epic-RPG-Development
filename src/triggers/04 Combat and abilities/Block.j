@@ -19,23 +19,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Block takes nothing returns nothing
 endfunction
-
 function RegisterR11_Block_Item_Destroy takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Block_Item_Destroy=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Block_Item_Destroy,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
-
-call TriggerAddCondition(gg_trg_Block_Item_Destroy,Condition(function Trig_Block_Item_Destroy_Conditions))
-
-call TriggerAddAction(gg_trg_Block_Item_Destroy,function Trig_Block_Item_Destroy_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Block_Item_Destroy=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Block_Item_Destroy,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
+    call TriggerAddCondition(gg_trg_Block_Item_Destroy,Condition(function Trig_Block_Item_Destroy_Conditions))
+    call TriggerAddAction(gg_trg_Block_Item_Destroy,function Trig_Block_Item_Destroy_Actions)
 endfunction
 
 

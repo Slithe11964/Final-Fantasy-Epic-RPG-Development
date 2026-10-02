@@ -24,40 +24,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_PhantomDancer takes nothing returns nothing
 endfunction
-
 function RegisterR11_PhantomDancer_Blink takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PhantomDancer_Blink=CreateTrigger()
-
-call DisableTrigger(gg_trg_PhantomDancer_Blink)
-
-call TriggerAddAction(gg_trg_PhantomDancer_Blink,function Trig_PhantomDancer_Blink_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PhantomDancer_Blink=CreateTrigger()
+    call DisableTrigger(gg_trg_PhantomDancer_Blink)
+    call TriggerAddAction(gg_trg_PhantomDancer_Blink,function Trig_PhantomDancer_Blink_Actions)
 endfunction
-
-
-
-
 function RegisterR11_PhantomDancer_Berserk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PhantomDancer_Berserk=CreateTrigger()
-
-call DisableTrigger(gg_trg_PhantomDancer_Berserk)
-
-call TriggerAddAction(gg_trg_PhantomDancer_Berserk,function Trig_PhantomDancer_Berserk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PhantomDancer_Berserk=CreateTrigger()
+    call DisableTrigger(gg_trg_PhantomDancer_Berserk)
+    call TriggerAddAction(gg_trg_PhantomDancer_Berserk,function Trig_PhantomDancer_Berserk_Actions)
 endfunction
 
 

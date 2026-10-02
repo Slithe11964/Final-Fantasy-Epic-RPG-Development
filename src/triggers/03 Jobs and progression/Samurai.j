@@ -169,65 +169,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Samurai takes nothing returns nothing
 endfunction
-
 function RegisterR11_Samurai_Mineuchi takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Samurai_Mineuchi=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Mineuchi,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Samurai_Mineuchi,Condition(function Trig_Samurai_Mineuchi_Conditions))
-
-call TriggerAddAction(gg_trg_Samurai_Mineuchi,function Trig_Samurai_Mineuchi_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Samurai_Mineuchi=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Mineuchi,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Samurai_Mineuchi,Condition(function Trig_Samurai_Mineuchi_Conditions))
+    call TriggerAddAction(gg_trg_Samurai_Mineuchi,function Trig_Samurai_Mineuchi_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Samurai_Renzokuken takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Samurai_Renzokuken=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Renzokuken,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Samurai_Renzokuken,Condition(function Trig_Samurai_Renzokuken_Conditions))
-
-call TriggerAddAction(gg_trg_Samurai_Renzokuken,function Trig_Samurai_Renzokuken_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Samurai_Renzokuken=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Renzokuken,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Samurai_Renzokuken,Condition(function Trig_Samurai_Renzokuken_Conditions))
+    call TriggerAddAction(gg_trg_Samurai_Renzokuken,function Trig_Samurai_Renzokuken_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Samurai_Iainuki takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Samurai_Iainuki=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Iainuki,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Samurai_Iainuki,Condition(function Trig_Samurai_Iainuki_Conditions))
-
-call TriggerAddAction(gg_trg_Samurai_Iainuki,function Trig_Samurai_Iainuki_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Samurai_Iainuki=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Samurai_Iainuki,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Samurai_Iainuki,Condition(function Trig_Samurai_Iainuki_Conditions))
+    call TriggerAddAction(gg_trg_Samurai_Iainuki,function Trig_Samurai_Iainuki_Actions)
 endfunction
 
 

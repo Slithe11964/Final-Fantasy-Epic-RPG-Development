@@ -48,71 +48,35 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Artifact takes nothing returns nothing
 endfunction
-
 function RegisterR11_Artifact_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Artifact_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_Artifact_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Artifact_Ping,15.)
-
-call TriggerAddCondition(gg_trg_Artifact_Ping,Condition(function Trig_Artifact_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_Artifact_Ping,function Trig_Artifact_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Artifact_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Artifact_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Artifact_Ping,15.)
+    call TriggerAddCondition(gg_trg_Artifact_Ping,Condition(function Trig_Artifact_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Artifact_Ping,function Trig_Artifact_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Artifact_PickedUp takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Artifact_PickedUp=CreateTrigger()
-
-call DisableTrigger(gg_trg_Artifact_PickedUp)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_PickedUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Artifact_PickedUp,Condition(function Trig_Artifact_PickedUp_Conditions))
-
-call TriggerAddAction(gg_trg_Artifact_PickedUp,function Trig_Artifact_PickedUp_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Artifact_PickedUp=CreateTrigger()
+    call DisableTrigger(gg_trg_Artifact_PickedUp)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_PickedUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Artifact_PickedUp,Condition(function Trig_Artifact_PickedUp_Conditions))
+    call TriggerAddAction(gg_trg_Artifact_PickedUp,function Trig_Artifact_PickedUp_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Artifact_Carrier takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Artifact_Carrier=CreateTrigger()
-
-call DisableTrigger(gg_trg_Artifact_Carrier)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_Carrier,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Artifact_Carrier,Condition(function Trig_Artifact_Carrier_Conditions))
-
-call TriggerAddAction(gg_trg_Artifact_Carrier,function Trig_Artifact_Carrier_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Artifact_Carrier=CreateTrigger()
+    call DisableTrigger(gg_trg_Artifact_Carrier)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_Carrier,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Artifact_Carrier,Condition(function Trig_Artifact_Carrier_Conditions))
+    call TriggerAddAction(gg_trg_Artifact_Carrier,function Trig_Artifact_Carrier_Actions)
 endfunction
 
 

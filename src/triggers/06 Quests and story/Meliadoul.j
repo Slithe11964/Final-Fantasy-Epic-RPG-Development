@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Meliadoul takes nothing returns nothing
 endfunction
-
 function RegisterR11_Meliadoul_Hint_Timer takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Meliadoul_Hint_Timer=CreateTrigger()
-
-call DisableTrigger(gg_trg_Meliadoul_Hint_Timer)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Meliadoul_Hint_Timer,udg_SiegeTimer)
-
-call TriggerAddAction(gg_trg_Meliadoul_Hint_Timer,function Trig_Meliadoul_Hint_Timer_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Meliadoul_Hint_Timer=CreateTrigger()
+    call DisableTrigger(gg_trg_Meliadoul_Hint_Timer)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Meliadoul_Hint_Timer,udg_SiegeTimer)
+    call TriggerAddAction(gg_trg_Meliadoul_Hint_Timer,function Trig_Meliadoul_Hint_Timer_Actions)
 endfunction
 
 

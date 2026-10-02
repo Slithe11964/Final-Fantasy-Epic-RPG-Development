@@ -288,23 +288,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Spring takes nothing returns nothing
 endfunction
-
 function RegisterR11_Spring_Of_Life_Ritual takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Spring_Of_Life_Ritual=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Spring_Of_Life_Ritual,gg_rct_673)
-
-call TriggerAddCondition(gg_trg_Spring_Of_Life_Ritual,Condition(function Trig_Spring_Of_Life_Ritual_Conditions))
-
-call TriggerAddAction(gg_trg_Spring_Of_Life_Ritual,function Trig_Spring_Of_Life_Ritual_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Spring_Of_Life_Ritual=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Spring_Of_Life_Ritual,gg_rct_673)
+    call TriggerAddCondition(gg_trg_Spring_Of_Life_Ritual,Condition(function Trig_Spring_Of_Life_Ritual_Conditions))
+    call TriggerAddAction(gg_trg_Spring_Of_Life_Ritual,function Trig_Spring_Of_Life_Ritual_Actions)
 endfunction
 
 

@@ -41,56 +41,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_NpcTrio takes nothing returns nothing
 endfunction
-
 function RegisterR11_NpcTrio_Group_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_NpcTrio_Group_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_NpcTrio_Group_Init,2.)
-
-call TriggerAddAction(gg_trg_NpcTrio_Group_Init,function Trig_NpcTrio_Group_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_NpcTrio_Group_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_NpcTrio_Group_Init,2.)
+    call TriggerAddAction(gg_trg_NpcTrio_Group_Init,function Trig_NpcTrio_Group_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_NpcTrio_Turn_Face takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_NpcTrio_Turn_Face=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(7),true)
-
-call TriggerAddCondition(gg_trg_NpcTrio_Turn_Face,Condition(function Trig_NpcTrio_Turn_Face_Conditions))
-
-call TriggerAddAction(gg_trg_NpcTrio_Turn_Face,function Trig_NpcTrio_Turn_Face_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_NpcTrio_Turn_Face=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(7),true)
+    call TriggerAddCondition(gg_trg_NpcTrio_Turn_Face,Condition(function Trig_NpcTrio_Turn_Face_Conditions))
+    call TriggerAddAction(gg_trg_NpcTrio_Turn_Face,function Trig_NpcTrio_Turn_Face_Actions)
 endfunction
 
 

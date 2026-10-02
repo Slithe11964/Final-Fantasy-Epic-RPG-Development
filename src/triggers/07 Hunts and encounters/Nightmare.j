@@ -181,111 +181,52 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Nightmare takes nothing returns nothing
 endfunction
-
 function RegisterR11_Nightmare_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nightmare_Spawn=CreateTrigger()
-
-call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Spawn,EQUAL,20.)
-
-call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Spawn,EQUAL,.0)
-
-call TriggerAddAction(gg_trg_Nightmare_Spawn,function Trig_Nightmare_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nightmare_Spawn=CreateTrigger()
+    call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Spawn,EQUAL,20.)
+    call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Spawn,EQUAL,.0)
+    call TriggerAddAction(gg_trg_Nightmare_Spawn,function Trig_Nightmare_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nightmare_Despawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nightmare_Despawn=CreateTrigger()
-
-call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Despawn,EQUAL,4.)
-
-call TriggerAddCondition(gg_trg_Nightmare_Despawn,Condition(function Trig_Nightmare_Despawn_Conditions))
-
-call TriggerAddAction(gg_trg_Nightmare_Despawn,function Trig_Nightmare_Despawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nightmare_Despawn=CreateTrigger()
+    call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Nightmare_Despawn,EQUAL,4.)
+    call TriggerAddCondition(gg_trg_Nightmare_Despawn,Condition(function Trig_Nightmare_Despawn_Conditions))
+    call TriggerAddAction(gg_trg_Nightmare_Despawn,function Trig_Nightmare_Despawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nightmare_Death_Charge takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nightmare_Death_Charge=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Nightmare_Death_Charge,Player($B),EVENT_PLAYER_UNIT_SPELL_EFFECT) // $B = 11
-
-call TriggerAddCondition(gg_trg_Nightmare_Death_Charge,Condition(function Trig_Nightmare_Death_Charge_Conditions))
-
-call TriggerAddAction(gg_trg_Nightmare_Death_Charge,function Trig_Nightmare_Death_Charge_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nightmare_Death_Charge=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Nightmare_Death_Charge,Player($B),EVENT_PLAYER_UNIT_SPELL_EFFECT) // $B = 11
+    call TriggerAddCondition(gg_trg_Nightmare_Death_Charge,Condition(function Trig_Nightmare_Death_Charge_Conditions))
+    call TriggerAddAction(gg_trg_Nightmare_Death_Charge,function Trig_Nightmare_Death_Charge_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nightmare_Roam takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nightmare_Roam=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nightmare_Roam)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Nightmare_Roam,10.)
-
-call TriggerAddCondition(gg_trg_Nightmare_Roam,Condition(function Trig_Nightmare_Roam_Conditions))
-
-call TriggerAddAction(gg_trg_Nightmare_Roam,function Trig_Nightmare_Roam_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nightmare_Roam=CreateTrigger()
+    call DisableTrigger(gg_trg_Nightmare_Roam)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Nightmare_Roam,10.)
+    call TriggerAddCondition(gg_trg_Nightmare_Roam,Condition(function Trig_Nightmare_Roam_Conditions))
+    call TriggerAddAction(gg_trg_Nightmare_Roam,function Trig_Nightmare_Roam_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nightmare_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nightmare_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nightmare_Death)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Nightmare_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Nightmare_Death,Condition(function Trig_Nightmare_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Nightmare_Death,function Trig_Nightmare_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nightmare_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Nightmare_Death)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Nightmare_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Nightmare_Death,Condition(function Trig_Nightmare_Death_Conditions))
+    call TriggerAddAction(gg_trg_Nightmare_Death,function Trig_Nightmare_Death_Actions)
 endfunction
 
 

@@ -49,35 +49,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DamageText takes nothing returns nothing
 endfunction
-
 function RegisterR11_DamageText_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DamageText_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(0),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(1),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(2),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(3),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(4),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(5),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(6),"-damagetext",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(7),"-damagetext",false)
-
-call TriggerAddAction(gg_trg_DamageText_Command,function Trig_DamageText_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DamageText_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(0),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(1),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(2),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(3),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(4),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(5),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(6),"-damagetext",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_DamageText_Command,Player(7),"-damagetext",false)
+    call TriggerAddAction(gg_trg_DamageText_Command,function Trig_DamageText_Command_Actions)
 endfunction
 
 

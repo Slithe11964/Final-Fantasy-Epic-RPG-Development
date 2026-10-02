@@ -29,23 +29,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Heal takes nothing returns nothing
 endfunction
-
 function RegisterR11_Heal_Spell_Apply takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Heal_Spell_Apply=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Heal_Spell_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Heal_Spell_Apply,Condition(function Trig_Heal_Spell_Apply_Conditions))
-
-call TriggerAddAction(gg_trg_Heal_Spell_Apply,function Trig_Heal_Spell_Apply_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Heal_Spell_Apply=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Heal_Spell_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Heal_Spell_Apply,Condition(function Trig_Heal_Spell_Apply_Conditions))
+    call TriggerAddAction(gg_trg_Heal_Spell_Apply,function Trig_Heal_Spell_Apply_Actions)
 endfunction
 
 

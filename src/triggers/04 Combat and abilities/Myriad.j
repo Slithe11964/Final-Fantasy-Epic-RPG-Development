@@ -44,23 +44,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Myriad takes nothing returns nothing
 endfunction
-
 function RegisterR11_Myriad_Arrows takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Myriad_Arrows=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Myriad_Arrows,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Myriad_Arrows,Condition(function Trig_Myriad_Arrows_Conditions))
-
-call TriggerAddAction(gg_trg_Myriad_Arrows,function Trig_Myriad_Arrows_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Myriad_Arrows=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Myriad_Arrows,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Myriad_Arrows,Condition(function Trig_Myriad_Arrows_Conditions))
+    call TriggerAddAction(gg_trg_Myriad_Arrows,function Trig_Myriad_Arrows_Actions)
 endfunction
 
 

@@ -1404,103 +1404,51 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cmd takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cmd_Music takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cmd_Music=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(0),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(1),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(2),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(3),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(4),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(5),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(6),"-music",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(7),"-music",false)
-
-call TriggerAddCondition(gg_trg_Cmd_Music,Condition(function Trig_Cmd_Music_Conditions))
-
-call TriggerAddAction(gg_trg_Cmd_Music,function Trig_Cmd_Music_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cmd_Music=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(0),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(1),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(2),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(3),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(4),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(5),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(6),"-music",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(7),"-music",false)
+    call TriggerAddCondition(gg_trg_Cmd_Music,Condition(function Trig_Cmd_Music_Conditions))
+    call TriggerAddAction(gg_trg_Cmd_Music,function Trig_Cmd_Music_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cmd_Load_Code takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cmd_Load_Code=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(0),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(1),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(2),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(3),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(4),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(5),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(6),"-load ",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(7),"-load ",false)
-
-call TriggerAddAction(gg_trg_Cmd_Load_Code,function Trig_Cmd_Load_Code_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cmd_Load_Code=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(0),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(1),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(2),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(3),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(4),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(5),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(6),"-load ",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(7),"-load ",false)
+    call TriggerAddAction(gg_trg_Cmd_Load_Code,function Trig_Cmd_Load_Code_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Cmd_Load_Armory takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cmd_Load_Armory=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(0),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(1),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(2),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(3),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(4),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(5),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(6),"-loada",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(7),"-loada",false)
-
-call TriggerAddAction(gg_trg_Cmd_Load_Armory,function Trig_Cmd_Load_Armory_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cmd_Load_Armory=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(0),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(1),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(2),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(3),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(4),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(5),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(6),"-loada",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(7),"-loada",false)
+    call TriggerAddAction(gg_trg_Cmd_Load_Armory,function Trig_Cmd_Load_Armory_Actions)
 endfunction
 
 

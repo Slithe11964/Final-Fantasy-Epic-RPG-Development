@@ -214,58 +214,30 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Gate takes nothing returns nothing
 endfunction
-
 function RegisterR11_Gate_Codeword_Demesne takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gate_Codeword_Demesne=CreateTrigger()
-
-call DisableTrigger(gg_trg_Gate_Codeword_Demesne)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(0),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(1),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(2),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(3),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(4),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(5),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(6),"Demesne",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(7),"Demesne",false)
-
-call TriggerAddAction(gg_trg_Gate_Codeword_Demesne,function Trig_Gate_Codeword_Demesne_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gate_Codeword_Demesne=CreateTrigger()
+    call DisableTrigger(gg_trg_Gate_Codeword_Demesne)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(0),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(1),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(2),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(3),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(4),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(5),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(6),"Demesne",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(7),"Demesne",false)
+    call TriggerAddAction(gg_trg_Gate_Codeword_Demesne,function Trig_Gate_Codeword_Demesne_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gate_WinterKey_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gate_WinterKey_Unlock=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Gate_WinterKey_Unlock,gg_rct_631)
-
-call TriggerAddCondition(gg_trg_Gate_WinterKey_Unlock,Condition(function Trig_Gate_WinterKey_Unlock_Conditions))
-
-call TriggerAddAction(gg_trg_Gate_WinterKey_Unlock,function Trig_Gate_WinterKey_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gate_WinterKey_Unlock=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Gate_WinterKey_Unlock,gg_rct_631)
+    call TriggerAddCondition(gg_trg_Gate_WinterKey_Unlock,Condition(function Trig_Gate_WinterKey_Unlock_Conditions))
+    call TriggerAddAction(gg_trg_Gate_WinterKey_Unlock,function Trig_Gate_WinterKey_Unlock_Actions)
 endfunction
 
 

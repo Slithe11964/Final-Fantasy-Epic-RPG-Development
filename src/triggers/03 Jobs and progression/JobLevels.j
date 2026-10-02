@@ -103,42 +103,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_JobLevels takes nothing returns nothing
 endfunction
-
 function RegisterR11_JobLevels_Update takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_JobLevels_Update=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Update,udg_JobLevelTimer)
-
-call TriggerAddAction(gg_trg_JobLevels_Update,function Trig_JobLevels_Update_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_JobLevels_Update=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Update,udg_JobLevelTimer)
+    call TriggerAddAction(gg_trg_JobLevels_Update,function Trig_JobLevels_Update_Actions)
 endfunction
-
-
-
-
 function RegisterR11_JobLevels_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_JobLevels_Init=CreateTrigger()
-
-call DisableTrigger(gg_trg_JobLevels_Init)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Init,udg_JobLevelTimer)
-
-call TriggerAddAction(gg_trg_JobLevels_Init,function Trig_JobLevels_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_JobLevels_Init=CreateTrigger()
+    call DisableTrigger(gg_trg_JobLevels_Init)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Init,udg_JobLevelTimer)
+    call TriggerAddAction(gg_trg_JobLevels_Init,function Trig_JobLevels_Init_Actions)
 endfunction
 
 

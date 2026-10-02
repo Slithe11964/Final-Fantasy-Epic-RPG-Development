@@ -28,19 +28,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Barrens takes nothing returns nothing
 endfunction
-
 function RegisterR11_Barrens_Forge_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Barrens_Forge_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Barrens_Forge_Setup,function Trig_Barrens_Forge_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Barrens_Forge_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_Barrens_Forge_Setup,function Trig_Barrens_Forge_Setup_Actions)
 endfunction
 
 

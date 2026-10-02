@@ -76,44 +76,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_FireAura takes nothing returns nothing
 endfunction
-
 function RegisterR11_FireAura_Pulse_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FireAura_Pulse_Start=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_FireAura_Pulse_Start,1.)
-
-call TriggerAddCondition(gg_trg_FireAura_Pulse_Start,Condition(function Trig_FireAura_Pulse_Start_Conditions))
-
-call TriggerAddAction(gg_trg_FireAura_Pulse_Start,function Trig_FireAura_Pulse_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FireAura_Pulse_Start=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_FireAura_Pulse_Start,1.)
+    call TriggerAddCondition(gg_trg_FireAura_Pulse_Start,Condition(function Trig_FireAura_Pulse_Start_Conditions))
+    call TriggerAddAction(gg_trg_FireAura_Pulse_Start,function Trig_FireAura_Pulse_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FireAura_Pulse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FireAura_Pulse=CreateTrigger()
-
-call DisableTrigger(gg_trg_FireAura_Pulse)
-
-call TriggerAddCondition(gg_trg_FireAura_Pulse,Condition(function Trig_FireAura_Pulse_Conditions))
-
-call TriggerAddAction(gg_trg_FireAura_Pulse,function Trig_FireAura_Pulse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FireAura_Pulse=CreateTrigger()
+    call DisableTrigger(gg_trg_FireAura_Pulse)
+    call TriggerAddCondition(gg_trg_FireAura_Pulse,Condition(function Trig_FireAura_Pulse_Conditions))
+    call TriggerAddAction(gg_trg_FireAura_Pulse,function Trig_FireAura_Pulse_Actions)
 endfunction
 
 

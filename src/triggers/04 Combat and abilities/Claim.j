@@ -75,37 +75,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Claim takes nothing returns nothing
 endfunction
-
 function RegisterR11_Claim_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Claim_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(0),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(1),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(2),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(3),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(4),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(5),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(6),"-claim",true)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(7),"-claim",true)
-
-call TriggerAddCondition(gg_trg_Claim_Command,Condition(function Trig_Claim_Command_Conditions))
-
-call TriggerAddAction(gg_trg_Claim_Command,function Trig_Claim_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Claim_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(0),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(1),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(2),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(3),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(4),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(5),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(6),"-claim",true)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(7),"-claim",true)
+    call TriggerAddCondition(gg_trg_Claim_Command,Condition(function Trig_Claim_Command_Conditions))
+    call TriggerAddAction(gg_trg_Claim_Command,function Trig_Claim_Command_Actions)
 endfunction
 
 

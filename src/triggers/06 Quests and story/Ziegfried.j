@@ -308,134 +308,62 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ziegfried takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ziegfried_Mine_Arrive takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Mine_Arrive=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ziegfried_Mine_Arrive)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Ziegfried_Mine_Arrive,udg_SharedDelayTimer5)
-
-call TriggerAddAction(gg_trg_Ziegfried_Mine_Arrive,function Trig_Ziegfried_Mine_Arrive_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Mine_Arrive=CreateTrigger()
+    call DisableTrigger(gg_trg_Ziegfried_Mine_Arrive)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Ziegfried_Mine_Arrive,udg_SharedDelayTimer5)
+    call TriggerAddAction(gg_trg_Ziegfried_Mine_Arrive,function Trig_Ziegfried_Mine_Arrive_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ziegfried_Advance_Order takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Advance_Order=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ziegfried_Advance_Order)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Advance_Order,4.)
-
-call TriggerAddAction(gg_trg_Ziegfried_Advance_Order,function Trig_Ziegfried_Advance_Order_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Advance_Order=CreateTrigger()
+    call DisableTrigger(gg_trg_Ziegfried_Advance_Order)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Advance_Order,4.)
+    call TriggerAddAction(gg_trg_Ziegfried_Advance_Order,function Trig_Ziegfried_Advance_Order_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ziegfried_Attack_Fafnir takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Attack_Fafnir=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ziegfried_Attack_Fafnir)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Attack_Fafnir,10.)
-
-call TriggerAddAction(gg_trg_Ziegfried_Attack_Fafnir,function Trig_Ziegfried_Attack_Fafnir_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Attack_Fafnir=CreateTrigger()
+    call DisableTrigger(gg_trg_Ziegfried_Attack_Fafnir)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Attack_Fafnir,10.)
+    call TriggerAddAction(gg_trg_Ziegfried_Attack_Fafnir,function Trig_Ziegfried_Attack_Fafnir_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ziegfried_Meltdown takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Meltdown=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Ziegfried_Meltdown,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Ziegfried_Meltdown,Condition(function Trig_Ziegfried_Meltdown_Conditions))
-
-call TriggerAddAction(gg_trg_Ziegfried_Meltdown,function Trig_Ziegfried_Meltdown_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Meltdown=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Ziegfried_Meltdown,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Ziegfried_Meltdown,Condition(function Trig_Ziegfried_Meltdown_Conditions))
+    call TriggerAddAction(gg_trg_Ziegfried_Meltdown,function Trig_Ziegfried_Meltdown_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ziegfried_Confront takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Confront=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ziegfried_Confront)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Ziegfried_Confront,800.,gg_unit_H036_0254)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Ziegfried_Confront,250.,gg_unit_H036_0254)
-
-call TriggerAddCondition(gg_trg_Ziegfried_Confront,Condition(function Trig_Ziegfried_Confront_Conditions))
-
-call TriggerAddAction(gg_trg_Ziegfried_Confront,function Trig_Ziegfried_Confront_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Confront=CreateTrigger()
+    call DisableTrigger(gg_trg_Ziegfried_Confront)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Ziegfried_Confront,800.,gg_unit_H036_0254)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Ziegfried_Confront,250.,gg_unit_H036_0254)
+    call TriggerAddCondition(gg_trg_Ziegfried_Confront,Condition(function Trig_Ziegfried_Confront_Conditions))
+    call TriggerAddAction(gg_trg_Ziegfried_Confront,function Trig_Ziegfried_Confront_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ziegfried_Arena_Leash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ziegfried_Arena_Leash=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ziegfried_Arena_Leash)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Ziegfried_Arena_Leash,gg_rct_710)
-
-call TriggerAddCondition(gg_trg_Ziegfried_Arena_Leash,Condition(function Trig_Ziegfried_Arena_Leash_Conditions))
-
-call TriggerAddAction(gg_trg_Ziegfried_Arena_Leash,function Trig_Ziegfried_Arena_Leash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ziegfried_Arena_Leash=CreateTrigger()
+    call DisableTrigger(gg_trg_Ziegfried_Arena_Leash)
+    call TriggerRegisterEnterRectSimple(gg_trg_Ziegfried_Arena_Leash,gg_rct_710)
+    call TriggerAddCondition(gg_trg_Ziegfried_Arena_Leash,Condition(function Trig_Ziegfried_Arena_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Ziegfried_Arena_Leash,function Trig_Ziegfried_Arena_Leash_Actions)
 endfunction
 
 

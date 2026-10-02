@@ -12,19 +12,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BlackPearl takes nothing returns nothing
 endfunction
-
 function RegisterR11_BlackPearl_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BlackPearl_Death=CreateTrigger()
-
-call TriggerAddAction(gg_trg_BlackPearl_Death,function Trig_BlackPearl_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BlackPearl_Death=CreateTrigger()
+    call TriggerAddAction(gg_trg_BlackPearl_Death,function Trig_BlackPearl_Death_Actions)
 endfunction
 
 

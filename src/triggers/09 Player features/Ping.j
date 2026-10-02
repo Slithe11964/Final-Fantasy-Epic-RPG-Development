@@ -34,46 +34,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ping takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ping_ArenaTarget takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ping_ArenaTarget=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ping_ArenaTarget)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_ArenaTarget,15.)
-
-call TriggerAddAction(gg_trg_Ping_ArenaTarget,function Trig_Ping_ArenaTarget_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ping_ArenaTarget=CreateTrigger()
+    call DisableTrigger(gg_trg_Ping_ArenaTarget)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_ArenaTarget,15.)
+    call TriggerAddAction(gg_trg_Ping_ArenaTarget,function Trig_Ping_ArenaTarget_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ping_EyeOfJenova takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ping_EyeOfJenova=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ping_EyeOfJenova)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_EyeOfJenova,15.)
-
-call TriggerAddCondition(gg_trg_Ping_EyeOfJenova,Condition(function Trig_Ping_EyeOfJenova_Conditions))
-
-call TriggerAddAction(gg_trg_Ping_EyeOfJenova,function Trig_Ping_EyeOfJenova_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ping_EyeOfJenova=CreateTrigger()
+    call DisableTrigger(gg_trg_Ping_EyeOfJenova)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_EyeOfJenova,15.)
+    call TriggerAddCondition(gg_trg_Ping_EyeOfJenova,Condition(function Trig_Ping_EyeOfJenova_Conditions))
+    call TriggerAddAction(gg_trg_Ping_EyeOfJenova,function Trig_Ping_EyeOfJenova_Actions)
 endfunction
 
 

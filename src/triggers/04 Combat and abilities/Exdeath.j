@@ -10,19 +10,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Exdeath takes nothing returns nothing
 endfunction
-
 function RegisterR11_Exdeath_Drop_Scroll takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exdeath_Drop_Scroll=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Exdeath_Drop_Scroll,function Trig_Exdeath_Drop_Scroll_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exdeath_Drop_Scroll=CreateTrigger()
+    call TriggerAddAction(gg_trg_Exdeath_Drop_Scroll,function Trig_Exdeath_Drop_Scroll_Actions)
 endfunction
 
 

@@ -50,42 +50,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BagOfTricks takes nothing returns nothing
 endfunction
-
 function RegisterR11_BagOfTricks_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BagOfTricks_Setup=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_BagOfTricks_Setup,40.)
-
-call TriggerAddAction(gg_trg_BagOfTricks_Setup,function Trig_BagOfTricks_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BagOfTricks_Setup=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_BagOfTricks_Setup,40.)
+    call TriggerAddAction(gg_trg_BagOfTricks_Setup,function Trig_BagOfTricks_Setup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BagOfTricks_Progress takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BagOfTricks_Progress=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_BagOfTricks_Progress,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_BagOfTricks_Progress,Condition(function Trig_BagOfTricks_Progress_Conditions))
-
-call TriggerAddAction(gg_trg_BagOfTricks_Progress,function Trig_BagOfTricks_Progress_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BagOfTricks_Progress=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_BagOfTricks_Progress,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_BagOfTricks_Progress,Condition(function Trig_BagOfTricks_Progress_Conditions))
+    call TriggerAddAction(gg_trg_BagOfTricks_Progress,function Trig_BagOfTricks_Progress_Actions)
 endfunction
 
 

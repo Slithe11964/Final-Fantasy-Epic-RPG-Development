@@ -160,44 +160,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Toss takes nothing returns nothing
 endfunction
-
 function RegisterR11_Toss_Potion takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Toss_Potion=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_Potion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Toss_Potion,Condition(function Trig_Toss_Potion_Conditions))
-
-call TriggerAddAction(gg_trg_Toss_Potion,function Trig_Toss_Potion_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Toss_Potion=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_Potion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Toss_Potion,Condition(function Trig_Toss_Potion_Conditions))
+    call TriggerAddAction(gg_trg_Toss_Potion,function Trig_Toss_Potion_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Toss_HeroDrink takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Toss_HeroDrink=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_HeroDrink,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Toss_HeroDrink,Condition(function Trig_Toss_HeroDrink_Conditions))
-
-call TriggerAddAction(gg_trg_Toss_HeroDrink,function Trig_Toss_HeroDrink_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Toss_HeroDrink=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_HeroDrink,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Toss_HeroDrink,Condition(function Trig_Toss_HeroDrink_Conditions))
+    call TriggerAddAction(gg_trg_Toss_HeroDrink,function Trig_Toss_HeroDrink_Actions)
 endfunction
 
 

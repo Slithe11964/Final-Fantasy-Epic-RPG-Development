@@ -51,65 +51,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zone4 takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zone4_Leash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone4_Leash=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash,gg_rct_225)
-
-call TriggerAddCondition(gg_trg_Zone4_Leash,Condition(function Trig_Zone4_Leash_Conditions))
-
-call TriggerAddAction(gg_trg_Zone4_Leash,function Trig_Zone4_Leash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone4_Leash=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash,gg_rct_225)
+    call TriggerAddCondition(gg_trg_Zone4_Leash,Condition(function Trig_Zone4_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Zone4_Leash,function Trig_Zone4_Leash_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zone4_Leash_North takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone4_Leash_North=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_North,gg_rct_664)
-
-call TriggerAddCondition(gg_trg_Zone4_Leash_North,Condition(function Trig_Zone4_Leash_North_Conditions))
-
-call TriggerAddAction(gg_trg_Zone4_Leash_North,function Trig_Zone4_Leash_North_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone4_Leash_North=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_North,gg_rct_664)
+    call TriggerAddCondition(gg_trg_Zone4_Leash_North,Condition(function Trig_Zone4_Leash_North_Conditions))
+    call TriggerAddAction(gg_trg_Zone4_Leash_North,function Trig_Zone4_Leash_North_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zone4_Leash_Mid takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone4_Leash_Mid=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_Mid,gg_rct_670)
-
-call TriggerAddCondition(gg_trg_Zone4_Leash_Mid,Condition(function Trig_Zone4_Leash_Mid_Conditions))
-
-call TriggerAddAction(gg_trg_Zone4_Leash_Mid,function Trig_Zone4_Leash_Mid_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone4_Leash_Mid=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_Mid,gg_rct_670)
+    call TriggerAddCondition(gg_trg_Zone4_Leash_Mid,Condition(function Trig_Zone4_Leash_Mid_Conditions))
+    call TriggerAddAction(gg_trg_Zone4_Leash_Mid,function Trig_Zone4_Leash_Mid_Actions)
 endfunction
 
 

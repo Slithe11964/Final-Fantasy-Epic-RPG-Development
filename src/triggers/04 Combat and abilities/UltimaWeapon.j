@@ -9,19 +9,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_UltimaWeapon takes nothing returns nothing
 endfunction
-
 function RegisterR11_UltimaWeapon_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_UltimaWeapon_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_UltimaWeapon_Hide,function Trig_UltimaWeapon_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_UltimaWeapon_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_UltimaWeapon_Hide,function Trig_UltimaWeapon_Hide_Actions)
 endfunction
 
 

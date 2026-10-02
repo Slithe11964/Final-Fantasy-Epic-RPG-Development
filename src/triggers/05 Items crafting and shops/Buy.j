@@ -29,23 +29,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Buy takes nothing returns nothing
 endfunction
-
 function RegisterR11_Buy_Kesha_Brew takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Buy_Kesha_Brew=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Buy_Kesha_Brew,EVENT_PLAYER_UNIT_SELL_ITEM)
-
-call TriggerAddCondition(gg_trg_Buy_Kesha_Brew,Condition(function Trig_Buy_Kesha_Brew_Conditions))
-
-call TriggerAddAction(gg_trg_Buy_Kesha_Brew,function Trig_Buy_Kesha_Brew_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Buy_Kesha_Brew=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Buy_Kesha_Brew,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Buy_Kesha_Brew,Condition(function Trig_Buy_Kesha_Brew_Conditions))
+    call TriggerAddAction(gg_trg_Buy_Kesha_Brew,function Trig_Buy_Kesha_Brew_Actions)
 endfunction
 
 

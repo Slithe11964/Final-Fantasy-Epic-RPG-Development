@@ -26,23 +26,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cuchulainn takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cuchulainn_Soul_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cuchulainn_Soul_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cuchulainn_Soul_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_Cuchulainn_Soul_Death,gg_unit_U019_0253,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Cuchulainn_Soul_Death,function Trig_Cuchulainn_Soul_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cuchulainn_Soul_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Cuchulainn_Soul_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Cuchulainn_Soul_Death,gg_unit_U019_0253,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Cuchulainn_Soul_Death,function Trig_Cuchulainn_Soul_Death_Actions)
 endfunction
 
 

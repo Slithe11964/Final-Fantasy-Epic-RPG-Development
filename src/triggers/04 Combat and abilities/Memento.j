@@ -111,23 +111,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Memento takes nothing returns nothing
 endfunction
-
 function RegisterR11_Memento_Ring_Compass takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Memento_Ring_Compass=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Memento_Ring_Compass,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Memento_Ring_Compass,Condition(function Trig_Memento_Ring_Compass_Conditions))
-
-call TriggerAddAction(gg_trg_Memento_Ring_Compass,function Trig_Memento_Ring_Compass_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Memento_Ring_Compass=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Memento_Ring_Compass,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Memento_Ring_Compass,Condition(function Trig_Memento_Ring_Compass_Conditions))
+    call TriggerAddAction(gg_trg_Memento_Ring_Compass,function Trig_Memento_Ring_Compass_Actions)
 endfunction
 
 

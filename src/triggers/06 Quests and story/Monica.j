@@ -8,21 +8,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Monica takes nothing returns nothing
 endfunction
-
 function RegisterR11_Monica_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Monica_ShowMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_Monica_ShowMarker)
-
-call TriggerAddAction(gg_trg_Monica_ShowMarker,function Trig_Monica_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Monica_ShowMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_Monica_ShowMarker)
+    call TriggerAddAction(gg_trg_Monica_ShowMarker,function Trig_Monica_ShowMarker_Actions)
 endfunction
 
 

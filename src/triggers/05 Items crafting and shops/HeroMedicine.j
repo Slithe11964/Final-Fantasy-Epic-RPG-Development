@@ -41,46 +41,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HeroMedicine takes nothing returns nothing
 endfunction
-
 function RegisterR11_HeroMedicine_Refill takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HeroMedicine_Refill=CreateTrigger()
-
-call DisableTrigger(gg_trg_HeroMedicine_Refill)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_HeroMedicine_Refill,6.)
-
-call TriggerAddAction(gg_trg_HeroMedicine_Refill,function Trig_HeroMedicine_Refill_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HeroMedicine_Refill=CreateTrigger()
+    call DisableTrigger(gg_trg_HeroMedicine_Refill)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_HeroMedicine_Refill,6.)
+    call TriggerAddAction(gg_trg_HeroMedicine_Refill,function Trig_HeroMedicine_Refill_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HeroMedicine_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HeroMedicine_Pickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_HeroMedicine_Pickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HeroMedicine_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_HeroMedicine_Pickup,Condition(function Trig_HeroMedicine_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_HeroMedicine_Pickup,function Trig_HeroMedicine_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HeroMedicine_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_HeroMedicine_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HeroMedicine_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_HeroMedicine_Pickup,Condition(function Trig_HeroMedicine_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_HeroMedicine_Pickup,function Trig_HeroMedicine_Pickup_Actions)
 endfunction
 
 

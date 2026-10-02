@@ -111,40 +111,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_OmegaWeapon takes nothing returns nothing
 endfunction
-
 function RegisterR11_OmegaWeapon_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OmegaWeapon_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_OmegaWeapon_Hide,function Trig_OmegaWeapon_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OmegaWeapon_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_OmegaWeapon_Hide,function Trig_OmegaWeapon_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OmegaWeapon_SpellRotation takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OmegaWeapon_SpellRotation=CreateTrigger()
-
-call DisableTrigger(gg_trg_OmegaWeapon_SpellRotation)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_OmegaWeapon_SpellRotation,10.)
-
-call TriggerAddAction(gg_trg_OmegaWeapon_SpellRotation,function Trig_OmegaWeapon_SpellRotation_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OmegaWeapon_SpellRotation=CreateTrigger()
+    call DisableTrigger(gg_trg_OmegaWeapon_SpellRotation)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_OmegaWeapon_SpellRotation,10.)
+    call TriggerAddAction(gg_trg_OmegaWeapon_SpellRotation,function Trig_OmegaWeapon_SpellRotation_Actions)
 endfunction
 
 

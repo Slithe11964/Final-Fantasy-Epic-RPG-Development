@@ -82,48 +82,25 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DeathSeeker takes nothing returns nothing
 endfunction
-
 function RegisterR11_DeathSeeker_Give takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DeathSeeker_Give=CreateTrigger()
-
-call DisableTrigger(gg_trg_DeathSeeker_Give)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DeathSeeker_Give,gg_rct_550)
-
-call TriggerAddCondition(gg_trg_DeathSeeker_Give,Condition(function Trig_DeathSeeker_Give_Conditions))
-
-call TriggerAddAction(gg_trg_DeathSeeker_Give,function Trig_DeathSeeker_Give_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DeathSeeker_Give=CreateTrigger()
+    call DisableTrigger(gg_trg_DeathSeeker_Give)
+    call TriggerRegisterEnterRectSimple(gg_trg_DeathSeeker_Give,gg_rct_550)
+    call TriggerAddCondition(gg_trg_DeathSeeker_Give,Condition(function Trig_DeathSeeker_Give_Conditions))
+    call TriggerAddAction(gg_trg_DeathSeeker_Give,function Trig_DeathSeeker_Give_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DeathSeeker_TurnIn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DeathSeeker_TurnIn=CreateTrigger()
-
-call DisableTrigger(gg_trg_DeathSeeker_TurnIn)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DeathSeeker_TurnIn,250.,gg_unit_n034_0109)
-
-call TriggerAddCondition(gg_trg_DeathSeeker_TurnIn,Condition(function Trig_DeathSeeker_TurnIn_Conditions))
-
-call TriggerAddAction(gg_trg_DeathSeeker_TurnIn,function Trig_DeathSeeker_TurnIn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DeathSeeker_TurnIn=CreateTrigger()
+    call DisableTrigger(gg_trg_DeathSeeker_TurnIn)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DeathSeeker_TurnIn,250.,gg_unit_n034_0109)
+    call TriggerAddCondition(gg_trg_DeathSeeker_TurnIn,Condition(function Trig_DeathSeeker_TurnIn_Conditions))
+    call TriggerAddAction(gg_trg_DeathSeeker_TurnIn,function Trig_DeathSeeker_TurnIn_Actions)
 endfunction
 
 

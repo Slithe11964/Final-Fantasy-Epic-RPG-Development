@@ -29,19 +29,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Demon takes nothing returns nothing
 endfunction
-
 function RegisterR11_Demon_Drop_Magatama takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Demon_Drop_Magatama=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Demon_Drop_Magatama,function Trig_Demon_Drop_Magatama_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Demon_Drop_Magatama=CreateTrigger()
+    call TriggerAddAction(gg_trg_Demon_Drop_Magatama,function Trig_Demon_Drop_Magatama_Actions)
 endfunction
 
 

@@ -39,25 +39,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_TropicalEssence takes nothing returns nothing
 endfunction
-
 function RegisterR11_TropicalEssence_TurnIn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_TropicalEssence_TurnIn=CreateTrigger()
-
-call DisableTrigger(gg_trg_TropicalEssence_TurnIn)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_TropicalEssence_TurnIn,250.,gg_unit_n034_0109)
-
-call TriggerAddCondition(gg_trg_TropicalEssence_TurnIn,Condition(function Trig_TropicalEssence_TurnIn_Conditions))
-
-call TriggerAddAction(gg_trg_TropicalEssence_TurnIn,function Trig_TropicalEssence_TurnIn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_TropicalEssence_TurnIn=CreateTrigger()
+    call DisableTrigger(gg_trg_TropicalEssence_TurnIn)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_TropicalEssence_TurnIn,250.,gg_unit_n034_0109)
+    call TriggerAddCondition(gg_trg_TropicalEssence_TurnIn,Condition(function Trig_TropicalEssence_TurnIn_Conditions))
+    call TriggerAddAction(gg_trg_TropicalEssence_TurnIn,function Trig_TropicalEssence_TurnIn_Actions)
 endfunction
 
 

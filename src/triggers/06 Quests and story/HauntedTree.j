@@ -130,140 +130,65 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HauntedTree takes nothing returns nothing
 endfunction
-
 function RegisterR11_HauntedTree_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_HauntedTree_Init,function Trig_HauntedTree_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_HauntedTree_Init,function Trig_HauntedTree_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HauntedTree_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_HauntedTree_Prepare)
-
-call TriggerAddAction(gg_trg_HauntedTree_Prepare,function Trig_HauntedTree_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_HauntedTree_Prepare)
+    call TriggerAddAction(gg_trg_HauntedTree_Prepare,function Trig_HauntedTree_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HauntedTree_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_HauntedTree_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_HauntedTree_Start,Condition(function Trig_HauntedTree_Start_Conditions))
-
-call TriggerAddAction(gg_trg_HauntedTree_Start,function Trig_HauntedTree_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_HauntedTree_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_HauntedTree_Start,Condition(function Trig_HauntedTree_Start_Conditions))
+    call TriggerAddAction(gg_trg_HauntedTree_Start,function Trig_HauntedTree_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HauntedTree_GhostRoam takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_GhostRoam=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_HauntedTree_GhostRoam,4.)
-
-call TriggerAddAction(gg_trg_HauntedTree_GhostRoam,function Trig_HauntedTree_GhostRoam_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_GhostRoam=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_HauntedTree_GhostRoam,4.)
+    call TriggerAddAction(gg_trg_HauntedTree_GhostRoam,function Trig_HauntedTree_GhostRoam_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HauntedTree_CaptureSpirit takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_CaptureSpirit=CreateTrigger()
-
-call DisableTrigger(gg_trg_HauntedTree_CaptureSpirit)
-
-call TriggerRegisterEnterRectSimple(gg_trg_HauntedTree_CaptureSpirit,gg_rct_366)
-
-call TriggerAddCondition(gg_trg_HauntedTree_CaptureSpirit,Condition(function Trig_HauntedTree_CaptureSpirit_Conditions))
-
-call TriggerAddAction(gg_trg_HauntedTree_CaptureSpirit,function Trig_HauntedTree_CaptureSpirit_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_CaptureSpirit=CreateTrigger()
+    call DisableTrigger(gg_trg_HauntedTree_CaptureSpirit)
+    call TriggerRegisterEnterRectSimple(gg_trg_HauntedTree_CaptureSpirit,gg_rct_366)
+    call TriggerAddCondition(gg_trg_HauntedTree_CaptureSpirit,Condition(function Trig_HauntedTree_CaptureSpirit_Conditions))
+    call TriggerAddAction(gg_trg_HauntedTree_CaptureSpirit,function Trig_HauntedTree_CaptureSpirit_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HauntedTree_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HauntedTree_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_HauntedTree_Complete)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_HauntedTree_Complete,450.,gg_unit_n02F_0108)
-
-call TriggerAddCondition(gg_trg_HauntedTree_Complete,Condition(function Trig_HauntedTree_Complete_Conditions))
-
-call TriggerAddAction(gg_trg_HauntedTree_Complete,function Trig_HauntedTree_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HauntedTree_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_HauntedTree_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_HauntedTree_Complete,450.,gg_unit_n02F_0108)
+    call TriggerAddCondition(gg_trg_HauntedTree_Complete,Condition(function Trig_HauntedTree_Complete_Conditions))
+    call TriggerAddAction(gg_trg_HauntedTree_Complete,function Trig_HauntedTree_Complete_Actions)
 endfunction
 
 

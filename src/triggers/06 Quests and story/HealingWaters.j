@@ -282,167 +282,77 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HealingWaters takes nothing returns nothing
 endfunction
-
 function RegisterR11_HealingWaters_HideFamily takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_HideFamily=CreateTrigger()
-
-call TriggerAddAction(gg_trg_HealingWaters_HideFamily,function Trig_HealingWaters_HideFamily_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_HideFamily=CreateTrigger()
+    call TriggerAddAction(gg_trg_HealingWaters_HideFamily,function Trig_HealingWaters_HideFamily_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_Prepare)
-
-call TriggerAddAction(gg_trg_HealingWaters_Prepare,function Trig_HealingWaters_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_Prepare)
+    call TriggerAddAction(gg_trg_HealingWaters_Prepare,function Trig_HealingWaters_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_HealingWaters_Start,Condition(function Trig_HealingWaters_Start_Conditions))
-
-call TriggerAddAction(gg_trg_HealingWaters_Start,function Trig_HealingWaters_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HealingWaters_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_HealingWaters_Start,Condition(function Trig_HealingWaters_Start_Conditions))
+    call TriggerAddAction(gg_trg_HealingWaters_Start,function Trig_HealingWaters_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_PingVial takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_PingVial=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_PingVial)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_HealingWaters_PingVial,15.)
-
-call TriggerAddCondition(gg_trg_HealingWaters_PingVial,Condition(function Trig_HealingWaters_PingVial_Conditions))
-
-call TriggerAddAction(gg_trg_HealingWaters_PingVial,function Trig_HealingWaters_PingVial_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_PingVial=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_PingVial)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_HealingWaters_PingVial,15.)
+    call TriggerAddCondition(gg_trg_HealingWaters_PingVial,Condition(function Trig_HealingWaters_PingVial_Conditions))
+    call TriggerAddAction(gg_trg_HealingWaters_PingVial,function Trig_HealingWaters_PingVial_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_DefiledVial takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_DefiledVial=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_DefiledVial)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_DefiledVial,450.,gg_unit_H00T_0185)
-
-call TriggerAddCondition(gg_trg_HealingWaters_DefiledVial,Condition(function Trig_HealingWaters_DefiledVial_Conditions))
-
-call TriggerAddAction(gg_trg_HealingWaters_DefiledVial,function Trig_HealingWaters_DefiledVial_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_DefiledVial=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_DefiledVial)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_DefiledVial,450.,gg_unit_H00T_0185)
+    call TriggerAddCondition(gg_trg_HealingWaters_DefiledVial,Condition(function Trig_HealingWaters_DefiledVial_Conditions))
+    call TriggerAddAction(gg_trg_HealingWaters_DefiledVial,function Trig_HealingWaters_DefiledVial_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_Cure takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_Cure=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_Cure)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_Cure,450.,gg_unit_H00T_0185)
-
-call TriggerAddCondition(gg_trg_HealingWaters_Cure,Condition(function Trig_HealingWaters_Cure_Conditions))
-
-call TriggerAddAction(gg_trg_HealingWaters_Cure,function Trig_HealingWaters_Cure_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_Cure=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_Cure)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_Cure,450.,gg_unit_H00T_0185)
+    call TriggerAddCondition(gg_trg_HealingWaters_Cure,Condition(function Trig_HealingWaters_Cure_Conditions))
+    call TriggerAddAction(gg_trg_HealingWaters_Cure,function Trig_HealingWaters_Cure_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HealingWaters_CureBlood takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HealingWaters_CureBlood=CreateTrigger()
-
-call DisableTrigger(gg_trg_HealingWaters_CureBlood)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_CureBlood,450.,gg_unit_H00T_0185)
-
-call TriggerAddCondition(gg_trg_HealingWaters_CureBlood,Condition(function Trig_HealingWaters_CureBlood_Conditions))
-
-call TriggerAddAction(gg_trg_HealingWaters_CureBlood,function Trig_HealingWaters_CureBlood_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HealingWaters_CureBlood=CreateTrigger()
+    call DisableTrigger(gg_trg_HealingWaters_CureBlood)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_HealingWaters_CureBlood,450.,gg_unit_H00T_0185)
+    call TriggerAddCondition(gg_trg_HealingWaters_CureBlood,Condition(function Trig_HealingWaters_CureBlood_Conditions))
+    call TriggerAddAction(gg_trg_HealingWaters_CureBlood,function Trig_HealingWaters_CureBlood_Actions)
 endfunction
 
 

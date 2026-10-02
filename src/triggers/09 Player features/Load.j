@@ -202,40 +202,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Load takes nothing returns nothing
 endfunction
-
 function RegisterR11_Load_Warn_5Min takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Load_Warn_5Min=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Load_Warn_5Min,600.)
-
-call TriggerAddAction(gg_trg_Load_Warn_5Min,function Trig_Load_Warn_5Min_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Load_Warn_5Min=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Load_Warn_5Min,600.)
+    call TriggerAddAction(gg_trg_Load_Warn_5Min,function Trig_Load_Warn_5Min_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Load_Disable takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Load_Disable=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Load_Disable,900.)
-
-call TriggerAddAction(gg_trg_Load_Disable,function Trig_Load_Disable_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Load_Disable=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Load_Disable,900.)
+    call TriggerAddAction(gg_trg_Load_Disable,function Trig_Load_Disable_Actions)
 endfunction
 
 

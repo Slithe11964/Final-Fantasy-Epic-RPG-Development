@@ -345,109 +345,51 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Gilgamesh takes nothing returns nothing
 endfunction
-
 function RegisterR11_Gilgamesh_Gift takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gilgamesh_Gift=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Gilgamesh_Gift,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Gilgamesh_Gift,Condition(function Trig_Gilgamesh_Gift_Conditions))
-
-call TriggerAddAction(gg_trg_Gilgamesh_Gift,function Trig_Gilgamesh_Gift_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gilgamesh_Gift=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gilgamesh_Gift,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Gilgamesh_Gift,Condition(function Trig_Gilgamesh_Gift_Conditions))
+    call TriggerAddAction(gg_trg_Gilgamesh_Gift,function Trig_Gilgamesh_Gift_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gilgamesh_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gilgamesh_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Gilgamesh_Init,function Trig_Gilgamesh_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gilgamesh_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Gilgamesh_Init,function Trig_Gilgamesh_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gilgamesh_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gilgamesh_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_Gilgamesh_Appear)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Gilgamesh_Appear,128.,gg_unit_N03D_0165)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Gilgamesh_Appear,gg_rct_478)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Gilgamesh_Appear,gg_rct_479)
-
-call TriggerAddCondition(gg_trg_Gilgamesh_Appear,Condition(function Trig_Gilgamesh_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_Gilgamesh_Appear,function Trig_Gilgamesh_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gilgamesh_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_Gilgamesh_Appear)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Gilgamesh_Appear,128.,gg_unit_N03D_0165)
+    call TriggerRegisterEnterRectSimple(gg_trg_Gilgamesh_Appear,gg_rct_478)
+    call TriggerRegisterEnterRectSimple(gg_trg_Gilgamesh_Appear,gg_rct_479)
+    call TriggerAddCondition(gg_trg_Gilgamesh_Appear,Condition(function Trig_Gilgamesh_Appear_Conditions))
+    call TriggerAddAction(gg_trg_Gilgamesh_Appear,function Trig_Gilgamesh_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gilgamesh_Phase2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gilgamesh_Phase2=CreateTrigger()
-
-call DisableTrigger(gg_trg_Gilgamesh_Phase2)
-
-call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Phase2,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Gilgamesh_Phase2,function Trig_Gilgamesh_Phase2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gilgamesh_Phase2=CreateTrigger()
+    call DisableTrigger(gg_trg_Gilgamesh_Phase2)
+    call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Phase2,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Gilgamesh_Phase2,function Trig_Gilgamesh_Phase2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gilgamesh_Defeat takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gilgamesh_Defeat=CreateTrigger()
-
-call DisableTrigger(gg_trg_Gilgamesh_Defeat)
-
-call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Defeat,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Gilgamesh_Defeat,function Trig_Gilgamesh_Defeat_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gilgamesh_Defeat=CreateTrigger()
+    call DisableTrigger(gg_trg_Gilgamesh_Defeat)
+    call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Defeat,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Gilgamesh_Defeat,function Trig_Gilgamesh_Defeat_Actions)
 endfunction
 
 

@@ -154,63 +154,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Multiboard takes nothing returns nothing
 endfunction
-
 function RegisterR11_Multiboard_Create takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Multiboard_Create=CreateTrigger()
-
-call DisableTrigger(gg_trg_Multiboard_Create)
-
-call TriggerAddAction(gg_trg_Multiboard_Create,function Trig_Multiboard_Create_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Multiboard_Create=CreateTrigger()
+    call DisableTrigger(gg_trg_Multiboard_Create)
+    call TriggerAddAction(gg_trg_Multiboard_Create,function Trig_Multiboard_Create_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Multiboard_Refresh takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Multiboard_Refresh=CreateTrigger()
-
-call DisableTrigger(gg_trg_Multiboard_Refresh)
-
-call TriggerRegisterTimerEvent(gg_trg_Multiboard_Refresh,2.,true)
-
-call TriggerAddAction(gg_trg_Multiboard_Refresh,function Trig_Multiboard_Refresh_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Multiboard_Refresh=CreateTrigger()
+    call DisableTrigger(gg_trg_Multiboard_Refresh)
+    call TriggerRegisterTimerEvent(gg_trg_Multiboard_Refresh,2.,true)
+    call TriggerAddAction(gg_trg_Multiboard_Refresh,function Trig_Multiboard_Refresh_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Multiboard_Title takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Multiboard_Title=CreateTrigger()
-
-call DisableTrigger(gg_trg_Multiboard_Title)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Multiboard_Title,1.)
-
-call TriggerAddAction(gg_trg_Multiboard_Title,function Trig_Multiboard_Title_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Multiboard_Title=CreateTrigger()
+    call DisableTrigger(gg_trg_Multiboard_Title)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Multiboard_Title,1.)
+    call TriggerAddAction(gg_trg_Multiboard_Title,function Trig_Multiboard_Title_Actions)
 endfunction
 
 

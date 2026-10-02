@@ -33,23 +33,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_QuestCount takes nothing returns nothing
 endfunction
-
 function RegisterR11_QuestCount_Milestones takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_QuestCount_Milestones=CreateTrigger()
-
-call DisableTrigger(gg_trg_QuestCount_Milestones)
-
-call TriggerAddCondition(gg_trg_QuestCount_Milestones,Condition(function Trig_QuestCount_Milestones_Conditions))
-
-call TriggerAddAction(gg_trg_QuestCount_Milestones,function Trig_QuestCount_Milestones_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_QuestCount_Milestones=CreateTrigger()
+    call DisableTrigger(gg_trg_QuestCount_Milestones)
+    call TriggerAddCondition(gg_trg_QuestCount_Milestones,Condition(function Trig_QuestCount_Milestones_Conditions))
+    call TriggerAddAction(gg_trg_QuestCount_Milestones,function Trig_QuestCount_Milestones_Actions)
 endfunction
 
 

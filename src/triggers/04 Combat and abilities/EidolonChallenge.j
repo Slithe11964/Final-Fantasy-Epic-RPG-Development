@@ -18,19 +18,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_EidolonChallenge takes nothing returns nothing
 endfunction
-
 function RegisterR11_EidolonChallenge_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_EidolonChallenge_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_EidolonChallenge_Setup,function Trig_EidolonChallenge_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_EidolonChallenge_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_EidolonChallenge_Setup,function Trig_EidolonChallenge_Setup_Actions)
 endfunction
 
 

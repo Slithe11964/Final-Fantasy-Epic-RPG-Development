@@ -35,39 +35,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_PhantomDiary takes nothing returns nothing
 endfunction
-
 function RegisterR11_PhantomDiary_Open takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PhantomDiary_Open=CreateTrigger()
-
-call DisableTrigger(gg_trg_PhantomDiary_Open)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(7),true)
-
-call TriggerAddCondition(gg_trg_PhantomDiary_Open,Condition(function Trig_PhantomDiary_Open_Conditions))
-
-call TriggerAddAction(gg_trg_PhantomDiary_Open,function Trig_PhantomDiary_Open_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PhantomDiary_Open=CreateTrigger()
+    call DisableTrigger(gg_trg_PhantomDiary_Open)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(7),true)
+    call TriggerAddCondition(gg_trg_PhantomDiary_Open,Condition(function Trig_PhantomDiary_Open_Conditions))
+    call TriggerAddAction(gg_trg_PhantomDiary_Open,function Trig_PhantomDiary_Open_Actions)
 endfunction
 
 

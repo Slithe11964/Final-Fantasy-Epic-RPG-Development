@@ -30,25 +30,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkTitan takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkTitan_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkTitan_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkTitan_Appear)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_DarkTitan_Appear,400.,gg_unit_H01U_0040)
-
-call TriggerAddCondition(gg_trg_DarkTitan_Appear,Condition(function Trig_DarkTitan_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkTitan_Appear,function Trig_DarkTitan_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkTitan_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkTitan_Appear)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_DarkTitan_Appear,400.,gg_unit_H01U_0040)
+    call TriggerAddCondition(gg_trg_DarkTitan_Appear,Condition(function Trig_DarkTitan_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkTitan_Appear,function Trig_DarkTitan_Appear_Actions)
 endfunction
 
 

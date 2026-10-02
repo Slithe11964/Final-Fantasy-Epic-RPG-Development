@@ -12,19 +12,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Tonberry takes nothing returns nothing
 endfunction
-
 function RegisterR11_Tonberry_Gate_Open takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Tonberry_Gate_Open=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Tonberry_Gate_Open,function Trig_Tonberry_Gate_Open_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Tonberry_Gate_Open=CreateTrigger()
+    call TriggerAddAction(gg_trg_Tonberry_Gate_Open,function Trig_Tonberry_Gate_Open_Actions)
 endfunction
 
 

@@ -273,21 +273,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Passive takes nothing returns nothing
 endfunction
-
 function RegisterR11_Passive_Bonus_Sync takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Passive_Bonus_Sync=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Passive_Bonus_Sync,udg_StatsRefreshTimer)
-
-call TriggerAddAction(gg_trg_Passive_Bonus_Sync,function Trig_Passive_Bonus_Sync_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Passive_Bonus_Sync=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Passive_Bonus_Sync,udg_StatsRefreshTimer)
+    call TriggerAddAction(gg_trg_Passive_Bonus_Sync,function Trig_Passive_Bonus_Sync_Actions)
 endfunction
 
 

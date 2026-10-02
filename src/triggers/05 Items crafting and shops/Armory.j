@@ -1116,162 +1116,73 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Armory takes nothing returns nothing
 endfunction
-
 function RegisterR11_Armory_Item_List takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Item_List=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Armory_Item_List,2.)
-
-call TriggerAddAction(gg_trg_Armory_Item_List,function Trig_Armory_Item_List_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Item_List=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Armory_Item_List,2.)
+    call TriggerAddAction(gg_trg_Armory_Item_List,function Trig_Armory_Item_List_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Item_Hash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Item_Hash=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Armory_Item_Hash,function Trig_Armory_Item_Hash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Item_Hash=CreateTrigger()
+    call TriggerAddAction(gg_trg_Armory_Item_Hash,function Trig_Armory_Item_Hash_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Armory_Init,8.)
-
-call TriggerAddAction(gg_trg_Armory_Init,function Trig_Armory_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Armory_Init,8.)
+    call TriggerAddAction(gg_trg_Armory_Init,function Trig_Armory_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Open takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Open=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Open,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Armory_Open,Condition(function Trig_Armory_Open_Conditions))
-
-call TriggerAddAction(gg_trg_Armory_Open,function Trig_Armory_Open_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Open=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Open,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Armory_Open,Condition(function Trig_Armory_Open_Conditions))
+    call TriggerAddAction(gg_trg_Armory_Open,function Trig_Armory_Open_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Select takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Select=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Select,EVENT_PLAYER_UNIT_SELL)
-
-call TriggerAddCondition(gg_trg_Armory_Select,Condition(function Trig_Armory_Select_Conditions))
-
-call TriggerAddAction(gg_trg_Armory_Select,function Trig_Armory_Select_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Select=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Select,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Armory_Select,Condition(function Trig_Armory_Select_Conditions))
+    call TriggerAddAction(gg_trg_Armory_Select,function Trig_Armory_Select_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Back takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Back=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Back,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Armory_Back,Condition(function Trig_Armory_Back_Conditions))
-
-call TriggerAddAction(gg_trg_Armory_Back,function Trig_Armory_Back_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Back=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Back,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Armory_Back,Condition(function Trig_Armory_Back_Conditions))
+    call TriggerAddAction(gg_trg_Armory_Back,function Trig_Armory_Back_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Closed takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Closed=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Closed,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Armory_Closed,Condition(function Trig_Armory_Closed_Conditions))
-
-call TriggerAddAction(gg_trg_Armory_Closed,function Trig_Armory_Closed_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Closed=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Closed,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Armory_Closed,Condition(function Trig_Armory_Closed_Conditions))
+    call TriggerAddAction(gg_trg_Armory_Closed,function Trig_Armory_Closed_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Armory_Store_Item takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Armory_Store_Item=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Store_Item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Armory_Store_Item,Condition(function Trig_Armory_Store_Item_Conditions))
-
-call TriggerAddAction(gg_trg_Armory_Store_Item,function Trig_Armory_Store_Item_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Armory_Store_Item=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Armory_Store_Item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Armory_Store_Item,Condition(function Trig_Armory_Store_Item_Conditions))
+    call TriggerAddAction(gg_trg_Armory_Store_Item,function Trig_Armory_Store_Item_Actions)
 endfunction
 
 

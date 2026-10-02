@@ -193,136 +193,66 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Nimphrodel takes nothing returns nothing
 endfunction
-
 function RegisterR11_Nimphrodel_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nimphrodel_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nimphrodel_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Nimphrodel_Start,Condition(function Trig_Nimphrodel_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Nimphrodel_Start,function Trig_Nimphrodel_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nimphrodel_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Nimphrodel_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Nimphrodel_Start,Condition(function Trig_Nimphrodel_Start_Conditions))
+    call TriggerAddAction(gg_trg_Nimphrodel_Start,function Trig_Nimphrodel_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nimphrodel_Meet takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nimphrodel_Meet=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nimphrodel_Meet)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Nimphrodel_Meet,Condition(function Trig_Nimphrodel_Meet_Conditions))
-
-call TriggerAddAction(gg_trg_Nimphrodel_Meet,function Trig_Nimphrodel_Meet_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nimphrodel_Meet=CreateTrigger()
+    call DisableTrigger(gg_trg_Nimphrodel_Meet)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(7),true)
+    call TriggerAddCondition(gg_trg_Nimphrodel_Meet,Condition(function Trig_Nimphrodel_Meet_Conditions))
+    call TriggerAddAction(gg_trg_Nimphrodel_Meet,function Trig_Nimphrodel_Meet_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nimphrodel_Undomiel takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nimphrodel_Undomiel=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nimphrodel_Undomiel)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Nimphrodel_Undomiel,Condition(function Trig_Nimphrodel_Undomiel_Conditions))
-
-call TriggerAddAction(gg_trg_Nimphrodel_Undomiel,function Trig_Nimphrodel_Undomiel_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nimphrodel_Undomiel=CreateTrigger()
+    call DisableTrigger(gg_trg_Nimphrodel_Undomiel)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(7),true)
+    call TriggerAddCondition(gg_trg_Nimphrodel_Undomiel,Condition(function Trig_Nimphrodel_Undomiel_Conditions))
+    call TriggerAddAction(gg_trg_Nimphrodel_Undomiel,function Trig_Nimphrodel_Undomiel_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Nimphrodel_Complete takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Nimphrodel_Complete=CreateTrigger()
-
-call DisableTrigger(gg_trg_Nimphrodel_Complete)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Nimphrodel_Complete,450.,gg_unit_E004_0190)
-
-call TriggerAddCondition(gg_trg_Nimphrodel_Complete,Condition(function Trig_Nimphrodel_Complete_Conditions))
-
-call TriggerAddAction(gg_trg_Nimphrodel_Complete,function Trig_Nimphrodel_Complete_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Nimphrodel_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Nimphrodel_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Nimphrodel_Complete,450.,gg_unit_E004_0190)
+    call TriggerAddCondition(gg_trg_Nimphrodel_Complete,Condition(function Trig_Nimphrodel_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Nimphrodel_Complete,function Trig_Nimphrodel_Complete_Actions)
 endfunction
 
 

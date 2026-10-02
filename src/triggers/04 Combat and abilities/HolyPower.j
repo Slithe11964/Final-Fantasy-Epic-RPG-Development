@@ -62,46 +62,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HolyPower takes nothing returns nothing
 endfunction
-
 function RegisterR11_HolyPower_Mastery_Track takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HolyPower_Mastery_Track=CreateTrigger()
-
-call DisableTrigger(gg_trg_HolyPower_Mastery_Track)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Track,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_HolyPower_Mastery_Track,Condition(function Trig_HolyPower_Mastery_Track_Conditions))
-
-call TriggerAddAction(gg_trg_HolyPower_Mastery_Track,function Trig_HolyPower_Mastery_Track_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HolyPower_Mastery_Track=CreateTrigger()
+    call DisableTrigger(gg_trg_HolyPower_Mastery_Track)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Track,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_HolyPower_Mastery_Track,Condition(function Trig_HolyPower_Mastery_Track_Conditions))
+    call TriggerAddAction(gg_trg_HolyPower_Mastery_Track,function Trig_HolyPower_Mastery_Track_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HolyPower_Mastery_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HolyPower_Mastery_Start=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_HolyPower_Mastery_Start,Condition(function Trig_HolyPower_Mastery_Start_Conditions))
-
-call TriggerAddAction(gg_trg_HolyPower_Mastery_Start,function Trig_HolyPower_Mastery_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HolyPower_Mastery_Start=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_HolyPower_Mastery_Start,Condition(function Trig_HolyPower_Mastery_Start_Conditions))
+    call TriggerAddAction(gg_trg_HolyPower_Mastery_Start,function Trig_HolyPower_Mastery_Start_Actions)
 endfunction
 
 

@@ -173,59 +173,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BlazingDemon takes nothing returns nothing
 endfunction
-
 function RegisterR11_BlazingDemon_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BlazingDemon_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_BlazingDemon_Hide,function Trig_BlazingDemon_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BlazingDemon_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_BlazingDemon_Hide,function Trig_BlazingDemon_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BlazingDemon_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BlazingDemon_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_BlazingDemon_Appear)
-
-call TriggerAddAction(gg_trg_BlazingDemon_Appear,function Trig_BlazingDemon_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BlazingDemon_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_BlazingDemon_Appear)
+    call TriggerAddAction(gg_trg_BlazingDemon_Appear,function Trig_BlazingDemon_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BlazingDemon_FullHeat takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BlazingDemon_FullHeat=CreateTrigger()
-
-call DisableTrigger(gg_trg_BlazingDemon_FullHeat)
-
-call TriggerRegisterUnitEvent(gg_trg_BlazingDemon_FullHeat,gg_unit_U00G_0220,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_BlazingDemon_FullHeat,function Trig_BlazingDemon_FullHeat_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BlazingDemon_FullHeat=CreateTrigger()
+    call DisableTrigger(gg_trg_BlazingDemon_FullHeat)
+    call TriggerRegisterUnitEvent(gg_trg_BlazingDemon_FullHeat,gg_unit_U00G_0220,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_BlazingDemon_FullHeat,function Trig_BlazingDemon_FullHeat_Actions)
 endfunction
 
 

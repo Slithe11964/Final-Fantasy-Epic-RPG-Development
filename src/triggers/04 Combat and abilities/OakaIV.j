@@ -109,113 +109,53 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_OakaIV takes nothing returns nothing
 endfunction
-
 function RegisterR11_OakaIV_CutTrees takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OakaIV_CutTrees=CreateTrigger()
-
-call DisableTrigger(gg_trg_OakaIV_CutTrees)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_OakaIV_CutTrees,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_OakaIV_CutTrees,Condition(function Trig_OakaIV_CutTrees_Conditions))
-
-call TriggerAddAction(gg_trg_OakaIV_CutTrees,function Trig_OakaIV_CutTrees_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OakaIV_CutTrees=CreateTrigger()
+    call DisableTrigger(gg_trg_OakaIV_CutTrees)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_OakaIV_CutTrees,Player(8),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_OakaIV_CutTrees,Condition(function Trig_OakaIV_CutTrees_Conditions))
+    call TriggerAddAction(gg_trg_OakaIV_CutTrees,function Trig_OakaIV_CutTrees_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OakaIV_ReachNorthTree takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OakaIV_ReachNorthTree=CreateTrigger()
-
-call DisableTrigger(gg_trg_OakaIV_ReachNorthTree)
-
-call TriggerRegisterEnterRectSimple(gg_trg_OakaIV_ReachNorthTree,gg_rct_490)
-
-call TriggerAddCondition(gg_trg_OakaIV_ReachNorthTree,Condition(function Trig_OakaIV_ReachNorthTree_Conditions))
-
-call TriggerAddAction(gg_trg_OakaIV_ReachNorthTree,function Trig_OakaIV_ReachNorthTree_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OakaIV_ReachNorthTree=CreateTrigger()
+    call DisableTrigger(gg_trg_OakaIV_ReachNorthTree)
+    call TriggerRegisterEnterRectSimple(gg_trg_OakaIV_ReachNorthTree,gg_rct_490)
+    call TriggerAddCondition(gg_trg_OakaIV_ReachNorthTree,Condition(function Trig_OakaIV_ReachNorthTree_Conditions))
+    call TriggerAddAction(gg_trg_OakaIV_ReachNorthTree,function Trig_OakaIV_ReachNorthTree_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OakaIV_ReachSouthTree takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OakaIV_ReachSouthTree=CreateTrigger()
-
-call DisableTrigger(gg_trg_OakaIV_ReachSouthTree)
-
-call TriggerRegisterEnterRectSimple(gg_trg_OakaIV_ReachSouthTree,gg_rct_491)
-
-call TriggerAddCondition(gg_trg_OakaIV_ReachSouthTree,Condition(function Trig_OakaIV_ReachSouthTree_Conditions))
-
-call TriggerAddAction(gg_trg_OakaIV_ReachSouthTree,function Trig_OakaIV_ReachSouthTree_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OakaIV_ReachSouthTree=CreateTrigger()
+    call DisableTrigger(gg_trg_OakaIV_ReachSouthTree)
+    call TriggerRegisterEnterRectSimple(gg_trg_OakaIV_ReachSouthTree,gg_rct_491)
+    call TriggerAddCondition(gg_trg_OakaIV_ReachSouthTree,Condition(function Trig_OakaIV_ReachSouthTree_Conditions))
+    call TriggerAddAction(gg_trg_OakaIV_ReachSouthTree,function Trig_OakaIV_ReachSouthTree_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OakaIV_NorthTreeFelled takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OakaIV_NorthTreeFelled=CreateTrigger()
-
-call DisableTrigger(gg_trg_OakaIV_NorthTreeFelled)
-
-call TriggerRegisterDeathEvent(gg_trg_OakaIV_NorthTreeFelled,gg_dest_B002_0040)
-
-call TriggerAddAction(gg_trg_OakaIV_NorthTreeFelled,function Trig_OakaIV_NorthTreeFelled_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OakaIV_NorthTreeFelled=CreateTrigger()
+    call DisableTrigger(gg_trg_OakaIV_NorthTreeFelled)
+    call TriggerRegisterDeathEvent(gg_trg_OakaIV_NorthTreeFelled,gg_dest_B002_0040)
+    call TriggerAddAction(gg_trg_OakaIV_NorthTreeFelled,function Trig_OakaIV_NorthTreeFelled_Actions)
 endfunction
-
-
-
-
 function RegisterR11_OakaIV_SouthTreeFelled takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_OakaIV_SouthTreeFelled=CreateTrigger()
-
-call DisableTrigger(gg_trg_OakaIV_SouthTreeFelled)
-
-call TriggerRegisterDeathEvent(gg_trg_OakaIV_SouthTreeFelled,gg_dest_B002_0026)
-
-call TriggerAddAction(gg_trg_OakaIV_SouthTreeFelled,function Trig_OakaIV_SouthTreeFelled_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_OakaIV_SouthTreeFelled=CreateTrigger()
+    call DisableTrigger(gg_trg_OakaIV_SouthTreeFelled)
+    call TriggerRegisterDeathEvent(gg_trg_OakaIV_SouthTreeFelled,gg_dest_B002_0026)
+    call TriggerAddAction(gg_trg_OakaIV_SouthTreeFelled,function Trig_OakaIV_SouthTreeFelled_Actions)
 endfunction
 
 

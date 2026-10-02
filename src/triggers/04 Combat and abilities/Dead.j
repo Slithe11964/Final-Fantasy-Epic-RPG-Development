@@ -57,21 +57,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Dead takes nothing returns nothing
 endfunction
-
 function RegisterR11_Dead_Hero_Item_Drop takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dead_Hero_Item_Drop=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Dead_Hero_Item_Drop,6.)
-
-call TriggerAddAction(gg_trg_Dead_Hero_Item_Drop,function Trig_Dead_Hero_Item_Drop_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dead_Hero_Item_Drop=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Dead_Hero_Item_Drop,6.)
+    call TriggerAddAction(gg_trg_Dead_Hero_Item_Drop,function Trig_Dead_Hero_Item_Drop_Actions)
 endfunction
 
 

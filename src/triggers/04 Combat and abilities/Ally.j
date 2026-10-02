@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ally takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ally_Death_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ally_Death_Cleanup=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ally_Death_Cleanup,Player(9),EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Ally_Death_Cleanup,Condition(function Trig_Ally_Death_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_Ally_Death_Cleanup,function Trig_Ally_Death_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ally_Death_Cleanup=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ally_Death_Cleanup,Player(9),EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Ally_Death_Cleanup,Condition(function Trig_Ally_Death_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Ally_Death_Cleanup,function Trig_Ally_Death_Cleanup_Actions)
 endfunction
 
 

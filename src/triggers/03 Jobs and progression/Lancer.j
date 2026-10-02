@@ -311,128 +311,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Lancer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Lancer_DragonBreath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_DragonBreath=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonBreath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Lancer_DragonBreath,Condition(function Trig_Lancer_DragonBreath_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_DragonBreath,function Trig_Lancer_DragonBreath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_DragonBreath=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonBreath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Lancer_DragonBreath,Condition(function Trig_Lancer_DragonBreath_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_DragonBreath,function Trig_Lancer_DragonBreath_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Lancer_DragonSlam takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_DragonSlam=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonSlam,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Lancer_DragonSlam,Condition(function Trig_Lancer_DragonSlam_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_DragonSlam,function Trig_Lancer_DragonSlam_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_DragonSlam=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonSlam,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Lancer_DragonSlam,Condition(function Trig_Lancer_DragonSlam_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_DragonSlam,function Trig_Lancer_DragonSlam_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Lancer_DragonAlly takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_DragonAlly=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonAlly,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Lancer_DragonAlly,Condition(function Trig_Lancer_DragonAlly_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_DragonAlly,function Trig_Lancer_DragonAlly_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_DragonAlly=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonAlly,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Lancer_DragonAlly,Condition(function Trig_Lancer_DragonAlly_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_DragonAlly,function Trig_Lancer_DragonAlly_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Lancer_Jump_RangeCheck takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_Jump_RangeCheck=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump_RangeCheck,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_Lancer_Jump_RangeCheck,Condition(function Trig_Lancer_Jump_RangeCheck_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_Jump_RangeCheck,function Trig_Lancer_Jump_RangeCheck_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_Jump_RangeCheck=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump_RangeCheck,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Lancer_Jump_RangeCheck,Condition(function Trig_Lancer_Jump_RangeCheck_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_Jump_RangeCheck,function Trig_Lancer_Jump_RangeCheck_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Lancer_Jump takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_Jump=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Lancer_Jump,Condition(function Trig_Lancer_Jump_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_Jump,function Trig_Lancer_Jump_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_Jump=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Lancer_Jump,Condition(function Trig_Lancer_Jump_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_Jump,function Trig_Lancer_Jump_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Lancer_Task_Dragons takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Lancer_Task_Dragons=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Lancer_Task_Dragons,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Lancer_Task_Dragons,Condition(function Trig_Lancer_Task_Dragons_Conditions))
-
-call TriggerAddAction(gg_trg_Lancer_Task_Dragons,function Trig_Lancer_Task_Dragons_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Lancer_Task_Dragons=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Lancer_Task_Dragons,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Lancer_Task_Dragons,Condition(function Trig_Lancer_Task_Dragons_Conditions))
+    call TriggerAddAction(gg_trg_Lancer_Task_Dragons,function Trig_Lancer_Task_Dragons_Actions)
 endfunction
 
 

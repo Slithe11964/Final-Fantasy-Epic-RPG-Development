@@ -449,126 +449,58 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Chemist takes nothing returns nothing
 endfunction
-
 function RegisterR11_Chemist_TakeItem takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_TakeItem=CreateTrigger()
-
-call DisableTrigger(gg_trg_Chemist_TakeItem)
-
-call TriggerAddAction(gg_trg_Chemist_TakeItem,function Trig_Chemist_TakeItem_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_TakeItem=CreateTrigger()
+    call DisableTrigger(gg_trg_Chemist_TakeItem)
+    call TriggerAddAction(gg_trg_Chemist_TakeItem,function Trig_Chemist_TakeItem_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chemist_Pharmacology takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_Pharmacology=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Pharmacology,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chemist_Pharmacology,Condition(function Trig_Chemist_Pharmacology_Conditions))
-
-call TriggerAddAction(gg_trg_Chemist_Pharmacology,function Trig_Chemist_Pharmacology_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_Pharmacology=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Pharmacology,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chemist_Pharmacology,Condition(function Trig_Chemist_Pharmacology_Conditions))
+    call TriggerAddAction(gg_trg_Chemist_Pharmacology,function Trig_Chemist_Pharmacology_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chemist_LearnAlchemy takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_LearnAlchemy=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_LearnAlchemy,EVENT_PLAYER_HERO_SKILL)
-
-call TriggerAddCondition(gg_trg_Chemist_LearnAlchemy,Condition(function Trig_Chemist_LearnAlchemy_Conditions))
-
-call TriggerAddAction(gg_trg_Chemist_LearnAlchemy,function Trig_Chemist_LearnAlchemy_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_LearnAlchemy=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_LearnAlchemy,EVENT_PLAYER_HERO_SKILL)
+    call TriggerAddCondition(gg_trg_Chemist_LearnAlchemy,Condition(function Trig_Chemist_LearnAlchemy_Conditions))
+    call TriggerAddAction(gg_trg_Chemist_LearnAlchemy,function Trig_Chemist_LearnAlchemy_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chemist_Brew takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_Brew=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Brew,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chemist_Brew,Condition(function Trig_Chemist_Brew_Conditions))
-
-call TriggerAddAction(gg_trg_Chemist_Brew,function Trig_Chemist_Brew_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_Brew=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Brew,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chemist_Brew,Condition(function Trig_Chemist_Brew_Conditions))
+    call TriggerAddAction(gg_trg_Chemist_Brew,function Trig_Chemist_Brew_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chemist_NoxiousMixture takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_NoxiousMixture=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_NoxiousMixture,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chemist_NoxiousMixture,Condition(function Trig_Chemist_NoxiousMixture_Conditions))
-
-call TriggerAddAction(gg_trg_Chemist_NoxiousMixture,function Trig_Chemist_NoxiousMixture_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_NoxiousMixture=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_NoxiousMixture,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chemist_NoxiousMixture,Condition(function Trig_Chemist_NoxiousMixture_Conditions))
+    call TriggerAddAction(gg_trg_Chemist_NoxiousMixture,function Trig_Chemist_NoxiousMixture_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Chemist_Molotov takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Chemist_Molotov=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Molotov,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Chemist_Molotov,Condition(function Trig_Chemist_Molotov_Conditions))
-
-call TriggerAddAction(gg_trg_Chemist_Molotov,function Trig_Chemist_Molotov_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Chemist_Molotov=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chemist_Molotov,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chemist_Molotov,Condition(function Trig_Chemist_Molotov_Conditions))
+    call TriggerAddAction(gg_trg_Chemist_Molotov,function Trig_Chemist_Molotov_Actions)
 endfunction
 
 

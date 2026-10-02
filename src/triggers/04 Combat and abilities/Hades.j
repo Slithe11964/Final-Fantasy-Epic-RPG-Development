@@ -132,23 +132,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Hades takes nothing returns nothing
 endfunction
-
 function RegisterR11_Hades_BlackCauldron takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Hades_BlackCauldron=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Hades_BlackCauldron,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Hades_BlackCauldron,Condition(function Trig_Hades_BlackCauldron_Conditions))
-
-call TriggerAddAction(gg_trg_Hades_BlackCauldron,function Trig_Hades_BlackCauldron_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Hades_BlackCauldron=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Hades_BlackCauldron,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Hades_BlackCauldron,Condition(function Trig_Hades_BlackCauldron_Conditions))
+    call TriggerAddAction(gg_trg_Hades_BlackCauldron,function Trig_Hades_BlackCauldron_Actions)
 endfunction
 
 

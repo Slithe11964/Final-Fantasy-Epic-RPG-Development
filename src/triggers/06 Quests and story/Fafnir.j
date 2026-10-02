@@ -111,199 +111,90 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Fafnir takes nothing returns nothing
 endfunction
-
 function RegisterR11_Fafnir_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Spawn=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Fafnir_Spawn,45.)
-
-call TriggerAddAction(gg_trg_Fafnir_Spawn,function Trig_Fafnir_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Spawn=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Fafnir_Spawn,45.)
+    call TriggerAddAction(gg_trg_Fafnir_Spawn,function Trig_Fafnir_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Patrol_Move takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Patrol_Move=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Fafnir_Patrol_Move,udg_FafnirPatrolTimer)
-
-call TriggerAddAction(gg_trg_Fafnir_Patrol_Move,function Trig_Fafnir_Patrol_Move_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Patrol_Move=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Fafnir_Patrol_Move,udg_FafnirPatrolTimer)
+    call TriggerAddAction(gg_trg_Fafnir_Patrol_Move,function Trig_Fafnir_Patrol_Move_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Patrol_Waypoint1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Patrol_Waypoint1=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint1)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint1,gg_rct_676)
-
-call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint1,Condition(function Trig_Fafnir_Patrol_Waypoint1_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint1,function Trig_Fafnir_Patrol_Waypoint1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Patrol_Waypoint1=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint1)
+    call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint1,gg_rct_676)
+    call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint1,Condition(function Trig_Fafnir_Patrol_Waypoint1_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint1,function Trig_Fafnir_Patrol_Waypoint1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Patrol_Waypoint2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Patrol_Waypoint2=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint2)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint2,gg_rct_677)
-
-call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint2,Condition(function Trig_Fafnir_Patrol_Waypoint2_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint2,function Trig_Fafnir_Patrol_Waypoint2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Patrol_Waypoint2=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint2)
+    call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint2,gg_rct_677)
+    call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint2,Condition(function Trig_Fafnir_Patrol_Waypoint2_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint2,function Trig_Fafnir_Patrol_Waypoint2_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Patrol_Waypoint3 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Patrol_Waypoint3=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint3)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint3,gg_rct_678)
-
-call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint3,Condition(function Trig_Fafnir_Patrol_Waypoint3_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint3,function Trig_Fafnir_Patrol_Waypoint3_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Patrol_Waypoint3=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint3)
+    call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint3,gg_rct_678)
+    call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint3,Condition(function Trig_Fafnir_Patrol_Waypoint3_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint3,function Trig_Fafnir_Patrol_Waypoint3_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Patrol_Waypoint0 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Patrol_Waypoint0=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint0)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint0,gg_rct_679)
-
-call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint0,Condition(function Trig_Fafnir_Patrol_Waypoint0_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint0,function Trig_Fafnir_Patrol_Waypoint0_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Patrol_Waypoint0=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint0)
+    call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint0,gg_rct_679)
+    call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint0,Condition(function Trig_Fafnir_Patrol_Waypoint0_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint0,function Trig_Fafnir_Patrol_Waypoint0_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Attack_Delay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Attack_Delay=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Attack_Delay)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fafnir_Attack_Delay,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Fafnir_Attack_Delay,Condition(function Trig_Fafnir_Attack_Delay_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Attack_Delay,function Trig_Fafnir_Attack_Delay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Attack_Delay=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Attack_Delay)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fafnir_Attack_Delay,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Fafnir_Attack_Delay,Condition(function Trig_Fafnir_Attack_Delay_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Attack_Delay,function Trig_Fafnir_Attack_Delay_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_LowLife_Credit takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_LowLife_Credit=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_LowLife_Credit)
-
-call TriggerAddCondition(gg_trg_Fafnir_LowLife_Credit,Condition(function Trig_Fafnir_LowLife_Credit_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_LowLife_Credit,function Trig_Fafnir_LowLife_Credit_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_LowLife_Credit=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_LowLife_Credit)
+    call TriggerAddCondition(gg_trg_Fafnir_LowLife_Credit,Condition(function Trig_Fafnir_LowLife_Credit_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_LowLife_Credit,function Trig_Fafnir_LowLife_Credit_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Fafnir_Battle_Begin takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fafnir_Battle_Begin=CreateTrigger()
-
-call DisableTrigger(gg_trg_Fafnir_Battle_Begin)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Fafnir_Battle_Begin,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Fafnir_Battle_Begin,Condition(function Trig_Fafnir_Battle_Begin_Conditions))
-
-call TriggerAddAction(gg_trg_Fafnir_Battle_Begin,function Trig_Fafnir_Battle_Begin_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fafnir_Battle_Begin=CreateTrigger()
+    call DisableTrigger(gg_trg_Fafnir_Battle_Begin)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Fafnir_Battle_Begin,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Fafnir_Battle_Begin,Condition(function Trig_Fafnir_Battle_Begin_Conditions))
+    call TriggerAddAction(gg_trg_Fafnir_Battle_Begin,function Trig_Fafnir_Battle_Begin_Actions)
 endfunction
 
 

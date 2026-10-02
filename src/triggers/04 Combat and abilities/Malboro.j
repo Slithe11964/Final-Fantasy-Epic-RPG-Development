@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Malboro takes nothing returns nothing
 endfunction
-
 function RegisterR11_Malboro_BadBreath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Malboro_BadBreath=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Malboro_BadBreath,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Malboro_BadBreath,Condition(function Trig_Malboro_BadBreath_Conditions))
-
-call TriggerAddAction(gg_trg_Malboro_BadBreath,function Trig_Malboro_BadBreath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Malboro_BadBreath=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Malboro_BadBreath,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Malboro_BadBreath,Condition(function Trig_Malboro_BadBreath_Conditions))
+    call TriggerAddAction(gg_trg_Malboro_BadBreath,function Trig_Malboro_BadBreath_Actions)
 endfunction
 
 

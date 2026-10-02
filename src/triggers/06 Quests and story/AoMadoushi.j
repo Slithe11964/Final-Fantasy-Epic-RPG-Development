@@ -27,42 +27,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AoMadoushi takes nothing returns nothing
 endfunction
-
 function RegisterR11_AoMadoushi_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AoMadoushi_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_AoMadoushi_Hide,function Trig_AoMadoushi_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AoMadoushi_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_AoMadoushi_Hide,function Trig_AoMadoushi_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_AoMadoushi_Summon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AoMadoushi_Summon=CreateTrigger()
-
-call DisableTrigger(gg_trg_AoMadoushi_Summon)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_AoMadoushi_Summon,450.,gg_unit_Othr_0106)
-
-call TriggerAddCondition(gg_trg_AoMadoushi_Summon,Condition(function Trig_AoMadoushi_Summon_Conditions))
-
-call TriggerAddAction(gg_trg_AoMadoushi_Summon,function Trig_AoMadoushi_Summon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AoMadoushi_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_AoMadoushi_Summon)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_AoMadoushi_Summon,450.,gg_unit_Othr_0106)
+    call TriggerAddCondition(gg_trg_AoMadoushi_Summon,Condition(function Trig_AoMadoushi_Summon_Conditions))
+    call TriggerAddAction(gg_trg_AoMadoushi_Summon,function Trig_AoMadoushi_Summon_Actions)
 endfunction
 
 

@@ -54,55 +54,30 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkEidolon takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkEidolon_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEidolon_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkEidolon_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_E00C_0046,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01S_0045,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01T_0044,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_E00D_0043,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01V_0041,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_U00B_0042,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01U_0040,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01Z_0036,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01N_0035,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H021_0034,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_O00B_0032,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_O00A_0033,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_N02Z_0031,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01W_0039,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01X_0038,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01Y_0037,EVENT_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_DarkEidolon_Death,Condition(function Trig_DarkEidolon_Death_Conditions))
-
-call TriggerAddAction(gg_trg_DarkEidolon_Death,function Trig_DarkEidolon_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEidolon_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkEidolon_Death)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_E00C_0046,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01S_0045,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01T_0044,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_E00D_0043,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01V_0041,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_U00B_0042,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01U_0040,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01Z_0036,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01N_0035,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H021_0034,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_O00B_0032,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_O00A_0033,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_N02Z_0031,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01W_0039,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01X_0038,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_H01Y_0037,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_DarkEidolon_Death,Condition(function Trig_DarkEidolon_Death_Conditions))
+    call TriggerAddAction(gg_trg_DarkEidolon_Death,function Trig_DarkEidolon_Death_Actions)
 endfunction
 
 

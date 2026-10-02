@@ -465,124 +465,57 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shemhazai takes nothing returns nothing
 endfunction
-
 function RegisterR11_Shemhazai_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Shemhazai_Prepare,function Trig_Shemhazai_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Shemhazai_Prepare,function Trig_Shemhazai_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shemhazai_Appears takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_Appears=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shemhazai_Appears)
-
-call TriggerRegisterUnitEvent(gg_trg_Shemhazai_Appears,gg_unit_nbfl_0170,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Shemhazai_Appears,function Trig_Shemhazai_Appears_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_Appears=CreateTrigger()
+    call DisableTrigger(gg_trg_Shemhazai_Appears)
+    call TriggerRegisterUnitEvent(gg_trg_Shemhazai_Appears,gg_unit_nbfl_0170,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Shemhazai_Appears,function Trig_Shemhazai_Appears_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shemhazai_Spawn_SoulClones takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_Spawn_SoulClones=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shemhazai_Spawn_SoulClones)
-
-call TriggerAddAction(gg_trg_Shemhazai_Spawn_SoulClones,function Trig_Shemhazai_Spawn_SoulClones_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_Spawn_SoulClones=CreateTrigger()
+    call DisableTrigger(gg_trg_Shemhazai_Spawn_SoulClones)
+    call TriggerAddAction(gg_trg_Shemhazai_Spawn_SoulClones,function Trig_Shemhazai_Spawn_SoulClones_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shemhazai_SurpriseMechanic takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_SurpriseMechanic=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SurpriseMechanic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Shemhazai_SurpriseMechanic,Condition(function Trig_Shemhazai_SurpriseMechanic_Conditions))
-
-call TriggerAddAction(gg_trg_Shemhazai_SurpriseMechanic,function Trig_Shemhazai_SurpriseMechanic_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_SurpriseMechanic=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SurpriseMechanic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shemhazai_SurpriseMechanic,Condition(function Trig_Shemhazai_SurpriseMechanic_Conditions))
+    call TriggerAddAction(gg_trg_Shemhazai_SurpriseMechanic,function Trig_Shemhazai_SurpriseMechanic_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shemhazai_Phase2_Cuchulainn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_Phase2_Cuchulainn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Shemhazai_Phase2_Cuchulainn)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shemhazai_Phase2_Cuchulainn,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Shemhazai_Phase2_Cuchulainn,Condition(function Trig_Shemhazai_Phase2_Cuchulainn_Conditions))
-
-call TriggerAddAction(gg_trg_Shemhazai_Phase2_Cuchulainn,function Trig_Shemhazai_Phase2_Cuchulainn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_Phase2_Cuchulainn=CreateTrigger()
+    call DisableTrigger(gg_trg_Shemhazai_Phase2_Cuchulainn)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shemhazai_Phase2_Cuchulainn,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Shemhazai_Phase2_Cuchulainn,Condition(function Trig_Shemhazai_Phase2_Cuchulainn_Conditions))
+    call TriggerAddAction(gg_trg_Shemhazai_Phase2_Cuchulainn,function Trig_Shemhazai_Phase2_Cuchulainn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Shemhazai_SoulSplit takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Shemhazai_SoulSplit=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SoulSplit,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Shemhazai_SoulSplit,Condition(function Trig_Shemhazai_SoulSplit_Conditions))
-
-call TriggerAddAction(gg_trg_Shemhazai_SoulSplit,function Trig_Shemhazai_SoulSplit_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Shemhazai_SoulSplit=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SoulSplit,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shemhazai_SoulSplit,Condition(function Trig_Shemhazai_SoulSplit_Conditions))
+    call TriggerAddAction(gg_trg_Shemhazai_SoulSplit,function Trig_Shemhazai_SoulSplit_Actions)
 endfunction
 
 

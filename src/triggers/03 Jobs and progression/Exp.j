@@ -249,23 +249,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Exp takes nothing returns nothing
 endfunction
-
 function RegisterR11_Exp_Distribution takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exp_Distribution=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Exp_Distribution,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Exp_Distribution,Condition(function Trig_Exp_Distribution_Conditions))
-
-call TriggerAddAction(gg_trg_Exp_Distribution,function Trig_Exp_Distribution_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exp_Distribution=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Exp_Distribution,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Exp_Distribution,Condition(function Trig_Exp_Distribution_Conditions))
+    call TriggerAddAction(gg_trg_Exp_Distribution,function Trig_Exp_Distribution_Actions)
 endfunction
 
 

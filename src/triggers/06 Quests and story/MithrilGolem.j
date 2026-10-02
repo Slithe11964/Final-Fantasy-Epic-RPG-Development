@@ -189,102 +189,49 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MithrilGolem takes nothing returns nothing
 endfunction
-
 function RegisterR11_MithrilGolem_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MithrilGolem_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_MithrilGolem_Prepare)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_MithrilGolem_Prepare,udg_SharedDelayTimer1)
-
-call TriggerAddAction(gg_trg_MithrilGolem_Prepare,function Trig_MithrilGolem_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MithrilGolem_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_MithrilGolem_Prepare)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_MithrilGolem_Prepare,udg_SharedDelayTimer1)
+    call TriggerAddAction(gg_trg_MithrilGolem_Prepare,function Trig_MithrilGolem_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MithrilGolem_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MithrilGolem_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_MithrilGolem_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_MithrilGolem_Start,Condition(function Trig_MithrilGolem_Start_Conditions))
-
-call TriggerAddAction(gg_trg_MithrilGolem_Start,function Trig_MithrilGolem_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MithrilGolem_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_MithrilGolem_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_MithrilGolem_Start,Condition(function Trig_MithrilGolem_Start_Conditions))
+    call TriggerAddAction(gg_trg_MithrilGolem_Start,function Trig_MithrilGolem_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MithrilGolem_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MithrilGolem_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_MithrilGolem_Death)
-
-call TriggerAddAction(gg_trg_MithrilGolem_Death,function Trig_MithrilGolem_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MithrilGolem_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_MithrilGolem_Death)
+    call TriggerAddAction(gg_trg_MithrilGolem_Death,function Trig_MithrilGolem_Death_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MithrilGolem_Activate takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MithrilGolem_Activate=CreateTrigger()
-
-call DisableTrigger(gg_trg_MithrilGolem_Activate)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_MithrilGolem_Activate,450.,gg_unit_Hjai_0093)
-
-call TriggerAddCondition(gg_trg_MithrilGolem_Activate,Condition(function Trig_MithrilGolem_Activate_Conditions))
-
-call TriggerAddAction(gg_trg_MithrilGolem_Activate,function Trig_MithrilGolem_Activate_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MithrilGolem_Activate=CreateTrigger()
+    call DisableTrigger(gg_trg_MithrilGolem_Activate)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_MithrilGolem_Activate,450.,gg_unit_Hjai_0093)
+    call TriggerAddCondition(gg_trg_MithrilGolem_Activate,Condition(function Trig_MithrilGolem_Activate_Conditions))
+    call TriggerAddAction(gg_trg_MithrilGolem_Activate,function Trig_MithrilGolem_Activate_Actions)
 endfunction
 
 

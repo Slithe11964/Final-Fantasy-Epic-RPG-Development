@@ -112,61 +112,30 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_NebraKing takes nothing returns nothing
 endfunction
-
 function RegisterR11_NebraKing_Hide takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_NebraKing_Hide=CreateTrigger()
-
-call TriggerAddAction(gg_trg_NebraKing_Hide,function Trig_NebraKing_Hide_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_NebraKing_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_NebraKing_Hide,function Trig_NebraKing_Hide_Actions)
 endfunction
-
-
-
-
 function RegisterR11_NebraKing_Summon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_NebraKing_Summon=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_NebraKing_Summon,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_NebraKing_Summon,Condition(function Trig_NebraKing_Summon_Conditions))
-
-call TriggerAddAction(gg_trg_NebraKing_Summon,function Trig_NebraKing_Summon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_NebraKing_Summon=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_NebraKing_Summon,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_NebraKing_Summon,Condition(function Trig_NebraKing_Summon_Conditions))
+    call TriggerAddAction(gg_trg_NebraKing_Summon,function Trig_NebraKing_Summon_Actions)
 endfunction
-
-
-
-
 function RegisterR11_NebraKing_Escape takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_NebraKing_Escape=CreateTrigger()
-
-call DisableTrigger(gg_trg_NebraKing_Escape)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_NebraKing_Escape,udg_NebraKingTimer)
-
-call TriggerAddAction(gg_trg_NebraKing_Escape,function Trig_NebraKing_Escape_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_NebraKing_Escape=CreateTrigger()
+    call DisableTrigger(gg_trg_NebraKing_Escape)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_NebraKing_Escape,udg_NebraKingTimer)
+    call TriggerAddAction(gg_trg_NebraKing_Escape,function Trig_NebraKing_Escape_Actions)
 endfunction
 
 

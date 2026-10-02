@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Celeborn takes nothing returns nothing
 endfunction
-
 function RegisterR11_Celeborn_Summon_Alert takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Celeborn_Summon_Alert=CreateTrigger()
-
-call DisableTrigger(gg_trg_Celeborn_Summon_Alert)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Celeborn_Summon_Alert,udg_KalmSiegeTimer)
-
-call TriggerAddAction(gg_trg_Celeborn_Summon_Alert,function Trig_Celeborn_Summon_Alert_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Celeborn_Summon_Alert=CreateTrigger()
+    call DisableTrigger(gg_trg_Celeborn_Summon_Alert)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Celeborn_Summon_Alert,udg_KalmSiegeTimer)
+    call TriggerAddAction(gg_trg_Celeborn_Summon_Alert,function Trig_Celeborn_Summon_Alert_Actions)
 endfunction
 
 

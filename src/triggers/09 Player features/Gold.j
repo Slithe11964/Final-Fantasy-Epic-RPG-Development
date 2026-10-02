@@ -145,77 +145,38 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Gold takes nothing returns nothing
 endfunction
-
 function RegisterR11_Gold_Cap takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gold_Cap=CreateTrigger()
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(0),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(1),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(2),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(3),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(4),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(5),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(6),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(7),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
-
-call TriggerAddAction(gg_trg_Gold_Cap,function Trig_Gold_Cap_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gold_Cap=CreateTrigger()
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(0),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(1),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(2),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(3),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(4),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(5),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(6),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(7),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
+    call TriggerAddAction(gg_trg_Gold_Cap,function Trig_Gold_Cap_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gold_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gold_Pickup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Gold_Pickup,Condition(function Trig_Gold_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_Gold_Pickup,function Trig_Gold_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gold_Pickup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Gold_Pickup,Condition(function Trig_Gold_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Gold_Pickup,function Trig_Gold_Pickup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Gold_Share_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Gold_Share_Pickup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Share_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Gold_Share_Pickup,Condition(function Trig_Gold_Share_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_Gold_Share_Pickup,function Trig_Gold_Share_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Gold_Share_Pickup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Share_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Gold_Share_Pickup,Condition(function Trig_Gold_Share_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Gold_Share_Pickup,function Trig_Gold_Share_Pickup_Actions)
 endfunction
 
 

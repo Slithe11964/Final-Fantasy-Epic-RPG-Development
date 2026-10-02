@@ -42,76 +42,36 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Preload takes nothing returns nothing
 endfunction
-
 function RegisterR11_Preload_HeroChronicles takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Preload_HeroChronicles=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Preload_HeroChronicles,4.)
-
-call TriggerAddAction(gg_trg_Preload_HeroChronicles,function Trig_Preload_HeroChronicles_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Preload_HeroChronicles=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Preload_HeroChronicles,4.)
+    call TriggerAddAction(gg_trg_Preload_HeroChronicles,function Trig_Preload_HeroChronicles_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Preload_DrinkPowerup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Preload_DrinkPowerup=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Preload_DrinkPowerup,3.)
-
-call TriggerAddAction(gg_trg_Preload_DrinkPowerup,function Trig_Preload_DrinkPowerup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Preload_DrinkPowerup=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Preload_DrinkPowerup,3.)
+    call TriggerAddAction(gg_trg_Preload_DrinkPowerup,function Trig_Preload_DrinkPowerup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Preload_AgiAttackSpeed takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Preload_AgiAttackSpeed=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Preload_AgiAttackSpeed,2.)
-
-call TriggerAddAction(gg_trg_Preload_AgiAttackSpeed,function Trig_Preload_AgiAttackSpeed_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Preload_AgiAttackSpeed=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Preload_AgiAttackSpeed,2.)
+    call TriggerAddAction(gg_trg_Preload_AgiAttackSpeed,function Trig_Preload_AgiAttackSpeed_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Preload_JobUnits takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Preload_JobUnits=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Preload_JobUnits,function Trig_Preload_JobUnits_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Preload_JobUnits=CreateTrigger()
+    call TriggerAddAction(gg_trg_Preload_JobUnits,function Trig_Preload_JobUnits_Actions)
 endfunction
 
 

@@ -25,23 +25,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Debug takes nothing returns nothing
 endfunction
-
 function RegisterR11_Debug_ImmortalDeath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Debug_ImmortalDeath=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Debug_ImmortalDeath,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_Debug_ImmortalDeath,Condition(function Trig_Debug_ImmortalDeath_Conditions))
-
-call TriggerAddAction(gg_trg_Debug_ImmortalDeath,function Trig_Debug_ImmortalDeath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Debug_ImmortalDeath=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Debug_ImmortalDeath,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Debug_ImmortalDeath,Condition(function Trig_Debug_ImmortalDeath_Conditions))
+    call TriggerAddAction(gg_trg_Debug_ImmortalDeath,function Trig_Debug_ImmortalDeath_Actions)
 endfunction
 
 

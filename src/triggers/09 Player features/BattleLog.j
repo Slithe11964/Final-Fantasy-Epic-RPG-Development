@@ -134,35 +134,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BattleLog takes nothing returns nothing
 endfunction
-
 function RegisterR11_Battlelog_Command takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Battlelog_Command=CreateTrigger()
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(0),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(1),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(2),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(3),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(4),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(5),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(6),"-battlelog",false)
-
-call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(7),"-battlelog",false)
-
-call TriggerAddAction(gg_trg_Battlelog_Command,function Trig_Battlelog_Command_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Battlelog_Command=CreateTrigger()
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(0),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(1),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(2),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(3),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(4),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(5),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(6),"-battlelog",false)
+    call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(7),"-battlelog",false)
+    call TriggerAddAction(gg_trg_Battlelog_Command,function Trig_Battlelog_Command_Actions)
 endfunction
 
 

@@ -1127,388 +1127,165 @@ endfunction
 
 function InitTrig_Init takes nothing returns nothing
 endfunction
-
 function RegisterR11_Init_AbilityLevelShift takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_AbilityLevelShift=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_AbilityLevelShift,function Trig_Init_AbilityLevelShift_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_AbilityLevelShift=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_AbilityLevelShift,function Trig_Init_AbilityLevelShift_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_JobTables takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_JobTables=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Init_JobTables,7.)
-
-call TriggerAddAction(gg_trg_Init_JobTables,function Trig_Init_JobTables_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_JobTables=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Init_JobTables,7.)
+    call TriggerAddAction(gg_trg_Init_JobTables,function Trig_Init_JobTables_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_PlayerForces takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_PlayerForces=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_PlayerForces,function Trig_Init_PlayerForces_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_PlayerForces=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_PlayerForces,function Trig_Init_PlayerForces_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_PlayerColors takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_PlayerColors=CreateTrigger()
-
-call TriggerRegisterTimerEvent(gg_trg_Init_PlayerColors,6,false)
-
-call TriggerAddAction(gg_trg_Init_PlayerColors,function Trig_Init_PlayerColors_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_PlayerColors=CreateTrigger()
+    call TriggerRegisterTimerEvent(gg_trg_Init_PlayerColors,6,false)
+    call TriggerAddAction(gg_trg_Init_PlayerColors,function Trig_Init_PlayerColors_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_RevealStartArea takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_RevealStartArea=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_RevealStartArea,function Trig_Init_RevealStartArea_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_RevealStartArea=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_RevealStartArea,function Trig_Init_RevealStartArea_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_HideScoreScreen takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_HideScoreScreen=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_HideScoreScreen,function Trig_Init_HideScoreScreen_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_HideScoreScreen=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_HideScoreScreen,function Trig_Init_HideScoreScreen_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_NeutralPlayer8 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_NeutralPlayer8=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_NeutralPlayer8,function Trig_Init_NeutralPlayer8_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_NeutralPlayer8=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_NeutralPlayer8,function Trig_Init_NeutralPlayer8_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_AllyPlayer9 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_AllyPlayer9=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_AllyPlayer9,function Trig_Init_AllyPlayer9_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_AllyPlayer9=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_AllyPlayer9,function Trig_Init_AllyPlayer9_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_AllyPlayer10 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_AllyPlayer10=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_AllyPlayer10,function Trig_Init_AllyPlayer10_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_AllyPlayer10=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_AllyPlayer10,function Trig_Init_AllyPlayer10_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_RemoveGuards takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_RemoveGuards=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Init_RemoveGuards,1.2)
-
-call TriggerAddAction(gg_trg_Init_RemoveGuards,function Trig_Init_RemoveGuards_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_RemoveGuards=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Init_RemoveGuards,1.2)
+    call TriggerAddAction(gg_trg_Init_RemoveGuards,function Trig_Init_RemoveGuards_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_FoodCap takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_FoodCap=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_FoodCap,function Trig_Init_FoodCap_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_FoodCap=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_FoodCap,function Trig_Init_FoodCap_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_EnemyUpgrades takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_EnemyUpgrades=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Init_EnemyUpgrades,8.)
-
-call TriggerAddAction(gg_trg_Init_EnemyUpgrades,function Trig_Init_EnemyUpgrades_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_EnemyUpgrades=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Init_EnemyUpgrades,8.)
+    call TriggerAddAction(gg_trg_Init_EnemyUpgrades,function Trig_Init_EnemyUpgrades_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_InvulnerableGates takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_InvulnerableGates=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Init_InvulnerableGates,2.)
-
-call TriggerAddAction(gg_trg_Init_InvulnerableGates,function Trig_Init_InvulnerableGates_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_InvulnerableGates=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Init_InvulnerableGates,2.)
+    call TriggerAddAction(gg_trg_Init_InvulnerableGates,function Trig_Init_InvulnerableGates_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_TimeOfDay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_TimeOfDay=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_TimeOfDay,function Trig_Init_TimeOfDay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_TimeOfDay=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_TimeOfDay,function Trig_Init_TimeOfDay_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_LockTrading takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_LockTrading=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_LockTrading,function Trig_Init_LockTrading_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_LockTrading=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_LockTrading,function Trig_Init_LockTrading_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_HideUiAbilities takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_HideUiAbilities=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_HideUiAbilities,function Trig_Init_HideUiAbilities_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_HideUiAbilities=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_HideUiAbilities,function Trig_Init_HideUiAbilities_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_InfoQuest takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_InfoQuest=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_InfoQuest,function Trig_Init_InfoQuest_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_InfoQuest=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_InfoQuest,function Trig_Init_InfoQuest_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_QuestLog takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_QuestLog=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Init_QuestLog,7.)
-
-call TriggerAddAction(gg_trg_Init_QuestLog,function Trig_Init_QuestLog_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_QuestLog=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Init_QuestLog,7.)
+    call TriggerAddAction(gg_trg_Init_QuestLog,function Trig_Init_QuestLog_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_VoteOptionText takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_VoteOptionText=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_VoteOptionText,function Trig_Init_VoteOptionText_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_VoteOptionText=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_VoteOptionText,function Trig_Init_VoteOptionText_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_SkyAndSubtitles takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_SkyAndSubtitles=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_SkyAndSubtitles,function Trig_Init_SkyAndSubtitles_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_SkyAndSubtitles=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_SkyAndSubtitles,function Trig_Init_SkyAndSubtitles_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_AncientForestNpcs takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_AncientForestNpcs=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_AncientForestNpcs,function Trig_Init_AncientForestNpcs_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_AncientForestNpcs=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_AncientForestNpcs,function Trig_Init_AncientForestNpcs_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Init_ZaleraChapter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Init_ZaleraChapter=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Init_ZaleraChapter,function Trig_Init_ZaleraChapter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Init_ZaleraChapter=CreateTrigger()
+    call TriggerAddAction(gg_trg_Init_ZaleraChapter,function Trig_Init_ZaleraChapter_Actions)
 endfunction
 
 

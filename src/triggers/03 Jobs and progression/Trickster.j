@@ -38,42 +38,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Trickster takes nothing returns nothing
 endfunction
-
 function RegisterR11_Trickster_Decoy_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Trickster_Decoy_Spawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Trickster_Decoy_Spawn)
-
-call TriggerAddAction(gg_trg_Trickster_Decoy_Spawn,function Trig_Trickster_Decoy_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Trickster_Decoy_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Trickster_Decoy_Spawn)
+    call TriggerAddAction(gg_trg_Trickster_Decoy_Spawn,function Trig_Trickster_Decoy_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Trickster_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Trickster_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Trickster_Reveal)
-
-call TriggerAddCondition(gg_trg_Trickster_Reveal,Condition(function Trig_Trickster_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Trickster_Reveal,function Trig_Trickster_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Trickster_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_Trickster_Reveal)
+    call TriggerAddCondition(gg_trg_Trickster_Reveal,Condition(function Trig_Trickster_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Trickster_Reveal,function Trig_Trickster_Reveal_Actions)
 endfunction
 
 

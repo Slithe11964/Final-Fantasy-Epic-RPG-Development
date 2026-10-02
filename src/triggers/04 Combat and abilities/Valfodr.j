@@ -206,128 +206,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Valfodr takes nothing returns nothing
 endfunction
-
 function RegisterR11_Valfodr_SummonSetup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_SummonSetup=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Valfodr_SummonSetup,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Valfodr_SummonSetup,Condition(function Trig_Valfodr_SummonSetup_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_SummonSetup,function Trig_Valfodr_SummonSetup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_SummonSetup=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Valfodr_SummonSetup,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Valfodr_SummonSetup,Condition(function Trig_Valfodr_SummonSetup_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_SummonSetup,function Trig_Valfodr_SummonSetup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valfodr_Gagnrath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_Gagnrath=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_Gagnrath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Valfodr_Gagnrath,Condition(function Trig_Valfodr_Gagnrath_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_Gagnrath,function Trig_Valfodr_Gagnrath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_Gagnrath=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_Gagnrath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Valfodr_Gagnrath,Condition(function Trig_Valfodr_Gagnrath_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_Gagnrath,function Trig_Valfodr_Gagnrath_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valfodr_GagnrathEnd takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_GagnrathEnd=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_GagnrathEnd,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
-
-call TriggerAddCondition(gg_trg_Valfodr_GagnrathEnd,Condition(function Trig_Valfodr_GagnrathEnd_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_GagnrathEnd,function Trig_Valfodr_GagnrathEnd_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_GagnrathEnd=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_GagnrathEnd,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
+    call TriggerAddCondition(gg_trg_Valfodr_GagnrathEnd,Condition(function Trig_Valfodr_GagnrathEnd_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_GagnrathEnd,function Trig_Valfodr_GagnrathEnd_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valfodr_GagnrathPulse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_GagnrathPulse=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Valfodr_GagnrathPulse,udg_GagnrathTimer)
-
-call TriggerAddCondition(gg_trg_Valfodr_GagnrathPulse,Condition(function Trig_Valfodr_GagnrathPulse_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_GagnrathPulse,function Trig_Valfodr_GagnrathPulse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_GagnrathPulse=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Valfodr_GagnrathPulse,udg_GagnrathTimer)
+    call TriggerAddCondition(gg_trg_Valfodr_GagnrathPulse,Condition(function Trig_Valfodr_GagnrathPulse_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_GagnrathPulse,function Trig_Valfodr_GagnrathPulse_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valfodr_GagnrathWave takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_GagnrathWave=CreateTrigger()
-
-call DisableTrigger(gg_trg_Valfodr_GagnrathWave)
-
-call TriggerAddCondition(gg_trg_Valfodr_GagnrathWave,Condition(function Trig_Valfodr_GagnrathWave_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_GagnrathWave,function Trig_Valfodr_GagnrathWave_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_GagnrathWave=CreateTrigger()
+    call DisableTrigger(gg_trg_Valfodr_GagnrathWave)
+    call TriggerAddCondition(gg_trg_Valfodr_GagnrathWave,Condition(function Trig_Valfodr_GagnrathWave_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_GagnrathWave,function Trig_Valfodr_GagnrathWave_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Valfodr_Bolverk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Valfodr_Bolverk=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_Bolverk,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Valfodr_Bolverk,Condition(function Trig_Valfodr_Bolverk_Conditions))
-
-call TriggerAddAction(gg_trg_Valfodr_Bolverk,function Trig_Valfodr_Bolverk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Valfodr_Bolverk=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Valfodr_Bolverk,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Valfodr_Bolverk,Condition(function Trig_Valfodr_Bolverk_Conditions))
+    call TriggerAddAction(gg_trg_Valfodr_Bolverk,function Trig_Valfodr_Bolverk_Actions)
 endfunction
 
 

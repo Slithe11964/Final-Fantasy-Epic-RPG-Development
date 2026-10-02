@@ -113,44 +113,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_ThunderRush takes nothing returns nothing
 endfunction
-
 function RegisterR11_ThunderRush_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ThunderRush_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_ThunderRush_Cast,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_ThunderRush_Cast,Condition(function Trig_ThunderRush_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_ThunderRush_Cast,function Trig_ThunderRush_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ThunderRush_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_ThunderRush_Cast,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_ThunderRush_Cast,Condition(function Trig_ThunderRush_Cast_Conditions))
+    call TriggerAddAction(gg_trg_ThunderRush_Cast,function Trig_ThunderRush_Cast_Actions)
 endfunction
-
-
-
-
 function RegisterR11_ThunderRush_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_ThunderRush_Cleanup=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_ThunderRush_Cleanup,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_ThunderRush_Cleanup,Condition(function Trig_ThunderRush_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_ThunderRush_Cleanup,function Trig_ThunderRush_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_ThunderRush_Cleanup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_ThunderRush_Cleanup,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_ThunderRush_Cleanup,Condition(function Trig_ThunderRush_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_ThunderRush_Cleanup,function Trig_ThunderRush_Cleanup_Actions)
 endfunction
 
 

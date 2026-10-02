@@ -289,207 +289,97 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Bernkastel takes nothing returns nothing
 endfunction
-
 function RegisterR11_Bernkastel_State_Reset takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_State_Reset=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Bernkastel_State_Reset,1.)
-
-call TriggerAddAction(gg_trg_Bernkastel_State_Reset,function Trig_Bernkastel_State_Reset_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_State_Reset=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Bernkastel_State_Reset,1.)
+    call TriggerAddAction(gg_trg_Bernkastel_State_Reset,function Trig_Bernkastel_State_Reset_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_Try_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_Try_Spawn=CreateTrigger()
-
-call DisableTrigger(gg_trg_Bernkastel_Try_Spawn)
-
-call TriggerAddAction(gg_trg_Bernkastel_Try_Spawn,function Trig_Bernkastel_Try_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_Try_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Bernkastel_Try_Spawn)
+    call TriggerAddAction(gg_trg_Bernkastel_Try_Spawn,function Trig_Bernkastel_Try_Spawn_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_First_Talk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_First_Talk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Bernkastel_First_Talk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Bernkastel_First_Talk,Condition(function Trig_Bernkastel_First_Talk_Conditions))
-
-call TriggerAddAction(gg_trg_Bernkastel_First_Talk,function Trig_Bernkastel_First_Talk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_First_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Bernkastel_First_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Bernkastel_First_Talk,Condition(function Trig_Bernkastel_First_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Bernkastel_First_Talk,function Trig_Bernkastel_First_Talk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_Second_Talk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_Second_Talk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Bernkastel_Second_Talk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Bernkastel_Second_Talk,Condition(function Trig_Bernkastel_Second_Talk_Conditions))
-
-call TriggerAddAction(gg_trg_Bernkastel_Second_Talk,function Trig_Bernkastel_Second_Talk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_Second_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Bernkastel_Second_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Bernkastel_Second_Talk,Condition(function Trig_Bernkastel_Second_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Bernkastel_Second_Talk,function Trig_Bernkastel_Second_Talk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_Hint_Talk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_Hint_Talk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Bernkastel_Hint_Talk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Bernkastel_Hint_Talk,Condition(function Trig_Bernkastel_Hint_Talk_Conditions))
-
-call TriggerAddAction(gg_trg_Bernkastel_Hint_Talk,function Trig_Bernkastel_Hint_Talk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_Hint_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Bernkastel_Hint_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Bernkastel_Hint_Talk,Condition(function Trig_Bernkastel_Hint_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Bernkastel_Hint_Talk,function Trig_Bernkastel_Hint_Talk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_Final_Talk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_Final_Talk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Bernkastel_Final_Talk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Bernkastel_Final_Talk,Condition(function Trig_Bernkastel_Final_Talk_Conditions))
-
-call TriggerAddAction(gg_trg_Bernkastel_Final_Talk,function Trig_Bernkastel_Final_Talk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_Final_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Bernkastel_Final_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Bernkastel_Final_Talk,Condition(function Trig_Bernkastel_Final_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Bernkastel_Final_Talk,function Trig_Bernkastel_Final_Talk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Bernkastel_Despawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Bernkastel_Despawn=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Bernkastel_Despawn,udg_BlueGirlTimer)
-
-call TriggerAddAction(gg_trg_Bernkastel_Despawn,function Trig_Bernkastel_Despawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Bernkastel_Despawn=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Bernkastel_Despawn,udg_BlueGirlTimer)
+    call TriggerAddAction(gg_trg_Bernkastel_Despawn,function Trig_Bernkastel_Despawn_Actions)
 endfunction
 
 

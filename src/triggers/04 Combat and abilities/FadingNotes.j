@@ -102,67 +102,33 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_FadingNotes takes nothing returns nothing
 endfunction
-
 function RegisterR11_FadingNotes_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FadingNotes_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_FadingNotes_Init,3.)
-
-call TriggerAddAction(gg_trg_FadingNotes_Init,function Trig_FadingNotes_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FadingNotes_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_FadingNotes_Init,3.)
+    call TriggerAddAction(gg_trg_FadingNotes_Init,function Trig_FadingNotes_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FadingNotes_DropCultist takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FadingNotes_DropCultist=CreateTrigger()
-
-call DisableTrigger(gg_trg_FadingNotes_DropCultist)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropCultist,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_FadingNotes_DropCultist,Condition(function Trig_FadingNotes_DropCultist_Conditions))
-
-call TriggerAddAction(gg_trg_FadingNotes_DropCultist,function Trig_FadingNotes_DropCultist_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FadingNotes_DropCultist=CreateTrigger()
+    call DisableTrigger(gg_trg_FadingNotes_DropCultist)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropCultist,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_FadingNotes_DropCultist,Condition(function Trig_FadingNotes_DropCultist_Conditions))
+    call TriggerAddAction(gg_trg_FadingNotes_DropCultist,function Trig_FadingNotes_DropCultist_Actions)
 endfunction
-
-
-
-
 function RegisterR11_FadingNotes_DropWizard takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_FadingNotes_DropWizard=CreateTrigger()
-
-call DisableTrigger(gg_trg_FadingNotes_DropWizard)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropWizard,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_FadingNotes_DropWizard,Condition(function Trig_FadingNotes_DropWizard_Conditions))
-
-call TriggerAddAction(gg_trg_FadingNotes_DropWizard,function Trig_FadingNotes_DropWizard_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_FadingNotes_DropWizard=CreateTrigger()
+    call DisableTrigger(gg_trg_FadingNotes_DropWizard)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropWizard,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_FadingNotes_DropWizard,Condition(function Trig_FadingNotes_DropWizard_Conditions))
+    call TriggerAddAction(gg_trg_FadingNotes_DropWizard,function Trig_FadingNotes_DropWizard_Actions)
 endfunction
 
 

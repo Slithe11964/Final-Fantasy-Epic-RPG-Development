@@ -136,95 +136,47 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_PriestX takes nothing returns nothing
 endfunction
-
 function RegisterR11_PriestX_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PriestX_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_PriestX_Appear)
-
-call TriggerAddAction(gg_trg_PriestX_Appear,function Trig_PriestX_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PriestX_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_PriestX_Appear)
+    call TriggerAddAction(gg_trg_PriestX_Appear,function Trig_PriestX_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_PriestX_Talk1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PriestX_Talk1=CreateTrigger()
-
-call DisableTrigger(gg_trg_PriestX_Talk1)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(7),true)
-
-call TriggerAddCondition(gg_trg_PriestX_Talk1,Condition(function Trig_PriestX_Talk1_Conditions))
-
-call TriggerAddAction(gg_trg_PriestX_Talk1,function Trig_PriestX_Talk1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PriestX_Talk1=CreateTrigger()
+    call DisableTrigger(gg_trg_PriestX_Talk1)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk1,Player(7),true)
+    call TriggerAddCondition(gg_trg_PriestX_Talk1,Condition(function Trig_PriestX_Talk1_Conditions))
+    call TriggerAddAction(gg_trg_PriestX_Talk1,function Trig_PriestX_Talk1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_PriestX_Talk2 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_PriestX_Talk2=CreateTrigger()
-
-call DisableTrigger(gg_trg_PriestX_Talk2)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(7),true)
-
-call TriggerAddCondition(gg_trg_PriestX_Talk2,Condition(function Trig_PriestX_Talk2_Conditions))
-
-call TriggerAddAction(gg_trg_PriestX_Talk2,function Trig_PriestX_Talk2_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_PriestX_Talk2=CreateTrigger()
+    call DisableTrigger(gg_trg_PriestX_Talk2)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PriestX_Talk2,Player(7),true)
+    call TriggerAddCondition(gg_trg_PriestX_Talk2,Condition(function Trig_PriestX_Talk2_Conditions))
+    call TriggerAddAction(gg_trg_PriestX_Talk2,function Trig_PriestX_Talk2_Actions)
 endfunction
 
 

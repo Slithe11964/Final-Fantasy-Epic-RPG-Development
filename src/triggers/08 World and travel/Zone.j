@@ -550,38 +550,20 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zone takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zone_Rects_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone_Rects_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Zone_Rects_Init,function Trig_Zone_Rects_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone_Rects_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Zone_Rects_Init,function Trig_Zone_Rects_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Zone_Spawn_System takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone_Spawn_System=CreateTrigger()
-
-call TriggerRegisterTimerEvent(gg_trg_Zone_Spawn_System,.5,false)
-
-call TriggerAddAction(gg_trg_Zone_Spawn_System,function Trig_Zone_Spawn_System_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone_Spawn_System=CreateTrigger()
+    call TriggerRegisterTimerEvent(gg_trg_Zone_Spawn_System,.5,false)
+    call TriggerAddAction(gg_trg_Zone_Spawn_System,function Trig_Zone_Spawn_System_Actions)
 endfunction
 
 

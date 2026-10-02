@@ -17,23 +17,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Loop takes nothing returns nothing
 endfunction
-
 function RegisterR11_Loop_MadoushiChanneling takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Loop_MadoushiChanneling=CreateTrigger()
-
-call DisableTrigger(gg_trg_Loop_MadoushiChanneling)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Loop_MadoushiChanneling,2.7)
-
-call TriggerAddAction(gg_trg_Loop_MadoushiChanneling,function Trig_Loop_MadoushiChanneling_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Loop_MadoushiChanneling=CreateTrigger()
+    call DisableTrigger(gg_trg_Loop_MadoushiChanneling)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Loop_MadoushiChanneling,2.7)
+    call TriggerAddAction(gg_trg_Loop_MadoushiChanneling,function Trig_Loop_MadoushiChanneling_Actions)
 endfunction
 
 

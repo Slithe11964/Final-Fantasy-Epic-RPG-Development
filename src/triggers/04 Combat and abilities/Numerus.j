@@ -78,23 +78,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Numerus takes nothing returns nothing
 endfunction
-
 function RegisterR11_Numerus_ChargeCommand takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Numerus_ChargeCommand=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Numerus_ChargeCommand,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Numerus_ChargeCommand,Condition(function Trig_Numerus_ChargeCommand_Conditions))
-
-call TriggerAddAction(gg_trg_Numerus_ChargeCommand,function Trig_Numerus_ChargeCommand_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Numerus_ChargeCommand=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Numerus_ChargeCommand,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Numerus_ChargeCommand,Condition(function Trig_Numerus_ChargeCommand_Conditions))
+    call TriggerAddAction(gg_trg_Numerus_ChargeCommand,function Trig_Numerus_ChargeCommand_Actions)
 endfunction
 
 

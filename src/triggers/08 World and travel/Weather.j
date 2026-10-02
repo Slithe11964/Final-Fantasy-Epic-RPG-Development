@@ -18,21 +18,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Weather takes nothing returns nothing
 endfunction
-
 function RegisterR11_Weather_Snow_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Weather_Snow_Init=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_Weather_Snow_Init,5)
-
-call TriggerAddAction(gg_trg_Weather_Snow_Init,function Trig_Weather_Snow_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Weather_Snow_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Weather_Snow_Init,5)
+    call TriggerAddAction(gg_trg_Weather_Snow_Init,function Trig_Weather_Snow_Init_Actions)
 endfunction
 
 

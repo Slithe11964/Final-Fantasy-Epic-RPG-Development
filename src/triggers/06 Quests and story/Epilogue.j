@@ -329,208 +329,99 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Epilogue takes nothing returns nothing
 endfunction
-
 function RegisterR11_Epilogue_WaitForCid takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_WaitForCid=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_WaitForCid)
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Epilogue_WaitForCid,udg_WorldFreezeTimer)
-
-call TriggerAddAction(gg_trg_Epilogue_WaitForCid,function Trig_Epilogue_WaitForCid_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_WaitForCid=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_WaitForCid)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Epilogue_WaitForCid,udg_WorldFreezeTimer)
+    call TriggerAddAction(gg_trg_Epilogue_WaitForCid,function Trig_Epilogue_WaitForCid_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Epilogue_Kalm takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_Kalm=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_Kalm)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Epilogue_Kalm,Condition(function Trig_Epilogue_Kalm_Conditions))
-
-call TriggerAddAction(gg_trg_Epilogue_Kalm,function Trig_Epilogue_Kalm_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_Kalm=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_Kalm)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Kalm,Player(7),true)
+    call TriggerAddCondition(gg_trg_Epilogue_Kalm,Condition(function Trig_Epilogue_Kalm_Conditions))
+    call TriggerAddAction(gg_trg_Epilogue_Kalm,function Trig_Epilogue_Kalm_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Epilogue_Lothlorien takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_Lothlorien=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_Lothlorien)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Epilogue_Lothlorien,Condition(function Trig_Epilogue_Lothlorien_Conditions))
-
-call TriggerAddAction(gg_trg_Epilogue_Lothlorien,function Trig_Epilogue_Lothlorien_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_Lothlorien=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_Lothlorien)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Lothlorien,Player(7),true)
+    call TriggerAddCondition(gg_trg_Epilogue_Lothlorien,Condition(function Trig_Epilogue_Lothlorien_Conditions))
+    call TriggerAddAction(gg_trg_Epilogue_Lothlorien,function Trig_Epilogue_Lothlorien_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Epilogue_BlueMage takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_BlueMage=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_BlueMage)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Epilogue_BlueMage,Condition(function Trig_Epilogue_BlueMage_Conditions))
-
-call TriggerAddAction(gg_trg_Epilogue_BlueMage,function Trig_Epilogue_BlueMage_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_BlueMage=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_BlueMage)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_BlueMage,Player(7),true)
+    call TriggerAddCondition(gg_trg_Epilogue_BlueMage,Condition(function Trig_Epilogue_BlueMage_Conditions))
+    call TriggerAddAction(gg_trg_Epilogue_BlueMage,function Trig_Epilogue_BlueMage_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Epilogue_DarkKnight takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_DarkKnight=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_DarkKnight)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Epilogue_DarkKnight,Condition(function Trig_Epilogue_DarkKnight_Conditions))
-
-call TriggerAddAction(gg_trg_Epilogue_DarkKnight,function Trig_Epilogue_DarkKnight_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_DarkKnight=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_DarkKnight)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_DarkKnight,Player(7),true)
+    call TriggerAddCondition(gg_trg_Epilogue_DarkKnight,Condition(function Trig_Epilogue_DarkKnight_Conditions))
+    call TriggerAddAction(gg_trg_Epilogue_DarkKnight,function Trig_Epilogue_DarkKnight_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Epilogue_Dana takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Epilogue_Dana=CreateTrigger()
-
-call DisableTrigger(gg_trg_Epilogue_Dana)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Epilogue_Dana,Condition(function Trig_Epilogue_Dana_Conditions))
-
-call TriggerAddAction(gg_trg_Epilogue_Dana,function Trig_Epilogue_Dana_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Epilogue_Dana=CreateTrigger()
+    call DisableTrigger(gg_trg_Epilogue_Dana)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Epilogue_Dana,Player(7),true)
+    call TriggerAddCondition(gg_trg_Epilogue_Dana,Condition(function Trig_Epilogue_Dana_Conditions))
+    call TriggerAddAction(gg_trg_Epilogue_Dana,function Trig_Epilogue_Dana_Actions)
 endfunction
 
 

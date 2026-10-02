@@ -570,21 +570,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Unit takes nothing returns nothing
 endfunction
-
 function RegisterR11_Unit_ApplyUpgradeBonuses takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Unit_ApplyUpgradeBonuses=CreateTrigger()
-
-call DisableTrigger(gg_trg_Unit_ApplyUpgradeBonuses)
-
-call TriggerAddAction(gg_trg_Unit_ApplyUpgradeBonuses,function Trig_Unit_ApplyUpgradeBonuses_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Unit_ApplyUpgradeBonuses=CreateTrigger()
+    call DisableTrigger(gg_trg_Unit_ApplyUpgradeBonuses)
+    call TriggerAddAction(gg_trg_Unit_ApplyUpgradeBonuses,function Trig_Unit_ApplyUpgradeBonuses_Actions)
 endfunction
 
 

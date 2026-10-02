@@ -140,146 +140,68 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_HydraEgg takes nothing returns nothing
 endfunction
-
 function RegisterR11_HydraEgg_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_HydraEgg_Prepare,function Trig_HydraEgg_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_HydraEgg_Prepare,function Trig_HydraEgg_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HydraEgg_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Start=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_HydraEgg_Start,Condition(function Trig_HydraEgg_Start_Conditions))
-
-call TriggerAddAction(gg_trg_HydraEgg_Start,function Trig_HydraEgg_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Start=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_HydraEgg_Start,Condition(function Trig_HydraEgg_Start_Conditions))
+    call TriggerAddAction(gg_trg_HydraEgg_Start,function Trig_HydraEgg_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HydraEgg_Drop takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Drop=CreateTrigger()
-
-call DisableTrigger(gg_trg_HydraEgg_Drop)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Drop,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_HydraEgg_Drop,Condition(function Trig_HydraEgg_Drop_Conditions))
-
-call TriggerAddAction(gg_trg_HydraEgg_Drop,function Trig_HydraEgg_Drop_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Drop=CreateTrigger()
+    call DisableTrigger(gg_trg_HydraEgg_Drop)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Drop,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_HydraEgg_Drop,Condition(function Trig_HydraEgg_Drop_Conditions))
+    call TriggerAddAction(gg_trg_HydraEgg_Drop,function Trig_HydraEgg_Drop_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HydraEgg_Pickup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Pickup=CreateTrigger()
-
-call DisableTrigger(gg_trg_HydraEgg_Pickup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_HydraEgg_Pickup,Condition(function Trig_HydraEgg_Pickup_Conditions))
-
-call TriggerAddAction(gg_trg_HydraEgg_Pickup,function Trig_HydraEgg_Pickup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_HydraEgg_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_HydraEgg_Pickup,Condition(function Trig_HydraEgg_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_HydraEgg_Pickup,function Trig_HydraEgg_Pickup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HydraEgg_Ping takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Ping=CreateTrigger()
-
-call DisableTrigger(gg_trg_HydraEgg_Ping)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_HydraEgg_Ping,15.)
-
-call TriggerAddCondition(gg_trg_HydraEgg_Ping,Condition(function Trig_HydraEgg_Ping_Conditions))
-
-call TriggerAddAction(gg_trg_HydraEgg_Ping,function Trig_HydraEgg_Ping_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_HydraEgg_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_HydraEgg_Ping,15.)
+    call TriggerAddCondition(gg_trg_HydraEgg_Ping,Condition(function Trig_HydraEgg_Ping_Conditions))
+    call TriggerAddAction(gg_trg_HydraEgg_Ping,function Trig_HydraEgg_Ping_Actions)
 endfunction
-
-
-
-
 function RegisterR11_HydraEgg_Deliver takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_HydraEgg_Deliver=CreateTrigger()
-
-call DisableTrigger(gg_trg_HydraEgg_Deliver)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_HydraEgg_Deliver,450.,gg_unit_Hapm_0179)
-
-call TriggerAddCondition(gg_trg_HydraEgg_Deliver,Condition(function Trig_HydraEgg_Deliver_Conditions))
-
-call TriggerAddAction(gg_trg_HydraEgg_Deliver,function Trig_HydraEgg_Deliver_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_HydraEgg_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_HydraEgg_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_HydraEgg_Deliver,450.,gg_unit_Hapm_0179)
+    call TriggerAddCondition(gg_trg_HydraEgg_Deliver,Condition(function Trig_HydraEgg_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_HydraEgg_Deliver,function Trig_HydraEgg_Deliver_Actions)
 endfunction
 
 

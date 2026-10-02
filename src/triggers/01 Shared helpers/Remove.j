@@ -63,40 +63,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Remove takes nothing returns nothing
 endfunction
-
 function RegisterR11_Remove_Debuffs takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Remove_Debuffs=CreateTrigger()
-
-call DisableTrigger(gg_trg_Remove_Debuffs)
-
-call TriggerAddAction(gg_trg_Remove_Debuffs,function Trig_Remove_Debuffs_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Remove_Debuffs=CreateTrigger()
+    call DisableTrigger(gg_trg_Remove_Debuffs)
+    call TriggerAddAction(gg_trg_Remove_Debuffs,function Trig_Remove_Debuffs_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Remove_Buffs takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Remove_Buffs=CreateTrigger()
-
-call DisableTrigger(gg_trg_Remove_Buffs)
-
-call TriggerAddAction(gg_trg_Remove_Buffs,function Trig_Remove_Buffs_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Remove_Buffs=CreateTrigger()
+    call DisableTrigger(gg_trg_Remove_Buffs)
+    call TriggerAddAction(gg_trg_Remove_Buffs,function Trig_Remove_Buffs_Actions)
 endfunction
 
 

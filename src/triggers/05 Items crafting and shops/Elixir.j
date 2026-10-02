@@ -89,81 +89,40 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Elixir takes nothing returns nothing
 endfunction
-
 function RegisterR11_Elixir_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elixir_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_Elixir_Prepare)
-
-call TriggerAddAction(gg_trg_Elixir_Prepare,function Trig_Elixir_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elixir_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_Elixir_Prepare)
+    call TriggerAddAction(gg_trg_Elixir_Prepare,function Trig_Elixir_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Elixir_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elixir_Start=CreateTrigger()
-
-call DisableTrigger(gg_trg_Elixir_Start)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Elixir_Start,Condition(function Trig_Elixir_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Elixir_Start,function Trig_Elixir_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elixir_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Elixir_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Elixir_Start,Condition(function Trig_Elixir_Start_Conditions))
+    call TriggerAddAction(gg_trg_Elixir_Start,function Trig_Elixir_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Elixir_Deliver takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Elixir_Deliver=CreateTrigger()
-
-call DisableTrigger(gg_trg_Elixir_Deliver)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Elixir_Deliver,450.,gg_unit_n001_0012)
-
-call TriggerAddCondition(gg_trg_Elixir_Deliver,Condition(function Trig_Elixir_Deliver_Conditions))
-
-call TriggerAddAction(gg_trg_Elixir_Deliver,function Trig_Elixir_Deliver_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Elixir_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Elixir_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Elixir_Deliver,450.,gg_unit_n001_0012)
+    call TriggerAddCondition(gg_trg_Elixir_Deliver,Condition(function Trig_Elixir_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Elixir_Deliver,function Trig_Elixir_Deliver_Actions)
 endfunction
 
 

@@ -147,57 +147,28 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_IcyRealm takes nothing returns nothing
 endfunction
-
 function RegisterR11_IcyRealm_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_IcyRealm_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_IcyRealm_Init,function Trig_IcyRealm_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_IcyRealm_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_IcyRealm_Init,function Trig_IcyRealm_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_IcyRealm_GateOpened_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_IcyRealm_GateOpened_Setup=CreateTrigger()
-
-call DisableTrigger(gg_trg_IcyRealm_GateOpened_Setup)
-
-call TriggerAddAction(gg_trg_IcyRealm_GateOpened_Setup,function Trig_IcyRealm_GateOpened_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_IcyRealm_GateOpened_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_IcyRealm_GateOpened_Setup)
+    call TriggerAddAction(gg_trg_IcyRealm_GateOpened_Setup,function Trig_IcyRealm_GateOpened_Setup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_IcyRealm_Restore takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_IcyRealm_Restore=CreateTrigger()
-
-call DisableTrigger(gg_trg_IcyRealm_Restore)
-
-call TriggerAddAction(gg_trg_IcyRealm_Restore,function Trig_IcyRealm_Restore_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_IcyRealm_Restore=CreateTrigger()
+    call DisableTrigger(gg_trg_IcyRealm_Restore)
+    call TriggerAddAction(gg_trg_IcyRealm_Restore,function Trig_IcyRealm_Restore_Actions)
 endfunction
 
 

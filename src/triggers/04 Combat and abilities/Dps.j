@@ -103,40 +103,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Dps takes nothing returns nothing
 endfunction
-
 function RegisterR11_Dps_Start takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dps_Start=CreateTrigger()
-
-call TriggerAddCondition(gg_trg_Dps_Start,Condition(function Trig_Dps_Start_Conditions))
-
-call TriggerAddAction(gg_trg_Dps_Start,function Trig_Dps_Start_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dps_Start=CreateTrigger()
+    call TriggerAddCondition(gg_trg_Dps_Start,Condition(function Trig_Dps_Start_Conditions))
+    call TriggerAddAction(gg_trg_Dps_Start,function Trig_Dps_Start_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Dps_Tick takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dps_Tick=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Dps_Tick,udg_DpsTimer)
-
-call TriggerAddAction(gg_trg_Dps_Tick,function Trig_Dps_Tick_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dps_Tick=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Dps_Tick,udg_DpsTimer)
+    call TriggerAddAction(gg_trg_Dps_Tick,function Trig_Dps_Tick_Actions)
 endfunction
 
 

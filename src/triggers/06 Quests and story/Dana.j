@@ -209,125 +209,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Dana takes nothing returns nothing
 endfunction
-
 function RegisterR11_Dana_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dana_Prepare=CreateTrigger()
-
-call DisableTrigger(gg_trg_Dana_Prepare)
-
-call TriggerAddAction(gg_trg_Dana_Prepare,function Trig_Dana_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dana_Prepare=CreateTrigger()
+    call DisableTrigger(gg_trg_Dana_Prepare)
+    call TriggerAddAction(gg_trg_Dana_Prepare,function Trig_Dana_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Dana_Talk1 takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dana_Talk1=CreateTrigger()
-
-call DisableTrigger(gg_trg_Dana_Talk1)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Dana_Talk1,Condition(function Trig_Dana_Talk1_Conditions))
-
-call TriggerAddAction(gg_trg_Dana_Talk1,function Trig_Dana_Talk1_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dana_Talk1=CreateTrigger()
+    call DisableTrigger(gg_trg_Dana_Talk1)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(7),true)
+    call TriggerAddCondition(gg_trg_Dana_Talk1,Condition(function Trig_Dana_Talk1_Conditions))
+    call TriggerAddAction(gg_trg_Dana_Talk1,function Trig_Dana_Talk1_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Dana_Talk2_Enable takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dana_Talk2_Enable=CreateTrigger()
-
-call DisableTrigger(gg_trg_Dana_Talk2_Enable)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Dana_Talk2_Enable,5.)
-
-call TriggerAddCondition(gg_trg_Dana_Talk2_Enable,Condition(function Trig_Dana_Talk2_Enable_Conditions))
-
-call TriggerAddAction(gg_trg_Dana_Talk2_Enable,function Trig_Dana_Talk2_Enable_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dana_Talk2_Enable=CreateTrigger()
+    call DisableTrigger(gg_trg_Dana_Talk2_Enable)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Dana_Talk2_Enable,5.)
+    call TriggerAddCondition(gg_trg_Dana_Talk2_Enable,Condition(function Trig_Dana_Talk2_Enable_Conditions))
+    call TriggerAddAction(gg_trg_Dana_Talk2_Enable,function Trig_Dana_Talk2_Enable_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Dana_Receive_Eye takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dana_Receive_Eye=CreateTrigger()
-
-call DisableTrigger(gg_trg_Dana_Receive_Eye)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Dana_Receive_Eye,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Dana_Receive_Eye,Condition(function Trig_Dana_Receive_Eye_Conditions))
-
-call TriggerAddAction(gg_trg_Dana_Receive_Eye,function Trig_Dana_Receive_Eye_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dana_Receive_Eye=CreateTrigger()
+    call DisableTrigger(gg_trg_Dana_Receive_Eye)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Dana_Receive_Eye,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Dana_Receive_Eye,Condition(function Trig_Dana_Receive_Eye_Conditions))
+    call TriggerAddAction(gg_trg_Dana_Receive_Eye,function Trig_Dana_Receive_Eye_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Dana_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Dana_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Dana_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_Dana_Death,gg_unit_n0BN_0171,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_Dana_Death,function Trig_Dana_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Dana_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Dana_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Dana_Death,gg_unit_n0BN_0171,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Dana_Death,function Trig_Dana_Death_Actions)
 endfunction
 
 

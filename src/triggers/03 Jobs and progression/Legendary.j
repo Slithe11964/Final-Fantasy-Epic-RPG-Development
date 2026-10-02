@@ -18,21 +18,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Legendary takes nothing returns nothing
 endfunction
-
 function RegisterR11_Legendary_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Legendary_Unlock=CreateTrigger()
-
-call DisableTrigger(gg_trg_Legendary_Unlock)
-
-call TriggerAddAction(gg_trg_Legendary_Unlock,function Trig_Legendary_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Legendary_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_Legendary_Unlock)
+    call TriggerAddAction(gg_trg_Legendary_Unlock,function Trig_Legendary_Unlock_Actions)
 endfunction
 
 

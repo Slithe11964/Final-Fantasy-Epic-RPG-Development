@@ -441,128 +441,59 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Mediator takes nothing returns nothing
 endfunction
-
 function RegisterR11_Mediator_Clone_Reject takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_Clone_Reject=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Clone_Reject,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_Mediator_Clone_Reject,Condition(function Trig_Mediator_Clone_Reject_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_Clone_Reject,function Trig_Mediator_Clone_Reject_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_Clone_Reject=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Clone_Reject,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Mediator_Clone_Reject,Condition(function Trig_Mediator_Clone_Reject_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_Clone_Reject,function Trig_Mediator_Clone_Reject_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mediator_Clone takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_Clone=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Clone,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mediator_Clone,Condition(function Trig_Mediator_Clone_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_Clone,function Trig_Mediator_Clone_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_Clone=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Clone,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mediator_Clone,Condition(function Trig_Mediator_Clone_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_Clone,function Trig_Mediator_Clone_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mediator_SpellShot takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_SpellShot=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_SpellShot,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mediator_SpellShot,Condition(function Trig_Mediator_SpellShot_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_SpellShot,function Trig_Mediator_SpellShot_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_SpellShot=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_SpellShot,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mediator_SpellShot,Condition(function Trig_Mediator_SpellShot_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_SpellShot,function Trig_Mediator_SpellShot_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mediator_Invitation takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_Invitation=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Invitation,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mediator_Invitation,Condition(function Trig_Mediator_Invitation_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_Invitation,function Trig_Mediator_Invitation_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_Invitation=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Invitation,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mediator_Invitation,Condition(function Trig_Mediator_Invitation_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_Invitation,function Trig_Mediator_Invitation_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mediator_Balance takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_Balance=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Balance,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mediator_Balance,Condition(function Trig_Mediator_Balance_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_Balance,function Trig_Mediator_Balance_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_Balance=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_Balance,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mediator_Balance,Condition(function Trig_Mediator_Balance_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_Balance,function Trig_Mediator_Balance_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Mediator_MarkForDeath takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Mediator_MarkForDeath=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_MarkForDeath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Mediator_MarkForDeath,Condition(function Trig_Mediator_MarkForDeath_Conditions))
-
-call TriggerAddAction(gg_trg_Mediator_MarkForDeath,function Trig_Mediator_MarkForDeath_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Mediator_MarkForDeath=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Mediator_MarkForDeath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Mediator_MarkForDeath,Condition(function Trig_Mediator_MarkForDeath_Conditions))
+    call TriggerAddAction(gg_trg_Mediator_MarkForDeath,function Trig_Mediator_MarkForDeath_Actions)
 endfunction
 
 

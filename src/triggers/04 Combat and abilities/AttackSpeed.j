@@ -48,21 +48,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_AttackSpeed takes nothing returns nothing
 endfunction
-
 function RegisterR11_AttackSpeed_Update takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_AttackSpeed_Update=CreateTrigger()
-
-call DisableTrigger(gg_trg_AttackSpeed_Update)
-
-call TriggerAddAction(gg_trg_AttackSpeed_Update,function Trig_AttackSpeed_Update_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_AttackSpeed_Update=CreateTrigger()
+    call DisableTrigger(gg_trg_AttackSpeed_Update)
+    call TriggerAddAction(gg_trg_AttackSpeed_Update,function Trig_AttackSpeed_Update_Actions)
 endfunction
 
 

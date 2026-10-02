@@ -172,23 +172,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Food takes nothing returns nothing
 endfunction
-
 function RegisterR11_Food_Effects takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Food_Effects=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Food_Effects,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Food_Effects,Condition(function Trig_Food_Effects_Conditions))
-
-call TriggerAddAction(gg_trg_Food_Effects,function Trig_Food_Effects_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Food_Effects=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Food_Effects,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Food_Effects,Condition(function Trig_Food_Effects_Conditions))
+    call TriggerAddAction(gg_trg_Food_Effects,function Trig_Food_Effects_Actions)
 endfunction
 
 

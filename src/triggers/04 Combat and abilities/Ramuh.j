@@ -11,19 +11,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ramuh takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ramuh_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ramuh_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Ramuh_Setup,function Trig_Ramuh_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ramuh_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_Ramuh_Setup,function Trig_Ramuh_Setup_Actions)
 endfunction
 
 

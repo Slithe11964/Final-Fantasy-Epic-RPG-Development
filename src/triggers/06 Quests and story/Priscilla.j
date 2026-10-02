@@ -22,57 +22,28 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Priscilla takes nothing returns nothing
 endfunction
-
 function RegisterR11_Priscilla_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Priscilla_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Priscilla_Setup,function Trig_Priscilla_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Priscilla_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_Priscilla_Setup,function Trig_Priscilla_Setup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Priscilla_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Priscilla_ShowMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_Priscilla_ShowMarker)
-
-call TriggerAddAction(gg_trg_Priscilla_ShowMarker,function Trig_Priscilla_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Priscilla_ShowMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_Priscilla_ShowMarker)
+    call TriggerAddAction(gg_trg_Priscilla_ShowMarker,function Trig_Priscilla_ShowMarker_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Priscilla_ShowMarker_Eden takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Priscilla_ShowMarker_Eden=CreateTrigger()
-
-call DisableTrigger(gg_trg_Priscilla_ShowMarker_Eden)
-
-call TriggerAddAction(gg_trg_Priscilla_ShowMarker_Eden,function Trig_Priscilla_ShowMarker_Eden_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Priscilla_ShowMarker_Eden=CreateTrigger()
+    call DisableTrigger(gg_trg_Priscilla_ShowMarker_Eden)
+    call TriggerAddAction(gg_trg_Priscilla_ShowMarker_Eden,function Trig_Priscilla_ShowMarker_Eden_Actions)
 endfunction
 
 

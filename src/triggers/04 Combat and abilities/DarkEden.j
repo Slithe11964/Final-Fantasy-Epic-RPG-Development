@@ -140,67 +140,33 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkEden takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkEden_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEden_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkEden_Appear)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DarkEden_Appear,gg_rct_118)
-
-call TriggerAddCondition(gg_trg_DarkEden_Appear,Condition(function Trig_DarkEden_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkEden_Appear,function Trig_DarkEden_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEden_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkEden_Appear)
+    call TriggerRegisterEnterRectSimple(gg_trg_DarkEden_Appear,gg_rct_118)
+    call TriggerAddCondition(gg_trg_DarkEden_Appear,Condition(function Trig_DarkEden_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkEden_Appear,function Trig_DarkEden_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkEden_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEden_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkEden_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkEden_Death,gg_unit_N02Z_0031,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_DarkEden_Death,function Trig_DarkEden_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEden_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkEden_Death)
+    call TriggerRegisterUnitEvent(gg_trg_DarkEden_Death,gg_unit_N02Z_0031,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_DarkEden_Death,function Trig_DarkEden_Death_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkEden_LightningColor takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEden_LightningColor=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkEden_LightningColor)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEden_LightningColor,.25)
-
-call TriggerAddAction(gg_trg_DarkEden_LightningColor,function Trig_DarkEden_LightningColor_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEden_LightningColor=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkEden_LightningColor)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEden_LightningColor,.25)
+    call TriggerAddAction(gg_trg_DarkEden_LightningColor,function Trig_DarkEden_LightningColor_Actions)
 endfunction
 
 

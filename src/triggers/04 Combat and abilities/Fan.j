@@ -35,23 +35,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Fan takes nothing returns nothing
 endfunction
-
 function RegisterR11_Fan_Of_Knives takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Fan_Of_Knives=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Fan_Of_Knives,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Fan_Of_Knives,Condition(function Trig_Fan_Of_Knives_Conditions))
-
-call TriggerAddAction(gg_trg_Fan_Of_Knives,function Trig_Fan_Of_Knives_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Fan_Of_Knives=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fan_Of_Knives,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Fan_Of_Knives,Condition(function Trig_Fan_Of_Knives_Conditions))
+    call TriggerAddAction(gg_trg_Fan_Of_Knives,function Trig_Fan_Of_Knives_Actions)
 endfunction
 
 

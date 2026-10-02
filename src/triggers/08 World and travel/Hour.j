@@ -7,21 +7,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Hour takes nothing returns nothing
 endfunction
-
 function RegisterR11_Hour_Timer_Rollover takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Hour_Timer_Rollover=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Hour_Timer_Rollover,udg_GameClock)
-
-call TriggerAddAction(gg_trg_Hour_Timer_Rollover,function Trig_Hour_Timer_Rollover_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Hour_Timer_Rollover=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Hour_Timer_Rollover,udg_GameClock)
+    call TriggerAddAction(gg_trg_Hour_Timer_Rollover,function Trig_Hour_Timer_Rollover_Actions)
 endfunction
 
 

@@ -111,60 +111,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Giott takes nothing returns nothing
 endfunction
-
 function RegisterR11_Giott_FirstTalk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Giott_FirstTalk=CreateTrigger()
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Giott_FirstTalk,Condition(function Trig_Giott_FirstTalk_Conditions))
-
-call TriggerAddAction(gg_trg_Giott_FirstTalk,function Trig_Giott_FirstTalk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Giott_FirstTalk=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Giott_FirstTalk,Condition(function Trig_Giott_FirstTalk_Conditions))
+    call TriggerAddAction(gg_trg_Giott_FirstTalk,function Trig_Giott_FirstTalk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Giott_Letter_Deliver takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Giott_Letter_Deliver=CreateTrigger()
-
-call DisableTrigger(gg_trg_Giott_Letter_Deliver)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Giott_Letter_Deliver,450.,gg_unit_h00R_0256)
-
-call TriggerAddCondition(gg_trg_Giott_Letter_Deliver,Condition(function Trig_Giott_Letter_Deliver_Conditions))
-
-call TriggerAddAction(gg_trg_Giott_Letter_Deliver,function Trig_Giott_Letter_Deliver_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Giott_Letter_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Giott_Letter_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Giott_Letter_Deliver,450.,gg_unit_h00R_0256)
+    call TriggerAddCondition(gg_trg_Giott_Letter_Deliver,Condition(function Trig_Giott_Letter_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Giott_Letter_Deliver,function Trig_Giott_Letter_Deliver_Actions)
 endfunction
 
 

@@ -13,19 +13,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Melaiduma takes nothing returns nothing
 endfunction
-
 function RegisterR11_Melaiduma_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Melaiduma_Death=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Melaiduma_Death,function Trig_Melaiduma_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Melaiduma_Death=CreateTrigger()
+    call TriggerAddAction(gg_trg_Melaiduma_Death,function Trig_Melaiduma_Death_Actions)
 endfunction
 
 

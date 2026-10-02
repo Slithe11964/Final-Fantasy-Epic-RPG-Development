@@ -12,23 +12,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_LionHeart takes nothing returns nothing
 endfunction
-
 function RegisterR11_LionHeart_LowLifeBonus takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_LionHeart_LowLifeBonus=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_LionHeart_LowLifeBonus,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_LionHeart_LowLifeBonus,Condition(function Trig_LionHeart_LowLifeBonus_Conditions))
-
-call TriggerAddAction(gg_trg_LionHeart_LowLifeBonus,function Trig_LionHeart_LowLifeBonus_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_LionHeart_LowLifeBonus=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_LionHeart_LowLifeBonus,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_LionHeart_LowLifeBonus,Condition(function Trig_LionHeart_LowLifeBonus_Conditions))
+    call TriggerAddAction(gg_trg_LionHeart_LowLifeBonus,function Trig_LionHeart_LowLifeBonus_Actions)
 endfunction
 
 

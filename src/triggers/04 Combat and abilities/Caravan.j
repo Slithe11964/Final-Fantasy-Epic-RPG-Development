@@ -17,19 +17,12 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Caravan takes nothing returns nothing
 endfunction
-
 function RegisterR11_Caravan_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Caravan_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Caravan_Init,function Trig_Caravan_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Caravan_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Caravan_Init,function Trig_Caravan_Init_Actions)
 endfunction
 
 

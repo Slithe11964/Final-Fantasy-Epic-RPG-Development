@@ -66,50 +66,26 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Harpy takes nothing returns nothing
 endfunction
-
 function RegisterR11_Harpy_Matriarch_CallAid takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Harpy_Matriarch_CallAid=CreateTrigger()
-
-call DisableTrigger(gg_trg_Harpy_Matriarch_CallAid)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Matriarch_CallAid,EVENT_PLAYER_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Harpy_Matriarch_CallAid,Condition(function Trig_Harpy_Matriarch_CallAid_Conditions))
-
-call TriggerAddAction(gg_trg_Harpy_Matriarch_CallAid,function Trig_Harpy_Matriarch_CallAid_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Harpy_Matriarch_CallAid=CreateTrigger()
+    call DisableTrigger(gg_trg_Harpy_Matriarch_CallAid)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Matriarch_CallAid,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Harpy_Matriarch_CallAid,Condition(function Trig_Harpy_Matriarch_CallAid_Conditions))
+    call TriggerAddAction(gg_trg_Harpy_Matriarch_CallAid,function Trig_Harpy_Matriarch_CallAid_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Harpy_Trickster_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Harpy_Trickster_Cleanup=CreateTrigger()
-
-call DisableTrigger(gg_trg_Harpy_Trickster_Cleanup)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Trickster_Cleanup,EVENT_PLAYER_UNIT_CHANGE_OWNER)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Harpy_Trickster_Cleanup,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Harpy_Trickster_Cleanup,Condition(function Trig_Harpy_Trickster_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_Harpy_Trickster_Cleanup,function Trig_Harpy_Trickster_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Harpy_Trickster_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Harpy_Trickster_Cleanup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Trickster_Cleanup,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Harpy_Trickster_Cleanup,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Harpy_Trickster_Cleanup,Condition(function Trig_Harpy_Trickster_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Harpy_Trickster_Cleanup,function Trig_Harpy_Trickster_Cleanup_Actions)
 endfunction
 
 

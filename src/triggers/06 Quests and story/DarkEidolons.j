@@ -139,59 +139,29 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkEidolons takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkEidolons_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEidolons_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_DarkEidolons_Init,function Trig_DarkEidolons_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEidolons_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_DarkEidolons_Init,function Trig_DarkEidolons_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkEidolons_SpawnGhosts takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEidolons_SpawnGhosts=CreateTrigger()
-
-call TriggerRegisterTimerEventSingle(gg_trg_DarkEidolons_SpawnGhosts,20.)
-
-call TriggerAddAction(gg_trg_DarkEidolons_SpawnGhosts,function Trig_DarkEidolons_SpawnGhosts_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEidolons_SpawnGhosts=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_DarkEidolons_SpawnGhosts,20.)
+    call TriggerAddAction(gg_trg_DarkEidolons_SpawnGhosts,function Trig_DarkEidolons_SpawnGhosts_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkEidolons_Unlock takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkEidolons_Unlock=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEidolons_Unlock,15.)
-
-call TriggerAddCondition(gg_trg_DarkEidolons_Unlock,Condition(function Trig_DarkEidolons_Unlock_Conditions))
-
-call TriggerAddAction(gg_trg_DarkEidolons_Unlock,function Trig_DarkEidolons_Unlock_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkEidolons_Unlock=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEidolons_Unlock,15.)
+    call TriggerAddCondition(gg_trg_DarkEidolons_Unlock,Condition(function Trig_DarkEidolons_Unlock_Conditions))
+    call TriggerAddAction(gg_trg_DarkEidolons_Unlock,function Trig_DarkEidolons_Unlock_Actions)
 endfunction
 
 

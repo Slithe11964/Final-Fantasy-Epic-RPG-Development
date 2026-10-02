@@ -80,23 +80,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cyclops takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cyclops_FinalSmash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cyclops_FinalSmash=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Cyclops_FinalSmash,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Cyclops_FinalSmash,Condition(function Trig_Cyclops_FinalSmash_Conditions))
-
-call TriggerAddAction(gg_trg_Cyclops_FinalSmash,function Trig_Cyclops_FinalSmash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cyclops_FinalSmash=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Cyclops_FinalSmash,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Cyclops_FinalSmash,Condition(function Trig_Cyclops_FinalSmash_Conditions))
+    call TriggerAddAction(gg_trg_Cyclops_FinalSmash,function Trig_Cyclops_FinalSmash_Actions)
 endfunction
 
 

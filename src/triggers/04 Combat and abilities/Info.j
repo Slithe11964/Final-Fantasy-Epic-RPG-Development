@@ -13,23 +13,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Info takes nothing returns nothing
 endfunction
-
 function RegisterR11_Info_Item_Show_Lore takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Info_Item_Show_Lore=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Info_Item_Show_Lore,EVENT_PLAYER_UNIT_SELL_ITEM)
-
-call TriggerAddCondition(gg_trg_Info_Item_Show_Lore,Condition(function Trig_Info_Item_Show_Lore_Conditions))
-
-call TriggerAddAction(gg_trg_Info_Item_Show_Lore,function Trig_Info_Item_Show_Lore_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Info_Item_Show_Lore=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Info_Item_Show_Lore,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Info_Item_Show_Lore,Condition(function Trig_Info_Item_Show_Lore_Conditions))
+    call TriggerAddAction(gg_trg_Info_Item_Show_Lore,function Trig_Info_Item_Show_Lore_Actions)
 endfunction
 
 

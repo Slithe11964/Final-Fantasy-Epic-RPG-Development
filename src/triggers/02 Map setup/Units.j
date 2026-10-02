@@ -1,1323 +1,662 @@
 library TUnits requires TDrop, TLoot
 function Units_CreateNeutralPassiveBuildings takes nothing returns nothing
-
-local trigger t
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nfh0_0274,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nfh0_0274,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nfh1_0275,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nfh1_0275,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0276,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0276,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropPotion)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0277,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0277,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0278,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0278,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_SpiritOfLowtown)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0279,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0279,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0280,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0280,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_SetzersCoin)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0281,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0281,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_SprintShoes)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0282,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0282,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_ChimesOfPiercing)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0283,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0283,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_TotemOfPower)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0284,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0284,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_CatsBell)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0285,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0285,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Restoration)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0286,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0286,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_CrystalShard)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0287,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0287,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_GnollHut_Ether)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0288,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0288,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Barrel_HiPotionHiEther_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0289,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0289,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0290,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0290,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_GnollHut_Potion)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0291,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0291,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_GnollHut_Gold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0292,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0292,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Scarletite)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0293,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0293,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Nethril)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0294,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0294,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0295,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0295,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0296,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0296,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0297,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0297,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0298,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0298,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_CentaurTent_Gold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0299,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0299,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct1_0300,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct1_0300,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_CentaurTent_GoldCache)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0301,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0301,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropEthers)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0302,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0302,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0303,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0303,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0304,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0304,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0305,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct2_0305,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0306,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0306,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct1_0307,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nct1_0307,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0308,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nhns_0308,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0309,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0309,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0310,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0310,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0311,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0311,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0312,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0312,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0313,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0313,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0314,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0314,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0315,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0315,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Potions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0316,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0316,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Scrolls)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0317,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0317,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMediumGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0318,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0318,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropKikuIchimonji)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0319,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0319,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_RuneBlade)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0320,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0320,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_BlazerGloves)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0321,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0321,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Stopwatch)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0322,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0322,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropElixirOrGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0323,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0323,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSummonersHorn)
-
-call WaygateSetDestination(gg_unit_nwgt_0324,GetRectCenterX(gg_rct_411),GetRectCenterY(gg_rct_411))
-
-call WaygateActivate(gg_unit_nwgt_0324,true)
-
-call WaygateSetDestination(gg_unit_nwgt_0325,GetRectCenterX(gg_rct_410),GetRectCenterY(gg_rct_410))
-
-call WaygateActivate(gg_unit_nwgt_0325,true)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0326,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nten_0326,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
+    local trigger t
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nfh0_0274,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nfh0_0274,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nfh1_0275,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nfh1_0275,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0276,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0276,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropPotion)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0277,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0277,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0278,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0278,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_SpiritOfLowtown)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0279,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0279,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0280,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0280,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_SetzersCoin)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0281,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0281,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_SprintShoes)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0282,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0282,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_ChimesOfPiercing)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0283,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0283,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_TotemOfPower)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0284,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0284,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_CatsBell)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0285,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0285,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Restoration)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0286,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0286,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_CrystalShard)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0287,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0287,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_GnollHut_Ether)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0288,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0288,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Barrel_HiPotionHiEther_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0289,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0289,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0290,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0290,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_GnollHut_Potion)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0291,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngt2_0291,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_GnollHut_Gold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0292,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0292,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Scarletite)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0293,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0293,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Nethril)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0294,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ngnh_0294,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0295,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0295,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0296,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0296,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0297,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0297,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0298,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0298,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_CentaurTent_Gold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0299,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0299,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct1_0300,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct1_0300,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_CentaurTent_GoldCache)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0301,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0301,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropEthers)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0302,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0302,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0303,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0303,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Barrel_Potions_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0304,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0304,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0305,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct2_0305,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0306,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0306,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nct1_0307,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nct1_0307,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0308,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nhns_0308,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0309,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0309,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0310,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0310,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0311,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0311,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0312,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0312,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0313,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0313,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0314,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0314,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0315,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0315,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Potions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0316,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0316,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Scrolls)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0317,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ntn2_0317,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMediumGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0318,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0318,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropKikuIchimonji)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0319,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0319,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_RuneBlade)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0320,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0320,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_BlazerGloves)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0321,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0321,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Stopwatch)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0322,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ncnt_0322,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropElixirOrGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0323,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0323,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSummonersHorn)
+    call WaygateSetDestination(gg_unit_nwgt_0324,GetRectCenterX(gg_rct_411),GetRectCenterY(gg_rct_411))
+    call WaygateActivate(gg_unit_nwgt_0324,true)
+    call WaygateSetDestination(gg_unit_nwgt_0325,GetRectCenterX(gg_rct_410),GetRectCenterY(gg_rct_410))
+    call WaygateActivate(gg_unit_nwgt_0325,true)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0326,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nten_0326,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
 endfunction
-
-
 function Units_CreateNeutralPassiveCritters takes nothing returns nothing
-
-local trigger t
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_hbew_0327,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_hbew_0327,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Drop500Gold)
-
+    local trigger t
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_hbew_0327,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_hbew_0327,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Drop500Gold)
 endfunction
-
-
 function Units_CreatePlayerBuildings takes nothing returns nothing
-
-local trigger t
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0328,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0328,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0329,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0329,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0330,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0330,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0331,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0331,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_npgf_0332,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_npgf_0332,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Trig_Drop_Crate_Gold500b_Actions)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0333,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_owtw_0333,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ofrt_0334,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ofrt_0334,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_OrcCamp_Fortress)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_ofor_0335,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_ofor_0335,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropMolotovShot)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_obar_0336,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_obar_0336,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_OrcCamp_Barracks1)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_obar_0337,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_obar_0337,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_OrcCamp_Barracks2)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_npgf_0338,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_npgf_0338,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_OrcCamp_PigFarm)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_oalt_0339,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_oalt_0339,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_OrcCamp_Altar)
-
-call IssueImmediateOrderById(gg_unit_nbfl_0170,$D0086) // $D0086 = 852102
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nntg_0340,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nntg_0340,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nntg_0341,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nntg_0341,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropSmallGold)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0342,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0342,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropWhiteMateria)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0343,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0343,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_Aldebaran)
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0115,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0115,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_GoldCache)
-
+    local trigger t
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0328,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0328,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0329,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0329,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0330,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0330,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0331,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0331,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_npgf_0332,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_npgf_0332,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Trig_Drop_Crate_Gold500b_Actions)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0333,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_owtw_0333,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ofrt_0334,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ofrt_0334,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_OrcCamp_Fortress)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_ofor_0335,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_ofor_0335,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropMolotovShot)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_obar_0336,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_obar_0336,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_OrcCamp_Barracks1)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_obar_0337,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_obar_0337,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_OrcCamp_Barracks2)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_npgf_0338,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_npgf_0338,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_OrcCamp_PigFarm)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_oalt_0339,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_oalt_0339,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_OrcCamp_Altar)
+    call IssueImmediateOrderById(gg_unit_nbfl_0170,$D0086) // $D0086 = 852102
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nntg_0340,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nntg_0340,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nntg_0341,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nntg_0341,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropSmallGold)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0342,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0342,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropWhiteMateria)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0343,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0343,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_Aldebaran)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0115,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_nmgv_0115,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_GoldCache)
 endfunction
-
-
 function Units_CreateAllUnits takes nothing returns nothing
-
-local trigger t
-
-call SetUnitAcquireRange(gg_unit_Othr_0106,200.)
-
-call IssueImmediateOrder(gg_unit_Othr_0106,"")
-
-call IssueImmediateOrder(gg_unit_Othr_0106,"")
-
-call IssueImmediateOrder(gg_unit_Othr_0106,"")
-
-call IssueImmediateOrder(gg_unit_Othr_0106,"")
-
-call IssueImmediateOrder(gg_unit_Othr_0106,"")
-
-call SetUnitAcquireRange(gg_unit_hbsh_0344,200.)
-
-call SetUnitAcquireRange(gg_unit_Ewrd_0120,200.)
-
-call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
-
-call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
-
-call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
-
-call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
-
-call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call IssueImmediateOrder(gg_unit_Eill_0119,"")
-
-call SetUnitAcquireRange(gg_unit_H036_0254,200.)
-
-call IssueImmediateOrder(gg_unit_Hpb1_0013,"")
-
-call SetUnitAcquireRange(gg_unit_hhes_0345,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0346,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0347,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0348,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0349,200.)
-
-call SetUnitAcquireRange(gg_unit_hcth_0231,200.)
-
-call SetUnitAcquireRange(gg_unit_H00T_0185,200.)
-
-call IssueImmediateOrder(gg_unit_H00T_0185,"")
-
-call IssueImmediateOrder(gg_unit_H00T_0185,"")
-
-call IssueImmediateOrder(gg_unit_H00T_0185,"")
-
-call IssueImmediateOrder(gg_unit_H00T_0185,"")
-
-call IssueImmediateOrder(gg_unit_H00T_0185,"")
-
-call SetUnitAcquireRange(gg_unit_hhes_0350,200.)
-
-call SetUnitAcquireRange(gg_unit_nsw2_0056,200.)
-
-call IssueImmediateOrder(gg_unit_Hant_0059,"")
-
-call IssueImmediateOrder(gg_unit_Hant_0059,"")
-
-call IssueImmediateOrder(gg_unit_Hant_0059,"")
-
-call IssueImmediateOrder(gg_unit_Hant_0059,"")
-
-call IssueImmediateOrder(gg_unit_Hant_0059,"")
-
-call SetUnitAcquireRange(gg_unit_nhea_0351,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0084,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0352,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0353,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0354,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0355,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0086,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0356,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0087,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0088,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0357,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0358,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0359,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0360,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0361,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0362,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0363,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0364,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0090,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0365,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0366,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0367,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0368,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0369,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0370,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0371,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0372,200.)
-
-call SetUnitAcquireRange(gg_unit_hfoo_0373,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0096,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0099,200.)
-
-call SetUnitAcquireRange(gg_unit_hhes_0100,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0374,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0375,200.)
-
-call SetUnitAcquireRange(gg_unit_n0BW_0094,200.)
-
-call SetUnitAcquireRange(gg_unit_ebsh_0376,200.)
-
-call SetUnitAcquireRange(gg_unit_earc_0377,200.)
-
-call SetUnitAcquireRange(gg_unit_Etyr_0155,200.)
-
-call IssueImmediateOrder(gg_unit_Etyr_0155,"")
-
-call IssueImmediateOrder(gg_unit_Etyr_0155,"")
-
-call IssueImmediateOrder(gg_unit_Etyr_0155,"")
-
-call IssueImmediateOrder(gg_unit_Etyr_0155,"")
-
-call IssueImmediateOrder(gg_unit_Etyr_0155,"")
-
-call SetUnitAcquireRange(gg_unit_Emns_0156,200.)
-
-call IssueImmediateOrder(gg_unit_Emns_0156,"")
-
-call IssueImmediateOrder(gg_unit_Emns_0156,"")
-
-call IssueImmediateOrder(gg_unit_Emns_0156,"")
-
-call IssueImmediateOrder(gg_unit_Emns_0156,"")
-
-call SetUnitAcquireRange(gg_unit_eshd_0143,200.)
-
-call SetUnitAcquireRange(gg_unit_e008_0132,200.)
-
-call SetUnitAcquireRange(gg_unit_nhea_0378,200.)
-
-call SetUnitAcquireRange(gg_unit_nbld_0014,200.)
-
-call SetUnitAcquireRange(gg_unit_nenf_0379,200.)
-
-call SetUnitAcquireRange(gg_unit_nenf_0380,200.)
-
-call SetUnitAcquireRange(gg_unit_nass_0015,200.)
-
-call SetUnitAcquireRange(gg_unit_nrog_0381,200.)
-
-call SetUnitAcquireRange(gg_unit_nrog_0382,200.)
-
-call SetUnitAcquireRange(gg_unit_nban_0383,200.)
-
-call SetUnitAcquireRange(gg_unit_nban_0384,200.)
-
-call SetUnitAcquireRange(gg_unit_nbrg_0385,200.)
-
-call SetUnitAcquireRange(gg_unit_nbrg_0386,200.)
-
-call IssueImmediateOrder(gg_unit_O00I_0239,"")
-
-call IssueImmediateOrder(gg_unit_O00I_0239,"")
-
-call IssueImmediateOrderById(gg_unit_O00I_0239,$D0087) // $D0087 = 852103
-
-call IssueImmediateOrder(gg_unit_O00I_0239,"")
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_O00I_0239,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_O00I_0239,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_Vault_DemonAxe)
-
-call SetUnitAcquireRange(gg_unit_n016_0387,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0388,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0389,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0390,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0391,200.)
-
-call IssueImmediateOrderById(gg_unit_Hgam_0060,$D0087) // $D0087 = 852103
-
-call IssueImmediateOrder(gg_unit_Hgam_0060,"")
-
-call IssueImmediateOrder(gg_unit_Hgam_0060,"")
-
-call IssueImmediateOrder(gg_unit_Hgam_0060,"")
-
-call IssueImmediateOrder(gg_unit_Hgam_0060,"")
-
-call SetUnitAcquireRange(gg_unit_n016_0392,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0393,200.)
-
-call SetUnitAcquireRange(gg_unit_n016_0394,200.)
-
-call IssueImmediateOrder(gg_unit_U000_0248,"")
-
-call SetUnitAcquireRange(gg_unit_n016_0395,200.)
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
-
-call SetUnitAcquireRange(gg_unit_n016_0396,200.)
-
-call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
-
-call IssueImmediateOrderById(gg_unit_Hvsh_0145,$D00E0) // $D00E0 = 852192
-
-call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
-
-call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
-
-call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
-
-call SetUnitAcquireRange(gg_unit_n016_0397,200.)
-
-call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
-
-call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
-
-call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
-
-call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
-
-call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
-
-call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
-
-call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
-
-call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
-
-call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
-
-call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
-
-call SetUnitAcquireRange(gg_unit_ngno_0398,200.)
-
-call SetUnitAcquireRange(gg_unit_ngno_0399,200.)
-
-call SetUnitAcquireRange(gg_unit_ngno_0400,200.)
-
-call SetUnitAcquireRange(gg_unit_ngna_0401,200.)
-
-call SetUnitAcquireRange(gg_unit_ngna_0402,200.)
-
-call SetUnitAcquireRange(gg_unit_ngns_0403,200.)
-
-call SetUnitAcquireRange(gg_unit_ngns_0404,200.)
-
-call SetUnitAcquireRange(gg_unit_ngns_0405,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnw_0406,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnw_0407,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnv_0408,200.)
-
-call SetUnitAcquireRange(gg_unit_n00H_0005,200.)
-
-call IssueImmediateOrder(gg_unit_n00H_0005,"")
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_n00H_0005,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_n00H_0005,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropCrushersBelt)
-
-call IssueImmediateOrderById(gg_unit_Nman_0151,$D006D) // $D006D = 852077
-
-call IssueImmediateOrder(gg_unit_Nman_0151,"")
-
-call IssueImmediateOrder(gg_unit_Nman_0151,"")
-
-call IssueImmediateOrder(gg_unit_Nman_0151,"")
-
-call IssueImmediateOrder(gg_unit_Nman_0151,"")
-
-call IssueImmediateOrder(gg_unit_Nman_0151,"")
-
-call IssueImmediateOrder(gg_unit_H01N_0035,"")
-
-call IssueImmediateOrder(gg_unit_H01N_0035,"")
-
-call IssueImmediateOrder(gg_unit_H01N_0035,"")
-
-call IssueImmediateOrder(gg_unit_H01N_0035,"")
-
-call SetUnitAcquireRange(gg_unit_ncer_0409,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnv_0410,200.)
-
-call SetUnitAcquireRange(gg_unit_ngno_0411,200.)
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrderById(gg_unit_Opgh_0169,$D00B7) // $D00B7 = 852151
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call IssueImmediateOrder(gg_unit_Opgh_0169,"")
-
-call SetUnitAcquireRange(gg_unit_ngna_0412,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnw_0413,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnw_0414,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnv_0415,200.)
-
-call SetUnitAcquireRange(gg_unit_ngnv_0416,200.)
-
-call IssueImmediateOrderById(gg_unit_N03D_0165,$D0087) // $D0087 = 852103
-
-call IssueImmediateOrder(gg_unit_N03D_0165,"")
-
-call IssueImmediateOrder(gg_unit_N03D_0165,"")
-
-call IssueImmediateOrder(gg_unit_N03D_0165,"")
-
-call IssueImmediateOrderById(gg_unit_N03D_0165,$D0252) // $D0252 = 852562
-
-call IssueImmediateOrder(gg_unit_N03D_0165,"")
-
-call IssueImmediateOrder(gg_unit_N03D_0165,"")
-
-call SetUnitAcquireRange(gg_unit_n014_0174,200.)
-
-call SetUnitAcquireRange(gg_unit_ncea_0417,200.)
-
-call SetUnitAcquireRange(gg_unit_ncea_0418,200.)
-
-call SetUnitAcquireRange(gg_unit_ncer_0419,200.)
-
-call SetUnitAcquireRange(gg_unit_ncks_0420,200.)
-
-call SetUnitAcquireRange(gg_unit_ncks_0421,200.)
-
-call SetUnitAcquireRange(gg_unit_ncks_0422,200.)
-
-call SetUnitAcquireRange(gg_unit_ncks_0423,200.)
-
-call IssueImmediateOrder(gg_unit_Uwar_0192,"")
-
-call IssueImmediateOrderById(gg_unit_Uwar_0192,$D0086) // $D0086 = 852102
-
-call IssueImmediateOrder(gg_unit_Uwar_0192,"")
-
-call IssueImmediateOrder(gg_unit_Uwar_0192,"")
-
-call IssueImmediateOrder(gg_unit_Uwar_0192,"")
-
-call SetUnitAcquireRange(gg_unit_ncnk_0197,200.)
-
-call SetUnitAcquireRange(gg_unit_nhrq_0198,200.)
-
-call SetUnitAcquireRange(gg_unit_nstw_0199,200.)
-
-call SetUnitAcquireRange(gg_unit_nmrm_0200,200.)
-
-call SetUnitAcquireRange(gg_unit_nmrr_0424,200.)
-
-call SetUnitAcquireRange(gg_unit_nmrr_0425,200.)
-
-call SetUnitAcquireRange(gg_unit_nmrr_0426,200.)
-
-call SetUnitAcquireRange(gg_unit_nowk_0201,200.)
-
-call SetUnitAcquireRange(gg_unit_nrzb_0427,200.)
-
-call SetUnitAcquireRange(gg_unit_nrzg_0202,200.)
-
-call SetUnitAcquireRange(gg_unit_nrzm_0428,200.)
-
-call SetUnitAcquireRange(gg_unit_nhrh_0429,200.)
-
-call SetUnitAcquireRange(gg_unit_nggr_0203,200.)
-
-call SetUnitAcquireRange(gg_unit_ngst_0430,200.)
-
-call SetUnitAcquireRange(gg_unit_ngrk_0431,200.)
-
-call SetUnitAcquireRange(gg_unit_E002_0075,200.)
-
-call IssueImmediateOrder(gg_unit_E002_0075,"")
-
-call IssueImmediateOrderById(gg_unit_E002_0075,$D00E0) // $D00E0 = 852192
-
-call IssueImmediateOrder(gg_unit_E002_0075,"")
-
-call IssueImmediateOrder(gg_unit_E002_0075,"")
-
-call IssueImmediateOrder(gg_unit_E002_0075,"")
-
-call IssueImmediateOrder(gg_unit_E002_0075,"")
-
-call SetUnitAcquireRange(gg_unit_Uvng_0076,200.)
-
-call IssueImmediateOrder(gg_unit_Uvng_0076,"")
-
-call IssueImmediateOrder(gg_unit_Uvng_0076,"")
-
-call IssueImmediateOrder(gg_unit_Uvng_0076,"")
-
-call IssueImmediateOrder(gg_unit_Uvng_0076,"")
-
-call SetUnitAcquireRange(gg_unit_U006_0077,200.)
-
-call IssueImmediateOrder(gg_unit_U006_0077,"")
-
-call IssueImmediateOrderById(gg_unit_U006_0077,$D01EB) // $D01EB = 852459
-
-call IssueImmediateOrder(gg_unit_U006_0077,"")
-
-call IssueImmediateOrder(gg_unit_U006_0077,"")
-
-call IssueImmediateOrder(gg_unit_U006_0077,"")
-
-call SetUnitAcquireRange(gg_unit_uabo_0432,200.)
-
-call SetUnitAcquireRange(gg_unit_uabo_0433,200.)
-
-call SetUnitAcquireRange(gg_unit_H00W_0079,200.)
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call IssueImmediateOrder(gg_unit_H00W_0079,"")
-
-call SetUnitAcquireRange(gg_unit_nomg_0434,200.)
-
-call SetUnitAcquireRange(gg_unit_nogm_0435,200.)
-
-call SetUnitAcquireRange(gg_unit_nogr_0436,200.)
-
-call SetUnitAcquireRange(gg_unit_nogr_0437,200.)
-
-call IssueImmediateOrder(gg_unit_H00X_0133,"")
-
-call IssueImmediateOrder(gg_unit_H00X_0133,"")
-
-call IssueImmediateOrder(gg_unit_H00X_0133,"")
-
-call IssueImmediateOrder(gg_unit_H00X_0133,"")
-
-call IssueImmediateOrder(gg_unit_H00Y_0022,"")
-
-call IssueImmediateOrder(gg_unit_H00Y_0022,"")
-
-call IssueImmediateOrder(gg_unit_H00Y_0022,"")
-
-call IssueImmediateOrder(gg_unit_H00Y_0022,"")
-
-call SetUnitAcquireRange(gg_unit_e009_0118,200.)
-
-call IssueImmediateOrderById(gg_unit_e009_0118,$D00DF) // $D00DF = 852191
-
-call SetUnitAcquireRange(gg_unit_N022_0125,200.)
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N022_0125,"")
-
-call IssueImmediateOrder(gg_unit_N02I_0074,"")
-
-call IssueImmediateOrderById(gg_unit_N02I_0074,$D00DF) // $D00DF = 852191
-
-call IssueImmediateOrder(gg_unit_N02I_0074,"")
-
-call IssueImmediateOrder(gg_unit_N02I_0074,"")
-
-call IssueImmediateOrderById(gg_unit_N02I_0074,$D00B6) // $D00B6 = 852150
-
-call IssueImmediateOrder(gg_unit_E00C_0046,"")
-
-call IssueImmediateOrder(gg_unit_E00C_0046,"")
-
-call IssueImmediateOrder(gg_unit_E00C_0046,"")
-
-call IssueImmediateOrder(gg_unit_H01S_0045,"")
-
-call IssueImmediateOrder(gg_unit_H01S_0045,"")
-
-call IssueImmediateOrder(gg_unit_H01S_0045,"")
-
-call IssueImmediateOrder(gg_unit_H01S_0045,"")
-
-call IssueImmediateOrderById(gg_unit_H01T_0044,$D0086) // $D0086 = 852102
-
-call IssueImmediateOrder(gg_unit_H01T_0044,"")
-
-call IssueImmediateOrder(gg_unit_H01T_0044,"")
-
-call IssueImmediateOrder(gg_unit_E00D_0043,"")
-
-call IssueImmediateOrder(gg_unit_E00D_0043,"")
-
-call SetUnitAcquireRange(gg_unit_H01I_0070,200.)
-
-call IssueImmediateOrder(gg_unit_H01I_0070,"")
-
-call IssueImmediateOrder(gg_unit_H01I_0070,"")
-
-call IssueImmediateOrder(gg_unit_H01I_0070,"")
-
-call IssueImmediateOrder(gg_unit_H01I_0070,"")
-
-call IssueImmediateOrderById(gg_unit_H01I_0070,$D00B7) // $D00B7 = 852151
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01I_0070,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01I_0070,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropRockShot)
-
-call IssueImmediateOrder(gg_unit_H01J_0069,"")
-
-call IssueImmediateOrder(gg_unit_H01J_0069,"")
-
-call IssueImmediateOrder(gg_unit_H01J_0069,"")
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01J_0069,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01J_0069,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropWandOfTheWind)
-
-call SetUnitAcquireRange(gg_unit_H01K_0068,200.)
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-call IssueImmediateOrder(gg_unit_H01K_0068,"")
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01K_0068,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01K_0068,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropRingOfRejuvenation)
-
-call SetUnitAcquireRange(gg_unit_H01L_0067,200.)
-
-call IssueImmediateOrderById(gg_unit_H01L_0067,$D0087) // $D0087 = 852103
-
-call IssueImmediateOrder(gg_unit_H01L_0067,"")
-
-call IssueImmediateOrderById(gg_unit_H01L_0067,$D00B7) // $D00B7 = 852151
-
-call IssueImmediateOrder(gg_unit_H01L_0067,"")
-
-call IssueImmediateOrder(gg_unit_H01L_0067,"")
-
-set t=CreateTrigger()
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01L_0067,EVENT_UNIT_DEATH)
-
-call TriggerRegisterUnitEvent(t,gg_unit_H01L_0067,EVENT_UNIT_CHANGE_OWNER)
-
-call TriggerAddAction(t,function Loot_DropTotemAndBubbleShot)
-
-call IssueImmediateOrder(gg_unit_U00B_0042,"")
-
-call IssueImmediateOrder(gg_unit_U00B_0042,"")
-
-call IssueImmediateOrder(gg_unit_H01V_0041,"")
-
-call IssueImmediateOrder(gg_unit_H01U_0040,"")
-
-call IssueImmediateOrder(gg_unit_H01U_0040,"")
-
-call IssueImmediateOrderById(gg_unit_H01U_0040,$D00B7) // $D00B7 = 852151
-
-call IssueImmediateOrder(gg_unit_H01U_0040,"")
-
-call IssueImmediateOrder(gg_unit_H01U_0040,"")
-
-call IssueImmediateOrder(gg_unit_H01Y_0037,"")
-
-call IssueImmediateOrderById(gg_unit_H01Z_0036,$D0086) // $D0086 = 852102
-
-call IssueImmediateOrder(gg_unit_H01Z_0036,"")
-
-call IssueImmediateOrder(gg_unit_H01Z_0036,"")
-
-call IssueImmediateOrder(gg_unit_H021_0034,"")
-
-call IssueImmediateOrder(gg_unit_H021_0034,"")
-
-call IssueImmediateOrder(gg_unit_O00A_0033,"")
-
-call IssueImmediateOrder(gg_unit_O00A_0033,"")
-
-call IssueImmediateOrder(gg_unit_O00A_0033,"")
-
-call IssueImmediateOrder(gg_unit_O00B_0032,"")
-
-call IssueImmediateOrder(gg_unit_O00B_0032,"")
-
-call IssueImmediateOrder(gg_unit_O00B_0032,"")
-
-call IssueImmediateOrder(gg_unit_O00B_0032,"")
-
-call IssueImmediateOrder(gg_unit_N02Z_0031,"")
-
-call IssueImmediateOrderById(gg_unit_N02Z_0031,$D00E0) // $D00E0 = 852192
-
-call IssueImmediateOrder(gg_unit_N02Z_0031,"")
-
-call IssueImmediateOrder(gg_unit_N02Z_0031,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrderById(gg_unit_U00C_0024,$D00B7) // $D00B7 = 852151
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
-call IssueImmediateOrder(gg_unit_U00C_0024,"")
-
+    local trigger t
+    call SetUnitAcquireRange(gg_unit_Othr_0106,200.)
+    call IssueImmediateOrder(gg_unit_Othr_0106,"")
+    call IssueImmediateOrder(gg_unit_Othr_0106,"")
+    call IssueImmediateOrder(gg_unit_Othr_0106,"")
+    call IssueImmediateOrder(gg_unit_Othr_0106,"")
+    call IssueImmediateOrder(gg_unit_Othr_0106,"")
+    call SetUnitAcquireRange(gg_unit_hbsh_0344,200.)
+    call SetUnitAcquireRange(gg_unit_Ewrd_0120,200.)
+    call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
+    call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
+    call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
+    call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
+    call IssueImmediateOrder(gg_unit_Ewrd_0120,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call IssueImmediateOrder(gg_unit_Eill_0119,"")
+    call SetUnitAcquireRange(gg_unit_H036_0254,200.)
+    call IssueImmediateOrder(gg_unit_Hpb1_0013,"")
+    call SetUnitAcquireRange(gg_unit_hhes_0345,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0346,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0347,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0348,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0349,200.)
+    call SetUnitAcquireRange(gg_unit_hcth_0231,200.)
+    call SetUnitAcquireRange(gg_unit_H00T_0185,200.)
+    call IssueImmediateOrder(gg_unit_H00T_0185,"")
+    call IssueImmediateOrder(gg_unit_H00T_0185,"")
+    call IssueImmediateOrder(gg_unit_H00T_0185,"")
+    call IssueImmediateOrder(gg_unit_H00T_0185,"")
+    call IssueImmediateOrder(gg_unit_H00T_0185,"")
+    call SetUnitAcquireRange(gg_unit_hhes_0350,200.)
+    call SetUnitAcquireRange(gg_unit_nsw2_0056,200.)
+    call IssueImmediateOrder(gg_unit_Hant_0059,"")
+    call IssueImmediateOrder(gg_unit_Hant_0059,"")
+    call IssueImmediateOrder(gg_unit_Hant_0059,"")
+    call IssueImmediateOrder(gg_unit_Hant_0059,"")
+    call IssueImmediateOrder(gg_unit_Hant_0059,"")
+    call SetUnitAcquireRange(gg_unit_nhea_0351,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0084,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0352,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0353,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0354,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0355,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0086,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0356,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0087,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0088,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0357,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0358,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0359,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0360,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0361,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0362,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0363,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0364,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0090,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0365,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0366,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0367,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0368,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0369,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0370,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0371,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0372,200.)
+    call SetUnitAcquireRange(gg_unit_hfoo_0373,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0096,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0099,200.)
+    call SetUnitAcquireRange(gg_unit_hhes_0100,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0374,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0375,200.)
+    call SetUnitAcquireRange(gg_unit_n0BW_0094,200.)
+    call SetUnitAcquireRange(gg_unit_ebsh_0376,200.)
+    call SetUnitAcquireRange(gg_unit_earc_0377,200.)
+    call SetUnitAcquireRange(gg_unit_Etyr_0155,200.)
+    call IssueImmediateOrder(gg_unit_Etyr_0155,"")
+    call IssueImmediateOrder(gg_unit_Etyr_0155,"")
+    call IssueImmediateOrder(gg_unit_Etyr_0155,"")
+    call IssueImmediateOrder(gg_unit_Etyr_0155,"")
+    call IssueImmediateOrder(gg_unit_Etyr_0155,"")
+    call SetUnitAcquireRange(gg_unit_Emns_0156,200.)
+    call IssueImmediateOrder(gg_unit_Emns_0156,"")
+    call IssueImmediateOrder(gg_unit_Emns_0156,"")
+    call IssueImmediateOrder(gg_unit_Emns_0156,"")
+    call IssueImmediateOrder(gg_unit_Emns_0156,"")
+    call SetUnitAcquireRange(gg_unit_eshd_0143,200.)
+    call SetUnitAcquireRange(gg_unit_e008_0132,200.)
+    call SetUnitAcquireRange(gg_unit_nhea_0378,200.)
+    call SetUnitAcquireRange(gg_unit_nbld_0014,200.)
+    call SetUnitAcquireRange(gg_unit_nenf_0379,200.)
+    call SetUnitAcquireRange(gg_unit_nenf_0380,200.)
+    call SetUnitAcquireRange(gg_unit_nass_0015,200.)
+    call SetUnitAcquireRange(gg_unit_nrog_0381,200.)
+    call SetUnitAcquireRange(gg_unit_nrog_0382,200.)
+    call SetUnitAcquireRange(gg_unit_nban_0383,200.)
+    call SetUnitAcquireRange(gg_unit_nban_0384,200.)
+    call SetUnitAcquireRange(gg_unit_nbrg_0385,200.)
+    call SetUnitAcquireRange(gg_unit_nbrg_0386,200.)
+    call IssueImmediateOrder(gg_unit_O00I_0239,"")
+    call IssueImmediateOrder(gg_unit_O00I_0239,"")
+    call IssueImmediateOrderById(gg_unit_O00I_0239,$D0087) // $D0087 = 852103
+    call IssueImmediateOrder(gg_unit_O00I_0239,"")
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_O00I_0239,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_O00I_0239,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_Vault_DemonAxe)
+    call SetUnitAcquireRange(gg_unit_n016_0387,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0388,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0389,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0390,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0391,200.)
+    call IssueImmediateOrderById(gg_unit_Hgam_0060,$D0087) // $D0087 = 852103
+    call IssueImmediateOrder(gg_unit_Hgam_0060,"")
+    call IssueImmediateOrder(gg_unit_Hgam_0060,"")
+    call IssueImmediateOrder(gg_unit_Hgam_0060,"")
+    call IssueImmediateOrder(gg_unit_Hgam_0060,"")
+    call SetUnitAcquireRange(gg_unit_n016_0392,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0393,200.)
+    call SetUnitAcquireRange(gg_unit_n016_0394,200.)
+    call IssueImmediateOrder(gg_unit_U000_0248,"")
+    call SetUnitAcquireRange(gg_unit_n016_0395,200.)
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call IssueImmediateOrder(gg_unit_Nbbc_0006,"")
+    call SetUnitAcquireRange(gg_unit_n016_0396,200.)
+    call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
+    call IssueImmediateOrderById(gg_unit_Hvsh_0145,$D00E0) // $D00E0 = 852192
+    call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
+    call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
+    call IssueImmediateOrder(gg_unit_Hvsh_0145,"")
+    call SetUnitAcquireRange(gg_unit_n016_0397,200.)
+    call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
+    call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
+    call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
+    call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
+    call IssueImmediateOrder(gg_unit_Ocb2_0147,"")
+    call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
+    call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
+    call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
+    call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
+    call IssueImmediateOrder(gg_unit_Ocbh_0148,"")
+    call SetUnitAcquireRange(gg_unit_ngno_0398,200.)
+    call SetUnitAcquireRange(gg_unit_ngno_0399,200.)
+    call SetUnitAcquireRange(gg_unit_ngno_0400,200.)
+    call SetUnitAcquireRange(gg_unit_ngna_0401,200.)
+    call SetUnitAcquireRange(gg_unit_ngna_0402,200.)
+    call SetUnitAcquireRange(gg_unit_ngns_0403,200.)
+    call SetUnitAcquireRange(gg_unit_ngns_0404,200.)
+    call SetUnitAcquireRange(gg_unit_ngns_0405,200.)
+    call SetUnitAcquireRange(gg_unit_ngnw_0406,200.)
+    call SetUnitAcquireRange(gg_unit_ngnw_0407,200.)
+    call SetUnitAcquireRange(gg_unit_ngnv_0408,200.)
+    call SetUnitAcquireRange(gg_unit_n00H_0005,200.)
+    call IssueImmediateOrder(gg_unit_n00H_0005,"")
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_n00H_0005,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_n00H_0005,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropCrushersBelt)
+    call IssueImmediateOrderById(gg_unit_Nman_0151,$D006D) // $D006D = 852077
+    call IssueImmediateOrder(gg_unit_Nman_0151,"")
+    call IssueImmediateOrder(gg_unit_Nman_0151,"")
+    call IssueImmediateOrder(gg_unit_Nman_0151,"")
+    call IssueImmediateOrder(gg_unit_Nman_0151,"")
+    call IssueImmediateOrder(gg_unit_Nman_0151,"")
+    call IssueImmediateOrder(gg_unit_H01N_0035,"")
+    call IssueImmediateOrder(gg_unit_H01N_0035,"")
+    call IssueImmediateOrder(gg_unit_H01N_0035,"")
+    call IssueImmediateOrder(gg_unit_H01N_0035,"")
+    call SetUnitAcquireRange(gg_unit_ncer_0409,200.)
+    call SetUnitAcquireRange(gg_unit_ngnv_0410,200.)
+    call SetUnitAcquireRange(gg_unit_ngno_0411,200.)
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrderById(gg_unit_Opgh_0169,$D00B7) // $D00B7 = 852151
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call IssueImmediateOrder(gg_unit_Opgh_0169,"")
+    call SetUnitAcquireRange(gg_unit_ngna_0412,200.)
+    call SetUnitAcquireRange(gg_unit_ngnw_0413,200.)
+    call SetUnitAcquireRange(gg_unit_ngnw_0414,200.)
+    call SetUnitAcquireRange(gg_unit_ngnv_0415,200.)
+    call SetUnitAcquireRange(gg_unit_ngnv_0416,200.)
+    call IssueImmediateOrderById(gg_unit_N03D_0165,$D0087) // $D0087 = 852103
+    call IssueImmediateOrder(gg_unit_N03D_0165,"")
+    call IssueImmediateOrder(gg_unit_N03D_0165,"")
+    call IssueImmediateOrder(gg_unit_N03D_0165,"")
+    call IssueImmediateOrderById(gg_unit_N03D_0165,$D0252) // $D0252 = 852562
+    call IssueImmediateOrder(gg_unit_N03D_0165,"")
+    call IssueImmediateOrder(gg_unit_N03D_0165,"")
+    call SetUnitAcquireRange(gg_unit_n014_0174,200.)
+    call SetUnitAcquireRange(gg_unit_ncea_0417,200.)
+    call SetUnitAcquireRange(gg_unit_ncea_0418,200.)
+    call SetUnitAcquireRange(gg_unit_ncer_0419,200.)
+    call SetUnitAcquireRange(gg_unit_ncks_0420,200.)
+    call SetUnitAcquireRange(gg_unit_ncks_0421,200.)
+    call SetUnitAcquireRange(gg_unit_ncks_0422,200.)
+    call SetUnitAcquireRange(gg_unit_ncks_0423,200.)
+    call IssueImmediateOrder(gg_unit_Uwar_0192,"")
+    call IssueImmediateOrderById(gg_unit_Uwar_0192,$D0086) // $D0086 = 852102
+    call IssueImmediateOrder(gg_unit_Uwar_0192,"")
+    call IssueImmediateOrder(gg_unit_Uwar_0192,"")
+    call IssueImmediateOrder(gg_unit_Uwar_0192,"")
+    call SetUnitAcquireRange(gg_unit_ncnk_0197,200.)
+    call SetUnitAcquireRange(gg_unit_nhrq_0198,200.)
+    call SetUnitAcquireRange(gg_unit_nstw_0199,200.)
+    call SetUnitAcquireRange(gg_unit_nmrm_0200,200.)
+    call SetUnitAcquireRange(gg_unit_nmrr_0424,200.)
+    call SetUnitAcquireRange(gg_unit_nmrr_0425,200.)
+    call SetUnitAcquireRange(gg_unit_nmrr_0426,200.)
+    call SetUnitAcquireRange(gg_unit_nowk_0201,200.)
+    call SetUnitAcquireRange(gg_unit_nrzb_0427,200.)
+    call SetUnitAcquireRange(gg_unit_nrzg_0202,200.)
+    call SetUnitAcquireRange(gg_unit_nrzm_0428,200.)
+    call SetUnitAcquireRange(gg_unit_nhrh_0429,200.)
+    call SetUnitAcquireRange(gg_unit_nggr_0203,200.)
+    call SetUnitAcquireRange(gg_unit_ngst_0430,200.)
+    call SetUnitAcquireRange(gg_unit_ngrk_0431,200.)
+    call SetUnitAcquireRange(gg_unit_E002_0075,200.)
+    call IssueImmediateOrder(gg_unit_E002_0075,"")
+    call IssueImmediateOrderById(gg_unit_E002_0075,$D00E0) // $D00E0 = 852192
+    call IssueImmediateOrder(gg_unit_E002_0075,"")
+    call IssueImmediateOrder(gg_unit_E002_0075,"")
+    call IssueImmediateOrder(gg_unit_E002_0075,"")
+    call IssueImmediateOrder(gg_unit_E002_0075,"")
+    call SetUnitAcquireRange(gg_unit_Uvng_0076,200.)
+    call IssueImmediateOrder(gg_unit_Uvng_0076,"")
+    call IssueImmediateOrder(gg_unit_Uvng_0076,"")
+    call IssueImmediateOrder(gg_unit_Uvng_0076,"")
+    call IssueImmediateOrder(gg_unit_Uvng_0076,"")
+    call SetUnitAcquireRange(gg_unit_U006_0077,200.)
+    call IssueImmediateOrder(gg_unit_U006_0077,"")
+    call IssueImmediateOrderById(gg_unit_U006_0077,$D01EB) // $D01EB = 852459
+    call IssueImmediateOrder(gg_unit_U006_0077,"")
+    call IssueImmediateOrder(gg_unit_U006_0077,"")
+    call IssueImmediateOrder(gg_unit_U006_0077,"")
+    call SetUnitAcquireRange(gg_unit_uabo_0432,200.)
+    call SetUnitAcquireRange(gg_unit_uabo_0433,200.)
+    call SetUnitAcquireRange(gg_unit_H00W_0079,200.)
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call IssueImmediateOrder(gg_unit_H00W_0079,"")
+    call SetUnitAcquireRange(gg_unit_nomg_0434,200.)
+    call SetUnitAcquireRange(gg_unit_nogm_0435,200.)
+    call SetUnitAcquireRange(gg_unit_nogr_0436,200.)
+    call SetUnitAcquireRange(gg_unit_nogr_0437,200.)
+    call IssueImmediateOrder(gg_unit_H00X_0133,"")
+    call IssueImmediateOrder(gg_unit_H00X_0133,"")
+    call IssueImmediateOrder(gg_unit_H00X_0133,"")
+    call IssueImmediateOrder(gg_unit_H00X_0133,"")
+    call IssueImmediateOrder(gg_unit_H00Y_0022,"")
+    call IssueImmediateOrder(gg_unit_H00Y_0022,"")
+    call IssueImmediateOrder(gg_unit_H00Y_0022,"")
+    call IssueImmediateOrder(gg_unit_H00Y_0022,"")
+    call SetUnitAcquireRange(gg_unit_e009_0118,200.)
+    call IssueImmediateOrderById(gg_unit_e009_0118,$D00DF) // $D00DF = 852191
+    call SetUnitAcquireRange(gg_unit_N022_0125,200.)
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N022_0125,"")
+    call IssueImmediateOrder(gg_unit_N02I_0074,"")
+    call IssueImmediateOrderById(gg_unit_N02I_0074,$D00DF) // $D00DF = 852191
+    call IssueImmediateOrder(gg_unit_N02I_0074,"")
+    call IssueImmediateOrder(gg_unit_N02I_0074,"")
+    call IssueImmediateOrderById(gg_unit_N02I_0074,$D00B6) // $D00B6 = 852150
+    call IssueImmediateOrder(gg_unit_E00C_0046,"")
+    call IssueImmediateOrder(gg_unit_E00C_0046,"")
+    call IssueImmediateOrder(gg_unit_E00C_0046,"")
+    call IssueImmediateOrder(gg_unit_H01S_0045,"")
+    call IssueImmediateOrder(gg_unit_H01S_0045,"")
+    call IssueImmediateOrder(gg_unit_H01S_0045,"")
+    call IssueImmediateOrder(gg_unit_H01S_0045,"")
+    call IssueImmediateOrderById(gg_unit_H01T_0044,$D0086) // $D0086 = 852102
+    call IssueImmediateOrder(gg_unit_H01T_0044,"")
+    call IssueImmediateOrder(gg_unit_H01T_0044,"")
+    call IssueImmediateOrder(gg_unit_E00D_0043,"")
+    call IssueImmediateOrder(gg_unit_E00D_0043,"")
+    call SetUnitAcquireRange(gg_unit_H01I_0070,200.)
+    call IssueImmediateOrder(gg_unit_H01I_0070,"")
+    call IssueImmediateOrder(gg_unit_H01I_0070,"")
+    call IssueImmediateOrder(gg_unit_H01I_0070,"")
+    call IssueImmediateOrder(gg_unit_H01I_0070,"")
+    call IssueImmediateOrderById(gg_unit_H01I_0070,$D00B7) // $D00B7 = 852151
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_H01I_0070,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_H01I_0070,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropRockShot)
+    call IssueImmediateOrder(gg_unit_H01J_0069,"")
+    call IssueImmediateOrder(gg_unit_H01J_0069,"")
+    call IssueImmediateOrder(gg_unit_H01J_0069,"")
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_H01J_0069,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_H01J_0069,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropWandOfTheWind)
+    call SetUnitAcquireRange(gg_unit_H01K_0068,200.)
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    call IssueImmediateOrder(gg_unit_H01K_0068,"")
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_H01K_0068,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_H01K_0068,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropRingOfRejuvenation)
+    call SetUnitAcquireRange(gg_unit_H01L_0067,200.)
+    call IssueImmediateOrderById(gg_unit_H01L_0067,$D0087) // $D0087 = 852103
+    call IssueImmediateOrder(gg_unit_H01L_0067,"")
+    call IssueImmediateOrderById(gg_unit_H01L_0067,$D00B7) // $D00B7 = 852151
+    call IssueImmediateOrder(gg_unit_H01L_0067,"")
+    call IssueImmediateOrder(gg_unit_H01L_0067,"")
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t,gg_unit_H01L_0067,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t,gg_unit_H01L_0067,EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t,function Loot_DropTotemAndBubbleShot)
+    call IssueImmediateOrder(gg_unit_U00B_0042,"")
+    call IssueImmediateOrder(gg_unit_U00B_0042,"")
+    call IssueImmediateOrder(gg_unit_H01V_0041,"")
+    call IssueImmediateOrder(gg_unit_H01U_0040,"")
+    call IssueImmediateOrder(gg_unit_H01U_0040,"")
+    call IssueImmediateOrderById(gg_unit_H01U_0040,$D00B7) // $D00B7 = 852151
+    call IssueImmediateOrder(gg_unit_H01U_0040,"")
+    call IssueImmediateOrder(gg_unit_H01U_0040,"")
+    call IssueImmediateOrder(gg_unit_H01Y_0037,"")
+    call IssueImmediateOrderById(gg_unit_H01Z_0036,$D0086) // $D0086 = 852102
+    call IssueImmediateOrder(gg_unit_H01Z_0036,"")
+    call IssueImmediateOrder(gg_unit_H01Z_0036,"")
+    call IssueImmediateOrder(gg_unit_H021_0034,"")
+    call IssueImmediateOrder(gg_unit_H021_0034,"")
+    call IssueImmediateOrder(gg_unit_O00A_0033,"")
+    call IssueImmediateOrder(gg_unit_O00A_0033,"")
+    call IssueImmediateOrder(gg_unit_O00A_0033,"")
+    call IssueImmediateOrder(gg_unit_O00B_0032,"")
+    call IssueImmediateOrder(gg_unit_O00B_0032,"")
+    call IssueImmediateOrder(gg_unit_O00B_0032,"")
+    call IssueImmediateOrder(gg_unit_O00B_0032,"")
+    call IssueImmediateOrder(gg_unit_N02Z_0031,"")
+    call IssueImmediateOrderById(gg_unit_N02Z_0031,$D00E0) // $D00E0 = 852192
+    call IssueImmediateOrder(gg_unit_N02Z_0031,"")
+    call IssueImmediateOrder(gg_unit_N02Z_0031,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrderById(gg_unit_U00C_0024,$D00B7) // $D00B7 = 852151
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
+    call IssueImmediateOrder(gg_unit_U00C_0024,"")
 endfunction
 
 

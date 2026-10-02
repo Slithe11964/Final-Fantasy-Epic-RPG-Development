@@ -198,52 +198,27 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Player takes nothing returns nothing
 endfunction
-
 function RegisterR11_Player_Init takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Player_Init=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Player_Init,function Trig_Player_Init_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Player_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Player_Init,function Trig_Player_Init_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Player_Leaves_Game takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Player_Leaves_Game=CreateTrigger()
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(0))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(1))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(2))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(3))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(4))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(5))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(6))
-
-call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(7))
-
-call TriggerAddAction(gg_trg_Player_Leaves_Game,function Trig_Player_Leaves_Game_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Player_Leaves_Game=CreateTrigger()
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(0))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(1))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(2))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(3))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(4))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(5))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(6))
+    call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(7))
+    call TriggerAddAction(gg_trg_Player_Leaves_Game,function Trig_Player_Leaves_Game_Actions)
 endfunction
 
 

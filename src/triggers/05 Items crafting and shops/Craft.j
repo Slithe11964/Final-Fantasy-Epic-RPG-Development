@@ -151,23 +151,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Craft takes nothing returns nothing
 endfunction
-
 function RegisterR11_Craft_Recipe takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Craft_Recipe=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Craft_Recipe,EVENT_PLAYER_UNIT_SELL_ITEM)
-
-call TriggerAddCondition(gg_trg_Craft_Recipe,Condition(function Trig_Craft_Recipe_Conditions))
-
-call TriggerAddAction(gg_trg_Craft_Recipe,function Trig_Craft_Recipe_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Craft_Recipe=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Craft_Recipe,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Craft_Recipe,Condition(function Trig_Craft_Recipe_Conditions))
+    call TriggerAddAction(gg_trg_Craft_Recipe,function Trig_Craft_Recipe_Actions)
 endfunction
 
 

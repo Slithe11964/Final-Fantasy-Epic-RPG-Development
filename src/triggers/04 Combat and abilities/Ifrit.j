@@ -79,23 +79,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ifrit takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ifrit_Hellfire takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ifrit_Hellfire=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Ifrit_Hellfire,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Ifrit_Hellfire,Condition(function Trig_Ifrit_Hellfire_Conditions))
-
-call TriggerAddAction(gg_trg_Ifrit_Hellfire,function Trig_Ifrit_Hellfire_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ifrit_Hellfire=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Ifrit_Hellfire,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Ifrit_Hellfire,Condition(function Trig_Ifrit_Hellfire_Conditions))
+    call TriggerAddAction(gg_trg_Ifrit_Hellfire,function Trig_Ifrit_Hellfire_Actions)
 endfunction
 
 

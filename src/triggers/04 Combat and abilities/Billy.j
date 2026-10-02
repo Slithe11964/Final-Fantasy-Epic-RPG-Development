@@ -15,21 +15,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Billy takes nothing returns nothing
 endfunction
-
 function RegisterR11_Billy_ShowTalkIcon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Billy_ShowTalkIcon=CreateTrigger()
-
-call DisableTrigger(gg_trg_Billy_ShowTalkIcon)
-
-call TriggerAddAction(gg_trg_Billy_ShowTalkIcon,function Trig_Billy_ShowTalkIcon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Billy_ShowTalkIcon=CreateTrigger()
+    call DisableTrigger(gg_trg_Billy_ShowTalkIcon)
+    call TriggerAddAction(gg_trg_Billy_ShowTalkIcon,function Trig_Billy_ShowTalkIcon_Actions)
 endfunction
 
 

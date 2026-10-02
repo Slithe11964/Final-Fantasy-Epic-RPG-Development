@@ -93,63 +93,31 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Famfrit takes nothing returns nothing
 endfunction
-
 function RegisterR11_Famfrit_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Famfrit_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Famfrit_Prepare,function Trig_Famfrit_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Famfrit_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Famfrit_Prepare,function Trig_Famfrit_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Famfrit_Encounter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Famfrit_Encounter=CreateTrigger()
-
-call DisableTrigger(gg_trg_Famfrit_Encounter)
-
-call TriggerRegisterUnitInRangeSimple(gg_trg_Famfrit_Encounter,700.,gg_unit_U00N_0205)
-
-call TriggerAddCondition(gg_trg_Famfrit_Encounter,Condition(function Trig_Famfrit_Encounter_Conditions))
-
-call TriggerAddAction(gg_trg_Famfrit_Encounter,function Trig_Famfrit_Encounter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Famfrit_Encounter=CreateTrigger()
+    call DisableTrigger(gg_trg_Famfrit_Encounter)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Famfrit_Encounter,700.,gg_unit_U00N_0205)
+    call TriggerAddCondition(gg_trg_Famfrit_Encounter,Condition(function Trig_Famfrit_Encounter_Conditions))
+    call TriggerAddAction(gg_trg_Famfrit_Encounter,function Trig_Famfrit_Encounter_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Famfrit_TidalWave takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Famfrit_TidalWave=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Famfrit_TidalWave,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Famfrit_TidalWave,Condition(function Trig_Famfrit_TidalWave_Conditions))
-
-call TriggerAddAction(gg_trg_Famfrit_TidalWave,function Trig_Famfrit_TidalWave_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Famfrit_TidalWave=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Famfrit_TidalWave,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Famfrit_TidalWave,Condition(function Trig_Famfrit_TidalWave_Conditions))
+    call TriggerAddAction(gg_trg_Famfrit_TidalWave,function Trig_Famfrit_TidalWave_Actions)
 endfunction
 
 

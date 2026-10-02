@@ -11,21 +11,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Anabel takes nothing returns nothing
 endfunction
-
 function RegisterR11_Anabel_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Anabel_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_Anabel_Appear)
-
-call TriggerAddAction(gg_trg_Anabel_Appear,function Trig_Anabel_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Anabel_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_Anabel_Appear)
+    call TriggerAddAction(gg_trg_Anabel_Appear,function Trig_Anabel_Appear_Actions)
 endfunction
 
 

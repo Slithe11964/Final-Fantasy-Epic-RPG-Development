@@ -26,44 +26,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_BattleWard takes nothing returns nothing
 endfunction
-
 function RegisterR11_BattleWard_Enter takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BattleWard_Enter=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_BattleWard_Enter,GetPlayableMapRect())
-
-call TriggerAddCondition(gg_trg_BattleWard_Enter,Condition(function Trig_BattleWard_Enter_Conditions))
-
-call TriggerAddAction(gg_trg_BattleWard_Enter,function Trig_BattleWard_Enter_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BattleWard_Enter=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_BattleWard_Enter,GetPlayableMapRect())
+    call TriggerAddCondition(gg_trg_BattleWard_Enter,Condition(function Trig_BattleWard_Enter_Conditions))
+    call TriggerAddAction(gg_trg_BattleWard_Enter,function Trig_BattleWard_Enter_Actions)
 endfunction
-
-
-
-
 function RegisterR11_BattleWard_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_BattleWard_Death=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_BattleWard_Death,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_BattleWard_Death,Condition(function Trig_BattleWard_Death_Conditions))
-
-call TriggerAddAction(gg_trg_BattleWard_Death,function Trig_BattleWard_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_BattleWard_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_BattleWard_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_BattleWard_Death,Condition(function Trig_BattleWard_Death_Conditions))
+    call TriggerAddAction(gg_trg_BattleWard_Death,function Trig_BattleWard_Death_Actions)
 endfunction
 
 

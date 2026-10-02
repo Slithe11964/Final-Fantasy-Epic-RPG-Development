@@ -8,21 +8,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ward takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ward_ShowTalkIcon takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ward_ShowTalkIcon=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ward_ShowTalkIcon)
-
-call TriggerAddAction(gg_trg_Ward_ShowTalkIcon,function Trig_Ward_ShowTalkIcon_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ward_ShowTalkIcon=CreateTrigger()
+    call DisableTrigger(gg_trg_Ward_ShowTalkIcon)
+    call TriggerAddAction(gg_trg_Ward_ShowTalkIcon,function Trig_Ward_ShowTalkIcon_Actions)
 endfunction
 
 

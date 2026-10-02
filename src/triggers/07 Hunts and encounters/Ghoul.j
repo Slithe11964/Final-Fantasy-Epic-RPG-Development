@@ -58,67 +58,33 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Ghoul takes nothing returns nothing
 endfunction
-
 function RegisterR11_Ghoul_Group_Cleanup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ghoul_Group_Cleanup=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ghoul_Group_Cleanup,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
-
-call TriggerAddCondition(gg_trg_Ghoul_Group_Cleanup,Condition(function Trig_Ghoul_Group_Cleanup_Conditions))
-
-call TriggerAddAction(gg_trg_Ghoul_Group_Cleanup,function Trig_Ghoul_Group_Cleanup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ghoul_Group_Cleanup=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ghoul_Group_Cleanup,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Ghoul_Group_Cleanup,Condition(function Trig_Ghoul_Group_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Ghoul_Group_Cleanup,function Trig_Ghoul_Group_Cleanup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ghoul_Master_Decay takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ghoul_Master_Decay=CreateTrigger()
-
-call DisableTrigger(gg_trg_Ghoul_Master_Decay)
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_Ghoul_Master_Decay,3.)
-
-call TriggerAddCondition(gg_trg_Ghoul_Master_Decay,Condition(function Trig_Ghoul_Master_Decay_Conditions))
-
-call TriggerAddAction(gg_trg_Ghoul_Master_Decay,function Trig_Ghoul_Master_Decay_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ghoul_Master_Decay=CreateTrigger()
+    call DisableTrigger(gg_trg_Ghoul_Master_Decay)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Ghoul_Master_Decay,3.)
+    call TriggerAddCondition(gg_trg_Ghoul_Master_Decay,Condition(function Trig_Ghoul_Master_Decay_Conditions))
+    call TriggerAddAction(gg_trg_Ghoul_Master_Decay,function Trig_Ghoul_Master_Decay_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Ghoul_Master_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Ghoul_Master_Spawn=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ghoul_Master_Spawn,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_Ghoul_Master_Spawn,Condition(function Trig_Ghoul_Master_Spawn_Conditions))
-
-call TriggerAddAction(gg_trg_Ghoul_Master_Spawn,function Trig_Ghoul_Master_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Ghoul_Master_Spawn=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ghoul_Master_Spawn,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_Ghoul_Master_Spawn,Condition(function Trig_Ghoul_Master_Spawn_Conditions))
+    call TriggerAddAction(gg_trg_Ghoul_Master_Spawn,function Trig_Ghoul_Master_Spawn_Actions)
 endfunction
 
 

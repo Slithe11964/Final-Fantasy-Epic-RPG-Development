@@ -29,50 +29,26 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Talon takes nothing returns nothing
 endfunction
-
 function RegisterR11_Talon_Leash_Gate takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Talon_Leash_Gate=CreateTrigger()
-
-call DisableTrigger(gg_trg_Talon_Leash_Gate)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Talon_Leash_Gate,gg_rct_638)
-
-call TriggerRegisterEnterRectSimple(gg_trg_Talon_Leash_Gate,gg_rct_631)
-
-call TriggerAddCondition(gg_trg_Talon_Leash_Gate,Condition(function Trig_Talon_Leash_Gate_Conditions))
-
-call TriggerAddAction(gg_trg_Talon_Leash_Gate,function Trig_Talon_Leash_Gate_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Talon_Leash_Gate=CreateTrigger()
+    call DisableTrigger(gg_trg_Talon_Leash_Gate)
+    call TriggerRegisterEnterRectSimple(gg_trg_Talon_Leash_Gate,gg_rct_638)
+    call TriggerRegisterEnterRectSimple(gg_trg_Talon_Leash_Gate,gg_rct_631)
+    call TriggerAddCondition(gg_trg_Talon_Leash_Gate,Condition(function Trig_Talon_Leash_Gate_Conditions))
+    call TriggerAddAction(gg_trg_Talon_Leash_Gate,function Trig_Talon_Leash_Gate_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Talon_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Talon_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_Talon_Death)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Talon_Death,Player($A),EVENT_PLAYER_UNIT_DEATH) // $A = 10
-
-call TriggerAddCondition(gg_trg_Talon_Death,Condition(function Trig_Talon_Death_Conditions))
-
-call TriggerAddAction(gg_trg_Talon_Death,function Trig_Talon_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Talon_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Talon_Death)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Talon_Death,Player($A),EVENT_PLAYER_UNIT_DEATH) // $A = 10
+    call TriggerAddCondition(gg_trg_Talon_Death,Condition(function Trig_Talon_Death_Conditions))
+    call TriggerAddAction(gg_trg_Talon_Death,function Trig_Talon_Death_Actions)
 endfunction
 
 

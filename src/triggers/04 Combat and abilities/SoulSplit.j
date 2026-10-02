@@ -15,23 +15,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_SoulSplit takes nothing returns nothing
 endfunction
-
 function RegisterR11_SoulSplit_Clone_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SoulSplit_Clone_Death=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_SoulSplit_Clone_Death,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_SoulSplit_Clone_Death,Condition(function Trig_SoulSplit_Clone_Death_Conditions))
-
-call TriggerAddAction(gg_trg_SoulSplit_Clone_Death,function Trig_SoulSplit_Clone_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SoulSplit_Clone_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_SoulSplit_Clone_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_SoulSplit_Clone_Death,Condition(function Trig_SoulSplit_Clone_Death_Conditions))
+    call TriggerAddAction(gg_trg_SoulSplit_Clone_Death,function Trig_SoulSplit_Clone_Death_Actions)
 endfunction
 
 

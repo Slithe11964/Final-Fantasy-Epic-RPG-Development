@@ -55,65 +55,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Teleport takes nothing returns nothing
 endfunction
-
 function RegisterR11_Teleport_Spell takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Teleport_Spell=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_Spell,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Teleport_Spell,Condition(function Trig_Teleport_Spell_Conditions))
-
-call TriggerAddAction(gg_trg_Teleport_Spell,function Trig_Teleport_Spell_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Teleport_Spell=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_Spell,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Teleport_Spell,Condition(function Trig_Teleport_Spell_Conditions))
+    call TriggerAddAction(gg_trg_Teleport_Spell,function Trig_Teleport_Spell_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Teleport_ToKalm takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Teleport_ToKalm=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_ToKalm,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Teleport_ToKalm,Condition(function Trig_Teleport_ToKalm_Conditions))
-
-call TriggerAddAction(gg_trg_Teleport_ToKalm,function Trig_Teleport_ToKalm_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Teleport_ToKalm=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_ToKalm,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Teleport_ToKalm,Condition(function Trig_Teleport_ToKalm_Conditions))
+    call TriggerAddAction(gg_trg_Teleport_ToKalm,function Trig_Teleport_ToKalm_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Teleport_ToArena takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Teleport_ToArena=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_ToArena,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Teleport_ToArena,Condition(function Trig_Teleport_ToArena_Conditions))
-
-call TriggerAddAction(gg_trg_Teleport_ToArena,function Trig_Teleport_ToArena_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Teleport_ToArena=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Teleport_ToArena,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Teleport_ToArena,Condition(function Trig_Teleport_ToArena_Conditions))
+    call TriggerAddAction(gg_trg_Teleport_ToArena,function Trig_Teleport_ToArena_Actions)
 endfunction
 
 

@@ -96,44 +96,23 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Darkness takes nothing returns nothing
 endfunction
-
 function RegisterR11_Darkness_LowHP_Cancel takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Darkness_LowHP_Cancel=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_LowHP_Cancel,EVENT_PLAYER_UNIT_SPELL_CAST)
-
-call TriggerAddCondition(gg_trg_Darkness_LowHP_Cancel,Condition(function Trig_Darkness_LowHP_Cancel_Conditions))
-
-call TriggerAddAction(gg_trg_Darkness_LowHP_Cancel,function Trig_Darkness_LowHP_Cancel_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Darkness_LowHP_Cancel=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_LowHP_Cancel,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Darkness_LowHP_Cancel,Condition(function Trig_Darkness_LowHP_Cancel_Conditions))
+    call TriggerAddAction(gg_trg_Darkness_LowHP_Cancel,function Trig_Darkness_LowHP_Cancel_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Darkness_Cast takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Darkness_Cast=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Darkness_Cast,Condition(function Trig_Darkness_Cast_Conditions))
-
-call TriggerAddAction(gg_trg_Darkness_Cast,function Trig_Darkness_Cast_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Darkness_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Darkness_Cast,Condition(function Trig_Darkness_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Darkness_Cast,function Trig_Darkness_Cast_Actions)
 endfunction
 
 

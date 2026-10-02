@@ -61,25 +61,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Firewood takes nothing returns nothing
 endfunction
-
 function RegisterR11_Firewood_Light_Fireplace takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Firewood_Light_Fireplace=CreateTrigger()
-
-call DisableTrigger(gg_trg_Firewood_Light_Fireplace)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Firewood_Light_Fireplace,EVENT_PLAYER_UNIT_USE_ITEM)
-
-call TriggerAddCondition(gg_trg_Firewood_Light_Fireplace,Condition(function Trig_Firewood_Light_Fireplace_Conditions))
-
-call TriggerAddAction(gg_trg_Firewood_Light_Fireplace,function Trig_Firewood_Light_Fireplace_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Firewood_Light_Fireplace=CreateTrigger()
+    call DisableTrigger(gg_trg_Firewood_Light_Fireplace)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Firewood_Light_Fireplace,EVENT_PLAYER_UNIT_USE_ITEM)
+    call TriggerAddCondition(gg_trg_Firewood_Light_Fireplace,Condition(function Trig_Firewood_Light_Fireplace_Conditions))
+    call TriggerAddAction(gg_trg_Firewood_Light_Fireplace,function Trig_Firewood_Light_Fireplace_Actions)
 endfunction
 
 

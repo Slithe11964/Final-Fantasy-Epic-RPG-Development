@@ -62,21 +62,13 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Cooking takes nothing returns nothing
 endfunction
-
 function RegisterR11_Cooking_Recipes_UnlockAll takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Cooking_Recipes_UnlockAll=CreateTrigger()
-
-call DisableTrigger(gg_trg_Cooking_Recipes_UnlockAll)
-
-call TriggerAddAction(gg_trg_Cooking_Recipes_UnlockAll,function Trig_Cooking_Recipes_UnlockAll_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Cooking_Recipes_UnlockAll=CreateTrigger()
+    call DisableTrigger(gg_trg_Cooking_Recipes_UnlockAll)
+    call TriggerAddAction(gg_trg_Cooking_Recipes_UnlockAll,function Trig_Cooking_Recipes_UnlockAll_Actions)
 endfunction
 
 

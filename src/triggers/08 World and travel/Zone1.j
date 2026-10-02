@@ -21,23 +21,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Zone1 takes nothing returns nothing
 endfunction
-
 function RegisterR11_Zone1_Leash takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Zone1_Leash=CreateTrigger()
-
-call TriggerRegisterEnterRectSimple(gg_trg_Zone1_Leash,gg_rct_224)
-
-call TriggerAddCondition(gg_trg_Zone1_Leash,Condition(function Trig_Zone1_Leash_Conditions))
-
-call TriggerAddAction(gg_trg_Zone1_Leash,function Trig_Zone1_Leash_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Zone1_Leash=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Zone1_Leash,gg_rct_224)
+    call TriggerAddCondition(gg_trg_Zone1_Leash,Condition(function Trig_Zone1_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Zone1_Leash,function Trig_Zone1_Leash_Actions)
 endfunction
 
 

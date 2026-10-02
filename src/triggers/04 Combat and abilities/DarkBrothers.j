@@ -45,25 +45,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkBrothers takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkBrothers_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkBrothers_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkBrothers_Appear)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DarkBrothers_Appear,gg_rct_117)
-
-call TriggerAddCondition(gg_trg_DarkBrothers_Appear,Condition(function Trig_DarkBrothers_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkBrothers_Appear,function Trig_DarkBrothers_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkBrothers_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkBrothers_Appear)
+    call TriggerRegisterEnterRectSimple(gg_trg_DarkBrothers_Appear,gg_rct_117)
+    call TriggerAddCondition(gg_trg_DarkBrothers_Appear,Condition(function Trig_DarkBrothers_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkBrothers_Appear,function Trig_DarkBrothers_Appear_Actions)
 endfunction
 
 

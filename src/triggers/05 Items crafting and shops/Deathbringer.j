@@ -18,37 +18,21 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Deathbringer takes nothing returns nothing
 endfunction
-
 function RegisterR11_Deathbringer_Warning takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Deathbringer_Warning=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(0),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(1),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(2),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(3),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(4),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(5),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(6),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(7),EVENT_PLAYER_UNIT_PICKUP_ITEM)
-
-call TriggerAddCondition(gg_trg_Deathbringer_Warning,Condition(function Trig_Deathbringer_Warning_Conditions))
-
-call TriggerAddAction(gg_trg_Deathbringer_Warning,function Trig_Deathbringer_Warning_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Deathbringer_Warning=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(0),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(1),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(2),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(3),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(4),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(5),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(6),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Deathbringer_Warning,Player(7),EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Deathbringer_Warning,Condition(function Trig_Deathbringer_Warning_Conditions))
+    call TriggerAddAction(gg_trg_Deathbringer_Warning,function Trig_Deathbringer_Warning_Actions)
 endfunction
 
 

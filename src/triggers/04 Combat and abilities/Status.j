@@ -70,23 +70,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Status takes nothing returns nothing
 endfunction
-
 function RegisterR11_Status_AutoCleanse takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Status_AutoCleanse=CreateTrigger()
-
-call TriggerRegisterTimerExpireEventBJ(gg_trg_Status_AutoCleanse,udg_HeroRefreshTimer)
-
-call TriggerAddCondition(gg_trg_Status_AutoCleanse,Condition(function Trig_Status_AutoCleanse_Conditions))
-
-call TriggerAddAction(gg_trg_Status_AutoCleanse,function Trig_Status_AutoCleanse_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Status_AutoCleanse=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Status_AutoCleanse,udg_HeroRefreshTimer)
+    call TriggerAddCondition(gg_trg_Status_AutoCleanse,Condition(function Trig_Status_AutoCleanse_Conditions))
+    call TriggerAddAction(gg_trg_Status_AutoCleanse,function Trig_Status_AutoCleanse_Actions)
 endfunction
 
 

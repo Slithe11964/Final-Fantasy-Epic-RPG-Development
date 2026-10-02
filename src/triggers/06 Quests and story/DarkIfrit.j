@@ -203,46 +203,24 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkIfrit takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkIfrit_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkIfrit_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkIfrit_Appear)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DarkIfrit_Appear,gg_rct_120)
-
-call TriggerAddCondition(gg_trg_DarkIfrit_Appear,Condition(function Trig_DarkIfrit_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkIfrit_Appear,function Trig_DarkIfrit_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkIfrit_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkIfrit_Appear)
+    call TriggerRegisterEnterRectSimple(gg_trg_DarkIfrit_Appear,gg_rct_120)
+    call TriggerAddCondition(gg_trg_DarkIfrit_Appear,Condition(function Trig_DarkIfrit_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkIfrit_Appear,function Trig_DarkIfrit_Appear_Actions)
 endfunction
-
-
-
-
 function RegisterR11_DarkIfrit_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkIfrit_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkIfrit_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_DarkIfrit_Death,gg_unit_E00D_0043,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_DarkIfrit_Death,function Trig_DarkIfrit_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkIfrit_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkIfrit_Death)
+    call TriggerRegisterUnitEvent(gg_trg_DarkIfrit_Death,gg_unit_E00D_0043,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_DarkIfrit_Death,function Trig_DarkIfrit_Death_Actions)
 endfunction
 
 

@@ -160,119 +160,56 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Exodus takes nothing returns nothing
 endfunction
-
 function RegisterR11_Exodus_Prepare takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exodus_Prepare=CreateTrigger()
-
-call TriggerAddAction(gg_trg_Exodus_Prepare,function Trig_Exodus_Prepare_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exodus_Prepare=CreateTrigger()
+    call TriggerAddAction(gg_trg_Exodus_Prepare,function Trig_Exodus_Prepare_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Exodus_Reveal takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exodus_Reveal=CreateTrigger()
-
-call DisableTrigger(gg_trg_Exodus_Reveal)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Exodus_Reveal,Condition(function Trig_Exodus_Reveal_Conditions))
-
-call TriggerAddAction(gg_trg_Exodus_Reveal,function Trig_Exodus_Reveal_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exodus_Reveal=CreateTrigger()
+    call DisableTrigger(gg_trg_Exodus_Reveal)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(7),true)
+    call TriggerAddCondition(gg_trg_Exodus_Reveal,Condition(function Trig_Exodus_Reveal_Conditions))
+    call TriggerAddAction(gg_trg_Exodus_Reveal,function Trig_Exodus_Reveal_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Exodus_Stomp takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exodus_Stomp=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_Exodus_Stomp,gg_unit_U00K_0208,EVENT_UNIT_ATTACKED)
-
-call TriggerAddCondition(gg_trg_Exodus_Stomp,Condition(function Trig_Exodus_Stomp_Conditions))
-
-call TriggerAddAction(gg_trg_Exodus_Stomp,function Trig_Exodus_Stomp_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exodus_Stomp=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_Exodus_Stomp,gg_unit_U00K_0208,EVENT_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Exodus_Stomp,Condition(function Trig_Exodus_Stomp_Conditions))
+    call TriggerAddAction(gg_trg_Exodus_Stomp,function Trig_Exodus_Stomp_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Exodus_SummonTrees takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exodus_SummonTrees=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_SummonTrees,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Exodus_SummonTrees,Condition(function Trig_Exodus_SummonTrees_Conditions))
-
-call TriggerAddAction(gg_trg_Exodus_SummonTrees,function Trig_Exodus_SummonTrees_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exodus_SummonTrees=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_SummonTrees,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Exodus_SummonTrees,Condition(function Trig_Exodus_SummonTrees_Conditions))
+    call TriggerAddAction(gg_trg_Exodus_SummonTrees,function Trig_Exodus_SummonTrees_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Exodus_Cometeorite takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Exodus_Cometeorite=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_Cometeorite,EVENT_PLAYER_UNIT_SPELL_EFFECT)
-
-call TriggerAddCondition(gg_trg_Exodus_Cometeorite,Condition(function Trig_Exodus_Cometeorite_Conditions))
-
-call TriggerAddAction(gg_trg_Exodus_Cometeorite,function Trig_Exodus_Cometeorite_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Exodus_Cometeorite=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_Cometeorite,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Exodus_Cometeorite,Condition(function Trig_Exodus_Cometeorite_Conditions))
+    call TriggerAddAction(gg_trg_Exodus_Cometeorite,function Trig_Exodus_Cometeorite_Actions)
 endfunction
 
 

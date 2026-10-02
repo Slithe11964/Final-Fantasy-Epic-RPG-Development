@@ -229,23 +229,14 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Materia takes nothing returns nothing
 endfunction
-
 function RegisterR11_Materia_Altar_Ritual takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Materia_Altar_Ritual=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Materia_Altar_Ritual,EVENT_PLAYER_UNIT_DROP_ITEM)
-
-call TriggerAddCondition(gg_trg_Materia_Altar_Ritual,Condition(function Trig_Materia_Altar_Ritual_Conditions))
-
-call TriggerAddAction(gg_trg_Materia_Altar_Ritual,function Trig_Materia_Altar_Ritual_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Materia_Altar_Ritual=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Materia_Altar_Ritual,EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerAddCondition(gg_trg_Materia_Altar_Ritual,Condition(function Trig_Materia_Altar_Ritual_Conditions))
+    call TriggerAddAction(gg_trg_Materia_Altar_Ritual,function Trig_Materia_Altar_Ritual_Actions)
 endfunction
 
 

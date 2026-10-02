@@ -98,39 +98,22 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Monograph takes nothing returns nothing
 endfunction
-
 function RegisterR11_Monograph_Drop takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Monograph_Drop=CreateTrigger()
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0047)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0048)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0049)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0050)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0051)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0053)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0054)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0055)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0056)
-
-call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0057)
-
-call TriggerAddAction(gg_trg_Monograph_Drop,function Trig_Monograph_Drop_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Monograph_Drop=CreateTrigger()
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0047)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0048)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0049)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0050)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0051)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0053)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0054)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0055)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0056)
+    call TriggerRegisterDeathEvent(gg_trg_Monograph_Drop,gg_dest_B001_0057)
+    call TriggerAddAction(gg_trg_Monograph_Drop,function Trig_Monograph_Drop_Actions)
 endfunction
 
 

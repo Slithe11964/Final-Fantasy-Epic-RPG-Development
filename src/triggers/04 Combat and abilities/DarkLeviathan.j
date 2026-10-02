@@ -32,25 +32,15 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_DarkLeviathan takes nothing returns nothing
 endfunction
-
 function RegisterR11_DarkLeviathan_Appear takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_DarkLeviathan_Appear=CreateTrigger()
-
-call DisableTrigger(gg_trg_DarkLeviathan_Appear)
-
-call TriggerRegisterEnterRectSimple(gg_trg_DarkLeviathan_Appear,gg_rct_121)
-
-call TriggerAddCondition(gg_trg_DarkLeviathan_Appear,Condition(function Trig_DarkLeviathan_Appear_Conditions))
-
-call TriggerAddAction(gg_trg_DarkLeviathan_Appear,function Trig_DarkLeviathan_Appear_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_DarkLeviathan_Appear=CreateTrigger()
+    call DisableTrigger(gg_trg_DarkLeviathan_Appear)
+    call TriggerRegisterEnterRectSimple(gg_trg_DarkLeviathan_Appear,gg_rct_121)
+    call TriggerAddCondition(gg_trg_DarkLeviathan_Appear,Condition(function Trig_DarkLeviathan_Appear_Conditions))
+    call TriggerAddAction(gg_trg_DarkLeviathan_Appear,function Trig_DarkLeviathan_Appear_Actions)
 endfunction
 
 

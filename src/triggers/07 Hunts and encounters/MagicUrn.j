@@ -88,82 +88,39 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_MagicUrn takes nothing returns nothing
 endfunction
-
 function RegisterR11_MagicUrn_Setup takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicUrn_Setup=CreateTrigger()
-
-call TriggerAddAction(gg_trg_MagicUrn_Setup,function Trig_MagicUrn_Setup_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicUrn_Setup=CreateTrigger()
+    call TriggerAddAction(gg_trg_MagicUrn_Setup,function Trig_MagicUrn_Setup_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MagicUrn_Drop takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicUrn_Drop=CreateTrigger()
-
-call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Drop,gg_unit_nmgv_0065,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_MagicUrn_Drop,function Trig_MagicUrn_Drop_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicUrn_Drop=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Drop,gg_unit_nmgv_0065,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_MagicUrn_Drop,function Trig_MagicUrn_Drop_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MagicUrn_Open takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicUrn_Open=CreateTrigger()
-
-call DisableTrigger(gg_trg_MagicUrn_Open)
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_MagicUrn_Open,EVENT_PLAYER_UNIT_USE_ITEM)
-
-call TriggerAddCondition(gg_trg_MagicUrn_Open,Condition(function Trig_MagicUrn_Open_Conditions))
-
-call TriggerAddAction(gg_trg_MagicUrn_Open,function Trig_MagicUrn_Open_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicUrn_Open=CreateTrigger()
+    call DisableTrigger(gg_trg_MagicUrn_Open)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_MagicUrn_Open,EVENT_PLAYER_UNIT_USE_ITEM)
+    call TriggerAddCondition(gg_trg_MagicUrn_Open,Condition(function Trig_MagicUrn_Open_Conditions))
+    call TriggerAddAction(gg_trg_MagicUrn_Open,function Trig_MagicUrn_Open_Actions)
 endfunction
-
-
-
-
 function RegisterR11_MagicUrn_Boss_Death takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_MagicUrn_Boss_Death=CreateTrigger()
-
-call DisableTrigger(gg_trg_MagicUrn_Boss_Death)
-
-call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Boss_Death,gg_unit_U00C_0024,EVENT_UNIT_DEATH)
-
-call TriggerAddAction(gg_trg_MagicUrn_Boss_Death,function Trig_MagicUrn_Boss_Death_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_MagicUrn_Boss_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_MagicUrn_Boss_Death)
+    call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Boss_Death,gg_unit_U00C_0024,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_MagicUrn_Boss_Death,function Trig_MagicUrn_Boss_Death_Actions)
 endfunction
 
 

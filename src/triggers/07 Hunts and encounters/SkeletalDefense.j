@@ -76,65 +76,32 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_SkeletalDefense takes nothing returns nothing
 endfunction
-
 function RegisterR11_SkeletalDefense_MarkAttacker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SkeletalDefense_MarkAttacker=CreateTrigger()
-
-call TriggerRegisterPlayerUnitEventSimple(gg_trg_SkeletalDefense_MarkAttacker,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
-
-call TriggerAddCondition(gg_trg_SkeletalDefense_MarkAttacker,Condition(function Trig_SkeletalDefense_MarkAttacker_Conditions))
-
-call TriggerAddAction(gg_trg_SkeletalDefense_MarkAttacker,function Trig_SkeletalDefense_MarkAttacker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SkeletalDefense_MarkAttacker=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_SkeletalDefense_MarkAttacker,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
+    call TriggerAddCondition(gg_trg_SkeletalDefense_MarkAttacker,Condition(function Trig_SkeletalDefense_MarkAttacker_Conditions))
+    call TriggerAddAction(gg_trg_SkeletalDefense_MarkAttacker,function Trig_SkeletalDefense_MarkAttacker_Actions)
 endfunction
-
-
-
-
 function RegisterR11_SkeletalDefense_ClearDead takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SkeletalDefense_ClearDead=CreateTrigger()
-
-call TriggerRegisterAnyUnitEventBJ(gg_trg_SkeletalDefense_ClearDead,EVENT_PLAYER_UNIT_DEATH)
-
-call TriggerAddCondition(gg_trg_SkeletalDefense_ClearDead,Condition(function Trig_SkeletalDefense_ClearDead_Conditions))
-
-call TriggerAddAction(gg_trg_SkeletalDefense_ClearDead,function Trig_SkeletalDefense_ClearDead_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SkeletalDefense_ClearDead=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_SkeletalDefense_ClearDead,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_SkeletalDefense_ClearDead,Condition(function Trig_SkeletalDefense_ClearDead_Conditions))
+    call TriggerAddAction(gg_trg_SkeletalDefense_ClearDead,function Trig_SkeletalDefense_ClearDead_Actions)
 endfunction
-
-
-
-
 function RegisterR11_SkeletalDefense_Spawn takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_SkeletalDefense_Spawn=CreateTrigger()
-
-call TriggerRegisterTimerEventPeriodic(gg_trg_SkeletalDefense_Spawn,1.)
-
-call TriggerAddCondition(gg_trg_SkeletalDefense_Spawn,Condition(function Trig_SkeletalDefense_Spawn_Conditions))
-
-call TriggerAddAction(gg_trg_SkeletalDefense_Spawn,function Trig_SkeletalDefense_Spawn_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_SkeletalDefense_Spawn=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_SkeletalDefense_Spawn,1.)
+    call TriggerAddCondition(gg_trg_SkeletalDefense_Spawn,Condition(function Trig_SkeletalDefense_Spawn_Conditions))
+    call TriggerAddAction(gg_trg_SkeletalDefense_Spawn,function Trig_SkeletalDefense_Spawn_Actions)
 endfunction
 
 

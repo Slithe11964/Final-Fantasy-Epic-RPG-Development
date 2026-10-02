@@ -61,77 +61,38 @@ endfunction
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Frakir takes nothing returns nothing
 endfunction
-
 function RegisterR11_Frakir_ShowMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Frakir_ShowMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_Frakir_ShowMarker)
-
-call TriggerAddAction(gg_trg_Frakir_ShowMarker,function Trig_Frakir_ShowMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Frakir_ShowMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_Frakir_ShowMarker)
+    call TriggerAddAction(gg_trg_Frakir_ShowMarker,function Trig_Frakir_ShowMarker_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Frakir_Lore_Talk takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Frakir_Lore_Talk=CreateTrigger()
-
-call DisableTrigger(gg_trg_Frakir_Lore_Talk)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(0),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(1),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(2),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(3),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(4),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(5),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(6),true)
-
-call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(7),true)
-
-call TriggerAddCondition(gg_trg_Frakir_Lore_Talk,Condition(function Trig_Frakir_Lore_Talk_Conditions))
-
-call TriggerAddAction(gg_trg_Frakir_Lore_Talk,function Trig_Frakir_Lore_Talk_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Frakir_Lore_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Frakir_Lore_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Frakir_Lore_Talk,Condition(function Trig_Frakir_Lore_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Frakir_Lore_Talk,function Trig_Frakir_Lore_Talk_Actions)
 endfunction
-
-
-
-
 function RegisterR11_Frakir_NextMarker takes nothing returns nothing
-
-if not udg_InitTrigFromMain then
-
-return
-
-endif
-
-set gg_trg_Frakir_NextMarker=CreateTrigger()
-
-call DisableTrigger(gg_trg_Frakir_NextMarker)
-
-call TriggerAddAction(gg_trg_Frakir_NextMarker,function Trig_Frakir_NextMarker_Actions)
-
+    if not udg_InitTrigFromMain then
+        return
+    endif
+    set gg_trg_Frakir_NextMarker=CreateTrigger()
+    call DisableTrigger(gg_trg_Frakir_NextMarker)
+    call TriggerAddAction(gg_trg_Frakir_NextMarker,function Trig_Frakir_NextMarker_Actions)
 endfunction
 
 
