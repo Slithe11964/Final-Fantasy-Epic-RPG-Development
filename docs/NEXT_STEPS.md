@@ -3,12 +3,9 @@
 Current map: `release/FFERPG_0.9.7.3-r15.w3x` (baseline: your r14 editor save). Read `README.md` first.
 
 ## Quick wins (small, low risk)
-1. **Make a release folder.**
-   - r14 (your editor save) is now the baseline. Once r15test passes its play test, copy it to `release/` as the next numbered version.
-   - Update the map name in Map Properties. It still says `0.9.7.3-r11`.
-   - Tag it in Git (`git tag r15`).
-2. **Archive the old tooling.** Move `../Builder24/`, `../CONTINUE_PROJECT.md` and `../RESUME_PROMPT.txt` into an `archive/` folder. A new developer then only sees `FFERPG/`.
-3. **Add a `CONTRIBUTING.md`:** the editor settings (JassHelper + vJass on), save -> `check_map.py` -> play -> `export_sources.py` -> commit, and the naming conventions (`Register_X`, `RegisterTriggers_X`, module `globals` blocks).
+1. ~~**Release naming.**~~ Done: the map name and loading-screen title say `0.9.7.3-r15`. Once r15 passes its play test, tag it in Git (`git tag r15`) and make it the new baseline.
+2. ~~**Archive the old tooling.**~~ Done: experiment outputs are in `../_archive/2026-10-02_handoff/`. `../Builder24/` keeps only the extractor app's code, tools (pjass, JassHelper) and notes. The reusable tools are in `../MapToolkit/`.
+3. ~~**`CONTRIBUTING.md`.**~~ Done (repo root).
 4. **Publish the repo** (GitHub, private or public) so other people can get it. Share maps through GitHub Releases rather than Git.
 
 ## Medium (worth doing next)
