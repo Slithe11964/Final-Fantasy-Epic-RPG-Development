@@ -79,5 +79,23 @@ Two cautions:
 - **MainDeprotected** (GUI): starts everything.
 - **PreplacedUnitRefs** (a disabled GUI trigger): makes World Editor generate the `gg_unit_*`
   variables the code uses. Don't delete it or enable it.
-- **ModuleLongText_*** helpers (QuestLog): long quest-log text. Build Play Copy moves this
-  text into the string table so that native save/load works.
+- **QuestLog_Entries** (GUI, folder 02 Map setup): the quest log (F9) help texts as
+  "Create Quest" actions. Keep long text in GUI actions like these. World Editor stores GUI text
+  in the map's string table. A very long string typed in custom script makes loading a saved game
+  crash.
+
+## Switching modules off
+
+Every line in the `Startup_*` steps and in the `RegisterTriggers_*` lists that uses another module
+is wrapped like this:
+
+```jass
+static if LIBRARY_TAgrias then
+    call ExecuteFunc("RegisterTriggers_Agrias") // 06 Quests and story
+endif
+```
+
+JassHelper keeps the line while module `Agrias` is enabled and drops it when you disable that
+trigger in World Editor. The matching `requires` are `optional`. With every module enabled, the
+compiled map is exactly the same as without the guards. `tools/disable_check.py` and
+`docs/DISABLING.md` tell you which modules other code still needs.

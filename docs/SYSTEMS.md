@@ -10,6 +10,7 @@ Reference lists generated from the code (re-run `python tools/gen_docs.py` after
 - [GLOBALS.md](GLOBALS.md): every variable, where it is declared, and who uses it.
 - [DEAD_CODE.md](DEAD_CODE.md): functions nothing uses.
 - [STARTUP.md](STARTUP.md): how the map starts.
+- [DISABLING.md](DISABLING.md): which modules can be switched off on their own.
 
 ## How a module is laid out
 
@@ -49,8 +50,8 @@ Small utilities with no gameplay of their own:
 ### 02 Map setup
 - `Units` creates the script-placed units and buildings at startup.
 - `Init` holds the timed initialization triggers: job tables, player colors, alliances,
-  quest log, and so on. It also holds the `ModuleLongText_*` quest-log texts that Build Play Copy
-  finalizes.
+  quest log, and so on.
+- `QuestLog_Entries` is a GUI trigger with the quest log (F9) help texts. Edit them there.
 - `Preload` preloads models.
 - `MapSetup` and `config` hold editor-generated helpers.
 
@@ -138,5 +139,6 @@ Small utilities with no gameplay of their own:
   not in the Variable Editor. Don't create a Variable Editor variable with the same name.
 - **Starting state:** a trigger noted "starts off" is turned on by quest/story progress. Check
   TRIGGER_INDEX.md for who enables it before assuming it is unused.
-- **Long text:** quest-log text that is too long breaks native save/load. Keep the
-  `ModuleLongText_*` pattern and run Build Play Copy.
+- **Long text:** a very long string in custom script breaks loading saved games. Put long
+  text in GUI actions, as `QuestLog_Entries` does. `check_map.py` warns about strings over 1000 bytes.
+- **Switching a system off:** run `tools/disable_check.py` first (see `DISABLING.md`).

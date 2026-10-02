@@ -20,7 +20,10 @@
 //   * A module's own variables are in the globals block at its top; shared ones are below.
 //   * Object ids such as 'A0B3' carry a comment with the object's name.
 //   * New triggers: just create them in World Editor (see docs/STARTUP.md for caveats).
-//   * After saving in World Editor, run Build Play Copy before playing (long quest text).
+//   * Long text (quest log help, etc.) belongs in GUI actions such as QuestLog_Entries: World
+//     Editor keeps GUI text in the string table. Very long strings typed in custom script make
+//     loading a saved game crash.
+//   * Modules can be switched off (untick Enabled); run tools/disable_check.py first.
 // ==========================================================================================
 globals
     // ======================================================================================

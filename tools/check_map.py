@@ -136,9 +136,11 @@ def main():
     results['3 startup wiring'] = (not errs, errs[:30])
 
     # 4. source/runtime agreement on startup functions
+    from vjass_lite import resolve_static_ifs, split_libraries
+    present = set(split_libraries(texts)[0])
     src_funcs = {}
     for t in texts:
-        src_funcs.update(functions(t))
+        src_funcs.update(functions(resolve_static_ifs(t.replace('\r\n', '\n'), present)))
     rt_funcs = functions(runtime_lf)
     pat = re.compile(r'^(main_old|Startup_\w+|RegisterTriggers_\w+|Register_\w+|RegisterR11_\w+|RegisterLegacy_\w+)$')
     errs = []
@@ -186,7 +188,7 @@ def main():
     if missing:
         msgs.append('text references missing from the string table: %s' % missing[:10])
     if msgs and not missing:
-        msgs.append('-> run Build Play Copy on this map before playing (native saved games crash otherwise)')
+        msgs.append('-> keep long text in GUI actions (see the QuestLog_Entries trigger), or run Build Play Copy on this map before playing; native saved games crash otherwise')
     results['5 native save/load text safety'] = (not msgs, msgs)
 
     if a.baseline:

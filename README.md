@@ -18,14 +18,13 @@ be reviewed, diffed and reverted with Git.
 
 1. Open the map from `release/` in World Editor. Keep **JassHelper** and **vJass** enabled
    (Trigger Editor menu).
-2. Make your changes and **Save As** a new file name.
-3. Build a playable copy. Run `WarcraftMapExtractor` (`dotnet run`), open the
-   **Build Play Copy** tab and pick your saved map. This moves long quest-log text into the
-   map's string table. Without this step, loading a Warcraft *saved game* crashes. Always
-   play the Build Play Copy output, never the editor save itself.
-4. Run the automated checks on the play copy:
-   `python tools/check_map.py release/<play copy>.w3x --baseline baseline/FFERPG_0.9.7.3-r12test.w3x`
-5. Test in game.
+2. Make your changes and **Save As** a new file name. The saved map is directly playable.
+3. Run the automated checks on it:
+   `python tools/check_map.py <saved map>.w3x --baseline baseline/FFERPG_0.9.7.3-r12test.w3x`
+4. Test in game.
+5. Optional: **Build Play Copy** in `WarcraftMapExtractor` (`dotnet run`) runs extra checks,
+   such as neutral unit ownership, and produces a separate copy. It is no longer needed for
+   saved games to load, because the long help texts now live in the GUI trigger `QuestLog_Entries`.
 6. Record the change in Git:
    `python tools/export_sources.py <your saved map>.w3x`, then `git add -A` and `git commit`.
 
@@ -43,6 +42,13 @@ Trigger Editor has a short version of it.
 - Object IDs such as `'A0B3'` carry a comment with the object's name. Formulas carry comments
   explaining the math.
 
+## Switching systems off
+
+Untick **Enabled** on a module in the Trigger Editor to leave it out of the map. Startup skips
+it automatically. Before you do, run
+`python tools/disable_check.py <map>.w3x <Module> [<Module> ...]`: it says whether other code
+still needs the module. `docs/DISABLING.md` lists the answer for every module on its own.
+
 ## Tools
 
 | Command | Purpose |
@@ -51,6 +57,7 @@ Trigger Editor has a short version of it.
 | `python tools/startup_audit.py OLD NEW` | Proves NEW's startup does the same work as OLD's. |
 | `python tools/export_sources.py MAP` | Map → `src/` (for Git). |
 | `python tools/build_map.py BASE OUT [--runtime war3map.j]` | `src/` → map (for tool-driven refactors). |
+| `python tools/disable_check.py MAP MODULE...` | Can these modules be switched off? (`--all` regenerates `docs/DISABLING.md`.) |
 | `python tools/gen_docs.py` | Regenerates `docs/TRIGGER_INDEX.md`, `GLOBALS.md` and `DEAD_CODE.md` from `src/`. |
 
 `check_map.py` needs `pjass`, `common.j` and `blizzard.j`. It finds them in `tools/bin/` or in
