@@ -74,6 +74,52 @@ function DevCommands_RawCode takes string s returns integer
     return id
 endfunction
 
+// 'I01Z' -> "I01Z"
+function DevCommands_RawToString takes integer id returns string
+    local string s=""
+    local integer i=0
+    local integer c
+    loop
+        exitwhen i>=4
+        set c=id-(id/256)*256
+        set s=SubString(DEV_CHARS,c-32,c-31)+s
+        set id=id/256
+        set i=i+1
+    endloop
+    return s
+endfunction
+
+// Writes Documents/Warcraft III/CustomMapData/FFERPG/itemtable.txt: every saveable item with its save
+// index, rawcode, whether it is charged (charged items store their charges in save codes) and name.
+// tools/savecode.py reads this file to decode save codes exactly.
+function DevCommands_DumpItems takes player p returns nothing
+    local integer i=1
+    local item it
+    local integer charged
+    local integer n=0
+    call PreloadGenClear()
+    call PreloadGenStart()
+    loop
+        exitwhen i>udg_SaveFlagCount
+        if udg_ItemIdTable[i]!=0 then
+            set it=CreateItem(udg_ItemIdTable[i],0,0)
+            set charged=0
+            if GetItemType(it)==ITEM_TYPE_CHARGED then
+                set charged=1
+            endif
+            call Preload("ITEM "+I2S(i)+" "+DevCommands_RawToString(udg_ItemIdTable[i])+" "+I2S(charged)+" "+GetItemName(it))
+            call RemoveItem(it)
+            set n=n+1
+        endif
+        set i=i+1
+    endloop
+    if GetLocalPlayer()==p then
+        call PreloadGenEnd(".\\FFERPG\\itemtable.txt")
+    endif
+    set it=null
+    call DevCommands_Say(p,I2S(n)+" items written to CustomMapData\\FFERPG\\itemtable.txt")
+endfunction
+
 function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"Developer commands (single player only):")
     call DevCommands_Say(p,"-gold N, -shards N, -bp N (Battle Points), -lvl N (hero level)")
@@ -81,6 +127,7 @@ function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"-item XXXX (create item by rawcode), -unit XXXX [N] (enemy units)")
     call DevCommands_Say(p,"-kill (selected units), -tp X Y (or -tp: camera), -pos")
     call DevCommands_Say(p,"-time H (0-24), -reveal (toggle), -spawns on/off, -title N")
+    call DevCommands_Say(p,"-dumpitems (item table file for tools/savecode.py)")
 endfunction
 
 function DevCommands_KillEnum takes nothing returns nothing
@@ -114,6 +161,8 @@ function Trig_DevCommands_Chat_Actions takes nothing returns nothing
     elseif cmd=="-bp" then
         set udg_BattlePoints[GetConvertedPlayerId(p)]=IMinBJ(udg_BattlePoints[GetConvertedPlayerId(p)]+n,999999)
         call DevCommands_Say(p,"Battle Points: "+I2S(udg_BattlePoints[GetConvertedPlayerId(p)]))
+    elseif cmd=="-dumpitems" then
+        call DevCommands_DumpItems(p)
     elseif h==null then
         call DevCommands_Say(p,"pick a hero first")
     elseif cmd=="-lvl" then

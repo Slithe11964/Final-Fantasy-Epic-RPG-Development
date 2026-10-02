@@ -26,6 +26,7 @@ automatically, and `tools/disable_check.py` confirms this.
 | `-reveal` | Toggle full map vision for you. |
 | `-spawns on/off` | Pause or resume monster spawns. |
 | `-title N` | Grant title N (sets the save-code title flags, so it's useful for testing save codes). |
+| `-dumpitems` | Write `Documents\Warcraft III\CustomMapData\FFERPG\itemtable.txt`: every saveable item with its save index, rawcode, whether it is charged, and name. `tools/savecode.py --items` uses it to read save codes exactly. Run it once per map version. |
 
 ## Notes
 

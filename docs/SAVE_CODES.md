@@ -91,3 +91,27 @@ The first character is the version: `A` = 0, `B` = 1, and so on.
   and a file (`-loadf`). `-sdebug` prints what is being written.
 - **Long text:** keep long text out of custom script. Very long JASS strings break loading saved
   *games* (the in-game Save Game menu, not codes). See `SYSTEMS.md`, "Long text".
+
+## Reading a code outside the game: `tools/savecode.py`
+
+```
+python tools/savecode.py decode "<code>" --items itemtable.txt [--log]
+python tools/savecode.py selftest
+```
+
+`decode` lists what a code holds: difficulty, gold, every job level, Freelancer/Gaya, the three
+inventories, upgrades, titles and New Game+ level. `--log` prints every field with its bit size,
+which is handy when a code fails to load. It follows the game's reader (`LoadCodeV3`) step by step,
+for G/H codes.
+
+**Item charges:** a charged item stores 7 extra bits, so the tool must know which items are
+charged. In game, the developer command `-dumpitems` writes `itemtable.txt` (see
+`DEBUG_COMMANDS.md`); pass it with `--items`. Without it, the tool guesses from the object data
+(`src/items-guess.json`, made by `tools/objects.py`) and may fail on codes with charged items.
+
+**Testing:** `selftest` writes 2,000 random codes with a Python copy of `Save_WriteCode` and reads
+them back. That proves reader and writer agree with each other. **It still needs checking against
+a real code from the game.**
+
+**When you change the save format,** change `savecode.py` the same way (`decode` and `encode`)
+and run `selftest`.
