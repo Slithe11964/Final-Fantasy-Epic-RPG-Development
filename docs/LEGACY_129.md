@@ -1,4 +1,45 @@
-# Can FF Epic RPG run on Warcraft III 1.29? Feasibility study
+# FF Epic RPG on Warcraft III 1.29.2
+
+## Status (stage E, 2026-10-02): first 1.29.2 test map built
+
+`release/FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x` was made from the stage C map by
+`MapToolkit/tools/downgrade.py`. Each converted file was checked against the old r7 map:
+
+- **Terrain:** byte-identical to r7.
+- **Doodads:** 12,036 of 12,043 records are byte-identical to r7; the other 7 were changed since r7.
+- **Placed units:** the file reads back fully.
+- **Object data:** the same objects as r7. The only differences are values the Reforged editor leaves out because they are defaults.
+- **Map info:** version 25, reads back fully.
+- **Script:** compiles against 1.29.2's natives.
+
+**Not proven until you play it in 1.29.2.**
+
+### How to test
+1. Copy the map into the Maps folder that 1.29.2 uses (`Documents\\Warcraft III\\Maps`, or the game folder's `Maps`).
+2. Start 1.29.2 → Single Player → Custom Game, and pick it.
+3. Check, and note anything wrong:
+   - the map shows in the list with the right name and loading screen;
+   - the terrain, trees and buildings look right;
+   - heroes can be picked; the job shrine works; spells work;
+   - `-save` and `-load` work;
+   - the quest log (F9) works;
+   - the `-dev` commands work;
+   - nothing crashes in 15+ minutes of play.
+
+If it crashes on loading, tell me where (map list, loading screen, or the start of the game). Each
+point narrows it down to one file type.
+
+### Known limits
+- **No triggers in the 1.29 editor:** the 1.29 map has no Trigger Editor data, because the
+  Reforged trigger files were removed. It is for playing. Opening it in the 1.29 editor needs
+  classic trigger files: a later step.
+- **Object data:** fields that only exist in Reforged are kept in the object data. 1.29 should
+  ignore them, but that is unconfirmed.
+- **Re-run on every release:** `python tools/downgrade.py <Reforged map> <out> --w3i-template FFERPG_0.9.7.3-r7.w3x`.
+
+---
+
+# Feasibility study (written before the converter)
 
 Date: 2026-10-02. Map checked: `release/FFERPG_0.9.7.3-r15test.w3x`.
 Tool: `MapToolkit/tools/compat_report.py` (re-run it after changes).

@@ -1,0 +1,21 @@
+# Compatibility report: fferpg_129.w3x
+
+## Script (war3map.j)
+
+### 1.29.2: compiles
+
+## File formats
+
+| File | Version | 1.29 reads | 1.31 reads |
+|---|---|---|---|
+| war3map.w3i | 25 | yes | yes |
+| war3map.w3e | 11 | yes | yes |
+| war3map.doo | 8 | yes | yes |
+| war3mapUnits.doo | 8 | yes | yes |
+| war3map.w3u | 2 | yes | yes |
+| war3map.w3a | 2 | yes | yes |
+| war3map.w3t | 2 | yes | yes |
+| war3map.w3b | 2 | yes | yes |
+| war3map.w3d | 2 | yes | yes |
+| war3map.w3h | 2 | yes | yes |
+| war3map.w3q | 2 | yes | yes |
