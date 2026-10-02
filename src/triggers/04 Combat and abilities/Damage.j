@@ -1,5 +1,44 @@
 library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait
 globals
+    // Per-hit context for Trig_Damage_Engine_CalcDamage (one slot per nested call, see DmgCtx_Depth).
+    integer DmgCtx_Depth=0
+    real array DmgCtx_Amount
+    unit array DmgCtx_Source
+    unit array DmgCtx_Target
+    boolean array DmgCtx_Unavoidable
+    integer array DmgCtx_Kind
+    boolean array DmgCtx_NoCrit
+    integer array DmgCtx_Element
+    boolean array DmgCtx_ManaDamage
+    boolean array DmgCtx_Holy
+    boolean array DmgCtx_Heal
+    boolean array DmgCtx_NoRedirect
+    boolean array DmgCtx_HealUndead
+    boolean array DmgCtx_Pure
+    boolean array DmgCtx_Melee
+    boolean array DmgCtx_Ranged
+    boolean array DmgCtx_Physical
+    boolean array DmgCtx_Magical
+    boolean array DmgCtx_Akashic
+    boolean array DmgCtx_IgnoreDefense
+    integer array DmgCtx_FxCode
+    integer array DmgCtx_BlockCode
+    real array DmgCtx_SourceX
+    real array DmgCtx_SourceY
+    real array DmgCtx_TargetX
+    real array DmgCtx_TargetY
+    integer array DmgCtx_SourceHandle
+    integer array DmgCtx_TargetHandle
+    player array DmgCtx_SourcePlayer
+    player array DmgCtx_TargetPlayer
+    real array DmgCtx_ArmorMult
+    real array DmgCtx_DefenseScale
+    integer array DmgCtx_Tmp
+    real array DmgCtx_Val
+    real array DmgCtx_Val2
+    unit array DmgCtx_Dummy
+    texttag array DmgCtx_Tag
+    integer array DmgCtx_Resist
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Damage_Init=null
     trigger gg_trg_Damage_RegisterEnter=null
@@ -1436,46 +1475,24 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
     set tp=null
 endfunction
 
-// ==========================================================================================
-// Trig_Damage_Engine_CalcDamage - the combat formula used by the damage engine for attacks,
-// spells and heals. It changes l_amount step by step, top to bottom (Step 1 ... Step 19 below), and returns
-// the final damage (heals and mana changes are applied here directly).
-//   l_amount     base damage or healing           u / t : source / target unit
-//   l_dmgKind    1 melee, 2 ranged, 4 pure (skips most modifiers), anything else = magic
-//   l_element    element id (0 = use the attacker's element)
-//   l_blockCode  -1 cannot miss or be blocked, 0 normal, 1 evaded, 2 blocked, 3 nullified
-//   l_fxCode     1 cleave effect, 2 critical-hit effect
-// A hit can cause another hit (damage dealt from inside this function), so it runs nested;
-// that is why everything is kept in locals. Keep it that way if you split it up.
-// ==========================================================================================
-function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean l_unavoidable,integer l_dmgKind,boolean l_noCrit,integer l_element,boolean l_manaDamage,boolean l_holy,boolean l_heal,boolean l_noRedirect,boolean l_healUndead returns real
-    local boolean l_pure=(l_dmgKind==4)
-    local boolean l_melee=(l_dmgKind==1)
-    local boolean l_ranged=(l_dmgKind==2)
-    local boolean l_physical=l_melee or l_ranged
-    local boolean l_magical=(not l_physical)and(not l_pure)
-    local boolean l_akashic=(l_magical and not l_heal and GetUnitAbilityLevel(u,'A041')>0) // 'A041': ability "Akashic"
-    local boolean l_ignoreDef=false
-    local integer l_fxCode=0
-    local integer l_blockCode=0
-    local real ux=GetUnitX(u)
-    local real uy=GetUnitY(u)
-    local real tx=GetUnitX(t)
-    local real ty=GetUnitY(t)
-    local integer uh=GetHandleId(u)
-    local integer th=GetHandleId(t)
-    local player up=GetOwningPlayer(u)
-    local player tp=GetOwningPlayer(t)
-    local real l_armorMult=BlzGetUnitArmor(t)
-    local real l_defScale=1.
-    local integer l_tmp
-    local real l_val
-    local real l_val2
-    local unit l_dummy
-    local texttag l_tag
-    local integer l_resist=3
-    // Step 1 - Setup: negative amounts become 0; the target's armor becomes a multiplier
-    // (1 + 0.02 per armor point) that later steps use to apply or undo armor.
+// Releases the context slot of a finished CalcDamage call.
+function Trig_Damage_Engine_FreeContext takes integer c returns nothing
+    set DmgCtx_Source[c]=null
+    set DmgCtx_Target[c]=null
+    set DmgCtx_SourcePlayer[c]=null
+    set DmgCtx_TargetPlayer[c]=null
+    set DmgCtx_Dummy[c]=null
+    set DmgCtx_Tag[c]=null
+    set DmgCtx_Depth=c-1
+endfunction
+
+// Step 1 - Setup: negative amounts become 0; the target's armor becomes a multiplier
+// (1 + 0.02 per armor point) that later steps use to apply or undo armor.
+function Trig_Damage_Engine_Step01_Setup takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local boolean l_unavoidable=DmgCtx_Unavoidable[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
     if(l_amount<1.)then
         set l_amount=.0
     endif
@@ -1489,7 +1506,19 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     if l_unavoidable then
         set l_blockCode=-1
     endif
-    // Step 2 - Healing an undead or Zombie target hurts it instead (x1.5, counts as holy).
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set DmgCtx_ArmorMult[c]=l_armorMult
+endfunction
+
+// Step 2 - Healing an undead or Zombie target hurts it instead (x1.5, counts as holy).
+function Trig_Damage_Engine_Step02_HealingUndead takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_holy=DmgCtx_Holy[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_healUndead=DmgCtx_HealUndead[c]
+    local boolean l_pure=DmgCtx_Pure[c]
     if(l_heal and not l_healUndead and(IsUnitType(t,UNIT_TYPE_UNDEAD)or GetUnitAbilityLevel(t,'B05T')>0))then // 'B05T': buff tooltip "Zombie"
         set l_heal=false
         if(not l_pure)then
@@ -1498,9 +1527,25 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_holy=true
         endif
     endif
-    // Step 3 - Complete protection: Infinity (absorbs the hit and counts toward a job mastery),
-    // Majin Barrier, Block All / Shield, protected quest and town NPCs (Player(8)),
-    // Cup Arena outsiders, Null Sleep.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Holy[c]=l_holy
+    set DmgCtx_Heal[c]=l_heal
+    set t=null
+endfunction
+
+// Step 3 - Complete protection: Infinity (absorbs the hit and counts toward a job mastery),
+// Majin Barrier, Block All / Shield, protected quest and town NPCs (Player(8)),
+// Cup Arena outsiders, Null Sleep.
+function Trig_Damage_Engine_Step03_FullProtection takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_heal)then
         set l_blockCode=-1
     elseif(l_amount>.0)then
@@ -1551,7 +1596,33 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=.0
         endif
     endif
-    // Step 4 - Cover: the hit is redirected to the unit covering the target if it is alive and in range.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Dummy[c]=l_dummy
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 4 - Cover: the hit is redirected to the unit covering the target if it is alive and in range.
+// Returns true when the hit was redirected: CalcDamage then stops and returns 0.
+function Trig_Damage_Engine_Step04_Cover takes integer c returns boolean
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_noRedirect=DmgCtx_NoRedirect[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_melee=DmgCtx_Melee[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local real tx=DmgCtx_TargetX[c]
+    local real ty=DmgCtx_TargetY[c]
+    local integer th=DmgCtx_TargetHandle[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local real l_val=DmgCtx_Val[c]
+    local real l_val2=DmgCtx_Val2[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_amount>.0 and not l_heal and not l_noRedirect and(GetUnitAbilityLevel(t,'B063')>0 or GetUnitAbilityLevel(t,'A0X2')>0))then // 'B063': buff "Cover"; 'A0X2': ability "Perma Cover"
         set l_dummy=LoadUnitHandle(udg_LinkedCasterHash,th,1)
         if(l_dummy==null or GetWidgetLife(l_dummy)<=.405 or IsUnitInGroup(l_dummy,udg_InactiveUnits)or GetUnitAbilityLevel(l_dummy,'Avul')>0)then // 'Avul': standard ability reference "Invulnerable"
@@ -1589,11 +1660,30 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
                 set l_dummy=null
                 set u=null
                 set t=null
-                return .0
+                return true
             endif
         endif
     endif
-    // Step 5 - Immunities: Physical Immunity; Inner Fire against magic.
+    set DmgCtx_Source[c]=u
+    set DmgCtx_Target[c]=t
+    set DmgCtx_Val[c]=l_val
+    set DmgCtx_Val2[c]=l_val2
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+    return false
+endfunction
+
+// Step 5 - Immunities: Physical Immunity; Inner Fire against magic.
+function Trig_Damage_Engine_Step05_Immunities takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local boolean l_akashic=DmgCtx_Akashic[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
     if((l_physical or l_akashic)and not l_heal and l_amount>.0 and GetUnitAbilityLevel(t,'A0PS')>0)then // 'A0PS': ability "Physical Immunity"
         set l_blockCode=3
         set l_amount=.0
@@ -1602,8 +1692,29 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         set l_blockCode=3
         set l_amount=.0
     endif
-    // Step 6 - Defense: heals, Akashic, holy and Pierce/Frog hits handle armor here. Magic that
-    // hits a player's hero is scaled by 50 / (50 + that player's magic defense).
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set t=null
+endfunction
+
+// Step 6 - Defense: heals, Akashic, holy and Pierce/Frog hits handle armor here. Magic that
+// hits a player's hero is scaled by 50 / (50 + that player's magic defense).
+function Trig_Damage_Engine_Step06_Defense takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_holy=DmgCtx_Holy[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_ranged=DmgCtx_Ranged[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local boolean l_akashic=DmgCtx_Akashic[c]
+    local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local real l_defScale=DmgCtx_DefenseScale[c]
     if(l_amount>.0 and not l_pure and(l_heal or l_akashic or l_holy or GetUnitAbilityLevel(u,'B05Q')>0 or GetUnitAbilityLevel(t,'B015')>0 or GetUnitAbilityLevel(t,'B05R')>0))then // 'B05Q': buff tooltip "Pierce"; 'B015': buff tooltip "Frog"; 'B05R': buff tooltip "Vitality Zero"
         if(l_physical or not IsPlayerInForce(tp,udg_PlayingPlayers)or t!=Player_GetHero(tp))then
             if l_physical then
@@ -1646,8 +1757,37 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         // (GetPlayerId(up)) plus (1).
         call TimerStart(udg_RangedShotTimer[GetPlayerId(up)+1],.01,false,null)
     endif
-    // Step 7 - Melee attacker bonuses: weapon proficiency, axe charge, Rengeki, mana on hit,
-    // Combo Strike, Two-Handed, Dragon Eye, splash, Momentum and other melee skills.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Ranged[c]=l_ranged
+    set DmgCtx_Physical[c]=l_physical
+    set DmgCtx_Magical[c]=l_magical
+    set DmgCtx_IgnoreDefense[c]=l_ignoreDef
+    set DmgCtx_ArmorMult[c]=l_armorMult
+    set DmgCtx_DefenseScale[c]=l_defScale
+    set u=null
+    set t=null
+endfunction
+
+// Step 7 - Melee attacker bonuses: weapon proficiency, axe charge, Rengeki, mana on hit,
+// Combo Strike, Two-Handed, Dragon Eye, splash, Momentum and other melee skills.
+function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_melee=DmgCtx_Melee[c]
+    local real ux=DmgCtx_SourceX[c]
+    local real uy=DmgCtx_SourceY[c]
+    local real tx=DmgCtx_TargetX[c]
+    local real ty=DmgCtx_TargetY[c]
+    local integer uh=DmgCtx_SourceHandle[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local real l_val=DmgCtx_Val[c]
+    local real l_val2=DmgCtx_Val2[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
+    local texttag l_tag=DmgCtx_Tag[c]
     if l_melee and l_amount>.0 then
         set l_val=Trig_Damage_Engine_ProficiencyMult(u)
         if l_val>1. then
@@ -1925,8 +2065,35 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
-    // Step 8 - Elements: use the attacker's element when none was given, then apply the
-    // target's weakness / resistance / immunity / absorption.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Val[c]=l_val
+    set DmgCtx_Val2[c]=l_val2
+    set DmgCtx_Dummy[c]=l_dummy
+    set DmgCtx_Tag[c]=l_tag
+    set u=null
+    set t=null
+    set l_dummy=null
+    set l_tag=null
+endfunction
+
+// Step 8 - Elements: use the attacker's element when none was given, then apply the
+// target's weakness / resistance / immunity / absorption.
+function Trig_Damage_Engine_Step08_Elements takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local integer l_element=DmgCtx_Element[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_ranged=DmgCtx_Ranged[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
+    local integer l_fxCode=DmgCtx_FxCode[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local integer l_resist=DmgCtx_Resist[c]
     if(l_element<=0 and not l_pure)then
         set l_element=Element_GetOfUnit(u,l_physical)
     endif
@@ -2002,8 +2169,26 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         call UnitApplyTimedLife(gg_unit_n08D_0001,'BTLF',.5) // 'BTLF': object name not found in map data
         call UnitAddAbility(gg_unit_n08D_0001,'Abun') // 'Abun': object name not found in map data
     endif
-    // Step 9 - Accuracy: effects that make the hit impossible to evade (Sharp Eye, Null Evasion,
-    // Gun Accuracy ...).
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Element[c]=l_element
+    set DmgCtx_Heal[c]=l_heal
+    set DmgCtx_IgnoreDefense[c]=l_ignoreDef
+    set DmgCtx_FxCode[c]=l_fxCode
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set DmgCtx_Resist[c]=l_resist
+    set u=null
+    set t=null
+endfunction
+
+// Step 9 - Accuracy: effects that make the hit impossible to evade (Sharp Eye, Null Evasion,
+// Gun Accuracy ...).
+function Trig_Damage_Engine_Step09_Accuracy takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
     if(l_blockCode==0)then
         if(l_amount<=0)then
             set l_blockCode=-1
@@ -2019,8 +2204,34 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         call UnitRemoveAbility(u,'B00P') // 'B00P': buff tooltip "Blind"
         call UnitRemoveAbility(u,'B02V') // 'B02V': buff tooltip "Total Blind"
     endif
-    // Step 10 - Evasion and blocking: miss roll (Trig_Damage_Engine_RollMiss), Evade and Counter,
-    // block abilities.
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set u=null
+    set t=null
+endfunction
+
+// Step 10 - Evasion and blocking: miss roll (Trig_Damage_Engine_RollMiss), Evade and Counter,
+// block abilities.
+function Trig_Damage_Engine_Step10_EvasionAndBlocking takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_noRedirect=DmgCtx_NoRedirect[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_melee=DmgCtx_Melee[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
+    local real ux=DmgCtx_SourceX[c]
+    local real uy=DmgCtx_SourceY[c]
+    local real tx=DmgCtx_TargetX[c]
+    local real ty=DmgCtx_TargetY[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local real l_defScale=DmgCtx_DefenseScale[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local real l_val=DmgCtx_Val[c]
+    local real l_val2=DmgCtx_Val2[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_blockCode==0)then
         if(GetUnitAbilityLevel(t,'B050')<=0)then // 'B050': buff tooltip "Evade and Counter"
             set udg_DodgeStreak[GetPlayerId(tp)]=0
@@ -2113,7 +2324,28 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         endif
         call UnitRemoveAbility(t,'B050') // 'B050': buff tooltip "Evade and Counter"
     endif
-    // Step 11 - Remember the attacker's last element and apply its element damage bonus.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Val[c]=l_val
+    set DmgCtx_Val2[c]=l_val2
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 11 - Remember the attacker's last element and apply its element damage bonus.
+function Trig_Damage_Engine_Step11_ElementBonus takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local integer l_element=DmgCtx_Element[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local integer l_fxCode=DmgCtx_FxCode[c]
+    local integer l_blockCode=DmgCtx_BlockCode[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local real l_val=DmgCtx_Val[c]
     if(l_amount>.0 and l_element>0)then
         if(GetUnitAbilityLevel(u,'A0PO')<=0)then // 'A0PO': ability "Latest Used Element"
             call UnitAddAbility(u,'A0PO') // 'A0PO': ability "Latest Used Element"
@@ -2170,7 +2402,27 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         endif
         call Text_FloatingDamage(t,false,l_blockCode,.0,false,0)
     endif
-    // Step 12 - Physical attacker skills: Aim, Killer / Artemis Arrows and other shot bonuses.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Element[c]=l_element
+    set DmgCtx_FxCode[c]=l_fxCode
+    set DmgCtx_BlockCode[c]=l_blockCode
+    set DmgCtx_Val[c]=l_val
+    set u=null
+    set t=null
+endfunction
+
+// Step 12 - Physical attacker skills: Aim, Killer / Artemis Arrows and other shot bonuses.
+function Trig_Damage_Engine_Step12_PhysicalSkills takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local real tx=DmgCtx_TargetX[c]
+    local real ty=DmgCtx_TargetY[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local real l_armorMult=DmgCtx_ArmorMult[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_physical and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'B01F')>0 and GetUnitAbilityLevel(u,'A0RH')>0)then // 'B01F': buff tooltip "Aim"; 'A0RH': ability "Aim"
             // Result 1: (amount) times (1.2).
@@ -2268,7 +2520,20 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             call IssueTargetOrder(l_dummy,"acidbomb",t)
         endif
     endif
-    // Step 13 - Marked for Death and Undead Touch.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 13 - Marked for Death and Undead Touch.
+function Trig_Damage_Engine_Step13_MarkedForDeath takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
     if(l_amount>.0 and not l_heal and GetUnitAbilityLevel(t,'B07M')>0)then // 'B07M': buff tooltip "Marked for Death"
         // ((amount) plus (80)) plus ((GetUnitAbilityLevel(t, 'A03C')) times (20)).
         set l_amount=l_amount+80+(GetUnitAbilityLevel(t,'A03C')*20) // 'A03C': ability "Marked for Death"
@@ -2281,8 +2546,24 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         // Increase amount by 30.
         set l_amount=l_amount+30
     endif
-    // Step 14 - Difficulty: hits from the enemy player (Player(11)) on active players are divided by
-    // DifficultyScale; hits on the enemy player are multiplied by it.
+    set DmgCtx_Amount[c]=l_amount
+    set u=null
+    set t=null
+endfunction
+
+// Step 14 - Difficulty: hits from the enemy player (Player(11)) on active players are divided by
+// DifficultyScale; hits on the enemy player are multiplied by it.
+function Trig_Damage_Engine_Step14_Difficulty takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local real l_defScale=DmgCtx_DefenseScale[c]
     if(not l_pure and udg_Difficulty!=3)then
         if(up==Player($B)and IsPlayerInForce(tp,udg_ActivePlayers))then // $B = 11
             // (amount) divided by (udg_DifficultyScale).
@@ -2307,7 +2588,19 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*.625
         endif
     endif
-    // Step 15 - Random spread: normally x(15..16)/16; Gambler Spirit x(0.2..2).
+    set DmgCtx_Amount[c]=l_amount
+    set u=null
+    set t=null
+endfunction
+
+// Step 15 - Random spread: normally x(15..16)/16; Gambler Spirit x(0.2..2).
+function Trig_Damage_Engine_Step15_RandomSpread takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
     if(not l_pure and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'A05L')>0)then // 'A05L': ability "Gambler Spirit"
             // (amount) times (a random decimal number between 0.2 and 2).
@@ -2355,8 +2648,31 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
-    // Step 16 - Physical hit: critical hits, Devaluing Attack, Bravery / Pain buffs, Focus,
-    // Adrenaline, Physical Hardness, Deathblow, Ultima Blade.
+    set DmgCtx_Amount[c]=l_amount
+    set u=null
+    set t=null
+endfunction
+
+// Step 16 - Physical hit: critical hits, Devaluing Attack, Bravery / Pain buffs, Focus,
+// Adrenaline, Physical Hardness, Deathblow, Ultima Blade.
+function Trig_Damage_Engine_Step16_PhysicalHit takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_noCrit=DmgCtx_NoCrit[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_melee=DmgCtx_Melee[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
+    local integer l_fxCode=DmgCtx_FxCode[c]
+    local real ux=DmgCtx_SourceX[c]
+    local real uy=DmgCtx_SourceY[c]
+    local real tx=DmgCtx_TargetX[c]
+    local real ty=DmgCtx_TargetY[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local real l_val=DmgCtx_Val[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_physical and l_amount>.0)then
         if(not l_noCrit and not IsUnitType(t,UNIT_TYPE_STRUCTURE))then
             set l_val=1.
@@ -2481,7 +2797,27 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     // Backstab and Stealth end once the attacker hits.
     call UnitRemoveAbility(u,'B03N') // 'B03N': buff tooltip "Backstab"
     call UnitRemoveAbility(u,'B089') // 'B089': buff tooltip "Stealth"
-    // Step 17 - Magic: Faith / Faithra and other spell-power modifiers.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_IgnoreDefense[c]=l_ignoreDef
+    set DmgCtx_FxCode[c]=l_fxCode
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Val[c]=l_val
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 17 - Magic: Faith / Faithra and other spell-power modifiers.
+function Trig_Damage_Engine_Step17_Magic takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if(l_magical and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'B08Q')>0)then // 'B08Q': buff "Faithra"
             // Multiply the current amount by 2: 100 becomes 200, before any later adjustments.
@@ -2546,8 +2882,32 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*.7
         endif
     endif
-    // Step 18 - Final modifiers from both sides: Night Might, Great Wall, Inner Fire, Death Screech,
-    // Sleep, Oversoul, Adaptive Barrier, Sentinel, Divine Shield, Drain Attack ...
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 18 - Final modifiers from both sides: Night Might, Great Wall, Inner Fire, Death Screech,
+// Sleep, Oversoul, Adaptive Barrier, Sentinel, Divine Shield, Drain Attack ...
+function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local integer l_element=DmgCtx_Element[c]
+    local boolean l_manaDamage=DmgCtx_ManaDamage[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_pure=DmgCtx_Pure[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local boolean l_magical=DmgCtx_Magical[c]
+    local integer th=DmgCtx_TargetHandle[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local integer l_tmp=DmgCtx_Tmp[c]
+    local real l_val=DmgCtx_Val[c]
+    local real l_val2=DmgCtx_Val2[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     if l_amount>.0 then
         if(GetUnitAbilityLevel(u,'A03N')>0 and not l_pure and Trig_Damage_Engine_IsNight())then // 'A03N': ability "Night Might"
             // Multiply the current amount by 1.6: 100 becomes 160, before any later adjustments.
@@ -2769,8 +3129,31 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
-    // Step 19 - Apply: heals and mana changes are applied here (with floating text) and return 0;
-    // normal damage is returned to the caller, which deals it.
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Tmp[c]=l_tmp
+    set DmgCtx_Val[c]=l_val
+    set DmgCtx_Val2[c]=l_val2
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// Step 19 - Apply: heals and mana changes are applied here (with floating text) and return 0;
+// normal damage is returned to the caller, which deals it.
+function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
+    local real l_amount=DmgCtx_Amount[c]
+    local unit u=DmgCtx_Source[c]
+    local unit t=DmgCtx_Target[c]
+    local boolean l_manaDamage=DmgCtx_ManaDamage[c]
+    local boolean l_heal=DmgCtx_Heal[c]
+    local boolean l_melee=DmgCtx_Melee[c]
+    local boolean l_physical=DmgCtx_Physical[c]
+    local integer l_fxCode=DmgCtx_FxCode[c]
+    local integer th=DmgCtx_TargetHandle[c]
+    local player up=DmgCtx_SourcePlayer[c]
+    local player tp=DmgCtx_TargetPlayer[c]
+    local unit l_dummy=DmgCtx_Dummy[c]
     set udg_LastDamageDealt=l_amount
     if(l_amount>.0)then
         if l_manaDamage then
@@ -2871,7 +3254,96 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     set l_dummy=null
     set up=null
     set tp=null
-    return l_amount
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Source[c]=u
+    set DmgCtx_Target[c]=t
+    set DmgCtx_SourcePlayer[c]=up
+    set DmgCtx_TargetPlayer[c]=tp
+    set DmgCtx_Dummy[c]=l_dummy
+    set u=null
+    set t=null
+    set l_dummy=null
+endfunction
+
+// ==========================================================================================
+// Trig_Damage_Engine_CalcDamage - the combat formula used by the damage engine for attacks,
+// spells and heals. It runs the steps below in order; each step is a function above
+// (Trig_Damage_Engine_StepNN_*) that changes the hit's values (amount, block code, ...).
+//   l_amount     base damage or healing           u / t : source / target unit
+//   l_dmgKind    1 melee, 2 ranged, 4 pure (skips most modifiers), anything else = magic
+//   l_element    element id (0 = use the attacker's element)
+//   DmgCtx_BlockCode  -1 cannot miss or be blocked, 0 normal, 1 evaded, 2 blocked, 3 nullified
+//   DmgCtx_FxCode     1 cleave effect, 2 critical-hit effect
+// A hit can cause another hit while it is being calculated, so every call gets its own slot
+// c in the DmgCtx_* arrays. To add a modifier, put it in the step where it belongs, or add a
+// new step function and call it here.
+// ==========================================================================================
+function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean l_unavoidable,integer l_dmgKind,boolean l_noCrit,integer l_element,boolean l_manaDamage,boolean l_holy,boolean l_heal,boolean l_noRedirect,boolean l_healUndead returns real
+    local integer c
+    local real result
+    if DmgCtx_Depth>=8000 then
+        // safety: a crashed call never released its slot; start over instead of running past the arrays
+        set DmgCtx_Depth=0
+    endif
+    set DmgCtx_Depth=DmgCtx_Depth+1
+    set c=DmgCtx_Depth
+    set DmgCtx_Amount[c]=l_amount
+    set DmgCtx_Source[c]=u
+    set DmgCtx_Target[c]=t
+    set DmgCtx_Unavoidable[c]=l_unavoidable
+    set DmgCtx_Kind[c]=l_dmgKind
+    set DmgCtx_NoCrit[c]=l_noCrit
+    set DmgCtx_Element[c]=l_element
+    set DmgCtx_ManaDamage[c]=l_manaDamage
+    set DmgCtx_Holy[c]=l_holy
+    set DmgCtx_Heal[c]=l_heal
+    set DmgCtx_NoRedirect[c]=l_noRedirect
+    set DmgCtx_HealUndead[c]=l_healUndead
+    set DmgCtx_Pure[c]=(DmgCtx_Kind[c]==4)
+    set DmgCtx_Melee[c]=(DmgCtx_Kind[c]==1)
+    set DmgCtx_Ranged[c]=(DmgCtx_Kind[c]==2)
+    set DmgCtx_Physical[c]=DmgCtx_Melee[c] or DmgCtx_Ranged[c]
+    set DmgCtx_Magical[c]=(not DmgCtx_Physical[c])and(not DmgCtx_Pure[c])
+    set DmgCtx_Akashic[c]=(DmgCtx_Magical[c] and not DmgCtx_Heal[c] and GetUnitAbilityLevel(DmgCtx_Source[c],'A041')>0) // 'A041': ability "Akashic"
+    set DmgCtx_IgnoreDefense[c]=false
+    set DmgCtx_FxCode[c]=0
+    set DmgCtx_BlockCode[c]=0
+    set DmgCtx_SourceX[c]=GetUnitX(DmgCtx_Source[c])
+    set DmgCtx_SourceY[c]=GetUnitY(DmgCtx_Source[c])
+    set DmgCtx_TargetX[c]=GetUnitX(DmgCtx_Target[c])
+    set DmgCtx_TargetY[c]=GetUnitY(DmgCtx_Target[c])
+    set DmgCtx_SourceHandle[c]=GetHandleId(DmgCtx_Source[c])
+    set DmgCtx_TargetHandle[c]=GetHandleId(DmgCtx_Target[c])
+    set DmgCtx_SourcePlayer[c]=GetOwningPlayer(DmgCtx_Source[c])
+    set DmgCtx_TargetPlayer[c]=GetOwningPlayer(DmgCtx_Target[c])
+    set DmgCtx_ArmorMult[c]=BlzGetUnitArmor(DmgCtx_Target[c])
+    set DmgCtx_DefenseScale[c]=1.
+    set DmgCtx_Resist[c]=3
+    call Trig_Damage_Engine_Step01_Setup(c)
+    call Trig_Damage_Engine_Step02_HealingUndead(c)
+    call Trig_Damage_Engine_Step03_FullProtection(c)
+    if Trig_Damage_Engine_Step04_Cover(c) then
+        call Trig_Damage_Engine_FreeContext(c)
+        return .0
+    endif
+    call Trig_Damage_Engine_Step05_Immunities(c)
+    call Trig_Damage_Engine_Step06_Defense(c)
+    call Trig_Damage_Engine_Step07_MeleeBonuses(c)
+    call Trig_Damage_Engine_Step08_Elements(c)
+    call Trig_Damage_Engine_Step09_Accuracy(c)
+    call Trig_Damage_Engine_Step10_EvasionAndBlocking(c)
+    call Trig_Damage_Engine_Step11_ElementBonus(c)
+    call Trig_Damage_Engine_Step12_PhysicalSkills(c)
+    call Trig_Damage_Engine_Step13_MarkedForDeath(c)
+    call Trig_Damage_Engine_Step14_Difficulty(c)
+    call Trig_Damage_Engine_Step15_RandomSpread(c)
+    call Trig_Damage_Engine_Step16_PhysicalHit(c)
+    call Trig_Damage_Engine_Step17_Magic(c)
+    call Trig_Damage_Engine_Step18_FinalModifiers(c)
+    call Trig_Damage_Engine_Step19_Apply(c)
+    set result=DmgCtx_Amount[c]
+    call Trig_Damage_Engine_FreeContext(c)
+    return result
 endfunction
 
 function Trig_Damage_Init_RegisterDamageUnit takes nothing returns nothing
