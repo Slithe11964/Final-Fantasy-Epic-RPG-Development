@@ -197,11 +197,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ScorchedEarth takes nothing returns nothing
-    call Register_ScorchedEarth_Omen()
-    call Register_ScorchedEarth_EnterRegion()
-    call Register_ScorchedEarth_TowerAttack()
-    call Register_ScorchedEarth_HeatFade()
-    call Register_ScorchedEarth_Barrier()
+    call Register_ScorchedEarth_Omen() // starts off; enabled by Quest_BlazingDemon
+    call Register_ScorchedEarth_EnterRegion() // starts off; enabled by ScorchedEarth; disabled by Quest_ScorchedEarth; destroyed by Quest_ScorchedEarth
+    call Register_ScorchedEarth_TowerAttack() // starts off; enabled by ScorchedEarth; disabled by Quest_ScorchedEarth; destroyed by Quest_ScorchedEarth
+    call Register_ScorchedEarth_HeatFade() // starts off; enabled by Quest_ScorchedEarth; disabled by McBurn; destroyed by McBurn
+    call Register_ScorchedEarth_Barrier() // starts off; enabled by Quest_ScorchedEarth
 endfunction
 
 endlibrary

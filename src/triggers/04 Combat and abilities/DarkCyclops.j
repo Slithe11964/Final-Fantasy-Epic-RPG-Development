@@ -48,7 +48,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkCyclops takes nothing returns nothing
-    call Register_DarkCyclops_Appear()
+    call Register_DarkCyclops_Appear() // starts off; enabled by DarkGolem
 endfunction
 
 endlibrary

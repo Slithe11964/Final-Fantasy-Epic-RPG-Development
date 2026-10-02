@@ -89,8 +89,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Aisha takes nothing returns nothing
-    call Register_Aisha_ArtemisTalk_Prepare()
-    call Register_Aisha_ArtemisTale()
+    call Register_Aisha_ArtemisTalk_Prepare() // starts off; enabled by TargetPractice
+    call Register_Aisha_ArtemisTale() // starts off; enabled by Aisha
 endfunction
 
 endlibrary

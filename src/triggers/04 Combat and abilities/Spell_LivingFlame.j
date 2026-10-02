@@ -1,4 +1,11 @@
 library TSpellLivingFlame requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_LivingFlame_Apply=null
+    trigger gg_trg_Spell_LivingFlame_Tick=null
+    trigger gg_trg_Spell_LivingFlame_Spread=null
+endglobals
+
 function Trig_Spell_LivingFlame_Apply_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0YT') // 'A0YT': ability "Living Flame"
 endfunction
@@ -110,6 +117,31 @@ function Trig_Spell_LivingFlame_Spread_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Spell_LivingFlame takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part4 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_LivingFlame_Apply takes nothing returns nothing
+    set gg_trg_Spell_LivingFlame_Apply=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_LivingFlame_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_LivingFlame_Apply,Condition(function Trig_Spell_LivingFlame_Apply_Conditions))
+    call TriggerAddAction(gg_trg_Spell_LivingFlame_Apply,function Trig_Spell_LivingFlame_Apply_Actions)
+endfunction
+
+function Register_Spell_LivingFlame_Tick takes nothing returns nothing
+    set gg_trg_Spell_LivingFlame_Tick=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Spell_LivingFlame_Tick,1.)
+    call TriggerAddCondition(gg_trg_Spell_LivingFlame_Tick,Condition(function Trig_Spell_LivingFlame_Tick_Conditions))
+    call TriggerAddAction(gg_trg_Spell_LivingFlame_Tick,function Trig_Spell_LivingFlame_Tick_Actions)
+endfunction
+
+function Register_Spell_LivingFlame_Spread takes nothing returns nothing
+    set gg_trg_Spell_LivingFlame_Spread=CreateTrigger()
+    call DisableTrigger(gg_trg_Spell_LivingFlame_Spread)
+    call TriggerAddCondition(gg_trg_Spell_LivingFlame_Spread,Condition(function Trig_Spell_LivingFlame_Spread_Conditions))
+    call TriggerAddAction(gg_trg_Spell_LivingFlame_Spread,function Trig_Spell_LivingFlame_Spread_Actions)
 endfunction
 
 endlibrary

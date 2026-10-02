@@ -1,5 +1,8 @@
 library TQuestWolfFangs requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_WolfFangs_Start=null
+    trigger gg_trg_Quest_WolfFangs_TurnIn=null
     // Variables only this module uses.
     integer udg_FangsRemaining=0
 endglobals
@@ -99,6 +102,33 @@ function Trig_Quest_WolfFangs_TurnIn_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_WolfFangs takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part10 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_WolfFangs_Start takes nothing returns nothing
+    set gg_trg_Quest_WolfFangs_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_WolfFangs_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_WolfFangs_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_WolfFangs_Start,Condition(function Trig_Quest_WolfFangs_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_WolfFangs_Start,function Trig_Quest_WolfFangs_Start_Actions)
+endfunction
+
+function Register_Quest_WolfFangs_TurnIn takes nothing returns nothing
+    set gg_trg_Quest_WolfFangs_TurnIn=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_WolfFangs_TurnIn)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_WolfFangs_TurnIn,450.,gg_unit_n01R_0081)
+    call TriggerAddCondition(gg_trg_Quest_WolfFangs_TurnIn,Condition(function Trig_Quest_WolfFangs_TurnIn_Conditions))
+    call TriggerAddAction(gg_trg_Quest_WolfFangs_TurnIn,function Trig_Quest_WolfFangs_TurnIn_Actions)
 endfunction
 
 endlibrary

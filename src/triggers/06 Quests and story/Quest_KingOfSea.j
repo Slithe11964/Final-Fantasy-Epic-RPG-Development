@@ -1,4 +1,10 @@
 library TQuestKingOfSea requires TCam, TCine, TPlayerPart01, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_KingOfSea_Slain=null
+    trigger gg_trg_Quest_KingOfSea_Reward=null
+endglobals
+
 function Trig_Quest_KingOfSea_Slain_Cond_TrackBossKill takes nothing returns boolean
     return(udg_SpeedrunMode)
 endfunction
@@ -90,6 +96,25 @@ function Trig_Quest_KingOfSea_Reward_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_KingOfSea takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_KingOfSea_Slain takes nothing returns nothing
+    set gg_trg_Quest_KingOfSea_Slain=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KingOfSea_Slain)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KingOfSea_Slain,gg_unit_H02W_0246,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_KingOfSea_Slain,function Trig_Quest_KingOfSea_Slain_Actions)
+endfunction
+
+function Register_Quest_KingOfSea_Reward takes nothing returns nothing
+    set gg_trg_Quest_KingOfSea_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KingOfSea_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_KingOfSea_Reward,450.,gg_unit_n0AV_0247)
+    call TriggerAddCondition(gg_trg_Quest_KingOfSea_Reward,Condition(function Trig_Quest_KingOfSea_Reward_Conditions))
+    call TriggerAddAction(gg_trg_Quest_KingOfSea_Reward,function Trig_Quest_KingOfSea_Reward_Actions)
 endfunction
 
 endlibrary

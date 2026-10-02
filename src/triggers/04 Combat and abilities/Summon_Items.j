@@ -1,4 +1,9 @@
 library TSummonItems requires TPlayerPart01, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Summon_Item_Dropped=null
+endglobals
+
 function Trig_Summon_Item_Dropped_IsSummonItem takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I05O')or(GetItemTypeId(GetManipulatedItem())=='I0A3')or(GetItemTypeId(GetManipulatedItem())=='I0D5')or(GetItemTypeId(GetManipulatedItem())=='I0EA')or(GetItemTypeId(GetManipulatedItem())=='I0F0')or(GetItemTypeId(GetManipulatedItem())=='I08S')or(GetItemTypeId(GetManipulatedItem())=='I0L5')or(GetItemTypeId(GetManipulatedItem())=='I0BK') // 'I05O': item "Perfect Mark of Darkness"; 'I0A3': item "Excalipoor"; 'I0D5': item "Judge's Helm"; 'I0EA': item "Black Hole"; 'I0F0': item "Magatama"; 'I08S': item "Spirit Pendant"; 'I0L5': item "Dragon Remains"; 'I0BK': item "Horn of Madain Sari"
 endfunction
@@ -140,6 +145,18 @@ function Trig_Summon_Item_Dropped_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Summon_Items takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part4 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Item_Dropped takes nothing returns nothing
+    set gg_trg_Summon_Item_Dropped=CreateTrigger()
+    call DisableTrigger(gg_trg_Summon_Item_Dropped)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Summon_Item_Dropped,EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerAddCondition(gg_trg_Summon_Item_Dropped,Condition(function Trig_Summon_Item_Dropped_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Item_Dropped,function Trig_Summon_Item_Dropped_Actions)
 endfunction
 
 endlibrary

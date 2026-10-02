@@ -38,7 +38,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Tiara takes nothing returns nothing
-    call Register_Tiara_Ping()
+    call Register_Tiara_Ping() // starts off; enabled by Vodyan; disabled by Quest_SpiritOfWater
 endfunction
 
 endlibrary

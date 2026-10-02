@@ -87,9 +87,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Eden takes nothing returns nothing
-    call Register_Eden_Setup()
-    call Register_Eden_Summon()
-    call Register_Eden_Despawn()
+    call Register_Eden_Setup() // run by MapBootstrap
+    call Register_Eden_Summon() // starts off; enabled by Eden, Quest_StrongestEidolon
+    call Register_Eden_Despawn() // starts off; enabled by Eden; disabled by Quest_StrongestEidolon
 endfunction
 
 endlibrary

@@ -141,8 +141,8 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FadingNotes takes nothing returns nothing
     call Register_FadingNotes_Init()
-    call Register_FadingNotes_DropCultist()
-    call Register_FadingNotes_DropWizard()
+    call Register_FadingNotes_DropCultist() // starts off; enabled by Quest_SeekDestroy
+    call Register_FadingNotes_DropWizard() // starts off; enabled by Quest_SeekDestroy
 endfunction
 
 endlibrary

@@ -1,4 +1,10 @@
 library TQuestUltimaWeapon requires TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_UltimaWeapon_Start=null
+    trigger gg_trg_Quest_UltimaWeapon_Slain=null
+endglobals
+
 function Trig_Quest_UltimaWeapon_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call EnableTrigger(gg_trg_Quest_UltimaWeapon_Slain)
@@ -63,6 +69,25 @@ function Trig_Quest_UltimaWeapon_Slain_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_UltimaWeapon takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_UltimaWeapon_Start takes nothing returns nothing
+    set gg_trg_Quest_UltimaWeapon_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_UltimaWeapon_Start)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_UltimaWeapon_Start,gg_unit_Nman_0151,EVENT_UNIT_DAMAGED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_UltimaWeapon_Start,gg_unit_Nman_0151,EVENT_UNIT_ATTACKED)
+    call TriggerAddAction(gg_trg_Quest_UltimaWeapon_Start,function Trig_Quest_UltimaWeapon_Start_Actions)
+endfunction
+
+function Register_Quest_UltimaWeapon_Slain takes nothing returns nothing
+    set gg_trg_Quest_UltimaWeapon_Slain=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_UltimaWeapon_Slain)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_UltimaWeapon_Slain,gg_unit_Nman_0151,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_UltimaWeapon_Slain,function Trig_Quest_UltimaWeapon_Slain_Actions)
 endfunction
 
 endlibrary

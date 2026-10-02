@@ -418,11 +418,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_NameDiary takes nothing returns nothing
-    call Register_NameDiary_Prepare()
-    call Register_NameDiary_Start()
-    call Register_NameDiary_Ping()
-    call Register_NameDiary_Chronicle()
-    call Register_NameDiary_Reward()
+    call Register_NameDiary_Prepare() // starts off; enabled by Quest_SaveTimmy
+    call Register_NameDiary_Start() // starts off; enabled by NameDiary
+    call Register_NameDiary_Ping() // starts off; enabled by NameDiary; disabled by NameDiary; destroyed by NameDiary
+    call Register_NameDiary_Chronicle() // starts off; enabled by NameDiary; disabled by NameDiary; destroyed by NameDiary
+    call Register_NameDiary_Reward() // starts off; enabled by NameDiary
 endfunction
 
 endlibrary

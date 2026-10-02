@@ -173,9 +173,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkShiva takes nothing returns nothing
-    call Register_DarkShiva_Appear()
-    call Register_DarkShiva_Phase2()
-    call Register_DarkShiva_Death()
+    call Register_DarkShiva_Appear() // starts off; enabled by DarkEidolons
+    call Register_DarkShiva_Phase2() // starts off; enabled by DarkShiva
+    call Register_DarkShiva_Death() // starts off; enabled by DarkShiva
 endfunction
 
 endlibrary

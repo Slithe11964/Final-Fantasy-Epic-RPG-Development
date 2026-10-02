@@ -25,7 +25,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Agrias takes nothing returns nothing
-    call Register_Agrias_ShowMarker()
+    call Register_Agrias_ShowMarker() // starts off; run by Zeromus
 endfunction
 
 endlibrary

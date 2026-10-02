@@ -72,8 +72,8 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Rabite takes nothing returns nothing
     call Register_Rabite_Area_Init()
-    call Register_Rabite_Hunt_Unlock()
-    call Register_Rabite_Death()
+    call Register_Rabite_Hunt_Unlock() // starts off; enabled by Rabite
+    call Register_Rabite_Death() // used by Hunt_Encounters
 endfunction
 
 endlibrary

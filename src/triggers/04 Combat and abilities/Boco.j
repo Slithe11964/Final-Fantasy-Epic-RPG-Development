@@ -92,7 +92,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Boco takes nothing returns nothing
     call Register_Boco_Feed_Greens()
-    call Register_Boco_Meet_Again()
+    call Register_Boco_Meet_Again() // starts off; enabled by Boco
 endfunction
 
 endlibrary

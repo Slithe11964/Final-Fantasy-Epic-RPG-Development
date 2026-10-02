@@ -102,7 +102,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FireAura takes nothing returns nothing
     call Register_FireAura_Pulse_Start()
-    call Register_FireAura_Pulse()
+    call Register_FireAura_Pulse() // starts off; run by FireAura
 endfunction
 
 endlibrary

@@ -1,4 +1,9 @@
 library TShadowCombat
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shadow_FumaShuriken=null
+endglobals
+
 function Trig_Shadow_FumaShuriken_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0WS') // 'A0WS': ability "Fuma Shuriken"
 endfunction
@@ -39,6 +44,17 @@ function Trig_Shadow_FumaShuriken_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Shadow_Combat takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Shadow (module Shadow),
+// which keeps the original registration order.
+
+function Register_Shadow_FumaShuriken takes nothing returns nothing
+    set gg_trg_Shadow_FumaShuriken=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shadow_FumaShuriken,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shadow_FumaShuriken,Condition(function Trig_Shadow_FumaShuriken_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_FumaShuriken,function Trig_Shadow_FumaShuriken_Actions)
 endfunction
 
 endlibrary

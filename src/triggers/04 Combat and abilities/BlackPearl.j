@@ -27,7 +27,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_BlackPearl takes nothing returns nothing
-    call Register_BlackPearl_Death()
+    call Register_BlackPearl_Death() // used by Hunt_Encounters
 endfunction
 
 endlibrary

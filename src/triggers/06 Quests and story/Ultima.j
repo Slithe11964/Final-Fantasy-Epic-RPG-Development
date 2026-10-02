@@ -367,14 +367,14 @@ endfunction
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Ultima_Part1 takes nothing returns nothing
     call Register_Ultima_Cast()
-    call Register_Ultima_Prepare()
+    call Register_Ultima_Prepare() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Ultima_Part2 takes nothing returns nothing
-    call Register_Ultima_Possession()
+    call Register_Ultima_Possession() // starts off; enabled by Quest_LightOfJudgment
     call Register_Ultima_Holyja()
 endfunction
 

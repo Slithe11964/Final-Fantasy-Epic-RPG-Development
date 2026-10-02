@@ -923,17 +923,17 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_KalmSiege2 takes nothing returns nothing
-    call Register_KalmSiege2_Call()
-    call Register_KalmSiege2_Start()
-    call Register_KalmSiege2_Restart()
-    call Register_KalmSiege2_Begin()
-    call Register_KalmSiege2_SouthWave()
-    call Register_KalmSiege2_DemonSpotted()
-    call Register_KalmSiege2_DemonFlee()
-    call Register_KalmSiege2_Defeat()
-    call Register_KalmSiege2_TrackDeaths()
-    call Register_KalmSiege2_Complete()
-    call Register_KalmSiege2_Fail()
+    call Register_KalmSiege2_Call() // starts off; enabled by KalmSiege1
+    call Register_KalmSiege2_Start() // starts off; enabled by KalmSiege2
+    call Register_KalmSiege2_Restart() // starts off; enabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_Begin() // starts off; enabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_SouthWave() // starts off; enabled by KalmSiege2; disabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_DemonSpotted() // starts off; enabled by KalmSiege2; disabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_DemonFlee() // starts off; enabled by KalmSiege2; disabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_Defeat() // starts off; enabled by KalmSiege2; disabled by KalmSiege2; destroyed by KalmSiege2
+    call Register_KalmSiege2_TrackDeaths() // starts off; enabled by KalmSiege2; disabled by KalmSiege2
+    call Register_KalmSiege2_Complete() // starts off; enabled by KalmSiege2
+    call Register_KalmSiege2_Fail() // starts off; enabled by KalmSiege2; disabled by KalmSiege2; destroyed by KalmSiege2
 endfunction
 
 endlibrary

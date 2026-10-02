@@ -633,10 +633,10 @@ endfunction
 // Startup step 6: Blizzard library state the original map initialised here (player forces,
 // queued triggers, single-player detection, item stock, etc.).
 function Startup_BlizzardSupport takes nothing returns nothing
-    local integer l_integer_01
-    local integer l_integer_02
+    local integer index
+    local integer humanPlayerCount
     local version v
-    local integer l_integer_03
+    local integer itemLevel
     set udg_FilterTrue=Filter(function Filter_True)
     set filterIssueHauntOrderAtLocBJ=Filter(function IssueHauntOrderAtLocBJFilter)
     set filterEnumDestructablesInCircleBJ=Filter(function Filter_DestInRange)
@@ -645,36 +645,36 @@ function Startup_BlizzardSupport takes nothing returns nothing
     set filterGetUnitsOfPlayerAndTypeId=Filter(function GetUnitsOfPlayerAndTypeIdFilter)
     set filterMeleeTrainedUnitIsHeroBJ=Filter(function MeleeTrainedUnitIsHeroBJFilter)
     set filterLivingPlayerUnitsOfTypeId=Filter(function LivingPlayerUnitsOfTypeIdFilter)
-    set l_integer_01=0
+    set index=0
     loop
-        exitwhen l_integer_01==bj_MAX_PLAYER_SLOTS
-        set bj_FORCE_PLAYER[l_integer_01]=CreateForce()
-        call ForceAddPlayer(bj_FORCE_PLAYER[l_integer_01],Player(l_integer_01))
-        set l_integer_01=l_integer_01+1
+        exitwhen index==bj_MAX_PLAYER_SLOTS
+        set bj_FORCE_PLAYER[index]=CreateForce()
+        call ForceAddPlayer(bj_FORCE_PLAYER[index],Player(index))
+        set index=index+1
     endloop
     set bj_FORCE_ALL_PLAYERS=CreateForce()
     call ForceEnumPlayers(bj_FORCE_ALL_PLAYERS,null)
     set bj_cineModePriorSpeed=GetGameSpeed()
     set bj_cineModePriorFogSetting=IsFogEnabled()
     set bj_cineModePriorMaskSetting=IsFogMaskEnabled()
-    set l_integer_01=0
+    set index=0
     loop
-        exitwhen l_integer_01>=bj_MAX_QUEUED_TRIGGERS
-        set bj_queuedExecTriggers[l_integer_01]=null
-        set bj_queuedExecUseConds[l_integer_01]=false
-        set l_integer_01=l_integer_01+1
+        exitwhen index>=bj_MAX_QUEUED_TRIGGERS
+        set bj_queuedExecTriggers[index]=null
+        set bj_queuedExecUseConds[index]=false
+        set index=index+1
     endloop
     set bj_isSinglePlayer=false
-    set l_integer_02=0
-    set l_integer_01=0
+    set humanPlayerCount=0
+    set index=0
     loop
-        exitwhen l_integer_01>=bj_MAX_PLAYERS
-        if(GetPlayerController(Player(l_integer_01))==MAP_CONTROL_USER and GetPlayerSlotState(Player(l_integer_01))==PLAYER_SLOT_STATE_PLAYING)then
-            set l_integer_02=l_integer_02+1
+        exitwhen index>=bj_MAX_PLAYERS
+        if(GetPlayerController(Player(index))==MAP_CONTROL_USER and GetPlayerSlotState(Player(index))==PLAYER_SLOT_STATE_PLAYING)then
+            set humanPlayerCount=humanPlayerCount+1
         endif
-        set l_integer_01=l_integer_01+1
+        set index=index+1
     endloop
-    set bj_isSinglePlayer=(l_integer_02==1)
+    set bj_isSinglePlayer=(humanPlayerCount==1)
     set bj_rescueSound=CreateSoundFromLabel("Rescue",false,false,false,$2710,$2710) // $2710 = 10000
     set bj_questDiscoveredSound=CreateSoundFromLabel("QuestNew",false,false,false,$2710,$2710) // $2710 = 10000
     set bj_questUpdatedSound=CreateSoundFromLabel("QuestUpdate",false,false,false,$2710,$2710) // $2710 = 10000
@@ -698,13 +698,13 @@ function Startup_BlizzardSupport takes nothing returns nothing
     call InitDNCSounds()
     call InitMapRects()
     call InitSummonableCaps()
-    set l_integer_03=0
+    set itemLevel=0
     loop
-        set bj_stockAllowedPermanent[l_integer_03]=false
-        set bj_stockAllowedCharged[l_integer_03]=false
-        set bj_stockAllowedArtifact[l_integer_03]=false
-        set l_integer_03=l_integer_03+1
-        exitwhen l_integer_03>bj_MAX_ITEM_LEVEL
+        set bj_stockAllowedPermanent[itemLevel]=false
+        set bj_stockAllowedCharged[itemLevel]=false
+        set bj_stockAllowedArtifact[itemLevel]=false
+        set itemLevel=itemLevel+1
+        exitwhen itemLevel>bj_MAX_ITEM_LEVEL
     endloop
     call SetAllItemTypeSlots(bj_MAX_STOCK_ITEM_SLOTS)
     call SetAllUnitTypeSlots(bj_MAX_STOCK_UNIT_SLOTS)
@@ -732,135 +732,19 @@ function Startup_InitSharedSystems takes nothing returns nothing
     call ExecuteFunc("Load_InitCodeUnit")
 endfunction
 
-// Startup step 8: spell triggers the original map registered directly in its startup code,
-// with the effect models they preload.
+// Startup step 8: spell triggers the original map registered directly in its startup code.
+// Each RegisterLegacy_* function lives in its spell's module and also preloads its effects.
 function Startup_LegacySpellTriggers takes nothing returns nothing
-    local trigger t
-    local integer i
-    local trigger l_trigger_01
-    local trigger l_trigger_02
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_HolyBlast_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_HolyBlast_Actions)
-    call Preload("Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_Bolt_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_Bolt_Actions)
-    call Preload("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl")
-    call Preload("Abilities\\Spells\\Other\\Monsoon\\MonsoonBoltTarget.mdl")
-    call Preload("Abilities\\Weapons\\FarseerMissile\\FarseerMissile.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_Cure_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_Cure_Actions)
-    call Preload("Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl")
-    call Preload("Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_Blizzaga_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_Blizzaga_Actions)
-    set udg_BlizzagaFilter=Condition(function Filter_AliveNotInvul)
-    call Preload("Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl")
-    call Preload("Abilities\\Spells\\Undead\\FreezingBreath\\FreezingBreathMissile.mdl")
-    call Preload("Abilities\\Weapons\\FrostWyrmMissile\\FrostWyrmMissile.mdl")
-    set l_trigger_01=CreateTrigger()
-    set l_trigger_02=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(l_trigger_01,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        call TriggerRegisterPlayerUnitEvent(l_trigger_02,Player(i),EVENT_PLAYER_UNIT_SPELL_ENDCAST,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(l_trigger_01,Condition(function Trig_Spell_RapidFire_Conditions))
-    call TriggerAddCondition(l_trigger_02,Condition(function Trig_Spell_RapidFire_Conditions))
-    call TriggerAddAction(l_trigger_01,function Trig_Spell_RapidFire_Actions)
-    call TriggerAddAction(l_trigger_02,function Trig_Spell_RapidFire_End_Actions)
-    call Preload("Abilities\\Spells\\Other\\Incinerate\\FireLordDeathExplode.mdl")
-    call Preload("Abilities\\Weapons\\FrostWyrmMissile\\FrostWyrmMissile.mdl")
-    call Preload("Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
-    call Preload("Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl")
-    call Preload("Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdl")
-    call Preload("Abilities\\Spells\\Other\\FrostArrows\\NagaColdArrowMissile.mdl")
-    call Preload("Abilities\\Weapons\\FarseerMissile\\FarseerMissile.mdl")
-    call Preload("Abilities\\Weapons\\PoisonArrow\\PoisonArrowMissile.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_Shuriken_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_Shuriken_Actions)
-    set udg_ShurikenFilter=Condition(function Filter_AliveNonStructure)
-    call Preload("Objects\\Spawnmodels\\Human\\HumanBlood\\BloodElfSpellThiefBlood.mdl")
-    call Preload("Abilities\\Weapons\\ShadowHunterMissile\\ShadowHunterMissile.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_Tatsumaki_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_Tatsumaki_Actions)
-    set udg_TatsumakiFilter=Condition(function Filter_ValidUnit)
-    call Preload("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Spell_LiquidSteel_Conditions))
-    call TriggerAddAction(t,function Trig_Spell_LiquidSteel_Actions)
-    set udg_LiquidSteelFilter=Condition(function Filter_EnemyOfOwner)
-    call Preload("Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
-    call Preload("Abilities\\Weapons\\WaterElementalMissile\\WaterElementalMissile.mdl")
-    set t=CreateTrigger()
-    set i=0
-    call TriggerRegisterPlayerUnitEvent(t,Player($B),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-    call TriggerAddCondition(t,Condition(function Trig_Boss_Verc_WickedWhirl_Conditions))
-    call TriggerAddAction(t,function Trig_Boss_Verc_WickedWhirl_Actions)
-    set udg_WickedWhirlFilter=Condition(function Filter_EnemyOfHostile)
-    call Preload("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
-    call Preload("units\\undead\\Gargoyle\\Gargoyle.mdl")
-    call Preload("Abilities\\Spells\\Human\\FlameStrike\\FlameStrike1.mdl")
-    set t=CreateTrigger()
-    set i=0
-    loop
-        exitwhen i==bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerUnitEvent(t,Player(i),EVENT_PLAYER_UNIT_SPELL_EFFECT,null)
-        set i=i+1
-    endloop
-    call TriggerAddCondition(t,Condition(function Trig_Boss_Shinra_Clione_Conditions))
-    call TriggerAddAction(t,function Trig_Boss_Shinra_Clione_Actions)
-    call Preload("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
-    call Preload("Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl")
+    call RegisterLegacy_Spell_HolyBlast() // Spell_HolyBlast
+    call RegisterLegacy_Spell_Bolt() // Spell_Bolt
+    call RegisterLegacy_Spell_Cure() // Spell_Cure
+    call RegisterLegacy_Spell_Blizzaga() // Spell_Blizzaga
+    call RegisterLegacy_Spell_RapidFire() // Spell_RapidFire
+    call RegisterLegacy_Spell_Shuriken() // Spell_Shuriken
+    call RegisterLegacy_Spell_Tatsumaki() // Spell_Tatsumaki
+    call RegisterLegacy_Spell_LiquidSteel() // Spell_LiquidSteel
+    call RegisterLegacy_Boss_Verc_WickedWhirl() // Boss_Verc
+    call RegisterLegacy_Boss_Shinra_Clione() // Boss_Shinra
 endfunction
 
 // Startup step 9: initial values of shared gameplay variables (udg_*): timers, groups,

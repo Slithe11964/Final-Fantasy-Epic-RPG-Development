@@ -1,4 +1,9 @@
 library TArenaIntroduction requires TCam, TCine, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_LeoIntro=null
+endglobals
+
 function Trig_Arena_LeoIntro_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h02I_0167,true,true,true))
 endfunction
@@ -32,6 +37,24 @@ function Trig_Arena_LeoIntro_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Introduction takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_LeoIntro takes nothing returns nothing
+    set gg_trg_Arena_LeoIntro=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Arena_LeoIntro,Player(7),true)
+    call TriggerAddCondition(gg_trg_Arena_LeoIntro,Condition(function Trig_Arena_LeoIntro_Conditions))
+    call TriggerAddAction(gg_trg_Arena_LeoIntro,function Trig_Arena_LeoIntro_Actions)
 endfunction
 
 endlibrary

@@ -1,4 +1,12 @@
 library TShadowLoyalty
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shadow_LoyaltyTick=null
+    trigger gg_trg_Shadow_KillCount=null
+    trigger gg_trg_Shadow_AttackedByParty=null
+    trigger gg_trg_Shadow_HealedBonus=null
+endglobals
+
 function Trig_Shadow_LoyaltyTick_Conditions takes nothing returns boolean
     return(udg_ShadowUnit!=null)and(GetOwningPlayer(udg_ShadowUnit)==Player($A)) // $A = 10
 endfunction
@@ -138,6 +146,42 @@ function Trig_Shadow_HealedBonus_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Shadow_Loyalty takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Shadow (module Shadow),
+// which keeps the original registration order.
+
+function Register_Shadow_LoyaltyTick takes nothing returns nothing
+    set gg_trg_Shadow_LoyaltyTick=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_LoyaltyTick)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Shadow_LoyaltyTick,10.)
+    call TriggerAddCondition(gg_trg_Shadow_LoyaltyTick,Condition(function Trig_Shadow_LoyaltyTick_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_LoyaltyTick,function Trig_Shadow_LoyaltyTick_Actions)
+endfunction
+
+function Register_Shadow_KillCount takes nothing returns nothing
+    set gg_trg_Shadow_KillCount=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_KillCount)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shadow_KillCount,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Shadow_KillCount,Condition(function Trig_Shadow_KillCount_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_KillCount,function Trig_Shadow_KillCount_Actions)
+endfunction
+
+function Register_Shadow_AttackedByParty takes nothing returns nothing
+    set gg_trg_Shadow_AttackedByParty=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_AttackedByParty)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shadow_AttackedByParty,Player($A),EVENT_PLAYER_UNIT_ATTACKED) // $A = 10
+    call TriggerAddCondition(gg_trg_Shadow_AttackedByParty,Condition(function Trig_Shadow_AttackedByParty_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_AttackedByParty,function Trig_Shadow_AttackedByParty_Actions)
+endfunction
+
+function Register_Shadow_HealedBonus takes nothing returns nothing
+    set gg_trg_Shadow_HealedBonus=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_HealedBonus)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shadow_HealedBonus,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Shadow_HealedBonus,Condition(function Trig_Shadow_HealedBonus_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_HealedBonus,function Trig_Shadow_HealedBonus_Actions)
 endfunction
 
 endlibrary

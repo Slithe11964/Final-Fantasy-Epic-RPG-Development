@@ -238,8 +238,8 @@ function RegisterTriggers_Nightmare takes nothing returns nothing
     call Register_Nightmare_Spawn()
     call Register_Nightmare_Despawn()
     call Register_Nightmare_Death_Charge()
-    call Register_Nightmare_Roam()
-    call Register_Nightmare_Death()
+    call Register_Nightmare_Roam() // starts off; enabled by Nightmare; disabled by Nightmare
+    call Register_Nightmare_Death() // starts off; enabled by Nightmare; disabled by Nightmare
 endfunction
 
 endlibrary

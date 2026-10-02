@@ -1,4 +1,11 @@
 library TQuestHarpyHunt requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_HarpyHunt_Start=null
+    trigger gg_trg_Quest_HarpyHunt_Count=null
+    trigger gg_trg_Quest_HarpyHunt_Reward=null
+endglobals
+
 function Trig_Quest_HarpyHunt_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0B3_0049,true,true,true))
 endfunction
@@ -116,6 +123,41 @@ function Trig_Quest_HarpyHunt_Reward_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_HarpyHunt takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_HarpyHunt_Start takes nothing returns nothing
+    set gg_trg_Quest_HarpyHunt_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_HarpyHunt_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_HarpyHunt_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_HarpyHunt_Start,Condition(function Trig_Quest_HarpyHunt_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_HarpyHunt_Start,function Trig_Quest_HarpyHunt_Start_Actions)
+endfunction
+
+function Register_Quest_HarpyHunt_Count takes nothing returns nothing
+    set gg_trg_Quest_HarpyHunt_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_HarpyHunt_Count)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_HarpyHunt_Count,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Quest_HarpyHunt_Count,Condition(function Trig_Quest_HarpyHunt_Count_Conditions))
+    call TriggerAddAction(gg_trg_Quest_HarpyHunt_Count,function Trig_Quest_HarpyHunt_Count_Actions)
+endfunction
+
+function Register_Quest_HarpyHunt_Reward takes nothing returns nothing
+    set gg_trg_Quest_HarpyHunt_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_HarpyHunt_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_HarpyHunt_Reward,450.,gg_unit_n0B3_0049)
+    call TriggerAddCondition(gg_trg_Quest_HarpyHunt_Reward,Condition(function Trig_Quest_HarpyHunt_Reward_Conditions))
+    call TriggerAddAction(gg_trg_Quest_HarpyHunt_Reward,function Trig_Quest_HarpyHunt_Reward_Actions)
 endfunction
 
 endlibrary

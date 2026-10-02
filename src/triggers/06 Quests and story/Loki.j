@@ -347,18 +347,18 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Loki_Part1 takes nothing returns nothing
-    call Register_Loki_Talk_Enable()
+    call Register_Loki_Talk_Enable() // starts off; run by Giott
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Loki_Part2 takes nothing returns nothing
-    call Register_Loki_Reforge_Unlock()
-    call Register_Loki_Reforge_Offer()
-    call Register_Loki_Reforge_Drop()
+    call Register_Loki_Reforge_Unlock() // starts off; enabled by Giott
+    call Register_Loki_Reforge_Offer() // starts off; enabled by Loki, Quest_OreSupplies
+    call Register_Loki_Reforge_Drop() // starts off; enabled by Loki; disabled by Loki
     call Register_Loki_Forge_Text_Clear()
-    call Register_Loki_Reforge_Confirm()
+    call Register_Loki_Reforge_Confirm() // starts off; enabled by Loki; disabled by Loki
 endfunction
 
 endlibrary

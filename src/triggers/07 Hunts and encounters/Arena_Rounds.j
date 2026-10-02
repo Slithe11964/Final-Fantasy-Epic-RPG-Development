@@ -1,4 +1,10 @@
 library TArenaRounds requires TForce, TJob, TLink, TPlayerPart01, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Round_Start=null
+    trigger gg_trg_Arena_Round_End=null
+endglobals
+
 function Trig_Arena_Round_Start_IsEliminatedSlot takes nothing returns boolean
     // (9) minus (udg_ArenaRound).
     return(GetForLoopIndexA()>(9-udg_ArenaRound))
@@ -974,6 +980,25 @@ function Trig_Arena_Round_End_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Rounds takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Round_Start takes nothing returns nothing
+    set gg_trg_Arena_Round_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Round_Start)
+    call TriggerAddAction(gg_trg_Arena_Round_Start,function Trig_Arena_Round_Start_Actions)
+endfunction
+
+function Register_Arena_Round_End takes nothing returns nothing
+    set gg_trg_Arena_Round_End=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Round_End)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_Round_End,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_Round_End,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerAddCondition(gg_trg_Arena_Round_End,Condition(function Trig_Arena_Round_End_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Round_End,function Trig_Arena_Round_End_Actions)
 endfunction
 
 endlibrary

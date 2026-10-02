@@ -1,4 +1,9 @@
 library TBossLilith requires TCam, TCine, TGroup, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Lilith_Death=null
+endglobals
+
 function Trig_Boss_Lilith_Death_Cond_TrackKill takes nothing returns boolean
     return(udg_SpeedrunMode)
 endfunction
@@ -57,6 +62,17 @@ function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Lilith takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part9 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Lilith_Death takes nothing returns nothing
+    set gg_trg_Boss_Lilith_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Lilith_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Lilith_Death,gg_unit_e009_0118,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Lilith_Death,function Trig_Boss_Lilith_Death_Actions)
 endfunction
 
 endlibrary

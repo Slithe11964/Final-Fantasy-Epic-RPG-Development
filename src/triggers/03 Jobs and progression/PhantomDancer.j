@@ -47,8 +47,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_PhantomDancer takes nothing returns nothing
-    call Register_PhantomDancer_Blink()
-    call Register_PhantomDancer_Berserk()
+    call Register_PhantomDancer_Blink() // starts off; enabled by Hunt_Encounters
+    call Register_PhantomDancer_Berserk() // starts off; enabled by Hunt_Encounters
 endfunction
 
 endlibrary

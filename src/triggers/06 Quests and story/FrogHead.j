@@ -53,7 +53,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FrogHead takes nothing returns nothing
-    call Register_FrogHead_TurnIn()
+    call Register_FrogHead_TurnIn() // starts off; enabled by QuFrog
 endfunction
 
 endlibrary

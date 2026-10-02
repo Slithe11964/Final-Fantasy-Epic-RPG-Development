@@ -1,4 +1,10 @@
 library TShadowHiring requires TForce, TMusic, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shadow_Hire=null
+    trigger gg_trg_Shadow_Disband=null
+endglobals
+
 function Trig_Shadow_Hire_IsHireOffer takes nothing returns boolean
     // Calculation 1:
     // (udg_ShadowOfferTier) plus (1).
@@ -494,6 +500,25 @@ function Trig_Shadow_Disband_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Shadow_Hiring takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Shadow (module Shadow),
+// which keeps the original registration order.
+
+function Register_Shadow_Hire takes nothing returns nothing
+    set gg_trg_Shadow_Hire=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_Hire)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Shadow_Hire,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Shadow_Hire,Condition(function Trig_Shadow_Hire_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_Hire,function Trig_Shadow_Hire_Actions)
+endfunction
+
+function Register_Shadow_Disband takes nothing returns nothing
+    set gg_trg_Shadow_Disband=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_Disband)
+    call TriggerAddCondition(gg_trg_Shadow_Disband,Condition(function Trig_Shadow_Disband_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_Disband,function Trig_Shadow_Disband_Actions)
 endfunction
 
 endlibrary

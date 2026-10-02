@@ -36,7 +36,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Celeborn takes nothing returns nothing
-    call Register_Celeborn_Summon_Alert()
+    call Register_Celeborn_Summon_Alert() // starts off; enabled by Boss_Zalera
 endfunction
 
 endlibrary

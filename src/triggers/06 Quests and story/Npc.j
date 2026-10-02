@@ -623,34 +623,34 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Npc takes nothing returns nothing
-    call Register_Npc_Hints_Create()
+    call Register_Npc_Hints_Create() // run by MapBootstrap
     call Register_Npc_Talk_Woman()
-    call Register_Npc_Talk_Reno()
-    call Register_Npc_Talk_Rude()
+    call Register_Npc_Talk_Reno() // starts off; enabled by Dwarves
+    call Register_Npc_Talk_Rude() // starts off; enabled by Quest_NightElves
     call Register_Npc_Talk_Footman()
     call Register_Npc_Talk_Swordsman()
     call Register_Npc_Talk_Child()
     call Register_Npc_Talk_Archer()
     call Register_Npc_Talk_Knight()
     call Register_Npc_Talk_ChildChocobo()
-    call Register_Npc_Talk_Kenarius()
-    call Register_Npc_Talk_Nimphrodel()
+    call Register_Npc_Talk_Kenarius() // starts off; enabled by Nimphrodel
+    call Register_Npc_Talk_Nimphrodel() // starts off; enabled by Nimphrodel
     call Register_Npc_Talk_Sentry()
-    call Register_Npc_Talk_Kesha()
-    call Register_Npc_Talk_Peasant()
-    call Register_Npc_Talk_PeasantHarvest()
+    call Register_Npc_Talk_Kesha() // disabled by Kesha
+    call Register_Npc_Talk_Peasant() // disabled by Quest_SaveTimmy; destroyed by Quest_SaveTimmy
+    call Register_Npc_Talk_PeasantHarvest() // starts off; enabled by Quest_SaveTimmy
     call Register_Npc_Talk_MineStory()
-    call Register_Npc_Fire_WantMore()
-    call Register_Npc_Fire_Thanks()
-    call Register_Npc_Priscilla_SummonEden()
-    call Register_Npc_Talk_LinkGuard()
-    call Register_Npc_Talk_Jack()
+    call Register_Npc_Fire_WantMore() // starts off; run by Fire
+    call Register_Npc_Fire_Thanks() // starts off; run by Fire
+    call Register_Npc_Priscilla_SummonEden() // run by Eden
+    call Register_Npc_Talk_LinkGuard() // disabled by MysteriousCurse
+    call Register_Npc_Talk_Jack() // starts off; enabled by HydraEgg
     call Register_Npc_Talk_ArcherWall()
-    call Register_Npc_Talk_Ruksel()
-    call Register_Npc_Thorn_BattleWait()
-    call Register_Npc_Talk_Sigroon()
-    call Register_Npc_Talk_Quincy()
-    call Register_Npc_Talk_Gravedigger()
+    call Register_Npc_Talk_Ruksel() // disabled by Fishing_Setup; destroyed by Fishing_Setup
+    call Register_Npc_Thorn_BattleWait() // starts off; run by Arena_Access
+    call Register_Npc_Talk_Sigroon() // starts off; enabled by Dana
+    call Register_Npc_Talk_Quincy() // starts off; enabled by Quest_SeekDestroy
+    call Register_Npc_Talk_Gravedigger() // starts off; enabled by Graves
 endfunction
 
 endlibrary

@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_NightElf takes nothing returns nothing
-    call Register_NightElf_TalkPrepare()
+    call Register_NightElf_TalkPrepare() // starts off; enabled by Epilogue, Quest_NightElves, Talk; run by Epilogue, Quest_NightElves, Talk
 endfunction
 
 endlibrary

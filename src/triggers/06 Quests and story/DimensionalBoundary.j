@@ -218,16 +218,16 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_DimensionalBoundary_Part1 takes nothing returns nothing
-    call Register_DimensionalBoundary_Init()
-    call Register_DimensionalBoundary_Start()
-    call Register_DimensionalBoundary_OpenPortal()
+    call Register_DimensionalBoundary_Init() // run by MapBootstrap
+    call Register_DimensionalBoundary_Start() // starts off; enabled by Shinra
+    call Register_DimensionalBoundary_OpenPortal() // starts off; enabled by FrogHead
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_DimensionalBoundary_Part2 takes nothing returns nothing
-    call Register_DimensionalBoundary_EmptyEnd()
+    call Register_DimensionalBoundary_EmptyEnd() // starts off; enabled by DimensionalBoundary
 endfunction
 
 endlibrary

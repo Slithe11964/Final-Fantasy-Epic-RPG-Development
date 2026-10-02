@@ -75,8 +75,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Odin takes nothing returns nothing
-    call Register_Odin_Escort_Teleport()
-    call Register_Odin_Leash_Arena()
+    call Register_Odin_Escort_Teleport() // starts off; enabled by Boss_Odin; disabled by Boss_Odin; destroyed by Boss_Odin
+    call Register_Odin_Leash_Arena() // starts off; enabled by Boss_Odin; disabled by Boss_Odin; destroyed by Boss_Odin
 endfunction
 
 endlibrary

@@ -185,11 +185,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DragonEgg takes nothing returns nothing
-    call Register_DragonEgg_Start()
-    call Register_DragonEgg_Ping()
-    call Register_DragonEgg_PickUp()
-    call Register_DragonEgg_Fail()
-    call Register_DragonEgg_Reward()
+    call Register_DragonEgg_Start() // starts off; enabled by Kiemarl
+    call Register_DragonEgg_Ping() // starts off; enabled by DragonEgg; disabled by DragonEgg; destroyed by DragonEgg
+    call Register_DragonEgg_PickUp() // starts off; enabled by DragonEgg
+    call Register_DragonEgg_Fail() // starts off; run by Dana; destroyed by DragonEgg
+    call Register_DragonEgg_Reward() // starts off; enabled by DragonEgg; destroyed by DragonEgg
 endfunction
 
 endlibrary

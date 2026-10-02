@@ -1,4 +1,10 @@
 library TQuestOmegaWeapon requires TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_OmegaWeapon_Start=null
+    trigger gg_trg_Quest_OmegaWeapon_Slain=null
+endglobals
+
 function Trig_Quest_OmegaWeapon_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Omega Weapon|r")
@@ -50,6 +56,25 @@ function Trig_Quest_OmegaWeapon_Slain_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_OmegaWeapon takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_OmegaWeapon_Start takes nothing returns nothing
+    set gg_trg_Quest_OmegaWeapon_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_OmegaWeapon_Start)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_OmegaWeapon_Start,gg_unit_N022_0125,EVENT_UNIT_ATTACKED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_OmegaWeapon_Start,gg_unit_N022_0125,EVENT_UNIT_DAMAGED)
+    call TriggerAddAction(gg_trg_Quest_OmegaWeapon_Start,function Trig_Quest_OmegaWeapon_Start_Actions)
+endfunction
+
+function Register_Quest_OmegaWeapon_Slain takes nothing returns nothing
+    set gg_trg_Quest_OmegaWeapon_Slain=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_OmegaWeapon_Slain)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_OmegaWeapon_Slain,gg_unit_N022_0125,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_OmegaWeapon_Slain,function Trig_Quest_OmegaWeapon_Slain_Actions)
 endfunction
 
 endlibrary

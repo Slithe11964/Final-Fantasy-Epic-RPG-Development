@@ -377,7 +377,7 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
     local unitpool l_pool
     local rect l_spawnRect
     local real l_y
-    local real l_x_2
+    local real l_x
     local unit l_spawned
     local group l_zoneGroup=LoadGroupHandle(udg_SpawnTimerHash,5,i)
     local integer j=Trig_Zone_Spawn_System_GroupSize(l_zoneGroup)
@@ -406,8 +406,8 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
         // A random decimal number between GetRectMinY(l_spawnRect) and GetRectMaxY(l_spawnRect).
         set l_y=GetRandomReal(GetRectMinY(l_spawnRect),GetRectMaxY(l_spawnRect))
         // A random decimal number between GetRectMinX(l_spawnRect) and GetRectMaxX(l_spawnRect).
-        set l_x_2=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
-        set l_spawned=PlaceRandomUnit(l_pool,Player($B),l_x_2,l_y,270.) // $B = 11
+        set l_x=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
+        set l_spawned=PlaceRandomUnit(l_pool,Player($B),l_x,l_y,270.) // $B = 11
         call SetUnitUserData(l_spawned,i)
         call GroupAddUnit(l_zoneGroup,l_spawned)
         call Trig_Zone_Spawn_System_ScaleSpawnHP(l_spawned,i)
@@ -425,8 +425,8 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
         // A random decimal number between GetRectMinY(l_spawnRect) and GetRectMaxY(l_spawnRect).
         set l_y=GetRandomReal(GetRectMinY(l_spawnRect),GetRectMaxY(l_spawnRect))
         // A random decimal number between GetRectMinX(l_spawnRect) and GetRectMaxX(l_spawnRect).
-        set l_x_2=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
-        call IssuePointOrderById(l_spawned,$D0016,l_x_2,l_y) // $D0016 = 851990
+        set l_x=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
+        call IssuePointOrderById(l_spawned,$D0016,l_x,l_y) // $D0016 = 851990
         set j=j+1
     endloop
     set l_zoneGroup=null
@@ -440,7 +440,7 @@ function Trig_Zone_Spawn_System_RefreshZoneUnit takes nothing returns nothing
     local unit l_enumUnit=GetEnumUnit()
     local rect l_spawnRect
     local real l_y
-    local real l_x_2
+    local real l_x
     if(l_enumUnit!=null)then
         if((GetUnitState(l_enumUnit,UNIT_STATE_LIFE)>.405)and(GetOwningPlayer(l_enumUnit)==Player($B))and(GetUnitUserData(l_enumUnit)==udg_CurrentZoneId))then // $B = 11
             call GroupAddUnit(udg_ZoneAliveGroup,l_enumUnit)
@@ -450,8 +450,8 @@ function Trig_Zone_Spawn_System_RefreshZoneUnit takes nothing returns nothing
             // A random decimal number between GetRectMinY(l_spawnRect) and GetRectMaxY(l_spawnRect).
             set l_y=GetRandomReal(GetRectMinY(l_spawnRect),GetRectMaxY(l_spawnRect))
             // A random decimal number between GetRectMinX(l_spawnRect) and GetRectMaxX(l_spawnRect).
-            set l_x_2=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
-            call IssuePointOrderById(l_enumUnit,$D0016,l_x_2,l_y) // $D0016 = 851990
+            set l_x=GetRandomReal(GetRectMinX(l_spawnRect),GetRectMaxX(l_spawnRect))
+            call IssuePointOrderById(l_enumUnit,$D0016,l_x,l_y) // $D0016 = 851990
         else
             call SetUnitUserData(l_enumUnit,0)
         endif
@@ -576,7 +576,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Zone takes nothing returns nothing
-    call Register_Zone_Rects_Init()
+    call Register_Zone_Rects_Init() // run by MapBootstrap
     call Register_Zone_Spawn_System()
 endfunction
 

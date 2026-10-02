@@ -331,13 +331,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ArenaResources takes nothing returns nothing
-    call Register_ArenaResources_Prepare()
-    call Register_ArenaResources_Start()
-    call Register_ArenaResources_Escort()
-    call Register_ArenaResources_ShipMove()
-    call Register_ArenaResources_ShipDamaged()
-    call Register_ArenaResources_ShipLost()
-    call Register_ArenaResources_Complete()
+    call Register_ArenaResources_Prepare() // starts off; run by Epilogue, Quest_NightElves
+    call Register_ArenaResources_Start() // starts off; enabled by ArenaResources
+    call Register_ArenaResources_Escort() // starts off; enabled by ArenaResources
+    call Register_ArenaResources_ShipMove() // starts off; enabled by ArenaResources; disabled by ArenaResources
+    call Register_ArenaResources_ShipDamaged() // starts off; enabled by ArenaResources; disabled by ArenaResources
+    call Register_ArenaResources_ShipLost() // starts off; enabled by ArenaResources; disabled by ArenaResources
+    call Register_ArenaResources_Complete() // starts off; enabled by ArenaResources; disabled by ArenaResources
 endfunction
 
 endlibrary

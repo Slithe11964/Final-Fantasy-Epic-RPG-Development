@@ -40,8 +40,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Siegfried takes nothing returns nothing
-    call Register_Siegfried_Hide_Init()
-    call Register_Siegfried_Appear()
+    call Register_Siegfried_Hide_Init() // run by MapBootstrap
+    call Register_Siegfried_Appear() // starts off; enabled by Quest_ImperviousBeast
 endfunction
 
 endlibrary

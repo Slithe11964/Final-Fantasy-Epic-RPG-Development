@@ -610,14 +610,14 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Vote takes nothing returns nothing
-    call Register_Vote_TextSpeed_Show()
-    call Register_Vote_TextSpeed_Click()
-    call Register_Vote_TextSpeed_Result()
-    call Register_Vote_Difficulty_Show()
-    call Register_Vote_Difficulty_Click()
-    call Register_Vote_Difficulty_Result()
-    call Register_Vote_GameMode_Show()
-    call Register_Vote_GameMode_Click()
+    call Register_Vote_TextSpeed_Show() // starts off; run by Vote
+    call Register_Vote_TextSpeed_Click() // starts off; enabled by Vote; disabled by Vote; destroyed by Game
+    call Register_Vote_TextSpeed_Result() // starts off; enabled by Vote; run by Vote
+    call Register_Vote_Difficulty_Show() // starts off; run by GameMode
+    call Register_Vote_Difficulty_Click() // starts off; enabled by Vote; disabled by Vote; destroyed by Game
+    call Register_Vote_Difficulty_Result() // starts off; enabled by Vote; run by Vote
+    call Register_Vote_GameMode_Show() // starts off; run by Intro
+    call Register_Vote_GameMode_Click() // starts off; enabled by Vote; disabled by GameMode; destroyed by Game
 endfunction
 
 endlibrary

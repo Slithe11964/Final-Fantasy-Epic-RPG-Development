@@ -1,4 +1,11 @@
 library TBossGafgarion requires TCam, TCine, TGroup, TLoc, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Gafgarion_Intro=null
+    trigger gg_trg_Boss_Gafgarion_Death=null
+    trigger gg_trg_Boss_Gafgarion_Guard_Death=null
+endglobals
+
 function Trig_Boss_Gafgarion_Intro_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null
 endfunction
@@ -161,6 +168,29 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Boss_Gafgarion takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part1 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Gafgarion_Intro takes nothing returns nothing
+    set gg_trg_Boss_Gafgarion_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gafgarion_Intro)
+    call TriggerAddCondition(gg_trg_Boss_Gafgarion_Intro,Condition(function Trig_Boss_Gafgarion_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Gafgarion_Intro,function Trig_Boss_Gafgarion_Intro_Actions)
+endfunction
+
+function Register_Boss_Gafgarion_Death takes nothing returns nothing
+    set gg_trg_Boss_Gafgarion_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gafgarion_Death)
+    call TriggerAddAction(gg_trg_Boss_Gafgarion_Death,function Trig_Boss_Gafgarion_Death_Actions)
+endfunction
+
+function Register_Boss_Gafgarion_Guard_Death takes nothing returns nothing
+    set gg_trg_Boss_Gafgarion_Guard_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gafgarion_Guard_Death)
+    call TriggerAddAction(gg_trg_Boss_Gafgarion_Guard_Death,function Trig_Boss_Gafgarion_Guard_Death_Actions)
 endfunction
 
 endlibrary

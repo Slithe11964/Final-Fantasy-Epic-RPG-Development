@@ -199,9 +199,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Verci takes nothing returns nothing
-    call Register_Verci_Awaken()
-    call Register_Verci_Phases()
-    call Register_Verci_Death()
+    call Register_Verci_Awaken() // starts off; enabled by Verci, Hunt_Encounters
+    call Register_Verci_Phases() // starts off; enabled by Verci; disabled by Verci
+    call Register_Verci_Death() // used by Hunt_Encounters
 endfunction
 
 endlibrary

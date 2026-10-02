@@ -1,4 +1,12 @@
 library TChocoboUpgrades requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Gysahl_Upgrade=null
+    trigger gg_trg_Chocobo_Mimett_Upgrade=null
+    trigger gg_trg_Chocobo_Silkis_Upgrade=null
+    trigger gg_trg_Chocobo_Defend_Upgrade=null
+endglobals
+
 function Trig_Chocobo_Gysahl_Upgrade_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A15X')and(GetUnitName(GetSpellTargetUnit())=="Chocobo")and(GetOwningPlayer(GetTriggerUnit())==GetOwningPlayer(GetSpellTargetUnit())) // 'A15X': ability "Gysahl Greens"
 endfunction
@@ -271,6 +279,38 @@ function Trig_Chocobo_Defend_Upgrade_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_Upgrades takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Gysahl_Upgrade takes nothing returns nothing
+    set gg_trg_Chocobo_Gysahl_Upgrade=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Gysahl_Upgrade,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_Gysahl_Upgrade,Condition(function Trig_Chocobo_Gysahl_Upgrade_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Gysahl_Upgrade,function Trig_Chocobo_Gysahl_Upgrade_Actions)
+endfunction
+
+function Register_Chocobo_Mimett_Upgrade takes nothing returns nothing
+    set gg_trg_Chocobo_Mimett_Upgrade=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Mimett_Upgrade,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_Mimett_Upgrade,Condition(function Trig_Chocobo_Mimett_Upgrade_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Mimett_Upgrade,function Trig_Chocobo_Mimett_Upgrade_Actions)
+endfunction
+
+function Register_Chocobo_Silkis_Upgrade takes nothing returns nothing
+    set gg_trg_Chocobo_Silkis_Upgrade=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Silkis_Upgrade,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_Silkis_Upgrade,Condition(function Trig_Chocobo_Silkis_Upgrade_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Silkis_Upgrade,function Trig_Chocobo_Silkis_Upgrade_Actions)
+endfunction
+
+function Register_Chocobo_Defend_Upgrade takes nothing returns nothing
+    set gg_trg_Chocobo_Defend_Upgrade=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Defend_Upgrade,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Chocobo_Defend_Upgrade,Condition(function Trig_Chocobo_Defend_Upgrade_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Defend_Upgrade,function Trig_Chocobo_Defend_Upgrade_Actions)
 endfunction
 
 endlibrary

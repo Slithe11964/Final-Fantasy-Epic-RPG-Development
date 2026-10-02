@@ -157,8 +157,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_QuFrog takes nothing returns nothing
-    call Register_QuFrog_DrainTick()
-    call Register_QuFrog_Death()
+    call Register_QuFrog_DrainTick() // starts off; enabled by DeathSeeker; disabled by QuFrog
+    call Register_QuFrog_Death() // starts off; enabled by DeathSeeker
 endfunction
 
 endlibrary

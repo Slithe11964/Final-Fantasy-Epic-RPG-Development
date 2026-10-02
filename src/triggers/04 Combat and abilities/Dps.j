@@ -128,7 +128,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Dps takes nothing returns nothing
-    call Register_Dps_Start()
+    call Register_Dps_Start() // run by Damage
     call Register_Dps_Tick()
 endfunction
 

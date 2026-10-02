@@ -154,7 +154,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GameMode takes nothing returns nothing
-    call Register_GameMode_Apply()
+    call Register_GameMode_Apply() // starts off; enabled by Vote; run by Vote
 endfunction
 
 endlibrary

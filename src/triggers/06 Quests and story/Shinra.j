@@ -25,7 +25,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Shinra takes nothing returns nothing
-    call Register_Shinra_TalkPrepare()
+    call Register_Shinra_TalkPrepare() // starts off; run by QuestCount
 endfunction
 
 endlibrary

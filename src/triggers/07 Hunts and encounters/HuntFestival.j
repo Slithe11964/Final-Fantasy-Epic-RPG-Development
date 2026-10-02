@@ -702,15 +702,15 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HuntFestival takes nothing returns nothing
-    call Register_HuntFestival_Announce()
-    call Register_HuntFestival_Invite()
-    call Register_HuntFestival_Begin()
-    call Register_HuntFestival_Teleport()
-    call Register_HuntFestival_KeepAway()
-    call Register_HuntFestival_Reorder()
-    call Register_HuntFestival_Respawn()
-    call Register_HuntFestival_Score()
-    call Register_HuntFestival_End()
+    call Register_HuntFestival_Announce() // starts off; enabled by KalmSiege3, TrueIceAge
+    call Register_HuntFestival_Invite() // starts off; enabled by HuntFestival
+    call Register_HuntFestival_Begin() // starts off; enabled by HuntFestival
+    call Register_HuntFestival_Teleport() // starts off; enabled by HuntFestival; disabled by HuntFestival
+    call Register_HuntFestival_KeepAway() // starts off; enabled by HuntFestival; disabled by HuntFestival
+    call Register_HuntFestival_Reorder() // starts off; enabled by HuntFestival; disabled by HuntFestival
+    call Register_HuntFestival_Respawn() // starts off; enabled by HuntFestival; disabled by HuntFestival
+    call Register_HuntFestival_Score() // starts off; enabled by HuntFestival; disabled by HuntFestival
+    call Register_HuntFestival_End() // starts off; enabled by HuntFestival
 endfunction
 
 endlibrary

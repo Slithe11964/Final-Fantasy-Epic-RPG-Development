@@ -1,4 +1,11 @@
 library TBossDemesne requires TBattleLog, TLink, TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Demesne_CoverSwap=null
+    trigger gg_trg_Boss_Demesne_Death_Revive=null
+    trigger gg_trg_Boss_Demesne_Revived=null
+endglobals
+
 function Trig_Boss_Demesne_CoverSwap_Conditions takes nothing returns boolean
     // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
     // missing or its maximum is 0).
@@ -71,6 +78,33 @@ function Trig_Boss_Demesne_Revived_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Demesne takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part5, RegisterTriggers_Boss_Part6 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Demesne_CoverSwap takes nothing returns nothing
+    set gg_trg_Boss_Demesne_CoverSwap=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Demesne_CoverSwap)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Demesne_CoverSwap,gg_unit_U00M_0206,EVENT_UNIT_DAMAGED)
+    call TriggerAddCondition(gg_trg_Boss_Demesne_CoverSwap,Condition(function Trig_Boss_Demesne_CoverSwap_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Demesne_CoverSwap,function Trig_Boss_Demesne_CoverSwap_Actions)
+endfunction
+
+function Register_Boss_Demesne_Death_Revive takes nothing returns nothing
+    set gg_trg_Boss_Demesne_Death_Revive=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Demesne_Death_Revive)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Demesne_Death_Revive,gg_unit_U00M_0206,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Demesne_Death_Revive,function Trig_Boss_Demesne_Death_Revive_Actions)
+endfunction
+
+function Register_Boss_Demesne_Revived takes nothing returns nothing
+    set gg_trg_Boss_Demesne_Revived=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Demesne_Revived)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Demesne_Revived,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_Demesne_Revived,Condition(function Trig_Boss_Demesne_Revived_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Demesne_Revived,function Trig_Boss_Demesne_Revived_Actions)
 endfunction
 
 endlibrary

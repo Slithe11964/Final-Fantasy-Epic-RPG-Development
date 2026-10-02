@@ -303,13 +303,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GuideBook takes nothing returns nothing
-    call Register_GuideBook_Search1()
-    call Register_GuideBook_Search2()
-    call Register_GuideBook_Search3()
-    call Register_GuideBook_Search4()
-    call Register_GuideBook_Search5()
-    call Register_GuideBook_Search6()
-    call Register_GuideBook_TurnIn()
+    call Register_GuideBook_Search1() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_Search2() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_Search3() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_Search4() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_Search5() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_Search6() // starts off; enabled by DimensionalBoundary
+    call Register_GuideBook_TurnIn() // starts off; enabled by DimensionalBoundary
 endfunction
 
 endlibrary

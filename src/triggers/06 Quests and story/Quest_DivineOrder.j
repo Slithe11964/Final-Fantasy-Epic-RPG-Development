@@ -1,5 +1,8 @@
 library TQuestDivineOrder requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_DivineOrder_Start=null
+    trigger gg_trg_Quest_DivineOrder_Complete=null
     // Variables only this module uses (MapBootstrap sets some starting values).
     lightning udg_ExecutionLightning=null
     sound gg_snd_004=null
@@ -195,6 +198,32 @@ function Trig_Quest_DivineOrder_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_DivineOrder takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part19, RegisterTriggers_Quest_Part20 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_DivineOrder_Start takes nothing returns nothing
+    set gg_trg_Quest_DivineOrder_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_DivineOrder_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_DivineOrder_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_DivineOrder_Start,Condition(function Trig_Quest_DivineOrder_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_DivineOrder_Start,function Trig_Quest_DivineOrder_Start_Actions)
+endfunction
+
+function Register_Quest_DivineOrder_Complete takes nothing returns nothing
+    set gg_trg_Quest_DivineOrder_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_DivineOrder_Complete)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_DivineOrder_Complete,gg_unit_H036_0254,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_DivineOrder_Complete,function Trig_Quest_DivineOrder_Complete_Actions)
 endfunction
 
 endlibrary

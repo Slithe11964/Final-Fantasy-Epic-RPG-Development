@@ -65,8 +65,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Brothers takes nothing returns nothing
-    call Register_Brothers_Alert_Eidolons()
-    call Register_Brothers_Alert_Rematch()
+    call Register_Brothers_Alert_Eidolons() // starts off; enabled by Quest_Brothers
+    call Register_Brothers_Alert_Rematch() // starts off; enabled by Quest_EidolonChallenge
 endfunction
 
 endlibrary

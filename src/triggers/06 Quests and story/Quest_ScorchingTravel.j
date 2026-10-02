@@ -1,4 +1,9 @@
 library TQuestScorchingTravel requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_52_Scorching=null
+endglobals
+
 function Trig_Quest_52_Scorching_TravelDialog_Rebuild takes nothing returns nothing
     local integer i=0
     call DialogClear(udg_WarpDialog)
@@ -388,6 +393,16 @@ function Trig_Quest_52_Unscorching_Func054Func001C takes nothing returns boolean
 endfunction
 
 function InitTrig_Quest_ScorchingTravel takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part16 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_52_Scorching takes nothing returns nothing
+    set gg_trg_Quest_52_Scorching=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_52_Scorching)
+    call TriggerAddAction(gg_trg_Quest_52_Scorching,function Trig_Quest_52_Scorching_Actions)
 endfunction
 
 endlibrary

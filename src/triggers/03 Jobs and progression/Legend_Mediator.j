@@ -1,4 +1,9 @@
 library TLegendMediator requires TCam, TCine, TForce, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Legend_Mediator_Talk=null
+endglobals
+
 function Trig_Legend_Mediator_Talk_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,udg_NpcUnit[$F],true,true,true)) // $F = 15
 endfunction
@@ -79,6 +84,25 @@ function Trig_Legend_Mediator_Talk_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Legend_Mediator takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Legend (module Legend),
+// which keeps the original registration order.
+
+function Register_Legend_Mediator_Talk takes nothing returns nothing
+    set gg_trg_Legend_Mediator_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Legend_Mediator_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Legend_Mediator_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Legend_Mediator_Talk,Condition(function Trig_Legend_Mediator_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Legend_Mediator_Talk,function Trig_Legend_Mediator_Talk_Actions)
 endfunction
 
 endlibrary

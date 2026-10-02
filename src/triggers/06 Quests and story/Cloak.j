@@ -181,8 +181,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cloak takes nothing returns nothing
-    call Register_Cloak_Equip()
-    call Register_Cloak_UpdateStats()
+    call Register_Cloak_Equip() // enabled by Cloak
+    call Register_Cloak_UpdateStats() // starts off; enabled by Cloak, Job
     call Register_Cloak_Drop()
 endfunction
 

@@ -1,5 +1,9 @@
 library TSpellGayaRage requires TGroup, TLoc
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_GayaRage_Start=null
+    trigger gg_trg_Spell_GayaRage_Ring=null
+    trigger gg_trg_Spell_GayaRage_Damage=null
     // Variables only this module uses.
     real udg_GayaRageRadius=0
     effect udg_GayaRageEffect=null
@@ -150,6 +154,32 @@ function Trig_Spell_GayaRage_Damage_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Spell_GayaRage takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part5 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_GayaRage_Start takes nothing returns nothing
+    set gg_trg_Spell_GayaRage_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Spell_GayaRage_Start)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_GayaRage_Start,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddCondition(gg_trg_Spell_GayaRage_Start,Condition(function Trig_Spell_GayaRage_Start_Conditions))
+    call TriggerAddAction(gg_trg_Spell_GayaRage_Start,function Trig_Spell_GayaRage_Start_Actions)
+endfunction
+
+function Register_Spell_GayaRage_Ring takes nothing returns nothing
+    set gg_trg_Spell_GayaRage_Ring=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Spell_GayaRage_Ring,udg_GayaRageTimer)
+    call TriggerAddCondition(gg_trg_Spell_GayaRage_Ring,Condition(function Trig_Spell_GayaRage_Ring_Conditions))
+    call TriggerAddAction(gg_trg_Spell_GayaRage_Ring,function Trig_Spell_GayaRage_Ring_Actions)
+endfunction
+
+function Register_Spell_GayaRage_Damage takes nothing returns nothing
+    set gg_trg_Spell_GayaRage_Damage=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_GayaRage_Damage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_GayaRage_Damage,Condition(function Trig_Spell_GayaRage_Damage_Conditions))
+    call TriggerAddAction(gg_trg_Spell_GayaRage_Damage,function Trig_Spell_GayaRage_Damage_Actions)
 endfunction
 
 endlibrary

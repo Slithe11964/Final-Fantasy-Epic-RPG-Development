@@ -25,7 +25,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Sarai takes nothing returns nothing
-    call Register_Sarai_ShowTalkIcon()
+    call Register_Sarai_ShowTalkIcon() // starts off; run by Dana
 endfunction
 
 endlibrary

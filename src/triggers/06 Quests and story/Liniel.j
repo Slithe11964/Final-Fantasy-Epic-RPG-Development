@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Liniel takes nothing returns nothing
-    call Register_Liniel_ShowMarker()
+    call Register_Liniel_ShowMarker() // starts off; run by Epilogue, Quest_NightElves, Talk
 endfunction
 
 endlibrary

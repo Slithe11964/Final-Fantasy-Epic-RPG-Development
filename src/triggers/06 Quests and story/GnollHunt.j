@@ -162,9 +162,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GnollHunt takes nothing returns nothing
-    call Register_GnollHunt_Start()
-    call Register_GnollHunt_Count()
-    call Register_GnollHunt_Reward()
+    call Register_GnollHunt_Start() // starts off; enabled by Kiros
+    call Register_GnollHunt_Count() // starts off; enabled by GnollHunt
+    call Register_GnollHunt_Reward() // starts off; enabled by GnollHunt
 endfunction
 
 endlibrary

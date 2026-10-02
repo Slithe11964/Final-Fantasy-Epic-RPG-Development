@@ -742,9 +742,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Titles takes nothing returns nothing
-    call Register_Titles_Init()
-    call Register_Titles_CheckAll()
-    call Register_Titles_CheckBasic()
+    call Register_Titles_Init() // starts off; run by Init
+    call Register_Titles_CheckAll() // starts off; run by Cmd
+    call Register_Titles_CheckBasic() // starts off; run by JobLevels
 endfunction
 
 endlibrary

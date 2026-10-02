@@ -1,5 +1,13 @@
 library TQuestLostMemories requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_LostMemories_Start=null
+    trigger gg_trg_Quest_LostMemories_RingFade=null
+    trigger gg_trg_Quest_LostMemories_Fail=null
+    trigger gg_trg_Quest_LostMemories_Pickup=null
+    trigger gg_trg_Quest_LostMemories_ShadowLie=null
+    trigger gg_trg_Quest_LostMemories_ShadowTruth=null
+    trigger gg_trg_Quest_LostMemories_Reunion=null
     // Variables only this module uses.
     unit udg_MementoRingHero=null
 endglobals
@@ -421,6 +429,79 @@ function Trig_Quest_LostMemories_Reunion_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_LostMemories takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_LostMemories_Start takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_Start,Condition(function Trig_Quest_LostMemories_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_Start,function Trig_Quest_LostMemories_Start_Actions)
+endfunction
+
+function Register_Quest_LostMemories_RingFade takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_RingFade=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_RingFade)
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_RingFade,Condition(function Trig_Quest_LostMemories_RingFade_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_RingFade,function Trig_Quest_LostMemories_RingFade_Actions)
+endfunction
+
+function Register_Quest_LostMemories_Fail takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_Fail=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_Fail)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_LostMemories_Fail,450.,gg_unit_e00V_0009)
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_Fail,Condition(function Trig_Quest_LostMemories_Fail_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_Fail,function Trig_Quest_LostMemories_Fail_Actions)
+endfunction
+
+function Register_Quest_LostMemories_Pickup takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_LostMemories_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_Pickup,Condition(function Trig_Quest_LostMemories_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_Pickup,function Trig_Quest_LostMemories_Pickup_Actions)
+endfunction
+
+function Register_Quest_LostMemories_ShadowLie takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_ShadowLie=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_ShadowLie)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Quest_LostMemories_ShadowLie,Player($A),EVENT_PLAYER_UNIT_PICKUP_ITEM) // $A = 10
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_ShadowLie,Condition(function Trig_Quest_LostMemories_ShadowLie_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_ShadowLie,function Trig_Quest_LostMemories_ShadowLie_Actions)
+endfunction
+
+function Register_Quest_LostMemories_ShadowTruth takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_ShadowTruth=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_ShadowTruth)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Quest_LostMemories_ShadowTruth,Player($A),EVENT_PLAYER_UNIT_PICKUP_ITEM) // $A = 10
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_ShadowTruth,Condition(function Trig_Quest_LostMemories_ShadowTruth_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_ShadowTruth,function Trig_Quest_LostMemories_ShadowTruth_Actions)
+endfunction
+
+function Register_Quest_LostMemories_Reunion takes nothing returns nothing
+    set gg_trg_Quest_LostMemories_Reunion=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LostMemories_Reunion)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LostMemories_Reunion,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_LostMemories_Reunion,Condition(function Trig_Quest_LostMemories_Reunion_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LostMemories_Reunion,function Trig_Quest_LostMemories_Reunion_Actions)
 endfunction
 
 endlibrary

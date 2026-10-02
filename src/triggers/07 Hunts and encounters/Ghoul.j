@@ -93,7 +93,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ghoul takes nothing returns nothing
     call Register_Ghoul_Group_Cleanup()
-    call Register_Ghoul_Master_Decay()
+    call Register_Ghoul_Master_Decay() // starts off; enabled by GrandVampire; disabled by GrandVampire; destroyed by GrandVampire
     call Register_Ghoul_Master_Spawn()
 endfunction
 

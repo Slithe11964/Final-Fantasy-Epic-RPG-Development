@@ -267,7 +267,7 @@ function RegisterTriggers_Valfodr takes nothing returns nothing
     call Register_Valfodr_Gagnrath()
     call Register_Valfodr_GagnrathEnd()
     call Register_Valfodr_GagnrathPulse()
-    call Register_Valfodr_GagnrathWave()
+    call Register_Valfodr_GagnrathWave() // starts off; run by Valfodr
     call Register_Valfodr_Bolverk()
 endfunction
 

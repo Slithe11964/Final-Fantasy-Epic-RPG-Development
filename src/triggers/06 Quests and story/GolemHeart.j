@@ -61,8 +61,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GolemHeart takes nothing returns nothing
-    call Register_GolemHeart_Ping()
-    call Register_GolemHeart_Pickup()
+    call Register_GolemHeart_Ping() // starts off; enabled by MithrilGolem; disabled by MithrilGolem
+    call Register_GolemHeart_Pickup() // starts off; enabled by MithrilGolem
 endfunction
 
 endlibrary

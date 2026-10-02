@@ -5,7 +5,8 @@
 Both playable scripts (war3map.j) are expanded from main_old: startup step functions
 (Startup_*), trigger registration groups (RegisterTriggers_*), per-trigger registration
 helpers (Register_*, or the older RegisterR11_*) and ExecuteFunc calls to them are inlined,
-giving the exact list of statements startup executes.
+giving the exact list of statements startup executes. Local variable names are compared by type
+only (so renaming a local, or moving code into its own function with its own locals, is fine).
 
 Pass criteria:
   1. Every statement outside trigger registration runs in exactly the same order.
@@ -20,7 +21,7 @@ import re, sys, os, json, itertools
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from jtok import tokens, strip_comments
 
-INLINE = re.compile(r'^(main_old|Startup_\w+|RegisterTriggers_\w+|Register_\w+|RegisterR11_\w+)$')
+INLINE = re.compile(r'^(main_old|Startup_\w+|RegisterTriggers_\w+|Register_\w+|RegisterR11_\w+|RegisterLegacy_\w+)$')
 HELPER = re.compile(r'^(Register_|RegisterR11_)\w+$')
 FUNC = re.compile(r'^\s*function\s+(\w+)\s+takes\s+(.*?)\s+returns\s+\w+\s*$')
 
@@ -45,6 +46,9 @@ def parse_functions(script):
             cur = None
             continue
         if cur is not None:
+            lm = re.match(r'local\s+(\w+)\s+(?:array\s+)?(\w+)', s)
+            if lm:
+                cur.setdefault('locals', {})[lm.group(2)] = 'local:' + lm.group(1)
             cur['body'].append(s)
     return funcs
 
@@ -80,7 +84,8 @@ def expand(funcs, name='main_old'):
                     target = m2.group(1)
                     args = [a.strip() for a in split_args(m2.group(2))] if m2.group(2).strip() else []
             if target:
-                inner = dict(zip(funcs[target]['params'], [norm(a, subst) for a in args]))
+                inner = dict(funcs[target].get('locals', {}))
+                inner.update(zip(funcs[target]['params'], [norm(a, subst) for a in args]))
                 if HELPER.match(target):
                     unit = []
                     run(target, inner, depth + 1, unit)
@@ -90,7 +95,7 @@ def expand(funcs, name='main_old'):
             else:
                 sink.append(('stmt', norm(s, subst)))
             i += 1
-    run(name, {}, 0, out)
+    run(name, dict(funcs[name].get('locals', {})), 0, out)
     return out
 
 def split_args(s):

@@ -1,4 +1,10 @@
 library TChocoboTaming requires TForce, TGroup, TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Tame_Limit=null
+    trigger gg_trg_Chocobo_Tame_Breed=null
+endglobals
+
 function Trig_Chocobo_Tame_Limit_Conditions takes nothing returns boolean
     return(GetAbilityName(GetSpellAbilityId())=="Chocobo Tame")
 endfunction
@@ -295,6 +301,24 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_Taming takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Tame_Limit takes nothing returns nothing
+    set gg_trg_Chocobo_Tame_Limit=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Tame_Limit,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Chocobo_Tame_Limit,Condition(function Trig_Chocobo_Tame_Limit_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Tame_Limit,function Trig_Chocobo_Tame_Limit_Actions)
+endfunction
+
+function Register_Chocobo_Tame_Breed takes nothing returns nothing
+    set gg_trg_Chocobo_Tame_Breed=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Tame_Breed,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_Tame_Breed,Condition(function Trig_Chocobo_Tame_Breed_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Tame_Breed,function Trig_Chocobo_Tame_Breed_Actions)
 endfunction
 
 endlibrary

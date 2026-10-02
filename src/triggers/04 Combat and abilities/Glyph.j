@@ -36,7 +36,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Glyph takes nothing returns nothing
-    call Register_Glyph_Area_Enter()
+    call Register_Glyph_Area_Enter() // starts off; enabled by RingOfDarkness
 endfunction
 
 endlibrary

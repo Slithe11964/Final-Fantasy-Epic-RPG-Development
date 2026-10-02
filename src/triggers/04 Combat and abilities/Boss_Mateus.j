@@ -1,4 +1,12 @@
 library TBossMateus requires TCam, TCine, TLink, TMusic, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Mateus_Intro=null
+    trigger gg_trg_Boss_Mateus_CoverSwap=null
+    trigger gg_trg_Boss_Mateus_Death=null
+    trigger gg_trg_Boss_Mateus_Death_Final=null
+endglobals
+
 function Trig_Boss_Mateus_Intro_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
@@ -235,6 +243,40 @@ function Trig_Boss_Mateus_Death_Final_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Mateus takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part5, RegisterTriggers_Boss_Part6 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Mateus_Intro takes nothing returns nothing
+    set gg_trg_Boss_Mateus_Intro=CreateTrigger()
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Mateus_Intro,800.,gg_unit_U00L_0207)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Mateus_Intro,800.,gg_unit_U00M_0206)
+    call TriggerAddCondition(gg_trg_Boss_Mateus_Intro,Condition(function Trig_Boss_Mateus_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Mateus_Intro,function Trig_Boss_Mateus_Intro_Actions)
+endfunction
+
+function Register_Boss_Mateus_CoverSwap takes nothing returns nothing
+    set gg_trg_Boss_Mateus_CoverSwap=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Mateus_CoverSwap)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Mateus_CoverSwap,gg_unit_U00L_0207,EVENT_UNIT_DAMAGED)
+    call TriggerAddCondition(gg_trg_Boss_Mateus_CoverSwap,Condition(function Trig_Boss_Mateus_CoverSwap_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Mateus_CoverSwap,function Trig_Boss_Mateus_CoverSwap_Actions)
+endfunction
+
+function Register_Boss_Mateus_Death takes nothing returns nothing
+    set gg_trg_Boss_Mateus_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Mateus_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Mateus_Death,gg_unit_U00L_0207,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Mateus_Death,function Trig_Boss_Mateus_Death_Actions)
+endfunction
+
+function Register_Boss_Mateus_Death_Final takes nothing returns nothing
+    set gg_trg_Boss_Mateus_Death_Final=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Mateus_Death_Final)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Mateus_Death_Final,gg_unit_U00L_0207,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Mateus_Death_Final,function Trig_Boss_Mateus_Death_Final_Actions)
 endfunction
 
 endlibrary

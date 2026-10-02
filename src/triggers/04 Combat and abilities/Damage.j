@@ -1436,6 +1436,18 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
     set tp=null
 endfunction
 
+// ==========================================================================================
+// Trig_Damage_Engine_CalcDamage - the combat formula used by the damage engine for attacks,
+// spells and heals. It changes l_amount step by step, top to bottom (Step 1 ... Step 19 below), and returns
+// the final damage (heals and mana changes are applied here directly).
+//   l_amount     base damage or healing           u / t : source / target unit
+//   l_dmgKind    1 melee, 2 ranged, 4 pure (skips most modifiers), anything else = magic
+//   l_element    element id (0 = use the attacker's element)
+//   l_blockCode  -1 cannot miss or be blocked, 0 normal, 1 evaded, 2 blocked, 3 nullified
+//   l_fxCode     1 cleave effect, 2 critical-hit effect
+// A hit can cause another hit (damage dealt from inside this function), so it runs nested;
+// that is why everything is kept in locals. Keep it that way if you split it up.
+// ==========================================================================================
 function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean l_unavoidable,integer l_dmgKind,boolean l_noCrit,integer l_element,boolean l_manaDamage,boolean l_holy,boolean l_heal,boolean l_noRedirect,boolean l_healUndead returns real
     local boolean l_pure=(l_dmgKind==4)
     local boolean l_melee=(l_dmgKind==1)
@@ -1462,6 +1474,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     local unit l_dummy
     local texttag l_tag
     local integer l_resist=3
+    // Step 1 - Setup: negative amounts become 0; the target's armor becomes a multiplier
+    // (1 + 0.02 per armor point) that later steps use to apply or undo armor.
     if(l_amount<1.)then
         set l_amount=.0
     endif
@@ -1471,9 +1485,11 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     else
         set l_armorMult=1.
     endif
+    // Unavoidable damage can never be evaded or blocked.
     if l_unavoidable then
         set l_blockCode=-1
     endif
+    // Step 2 - Healing an undead or Zombie target hurts it instead (x1.5, counts as holy).
     if(l_heal and not l_healUndead and(IsUnitType(t,UNIT_TYPE_UNDEAD)or GetUnitAbilityLevel(t,'B05T')>0))then // 'B05T': buff tooltip "Zombie"
         set l_heal=false
         if(not l_pure)then
@@ -1482,6 +1498,9 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_holy=true
         endif
     endif
+    // Step 3 - Complete protection: Infinity (absorbs the hit and counts toward a job mastery),
+    // Majin Barrier, Block All / Shield, protected quest and town NPCs (Player(8)),
+    // Cup Arena outsiders, Null Sleep.
     if(l_heal)then
         set l_blockCode=-1
     elseif(l_amount>.0)then
@@ -1532,6 +1551,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=.0
         endif
     endif
+    // Step 4 - Cover: the hit is redirected to the unit covering the target if it is alive and in range.
     if(l_amount>.0 and not l_heal and not l_noRedirect and(GetUnitAbilityLevel(t,'B063')>0 or GetUnitAbilityLevel(t,'A0X2')>0))then // 'B063': buff "Cover"; 'A0X2': ability "Perma Cover"
         set l_dummy=LoadUnitHandle(udg_LinkedCasterHash,th,1)
         if(l_dummy==null or GetWidgetLife(l_dummy)<=.405 or IsUnitInGroup(l_dummy,udg_InactiveUnits)or GetUnitAbilityLevel(l_dummy,'Avul')>0)then // 'Avul': standard ability reference "Invulnerable"
@@ -1573,6 +1593,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Step 5 - Immunities: Physical Immunity; Inner Fire against magic.
     if((l_physical or l_akashic)and not l_heal and l_amount>.0 and GetUnitAbilityLevel(t,'A0PS')>0)then // 'A0PS': ability "Physical Immunity"
         set l_blockCode=3
         set l_amount=.0
@@ -1581,6 +1602,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         set l_blockCode=3
         set l_amount=.0
     endif
+    // Step 6 - Defense: heals, Akashic, holy and Pierce/Frog hits handle armor here. Magic that
+    // hits a player's hero is scaled by 50 / (50 + that player's magic defense).
     if(l_amount>.0 and not l_pure and(l_heal or l_akashic or l_holy or GetUnitAbilityLevel(u,'B05Q')>0 or GetUnitAbilityLevel(t,'B015')>0 or GetUnitAbilityLevel(t,'B05R')>0))then // 'B05Q': buff tooltip "Pierce"; 'B015': buff tooltip "Frog"; 'B05R': buff tooltip "Vitality Zero"
         if(l_physical or not IsPlayerInForce(tp,udg_PlayingPlayers)or t!=Player_GetHero(tp))then
             if l_physical then
@@ -1618,10 +1641,13 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         // (amount) times (l_defScale).
         set l_amount=l_amount*l_defScale
     endif
+    // A player hero's ranged shot restarts RangedShotTimer.
     if(l_ranged and IsPlayerInForce(up,udg_PlayingPlayers)and u==Player_GetHero(up))then
         // (GetPlayerId(up)) plus (1).
         call TimerStart(udg_RangedShotTimer[GetPlayerId(up)+1],.01,false,null)
     endif
+    // Step 7 - Melee attacker bonuses: weapon proficiency, axe charge, Rengeki, mana on hit,
+    // Combo Strike, Two-Handed, Dragon Eye, splash, Momentum and other melee skills.
     if l_melee and l_amount>.0 then
         set l_val=Trig_Damage_Engine_ProficiencyMult(u)
         if l_val>1. then
@@ -1849,6 +1875,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Command AI: melee AI units sometimes cast a spell at their target; each bit of the
+    // ability level enables one spell.
     set l_tmp=GetUnitAbilityLevel(u,'A0SF') // 'A0SF': ability "Command AI"
     if(l_tmp>1 and l_melee)then
         set l_tmp=l_tmp-1
@@ -1897,6 +1925,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Step 8 - Elements: use the attacker's element when none was given, then apply the
+    // target's weakness / resistance / immunity / absorption.
     if(l_element<=0 and not l_pure)then
         set l_element=Element_GetOfUnit(u,l_physical)
     endif
@@ -1958,10 +1988,12 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_blockCode=-1
         endif
     endif
+    // Rengeki Bonus on the target against ranged hits.
     if(l_ranged and l_amount>.0 and GetUnitAbilityLevel(t,'A14C')>0)then // 'A14C': ability "Rengeki Bonus"
         // (amount) times (((LoadInteger(udg_RunicHash, GetHandleId(t), 3)) times (0.05)) plus (1)).
         set l_amount=l_amount*((LoadInteger(udg_RunicHash,GetHandleId(t),3)*.05)+1)
     endif
+    // Special unit n08D_0001: its hit equals its own armor, then it expires.
     if(u==gg_unit_n08D_0001 and u!=null)then
         if l_amount>.0 then
             // (BlzGetUnitArmor(u)) divided by (l_armorMult).
@@ -1970,6 +2002,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         call UnitApplyTimedLife(gg_unit_n08D_0001,'BTLF',.5) // 'BTLF': object name not found in map data
         call UnitAddAbility(gg_unit_n08D_0001,'Abun') // 'Abun': object name not found in map data
     endif
+    // Step 9 - Accuracy: effects that make the hit impossible to evade (Sharp Eye, Null Evasion,
+    // Gun Accuracy ...).
     if(l_blockCode==0)then
         if(l_amount<=0)then
             set l_blockCode=-1
@@ -1985,6 +2019,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         call UnitRemoveAbility(u,'B00P') // 'B00P': buff tooltip "Blind"
         call UnitRemoveAbility(u,'B02V') // 'B02V': buff tooltip "Total Blind"
     endif
+    // Step 10 - Evasion and blocking: miss roll (Trig_Damage_Engine_RollMiss), Evade and Counter,
+    // block abilities.
     if(l_blockCode==0)then
         if(GetUnitAbilityLevel(t,'B050')<=0)then // 'B050': buff tooltip "Evade and Counter"
             set udg_DodgeStreak[GetPlayerId(tp)]=0
@@ -2077,6 +2113,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         endif
         call UnitRemoveAbility(t,'B050') // 'B050': buff tooltip "Evade and Counter"
     endif
+    // Step 11 - Remember the attacker's last element and apply its element damage bonus.
     if(l_amount>.0 and l_element>0)then
         if(GetUnitAbilityLevel(u,'A0PO')<=0)then // 'A0PO': ability "Latest Used Element"
             call UnitAddAbility(u,'A0PO') // 'A0PO': ability "Latest Used Element"
@@ -2124,6 +2161,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_fxCode=3
         endif
     endif
+    // Show the evade / block effect and floating text when the hit was stopped.
     if(l_blockCode>0)then
         if(l_blockCode==1)then
             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl",t,"origin"))
@@ -2132,6 +2170,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         endif
         call Text_FloatingDamage(t,false,l_blockCode,.0,false,0)
     endif
+    // Step 12 - Physical attacker skills: Aim, Killer / Artemis Arrows and other shot bonuses.
     if(l_physical and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'B01F')>0 and GetUnitAbilityLevel(u,'A0RH')>0)then // 'B01F': buff tooltip "Aim"; 'A0RH': ability "Aim"
             // Result 1: (amount) times (1.2).
@@ -2229,6 +2268,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             call IssueTargetOrder(l_dummy,"acidbomb",t)
         endif
     endif
+    // Step 13 - Marked for Death and Undead Touch.
     if(l_amount>.0 and not l_heal and GetUnitAbilityLevel(t,'B07M')>0)then // 'B07M': buff tooltip "Marked for Death"
         // ((amount) plus (80)) plus ((GetUnitAbilityLevel(t, 'A03C')) times (20)).
         set l_amount=l_amount+80+(GetUnitAbilityLevel(t,'A03C')*20) // 'A03C': ability "Marked for Death"
@@ -2241,6 +2281,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         // Increase amount by 30.
         set l_amount=l_amount+30
     endif
+    // Step 14 - Difficulty: hits from the enemy player (Player(11)) on active players are divided by
+    // DifficultyScale; hits on the enemy player are multiplied by it.
     if(not l_pure and udg_Difficulty!=3)then
         if(up==Player($B)and IsPlayerInForce(tp,udg_ActivePlayers))then // $B = 11
             // (amount) divided by (udg_DifficultyScale).
@@ -2250,6 +2292,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*udg_DifficultyScale
         endif
     endif
+    // Eternity Mode bonuses.
     if(l_amount>.0 and udg_EternityMode)then
         if(not l_pure and GetUnitAbilityLevel(u,'B07T')>0)then // 'B07T': buff "Eternity Mode"
             if l_physical then
@@ -2264,6 +2307,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*.625
         endif
     endif
+    // Step 15 - Random spread: normally x(15..16)/16; Gambler Spirit x(0.2..2).
     if(not l_pure and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'A05L')>0)then // 'A05L': ability "Gambler Spirit"
             // (amount) times (a random decimal number between 0.2 and 2).
@@ -2311,6 +2355,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Step 16 - Physical hit: critical hits, Devaluing Attack, Bravery / Pain buffs, Focus,
+    // Adrenaline, Physical Hardness, Deathblow, Ultima Blade.
     if(l_physical and l_amount>.0)then
         if(not l_noCrit and not IsUnitType(t,UNIT_TYPE_STRUCTURE))then
             set l_val=1.
@@ -2432,8 +2478,10 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*(1.5*(GetUnitState(u,UNIT_STATE_LIFE)/ GetUnitState(u,UNIT_STATE_MAX_LIFE)))
         endif
     endif
+    // Backstab and Stealth end once the attacker hits.
     call UnitRemoveAbility(u,'B03N') // 'B03N': buff tooltip "Backstab"
     call UnitRemoveAbility(u,'B089') // 'B089': buff tooltip "Stealth"
+    // Step 17 - Magic: Faith / Faithra and other spell-power modifiers.
     if(l_magical and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'B08Q')>0)then // 'B08Q': buff "Faithra"
             // Multiply the current amount by 2: 100 becomes 200, before any later adjustments.
@@ -2498,6 +2546,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=l_amount*.7
         endif
     endif
+    // Step 18 - Final modifiers from both sides: Night Might, Great Wall, Inner Fire, Death Screech,
+    // Sleep, Oversoul, Adaptive Barrier, Sentinel, Divine Shield, Drain Attack ...
     if l_amount>.0 then
         if(GetUnitAbilityLevel(u,'A03N')>0 and not l_pure and Trig_Damage_Engine_IsNight())then // 'A03N': ability "Night Might"
             // Multiply the current amount by 1.6: 100 becomes 160, before any later adjustments.
@@ -2719,6 +2769,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Step 19 - Apply: heals and mana changes are applied here (with floating text) and return 0;
+    // normal damage is returned to the caller, which deals it.
     set udg_LastDamageDealt=l_amount
     if(l_amount>.0)then
         if l_manaDamage then
@@ -2756,6 +2808,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             set l_amount=.0
         endif
     endif
+    // Cleave / critical-hit effect on the target.
     if(l_amount>.0 and l_fxCode>0)then
         if(l_fxCode==1)then
             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Cleave\\CleaveDamageTarget.mdl",t,"origin"))
@@ -2763,6 +2816,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Stampede\\StampedeMissileDeath.mdl",t,"origin"))
         endif
     endif
+    // Absorb shields store the damage instead of taking it.
     if(l_amount>.0 and IsUnitInGroup(t,udg_AbsorbShieldGroup))then
         // (LoadReal(udg_AbsorbShieldHash, th, 0)) plus (amount).
         call SaveReal(udg_AbsorbShieldHash,th,0,LoadReal(udg_AbsorbShieldHash,th,0)+l_amount)
@@ -2770,6 +2824,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
         call DestroyEffect(AddSpecialEffectTarget(Trig_Damage_Engine_BlockEffectPath(l_physical),t,"origin"))
         call Text_FloatingDamage(t,false,5,.0,false,0)
     endif
+    // DPS meter for players.
     if(IsPlayerInForce(up,udg_PlayingPlayers)and l_amount>.0 and l_amount<1000000.)then
         call ConditionalTriggerExecute(gg_trg_Dps_Start)
         // Calculation 1:
@@ -2799,6 +2854,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             endif
         endif
     endif
+    // Floating damage text.
     if(l_amount>=1.)then
         if(l_amount>=1000000.)then
             call Text_FloatingDamage(t,false,6,.0,false,l_fxCode)
@@ -2806,6 +2862,7 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
             call Text_FloatingDamage(t,false,0,l_amount,false,l_fxCode)
         endif
     endif
+    // Illusions deal no damage.
     if IsUnitIllusion(u)then
         set l_amount=.0
     endif
@@ -2990,9 +3047,9 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Damage takes nothing returns nothing
     call Register_Damage_Init()
-    call Register_Damage_RegisterEnter()
-    call Register_Damage_RegisterAttacked()
-    call Register_Damage_Engine()
+    call Register_Damage_RegisterEnter() // starts off; enabled by Damage
+    call Register_Damage_RegisterAttacked() // starts off; enabled by Damage
+    call Register_Damage_Engine() // starts off; enabled by Damage
     call Register_Damage_ProxyCleanup()
     call Register_Damage_Splash()
 endfunction

@@ -507,7 +507,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Chemist takes nothing returns nothing
-    call Register_Chemist_TakeItem()
+    call Register_Chemist_TakeItem() // starts off; run by Chemist
     call Register_Chemist_Pharmacology()
     call Register_Chemist_LearnAlchemy()
     call Register_Chemist_Brew()

@@ -679,14 +679,14 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Title takes nothing returns nothing
-    call Register_Title_Grant()
-    call Register_Title_UnlockEffects()
-    call Register_Title_ApplyStats()
-    call Register_Title_ArmsCollection()
+    call Register_Title_Grant() // starts off; run by Title, AlmightyShinra, Arena_BattleResults +26 more
+    call Register_Title_UnlockEffects() // starts off; run by Title
+    call Register_Title_ApplyStats() // starts off; run by Title, Hero_EndlessGrowth
+    call Register_Title_ArmsCollection() // starts off; run by Cmd, Weapon
     call Register_Title_JuniorAdventurer()
-    call Register_Title_RumoredAdventurer()
-    call Register_Title_SeniorAdventurer()
-    call Register_Title_HeroicSpirit()
+    call Register_Title_RumoredAdventurer() // starts off; enabled by Title
+    call Register_Title_SeniorAdventurer() // starts off; enabled by Title
+    call Register_Title_HeroicSpirit() // starts off; enabled by Title
 endfunction
 
 endlibrary

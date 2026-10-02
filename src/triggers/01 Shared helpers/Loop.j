@@ -34,7 +34,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Loop takes nothing returns nothing
-    call Register_Loop_MadoushiChanneling()
+    call Register_Loop_MadoushiChanneling() // starts off; enabled by Quest_EyeOfJenova
 endfunction
 
 endlibrary

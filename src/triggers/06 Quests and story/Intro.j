@@ -77,7 +77,7 @@ endfunction
 function RegisterTriggers_Intro takes nothing returns nothing
     call Register_Intro_LockPlayers()
     call Register_Intro_StartGameModeVote()
-    call Register_Intro_WelcomeMessages()
+    call Register_Intro_WelcomeMessages() // starts off; run by Game
     call Register_Intro_FadeToBlack()
 endfunction
 

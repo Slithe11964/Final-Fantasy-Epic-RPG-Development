@@ -1,4 +1,10 @@
 library TGayaMovement requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gaya_Follow=null
+    trigger gg_trg_Gaya_HousePortal=null
+endglobals
+
 // ---- Gaya ----
 function Trig_Gaya_Follow_MoveGayaToHero takes nothing returns nothing
     // Starting value for i:
@@ -67,6 +73,24 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Gaya_Movement takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Gaya (module Gaya),
+// which keeps the original registration order.
+
+function Register_Gaya_Follow takes nothing returns nothing
+    set gg_trg_Gaya_Follow=CreateTrigger()
+    call DisableTrigger(gg_trg_Gaya_Follow)
+    call TriggerRegisterTimerEvent(gg_trg_Gaya_Follow,1.,true)
+    call TriggerAddAction(gg_trg_Gaya_Follow,function Trig_Gaya_Follow_Actions)
+endfunction
+
+function Register_Gaya_HousePortal takes nothing returns nothing
+    set gg_trg_Gaya_HousePortal=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_HousePortal,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Gaya_HousePortal,Condition(function Trig_Gaya_HousePortal_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_HousePortal,function Trig_Gaya_HousePortal_Actions)
 endfunction
 
 endlibrary

@@ -82,9 +82,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_CrystalBall takes nothing returns nothing
-    call Register_CrystalBall_Drop()
-    call Register_CrystalBall_Ping()
-    call Register_CrystalBall_Pickup()
+    call Register_CrystalBall_Drop() // starts off; enabled by Nimphrodel
+    call Register_CrystalBall_Ping() // starts off; enabled by CrystalBall; disabled by Nimphrodel
+    call Register_CrystalBall_Pickup() // starts off; enabled by CrystalBall
 endfunction
 
 endlibrary

@@ -1,4 +1,13 @@
 library TQuestBrothers requires TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Brothers_Init=null
+    trigger gg_trg_Quest_Brothers_Available=null
+    trigger gg_trg_Quest_Brothers_Start=null
+    trigger gg_trg_Quest_Brothers_Defeated=null
+    trigger gg_trg_Quest_Brothers_Complete=null
+endglobals
+
 function Trig_Quest_Brothers_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_Ocb2_0147)
     call ShowUnitHide(gg_unit_Ocbh_0148)
@@ -243,6 +252,52 @@ function Trig_Quest_Brothers_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Brothers takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Brothers_Init takes nothing returns nothing
+    set gg_trg_Quest_Brothers_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Quest_Brothers_Init,function Trig_Quest_Brothers_Init_Actions)
+endfunction
+
+function Register_Quest_Brothers_Available takes nothing returns nothing
+    set gg_trg_Quest_Brothers_Available=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Brothers_Available)
+    call TriggerAddAction(gg_trg_Quest_Brothers_Available,function Trig_Quest_Brothers_Available_Actions)
+endfunction
+
+function Register_Quest_Brothers_Start takes nothing returns nothing
+    set gg_trg_Quest_Brothers_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Brothers_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Brothers_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Brothers_Start,Condition(function Trig_Quest_Brothers_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Brothers_Start,function Trig_Quest_Brothers_Start_Actions)
+endfunction
+
+function Register_Quest_Brothers_Defeated takes nothing returns nothing
+    set gg_trg_Quest_Brothers_Defeated=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Brothers_Defeated)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_Brothers_Defeated,gg_unit_Ocb2_0147,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_Brothers_Defeated,gg_unit_Ocbh_0148,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_Brothers_Defeated,function Trig_Quest_Brothers_Defeated_Actions)
+endfunction
+
+function Register_Quest_Brothers_Complete takes nothing returns nothing
+    set gg_trg_Quest_Brothers_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Brothers_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Brothers_Complete,450.,gg_unit_Hdgo_0097)
+    call TriggerAddCondition(gg_trg_Quest_Brothers_Complete,Condition(function Trig_Quest_Brothers_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Brothers_Complete,function Trig_Quest_Brothers_Complete_Actions)
 endfunction
 
 endlibrary

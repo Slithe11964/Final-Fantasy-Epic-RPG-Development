@@ -86,8 +86,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Remove takes nothing returns nothing
-    call Register_Remove_Debuffs()
-    call Register_Remove_Buffs()
+    call Register_Remove_Debuffs() // starts off; run by Boss_DemiFiend, Buy, Chakra +13 more
+    call Register_Remove_Buffs() // starts off; run by Dispel, Ending, Mediator +5 more
 endfunction
 
 endlibrary

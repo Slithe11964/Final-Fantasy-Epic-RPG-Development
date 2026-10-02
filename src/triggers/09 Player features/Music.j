@@ -177,7 +177,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Music takes nothing returns nothing
-    call Register_Music_Prelude()
+    call Register_Music_Prelude() // run by MapBootstrap
 endfunction
 
 endlibrary

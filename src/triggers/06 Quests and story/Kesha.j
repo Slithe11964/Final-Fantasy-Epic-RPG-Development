@@ -186,9 +186,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Kesha takes nothing returns nothing
-    call Register_Kesha_Stones_Spawn()
-    call Register_Kesha_Return_Stones()
-    call Register_Kesha_Subscription_Toggle()
+    call Register_Kesha_Stones_Spawn() // starts off; run by News
+    call Register_Kesha_Return_Stones() // starts off; enabled by Kesha
+    call Register_Kesha_Subscription_Toggle() // disabled by Kesha; destroyed by Kesha
 endfunction
 
 endlibrary

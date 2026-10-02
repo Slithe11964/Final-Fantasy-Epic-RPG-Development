@@ -1,4 +1,9 @@
 library TQuestMonstrum requires TReward
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Monstrum_Complete=null
+endglobals
+
 function Trig_Quest_Monstrum_Complete_HuntLogEnabled takes nothing returns boolean
     return(udg_SpeedrunMode)
 endfunction
@@ -42,6 +47,16 @@ function Trig_Quest_Monstrum_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Monstrum takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part20 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Monstrum_Complete takes nothing returns nothing
+    set gg_trg_Quest_Monstrum_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Monstrum_Complete)
+    call TriggerAddAction(gg_trg_Quest_Monstrum_Complete,function Trig_Quest_Monstrum_Complete_Actions)
 endfunction
 
 endlibrary

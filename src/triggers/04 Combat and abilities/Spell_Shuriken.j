@@ -139,6 +139,7 @@ function Trig_Spell_Shuriken_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_Shuriken.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_Shuriken takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

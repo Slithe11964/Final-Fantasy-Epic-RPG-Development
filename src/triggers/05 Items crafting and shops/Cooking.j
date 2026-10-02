@@ -78,7 +78,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cooking takes nothing returns nothing
-    call Register_Cooking_Recipes_UnlockAll()
+    call Register_Cooking_Recipes_UnlockAll() // starts off; run by Title
 endfunction
 
 endlibrary

@@ -1,4 +1,12 @@
 library TQuestArachnophobia requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Arachnophobia_Offer=null
+    trigger gg_trg_Quest_Arachnophobia_Start=null
+    trigger gg_trg_Quest_Arachnophobia_Count=null
+    trigger gg_trg_Quest_Arachnophobia_Reward=null
+endglobals
+
 function Trig_Quest_Arachnophobia_Offer_Actions takes nothing returns nothing
     set udg_SpecialEffect[3]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n009_0051,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Arachnophobia_Start)
@@ -123,6 +131,47 @@ function Trig_Quest_Arachnophobia_Reward_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Arachnophobia takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Arachnophobia_Offer takes nothing returns nothing
+    set gg_trg_Quest_Arachnophobia_Offer=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arachnophobia_Offer)
+    call TriggerAddAction(gg_trg_Quest_Arachnophobia_Offer,function Trig_Quest_Arachnophobia_Offer_Actions)
+endfunction
+
+function Register_Quest_Arachnophobia_Start takes nothing returns nothing
+    set gg_trg_Quest_Arachnophobia_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arachnophobia_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arachnophobia_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Arachnophobia_Start,Condition(function Trig_Quest_Arachnophobia_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arachnophobia_Start,function Trig_Quest_Arachnophobia_Start_Actions)
+endfunction
+
+function Register_Quest_Arachnophobia_Count takes nothing returns nothing
+    set gg_trg_Quest_Arachnophobia_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arachnophobia_Count)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Arachnophobia_Count,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Quest_Arachnophobia_Count,Condition(function Trig_Quest_Arachnophobia_Count_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arachnophobia_Count,function Trig_Quest_Arachnophobia_Count_Actions)
+endfunction
+
+function Register_Quest_Arachnophobia_Reward takes nothing returns nothing
+    set gg_trg_Quest_Arachnophobia_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arachnophobia_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Arachnophobia_Reward,450.,gg_unit_n009_0051)
+    call TriggerAddCondition(gg_trg_Quest_Arachnophobia_Reward,Condition(function Trig_Quest_Arachnophobia_Reward_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arachnophobia_Reward,function Trig_Quest_Arachnophobia_Reward_Actions)
 endfunction
 
 endlibrary

@@ -1,4 +1,11 @@
 library TArenaTeamData
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_InitData=null
+    trigger gg_trg_Arena_TeamData1=null
+    trigger gg_trg_Arena_TeamData2=null
+endglobals
+
 function Trig_Arena_InitData_Actions takes nothing returns nothing
     call InitHashtableBJ()
     set udg_GameStateHash=GetLastCreatedHashtableBJ()
@@ -1353,6 +1360,28 @@ function Trig_Arena_TeamData2_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_TeamData takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_InitData takes nothing returns nothing
+    set gg_trg_Arena_InitData=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_InitData,4.)
+    call TriggerAddAction(gg_trg_Arena_InitData,function Trig_Arena_InitData_Actions)
+endfunction
+
+function Register_Arena_TeamData1 takes nothing returns nothing
+    set gg_trg_Arena_TeamData1=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_TeamData1,4.)
+    call TriggerAddAction(gg_trg_Arena_TeamData1,function Trig_Arena_TeamData1_Actions)
+endfunction
+
+function Register_Arena_TeamData2 takes nothing returns nothing
+    set gg_trg_Arena_TeamData2=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_TeamData2,4.)
+    call TriggerAddAction(gg_trg_Arena_TeamData2,function Trig_Arena_TeamData2_Actions)
 endfunction
 
 endlibrary

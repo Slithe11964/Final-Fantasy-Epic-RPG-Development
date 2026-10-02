@@ -176,9 +176,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_IcyRealm takes nothing returns nothing
-    call Register_IcyRealm_Init()
-    call Register_IcyRealm_GateOpened_Setup()
-    call Register_IcyRealm_Restore()
+    call Register_IcyRealm_Init() // run by MapBootstrap
+    call Register_IcyRealm_GateOpened_Setup() // starts off; run by Gate, Quest_ZodiacAge
+    call Register_IcyRealm_Restore() // starts off; run by Quest_ScorchedEarth
 endfunction
 
 endlibrary

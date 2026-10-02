@@ -1,4 +1,9 @@
 library TBossOrcChieftain
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_OrcChieftain_Death=null
+endglobals
+
 function Trig_Boss_OrcChieftain_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_RecruitedAllies)
@@ -12,6 +17,16 @@ function Trig_Boss_OrcChieftain_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_OrcChieftain takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part3 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_OrcChieftain_Death takes nothing returns nothing
+    set gg_trg_Boss_OrcChieftain_Death=CreateTrigger()
+    call TriggerRegisterUnitEvent(gg_trg_Boss_OrcChieftain_Death,gg_unit_Opgh_0169,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_OrcChieftain_Death,function Trig_Boss_OrcChieftain_Death_Actions)
 endfunction
 
 endlibrary

@@ -41,7 +41,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_InfernalMountain takes nothing returns nothing
-    call Register_InfernalMountain_Hide()
+    call Register_InfernalMountain_Hide() // run by MapBootstrap
 endfunction
 
 endlibrary

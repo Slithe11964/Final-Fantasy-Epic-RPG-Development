@@ -297,7 +297,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Equip takes nothing returns nothing
-    call Register_Equip_Restrictions()
+    call Register_Equip_Restrictions() // enabled by Fix, Shadow_Hiring; disabled by Fix, Shadow_Hiring
 endfunction
 
 endlibrary

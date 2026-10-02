@@ -1,4 +1,12 @@
 library TBossHashmalum requires TCam, TCine, TLoc, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Hashmalum_Intro=null
+    trigger gg_trg_Boss_Hashmalum_Revive_Belias=null
+    trigger gg_trg_Boss_Hashmalum_Revive_Loop=null
+    trigger gg_trg_Boss_Hashmalum_Death_Final=null
+endglobals
+
 function Trig_Boss_Hashmalum_Intro_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
@@ -368,6 +376,39 @@ function Trig_Boss_Hashmalum_Death_Final_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Hashmalum takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part6 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Hashmalum_Intro takes nothing returns nothing
+    set gg_trg_Boss_Hashmalum_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Hashmalum_Intro)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Hashmalum_Intro,700.,gg_unit_E002_0075)
+    call TriggerAddCondition(gg_trg_Boss_Hashmalum_Intro,Condition(function Trig_Boss_Hashmalum_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Hashmalum_Intro,function Trig_Boss_Hashmalum_Intro_Actions)
+endfunction
+
+function Register_Boss_Hashmalum_Revive_Belias takes nothing returns nothing
+    set gg_trg_Boss_Hashmalum_Revive_Belias=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Hashmalum_Revive_Belias)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Hashmalum_Revive_Belias,gg_unit_E002_0075,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Hashmalum_Revive_Belias,function Trig_Boss_Hashmalum_Revive_Belias_Actions)
+endfunction
+
+function Register_Boss_Hashmalum_Revive_Loop takes nothing returns nothing
+    set gg_trg_Boss_Hashmalum_Revive_Loop=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Hashmalum_Revive_Loop)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Hashmalum_Revive_Loop,gg_unit_E002_0075,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Hashmalum_Revive_Loop,function Trig_Boss_Hashmalum_Revive_Loop_Actions)
+endfunction
+
+function Register_Boss_Hashmalum_Death_Final takes nothing returns nothing
+    set gg_trg_Boss_Hashmalum_Death_Final=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Hashmalum_Death_Final)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Hashmalum_Death_Final,gg_unit_E002_0075,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Hashmalum_Death_Final,function Trig_Boss_Hashmalum_Death_Final_Actions)
 endfunction
 
 endlibrary

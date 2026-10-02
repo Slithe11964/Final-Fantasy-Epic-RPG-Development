@@ -85,8 +85,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GodDragon takes nothing returns nothing
-    call Register_GodDragon_Transfusion()
-    call Register_GodDragon_Death()
+    call Register_GodDragon_Transfusion() // starts off; enabled by Quest_GodDragon
+    call Register_GodDragon_Death() // starts off; enabled by Quest_GodDragon
 endfunction
 
 endlibrary

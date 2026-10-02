@@ -261,10 +261,10 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Merchant takes nothing returns nothing
     call Register_Merchant_Stock_Init()
-    call Register_Merchant_Spawn_Night()
-    call Register_Merchant_Reveal()
-    call Register_Merchant_Leave_Dawn()
-    call Register_Merchant_Leave_OnSale()
+    call Register_Merchant_Spawn_Night() // starts off; enabled by Merchant
+    call Register_Merchant_Reveal() // starts off; enabled by Merchant; disabled by Merchant
+    call Register_Merchant_Leave_Dawn() // starts off; enabled by Merchant; disabled by Merchant
+    call Register_Merchant_Leave_OnSale() // starts off; enabled by Merchant; disabled by Merchant
     call Register_Merchant_Stock_Shrink()
 endfunction
 

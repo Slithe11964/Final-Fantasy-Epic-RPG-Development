@@ -1,4 +1,10 @@
 library TItemStack
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Item_Stack_Order=null
+    trigger gg_trg_Item_Stack_Pickup=null
+endglobals
+
 function Trig_Item_Stack_Order_Conditions takes nothing returns boolean
     return GetIssuedOrderId()>=$D0022 and GetIssuedOrderId()<=$D0027 and IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers) // $D0022 = 852002; $D0027 = 852007
 endfunction
@@ -128,6 +134,24 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Item_Stack takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Item_Part1 (module Item),
+// which keeps the original registration order.
+
+function Register_Item_Stack_Order takes nothing returns nothing
+    set gg_trg_Item_Stack_Order=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Item_Stack_Order,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
+    call TriggerAddCondition(gg_trg_Item_Stack_Order,Condition(function Trig_Item_Stack_Order_Conditions))
+    call TriggerAddAction(gg_trg_Item_Stack_Order,function Trig_Item_Stack_Order_Actions)
+endfunction
+
+function Register_Item_Stack_Pickup takes nothing returns nothing
+    set gg_trg_Item_Stack_Pickup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Item_Stack_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Item_Stack_Pickup,Condition(function Trig_Item_Stack_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Item_Stack_Pickup,function Trig_Item_Stack_Pickup_Actions)
 endfunction
 
 endlibrary

@@ -50,7 +50,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkLeviathan takes nothing returns nothing
-    call Register_DarkLeviathan_Appear()
+    call Register_DarkLeviathan_Appear() // starts off; enabled by DarkEidolons
 endfunction
 
 endlibrary

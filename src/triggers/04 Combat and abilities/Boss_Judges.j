@@ -1,5 +1,18 @@
 library TBossJudges requires TCam, TCine, TDifficulty, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Judges_Summon=null
+    trigger gg_trg_Boss_Judges_Ultimates=null
+    trigger gg_trg_Boss_Judges_Ghis_AI=null
+    trigger gg_trg_Boss_Judges_Gabranth_AI=null
+    trigger gg_trg_Boss_Judges_Zargabaath_AI=null
+    trigger gg_trg_Boss_Judges_Drace_AI=null
+    trigger gg_trg_Boss_Judges_Death=null
+    trigger gg_trg_Boss_Judges_UseMegalixir=null
+    trigger gg_trg_Boss_Judge_ImperialRage=null
+    trigger gg_trg_Boss_Judge_Sentence=null
+    trigger gg_trg_Boss_Judge_ChainMagick=null
+    trigger gg_trg_Boss_Judges_Cleanup=null
     // Variables only this module uses.
     unit udg_JudgeGabranth=null
     unit udg_JudgeGhis=null
@@ -604,6 +617,95 @@ function Trig_Boss_Judges_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Judges takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part12 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Judges_Summon takes nothing returns nothing
+    set gg_trg_Boss_Judges_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Summon)
+    call TriggerAddAction(gg_trg_Boss_Judges_Summon,function Trig_Boss_Judges_Summon_Actions)
+endfunction
+
+function Register_Boss_Judges_Ultimates takes nothing returns nothing
+    set gg_trg_Boss_Judges_Ultimates=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Ultimates)
+    call TriggerAddAction(gg_trg_Boss_Judges_Ultimates,function Trig_Boss_Judges_Ultimates_Actions)
+endfunction
+
+function Register_Boss_Judges_Ghis_AI takes nothing returns nothing
+    set gg_trg_Boss_Judges_Ghis_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Ghis_AI)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_Judges_Ghis_AI,udg_JudgeTimer[1])
+    call TriggerAddCondition(gg_trg_Boss_Judges_Ghis_AI,Condition(function Trig_Boss_Judges_Ghis_AI_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_Ghis_AI,function Trig_Boss_Judges_Ghis_AI_Actions)
+endfunction
+
+function Register_Boss_Judges_Gabranth_AI takes nothing returns nothing
+    set gg_trg_Boss_Judges_Gabranth_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Gabranth_AI)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_Judges_Gabranth_AI,udg_JudgeTimer[2])
+    call TriggerAddCondition(gg_trg_Boss_Judges_Gabranth_AI,Condition(function Trig_Boss_Judges_Gabranth_AI_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_Gabranth_AI,function Trig_Boss_Judges_Gabranth_AI_Actions)
+endfunction
+
+function Register_Boss_Judges_Zargabaath_AI takes nothing returns nothing
+    set gg_trg_Boss_Judges_Zargabaath_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Zargabaath_AI)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_Judges_Zargabaath_AI,udg_JudgeTimer[3])
+    call TriggerAddCondition(gg_trg_Boss_Judges_Zargabaath_AI,Condition(function Trig_Boss_Judges_Zargabaath_AI_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_Zargabaath_AI,function Trig_Boss_Judges_Zargabaath_AI_Actions)
+endfunction
+
+function Register_Boss_Judges_Drace_AI takes nothing returns nothing
+    set gg_trg_Boss_Judges_Drace_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Drace_AI)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_Judges_Drace_AI,udg_JudgeTimer[4])
+    call TriggerAddCondition(gg_trg_Boss_Judges_Drace_AI,Condition(function Trig_Boss_Judges_Drace_AI_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_Drace_AI,function Trig_Boss_Judges_Drace_AI_Actions)
+endfunction
+
+function Register_Boss_Judges_Death takes nothing returns nothing
+    set gg_trg_Boss_Judges_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Death)
+    call TriggerAddCondition(gg_trg_Boss_Judges_Death,Condition(function Trig_Boss_Judges_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_Death,function Trig_Boss_Judges_Death_Actions)
+endfunction
+
+function Register_Boss_Judges_UseMegalixir takes nothing returns nothing
+    set gg_trg_Boss_Judges_UseMegalixir=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_UseMegalixir)
+    call TriggerAddCondition(gg_trg_Boss_Judges_UseMegalixir,Condition(function Trig_Boss_Judges_UseMegalixir_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judges_UseMegalixir,function Trig_Boss_Judges_UseMegalixir_Actions)
+endfunction
+
+function Register_Boss_Judge_ImperialRage takes nothing returns nothing
+    set gg_trg_Boss_Judge_ImperialRage=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Judge_ImperialRage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_Judge_ImperialRage,Condition(function Trig_Boss_Judge_ImperialRage_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judge_ImperialRage,function Trig_Boss_Judge_ImperialRage_Actions)
+endfunction
+
+function Register_Boss_Judge_Sentence takes nothing returns nothing
+    set gg_trg_Boss_Judge_Sentence=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Judge_Sentence,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_Judge_Sentence,Condition(function Trig_Boss_Judge_Sentence_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judge_Sentence,function Trig_Boss_Judge_Sentence_Actions)
+endfunction
+
+function Register_Boss_Judge_ChainMagick takes nothing returns nothing
+    set gg_trg_Boss_Judge_ChainMagick=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Judge_ChainMagick,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_Judge_ChainMagick,Condition(function Trig_Boss_Judge_ChainMagick_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Judge_ChainMagick,function Trig_Boss_Judge_ChainMagick_Actions)
+endfunction
+
+function Register_Boss_Judges_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_Judges_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Judges_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_Judges_Cleanup,function Trig_Boss_Judges_Cleanup_Actions)
 endfunction
 
 endlibrary

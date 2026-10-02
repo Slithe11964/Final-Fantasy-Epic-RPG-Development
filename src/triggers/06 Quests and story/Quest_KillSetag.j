@@ -1,4 +1,14 @@
 library TQuestKillSetag requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_KillSetag_Hide=null
+    trigger gg_trg_Quest_KillSetag_Offer=null
+    trigger gg_trg_Quest_KillSetag_Start=null
+    trigger gg_trg_Quest_KillSetag_Ambush=null
+    trigger gg_trg_Quest_KillSetag_Failed=null
+    trigger gg_trg_Quest_KillSetag_Complete=null
+endglobals
+
 function Trig_Quest_KillSetag_Hide_Actions takes nothing returns nothing
     call PauseUnitBJ(true,gg_unit_Hant_0059)
     call UnitAddAbilityBJ('A0VJ',gg_unit_Hant_0059) // 'A0VJ': ability "Unaffected by Cinematics"
@@ -200,6 +210,62 @@ function Trig_Quest_KillSetag_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_KillSetag takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_KillSetag_Hide takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Hide=CreateTrigger()
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Hide,function Trig_Quest_KillSetag_Hide_Actions)
+endfunction
+
+function Register_Quest_KillSetag_Offer takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Offer=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KillSetag_Offer)
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Offer,function Trig_Quest_KillSetag_Offer_Actions)
+endfunction
+
+function Register_Quest_KillSetag_Start takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KillSetag_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_KillSetag_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_KillSetag_Start,Condition(function Trig_Quest_KillSetag_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Start,function Trig_Quest_KillSetag_Start_Actions)
+endfunction
+
+function Register_Quest_KillSetag_Ambush takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Ambush=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KillSetag_Ambush)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Ambush,gg_unit_Hgam_0060,EVENT_UNIT_DAMAGED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Ambush,gg_unit_Hgam_0060,EVENT_UNIT_ATTACKED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Ambush,gg_unit_uabo_0061,EVENT_UNIT_ATTACKED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Ambush,gg_unit_uabo_0062,EVENT_UNIT_ATTACKED)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Ambush,gg_unit_uabo_0002,EVENT_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Quest_KillSetag_Ambush,Condition(function Trig_Quest_KillSetag_Ambush_Conditions))
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Ambush,function Trig_Quest_KillSetag_Ambush_Actions)
+endfunction
+
+function Register_Quest_KillSetag_Failed takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Failed=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KillSetag_Failed)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Failed,gg_unit_Hant_0059,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Failed,function Trig_Quest_KillSetag_Failed_Actions)
+endfunction
+
+function Register_Quest_KillSetag_Complete takes nothing returns nothing
+    set gg_trg_Quest_KillSetag_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_KillSetag_Complete)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_KillSetag_Complete,gg_unit_Hgam_0060,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_KillSetag_Complete,function Trig_Quest_KillSetag_Complete_Actions)
 endfunction
 
 endlibrary

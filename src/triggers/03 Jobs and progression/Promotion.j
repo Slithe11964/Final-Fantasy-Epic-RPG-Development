@@ -37,7 +37,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Promotion takes nothing returns nothing
-    call Register_Promotion_Award_Random()
+    call Register_Promotion_Award_Random() // starts off; run by BlackPearl, Boss_GodDragon, Boss_Odin +7 more
 endfunction
 
 endlibrary

@@ -52,7 +52,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_QuestCount takes nothing returns nothing
-    call Register_QuestCount_Milestones()
+    call Register_QuestCount_Milestones() // starts off; run by BridgeBattle, Cid, Cine +25 more
 endfunction
 
 endlibrary

@@ -325,9 +325,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Elysium takes nothing returns nothing
-    call Register_Elysium_Prepare()
-    call Register_Elysium_AssignLegends()
-    call Register_Elysium_MarkerTick()
+    call Register_Elysium_Prepare() // run by MapBootstrap
+    call Register_Elysium_AssignLegends() // starts off; run by Init
+    call Register_Elysium_MarkerTick() // starts off; enabled by Andre
 endfunction
 
 endlibrary

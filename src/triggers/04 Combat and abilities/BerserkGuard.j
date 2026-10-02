@@ -28,7 +28,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_BerserkGuard takes nothing returns nothing
-    call Register_BerserkGuard_Decay()
+    call Register_BerserkGuard_Decay() // starts off; enabled by Cid; disabled by Cid; destroyed by Cid
 endfunction
 
 endlibrary

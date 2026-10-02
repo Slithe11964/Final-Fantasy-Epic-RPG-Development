@@ -336,13 +336,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ArenaExpansion takes nothing returns nothing
-    call Register_ArenaExpansion_Prepare()
-    call Register_ArenaExpansion_Start()
-    call Register_ArenaExpansion_ShadowStoneSpawn()
-    call Register_ArenaExpansion_ShadowStoneTurnIn()
-    call Register_ArenaExpansion_GatherDust()
-    call Register_ArenaExpansion_PingDust()
-    call Register_ArenaExpansion_Complete()
+    call Register_ArenaExpansion_Prepare() // starts off; enabled by ArenaResources
+    call Register_ArenaExpansion_Start() // starts off; enabled by ArenaExpansion
+    call Register_ArenaExpansion_ShadowStoneSpawn() // starts off; enabled by ArenaExpansion
+    call Register_ArenaExpansion_ShadowStoneTurnIn() // starts off; enabled by ArenaExpansion
+    call Register_ArenaExpansion_GatherDust() // starts off; enabled by ArenaExpansion
+    call Register_ArenaExpansion_PingDust() // starts off; enabled by ArenaExpansion; disabled by ArenaExpansion
+    call Register_ArenaExpansion_Complete() // starts off; enabled by ArenaExpansion
 endfunction
 
 endlibrary

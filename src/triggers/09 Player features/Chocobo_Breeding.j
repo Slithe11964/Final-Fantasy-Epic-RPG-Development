@@ -1,4 +1,9 @@
 library TChocoboBreeding
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Breed_Score=null
+endglobals
+
 function Trig_Chocobo_Breed_Score_TargetIsTier3Type takes nothing returns boolean
     return(GetUnitTypeId(udg_BreedTargetChocobo)=='n02T')or(GetUnitTypeId(udg_BreedTargetChocobo)=='n035')or(GetUnitTypeId(udg_BreedTargetChocobo)=='n036') // 'n02T': unit "Chocobo"; 'n035': unit "Chocobo"; 'n036': unit "Chocobo"
 endfunction
@@ -115,6 +120,16 @@ function Trig_Chocobo_Breed_Score_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_Breeding takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Breed_Score takes nothing returns nothing
+    set gg_trg_Chocobo_Breed_Score=CreateTrigger()
+    call DisableTrigger(gg_trg_Chocobo_Breed_Score)
+    call TriggerAddAction(gg_trg_Chocobo_Breed_Score,function Trig_Chocobo_Breed_Score_Actions)
 endfunction
 
 endlibrary

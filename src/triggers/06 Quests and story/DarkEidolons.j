@@ -169,7 +169,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkEidolons takes nothing returns nothing
-    call Register_DarkEidolons_Init()
+    call Register_DarkEidolons_Init() // run by MapBootstrap
     call Register_DarkEidolons_SpawnGhosts()
     call Register_DarkEidolons_Unlock()
 endfunction

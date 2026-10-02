@@ -30,7 +30,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GreedIsGood takes nothing returns nothing
-    call Register_GreedIsGood_DropStone()
+    call Register_GreedIsGood_DropStone() // starts off; enabled by Quest_GreedIsGood
 endfunction
 
 endlibrary

@@ -114,9 +114,9 @@ def main():
     calls = Counter(re.findall(r'\bcall\s+(\w+)\s*\(', code))
     ex = Counter(execs)
     for n in sorted(defined):
-        if n.startswith('RegisterTriggers_') or n.startswith('RegisterR11_'):
+        if n.startswith('RegisterTriggers_') or n.startswith('RegisterR11_') or n.startswith('RegisterLegacy_'):
             c = ex[n] + calls[n]
-            if c != 1:
+            if c != 1 and not (c == 0 and n.startswith('RegisterLegacy_')):
                 errs.append('%s is started %d times (expected once)' % (n, c))
         elif n.startswith('Register_'):
             c = calls[n] + ex[n]
@@ -140,7 +140,7 @@ def main():
     for t in texts:
         src_funcs.update(functions(t))
     rt_funcs = functions(runtime_lf)
-    pat = re.compile(r'^(main_old|Startup_\w+|RegisterTriggers_\w+|Register_\w+|RegisterR11_\w+)$')
+    pat = re.compile(r'^(main_old|Startup_\w+|RegisterTriggers_\w+|Register_\w+|RegisterR11_\w+|RegisterLegacy_\w+)$')
     errs = []
     for n, body in src_funcs.items():
         if pat.match(n):

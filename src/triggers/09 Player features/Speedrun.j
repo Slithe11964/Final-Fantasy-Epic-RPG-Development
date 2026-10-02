@@ -231,16 +231,16 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Speedrun_Part1 takes nothing returns nothing
-    call Register_Speedrun_Announce()
-    call Register_Speedrun_FirstCast()
+    call Register_Speedrun_Announce() // starts off; run by Speedrun, Cid
+    call Register_Speedrun_FirstCast() // starts off; enabled by Game
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Speedrun_Part2 takes nothing returns nothing
-    call Register_Speedrun_Accolade()
-    call Register_Speedrun_Record()
+    call Register_Speedrun_Accolade() // starts off; run by AlmightyShinra, Arena_Duel, Boss_BlackDevil +35 more
+    call Register_Speedrun_Record() // starts off; enabled by GameMode
 endfunction
 
 endlibrary

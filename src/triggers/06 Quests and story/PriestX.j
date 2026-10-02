@@ -184,9 +184,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_PriestX takes nothing returns nothing
-    call Register_PriestX_Appear()
-    call Register_PriestX_Talk1()
-    call Register_PriestX_Talk2()
+    call Register_PriestX_Appear() // starts off; run by GnollHunt
+    call Register_PriestX_Talk1() // starts off; enabled by PriestX; disabled by TrueIceAge
+    call Register_PriestX_Talk2() // starts off; enabled by PriestX; disabled by TrueIceAge
 endfunction
 
 endlibrary

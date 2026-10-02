@@ -111,14 +111,14 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_DeathSeeker_Part1 takes nothing returns nothing
-    call Register_DeathSeeker_Give()
+    call Register_DeathSeeker_Give() // starts off; enabled by Boss_Zalera, Epilogue
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_DeathSeeker_Part2 takes nothing returns nothing
-    call Register_DeathSeeker_TurnIn()
+    call Register_DeathSeeker_TurnIn() // starts off; enabled by TropicalEssence
 endfunction
 
 endlibrary

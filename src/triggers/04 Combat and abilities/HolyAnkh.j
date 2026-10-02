@@ -41,7 +41,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HolyAnkh takes nothing returns nothing
-    call Register_HolyAnkh_Waygate()
+    call Register_HolyAnkh_Waygate() // run by TrueIceAge
 endfunction
 
 endlibrary

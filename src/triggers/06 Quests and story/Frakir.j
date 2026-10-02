@@ -102,9 +102,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Frakir takes nothing returns nothing
-    call Register_Frakir_ShowMarker()
-    call Register_Frakir_Lore_Talk()
-    call Register_Frakir_NextMarker()
+    call Register_Frakir_ShowMarker() // starts off; run by Cid, Mid
+    call Register_Frakir_Lore_Talk() // starts off; enabled by Frakir; disabled by Frakir; destroyed by Frakir
+    call Register_Frakir_NextMarker() // starts off; run by DimensionalBoundary, Zeromus
 endfunction
 
 endlibrary

@@ -141,6 +141,7 @@ function Trig_Spell_RapidFire_End_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_RapidFire.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_RapidFire takes nothing returns nothing
     local integer setupIndex
     local trigger firstSpellTrigger

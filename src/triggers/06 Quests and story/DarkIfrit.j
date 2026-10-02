@@ -229,8 +229,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkIfrit takes nothing returns nothing
-    call Register_DarkIfrit_Appear()
-    call Register_DarkIfrit_Death()
+    call Register_DarkIfrit_Appear() // starts off; enabled by DarkEidolons
+    call Register_DarkIfrit_Death() // starts off; enabled by DarkIfrit
 endfunction
 
 endlibrary

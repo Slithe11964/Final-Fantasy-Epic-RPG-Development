@@ -175,7 +175,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Evade takes nothing returns nothing
     call Register_Evade_Counter_Cost()
-    call Register_Evade_Counter_Decay()
+    call Register_Evade_Counter_Decay() // run by Evade
     call Register_Evade_Counter_Reset_P1()
     call Register_Evade_Counter_Reset_P2()
     call Register_Evade_Counter_Reset_P3()

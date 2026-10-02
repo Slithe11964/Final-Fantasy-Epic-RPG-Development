@@ -1,4 +1,9 @@
 library TSummonTransfusion
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Summon_Transfusion_Consume=null
+endglobals
+
 function Trig_Summon_Transfusion_Consume_IsSummonUltimate takes nothing returns boolean
     return(GetSpellAbilityId()=='A0RM')or(GetSpellAbilityId()=='A0RK')or(GetSpellAbilityId()=='A13L')or(GetSpellAbilityId()=='A13U') // 'A0RM': ability "!Diamond Dust"; 'A0RK': ability "!Hellfire"; 'A13L': ability "!Living Wall"; 'A13U': ability "!Final Smash"
 endfunction
@@ -55,6 +60,17 @@ function Trig_Summon_Transfusion_Consume_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Summon_Transfusion takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part3 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Transfusion_Consume takes nothing returns nothing
+    set gg_trg_Summon_Transfusion_Consume=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Summon_Transfusion_Consume,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Summon_Transfusion_Consume,Condition(function Trig_Summon_Transfusion_Consume_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Transfusion_Consume,function Trig_Summon_Transfusion_Consume_Actions)
 endfunction
 
 endlibrary

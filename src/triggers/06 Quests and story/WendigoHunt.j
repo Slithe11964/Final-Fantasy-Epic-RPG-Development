@@ -159,9 +159,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_WendigoHunt takes nothing returns nothing
-    call Register_WendigoHunt_Start()
-    call Register_WendigoHunt_Count()
-    call Register_WendigoHunt_Reward()
+    call Register_WendigoHunt_Start() // starts off; enabled by Ward
+    call Register_WendigoHunt_Count() // starts off; enabled by WendigoHunt
+    call Register_WendigoHunt_Reward() // starts off; enabled by WendigoHunt
 endfunction
 
 endlibrary

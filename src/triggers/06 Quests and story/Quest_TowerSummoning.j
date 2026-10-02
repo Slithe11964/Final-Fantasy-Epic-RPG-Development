@@ -1,4 +1,10 @@
 library TQuestTowerSummoning requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_TowerSummoning_Start=null
+    trigger gg_trg_Quest_TowerSummoning_Complete=null
+endglobals
+
 function Trig_Quest_TowerSummoning_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n020_0129,true,true,true))
 endfunction
@@ -117,6 +123,31 @@ function Trig_Quest_TowerSummoning_Complete_Actions takes nothing returns nothin
 endfunction
 
 function InitTrig_Quest_TowerSummoning takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part10, RegisterTriggers_Quest_Part11 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_TowerSummoning_Start takes nothing returns nothing
+    set gg_trg_Quest_TowerSummoning_Start=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TowerSummoning_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_TowerSummoning_Start,Condition(function Trig_Quest_TowerSummoning_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_TowerSummoning_Start,function Trig_Quest_TowerSummoning_Start_Actions)
+endfunction
+
+function Register_Quest_TowerSummoning_Complete takes nothing returns nothing
+    set gg_trg_Quest_TowerSummoning_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_TowerSummoning_Complete)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_TowerSummoning_Complete,gg_unit_n01Z_0127,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_TowerSummoning_Complete,function Trig_Quest_TowerSummoning_Complete_Actions)
 endfunction
 
 endlibrary

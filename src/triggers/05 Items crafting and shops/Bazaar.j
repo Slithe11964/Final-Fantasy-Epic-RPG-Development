@@ -1087,7 +1087,7 @@ function RegisterTriggers_Bazaar takes nothing returns nothing
     call Register_Bazaar_Init()
     call Register_Bazaar_Recipes()
     call Register_Bazaar_PawnMaterial()
-    call Register_Bazaar_UpdateStock()
+    call Register_Bazaar_UpdateStock() // run by Quest_WolfFangs
     call Register_Bazaar_Sell_Bundle()
 endfunction
 

@@ -2552,7 +2552,7 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Loot_Part2 takes nothing returns nothing
-    call Register_Loot_Cuchulainn_EyeDrop()
+    call Register_Loot_Cuchulainn_EyeDrop() // starts off; enabled by Quest_AoMadoushi
 endfunction
 
 endlibrary

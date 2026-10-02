@@ -370,18 +370,18 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Ziegfried_Part1 takes nothing returns nothing
-    call Register_Ziegfried_Mine_Arrive()
-    call Register_Ziegfried_Advance_Order()
-    call Register_Ziegfried_Attack_Fafnir()
+    call Register_Ziegfried_Mine_Arrive() // starts off; enabled by Quest_Arcanium; run by Valigarmanda
+    call Register_Ziegfried_Advance_Order() // starts off; enabled by Quest_ImperviousBeast; disabled by Fafnir
+    call Register_Ziegfried_Attack_Fafnir() // starts off; enabled by Fafnir; disabled by Quest_ImperviousBeast
     call Register_Ziegfried_Meltdown()
-    call Register_Ziegfried_Confront()
+    call Register_Ziegfried_Confront() // starts off; enabled by Quest_DivineOrder
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Ziegfried_Part2 takes nothing returns nothing
-    call Register_Ziegfried_Arena_Leash()
+    call Register_Ziegfried_Arena_Leash() // starts off; enabled by Ziegfried; disabled by Quest_DivineOrder; destroyed by Quest_DivineOrder
 endfunction
 
 endlibrary

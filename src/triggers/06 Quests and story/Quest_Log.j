@@ -1,4 +1,9 @@
 library TQuestLog requires TTime
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Log_Update=null
+endglobals
+
 function Trig_Quest_Log_Update_Actions takes nothing returns nothing
     local string l_elapsed=Time_ElapsedString()
     // (udg_Difficulty) plus (6).
@@ -12,6 +17,16 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Quest_Log takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part1 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Log_Update takes nothing returns nothing
+    set gg_trg_Quest_Log_Update=CreateTrigger()
+    call TriggerRegisterTimerEvent(gg_trg_Quest_Log_Update,4.,true)
+    call TriggerAddAction(gg_trg_Quest_Log_Update,function Trig_Quest_Log_Update_Actions)
 endfunction
 
 endlibrary

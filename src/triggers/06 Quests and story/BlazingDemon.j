@@ -203,9 +203,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_BlazingDemon takes nothing returns nothing
-    call Register_BlazingDemon_Hide()
-    call Register_BlazingDemon_Appear()
-    call Register_BlazingDemon_FullHeat()
+    call Register_BlazingDemon_Hide() // run by MapBootstrap
+    call Register_BlazingDemon_Appear() // starts off; run by DarkIfrit, DarkPhoenix
+    call Register_BlazingDemon_FullHeat() // starts off; enabled by Quest_BlazingDemon; destroyed by Quest_BlazingDemon
 endfunction
 
 endlibrary

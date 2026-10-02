@@ -1,4 +1,9 @@
 library TQuestPhantomDiary requires TCam, TCine, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_PhantomDiary_ShowAlberich=null
+endglobals
+
 function Trig_Quest_PhantomDiary_ShowAlberich_Conditions takes nothing returns boolean
     return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BR'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_h037_0257)==false)and(udg_InCinematicMode==false))!=null // 'I0BR': item "Phantom Diary Page 3"
 endfunction
@@ -35,6 +40,18 @@ function Trig_Quest_PhantomDiary_ShowAlberich_Actions takes nothing returns noth
 endfunction
 
 function InitTrig_Quest_PhantomDiary takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part12 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_PhantomDiary_ShowAlberich takes nothing returns nothing
+    set gg_trg_Quest_PhantomDiary_ShowAlberich=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_PhantomDiary_ShowAlberich)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_PhantomDiary_ShowAlberich,300.,gg_unit_h037_0257)
+    call TriggerAddCondition(gg_trg_Quest_PhantomDiary_ShowAlberich,Condition(function Trig_Quest_PhantomDiary_ShowAlberich_Conditions))
+    call TriggerAddAction(gg_trg_Quest_PhantomDiary_ShowAlberich,function Trig_Quest_PhantomDiary_ShowAlberich_Actions)
 endfunction
 
 endlibrary

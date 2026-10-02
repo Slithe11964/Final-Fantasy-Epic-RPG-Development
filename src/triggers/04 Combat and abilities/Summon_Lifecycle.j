@@ -1,4 +1,10 @@
 library TSummonLifecycle
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Summon_Detect=null
+    trigger gg_trg_Summon_Death_Cleanup=null
+endglobals
+
 function Trig_Summon_Detect_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A009',GetTriggerUnit())>0)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)) // 'A009': ability "Summon Auto-Powerup"
 endfunction
@@ -99,6 +105,24 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Summon_Lifecycle takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part1, RegisterTriggers_Summon_Part3 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Detect takes nothing returns nothing
+    set gg_trg_Summon_Detect=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Summon_Detect,GetPlayableMapRect())
+    call TriggerAddCondition(gg_trg_Summon_Detect,Condition(function Trig_Summon_Detect_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Detect,function Trig_Summon_Detect_Actions)
+endfunction
+
+function Register_Summon_Death_Cleanup takes nothing returns nothing
+    set gg_trg_Summon_Death_Cleanup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Summon_Death_Cleanup,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Summon_Death_Cleanup,Condition(function Trig_Summon_Death_Cleanup_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Death_Cleanup,function Trig_Summon_Death_Cleanup_Actions)
 endfunction
 
 endlibrary

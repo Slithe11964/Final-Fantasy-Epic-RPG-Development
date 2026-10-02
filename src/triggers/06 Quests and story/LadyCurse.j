@@ -75,8 +75,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_LadyCurse takes nothing returns nothing
-    call Register_LadyCurse_ShowMarker()
-    call Register_LadyCurse_ReturnBelongings()
+    call Register_LadyCurse_ShowMarker() // starts off; run by QuestCount
+    call Register_LadyCurse_ReturnBelongings() // starts off; enabled by Belongings
 endfunction
 
 endlibrary

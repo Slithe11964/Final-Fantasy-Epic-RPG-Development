@@ -76,14 +76,14 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Makenroh_Part1 takes nothing returns nothing
-    call Register_Makenroh_Greet()
+    call Register_Makenroh_Greet() // starts off; enabled by Cartographer
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Makenroh_Part2 takes nothing returns nothing
-    call Register_Makenroh_ShowTalkIcon()
+    call Register_Makenroh_ShowTalkIcon() // starts off; enabled by Makenroh
 endfunction
 
 endlibrary

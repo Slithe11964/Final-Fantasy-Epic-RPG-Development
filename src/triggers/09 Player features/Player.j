@@ -229,7 +229,7 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Player_Part1 takes nothing returns nothing
-    call Register_Player_Init()
+    call Register_Player_Init() // run by Init
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from

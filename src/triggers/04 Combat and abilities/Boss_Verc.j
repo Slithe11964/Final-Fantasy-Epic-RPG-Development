@@ -162,6 +162,7 @@ function Trig_Boss_Verc_WickedWhirl_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Boss_Verc_WickedWhirl.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Boss_Verc_WickedWhirl takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

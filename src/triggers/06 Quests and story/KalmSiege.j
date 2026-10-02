@@ -400,11 +400,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_KalmSiege takes nothing returns nothing
-    call Register_KalmSiege_AITick()
-    call Register_KalmSiege_LeaderRetreat()
-    call Register_KalmSiege_FailRespawn()
-    call Register_KalmSiege_DemonRecover()
-    call Register_KalmSiege_Init()
+    call Register_KalmSiege_AITick() // starts off; enabled by KalmSiege1, KalmSiege2, KalmSiege3; disabled by KalmSiege1, KalmSiege2, KalmSiege3
+    call Register_KalmSiege_LeaderRetreat() // starts off; enabled by KalmSiege1, KalmSiege2, KalmSiege3; disabled by KalmSiege1, KalmSiege2, KalmSiege3
+    call Register_KalmSiege_FailRespawn() // starts off; enabled by KalmSiege1, KalmSiege2, KalmSiege3
+    call Register_KalmSiege_DemonRecover() // starts off; enabled by KalmSiege1, KalmSiege2, KalmSiege3
+    call Register_KalmSiege_Init() // run by MapBootstrap
 endfunction
 
 endlibrary

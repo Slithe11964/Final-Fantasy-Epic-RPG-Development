@@ -1,4 +1,13 @@
 library TQuestShimmerweed requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Shimmerweed_Offer=null
+    trigger gg_trg_Quest_Shimmerweed_Start=null
+    trigger gg_trg_Quest_Shimmerweed_Ping=null
+    trigger gg_trg_Quest_Shimmerweed_Pickup=null
+    trigger gg_trg_Quest_Shimmerweed_Deliver=null
+endglobals
+
 function Trig_Quest_Shimmerweed_Offer_Actions takes nothing returns nothing
     set udg_SpecialEffect[1]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n008_0050,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Shimmerweed_Start)
@@ -105,6 +114,55 @@ function Trig_Quest_Shimmerweed_Deliver_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Shimmerweed takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part8, RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Shimmerweed_Offer takes nothing returns nothing
+    set gg_trg_Quest_Shimmerweed_Offer=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Shimmerweed_Offer)
+    call TriggerAddAction(gg_trg_Quest_Shimmerweed_Offer,function Trig_Quest_Shimmerweed_Offer_Actions)
+endfunction
+
+function Register_Quest_Shimmerweed_Start takes nothing returns nothing
+    set gg_trg_Quest_Shimmerweed_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Shimmerweed_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Shimmerweed_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Shimmerweed_Start,Condition(function Trig_Quest_Shimmerweed_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Shimmerweed_Start,function Trig_Quest_Shimmerweed_Start_Actions)
+endfunction
+
+function Register_Quest_Shimmerweed_Ping takes nothing returns nothing
+    set gg_trg_Quest_Shimmerweed_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Shimmerweed_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_Shimmerweed_Ping,15.)
+    call TriggerAddCondition(gg_trg_Quest_Shimmerweed_Ping,Condition(function Trig_Quest_Shimmerweed_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Shimmerweed_Ping,function Trig_Quest_Shimmerweed_Ping_Actions)
+endfunction
+
+function Register_Quest_Shimmerweed_Pickup takes nothing returns nothing
+    set gg_trg_Quest_Shimmerweed_Pickup=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Shimmerweed_Pickup)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Shimmerweed_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_Shimmerweed_Pickup,Condition(function Trig_Quest_Shimmerweed_Pickup_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Shimmerweed_Pickup,function Trig_Quest_Shimmerweed_Pickup_Actions)
+endfunction
+
+function Register_Quest_Shimmerweed_Deliver takes nothing returns nothing
+    set gg_trg_Quest_Shimmerweed_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Shimmerweed_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Shimmerweed_Deliver,450.,gg_unit_n008_0050)
+    call TriggerAddCondition(gg_trg_Quest_Shimmerweed_Deliver,Condition(function Trig_Quest_Shimmerweed_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Shimmerweed_Deliver,function Trig_Quest_Shimmerweed_Deliver_Actions)
 endfunction
 
 endlibrary

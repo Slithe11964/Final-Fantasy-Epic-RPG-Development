@@ -172,4 +172,15 @@ endfunction
 function InitTrig_Arena_Conquest takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part3 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Conquest takes nothing returns nothing
+    set gg_trg_Arena_Conquest=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_Conquest,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Arena_Conquest,Condition(function Trig_Arena_Conquest_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Conquest,function Trig_Arena_Conquest_Actions)
+endfunction
+
 endlibrary

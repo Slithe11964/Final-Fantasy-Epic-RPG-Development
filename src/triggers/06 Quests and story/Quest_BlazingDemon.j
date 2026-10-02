@@ -1,4 +1,12 @@
 library TQuestBlazingDemon requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_BlazingDemon_Start=null
+    trigger gg_trg_Quest_BlazingDemon_EndWeak=null
+    trigger gg_trg_Quest_BlazingDemon_End=null
+    trigger gg_trg_Quest_BlazingDemon_Escape=null
+endglobals
+
 function Trig_Quest_BlazingDemon_Start_Cond_LowDifficulty takes nothing returns boolean
     return(udg_Difficulty<=3)
 endfunction
@@ -190,6 +198,37 @@ function Trig_Quest_BlazingDemon_Escape_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_BlazingDemon takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15, RegisterTriggers_Quest_Part16 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_BlazingDemon_Start takes nothing returns nothing
+    set gg_trg_Quest_BlazingDemon_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_BlazingDemon_Start)
+    call TriggerAddAction(gg_trg_Quest_BlazingDemon_Start,function Trig_Quest_BlazingDemon_Start_Actions)
+endfunction
+
+function Register_Quest_BlazingDemon_EndWeak takes nothing returns nothing
+    set gg_trg_Quest_BlazingDemon_EndWeak=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_BlazingDemon_EndWeak)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_BlazingDemon_EndWeak,gg_unit_U00G_0220,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_BlazingDemon_EndWeak,function Trig_Quest_BlazingDemon_EndWeak_Actions)
+endfunction
+
+function Register_Quest_BlazingDemon_End takes nothing returns nothing
+    set gg_trg_Quest_BlazingDemon_End=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_BlazingDemon_End)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_BlazingDemon_End,gg_unit_U00G_0220,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_BlazingDemon_End,function Trig_Quest_BlazingDemon_End_Actions)
+endfunction
+
+function Register_Quest_BlazingDemon_Escape takes nothing returns nothing
+    set gg_trg_Quest_BlazingDemon_Escape=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_BlazingDemon_Escape)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_BlazingDemon_Escape,gg_unit_U00G_0220,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_BlazingDemon_Escape,function Trig_Quest_BlazingDemon_Escape_Actions)
 endfunction
 
 endlibrary

@@ -33,8 +33,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Statue takes nothing returns nothing
-    call Register_Statue_Keeper_Anim()
-    call Register_Statue_Guardian_Anim()
+    call Register_Statue_Keeper_Anim() // run by MapBootstrap
+    call Register_Statue_Guardian_Anim() // run by MapBootstrap
 endfunction
 
 endlibrary

@@ -1,4 +1,9 @@
 library TQuestNorthernGod requires TCam, TCine, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_NorthernGod_Judgment=null
+endglobals
+
 function Trig_Quest_NorthernGod_Judgment_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h037_0257,true,true,true))
 endfunction
@@ -48,6 +53,25 @@ function Trig_Quest_NorthernGod_Judgment_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_NorthernGod takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part13 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_NorthernGod_Judgment takes nothing returns nothing
+    set gg_trg_Quest_NorthernGod_Judgment=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NorthernGod_Judgment)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NorthernGod_Judgment,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_NorthernGod_Judgment,Condition(function Trig_Quest_NorthernGod_Judgment_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NorthernGod_Judgment,function Trig_Quest_NorthernGod_Judgment_Actions)
 endfunction
 
 endlibrary

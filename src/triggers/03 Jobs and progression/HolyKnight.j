@@ -29,7 +29,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HolyKnight takes nothing returns nothing
-    call Register_HolyKnight_Setup()
+    call Register_HolyKnight_Setup() // run by MapBootstrap
 endfunction
 
 endlibrary

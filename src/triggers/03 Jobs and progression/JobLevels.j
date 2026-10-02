@@ -128,7 +128,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_JobLevels takes nothing returns nothing
     call Register_JobLevels_Update()
-    call Register_JobLevels_Init()
+    call Register_JobLevels_Init() // starts off; enabled by Title
 endfunction
 
 endlibrary

@@ -347,13 +347,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Monstrum takes nothing returns nothing
-    call Register_Monstrum_Ambush_Arm()
-    call Register_Monstrum_Tentacle_Ambush()
-    call Register_Monstrum_Summon()
-    call Register_Monstrum_Ambush_Rearm()
-    call Register_Monstrum_Phase_Check()
+    call Register_Monstrum_Ambush_Arm() // starts off; enabled by Ultros
+    call Register_Monstrum_Tentacle_Ambush() // starts off; enabled by Monstrum
+    call Register_Monstrum_Summon() // starts off; enabled by Monstrum; disabled by Monstrum
+    call Register_Monstrum_Ambush_Rearm() // starts off; enabled by Monstrum; disabled by Quest_Monstrum; destroyed by Quest_Monstrum
+    call Register_Monstrum_Phase_Check() // starts off; enabled by Monstrum; disabled by Quest_Monstrum; destroyed by Quest_Monstrum
     call Register_Monstrum_DepthCharge()
-    call Register_Monstrum_Tentacle_Cleanup()
+    call Register_Monstrum_Tentacle_Cleanup() // starts off; enabled by Monstrum; disabled by Monstrum
 endfunction
 
 endlibrary

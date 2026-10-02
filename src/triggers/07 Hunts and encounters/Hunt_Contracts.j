@@ -1,5 +1,8 @@
 library THuntContracts requires TForce, TReward, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hunt_Accept=null
+    trigger gg_trg_Hunt_Complete=null
     // Variables only this module uses (MapBootstrap sets some starting values).
     sound gg_snd_ArrangedTeamInvitation=null
 endglobals
@@ -135,6 +138,22 @@ function Trig_Hunt_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Hunt_Contracts takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hunt (module Hunt),
+// which keeps the original registration order.
+
+function Register_Hunt_Accept takes nothing returns nothing
+    set gg_trg_Hunt_Accept=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Hunt_Accept,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Hunt_Accept,Condition(function Trig_Hunt_Accept_Conditions))
+    call TriggerAddAction(gg_trg_Hunt_Accept,function Trig_Hunt_Accept_Actions)
+endfunction
+
+function Register_Hunt_Complete takes nothing returns nothing
+    set gg_trg_Hunt_Complete=CreateTrigger()
+    call TriggerAddAction(gg_trg_Hunt_Complete,function Trig_Hunt_Complete_Actions)
 endfunction
 
 endlibrary

@@ -332,8 +332,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Zeromus takes nothing returns nothing
-    call Register_Zeromus_Encounter()
-    call Register_Zeromus_Death()
+    call Register_Zeromus_Encounter() // starts off; enabled by DimensionalBoundary
+    call Register_Zeromus_Death() // starts off; enabled by Zeromus
 endfunction
 
 endlibrary

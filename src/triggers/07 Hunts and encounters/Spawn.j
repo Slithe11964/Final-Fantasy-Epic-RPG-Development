@@ -896,15 +896,15 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Spawn_Part1 takes nothing returns nothing
-    call Register_Spawn_Pools_Init()
+    call Register_Spawn_Pools_Init() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Spawn_Part2 takes nothing returns nothing
-    call Register_Spawn_Gafgarion()
-    call Register_Spawn_KalmDefenders()
+    call Register_Spawn_Gafgarion() // starts off; run by Boss_Belias, Boss_Hashmalum, Cine +1 more
+    call Register_Spawn_KalmDefenders() // starts off; run by KalmSiege1, KalmSiege2, KalmSiege3
 endfunction
 
 endlibrary

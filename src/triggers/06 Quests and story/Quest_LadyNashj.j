@@ -1,5 +1,11 @@
 library TQuestLadyNashj requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_LadyNashj_Init=null
+    trigger gg_trg_Quest_LadyNashj_Available=null
+    trigger gg_trg_Quest_LadyNashj_Start=null
+    trigger gg_trg_Quest_LadyNashj_Slain=null
+    trigger gg_trg_Quest_LadyNashj_Complete=null
     // Variables only this module uses.
     boolean udg_NashjDead=false
 endglobals
@@ -101,6 +107,51 @@ function Trig_Quest_LadyNashj_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_LadyNashj takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_LadyNashj_Init takes nothing returns nothing
+    set gg_trg_Quest_LadyNashj_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Quest_LadyNashj_Init,function Trig_Quest_LadyNashj_Init_Actions)
+endfunction
+
+function Register_Quest_LadyNashj_Available takes nothing returns nothing
+    set gg_trg_Quest_LadyNashj_Available=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LadyNashj_Available)
+    call TriggerAddAction(gg_trg_Quest_LadyNashj_Available,function Trig_Quest_LadyNashj_Available_Actions)
+endfunction
+
+function Register_Quest_LadyNashj_Start takes nothing returns nothing
+    set gg_trg_Quest_LadyNashj_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LadyNashj_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LadyNashj_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_LadyNashj_Start,Condition(function Trig_Quest_LadyNashj_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LadyNashj_Start,function Trig_Quest_LadyNashj_Start_Actions)
+endfunction
+
+function Register_Quest_LadyNashj_Slain takes nothing returns nothing
+    set gg_trg_Quest_LadyNashj_Slain=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LadyNashj_Slain)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_LadyNashj_Slain,gg_unit_Hvsh_0145,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_LadyNashj_Slain,function Trig_Quest_LadyNashj_Slain_Actions)
+endfunction
+
+function Register_Quest_LadyNashj_Complete takes nothing returns nothing
+    set gg_trg_Quest_LadyNashj_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LadyNashj_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_LadyNashj_Complete,450.,gg_unit_eshd_0143)
+    call TriggerAddCondition(gg_trg_Quest_LadyNashj_Complete,Condition(function Trig_Quest_LadyNashj_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LadyNashj_Complete,function Trig_Quest_LadyNashj_Complete_Actions)
 endfunction
 
 endlibrary

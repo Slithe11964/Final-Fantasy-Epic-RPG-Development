@@ -267,11 +267,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Dana takes nothing returns nothing
-    call Register_Dana_Prepare()
-    call Register_Dana_Talk1()
-    call Register_Dana_Talk2_Enable()
-    call Register_Dana_Receive_Eye()
-    call Register_Dana_Death()
+    call Register_Dana_Prepare() // starts off; run by Quest_LadyNashj
+    call Register_Dana_Talk1() // starts off; enabled by Dana
+    call Register_Dana_Talk2_Enable() // starts off; enabled by Dana
+    call Register_Dana_Receive_Eye() // starts off; enabled by Quest_Illusions; disabled by TrueIceAge
+    call Register_Dana_Death() // starts off; enabled by Dana; disabled by TrueIceAge
 endfunction
 
 endlibrary

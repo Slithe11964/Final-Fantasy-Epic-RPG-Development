@@ -909,20 +909,20 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_MysteriousCurse takes nothing returns nothing
-    call Register_MysteriousCurse_Init()
+    call Register_MysteriousCurse_Init() // run by MapBootstrap
     call Register_MysteriousCurse_Link()
-    call Register_MysteriousCurse_Adria()
-    call Register_MysteriousCurse_Confront()
-    call Register_MysteriousCurse_Witness()
-    call Register_MysteriousCurse_AttackLink()
-    call Register_MysteriousCurse_AttackAdria()
+    call Register_MysteriousCurse_Adria() // starts off; enabled by MysteriousCurse
+    call Register_MysteriousCurse_Confront() // starts off; enabled by MysteriousCurse
+    call Register_MysteriousCurse_Witness() // starts off; enabled by Epilogue, Quest_NightElves, Talk
+    call Register_MysteriousCurse_AttackLink() // starts off; enabled by MysteriousCurse; disabled by MysteriousCurse; run by MysteriousCurse
+    call Register_MysteriousCurse_AttackAdria() // starts off; enabled by MysteriousCurse; disabled by MysteriousCurse; run by MysteriousCurse
     call Register_MysteriousCurse_LinkDies()
     call Register_MysteriousCurse_AdriaWitchDead()
     call Register_MysteriousCurse_BabaYagaAppears()
     call Register_MysteriousCurse_AdriaRestored()
-    call Register_MysteriousCurse_AdriaReturn()
+    call Register_MysteriousCurse_AdriaReturn() // starts off; enabled by MysteriousCurse
     call Register_MysteriousCurse_LinkRestored()
-    call Register_MysteriousCurse_LinkReturn()
+    call Register_MysteriousCurse_LinkReturn() // starts off; enabled by MysteriousCurse
     call Register_MysteriousCurse_AdriaDies()
     call Register_MysteriousCurse_BabaYagaDead()
 endfunction

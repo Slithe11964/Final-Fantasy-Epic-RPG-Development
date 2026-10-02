@@ -1,5 +1,7 @@
 library TSpellTables
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_Tables_Init=null
     // Variables only this module uses.
     hashtable udg_UnusedHash=null
 endglobals
@@ -129,6 +131,16 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Spell_Tables takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part1 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_Tables_Init takes nothing returns nothing
+    set gg_trg_Spell_Tables_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Spell_Tables_Init,2.)
+    call TriggerAddAction(gg_trg_Spell_Tables_Init,function Trig_Spell_Tables_Init_Actions)
 endfunction
 
 endlibrary

@@ -64,7 +64,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AttackSpeed takes nothing returns nothing
-    call Register_AttackSpeed_Update()
+    call Register_AttackSpeed_Update() // starts off; run by AtkSpd, Job, Passive
 endfunction
 
 endlibrary

@@ -1,4 +1,13 @@
 library TArenaCups requires TForce, TLoc, TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Unlock=null
+    trigger gg_trg_Arena_Cup_Won=null
+    trigger gg_trg_Arena_UnlockCups=null
+    trigger gg_trg_Arena_Omega_Absorbs=null
+    trigger gg_trg_Arena_Shinryu_Absorbs=null
+endglobals
+
 function Trig_Arena_Unlock_CreateBpTag takes nothing returns nothing
     set udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())]=CreateTextTagUnitBJ("Current BP: |cffffcc000|r",gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
@@ -354,6 +363,43 @@ function Trig_Arena_Shinryu_Absorbs_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Cups takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2, RegisterTriggers_Arena_Part4 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Unlock takes nothing returns nothing
+    set gg_trg_Arena_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Unlock)
+    call TriggerAddAction(gg_trg_Arena_Unlock,function Trig_Arena_Unlock_Actions)
+endfunction
+
+function Register_Arena_Cup_Won takes nothing returns nothing
+    set gg_trg_Arena_Cup_Won=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Cup_Won)
+    call TriggerAddAction(gg_trg_Arena_Cup_Won,function Trig_Arena_Cup_Won_Actions)
+endfunction
+
+function Register_Arena_UnlockCups takes nothing returns nothing
+    set gg_trg_Arena_UnlockCups=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_UnlockCups)
+    call TriggerAddCondition(gg_trg_Arena_UnlockCups,Condition(function Trig_Arena_UnlockCups_Conditions))
+    call TriggerAddAction(gg_trg_Arena_UnlockCups,function Trig_Arena_UnlockCups_Actions)
+endfunction
+
+function Register_Arena_Omega_Absorbs takes nothing returns nothing
+    set gg_trg_Arena_Omega_Absorbs=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Omega_Absorbs)
+    call TriggerAddCondition(gg_trg_Arena_Omega_Absorbs,Condition(function Trig_Arena_Omega_Absorbs_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Omega_Absorbs,function Trig_Arena_Omega_Absorbs_Actions)
+endfunction
+
+function Register_Arena_Shinryu_Absorbs takes nothing returns nothing
+    set gg_trg_Arena_Shinryu_Absorbs=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Shinryu_Absorbs)
+    call TriggerAddCondition(gg_trg_Arena_Shinryu_Absorbs,Condition(function Trig_Arena_Shinryu_Absorbs_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Shinryu_Absorbs,function Trig_Arena_Shinryu_Absorbs_Actions)
 endfunction
 
 endlibrary

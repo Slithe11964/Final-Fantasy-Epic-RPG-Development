@@ -187,6 +187,7 @@ function Trig_Spell_LiquidSteel_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_LiquidSteel.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_LiquidSteel takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

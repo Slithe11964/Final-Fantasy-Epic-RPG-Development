@@ -1,4 +1,10 @@
 library TBossZalera requires TCam, TCine, TGroup, TLink, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Zalera_Intro=null
+    trigger gg_trg_Boss_Zalera_Death=null
+endglobals
+
 function Trig_Boss_Zalera_Intro_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null
 endfunction
@@ -258,6 +264,27 @@ function Trig_Boss_Zalera_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Zalera takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part1 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Zalera_Intro takes nothing returns nothing
+    set gg_trg_Boss_Zalera_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Zalera_Intro)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Zalera_Intro,200.,gg_unit_U000_0248)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Zalera_Intro,500.,gg_unit_U000_0248)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Zalera_Intro,700.,gg_unit_U000_0248)
+    call TriggerAddCondition(gg_trg_Boss_Zalera_Intro,Condition(function Trig_Boss_Zalera_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Zalera_Intro,function Trig_Boss_Zalera_Intro_Actions)
+endfunction
+
+function Register_Boss_Zalera_Death takes nothing returns nothing
+    set gg_trg_Boss_Zalera_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Zalera_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Zalera_Death,gg_unit_U000_0248,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Zalera_Death,function Trig_Boss_Zalera_Death_Actions)
 endfunction
 
 endlibrary

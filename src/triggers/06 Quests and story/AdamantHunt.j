@@ -162,8 +162,8 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AdamantHunt takes nothing returns nothing
     call Register_AdamantHunt_Start()
-    call Register_AdamantHunt_Count()
-    call Register_AdamantHunt_Reward()
+    call Register_AdamantHunt_Count() // starts off; enabled by AdamantHunt
+    call Register_AdamantHunt_Reward() // starts off; enabled by AdamantHunt
 endfunction
 
 endlibrary

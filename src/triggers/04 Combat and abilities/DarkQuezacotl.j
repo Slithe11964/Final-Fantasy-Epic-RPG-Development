@@ -82,8 +82,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkQuezacotl takes nothing returns nothing
-    call Register_DarkQuezacotl_Appear()
-    call Register_DarkQuezacotl_Death()
+    call Register_DarkQuezacotl_Appear() // starts off; enabled by DarkEidolons
+    call Register_DarkQuezacotl_Death() // starts off; enabled by DarkQuezacotl
 endfunction
 
 endlibrary

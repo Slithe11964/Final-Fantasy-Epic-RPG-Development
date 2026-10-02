@@ -105,8 +105,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Mephorash takes nothing returns nothing
-    call Register_Mephorash_Split()
-    call Register_Mephorash_Clone_Death()
+    call Register_Mephorash_Split() // used by Hunt_Encounters
+    call Register_Mephorash_Clone_Death() // used by Mephorash
 endfunction
 
 endlibrary

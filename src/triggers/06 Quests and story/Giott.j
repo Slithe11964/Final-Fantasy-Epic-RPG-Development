@@ -144,8 +144,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Giott takes nothing returns nothing
-    call Register_Giott_FirstTalk()
-    call Register_Giott_Letter_Deliver()
+    call Register_Giott_FirstTalk() // disabled by Epilogue, Mid
+    call Register_Giott_Letter_Deliver() // starts off; enabled by Epilogue, Mid
 endfunction
 
 endlibrary

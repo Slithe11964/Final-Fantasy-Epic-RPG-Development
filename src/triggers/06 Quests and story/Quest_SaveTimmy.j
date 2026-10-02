@@ -1,5 +1,20 @@
 library TQuestSaveTimmy requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_SaveTimmy_Init=null
+    trigger gg_trg_Quest_SaveTimmy_Start=null
+    trigger gg_trg_Quest_SaveTimmy_Ping=null
+    trigger gg_trg_Quest_SaveTimmy_GateRefused=null
+    trigger gg_trg_Quest_SaveTimmy_GateAsk=null
+    trigger gg_trg_Quest_SaveTimmy_GateOpen=null
+    trigger gg_trg_Quest_SaveTimmy_CampFlank=null
+    trigger gg_trg_Quest_SaveTimmy_CampAlerted=null
+    trigger gg_trg_Quest_SaveTimmy_CampCleared=null
+    trigger gg_trg_Quest_SaveTimmy_Freed=null
+    trigger gg_trg_Quest_SaveTimmy_TimmyReturns=null
+    trigger gg_trg_Quest_SaveTimmy_RescueFirst=null
+    trigger gg_trg_Quest_SaveTimmy_Complete=null
+    trigger gg_trg_Quest_SaveTimmy_CompleteAlt=null
     // Variables only this module uses (MapBootstrap sets some starting values).
     boolean udg_FarmGateOpen=false
     boolean udg_GateGuardTalked=false
@@ -454,6 +469,127 @@ function Trig_Quest_SaveTimmy_CompleteAlt_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_SaveTimmy takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_SaveTimmy_Init takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_Init,function Trig_Quest_SaveTimmy_Init_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_Start takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_Start=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_Start,Condition(function Trig_Quest_SaveTimmy_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_Start,function Trig_Quest_SaveTimmy_Start_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_Ping takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_SaveTimmy_Ping,15.)
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_Ping,function Trig_Quest_SaveTimmy_Ping_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_GateRefused takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_GateRefused=CreateTrigger()
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateRefused,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_GateRefused,Condition(function Trig_Quest_SaveTimmy_GateRefused_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_GateRefused,function Trig_Quest_SaveTimmy_GateRefused_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_GateAsk takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_GateAsk=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_GateAsk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SaveTimmy_GateAsk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_GateAsk,Condition(function Trig_Quest_SaveTimmy_GateAsk_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_GateAsk,function Trig_Quest_SaveTimmy_GateAsk_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_GateOpen takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_GateOpen=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_GateOpen)
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_GateOpen,function Trig_Quest_SaveTimmy_GateOpen_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_CampFlank takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_CampFlank=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Quest_SaveTimmy_CampFlank,gg_rct_487)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_CampFlank,Condition(function Trig_Quest_SaveTimmy_CampFlank_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_CampFlank,function Trig_Quest_SaveTimmy_CampFlank_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_CampAlerted takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_CampAlerted=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_SaveTimmy_CampAlerted,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_CampAlerted,Condition(function Trig_Quest_SaveTimmy_CampAlerted_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_CampAlerted,function Trig_Quest_SaveTimmy_CampAlerted_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_CampCleared takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_CampCleared=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_SaveTimmy_CampCleared,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_CampCleared,Condition(function Trig_Quest_SaveTimmy_CampCleared_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_CampCleared,function Trig_Quest_SaveTimmy_CampCleared_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_Freed takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_Freed=CreateTrigger()
+    call TriggerRegisterDeathEvent(gg_trg_Quest_SaveTimmy_Freed,gg_dest_LOcg_0024)
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_Freed,function Trig_Quest_SaveTimmy_Freed_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_TimmyReturns takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_TimmyReturns=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_TimmyReturns)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_SaveTimmy_TimmyReturns,udg_TimmyQuestTimer)
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_TimmyReturns,function Trig_Quest_SaveTimmy_TimmyReturns_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_RescueFirst takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_RescueFirst=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_SaveTimmy_RescueFirst,udg_TimmyQuestTimer)
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_RescueFirst,function Trig_Quest_SaveTimmy_RescueFirst_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_Complete takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_SaveTimmy_Complete,450.,gg_unit_n00I_0011)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_Complete,Condition(function Trig_Quest_SaveTimmy_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_Complete,function Trig_Quest_SaveTimmy_Complete_Actions)
+endfunction
+
+function Register_Quest_SaveTimmy_CompleteAlt takes nothing returns nothing
+    set gg_trg_Quest_SaveTimmy_CompleteAlt=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SaveTimmy_CompleteAlt)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_SaveTimmy_CompleteAlt,450.,gg_unit_n00I_0011)
+    call TriggerAddCondition(gg_trg_Quest_SaveTimmy_CompleteAlt,Condition(function Trig_Quest_SaveTimmy_CompleteAlt_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SaveTimmy_CompleteAlt,function Trig_Quest_SaveTimmy_CompleteAlt_Actions)
 endfunction
 
 endlibrary

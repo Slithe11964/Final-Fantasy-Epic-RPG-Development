@@ -27,7 +27,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Tonberry takes nothing returns nothing
-    call Register_Tonberry_Gate_Open()
+    call Register_Tonberry_Gate_Open() // used by Hunt_Encounters
 endfunction
 
 endlibrary

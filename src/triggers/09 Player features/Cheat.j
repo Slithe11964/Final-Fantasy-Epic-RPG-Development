@@ -193,12 +193,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cheat takes nothing returns nothing
-    call Register_Cheat_Detect_Init()
-    call Register_Cheat_Detect_Fog()
-    call Register_Cheat_Detect_Invuln()
-    call Register_Cheat_Detect_Resources()
-    call Register_Cheat_Detect_Mana()
-    call Register_Cheat_Punish()
+    call Register_Cheat_Detect_Init() // run by Init
+    call Register_Cheat_Detect_Fog() // starts off; enabled by Cheat; destroyed by Cheat
+    call Register_Cheat_Detect_Invuln() // starts off; enabled by Cheat; destroyed by Cheat
+    call Register_Cheat_Detect_Resources() // starts off; enabled by Cheat; destroyed by Cheat
+    call Register_Cheat_Detect_Mana() // starts off; enabled by Cheat; destroyed by Cheat
+    call Register_Cheat_Punish() // starts off; run by Cheat; destroyed by Cheat
 endfunction
 
 endlibrary

@@ -294,7 +294,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Freelancer takes nothing returns nothing
-    call Register_Freelancer_Stats()
+    call Register_Freelancer_Stats() // starts off; run by Job
 endfunction
 
 endlibrary

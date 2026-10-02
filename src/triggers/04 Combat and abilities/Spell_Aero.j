@@ -38,4 +38,15 @@ endfunction
 function InitTrig_Spell_Aero takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part6 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_Aero takes nothing returns nothing
+    set gg_trg_Spell_Aero=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_Aero,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_Aero,Condition(function Trig_Spell_Aero_Conditions))
+    call TriggerAddAction(gg_trg_Spell_Aero,function Trig_Spell_Aero_Actions)
+endfunction
+
 endlibrary

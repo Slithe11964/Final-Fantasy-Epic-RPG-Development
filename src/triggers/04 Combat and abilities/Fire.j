@@ -351,11 +351,11 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Fire_Part2 takes nothing returns nothing
-    call Register_Fire_Pawn_Nectar()
-    call Register_Fire_Pawn_SpiritPotion()
-    call Register_Fire_Pawn_BloodEther()
-    call Register_Fire_Pawn_HeroDrink()
-    call Register_Fire_Reward_Megalixir()
+    call Register_Fire_Pawn_Nectar() // starts off; enabled by Elixir
+    call Register_Fire_Pawn_SpiritPotion() // starts off; enabled by Elixir
+    call Register_Fire_Pawn_BloodEther() // starts off; enabled by Elixir
+    call Register_Fire_Pawn_HeroDrink() // starts off; enabled by Elixir
+    call Register_Fire_Reward_Megalixir() // starts off; enabled by Fire
 endfunction
 
 endlibrary

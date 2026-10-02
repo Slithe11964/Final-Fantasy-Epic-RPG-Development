@@ -1,4 +1,9 @@
 library TSpellJavelinRain
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_JavelinRain_Cast=null
+endglobals
+
 function Trig_Spell_JavelinRain_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0U2') // 'A0U2': ability "Javelin Rain"
 endfunction
@@ -28,6 +33,17 @@ function Trig_Spell_JavelinRain_Cast_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Spell_JavelinRain takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part5 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_JavelinRain_Cast takes nothing returns nothing
+    set gg_trg_Spell_JavelinRain_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_JavelinRain_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_JavelinRain_Cast,Condition(function Trig_Spell_JavelinRain_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Spell_JavelinRain_Cast,function Trig_Spell_JavelinRain_Cast_Actions)
 endfunction
 
 endlibrary

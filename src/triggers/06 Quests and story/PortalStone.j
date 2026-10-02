@@ -61,8 +61,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_PortalStone takes nothing returns nothing
-    call Register_PortalStone_Ping()
-    call Register_PortalStone_PickedUp()
+    call Register_PortalStone_Ping() // starts off; enabled by GreedIsGood; disabled by Quest_GreedIsGood
+    call Register_PortalStone_PickedUp() // starts off; enabled by GreedIsGood
 endfunction
 
 endlibrary

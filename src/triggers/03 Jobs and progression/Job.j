@@ -889,7 +889,7 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Job_Part2 takes nothing returns nothing
-    call Register_Job_XP_Handicap()
+    call Register_Job_XP_Handicap() // starts off; enabled by Game; run by Exp, Game, JobLevels +2 more
 endfunction
 
 endlibrary

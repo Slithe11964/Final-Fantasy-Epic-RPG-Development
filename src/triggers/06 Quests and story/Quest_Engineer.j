@@ -1,4 +1,9 @@
 library TQuestEngineer requires TCam, TCine, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Engineer_GetAdvice=null
+endglobals
+
 function Trig_Quest_Engineer_GetAdvice_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h00R_0256,true,true,true))
 endfunction
@@ -32,6 +37,25 @@ function Trig_Quest_Engineer_GetAdvice_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Engineer takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part20 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Engineer_GetAdvice takes nothing returns nothing
+    set gg_trg_Quest_Engineer_GetAdvice=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Engineer_GetAdvice)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Engineer_GetAdvice,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Engineer_GetAdvice,Condition(function Trig_Quest_Engineer_GetAdvice_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Engineer_GetAdvice,function Trig_Quest_Engineer_GetAdvice_Actions)
 endfunction
 
 endlibrary

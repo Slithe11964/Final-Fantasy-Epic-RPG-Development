@@ -49,4 +49,15 @@ endfunction
 function InitTrig_Summon_Cyclops takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part2 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Cyclops takes nothing returns nothing
+    set gg_trg_Summon_Cyclops=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Summon_Cyclops,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Summon_Cyclops,Condition(function Trig_Summon_Cyclops_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Cyclops,function Trig_Summon_Cyclops_Actions)
+endfunction
+
 endlibrary

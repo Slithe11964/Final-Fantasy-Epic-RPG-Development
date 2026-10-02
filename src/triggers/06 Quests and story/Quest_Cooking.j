@@ -1,4 +1,10 @@
 library TQuestCooking requires TCam, TCine, TPlayerPart01, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Cooking_Start=null
+    trigger gg_trg_Quest_Cooking_Complete=null
+endglobals
+
 function Trig_Quest_Cooking_Start_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_n0KG_0263)==false)and(udg_InCinematicMode==false))!=null
 endfunction
@@ -108,6 +114,24 @@ function Trig_Quest_Cooking_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Cooking takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part19 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Cooking_Start takes nothing returns nothing
+    set gg_trg_Quest_Cooking_Start=CreateTrigger()
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Cooking_Start,450.,gg_unit_n0KG_0263)
+    call TriggerAddCondition(gg_trg_Quest_Cooking_Start,Condition(function Trig_Quest_Cooking_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Cooking_Start,function Trig_Quest_Cooking_Start_Actions)
+endfunction
+
+function Register_Quest_Cooking_Complete takes nothing returns nothing
+    set gg_trg_Quest_Cooking_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Cooking_Complete)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_Cooking_Complete,udg_ShortDelayTimer)
+    call TriggerAddAction(gg_trg_Quest_Cooking_Complete,function Trig_Quest_Cooking_Complete_Actions)
 endfunction
 
 endlibrary

@@ -35,8 +35,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Kiros takes nothing returns nothing
-    call Register_Kiros_Hide()
-    call Register_Kiros_ShowTalkIcon()
+    call Register_Kiros_Hide() // run by MapBootstrap
+    call Register_Kiros_ShowTalkIcon() // starts off; run by Quest_SaveTimmy
 endfunction
 
 endlibrary

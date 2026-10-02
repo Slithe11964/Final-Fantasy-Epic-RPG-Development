@@ -133,10 +133,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ultros takes nothing returns nothing
-    call Register_Ultros_Spawn()
-    call Register_Ultros_SummonTentacle()
-    call Register_Ultros_TentacleDeath()
-    call Register_Ultros_Death()
+    call Register_Ultros_Spawn() // starts off; run by Tentacles
+    call Register_Ultros_SummonTentacle() // starts off; enabled by Ultros; disabled by Ultros; destroyed by Ultros
+    call Register_Ultros_TentacleDeath() // starts off; enabled by Ultros; disabled by Ultros; destroyed by Ultros
+    call Register_Ultros_Death() // starts off; enabled by Ultros
 endfunction
 
 endlibrary

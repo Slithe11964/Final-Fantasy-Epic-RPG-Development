@@ -55,7 +55,7 @@ endfunction
 function RegisterTriggers_ExcaliburII takes nothing returns nothing
     call Register_ExcaliburII_HideRock()
     call Register_ExcaliburII_ShowRock()
-    call Register_ExcaliburII_Drop()
+    call Register_ExcaliburII_Drop() // starts off; enabled by Gafgarion
 endfunction
 
 endlibrary

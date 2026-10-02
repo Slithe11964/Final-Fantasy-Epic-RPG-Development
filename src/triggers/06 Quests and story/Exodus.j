@@ -217,14 +217,14 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Exodus_Part1 takes nothing returns nothing
-    call Register_Exodus_Prepare()
+    call Register_Exodus_Prepare() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Exodus_Part2 takes nothing returns nothing
-    call Register_Exodus_Reveal()
+    call Register_Exodus_Reveal() // starts off; enabled by Quest_LastRites; disabled by TrueIceAge
     call Register_Exodus_Stomp()
     call Register_Exodus_SummonTrees()
     call Register_Exodus_Cometeorite()

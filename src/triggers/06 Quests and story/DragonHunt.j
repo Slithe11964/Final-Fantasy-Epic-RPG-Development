@@ -154,9 +154,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DragonHunt takes nothing returns nothing
-    call Register_DragonHunt_Start()
-    call Register_DragonHunt_Count()
-    call Register_DragonHunt_Reward()
+    call Register_DragonHunt_Start() // starts off; enabled by Makenroh
+    call Register_DragonHunt_Count() // starts off; enabled by DragonHunt
+    call Register_DragonHunt_Reward() // starts off; enabled by DragonHunt
 endfunction
 
 endlibrary

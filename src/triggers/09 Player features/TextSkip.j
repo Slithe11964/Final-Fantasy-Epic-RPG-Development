@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_TextSkip takes nothing returns nothing
-    call Register_TextSkip_Command()
+    call Register_TextSkip_Command() // disabled by GameMode
 endfunction
 
 endlibrary

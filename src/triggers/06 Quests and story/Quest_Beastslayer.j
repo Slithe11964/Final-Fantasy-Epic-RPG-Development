@@ -1,4 +1,14 @@
 library TQuestBeastslayer requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Beastslayer_Available=null
+    trigger gg_trg_Quest_Beastslayer_Start=null
+    trigger gg_trg_Quest_Beastslayer_ArrowDropped=null
+    trigger gg_trg_Quest_Beastslayer_Ping=null
+    trigger gg_trg_Quest_Beastslayer_ArrowTaken=null
+    trigger gg_trg_Quest_Beastslayer_Complete=null
+endglobals
+
 function Trig_Quest_Beastslayer_Available_Actions takes nothing returns nothing
     set udg_SpecialEffect[29]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00D_0091,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Beastslayer_Start)
@@ -123,6 +133,61 @@ function Trig_Quest_Beastslayer_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Beastslayer takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Beastslayer_Available takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_Available=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_Available)
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_Available,function Trig_Quest_Beastslayer_Available_Actions)
+endfunction
+
+function Register_Quest_Beastslayer_Start takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Start,Condition(function Trig_Quest_Beastslayer_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_Start,function Trig_Quest_Beastslayer_Start_Actions)
+endfunction
+
+function Register_Quest_Beastslayer_ArrowDropped takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_ArrowDropped=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_ArrowDropped)
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_ArrowDropped,function Trig_Quest_Beastslayer_ArrowDropped_Actions)
+endfunction
+
+function Register_Quest_Beastslayer_Ping takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_Beastslayer_Ping,15.)
+    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Ping,Condition(function Trig_Quest_Beastslayer_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_Ping,function Trig_Quest_Beastslayer_Ping_Actions)
+endfunction
+
+function Register_Quest_Beastslayer_ArrowTaken takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_ArrowTaken=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_ArrowTaken)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Beastslayer_ArrowTaken,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_Beastslayer_ArrowTaken,Condition(function Trig_Quest_Beastslayer_ArrowTaken_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_ArrowTaken,function Trig_Quest_Beastslayer_ArrowTaken_Actions)
+endfunction
+
+function Register_Quest_Beastslayer_Complete takes nothing returns nothing
+    set gg_trg_Quest_Beastslayer_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Beastslayer_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Beastslayer_Complete,450.,gg_unit_n00D_0091)
+    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Complete,Condition(function Trig_Quest_Beastslayer_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Beastslayer_Complete,function Trig_Quest_Beastslayer_Complete_Actions)
 endfunction
 
 endlibrary

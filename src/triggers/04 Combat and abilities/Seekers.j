@@ -28,7 +28,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Seekers takes nothing returns nothing
-    call Register_Seekers_TrackEngaged()
+    call Register_Seekers_TrackEngaged() // starts off; enabled by Quest_SeekDestroy
 endfunction
 
 endlibrary

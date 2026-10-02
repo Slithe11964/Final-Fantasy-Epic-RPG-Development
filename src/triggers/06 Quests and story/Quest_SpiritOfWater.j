@@ -1,4 +1,11 @@
 library TQuestSpiritOfWater requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_SpiritOfWater_Start=null
+    trigger gg_trg_Quest_SpiritOfWater_WaterGem=null
+    trigger gg_trg_Quest_SpiritOfWater_Complete=null
+endglobals
+
 function Trig_Quest_SpiritOfWater_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_u007_0128,true,true,true))
 endfunction
@@ -126,6 +133,41 @@ function Trig_Quest_SpiritOfWater_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_SpiritOfWater takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part10 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_SpiritOfWater_Start takes nothing returns nothing
+    set gg_trg_Quest_SpiritOfWater_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SpiritOfWater_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_SpiritOfWater_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_SpiritOfWater_Start,Condition(function Trig_Quest_SpiritOfWater_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SpiritOfWater_Start,function Trig_Quest_SpiritOfWater_Start_Actions)
+endfunction
+
+function Register_Quest_SpiritOfWater_WaterGem takes nothing returns nothing
+    set gg_trg_Quest_SpiritOfWater_WaterGem=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SpiritOfWater_WaterGem)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_SpiritOfWater_WaterGem,450.,gg_unit_u007_0128)
+    call TriggerAddCondition(gg_trg_Quest_SpiritOfWater_WaterGem,Condition(function Trig_Quest_SpiritOfWater_WaterGem_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SpiritOfWater_WaterGem,function Trig_Quest_SpiritOfWater_WaterGem_Actions)
+endfunction
+
+function Register_Quest_SpiritOfWater_Complete takes nothing returns nothing
+    set gg_trg_Quest_SpiritOfWater_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_SpiritOfWater_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_SpiritOfWater_Complete,450.,gg_unit_u007_0128)
+    call TriggerAddCondition(gg_trg_Quest_SpiritOfWater_Complete,Condition(function Trig_Quest_SpiritOfWater_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_SpiritOfWater_Complete,function Trig_Quest_SpiritOfWater_Complete_Actions)
 endfunction
 
 endlibrary

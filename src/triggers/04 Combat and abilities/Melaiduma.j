@@ -28,7 +28,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Melaiduma takes nothing returns nothing
-    call Register_Melaiduma_Death()
+    call Register_Melaiduma_Death() // used by Hunt_Encounters
 endfunction
 
 endlibrary

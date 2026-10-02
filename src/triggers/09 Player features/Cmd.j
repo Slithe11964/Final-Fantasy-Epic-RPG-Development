@@ -1463,14 +1463,14 @@ endfunction
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Cmd_Part1 takes nothing returns nothing
     call Register_Cmd_Music()
-    call Register_Cmd_Load_Code()
+    call Register_Cmd_Load_Code() // disabled by Load
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Cmd_Part2 takes nothing returns nothing
-    call Register_Cmd_Load_Armory()
+    call Register_Cmd_Load_Armory() // disabled by Load
 endfunction
 
 endlibrary

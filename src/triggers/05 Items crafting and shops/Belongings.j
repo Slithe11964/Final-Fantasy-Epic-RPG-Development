@@ -59,8 +59,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Belongings takes nothing returns nothing
-    call Register_Belongings_Ping()
-    call Register_Belongings_PickedUp()
+    call Register_Belongings_Ping() // starts off; enabled by AnnoyingMonster; disabled by LadyCurse
+    call Register_Belongings_PickedUp() // starts off; enabled by AnnoyingMonster
 endfunction
 
 endlibrary

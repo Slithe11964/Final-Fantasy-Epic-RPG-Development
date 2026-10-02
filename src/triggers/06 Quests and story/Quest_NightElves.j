@@ -1,4 +1,11 @@
 library TQuestNightElves requires TCine, TMusic, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_NightElves_Start=null
+    trigger gg_trg_Quest_NightElves_Complete=null
+    trigger gg_trg_Quest_NightElves_Report=null
+endglobals
+
 function Trig_Quest_NightElves_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
 endfunction
@@ -242,6 +249,55 @@ function Trig_Quest_NightElves_Report_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_NightElves takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part2, RegisterTriggers_Quest_Part3, RegisterTriggers_Quest_Part4 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_NightElves_Start takes nothing returns nothing
+    set gg_trg_Quest_NightElves_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NightElves_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_NightElves_Start,Condition(function Trig_Quest_NightElves_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NightElves_Start,function Trig_Quest_NightElves_Start_Actions)
+endfunction
+
+function Register_Quest_NightElves_Complete takes nothing returns nothing
+    set gg_trg_Quest_NightElves_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NightElves_Complete)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Complete,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_NightElves_Complete,Condition(function Trig_Quest_NightElves_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NightElves_Complete,function Trig_Quest_NightElves_Complete_Actions)
+endfunction
+
+function Register_Quest_NightElves_Report takes nothing returns nothing
+    set gg_trg_Quest_NightElves_Report=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NightElves_Report)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NightElves_Report,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_NightElves_Report,Condition(function Trig_Quest_NightElves_Report_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NightElves_Report,function Trig_Quest_NightElves_Report_Actions)
 endfunction
 
 endlibrary

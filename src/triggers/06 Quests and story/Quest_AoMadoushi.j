@@ -1,4 +1,10 @@
 library TQuestAoMadoushi requires TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_AoMadoushi_Talk=null
+    trigger gg_trg_Quest_AoMadoushi_Report=null
+endglobals
+
 function Trig_Quest_AoMadoushi_Talk_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Othr_0106,true,true,true))
 endfunction
@@ -184,6 +190,40 @@ function Trig_Quest_AoMadoushi_Report_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_AoMadoushi takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part2 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_AoMadoushi_Talk takes nothing returns nothing
+    set gg_trg_Quest_AoMadoushi_Talk=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_AoMadoushi_Talk)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Talk,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_AoMadoushi_Talk,Condition(function Trig_Quest_AoMadoushi_Talk_Conditions))
+    call TriggerAddAction(gg_trg_Quest_AoMadoushi_Talk,function Trig_Quest_AoMadoushi_Talk_Actions)
+endfunction
+
+function Register_Quest_AoMadoushi_Report takes nothing returns nothing
+    set gg_trg_Quest_AoMadoushi_Report=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_AoMadoushi_Report)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_AoMadoushi_Report,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_AoMadoushi_Report,Condition(function Trig_Quest_AoMadoushi_Report_Conditions))
+    call TriggerAddAction(gg_trg_Quest_AoMadoushi_Report,function Trig_Quest_AoMadoushi_Report_Actions)
 endfunction
 
 endlibrary

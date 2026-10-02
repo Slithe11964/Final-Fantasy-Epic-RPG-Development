@@ -87,7 +87,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_SpiritScroll takes nothing returns nothing
     call Register_SpiritScroll_Pickup()
-    call Register_SpiritScroll_Cleanse()
+    call Register_SpiritScroll_Cleanse() // starts off; enabled by SpiritScroll
 endfunction
 
 endlibrary

@@ -466,8 +466,8 @@ endfunction
 function RegisterTriggers_Prophet takes nothing returns nothing
     call Register_Prophet_Pray_Start()
     call Register_Prophet_Pray_Stop()
-    call Register_Prophet_Pray_Tick()
-    call Register_Prophet_Pray_Heal()
+    call Register_Prophet_Pray_Tick() // starts off; enabled by Prophet; disabled by Prophet
+    call Register_Prophet_Pray_Heal() // starts off; run by Prophet
     call Register_Prophet_BlessingOfLight()
     call Register_Prophet_DivineShield()
     call Register_Prophet_Infinity()

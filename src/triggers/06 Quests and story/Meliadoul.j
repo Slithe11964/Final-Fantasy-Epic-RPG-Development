@@ -34,7 +34,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Meliadoul takes nothing returns nothing
-    call Register_Meliadoul_Hint_Timer()
+    call Register_Meliadoul_Hint_Timer() // starts off; enabled by KalmSiege3
 endfunction
 
 endlibrary

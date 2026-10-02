@@ -228,7 +228,7 @@ endfunction
 function RegisterTriggers_Oblivion takes nothing returns nothing
     call Register_Oblivion_Cast()
     call Register_Oblivion_Pulse_Start()
-    call Register_Oblivion_Pulse()
+    call Register_Oblivion_Pulse() // starts off; run by Oblivion
     call Register_Oblivion_Dummy_Death()
 endfunction
 

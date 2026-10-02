@@ -252,9 +252,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_VoiceOfForest takes nothing returns nothing
-    call Register_VoiceOfForest_Start()
-    call Register_VoiceOfForest_PingCrystal()
-    call Register_VoiceOfForest_SummonChaos()
+    call Register_VoiceOfForest_Start() // starts off; enabled by SpiritScroll
+    call Register_VoiceOfForest_PingCrystal() // starts off; enabled by VoiceOfForest; disabled by VoiceOfForest
+    call Register_VoiceOfForest_SummonChaos() // starts off; enabled by VoiceOfForest
 endfunction
 
 endlibrary

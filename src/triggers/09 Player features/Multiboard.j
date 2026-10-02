@@ -194,9 +194,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Multiboard takes nothing returns nothing
-    call Register_Multiboard_Create()
-    call Register_Multiboard_Refresh()
-    call Register_Multiboard_Title()
+    call Register_Multiboard_Create() // starts off; run by Game, Player
+    call Register_Multiboard_Refresh() // starts off; enabled by Game; run by Multiboard, Dps, Game +2 more
+    call Register_Multiboard_Title() // starts off; enabled by Speedrun; destroyed by Speedrun
 endfunction
 
 endlibrary

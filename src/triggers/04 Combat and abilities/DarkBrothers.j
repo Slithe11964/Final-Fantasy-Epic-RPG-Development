@@ -63,7 +63,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkBrothers takes nothing returns nothing
-    call Register_DarkBrothers_Appear()
+    call Register_DarkBrothers_Appear() // starts off; enabled by DarkEidolons
 endfunction
 
 endlibrary

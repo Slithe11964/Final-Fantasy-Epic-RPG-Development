@@ -1,4 +1,15 @@
 library TQuestZodiacAge requires TCam, TCine, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_ZodiacAge_Start=null
+    trigger gg_trg_Quest_ZodiacAge_GateBlocked=null
+    trigger gg_trg_Quest_ZodiacAge_AskCeleborn=null
+    trigger gg_trg_Quest_ZodiacAge_AskTalon=null
+    trigger gg_trg_Quest_ZodiacAge_GetPendant=null
+    trigger gg_trg_Quest_ZodiacAge_ShowPendant=null
+    trigger gg_trg_Quest_ZodiacAge_TalonOpensGate=null
+endglobals
+
 function Trig_Quest_ZodiacAge_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Emns_0156,true,true,true))
 endfunction
@@ -450,6 +461,100 @@ function Trig_Quest_ZodiacAge_TalonOpensGate_Actions takes nothing returns nothi
 endfunction
 
 function InitTrig_Quest_ZodiacAge takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part8 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_ZodiacAge_Start takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_Start,Condition(function Trig_Quest_ZodiacAge_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_Start,function Trig_Quest_ZodiacAge_Start_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_GateBlocked takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_GateBlocked=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Quest_ZodiacAge_GateBlocked,gg_rct_630)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_GateBlocked,Condition(function Trig_Quest_ZodiacAge_GateBlocked_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_GateBlocked,function Trig_Quest_ZodiacAge_GateBlocked_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_AskCeleborn takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_AskCeleborn=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_AskCeleborn)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskCeleborn,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_AskCeleborn,Condition(function Trig_Quest_ZodiacAge_AskCeleborn_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_AskCeleborn,function Trig_Quest_ZodiacAge_AskCeleborn_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_AskTalon takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_AskTalon=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_AskTalon)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_AskTalon,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_AskTalon,Condition(function Trig_Quest_ZodiacAge_AskTalon_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_AskTalon,function Trig_Quest_ZodiacAge_AskTalon_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_GetPendant takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_GetPendant=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_GetPendant)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_GetPendant,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_GetPendant,Condition(function Trig_Quest_ZodiacAge_GetPendant_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_GetPendant,function Trig_Quest_ZodiacAge_GetPendant_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_ShowPendant takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_ShowPendant=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_ShowPendant)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_ZodiacAge_ShowPendant,450.,gg_unit_e015_0238)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_ShowPendant,Condition(function Trig_Quest_ZodiacAge_ShowPendant_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_ShowPendant,function Trig_Quest_ZodiacAge_ShowPendant_Actions)
+endfunction
+
+function Register_Quest_ZodiacAge_TalonOpensGate takes nothing returns nothing
+    set gg_trg_Quest_ZodiacAge_TalonOpensGate=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ZodiacAge_TalonOpensGate)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ZodiacAge_TalonOpensGate,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ZodiacAge_TalonOpensGate,Condition(function Trig_Quest_ZodiacAge_TalonOpensGate_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ZodiacAge_TalonOpensGate,function Trig_Quest_ZodiacAge_TalonOpensGate_Actions)
 endfunction
 
 endlibrary

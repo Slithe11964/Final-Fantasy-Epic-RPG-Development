@@ -1,4 +1,11 @@
 library TChocoboPopulation
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Init=null
+    trigger gg_trg_Chocobo_Spawn_Periodic=null
+    trigger gg_trg_Chocobo_Respawn=null
+endglobals
+
 function Trig_Chocobo_Init_Actions takes nothing returns nothing
     call SetPlayerTechResearchedSwap('R00J',1,Player($B)) // 'R00J': upgrade "Enemy Chocobo"; $B = 11
     call SetPlayerTechResearchedSwap('R00Q',1,Player($B)) // 'R00Q': upgrade "Enemy Chocobo"; $B = 11
@@ -192,6 +199,30 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Chocobo_Population takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1, RegisterTriggers_Chocobo_Part2 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Init takes nothing returns nothing
+    set gg_trg_Chocobo_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Chocobo_Init,20.)
+    call TriggerAddAction(gg_trg_Chocobo_Init,function Trig_Chocobo_Init_Actions)
+endfunction
+
+function Register_Chocobo_Spawn_Periodic takes nothing returns nothing
+    set gg_trg_Chocobo_Spawn_Periodic=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Chocobo_Spawn_Periodic,120.)
+    call TriggerAddCondition(gg_trg_Chocobo_Spawn_Periodic,Condition(function Trig_Chocobo_Spawn_Periodic_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Spawn_Periodic,function Trig_Chocobo_Spawn_Periodic_Actions)
+endfunction
+
+function Register_Chocobo_Respawn takes nothing returns nothing
+    set gg_trg_Chocobo_Respawn=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Respawn,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Chocobo_Respawn,Condition(function Trig_Chocobo_Respawn_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Respawn,function Trig_Chocobo_Respawn_Actions)
 endfunction
 
 endlibrary

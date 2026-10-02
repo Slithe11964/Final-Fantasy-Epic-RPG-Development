@@ -94,8 +94,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Harpy takes nothing returns nothing
-    call Register_Harpy_Matriarch_CallAid()
-    call Register_Harpy_Trickster_Cleanup()
+    call Register_Harpy_Matriarch_CallAid() // starts off; enabled by Quest_FieryWings; disabled by Quest_FieryWings
+    call Register_Harpy_Trickster_Cleanup() // starts off; enabled by Quest_FieryWings; disabled by Quest_FieryWings
 endfunction
 
 endlibrary

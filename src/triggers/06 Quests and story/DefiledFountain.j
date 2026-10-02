@@ -183,11 +183,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DefiledFountain takes nothing returns nothing
-    call Register_DefiledFountain_Prepare()
-    call Register_DefiledFountain_Start()
-    call Register_DefiledFountain_Hoof()
-    call Register_DefiledFountain_PingBulb()
-    call Register_DefiledFountain_BulbPickup()
+    call Register_DefiledFountain_Prepare() // starts off; run by Epilogue, Quest_NightElves, Talk
+    call Register_DefiledFountain_Start() // starts off; enabled by DefiledFountain
+    call Register_DefiledFountain_Hoof() // starts off; enabled by DefiledFountain
+    call Register_DefiledFountain_PingBulb() // starts off; enabled by DefiledFountain; disabled by Quest_Fountain; destroyed by Quest_Fountain
+    call Register_DefiledFountain_BulbPickup() // starts off; enabled by DefiledFountain; disabled by Quest_Fountain; destroyed by Quest_Fountain
 endfunction
 
 endlibrary

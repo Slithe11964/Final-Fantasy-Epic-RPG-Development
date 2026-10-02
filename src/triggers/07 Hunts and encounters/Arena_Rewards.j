@@ -1,4 +1,11 @@
 library TArenaRewards requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_BuyPrize=null
+    trigger gg_trg_Arena_ExchangeBP=null
+    trigger gg_trg_Arena_RefreshBPTags=null
+endglobals
+
 function Trig_Arena_BuyPrize_IsOutfitter takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_e01A_0252)or(GetTriggerUnit()==gg_unit_e01B_0028)or(GetTriggerUnit()==gg_unit_e01C_0027)or(GetTriggerUnit()==gg_unit_e01D_0026)
 endfunction
@@ -141,6 +148,30 @@ function Trig_Arena_RefreshBPTags_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Rewards takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2, RegisterTriggers_Arena_Part3 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_BuyPrize takes nothing returns nothing
+    set gg_trg_Arena_BuyPrize=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_BuyPrize,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Arena_BuyPrize,Condition(function Trig_Arena_BuyPrize_Conditions))
+    call TriggerAddAction(gg_trg_Arena_BuyPrize,function Trig_Arena_BuyPrize_Actions)
+endfunction
+
+function Register_Arena_ExchangeBP takes nothing returns nothing
+    set gg_trg_Arena_ExchangeBP=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_ExchangeBP,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Arena_ExchangeBP,Condition(function Trig_Arena_ExchangeBP_Conditions))
+    call TriggerAddAction(gg_trg_Arena_ExchangeBP,function Trig_Arena_ExchangeBP_Actions)
+endfunction
+
+function Register_Arena_RefreshBPTags takes nothing returns nothing
+    set gg_trg_Arena_RefreshBPTags=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_RefreshBPTags)
+    call TriggerAddAction(gg_trg_Arena_RefreshBPTags,function Trig_Arena_RefreshBPTags_Actions)
 endfunction
 
 endlibrary

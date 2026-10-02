@@ -1,5 +1,7 @@
 library THeroDeath requires TForce, TGroup, TPlayerPart01, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hero_Death_Revive=null
     // Variables only this module uses.
     boolean udg_SuppressDeathMessages=false
 endglobals
@@ -174,6 +176,17 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Hero_Death takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hero_Part2 (module Hero),
+// which keeps the original registration order.
+
+function Register_Hero_Death_Revive takes nothing returns nothing
+    set gg_trg_Hero_Death_Revive=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Hero_Death_Revive,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Hero_Death_Revive,Condition(function Trig_Hero_Death_Revive_Conditions))
+    call TriggerAddAction(gg_trg_Hero_Death_Revive,function Trig_Hero_Death_Revive_Actions)
 endfunction
 
 endlibrary

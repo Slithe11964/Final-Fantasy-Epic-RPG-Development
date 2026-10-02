@@ -134,7 +134,7 @@ endfunction
 function RegisterTriggers_Kalm takes nothing returns nothing
     call Register_Kalm_News_Init()
     call Register_Kalm_News_Read()
-    call Register_Kalm_Init()
+    call Register_Kalm_Init() // run by MapBootstrap
 endfunction
 
 endlibrary

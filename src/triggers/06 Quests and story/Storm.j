@@ -59,7 +59,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Storm takes nothing returns nothing
-    call Register_Storm_Greet()
+    call Register_Storm_Greet() // starts off; enabled by MysticalGlyph; disabled by MysticalGlyph
 endfunction
 
 endlibrary

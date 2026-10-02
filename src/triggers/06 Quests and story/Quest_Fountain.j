@@ -1,4 +1,10 @@
 library TQuestFountain requires TCam, TCine, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Fountain_Bulb=null
+    trigger gg_trg_Quest_Fountain_Complete=null
+endglobals
+
 function Trig_Quest_Fountain_Bulb_Conditions takes nothing returns boolean
     return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0FN'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FN': item "Thunderbloom Bulb"
 endfunction
@@ -125,6 +131,26 @@ function Trig_Quest_Fountain_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Fountain takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part10 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Fountain_Bulb takes nothing returns nothing
+    set gg_trg_Quest_Fountain_Bulb=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Fountain_Bulb)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Fountain_Bulb,450.,gg_unit_e007_0154)
+    call TriggerAddCondition(gg_trg_Quest_Fountain_Bulb,Condition(function Trig_Quest_Fountain_Bulb_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Fountain_Bulb,function Trig_Quest_Fountain_Bulb_Actions)
+endfunction
+
+function Register_Quest_Fountain_Complete takes nothing returns nothing
+    set gg_trg_Quest_Fountain_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Fountain_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Fountain_Complete,450.,gg_unit_e007_0154)
+    call TriggerAddCondition(gg_trg_Quest_Fountain_Complete,Condition(function Trig_Quest_Fountain_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Fountain_Complete,function Trig_Quest_Fountain_Complete_Actions)
 endfunction
 
 endlibrary

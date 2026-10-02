@@ -205,8 +205,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Andre takes nothing returns nothing
-    call Register_Andre_Elysium_Reveal()
-    call Register_Andre_Legendary_Rules()
+    call Register_Andre_Elysium_Reveal() // starts off; enabled by Elysium
+    call Register_Andre_Legendary_Rules() // starts off; enabled by Elysium
 endfunction
 
 endlibrary

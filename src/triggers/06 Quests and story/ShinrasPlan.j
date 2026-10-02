@@ -242,11 +242,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ShinrasPlan takes nothing returns nothing
-    call Register_ShinrasPlan_Prepare()
-    call Register_ShinrasPlan_Start()
-    call Register_ShinrasPlan_WaterTurnIn()
-    call Register_ShinrasPlan_ShardTurnIn()
-    call Register_ShinrasPlan_Complete()
+    call Register_ShinrasPlan_Prepare() // starts off; run by DimensionalBoundary, Epilogue, Quest_NightElves +4 more
+    call Register_ShinrasPlan_Start() // starts off; enabled by ShinrasPlan
+    call Register_ShinrasPlan_WaterTurnIn() // starts off; enabled by ShinrasPlan
+    call Register_ShinrasPlan_ShardTurnIn() // starts off; enabled by ShinrasPlan
+    call Register_ShinrasPlan_Complete() // starts off; enabled by ShinrasPlan
 endfunction
 
 endlibrary

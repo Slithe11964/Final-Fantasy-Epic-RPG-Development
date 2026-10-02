@@ -72,4 +72,14 @@ endfunction
 function InitTrig_Hero_EndlessGrowth takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hero_Part1 (module Hero),
+// which keeps the original registration order.
+
+function Register_Hero_EndlessGrowth takes nothing returns nothing
+    set gg_trg_Hero_EndlessGrowth=CreateTrigger()
+    call DisableTrigger(gg_trg_Hero_EndlessGrowth)
+    call TriggerAddAction(gg_trg_Hero_EndlessGrowth,function Trig_Hero_EndlessGrowth_Actions)
+endfunction
+
 endlibrary

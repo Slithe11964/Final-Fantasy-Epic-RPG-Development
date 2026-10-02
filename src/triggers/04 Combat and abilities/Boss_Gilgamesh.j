@@ -1,5 +1,10 @@
 library TBossGilgamesh requires TCam, TCine, TDifficulty, TJob, TMusic, TPlayerPart01, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Gilgamesh_Summon=null
+    trigger gg_trg_Boss_Gilgamesh_NextSword=null
+    trigger gg_trg_Boss_Gilgamesh_Death=null
+    trigger gg_trg_Boss_Gilgamesh_Cleanup=null
     // Variables only this module uses.
     integer udg_GilgameshSwordStage=0
     unit udg_GilgameshUnit=null
@@ -259,6 +264,36 @@ function Trig_Boss_Gilgamesh_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Gilgamesh takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part12 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Gilgamesh_Summon takes nothing returns nothing
+    set gg_trg_Boss_Gilgamesh_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gilgamesh_Summon)
+    call TriggerAddAction(gg_trg_Boss_Gilgamesh_Summon,function Trig_Boss_Gilgamesh_Summon_Actions)
+endfunction
+
+function Register_Boss_Gilgamesh_NextSword takes nothing returns nothing
+    set gg_trg_Boss_Gilgamesh_NextSword=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gilgamesh_NextSword)
+    call TriggerAddCondition(gg_trg_Boss_Gilgamesh_NextSword,Condition(function Trig_Boss_Gilgamesh_NextSword_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Gilgamesh_NextSword,function Trig_Boss_Gilgamesh_NextSword_Actions)
+endfunction
+
+function Register_Boss_Gilgamesh_Death takes nothing returns nothing
+    set gg_trg_Boss_Gilgamesh_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gilgamesh_Death)
+    call TriggerAddCondition(gg_trg_Boss_Gilgamesh_Death,Condition(function Trig_Boss_Gilgamesh_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Gilgamesh_Death,function Trig_Boss_Gilgamesh_Death_Actions)
+endfunction
+
+function Register_Boss_Gilgamesh_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_Gilgamesh_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Gilgamesh_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_Gilgamesh_Cleanup,function Trig_Boss_Gilgamesh_Cleanup_Actions)
 endfunction
 
 endlibrary

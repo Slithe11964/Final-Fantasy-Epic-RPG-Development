@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Monica takes nothing returns nothing
-    call Register_Monica_ShowMarker()
+    call Register_Monica_ShowMarker() // starts off; run by Cid, Epilogue
 endfunction
 
 endlibrary

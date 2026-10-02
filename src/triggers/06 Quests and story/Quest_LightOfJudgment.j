@@ -1,4 +1,9 @@
 library TQuestLightOfJudgment requires TCam, TCine, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_LightOfJudgment_Start=null
+endglobals
+
 function Trig_Quest_LightOfJudgment_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Eill_0119,true,true,true))
 endfunction
@@ -39,6 +44,25 @@ function Trig_Quest_LightOfJudgment_Start_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_LightOfJudgment takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part7 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_LightOfJudgment_Start takes nothing returns nothing
+    set gg_trg_Quest_LightOfJudgment_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_LightOfJudgment_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_LightOfJudgment_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_LightOfJudgment_Start,Condition(function Trig_Quest_LightOfJudgment_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_LightOfJudgment_Start,function Trig_Quest_LightOfJudgment_Start_Actions)
 endfunction
 
 endlibrary

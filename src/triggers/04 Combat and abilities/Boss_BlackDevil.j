@@ -1,5 +1,9 @@
 library TBossBlackDevil requires TCam, TCine, TDifficulty, TMusic, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_BlackDevil_Summon=null
+    trigger gg_trg_Boss_BlackDevil_Death=null
+    trigger gg_trg_Boss_BlackDevil_Cleanup=null
     // Variables only this module uses.
     unit udg_BlackDevilUnit=null
 endglobals
@@ -116,6 +120,29 @@ function Trig_Boss_BlackDevil_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_BlackDevil takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part12 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_BlackDevil_Summon takes nothing returns nothing
+    set gg_trg_Boss_BlackDevil_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_BlackDevil_Summon)
+    call TriggerAddAction(gg_trg_Boss_BlackDevil_Summon,function Trig_Boss_BlackDevil_Summon_Actions)
+endfunction
+
+function Register_Boss_BlackDevil_Death takes nothing returns nothing
+    set gg_trg_Boss_BlackDevil_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_BlackDevil_Death)
+    call TriggerAddCondition(gg_trg_Boss_BlackDevil_Death,Condition(function Trig_Boss_BlackDevil_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_BlackDevil_Death,function Trig_Boss_BlackDevil_Death_Actions)
+endfunction
+
+function Register_Boss_BlackDevil_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_BlackDevil_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_BlackDevil_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_BlackDevil_Cleanup,function Trig_Boss_BlackDevil_Cleanup_Actions)
 endfunction
 
 endlibrary

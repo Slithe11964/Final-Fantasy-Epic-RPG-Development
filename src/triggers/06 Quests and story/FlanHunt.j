@@ -205,10 +205,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FlanHunt takes nothing returns nothing
-    call Register_FlanHunt_Start()
-    call Register_FlanHunt_Count()
-    call Register_FlanHunt_Fail()
-    call Register_FlanHunt_Reward()
+    call Register_FlanHunt_Start() // starts off; enabled by Olga
+    call Register_FlanHunt_Count() // starts off; enabled by FlanHunt; disabled by FlanHunt; destroyed by FlanHunt
+    call Register_FlanHunt_Fail() // starts off; run by Dana; destroyed by FlanHunt
+    call Register_FlanHunt_Reward() // starts off; enabled by FlanHunt; destroyed by FlanHunt
 endfunction
 
 endlibrary

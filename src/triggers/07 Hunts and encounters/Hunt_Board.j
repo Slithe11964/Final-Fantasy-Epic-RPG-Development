@@ -1,5 +1,8 @@
 library THuntBoard
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hunt_Setup=null
+    trigger gg_trg_Hunt_Board_Markers=null
     // Variables only this module uses.
     effect array udg_HuntMarkerEffect
 endglobals
@@ -294,6 +297,22 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Hunt_Board takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hunt (module Hunt),
+// which keeps the original registration order.
+
+function Register_Hunt_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Setup=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Hunt_Setup,3.)
+    call TriggerAddAction(gg_trg_Hunt_Setup,function Trig_Hunt_Setup_Actions)
+endfunction
+
+function Register_Hunt_Board_Markers takes nothing returns nothing
+    set gg_trg_Hunt_Board_Markers=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Board_Markers)
+    call TriggerAddAction(gg_trg_Hunt_Board_Markers,function Trig_Hunt_Board_Markers_Actions)
 endfunction
 
 endlibrary

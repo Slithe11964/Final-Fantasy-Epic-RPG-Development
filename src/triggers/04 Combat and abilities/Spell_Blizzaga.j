@@ -158,6 +158,7 @@ function Trig_Spell_Blizzaga_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_Blizzaga.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_Blizzaga takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

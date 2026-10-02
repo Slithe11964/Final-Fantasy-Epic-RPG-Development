@@ -28,7 +28,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ghost takes nothing returns nothing
-    call Register_Ghost_Despawn()
+    call Register_Ghost_Despawn() // disabled by Boss_Zalera; destroyed by Boss_Zalera
 endfunction
 
 endlibrary

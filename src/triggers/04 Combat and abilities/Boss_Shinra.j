@@ -99,6 +99,7 @@ function Trig_Boss_Shinra_Clione_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Boss_Shinra_Clione.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Boss_Shinra_Clione takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

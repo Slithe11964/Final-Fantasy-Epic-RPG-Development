@@ -424,11 +424,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkBahamut takes nothing returns nothing
-    call Register_DarkBahamut_Riddle()
-    call Register_DarkBahamut_DragonDeath()
-    call Register_DarkBahamut_Phase2()
-    call Register_DarkBahamut_Phase3()
-    call Register_DarkBahamut_Phase4()
+    call Register_DarkBahamut_Riddle() // starts off; enabled by DarkEidolons
+    call Register_DarkBahamut_DragonDeath() // starts off; enabled by DarkBahamut
+    call Register_DarkBahamut_Phase2() // starts off; enabled by DarkBahamut
+    call Register_DarkBahamut_Phase3() // starts off; enabled by DarkBahamut
+    call Register_DarkBahamut_Phase4() // starts off; enabled by DarkBahamut
 endfunction
 
 endlibrary

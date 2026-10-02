@@ -1,4 +1,11 @@
 library TChocoboWildBehavior requires TGroup, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Wild_Death=null
+    trigger gg_trg_Chocobo_Wild_Retaliate=null
+    trigger gg_trg_Chocobo_Wild_AI=null
+endglobals
+
 function Trig_Chocobo_Wild_Death_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_TownNpcUnits))
 endfunction
@@ -145,6 +152,30 @@ function Trig_Chocobo_Wild_AI_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_WildBehavior takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Wild_Death takes nothing returns nothing
+    set gg_trg_Chocobo_Wild_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Wild_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Chocobo_Wild_Death,Condition(function Trig_Chocobo_Wild_Death_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Wild_Death,function Trig_Chocobo_Wild_Death_Actions)
+endfunction
+
+function Register_Chocobo_Wild_Retaliate takes nothing returns nothing
+    set gg_trg_Chocobo_Wild_Retaliate=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chocobo_Wild_Retaliate,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Chocobo_Wild_Retaliate,Condition(function Trig_Chocobo_Wild_Retaliate_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Wild_Retaliate,function Trig_Chocobo_Wild_Retaliate_Actions)
+endfunction
+
+function Register_Chocobo_Wild_AI takes nothing returns nothing
+    set gg_trg_Chocobo_Wild_AI=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Chocobo_Wild_AI,5.)
+    call TriggerAddAction(gg_trg_Chocobo_Wild_AI,function Trig_Chocobo_Wild_AI_Actions)
 endfunction
 
 endlibrary

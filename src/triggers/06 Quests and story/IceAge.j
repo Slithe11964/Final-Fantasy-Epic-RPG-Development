@@ -372,8 +372,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_IceAge takes nothing returns nothing
-    call Register_IceAge_FreezeTimeout()
-    call Register_IceAge_Victory()
+    call Register_IceAge_FreezeTimeout() // starts off; enabled by Boss_Echele; disabled by IceAge
+    call Register_IceAge_Victory() // starts off; enabled by Boss_Echele; disabled by IceAge
 endfunction
 
 endlibrary

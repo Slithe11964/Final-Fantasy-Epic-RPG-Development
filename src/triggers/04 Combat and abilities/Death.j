@@ -168,7 +168,7 @@ endfunction
 function RegisterTriggers_Death_Part2 takes nothing returns nothing
     call Register_Death_Explosion_Queue()
     call Register_Death_Explosion_Start()
-    call Register_Death_Explosion_Blast()
+    call Register_Death_Explosion_Blast() // starts off; run by Death
 endfunction
 
 endlibrary

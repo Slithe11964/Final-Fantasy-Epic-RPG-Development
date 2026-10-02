@@ -400,16 +400,16 @@ endfunction
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Gilgamesh_Part1 takes nothing returns nothing
     call Register_Gilgamesh_Gift()
-    call Register_Gilgamesh_Init()
+    call Register_Gilgamesh_Init() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Gilgamesh_Part2 takes nothing returns nothing
-    call Register_Gilgamesh_Appear()
-    call Register_Gilgamesh_Phase2()
-    call Register_Gilgamesh_Defeat()
+    call Register_Gilgamesh_Appear() // starts off; enabled by BridgeBattle
+    call Register_Gilgamesh_Phase2() // starts off; enabled by Gilgamesh
+    call Register_Gilgamesh_Defeat() // starts off; enabled by Gilgamesh
 endfunction
 
 endlibrary

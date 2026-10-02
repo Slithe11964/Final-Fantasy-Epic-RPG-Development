@@ -125,8 +125,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Famfrit takes nothing returns nothing
-    call Register_Famfrit_Prepare()
-    call Register_Famfrit_Encounter()
+    call Register_Famfrit_Prepare() // run by MapBootstrap
+    call Register_Famfrit_Encounter() // starts off; enabled by Dana; disabled by TrueIceAge
     call Register_Famfrit_TidalWave()
 endfunction
 

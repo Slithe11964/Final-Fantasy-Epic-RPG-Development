@@ -193,12 +193,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HauntedTree takes nothing returns nothing
-    call Register_HauntedTree_Init()
-    call Register_HauntedTree_Prepare()
-    call Register_HauntedTree_Start()
-    call Register_HauntedTree_GhostRoam()
-    call Register_HauntedTree_CaptureSpirit()
-    call Register_HauntedTree_Complete()
+    call Register_HauntedTree_Init() // run by MapBootstrap
+    call Register_HauntedTree_Prepare() // starts off; run by Valigarmanda
+    call Register_HauntedTree_Start() // starts off; enabled by HauntedTree
+    call Register_HauntedTree_GhostRoam() // disabled by HauntedTree; destroyed by HauntedTree
+    call Register_HauntedTree_CaptureSpirit() // starts off; enabled by HauntedTree
+    call Register_HauntedTree_Complete() // starts off; enabled by HauntedTree
 endfunction
 
 endlibrary

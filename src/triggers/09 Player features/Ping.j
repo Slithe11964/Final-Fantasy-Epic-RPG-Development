@@ -60,8 +60,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ping takes nothing returns nothing
-    call Register_Ping_ArenaTarget()
-    call Register_Ping_EyeOfJenova()
+    call Register_Ping_ArenaTarget() // starts off; enabled by Quest_AoMadoushi; disabled by Ending, Loot; destroyed by Loot
+    call Register_Ping_EyeOfJenova() // starts off; enabled by Loot; disabled by Quest_EyeOfJenova; destroyed by Quest_EyeOfJenova
 endfunction
 
 endlibrary

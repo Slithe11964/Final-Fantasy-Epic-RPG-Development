@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Olga takes nothing returns nothing
-    call Register_Olga_ShowTalkIcon()
+    call Register_Olga_ShowTalkIcon() // starts off; run by Dana
 endfunction
 
 endlibrary

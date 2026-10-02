@@ -649,4 +649,15 @@ endfunction
 function InitTrig_Gaya_Scan takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Gaya (module Gaya),
+// which keeps the original registration order.
+
+function Register_Gaya_Scan takes nothing returns nothing
+    set gg_trg_Gaya_Scan=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_Scan,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Gaya_Scan,Condition(function Trig_Gaya_Scan_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_Scan,function Trig_Gaya_Scan_Actions)
+endfunction
+
 endlibrary

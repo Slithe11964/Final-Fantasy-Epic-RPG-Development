@@ -1,4 +1,15 @@
 library TQuestFireGolem requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_FireGolem_Init=null
+    trigger gg_trg_Quest_FireGolem_Alert=null
+    trigger gg_trg_Quest_FireGolem_Start=null
+    trigger gg_trg_Quest_FireGolem_HeartDropped=null
+    trigger gg_trg_Quest_FireGolem_Ping=null
+    trigger gg_trg_Quest_FireGolem_HeartTaken=null
+    trigger gg_trg_Quest_FireGolem_Complete=null
+endglobals
+
 function Trig_Quest_FireGolem_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_n00F_0139)
     call PauseUnitBJ(true,gg_unit_n00F_0139)
@@ -211,6 +222,68 @@ function Trig_Quest_FireGolem_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_FireGolem takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_FireGolem_Init takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_Init=CreateTrigger()
+    call TriggerAddAction(gg_trg_Quest_FireGolem_Init,function Trig_Quest_FireGolem_Init_Actions)
+endfunction
+
+function Register_Quest_FireGolem_Alert takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_Alert=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_Alert)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_FireGolem_Alert,udg_SharedDelayTimer1)
+    call TriggerAddAction(gg_trg_Quest_FireGolem_Alert,function Trig_Quest_FireGolem_Alert_Actions)
+endfunction
+
+function Register_Quest_FireGolem_Start takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_FireGolem_Start,Condition(function Trig_Quest_FireGolem_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FireGolem_Start,function Trig_Quest_FireGolem_Start_Actions)
+endfunction
+
+function Register_Quest_FireGolem_HeartDropped takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_HeartDropped=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_HeartDropped)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_FireGolem_HeartDropped,gg_unit_n00F_0139,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_FireGolem_HeartDropped,function Trig_Quest_FireGolem_HeartDropped_Actions)
+endfunction
+
+function Register_Quest_FireGolem_Ping takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_FireGolem_Ping,15.)
+    call TriggerAddCondition(gg_trg_Quest_FireGolem_Ping,Condition(function Trig_Quest_FireGolem_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FireGolem_Ping,function Trig_Quest_FireGolem_Ping_Actions)
+endfunction
+
+function Register_Quest_FireGolem_HeartTaken takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_HeartTaken=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_HeartTaken)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_FireGolem_HeartTaken,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_FireGolem_HeartTaken,Condition(function Trig_Quest_FireGolem_HeartTaken_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FireGolem_HeartTaken,function Trig_Quest_FireGolem_HeartTaken_Actions)
+endfunction
+
+function Register_Quest_FireGolem_Complete takes nothing returns nothing
+    set gg_trg_Quest_FireGolem_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FireGolem_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_FireGolem_Complete,450.,gg_unit_Hjai_0093)
+    call TriggerAddCondition(gg_trg_Quest_FireGolem_Complete,Condition(function Trig_Quest_FireGolem_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FireGolem_Complete,function Trig_Quest_FireGolem_Complete_Actions)
 endfunction
 
 endlibrary

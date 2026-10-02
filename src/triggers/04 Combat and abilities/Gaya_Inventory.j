@@ -1,4 +1,11 @@
 library TGayaInventory requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gaya_ShopPurchase=null
+    trigger gg_trg_Gaya_ItemChanged=null
+    trigger gg_trg_Gaya_GatherItems=null
+endglobals
+
 function Trig_Gaya_ShopPurchase_Conditions takes nothing returns boolean
     return GetUnitTypeId(GetSellingUnit())=='n007' or GetUnitTypeId(GetSellingUnit())=='n017' // 'n007': unit "Storm the Pandaren Spiritualist"; 'n017': unit "Storm the Pandaren Spiritualist"
 endfunction
@@ -173,6 +180,32 @@ function Trig_Gaya_GatherItems_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Gaya_Inventory takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Gaya (module Gaya),
+// which keeps the original registration order.
+
+function Register_Gaya_ShopPurchase takes nothing returns nothing
+    set gg_trg_Gaya_ShopPurchase=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_ShopPurchase,EVENT_PLAYER_UNIT_SELL_ITEM)
+    call TriggerAddCondition(gg_trg_Gaya_ShopPurchase,Condition(function Trig_Gaya_ShopPurchase_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_ShopPurchase,function Trig_Gaya_ShopPurchase_Actions)
+endfunction
+
+function Register_Gaya_ItemChanged takes nothing returns nothing
+    set gg_trg_Gaya_ItemChanged=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_ItemChanged,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_ItemChanged,EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerAddCondition(gg_trg_Gaya_ItemChanged,Condition(function Trig_Gaya_ItemChanged_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_ItemChanged,function Trig_Gaya_ItemChanged_Actions)
+endfunction
+
+function Register_Gaya_GatherItems takes nothing returns nothing
+    set gg_trg_Gaya_GatherItems=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_GatherItems,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Gaya_GatherItems,Condition(function Trig_Gaya_GatherItems_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_GatherItems,function Trig_Gaya_GatherItems_Actions)
 endfunction
 
 endlibrary

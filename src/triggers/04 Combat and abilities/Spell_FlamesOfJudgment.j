@@ -62,4 +62,15 @@ endfunction
 function InitTrig_Spell_FlamesOfJudgment takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part4 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_FlamesOfJudgment takes nothing returns nothing
+    set gg_trg_Spell_FlamesOfJudgment=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_FlamesOfJudgment,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_FlamesOfJudgment,Condition(function Trig_Spell_FlamesOfJudgment_Conditions))
+    call TriggerAddAction(gg_trg_Spell_FlamesOfJudgment,function Trig_Spell_FlamesOfJudgment_Actions)
+endfunction
+
 endlibrary

@@ -134,8 +134,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_OmegaWeapon takes nothing returns nothing
-    call Register_OmegaWeapon_Hide()
-    call Register_OmegaWeapon_SpellRotation()
+    call Register_OmegaWeapon_Hide() // run by MapBootstrap
+    call Register_OmegaWeapon_SpellRotation() // starts off; enabled by Quest_OmegaWeapon
 endfunction
 
 endlibrary

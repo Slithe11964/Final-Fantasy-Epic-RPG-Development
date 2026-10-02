@@ -1,4 +1,11 @@
 library TArenaBattleResults requires TForce, TGroup, TJob, TMusic, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_FoeDeath=null
+    trigger gg_trg_Arena_BattleLost=null
+    trigger gg_trg_Arena_Abandoned_Reset=null
+endglobals
+
 function Trig_Arena_FoeDeath_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_CupArenaUnits))
 endfunction
@@ -413,6 +420,34 @@ function Trig_Arena_Abandoned_Reset_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_BattleResults takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2, RegisterTriggers_Arena_Part4 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_FoeDeath takes nothing returns nothing
+    set gg_trg_Arena_FoeDeath=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_FoeDeath)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_FoeDeath,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_FoeDeath,EVENT_PLAYER_UNIT_CHANGE_OWNER)
+    call TriggerAddCondition(gg_trg_Arena_FoeDeath,Condition(function Trig_Arena_FoeDeath_Conditions))
+    call TriggerAddAction(gg_trg_Arena_FoeDeath,function Trig_Arena_FoeDeath_Actions)
+endfunction
+
+function Register_Arena_BattleLost takes nothing returns nothing
+    set gg_trg_Arena_BattleLost=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_BattleLost)
+    call TriggerAddCondition(gg_trg_Arena_BattleLost,Condition(function Trig_Arena_BattleLost_Conditions))
+    call TriggerAddAction(gg_trg_Arena_BattleLost,function Trig_Arena_BattleLost_Actions)
+endfunction
+
+function Register_Arena_Abandoned_Reset takes nothing returns nothing
+    set gg_trg_Arena_Abandoned_Reset=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Abandoned_Reset)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Arena_Abandoned_Reset,udg_ArenaCheckTimer)
+    call TriggerAddCondition(gg_trg_Arena_Abandoned_Reset,Condition(function Trig_Arena_Abandoned_Reset_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Abandoned_Reset,function Trig_Arena_Abandoned_Reset_Actions)
 endfunction
 
 endlibrary

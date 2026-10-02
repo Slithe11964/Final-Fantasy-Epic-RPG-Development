@@ -224,8 +224,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Judgment takes nothing returns nothing
-    call Register_Judgment_Attack_Alberich()
-    call Register_Judgment_Spare_Alberich()
+    call Register_Judgment_Attack_Alberich() // starts off; enabled by Quest_NorthernGod; disabled by Judgment; destroyed by Judgment
+    call Register_Judgment_Spare_Alberich() // starts off; enabled by Quest_NorthernGod; disabled by Judgment; destroyed by Judgment
 endfunction
 
 endlibrary

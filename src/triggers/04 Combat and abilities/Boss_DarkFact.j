@@ -1,5 +1,13 @@
 library TBossDarkFact requires TCam, TCine, TGroup, TMusic, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_DarkFact_Summon=null
+    trigger gg_trg_Boss_DarkFact_Death=null
+    trigger gg_trg_Boss_DarkFact_FactStrike=null
+    trigger gg_trg_Boss_DarkFact_PingPong=null
+    trigger gg_trg_Boss_DarkFact_Orb_Bounce=null
+    trigger gg_trg_Boss_DarkFact_Orb_Attack=null
+    trigger gg_trg_Boss_DarkFact_Cleanup=null
     // Variables only this module uses.
     unit udg_DarkFactUnit=null
 endglobals
@@ -408,6 +416,57 @@ function Trig_Boss_DarkFact_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_DarkFact takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part12, RegisterTriggers_Boss_Part13 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_DarkFact_Summon takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DarkFact_Summon)
+    call TriggerAddAction(gg_trg_Boss_DarkFact_Summon,function Trig_Boss_DarkFact_Summon_Actions)
+endfunction
+
+function Register_Boss_DarkFact_Death takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DarkFact_Death)
+    call TriggerAddCondition(gg_trg_Boss_DarkFact_Death,Condition(function Trig_Boss_DarkFact_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DarkFact_Death,function Trig_Boss_DarkFact_Death_Actions)
+endfunction
+
+function Register_Boss_DarkFact_FactStrike takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_FactStrike=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DarkFact_FactStrike)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_DarkFact_FactStrike,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Boss_DarkFact_FactStrike,Condition(function Trig_Boss_DarkFact_FactStrike_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DarkFact_FactStrike,function Trig_Boss_DarkFact_FactStrike_Actions)
+endfunction
+
+function Register_Boss_DarkFact_PingPong takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_PingPong=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_DarkFact_PingPong,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_DarkFact_PingPong,Condition(function Trig_Boss_DarkFact_PingPong_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DarkFact_PingPong,function Trig_Boss_DarkFact_PingPong_Actions)
+endfunction
+
+function Register_Boss_DarkFact_Orb_Bounce takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_Orb_Bounce=CreateTrigger()
+    call TriggerAddCondition(gg_trg_Boss_DarkFact_Orb_Bounce,Condition(function Trig_Boss_DarkFact_Orb_Bounce_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DarkFact_Orb_Bounce,function Trig_Boss_DarkFact_Orb_Bounce_Actions)
+endfunction
+
+function Register_Boss_DarkFact_Orb_Attack takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_Orb_Attack=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_DarkFact_Orb_Attack,EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(gg_trg_Boss_DarkFact_Orb_Attack,Condition(function Trig_Boss_DarkFact_Orb_Attack_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DarkFact_Orb_Attack,function Trig_Boss_DarkFact_Orb_Attack_Actions)
+endfunction
+
+function Register_Boss_DarkFact_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_DarkFact_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DarkFact_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_DarkFact_Cleanup,function Trig_Boss_DarkFact_Cleanup_Actions)
 endfunction
 
 endlibrary

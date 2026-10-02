@@ -1,5 +1,9 @@
 library TQuestEidolonChallenge requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_EidolonChallenge_Start=null
+    trigger gg_trg_Quest_EidolonChallenge_Count=null
+    trigger gg_trg_Quest_EidolonChallenge_Complete=null
     // Variables only this module uses.
     integer udg_EidolonsDefeated=0
 endglobals
@@ -165,6 +169,50 @@ function Trig_Quest_EidolonChallenge_Complete_Actions takes nothing returns noth
 endfunction
 
 function InitTrig_Quest_EidolonChallenge takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part11, RegisterTriggers_Quest_Part12 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_EidolonChallenge_Start takes nothing returns nothing
+    set gg_trg_Quest_EidolonChallenge_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_EidolonChallenge_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_EidolonChallenge_Start,Condition(function Trig_Quest_EidolonChallenge_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Start,function Trig_Quest_EidolonChallenge_Start_Actions)
+endfunction
+
+function Register_Quest_EidolonChallenge_Count takes nothing returns nothing
+    set gg_trg_Quest_EidolonChallenge_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_EidolonChallenge_Count)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01I_0070,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01J_0069,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01K_0068,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01L_0067,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Count,function Trig_Quest_EidolonChallenge_Count_Actions)
+endfunction
+
+function Register_Quest_EidolonChallenge_Complete takes nothing returns nothing
+    set gg_trg_Quest_EidolonChallenge_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_EidolonChallenge_Complete)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_EidolonChallenge_Complete,Condition(function Trig_Quest_EidolonChallenge_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Complete,function Trig_Quest_EidolonChallenge_Complete_Actions)
 endfunction
 
 endlibrary

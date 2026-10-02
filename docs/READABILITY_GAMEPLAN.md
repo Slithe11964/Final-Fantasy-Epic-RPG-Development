@@ -8,8 +8,10 @@ Written 2026-10-02 (Claude). Baseline: `FFERPG_0.9.7.3-r12test.w3x`.
 |---|---|---|
 | 0 | Done | New `FFERPG/` developer folder: Git history (baseline → phase 1 → phase 2), `src/` export, tools (`check_map`, `startup_audit`, `export_sources`, `build_map`), docs. The 10 leftover experiment folders on the cleanup list were moved to `_archive/`. |
 | 1 | Done | 1,607 generated functions re-indented; 8 noise comments removed. Code tokens unchanged; map `r13-phase1` has a byte-identical playable script. |
-| 2 | Done, awaiting play test | main_old is now 11 named steps. 1,613 string dispatches became 571 `RegisterTriggers_*` group calls. 1,602 helpers renamed `Register_<Trigger>`, guards removed. The startup audit proves the same statements run and event firing order is kept. Map: `r13-phase2`. |
-| 3–6 | Not started | After the phase 2 test round. |
+| 2 | Done, user-tested | main_old is now 11 named steps. 1,613 string dispatches became 571 `RegisterTriggers_*` group calls. 1,602 helpers renamed `Register_<Trigger>`, guards removed. The startup audit proves the same statements run and event firing order is kept. Map: `r13-phase2`. |
+| 3 | Done, awaiting play test | 1,581 trigger variables + 422 single-module variables moved into their modules' globals blocks; 932 shared variables grouped by folder in the map header with "used by" notes. Map `r13-phase3`. |
+| 4 | Done, awaiting play test | 480 registration helpers moved next to their trigger code; RegisterTriggers calls annotated (starts off / enabled-disabled-run by); legacy spells registered by their modules; generic locals renamed; CalcDamage documented step by step; developer guide in the map header; docs/SYSTEMS.md, TRIGGER_INDEX.md, GLOBALS.md, DEAD_CODE.md. Giant functions were deliberately not split (CalcDamage runs nested; MonsterData/Bazaar are data tables). The only generic names (`_FuncNNN`) were in dead code. Map `r13-phase4`. |
+| 5–6 | Not started | After the phase 3–4 test round. |
 
 ## 0. What r12test is
 

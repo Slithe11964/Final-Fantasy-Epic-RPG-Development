@@ -104,7 +104,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AbilityTags takes nothing returns nothing
-    call Register_AbilityTags_Show()
+    call Register_AbilityTags_Show() // starts off; enabled by Fishing_ReelingAndCatch; disabled by Fishing_ReelingAndCatch
 endfunction
 
 endlibrary

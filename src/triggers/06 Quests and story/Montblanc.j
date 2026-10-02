@@ -40,7 +40,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Montblanc takes nothing returns nothing
-    call Register_Montblanc_Hint_Timer()
+    call Register_Montblanc_Hint_Timer() // starts off; enabled by DragonHunt
 endfunction
 
 endlibrary

@@ -227,18 +227,18 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_MysticalGlyph_Part1 takes nothing returns nothing
-    call Register_MysticalGlyph_Prepare()
-    call Register_MysticalGlyph_Drop()
-    call Register_MysticalGlyph_Pickup()
-    call Register_MysticalGlyph_Ping()
-    call Register_MysticalGlyph_Deliver()
+    call Register_MysticalGlyph_Prepare() // starts off; run by Cid, Mid
+    call Register_MysticalGlyph_Drop() // starts off; enabled by MysticalGlyph
+    call Register_MysticalGlyph_Pickup() // starts off; enabled by MysticalGlyph
+    call Register_MysticalGlyph_Ping() // starts off; enabled by MysticalGlyph; disabled by MysticalGlyph
+    call Register_MysticalGlyph_Deliver() // starts off; enabled by MysticalGlyph
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_MysticalGlyph_Part2 takes nothing returns nothing
-    call Register_MysticalGlyph_Result()
+    call Register_MysticalGlyph_Result() // starts off; enabled by MysticalGlyph
 endfunction
 
 endlibrary

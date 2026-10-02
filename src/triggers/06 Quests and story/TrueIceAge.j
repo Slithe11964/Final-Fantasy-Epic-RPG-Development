@@ -1094,12 +1094,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_TrueIceAge takes nothing returns nothing
-    call Register_TrueIceAge_GateUnlock()
-    call Register_TrueIceAge_Summon()
-    call Register_TrueIceAge_SpawnBrave()
-    call Register_TrueIceAge_BossIntro()
-    call Register_TrueIceAge_FreezeTimeout()
-    call Register_TrueIceAge_Victory()
+    call Register_TrueIceAge_GateUnlock() // disabled by World
+    call Register_TrueIceAge_Summon() // starts off; enabled by TrueIceAge; disabled by World
+    call Register_TrueIceAge_SpawnBrave() // starts off; run by Boss_Echele
+    call Register_TrueIceAge_BossIntro() // starts off; enabled by TrueIceAge
+    call Register_TrueIceAge_FreezeTimeout() // starts off; enabled by TrueIceAge; disabled by TrueIceAge
+    call Register_TrueIceAge_Victory() // starts off; enabled by Boss_Echele; disabled by TrueIceAge
 endfunction
 
 endlibrary

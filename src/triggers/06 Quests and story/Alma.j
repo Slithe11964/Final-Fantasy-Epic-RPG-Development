@@ -77,8 +77,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Alma takes nothing returns nothing
-    call Register_Alma_Disappear()
-    call Register_Alma_Missing_Notice()
+    call Register_Alma_Disappear() // starts off; enabled by Boss_Lilith
+    call Register_Alma_Missing_Notice() // starts off; enabled by Alma
 endfunction
 
 endlibrary

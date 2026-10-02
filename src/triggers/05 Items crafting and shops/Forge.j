@@ -611,13 +611,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Forge takes nothing returns nothing
-    call Register_Forge_Bali_Init()
-    call Register_Forge_Bali_ItemGiven()
-    call Register_Forge_Bali_ItemTaken()
-    call Register_Forge_Bali_Refresh()
+    call Register_Forge_Bali_Init() // starts off; run by Giott
+    call Register_Forge_Bali_ItemGiven() // starts off; enabled by Quest_Arcanium
+    call Register_Forge_Bali_ItemTaken() // starts off; enabled by Forge; disabled by Forge
+    call Register_Forge_Bali_Refresh() // starts off; run by Forge
     call Register_Forge_Bali_ClearText()
-    call Register_Forge_Bali_Craft()
-    call Register_Forge_Bali_PsypherTalk()
+    call Register_Forge_Bali_Craft() // starts off; enabled by Quest_Arcanium
+    call Register_Forge_Bali_PsypherTalk() // starts off; enabled by Quest_Arcanium
 endfunction
 
 endlibrary

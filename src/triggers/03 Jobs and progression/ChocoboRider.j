@@ -236,11 +236,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ChocoboRider takes nothing returns nothing
-    call Register_ChocoboRider_Start()
-    call Register_ChocoboRider_StartWithChocobo()
-    call Register_ChocoboRider_Progress()
-    call Register_ChocoboRider_FoundTreasure()
-    call Register_ChocoboRider_Reward()
+    call Register_ChocoboRider_Start() // starts off; enabled by Billy; disabled by ChocoboRider; destroyed by ChocoboRider
+    call Register_ChocoboRider_StartWithChocobo() // disabled by ChocoboRider; destroyed by ChocoboRider
+    call Register_ChocoboRider_Progress() // starts off; enabled by ChocoboRider
+    call Register_ChocoboRider_FoundTreasure() // starts off; enabled by ChocoboRider
+    call Register_ChocoboRider_Reward() // starts off; enabled by ChocoboRider
 endfunction
 
 endlibrary

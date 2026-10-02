@@ -27,7 +27,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FallenRanger takes nothing returns nothing
-    call Register_FallenRanger_Setup()
+    call Register_FallenRanger_Setup() // run by MapBootstrap
 endfunction
 
 endlibrary

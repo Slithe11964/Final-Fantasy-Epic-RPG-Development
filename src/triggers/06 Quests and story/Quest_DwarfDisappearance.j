@@ -1,4 +1,9 @@
 library TQuestDwarfDisappearance requires TCam, TCine, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_DwarfDisappearance_Start=null
+endglobals
+
 function Trig_Quest_DwarfDisappearance_Start_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(IsUnitHiddenBJ(gg_unit_hbla_0158)==false)and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
@@ -32,6 +37,18 @@ function Trig_Quest_DwarfDisappearance_Start_Actions takes nothing returns nothi
 endfunction
 
 function InitTrig_Quest_DwarfDisappearance takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part17 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_DwarfDisappearance_Start takes nothing returns nothing
+    set gg_trg_Quest_DwarfDisappearance_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_DwarfDisappearance_Start)
+    call TriggerRegisterEnterRectSimple(gg_trg_Quest_DwarfDisappearance_Start,gg_rct_696)
+    call TriggerAddCondition(gg_trg_Quest_DwarfDisappearance_Start,Condition(function Trig_Quest_DwarfDisappearance_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_DwarfDisappearance_Start,function Trig_Quest_DwarfDisappearance_Start_Actions)
 endfunction
 
 endlibrary

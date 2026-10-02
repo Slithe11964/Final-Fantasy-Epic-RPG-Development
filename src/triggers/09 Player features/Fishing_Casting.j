@@ -1,5 +1,7 @@
 library TFishingCasting requires TAbil, TGroup, TPlayerPart01
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fishing_Cast=null
     // Variables only this module uses.
     integer udg_FishCatchCount=0
 endglobals
@@ -172,6 +174,18 @@ function Trig_Fishing_Cast_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Fishing_Casting takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Fishing_Part1 (module Fishing),
+// which keeps the original registration order.
+
+function Register_Fishing_Cast takes nothing returns nothing
+    set gg_trg_Fishing_Cast=CreateTrigger()
+    call DisableTrigger(gg_trg_Fishing_Cast)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fishing_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Fishing_Cast,Condition(function Trig_Fishing_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Fishing_Cast,function Trig_Fishing_Cast_Actions)
 endfunction
 
 endlibrary

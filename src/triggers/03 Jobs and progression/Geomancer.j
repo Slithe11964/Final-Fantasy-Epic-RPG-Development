@@ -189,7 +189,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Geomancer takes nothing returns nothing
-    call Register_Geomancer_Enchant_Cycle()
+    call Register_Geomancer_Enchant_Cycle() // enabled by Geomancer
     call Register_Geomancer_Enchant_Apply()
     call Register_Geomancer_Enchant_ClearBuffs()
     call Register_Geomancer_GayaRage()

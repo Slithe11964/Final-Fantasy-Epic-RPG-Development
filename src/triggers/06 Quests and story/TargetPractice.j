@@ -484,13 +484,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_TargetPractice takes nothing returns nothing
-    call Register_TargetPractice_Init()
-    call Register_TargetPractice_Begin()
-    call Register_TargetPractice_PingTargets()
-    call Register_TargetPractice_TargetHit()
-    call Register_TargetPractice_Timeout()
-    call Register_TargetPractice_Fail()
-    call Register_TargetPractice_Reward()
+    call Register_TargetPractice_Init() // starts off; run by Dana
+    call Register_TargetPractice_Begin() // starts off; enabled by TargetPractice, Quest_TargetPractice
+    call Register_TargetPractice_PingTargets() // starts off; enabled by TargetPractice; disabled by TargetPractice
+    call Register_TargetPractice_TargetHit() // starts off; enabled by TargetPractice; disabled by TargetPractice
+    call Register_TargetPractice_Timeout() // starts off; enabled by TargetPractice; disabled by TargetPractice
+    call Register_TargetPractice_Fail() // starts off; run by Dana; destroyed by TargetPractice
+    call Register_TargetPractice_Reward() // starts off; enabled by TargetPractice; destroyed by TargetPractice
 endfunction
 
 endlibrary

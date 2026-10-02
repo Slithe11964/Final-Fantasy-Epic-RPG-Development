@@ -571,13 +571,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_KalmSiege1 takes nothing returns nothing
-    call Register_KalmSiege1_Start()
-    call Register_KalmSiege1_Briefing()
-    call Register_KalmSiege1_Begin()
-    call Register_KalmSiege1_Defeat()
-    call Register_KalmSiege1_TrackDeaths()
-    call Register_KalmSiege1_Complete()
-    call Register_KalmSiege1_Fail()
+    call Register_KalmSiege1_Start() // starts off; enabled by Boss_Zalera
+    call Register_KalmSiege1_Briefing() // starts off; enabled by KalmSiege1; destroyed by KalmSiege1
+    call Register_KalmSiege1_Begin() // starts off; enabled by KalmSiege1; destroyed by KalmSiege1
+    call Register_KalmSiege1_Defeat() // starts off; enabled by KalmSiege1; disabled by KalmSiege1; destroyed by KalmSiege1
+    call Register_KalmSiege1_TrackDeaths() // starts off; enabled by KalmSiege1; disabled by KalmSiege1
+    call Register_KalmSiege1_Complete() // starts off; enabled by KalmSiege1
+    call Register_KalmSiege1_Fail() // starts off; enabled by KalmSiege1; disabled by KalmSiege1; destroyed by KalmSiege1
 endfunction
 
 endlibrary

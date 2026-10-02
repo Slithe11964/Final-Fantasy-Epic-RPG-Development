@@ -147,10 +147,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ambush takes nothing returns nothing
-    call Register_Ambush_Skeletons_1()
-    call Register_Ambush_Skeletons_2()
-    call Register_Ambush_Skeletons_3()
-    call Register_Ambush_Skeletons_4()
+    call Register_Ambush_Skeletons_1() // starts off; enabled by World; destroyed by Boss_Hashmalum, TrueIceAge
+    call Register_Ambush_Skeletons_2() // starts off; enabled by World; destroyed by Boss_Hashmalum, TrueIceAge
+    call Register_Ambush_Skeletons_3() // starts off; enabled by World; destroyed by Boss_Hashmalum, TrueIceAge
+    call Register_Ambush_Skeletons_4() // starts off; enabled by World; destroyed by Boss_Hashmalum, TrueIceAge
 endfunction
 
 endlibrary

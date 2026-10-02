@@ -27,7 +27,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Anabel takes nothing returns nothing
-    call Register_Anabel_Appear()
+    call Register_Anabel_Appear() // starts off; run by Fishing_ReelingAndCatch
 endfunction
 
 endlibrary

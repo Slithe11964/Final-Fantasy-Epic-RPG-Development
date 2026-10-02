@@ -35,8 +35,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_QuestTotal takes nothing returns nothing
-    call Register_QuestTotal_Add()
-    call Register_QuestTotal_Add71()
+    call Register_QuestTotal_Add() // run by MapBootstrap
+    call Register_QuestTotal_Add71() // run by MapBootstrap
 endfunction
 
 endlibrary

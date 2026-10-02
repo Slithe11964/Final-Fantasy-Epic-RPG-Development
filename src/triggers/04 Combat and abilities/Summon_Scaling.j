@@ -1,4 +1,9 @@
 library TSummonScaling requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Summon_Powerup=null
+endglobals
+
 function Trig_Summon_Powerup_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A122',udg_TempUnit2)<=0) // 'A122': ability "Summoned Powerup"
 endfunction
@@ -134,6 +139,17 @@ function Trig_Summon_Powerup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Summon_Scaling takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part1 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Powerup takes nothing returns nothing
+    set gg_trg_Summon_Powerup=CreateTrigger()
+    call DisableTrigger(gg_trg_Summon_Powerup)
+    call TriggerAddCondition(gg_trg_Summon_Powerup,Condition(function Trig_Summon_Powerup_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Powerup,function Trig_Summon_Powerup_Actions)
 endfunction
 
 endlibrary

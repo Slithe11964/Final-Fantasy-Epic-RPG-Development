@@ -59,8 +59,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_StrangeKey takes nothing returns nothing
-    call Register_StrangeKey_Drop()
-    call Register_StrangeKey_Ping()
+    call Register_StrangeKey_Drop() // starts off; enabled by MithrilGolem
+    call Register_StrangeKey_Ping() // starts off; enabled by StrangeKey; disabled by StrangeCage
 endfunction
 
 endlibrary

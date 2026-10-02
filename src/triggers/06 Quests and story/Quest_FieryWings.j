@@ -1,4 +1,11 @@
 library TQuestFieryWings requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_FieryWings_Start=null
+    trigger gg_trg_Quest_FieryWings_Matriarch_Dead=null
+    trigger gg_trg_Quest_FieryWings_Complete=null
+endglobals
+
 function Trig_Quest_FieryWings_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h00Q_0255,true,true,true))
 endfunction
@@ -119,6 +126,40 @@ function Trig_Quest_FieryWings_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_FieryWings takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part19 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_FieryWings_Start takes nothing returns nothing
+    set gg_trg_Quest_FieryWings_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FieryWings_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FieryWings_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_FieryWings_Start,Condition(function Trig_Quest_FieryWings_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FieryWings_Start,function Trig_Quest_FieryWings_Start_Actions)
+endfunction
+
+function Register_Quest_FieryWings_Matriarch_Dead takes nothing returns nothing
+    set gg_trg_Quest_FieryWings_Matriarch_Dead=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FieryWings_Matriarch_Dead)
+    call TriggerAddCondition(gg_trg_Quest_FieryWings_Matriarch_Dead,Condition(function Trig_Quest_FieryWings_Matriarch_Dead_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FieryWings_Matriarch_Dead,function Trig_Quest_FieryWings_Matriarch_Dead_Actions)
+endfunction
+
+function Register_Quest_FieryWings_Complete takes nothing returns nothing
+    set gg_trg_Quest_FieryWings_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_FieryWings_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_FieryWings_Complete,450.,gg_unit_h00Q_0255)
+    call TriggerAddCondition(gg_trg_Quest_FieryWings_Complete,Condition(function Trig_Quest_FieryWings_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_FieryWings_Complete,function Trig_Quest_FieryWings_Complete_Actions)
 endfunction
 
 endlibrary

@@ -58,6 +58,7 @@ function Trig_Spell_HolyBlast_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_HolyBlast.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_HolyBlast takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

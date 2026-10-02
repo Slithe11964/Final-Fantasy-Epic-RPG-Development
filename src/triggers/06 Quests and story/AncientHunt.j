@@ -174,9 +174,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AncientHunt takes nothing returns nothing
-    call Register_AncientHunt_Start()
-    call Register_AncientHunt_Count()
-    call Register_AncientHunt_Reward()
+    call Register_AncientHunt_Start() // starts off; enabled by Krjn
+    call Register_AncientHunt_Count() // starts off; enabled by AncientHunt
+    call Register_AncientHunt_Reward() // starts off; enabled by AncientHunt
 endfunction
 
 endlibrary

@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_UltimaWeapon takes nothing returns nothing
-    call Register_UltimaWeapon_Hide()
+    call Register_UltimaWeapon_Hide() // run by MapBootstrap
 endfunction
 
 endlibrary

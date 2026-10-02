@@ -1,4 +1,15 @@
 library TArenaAccess requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Lock_Controls=null
+    trigger gg_trg_Arena_Enter_Region=null
+    trigger gg_trg_Arena_PlayerLeft=null
+    trigger gg_trg_Arena_GateWrongSide=null
+    trigger gg_trg_Arena_GateOpen=null
+    trigger gg_trg_Arena_Enter_Eject=null
+    trigger gg_trg_Arena_Leave_Player=null
+endglobals
+
 function Trig_Arena_Lock_Controls_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     set bj_forLoopAIndex=0
@@ -131,6 +142,63 @@ function Trig_Arena_Leave_Player_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Access takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2, RegisterTriggers_Arena_Part4 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Lock_Controls takes nothing returns nothing
+    set gg_trg_Arena_Lock_Controls=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Lock_Controls)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Arena_Lock_Controls,udg_ArenaLockTimer)
+    call TriggerAddAction(gg_trg_Arena_Lock_Controls,function Trig_Arena_Lock_Controls_Actions)
+endfunction
+
+function Register_Arena_Enter_Region takes nothing returns nothing
+    set gg_trg_Arena_Enter_Region=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Enter_Region)
+    call TriggerRegisterEnterRectSimple(gg_trg_Arena_Enter_Region,gg_rct_373)
+    call TriggerAddAction(gg_trg_Arena_Enter_Region,function Trig_Arena_Enter_Region_Actions)
+endfunction
+
+function Register_Arena_PlayerLeft takes nothing returns nothing
+    set gg_trg_Arena_PlayerLeft=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_PlayerLeft)
+    call TriggerRegisterLeaveRectSimple(gg_trg_Arena_PlayerLeft,gg_rct_373)
+    call TriggerAddCondition(gg_trg_Arena_PlayerLeft,Condition(function Trig_Arena_PlayerLeft_Conditions))
+    call TriggerAddAction(gg_trg_Arena_PlayerLeft,function Trig_Arena_PlayerLeft_Actions)
+endfunction
+
+function Register_Arena_GateWrongSide takes nothing returns nothing
+    set gg_trg_Arena_GateWrongSide=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Arena_GateWrongSide,gg_rct_485)
+    call TriggerAddCondition(gg_trg_Arena_GateWrongSide,Condition(function Trig_Arena_GateWrongSide_Conditions))
+    call TriggerAddAction(gg_trg_Arena_GateWrongSide,function Trig_Arena_GateWrongSide_Actions)
+endfunction
+
+function Register_Arena_GateOpen takes nothing returns nothing
+    set gg_trg_Arena_GateOpen=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_GateOpen)
+    call TriggerRegisterEnterRectSimple(gg_trg_Arena_GateOpen,gg_rct_043)
+    call TriggerAddCondition(gg_trg_Arena_GateOpen,Condition(function Trig_Arena_GateOpen_Conditions))
+    call TriggerAddAction(gg_trg_Arena_GateOpen,function Trig_Arena_GateOpen_Actions)
+endfunction
+
+function Register_Arena_Enter_Eject takes nothing returns nothing
+    set gg_trg_Arena_Enter_Eject=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Enter_Eject)
+    call TriggerRegisterEnterRectSimple(gg_trg_Arena_Enter_Eject,gg_rct_496)
+    call TriggerAddCondition(gg_trg_Arena_Enter_Eject,Condition(function Trig_Arena_Enter_Eject_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Enter_Eject,function Trig_Arena_Enter_Eject_Actions)
+endfunction
+
+function Register_Arena_Leave_Player takes nothing returns nothing
+    set gg_trg_Arena_Leave_Player=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Leave_Player)
+    call TriggerRegisterLeaveRectSimple(gg_trg_Arena_Leave_Player,gg_rct_496)
+    call TriggerAddCondition(gg_trg_Arena_Leave_Player,Condition(function Trig_Arena_Leave_Player_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Leave_Player,function Trig_Arena_Leave_Player_Actions)
 endfunction
 
 endlibrary

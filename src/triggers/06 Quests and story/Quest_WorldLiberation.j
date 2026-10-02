@@ -1,4 +1,10 @@
 library TQuestWorldLiberation requires TPlayerPart01, TReward
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_WorldLiberation_Count=null
+    trigger gg_trg_Quest_WorldLiberation_Reward=null
+endglobals
+
 function Trig_Quest_WorldLiberation_Count_StoneNotBroken takes nothing returns boolean
     return(udg_HashmalumStage<=0)
 endfunction
@@ -80,6 +86,22 @@ function Trig_Quest_WorldLiberation_Reward_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_WorldLiberation takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part4 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_WorldLiberation_Count takes nothing returns nothing
+    set gg_trg_Quest_WorldLiberation_Count=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_WorldLiberation_Count)
+    call TriggerAddAction(gg_trg_Quest_WorldLiberation_Count,function Trig_Quest_WorldLiberation_Count_Actions)
+endfunction
+
+function Register_Quest_WorldLiberation_Reward takes nothing returns nothing
+    set gg_trg_Quest_WorldLiberation_Reward=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_WorldLiberation_Reward,udg_LiberationRewardTimer)
+    call TriggerAddAction(gg_trg_Quest_WorldLiberation_Reward,function Trig_Quest_WorldLiberation_Reward_Actions)
 endfunction
 
 endlibrary

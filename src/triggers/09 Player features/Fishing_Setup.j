@@ -1,4 +1,10 @@
 library TFishingSetup requires TGroup, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fishing_Pole_Found=null
+    trigger gg_trg_Fishing_Unlock=null
+endglobals
+
 function Trig_Fishing_Setup_HideFishingSpot takes nothing returns nothing
     call ShowUnitHide(GetEnumUnit())
     call SetUnitLifePercentBJ(GetEnumUnit(),'d')
@@ -182,6 +188,30 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Fishing_Setup takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Fishing_Part1 (module Fishing),
+// which keeps the original registration order.
+
+function Register_Fishing_Setup takes nothing returns nothing
+    set gg_trg_Fishing_Setup=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Fishing_Setup,2.)
+    call TriggerAddAction(gg_trg_Fishing_Setup,function Trig_Fishing_Setup_Actions)
+endfunction
+
+function Register_Fishing_Pole_Found takes nothing returns nothing
+    set gg_trg_Fishing_Pole_Found=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Fishing_Pole_Found,gg_rct_581)
+    call TriggerAddCondition(gg_trg_Fishing_Pole_Found,Condition(function Trig_Fishing_Pole_Found_Conditions))
+    call TriggerAddAction(gg_trg_Fishing_Pole_Found,function Trig_Fishing_Pole_Found_Actions)
+endfunction
+
+function Register_Fishing_Unlock takes nothing returns nothing
+    set gg_trg_Fishing_Unlock=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fishing_Unlock,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Fishing_Unlock,Condition(function Trig_Fishing_Unlock_Conditions))
+    call TriggerAddAction(gg_trg_Fishing_Unlock,function Trig_Fishing_Unlock_Actions)
 endfunction
 
 endlibrary

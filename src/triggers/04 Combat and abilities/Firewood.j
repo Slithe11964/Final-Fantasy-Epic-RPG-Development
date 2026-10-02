@@ -79,7 +79,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Firewood takes nothing returns nothing
-    call Register_Firewood_Light_Fireplace()
+    call Register_Firewood_Light_Fireplace() // starts off; enabled by Quest_Cooking
 endfunction
 
 endlibrary

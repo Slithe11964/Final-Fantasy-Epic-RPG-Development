@@ -119,8 +119,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Eidolon takes nothing returns nothing
-    call Register_Eidolon_Found_Reveal()
-    call Register_Eidolon_Leviathan_Ambush()
+    call Register_Eidolon_Found_Reveal() // starts off; enabled by Quest_EidolonChallenge; disabled by Quest_EidolonChallenge; destroyed by Quest_EidolonChallenge
+    call Register_Eidolon_Leviathan_Ambush() // starts off; enabled by Quest_EidolonChallenge
 endfunction
 
 endlibrary

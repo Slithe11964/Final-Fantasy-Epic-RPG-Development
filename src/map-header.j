@@ -1,3 +1,27 @@
+// ==========================================================================================
+// FINAL FANTASY EPIC RPG - developer guide (full docs: FFERPG/docs in the developer workspace)
+//
+// Trigger folders
+//   01 Shared helpers        small utilities used everywhere: waits, groups, missiles, knockback
+//   02 Map setup             world creation, pre-placed unit setup, Init_* startup triggers
+//   03 Jobs and progression  jobs, job-change shrines, heroes, levels, legendary jobs
+//   04 Combat and abilities  damage engine, spells, passives, bosses, summons, Gaya spirit
+//   05 Items crafting shops  items, loot, armory, crafting, forge, materia, potions
+//   06 Quests and story      quests, NPCs, story chapters, sieges, Kalm
+//   07 Hunts and encounters  spawns, monster data, hunts, arena
+//   08 World and travel      zones, teleports, gates, camera and cinematics, weather
+//   09 Player features       chat commands, save/load codes, titles, chocobos, fishing, music
+//   10 Startup coordinator   MapBootstrap: main_old, the startup sequence
+//
+// Conventions
+//   * Each code module is a vJass library (T<Module>): keep JassHelper and vJass enabled.
+//   * Trigger X: its code is Trig_X_* ; it is created by Register_X ; the module's
+//     RegisterTriggers_* lists its triggers in startup order (called from MapBootstrap).
+//   * A module's own variables are in the globals block at its top; shared ones are below.
+//   * Object ids such as 'A0B3' carry a comment with the object's name.
+//   * New triggers: just create them in World Editor (see docs/STARTUP.md for caveats).
+//   * After saving in World Editor, run Build Play Copy before playing (long quest text).
+// ==========================================================================================
 globals
     // ======================================================================================
     // Map-wide variables that several modules share.

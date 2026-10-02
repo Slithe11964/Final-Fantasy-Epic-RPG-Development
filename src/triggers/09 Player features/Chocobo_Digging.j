@@ -1,5 +1,9 @@
 library TChocoboDigging
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_DeadPepper_Dig=null
+    trigger gg_trg_Chocobo_DigSpot_Nearest=null
+    trigger gg_trg_Chocobo_Drop_Nut=null
     // Variables only this module uses.
     location udg_ChocoboNearestDigSpot=null
     integer udg_ChocoboDigSpotIndex=0
@@ -260,6 +264,28 @@ function Trig_Chocobo_Drop_Nut_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_Digging takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1, RegisterTriggers_Chocobo_Part2 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_DeadPepper_Dig takes nothing returns nothing
+    set gg_trg_Chocobo_DeadPepper_Dig=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_DeadPepper_Dig,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_DeadPepper_Dig,Condition(function Trig_Chocobo_DeadPepper_Dig_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_DeadPepper_Dig,function Trig_Chocobo_DeadPepper_Dig_Actions)
+endfunction
+
+function Register_Chocobo_DigSpot_Nearest takes nothing returns nothing
+    set gg_trg_Chocobo_DigSpot_Nearest=CreateTrigger()
+    call TriggerAddAction(gg_trg_Chocobo_DigSpot_Nearest,function Trig_Chocobo_DigSpot_Nearest_Actions)
+endfunction
+
+function Register_Chocobo_Drop_Nut takes nothing returns nothing
+    set gg_trg_Chocobo_Drop_Nut=CreateTrigger()
+    call DisableTrigger(gg_trg_Chocobo_Drop_Nut)
+    call TriggerAddAction(gg_trg_Chocobo_Drop_Nut,function Trig_Chocobo_Drop_Nut_Actions)
 endfunction
 
 endlibrary

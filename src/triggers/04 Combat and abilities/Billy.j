@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Billy takes nothing returns nothing
-    call Register_Billy_ShowTalkIcon()
+    call Register_Billy_ShowTalkIcon() // starts off; run by Boss_Exodus, TrueIceAge
 endfunction
 
 endlibrary

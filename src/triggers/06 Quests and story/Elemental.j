@@ -316,11 +316,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Elemental takes nothing returns nothing
-    call Register_Elemental_Setup()
-    call Register_Elemental_Spawn()
-    call Register_Elemental_Wander()
+    call Register_Elemental_Setup() // starts off; run by Cine, Quest_DarkKnight, TrueIceAge
+    call Register_Elemental_Spawn() // starts off; run by Elemental, Boss_Chaos
+    call Register_Elemental_Wander() // starts off; enabled by Elemental
     call Register_Elemental_Aggro()
-    call Register_Elemental_Assist_Attack()
+    call Register_Elemental_Assist_Attack() // starts off; enabled by Elemental
     call Register_Elemental_Death()
 endfunction
 

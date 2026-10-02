@@ -60,7 +60,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_PhantomDiary takes nothing returns nothing
-    call Register_PhantomDiary_Open()
+    call Register_PhantomDiary_Open() // starts off; enabled by Quest_DivineOrder
 endfunction
 
 endlibrary

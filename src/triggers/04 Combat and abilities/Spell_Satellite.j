@@ -1,4 +1,11 @@
 library TSpellSatellite requires TLoc, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_Satellite_Beam=null
+    trigger gg_trg_Spell_Satellite_Beam_InGroup=null
+    trigger gg_trg_Spell_Satellite_Beam_Death=null
+endglobals
+
 function Trig_Spell_Satellite_Beam_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A173')and(IsUnitInGroup(GetTriggerUnit(),udg_CupArenaUnits)==false) // 'A173': ability "Satellite Beam"
 endfunction
@@ -192,6 +199,31 @@ function Trig_Spell_Satellite_Beam_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Spell_Satellite takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part6 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_Satellite_Beam takes nothing returns nothing
+    set gg_trg_Spell_Satellite_Beam=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_Satellite_Beam,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_Satellite_Beam,Condition(function Trig_Spell_Satellite_Beam_Conditions))
+    call TriggerAddAction(gg_trg_Spell_Satellite_Beam,function Trig_Spell_Satellite_Beam_Actions)
+endfunction
+
+function Register_Spell_Satellite_Beam_InGroup takes nothing returns nothing
+    set gg_trg_Spell_Satellite_Beam_InGroup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_Satellite_Beam_InGroup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_Satellite_Beam_InGroup,Condition(function Trig_Spell_Satellite_Beam_InGroup_Conditions))
+    call TriggerAddAction(gg_trg_Spell_Satellite_Beam_InGroup,function Trig_Spell_Satellite_Beam_InGroup_Actions)
+endfunction
+
+function Register_Spell_Satellite_Beam_Death takes nothing returns nothing
+    set gg_trg_Spell_Satellite_Beam_Death=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_Satellite_Beam_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Spell_Satellite_Beam_Death,Condition(function Trig_Spell_Satellite_Beam_Death_Conditions))
+    call TriggerAddAction(gg_trg_Spell_Satellite_Beam_Death,function Trig_Spell_Satellite_Beam_Death_Actions)
 endfunction
 
 endlibrary

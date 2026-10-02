@@ -356,13 +356,13 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HealingWaters takes nothing returns nothing
-    call Register_HealingWaters_HideFamily()
-    call Register_HealingWaters_Prepare()
-    call Register_HealingWaters_Start()
-    call Register_HealingWaters_PingVial()
-    call Register_HealingWaters_DefiledVial()
-    call Register_HealingWaters_Cure()
-    call Register_HealingWaters_CureBlood()
+    call Register_HealingWaters_HideFamily() // run by MapBootstrap
+    call Register_HealingWaters_Prepare() // starts off; run by Quest_NightElves, TrueIceAge
+    call Register_HealingWaters_Start() // starts off; enabled by HealingWaters
+    call Register_HealingWaters_PingVial() // starts off; enabled by HealingWaters; disabled by HealingWaters
+    call Register_HealingWaters_DefiledVial() // starts off; enabled by HealingWaters; disabled by HealingWaters
+    call Register_HealingWaters_Cure() // starts off; enabled by HealingWaters; disabled by HealingWaters
+    call Register_HealingWaters_CureBlood() // starts off; enabled by HealingWaters; disabled by HealingWaters
 endfunction
 
 endlibrary

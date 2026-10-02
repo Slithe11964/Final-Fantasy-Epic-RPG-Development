@@ -327,4 +327,14 @@ endfunction
 function InitTrig_Hero_LevelUp takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hero_Part1 (module Hero),
+// which keeps the original registration order.
+
+function Register_Hero_LevelUp takes nothing returns nothing
+    set gg_trg_Hero_LevelUp=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Hero_LevelUp,EVENT_PLAYER_HERO_LEVEL)
+    call TriggerAddAction(gg_trg_Hero_LevelUp,function Trig_Hero_LevelUp_Actions)
+endfunction
+
 endlibrary

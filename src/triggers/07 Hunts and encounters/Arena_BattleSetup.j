@@ -1,5 +1,8 @@
 library TArenaBattleSetup requires TForce, TGroup, TLink, TMusic, TPlayerPart01, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Start_Cup=null
+    trigger gg_trg_Arena_StartBattle=null
     // Variables only this module uses.
     integer udg_ArenaFinalTeam=0
 endglobals
@@ -474,6 +477,24 @@ function Trig_Arena_StartBattle_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_BattleSetup takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Start_Cup takes nothing returns nothing
+    set gg_trg_Arena_Start_Cup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_Start_Cup,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Arena_Start_Cup,Condition(function Trig_Arena_Start_Cup_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Start_Cup,function Trig_Arena_Start_Cup_Actions)
+endfunction
+
+function Register_Arena_StartBattle takes nothing returns nothing
+    set gg_trg_Arena_StartBattle=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_StartBattle,EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(gg_trg_Arena_StartBattle,Condition(function Trig_Arena_StartBattle_Conditions))
+    call TriggerAddAction(gg_trg_Arena_StartBattle,function Trig_Arena_StartBattle_Actions)
 endfunction
 
 endlibrary

@@ -126,9 +126,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_BridgeBattle takes nothing returns nothing
-    call Register_BridgeBattle_Prepare()
-    call Register_BridgeBattle_Start()
-    call Register_BridgeBattle_Complete()
+    call Register_BridgeBattle_Prepare() // starts off; enabled by Epilogue, Quest_NightElves, Talk
+    call Register_BridgeBattle_Start() // starts off; enabled by BridgeBattle
+    call Register_BridgeBattle_Complete() // starts off; enabled by Gilgamesh
 endfunction
 
 endlibrary

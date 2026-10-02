@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ward takes nothing returns nothing
-    call Register_Ward_ShowTalkIcon()
+    call Register_Ward_ShowTalkIcon() // starts off; run by IcyRealm
 endfunction
 
 endlibrary

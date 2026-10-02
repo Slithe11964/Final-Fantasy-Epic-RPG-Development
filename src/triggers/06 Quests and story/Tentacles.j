@@ -283,12 +283,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Tentacles takes nothing returns nothing
-    call Register_Tentacles_Start()
-    call Register_Tentacles_Ambush()
-    call Register_Tentacles_Yelp()
-    call Register_Tentacles_Despawn()
-    call Register_Tentacles_Fail()
-    call Register_Tentacles_Reward()
+    call Register_Tentacles_Start() // starts off; enabled by Sarai
+    call Register_Tentacles_Ambush() // starts off; enabled by Tentacles
+    call Register_Tentacles_Yelp() // starts off; enabled by Tentacles; disabled by Tentacles
+    call Register_Tentacles_Despawn() // starts off; enabled by Tentacles; disabled by Tentacles; destroyed by Tentacles
+    call Register_Tentacles_Fail() // starts off; run by Dana; destroyed by Tentacles
+    call Register_Tentacles_Reward() // starts off; enabled by Ultros; disabled by Tentacles; destroyed by Tentacles
 endfunction
 
 endlibrary

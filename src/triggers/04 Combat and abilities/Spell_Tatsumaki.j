@@ -95,6 +95,7 @@ function Trig_Spell_Tatsumaki_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_Tatsumaki.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_Tatsumaki takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

@@ -51,4 +51,15 @@ endfunction
 function InitTrig_Summon_Bahamut takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Summon_Part2 (module Summon),
+// which keeps the original registration order.
+
+function Register_Summon_Bahamut takes nothing returns nothing
+    set gg_trg_Summon_Bahamut=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Summon_Bahamut,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Summon_Bahamut,Condition(function Trig_Summon_Bahamut_Conditions))
+    call TriggerAddAction(gg_trg_Summon_Bahamut,function Trig_Summon_Bahamut_Actions)
+endfunction
+
 endlibrary

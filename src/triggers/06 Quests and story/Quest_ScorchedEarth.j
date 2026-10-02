@@ -1,4 +1,10 @@
 library TQuestScorchedEarth requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_ScorchedEarth_Start=null
+    trigger gg_trg_Quest_ScorchedEarth_End=null
+endglobals
+
 function Trig_Quest_ScorchedEarth_Start_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)
 endfunction
@@ -130,6 +136,24 @@ function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_ScorchedEarth takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part16 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_ScorchedEarth_Start takes nothing returns nothing
+    set gg_trg_Quest_ScorchedEarth_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ScorchedEarth_Start)
+    call TriggerAddCondition(gg_trg_Quest_ScorchedEarth_Start,Condition(function Trig_Quest_ScorchedEarth_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ScorchedEarth_Start,function Trig_Quest_ScorchedEarth_Start_Actions)
+endfunction
+
+function Register_Quest_ScorchedEarth_End takes nothing returns nothing
+    set gg_trg_Quest_ScorchedEarth_End=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ScorchedEarth_End)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_ScorchedEarth_End,gg_unit_U00Q_0023,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_ScorchedEarth_End,function Trig_Quest_ScorchedEarth_End_Actions)
 endfunction
 
 endlibrary

@@ -234,8 +234,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkPhoenix takes nothing returns nothing
-    call Register_DarkPhoenix_Appear()
-    call Register_DarkPhoenix_Death()
+    call Register_DarkPhoenix_Appear() // starts off; enabled by DarkEidolons
+    call Register_DarkPhoenix_Death() // starts off; enabled by DarkPhoenix
 endfunction
 
 endlibrary

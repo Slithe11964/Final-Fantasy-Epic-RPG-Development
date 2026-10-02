@@ -1,4 +1,13 @@
 library TBossEchele requires TBattleLog, TCam, TCine, TLoc, TMusic, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Echele_Start=null
+    trigger gg_trg_Boss_Echele_SpawnForm=null
+    trigger gg_trg_Boss_Echele_FormChange=null
+    trigger gg_trg_Boss_Echele_KillMinions=null
+    trigger gg_trg_Boss_Echele_Leash=null
+endglobals
+
 function Trig_Boss_Echele_Start_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_ActivePlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
@@ -529,6 +538,45 @@ function Trig_Boss_Echele_Leash_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Echele takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part7 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Echele_Start takes nothing returns nothing
+    set gg_trg_Boss_Echele_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Echele_Start)
+    call TriggerRegisterEnterRectSimple(gg_trg_Boss_Echele_Start,gg_rct_657)
+    call TriggerAddCondition(gg_trg_Boss_Echele_Start,Condition(function Trig_Boss_Echele_Start_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Echele_Start,function Trig_Boss_Echele_Start_Actions)
+endfunction
+
+function Register_Boss_Echele_SpawnForm takes nothing returns nothing
+    set gg_trg_Boss_Echele_SpawnForm=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Echele_SpawnForm)
+    call TriggerAddAction(gg_trg_Boss_Echele_SpawnForm,function Trig_Boss_Echele_SpawnForm_Actions)
+endfunction
+
+function Register_Boss_Echele_FormChange takes nothing returns nothing
+    set gg_trg_Boss_Echele_FormChange=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Echele_FormChange)
+    call TriggerAddCondition(gg_trg_Boss_Echele_FormChange,Condition(function Trig_Boss_Echele_FormChange_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Echele_FormChange,function Trig_Boss_Echele_FormChange_Actions)
+endfunction
+
+function Register_Boss_Echele_KillMinions takes nothing returns nothing
+    set gg_trg_Boss_Echele_KillMinions=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_Echele_KillMinions,udg_EcheleMinionKillTimer)
+    call TriggerAddAction(gg_trg_Boss_Echele_KillMinions,function Trig_Boss_Echele_KillMinions_Actions)
+endfunction
+
+function Register_Boss_Echele_Leash takes nothing returns nothing
+    set gg_trg_Boss_Echele_Leash=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Echele_Leash)
+    call TriggerRegisterEnterRectSimple(gg_trg_Boss_Echele_Leash,gg_rct_660)
+    call TriggerAddCondition(gg_trg_Boss_Echele_Leash,Condition(function Trig_Boss_Echele_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Echele_Leash,function Trig_Boss_Echele_Leash_Actions)
 endfunction
 
 endlibrary

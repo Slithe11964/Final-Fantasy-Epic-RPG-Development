@@ -48,12 +48,12 @@ function Unit_PlayersNearby takes real l_radius,unit u,boolean l_onlyTriggerUnit
     return false
 endfunction
 
-function Unit_AngleToPoint takes unit l_origin,real l_x_2,real l_y returns real
+function Unit_AngleToPoint takes unit l_origin,real l_x,real l_y returns real
     // Result 1: (l_y) minus (y position of l_origin).
-    // Result 2: (l_x_2) minus (x position of l_origin).
+    // Result 2: (l_x) minus (x position of l_origin).
     // Result 3: the angle in radians from the y gap (result 1) and x gap (result 2).
     // Result 4: (bj_RADTODEG) times (result 3).
-    return bj_RADTODEG*Atan2(l_y-GetUnitY(l_origin),l_x_2-GetUnitX(l_origin))
+    return bj_RADTODEG*Atan2(l_y-GetUnitY(l_origin),l_x-GetUnitX(l_origin))
 endfunction
 
 function Unit_ScaleToLevel takes unit u,integer l_targetLevel returns nothing
@@ -586,7 +586,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Unit takes nothing returns nothing
-    call Register_Unit_ApplyUpgradeBonuses()
+    call Register_Unit_ApplyUpgradeBonuses() // starts off; run by Cmd, Gaya_Inventory, Job +1 more
 endfunction
 
 endlibrary

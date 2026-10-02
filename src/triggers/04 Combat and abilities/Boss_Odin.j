@@ -1,4 +1,11 @@
 library TBossOdin requires TCam, TCine, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Odin_Intro=null
+    trigger gg_trg_Boss_Odin_Escort_AI=null
+    trigger gg_trg_Boss_Odin_Death=null
+endglobals
+
 function Trig_Boss_Odin_Intro_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_H01M_0071,true,true,true))
 endfunction
@@ -190,6 +197,39 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Odin takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part10 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Odin_Intro takes nothing returns nothing
+    set gg_trg_Boss_Odin_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Odin_Intro)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Boss_Odin_Intro,Player(7),true)
+    call TriggerAddCondition(gg_trg_Boss_Odin_Intro,Condition(function Trig_Boss_Odin_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Odin_Intro,function Trig_Boss_Odin_Intro_Actions)
+endfunction
+
+function Register_Boss_Odin_Escort_AI takes nothing returns nothing
+    set gg_trg_Boss_Odin_Escort_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Odin_Escort_AI)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Boss_Odin_Escort_AI,10.)
+    call TriggerAddAction(gg_trg_Boss_Odin_Escort_AI,function Trig_Boss_Odin_Escort_AI_Actions)
+endfunction
+
+function Register_Boss_Odin_Death takes nothing returns nothing
+    set gg_trg_Boss_Odin_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Odin_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Odin_Death,gg_unit_H01M_0071,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Odin_Death,function Trig_Boss_Odin_Death_Actions)
 endfunction
 
 endlibrary

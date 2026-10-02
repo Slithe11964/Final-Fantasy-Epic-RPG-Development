@@ -19,7 +19,7 @@
 | 5 | `Startup_CreateUnits` | Script-placed buildings, critters and units (`Units` module) |
 | 6 | `Startup_BlizzardSupport` | Blizzard library state: player forces, stock, single-player flag |
 | 7 | `Startup_InitSharedSystems` | Shared tables: paths, job heroes, music, save codes, missiles, recipes |
-| 8 | `Startup_LegacySpellTriggers` | A few spell triggers the original author registered inline |
+| 8 | `Startup_LegacySpellTriggers` | A few spell and boss-spell triggers, registered by each spell module's `RegisterLegacy_*` function |
 | 9 | `Startup_InitGameplayState` | Initial values of shared `udg_` variables |
 | 10 | `Startup_RegisterTriggers` | Creates every gameplay trigger (see below) |
 | 11 | `Startup_RunMapInitTriggers` | Runs the "initialization" triggers: quest setup, hiding NPCs, and so on |
@@ -28,7 +28,7 @@
 
 ## How existing triggers are created
 
-Each trigger has a **registration helper** in its own module:
+Each trigger has a **registration helper**, in the same module as the trigger's code:
 
 ```jass
 function Register_Agrias_ShowMarker takes nothing returns nothing
@@ -38,7 +38,11 @@ function Register_Agrias_ShowMarker takes nothing returns nothing
 endfunction
 ```
 
-At the bottom of each module, `RegisterTriggers_<Module>` calls that module's helpers in order.
+`RegisterTriggers_<Module>` functions list the helpers in startup order. Most modules have their
+own, at the bottom. Parent modules such as Quest, Boss, Hunt and Arena hold the lists for their
+feature modules; for example, `RegisterTriggers_Quest_Part9` calls `Register_Quest_Shimmerweed_Start`,
+which lives in `Quest_Shimmerweed`. Each call is annotated with whether the trigger starts
+switched off and which modules turn it on, off or run it.
 `Startup_RegisterTriggers` starts each `RegisterTriggers_*` once, using `ExecuteFunc`. That
 gives each module its own thread, as in the original map: a heavy module can't use up the
 startup thread's operation limit, and an error in one module doesn't stop the others.

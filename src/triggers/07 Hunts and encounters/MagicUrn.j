@@ -129,7 +129,7 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_MagicUrn_Part1 takes nothing returns nothing
-    call Register_MagicUrn_Setup()
+    call Register_MagicUrn_Setup() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
@@ -137,8 +137,8 @@ endfunction
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_MagicUrn_Part2 takes nothing returns nothing
     call Register_MagicUrn_Drop()
-    call Register_MagicUrn_Open()
-    call Register_MagicUrn_Boss_Death()
+    call Register_MagicUrn_Open() // starts off; enabled by MagicUrn
+    call Register_MagicUrn_Boss_Death() // starts off; enabled by MagicUrn
 endfunction
 
 endlibrary

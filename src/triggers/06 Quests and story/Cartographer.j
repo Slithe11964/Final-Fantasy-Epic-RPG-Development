@@ -434,10 +434,10 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cartographer takes nothing returns nothing
     call Register_Cartographer_Prepare()
-    call Register_Cartographer_Start()
-    call Register_Cartographer_Update()
-    call Register_Cartographer_Report()
-    call Register_Cartographer_Fail()
+    call Register_Cartographer_Start() // starts off; enabled by Cartographer
+    call Register_Cartographer_Update() // starts off; enabled by Cartographer; disabled by Cartographer; run by Cartographer; destroyed by Cartographer
+    call Register_Cartographer_Report() // starts off; enabled by Cartographer; destroyed by Cartographer
+    call Register_Cartographer_Fail() // starts off; enabled by Cartographer; destroyed by Cartographer
 endfunction
 
 endlibrary

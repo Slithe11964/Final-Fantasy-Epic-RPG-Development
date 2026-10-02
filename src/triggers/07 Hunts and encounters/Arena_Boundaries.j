@@ -1,4 +1,10 @@
 library TArenaBoundaries requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Leash=null
+    trigger gg_trg_Arena_OutOfBounds=null
+endglobals
+
 function Trig_Arena_Leash_IsArenaUnit takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_U00J_0209)or(GetTriggerUnit()==gg_unit_N022_0125)or(IsUnitInGroup(GetTriggerUnit(),udg_ArenaBoundUnits))
 endfunction
@@ -41,6 +47,25 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Arena_Boundaries takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part1, RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Leash takes nothing returns nothing
+    set gg_trg_Arena_Leash=CreateTrigger()
+    call TriggerRegisterEnterRectSimple(gg_trg_Arena_Leash,gg_rct_371)
+    call TriggerAddCondition(gg_trg_Arena_Leash,Condition(function Trig_Arena_Leash_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Leash,function Trig_Arena_Leash_Actions)
+endfunction
+
+function Register_Arena_OutOfBounds takes nothing returns nothing
+    set gg_trg_Arena_OutOfBounds=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_OutOfBounds)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Arena_OutOfBounds,1.5)
+    call TriggerAddCondition(gg_trg_Arena_OutOfBounds,Condition(function Trig_Arena_OutOfBounds_Conditions))
+    call TriggerAddAction(gg_trg_Arena_OutOfBounds,function Trig_Arena_OutOfBounds_Actions)
 endfunction
 
 endlibrary

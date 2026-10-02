@@ -145,9 +145,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_NebraKing takes nothing returns nothing
-    call Register_NebraKing_Hide()
+    call Register_NebraKing_Hide() // run by MapBootstrap
     call Register_NebraKing_Summon()
-    call Register_NebraKing_Escape()
+    call Register_NebraKing_Escape() // starts off; enabled by NebraKing; used by Quest_KingOfSea
 endfunction
 
 endlibrary

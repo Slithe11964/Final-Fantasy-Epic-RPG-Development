@@ -468,10 +468,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AlmightyShinra takes nothing returns nothing
-    call Register_AlmightyShinra_Arm()
-    call Register_AlmightyShinra_Cinematic()
-    call Register_AlmightyShinra_Spiral()
-    call Register_AlmightyShinra_Defeat()
+    call Register_AlmightyShinra_Arm() // starts off; run by Arena_Conquest, Arena_TeamSelection, Quest_OmegaWeapon +1 more
+    call Register_AlmightyShinra_Cinematic() // starts off; enabled by AlmightyShinra
+    call Register_AlmightyShinra_Spiral() // starts off; enabled by AlmightyShinra; disabled by AlmightyShinra; destroyed by AlmightyShinra
+    call Register_AlmightyShinra_Defeat() // starts off; run by Arena_Cups
 endfunction
 
 endlibrary

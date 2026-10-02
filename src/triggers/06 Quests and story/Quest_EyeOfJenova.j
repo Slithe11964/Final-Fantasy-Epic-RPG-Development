@@ -1,4 +1,10 @@
 library TQuestEyeOfJenova requires TCine, TForce, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_EyeOfJenova_PickUp=null
+    trigger gg_trg_Quest_EyeOfJenova_Deliver=null
+endglobals
+
 function Trig_Quest_EyeOfJenova_PickUp_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='gmfr') // 'gmfr': item "Eye of Jenova"
 endfunction
@@ -86,6 +92,26 @@ function Trig_Quest_EyeOfJenova_Deliver_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_EyeOfJenova takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part2 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_EyeOfJenova_PickUp takes nothing returns nothing
+    set gg_trg_Quest_EyeOfJenova_PickUp=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_EyeOfJenova_PickUp)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_EyeOfJenova_PickUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_EyeOfJenova_PickUp,Condition(function Trig_Quest_EyeOfJenova_PickUp_Conditions))
+    call TriggerAddAction(gg_trg_Quest_EyeOfJenova_PickUp,function Trig_Quest_EyeOfJenova_PickUp_Actions)
+endfunction
+
+function Register_Quest_EyeOfJenova_Deliver takes nothing returns nothing
+    set gg_trg_Quest_EyeOfJenova_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_EyeOfJenova_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_EyeOfJenova_Deliver,450.,gg_unit_Othr_0106)
+    call TriggerAddCondition(gg_trg_Quest_EyeOfJenova_Deliver,Condition(function Trig_Quest_EyeOfJenova_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Quest_EyeOfJenova_Deliver,function Trig_Quest_EyeOfJenova_Deliver_Actions)
 endfunction
 
 endlibrary

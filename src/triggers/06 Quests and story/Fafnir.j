@@ -202,19 +202,19 @@ endfunction
 function RegisterTriggers_Fafnir_Part1 takes nothing returns nothing
     call Register_Fafnir_Spawn()
     call Register_Fafnir_Patrol_Move()
-    call Register_Fafnir_Patrol_Waypoint1()
-    call Register_Fafnir_Patrol_Waypoint2()
-    call Register_Fafnir_Patrol_Waypoint3()
-    call Register_Fafnir_Patrol_Waypoint0()
-    call Register_Fafnir_Attack_Delay()
-    call Register_Fafnir_LowLife_Credit()
+    call Register_Fafnir_Patrol_Waypoint1() // starts off; enabled by Fafnir
+    call Register_Fafnir_Patrol_Waypoint2() // starts off; enabled by Fafnir
+    call Register_Fafnir_Patrol_Waypoint3() // starts off; enabled by Fafnir
+    call Register_Fafnir_Patrol_Waypoint0() // starts off; enabled by Fafnir
+    call Register_Fafnir_Attack_Delay() // starts off; enabled by Fafnir
+    call Register_Fafnir_LowLife_Credit() // starts off; enabled by Fafnir; disabled by Fafnir, Cheat; destroyed by Fafnir, Cheat
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Fafnir_Part2 takes nothing returns nothing
-    call Register_Fafnir_Battle_Begin()
+    call Register_Fafnir_Battle_Begin() // starts off; enabled by Quest_ImperviousBeast
 endfunction
 
 endlibrary

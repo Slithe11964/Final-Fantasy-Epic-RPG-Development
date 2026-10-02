@@ -22,7 +22,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Bansat takes nothing returns nothing
-    call Register_Bansat_ShowTalkIcon()
+    call Register_Bansat_ShowTalkIcon() // run by MapBootstrap
 endfunction
 
 endlibrary

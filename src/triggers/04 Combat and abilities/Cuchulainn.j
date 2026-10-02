@@ -43,7 +43,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cuchulainn takes nothing returns nothing
-    call Register_Cuchulainn_Soul_Death()
+    call Register_Cuchulainn_Soul_Death() // starts off; enabled by Shemhazai; disabled by TrueIceAge
 endfunction
 
 endlibrary

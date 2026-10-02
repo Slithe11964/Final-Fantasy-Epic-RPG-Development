@@ -1,4 +1,9 @@
 library TChocoboBribing requires TForce, TItemShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Bribe=null
+endglobals
+
 function Trig_Chocobo_Bribe_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A071') // 'A071': ability "Bribe"
 endfunction
@@ -60,6 +65,17 @@ function Trig_Chocobo_Bribe_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Chocobo_Bribing takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_Bribe takes nothing returns nothing
+    set gg_trg_Chocobo_Bribe=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_Bribe,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_Bribe,Condition(function Trig_Chocobo_Bribe_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_Bribe,function Trig_Chocobo_Bribe_Actions)
 endfunction
 
 endlibrary

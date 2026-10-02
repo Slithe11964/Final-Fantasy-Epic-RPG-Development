@@ -72,7 +72,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Portal takes nothing returns nothing
-    call Register_Portal_Reveal()
+    call Register_Portal_Reveal() // disabled by Talk; run by Epilogue, Quest_NightElves, Talk
 endfunction
 
 endlibrary

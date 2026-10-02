@@ -1,4 +1,12 @@
 library TArenaDuel requires TBattleLog, TJob, TLoc, TMusic, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Duel_AI=null
+    trigger gg_trg_Arena_Duel_Ascend=null
+    trigger gg_trg_Arena_Duel_Victory=null
+    trigger gg_trg_Arena_Duel_Cleanup=null
+endglobals
+
 function Trig_Arena_Duel_AI_IsSecondHalfStart takes nothing returns boolean
     return(udg_DragonBattlePhase==21)
 endfunction
@@ -278,6 +286,37 @@ function Trig_Arena_Duel_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Duel takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part4 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Duel_AI takes nothing returns nothing
+    set gg_trg_Arena_Duel_AI=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Duel_AI)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Arena_Duel_AI,udg_DragonBattleTimer)
+    call TriggerAddAction(gg_trg_Arena_Duel_AI,function Trig_Arena_Duel_AI_Actions)
+endfunction
+
+function Register_Arena_Duel_Ascend takes nothing returns nothing
+    set gg_trg_Arena_Duel_Ascend=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_Duel_Ascend,EVENT_PLAYER_UNIT_SPELL_FINISH)
+    call TriggerAddCondition(gg_trg_Arena_Duel_Ascend,Condition(function Trig_Arena_Duel_Ascend_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Duel_Ascend,function Trig_Arena_Duel_Ascend_Actions)
+endfunction
+
+function Register_Arena_Duel_Victory takes nothing returns nothing
+    set gg_trg_Arena_Duel_Victory=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Duel_Victory)
+    call TriggerAddCondition(gg_trg_Arena_Duel_Victory,Condition(function Trig_Arena_Duel_Victory_Conditions))
+    call TriggerAddAction(gg_trg_Arena_Duel_Victory,function Trig_Arena_Duel_Victory_Actions)
+endfunction
+
+function Register_Arena_Duel_Cleanup takes nothing returns nothing
+    set gg_trg_Arena_Duel_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Duel_Cleanup)
+    call TriggerAddAction(gg_trg_Arena_Duel_Cleanup,function Trig_Arena_Duel_Cleanup_Actions)
 endfunction
 
 endlibrary

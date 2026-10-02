@@ -1,4 +1,10 @@
 library TQuestCrossbow requires TForce, TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Crossbow_NeedEnemies=null
+    trigger gg_trg_Quest_Crossbow_Tested=null
+endglobals
+
 function Trig_Quest_Crossbow_NeedEnemies_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0KB') // 'A0KB': ability "Arrowwave"
 endfunction
@@ -62,6 +68,26 @@ function Trig_Quest_Crossbow_Tested_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Crossbow takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part20 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Crossbow_NeedEnemies takes nothing returns nothing
+    set gg_trg_Quest_Crossbow_NeedEnemies=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Crossbow_NeedEnemies)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Crossbow_NeedEnemies,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddCondition(gg_trg_Quest_Crossbow_NeedEnemies,Condition(function Trig_Quest_Crossbow_NeedEnemies_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Crossbow_NeedEnemies,function Trig_Quest_Crossbow_NeedEnemies_Actions)
+endfunction
+
+function Register_Quest_Crossbow_Tested takes nothing returns nothing
+    set gg_trg_Quest_Crossbow_Tested=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Crossbow_Tested)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Crossbow_Tested,EVENT_PLAYER_UNIT_USE_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_Crossbow_Tested,Condition(function Trig_Quest_Crossbow_Tested_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Crossbow_Tested,function Trig_Quest_Crossbow_Tested_Actions)
 endfunction
 
 endlibrary

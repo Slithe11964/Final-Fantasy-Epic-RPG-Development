@@ -1,4 +1,11 @@
 library TGayaSupport requires TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gaya_BreakStun=null
+    trigger gg_trg_Gaya_ManaTransfer=null
+    trigger gg_trg_Gaya_MegaHeal=null
+endglobals
+
 function Trig_Gaya_BreakStun_Conditions takes nothing returns boolean
     return GetSpellAbilityId()=='A0B4' // 'A0B4': ability "Break Stun"
 endfunction
@@ -68,6 +75,31 @@ function Trig_Gaya_MegaHeal_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Gaya_Support takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Gaya (module Gaya),
+// which keeps the original registration order.
+
+function Register_Gaya_BreakStun takes nothing returns nothing
+    set gg_trg_Gaya_BreakStun=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_BreakStun,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Gaya_BreakStun,Condition(function Trig_Gaya_BreakStun_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_BreakStun,function Trig_Gaya_BreakStun_Actions)
+endfunction
+
+function Register_Gaya_ManaTransfer takes nothing returns nothing
+    set gg_trg_Gaya_ManaTransfer=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_ManaTransfer,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Gaya_ManaTransfer,Condition(function Trig_Gaya_ManaTransfer_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_ManaTransfer,function Trig_Gaya_ManaTransfer_Actions)
+endfunction
+
+function Register_Gaya_MegaHeal takes nothing returns nothing
+    set gg_trg_Gaya_MegaHeal=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Gaya_MegaHeal,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Gaya_MegaHeal,Condition(function Trig_Gaya_MegaHeal_Conditions))
+    call TriggerAddAction(gg_trg_Gaya_MegaHeal,function Trig_Gaya_MegaHeal_Actions)
 endfunction
 
 endlibrary

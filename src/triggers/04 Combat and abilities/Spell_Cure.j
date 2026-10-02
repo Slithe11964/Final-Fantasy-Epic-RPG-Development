@@ -35,6 +35,7 @@ function Trig_Spell_Cure_Actions takes nothing returns nothing
 endfunction
 
 // Owns event registration, filters, and preloads for Spell_Cure.
+// Called once at startup by Startup_LegacySpellTriggers (MapBootstrap).
 function RegisterLegacy_Spell_Cure takes nothing returns nothing
     local trigger eventTrigger
     local integer setupIndex

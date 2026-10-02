@@ -46,4 +46,15 @@ endfunction
 function InitTrig_Spell_Quake takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Spell_Part6 (module Spell),
+// which keeps the original registration order.
+
+function Register_Spell_Quake takes nothing returns nothing
+    set gg_trg_Spell_Quake=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Spell_Quake,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Spell_Quake,Condition(function Trig_Spell_Quake_Conditions))
+    call TriggerAddAction(gg_trg_Spell_Quake,function Trig_Spell_Quake_Actions)
+endfunction
+
 endlibrary

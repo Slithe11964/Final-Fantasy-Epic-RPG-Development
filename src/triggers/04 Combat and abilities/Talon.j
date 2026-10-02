@@ -57,8 +57,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Talon takes nothing returns nothing
-    call Register_Talon_Leash_Gate()
-    call Register_Talon_Death()
+    call Register_Talon_Leash_Gate() // starts off; enabled by Quest_ZodiacAge
+    call Register_Talon_Death() // starts off; enabled by Quest_ZodiacAge
 endfunction
 
 endlibrary

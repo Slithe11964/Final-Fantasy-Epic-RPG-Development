@@ -116,8 +116,8 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ForestSpirit takes nothing returns nothing
     call Register_ForestSpirit_Spawn()
-    call Register_ForestSpirit_Wander()
-    call Register_ForestSpirit_Flee()
+    call Register_ForestSpirit_Wander() // disabled by VoiceOfForest; destroyed by VoiceOfForest
+    call Register_ForestSpirit_Flee() // disabled by VoiceOfForest; destroyed by VoiceOfForest
 endfunction
 
 endlibrary

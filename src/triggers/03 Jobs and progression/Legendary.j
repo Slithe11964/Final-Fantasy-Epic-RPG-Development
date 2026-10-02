@@ -34,7 +34,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Legendary takes nothing returns nothing
-    call Register_Legendary_Unlock()
+    call Register_Legendary_Unlock() // starts off; run by Title
 endfunction
 
 endlibrary

@@ -212,12 +212,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Gafgarion takes nothing returns nothing
-    call Register_Gafgarion_Join_Party()
-    call Register_Gafgarion_Leash()
-    call Register_Gafgarion_Death_Timer()
-    call Register_Gafgarion_Revive()
-    call Register_Gafgarion_Block_Portal_Scroll()
-    call Register_Gafgarion_Join_Summit()
+    call Register_Gafgarion_Join_Party() // starts off; enabled by Boss_Hashmalum
+    call Register_Gafgarion_Leash() // disabled by IceAge; destroyed by IceAge
+    call Register_Gafgarion_Death_Timer() // disabled by IceAge; destroyed by IceAge
+    call Register_Gafgarion_Revive() // disabled by IceAge; destroyed by IceAge
+    call Register_Gafgarion_Block_Portal_Scroll() // disabled by IceAge; destroyed by IceAge
+    call Register_Gafgarion_Join_Summit() // starts off; enabled by IceAge
     call Register_Gafgarion_RegenBurst()
 endfunction
 

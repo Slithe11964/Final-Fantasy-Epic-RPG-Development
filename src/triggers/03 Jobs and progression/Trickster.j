@@ -65,8 +65,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Trickster takes nothing returns nothing
-    call Register_Trickster_Decoy_Spawn()
-    call Register_Trickster_Reveal()
+    call Register_Trickster_Decoy_Spawn() // starts off; used by Hunt_Board
+    call Register_Trickster_Reveal() // starts off; enabled by Trickster
 endfunction
 
 endlibrary

@@ -426,12 +426,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Epilogue takes nothing returns nothing
-    call Register_Epilogue_WaitForCid()
-    call Register_Epilogue_Kalm()
-    call Register_Epilogue_Lothlorien()
-    call Register_Epilogue_BlueMage()
-    call Register_Epilogue_DarkKnight()
-    call Register_Epilogue_Dana()
+    call Register_Epilogue_WaitForCid() // starts off; enabled by TrueIceAge
+    call Register_Epilogue_Kalm() // starts off; enabled by Epilogue
+    call Register_Epilogue_Lothlorien() // starts off; enabled by TrueIceAge
+    call Register_Epilogue_BlueMage() // starts off; enabled by TrueIceAge
+    call Register_Epilogue_DarkKnight() // starts off; enabled by TrueIceAge
+    call Register_Epilogue_Dana() // starts off; enabled by Dana, TrueIceAge
 endfunction
 
 endlibrary

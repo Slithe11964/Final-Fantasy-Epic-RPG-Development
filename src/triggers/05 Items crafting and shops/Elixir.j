@@ -130,9 +130,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Elixir takes nothing returns nothing
-    call Register_Elixir_Prepare()
-    call Register_Elixir_Start()
-    call Register_Elixir_Deliver()
+    call Register_Elixir_Prepare() // starts off; run by QuestCount
+    call Register_Elixir_Start() // starts off; enabled by Elixir
+    call Register_Elixir_Deliver() // starts off; enabled by Elixir
 endfunction
 
 endlibrary

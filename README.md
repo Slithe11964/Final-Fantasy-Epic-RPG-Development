@@ -31,11 +31,15 @@ be reviewed, diffed and reverted with Git.
 
 ## Where things are in the code
 
+Start with `docs/SYSTEMS.md`, a folder-by-folder guide. The top of the map header in the
+Trigger Editor has a short version of it.
+
 - Startup is described in `docs/STARTUP.md`. Short version: `main_old` (in
   `10 Startup coordinator/MapBootstrap`) runs 11 named `Startup_*` steps.
 - To find where a trigger is created, search for `Register_<TriggerName>`. It sits in the
-  same module as the trigger's actions. Every module ends with `RegisterTriggers_<Module>`,
-  which lists the module's triggers.
+  same module as the trigger's code.
+- A module's own variables are in the `globals` block at its top. Shared variables are in the
+  map header, grouped by the folders that use them. `docs/GLOBALS.md` lists them all.
 - Object IDs such as `'A0B3'` carry a comment with the object's name. Formulas carry comments
   explaining the math.
 
@@ -47,6 +51,7 @@ be reviewed, diffed and reverted with Git.
 | `python tools/startup_audit.py OLD NEW` | Proves NEW's startup does the same work as OLD's. |
 | `python tools/export_sources.py MAP` | Map → `src/` (for Git). |
 | `python tools/build_map.py BASE OUT [--runtime war3map.j]` | `src/` → map (for tool-driven refactors). |
+| `python tools/gen_docs.py` | Regenerates `docs/TRIGGER_INDEX.md`, `GLOBALS.md` and `DEAD_CODE.md` from `src/`. |
 
 `check_map.py` needs `pjass`, `common.j` and `blizzard.j`. It finds them in `tools/bin/` or in
 `../Builder24/tools/JassHelper/`; on Windows that's the bundled `pjass.exe`.

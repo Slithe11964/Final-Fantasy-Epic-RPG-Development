@@ -1,4 +1,13 @@
 library TBossBelias requires TCam, TCine, TLink, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Belias_Rescue_Mateus=null
+    trigger gg_trg_Boss_Belias_Revive_Loop=null
+    trigger gg_trg_Boss_Belias_Rescue_Gafgarion=null
+    trigger gg_trg_Boss_Belias_Gafgarion_Death=null
+    trigger gg_trg_Boss_Belias_Death_Final=null
+endglobals
+
 function Trig_Boss_Belias_Rescue_Mateus_Conditions takes nothing returns boolean
     return(udg_MateusDefeated==false)
 endfunction
@@ -338,6 +347,47 @@ function Trig_Boss_Belias_Death_Final_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Belias takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part6 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Belias_Rescue_Mateus takes nothing returns nothing
+    set gg_trg_Boss_Belias_Rescue_Mateus=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Belias_Rescue_Mateus)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Belias_Rescue_Mateus,gg_unit_Uwar_0192,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Boss_Belias_Rescue_Mateus,Condition(function Trig_Boss_Belias_Rescue_Mateus_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Belias_Rescue_Mateus,function Trig_Boss_Belias_Rescue_Mateus_Actions)
+endfunction
+
+function Register_Boss_Belias_Revive_Loop takes nothing returns nothing
+    set gg_trg_Boss_Belias_Revive_Loop=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Belias_Revive_Loop)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Belias_Revive_Loop,gg_unit_Uwar_0192,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Boss_Belias_Revive_Loop,Condition(function Trig_Boss_Belias_Revive_Loop_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Belias_Revive_Loop,function Trig_Boss_Belias_Revive_Loop_Actions)
+endfunction
+
+function Register_Boss_Belias_Rescue_Gafgarion takes nothing returns nothing
+    set gg_trg_Boss_Belias_Rescue_Gafgarion=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Belias_Rescue_Gafgarion)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Belias_Rescue_Gafgarion,gg_unit_Uwar_0192,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Boss_Belias_Rescue_Gafgarion,Condition(function Trig_Boss_Belias_Rescue_Gafgarion_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Belias_Rescue_Gafgarion,function Trig_Boss_Belias_Rescue_Gafgarion_Actions)
+endfunction
+
+function Register_Boss_Belias_Gafgarion_Death takes nothing returns nothing
+    set gg_trg_Boss_Belias_Gafgarion_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Belias_Gafgarion_Death)
+    call TriggerAddAction(gg_trg_Boss_Belias_Gafgarion_Death,function Trig_Boss_Belias_Gafgarion_Death_Actions)
+endfunction
+
+function Register_Boss_Belias_Death_Final takes nothing returns nothing
+    set gg_trg_Boss_Belias_Death_Final=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Belias_Death_Final)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Belias_Death_Final,gg_unit_Uwar_0192,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Belias_Death_Final,function Trig_Boss_Belias_Death_Final_Actions)
 endfunction
 
 endlibrary

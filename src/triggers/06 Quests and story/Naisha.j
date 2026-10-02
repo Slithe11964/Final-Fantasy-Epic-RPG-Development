@@ -368,14 +368,14 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Naisha takes nothing returns nothing
-    call Register_Naisha_Init()
-    call Register_Naisha_Prepare()
-    call Register_Naisha_Recruit()
-    call Register_Naisha_Wounded()
-    call Register_Naisha_AttackedRetreat()
-    call Register_Naisha_Heal()
-    call Register_Naisha_Death()
-    call Register_Naisha_ArriveLothlorien()
+    call Register_Naisha_Init() // run by MapBootstrap
+    call Register_Naisha_Prepare() // starts off; run by Cid, Mid
+    call Register_Naisha_Recruit() // starts off; enabled by Naisha
+    call Register_Naisha_Wounded() // starts off; enabled by Naisha; disabled by Naisha; destroyed by Naisha
+    call Register_Naisha_AttackedRetreat() // starts off; enabled by Naisha; disabled by Naisha
+    call Register_Naisha_Heal() // starts off; enabled by Naisha; disabled by Naisha; destroyed by Naisha
+    call Register_Naisha_Death() // starts off; enabled by Naisha; disabled by Naisha; destroyed by Naisha
+    call Register_Naisha_ArriveLothlorien() // starts off; enabled by Naisha; disabled by Naisha; destroyed by Naisha
     call Register_Naisha_Whirl()
 endfunction
 

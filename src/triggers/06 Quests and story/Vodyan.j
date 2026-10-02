@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Vodyan takes nothing returns nothing
-    call Register_Vodyan_Death_DropTiara()
+    call Register_Vodyan_Death_DropTiara() // starts off; enabled by Quest_SpiritOfWater
 endfunction
 
 endlibrary

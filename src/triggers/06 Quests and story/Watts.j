@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Watts takes nothing returns nothing
-    call Register_Watts_Talk_Enable()
+    call Register_Watts_Talk_Enable() // starts off; run by Giott
 endfunction
 
 endlibrary

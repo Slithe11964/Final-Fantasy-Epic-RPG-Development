@@ -84,9 +84,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Artifact takes nothing returns nothing
-    call Register_Artifact_Ping()
-    call Register_Artifact_PickedUp()
-    call Register_Artifact_Carrier()
+    call Register_Artifact_Ping() // starts off; enabled by GoblinChief; disabled by Cid, TrueIceAge
+    call Register_Artifact_PickedUp() // starts off; enabled by GoblinChief
+    call Register_Artifact_Carrier() // starts off; enabled by GoblinChief; disabled by Cid, Cine, TrueIceAge
 endfunction
 
 endlibrary

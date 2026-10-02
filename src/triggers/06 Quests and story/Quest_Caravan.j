@@ -1,5 +1,16 @@
 library TQuestCaravan requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Caravan_SamAvailable=null
+    trigger gg_trg_Quest_Caravan_SamRequest=null
+    trigger gg_trg_Quest_Caravan_DioRefuses=null
+    trigger gg_trg_Quest_Caravan_Enable=null
+    trigger gg_trg_Quest_Caravan_Start=null
+    trigger gg_trg_Quest_Caravan_HorsesVulnerable=null
+    trigger gg_trg_Quest_Caravan_Deliver=null
+    trigger gg_trg_Quest_Caravan_Failed=null
+    trigger gg_trg_Quest_Caravan_Ping=null
+    trigger gg_trg_Quest_Caravan_Complete=null
     // Variables only this module uses.
     integer udg_CaravanReward=0
 endglobals
@@ -295,6 +306,109 @@ function Trig_Quest_Caravan_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Caravan takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Caravan_SamAvailable takes nothing returns nothing
+    set gg_trg_Quest_Caravan_SamAvailable=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_SamAvailable)
+    call TriggerAddAction(gg_trg_Quest_Caravan_SamAvailable,function Trig_Quest_Caravan_SamAvailable_Actions)
+endfunction
+
+function Register_Quest_Caravan_SamRequest takes nothing returns nothing
+    set gg_trg_Quest_Caravan_SamRequest=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_SamRequest)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_SamRequest,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_SamRequest,Condition(function Trig_Quest_Caravan_SamRequest_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_SamRequest,function Trig_Quest_Caravan_SamRequest_Actions)
+endfunction
+
+function Register_Quest_Caravan_DioRefuses takes nothing returns nothing
+    set gg_trg_Quest_Caravan_DioRefuses=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_DioRefuses)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_DioRefuses,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_DioRefuses,Condition(function Trig_Quest_Caravan_DioRefuses_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_DioRefuses,function Trig_Quest_Caravan_DioRefuses_Actions)
+endfunction
+
+function Register_Quest_Caravan_Enable takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Enable=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Enable)
+    call TriggerAddAction(gg_trg_Quest_Caravan_Enable,function Trig_Quest_Caravan_Enable_Actions)
+endfunction
+
+function Register_Quest_Caravan_Start takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Caravan_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_Start,Condition(function Trig_Quest_Caravan_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_Start,function Trig_Quest_Caravan_Start_Actions)
+endfunction
+
+function Register_Quest_Caravan_HorsesVulnerable takes nothing returns nothing
+    set gg_trg_Quest_Caravan_HorsesVulnerable=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_HorsesVulnerable)
+    call TriggerRegisterLeaveRectSimple(gg_trg_Quest_Caravan_HorsesVulnerable,gg_rct_498)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_HorsesVulnerable,Condition(function Trig_Quest_Caravan_HorsesVulnerable_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_HorsesVulnerable,function Trig_Quest_Caravan_HorsesVulnerable_Actions)
+endfunction
+
+function Register_Quest_Caravan_Deliver takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Caravan_Deliver,450.,gg_unit_n00B_0054)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_Deliver,Condition(function Trig_Quest_Caravan_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_Deliver,function Trig_Quest_Caravan_Deliver_Actions)
+endfunction
+
+function Register_Quest_Caravan_Failed takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Failed=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Failed)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_Caravan_Failed,gg_unit_hrdh_0102,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_Caravan_Failed,gg_unit_hrdh_0103,EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_Caravan_Failed,gg_unit_hrdh_0104,EVENT_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_Failed,Condition(function Trig_Quest_Caravan_Failed_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_Failed,function Trig_Quest_Caravan_Failed_Actions)
+endfunction
+
+function Register_Quest_Caravan_Ping takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Ping=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Ping)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_Caravan_Ping,15.)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_Ping,Condition(function Trig_Quest_Caravan_Ping_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_Ping,function Trig_Quest_Caravan_Ping_Actions)
+endfunction
+
+function Register_Quest_Caravan_Complete takes nothing returns nothing
+    set gg_trg_Quest_Caravan_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Caravan_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Caravan_Complete,450.,gg_unit_n00A_0101)
+    call TriggerAddCondition(gg_trg_Quest_Caravan_Complete,Condition(function Trig_Quest_Caravan_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Caravan_Complete,function Trig_Quest_Caravan_Complete_Actions)
 endfunction
 
 endlibrary

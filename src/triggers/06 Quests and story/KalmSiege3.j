@@ -1036,18 +1036,18 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_KalmSiege3 takes nothing returns nothing
-    call Register_KalmSiege3_Call()
-    call Register_KalmSiege3_CidTalk()
-    call Register_KalmSiege3_Start()
-    call Register_KalmSiege3_Restart()
-    call Register_KalmSiege3_Begin()
-    call Register_KalmSiege3_DemonArrive()
-    call Register_KalmSiege3_DemonSummon()
-    call Register_KalmSiege3_ChiefGuard()
-    call Register_KalmSiege3_TrackDeaths()
-    call Register_KalmSiege3_Defeat()
-    call Register_KalmSiege3_Complete()
-    call Register_KalmSiege3_Fail()
+    call Register_KalmSiege3_Call() // starts off; enabled by KalmSiege2
+    call Register_KalmSiege3_CidTalk() // starts off; enabled by KalmSiege3
+    call Register_KalmSiege3_Start() // starts off; enabled by KalmSiege3
+    call Register_KalmSiege3_Restart() // starts off; enabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_Begin() // starts off; enabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_DemonArrive() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_DemonSummon() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_ChiefGuard() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_TrackDeaths() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_Defeat() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_Complete() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
+    call Register_KalmSiege3_Fail() // starts off; enabled by KalmSiege3; disabled by KalmSiege3; destroyed by KalmSiege3
 endfunction
 
 endlibrary

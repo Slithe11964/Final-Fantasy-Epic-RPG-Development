@@ -1,5 +1,13 @@
 library TShadowLifecycle requires TCam, TCine, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shadow_Init=null
+    trigger gg_trg_Shadow_FirstAppear=null
+    trigger gg_trg_Shadow_Intro=null
+    trigger gg_trg_Shadow_Respawn=null
+    trigger gg_trg_Shadow_Leave=null
+    trigger gg_trg_Shadow_NearbyDelay=null
+    trigger gg_trg_Shadow_Death=null
     // Variables only this module uses.
     location array udg_ShadowSpawnPoint
 endglobals
@@ -420,6 +428,65 @@ endfunction
 
 // Registration ownership; called at the original bootstrap positions.
 function InitTrig_Shadow_Lifecycle takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Shadow (module Shadow),
+// which keeps the original registration order.
+
+function Register_Shadow_Init takes nothing returns nothing
+    set gg_trg_Shadow_Init=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Shadow_Init,2.)
+    call TriggerAddAction(gg_trg_Shadow_Init,function Trig_Shadow_Init_Actions)
+endfunction
+
+function Register_Shadow_FirstAppear takes nothing returns nothing
+    set gg_trg_Shadow_FirstAppear=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_FirstAppear)
+    call TriggerAddAction(gg_trg_Shadow_FirstAppear,function Trig_Shadow_FirstAppear_Actions)
+endfunction
+
+function Register_Shadow_Intro takes nothing returns nothing
+    set gg_trg_Shadow_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_Intro)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Shadow_Intro,Player(7),true)
+    call TriggerAddCondition(gg_trg_Shadow_Intro,Condition(function Trig_Shadow_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_Intro,function Trig_Shadow_Intro_Actions)
+endfunction
+
+function Register_Shadow_Respawn takes nothing returns nothing
+    set gg_trg_Shadow_Respawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_Respawn)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Shadow_Respawn,udg_ShadowTimer)
+    call TriggerAddAction(gg_trg_Shadow_Respawn,function Trig_Shadow_Respawn_Actions)
+endfunction
+
+function Register_Shadow_Leave takes nothing returns nothing
+    set gg_trg_Shadow_Leave=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Shadow_Leave,udg_ShadowTimer)
+    call TriggerAddAction(gg_trg_Shadow_Leave,function Trig_Shadow_Leave_Actions)
+endfunction
+
+function Register_Shadow_NearbyDelay takes nothing returns nothing
+    set gg_trg_Shadow_NearbyDelay=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_NearbyDelay)
+    call TriggerAddCondition(gg_trg_Shadow_NearbyDelay,Condition(function Trig_Shadow_NearbyDelay_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_NearbyDelay,function Trig_Shadow_NearbyDelay_Actions)
+endfunction
+
+function Register_Shadow_Death takes nothing returns nothing
+    set gg_trg_Shadow_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Shadow_Death)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shadow_Death,Player($A),EVENT_PLAYER_UNIT_DEATH) // $A = 10
+    call TriggerAddCondition(gg_trg_Shadow_Death,Condition(function Trig_Shadow_Death_Conditions))
+    call TriggerAddAction(gg_trg_Shadow_Death,function Trig_Shadow_Death_Actions)
 endfunction
 
 endlibrary

@@ -1,5 +1,14 @@
 library TBossDemiFiend requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_DemiFiend_Summon=null
+    trigger gg_trg_Boss_DemiFiend_Demon1_Death=null
+    trigger gg_trg_Boss_DemiFiend_Demon2_Death=null
+    trigger gg_trg_Boss_DemiFiend_Demon1_Spawn=null
+    trigger gg_trg_Boss_DemiFiend_Demon2_Spawn=null
+    trigger gg_trg_Boss_DemiFiend_Mediarahan=null
+    trigger gg_trg_Boss_DemiFiend_Death=null
+    trigger gg_trg_Boss_DemiFiend_Cleanup=null
     // Variables only this module uses.
     unit udg_DemiFiendUnit=null
     unit udg_DemiFiendDemon1=null
@@ -446,6 +455,66 @@ function Trig_Boss_DemiFiend_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_DemiFiend takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part12 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_DemiFiend_Summon takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Summon)
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Summon,function Trig_Boss_DemiFiend_Summon_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Demon1_Death takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Demon1_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Demon1_Death)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Boss_DemiFiend_Demon1_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Boss_DemiFiend_Demon1_Death,Condition(function Trig_Boss_DemiFiend_Demon1_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Demon1_Death,function Trig_Boss_DemiFiend_Demon1_Death_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Demon2_Death takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Demon2_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Demon2_Death)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Boss_DemiFiend_Demon2_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Boss_DemiFiend_Demon2_Death,Condition(function Trig_Boss_DemiFiend_Demon2_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Demon2_Death,function Trig_Boss_DemiFiend_Demon2_Death_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Demon1_Spawn takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Demon1_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Demon1_Spawn)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_DemiFiend_Demon1_Spawn,udg_DemiFiendDemon1Timer)
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Demon1_Spawn,function Trig_Boss_DemiFiend_Demon1_Spawn_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Demon2_Spawn takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Demon2_Spawn=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Demon2_Spawn)
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Boss_DemiFiend_Demon2_Spawn,udg_DemiFiendDemon2Timer)
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Demon2_Spawn,function Trig_Boss_DemiFiend_Demon2_Spawn_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Mediarahan takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Mediarahan=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Mediarahan)
+    call TriggerAddCondition(gg_trg_Boss_DemiFiend_Mediarahan,Condition(function Trig_Boss_DemiFiend_Mediarahan_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Mediarahan,function Trig_Boss_DemiFiend_Mediarahan_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Death takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Death)
+    call TriggerAddCondition(gg_trg_Boss_DemiFiend_Death,Condition(function Trig_Boss_DemiFiend_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Death,function Trig_Boss_DemiFiend_Death_Actions)
+endfunction
+
+function Register_Boss_DemiFiend_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_DemiFiend_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_DemiFiend_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_DemiFiend_Cleanup,function Trig_Boss_DemiFiend_Cleanup_Actions)
 endfunction
 
 endlibrary

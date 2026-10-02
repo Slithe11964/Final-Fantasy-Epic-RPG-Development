@@ -1,5 +1,8 @@
 library TQuestOreSupplies requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_OreSupplies_Start=null
+    trigger gg_trg_Quest_OreSupplies_Deliver=null
     // Variables only this module uses.
     integer udg_OreSuppliesRemaining=0
 endglobals
@@ -141,6 +144,33 @@ function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_OreSupplies takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part18 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_OreSupplies_Start takes nothing returns nothing
+    set gg_trg_Quest_OreSupplies_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_OreSupplies_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_OreSupplies_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_OreSupplies_Start,Condition(function Trig_Quest_OreSupplies_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_OreSupplies_Start,function Trig_Quest_OreSupplies_Start_Actions)
+endfunction
+
+function Register_Quest_OreSupplies_Deliver takes nothing returns nothing
+    set gg_trg_Quest_OreSupplies_Deliver=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_OreSupplies_Deliver)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_OreSupplies_Deliver,450.,gg_unit_H00P_0260)
+    call TriggerAddCondition(gg_trg_Quest_OreSupplies_Deliver,Condition(function Trig_Quest_OreSupplies_Deliver_Conditions))
+    call TriggerAddAction(gg_trg_Quest_OreSupplies_Deliver,function Trig_Quest_OreSupplies_Deliver_Actions)
 endfunction
 
 endlibrary

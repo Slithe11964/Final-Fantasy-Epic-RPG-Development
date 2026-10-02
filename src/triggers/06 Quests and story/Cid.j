@@ -769,22 +769,22 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Cid_Part1 takes nothing returns nothing
-    call Register_Cid_Talk_FindMid()
-    call Register_Cid_Talk_MidReturned()
-    call Register_Cid_Berserk_Start()
-    call Register_Cid_Talk_Hashmalum()
-    call Register_Cid_Berserk_Aggro()
-    call Register_Cid_Berserk_End()
+    call Register_Cid_Talk_FindMid() // disabled by Mid; destroyed by Mid
+    call Register_Cid_Talk_MidReturned() // starts off; enabled by Mid
+    call Register_Cid_Berserk_Start() // starts off; enabled by Artifact; disabled by Cine, TrueIceAge; destroyed by Cine, TrueIceAge
+    call Register_Cid_Talk_Hashmalum() // starts off; enabled by Cine; destroyed by Cid
+    call Register_Cid_Berserk_Aggro() // starts off; enabled by Cid; disabled by Cid; destroyed by Cid
+    call Register_Cid_Berserk_End() // starts off; enabled by Cid; run by Cid, Cine, TrueIceAge
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Cid_Part2 takes nothing returns nothing
-    call Register_Cid_Berserk_Revive()
-    call Register_Cid_Berserk_Aftermath()
-    call Register_Cid_Research_Done()
-    call Register_Cid_Talk_AoMadoushi()
+    call Register_Cid_Berserk_Revive() // starts off; enabled by Cid; disabled by Cid; destroyed by Cid
+    call Register_Cid_Berserk_Aftermath() // starts off; run by Cid
+    call Register_Cid_Research_Done() // starts off; enabled by Cid; disabled by TrueIceAge
+    call Register_Cid_Talk_AoMadoushi() // starts off; enabled by Cid; disabled by TrueIceAge
 endfunction
 
 endlibrary

@@ -44,7 +44,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Thunderbloom takes nothing returns nothing
     call Register_Thunderbloom_Spawn()
-    call Register_Thunderbloom_Pickup()
+    call Register_Thunderbloom_Pickup() // starts off; enabled by Thunderbloom
 endfunction
 
 endlibrary

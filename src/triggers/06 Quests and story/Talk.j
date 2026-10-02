@@ -187,15 +187,15 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Talk_Part1 takes nothing returns nothing
-    call Register_Talk_PortalGuardian()
-    call Register_Talk_ForestGuardian()
+    call Register_Talk_PortalGuardian() // disabled by Epilogue, Portal, Quest_NightElves; destroyed by Epilogue, Portal, Quest_NightElves
+    call Register_Talk_ForestGuardian() // starts off; enabled by Portal; disabled by Epilogue, Quest_NightElves; destroyed by Epilogue, Quest_NightElves
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Talk_Part2 takes nothing returns nothing
-    call Register_Talk_Lothlorien_Greet()
+    call Register_Talk_Lothlorien_Greet() // disabled by Quest_NightElves, TrueIceAge; destroyed by Quest_NightElves
 endfunction
 
 endlibrary

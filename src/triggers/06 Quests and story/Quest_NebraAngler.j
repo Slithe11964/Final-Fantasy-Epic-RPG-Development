@@ -1,4 +1,10 @@
 library TQuestNebraAngler requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_NebraAngler_Start=null
+    trigger gg_trg_Quest_NebraAngler_Reward=null
+endglobals
+
 function Trig_Quest_NebraAngler_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0AV_0247,true,true,true))
 endfunction
@@ -105,6 +111,33 @@ function Trig_Quest_NebraAngler_Reward_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_NebraAngler takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_NebraAngler_Start takes nothing returns nothing
+    set gg_trg_Quest_NebraAngler_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NebraAngler_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_NebraAngler_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_NebraAngler_Start,Condition(function Trig_Quest_NebraAngler_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NebraAngler_Start,function Trig_Quest_NebraAngler_Start_Actions)
+endfunction
+
+function Register_Quest_NebraAngler_Reward takes nothing returns nothing
+    set gg_trg_Quest_NebraAngler_Reward=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_NebraAngler_Reward)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_NebraAngler_Reward,450.,gg_unit_n0AV_0247)
+    call TriggerAddCondition(gg_trg_Quest_NebraAngler_Reward,Condition(function Trig_Quest_NebraAngler_Reward_Conditions))
+    call TriggerAddAction(gg_trg_Quest_NebraAngler_Reward,function Trig_Quest_NebraAngler_Reward_Actions)
 endfunction
 
 endlibrary

@@ -48,7 +48,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkTitan takes nothing returns nothing
-    call Register_DarkTitan_Appear()
+    call Register_DarkTitan_Appear() // starts off; enabled by DarkGolem
 endfunction
 
 endlibrary

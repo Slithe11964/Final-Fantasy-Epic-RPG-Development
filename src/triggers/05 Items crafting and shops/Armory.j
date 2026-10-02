@@ -1191,7 +1191,7 @@ endfunction
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Armory_Part1 takes nothing returns nothing
     call Register_Armory_Item_List()
-    call Register_Armory_Item_Hash()
+    call Register_Armory_Item_Hash() // run by Armory
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from

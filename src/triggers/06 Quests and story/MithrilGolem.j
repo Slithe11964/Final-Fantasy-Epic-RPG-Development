@@ -240,10 +240,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_MithrilGolem takes nothing returns nothing
-    call Register_MithrilGolem_Prepare()
-    call Register_MithrilGolem_Start()
-    call Register_MithrilGolem_Death()
-    call Register_MithrilGolem_Activate()
+    call Register_MithrilGolem_Prepare() // starts off; enabled by Quest_FireGolem
+    call Register_MithrilGolem_Start() // starts off; enabled by MithrilGolem
+    call Register_MithrilGolem_Death() // starts off; enabled by StrangeCage
+    call Register_MithrilGolem_Activate() // starts off; enabled by GolemHeart
 endfunction
 
 endlibrary

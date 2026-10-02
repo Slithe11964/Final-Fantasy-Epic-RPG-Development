@@ -1,4 +1,9 @@
 library TBossExodus requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Exodus_Death=null
+endglobals
+
 function Trig_Boss_Exodus_Death_TrackBossKills takes nothing returns boolean
     return(udg_SpeedrunMode)
 endfunction
@@ -93,6 +98,17 @@ function Trig_Boss_Exodus_Death_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Exodus takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part4 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Exodus_Death takes nothing returns nothing
+    set gg_trg_Boss_Exodus_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Exodus_Death)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Exodus_Death,gg_unit_U00K_0208,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Exodus_Death,function Trig_Boss_Exodus_Death_Actions)
 endfunction
 
 endlibrary

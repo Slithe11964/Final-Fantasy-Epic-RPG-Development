@@ -161,11 +161,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_OakaIV takes nothing returns nothing
-    call Register_OakaIV_CutTrees()
-    call Register_OakaIV_ReachNorthTree()
-    call Register_OakaIV_ReachSouthTree()
-    call Register_OakaIV_NorthTreeFelled()
-    call Register_OakaIV_SouthTreeFelled()
+    call Register_OakaIV_CutTrees() // starts off; enabled by HauntedTree
+    call Register_OakaIV_ReachNorthTree() // starts off; enabled by OakaIV
+    call Register_OakaIV_ReachSouthTree() // starts off; enabled by OakaIV
+    call Register_OakaIV_NorthTreeFelled() // starts off; enabled by OakaIV
+    call Register_OakaIV_SouthTreeFelled() // starts off; enabled by OakaIV
 endfunction
 
 endlibrary

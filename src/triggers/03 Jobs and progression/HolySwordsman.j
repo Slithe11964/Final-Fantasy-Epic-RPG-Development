@@ -203,7 +203,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HolySwordsman takes nothing returns nothing
     call Register_HolySwordsman_Eclipse()
-    call Register_HolySwordsman_Finisher()
+    call Register_HolySwordsman_Finisher() // used by Unused
 endfunction
 
 endlibrary

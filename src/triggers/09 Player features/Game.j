@@ -60,7 +60,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Game takes nothing returns nothing
-    call Register_Game_Start()
+    call Register_Game_Start() // starts off; run by Vote
 endfunction
 
 endlibrary

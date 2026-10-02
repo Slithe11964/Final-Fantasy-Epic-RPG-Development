@@ -1,4 +1,12 @@
 library TArenaTeamSelection
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Team_Data_A=null
+    trigger gg_trg_Arena_Team_Data_B=null
+    trigger gg_trg_Arena_Pick_Team=null
+    trigger gg_trg_Arena_SyncTeams=null
+endglobals
+
 function Trig_Arena_Team_Data_A_Actions takes nothing returns nothing
     call SaveStringBJ("Devil Duo",1,'e',udg_GameStateHash)
     call SaveIntegerBJ(4,3,'e',udg_GameStateHash)
@@ -1105,6 +1113,34 @@ function Trig_Arena_SyncTeams_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_TeamSelection takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Team_Data_A takes nothing returns nothing
+    set gg_trg_Arena_Team_Data_A=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_Team_Data_A,4.)
+    call TriggerAddAction(gg_trg_Arena_Team_Data_A,function Trig_Arena_Team_Data_A_Actions)
+endfunction
+
+function Register_Arena_Team_Data_B takes nothing returns nothing
+    set gg_trg_Arena_Team_Data_B=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_Team_Data_B,4.)
+    call TriggerAddAction(gg_trg_Arena_Team_Data_B,function Trig_Arena_Team_Data_B_Actions)
+endfunction
+
+function Register_Arena_Pick_Team takes nothing returns nothing
+    set gg_trg_Arena_Pick_Team=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_Pick_Team)
+    call TriggerAddAction(gg_trg_Arena_Pick_Team,function Trig_Arena_Pick_Team_Actions)
+endfunction
+
+function Register_Arena_SyncTeams takes nothing returns nothing
+    set gg_trg_Arena_SyncTeams=CreateTrigger()
+    call DisableTrigger(gg_trg_Arena_SyncTeams)
+    call TriggerAddAction(gg_trg_Arena_SyncTeams,function Trig_Arena_SyncTeams_Actions)
 endfunction
 
 endlibrary

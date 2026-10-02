@@ -51,9 +51,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Priscilla takes nothing returns nothing
-    call Register_Priscilla_Setup()
-    call Register_Priscilla_ShowMarker()
-    call Register_Priscilla_ShowMarker_Eden()
+    call Register_Priscilla_Setup() // run by MapBootstrap
+    call Register_Priscilla_ShowMarker() // starts off; run by KalmSiege1, TrueIceAge
+    call Register_Priscilla_ShowMarker_Eden() // starts off; run by Quest_SpiritOfWater, Quest_UltimaWeapon
 endfunction
 
 endlibrary

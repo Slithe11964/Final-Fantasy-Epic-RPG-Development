@@ -1,0 +1,8 @@
+PASS 1 playable script compiles (pjass)
+PASS 2 trigger-editor source compiles (vjass_lite + pjass)
+PASS 3 startup wiring
+PASS 4 source matches playable script (startup functions)
+PASS 4b globals match playable script
+PASS 5 native save/load text safety
+PASS 6 startup sequence matches baseline
+     1602 triggers checked, 3865 independent trigger pairs reordered

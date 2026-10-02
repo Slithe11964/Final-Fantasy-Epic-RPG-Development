@@ -232,17 +232,17 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Mid_Part1 takes nothing returns nothing
-    call Register_Mid_Cage_Ping()
-    call Register_Mid_Freed()
+    call Register_Mid_Cage_Ping() // starts off; enabled by Cid; disabled by Mid, Ending; destroyed by Mid
+    call Register_Mid_Freed() // starts off; enabled by BanditLord
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Mid_Part2 takes nothing returns nothing
-    call Register_Mid_Letter_Give()
-    call Register_Mid_Letter_Ping()
-    call Register_Mid_Crossbow_Talk_Enable()
+    call Register_Mid_Letter_Give() // starts off; enabled by KalmSiege1
+    call Register_Mid_Letter_Ping() // starts off; enabled by Mid, Epilogue; disabled by Giott
+    call Register_Mid_Crossbow_Talk_Enable() // starts off; run by Giott
 endfunction
 
 endlibrary

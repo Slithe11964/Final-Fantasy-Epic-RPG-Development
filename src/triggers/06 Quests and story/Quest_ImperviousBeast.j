@@ -1,4 +1,10 @@
 library TQuestImperviousBeast requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_ImperviousBeast_Start=null
+    trigger gg_trg_Quest_ImperviousBeast_Complete=null
+endglobals
+
 function Trig_Quest_ImperviousBeast_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_H036_0254,true,true,true))
 endfunction
@@ -103,6 +109,32 @@ function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothi
 endfunction
 
 function InitTrig_Quest_ImperviousBeast takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part17 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_ImperviousBeast_Start takes nothing returns nothing
+    set gg_trg_Quest_ImperviousBeast_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ImperviousBeast_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_ImperviousBeast_Start,Condition(function Trig_Quest_ImperviousBeast_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ImperviousBeast_Start,function Trig_Quest_ImperviousBeast_Start_Actions)
+endfunction
+
+function Register_Quest_ImperviousBeast_Complete takes nothing returns nothing
+    set gg_trg_Quest_ImperviousBeast_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_ImperviousBeast_Complete)
+    call TriggerAddCondition(gg_trg_Quest_ImperviousBeast_Complete,Condition(function Trig_Quest_ImperviousBeast_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_ImperviousBeast_Complete,function Trig_Quest_ImperviousBeast_Complete_Actions)
 endfunction
 
 endlibrary

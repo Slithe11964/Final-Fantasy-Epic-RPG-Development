@@ -1,4 +1,11 @@
 library TQuestArcanium requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_Arcanium_Start=null
+    trigger gg_trg_Quest_Arcanium_Taken=null
+    trigger gg_trg_Quest_Arcanium_Complete=null
+endglobals
+
 function Trig_Quest_Arcanium_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hmbr_0140,true,true,true))
 endfunction
@@ -116,6 +123,41 @@ function Trig_Quest_Arcanium_Complete_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Quest_Arcanium takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part9 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_Arcanium_Start takes nothing returns nothing
+    set gg_trg_Quest_Arcanium_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arcanium_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Arcanium_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_Arcanium_Start,Condition(function Trig_Quest_Arcanium_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arcanium_Start,function Trig_Quest_Arcanium_Start_Actions)
+endfunction
+
+function Register_Quest_Arcanium_Taken takes nothing returns nothing
+    set gg_trg_Quest_Arcanium_Taken=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arcanium_Taken)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Arcanium_Taken,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddCondition(gg_trg_Quest_Arcanium_Taken,Condition(function Trig_Quest_Arcanium_Taken_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arcanium_Taken,function Trig_Quest_Arcanium_Taken_Actions)
+endfunction
+
+function Register_Quest_Arcanium_Complete takes nothing returns nothing
+    set gg_trg_Quest_Arcanium_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_Arcanium_Complete)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Arcanium_Complete,450.,gg_unit_Hmbr_0140)
+    call TriggerAddCondition(gg_trg_Quest_Arcanium_Complete,Condition(function Trig_Quest_Arcanium_Complete_Conditions))
+    call TriggerAddAction(gg_trg_Quest_Arcanium_Complete,function Trig_Quest_Arcanium_Complete_Actions)
 endfunction
 
 endlibrary

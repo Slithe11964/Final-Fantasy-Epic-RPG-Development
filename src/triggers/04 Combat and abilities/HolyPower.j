@@ -88,7 +88,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HolyPower takes nothing returns nothing
-    call Register_HolyPower_Mastery_Track()
+    call Register_HolyPower_Mastery_Track() // starts off; enabled by HolyPower; disabled by Damage
     call Register_HolyPower_Mastery_Start()
 endfunction
 

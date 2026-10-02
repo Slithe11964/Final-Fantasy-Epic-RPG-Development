@@ -43,7 +43,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Barrens takes nothing returns nothing
-    call Register_Barrens_Forge_Setup()
+    call Register_Barrens_Forge_Setup() // run by MapBootstrap
 endfunction
 
 endlibrary

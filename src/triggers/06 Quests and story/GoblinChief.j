@@ -42,7 +42,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_GoblinChief takes nothing returns nothing
-    call Register_GoblinChief_Death()
+    call Register_GoblinChief_Death() // starts off; enabled by Cid
 endfunction
 
 endlibrary

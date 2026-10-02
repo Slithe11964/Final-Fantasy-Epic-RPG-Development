@@ -94,7 +94,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Turks takes nothing returns nothing
-    call Register_Turks_Give_Flute()
+    call Register_Turks_Give_Flute() // starts off; enabled by Cid; disabled by TrueIceAge
 endfunction
 
 endlibrary

@@ -221,18 +221,18 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_McBurn_Part1 takes nothing returns nothing
-    call Register_McBurn_Arena_Hide()
-    call Register_McBurn_Arena_Appear()
+    call Register_McBurn_Arena_Hide() // run by MapBootstrap
+    call Register_McBurn_Arena_Appear() // starts off; run by Arena_TeamSelection
     call Register_McBurn_Heat_Color()
-    call Register_McBurn_TrueForm_Reveal()
+    call Register_McBurn_TrueForm_Reveal() // starts off; enabled by ScorchedEarth
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_McBurn_Part2 takes nothing returns nothing
-    call Register_McBurn_Arena_Return()
-    call Register_McBurn_Volcano()
+    call Register_McBurn_Arena_Return() // starts off; enabled by McBurn; disabled by Quest_ScorchedEarth; destroyed by Quest_ScorchedEarth
+    call Register_McBurn_Volcano() // starts off; enabled by McBurn
 endfunction
 
 endlibrary

@@ -1,4 +1,9 @@
 library TBossShinryu requires TCam, TCine, TDifficulty, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Shinryu_Warmech_Summon=null
+endglobals
+
 function Trig_Boss_Shinryu_Warmech_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[7]==false)
 endfunction
@@ -97,6 +102,16 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Shinryu takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part13 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Shinryu_Warmech_Summon takes nothing returns nothing
+    set gg_trg_Boss_Shinryu_Warmech_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Shinryu_Warmech_Summon)
+    call TriggerAddAction(gg_trg_Boss_Shinryu_Warmech_Summon,function Trig_Boss_Shinryu_Warmech_Summon_Actions)
 endfunction
 
 endlibrary

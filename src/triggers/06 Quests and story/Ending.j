@@ -705,9 +705,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Ending takes nothing returns nothing
-    call Register_Ending_FrozenWorld()
-    call Register_Ending_Wasteland()
-    call Register_Ending_ReturnToStart()
+    call Register_Ending_FrozenWorld() // starts off; run by IceAge, TrueIceAge
+    call Register_Ending_Wasteland() // starts off; enabled by Ending
+    call Register_Ending_ReturnToStart() // starts off; enabled by Ending
 endfunction
 
 endlibrary

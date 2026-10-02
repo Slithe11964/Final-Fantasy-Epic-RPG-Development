@@ -91,8 +91,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_CowPortal takes nothing returns nothing
-    call Register_CowPortal_Open()
-    call Register_CowPortal_Spawn_Cows()
+    call Register_CowPortal_Open() // starts off; run by Wirts
+    call Register_CowPortal_Spawn_Cows() // starts off; enabled by CowPortal
 endfunction
 
 endlibrary

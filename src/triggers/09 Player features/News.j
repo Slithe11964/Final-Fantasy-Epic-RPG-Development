@@ -504,17 +504,17 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_News_Part1 takes nothing returns nothing
-    call Register_News_Morning()
+    call Register_News_Morning() // starts off; enabled by Game
     call Register_News_Evening()
-    call Register_News_SetTitle()
-    call Register_News_SetEntry()
+    call Register_News_SetTitle() // starts off; enabled by News
+    call Register_News_SetEntry() // starts off; enabled by News
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_News_Part2 takes nothing returns nothing
-    call Register_News_SubmitEntry()
+    call Register_News_SubmitEntry() // starts off; enabled by News
 endfunction
 
 endlibrary

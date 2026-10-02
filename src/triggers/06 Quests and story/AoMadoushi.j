@@ -53,8 +53,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AoMadoushi takes nothing returns nothing
-    call Register_AoMadoushi_Hide()
-    call Register_AoMadoushi_Summon()
+    call Register_AoMadoushi_Hide() // run by MapBootstrap
+    call Register_AoMadoushi_Summon() // starts off; enabled by Turks; disabled by TrueIceAge
 endfunction
 
 endlibrary

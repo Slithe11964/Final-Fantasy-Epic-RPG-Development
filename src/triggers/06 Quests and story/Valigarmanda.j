@@ -576,11 +576,11 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Valigarmanda takes nothing returns nothing
-    call Register_Valigarmanda_Confront()
-    call Register_Valigarmanda_Wave_Cleared()
-    call Register_Valigarmanda_Wave_Spawn()
-    call Register_Valigarmanda_Wave_Reset()
-    call Register_Valigarmanda_Death()
+    call Register_Valigarmanda_Confront() // starts off; enabled by Quest_DwarfDisappearance
+    call Register_Valigarmanda_Wave_Cleared() // starts off; enabled by Valigarmanda
+    call Register_Valigarmanda_Wave_Spawn() // starts off; run by Valigarmanda
+    call Register_Valigarmanda_Wave_Reset() // starts off; enabled by Valigarmanda; disabled by Valigarmanda; destroyed by Valigarmanda
+    call Register_Valigarmanda_Death() // starts off; enabled by Valigarmanda
 endfunction
 
 endlibrary

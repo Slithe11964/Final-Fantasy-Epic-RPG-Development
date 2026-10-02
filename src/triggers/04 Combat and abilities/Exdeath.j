@@ -25,7 +25,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Exdeath takes nothing returns nothing
-    call Register_Exdeath_Drop_Scroll()
+    call Register_Exdeath_Drop_Scroll() // used by Hunt_Encounters
 endfunction
 
 endlibrary

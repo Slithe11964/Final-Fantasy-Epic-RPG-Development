@@ -1,5 +1,8 @@
 library TArenaSpawning requires TDifficulty, TLoc, TUnit
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Unit_Data=null
+    trigger gg_trg_Arena_Spawn_Team=null
     // Variables only this module uses.
     real udg_ArenaHpMultiplier=0
 endglobals
@@ -1053,6 +1056,22 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Spawning takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_Unit_Data takes nothing returns nothing
+    set gg_trg_Arena_Unit_Data=CreateTrigger()
+    call TriggerRegisterTimerEventSingle(gg_trg_Arena_Unit_Data,4.)
+    call TriggerAddAction(gg_trg_Arena_Unit_Data,function Trig_Arena_Unit_Data_Actions)
+endfunction
+
+function Register_Arena_Spawn_Team takes nothing returns nothing
+    set gg_trg_Arena_Spawn_Team=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Arena_Spawn_Team,udg_ArenaSpawnTimer)
+    call TriggerAddAction(gg_trg_Arena_Spawn_Team,function Trig_Arena_Spawn_Team_Actions)
 endfunction
 
 endlibrary

@@ -1,4 +1,9 @@
 library TItemCooldown requires TAbil, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Item_Cooldown_Start=null
+endglobals
+
 // ---- Item ----
 function Trig_Item_Cooldown_Start_StartItemCooldown takes player p,real l_dur returns nothing
     // (GetPlayerId(p)) plus (1).
@@ -19,6 +24,24 @@ function Trig_Item_Cooldown_Start_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Item_Cooldown takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Item_Part2 (module Item),
+// which keeps the original registration order.
+
+function Register_Item_Cooldown_Start takes nothing returns nothing
+    set gg_trg_Item_Cooldown_Start=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(0),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(1),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(2),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(3),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(4),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(5),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(6),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Item_Cooldown_Start,Player(7),EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Item_Cooldown_Start,Condition(function Trig_Item_Cooldown_Start_Conditions))
+    call TriggerAddAction(gg_trg_Item_Cooldown_Start,function Trig_Item_Cooldown_Start_Actions)
 endfunction
 
 endlibrary

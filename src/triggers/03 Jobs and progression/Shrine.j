@@ -626,10 +626,10 @@ endfunction
 function RegisterTriggers_Shrine takes nothing returns nothing
     call Register_Shrine_Create()
     call Register_Shrine_AbilitySwap()
-    call Register_Shrine_SelectEnable()
-    call Register_Shrine_SelectMenu()
-    call Register_Shrine_Unlock()
-    call Register_Shrine_Reveal()
+    call Register_Shrine_SelectEnable() // starts off; enabled by Shrine
+    call Register_Shrine_SelectMenu() // enabled by Shrine; disabled by Shrine
+    call Register_Shrine_Unlock() // starts off; run by Title
+    call Register_Shrine_Reveal() // starts off; enabled by Shrine
 endfunction
 
 endlibrary

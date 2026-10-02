@@ -927,10 +927,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Cine takes nothing returns nothing
-    call Register_Cine_StoneBreaks()
-    call Register_Cine_ScryingVision()
-    call Register_Cine_Belias_Gafgarion()
-    call Register_Cine_StoneBreaks_Alt()
+    call Register_Cine_StoneBreaks() // starts off; enabled by Quest_AoMadoushi; disabled by Cine, TrueIceAge; destroyed by Cine
+    call Register_Cine_ScryingVision() // starts off; enabled by Quest_NightElves
+    call Register_Cine_Belias_Gafgarion() // starts off; enabled by Cine; run by Cine
+    call Register_Cine_StoneBreaks_Alt() // starts off; run by Quest_WorldLiberation; destroyed by World
 endfunction
 
 endlibrary

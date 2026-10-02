@@ -77,7 +77,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Mimic takes nothing returns nothing
     call Register_Mimic_Reveal()
-    call Register_Mimic_Death_Loot()
+    call Register_Mimic_Death_Loot() // starts off; enabled by Mimic
 endfunction
 
 endlibrary

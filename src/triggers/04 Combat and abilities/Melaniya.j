@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Melaniya takes nothing returns nothing
-    call Register_Melaniya_Setup()
+    call Register_Melaniya_Setup() // run by MapBootstrap
 endfunction
 
 endlibrary

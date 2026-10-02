@@ -522,17 +522,17 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Shemhazai_Part1 takes nothing returns nothing
-    call Register_Shemhazai_Prepare()
+    call Register_Shemhazai_Prepare() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Shemhazai_Part2 takes nothing returns nothing
-    call Register_Shemhazai_Appears()
-    call Register_Shemhazai_Spawn_SoulClones()
+    call Register_Shemhazai_Appears() // starts off; enabled by OrcBase
+    call Register_Shemhazai_Spawn_SoulClones() // starts off; run by Shemhazai
     call Register_Shemhazai_SurpriseMechanic()
-    call Register_Shemhazai_Phase2_Cuchulainn()
+    call Register_Shemhazai_Phase2_Cuchulainn() // starts off; enabled by Shemhazai; disabled by TrueIceAge
     call Register_Shemhazai_SoulSplit()
 endfunction
 

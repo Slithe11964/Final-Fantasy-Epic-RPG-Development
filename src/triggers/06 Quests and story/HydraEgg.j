@@ -206,12 +206,12 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HydraEgg takes nothing returns nothing
-    call Register_HydraEgg_Prepare()
+    call Register_HydraEgg_Prepare() // run by MapBootstrap
     call Register_HydraEgg_Start()
-    call Register_HydraEgg_Drop()
-    call Register_HydraEgg_Pickup()
-    call Register_HydraEgg_Ping()
-    call Register_HydraEgg_Deliver()
+    call Register_HydraEgg_Drop() // starts off; enabled by HydraEgg
+    call Register_HydraEgg_Pickup() // starts off; enabled by HydraEgg
+    call Register_HydraEgg_Ping() // starts off; enabled by HydraEgg; disabled by HydraEgg
+    call Register_HydraEgg_Deliver() // starts off; enabled by HydraEgg
 endfunction
 
 endlibrary

@@ -290,8 +290,8 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Zodiark_Part1 takes nothing returns nothing
-    call Register_Zodiark_Prepare()
-    call Register_Zodiark_Encounter()
+    call Register_Zodiark_Prepare() // run by MapBootstrap
+    call Register_Zodiark_Encounter() // starts off; enabled by Quest_GodDragon
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from

@@ -44,7 +44,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Shimmerweed takes nothing returns nothing
     call Register_Shimmerweed_Spawn()
-    call Register_Shimmerweed_Pickup()
+    call Register_Shimmerweed_Pickup() // starts off; enabled by Shimmerweed
 endfunction
 
 endlibrary

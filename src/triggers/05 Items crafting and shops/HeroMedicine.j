@@ -67,8 +67,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_HeroMedicine takes nothing returns nothing
-    call Register_HeroMedicine_Refill()
-    call Register_HeroMedicine_Pickup()
+    call Register_HeroMedicine_Refill() // starts off; enabled by Hero_MedicineEvents
+    call Register_HeroMedicine_Pickup() // starts off; enabled by Hero_MedicineEvents; disabled by HeroMedicine
 endfunction
 
 endlibrary

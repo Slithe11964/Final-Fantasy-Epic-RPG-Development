@@ -1,4 +1,9 @@
 library THuntShop
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hunt_Shop_Unlock=null
+endglobals
+
 function Trig_Hunt_Shop_Unlock_IsNotSlotTen takes nothing returns boolean
     return(GetForLoopIndexA()!=$A) // $A = 10
 endfunction
@@ -56,6 +61,17 @@ function Trig_Hunt_Shop_Unlock_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Hunt_Shop takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hunt (module Hunt),
+// which keeps the original registration order.
+
+function Register_Hunt_Shop_Unlock takes nothing returns nothing
+    set gg_trg_Hunt_Shop_Unlock=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Shop_Unlock)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Hunt_Shop_Unlock,10.)
+    call TriggerAddAction(gg_trg_Hunt_Shop_Unlock,function Trig_Hunt_Shop_Unlock_Actions)
 endfunction
 
 endlibrary

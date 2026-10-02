@@ -384,12 +384,12 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Bernkastel takes nothing returns nothing
     call Register_Bernkastel_State_Reset()
-    call Register_Bernkastel_Try_Spawn()
-    call Register_Bernkastel_First_Talk()
-    call Register_Bernkastel_Second_Talk()
-    call Register_Bernkastel_Hint_Talk()
-    call Register_Bernkastel_Final_Talk()
-    call Register_Bernkastel_Despawn()
+    call Register_Bernkastel_Try_Spawn() // starts off; run by Load
+    call Register_Bernkastel_First_Talk() // starts off; enabled by Bernkastel; disabled by Bernkastel; destroyed by Bernkastel
+    call Register_Bernkastel_Second_Talk() // starts off; enabled by Bernkastel; disabled by Bernkastel; destroyed by Bernkastel
+    call Register_Bernkastel_Hint_Talk() // starts off; enabled by Bernkastel
+    call Register_Bernkastel_Final_Talk() // starts off; enabled by Ending
+    call Register_Bernkastel_Despawn() // disabled by Bernkastel; destroyed by Bernkastel
 endfunction
 
 endlibrary

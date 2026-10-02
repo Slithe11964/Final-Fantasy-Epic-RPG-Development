@@ -31,7 +31,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_TextInstant takes nothing returns nothing
-    call Register_TextInstant_Command()
+    call Register_TextInstant_Command() // disabled by GameMode
 endfunction
 
 endlibrary

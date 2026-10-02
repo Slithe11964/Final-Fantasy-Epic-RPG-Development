@@ -1,4 +1,9 @@
 library TGayaStats
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gaya_RefreshStats=null
+endglobals
+
 function Trig_Gaya_RefreshStats_Cond_ManaNearlyFull takes nothing returns boolean
     return(GetUnitStateSwap(UNIT_STATE_MANA,udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())])>990000.)
 endfunction
@@ -19,6 +24,16 @@ function Trig_Gaya_RefreshStats_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Gaya_Stats takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Gaya (module Gaya),
+// which keeps the original registration order.
+
+function Register_Gaya_RefreshStats takes nothing returns nothing
+    set gg_trg_Gaya_RefreshStats=CreateTrigger()
+    call TriggerRegisterTimerExpireEventBJ(gg_trg_Gaya_RefreshStats,udg_LoadRefreshTimer)
+    call TriggerAddAction(gg_trg_Gaya_RefreshStats,function Trig_Gaya_RefreshStats_Actions)
 endfunction
 
 endlibrary

@@ -84,7 +84,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_War takes nothing returns nothing
-    call Register_War_Command()
+    call Register_War_Command() // enabled by Pvp; disabled by Pvp
 endfunction
 
 endlibrary

@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Valera takes nothing returns nothing
-    call Register_Valera_ShowMarker()
+    call Register_Valera_ShowMarker() // starts off; run by Cid, Mid
 endfunction
 
 endlibrary

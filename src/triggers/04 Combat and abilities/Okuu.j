@@ -46,8 +46,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Okuu takes nothing returns nothing
-    call Register_Okuu_Leash()
-    call Register_Okuu_Death()
+    call Register_Okuu_Leash() // starts off; enabled by Hunt_Encounters; disabled by Okuu; destroyed by Okuu
+    call Register_Okuu_Death() // disabled by Quest_ScorchedEarth; destroyed by Quest_ScorchedEarth; used by Hunt_Encounters
 endfunction
 
 endlibrary

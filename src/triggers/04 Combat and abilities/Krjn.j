@@ -24,7 +24,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Krjn takes nothing returns nothing
-    call Register_Krjn_ShowTalkIcon()
+    call Register_Krjn_ShowTalkIcon() // starts off; run by Epilogue, Quest_NightElves, Talk
 endfunction
 
 endlibrary

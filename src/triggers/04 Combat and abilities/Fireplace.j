@@ -22,7 +22,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Fireplace takes nothing returns nothing
-    call Register_Fireplace_Init()
+    call Register_Fireplace_Init() // run by MapBootstrap
 endfunction
 
 endlibrary

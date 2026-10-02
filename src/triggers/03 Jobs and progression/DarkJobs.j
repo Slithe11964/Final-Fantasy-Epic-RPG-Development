@@ -89,8 +89,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkJobs takes nothing returns nothing
-    call Register_DarkJobs_Unlock()
-    call Register_DarkJobs_Reveal()
+    call Register_DarkJobs_Unlock() // starts off; run by Title
+    call Register_DarkJobs_Reveal() // starts off; enabled by DarkJobs
 endfunction
 
 endlibrary

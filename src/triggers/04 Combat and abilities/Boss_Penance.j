@@ -1,5 +1,13 @@
 library TBossPenance requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerPart01, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Penance_Summon=null
+    trigger gg_trg_Boss_Penance_Judgment_Loop=null
+    trigger gg_trg_Boss_Penance_JudgmentDay_Cast=null
+    trigger gg_trg_Boss_Penance_JudgmentDay_Damage=null
+    trigger gg_trg_Boss_Penance_Arm_Death=null
+    trigger gg_trg_Boss_Penance_Death=null
+    trigger gg_trg_Boss_Penance_Cleanup=null
     // Variables only this module uses.
     unit udg_PenanceUnit=null
 endglobals
@@ -455,6 +463,59 @@ function Trig_Boss_Penance_Cleanup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Penance takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part11, RegisterTriggers_Boss_Part12 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Penance_Summon takes nothing returns nothing
+    set gg_trg_Boss_Penance_Summon=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Penance_Summon)
+    call TriggerAddAction(gg_trg_Boss_Penance_Summon,function Trig_Boss_Penance_Summon_Actions)
+endfunction
+
+function Register_Boss_Penance_Judgment_Loop takes nothing returns nothing
+    set gg_trg_Boss_Penance_Judgment_Loop=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Penance_Judgment_Loop)
+    call TriggerRegisterTimerEventPeriodic(gg_trg_Boss_Penance_Judgment_Loop,2)
+    call TriggerAddCondition(gg_trg_Boss_Penance_Judgment_Loop,Condition(function Trig_Boss_Penance_Judgment_Loop_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Penance_Judgment_Loop,function Trig_Boss_Penance_Judgment_Loop_Actions)
+endfunction
+
+function Register_Boss_Penance_JudgmentDay_Cast takes nothing returns nothing
+    set gg_trg_Boss_Penance_JudgmentDay_Cast=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Penance_JudgmentDay_Cast,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Boss_Penance_JudgmentDay_Cast,Condition(function Trig_Boss_Penance_JudgmentDay_Cast_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Penance_JudgmentDay_Cast,function Trig_Boss_Penance_JudgmentDay_Cast_Actions)
+endfunction
+
+function Register_Boss_Penance_JudgmentDay_Damage takes nothing returns nothing
+    set gg_trg_Boss_Penance_JudgmentDay_Damage=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Penance_JudgmentDay_Damage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Boss_Penance_JudgmentDay_Damage,Condition(function Trig_Boss_Penance_JudgmentDay_Damage_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Penance_JudgmentDay_Damage,function Trig_Boss_Penance_JudgmentDay_Damage_Actions)
+endfunction
+
+function Register_Boss_Penance_Arm_Death takes nothing returns nothing
+    set gg_trg_Boss_Penance_Arm_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Penance_Arm_Death)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Boss_Penance_Arm_Death,EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(gg_trg_Boss_Penance_Arm_Death,Condition(function Trig_Boss_Penance_Arm_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Penance_Arm_Death,function Trig_Boss_Penance_Arm_Death_Actions)
+endfunction
+
+function Register_Boss_Penance_Death takes nothing returns nothing
+    set gg_trg_Boss_Penance_Death=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Penance_Death)
+    call TriggerAddCondition(gg_trg_Boss_Penance_Death,Condition(function Trig_Boss_Penance_Death_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Penance_Death,function Trig_Boss_Penance_Death_Actions)
+endfunction
+
+function Register_Boss_Penance_Cleanup takes nothing returns nothing
+    set gg_trg_Boss_Penance_Cleanup=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Penance_Cleanup)
+    call TriggerAddAction(gg_trg_Boss_Penance_Cleanup,function Trig_Boss_Penance_Cleanup_Actions)
 endfunction
 
 endlibrary

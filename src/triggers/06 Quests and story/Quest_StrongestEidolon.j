@@ -1,4 +1,10 @@
 library TQuestStrongestEidolon requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quest_StrongestEidolon_Start=null
+    trigger gg_trg_Quest_StrongestEidolon_Complete=null
+endglobals
+
 function Trig_Quest_StrongestEidolon_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_u007_0128,true,true,true))
 endfunction
@@ -102,6 +108,32 @@ function Trig_Quest_StrongestEidolon_Complete_Actions takes nothing returns noth
 endfunction
 
 function InitTrig_Quest_StrongestEidolon takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part12 (module Quest),
+// which keeps the original registration order.
+
+function Register_Quest_StrongestEidolon_Start takes nothing returns nothing
+    set gg_trg_Quest_StrongestEidolon_Start=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_StrongestEidolon_Start)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(0),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(1),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(2),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(3),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(4),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(5),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(6),true)
+    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_StrongestEidolon_Start,Player(7),true)
+    call TriggerAddCondition(gg_trg_Quest_StrongestEidolon_Start,Condition(function Trig_Quest_StrongestEidolon_Start_Conditions))
+    call TriggerAddAction(gg_trg_Quest_StrongestEidolon_Start,function Trig_Quest_StrongestEidolon_Start_Actions)
+endfunction
+
+function Register_Quest_StrongestEidolon_Complete takes nothing returns nothing
+    set gg_trg_Quest_StrongestEidolon_Complete=CreateTrigger()
+    call DisableTrigger(gg_trg_Quest_StrongestEidolon_Complete)
+    call TriggerRegisterUnitEvent(gg_trg_Quest_StrongestEidolon_Complete,gg_unit_N02I_0074,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Quest_StrongestEidolon_Complete,function Trig_Quest_StrongestEidolon_Complete_Actions)
 endfunction
 
 endlibrary

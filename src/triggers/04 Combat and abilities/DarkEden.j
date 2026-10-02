@@ -176,9 +176,9 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_DarkEden takes nothing returns nothing
-    call Register_DarkEden_Appear()
-    call Register_DarkEden_Death()
-    call Register_DarkEden_LightningColor()
+    call Register_DarkEden_Appear() // starts off; enabled by DarkEidolons
+    call Register_DarkEden_Death() // starts off; enabled by DarkEden
+    call Register_DarkEden_LightningColor() // starts off; enabled by DarkEden; disabled by DarkEden; run by DarkEden; destroyed by DarkEden
 endfunction
 
 endlibrary

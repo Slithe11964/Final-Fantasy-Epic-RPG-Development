@@ -1,4 +1,21 @@
 library THuntEncounters requires TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hunt_Thextera_Escort=null
+    trigger gg_trg_Hunt_Tonberry_Setup=null
+    trigger gg_trg_Hunt_Demon_Setup=null
+    trigger gg_trg_Hunt_Parvati_Setup=null
+    trigger gg_trg_Hunt_PhantomDancer_Setup=null
+    trigger gg_trg_Hunt_Exdeath_Setup=null
+    trigger gg_trg_Hunt_Mephorash_Setup=null
+    trigger gg_trg_Hunt_Trickster_Unlock=null
+    trigger gg_trg_Hunt_Melaiduma_Setup=null
+    trigger gg_trg_Hunt_BlackPearl_Setup=null
+    trigger gg_trg_Hunt_Rabite_Setup=null
+    trigger gg_trg_Hunt_Verci_Setup=null
+    trigger gg_trg_Hunt_Okuu_Setup=null
+endglobals
+
 function Trig_Hunt_Thextera_Escort_Actions takes nothing returns nothing
     set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,64.)
     call CreateNUnitsAtLoc(1,'nwld',Player($B),udg_TempPoint2,180.) // 'nwld': object name not found in map data; $B = 11
@@ -132,6 +149,89 @@ function Trig_Hunt_Okuu_Setup_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Hunt_Encounters takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Hunt (module Hunt),
+// which keeps the original registration order.
+
+function Register_Hunt_Thextera_Escort takes nothing returns nothing
+    set gg_trg_Hunt_Thextera_Escort=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Thextera_Escort)
+    call TriggerAddAction(gg_trg_Hunt_Thextera_Escort,function Trig_Hunt_Thextera_Escort_Actions)
+endfunction
+
+function Register_Hunt_Tonberry_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Tonberry_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Tonberry_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Tonberry_Setup,function Trig_Hunt_Tonberry_Setup_Actions)
+endfunction
+
+function Register_Hunt_Demon_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Demon_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Demon_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Demon_Setup,function Trig_Hunt_Demon_Setup_Actions)
+endfunction
+
+function Register_Hunt_Parvati_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Parvati_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Parvati_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Parvati_Setup,function Trig_Hunt_Parvati_Setup_Actions)
+endfunction
+
+function Register_Hunt_PhantomDancer_Setup takes nothing returns nothing
+    set gg_trg_Hunt_PhantomDancer_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_PhantomDancer_Setup)
+    call TriggerAddAction(gg_trg_Hunt_PhantomDancer_Setup,function Trig_Hunt_PhantomDancer_Setup_Actions)
+endfunction
+
+function Register_Hunt_Exdeath_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Exdeath_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Exdeath_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Exdeath_Setup,function Trig_Hunt_Exdeath_Setup_Actions)
+endfunction
+
+function Register_Hunt_Mephorash_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Mephorash_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Mephorash_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Mephorash_Setup,function Trig_Hunt_Mephorash_Setup_Actions)
+endfunction
+
+function Register_Hunt_Trickster_Unlock takes nothing returns nothing
+    set gg_trg_Hunt_Trickster_Unlock=CreateTrigger()
+    call TriggerRegisterPlayerUnitEventSimple(gg_trg_Hunt_Trickster_Unlock,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
+    call TriggerAddCondition(gg_trg_Hunt_Trickster_Unlock,Condition(function Trig_Hunt_Trickster_Unlock_Conditions))
+    call TriggerAddAction(gg_trg_Hunt_Trickster_Unlock,function Trig_Hunt_Trickster_Unlock_Actions)
+endfunction
+
+function Register_Hunt_Melaiduma_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Melaiduma_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Melaiduma_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Melaiduma_Setup,function Trig_Hunt_Melaiduma_Setup_Actions)
+endfunction
+
+function Register_Hunt_BlackPearl_Setup takes nothing returns nothing
+    set gg_trg_Hunt_BlackPearl_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_BlackPearl_Setup)
+    call TriggerAddAction(gg_trg_Hunt_BlackPearl_Setup,function Trig_Hunt_BlackPearl_Setup_Actions)
+endfunction
+
+function Register_Hunt_Rabite_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Rabite_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Rabite_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Rabite_Setup,function Trig_Hunt_Rabite_Setup_Actions)
+endfunction
+
+function Register_Hunt_Verci_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Verci_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Verci_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Verci_Setup,function Trig_Hunt_Verci_Setup_Actions)
+endfunction
+
+function Register_Hunt_Okuu_Setup takes nothing returns nothing
+    set gg_trg_Hunt_Okuu_Setup=CreateTrigger()
+    call DisableTrigger(gg_trg_Hunt_Okuu_Setup)
+    call TriggerAddAction(gg_trg_Hunt_Okuu_Setup,function Trig_Hunt_Okuu_Setup_Actions)
 endfunction
 
 endlibrary

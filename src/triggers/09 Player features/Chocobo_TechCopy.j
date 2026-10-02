@@ -140,4 +140,15 @@ endfunction
 function InitTrig_Chocobo_TechCopy takes nothing returns nothing
 endfunction
 
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Chocobo_Part1 (module Chocobo),
+// which keeps the original registration order.
+
+function Register_Chocobo_TechCopy takes nothing returns nothing
+    set gg_trg_Chocobo_TechCopy=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Chocobo_TechCopy,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Chocobo_TechCopy,Condition(function Trig_Chocobo_TechCopy_Conditions))
+    call TriggerAddAction(gg_trg_Chocobo_TechCopy,function Trig_Chocobo_TechCopy_Actions)
+endfunction
+
 endlibrary

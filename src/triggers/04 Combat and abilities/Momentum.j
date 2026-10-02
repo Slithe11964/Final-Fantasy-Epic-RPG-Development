@@ -109,7 +109,7 @@ endfunction
 function RegisterTriggers_Momentum takes nothing returns nothing
     call Register_Momentum_Cast()
     call Register_Momentum_Apply()
-    call Register_Momentum_Decay()
+    call Register_Momentum_Decay() // starts off; enabled by Momentum
 endfunction
 
 endlibrary

@@ -1,4 +1,10 @@
 library TArenaPresentation requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_FreezeNpcs=null
+    trigger gg_trg_Arena_ToggleShowcase=null
+endglobals
+
 function Trig_Arena_FreezeNpcs_IsNotStructure takes nothing returns boolean
     return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)!=null
 endfunction
@@ -46,6 +52,22 @@ function Trig_Arena_ToggleShowcase_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Arena_Presentation takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Arena_Part2, RegisterTriggers_Arena_Part3 (module Arena),
+// which keeps the original registration order.
+
+function Register_Arena_FreezeNpcs takes nothing returns nothing
+    set gg_trg_Arena_FreezeNpcs=CreateTrigger()
+    call TriggerAddAction(gg_trg_Arena_FreezeNpcs,function Trig_Arena_FreezeNpcs_Actions)
+endfunction
+
+function Register_Arena_ToggleShowcase takes nothing returns nothing
+    set gg_trg_Arena_ToggleShowcase=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Arena_ToggleShowcase,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_Arena_ToggleShowcase,Condition(function Trig_Arena_ToggleShowcase_Conditions))
+    call TriggerAddAction(gg_trg_Arena_ToggleShowcase,function Trig_Arena_ToggleShowcase_Actions)
 endfunction
 
 endlibrary

@@ -1294,34 +1294,34 @@ endfunction
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Init_Part1 takes nothing returns nothing
-    call Register_Init_AbilityLevelShift()
+    call Register_Init_AbilityLevelShift() // run by MapBootstrap
     call Register_Init_JobTables()
-    call Register_Init_PlayerForces()
+    call Register_Init_PlayerForces() // run by MapBootstrap
     call Register_Init_PlayerColors()
-    call Register_Init_RevealStartArea()
-    call Register_Init_HideScoreScreen()
-    call Register_Init_NeutralPlayer8()
-    call Register_Init_AllyPlayer9()
-    call Register_Init_AllyPlayer10()
+    call Register_Init_RevealStartArea() // run by Init
+    call Register_Init_HideScoreScreen() // run by Init
+    call Register_Init_NeutralPlayer8() // run by Init, Pvp
+    call Register_Init_AllyPlayer9() // run by Init, Pvp
+    call Register_Init_AllyPlayer10() // run by Init, Pvp
     call Register_Init_RemoveGuards()
-    call Register_Init_FoodCap()
+    call Register_Init_FoodCap() // run by Init
     call Register_Init_EnemyUpgrades()
     call Register_Init_InvulnerableGates()
-    call Register_Init_TimeOfDay()
-    call Register_Init_LockTrading()
-    call Register_Init_HideUiAbilities()
-    call Register_Init_InfoQuest()
+    call Register_Init_TimeOfDay() // run by MapBootstrap
+    call Register_Init_LockTrading() // run by MapBootstrap
+    call Register_Init_HideUiAbilities() // run by Init
+    call Register_Init_InfoQuest() // run by MapBootstrap
     call Register_Init_QuestLog()
-    call Register_Init_VoteOptionText()
+    call Register_Init_VoteOptionText() // run by MapBootstrap
 endfunction
 
 // Creates part 2 of 2 of this module's triggers. Called once at startup from
 // Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
 // triggers sharing an event with other modules keep their original firing order.
 function RegisterTriggers_Init_Part2 takes nothing returns nothing
-    call Register_Init_SkyAndSubtitles()
-    call Register_Init_AncientForestNpcs()
-    call Register_Init_ZaleraChapter()
+    call Register_Init_SkyAndSubtitles() // run by MapBootstrap
+    call Register_Init_AncientForestNpcs() // run by MapBootstrap
+    call Register_Init_ZaleraChapter() // run by MapBootstrap
 endfunction
 
 endlibrary

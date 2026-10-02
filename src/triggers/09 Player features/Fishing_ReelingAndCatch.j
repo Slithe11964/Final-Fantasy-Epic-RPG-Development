@@ -1,5 +1,10 @@
 library TFishingReelingAndCatch requires TForce, TLoc, TPlayerPart01
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fishing_Tick=null
+    trigger gg_trg_Fishing_Input=null
+    trigger gg_trg_Fishing_Catch=null
+    trigger gg_trg_Fishing_End=null
     // Variables only this module uses.
     texttag array udg_FishingText
     effect array udg_FishingBubbles
@@ -396,6 +401,35 @@ function Trig_Fishing_End_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Fishing_ReelingAndCatch takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Fishing_Part1 (module Fishing),
+// which keeps the original registration order.
+
+function Register_Fishing_Tick takes nothing returns nothing
+    set gg_trg_Fishing_Tick=CreateTrigger()
+    call DisableTrigger(gg_trg_Fishing_Tick)
+    call TriggerAddAction(gg_trg_Fishing_Tick,function Trig_Fishing_Tick_Actions)
+endfunction
+
+function Register_Fishing_Input takes nothing returns nothing
+    set gg_trg_Fishing_Input=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Fishing_Input,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(gg_trg_Fishing_Input,Condition(function Trig_Fishing_Input_Conditions))
+    call TriggerAddAction(gg_trg_Fishing_Input,function Trig_Fishing_Input_Actions)
+endfunction
+
+function Register_Fishing_Catch takes nothing returns nothing
+    set gg_trg_Fishing_Catch=CreateTrigger()
+    call DisableTrigger(gg_trg_Fishing_Catch)
+    call TriggerAddAction(gg_trg_Fishing_Catch,function Trig_Fishing_Catch_Actions)
+endfunction
+
+function Register_Fishing_End takes nothing returns nothing
+    set gg_trg_Fishing_End=CreateTrigger()
+    call DisableTrigger(gg_trg_Fishing_End)
+    call TriggerAddAction(gg_trg_Fishing_End,function Trig_Fishing_End_Actions)
 endfunction
 
 endlibrary

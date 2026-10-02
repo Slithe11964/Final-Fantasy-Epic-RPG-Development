@@ -259,10 +259,10 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Nimphrodel takes nothing returns nothing
-    call Register_Nimphrodel_Start()
-    call Register_Nimphrodel_Meet()
-    call Register_Nimphrodel_Undomiel()
-    call Register_Nimphrodel_Complete()
+    call Register_Nimphrodel_Start() // starts off; enabled by Epilogue, Quest_NightElves
+    call Register_Nimphrodel_Meet() // starts off; enabled by Nimphrodel
+    call Register_Nimphrodel_Undomiel() // starts off; enabled by Nimphrodel
+    call Register_Nimphrodel_Complete() // starts off; enabled by CrystalBall
 endfunction
 
 endlibrary

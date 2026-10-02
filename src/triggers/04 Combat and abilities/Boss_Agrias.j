@@ -1,5 +1,8 @@
 library TBossAgrias requires TCam, TCine, TPlayerPart01, TText, TWait
 globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boss_Agrias_Intro=null
+    trigger gg_trg_Boss_Agrias_Death_Lilith=null
     // Variables only this module uses (MapBootstrap sets some starting values).
     sound gg_snd_DarkRangerYesAttack=null
 endglobals
@@ -97,6 +100,27 @@ function Trig_Boss_Agrias_Death_Lilith_Actions takes nothing returns nothing
 endfunction
 
 function InitTrig_Boss_Agrias takes nothing returns nothing
+endfunction
+
+// ---- Trigger registration ----
+// These create this module's triggers. They run at startup from RegisterTriggers_Boss_Part8, RegisterTriggers_Boss_Part9 (module Boss),
+// which keeps the original registration order.
+
+function Register_Boss_Agrias_Intro takes nothing returns nothing
+    set gg_trg_Boss_Agrias_Intro=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Agrias_Intro)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Agrias_Intro,250.,gg_unit_Ewrd_0120)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Agrias_Intro,450.,gg_unit_Ewrd_0120)
+    call TriggerRegisterUnitInRangeSimple(gg_trg_Boss_Agrias_Intro,700.,gg_unit_Ewrd_0120)
+    call TriggerAddCondition(gg_trg_Boss_Agrias_Intro,Condition(function Trig_Boss_Agrias_Intro_Conditions))
+    call TriggerAddAction(gg_trg_Boss_Agrias_Intro,function Trig_Boss_Agrias_Intro_Actions)
+endfunction
+
+function Register_Boss_Agrias_Death_Lilith takes nothing returns nothing
+    set gg_trg_Boss_Agrias_Death_Lilith=CreateTrigger()
+    call DisableTrigger(gg_trg_Boss_Agrias_Death_Lilith)
+    call TriggerRegisterUnitEvent(gg_trg_Boss_Agrias_Death_Lilith,gg_unit_Ewrd_0120,EVENT_UNIT_DEATH)
+    call TriggerAddAction(gg_trg_Boss_Agrias_Death_Lilith,function Trig_Boss_Agrias_Death_Lilith_Actions)
 endfunction
 
 endlibrary

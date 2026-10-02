@@ -86,7 +86,7 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_ShockAura takes nothing returns nothing
     call Register_ShockAura_Pulse_Start()
-    call Register_ShockAura_Pulse()
+    call Register_ShockAura_Pulse() // starts off; run by ShockAura
 endfunction
 
 endlibrary

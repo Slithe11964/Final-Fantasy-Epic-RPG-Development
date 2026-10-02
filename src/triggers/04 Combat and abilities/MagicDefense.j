@@ -472,7 +472,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_MagicDefense takes nothing returns nothing
-    call Register_MagicDefense_Calc()
+    call Register_MagicDefense_Calc() // starts off; run by Job, MagDef, Passive
 endfunction
 
 endlibrary

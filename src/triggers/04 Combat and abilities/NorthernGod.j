@@ -27,7 +27,7 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_NorthernGod takes nothing returns nothing
-    call Register_NorthernGod_Setup()
+    call Register_NorthernGod_Setup() // run by MapBootstrap
 endfunction
 
 endlibrary

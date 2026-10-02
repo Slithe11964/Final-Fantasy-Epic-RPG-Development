@@ -246,8 +246,8 @@ endfunction
 
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Gate takes nothing returns nothing
-    call Register_Gate_Codeword_Demesne()
-    call Register_Gate_WinterKey_Unlock()
+    call Register_Gate_Codeword_Demesne() // starts off; enabled by Quest_ZodiacAge; disabled by Quest_ZodiacAge
+    call Register_Gate_WinterKey_Unlock() // enabled by Boss_Mateus; disabled by Boss_Belias, TrueIceAge; destroyed by Boss_Belias, TrueIceAge
 endfunction
 
 endlibrary
