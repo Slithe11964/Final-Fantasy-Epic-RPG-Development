@@ -1,4 +1,4 @@
-library TFishingCasting requires TAbil, TGroup, TPlayerPart01
+library TFishingCasting requires TAbil, TGroup, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Cast=null

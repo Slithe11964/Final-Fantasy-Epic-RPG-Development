@@ -1,4 +1,4 @@
-library TBossDemiFiend requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
+library TBossDemiFiend requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_DemiFiend_Summon=null

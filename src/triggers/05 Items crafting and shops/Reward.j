@@ -1,4 +1,4 @@
-library TReward requires TPlayerPart01, TText
+library TReward requires TPlayerHero, TText
 function Reward_GiveAll takes integer l_gold,integer xp,unit l_speaker returns nothing
     local string l_msg="|cffffcc00All players get "
     local integer i=0

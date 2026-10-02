@@ -1,4 +1,4 @@
-library TLancer requires TAbil, TForce, TGroup, TPlayerPart01, TProf, TWait, TWave
+library TLancer requires TAbil, TForce, TGroup, TPlayerHero, TProf, TWait, TWave
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Lancer_DragonBreath=null

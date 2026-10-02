@@ -1,4 +1,4 @@
-library TBossShinryu requires TCam, TCine, TDifficulty, TMusic, TPlayerPart01, TText, TWait
+library TBossShinryu requires TCam, TCine, TDifficulty, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Shinryu_Warmech_Summon=null

@@ -1,4 +1,4 @@
-library TQuestSaveTimmy requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
+library TQuestSaveTimmy requires TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_SaveTimmy_Init=null

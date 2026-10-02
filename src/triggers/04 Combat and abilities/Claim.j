@@ -1,4 +1,4 @@
-library TClaim requires TForce, TPlayerPart01
+library TClaim requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Claim_Command=null

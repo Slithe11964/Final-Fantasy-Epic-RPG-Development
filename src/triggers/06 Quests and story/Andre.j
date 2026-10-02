@@ -1,4 +1,4 @@
-library TAndre requires TCam, TCine, TForce, TMusic, TPlayerPart01, TText, TUnit, TWait
+library TAndre requires TCam, TCine, TForce, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Andre_Elysium_Reveal=null

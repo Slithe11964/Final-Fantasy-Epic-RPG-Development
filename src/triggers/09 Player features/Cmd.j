@@ -1,4 +1,4 @@
-library TCmd requires TForce, TJob, TMusic, TPlayerPart01
+library TCmd requires TForce, TJob, TMusic, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cmd_Music=null

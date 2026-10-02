@@ -1,4 +1,4 @@
-library TNecro requires TAbil, TGroup, TLoc, TPlayerPart01, TProf, TText
+library TNecro requires TAbil, TGroup, TLoc, TPlayerHero, TProf, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Necro_RaiseDead_Reset=null

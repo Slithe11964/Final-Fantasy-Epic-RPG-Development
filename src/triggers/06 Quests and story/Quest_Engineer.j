@@ -1,4 +1,4 @@
-library TQuestEngineer requires TCam, TCine, TPlayerPart01, TText, TUnit
+library TQuestEngineer requires TCam, TCine, TPlayerHero, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Engineer_GetAdvice=null

@@ -20,7 +20,7 @@ be reviewed, diffed and reverted with Git.
    (Trigger Editor menu).
 2. Make your changes and **Save As** a new file name. The saved map is directly playable.
 3. Run the automated checks on it:
-   `python tools/check_map.py <saved map>.w3x --baseline baseline/FFERPG_0.9.7.3-r12test.w3x`
+   `python tools/check_map.py <saved map>.w3x --baseline baseline/FFERPG_0.9.7.3-r14.w3x`
 4. Test in game.
 5. Optional: **Build Play Copy** in `WarcraftMapExtractor` (`dotnet run`) runs extra checks,
    such as neutral unit ownership, and produces a separate copy. It is no longer needed for

@@ -1,4 +1,4 @@
-library TFamfrit requires TAbil, TCam, TCine, TLoc, TMusic, TPlayerPart01, TProf, TText, TWait
+library TFamfrit requires TAbil, TCam, TCine, TLoc, TMusic, TPlayerHero, TProf, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Famfrit_Prepare=null

@@ -1,4 +1,4 @@
-library THeroSelect requires TPlayerPart01
+library THeroSelect requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Hero_Select_Redirect=null

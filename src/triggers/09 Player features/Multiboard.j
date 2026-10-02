@@ -1,4 +1,4 @@
-library TMultiboard requires TPlayerPart01, TText, TTime
+library TMultiboard requires TPlayerHero, TText, TTime
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Multiboard_Create=null

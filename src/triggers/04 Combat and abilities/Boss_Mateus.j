@@ -1,4 +1,4 @@
-library TBossMateus requires TCam, TCine, TLink, TMusic, TPlayerPart01, TText
+library TBossMateus requires TCam, TCine, TLink, TMusic, TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Mateus_Intro=null

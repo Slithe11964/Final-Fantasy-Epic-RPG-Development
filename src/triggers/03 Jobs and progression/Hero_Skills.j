@@ -1,4 +1,4 @@
-library THeroPart01
+library THeroSkills
 // Hero
 
 function Hero_LearnSkillTo takes unit l_hero,integer l_skillId,integer l_targetLevel returns nothing
@@ -13,7 +13,7 @@ function Hero_LearnSkillTo takes unit l_hero,integer l_skillId,integer l_targetL
     endloop
 endfunction
 
-function InitTrig_Hero_Part01 takes nothing returns nothing
+function InitTrig_Hero_Skills takes nothing returns nothing
 endfunction
 
 endlibrary

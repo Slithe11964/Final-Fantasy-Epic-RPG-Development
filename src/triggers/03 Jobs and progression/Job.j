@@ -1,4 +1,4 @@
-library TJob requires TBerserk, TForce, TGayaShared, TGroup, THeroPart01, TPlayerPart01
+library TJob requires TBerserk, TForce, TGayaShared, TGroup, THeroSkills, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Job_Change=null

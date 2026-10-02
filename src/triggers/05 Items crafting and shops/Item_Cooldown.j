@@ -1,4 +1,4 @@
-library TItemCooldown requires TAbil, TPlayerPart01
+library TItemCooldown requires TAbil, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Item_Cooldown_Start=null

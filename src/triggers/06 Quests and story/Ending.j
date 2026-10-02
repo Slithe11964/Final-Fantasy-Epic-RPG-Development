@@ -1,4 +1,4 @@
-library TEnding requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TText, TUnit, TWait
+library TEnding requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Ending_FrozenWorld=null

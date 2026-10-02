@@ -1,4 +1,4 @@
-library TSave requires TCmd, TJob, TPlayerPart01, TUtil
+library TSave requires TCmd, TJob, TPlayerHero, TUtil
 globals
     // Variables only this module uses.
     boolean udg_IsAutosave

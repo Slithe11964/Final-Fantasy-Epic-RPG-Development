@@ -1,4 +1,4 @@
-library TMonstrum requires TLoc, TPlayerPart01, TWait
+library TMonstrum requires TLoc, TPlayerHero, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Monstrum_Ambush_Arm=null

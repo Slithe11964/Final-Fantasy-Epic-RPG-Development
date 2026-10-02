@@ -1,4 +1,4 @@
-library TLegendNecromancer requires TCam, TCine, TForce, TPlayerPart01, TText, TUnit
+library TLegendNecromancer requires TCam, TCine, TForce, TPlayerHero, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Legend_Necromancer_Talk=null

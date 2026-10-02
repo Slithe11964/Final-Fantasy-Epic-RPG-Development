@@ -1,4 +1,4 @@
-library TDimensionalBoundary requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait, TZeromus
+library TDimensionalBoundary requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TZeromus
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DimensionalBoundary_Init=null

@@ -1,4 +1,4 @@
-library TCam requires TPlayerPart01
+library TCam requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cam_Command=null

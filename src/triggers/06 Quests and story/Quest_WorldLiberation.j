@@ -1,4 +1,4 @@
-library TQuestWorldLiberation requires TPlayerPart01, TReward
+library TQuestWorldLiberation requires TPlayerHero, TReward
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_WorldLiberation_Count=null

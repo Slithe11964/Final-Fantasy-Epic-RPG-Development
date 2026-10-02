@@ -1,4 +1,4 @@
-library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerPart01, TProf, TText, TUnit, TWait
+library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Damage_Init=null

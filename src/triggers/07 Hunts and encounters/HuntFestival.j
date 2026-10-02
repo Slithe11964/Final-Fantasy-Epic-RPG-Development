@@ -1,4 +1,4 @@
-library THuntFestival requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+library THuntFestival requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_HuntFestival_Announce=null

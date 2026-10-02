@@ -1,4 +1,4 @@
-library THeroMedicine requires TMedicine, TPlayerPart01
+library THeroMedicine requires TMedicine, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_HeroMedicine_Refill=null

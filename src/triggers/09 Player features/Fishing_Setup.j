@@ -1,4 +1,4 @@
-library TFishingSetup requires TGroup, TPlayerPart01
+library TFishingSetup requires TGroup, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Pole_Found=null

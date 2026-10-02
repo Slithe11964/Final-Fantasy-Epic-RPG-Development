@@ -1,4 +1,4 @@
-library TFirefly requires TForce, TPlayerPart01
+library TFirefly requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Firefly_Drops=null

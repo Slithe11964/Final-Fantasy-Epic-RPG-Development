@@ -1,4 +1,4 @@
-library TAtkSpd requires TForce, TPlayerPart01
+library TAtkSpd requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_AtkSpd_Command=null

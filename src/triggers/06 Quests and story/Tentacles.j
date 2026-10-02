@@ -1,4 +1,4 @@
-library TTentacles requires TCam, TCine, TLoc, TPlayerPart01, TReward, TText, TUnit, TWait
+library TTentacles requires TCam, TCine, TLoc, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Tentacles_Start=null

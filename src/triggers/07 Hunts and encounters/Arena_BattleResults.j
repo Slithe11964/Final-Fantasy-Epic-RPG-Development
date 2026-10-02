@@ -1,4 +1,4 @@
-library TArenaBattleResults requires TForce, TGroup, TJob, TMusic, TPlayerPart01
+library TArenaBattleResults requires TForce, TGroup, TJob, TMusic, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Arena_FoeDeath=null

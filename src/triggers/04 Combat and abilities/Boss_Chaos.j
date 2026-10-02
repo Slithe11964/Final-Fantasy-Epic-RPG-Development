@@ -1,4 +1,4 @@
-library TBossChaos requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText
+library TBossChaos requires TCam, TCine, TMusic, TPlayerHero, TReward, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Chaos_Death=null

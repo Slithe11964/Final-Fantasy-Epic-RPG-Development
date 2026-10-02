@@ -1,4 +1,4 @@
-library TGame requires TPlayerPart01, TWait
+library TGame requires TPlayerHero, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Game_Start=null

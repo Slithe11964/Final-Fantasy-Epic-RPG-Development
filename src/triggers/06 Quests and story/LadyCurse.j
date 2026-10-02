@@ -1,4 +1,4 @@
-library TLadyCurse requires TCam, TCine, TPlayerPart01, TReward, TText
+library TLadyCurse requires TCam, TCine, TPlayerHero, TReward, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_LadyCurse_ShowMarker=null

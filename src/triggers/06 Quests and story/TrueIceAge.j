@@ -1,4 +1,4 @@
-library TTrueIceAge requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TReward, TText, TWait
+library TTrueIceAge requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TrueIceAge_GateUnlock=null

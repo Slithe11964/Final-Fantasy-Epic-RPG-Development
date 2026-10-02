@@ -1,4 +1,4 @@
-library TEvade requires TPlayerPart01
+library TEvade requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Evade_Counter_Cost=null

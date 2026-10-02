@@ -1,4 +1,4 @@
-library TMcBurn requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TText, TWait
+library TMcBurn requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_McBurn_Arena_Hide=null

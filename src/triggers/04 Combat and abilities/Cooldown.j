@@ -1,4 +1,4 @@
-library TCooldown requires TPlayerPart01
+library TCooldown requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cooldown_Scaling=null

@@ -1,4 +1,4 @@
-library TIceAge requires TCam, TCine, TGroup, TJob, TMusic, TPlayerPart01, TReward, TText, TWait
+library TIceAge requires TCam, TCine, TGroup, TJob, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_IceAge_FreezeTimeout=null

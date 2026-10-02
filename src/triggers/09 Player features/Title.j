@@ -1,4 +1,4 @@
-library TTitle requires TForce, TPlayerPart01
+library TTitle requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Title_Grant=null

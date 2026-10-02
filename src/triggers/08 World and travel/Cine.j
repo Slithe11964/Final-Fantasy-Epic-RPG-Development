@@ -1,4 +1,4 @@
-library TCine requires TCam, TGroup, TLoc, TMusic, TPlayerPart01, TText, TUnit, TWait
+library TCine requires TCam, TGroup, TLoc, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cine_StoneBreaks=null

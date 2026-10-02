@@ -1,4 +1,4 @@
-library TMid requires TCam, TCine, TGroup, TPlayerPart01, TText, TUnit, TWait
+library TMid requires TCam, TCine, TGroup, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Mid_Cage_Ping=null

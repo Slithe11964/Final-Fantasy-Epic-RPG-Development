@@ -1,4 +1,4 @@
-library TVoiceOfForest requires TCam, TCine, TForce, TGroup, TMusic, TPlayerPart01, TText, TUnit, TWait
+library TVoiceOfForest requires TCam, TCine, TForce, TGroup, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_VoiceOfForest_Start=null

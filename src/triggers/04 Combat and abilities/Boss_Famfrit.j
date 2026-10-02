@@ -1,4 +1,4 @@
-library TBossFamfrit requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText
+library TBossFamfrit requires TCam, TCine, TMusic, TPlayerHero, TReward, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Famfrit_Death=null

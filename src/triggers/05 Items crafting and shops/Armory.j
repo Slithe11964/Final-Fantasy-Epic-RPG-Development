@@ -1,4 +1,4 @@
-library TArmory requires TForce, TPlayerPart01
+library TArmory requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Armory_Item_List=null

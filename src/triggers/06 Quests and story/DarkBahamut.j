@@ -1,4 +1,4 @@
-library TDarkBahamut requires TBerserk, TCam, TCine, TLoc, TMusic, TPlayerPart01, TText, TWait
+library TDarkBahamut requires TBerserk, TCam, TCine, TLoc, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DarkBahamut_Riddle=null

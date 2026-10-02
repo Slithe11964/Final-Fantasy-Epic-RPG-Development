@@ -1,4 +1,4 @@
-library TShrine requires TForce, TJob, TPlayerPart01
+library TShrine requires TForce, TJob, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Shrine_Create=null

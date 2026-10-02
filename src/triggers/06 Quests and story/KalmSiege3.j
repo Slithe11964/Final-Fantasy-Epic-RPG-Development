@@ -1,4 +1,4 @@
-library TKalmSiege3 requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+library TKalmSiege3 requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_KalmSiege3_Call=null

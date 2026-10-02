@@ -1,4 +1,4 @@
-library TLoot requires TForce, TItemShared, TPlayerPart01
+library TLoot requires TForce, TItemShared, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Loot_MonsterDrop=null

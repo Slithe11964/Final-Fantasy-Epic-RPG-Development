@@ -1,4 +1,4 @@
-library TSummonScaling requires TPlayerPart01
+library TSummonScaling requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Summon_Powerup=null

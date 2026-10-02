@@ -1,4 +1,4 @@
-library TDarkIfrit requires TCam, TCine, TLoc, TPlayerPart01, TText, TWait
+library TDarkIfrit requires TCam, TCine, TLoc, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DarkIfrit_Appear=null

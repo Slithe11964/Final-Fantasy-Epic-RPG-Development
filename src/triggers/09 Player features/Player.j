@@ -1,4 +1,4 @@
-library TPlayer requires TDifficulty, TForce, TGroup, TJob, TPlayerPart01
+library TPlayer requires TDifficulty, TForce, TGroup, TJob, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Player_Init=null

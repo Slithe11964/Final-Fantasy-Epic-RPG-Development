@@ -1,4 +1,4 @@
-library TFishingReelingAndCatch requires TForce, TLoc, TPlayerPart01
+library TFishingReelingAndCatch requires TForce, TLoc, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Tick=null

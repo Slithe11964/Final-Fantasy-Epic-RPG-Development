@@ -1,4 +1,4 @@
-library TZeromus requires TCam, TCine, TGroup, TMusic, TPlayerPart01, TReward, TText, TWait
+library TZeromus requires TCam, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Zeromus_Encounter=null

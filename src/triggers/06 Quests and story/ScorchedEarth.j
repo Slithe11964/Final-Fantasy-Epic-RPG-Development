@@ -1,4 +1,4 @@
-library TScorchedEarth requires TCam, TCine, TForce, TPlayerPart01, TText, TWait
+library TScorchedEarth requires TCam, TCine, TForce, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ScorchedEarth_Omen=null

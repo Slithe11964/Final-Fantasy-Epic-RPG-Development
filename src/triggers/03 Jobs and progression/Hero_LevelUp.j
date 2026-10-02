@@ -1,4 +1,4 @@
-library THeroLevelUp requires TForce, TJob, TPlayerPart01
+library THeroLevelUp requires TForce, TJob, TPlayerHero
 function Trig_Hero_LevelUp_IsSquire takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='H000') // 'H000': unit "Squire"
 endfunction

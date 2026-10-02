@@ -1,4 +1,4 @@
-library TProf requires TPlayerPart01
+library TProf requires TPlayerHero
 globals
     // Variables only this module uses.
     constant integer udg_ProfIdUnarmed=$D // $D = 13

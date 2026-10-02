@@ -1,4 +1,4 @@
-library TTravel requires TPlayerPart01
+library TTravel requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Travel_Dialog_Click=null

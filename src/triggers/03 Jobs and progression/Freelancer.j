@@ -1,4 +1,4 @@
-library TFreelancer requires TJob, TPlayerPart01
+library TFreelancer requires TJob, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Freelancer_Stats=null

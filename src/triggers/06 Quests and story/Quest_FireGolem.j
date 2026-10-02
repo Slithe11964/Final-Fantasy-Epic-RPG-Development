@@ -1,4 +1,4 @@
-library TQuestFireGolem requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit, TWait
+library TQuestFireGolem requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_FireGolem_Init=null

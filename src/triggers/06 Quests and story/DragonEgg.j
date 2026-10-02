@@ -1,4 +1,4 @@
-library TDragonEgg requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+library TDragonEgg requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DragonEgg_Start=null

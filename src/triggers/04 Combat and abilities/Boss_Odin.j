@@ -1,4 +1,4 @@
-library TBossOdin requires TCam, TCine, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+library TBossOdin requires TCam, TCine, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Odin_Intro=null

@@ -1,4 +1,4 @@
-library TArenaRewards requires TForce, TPlayerPart01
+library TArenaRewards requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Arena_BuyPrize=null

@@ -1,4 +1,4 @@
-library THeroDeath requires TForce, TGroup, TPlayerPart01, TWait
+library THeroDeath requires TForce, TGroup, TPlayerHero, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Hero_Death_Revive=null

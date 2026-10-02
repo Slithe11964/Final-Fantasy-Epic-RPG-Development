@@ -1,4 +1,4 @@
-library TChocoboTechCopy requires TForce, TPlayerPart01
+library TChocoboTechCopy requires TForce, TPlayerHero
 function Trig_Chocobo_TechCopy_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0K8')and(GetUnitName(GetTriggerUnit())=="Chocobo")and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)) // 'A0K8': ability "Chocobo Tech Copy"
 endfunction

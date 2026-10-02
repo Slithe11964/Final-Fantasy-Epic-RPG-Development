@@ -1,4 +1,4 @@
-library TArenaBattleSetup requires TForce, TGroup, TLink, TMusic, TPlayerPart01, TWait
+library TArenaBattleSetup requires TForce, TGroup, TLink, TMusic, TPlayerHero, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Arena_Start_Cup=null

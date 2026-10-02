@@ -1,4 +1,4 @@
-library TQuestRematch requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit, TWait
+library TQuestRematch requires TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Rematch_Start=null

@@ -1,4 +1,4 @@
-library TLoad requires TCmd, TPlayerPart01, TSave
+library TLoad requires TCmd, TPlayerHero, TSave
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Load_Warn_5Min=null

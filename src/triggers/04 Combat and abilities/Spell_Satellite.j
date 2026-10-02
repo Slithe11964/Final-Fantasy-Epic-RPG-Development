@@ -1,4 +1,4 @@
-library TSpellSatellite requires TLoc, TPlayerPart01
+library TSpellSatellite requires TLoc, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Spell_Satellite_Beam=null

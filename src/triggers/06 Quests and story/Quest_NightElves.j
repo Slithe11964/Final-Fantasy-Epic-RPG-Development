@@ -1,4 +1,4 @@
-library TQuestNightElves requires TCine, TMusic, TPlayerPart01, TReward, TText, TUnit
+library TQuestNightElves requires TCine, TMusic, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_NightElves_Start=null

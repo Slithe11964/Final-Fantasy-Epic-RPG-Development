@@ -1,4 +1,4 @@
-library TTalk requires TCam, TCine, TMusic, TPlayerPart01, TText, TUnit, TWait
+library TTalk requires TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Talk_PortalGuardian=null

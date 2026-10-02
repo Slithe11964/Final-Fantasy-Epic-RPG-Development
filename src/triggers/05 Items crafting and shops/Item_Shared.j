@@ -1,4 +1,4 @@
-library TItemShared requires TFix, TPlayerPart01, TSound, TUnit
+library TItemShared requires TFix, TPlayerHero, TSound, TUnit
 function Item_FindSlotForType takes unit u,itemtype l_slotType returns integer
     local integer i=0
     local integer l_freeSlot=-2

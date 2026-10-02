@@ -1,4 +1,4 @@
-library THeroEndlessGrowth requires TPlayerPart01
+library THeroEndlessGrowth requires TPlayerHero
 function Trig_Hero_EndlessGrowth_Has_EndlessAbility takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))>0) // 'A10E': ability "Endless"
 endfunction

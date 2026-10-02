@@ -134,9 +134,9 @@
  },
  {
   "index": 22,
-  "name": "Hero_Part01",
+  "name": "Hero_Skills",
   "folder": "03 Jobs and progression",
-  "library": "THeroPart01"
+  "library": "THeroSkills"
  },
  {
   "index": 23,
@@ -4064,9 +4064,9 @@
  },
  {
   "index": 677,
-  "name": "Player_Part01",
+  "name": "Player_Hero",
   "folder": "09 Player features",
-  "library": "TPlayerPart01"
+  "library": "TPlayerHero"
  },
  {
   "index": 678,

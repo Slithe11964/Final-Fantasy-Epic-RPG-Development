@@ -1,4 +1,4 @@
-library TForge requires TCam, TCine, TPlayerPart01, TText
+library TForge requires TCam, TCine, TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Forge_Bali_Init=null

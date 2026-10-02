@@ -1,4 +1,4 @@
-library TZodiark requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerPart01, TText, TWait
+library TZodiark requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Zodiark_Prepare=null

@@ -1,4 +1,4 @@
-library TGiott requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+library TGiott requires TCam, TCine, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Giott_FirstTalk=null

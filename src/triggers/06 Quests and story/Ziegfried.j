@@ -1,4 +1,4 @@
-library TZiegfried requires TCam, TCine, TGroup, TLoc, TPlayerPart01, TText, TWait
+library TZiegfried requires TCam, TCine, TGroup, TLoc, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Ziegfried_Mine_Arrive=null

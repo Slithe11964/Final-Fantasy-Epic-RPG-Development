@@ -1,4 +1,4 @@
-library TBossJudges requires TCam, TCine, TDifficulty, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
+library TBossJudges requires TCam, TCine, TDifficulty, TJob, TLoc, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Judges_Summon=null

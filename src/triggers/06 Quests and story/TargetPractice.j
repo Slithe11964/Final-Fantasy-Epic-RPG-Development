@@ -1,4 +1,4 @@
-library TTargetPractice requires TCam, TCine, TForce, TGroup, TPlayerPart01, TReward, TText
+library TTargetPractice requires TCam, TCine, TForce, TGroup, TPlayerHero, TReward, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TargetPractice_Init=null

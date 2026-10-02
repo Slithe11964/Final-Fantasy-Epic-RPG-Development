@@ -1,4 +1,4 @@
-library TEpilogue requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+library TEpilogue requires TCam, TCine, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Epilogue_WaitForCid=null

@@ -1,4 +1,4 @@
-library TTurks requires TForce, TPlayerPart01, TUnit
+library TTurks requires TForce, TPlayerHero, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Turks_Give_Flute=null

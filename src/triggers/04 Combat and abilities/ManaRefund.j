@@ -1,4 +1,4 @@
-library TManaRefund requires TPlayerPart01, TSpellShared
+library TManaRefund requires TPlayerHero, TSpellShared
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ManaRefund_Cast=null

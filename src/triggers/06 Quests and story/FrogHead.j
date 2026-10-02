@@ -1,4 +1,4 @@
-library TFrogHead requires TCam, TCine, TPlayerPart01, TText, TWait
+library TFrogHead requires TCam, TCine, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_FrogHead_TurnIn=null

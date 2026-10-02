@@ -1,4 +1,4 @@
-library TExodus requires TCam, TCine, TMusic, TPlayerPart01, TProf, TText, TUnit, TWait
+library TExodus requires TCam, TCine, TMusic, TPlayerHero, TProf, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Exodus_Prepare=null

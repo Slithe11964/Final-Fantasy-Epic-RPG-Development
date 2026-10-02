@@ -1,4 +1,4 @@
-library TGameLoad requires TPlayerPart01
+library TGameLoad requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_GameLoad_RestoreTitles=null

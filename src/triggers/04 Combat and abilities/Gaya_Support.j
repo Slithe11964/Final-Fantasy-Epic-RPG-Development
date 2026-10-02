@@ -1,4 +1,4 @@
-library TGayaSupport requires TPlayerPart01, TText
+library TGayaSupport requires TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Gaya_BreakStun=null

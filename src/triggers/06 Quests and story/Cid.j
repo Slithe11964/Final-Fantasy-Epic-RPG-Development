@@ -1,4 +1,4 @@
-library TCid requires TBerserk, TCine, TGroup, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+library TCid requires TBerserk, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cid_Talk_FindMid=null

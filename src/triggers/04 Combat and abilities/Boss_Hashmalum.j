@@ -1,4 +1,4 @@
-library TBossHashmalum requires TCam, TCine, TLoc, TMusic, TPlayerPart01, TReward, TText, TWait
+library TBossHashmalum requires TCam, TCine, TLoc, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Hashmalum_Intro=null

@@ -1,4 +1,4 @@
-library TCurse requires TCraft, TPlayerPart01
+library TCurse requires TCraft, TPlayerHero
 globals
     // Variables only this module uses (MapBootstrap sets some starting values).
     trigger udg_CurseItemTrigger=null

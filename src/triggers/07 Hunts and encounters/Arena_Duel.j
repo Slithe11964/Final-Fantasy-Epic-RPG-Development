@@ -1,4 +1,4 @@
-library TArenaDuel requires TBattleLog, TJob, TLoc, TMusic, TPlayerPart01
+library TArenaDuel requires TBattleLog, TJob, TLoc, TMusic, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Arena_Duel_AI=null

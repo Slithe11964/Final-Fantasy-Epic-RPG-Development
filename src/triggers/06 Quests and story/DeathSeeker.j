@@ -1,4 +1,4 @@
-library TDeathSeeker requires TCam, TCine, TPlayerPart01, TText, TWait
+library TDeathSeeker requires TCam, TCine, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DeathSeeker_Give=null

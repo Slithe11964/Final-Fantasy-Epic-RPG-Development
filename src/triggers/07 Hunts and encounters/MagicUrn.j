@@ -1,4 +1,4 @@
-library TMagicUrn requires TForce, TMusic, TPlayerPart01
+library TMagicUrn requires TForce, TMusic, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_MagicUrn_Setup=null

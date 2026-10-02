@@ -1,4 +1,4 @@
-library TWarp requires TPlayerPart01, TQuestScorchingTravel, TTravel
+library TWarp requires TPlayerHero, TQuestScorchingTravel, TTravel
 function Warp_CondIsHero takes nothing returns boolean
     return GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit()))
 endfunction

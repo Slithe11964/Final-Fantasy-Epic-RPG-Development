@@ -1,4 +1,4 @@
-library TArmor requires TAbil, TPlayerPart01, TProf
+library TArmor requires TAbil, TPlayerHero, TProf
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Armor_Breaker=null

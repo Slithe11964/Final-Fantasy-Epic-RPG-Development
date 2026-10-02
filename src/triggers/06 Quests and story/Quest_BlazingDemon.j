@@ -1,4 +1,4 @@
-library TQuestBlazingDemon requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TWait
+library TQuestBlazingDemon requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_BlazingDemon_Start=null

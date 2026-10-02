@@ -1,4 +1,4 @@
-library TPromotion requires TJob, TPlayerPart01
+library TPromotion requires TJob, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Promotion_Award_Random=null

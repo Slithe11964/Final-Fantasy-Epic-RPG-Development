@@ -1,4 +1,4 @@
-library TBattleLog requires TForce, TPlayerPart01
+library TBattleLog requires TForce, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Battlelog_Command=null

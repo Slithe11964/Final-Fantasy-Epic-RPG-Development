@@ -1,4 +1,4 @@
-library TExp requires TPlayerPart01
+library TExp requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Exp_Distribution=null

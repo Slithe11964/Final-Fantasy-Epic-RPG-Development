@@ -1,4 +1,4 @@
-library TMedicine requires TPlayerPart01, TWait
+library TMedicine requires TPlayerHero, TWait
 function Medicine_ApplyTimed takes unit t,boolean ph returns nothing
     local integer l_amount=2
     local integer l_level=GetUnitAbilityLevel(t,'A0FM') // 'A0FM': ability "Hero Drink Powerup"

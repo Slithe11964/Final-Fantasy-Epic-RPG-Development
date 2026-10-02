@@ -1,4 +1,4 @@
-library TBossGilgamesh requires TCam, TCine, TDifficulty, TJob, TMusic, TPlayerPart01, TText, TWait
+library TBossGilgamesh requires TCam, TCine, TDifficulty, TJob, TMusic, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Gilgamesh_Summon=null

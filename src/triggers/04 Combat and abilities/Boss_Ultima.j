@@ -1,4 +1,4 @@
-library TBossUltima requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TWait
+library TBossUltima requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Ultima_Death=null

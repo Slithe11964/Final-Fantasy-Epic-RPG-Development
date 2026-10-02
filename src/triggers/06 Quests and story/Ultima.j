@@ -1,4 +1,4 @@
-library TUltima requires TAbil, TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TProf, TText, TUnit, TWait
+library TUltima requires TAbil, TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TProf, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Ultima_Cast=null

@@ -1,4 +1,4 @@
-library TBossZalera requires TCam, TCine, TGroup, TLink, TMusic, TPlayerPart01, TReward, TText, TWait
+library TBossZalera requires TCam, TCine, TGroup, TLink, TMusic, TPlayerHero, TReward, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Zalera_Intro=null

@@ -1,4 +1,4 @@
-library TArenaRounds requires TForce, TJob, TLink, TPlayerPart01, TWait
+library TArenaRounds requires TForce, TJob, TLink, TPlayerHero, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Arena_Round_Start=null

@@ -1,4 +1,4 @@
-library TCraft requires TJob, TPlayerPart01
+library TCraft requires TJob, TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Craft_Recipe=null
