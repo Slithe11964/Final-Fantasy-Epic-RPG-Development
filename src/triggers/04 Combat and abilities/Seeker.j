@@ -1,0 +1,60 @@
+library TSeeker requires TWait
+function Trig_Seeker_Teleport_Cast_Conditions takes nothing returns boolean
+    return(GetSpellAbilityId()=='A102') // 'A102': ability "!Teleport"
+endfunction
+
+function Trig_Seeker_Teleport_Cast_Cond_TeleportBlocked takes nothing returns boolean
+    return(udg_DmgFlagUnavoidable>0)
+endfunction
+
+function Trig_Seeker_Teleport_Cast_Actions takes nothing returns nothing
+    set udg_DmgFlagUnavoidable=0
+    if(Trig_Seeker_Teleport_Cast_Cond_TeleportBlocked())then
+        set udg_DmgFlagUnavoidable=0
+        call AddSpecialEffectTargetUnitBJ("chest",GetSpellTargetUnit(),"Abilities\\Spells\\Items\\SpellShieldAmulet\\SpellShieldCaster.mdl")
+        call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    else
+        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+        call DestroyEffectBJ(GetLastCreatedEffectBJ())
+        call RemoveLocation(udg_TempPoint)
+        // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
+        set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+        call SetUnitPositionLoc(GetSpellTargetUnit(),udg_TempPoint)
+        call RemoveLocation(udg_TempPoint)
+        call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+        call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    endif
+    call Wait_Polled(4.)
+    // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
+    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"patrol",udg_TempPoint)
+    call RemoveLocation(udg_TempPoint)
+endfunction
+
+// Registration ownership; called at the original bootstrap positions.
+function InitTrig_Seeker takes nothing returns nothing
+endfunction
+
+function RegisterR11_Seeker_Teleport_Cast takes nothing returns nothing
+
+if not udg_InitTrigFromMain then
+
+return
+
+endif
+
+set gg_trg_Seeker_Teleport_Cast=CreateTrigger()
+
+call TriggerRegisterAnyUnitEventBJ(gg_trg_Seeker_Teleport_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+
+call TriggerAddCondition(gg_trg_Seeker_Teleport_Cast,Condition(function Trig_Seeker_Teleport_Cast_Conditions))
+
+call TriggerAddAction(gg_trg_Seeker_Teleport_Cast,function Trig_Seeker_Teleport_Cast_Actions)
+
+endfunction
+
+
+
+
+endlibrary

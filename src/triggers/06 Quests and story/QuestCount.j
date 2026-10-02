@@ -1,0 +1,58 @@
+library TQuestCount
+function Trig_QuestCount_Milestones_Conditions takes nothing returns boolean
+    return(udg_QuestCountLocked==false)
+endfunction
+
+function Trig_QuestCount_Milestones_CountIs4 takes nothing returns boolean
+    return(udg_StoryProgress==4)
+endfunction
+
+function Trig_QuestCount_Milestones_CountIs6 takes nothing returns boolean
+    return(udg_StoryProgress==6)
+endfunction
+
+function Trig_QuestCount_Milestones_CountIs8 takes nothing returns boolean
+    return(udg_StoryProgress==8)
+endfunction
+
+function Trig_QuestCount_Milestones_Actions takes nothing returns nothing
+    call SetPlayerTechResearchedSwap('R021',udg_StoryProgress,Player($A)) // 'R021': upgrade "Naisha Powerup"; $A = 10
+    if(Trig_QuestCount_Milestones_CountIs4())then
+        call ConditionalTriggerExecute(gg_trg_Elixir_Prepare)
+    endif
+    if(Trig_QuestCount_Milestones_CountIs6())then
+        call RemoveItemFromStockBJ('I08P',gg_unit_n02Y_0052) // 'I08P': item "Information: Welcome to Kalm!"
+        call ConditionalTriggerExecute(gg_trg_Quest_Phoenix_Available)
+        call ConditionalTriggerExecute(gg_trg_LadyCurse_ShowMarker)
+    endif
+    if(Trig_QuestCount_Milestones_CountIs8())then
+        call ConditionalTriggerExecute(gg_trg_Shinra_TalkPrepare)
+    endif
+endfunction
+
+// Registration ownership; called at the original bootstrap positions.
+function InitTrig_QuestCount takes nothing returns nothing
+endfunction
+
+function RegisterR11_QuestCount_Milestones takes nothing returns nothing
+
+if not udg_InitTrigFromMain then
+
+return
+
+endif
+
+set gg_trg_QuestCount_Milestones=CreateTrigger()
+
+call DisableTrigger(gg_trg_QuestCount_Milestones)
+
+call TriggerAddCondition(gg_trg_QuestCount_Milestones,Condition(function Trig_QuestCount_Milestones_Conditions))
+
+call TriggerAddAction(gg_trg_QuestCount_Milestones,function Trig_QuestCount_Milestones_Actions)
+
+endfunction
+
+
+
+
+endlibrary

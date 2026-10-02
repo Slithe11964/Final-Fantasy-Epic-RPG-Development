@@ -1,0 +1,53 @@
+library TKiros
+function Trig_Kiros_Hide_Actions takes nothing returns nothing
+    call ShowUnitHide(gg_unit_n0BV_0229)
+    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+function Trig_Kiros_ShowTalkIcon_Actions takes nothing returns nothing
+    set udg_SpecialEffect[73]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BV_0229,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
+    call EnableTrigger(gg_trg_GnollHunt_Start)
+    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+// Registration ownership; called at the original bootstrap positions.
+function InitTrig_Kiros takes nothing returns nothing
+endfunction
+
+function RegisterR11_Kiros_Hide takes nothing returns nothing
+
+if not udg_InitTrigFromMain then
+
+return
+
+endif
+
+set gg_trg_Kiros_Hide=CreateTrigger()
+
+call TriggerAddAction(gg_trg_Kiros_Hide,function Trig_Kiros_Hide_Actions)
+
+endfunction
+
+
+
+
+function RegisterR11_Kiros_ShowTalkIcon takes nothing returns nothing
+
+if not udg_InitTrigFromMain then
+
+return
+
+endif
+
+set gg_trg_Kiros_ShowTalkIcon=CreateTrigger()
+
+call DisableTrigger(gg_trg_Kiros_ShowTalkIcon)
+
+call TriggerAddAction(gg_trg_Kiros_ShowTalkIcon,function Trig_Kiros_ShowTalkIcon_Actions)
+
+endfunction
+
+
+
+
+endlibrary

@@ -1,0 +1,53 @@
+library TMaechen
+function Trig_Maechen_Lore_Init_Actions takes nothing returns nothing
+    set udg_LoreText[1]=StringIdentity("Welcome to Kalm! My name is Mae'chen and I have travelled many a plane. While you're here I'll gladly tell you some of the stories and legends about Gaya. If you want to know about the history of this town, I suggest you talk to Frakir, the felhound. You can find him in the east of Kalm.")
+    set udg_LoreText[2]=StringIdentity("Yes, Arcanium is a legend in Gaya. It must have been centuries ago now when gear made of Arcanium made its rounds. Many fighters arose in those times, and those with Arcanium gear were unmatched. It was a bloody time, truth be told. No one could challenge those with that kind of godlike weaponry. But then someday the Arcanium mine collapsed, and all Arcanium weapons and armor disappeared from the world. And moreover now the place where the mine used to be is guarded by a mighty beast which in itself seems to be impervious to any attacks much like armor of Arcanium was. It seems unlikely this is all just mere coincidence, but this was all very long ago. Even if you wanted to learn more, you'd be lucky to find someone who survived this entire ordeal and is still alive to this day.")
+    set udg_LoreText[3]=StringIdentity("I met a child the other day. He was dressed in a dark full-cover suit and was able to speak a language that comes from the world of Spira. I would've liked to talk to him, but he is shy and rather avoids the people in this town. Could you find out why?")
+    set udg_LoreText[4]=StringIdentity("The Tiara of the Deep is an artifact that originally came from another world entirely. It is a relic of the water god Grattheos and it uses the power of water to absorb immense power from powerful beings. How exactly this divine tiara ended up in this world, I cannot say.")
+    set udg_LoreText[5]=StringIdentity("The Northern Mountains have no shortage of tales and legends of sorcery. Even now it is the residing place of the lost seekers, Yevon bless their souls. And there is a reason for that. The reason is unknown but magical energies are undeniably amplified and made more powerful on those mountains. They say that magic attracts more magic, so it would not be surprising if continuous use of magic left residues all over the place. But who knows. Oh I apologize for the tangent. As for the skeleton man, if he is telling the truth then surely there will be people who can vouch for him.")
+    set udg_LoreText[6]=StringIdentity("Phoenix has been an ally of elves since ages long past. Its lifecycle is short, but every new phoenix retains the memories of its mother bird, so it is a very wise Eidolon. Regrettably it does not speak human tongue. What a pity. I would truly be curious to hear of all the things those glowing eyes have witnessed.")
+    set udg_LoreText[7]=StringIdentity("Setag was a very talented mage in his youth. He achieved the title of calculator, but disappeared soon after. And then he returned and murdered the king. It seems his rival Halaster has tracked him down, but is unable to fight him alone. Setag is able to summon monsters to do his bidding. You should be careful when going after him, but recall that Setag himself is but a wizard. He may very well be the weak link in battle.")
+    set udg_LoreText[8]=StringIdentity("Perhaps it is but a mere coincidence, but an axe-wielding brutal man named Kilrog... nobody else but me will remember this, but Kilrog was a well-known fighter in his time. That time, however, was around two hundred years ago. The average lifespan of his kind is only forty years. By all regularity he should be long dead. But back in the day he had green skin... maybe his body was turned into something else entirely. Truly disturbing to think about indeed.")
+    set udg_LoreText[9]=StringIdentity("There are special glyphs in this world. The rituals engraved upon those glyphs can improve the affinity between you and your Spirit and make you more powerful. And it seems these rituals even have further power beyond what they appear to be... but who knows what those might be.")
+    set udg_LoreText[$A]=StringIdentity("Maybe you've already noticed the small tomb in the Northern Mountains. There is a book - a tome - next to it. You read it, it says a grand vampire is hidden inside it. Some say, you have to read the whole book to make it appear. Some say, you must destroy it. Who knows what the truth is? It may carry a lot of danger to it however, so be cautious.") // $A = 10
+    set udg_LoreText[$B]=StringIdentity("Golems are truly strange creatures. They require no sustenance and yet they keep going on tirelessly. They may get their energy from some source of magic, but no golem has ever been witnessed to just run out of fuel and stop working. Perhaps their energies are being continuously replenished by a mage of unimaginable power...? But that is mere speculation.") // $B = 11
+    set udg_LoreText[$C]=StringIdentity("It appears there are three types of greens in particular that chocobos adore. Gysahl Greens for good stamina. Mimett Greens for good speed. Silkis Greens for delicacy and adrenaline. I would recommend asking a person from the Farm down south if you want to hear more. His name is Billy and he's always been a big fan of chocobos.") // $C = 12
+    set udg_LoreText[$D]=StringIdentity("Have you possibly felt it too? This... feeling... it can only be the legendary Dark Eidolons. The legend says they were created as copies from the real Eidolon, but empowered by darkness. Only the Divine Eidolon could not be caught and copied. If that is true, there are Dark Eidolons emprisoned in the parallel world to Gaya - Terra - and are now about to reach the real Gaya. They must be stopped. But beware; they are extremely powerful, much stronger than their creator had intended!") // $D = 13
+    set udg_LoreText[$E]=StringIdentity("Dark Ifrit... yes, I heard he has been locked to a hot place. But surprisingly enough, awfully close to a cold place. Dark Shiva... well, she's pretty much exactly where you'd expect her to be. Careful though, she may not be alone.") // $E = 14
+    set udg_LoreText[$F]=StringIdentity("The locks of both of them have something in common. They react to magic. Of course, not to any magic, but to certain spells. Phoenix is locked near a... yes, I think it's a gnoll base. Quezacotl is locked south of the place where you'd probably expect the most to be struck by lightning.") // $F = 15
+    set udg_LoreText[16]=StringIdentity("An incredibly wild raging power... it's not surprising that this beast is kept in the very strongest lock. No, you yourself would never be able to open it. How about its equivalent? The lock is nearby... I can feel it. Maybe it is lurking on the summoner of the original?")
+    set udg_LoreText[17]=StringIdentity("Hmmm... I've never heard of notes like this one so I may not be able to help you here. All I can say is that the structure of this text reminds me a lot of the Hymn of the Fayth from the distant plane of Spira. That is all.")
+    set udg_LoreText[18]=StringIdentity("Beware! Inside the Magic Urn sleeps a being of great power! If you open it, you might wake and anger it. Oh, it won't open? Consider yourselves lucky. But if you want to open it that badly, I'd suggest trying it in an area where decay, taint and darkness gather.")
+    set udg_LoreText[19]=StringIdentity("That island... is a place sealed away on the border of this world, where you may face beings from beyond the rift. You wouldn't stay there unless you were suicidal... but if you must, remember that there is a Ring of Light that serves as a connection point as well. If you wish to open the pathway, you may require an artifact of great holy power.")
+    set udg_LoreText[20]=StringIdentity("There are some truly legendary weapons strewn across Gaya you realize. They were brought in here from many different worlds. It may sound like a fantasy, a final fantasy even, to acquire them. But I'm afraid if you wish to attain their power you may need knowledge from the worlds they hail from.")
+    set udg_LoreText[21]=StringIdentity("Hmm, I'm afraid I can't be of much help here. Do you have any idea who it might be? If so, maybe you should try showing the ring to that person.")
+    set udg_LoreText[22]=StringIdentity("Unfortunately I'm not too familiar with the art of fishing myself. However there was once an elf who was truly a legendary fisherman. He has since passed on, but perhaps part of his legacy still remains somewhere...")
+    set udg_LoreText[23]=StringIdentity("I would recognize the glow on this scroll anywhere; this is the power of the former ancient elder Dana. She used to lead Lothlorien, but it would seem she disappeared at some point. The magic within this scroll can surely be used to cleanse some of the corruption in the Ancient Forest of Lothlorien.")
+    call AddItemToStockBJ('I08P',gg_unit_n02Y_0052,1,1) // 'I08P': item "Information: Welcome to Kalm!"
+    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+// Registration ownership; called at the original bootstrap positions.
+function InitTrig_Maechen takes nothing returns nothing
+endfunction
+
+function RegisterR11_Maechen_Lore_Init takes nothing returns nothing
+
+if not udg_InitTrigFromMain then
+
+return
+
+endif
+
+set gg_trg_Maechen_Lore_Init=CreateTrigger()
+
+call TriggerRegisterTimerEventSingle(gg_trg_Maechen_Lore_Init,10.)
+
+call TriggerAddAction(gg_trg_Maechen_Lore_Init,function Trig_Maechen_Lore_Init_Actions)
+
+endfunction
+
+
+
+
+endlibrary

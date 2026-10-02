@@ -1,0 +1,4 @@
+# Trigger sources are stored exactly as World Editor saves them (CRLF)
+src/**/*.j -text
+*.py text eol=lf
+*.md text eol=lf

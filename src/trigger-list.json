@@ -1,0 +1,4450 @@
+[
+ {
+  "index": 0,
+  "name": "Wait",
+  "folder": "01 Shared helpers",
+  "library": "TWait"
+ },
+ {
+  "index": 1,
+  "name": "Loc",
+  "folder": "01 Shared helpers",
+  "library": "TLoc"
+ },
+ {
+  "index": 2,
+  "name": "Filter",
+  "folder": "01 Shared helpers",
+  "library": "TFilter"
+ },
+ {
+  "index": 3,
+  "name": "Group",
+  "folder": "01 Shared helpers",
+  "library": "TGroup"
+ },
+ {
+  "index": 4,
+  "name": "Force",
+  "folder": "01 Shared helpers",
+  "library": "TForce"
+ },
+ {
+  "index": 5,
+  "name": "Stock",
+  "folder": "01 Shared helpers",
+  "library": "TStock"
+ },
+ {
+  "index": 6,
+  "name": "Path",
+  "folder": "01 Shared helpers",
+  "library": "TPath"
+ },
+ {
+  "index": 7,
+  "name": "Knock",
+  "folder": "01 Shared helpers",
+  "library": "TKnock"
+ },
+ {
+  "index": 8,
+  "name": "Missile",
+  "folder": "01 Shared helpers",
+  "library": "TMissile"
+ },
+ {
+  "index": 9,
+  "name": "Fix",
+  "folder": "01 Shared helpers",
+  "library": "TFix"
+ },
+ {
+  "index": 10,
+  "name": "Util",
+  "folder": "01 Shared helpers",
+  "library": "TUtil"
+ },
+ {
+  "index": 11,
+  "name": "Link",
+  "folder": "01 Shared helpers",
+  "library": "TLink"
+ },
+ {
+  "index": 12,
+  "name": "Number",
+  "folder": "01 Shared helpers",
+  "library": "TNumber"
+ },
+ {
+  "index": 13,
+  "name": "Loop",
+  "folder": "01 Shared helpers",
+  "library": "TLoop"
+ },
+ {
+  "index": 14,
+  "name": "Code",
+  "folder": "01 Shared helpers",
+  "library": "TCode"
+ },
+ {
+  "index": 15,
+  "name": "Wrap",
+  "folder": "01 Shared helpers",
+  "library": "TWrap"
+ },
+ {
+  "index": 16,
+  "name": "Remove",
+  "folder": "01 Shared helpers",
+  "library": "TRemove"
+ },
+ {
+  "index": 17,
+  "name": "MapSetup",
+  "folder": "02 Map setup",
+  "library": "TMapSetup"
+ },
+ {
+  "index": 18,
+  "name": "Units",
+  "folder": "02 Map setup",
+  "library": "TUnits"
+ },
+ {
+  "index": 19,
+  "name": "Init",
+  "folder": "02 Map setup",
+  "library": "TInit"
+ },
+ {
+  "index": 20,
+  "name": "Preload",
+  "folder": "02 Map setup",
+  "library": "TPreload"
+ },
+ {
+  "index": 21,
+  "name": "InitCustomTeams",
+  "folder": "02 Map setup",
+  "library": "TInitCustomTeams"
+ },
+ {
+  "index": 22,
+  "name": "config",
+  "folder": "02 Map setup",
+  "library": "Tconfig"
+ },
+ {
+  "index": 23,
+  "name": "JobHero",
+  "folder": "03 Jobs and progression",
+  "library": "TJobHero"
+ },
+ {
+  "index": 24,
+  "name": "Hero_Part01",
+  "folder": "03 Jobs and progression",
+  "library": "THeroPart01"
+ },
+ {
+  "index": 25,
+  "name": "Prof",
+  "folder": "03 Jobs and progression",
+  "library": "TProf"
+ },
+ {
+  "index": 26,
+  "name": "Job",
+  "folder": "03 Jobs and progression",
+  "library": "TJob"
+ },
+ {
+  "index": 27,
+  "name": "Freelancer",
+  "folder": "03 Jobs and progression",
+  "library": "TFreelancer"
+ },
+ {
+  "index": 28,
+  "name": "JobLevels",
+  "folder": "03 Jobs and progression",
+  "library": "TJobLevels"
+ },
+ {
+  "index": 29,
+  "name": "Shrine",
+  "folder": "03 Jobs and progression",
+  "library": "TShrine"
+ },
+ {
+  "index": 30,
+  "name": "Legendary",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendary"
+ },
+ {
+  "index": 31,
+  "name": "Exp",
+  "folder": "03 Jobs and progression",
+  "library": "TExp"
+ },
+ {
+  "index": 32,
+  "name": "Research",
+  "folder": "03 Jobs and progression",
+  "library": "TResearch"
+ },
+ {
+  "index": 33,
+  "name": "Levels",
+  "folder": "03 Jobs and progression",
+  "library": "TLevels"
+ },
+ {
+  "index": 34,
+  "name": "Lancer",
+  "folder": "03 Jobs and progression",
+  "library": "TLancer"
+ },
+ {
+  "index": 35,
+  "name": "Geomancer",
+  "folder": "03 Jobs and progression",
+  "library": "TGeomancer"
+ },
+ {
+  "index": 36,
+  "name": "Mediator",
+  "folder": "03 Jobs and progression",
+  "library": "TMediator"
+ },
+ {
+  "index": 37,
+  "name": "Ninja",
+  "folder": "03 Jobs and progression",
+  "library": "TNinja"
+ },
+ {
+  "index": 38,
+  "name": "Prophet",
+  "folder": "03 Jobs and progression",
+  "library": "TProphet"
+ },
+ {
+  "index": 39,
+  "name": "HolySwordsman",
+  "folder": "03 Jobs and progression",
+  "library": "THolySwordsman"
+ },
+ {
+  "index": 40,
+  "name": "Sorcerer",
+  "folder": "03 Jobs and progression",
+  "library": "TSorcerer"
+ },
+ {
+  "index": 41,
+  "name": "Necro",
+  "folder": "03 Jobs and progression",
+  "library": "TNecro"
+ },
+ {
+  "index": 42,
+  "name": "PhantomDancer",
+  "folder": "03 Jobs and progression",
+  "library": "TPhantomDancer"
+ },
+ {
+  "index": 43,
+  "name": "HolyKnight",
+  "folder": "03 Jobs and progression",
+  "library": "THolyKnight"
+ },
+ {
+  "index": 44,
+  "name": "Calculator",
+  "folder": "03 Jobs and progression",
+  "library": "TCalculator"
+ },
+ {
+  "index": 45,
+  "name": "Chemist",
+  "folder": "03 Jobs and progression",
+  "library": "TChemist"
+ },
+ {
+  "index": 46,
+  "name": "ChocoboRider",
+  "folder": "03 Jobs and progression",
+  "library": "TChocoboRider"
+ },
+ {
+  "index": 47,
+  "name": "DarkJobs",
+  "folder": "03 Jobs and progression",
+  "library": "TDarkJobs"
+ },
+ {
+  "index": 48,
+  "name": "Promotion",
+  "folder": "03 Jobs and progression",
+  "library": "TPromotion"
+ },
+ {
+  "index": 49,
+  "name": "Samurai",
+  "folder": "03 Jobs and progression",
+  "library": "TSamurai"
+ },
+ {
+  "index": 50,
+  "name": "Trickster",
+  "folder": "03 Jobs and progression",
+  "library": "TTrickster"
+ },
+ {
+  "index": 51,
+  "name": "Hero_Death",
+  "folder": "03 Jobs and progression",
+  "library": "THeroDeath"
+ },
+ {
+  "index": 52,
+  "name": "Hero_EndlessGrowth",
+  "folder": "03 Jobs and progression",
+  "library": "THeroEndlessGrowth"
+ },
+ {
+  "index": 53,
+  "name": "Hero_LevelUp",
+  "folder": "03 Jobs and progression",
+  "library": "THeroLevelUp"
+ },
+ {
+  "index": 54,
+  "name": "Hero_MedicineEvents",
+  "folder": "03 Jobs and progression",
+  "library": "THeroMedicineEvents"
+ },
+ {
+  "index": 55,
+  "name": "Hero_Order",
+  "folder": "03 Jobs and progression",
+  "library": "THeroOrder"
+ },
+ {
+  "index": 56,
+  "name": "Hero_Select",
+  "folder": "03 Jobs and progression",
+  "library": "THeroSelect"
+ },
+ {
+  "index": 57,
+  "name": "Hero",
+  "folder": "03 Jobs and progression",
+  "library": "THero"
+ },
+ {
+  "index": 58,
+  "name": "Legend_Archer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendArcher"
+ },
+ {
+  "index": 59,
+  "name": "Legend_Calculator",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendCalculator"
+ },
+ {
+  "index": 60,
+  "name": "Legend_Chemist",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendChemist"
+ },
+ {
+  "index": 61,
+  "name": "Legend_DarkKnight",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendDarkKnight"
+ },
+ {
+  "index": 62,
+  "name": "Legend_Freelancer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendFreelancer"
+ },
+ {
+  "index": 63,
+  "name": "Legend_Geomancer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendGeomancer"
+ },
+ {
+  "index": 64,
+  "name": "Legend_HolySwordsman",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendHolySwordsman"
+ },
+ {
+  "index": 65,
+  "name": "Legend_Knight",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendKnight"
+ },
+ {
+  "index": 66,
+  "name": "Legend_Lancer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendLancer"
+ },
+ {
+  "index": 67,
+  "name": "Legend_Mediator",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendMediator"
+ },
+ {
+  "index": 68,
+  "name": "Legend_Monk",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendMonk"
+ },
+ {
+  "index": 69,
+  "name": "Legend_Necromancer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendNecromancer"
+ },
+ {
+  "index": 70,
+  "name": "Legend_Ninja",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendNinja"
+ },
+ {
+  "index": 71,
+  "name": "Legend_Oracle",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendOracle"
+ },
+ {
+  "index": 72,
+  "name": "Legend_Priest",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendPriest"
+ },
+ {
+  "index": 73,
+  "name": "Legend_Prophet",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendProphet"
+ },
+ {
+  "index": 74,
+  "name": "Legend_Samurai",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendSamurai"
+ },
+ {
+  "index": 75,
+  "name": "Legend_Sorcerer",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendSorcerer"
+ },
+ {
+  "index": 76,
+  "name": "Legend_Squire",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendSquire"
+ },
+ {
+  "index": 77,
+  "name": "Legend_Summoner",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendSummoner"
+ },
+ {
+  "index": 78,
+  "name": "Legend_Thief",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendThief"
+ },
+ {
+  "index": 79,
+  "name": "Legend_TimeMage",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendTimeMage"
+ },
+ {
+  "index": 80,
+  "name": "Legend_Wizard",
+  "folder": "03 Jobs and progression",
+  "library": "TLegendWizard"
+ },
+ {
+  "index": 81,
+  "name": "Legend",
+  "folder": "03 Jobs and progression",
+  "library": "TLegend"
+ },
+ {
+  "index": 82,
+  "name": "CombatFormulas",
+  "folder": "04 Combat and abilities",
+  "library": "TCombatFormulas"
+ },
+ {
+  "index": 83,
+  "name": "GoliathTonic",
+  "folder": "04 Combat and abilities",
+  "library": "TGoliathTonic"
+ },
+ {
+  "index": 84,
+  "name": "Berserk",
+  "folder": "04 Combat and abilities",
+  "library": "TBerserk"
+ },
+ {
+  "index": 85,
+  "name": "MaxHp",
+  "folder": "04 Combat and abilities",
+  "library": "TMaxHp"
+ },
+ {
+  "index": 86,
+  "name": "Unit",
+  "folder": "04 Combat and abilities",
+  "library": "TUnit"
+ },
+ {
+  "index": 87,
+  "name": "Element",
+  "folder": "04 Combat and abilities",
+  "library": "TElement"
+ },
+ {
+  "index": 88,
+  "name": "Damage",
+  "folder": "04 Combat and abilities",
+  "library": "TDamage"
+ },
+ {
+  "index": 89,
+  "name": "DEMissiles",
+  "folder": "04 Combat and abilities",
+  "library": "TDEMissiles"
+ },
+ {
+  "index": 90,
+  "name": "Abil",
+  "folder": "04 Combat and abilities",
+  "library": "TAbil"
+ },
+ {
+  "index": 91,
+  "name": "Runic",
+  "folder": "04 Combat and abilities",
+  "library": "TRunic"
+ },
+ {
+  "index": 92,
+  "name": "Gaya_Appearance",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaAppearance"
+ },
+ {
+  "index": 93,
+  "name": "Gaya_Channeling",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaChanneling"
+ },
+ {
+  "index": 94,
+  "name": "Gaya_Inventory",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaInventory"
+ },
+ {
+  "index": 95,
+  "name": "Gaya_Movement",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaMovement"
+ },
+ {
+  "index": 96,
+  "name": "Gaya_Orders",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaOrders"
+ },
+ {
+  "index": 97,
+  "name": "Gaya_Scan",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaScan"
+ },
+ {
+  "index": 98,
+  "name": "Gaya_Shared",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaShared"
+ },
+ {
+  "index": 99,
+  "name": "Gaya_Stats",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaStats"
+ },
+ {
+  "index": 100,
+  "name": "Gaya_Support",
+  "folder": "04 Combat and abilities",
+  "library": "TGayaSupport"
+ },
+ {
+  "index": 101,
+  "name": "Gaya",
+  "folder": "04 Combat and abilities",
+  "library": "TGaya"
+ },
+ {
+  "index": 102,
+  "name": "Spell_Aero",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellAero"
+ },
+ {
+  "index": 103,
+  "name": "Spell_Blizzaga",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellBlizzaga"
+ },
+ {
+  "index": 104,
+  "name": "Spell_Bolt",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellBolt"
+ },
+ {
+  "index": 105,
+  "name": "Spell_Cure",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellCure"
+ },
+ {
+  "index": 106,
+  "name": "Spell_Demi",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellDemi"
+ },
+ {
+  "index": 107,
+  "name": "Spell_Dewall",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellDewall"
+ },
+ {
+  "index": 108,
+  "name": "Spell_FlamesOfJudgment",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellFlamesOfJudgment"
+ },
+ {
+  "index": 109,
+  "name": "Spell_GayaRage",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellGayaRage"
+ },
+ {
+  "index": 110,
+  "name": "Spell_HeatWave",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellHeatWave"
+ },
+ {
+  "index": 111,
+  "name": "Spell_Hellhounds",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellHellhounds"
+ },
+ {
+  "index": 112,
+  "name": "Spell_HolyBlast",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellHolyBlast"
+ },
+ {
+  "index": 113,
+  "name": "Spell_Homing",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellHoming"
+ },
+ {
+  "index": 114,
+  "name": "Spell_IncandescentHellfire",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellIncandescentHellfire"
+ },
+ {
+  "index": 115,
+  "name": "Spell_InfernoRipple",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellInfernoRipple"
+ },
+ {
+  "index": 116,
+  "name": "Spell_JavelinRain",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellJavelinRain"
+ },
+ {
+  "index": 117,
+  "name": "Spell_LiquidSteel",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellLiquidSteel"
+ },
+ {
+  "index": 118,
+  "name": "Spell_LivingFlame",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellLivingFlame"
+ },
+ {
+  "index": 119,
+  "name": "Spell_Meteor",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellMeteor"
+ },
+ {
+  "index": 120,
+  "name": "Spell_Ozmeteor",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellOzmeteor"
+ },
+ {
+  "index": 121,
+  "name": "Spell_Quake",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellQuake"
+ },
+ {
+  "index": 122,
+  "name": "Spell_RapidFire",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellRapidFire"
+ },
+ {
+  "index": 123,
+  "name": "Spell_Satellite",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellSatellite"
+ },
+ {
+  "index": 124,
+  "name": "Spell_Shared",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellShared"
+ },
+ {
+  "index": 125,
+  "name": "Spell_Shuriken",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellShuriken"
+ },
+ {
+  "index": 126,
+  "name": "Spell_Tables",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellTables"
+ },
+ {
+  "index": 127,
+  "name": "Spell_Tatsumaki",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellTatsumaki"
+ },
+ {
+  "index": 128,
+  "name": "Spell_TerraBreak",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellTerraBreak"
+ },
+ {
+  "index": 129,
+  "name": "Spell_Water",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellWater"
+ },
+ {
+  "index": 130,
+  "name": "Spell_Wave",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellWave"
+ },
+ {
+  "index": 131,
+  "name": "Spell_XerosBeat",
+  "folder": "04 Combat and abilities",
+  "library": "TSpellXerosBeat"
+ },
+ {
+  "index": 132,
+  "name": "Spell",
+  "folder": "04 Combat and abilities",
+  "library": "TSpell"
+ },
+ {
+  "index": 133,
+  "name": "Passive",
+  "folder": "04 Combat and abilities",
+  "library": "TPassive"
+ },
+ {
+  "index": 134,
+  "name": "Dps",
+  "folder": "04 Combat and abilities",
+  "library": "TDps"
+ },
+ {
+  "index": 135,
+  "name": "Death",
+  "folder": "04 Combat and abilities",
+  "library": "TDeath"
+ },
+ {
+  "index": 136,
+  "name": "Dead",
+  "folder": "04 Combat and abilities",
+  "library": "TDead"
+ },
+ {
+  "index": 137,
+  "name": "Shift",
+  "folder": "04 Combat and abilities",
+  "library": "TShift"
+ },
+ {
+  "index": 138,
+  "name": "Curse",
+  "folder": "04 Combat and abilities",
+  "library": "TCurse"
+ },
+ {
+  "index": 139,
+  "name": "ManaRefund",
+  "folder": "04 Combat and abilities",
+  "library": "TManaRefund"
+ },
+ {
+  "index": 140,
+  "name": "MagDef",
+  "folder": "04 Combat and abilities",
+  "library": "TMagDef"
+ },
+ {
+  "index": 141,
+  "name": "AtkSpd",
+  "folder": "04 Combat and abilities",
+  "library": "TAtkSpd"
+ },
+ {
+  "index": 142,
+  "name": "Roll",
+  "folder": "04 Combat and abilities",
+  "library": "TRoll"
+ },
+ {
+  "index": 143,
+  "name": "Molotov",
+  "folder": "04 Combat and abilities",
+  "library": "TMolotov"
+ },
+ {
+  "index": 144,
+  "name": "Cooldown",
+  "folder": "04 Combat and abilities",
+  "library": "TCooldown"
+ },
+ {
+  "index": 145,
+  "name": "Mana",
+  "folder": "04 Combat and abilities",
+  "library": "TMana"
+ },
+ {
+  "index": 146,
+  "name": "Momentum",
+  "folder": "04 Combat and abilities",
+  "library": "TMomentum"
+ },
+ {
+  "index": 147,
+  "name": "Defend",
+  "folder": "04 Combat and abilities",
+  "library": "TDefend"
+ },
+ {
+  "index": 148,
+  "name": "Arrowwave",
+  "folder": "04 Combat and abilities",
+  "library": "TArrowwave"
+ },
+ {
+  "index": 149,
+  "name": "Myriad",
+  "folder": "04 Combat and abilities",
+  "library": "TMyriad"
+ },
+ {
+  "index": 150,
+  "name": "Fire",
+  "folder": "04 Combat and abilities",
+  "library": "TFire"
+ },
+ {
+  "index": 151,
+  "name": "Haste",
+  "folder": "04 Combat and abilities",
+  "library": "THaste"
+ },
+ {
+  "index": 152,
+  "name": "Meteor",
+  "folder": "04 Combat and abilities",
+  "library": "TMeteor"
+ },
+ {
+  "index": 153,
+  "name": "Immobilize",
+  "folder": "04 Combat and abilities",
+  "library": "TImmobilize"
+ },
+ {
+  "index": 154,
+  "name": "Inner",
+  "folder": "04 Combat and abilities",
+  "library": "TInner"
+ },
+ {
+  "index": 155,
+  "name": "Living",
+  "folder": "04 Combat and abilities",
+  "library": "TLiving"
+ },
+ {
+  "index": 156,
+  "name": "BattleWard",
+  "folder": "04 Combat and abilities",
+  "library": "TBattleWard"
+ },
+ {
+  "index": 157,
+  "name": "Unused",
+  "folder": "04 Combat and abilities",
+  "library": "TUnused"
+ },
+ {
+  "index": 158,
+  "name": "HolyPower",
+  "folder": "04 Combat and abilities",
+  "library": "THolyPower"
+ },
+ {
+  "index": 159,
+  "name": "MinusStrike",
+  "folder": "04 Combat and abilities",
+  "library": "TMinusStrike"
+ },
+ {
+  "index": 160,
+  "name": "Osmose",
+  "folder": "04 Combat and abilities",
+  "library": "TOsmose"
+ },
+ {
+  "index": 161,
+  "name": "Oblivion",
+  "folder": "04 Combat and abilities",
+  "library": "TOblivion"
+ },
+ {
+  "index": 162,
+  "name": "Healing",
+  "folder": "04 Combat and abilities",
+  "library": "THealing"
+ },
+ {
+  "index": 163,
+  "name": "Gust",
+  "folder": "04 Combat and abilities",
+  "library": "TGust"
+ },
+ {
+  "index": 164,
+  "name": "EarthSmash",
+  "folder": "04 Combat and abilities",
+  "library": "TEarthSmash"
+ },
+ {
+  "index": 165,
+  "name": "Manablow",
+  "folder": "04 Combat and abilities",
+  "library": "TManablow"
+ },
+ {
+  "index": 166,
+  "name": "Devour",
+  "folder": "04 Combat and abilities",
+  "library": "TDevour"
+ },
+ {
+  "index": 167,
+  "name": "EveryonesGrudge",
+  "folder": "04 Combat and abilities",
+  "library": "TEveryonesGrudge"
+ },
+ {
+  "index": 168,
+  "name": "Needles",
+  "folder": "04 Combat and abilities",
+  "library": "TNeedles"
+ },
+ {
+  "index": 169,
+  "name": "FireUnit",
+  "folder": "04 Combat and abilities",
+  "library": "TFireUnit"
+ },
+ {
+  "index": 170,
+  "name": "Valfodr",
+  "folder": "04 Combat and abilities",
+  "library": "TValfodr"
+ },
+ {
+  "index": 171,
+  "name": "Numerus",
+  "folder": "04 Combat and abilities",
+  "library": "TNumerus"
+ },
+ {
+  "index": 172,
+  "name": "Demon",
+  "folder": "04 Combat and abilities",
+  "library": "TDemon"
+ },
+ {
+  "index": 173,
+  "name": "Provoke",
+  "folder": "04 Combat and abilities",
+  "library": "TProvoke"
+ },
+ {
+  "index": 174,
+  "name": "Malboro",
+  "folder": "04 Combat and abilities",
+  "library": "TMalboro"
+ },
+ {
+  "index": 175,
+  "name": "Mephorash",
+  "folder": "04 Combat and abilities",
+  "library": "TMephorash"
+ },
+ {
+  "index": 176,
+  "name": "Melaiduma",
+  "folder": "04 Combat and abilities",
+  "library": "TMelaiduma"
+ },
+ {
+  "index": 177,
+  "name": "GatherServants",
+  "folder": "04 Combat and abilities",
+  "library": "TGatherServants"
+ },
+ {
+  "index": 178,
+  "name": "Verci",
+  "folder": "04 Combat and abilities",
+  "library": "TVerci"
+ },
+ {
+  "index": 179,
+  "name": "Okuu",
+  "folder": "04 Combat and abilities",
+  "library": "TOkuu"
+ },
+ {
+  "index": 180,
+  "name": "Hypernova",
+  "folder": "04 Combat and abilities",
+  "library": "THypernova"
+ },
+ {
+  "index": 181,
+  "name": "Ghost",
+  "folder": "04 Combat and abilities",
+  "library": "TGhost"
+ },
+ {
+  "index": 182,
+  "name": "GodDragon",
+  "folder": "04 Combat and abilities",
+  "library": "TGodDragon"
+ },
+ {
+  "index": 183,
+  "name": "Melaniya",
+  "folder": "04 Combat and abilities",
+  "library": "TMelaniya"
+ },
+ {
+  "index": 184,
+  "name": "EidolonChallenge",
+  "folder": "04 Combat and abilities",
+  "library": "TEidolonChallenge"
+ },
+ {
+  "index": 185,
+  "name": "NorthernGod",
+  "folder": "04 Combat and abilities",
+  "library": "TNorthernGod"
+ },
+ {
+  "index": 186,
+  "name": "Odin",
+  "folder": "04 Combat and abilities",
+  "library": "TOdin"
+ },
+ {
+  "index": 187,
+  "name": "OakaIV",
+  "folder": "04 Combat and abilities",
+  "library": "TOakaIV"
+ },
+ {
+  "index": 188,
+  "name": "IceCache",
+  "folder": "04 Combat and abilities",
+  "library": "TIceCache"
+ },
+ {
+  "index": 189,
+  "name": "Maelstrom",
+  "folder": "04 Combat and abilities",
+  "library": "TMaelstrom"
+ },
+ {
+  "index": 190,
+  "name": "Memento",
+  "folder": "04 Combat and abilities",
+  "library": "TMemento"
+ },
+ {
+  "index": 191,
+  "name": "OmegaWeapon",
+  "folder": "04 Combat and abilities",
+  "library": "TOmegaWeapon"
+ },
+ {
+  "index": 192,
+  "name": "InfernalMountain",
+  "folder": "04 Combat and abilities",
+  "library": "TInfernalMountain"
+ },
+ {
+  "index": 193,
+  "name": "Kiros",
+  "folder": "04 Combat and abilities",
+  "library": "TKiros"
+ },
+ {
+  "index": 194,
+  "name": "Olga",
+  "folder": "04 Combat and abilities",
+  "library": "TOlga"
+ },
+ {
+  "index": 195,
+  "name": "Krjn",
+  "folder": "04 Combat and abilities",
+  "library": "TKrjn"
+ },
+ {
+  "index": 196,
+  "name": "Sarai",
+  "folder": "04 Combat and abilities",
+  "library": "TSarai"
+ },
+ {
+  "index": 197,
+  "name": "Kiemarl",
+  "folder": "04 Combat and abilities",
+  "library": "TKiemarl"
+ },
+ {
+  "index": 198,
+  "name": "FogCheat",
+  "folder": "04 Combat and abilities",
+  "library": "TFogCheat"
+ },
+ {
+  "index": 199,
+  "name": "Mimic",
+  "folder": "04 Combat and abilities",
+  "library": "TMimic"
+ },
+ {
+  "index": 200,
+  "name": "Harpy",
+  "folder": "04 Combat and abilities",
+  "library": "THarpy"
+ },
+ {
+  "index": 201,
+  "name": "Fireplace",
+  "folder": "04 Combat and abilities",
+  "library": "TFireplace"
+ },
+ {
+  "index": 202,
+  "name": "Firewood",
+  "folder": "04 Combat and abilities",
+  "library": "TFirewood"
+ },
+ {
+  "index": 203,
+  "name": "Maechen",
+  "folder": "04 Combat and abilities",
+  "library": "TMaechen"
+ },
+ {
+  "index": 204,
+  "name": "Info",
+  "folder": "04 Combat and abilities",
+  "library": "TInfo"
+ },
+ {
+  "index": 205,
+  "name": "Miracle",
+  "folder": "04 Combat and abilities",
+  "library": "TMiracle"
+ },
+ {
+  "index": 206,
+  "name": "Hades",
+  "folder": "04 Combat and abilities",
+  "library": "THades"
+ },
+ {
+  "index": 207,
+  "name": "RingOfDarkness",
+  "folder": "04 Combat and abilities",
+  "library": "TRingOfDarkness"
+ },
+ {
+  "index": 208,
+  "name": "HolyAnkh",
+  "folder": "04 Combat and abilities",
+  "library": "THolyAnkh"
+ },
+ {
+  "index": 209,
+  "name": "Glyph",
+  "folder": "04 Combat and abilities",
+  "library": "TGlyph"
+ },
+ {
+  "index": 210,
+  "name": "Clione",
+  "folder": "04 Combat and abilities",
+  "library": "TClione"
+ },
+ {
+  "index": 211,
+  "name": "WickedWhirl",
+  "folder": "04 Combat and abilities",
+  "library": "TWickedWhirl"
+ },
+ {
+  "index": 212,
+  "name": "LiquidSteel",
+  "folder": "04 Combat and abilities",
+  "library": "TLiquidSteel"
+ },
+ {
+  "index": 213,
+  "name": "Tatsumaki",
+  "folder": "04 Combat and abilities",
+  "library": "TTatsumaki"
+ },
+ {
+  "index": 214,
+  "name": "Shuriken",
+  "folder": "04 Combat and abilities",
+  "library": "TShuriken"
+ },
+ {
+  "index": 215,
+  "name": "RapidFire",
+  "folder": "04 Combat and abilities",
+  "library": "TRapidFire"
+ },
+ {
+  "index": 216,
+  "name": "Blizzaga",
+  "folder": "04 Combat and abilities",
+  "library": "TBlizzaga"
+ },
+ {
+  "index": 217,
+  "name": "MagicDefense",
+  "folder": "04 Combat and abilities",
+  "library": "TMagicDefense"
+ },
+ {
+  "index": 218,
+  "name": "AttackSpeed",
+  "folder": "04 Combat and abilities",
+  "library": "TAttackSpeed"
+ },
+ {
+  "index": 219,
+  "name": "Armor",
+  "folder": "04 Combat and abilities",
+  "library": "TArmor"
+ },
+ {
+  "index": 220,
+  "name": "Weapon",
+  "folder": "04 Combat and abilities",
+  "library": "TWeapon"
+ },
+ {
+  "index": 221,
+  "name": "Stats",
+  "folder": "04 Combat and abilities",
+  "library": "TStats"
+ },
+ {
+  "index": 222,
+  "name": "Evade",
+  "folder": "04 Combat and abilities",
+  "library": "TEvade"
+ },
+ {
+  "index": 223,
+  "name": "Aim",
+  "folder": "04 Combat and abilities",
+  "library": "TAim"
+ },
+ {
+  "index": 224,
+  "name": "Ally",
+  "folder": "04 Combat and abilities",
+  "library": "TAlly"
+ },
+ {
+  "index": 225,
+  "name": "Block",
+  "folder": "04 Combat and abilities",
+  "library": "TBlock"
+ },
+ {
+  "index": 226,
+  "name": "Counter",
+  "folder": "04 Combat and abilities",
+  "library": "TCounter"
+ },
+ {
+  "index": 227,
+  "name": "Cover",
+  "folder": "04 Combat and abilities",
+  "library": "TCover"
+ },
+ {
+  "index": 228,
+  "name": "Dispel",
+  "folder": "04 Combat and abilities",
+  "library": "TDispel"
+ },
+ {
+  "index": 229,
+  "name": "DrainAttack",
+  "folder": "04 Combat and abilities",
+  "library": "TDrainAttack"
+ },
+ {
+  "index": 230,
+  "name": "Fan",
+  "folder": "04 Combat and abilities",
+  "library": "TFan"
+ },
+ {
+  "index": 231,
+  "name": "Protect",
+  "folder": "04 Combat and abilities",
+  "library": "TProtect"
+ },
+ {
+  "index": 232,
+  "name": "AbilityTags",
+  "folder": "04 Combat and abilities",
+  "library": "TAbilityTags"
+ },
+ {
+  "index": 233,
+  "name": "Accumulate",
+  "folder": "04 Combat and abilities",
+  "library": "TAccumulate"
+ },
+ {
+  "index": 234,
+  "name": "Animal",
+  "folder": "04 Combat and abilities",
+  "library": "TAnimal"
+ },
+ {
+  "index": 235,
+  "name": "BerserkGuard",
+  "folder": "04 Combat and abilities",
+  "library": "TBerserkGuard"
+ },
+ {
+  "index": 236,
+  "name": "Bio",
+  "folder": "04 Combat and abilities",
+  "library": "TBio"
+ },
+ {
+  "index": 237,
+  "name": "BlackPearl",
+  "folder": "04 Combat and abilities",
+  "library": "TBlackPearl"
+ },
+ {
+  "index": 238,
+  "name": "Blizzard",
+  "folder": "04 Combat and abilities",
+  "library": "TBlizzard"
+ },
+ {
+  "index": 239,
+  "name": "Boco",
+  "folder": "04 Combat and abilities",
+  "library": "TBoco"
+ },
+ {
+  "index": 240,
+  "name": "Bravery",
+  "folder": "04 Combat and abilities",
+  "library": "TBravery"
+ },
+ {
+  "index": 241,
+  "name": "Cactuar",
+  "folder": "04 Combat and abilities",
+  "library": "TCactuar"
+ },
+ {
+  "index": 242,
+  "name": "Chainsaw",
+  "folder": "04 Combat and abilities",
+  "library": "TChainsaw"
+ },
+ {
+  "index": 243,
+  "name": "Chakra",
+  "folder": "04 Combat and abilities",
+  "library": "TChakra"
+ },
+ {
+  "index": 244,
+  "name": "Chaosjet",
+  "folder": "04 Combat and abilities",
+  "library": "TChaosjet"
+ },
+ {
+  "index": 245,
+  "name": "Clear",
+  "folder": "04 Combat and abilities",
+  "library": "TClear"
+ },
+ {
+  "index": 246,
+  "name": "Combo",
+  "folder": "04 Combat and abilities",
+  "library": "TCombo"
+ },
+ {
+  "index": 247,
+  "name": "Ambush",
+  "folder": "04 Combat and abilities",
+  "library": "TAmbush"
+ },
+ {
+  "index": 248,
+  "name": "Angbar",
+  "folder": "04 Combat and abilities",
+  "library": "TAngbar"
+ },
+ {
+  "index": 249,
+  "name": "Aqualung",
+  "folder": "04 Combat and abilities",
+  "library": "TAqualung"
+ },
+ {
+  "index": 250,
+  "name": "Assault",
+  "folder": "04 Combat and abilities",
+  "library": "TAssault"
+ },
+ {
+  "index": 251,
+  "name": "Auto",
+  "folder": "04 Combat and abilities",
+  "library": "TAuto"
+ },
+ {
+  "index": 252,
+  "name": "BadBreath",
+  "folder": "04 Combat and abilities",
+  "library": "TBadBreath"
+ },
+ {
+  "index": 253,
+  "name": "BagOfTricks",
+  "folder": "04 Combat and abilities",
+  "library": "TBagOfTricks"
+ },
+ {
+  "index": 254,
+  "name": "Bahamut",
+  "folder": "04 Combat and abilities",
+  "library": "TBahamut"
+ },
+ {
+  "index": 255,
+  "name": "BanditLord",
+  "folder": "04 Combat and abilities",
+  "library": "TBanditLord"
+ },
+ {
+  "index": 256,
+  "name": "Bansat",
+  "folder": "04 Combat and abilities",
+  "library": "TBansat"
+ },
+ {
+  "index": 257,
+  "name": "Barrens",
+  "folder": "04 Combat and abilities",
+  "library": "TBarrens"
+ },
+ {
+  "index": 258,
+  "name": "Billy",
+  "folder": "04 Combat and abilities",
+  "library": "TBilly"
+ },
+ {
+  "index": 259,
+  "name": "Caravan",
+  "folder": "04 Combat and abilities",
+  "library": "TCaravan"
+ },
+ {
+  "index": 260,
+  "name": "Celestium",
+  "folder": "04 Combat and abilities",
+  "library": "TCelestium"
+ },
+ {
+  "index": 261,
+  "name": "Claim",
+  "folder": "04 Combat and abilities",
+  "library": "TClaim"
+ },
+ {
+  "index": 262,
+  "name": "Cometeorite",
+  "folder": "04 Combat and abilities",
+  "library": "TCometeorite"
+ },
+ {
+  "index": 263,
+  "name": "CowKing",
+  "folder": "04 Combat and abilities",
+  "library": "TCowKing"
+ },
+ {
+  "index": 264,
+  "name": "Cuchulainn",
+  "folder": "04 Combat and abilities",
+  "library": "TCuchulainn"
+ },
+ {
+  "index": 265,
+  "name": "Cyclops",
+  "folder": "04 Combat and abilities",
+  "library": "TCyclops"
+ },
+ {
+  "index": 266,
+  "name": "DarkBrothers",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkBrothers"
+ },
+ {
+  "index": 267,
+  "name": "DarkCyclops",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkCyclops"
+ },
+ {
+  "index": 268,
+  "name": "DarkEden",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkEden"
+ },
+ {
+  "index": 269,
+  "name": "DarkEidolon",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkEidolon"
+ },
+ {
+  "index": 270,
+  "name": "DarkGolem",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkGolem"
+ },
+ {
+  "index": 271,
+  "name": "DarkLeviathan",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkLeviathan"
+ },
+ {
+  "index": 272,
+  "name": "Darkness",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkness"
+ },
+ {
+  "index": 273,
+  "name": "DarkQuezacotl",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkQuezacotl"
+ },
+ {
+  "index": 274,
+  "name": "DarkServant",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkServant"
+ },
+ {
+  "index": 275,
+  "name": "DarkShiva",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkShiva"
+ },
+ {
+  "index": 276,
+  "name": "DarkTitan",
+  "folder": "04 Combat and abilities",
+  "library": "TDarkTitan"
+ },
+ {
+  "index": 277,
+  "name": "Eidolon",
+  "folder": "04 Combat and abilities",
+  "library": "TEidolon"
+ },
+ {
+  "index": 278,
+  "name": "Elements",
+  "folder": "04 Combat and abilities",
+  "library": "TElements"
+ },
+ {
+  "index": 279,
+  "name": "Enemy",
+  "folder": "04 Combat and abilities",
+  "library": "TEnemy"
+ },
+ {
+  "index": 280,
+  "name": "Esuna",
+  "folder": "04 Combat and abilities",
+  "library": "TEsuna"
+ },
+ {
+  "index": 281,
+  "name": "ExcaliburII",
+  "folder": "04 Combat and abilities",
+  "library": "TExcaliburII"
+ },
+ {
+  "index": 282,
+  "name": "Exdeath",
+  "folder": "04 Combat and abilities",
+  "library": "TExdeath"
+ },
+ {
+  "index": 283,
+  "name": "FadingNotes",
+  "folder": "04 Combat and abilities",
+  "library": "TFadingNotes"
+ },
+ {
+  "index": 284,
+  "name": "Faith",
+  "folder": "04 Combat and abilities",
+  "library": "TFaith"
+ },
+ {
+  "index": 285,
+  "name": "FallenRanger",
+  "folder": "04 Combat and abilities",
+  "library": "TFallenRanger"
+ },
+ {
+  "index": 286,
+  "name": "FinalImpact",
+  "folder": "04 Combat and abilities",
+  "library": "TFinalImpact"
+ },
+ {
+  "index": 287,
+  "name": "FireAura",
+  "folder": "04 Combat and abilities",
+  "library": "TFireAura"
+ },
+ {
+  "index": 288,
+  "name": "Firefly",
+  "folder": "04 Combat and abilities",
+  "library": "TFirefly"
+ },
+ {
+  "index": 289,
+  "name": "Goliath",
+  "folder": "04 Combat and abilities",
+  "library": "TGoliath"
+ },
+ {
+  "index": 290,
+  "name": "Heal",
+  "folder": "04 Combat and abilities",
+  "library": "THeal"
+ },
+ {
+  "index": 291,
+  "name": "Ice",
+  "folder": "04 Combat and abilities",
+  "library": "TIce"
+ },
+ {
+  "index": 292,
+  "name": "Ifrit",
+  "folder": "04 Combat and abilities",
+  "library": "TIfrit"
+ },
+ {
+  "index": 293,
+  "name": "Oracle",
+  "folder": "04 Combat and abilities",
+  "library": "TOracle"
+ },
+ {
+  "index": 294,
+  "name": "Patrol",
+  "folder": "04 Combat and abilities",
+  "library": "TPatrol"
+ },
+ {
+  "index": 295,
+  "name": "Peace",
+  "folder": "04 Combat and abilities",
+  "library": "TPeace"
+ },
+ {
+  "index": 296,
+  "name": "Pvp",
+  "folder": "04 Combat and abilities",
+  "library": "TPvp"
+ },
+ {
+  "index": 297,
+  "name": "QuFrog",
+  "folder": "04 Combat and abilities",
+  "library": "TQuFrog"
+ },
+ {
+  "index": 298,
+  "name": "Quick",
+  "folder": "04 Combat and abilities",
+  "library": "TQuick"
+ },
+ {
+  "index": 299,
+  "name": "Rabbit",
+  "folder": "04 Combat and abilities",
+  "library": "TRabbit"
+ },
+ {
+  "index": 300,
+  "name": "Rabite",
+  "folder": "04 Combat and abilities",
+  "library": "TRabite"
+ },
+ {
+  "index": 301,
+  "name": "Ramuh",
+  "folder": "04 Combat and abilities",
+  "library": "TRamuh"
+ },
+ {
+  "index": 302,
+  "name": "Rave",
+  "folder": "04 Combat and abilities",
+  "library": "TRave"
+ },
+ {
+  "index": 303,
+  "name": "Regen",
+  "folder": "04 Combat and abilities",
+  "library": "TRegen"
+ },
+ {
+  "index": 304,
+  "name": "Revive",
+  "folder": "04 Combat and abilities",
+  "library": "TRevive"
+ },
+ {
+  "index": 305,
+  "name": "Ripper",
+  "folder": "04 Combat and abilities",
+  "library": "TRipper"
+ },
+ {
+  "index": 306,
+  "name": "Seeker",
+  "folder": "04 Combat and abilities",
+  "library": "TSeeker"
+ },
+ {
+  "index": 307,
+  "name": "Seekers",
+  "folder": "04 Combat and abilities",
+  "library": "TSeekers"
+ },
+ {
+  "index": 308,
+  "name": "Sentinel",
+  "folder": "04 Combat and abilities",
+  "library": "TSentinel"
+ },
+ {
+  "index": 309,
+  "name": "Shell",
+  "folder": "04 Combat and abilities",
+  "library": "TShell"
+ },
+ {
+  "index": 310,
+  "name": "Shiva",
+  "folder": "04 Combat and abilities",
+  "library": "TShiva"
+ },
+ {
+  "index": 311,
+  "name": "Shock",
+  "folder": "04 Combat and abilities",
+  "library": "TShock"
+ },
+ {
+  "index": 312,
+  "name": "ShockAura",
+  "folder": "04 Combat and abilities",
+  "library": "TShockAura"
+ },
+ {
+  "index": 313,
+  "name": "ShockSmash",
+  "folder": "04 Combat and abilities",
+  "library": "TShockSmash"
+ },
+ {
+  "index": 314,
+  "name": "Sleep",
+  "folder": "04 Combat and abilities",
+  "library": "TSleep"
+ },
+ {
+  "index": 315,
+  "name": "SoulSplit",
+  "folder": "04 Combat and abilities",
+  "library": "TSoulSplit"
+ },
+ {
+  "index": 316,
+  "name": "Spartacus",
+  "folder": "04 Combat and abilities",
+  "library": "TSpartacus"
+ },
+ {
+  "index": 317,
+  "name": "Spirit",
+  "folder": "04 Combat and abilities",
+  "library": "TSpirit"
+ },
+ {
+  "index": 318,
+  "name": "Statue",
+  "folder": "04 Combat and abilities",
+  "library": "TStatue"
+ },
+ {
+  "index": 319,
+  "name": "Status",
+  "folder": "04 Combat and abilities",
+  "library": "TStatus"
+ },
+ {
+  "index": 320,
+  "name": "Steal",
+  "folder": "04 Combat and abilities",
+  "library": "TSteal"
+ },
+ {
+  "index": 321,
+  "name": "Stealth",
+  "folder": "04 Combat and abilities",
+  "library": "TStealth"
+ },
+ {
+  "index": 322,
+  "name": "Stop",
+  "folder": "04 Combat and abilities",
+  "library": "TStop"
+ },
+ {
+  "index": 323,
+  "name": "StrangeCage",
+  "folder": "04 Combat and abilities",
+  "library": "TStrangeCage"
+ },
+ {
+  "index": 324,
+  "name": "Suicide",
+  "folder": "04 Combat and abilities",
+  "library": "TSuicide"
+ },
+ {
+  "index": 325,
+  "name": "Talon",
+  "folder": "04 Combat and abilities",
+  "library": "TTalon"
+ },
+ {
+  "index": 326,
+  "name": "ThunderRush",
+  "folder": "04 Combat and abilities",
+  "library": "TThunderRush"
+ },
+ {
+  "index": 327,
+  "name": "Tornado",
+  "folder": "04 Combat and abilities",
+  "library": "TTornado"
+ },
+ {
+  "index": 328,
+  "name": "Transfusion",
+  "folder": "04 Combat and abilities",
+  "library": "TTransfusion"
+ },
+ {
+  "index": 329,
+  "name": "Tremor",
+  "folder": "04 Combat and abilities",
+  "library": "TTremor"
+ },
+ {
+  "index": 330,
+  "name": "TwoHanded",
+  "folder": "04 Combat and abilities",
+  "library": "TTwoHanded"
+ },
+ {
+  "index": 331,
+  "name": "UltimaWeapon",
+  "folder": "04 Combat and abilities",
+  "library": "TUltimaWeapon"
+ },
+ {
+  "index": 332,
+  "name": "Urn",
+  "folder": "04 Combat and abilities",
+  "library": "TUrn"
+ },
+ {
+  "index": 333,
+  "name": "Vendetta",
+  "folder": "04 Combat and abilities",
+  "library": "TVendetta"
+ },
+ {
+  "index": 334,
+  "name": "Virus",
+  "folder": "04 Combat and abilities",
+  "library": "TVirus"
+ },
+ {
+  "index": 335,
+  "name": "Vortex",
+  "folder": "04 Combat and abilities",
+  "library": "TVortex"
+ },
+ {
+  "index": 336,
+  "name": "War",
+  "folder": "04 Combat and abilities",
+  "library": "TWar"
+ },
+ {
+  "index": 337,
+  "name": "Ward",
+  "folder": "04 Combat and abilities",
+  "library": "TWard"
+ },
+ {
+  "index": 338,
+  "name": "WarringTriad",
+  "folder": "04 Combat and abilities",
+  "library": "TWarringTriad"
+ },
+ {
+  "index": 339,
+  "name": "WindShear",
+  "folder": "04 Combat and abilities",
+  "library": "TWindShear"
+ },
+ {
+  "index": 340,
+  "name": "Wirts",
+  "folder": "04 Combat and abilities",
+  "library": "TWirts"
+ },
+ {
+  "index": 341,
+  "name": "Boss_Agrias",
+  "folder": "04 Combat and abilities",
+  "library": "TBossAgrias"
+ },
+ {
+  "index": 342,
+  "name": "Boss_Belias",
+  "folder": "04 Combat and abilities",
+  "library": "TBossBelias"
+ },
+ {
+  "index": 343,
+  "name": "Boss_BlackDevil",
+  "folder": "04 Combat and abilities",
+  "library": "TBossBlackDevil"
+ },
+ {
+  "index": 344,
+  "name": "Boss_Chaos",
+  "folder": "04 Combat and abilities",
+  "library": "TBossChaos"
+ },
+ {
+  "index": 345,
+  "name": "Boss_DarkFact",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDarkFact"
+ },
+ {
+  "index": 346,
+  "name": "Boss_DarkRanger",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDarkRanger"
+ },
+ {
+  "index": 347,
+  "name": "Boss_Defeat",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDefeat"
+ },
+ {
+  "index": 348,
+  "name": "Boss_Demesne",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDemesne"
+ },
+ {
+  "index": 349,
+  "name": "Boss_DemiFiend",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDemiFiend"
+ },
+ {
+  "index": 350,
+  "name": "Boss_Drop",
+  "folder": "04 Combat and abilities",
+  "library": "TBossDrop"
+ },
+ {
+  "index": 351,
+  "name": "Boss_Echele",
+  "folder": "04 Combat and abilities",
+  "library": "TBossEchele"
+ },
+ {
+  "index": 352,
+  "name": "Boss_Exodus",
+  "folder": "04 Combat and abilities",
+  "library": "TBossExodus"
+ },
+ {
+  "index": 353,
+  "name": "Boss_Famfrit",
+  "folder": "04 Combat and abilities",
+  "library": "TBossFamfrit"
+ },
+ {
+  "index": 354,
+  "name": "Boss_Gafgarion",
+  "folder": "04 Combat and abilities",
+  "library": "TBossGafgarion"
+ },
+ {
+  "index": 355,
+  "name": "Boss_Gilgamesh",
+  "folder": "04 Combat and abilities",
+  "library": "TBossGilgamesh"
+ },
+ {
+  "index": 356,
+  "name": "Boss_GodDragon",
+  "folder": "04 Combat and abilities",
+  "library": "TBossGodDragon"
+ },
+ {
+  "index": 357,
+  "name": "Boss_Hashmalum",
+  "folder": "04 Combat and abilities",
+  "library": "TBossHashmalum"
+ },
+ {
+  "index": 358,
+  "name": "Boss_Judges",
+  "folder": "04 Combat and abilities",
+  "library": "TBossJudges"
+ },
+ {
+  "index": 359,
+  "name": "Boss_Lilith",
+  "folder": "04 Combat and abilities",
+  "library": "TBossLilith"
+ },
+ {
+  "index": 360,
+  "name": "Boss_Mateus",
+  "folder": "04 Combat and abilities",
+  "library": "TBossMateus"
+ },
+ {
+  "index": 361,
+  "name": "Boss_Odin",
+  "folder": "04 Combat and abilities",
+  "library": "TBossOdin"
+ },
+ {
+  "index": 362,
+  "name": "Boss_OrcChieftain",
+  "folder": "04 Combat and abilities",
+  "library": "TBossOrcChieftain"
+ },
+ {
+  "index": 363,
+  "name": "Boss_Ozma",
+  "folder": "04 Combat and abilities",
+  "library": "TBossOzma"
+ },
+ {
+  "index": 364,
+  "name": "Boss_Penance",
+  "folder": "04 Combat and abilities",
+  "library": "TBossPenance"
+ },
+ {
+  "index": 365,
+  "name": "Boss_Shemhazai",
+  "folder": "04 Combat and abilities",
+  "library": "TBossShemhazai"
+ },
+ {
+  "index": 366,
+  "name": "Boss_Shinra",
+  "folder": "04 Combat and abilities",
+  "library": "TBossShinra"
+ },
+ {
+  "index": 367,
+  "name": "Boss_Shinryu",
+  "folder": "04 Combat and abilities",
+  "library": "TBossShinryu"
+ },
+ {
+  "index": 368,
+  "name": "Boss_Ultima",
+  "folder": "04 Combat and abilities",
+  "library": "TBossUltima"
+ },
+ {
+  "index": 369,
+  "name": "Boss_Verc",
+  "folder": "04 Combat and abilities",
+  "library": "TBossVerc"
+ },
+ {
+  "index": 370,
+  "name": "Boss_Yukale",
+  "folder": "04 Combat and abilities",
+  "library": "TBossYukale"
+ },
+ {
+  "index": 371,
+  "name": "Boss_Zalera",
+  "folder": "04 Combat and abilities",
+  "library": "TBossZalera"
+ },
+ {
+  "index": 372,
+  "name": "Boss",
+  "folder": "04 Combat and abilities",
+  "library": "TBoss"
+ },
+ {
+  "index": 373,
+  "name": "Summon_Bahamut",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonBahamut"
+ },
+ {
+  "index": 374,
+  "name": "Summon_Cyclops",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonCyclops"
+ },
+ {
+  "index": 375,
+  "name": "Summon_Golem",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonGolem"
+ },
+ {
+  "index": 376,
+  "name": "Summon_Ifrit",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonIfrit"
+ },
+ {
+  "index": 377,
+  "name": "Summon_Items",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonItems"
+ },
+ {
+  "index": 378,
+  "name": "Summon_Lifecycle",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonLifecycle"
+ },
+ {
+  "index": 379,
+  "name": "Summon_Scaling",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonScaling"
+ },
+ {
+  "index": 380,
+  "name": "Summon_Shiva",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonShiva"
+ },
+ {
+  "index": 381,
+  "name": "Summon_Transfusion",
+  "folder": "04 Combat and abilities",
+  "library": "TSummonTransfusion"
+ },
+ {
+  "index": 382,
+  "name": "Summon",
+  "folder": "04 Combat and abilities",
+  "library": "TSummon"
+ },
+ {
+  "index": 383,
+  "name": "Armory",
+  "folder": "05 Items crafting and shops",
+  "library": "TArmory"
+ },
+ {
+  "index": 384,
+  "name": "Reward",
+  "folder": "05 Items crafting and shops",
+  "library": "TReward"
+ },
+ {
+  "index": 385,
+  "name": "Recipe",
+  "folder": "05 Items crafting and shops",
+  "library": "TRecipe"
+ },
+ {
+  "index": 386,
+  "name": "Item_Cooldown",
+  "folder": "05 Items crafting and shops",
+  "library": "TItemCooldown"
+ },
+ {
+  "index": 387,
+  "name": "Item_Shared",
+  "folder": "05 Items crafting and shops",
+  "library": "TItemShared"
+ },
+ {
+  "index": 388,
+  "name": "Item_Stack",
+  "folder": "05 Items crafting and shops",
+  "library": "TItemStack"
+ },
+ {
+  "index": 389,
+  "name": "Item_Upgrade",
+  "folder": "05 Items crafting and shops",
+  "library": "TItemUpgrade"
+ },
+ {
+  "index": 390,
+  "name": "Item",
+  "folder": "05 Items crafting and shops",
+  "library": "TItem"
+ },
+ {
+  "index": 391,
+  "name": "Loot",
+  "folder": "05 Items crafting and shops",
+  "library": "TLoot"
+ },
+ {
+  "index": 392,
+  "name": "Craft",
+  "folder": "05 Items crafting and shops",
+  "library": "TCraft"
+ },
+ {
+  "index": 393,
+  "name": "Drop",
+  "folder": "05 Items crafting and shops",
+  "library": "TDrop"
+ },
+ {
+  "index": 394,
+  "name": "Merchant",
+  "folder": "05 Items crafting and shops",
+  "library": "TMerchant"
+ },
+ {
+  "index": 395,
+  "name": "Equip",
+  "folder": "05 Items crafting and shops",
+  "library": "TEquip"
+ },
+ {
+  "index": 396,
+  "name": "Herb",
+  "folder": "05 Items crafting and shops",
+  "library": "THerb"
+ },
+ {
+  "index": 397,
+  "name": "Medicine",
+  "folder": "05 Items crafting and shops",
+  "library": "TMedicine"
+ },
+ {
+  "index": 398,
+  "name": "HeroDrink",
+  "folder": "05 Items crafting and shops",
+  "library": "THeroDrink"
+ },
+ {
+  "index": 399,
+  "name": "Toss",
+  "folder": "05 Items crafting and shops",
+  "library": "TToss"
+ },
+ {
+  "index": 400,
+  "name": "Remedy",
+  "folder": "05 Items crafting and shops",
+  "library": "TRemedy"
+ },
+ {
+  "index": 401,
+  "name": "Food",
+  "folder": "05 Items crafting and shops",
+  "library": "TFood"
+ },
+ {
+  "index": 402,
+  "name": "Rune",
+  "folder": "05 Items crafting and shops",
+  "library": "TRune"
+ },
+ {
+  "index": 403,
+  "name": "Monograph",
+  "folder": "05 Items crafting and shops",
+  "library": "TMonograph"
+ },
+ {
+  "index": 404,
+  "name": "HeroMedicine",
+  "folder": "05 Items crafting and shops",
+  "library": "THeroMedicine"
+ },
+ {
+  "index": 405,
+  "name": "MagicVault",
+  "folder": "05 Items crafting and shops",
+  "library": "TMagicVault"
+ },
+ {
+  "index": 406,
+  "name": "LionHeart",
+  "folder": "05 Items crafting and shops",
+  "library": "TLionHeart"
+ },
+ {
+  "index": 407,
+  "name": "MetaFragment",
+  "folder": "05 Items crafting and shops",
+  "library": "TMetaFragment"
+ },
+ {
+  "index": 408,
+  "name": "Masakados",
+  "folder": "05 Items crafting and shops",
+  "library": "TMasakados"
+ },
+ {
+  "index": 409,
+  "name": "Deathbringer",
+  "folder": "05 Items crafting and shops",
+  "library": "TDeathbringer"
+ },
+ {
+  "index": 410,
+  "name": "Dismantle",
+  "folder": "05 Items crafting and shops",
+  "library": "TDismantle"
+ },
+ {
+  "index": 411,
+  "name": "Mechanical",
+  "folder": "05 Items crafting and shops",
+  "library": "TMechanical"
+ },
+ {
+  "index": 412,
+  "name": "Knot",
+  "folder": "05 Items crafting and shops",
+  "library": "TKnot"
+ },
+ {
+  "index": 413,
+  "name": "Materia",
+  "folder": "05 Items crafting and shops",
+  "library": "TMateria"
+ },
+ {
+  "index": 414,
+  "name": "Forge",
+  "folder": "05 Items crafting and shops",
+  "library": "TForge"
+ },
+ {
+  "index": 415,
+  "name": "Megalixir",
+  "folder": "05 Items crafting and shops",
+  "library": "TMegalixir"
+ },
+ {
+  "index": 416,
+  "name": "Buy",
+  "folder": "05 Items crafting and shops",
+  "library": "TBuy"
+ },
+ {
+  "index": 417,
+  "name": "Cooking",
+  "folder": "05 Items crafting and shops",
+  "library": "TCooking"
+ },
+ {
+  "index": 418,
+  "name": "Artifact",
+  "folder": "05 Items crafting and shops",
+  "library": "TArtifact"
+ },
+ {
+  "index": 419,
+  "name": "Bazaar",
+  "folder": "05 Items crafting and shops",
+  "library": "TBazaar"
+ },
+ {
+  "index": 420,
+  "name": "Belongings",
+  "folder": "05 Items crafting and shops",
+  "library": "TBelongings"
+ },
+ {
+  "index": 421,
+  "name": "Book",
+  "folder": "05 Items crafting and shops",
+  "library": "TBook"
+ },
+ {
+  "index": 422,
+  "name": "Elixir",
+  "folder": "05 Items crafting and shops",
+  "library": "TElixir"
+ },
+ {
+  "index": 423,
+  "name": "FillVial",
+  "folder": "05 Items crafting and shops",
+  "library": "TFillVial"
+ },
+ {
+  "index": 424,
+  "name": "Potion",
+  "folder": "05 Items crafting and shops",
+  "library": "TPotion"
+ },
+ {
+  "index": 425,
+  "name": "Recharge",
+  "folder": "05 Items crafting and shops",
+  "library": "TRecharge"
+ },
+ {
+  "index": 426,
+  "name": "Sale",
+  "folder": "05 Items crafting and shops",
+  "library": "TSale"
+ },
+ {
+  "index": 427,
+  "name": "Vial",
+  "folder": "05 Items crafting and shops",
+  "library": "TVial"
+ },
+ {
+  "index": 428,
+  "name": "Ending",
+  "folder": "06 Quests and story",
+  "library": "TEnding"
+ },
+ {
+  "index": 429,
+  "name": "Intro",
+  "folder": "06 Quests and story",
+  "library": "TIntro"
+ },
+ {
+  "index": 430,
+  "name": "Quest_AnnoyingMonster",
+  "folder": "06 Quests and story",
+  "library": "TQuestAnnoyingMonster"
+ },
+ {
+  "index": 431,
+  "name": "Quest_AoMadoushi",
+  "folder": "06 Quests and story",
+  "library": "TQuestAoMadoushi"
+ },
+ {
+  "index": 432,
+  "name": "Quest_Arachnophobia",
+  "folder": "06 Quests and story",
+  "library": "TQuestArachnophobia"
+ },
+ {
+  "index": 433,
+  "name": "Quest_Arcanium",
+  "folder": "06 Quests and story",
+  "library": "TQuestArcanium"
+ },
+ {
+  "index": 434,
+  "name": "Quest_Beastslayer",
+  "folder": "06 Quests and story",
+  "library": "TQuestBeastslayer"
+ },
+ {
+  "index": 435,
+  "name": "Quest_BlazingDemon",
+  "folder": "06 Quests and story",
+  "library": "TQuestBlazingDemon"
+ },
+ {
+  "index": 436,
+  "name": "Quest_Brothers",
+  "folder": "06 Quests and story",
+  "library": "TQuestBrothers"
+ },
+ {
+  "index": 437,
+  "name": "Quest_Caravan",
+  "folder": "06 Quests and story",
+  "library": "TQuestCaravan"
+ },
+ {
+  "index": 438,
+  "name": "Quest_Cooking",
+  "folder": "06 Quests and story",
+  "library": "TQuestCooking"
+ },
+ {
+  "index": 439,
+  "name": "Quest_CorruptedOrcs",
+  "folder": "06 Quests and story",
+  "library": "TQuestCorruptedOrcs"
+ },
+ {
+  "index": 440,
+  "name": "Quest_Crossbow",
+  "folder": "06 Quests and story",
+  "library": "TQuestCrossbow"
+ },
+ {
+  "index": 441,
+  "name": "Quest_DarkKnight",
+  "folder": "06 Quests and story",
+  "library": "TQuestDarkKnight"
+ },
+ {
+  "index": 442,
+  "name": "Quest_DeliverLetter",
+  "folder": "06 Quests and story",
+  "library": "TQuestDeliverLetter"
+ },
+ {
+  "index": 443,
+  "name": "Quest_DivineOrder",
+  "folder": "06 Quests and story",
+  "library": "TQuestDivineOrder"
+ },
+ {
+  "index": 444,
+  "name": "Quest_DwarfDisappearance",
+  "folder": "06 Quests and story",
+  "library": "TQuestDwarfDisappearance"
+ },
+ {
+  "index": 445,
+  "name": "Quest_EidolonChallenge",
+  "folder": "06 Quests and story",
+  "library": "TQuestEidolonChallenge"
+ },
+ {
+  "index": 446,
+  "name": "Quest_Engineer",
+  "folder": "06 Quests and story",
+  "library": "TQuestEngineer"
+ },
+ {
+  "index": 447,
+  "name": "Quest_EyeOfJenova",
+  "folder": "06 Quests and story",
+  "library": "TQuestEyeOfJenova"
+ },
+ {
+  "index": 448,
+  "name": "Quest_FallenRanger",
+  "folder": "06 Quests and story",
+  "library": "TQuestFallenRanger"
+ },
+ {
+  "index": 449,
+  "name": "Quest_FieryWings",
+  "folder": "06 Quests and story",
+  "library": "TQuestFieryWings"
+ },
+ {
+  "index": 450,
+  "name": "Quest_FireGolem",
+  "folder": "06 Quests and story",
+  "library": "TQuestFireGolem"
+ },
+ {
+  "index": 451,
+  "name": "Quest_FishyDeals",
+  "folder": "06 Quests and story",
+  "library": "TQuestFishyDeals"
+ },
+ {
+  "index": 452,
+  "name": "Quest_Fountain",
+  "folder": "06 Quests and story",
+  "library": "TQuestFountain"
+ },
+ {
+  "index": 453,
+  "name": "Quest_GodDragon",
+  "folder": "06 Quests and story",
+  "library": "TQuestGodDragon"
+ },
+ {
+  "index": 454,
+  "name": "Quest_GreedIsGood",
+  "folder": "06 Quests and story",
+  "library": "TQuestGreedIsGood"
+ },
+ {
+  "index": 455,
+  "name": "Quest_HarpyHunt",
+  "folder": "06 Quests and story",
+  "library": "TQuestHarpyHunt"
+ },
+ {
+  "index": 456,
+  "name": "Quest_HolyKnight",
+  "folder": "06 Quests and story",
+  "library": "TQuestHolyKnight"
+ },
+ {
+  "index": 457,
+  "name": "Quest_Illusions",
+  "folder": "06 Quests and story",
+  "library": "TQuestIllusions"
+ },
+ {
+  "index": 458,
+  "name": "Quest_ImperviousBeast",
+  "folder": "06 Quests and story",
+  "library": "TQuestImperviousBeast"
+ },
+ {
+  "index": 459,
+  "name": "Quest_KillElmdor",
+  "folder": "06 Quests and story",
+  "library": "TQuestKillElmdor"
+ },
+ {
+  "index": 460,
+  "name": "Quest_KillSetag",
+  "folder": "06 Quests and story",
+  "library": "TQuestKillSetag"
+ },
+ {
+  "index": 461,
+  "name": "Quest_KingOfSea",
+  "folder": "06 Quests and story",
+  "library": "TQuestKingOfSea"
+ },
+ {
+  "index": 462,
+  "name": "Quest_LadyNashj",
+  "folder": "06 Quests and story",
+  "library": "TQuestLadyNashj"
+ },
+ {
+  "index": 463,
+  "name": "Quest_LastRites",
+  "folder": "06 Quests and story",
+  "library": "TQuestLastRites"
+ },
+ {
+  "index": 464,
+  "name": "Quest_LightOfJudgment",
+  "folder": "06 Quests and story",
+  "library": "TQuestLightOfJudgment"
+ },
+ {
+  "index": 465,
+  "name": "Quest_Log",
+  "folder": "06 Quests and story",
+  "library": "TQuestLog"
+ },
+ {
+  "index": 466,
+  "name": "Quest_LostMemories",
+  "folder": "06 Quests and story",
+  "library": "TQuestLostMemories"
+ },
+ {
+  "index": 467,
+  "name": "Quest_Monstrum",
+  "folder": "06 Quests and story",
+  "library": "TQuestMonstrum"
+ },
+ {
+  "index": 468,
+  "name": "Quest_NebraAngler",
+  "folder": "06 Quests and story",
+  "library": "TQuestNebraAngler"
+ },
+ {
+  "index": 469,
+  "name": "Quest_NightElves",
+  "folder": "06 Quests and story",
+  "library": "TQuestNightElves"
+ },
+ {
+  "index": 470,
+  "name": "Quest_NorthernGod",
+  "folder": "06 Quests and story",
+  "library": "TQuestNorthernGod"
+ },
+ {
+  "index": 471,
+  "name": "Quest_OgreHunt",
+  "folder": "06 Quests and story",
+  "library": "TQuestOgreHunt"
+ },
+ {
+  "index": 472,
+  "name": "Quest_OmegaWeapon",
+  "folder": "06 Quests and story",
+  "library": "TQuestOmegaWeapon"
+ },
+ {
+  "index": 473,
+  "name": "Quest_OreSupplies",
+  "folder": "06 Quests and story",
+  "library": "TQuestOreSupplies"
+ },
+ {
+  "index": 474,
+  "name": "Quest_PhantomDiary",
+  "folder": "06 Quests and story",
+  "library": "TQuestPhantomDiary"
+ },
+ {
+  "index": 475,
+  "name": "Quest_Phoenix",
+  "folder": "06 Quests and story",
+  "library": "TQuestPhoenix"
+ },
+ {
+  "index": 476,
+  "name": "Quest_Rematch",
+  "folder": "06 Quests and story",
+  "library": "TQuestRematch"
+ },
+ {
+  "index": 477,
+  "name": "Quest_SaveTimmy",
+  "folder": "06 Quests and story",
+  "library": "TQuestSaveTimmy"
+ },
+ {
+  "index": 478,
+  "name": "Quest_ScorchedEarth",
+  "folder": "06 Quests and story",
+  "library": "TQuestScorchedEarth"
+ },
+ {
+  "index": 479,
+  "name": "Quest_ScorchingTravel",
+  "folder": "06 Quests and story",
+  "library": "TQuestScorchingTravel"
+ },
+ {
+  "index": 480,
+  "name": "Quest_SeekDestroy",
+  "folder": "06 Quests and story",
+  "library": "TQuestSeekDestroy"
+ },
+ {
+  "index": 481,
+  "name": "Quest_Shimmerweed",
+  "folder": "06 Quests and story",
+  "library": "TQuestShimmerweed"
+ },
+ {
+  "index": 482,
+  "name": "Quest_SpiritHunt",
+  "folder": "06 Quests and story",
+  "library": "TQuestSpiritHunt"
+ },
+ {
+  "index": 483,
+  "name": "Quest_SpiritOfWater",
+  "folder": "06 Quests and story",
+  "library": "TQuestSpiritOfWater"
+ },
+ {
+  "index": 484,
+  "name": "Quest_StrongestEidolon",
+  "folder": "06 Quests and story",
+  "library": "TQuestStrongestEidolon"
+ },
+ {
+  "index": 485,
+  "name": "Quest_TargetPractice",
+  "folder": "06 Quests and story",
+  "library": "TQuestTargetPractice"
+ },
+ {
+  "index": 486,
+  "name": "Quest_TowerSummoning",
+  "folder": "06 Quests and story",
+  "library": "TQuestTowerSummoning"
+ },
+ {
+  "index": 487,
+  "name": "Quest_TrialByFire",
+  "folder": "06 Quests and story",
+  "library": "TQuestTrialByFire"
+ },
+ {
+  "index": 488,
+  "name": "Quest_UltimaWeapon",
+  "folder": "06 Quests and story",
+  "library": "TQuestUltimaWeapon"
+ },
+ {
+  "index": 489,
+  "name": "Quest_WolfFangs",
+  "folder": "06 Quests and story",
+  "library": "TQuestWolfFangs"
+ },
+ {
+  "index": 490,
+  "name": "Quest_WorldLiberation",
+  "folder": "06 Quests and story",
+  "library": "TQuestWorldLiberation"
+ },
+ {
+  "index": 491,
+  "name": "Quest_YoungEngineer",
+  "folder": "06 Quests and story",
+  "library": "TQuestYoungEngineer"
+ },
+ {
+  "index": 492,
+  "name": "Quest_ZodiacAge",
+  "folder": "06 Quests and story",
+  "library": "TQuestZodiacAge"
+ },
+ {
+  "index": 493,
+  "name": "Quest",
+  "folder": "06 Quests and story",
+  "library": "TQuest"
+ },
+ {
+  "index": 494,
+  "name": "Zeromus",
+  "folder": "06 Quests and story",
+  "library": "TZeromus"
+ },
+ {
+  "index": 495,
+  "name": "Kalm",
+  "folder": "06 Quests and story",
+  "library": "TKalm"
+ },
+ {
+  "index": 496,
+  "name": "Shadow_Combat",
+  "folder": "06 Quests and story",
+  "library": "TShadowCombat"
+ },
+ {
+  "index": 497,
+  "name": "Shadow_Hiring",
+  "folder": "06 Quests and story",
+  "library": "TShadowHiring"
+ },
+ {
+  "index": 498,
+  "name": "Shadow_Lifecycle",
+  "folder": "06 Quests and story",
+  "library": "TShadowLifecycle"
+ },
+ {
+  "index": 499,
+  "name": "Shadow_Loyalty",
+  "folder": "06 Quests and story",
+  "library": "TShadowLoyalty"
+ },
+ {
+  "index": 500,
+  "name": "Shadow_Support",
+  "folder": "06 Quests and story",
+  "library": "TShadowSupport"
+ },
+ {
+  "index": 501,
+  "name": "Shadow",
+  "folder": "06 Quests and story",
+  "library": "TShadow"
+ },
+ {
+  "index": 502,
+  "name": "DeathSeeker",
+  "folder": "06 Quests and story",
+  "library": "TDeathSeeker"
+ },
+ {
+  "index": 503,
+  "name": "Makenroh",
+  "folder": "06 Quests and story",
+  "library": "TMakenroh"
+ },
+ {
+  "index": 504,
+  "name": "Gilgamesh",
+  "folder": "06 Quests and story",
+  "library": "TGilgamesh"
+ },
+ {
+  "index": 505,
+  "name": "DarkBahamut",
+  "folder": "06 Quests and story",
+  "library": "TDarkBahamut"
+ },
+ {
+  "index": 506,
+  "name": "Cid",
+  "folder": "06 Quests and story",
+  "library": "TCid"
+ },
+ {
+  "index": 507,
+  "name": "Mid",
+  "folder": "06 Quests and story",
+  "library": "TMid"
+ },
+ {
+  "index": 508,
+  "name": "GoblinChief",
+  "folder": "06 Quests and story",
+  "library": "TGoblinChief"
+ },
+ {
+  "index": 509,
+  "name": "AoMadoushi",
+  "folder": "06 Quests and story",
+  "library": "TAoMadoushi"
+ },
+ {
+  "index": 510,
+  "name": "Talk",
+  "folder": "06 Quests and story",
+  "library": "TTalk"
+ },
+ {
+  "index": 511,
+  "name": "KalmSiege",
+  "folder": "06 Quests and story",
+  "library": "TKalmSiege"
+ },
+ {
+  "index": 512,
+  "name": "KalmSiege1",
+  "folder": "06 Quests and story",
+  "library": "TKalmSiege1"
+ },
+ {
+  "index": 513,
+  "name": "KalmSiege2",
+  "folder": "06 Quests and story",
+  "library": "TKalmSiege2"
+ },
+ {
+  "index": 514,
+  "name": "KalmSiege3",
+  "folder": "06 Quests and story",
+  "library": "TKalmSiege3"
+ },
+ {
+  "index": 515,
+  "name": "Shemhazai",
+  "folder": "06 Quests and story",
+  "library": "TShemhazai"
+ },
+ {
+  "index": 516,
+  "name": "Meliadoul",
+  "folder": "06 Quests and story",
+  "library": "TMeliadoul"
+ },
+ {
+  "index": 517,
+  "name": "OrcBase",
+  "folder": "06 Quests and story",
+  "library": "TOrcBase"
+ },
+ {
+  "index": 518,
+  "name": "Dana",
+  "folder": "06 Quests and story",
+  "library": "TDana"
+ },
+ {
+  "index": 519,
+  "name": "Montblanc",
+  "folder": "06 Quests and story",
+  "library": "TMontblanc"
+ },
+ {
+  "index": 520,
+  "name": "IcyRealm",
+  "folder": "06 Quests and story",
+  "library": "TIcyRealm"
+ },
+ {
+  "index": 521,
+  "name": "Gafgarion",
+  "folder": "06 Quests and story",
+  "library": "TGafgarion"
+ },
+ {
+  "index": 522,
+  "name": "IceAge",
+  "folder": "06 Quests and story",
+  "library": "TIceAge"
+ },
+ {
+  "index": 523,
+  "name": "TrueIceAge",
+  "folder": "06 Quests and story",
+  "library": "TTrueIceAge"
+ },
+ {
+  "index": 524,
+  "name": "Epilogue",
+  "folder": "06 Quests and story",
+  "library": "TEpilogue"
+ },
+ {
+  "index": 525,
+  "name": "TargetPractice",
+  "folder": "06 Quests and story",
+  "library": "TTargetPractice"
+ },
+ {
+  "index": 526,
+  "name": "HealingWaters",
+  "folder": "06 Quests and story",
+  "library": "THealingWaters"
+ },
+ {
+  "index": 527,
+  "name": "MithrilGolem",
+  "folder": "06 Quests and story",
+  "library": "TMithrilGolem"
+ },
+ {
+  "index": 528,
+  "name": "GolemHeart",
+  "folder": "06 Quests and story",
+  "library": "TGolemHeart"
+ },
+ {
+  "index": 529,
+  "name": "Naisha",
+  "folder": "06 Quests and story",
+  "library": "TNaisha"
+ },
+ {
+  "index": 530,
+  "name": "HydraEgg",
+  "folder": "06 Quests and story",
+  "library": "THydraEgg"
+ },
+ {
+  "index": 531,
+  "name": "MysticalGlyph",
+  "folder": "06 Quests and story",
+  "library": "TMysticalGlyph"
+ },
+ {
+  "index": 532,
+  "name": "Nimphrodel",
+  "folder": "06 Quests and story",
+  "library": "TNimphrodel"
+ },
+ {
+  "index": 533,
+  "name": "MysteriousCurse",
+  "folder": "06 Quests and story",
+  "library": "TMysteriousCurse"
+ },
+ {
+  "index": 534,
+  "name": "DefiledFountain",
+  "folder": "06 Quests and story",
+  "library": "TDefiledFountain"
+ },
+ {
+  "index": 535,
+  "name": "Monica",
+  "folder": "06 Quests and story",
+  "library": "TMonica"
+ },
+ {
+  "index": 536,
+  "name": "GreedIsGood",
+  "folder": "06 Quests and story",
+  "library": "TGreedIsGood"
+ },
+ {
+  "index": 537,
+  "name": "PortalStone",
+  "folder": "06 Quests and story",
+  "library": "TPortalStone"
+ },
+ {
+  "index": 538,
+  "name": "Liniel",
+  "folder": "06 Quests and story",
+  "library": "TLiniel"
+ },
+ {
+  "index": 539,
+  "name": "Priscilla",
+  "folder": "06 Quests and story",
+  "library": "TPriscilla"
+ },
+ {
+  "index": 540,
+  "name": "PhantomDiary",
+  "folder": "06 Quests and story",
+  "library": "TPhantomDiary"
+ },
+ {
+  "index": 541,
+  "name": "Judgment",
+  "folder": "06 Quests and story",
+  "library": "TJudgment"
+ },
+ {
+  "index": 542,
+  "name": "LadyCurse",
+  "folder": "06 Quests and story",
+  "library": "TLadyCurse"
+ },
+ {
+  "index": 543,
+  "name": "ArenaResources",
+  "folder": "06 Quests and story",
+  "library": "TArenaResources"
+ },
+ {
+  "index": 544,
+  "name": "ArenaExpansion",
+  "folder": "06 Quests and story",
+  "library": "TArenaExpansion"
+ },
+ {
+  "index": 545,
+  "name": "HauntedTree",
+  "folder": "06 Quests and story",
+  "library": "THauntedTree"
+ },
+ {
+  "index": 546,
+  "name": "DimensionalBoundary",
+  "folder": "06 Quests and story",
+  "library": "TDimensionalBoundary"
+ },
+ {
+  "index": 547,
+  "name": "GuideBook",
+  "folder": "06 Quests and story",
+  "library": "TGuideBook"
+ },
+ {
+  "index": 548,
+  "name": "FrogHead",
+  "folder": "06 Quests and story",
+  "library": "TFrogHead"
+ },
+ {
+  "index": 549,
+  "name": "AlmightyShinra",
+  "folder": "06 Quests and story",
+  "library": "TAlmightyShinra"
+ },
+ {
+  "index": 550,
+  "name": "NightElf",
+  "folder": "06 Quests and story",
+  "library": "TNightElf"
+ },
+ {
+  "index": 551,
+  "name": "NebraKing",
+  "folder": "06 Quests and story",
+  "library": "TNebraKing"
+ },
+ {
+  "index": 552,
+  "name": "McBurn",
+  "folder": "06 Quests and story",
+  "library": "TMcBurn"
+ },
+ {
+  "index": 553,
+  "name": "AdamantHunt",
+  "folder": "06 Quests and story",
+  "library": "TAdamantHunt"
+ },
+ {
+  "index": 554,
+  "name": "GnollHunt",
+  "folder": "06 Quests and story",
+  "library": "TGnollHunt"
+ },
+ {
+  "index": 555,
+  "name": "FlanHunt",
+  "folder": "06 Quests and story",
+  "library": "TFlanHunt"
+ },
+ {
+  "index": 556,
+  "name": "AncientHunt",
+  "folder": "06 Quests and story",
+  "library": "TAncientHunt"
+ },
+ {
+  "index": 557,
+  "name": "Tentacles",
+  "folder": "06 Quests and story",
+  "library": "TTentacles"
+ },
+ {
+  "index": 558,
+  "name": "DragonEgg",
+  "folder": "06 Quests and story",
+  "library": "TDragonEgg"
+ },
+ {
+  "index": 559,
+  "name": "NameDiary",
+  "folder": "06 Quests and story",
+  "library": "TNameDiary"
+ },
+ {
+  "index": 560,
+  "name": "Cartographer",
+  "folder": "06 Quests and story",
+  "library": "TCartographer"
+ },
+ {
+  "index": 561,
+  "name": "DragonHunt",
+  "folder": "06 Quests and story",
+  "library": "TDragonHunt"
+ },
+ {
+  "index": 562,
+  "name": "Graves",
+  "folder": "06 Quests and story",
+  "library": "TGraves"
+ },
+ {
+  "index": 563,
+  "name": "Ziegfried",
+  "folder": "06 Quests and story",
+  "library": "TZiegfried"
+ },
+ {
+  "index": 564,
+  "name": "Giott",
+  "folder": "06 Quests and story",
+  "library": "TGiott"
+ },
+ {
+  "index": 565,
+  "name": "Dwarves",
+  "folder": "06 Quests and story",
+  "library": "TDwarves"
+ },
+ {
+  "index": 566,
+  "name": "Valigarmanda",
+  "folder": "06 Quests and story",
+  "library": "TValigarmanda"
+ },
+ {
+  "index": 567,
+  "name": "Loki",
+  "folder": "06 Quests and story",
+  "library": "TLoki"
+ },
+ {
+  "index": 568,
+  "name": "Monstrum",
+  "folder": "06 Quests and story",
+  "library": "TMonstrum"
+ },
+ {
+  "index": 569,
+  "name": "Frakir",
+  "folder": "06 Quests and story",
+  "library": "TFrakir"
+ },
+ {
+  "index": 570,
+  "name": "Elysium",
+  "folder": "06 Quests and story",
+  "library": "TElysium"
+ },
+ {
+  "index": 571,
+  "name": "Spring",
+  "folder": "06 Quests and story",
+  "library": "TSpring"
+ },
+ {
+  "index": 572,
+  "name": "Kesha",
+  "folder": "06 Quests and story",
+  "library": "TKesha"
+ },
+ {
+  "index": 573,
+  "name": "NpcTrio",
+  "folder": "06 Quests and story",
+  "library": "TNpcTrio"
+ },
+ {
+  "index": 574,
+  "name": "Elemental",
+  "folder": "06 Quests and story",
+  "library": "TElemental"
+ },
+ {
+  "index": 575,
+  "name": "Bernkastel",
+  "folder": "06 Quests and story",
+  "library": "TBernkastel"
+ },
+ {
+  "index": 576,
+  "name": "Npc",
+  "folder": "06 Quests and story",
+  "library": "TNpc"
+ },
+ {
+  "index": 577,
+  "name": "GrandVampire",
+  "folder": "06 Quests and story",
+  "library": "TGrandVampire"
+ },
+ {
+  "index": 578,
+  "name": "MagicGodToken",
+  "folder": "06 Quests and story",
+  "library": "TMagicGodToken"
+ },
+ {
+  "index": 579,
+  "name": "AnnoyingMonster",
+  "folder": "06 Quests and story",
+  "library": "TAnnoyingMonster"
+ },
+ {
+  "index": 580,
+  "name": "Agrias",
+  "folder": "06 Quests and story",
+  "library": "TAgrias"
+ },
+ {
+  "index": 581,
+  "name": "Aisha",
+  "folder": "06 Quests and story",
+  "library": "TAisha"
+ },
+ {
+  "index": 582,
+  "name": "Alma",
+  "folder": "06 Quests and story",
+  "library": "TAlma"
+ },
+ {
+  "index": 583,
+  "name": "Anabel",
+  "folder": "06 Quests and story",
+  "library": "TAnabel"
+ },
+ {
+  "index": 584,
+  "name": "Andre",
+  "folder": "06 Quests and story",
+  "library": "TAndre"
+ },
+ {
+  "index": 585,
+  "name": "BlazingDemon",
+  "folder": "06 Quests and story",
+  "library": "TBlazingDemon"
+ },
+ {
+  "index": 586,
+  "name": "BridgeBattle",
+  "folder": "06 Quests and story",
+  "library": "TBridgeBattle"
+ },
+ {
+  "index": 587,
+  "name": "Brothers",
+  "folder": "06 Quests and story",
+  "library": "TBrothers"
+ },
+ {
+  "index": 588,
+  "name": "Celeborn",
+  "folder": "06 Quests and story",
+  "library": "TCeleborn"
+ },
+ {
+  "index": 589,
+  "name": "Clemydar",
+  "folder": "06 Quests and story",
+  "library": "TClemydar"
+ },
+ {
+  "index": 590,
+  "name": "Cloak",
+  "folder": "06 Quests and story",
+  "library": "TCloak"
+ },
+ {
+  "index": 591,
+  "name": "CrystalBall",
+  "folder": "06 Quests and story",
+  "library": "TCrystalBall"
+ },
+ {
+  "index": 592,
+  "name": "DarkEidolons",
+  "folder": "06 Quests and story",
+  "library": "TDarkEidolons"
+ },
+ {
+  "index": 593,
+  "name": "DarkIfrit",
+  "folder": "06 Quests and story",
+  "library": "TDarkIfrit"
+ },
+ {
+  "index": 594,
+  "name": "DarkPhoenix",
+  "folder": "06 Quests and story",
+  "library": "TDarkPhoenix"
+ },
+ {
+  "index": 595,
+  "name": "Eden",
+  "folder": "06 Quests and story",
+  "library": "TEden"
+ },
+ {
+  "index": 596,
+  "name": "Exodus",
+  "folder": "06 Quests and story",
+  "library": "TExodus"
+ },
+ {
+  "index": 597,
+  "name": "Fafnir",
+  "folder": "06 Quests and story",
+  "library": "TFafnir"
+ },
+ {
+  "index": 598,
+  "name": "Famfrit",
+  "folder": "06 Quests and story",
+  "library": "TFamfrit"
+ },
+ {
+  "index": 599,
+  "name": "PriestX",
+  "folder": "06 Quests and story",
+  "library": "TPriestX"
+ },
+ {
+  "index": 600,
+  "name": "QuestCount",
+  "folder": "06 Quests and story",
+  "library": "TQuestCount"
+ },
+ {
+  "index": 601,
+  "name": "QuestTotal",
+  "folder": "06 Quests and story",
+  "library": "TQuestTotal"
+ },
+ {
+  "index": 602,
+  "name": "QuestUnits",
+  "folder": "06 Quests and story",
+  "library": "TQuestUnits"
+ },
+ {
+  "index": 603,
+  "name": "ScorchedEarth",
+  "folder": "06 Quests and story",
+  "library": "TScorchedEarth"
+ },
+ {
+  "index": 604,
+  "name": "Shimmerweed",
+  "folder": "06 Quests and story",
+  "library": "TShimmerweed"
+ },
+ {
+  "index": 605,
+  "name": "Shinra",
+  "folder": "06 Quests and story",
+  "library": "TShinra"
+ },
+ {
+  "index": 606,
+  "name": "ShinrasPlan",
+  "folder": "06 Quests and story",
+  "library": "TShinrasPlan"
+ },
+ {
+  "index": 607,
+  "name": "Siegfried",
+  "folder": "06 Quests and story",
+  "library": "TSiegfried"
+ },
+ {
+  "index": 608,
+  "name": "SpiritScroll",
+  "folder": "06 Quests and story",
+  "library": "TSpiritScroll"
+ },
+ {
+  "index": 609,
+  "name": "Storm",
+  "folder": "06 Quests and story",
+  "library": "TStorm"
+ },
+ {
+  "index": 610,
+  "name": "StrangeKey",
+  "folder": "06 Quests and story",
+  "library": "TStrangeKey"
+ },
+ {
+  "index": 611,
+  "name": "Tiara",
+  "folder": "06 Quests and story",
+  "library": "TTiara"
+ },
+ {
+  "index": 612,
+  "name": "Tonberry",
+  "folder": "06 Quests and story",
+  "library": "TTonberry"
+ },
+ {
+  "index": 613,
+  "name": "Tower",
+  "folder": "06 Quests and story",
+  "library": "TTower"
+ },
+ {
+  "index": 614,
+  "name": "TropicalEssence",
+  "folder": "06 Quests and story",
+  "library": "TTropicalEssence"
+ },
+ {
+  "index": 615,
+  "name": "Turks",
+  "folder": "06 Quests and story",
+  "library": "TTurks"
+ },
+ {
+  "index": 616,
+  "name": "Ultima",
+  "folder": "06 Quests and story",
+  "library": "TUltima"
+ },
+ {
+  "index": 617,
+  "name": "Ultros",
+  "folder": "06 Quests and story",
+  "library": "TUltros"
+ },
+ {
+  "index": 618,
+  "name": "Valera",
+  "folder": "06 Quests and story",
+  "library": "TValera"
+ },
+ {
+  "index": 619,
+  "name": "Vodyan",
+  "folder": "06 Quests and story",
+  "library": "TVodyan"
+ },
+ {
+  "index": 620,
+  "name": "VoiceOfForest",
+  "folder": "06 Quests and story",
+  "library": "TVoiceOfForest"
+ },
+ {
+  "index": 621,
+  "name": "Wanderer",
+  "folder": "06 Quests and story",
+  "library": "TWanderer"
+ },
+ {
+  "index": 622,
+  "name": "Watts",
+  "folder": "06 Quests and story",
+  "library": "TWatts"
+ },
+ {
+  "index": 623,
+  "name": "WendigoHunt",
+  "folder": "06 Quests and story",
+  "library": "TWendigoHunt"
+ },
+ {
+  "index": 624,
+  "name": "Zodiark",
+  "folder": "06 Quests and story",
+  "library": "TZodiark"
+ },
+ {
+  "index": 625,
+  "name": "Wave",
+  "folder": "07 Hunts and encounters",
+  "library": "TWave"
+ },
+ {
+  "index": 626,
+  "name": "Spawn",
+  "folder": "07 Hunts and encounters",
+  "library": "TSpawn"
+ },
+ {
+  "index": 627,
+  "name": "MonsterData",
+  "folder": "07 Hunts and encounters",
+  "library": "TMonsterData"
+ },
+ {
+  "index": 628,
+  "name": "Oversoul",
+  "folder": "07 Hunts and encounters",
+  "library": "TOversoul"
+ },
+ {
+  "index": 629,
+  "name": "Chaos",
+  "folder": "07 Hunts and encounters",
+  "library": "TChaos"
+ },
+ {
+  "index": 630,
+  "name": "ForestSpirit",
+  "folder": "07 Hunts and encounters",
+  "library": "TForestSpirit"
+ },
+ {
+  "index": 631,
+  "name": "HuntGuest",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntGuest"
+ },
+ {
+  "index": 632,
+  "name": "HuntFestival",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntFestival"
+ },
+ {
+  "index": 633,
+  "name": "Ghoul",
+  "folder": "07 Hunts and encounters",
+  "library": "TGhoul"
+ },
+ {
+  "index": 634,
+  "name": "MagicUrn",
+  "folder": "07 Hunts and encounters",
+  "library": "TMagicUrn"
+ },
+ {
+  "index": 635,
+  "name": "Nightmare",
+  "folder": "07 Hunts and encounters",
+  "library": "TNightmare"
+ },
+ {
+  "index": 636,
+  "name": "CowPortal",
+  "folder": "07 Hunts and encounters",
+  "library": "TCowPortal"
+ },
+ {
+  "index": 637,
+  "name": "SkeletalDefense",
+  "folder": "07 Hunts and encounters",
+  "library": "TSkeletalDefense"
+ },
+ {
+  "index": 638,
+  "name": "Thunderbloom",
+  "folder": "07 Hunts and encounters",
+  "library": "TThunderbloom"
+ },
+ {
+  "index": 639,
+  "name": "Hunt_Board",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntBoard"
+ },
+ {
+  "index": 640,
+  "name": "Hunt_Contracts",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntContracts"
+ },
+ {
+  "index": 641,
+  "name": "Hunt_Encounters",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntEncounters"
+ },
+ {
+  "index": 642,
+  "name": "Hunt_Rewards",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntRewards"
+ },
+ {
+  "index": 643,
+  "name": "Hunt_Shop",
+  "folder": "07 Hunts and encounters",
+  "library": "THuntShop"
+ },
+ {
+  "index": 644,
+  "name": "Hunt",
+  "folder": "07 Hunts and encounters",
+  "library": "THunt"
+ },
+ {
+  "index": 645,
+  "name": "Arena_Access",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaAccess"
+ },
+ {
+  "index": 646,
+  "name": "Arena_BattleResults",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaBattleResults"
+ },
+ {
+  "index": 647,
+  "name": "Arena_BattleSetup",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaBattleSetup"
+ },
+ {
+  "index": 648,
+  "name": "Arena_Boundaries",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaBoundaries"
+ },
+ {
+  "index": 649,
+  "name": "Arena_Configuration",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaConfiguration"
+ },
+ {
+  "index": 650,
+  "name": "Arena_Conquest",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaConquest"
+ },
+ {
+  "index": 651,
+  "name": "Arena_Cups",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaCups"
+ },
+ {
+  "index": 652,
+  "name": "Arena_Duel",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaDuel"
+ },
+ {
+  "index": 653,
+  "name": "Arena_Introduction",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaIntroduction"
+ },
+ {
+  "index": 654,
+  "name": "Arena_Presentation",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaPresentation"
+ },
+ {
+  "index": 655,
+  "name": "Arena_Rewards",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaRewards"
+ },
+ {
+  "index": 656,
+  "name": "Arena_Rounds",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaRounds"
+ },
+ {
+  "index": 657,
+  "name": "Arena_Spawning",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaSpawning"
+ },
+ {
+  "index": 658,
+  "name": "Arena_TeamData",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaTeamData"
+ },
+ {
+  "index": 659,
+  "name": "Arena_TeamSelection",
+  "folder": "07 Hunts and encounters",
+  "library": "TArenaTeamSelection"
+ },
+ {
+  "index": 660,
+  "name": "Arena",
+  "folder": "07 Hunts and encounters",
+  "library": "TArena"
+ },
+ {
+  "index": 661,
+  "name": "Travel",
+  "folder": "08 World and travel",
+  "library": "TTravel"
+ },
+ {
+  "index": 662,
+  "name": "Cam",
+  "folder": "08 World and travel",
+  "library": "TCam"
+ },
+ {
+  "index": 663,
+  "name": "Cine",
+  "folder": "08 World and travel",
+  "library": "TCine"
+ },
+ {
+  "index": 664,
+  "name": "Zone",
+  "folder": "08 World and travel",
+  "library": "TZone"
+ },
+ {
+  "index": 665,
+  "name": "Time",
+  "folder": "08 World and travel",
+  "library": "TTime"
+ },
+ {
+  "index": 666,
+  "name": "Hour",
+  "folder": "08 World and travel",
+  "library": "THour"
+ },
+ {
+  "index": 667,
+  "name": "House",
+  "folder": "08 World and travel",
+  "library": "THouse"
+ },
+ {
+  "index": 668,
+  "name": "Zone7",
+  "folder": "08 World and travel",
+  "library": "TZone7"
+ },
+ {
+  "index": 669,
+  "name": "Zone6",
+  "folder": "08 World and travel",
+  "library": "TZone6"
+ },
+ {
+  "index": 670,
+  "name": "Zone1",
+  "folder": "08 World and travel",
+  "library": "TZone1"
+ },
+ {
+  "index": 671,
+  "name": "Zone4",
+  "folder": "08 World and travel",
+  "library": "TZone4"
+ },
+ {
+  "index": 672,
+  "name": "Weather",
+  "folder": "08 World and travel",
+  "library": "TWeather"
+ },
+ {
+  "index": 673,
+  "name": "Warp",
+  "folder": "08 World and travel",
+  "library": "TWarp"
+ },
+ {
+  "index": 674,
+  "name": "Zone8",
+  "folder": "08 World and travel",
+  "library": "TZone8"
+ },
+ {
+  "index": 675,
+  "name": "Transport",
+  "folder": "08 World and travel",
+  "library": "TTransport"
+ },
+ {
+  "index": 676,
+  "name": "Gate",
+  "folder": "08 World and travel",
+  "library": "TGate"
+ },
+ {
+  "index": 677,
+  "name": "Portal",
+  "folder": "08 World and travel",
+  "library": "TPortal"
+ },
+ {
+  "index": 678,
+  "name": "Teleport",
+  "folder": "08 World and travel",
+  "library": "TTeleport"
+ },
+ {
+  "index": 679,
+  "name": "Teleporters",
+  "folder": "08 World and travel",
+  "library": "TTeleporters"
+ },
+ {
+  "index": 680,
+  "name": "Unstuck",
+  "folder": "08 World and travel",
+  "library": "TUnstuck"
+ },
+ {
+  "index": 681,
+  "name": "World",
+  "folder": "08 World and travel",
+  "library": "TWorld"
+ },
+ {
+  "index": 682,
+  "name": "Player_Part01",
+  "folder": "09 Player features",
+  "library": "TPlayerPart01"
+ },
+ {
+  "index": 683,
+  "name": "Title",
+  "folder": "09 Player features",
+  "library": "TTitle"
+ },
+ {
+  "index": 684,
+  "name": "BattleLog",
+  "folder": "09 Player features",
+  "library": "TBattleLog"
+ },
+ {
+  "index": 685,
+  "name": "Music",
+  "folder": "09 Player features",
+  "library": "TMusic"
+ },
+ {
+  "index": 686,
+  "name": "Sound",
+  "folder": "09 Player features",
+  "library": "TSound"
+ },
+ {
+  "index": 687,
+  "name": "Text",
+  "folder": "09 Player features",
+  "library": "TText"
+ },
+ {
+  "index": 688,
+  "name": "Difficulty",
+  "folder": "09 Player features",
+  "library": "TDifficulty"
+ },
+ {
+  "index": 689,
+  "name": "Cmd",
+  "folder": "09 Player features",
+  "library": "TCmd"
+ },
+ {
+  "index": 690,
+  "name": "Save",
+  "folder": "09 Player features",
+  "library": "TSave"
+ },
+ {
+  "index": 691,
+  "name": "Load",
+  "folder": "09 Player features",
+  "library": "TLoad"
+ },
+ {
+  "index": 692,
+  "name": "Speedrun",
+  "folder": "09 Player features",
+  "library": "TSpeedrun"
+ },
+ {
+  "index": 693,
+  "name": "Vote",
+  "folder": "09 Player features",
+  "library": "TVote"
+ },
+ {
+  "index": 694,
+  "name": "GameMode",
+  "folder": "09 Player features",
+  "library": "TGameMode"
+ },
+ {
+  "index": 695,
+  "name": "Game",
+  "folder": "09 Player features",
+  "library": "TGame"
+ },
+ {
+  "index": 696,
+  "name": "Titles",
+  "folder": "09 Player features",
+  "library": "TTitles"
+ },
+ {
+  "index": 697,
+  "name": "GameLoad",
+  "folder": "09 Player features",
+  "library": "TGameLoad"
+ },
+ {
+  "index": 698,
+  "name": "Debug",
+  "folder": "09 Player features",
+  "library": "TDebug"
+ },
+ {
+  "index": 699,
+  "name": "AbilityText",
+  "folder": "09 Player features",
+  "library": "TAbilityText"
+ },
+ {
+  "index": 700,
+  "name": "Gold",
+  "folder": "09 Player features",
+  "library": "TGold"
+ },
+ {
+  "index": 701,
+  "name": "Lumber",
+  "folder": "09 Player features",
+  "library": "TLumber"
+ },
+ {
+  "index": 702,
+  "name": "Help",
+  "folder": "09 Player features",
+  "library": "THelp"
+ },
+ {
+  "index": 703,
+  "name": "Handicap",
+  "folder": "09 Player features",
+  "library": "THandicap"
+ },
+ {
+  "index": 704,
+  "name": "Fishing_Casting",
+  "folder": "09 Player features",
+  "library": "TFishingCasting"
+ },
+ {
+  "index": 705,
+  "name": "Fishing_Encounters",
+  "folder": "09 Player features",
+  "library": "TFishingEncounters"
+ },
+ {
+  "index": 706,
+  "name": "Fishing_ReelingAndCatch",
+  "folder": "09 Player features",
+  "library": "TFishingReelingAndCatch"
+ },
+ {
+  "index": 707,
+  "name": "Fishing_Setup",
+  "folder": "09 Player features",
+  "library": "TFishingSetup"
+ },
+ {
+  "index": 708,
+  "name": "Fishing",
+  "folder": "09 Player features",
+  "library": "TFishing"
+ },
+ {
+  "index": 709,
+  "name": "PlayerTimer1",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer1"
+ },
+ {
+  "index": 710,
+  "name": "PlayerTimer2",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer2"
+ },
+ {
+  "index": 711,
+  "name": "PlayerTimer3",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer3"
+ },
+ {
+  "index": 712,
+  "name": "PlayerTimer4",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer4"
+ },
+ {
+  "index": 713,
+  "name": "PlayerTimer5",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer5"
+ },
+ {
+  "index": 714,
+  "name": "PlayerTimer6",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer6"
+ },
+ {
+  "index": 715,
+  "name": "PlayerTimer7",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer7"
+ },
+ {
+  "index": 716,
+  "name": "PlayerTimer8",
+  "folder": "09 Player features",
+  "library": "TPlayerTimer8"
+ },
+ {
+  "index": 717,
+  "name": "Ping",
+  "folder": "09 Player features",
+  "library": "TPing"
+ },
+ {
+  "index": 718,
+  "name": "Multiboard",
+  "folder": "09 Player features",
+  "library": "TMultiboard"
+ },
+ {
+  "index": 719,
+  "name": "Cheat",
+  "folder": "09 Player features",
+  "library": "TCheat"
+ },
+ {
+  "index": 720,
+  "name": "Chocobo_Breeding",
+  "folder": "09 Player features",
+  "library": "TChocoboBreeding"
+ },
+ {
+  "index": 721,
+  "name": "Chocobo_Bribing",
+  "folder": "09 Player features",
+  "library": "TChocoboBribing"
+ },
+ {
+  "index": 722,
+  "name": "Chocobo_Digging",
+  "folder": "09 Player features",
+  "library": "TChocoboDigging"
+ },
+ {
+  "index": 723,
+  "name": "Chocobo_Population",
+  "folder": "09 Player features",
+  "library": "TChocoboPopulation"
+ },
+ {
+  "index": 724,
+  "name": "Chocobo_Taming",
+  "folder": "09 Player features",
+  "library": "TChocoboTaming"
+ },
+ {
+  "index": 725,
+  "name": "Chocobo_TechCopy",
+  "folder": "09 Player features",
+  "library": "TChocoboTechCopy"
+ },
+ {
+  "index": 726,
+  "name": "Chocobo_Upgrades",
+  "folder": "09 Player features",
+  "library": "TChocoboUpgrades"
+ },
+ {
+  "index": 727,
+  "name": "Chocobo_WildBehavior",
+  "folder": "09 Player features",
+  "library": "TChocoboWildBehavior"
+ },
+ {
+  "index": 728,
+  "name": "Chocobo",
+  "folder": "09 Player features",
+  "library": "TChocobo"
+ },
+ {
+  "index": 729,
+  "name": "TextSpeed",
+  "folder": "09 Player features",
+  "library": "TTextSpeed"
+ },
+ {
+  "index": 730,
+  "name": "DamageText",
+  "folder": "09 Player features",
+  "library": "TDamageText"
+ },
+ {
+  "index": 731,
+  "name": "Autosave",
+  "folder": "09 Player features",
+  "library": "TAutosave"
+ },
+ {
+  "index": 732,
+  "name": "News",
+  "folder": "09 Player features",
+  "library": "TNews"
+ },
+ {
+  "index": 733,
+  "name": "Player",
+  "folder": "09 Player features",
+  "library": "TPlayer"
+ },
+ {
+  "index": 734,
+  "name": "Reminder",
+  "folder": "09 Player features",
+  "library": "TReminder"
+ },
+ {
+  "index": 735,
+  "name": "SaveDebug",
+  "folder": "09 Player features",
+  "library": "TSaveDebug"
+ },
+ {
+  "index": 736,
+  "name": "TextInstant",
+  "folder": "09 Player features",
+  "library": "TTextInstant"
+ },
+ {
+  "index": 737,
+  "name": "TextSkip",
+  "folder": "09 Player features",
+  "library": "TTextSkip"
+ },
+ {
+  "index": 738,
+  "name": "MapBootstrap",
+  "folder": "10 Startup coordinator",
+  "library": "TMapBootstrap"
+ },
+ {
+  "index": 739,
+  "name": "MainDeprotected",
+  "folder": "10 Startup coordinator",
+  "library": null,
+  "note": "GUI trigger: Map Initialization event that runs main_old (the startup sequence). Keep it."
+ },
+ {
+  "index": 740,
+  "name": "PreplacedUnitRefs",
+  "folder": "",
+  "library": null,
+  "note": "Disabled GUI trigger that references pre-placed units so World Editor generates their gg_unit_ variables. Keep it disabled; do not delete."
+ }
+]

@@ -1,0 +1,6 @@
+# Map binaries live in release/ and baseline/ but are not tracked (large, rebuildable)
+*.w3x
+*.w3m
+__pycache__/
+*.pyc
+build/

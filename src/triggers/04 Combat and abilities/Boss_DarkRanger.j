@@ -1,0 +1,23 @@
+library TBossDarkRanger requires TWait
+function Trig_Boss_DarkRanger_Death_Actions takes nothing returns nothing
+    call DisableTrigger(GetTriggeringTrigger())
+    call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
+    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I036',udg_TempPoint) // 'I036': item "Dark Bow"
+    call CreateItemLoc('I0EV',udg_TempPoint) // 'I0EV': item "Spirit Scroll"
+    call RemoveLocation(udg_TempPoint)
+    call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
+    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to Liniel for reward.")
+    call QuestSetDescriptionBJ(udg_SideQuest[28],"Come back to Liniel for reward.")
+    call GroupAddUnitSimple(gg_unit_n01Y_0131,udg_BossUnits)
+    call EnableTrigger(gg_trg_Quest_FallenRanger_Complete)
+    call SaveIntegerBJ(1,2,'f',udg_GameStateHash)
+    call Wait_Polled(5.)
+    call RemoveUnit(GetTriggerUnit())
+    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+function InitTrig_Boss_DarkRanger takes nothing returns nothing
+endfunction
+
+endlibrary

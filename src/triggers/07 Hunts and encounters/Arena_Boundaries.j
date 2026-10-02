@@ -1,0 +1,46 @@
+library TArenaBoundaries requires TPlayerPart01
+function Trig_Arena_Leash_IsArenaUnit takes nothing returns boolean
+    return(GetTriggerUnit()==gg_unit_U00J_0209)or(GetTriggerUnit()==gg_unit_N022_0125)or(IsUnitInGroup(GetTriggerUnit(),udg_ArenaBoundUnits))
+endfunction
+
+function Trig_Arena_Leash_Conditions takes nothing returns boolean
+    return(Trig_Arena_Leash_IsArenaUnit())
+endfunction
+
+function Trig_Arena_Leash_Actions takes nothing returns nothing
+    set udg_TempPoint=GetRectCenter(gg_rct_458)
+    call SetUnitPositionLoc(GetEnteringUnit(),udg_TempPoint)
+    call RemoveLocation(udg_TempPoint)
+endfunction
+
+function Trig_Arena_OutOfBounds_Conditions takes nothing returns boolean
+    return(IsUnitGroupEmptyBJ(udg_CupArenaUnits)==false)
+endfunction
+
+function Trig_Arena_OutOfBounds_PlayerOutside takes nothing returns boolean
+    return(RectContainsUnit(gg_rct_499,Player_GetHero(GetEnumPlayer()))==false)
+endfunction
+
+function Trig_Arena_OutOfBounds_PunishPlayer takes nothing returns nothing
+    if(Trig_Arena_OutOfBounds_PlayerOutside())then
+        set udg_ArenaStallTicks=(udg_ArenaStallTicks+1)
+        call AddSpecialEffectTargetUnitBJ("origin",Player_GetHero(GetEnumPlayer()),"Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
+        call DestroyEffectBJ(GetLastCreatedEffectBJ())
+        set udg_DmgFlagPure=true
+        set udg_DmgFlagUnavoidable=-1
+        // Result 1: udg_ArenaStallTicks treated as a decimal-capable number.
+        // Result 2: (result 1) times (0.05).
+        // Result 3: (maximum health of Player_GetHero(the player being visited)) times (result 2).
+        call UnitDamageTargetBJ(GroupPickRandomUnit(udg_CupArenaUnits),Player_GetHero(GetEnumPlayer()),(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,Player_GetHero(GetEnumPlayer()))*(I2R(udg_ArenaStallTicks)*.05)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
+    endif
+endfunction
+
+function Trig_Arena_OutOfBounds_Actions takes nothing returns nothing
+    call ForForce(udg_CupArenaPlayers,function Trig_Arena_OutOfBounds_PunishPlayer)
+endfunction
+
+// Registration ownership; called at the original bootstrap positions.
+function InitTrig_Arena_Boundaries takes nothing returns nothing
+endfunction
+
+endlibrary
