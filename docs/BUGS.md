@@ -1,0 +1,27 @@
+# Suspected bugs (found while reading the code)
+
+These were spotted while writing the system guides. **None has been confirmed in game.**
+
+To work through one:
+1. Try it in game; the developer test commands (`docs/DEBUG_COMMANDS.md`) make that quick.
+2. Move it to "Confirmed", or delete it if it isn't a bug.
+3. Fix it in its own commit.
+
+## Open
+
+| # | Where | What could go wrong | How to check | Likely fix |
+|---|---|---|---|---|
+| 1 | `Loot` → `Trig_Loot_MonsterDrop_Actions` (Greed) | Greed picks `udg_LevelItemIdTable[sqrt(level) + 0..2]`. The table ends at 12 (Crystal Shard). A monster of level 121+ gives index 13, which is empty, so nothing drops. From level 100, Greed can drop Crystal Shards, which may not be intended either. | Kill a level 100+ / 121+ unit with Greed. | Cap the index at 11, or 12 if shards are intended. |
+| 2 | `Arena_TeamSelection` → `Trig_Arena_Pick_Team_Actions` | A rejected random pick runs the same trigger again (`ConditionalTriggerExecute(GetTriggeringTrigger())`), with no limit. If a cup has very few enabled teams, the chain can get so deep that Warcraft stops the thread and the bracket is left half-filled. | Start a cup that has only a few teams enabled; watch for empty bracket slots. | Replace the recursion with a loop over the eligible teams, then pick one at random. |
+| 3 | `Arena_Round_End` and `Arena_FoeDeath` | The Battle Point formula and foe drops exist twice: cups and single battles. A fix applied to one copy and not the other makes them drift apart. | Compare the two functions. | Move the shared part into one helper, e.g. `Arena_BattleReward`. |
+| 4 | `Boss_BlackDevil` (and other arena bosses with `DestroyTrigger` in `_Death`) | The death trigger destroys itself after the first win, but `_Summon` adds a new death event to it each time. If the boss can be summoned again, the second kill is never noticed: no reward, and the arena stays locked. | Win against Black Devil, then summon it again if the item allows. | Remove the `DestroyTrigger` line for bosses that can be fought more than once. |
+| 5 | `Arena_Start_Cup` | The dialogue mentions a 10 gold fee, but no code charges it. It may be the dummy unit's gold cost in the Object Editor. | Check gold before and after starting a cup. | Nothing, if the Object Editor cost is the fee. |
+| 6 | `Save` / `Armory` (save codes) | Items are saved as 9-bit indexes, and `udg_SaveFlagForce[501..540]` is also used for armory stock. An item table past index 500 would collide. Not a bug today (351 items), but a trap for the next developer. | — | Note kept in `SAVE_CODES.md` / `LOOT.md`; add a check that fails above 500. |
+
+## Confirmed
+
+(none yet)
+
+## Fixed
+
+(none yet)
