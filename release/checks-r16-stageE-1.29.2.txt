@@ -12,6 +12,10 @@
 | war3map.w3e | 11 | yes | yes |
 | war3map.doo | 8 | yes | yes |
 | war3mapUnits.doo | 8 | yes | yes |
+| war3map.w3r | 5 | yes | yes |
+| war3map.w3c | 0 | yes | yes |
+| war3map.wtg | 7 | yes | yes |
+| war3map.wct | 1 | yes | yes |
 | war3map.w3u | 2 | yes | yes |
 | war3map.w3a | 2 | yes | yes |
 | war3map.w3t | 2 | yes | yes |

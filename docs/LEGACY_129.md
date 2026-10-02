@@ -25,17 +25,21 @@
    - the quest log (F9) works;
    - the `-dev` commands work;
    - nothing crashes in 15+ minutes of play.
+4. Optional: open it in the 1.29 World Editor. Do the triggers, terrain and units show?
 
 If it crashes on loading, tell me where (map list, loading screen, or the start of the game). Each
 point narrows it down to one file type.
 
 ### Known limits
-- **No triggers in the 1.29 editor:** the 1.29 map has no Trigger Editor data, because the
-  Reforged trigger files were removed. It is for playing. Opening it in the 1.29 editor needs
-  classic trigger files: a later step.
+- **The 1.29 editor:** the map also carries the trigger editor (classic format: 11 folders, 576
+  variables, 737 triggers), regions and cameras, so the 1.29 World Editor should open it. The
+  map's code is vJass, so **saving** it in the 1.29 editor needs JassHelper there. If your 1.29
+  editor has no JassHelper menu, look but don't save; the map as built is already playable.
+  The Variable Editor sub-folders become one list, since the classic format has no sub-folders.
 - **Object data:** fields that only exist in Reforged are kept in the object data. 1.29 should
   ignore them, but that is unconfirmed.
 - **Re-run on every release:** `python tools/downgrade.py <Reforged map> <out> --w3i-template FFERPG_0.9.7.3-r7.w3x`.
+  `--no-editor-files` makes a play-only map.
 
 ---
 
