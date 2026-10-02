@@ -1,0 +1,42 @@
+id,copied from,name,used by (modules)
+B002,ITtw,,"Auto, Element, MapBootstrap, Molotov, Remove"
+B001,LTbr,Secret Barrel,MapBootstrap
+B000,Volc,,not used by code
+ZTtw,"(standard, changed)",,not used by code
+ZTtc,"(standard, changed)",,not used by code
+ZTsg,"(standard, changed)",,MapBootstrap
+ZTr2,"(standard, changed)",,not used by code
+ZTr1,"(standard, changed)",,not used by code
+YTwt,"(standard, changed)",,not used by code
+YTst,"(standard, changed)",,not used by code
+YTft,"(standard, changed)",,not used by code
+YTct,"(standard, changed)",,not used by code
+XTvt,"(standard, changed)",,not used by code
+XTbd,"(standard, changed)",,not used by code
+WTtw,"(standard, changed)",,not used by code
+WTst,"(standard, changed)",,Ending
+VTlt,"(standard, changed)",,not used by code
+OTtw,"(standard, changed)",,not used by code
+NTtw,"(standard, changed)",,Ending
+NTtc,"(standard, changed)",,not used by code
+LTw3,"(standard, changed)",,not used by code
+LTw2,"(standard, changed)",,not used by code
+LTw1,"(standard, changed)",,not used by code
+LTw0,"(standard, changed)",,not used by code
+LTlt,"(standard, changed)",,"Ending, MapBootstrap"
+LTba,"(standard, changed)",,MapBootstrap
+KTtw,"(standard, changed)",,not used by code
+JTtw,"(standard, changed)",,not used by code
+JTct,"(standard, changed)",,not used by code
+ITtw,"(standard, changed)",,"Ending, MapBootstrap, Quest_ScorchingTravel"
+ITtc,"(standard, changed)",,not used by code
+GTsh,"(standard, changed)",,not used by code
+FTtw,"(standard, changed)",,Ending
+Dofw,"(standard, changed)",,MapBootstrap
+DTsh,"(standard, changed)",,not used by code
+CTtr,"(standard, changed)",,Ending
+CTtc,"(standard, changed)",,not used by code
+BTtw,"(standard, changed)",,not used by code
+BTtc,"(standard, changed)",,not used by code
+ATtr,"(standard, changed)",,Ending
+ATtc,"(standard, changed)",,not used by code

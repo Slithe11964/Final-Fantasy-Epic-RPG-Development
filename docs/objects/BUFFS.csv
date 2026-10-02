@@ -1,0 +1,359 @@
+id,copied from,name,tooltip,used by (modules)
+X00B,XHfs,Death Circle (Effect),,not used by code
+X00A,XErf,Cometeorite,,not used by code
+X009,XErf,Myriad Arrows,,not used by code
+X008,XUdd,Maelstrom,,not used by code
+X007,XHfs,Ultima,,not used by code
+X006,XNmo,Terra Break (Effect),,not used by code
+X005,XHbz,Clione,,not used by code
+X004,XHbz,Aqualung,,not used by code
+X003,XHfs,Earthquake,,not used by code
+X002,XEsf,Wrath of the Forsaken[effect],,not used by code
+X001,XErf,Armageddon (Effect),,not used by code
+X000,XOeq,Cold Shoulder,,not used by code
+B08Z,BOac,,Gaya Strength,Damage
+B08Y,Bslo,Slowra,Slowra,"Cooldown, Remove, Status"
+B08X,Binf,Fogra,|cffff0000Fogra|r,"Damage, Faith, Oracle, Remove, Status"
+B08W,Binf,Painra,|cffff0000Painra|r,"Bravery, Damage, Oracle, Remove, Status"
+B08V,BOac,,Chaos,Damage
+B08U,BOac,,Girimehkala Skin,Damage
+B08T,Bblo,Hastera,|cff00ff00Hastera|r,"Cooldown, Haste, Mediator, Oracle, Remove, Samurai +1"
+B08S,Bam2,Shellra,|cff00ff00Shellra|r,"Damage, Mediator, Oracle, Remove, Samurai, Shell"
+B08R,Brej,Protectra,|cff00ff00Protectra|r,"Damage, Mediator, Oracle, Protect, Remove, Samurai"
+B08Q,Binf,Faithra,|cff00ff00Faithra|r,"Damage, Faith, Mediator, Oracle, Remove, Status"
+B08P,Binf,Bravera,|cff00ff00Bravera|r,"Bravery, Damage, Mediator, Oracle, Remove, Status"
+B08O,BHfs,,Fire,not used by code
+B08N,Bpig,Death Circle,,not used by code
+B08M,BOac,,Rendan,Damage
+B08L,BNdh,,Heavy,"Element, Immobilize"
+B08K,Bslo,Sleipnir,|cff00ff00Sleipnir|r,not used by code
+B08J,Broa,Auto-Growth,|cff00ff00Growth|r,not used by code
+B08I,BPSE,,Stunned,"Damage, Gaya_Support, Rave, Wave"
+B08H,Bslo,,Clone,not used by code
+B08G,Bfro,,Bleed,not used by code
+B08F,Buhf,,Burst,Passive
+B08E,Bfro,,Daze,"Damage, Gaya_Support, Rave, Wave"
+B08D,Bfro,,Reflect,not used by code
+B08C,BHad,Evil Strength,Evil Aura,not used by code
+B08B,BHad,Evil Speed,Evil Aura,not used by code
+B08A,BHad,Evil Armor,Evil Aura,Summon_Scaling
+B089,Binf,,Stealth,Damage
+B088,BNrf,Myriad Arrows (Area),,not used by code
+B087,BHbz,Meteor V3 (Caster),,not used by code
+B086,BHbz,Meteor V2 (Caster),,not used by code
+B085,BHbz,Meteor V1 (Caster),,not used by code
+B084,BHbz,Meteor V0 (Caster),,not used by code
+B083,Bslo,,Lurking Death,Nightmare
+B082,BOae,,Dark Power,Damage
+B081,Bpig,Noxious Mixture,,not used by code
+B080,BNrd,,Meteor,not used by code
+B07Z,BNrd,,Meteor,not used by code
+B07Y,BNrd,,Meteor,not used by code
+B07X,Bfro,,Bleed,not used by code
+B07W,Bfzy,,Momentum,Momentum
+B07V,Bfzy,,Momentum,"Damage, Momentum"
+B07U,Bbsk,Goliath Tonic,|cff00ff00Goliath Tonic|r,"GoliathTonic, Virus"
+B07T,BOac,Eternity Mode,|cff3fff3fEternity Mode|r,Damage
+B07S,Brej,Runic Revenge,|cff00ff00Runic Revenge|r,"Damage, Runic"
+B07R,Brej,Runic Shield,|cff00ff00Runic Shield|r,"Damage, Mediator, Runic"
+B07Q,Brej,Parry,|cffff0000Parry|r,not used by code
+B07P,Bbsk,Enraged,|cffff0000Enraged|r,"Berserk, Damage, Ninja"
+B07O,Bfzy,,First Aid,not used by code
+B07N,Bfro,,Tornado,not used by code
+B07M,Bbsk,,Marked for Death,Damage
+B07L,Bfzy,,Renzokuken,"Combo, Damage"
+B07K,Bbsk,,Status Change,not used by code
+B07J,Binf,Faith,|cff00ff00Faith|r,"Damage, Faith, Food, Mediator, Oracle, Remove +1"
+B07I,Binf,Bravery,|cff00ff00Bravery|r,"Bravery, Damage, Food, Mediator, Oracle, Remove +1"
+B07H,Bam2,Shell,|cff00ff00Shell|r,"Damage, Food, Mediator, Oracle, Remove, Samurai +1"
+B07G,Brej,Protect,|cff00ff00Protect|r,"Damage, Food, Mediator, Oracle, Protect, Remove +1"
+B07F,Bblo,Haste,|cff00ff00Haste|r,"Cooldown, Food, Haste, Mediator, Oracle, Remove +2"
+B07E,Bbsk,,MP Plus,Damage
+B07D,Bbsk,,HP Plus,Damage
+B07C,Bam2,Auto-Deshell,Deshell,not used by code
+B07B,Bam2,Auto-Shell,Shell,Damage
+B07A,Brej,Auto-Deprotect,Deprotect,not used by code
+B079,Brej,Auto-Protect,Protect,Damage
+B078,BEim,,Turbo Black Magic,not used by code
+B077,BOac,Difficulty: Nightmare,|cff330000Difficulty: Nightmare|r,not used by code
+B076,Bbsk,Inner Fire,|cff00ff00Inner Fire|r,Damage
+B075,BOae,,Assault,not used by code
+B074,Buhf,Rengeki,|cffff0000Rengeki|r,Damage
+B073,BHtc,,Shock,"Element, Remove"
+B072,BUau,,Oversoul,not used by code
+B071,Broa,,Competition,Exp
+B070,BNht,,Death Screech,"Damage, Remove"
+B06Z,BOac,,Channel Summon,not used by code
+B06Y,Bssd,,Poison Acid,not used by code
+B06X,BHtc,,Vendetta,not used by code
+B06W,Buhf,,Mirage,"Damage, Mediator, Remove"
+B06V,BOac,,Festival Spirit,not used by code
+B06U,BHtc,,Bolverk,not used by code
+B06T,Buhf,,Sharp Eye,"Damage, Mediator, Remove"
+B06S,BOac,,Soul Migration,not used by code
+B06R,BHad,,Spiritual Guard,"Chaos, Chaosjet, Damage"
+B06Q,BHab,Spirit Blessing,Spirit Link,not used by code
+B06P,BHab,Spirit MP Regen,Spirit Link,not used by code
+B06O,BUau,,Nerubian Aura,not used by code
+B06N,Bbsk,,Mind Charge,Prof
+B06M,Bbsk,Exhaustion,|cffff0000Exhaustion|r,Ninja
+B06L,Bbsk,,Trance,Damage
+B06K,Bam2,,Deshell,"Auto, Damage, Remove, Shell"
+B06J,Brej,,Deprotect,"Auto, Damage, Protect, Remove"
+B06I,Binf,Fog,|cffff0000Fog|r,"Auto, Damage, Faith, Oracle, Remove, Status +1"
+B06H,Binf,Pain,|cffff0000Pain|r,"Auto, Bravery, Damage, Oracle, Remove, Status +1"
+B06G,Broa,Finity,|cffff0000Finity|r,Prophet
+B06F,Bbsk,,Surge,Remove
+B06E,Basl,,Living Flame,not used by code
+B06D,Bpig,Permanent Lightning Shield,,not used by code
+B06C,BHad,,Right Arm,Damage
+B06B,BHad,,Left Arm,Damage
+B06A,Binf,,Wind Break,Element
+B069,Binf,,Earth Break,Element
+B068,Binf,,Water Break,Element
+B067,Binf,,Thunder Break,Element
+B066,Binf,,Ice Break,Element
+B065,Binf,,Fire Break,Element
+B064,Buhf,Perma Cover,Cover,"Arena_BattleResults, Arena_Rounds, Boss_Belias, Boss_Demesne, Boss_Gafgarion, Boss_Mateus +2"
+B063,Buhf,Cover,|cff00ff00Cover|r,"Arena_BattleResults, Boss_Odin, Boss_Penance, Combo, Damage, KalmSiege +2"
+B062,Bfzy,,Chain Magick,not used by code
+B061,Bfzy,,Imperial Rage,Damage
+B060,Binf,Auto-Faith,Faith,not used by code
+B05Z,Binf,Auto-Bravery,Bravery,not used by code
+B05Y,BHad,,Gnoll Aura,not used by code
+B05X,BUts,,Needles,not used by code
+B05W,Broa,,Two-Handed Swing,"Damage, TwoHanded"
+B05V,Bbsk,,Disease,"Berserk, Boss_Judges, MaxHp, McBurn, Monstrum, ThunderRush +1"
+B05U,Bfro,,Scourge,Remove
+B05T,Bbsk,,Zombie,"Auto, Damage, Oblivion, Remove, Shadow_Loyalty, Ultima"
+B05S,BUav,,Vampiric Power,not used by code
+B05R,Bbsk,,Vitality Zero,Damage
+B05Q,Bbsk,,Pierce,"Damage, Masakados"
+B05P,BOwk,,Ride Like The Wind,not used by code
+B05O,Bam2,,Shell,not used by code
+B05N,Bena,,Immobilize,"Auto, Damage"
+B05M,Beng,,Immobilize,"Auto, Damage, Element, Immobilize"
+B05L,BOae,,HP Regeneration Plus,not used by code
+B05K,BEim,,MP Attack,Damage
+B05J,Binf,Blitz,|cff00ff00Blitz|r,Damage
+B05I,BUau,,Regenerating,not used by code
+B05H,Binf,Enaero,|cff00ff00Enaero|r,"Element, Geomancer"
+B05G,Binf,Enstone,|cff00ff00Enstone|r,"Element, Geomancer"
+B05F,Binf,Enwater,|cff00ff00Enwater|r,"Element, Geomancer"
+B05E,Binf,Enthunder,|cff00ff00Enthunder|r,"Element, Geomancer"
+B05D,Binf,Enfrost,|cff00ff00Enfrost|r,"Element, Geomancer"
+B05C,Binf,Enfire,|cff00ff00Enfire|r,"Element, Geomancer"
+B05B,BHfs,,Target,not used by code
+B05A,Binf,Faith,|cff00ff00Faith|r,"Damage, Faith, Mediator, Oracle, Remove, Status +1"
+B059,BHad,,Shield,Damage
+B058,BEar,,Sharpshooter,Damage
+B057,BEsh,,Imperil,Damage
+B056,BOae,,Defense Plus,not used by code
+B055,BCbf,,Diamond Dust,not used by code
+B054,BNbf,,Heat Wave,not used by code
+B053,Broa,,Infinity,not used by code
+B052,Broa,Infinity,|cff00ff00Infinity|r,"Arena_BattleResults, Damage"
+B051,Buhf,Divine Shield,|cff00ff00Divine Shield|r,"Damage, Job, Prophet, Quest_ImperviousBeast"
+B050,Bbsk,,Evade and Counter,Damage
+B04Z,BNrd,,Myriad Arrows,not used by code
+B04Y,BEar,,Damage Plus,not used by code
+B04X,Broa,Growth,|cff00ff00Growth|r,"Exp, Status"
+B04W,Bpoi,,Darkness Attack,not used by code
+B04V,Bssd,,Poison Acid,not used by code
+B04U,Bspo,,Deadly Poison,not used by code
+B04T,Bpoi,,Poison,Damage
+B04S,Bpoi,,Physical Damage,Damage
+B04R,Bpsd,,Physical Damage,Damage
+B04Q,BHad,Spirit Speed,Spirit Aura,Mediator
+B04P,BHad,Spirit Armor,Spirit Aura,"Mediator, Summon_Scaling"
+B04O,BUau,,Recovering,"Damage, Monstrum"
+B04N,BHad,Spirit Strength,Spirit Aura,Mediator
+B04M,Bdef,,Sentinel,Damage
+B04L,Bslo,Speed Up,|cff00ff00Speed Up|r,not used by code
+B04K,Basl,,Frost,not used by code
+B04J,Bblo,Auto-Haste,Haste,not used by code
+B04I,Broa,,Elemental Strike,not used by code
+B04H,Broa,,Elemental Strike,not used by code
+B04G,Bpsd,,Darkness Attack,not used by code
+B04F,Bpoi,,Darkness Attack,not used by code
+B04E,Basl,,Arena Defense Boost,not used by code
+B04D,BEim,,Thievery,"Counter, Damage, Loot"
+B04C,BHad,,Choco-Armor Aura,not used by code
+B04B,BIpv,,Drain Attack,Damage
+B04A,Bpig,Dark Aura,,not used by code
+B049,Bmlc,Death [Caster],,not used by code
+B048,Bmlt,,Death,not used by code
+B047,BHbn,,Banish,not used by code
+B046,Broa,,Lion Heart,not used by code
+B045,BUdd,,Maelstrom,not used by code
+B044,Bdef,,Defend,not used by code
+B043,BUts,Interceptor Guard,,not used by code
+B042,BIrm,,Mana Ring,Damage
+B041,BIrl,,Cat's Ring,Damage
+B040,BIrg,,Mana Ring,Damage
+B03Z,Bdef,,Last Stand,not used by code
+B03Y,Broa,,Adrenaline,not used by code
+B03X,Bspe,,Sprint,not used by code
+B03W,BIrg,,Cat's Ring,Damage
+B03V,Broa,,Focus,not used by code
+B03U,Beng,,Jump,Lancer
+B03T,Bena,,Jump,Lancer
+B03S,BOae,,Transfusion,not used by code
+B03R,BPSE,,Stunned,"Damage, Rave, Wave"
+B03Q,BOae,,Dancing Daggers,not used by code
+B03P,BPSE,,Jump,not used by code
+B03O,Basl,,Arena Damage Boost,not used by code
+B03N,Binf,,Backstab,Damage
+B03M,BNht,Flanked,|cffff0000Flanked|r,not used by code
+B03L,Brej,,MP Drain,not used by code
+B03K,BHfs,,Ultima,not used by code
+B03J,ANmd,Terra Break,,not used by code
+B03I,BUts,Cactuar Needles,,not used by code
+B03H,Bspo,,Poison Acid,not used by code
+B03G,Bssd,,Poison Acid,not used by code
+B03F,BHtc,,Slow Breath,Remove
+B03E,Bslo,,Adamant Slow,not used by code
+B03D,BHds,,Spawn Protection,"Accumulate, Potion"
+B03C,BUst,Sleep (Stunned),,"Damage, Gaya_Support, Spell_Demi, Status"
+B03B,BUsp,Sleep (Pause),,"Damage, Gaya_Support, Spell_Demi, Status"
+B03A,BUsl,,Sleep,"Damage, Gaya_Support, Hades, Spell_Demi, Status"
+B039,Bfae,,Armor Shatter,not used by code
+B038,BNdh,,Disable,not used by code
+B037,BNpi,Toxic Cloud,,not used by code
+B036,Bdvv,,Devour,not used by code
+B035,Bdig,Devour,,not used by code
+B034,BOac,,Feather Aura,not used by code
+B033,Bspe,Trickster's Sprint,Sprint,not used by code
+B032,BOac,,Chocommando Aura,not used by code
+B031,BIcf,Drain HP (Ensanguined Shield),Ensanguined Shield,not used by code
+B030,BUau,,Lantern,not used by code
+B02Z,Bslo,,Everyone's Grudge,not used by code
+B02Y,Basl,Chocobo Potential,|cffffffffChocobo Potential|r,not used by code
+B02X,BUan,,Auto-Life,Damage
+B02W,Basl,Fighting in Arena,Arena Fighter,not used by code
+B02V,Bcrs,,Total Blind,Damage
+B02U,Brej,,Ice Shield,not used by code
+B02T,Btdg,Alternate Dimension,Alternate Dimension,not used by code
+B02S,BOac,,Grief,not used by code
+B02R,Basl,Fire's Stock,|cffffffffFire's Stock|r,not used by code
+B02Q,Brej,Alternative Dimension,Alternative Dimension,not used by code
+B02P,BNrd,,Chocobo Meteo,not used by code
+B02O,Bspe,Chocobo Sprint,Sprint,not used by code
+B02N,Brej,,Decreased MP Regeneration,not used by code
+B02M,Bslo,Reflect,|cff00ff00Reflect|r,not used by code
+B02L,Bam2,,no buff,not used by code
+B02K,Bpos,,,not used by code
+B02J,BHav,Boss,Boss,not used by code
+B02I,BEah,,Ultimate Reflect,not used by code
+B02H,Basl,Proof of Omega,|cffffE61AProof of Omega|r,not used by code
+B02G,Bfro,,Aero,not used by code
+B02F,BHbz,Aqualung,,not used by code
+B02E,BHbd,,Aqualung,not used by code
+B02D,BUts,Cenarius-Effect,|cffff3333Strongest Eidolon|r,not used by code
+B02C,BNdh,,Silence,"Auto, Remove"
+B02B,BHfs,,Quake,not used by code
+B02A,BOwk,Gods Eternal Wisdom,Gods Eternal Wisdom,not used by code
+B029,AEsd,Smite of the Gods,,not used by code
+B028,BHbn,Corrupted,Mass Corruption,not used by code
+B027,BUau,Speech,Speech,not used by code
+B026,BHds,Angels Wish,Angels Wish,not used by code
+B025,BNpi,Burned,,not used by code
+B024,AEsd,Wrath of the Forsaken[target],,not used by code
+B023,BHwe,,Shadow Maiden,not used by code
+B022,Bpig,Lighnting Shield,,not used by code
+B021,Bfro,,Blasted,not used by code
+B020,Bam2,,Absolute Shell,not used by code
+B01Z,BPSE,,Omega Bolt,not used by code
+B01Y,BPSE,,Holy Blast,Damage
+B01X,BEsh,,Crippling Poison,not used by code
+B01W,Binf,Bravery,|cff00ff00Bravery|r,"Bravery, Damage, Mediator, Oracle, Remove, Status +1"
+B01V,BNbf,,Dragon Breath,not used by code
+B01U,BEsh,,Bio,"Auto, Remove"
+B01T,BOac,,Damage,not used by code
+B01S,BPSE,,Firaga,not used by code
+B01R,BOac,,Rakugaya,not used by code
+B01Q,BOac,,Sukugaya,AtkSpd
+B01P,BOac,,Tarugaya,not used by code
+B01O,BEar,,Concentration,not used by code
+B01N,BOac,,Armor,not used by code
+B01M,BOac,,Armor,not used by code
+B01L,BOac,,Armor,not used by code
+B01K,BOac,,Armor,not used by code
+B01J,BOac,Difficulty: Inferno,|cffdd0000Difficulty: Inferno|r,not used by code
+B01I,BOac,Difficulty: Hard,|cffcc2222Difficulty: Hard|r,not used by code
+B01H,BOac,Difficulty: Easy,|cff22cc22Difficulty: Easy|r,not used by code
+B01G,BOac,Difficulty: Simple,|cff00ff00Difficulty: Simple|r,not used by code
+B01F,Bcri,,Aim,Damage
+B01E,BOac,,Damage,not used by code
+B01D,BOac,,Damage,not used by code
+B01C,BOac,,Damage,not used by code
+B01B,BOac,,Damage,not used by code
+B01A,BIrm,,Mana Spring,Regen
+B019,Bcri,,Power Break,Remove
+B018,BOae,,Holy Power,"Damage, HolyPower, HolySwordsman"
+B017,Bfzy,,Holy Enchantment,not used by code
+B016,BOwk,,Stealth,Stealth
+B015,BOhx,,Frog,"Damage, Remove"
+B014,BHfs,,Fire,not used by code
+B013,BHtc,,Shock,"Calculator, Damage, Element, Remove, ShockSmash"
+B012,BEsh,,Poisoned Dagger,not used by code
+B011,BEim,,Dragon Flame,not used by code
+B010,Bspl,,Shared Life,not used by code
+B00Z,BOmi,,Bunshin,not used by code
+B00Y,BNms,,Divine Shield,not used by code
+B00X,Brej,,Blessing of Might,"Damage, Remove"
+B00W,BHab,,MP Regeneration Plus,not used by code
+B00V,BUim,,Blizzaga,Damage
+B00U,BNab,,Flask of Acid,not used by code
+B00T,BNht,,Threaten,Remove
+B00S,Buhf,,Praise,Remove
+B00R,BNdo,,Death Sentence,not used by code
+B00Q,Brej,,Accumulate,not used by code
+B00P,Bcrs,,Blind,"Auto, Damage, Oracle, Remove, Status, Zodiark"
+B00O,Bfzy,,Rendan,Damage
+B00N,BPSE,,Yuffie's Shuriken,not used by code
+B00M,BIcb,,Touch of Corruption,not used by code
+B00L,BUim,,Freeze,"Damage, Element, Gaya_Support"
+B00K,Bbsk,,Rage,"Berserk, Damage, Ninja, Provoke"
+B00J,BHwe,,Timed Life,not used by code
+B00I,BEer,,Hell Ivy,"Auto, Damage"
+B00H,Brej,,Chakra,not used by code
+B00G,Bssd,,Deadly Poison,not used by code
+B00F,Bblo,Haste,|cff00ff00Haste|r,"Cooldown, Damage, Haste, Mediator, Oracle, Remove +3"
+B00E,BPSE,,Stop,Damage
+B00D,Brej,Cripple,|cffff0000Cripple|r,"Element, Remove"
+B00C,Bspo,,Deadly Poison,not used by code
+B00B,Bfro,,Flare,not used by code
+B00A,BEar,,Ranged Damage Plus,not used by code
+B009,BOmi,,Phantom Fighter,not used by code
+B008,Bfae,,Exposed,Remove
+B007,Brej,Protect,|cff00ff00Protect|r,"Chocobo_WildBehavior, Damage, Elemental, KalmSiege, Mediator, Oracle +3"
+B006,Brej,Regen,|cff00ff00Regen|r,"KalmSiege, Mediator, Regen, Remove"
+B005,Bam2,Shell,|cff00ff00Shell|r,"Chocobo_WildBehavior, Damage, Elemental, KalmSiege, Mediator, Oracle +3"
+B004,BOae,,Attack Speed Plus,not used by code
+B003,BNdh,,Oil,"Auto, Damage, Element, Remove"
+B002,BEsh,,Burn,"Auto, Element, MapBootstrap, Molotov, Remove"
+B001,Bbsk,Secret Barrel,Squire Frenzy,MapBootstrap
+B000,BOae,,Move Plus,not used by code
+Bslo,"(standard, changed)",,Slow,"Auto, Cooldown, Damage, Haste, Remove, Status +1"
+Broa,"(standard, changed)",,Roar,Remove
+Brej,"(standard, changed)",,Rejuvenation,not used by code
+Brai,"(standard, changed)",,Raised,"Necro, SkeletalDefense"
+Bpxf,"(standard, changed)",,Burned,not used by code
+Bfro,"(standard, changed)",,Frost,"Element, Remove"
+Beye,"(standard, changed)",,Watcher Ward,not used by code
+Bcsi,"(standard, changed)",Freezing Arrow,,not used by code
+Bcsd,"(standard, changed)",,Freezing Arrow,not used by code
+Bapl,"(standard, changed)",,Plague,Remove
+Bams,"(standard, changed)",,,not used by code
+BUav,"(standard, changed)",,Vampiric Strike,Damage
+BPSE,"(standard, changed)",,Stunned,"Damage, Gaya_Support, Rave, Wave"
+BNst,"(standard, changed)",Elemental Rush,,not used by code
+BNrd,"(standard, changed)",,Meteor,not used by code
+BNdo,"(standard, changed)",,Injected,not used by code
+BNdi,"(standard, changed)",,Injected,not used by code
+BNcs,"(standard, changed)",,Mantra Magic,not used by code
+BNba,"(standard, changed)",,Dark Arrow,not used by code
+BHds,"(standard, changed)",,Hero Drink,not used by code
+BHca,"(standard, changed)",,Freezing Arrow,not used by code
+BEfn,"(standard, changed)",,Time Limit,"Naisha, Shadow_Hiring"

@@ -1,0 +1,1646 @@
+id,copied from,name,level,HP,mana,armor,damage base,priority,used by (modules)
+u01V,uske,Spartacus,88,20000,1000,214.0,557,,Spartacus
+u01R,ushd,Satellite Beam,,50000,,,,,Spell_Satellite
+u01P,ushd,Ghost,,,,,,,Andre
+u01O,ushd,Wave Cannon,,30000,,,,,Spell_Wave
+u01M,ndr3,Scarecrow,80,100000,,0.0,153,,Damage
+u01L,uske,Dark Servant,40,8000,1000,42.0,265,,GatherServants
+u018,ushd,Inferno Ripple,,2000,,,,,Spell_InfernoRipple
+u017,ushd,Haunted Spirit,,,,,,,Boss_DarkFact
+u016,uske,Corpse,,100,,0.0,64,,Necro
+u014,ushd,Galbalan Orb,,50000,,999.0,-1,,"Boss_DarkFact, Damage"
+u013,ushd,Thunder Rush,99,99999,,,,,ThunderRush
+u012,ushd,Incandescent Hellfire,,20000,,,,,Spell_IncandescentHellfire
+u011,uske,Skeleton,5,1000,,35.0,64,,not used by code
+u010,uske,Skull Defender,7,1400,,46.0,72,,not used by code
+u00Z,uske,Dead Bones,10,1800,,59.0,87,,not used by code
+u00Y,uske,Skull Warrior,14,2500,,72.0,104,,not used by code
+u00X,uske,Skull Knight,18,3000,,89.0,120,,not used by code
+u00W,uske,Zombie,5,2000,200,43.0,64,,not used by code
+u00V,uske,Zombie Warrior,7,2500,200,47.0,77,,not used by code
+u00U,uske,Ghast,10,3000,200,51.0,94,,not used by code
+u00T,uske,Forbidden,14,3500,200,58.0,110,,not used by code
+u00S,uske,Zombie Warlock,18,4000,200,64.0,142,,not used by code
+u00R,uske,Shambling Corpse,24,6000,200,69.0,193,,"Arena_TeamData, KalmSiege2, KalmSiege3"
+u00P,uske,Skeleton Champion,24,4500,,106.0,153,,"Ambush, Arena_TeamData, SkeletalDefense, Zeromus"
+u00D,ushd,Death Ghost,,,,,,,"Boss_Gafgarion, Boss_Zalera, Cine, Ghost"
+u00A,uzig,Mavzoley,,15000,,,,,not used by code
+u009,uzg2,Infernal Tower,80,10000,,,998,,"IcyRealm, InfernalMountain, Quest_ScorchingTravel, ScorchedEarth"
+u008,uzg1,Prizrak Tower,,12000,,,90,,not used by code
+u007,uswb,Priscilla,,380,,1.0,,,not used by code
+u005,uswb,Baba Yaga,35,20000,4500,43.0,160,,"MonsterData, MysteriousCurse"
+u004,uswb,Adria,,380,,1.0,,,MysteriousCurse
+u003,uswb,Adria,35,20000,4500,43.0,160,,"MonsterData, MysteriousCurse"
+u002,uswb,Adria,,380,,1.0,,,not used by code
+u001,uske,Link,,2200,,31.0,87,,MonsterData
+o00H,osp3,Battle Ward,,500,,,150,,not used by code
+o00G,osp3,Battle Ward,,400,,,125,,not used by code
+o00F,osp3,Battle Ward,,360,,,114,,not used by code
+o00E,osp3,Battle Ward,,340,,,106,,not used by code
+o00D,osp3,Battle Ward,,320,,,98,,not used by code
+o00C,osp3,Battle Ward,,300,,,90,,not used by code
+o009,otau,Minotaur,40,16000,5000,75.0,470,,Tower
+o008,otau,Sacred,35,14000,4000,40.0,430,,Tower
+o007,owtw,Regenerator,,999,,25.0,19,,Damage
+o006,owtw,Anti-Cheat Tower,,1500,1,25.0,9,,not used by code
+o005,osp3,Battle Ward,,280,,,82,,not used by code
+o004,osp3,Battle Ward,,260,,,74,,not used by code
+o003,osp3,Battle Ward,,240,,,66,,not used by code
+o002,osp3,Battle Ward,,220,,,58,,not used by code
+o001,osp3,Battle Ward,,200,,,48,,not used by code
+o000,nwad,Zodiac Stone,,500000,,9999.0,,,"Cid, Cine"
+n0NG,nggr,Mimic,38,15000,800,277.0,450,,Mimic
+n0NF,ncrb,Hunt: Okuu,,,,,,,"Quest_ScorchedEarth, ScorchedEarth"
+n0NE,nech,Okuu,99,240000,40000,138.0,1234,,Hunt_Board
+n0ND,ncrb,Yatagarasu,,,351,,,,Armory
+n0NC,ncrb,Invert Shield,,41,350,,,,Armory
+n0NB,ncrb,White Robe,,,349,,,,Armory
+n0NA,ncrb,Storm Lance,,,348,,,,Armory
+n0N9,ncrb,Brotherhood,,,347,,,,Armory
+n0N8,ncrb,Akashic Records,,,346,,,,Armory
+n0N7,nwat,Phantom Diary,,100,0,,17,,Quest_DivineOrder
+n0N6,ncrb,Wyrmhero Blade,,,345,,,,Armory
+n0N5,ncrb,Gladius,,,344,,,,Armory
+n0N4,ncrb,True Ice Axe,,,343,,,,Armory
+n0N3,nndr,Forest Drake,51,10000,800,60.0,221,,"Lancer, MonsterData, Zeromus"
+n0N2,ncrb,Executioner Sword,,,342,,,,Armory
+n0N1,ntrg,Xiao Long Gui,60,16000,1200,238.0,1862,,"AdamantHunt, MonsterData, Zeromus"
+n0MZ,nwld,Vercingetorix,99,160000,60000,62.0,810,,Hunt_Board
+n0MY,ncrb,Beast Claw,,,341,,,,Armory
+n0MX,ncrb,Orb of Cetra,,,340,,,,Armory
+n0MW,ncrb,Ryuujin no Ken,,,339,,,,Armory
+n0MV,ncrb,Edgar's Drill,,,338,,,,Armory
+n0MU,ncrb,Rock Punch,,,337,,,,Armory
+n0MT,ncop,Fireplace,,1000,,,,,not used by code
+n0MS,ncrb,Genji Gloves,,,336,,,,Armory
+n0MR,ncrb,Sleipnir,,,334,,,,Armory
+n0MQ,nwns,Wendigo Berserker,54,15000,800,36.0,257,,"MonsterData, Spawn, WendigoHunt"
+n0MP,nfgt,,36,10000,,38.0,256,,Monstrum
+n0MO,nogm,Ogre Berserker,10,1200,250,44.0,45,,"MonsterData, Quest_OgreHunt, Spawn"
+n0MN,ncen,Centaur Berserker,11,1600,250,38.0,48,,"MonsterData, Spawn"
+n0MM,ncrb,Gravity Staff,,,333,,,,Armory
+n0ML,nsty,Satyr Assassin,35,4000,200,18.0,265,,"MonsterData, Spawn"
+n0MK,nfoh,Shield and Helmet Vendor,,3000,,,,,News
+n0MJ,ncrb,Loki Reforge Gear,,,,,,,Loki
+n0MI,ncrb,Loki Reforge Gear,,,,,,,Loki
+n0MH,ncrb,Miner's Pickaxe,,,329,,,,Armory
+n0MG,ncrb,Pickaxe,,,328,,,,Armory
+n0MF,ncrb,Knuckles,,,327,,,,Armory
+n0ME,ncrb,Mirage Vest,,,330,,,,Armory
+n0MD,ncrb,Slither Shield,,,331,,,,Armory
+n0MC,nmgd,Valigarmanda,60,50000,4500,80.0,750,,not used by code
+n0MB,ncrb,Hunt: Umaro,,,,,,,WendigoHunt
+n0MA,nwnr,Umaro,62,60000,3000,110.0,383,,Hunt_Board
+n0M9,ncrb,Canister Shot,,,332,,,,Armory
+n0M8,ncrb,Book of Winds,,,326,,,,Armory
+n0M7,ncrb,Book of Tremors,,,325,,,,Armory
+n0M6,ncrb,Book of Flames,,,190,,,,Armory
+n0M5,ncrb,Offhand: Elemental Books,1,,40,,,,Armory
+n0M4,ncrb,Pulsar Shot,,,323,,,,Armory
+n0M3,ngob,Kobold Merchant,,400,,,,,"Merchant, NameDiary"
+n0M2,ngob,Spiritual Trader,,200,,,,,NameDiary
+n0M1,ncop,Fireplace,,1000,,,,,Firewood
+n0M0,ncrb,Blank Orb,,,322,,,,Armory
+n0LZ,ncrb,Halberd of Justice,,,320,,,,Armory
+n0LY,ncrb,Auto-Crossbow,,145,319,,,,Armory
+n0LX,ncrb,Kiku-Ichimonji,,,318,,,,Armory
+n0LW,ncrb,Arena: Phantasm Mech Battle,,,,,,,Arena_Duel
+n0LV,ncrb,Arena: Phantasm Dragon Battle,,,,,,,Arena_Duel
+n0LT,ncrb,Hunt: Black Rabite,,,,,,,Rabite
+n0LS,nfgu,Infernal Gladiator,73,30000,3000,102.0,626,,not used by code
+n0LR,necr,Black Rabite,83,180000,10000,48.0,899,,"Arena_TeamData, Hunt_Board"
+n0LQ,ncrb,Holy Lance,,,317,,,,Armory
+n0LP,ncrb,Chunchunmaru,,,316,,,,Armory
+n0LO,ncrb,Shimmering Shield,,,313,,,,Armory
+n0LN,ncrb,Shimmering Helmet,,85,315,,,,Armory
+n0LM,ncrb,Shimmering Cloth,,,314,,,,Armory
+n0LL,ncrb,Ragnarok,,,312,,,,Armory
+n0LK,ncrb,Longinus,,,311,,,,Armory
+n0LJ,ncrb,Zanmatou,,,310,,,,Armory
+n0LI,ncrb,Scorpio,,,309,,,,Armory
+n0LH,ncrb,Zwill Crossblade,,,308,,,,Armory
+n0LG,ncrb,Ehrgeiz,,,307,,,,Armory
+n0LF,ncrb,Exeter,,,306,,,,Armory
+n0LE,ncrb,Sagittarius,,,305,,,,Armory
+n0LD,ncrb,Durandal,,,304,,,,Armory
+n0LC,ncrb,Chainsaw,,,303,,,,Armory
+n0LB,ncrb,Gear: Celestial Weapons,2,,7,,,,Armory
+n0LA,ncrb,Artemis Arrows,,,301,,,,Armory
+n0L9,ncrb,Gaya's Rod,,,300,,,,Armory
+n0L8,ncrb,Serpent Rod,,,299,,,,Armory
+n0L7,ncrb,Wand of the Wind,,,298,,,,Armory
+n0L6,nlv1,Bomb,22,3500,450,8.0,121,,"MonsterData, Zeromus"
+n0L5,ncrb,Hunt: Darm,,,,,,,Boss_DarkFact
+n0L4,ncrb,Shimmering Katana,,,297,,,,Armory
+n0L3,ncrb,Shimmering Axe,,,296,,,,Armory
+n0L2,ncrb,Shimmering Sword,,31,295,,,,Armory
+n0L1,ncrb,Shimmering Spear,,,294,,,,Armory
+n0L0,nhrh,Harpy Trickster,9,2400,600,6.0,44,,"Harpy, MonsterData, Quest_FieryWings, Quest_HarpyHunt, Spawn"
+n0KZ,nhrq,Harpy Matriarch,18,8000,2000,20.0,72,,"MonsterData, Quest_FieryWings, Quest_HarpyHunt"
+n0KY,ncrb,Earth Hat,,,293,,,,Armory
+n0KX,ncrb,Green Hat,,,292,,,,Armory
+n0KW,ncrb,Ice Hat,,,291,,,,Armory
+n0KV,ncrb,Glimmering Hat,,,290,,,,Armory
+n0KU,ncrb,Siphoning Staff,,,288,,,,Armory
+n0KT,ncrb,Aeon Scepter,,,289,,,,Armory
+n0KS,ncrb,Last Stand,,,,,,,not used by code
+n0KR,ncrb,Spellbreaker,,,,,,,not used by code
+n0KQ,ncrb,Adrenaline,,,,,,,not used by code
+n0KP,ncrb,Serenity,,,,,,,not used by code
+n0KO,ncrb,Focus,,,,,,,not used by code
+n0KN,ncrb,All Stats +10,,,,,,,not used by code
+n0KM,ncop,Shrine of Individuality,,,,,,,Shrine
+n0KL,ncrb,Legendary Bonus Menu,,,,,,,"Job, Legendary, Shrine"
+n0KK,ncrb,Azure Robe,,,287,,,,Armory
+n0KJ,ncrb,Red Robe,,,286,,,,Armory
+n0KI,ncrb,Light Robe,,,285,,,,Armory
+n0KH,ncrb,Glimmering Robe,,,284,,,,Armory
+n0KG,ncop,Fireplace,,1000,,,,,"Cooking, Firewood, Legend_Chemist"
+n0KF,ncnk,Fafnir,78,200000,50000,5000.0,6120,,Fafnir
+n0KE,nvk2,Billy,,,,,,,not used by code
+n0KD,ncrb,Arena: Light and Darkness Battle,,,,,,,Arena_TeamData
+n0KC,ncrb,Ring of Rejuvenation,,,283,,,,Armory
+n0KB,ncrb,Arena: Outer Plane Envoy Battle,,,,,,,Arena_TeamData
+n0KA,noga,Quattour,99,100000,50000,0.0,170,,Arena_Spawning
+n0K9,noga,Tria,99,100000,50000,0.0,170,,Arena_Spawning
+n0K8,noga,Duo,99,100000,50000,0.0,170,,Arena_Spawning
+n0K7,noga,Cyclops,15,3500,,20.0,250,,Spell_Tables
+n0K6,ncrb,Rosetta Stone,,,281,,,,Armory
+n0K5,ncrb,Hero's Badge,,,282,,,,Armory
+n0K4,ncrb,Firefly,,20,280,,,,Armory
+n0K3,ncrb,Vishnu Vest,,,279,,,,Armory
+n0K2,ncrb,Buddha Fist,,,278,,,,Armory
+n0K1,ncrb,Arena BP to Shards,,,,,,,"ArenaExpansion, Arena_Rewards"
+n0K0,ncrb,Arena BP to EXP,,,,,,,"ArenaExpansion, Arena_Rewards"
+n0JZ,ncrb,Arena BP to Gold,,,,,,,"ArenaExpansion, Arena_Rewards"
+n0JY,ncrb,Crystal Skull,,20,277,,,,Armory
+n0JX,ncrb,Golden Skull,,20,276,,,,Armory
+n0JW,ncrb,Flag of Competition,,20,275,,,,Armory
+n0JV,ncrb,Accessories: Grinder,1,,39,,,,Armory
+n0JU,ncrb,Paladin Shield,,41,274,,,,Armory
+n0JT,ncrb,Bag of Tricks,,20,273,,,,Armory
+n0JS,ncrb,Seitengrat,,145,145,,,,GameMode
+n0JR,ncrb,Heroic Lance,,,272,,,,Armory
+n0JQ,ncrb,Rabite's Foot,,,271,,,,Armory
+n0JP,ncrb,Dark Staff,,,270,,,,Armory
+n0JO,ncrb,Scourge Wand,,,268,,,,Armory
+n0JN,ncrb,Offhand: Shot,1,,38,,,,Armory
+n0JM,ncrb,Close,2,1000,,,,,Armory
+n0JL,ncrb,Gear: Accessories,2,,6,,,,Armory
+n0JK,ncrb,Gear: Armor,2,,5,,,,Armory
+n0JJ,ncrb,Gear: Helmets,2,,4,,,,Armory
+n0JI,ncrb,Gear: Offhand,2,,3,,,,Armory
+n0JH,ncrb,Gear: Magical Weapons,2,,2,,,,Armory
+n0JG,ncrb,Gear: Physical Weapons,2,,1,,,,Armory
+n0JF,ncrb,Weapon: Inner Mana,1,,23,,,,Armory
+n0JE,ncrb,Weapon: Staff,1,,22,,,,Armory
+n0JD,ncrb,Weapon: Rod,1,,21,,,,Armory
+n0JC,ncrb,Weapon: Gun,1,,14,,,,Armory
+n0JB,ncrb,Weapon: Greatsword,1,,20,,,,Armory
+n0JA,ncrb,Weapon: Katana,1,,19,,,,Armory
+n0J9,ncrb,Weapon: Axe,1,,18,,,,Armory
+n0J8,ncrb,Weapon: Spear,1,,17,,,,Armory
+n0J7,ncrb,Weapon: Dagger,1,,16,,,,Armory
+n0J6,ncrb,Weapon: Barehanded,1,,15,,,,Armory
+n0J5,ncrb,Weapon: Bow,1,,13,,,,Armory
+n0J4,ncrb,Weapon: Sword,1,,12,,,,Armory
+n0J3,ncrb,Weapon: Tools,1,,11,,,,Armory
+n0J2,ncrb,Offhand: Arrows,1,,27,,,,Armory
+n0J1,ncrb,Offhand: Buff Tomes,1,,26,,,,Armory
+n0J0,ncrb,Offhand: Magical Shield,1,,25,,,,Armory
+n0IZ,ncrb,Offhand: Physical Shield,1,,24,,,,Armory
+n0IY,ncrb,Helmet: Magical,1,,29,,,,Armory
+n0IX,ncrb,Helmet: Physical,1,,28,,,,Armory
+n0IW,ncrb,Armor: Mystic,1,,32,,,,Armory
+n0IV,ncrb,Armor: Plate,1,,31,,,,Armory
+n0IU,ncrb,Armor: Leather,1,,30,,,,Armory
+n0IT,ncrb,Accessories: Ultimate,1,,37,,,,Armory
+n0IS,ncrb,Accessories: Elemental,1,,35,,,,Armory
+n0IR,ncrb,Accessories: Special,1,,36,,,,Armory
+n0IQ,ncrb,Accessories: Stats,1,,34,,,,Armory
+n0IP,ncrb,Accessories: Simple,1,,33,,,,Armory
+n0IO,ncrb,Cancel,1,1000,,,,,Armory
+n0IN,ncrb,Deathbringer,,,111,,,,Armory
+n0IM,ncrb,Staff of Light,,,181,,,,Armory
+n0IL,ncrb,Formalhaut,,,137,,,,Armory
+n0IK,ncrb,Arcturus,,270,136,,,,Armory
+n0IJ,ncrb,Aldebaran,,269,135,,,,Armory
+n0II,ncrb,Vega,,,134,,,,Armory
+n0IH,ncrb,Phantom Bow,,,266,,,,Armory
+n0IG,ncrb,Caladbolg,,256,256,,,,Armory
+n0IF,ncrb,Angbar,,253,253,,,,Armory
+n0IE,ncrb,Lu Shang,,,234,,,,Armory
+n0ID,ncrb,Matamune,,,233,,,,Armory
+n0IC,ncrb,Muramata,,,232,,,,Armory
+n0IB,ncrb,Fishing Pole,,,231,,,,Armory
+n0IA,ncrb,Ame-no-Murakumo,,230,230,,,,Armory
+n0I9,ncrb,Final Wand,,,229,,,,Armory
+n0I8,ncrb,Demon Axe,,,227,,,,Armory
+n0I7,ncrb,Wirt's Leg,,,226,,,,Armory
+n0I6,ncrb,Short Lance,,,163,,,,Armory
+n0I5,ncrb,Wildfire Spear,,,216,,,,Armory
+n0I4,ncrb,Dagger,,,215,,,,Armory
+n0I3,ncrb,Longbow,,,214,,,,Armory
+n0I2,ncrb,Mjolnir,,,213,,,,Armory
+n0I1,ncrb,Icebrand,,,212,,,,Armory
+n0I0,ncrb,Magus Rod,,,208,,,,Armory
+n0HZ,ncrb,Magus Rod A,,,207,,,,Armory
+n0HY,ncrb,Thunder Wand J,,,203,,,,Armory
+n0HX,ncrb,Ice Wand U,,,202,,,,Armory
+n0HW,ncrb,Fire Wand K,,,201,,,,Armory
+n0HV,ncrb,Gladiator's Blade,,,185,,,,Armory
+n0HU,ncrb,Strange Vision,,,184,,,,Armory
+n0HT,ncrb,Mina,,,240,,,,Armory
+n0HS,ncrb,Assassin's Dagger,,172,172,,,,Armory
+n0HR,ncrb,Main Gauche,,,171,,,,Armory
+n0HQ,ncrb,Life Staff,,,170,,,,Armory
+n0HP,ncrb,Nirvana,,,151,,,,Armory
+n0HO,ncrb,Tournesol,,,146,,,,Armory
+n0HN,ncrb,Artemis Bow,,145,145,,,,Armory
+n0HM,ncrb,Zodiac Spear,,,144,,,,Armory
+n0HL,ncrb,Lion Heart,,,142,,,,Armory
+n0HK,ncrb,Demon Claw,,,124,,,,Armory
+n0HJ,ncrb,Ancient Axe,,,123,,,,Armory
+n0HI,ncrb,Death Claw,,,122,,,,Armory
+n0HH,ncrb,Shadow Bow,,,121,,,,Armory
+n0HG,ncrb,Doom Mace,,,120,,,,Armory
+n0HF,ncrb,Fel Axe,,,91,,,,Armory
+n0HE,ncrb,Dark Bow,,,90,,,,Armory
+n0HD,ncrb,Platinum Dagger,,,89,,,,Armory
+n0HC,ncrb,Trident,,,88,,,,Armory
+n0HB,ncrb,Crusher's Mace,,,84,,,,Armory
+n0HA,ncrb,Cursed Wand,,,80,,,,Armory
+n0H9,ncrb,Unholy Claw,,,77,,,,Armory
+n0H8,ncrb,Dark Claw,,,76,,,,Armory
+n0H7,ncrb,Dragon Wand,,,73,,,,Armory
+n0H6,ncrb,Ice Wand,,,49,,,,Armory
+n0H5,ncrb,Thunder Wand,,,48,,,,Armory
+n0H4,ncrb,Fire Wand,,,47,,,,Armory
+n0H3,ncrb,Poison Wand,,,46,,,,Armory
+n0H2,ncrb,Giant Axe,,,45,,,,Armory
+n0H1,ncrb,Mithril Axe,,,44,,,,Armory
+n0H0,ncrb,Battle Axe,,43,43,,,,Armory
+n0GZ,ncrb,Excalibur II,,,143,,,,Armory
+n0GY,ncrb,Muramasa,,,154,,,,Armory
+n0GX,ncrb,Masamune C,,,189,,,,Armory
+n0GW,ncrb,Masamune,,,42,,,,Armory
+n0GV,ncrb,Excalibur,,,34,,,,Armory
+n0GU,ncrb,Save the Queen,,,33,,,,Armory
+n0GT,ncrb,Rune Blade,,,32,,,,Armory
+n0GS,ncrb,Ancient Sword,,31,31,,,,Armory
+n0GR,ncrb,Mithril Sword,,,30,,,,Armory
+n0GQ,ncrb,Long Sword,,,29,,,,Armory
+n0GP,ncrb,Ultimate Weapon,,,28,,,,Armory
+n0GO,ncrb,Poison Spear,,,16,,,,Armory
+n0GN,ncrb,Kotetsu,,,15,,,,Armory
+n0GM,ncrb,Tome of the Tortoise,,265,265,,,,Armory
+n0GL,ncrb,Holy Book of Galbados,,,264,,,,Armory
+n0GK,ncrb,Tome of Time,,263,263,,,,Armory
+n0GJ,ncrb,Tome of Phantasm,,262,262,,,,Armory
+n0GI,ncrb,Tome of Life,,261,261,,,,Armory
+n0GH,ncrb,Tome of Heresy,,260,260,,,,Armory
+n0GG,ncrb,Tome of Banishment,,259,259,,,,Armory
+n0GF,ncrb,Tome of the Breaker,,,258,,,,Armory
+n0GE,ncrb,Tome of Strength,,,257,,,,Armory
+n0GD,ncrb,Tome of Crippling,,,255,,,,Armory
+n0GC,ncrb,Tome of Agility,,,254,,,,Armory
+n0GB,ncrb,Bubble Shot,,251,251,,,,Armory
+n0GA,ncrb,Molotov Shot,,,250,,,,Armory
+n0G9,ncrb,Scattershot,,,249,,,,Armory
+n0G8,ncrb,Rock Shot,,,248,,,,Armory
+n0G7,ncrb,Piercing Shot,,,247,,,,Armory
+n0G6,ncrb,Onion Shot,,,246,,,,Armory
+n0G5,ncrb,Killer Arrows,,,245,,,,Armory
+n0G4,ncrb,Tempest Arrows,,,244,,,,Armory
+n0G3,ncrb,Shock Arrows,,,243,,,,Armory
+n0G2,ncrb,Icecloud Arrows,,,242,,,,Armory
+n0G1,ncrb,Onion Arrows,,,241,,,,Armory
+n0G0,ncrb,Frost Shield,,,219,,,,Armory
+n0FZ,ncrb,Flame Shield,,,218,,,,Armory
+n0FY,ncrb,Interceptor Guard,,,204,,,,Armory
+n0FX,ncrb,Book of Depths,,,324,,,,Armory
+n0FW,ncrb,Genji Shield,,,165,,,,Armory
+n0FV,ncrb,Ensanguined Shield,,,133,,,,Armory
+n0FU,ncrb,Zodiac Escutcheon,,,132,,,,Armory
+n0FT,ncrb,Reflect Shield,,,125,,,,Armory
+n0FS,ncrb,Unholy Shield,,,81,,,,Armory
+n0FR,ncrb,Absorber,,41,41,,,,Armory
+n0FQ,ncrb,Enchanted Shield,,,40,,,,Armory
+n0FP,ncrb,Platinum Shield,,,39,,,,Armory
+n0FO,ncrb,Aegis Shield,,38,38,,,,Armory
+n0FN,ncrb,Mithril Shield,,,37,,,,Armory
+n0FM,ncrb,Iron Shield,,,36,,,,Armory
+n0FL,ncrb,Round Shield,,,35,,,,Armory
+n0FK,ncrb,Enchanted Helmet,,,221,,,,Armory
+n0FJ,ncrb,Serpent Helmet,,,220,,,,Armory
+n0FI,ncrb,Helm of Divine Judgment,,,183,,,,Armory
+n0FH,ncrb,Book of Glaciers,,,191,,,,Armory
+n0FG,ncrb,Genji Mask,,,164,,,,Armory
+n0FF,ncrb,Circlet,,,139,,,,Armory
+n0FE,ncrb,Zodiac Helmet,,,138,,,,Armory
+n0FD,ncrb,Berserker's Helmet,,129,129,,,,Armory
+n0FC,ncrb,Barbarian's Helmet,,85,85,,,,Armory
+n0FB,ncrb,Helm of the Necromancer,,,82,,,,Armory
+n0FA,ncrb,Headgear of the Damned,,,75,,,,Armory
+n0F9,ncrb,Grand Helmet,,,54,,,,Armory
+n0F8,ncrb,Helm of the Magi,,,72,,,,Armory
+n0F7,ncrb,Platinum Helmet,,,53,,,,Armory
+n0F6,ncrb,Diamond Helmet,,,52,,,,Armory
+n0F5,ncrb,Mithril Helmet,,,51,,,,Armory
+n0F4,ncrb,Iron Helmet,,,50,,,,Armory
+n0F3,ncrb,Grand Armor,,,267,,,,Armory
+n0F2,ncrb,Nebra Suit,,,237,,,,Armory
+n0F1,ncrb,Windbreaker,,,217,,,,Armory
+n0F0,ncrb,Maximillian,,,206,,,,Armory
+n0EZ,ncrb,Robe of Lords,,,140,,,,Armory
+n0EY,ncrb,Gaia Gear,,,130,,,,Armory
+n0EX,ncrb,Book of Storms,,,192,,,,Armory
+n0EW,ncrb,Genji Armor,,,67,,,,Armory
+n0EV,ncrb,Sorcerer's Robe,,,66,,,,Armory
+n0EU,ncrb,Magician's Robe,,,65,,,,Armory
+n0ET,ncrb,Wizard's Robe,,,64,,,,Armory
+n0ES,ncrb,Platinum Mail,,,63,,,,Armory
+n0ER,ncrb,Shimmering Mail,,,62,,,,Armory
+n0EQ,ncrb,Mithril Mail,,,61,,,,Armory
+n0EP,ncrb,Elven Mail,,,60,,,,Armory
+n0EO,ncrb,Fur Armor,,,86,,,,Armory
+n0EN,ncrb,Grandmasterwork Leather,,,59,,,,Armory
+n0EM,ncrb,Storm Wyrm Hide Armor,,,58,,,,Armory
+n0EL,ncrb,Reinforced Leather Armor,,,57,,,,Armory
+n0EK,ncrb,Studded Leather Armor,,,56,,,,Armory
+n0EJ,ncrb,Adamant Armor,,155,155,,,,Armory
+n0EI,ncrb,White Materia,,,104,,,,Armory
+n0EH,ncrb,Hunter's Cloak,,,182,,,,Armory
+n0EG,ncrb,Prominent Cloak,,,252,,,,Armory
+n0EF,ncrb,Stopwatch,,,236,,,,Armory
+n0EE,ncrb,Death Skull X,,,235,,,,Armory
+n0ED,ncrb,Masakados,,,228,,,,Armory
+n0EC,ncrb,Force of Nature,,,94,,,,Armory
+n0EB,ncrb,Orb of Wind,,,162,,,,Armory
+n0EA,ncrb,Orb of Earth,,,161,,,,Armory
+n0E9,ncrb,Orb of Water,,,160,,,,Armory
+n0E8,ncrb,Orb of Lightning,,,159,,,,Armory
+n0E7,ncrb,Orb of Frost,,,158,,,,Armory
+n0E6,ncrb,Orb of Fire,,,95,,,,Armory
+n0E5,ncrb,Jackboots,,,225,,,,Armory
+n0E4,ncrb,Memento Ring,,,205,,,,Armory
+n0E3,ncrb,Cameo Belt,,193,193,,,,Armory
+n0E2,ncrb,Turtleshell Choker,,,186,,,,Armory
+n0E1,ncrb,Setzer's Coin,,,180,,,,Armory
+n0E0,ncrb,Speed Bracers,,,168,,,,Armory
+n0DZ,ncrb,Silver Glasses,,,167,,,,Armory
+n0DY,ncrb,Summoner's Horn,,,166,,,,Armory
+n0DX,ncrb,Hidden Hero Medicine,,,157,,,,Armory
+n0DW,ncrb,Iron Duke,,,152,,,,Armory
+n0DV,ncrb,Charming Banner,,,131,,,,Armory
+n0DU,ncrb,Leather Gorget,,,126,,,,Armory
+n0DT,ncrb,Necklace of the Necromancer,,,119,,,,Armory
+n0DS,ncrb,Stalwart Belt,,,118,,,,Armory
+n0DR,ncrb,Growth Egg,,,97,,,,Armory
+n0DQ,ncrb,Death Skull,,,93,,,,Armory
+n0DP,ncrb,Magic Gloves,,,92,,,,Armory
+n0DO,ncrb,Crusher's Belt,,,87,,,,Armory
+n0DN,ncrb,Necklace of the Sorcerer,,,79,,,,Armory
+n0DM,ncrb,Heady Pipe,,,55,,,,Armory
+n0DL,ncrb,Cat's Bell,,27,27,,,,Armory
+n0DK,ncrb,Totem of Power,,,26,,,,Armory
+n0DJ,ncrb,Steel Gorget,,,25,,,,Armory
+n0DI,ncrb,Blazer Gloves,,24,24,,,,Armory
+n0DH,ncrb,Jade Collar,,,23,,,,Armory
+n0DG,ncrb,Greater Totem of Power,,,22,,,,Armory
+n0DF,ncrb,Germinas Boots,,,21,,,,Armory
+n0DE,ncrb,Blue Amulet,,20,20,,,,Armory
+n0DD,ncrb,Armguard,,19,19,,,,Armory
+n0DC,ncrb,Chimes of Piercing,,18,18,,,,Armory
+n0DB,ncrb,Sprint Shoes,,,17,,,,Armory
+n0DA,ncrb,Touph Ring,,,14,,,,Armory
+n0D9,ncrb,Griever,,,13,,,,Armory
+n0D8,ncrb,Champion's Belt,,12,12,,,,Armory
+n0D7,noga,Unum,99,100000,50000,0.0,170,,Arena_Spawning
+n0D6,nenp,Meteorite Rocks,2,99999,0,999.0,485,,Exodus
+n0D5,nenp,Tree of Ages,30,18000,800,120.0,485,,Exodus
+n0D4,nhea,Monica,50,15000,,32.0,142,,HuntFestival
+n0D3,nvil,X,,333,,,,,not used by code
+n0D2,ncrb,Arena Show BP,,,,,,,Arena_Rewards
+n0D1,nwld,Chichu,72,50000,0,35.0,923,,not used by code
+n0D0,nslf,Cactuarama,55,18000,100000,,255,,not used by code
+n0CZ,nech,Chocobo,,30000,2000,,921,,not used by code
+n0CY,noga,Leyak,48,16000,6000,36.0,640,,not used by code
+n0CX,ncrb,Arena: No Mercy for the Judged Battle,,,,,,,"Arena_Conquest, Arena_TeamData, Arena_TeamSelection"
+n0CW,nwns,Elder Hell Beast,71,34000,1400,186.0,712,,"MonsterData, Spawn"
+n0CV,nwen,Hell Shaman,60,18000,1600,81.0,490,,"MonsterData, Spawn"
+n0CU,nwen,Hell Beast,62,22000,1200,122.0,580,,"MonsterData, Spawn"
+n0CT,nwld,Earth Chaosjet,25,10000,9999,20.0,212,,Chaos
+n0CS,nwld,Wind Chaosjet,25,10000,9999,20.0,212,,Chaos
+n0CR,nwld,Water Chaosjet,25,10000,9999,20.0,212,,Chaos
+n0CQ,nwld,Thunder Chaosjet,25,10000,9999,20.0,21,,Chaos
+n0CP,nwld,Ice Chaosjet,25,10000,9999,20.0,212,,Chaos
+n0CO,nwld,Fire Chaosjet,25,10000,9999,20.0,212,,Chaos
+n0CN,ncrb,Hunt: Exdeath,,,,,,,AncientHunt
+n0CM,nenp,Exdeath,40,28000,0,120.0,795,,Hunt_Board
+n0CL,nwld,Puroboros,80,40000,99999,99.0,1594,,"MonsterData, Quest_ScorchingTravel"
+n0CK,nwld,Cerberus,66,24000,800,74.0,1212,,"MonsterData, Spawn"
+n0CJ,nhhr,Kelk,17,8400,450,20.0,87,,"MonsterData, Quest_SeekDestroy"
+n0CI,nwiz,Mika,22,9500,700,19.0,48,,"MonsterData, Quest_SeekDestroy"
+n0CH,nith,Talon,40,15000,600,22.0,644,,Quest_ZodiacAge
+n0CG,nwld,Bandersnatch,52,13000,0,48.0,380,,"Hunt_Encounters, MonsterData, Valigarmanda"
+n0CF,ncrb,Target Practice Start,,,,,,,"Quest_TargetPractice, TargetPractice"
+n0CE,nhem,Montblanc,,200,,,,,not used by code
+n0CD,nmoo,Target,,,,,,,TargetPractice
+n0CC,nwld,Shinryu,85,50000,6000,177.0,1321,,Quest_GodDragon
+n0CB,nlv1,Vulcan,70,14000,2400,27.0,721,,"FireUnit, MonsterData, Spawn"
+n0CA,nwzd,Kinoc,20,9000,,27.0,,,"MonsterData, Quest_SeekDestroy"
+n0C9,nfgt,,30,8000,,32.0,225,,"Tentacles, Ultros"
+n0C8,nenf,Phantom Dancer,45,24000,,9.0,97,,Hunt_Board
+n0C7,ncrb,Hunt: Titania,,,,,,,MysteriousCurse
+n0C6,ncrb,Hunt: Girimehkala,,,,,,,AdamantHunt
+n0C5,ncrb,Hunt: Cu Chulainn,,,,,,,GnollHunt
+n0C4,ncrb,Hunt: Arahabaki,,,,,,,FlanHunt
+n0C3,ncrb,Hunt: Parvati,,,,,,,Valigarmanda
+n0C2,ncrb,Hunt: Pixie,,,,,,,Nimphrodel
+n0C1,nsln,Ultros,45,40000,4000,58.0,440,,Ultros
+n0C0,ncrb,Osmose,,,,,,,DarkJobs
+n0BZ,ncrb,Drain,,,,,,,DarkJobs
+n0BY,ncrb,Raise Dead,,,,,,,DarkJobs
+n0BX,ncrb,Death Screech,,,,,,,DarkJobs
+n0BW,nhea,Monica,,820,,1.0,50,,not used by code
+n0BV,nvil,Kiros,,,,,,,not used by code
+n0BU,ncrb,Hunt: Marilith,,,,,,,"TrueIceAge, World"
+n0BT,ncrb,Hunt: Stinger,,,,,,,Hunt_Contracts
+n0BS,nsbm,Stinger,15,5000,600,35.0,198,,Hunt_Board
+n0BR,ncrb,HP Regeneration Plus,,,,,,,DarkJobs
+n0BQ,ncrb,Drain Attack,,,,,,,DarkJobs
+n0BP,ncrb,Minus Strike,,,,,,,DarkJobs
+n0BO,ncrb,Darkness,,,,,,,DarkJobs
+n0BN,nwat,Dana,,960,1500,0.0,50,,not used by code
+n0BM,nwat,Phantom Warden,,380,0,,17,,NameDiary
+n0BL,nsnp,Marilith,35,8000,,34.0,354,,Hunt_Board
+n0BK,ncrb,Hunt: Shinryu,,,,,,,not used by code
+n0BJ,ncrb,Hunt: Trickster,,,,,,,Hunt_Encounters
+n0BI,ncrb,Hunt: Malboro,,,,,,,Quest_Fountain
+n0BH,ncrb,Hunt: Melaiduma,,,,,,,Mephorash
+n0BG,ncrb,Hunt: Vercingetorix,,,,,,,"Quest_WorldLiberation, TrueIceAge"
+n0BF,ncrb,Hunt: Phantom Dancer,,,,,,,Quest_GreedIsGood
+n0BE,ncrb,Hunt: Tonberry,,,,,,,Quest_SpiritHunt
+n0BD,ncrb,Hunt: Mephorash,,,,,,,Boss_DarkFact
+n0BC,ncrb,Hunt: Lacerta,,,,,,,Quest_Brothers
+n0BB,ncrb,Hunt: Adamantoise,,,,,,,MithrilGolem
+n0BA,ncrb,Hunt: Adamantaimai,,,,,,,ArenaResources
+n0B9,ncrb,Hunt: Very Annoying Monster,,,,,,,LadyCurse
+n0B8,ncrb,Hunt: Tindalos,,,,,,,"Quest_NightElves, TrueIceAge"
+n0B7,ncrb,Hunt: Tempest Wyrm,,,,,,,Quest_Beastslayer
+n0B6,ncrb,Hunt: Cactuar,,,,,,,Quest_HarpyHunt
+n0B5,nwld,Angry Wolf,,850,0,28.0,37,,"Arena_TeamData, Cid, MonsterData"
+n0B4,nwlg,Big Wolf,,600,,22.0,28,,"Arena_TeamData, Cid, MonsterData"
+n0B3,nhef,Caroline,,,,,,,not used by code
+n0B2,ncrb,Hunt: Thextera,,,,,,,Quest_Arachnophobia
+n0B1,nwld,Thextera,10,2000,0,13.0,98,,Hunt_Board
+n0B0,ndrs,Melaiduma,99,500000,30000,99.0,13503,,"Arena_Access, Arena_TeamData, Hunt_Board"
+n0AZ,ndrs,Mephorash,80,75000,9999,480.0,2457,,"Arena_TeamData, Hunt_Board"
+n0AY,ncrb,Arena: Almighty Conflagration Battle,,,,,,,"Arena_TeamData, Quest_TrialByFire"
+n0AX,nwat,McBurn,,250000,0,,50,,not used by code
+n0AW,nvil,Ruksel,,,,,,,not used by code
+n0AV,nssn,Anabel,,400,,,16,,not used by code
+n0AU,nwld,Nebra Guard,66,28000,5000,50.0,804,,MonsterData
+n0AT,ncrb,Arena: Arena Owners Battle,,,,,,,Arena_TeamData
+n0AS,ncrb,Arena: Almighty Shinra Battle,,,,,,,AlmightyShinra
+n0AR,ncop,Fishing Controls,,,,,,,Fishing_ReelingAndCatch
+n0AQ,ncop,Fishing Spot,,,,,,,Fishing_Setup
+n0AP,ncop,Ring of Light,,,,,,,not used by code
+n0AO,nwld,Leamonde Entite,80,40000,99999,99.0,1594,,"Elemental, MonsterData"
+n0AN,nwld,Diakon Entite,80,40000,99999,99.0,1594,,"Boss_Chaos, MonsterData, TrueIceAge"
+n0AM,nwld,Dark Elemental,40,25000,99999,50.0,686,,"Elemental, MonsterData"
+n0AL,nwld,Holy Elemental,40,25000,99999,50.0,686,,"Boss_Chaos, MonsterData, TrueIceAge"
+n0AK,nwld,Sylphi Entite,80,40000,99999,99.0,797,,"Elemental, MonsterData"
+n0AJ,nwld,Gnoma Entite,80,40000,99999,99.0,797,,"Elemental, MonsterData"
+n0AI,nwld,Undin Entite,80,40000,99999,99.0,797,,"Elemental, MonsterData"
+n0AH,nwld,Mardu Entite,80,40000,99999,99.0,797,,"Elemental, MonsterData"
+n0AG,nwld,Leshach Entite,80,40000,99999,99.0,797,,"Elemental, IcyRealm, MonsterData"
+n0AF,nwld,Salamander Entite,80,40000,99999,99.0,797,,"Elemental, MonsterData"
+n0AE,ncnk,Hell Bovine,40,14500,0,35.0,290,,CowPortal
+n0AD,ncrb,Forge Cancel,,,,,,,Loki
+n0AC,ncrb,Bali Forge Orb,,,,,,,not used by code
+n0AB,ncrb,Bali Forge Defense,,,,,,,not used by code
+n0AA,ncrb,Loki Reforge Gear,,,,,,,Loki
+n0A9,noga,Arahabaki,77,70000,6000,55.0,610,,"Hunt_Board, RingOfDarkness"
+n0A8,noga,Parvati,58,54000,9000,29.0,150,,"Hunt_Board, RingOfDarkness"
+n0A7,noga,Titania,56,48000,3500,36.0,404,,"Hunt_Board, RingOfDarkness"
+n0A6,noga,Pixie,80,66000,4000,28.0,240,,"Hunt_Board, RingOfDarkness"
+n0A5,noga,Cu Chulainn,30,45000,1000,86.0,780,,"Boss_DemiFiend, Hunt_Board, RingOfDarkness"
+n0A4,noga,Girimehkala,49,70000,3000,98.0,1455,,"Boss_DemiFiend, Hunt_Board, RingOfDarkness"
+n0A3,ncrb,Arena: Warring Triad Battle,,,,,,,Arena_TeamData
+n0A2,ncrb,Arena: Unique Enemy Cup,,,,,,,"Arena_Conquest, Arena_Cups"
+n0A1,ncrb,Arena: Treasure Hunters Battle,,,,,,,Arena_TeamData
+n0A0,ncrb,Arena: Traitors of Sanubia Battle,,,,,,,Arena_TeamData
+n09Z,ncrb,Arena: Tornado Zone Battle,,,,,,,Arena_TeamData
+n09Y,ncrb,Arena: Tonberry Battle,,,,,,,Arena_TeamData
+n09X,ncrb,Arena: Tidal Wave Battle,,,,,,,Arena_TeamData
+n09W,ncrb,Arena: Swift Lizards Battle,,,,,,,Arena_TeamData
+n09V,ncrb,Arena: Sub-Bevelle Guards Battle,,,,,,,Arena_TeamData
+n09U,ncrb,Arena: Strongest Eidolon Battle,,,,,,,Arena_TeamData
+n09T,ncrb,Arena: Split Devil Battle,,,,,,,Arena_TeamData
+n09S,ncrb,Arena: Shadow Queen Battle,,,,,,,Arena_TeamData
+n09R,ncrb,Arena: Planet Protectors Battle,,,,,,,Arena_TeamData
+n09Q,ncrb,Arena: Planeswalker Battle,,,,,,,Arena_TeamData
+n09P,ncrb,Arena: Ogre Patriarch Battle,,,,,,,Arena_TeamData
+n09O,ncrb,Arena: Northern God Battle,,,,,,,Arena_TeamData
+n09N,ncrb,Arena: Ningen Cup,,,,,,,"ArenaExpansion, Arena_Conquest, Arena_Cups"
+n09M,ncrb,Arena: Mutant Collab Battle,,,,,,,Arena_TeamData
+n09L,ncrb,Arena: Mountains Cup,,,,,,,"Arena_Conquest, Arena_Cups"
+n09K,ncrb,Arena: Master Necromancy Battle,,,,,,,Arena_TeamData
+n09J,ncrb,Arena: Master Engineer Battle,,,,,,,Arena_TeamData
+n09I,ncrb,Arena: Malboro Battle,,,,,,,Arena_TeamData
+n09H,ncrb,Arena: Lothlorien Cup,,,,,,,ArenaExpansion
+n09G,ncrb,Arena: Last Illusion Masters Battle,,,,,,,Arena_TeamData
+n09F,ncrb,Arena: Kings of Green Battle,,,,,,,Arena_TeamData
+n09E,ncrb,Arena: Devil Duo Battle,,,,,,,Arena_TeamData
+n09D,ncrb,Arena: Island Cup,,,,,,,"Arena_Conquest, Arena_Cups"
+n09C,ncrb,Arena: Ice Demon Battle,,,,,,,Arena_TeamData
+n09B,ncrb,Arena: Horrendous Breath Battle,,,,,,,Arena_TeamData
+n09A,ncrb,Arena: Guardia Forest Cup,,,,,,,Arena_Cups
+n099,ncrb,Arena: Greatest Khan Battle,,,,,,,Arena_TeamData
+n098,ncrb,Arena: Grand Legend Battle,,,,,,,Arena_TeamData
+n097,ncrb,Arena: Golem Heroes Battle,,,,,,,Arena_TeamData
+n096,ncrb,Arena: Elune's Huntress Battle,,,,,,,Arena_TeamData
+n095,ncrb,Arena: Disintegration Battle,,,,,,,Arena_TeamData
+n094,ncrb,Arena: Dimension Cup,,,,,,,"ArenaExpansion, Arena_Conquest, Arena_Cups"
+n093,ncrb,Arena: Der Richter Battle,,,,,,,Arena_TeamData
+n092,ncrb,Arena: Demonic Archer Battle,,,,,,,Arena_TeamData
+n091,ncrb,Arena: Zodiac Vanguard Battle,,,,,,,Arena_TeamData
+n090,ncrb,Arena: Demon Cup,,,,,,,"ArenaExpansion, Arena_Conquest, Arena_Cups"
+n08Z,ncrb,Arena: Demon Banishers Battle,,,,,,,Arena_TeamData
+n08Y,ncrb,Arena: Death Warlock Battle,,,,,,,Arena_TeamData
+n08X,ncrb,Arena: Deadly Karma Battle,,,,,,,Arena_TeamData
+n08W,ncrb,Arena: Chocobo Cup,,,,,,,"Arena_Conquest, Arena_Cups"
+n08V,ncrb,Arena: Choco's Honor Battle,,,,,,,Arena_TeamData
+n08U,ncrb,Arena: Cursed Tomb Battle,,,,,,,Arena_TeamData
+n08T,ncrb,Arena: Cactuar Battle,,,,,,,Arena_TeamData
+n08S,ncrb,Arena: Brothers Battle,,,,,,,Arena_TeamData
+n08R,ncrb,Arena: Bobby Corwen Battle,,,,,,,Arena_TeamData
+n08Q,ncrb,Arena: Top Gang Battle,,,,,,,Arena_TeamData
+n08P,ncrb,Arena: Barrens Cup,,,,,,,"Arena_Conquest, Arena_Cups"
+n08O,ncrb,Arena: Bahamut's Guards Battle,,,,,,,Arena_TeamData
+n08N,ncrb,Arena: Anger of the Land Battle,,,,,,,Arena_TeamData
+n08M,ncrb,Arena: Abyssal Wolves Battle,,,,,,,Arena_TeamData
+n08L,nwld,Wind Elemental,40,25000,99999,50.0,343,,"Elemental, MonsterData"
+n08K,nwld,Earth Elemental,40,25000,99999,50.0,343,,"Elemental, MonsterData"
+n08J,nwld,Water Elemental,40,25000,99999,50.0,343,,"Elemental, MonsterData"
+n08I,nwld,Thunder Elemental,40,25000,99999,50.0,343,,"Elemental, MonsterData"
+n08H,nwld,Ice Elemental,40,25000,99999,50.0,343,,"Elemental, IcyRealm, MonsterData"
+n08F,noga,Cyclops,15,4200,,30.0,400,,Spell_Tables
+n08E,narg,Penance's Left Arm,90,50000,10000,160.0,1400,,"Arena_TeamData, Boss_Penance"
+n08D,nwld,Interceptor,,150000,0,1000.0,1337,,"Damage, Tower"
+n08C,noga,Cyclops,15,4000,,25.0,300,,Spell_Tables
+n08B,narg,Penance's Right Arm,90,50000,10000,160.0,1400,,"Arena_TeamData, Boss_Penance"
+n08A,nwld,Fire Elemental,40,25000,99999,50.0,343,,"Elemental, MonsterData"
+n089,nowl,Forest Spirit,,,,,,,"ForestSpirit, SpiritScroll, VoiceOfForest"
+n088,ncrb,Restore MP,,,,,,,"Quest_TowerSummoning, Tower"
+n087,nwe1,Homing Pigeon,,,,,,,not used by code
+n086,ncrb,How Freelancer Works,,,,,,,not used by code
+n085,ncrb,Hiring Shadow For Free,,,,,,,"Shadow_Hiring, Shadow_Lifecycle"
+n084,ncrb,10000 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n083,ncrb,8000 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n082,ncrb,6000 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n081,ncrb,4500 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n080,ncrb,3000 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07Z,ncrb,2400 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07Y,ncrb,1800 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07X,ncrb,1200 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07W,ncrb,800 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07V,ncrb,600 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07U,ncrb,400 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07T,ncrb,200 Gil - Shadow Offer,,,,,,,Shadow_Lifecycle
+n07S,nrwm,Greater Dragon,35,9000,,56.0,500,,Spell_Tables
+n07R,ncop,Shrine of Individuality,,,,,,,Shrine
+n07Q,ncop,Shrine of Individuality,,,,,,,Shrine
+n07P,ncop,Shrine of Individuality,,,,,,,Shrine
+n07O,ncop,Shrine of Individuality,,,,,,,Shrine
+n07N,ncop,Shrine of Individuality,,,,,,,Shrine
+n07M,ncop,Shrine of Individuality,,,,,,,Shrine
+n07L,ncop,Shrine of Individuality,,,,,,,Shrine
+n07K,ncop,Shrine of Individuality,,,,,,,Shrine
+n07J,ncop,Shrine of Individuality,,,,,,,Shrine
+n07I,ncrb,Ability Menu,,,,,,,"Job, Shrine"
+n07H,ncrb,Mage R Abilities,,,,,,,not used by code
+n07G,ncrb,Mage E Abilities,,,,,,,not used by code
+n07F,ncrb,Mage W Abilities,,,,,,,not used by code
+n07E,ncrb,Mage Q Abilities,,,,,,,not used by code
+n07D,ncrb,Warrior R Abilities,,,,,,,not used by code
+n07C,ncrb,Warrior E Abilities,,,,,,,not used by code
+n07B,ncrb,Warrior W Abilities,,,,,,,not used by code
+n07A,ncrb,Warrior Q Abilities,,,,,,,not used by code
+n079,ncrb,Warrior Abilities,,,,,,,not used by code
+n078,ncrb,Mage Abilities,,,,,,,not used by code
+n077,ncrb,Return to Main Menu,,,,,,,Shrine
+n076,ncrb,Return to Abilities,,,,,,,Shrine
+n075,ncrb,Intelligence Plus,,,,,,,not used by code
+n074,ncrb,Mass Cripple,,,,,,,not used by code
+n073,ncrb,Flare,,,,,,,not used by code
+n072,ncrb,Holy,,,,,,,not used by code
+n071,ncrb,Divine Shield,,,,,,,not used by code
+n070,ncrb,Blessing of Might,,,,,,,not used by code
+n06Z,ncrb,Blessing of Light,,,,,,,not used by code
+n06Y,ncrb,Holy Blast,,,,,,,not used by code
+n06X,ncrb,MP Regeneration Plus,,,,,,,not used by code
+n06W,ncrb,Blizzaga,,,,,,,not used by code
+n06V,ncrb,Thundaga,,,,,,,not used by code
+n06U,ncrb,Firaga,,,,,,,not used by code
+n06T,ncrb,Scourge,,,,,,,not used by code
+n06S,ncrb,Predict Magic,,,,,,,not used by code
+n06R,ncrb,Predict Strength,,,,,,,not used by code
+n06Q,ncrb,Blind,,,,,,,not used by code
+n06P,ncrb,Balance,,,,,,,not used by code
+n06O,ncrb,Sharp Eye,,,,,,,not used by code
+n06N,ncrb,Invitation,,,,,,,not used by code
+n06M,ncrb,Spell Shot,,,,,,,not used by code
+n06L,ncrb,Immobilize,,,,,,,not used by code
+n06K,ncrb,Meteor,,,,,,,not used by code
+n06J,ncrb,Slow,,,,,,,not used by code
+n06I,ncrb,Haste,,,,,,,not used by code
+n06H,ncrb,Cyclops,,,,,,,not used by code
+n06G,ncrb,Golem,,,,,,,not used by code
+n06F,ncrb,Ifrit,,,,,,,not used by code
+n06E,ncrb,Shiva,,,,,,,not used by code
+n06D,ncrb,Regen,,,,,,,not used by code
+n06C,ncrb,Shell,,,,,,,not used by code
+n06B,ncrb,Protect,,,,,,,not used by code
+n06A,ncrb,Cure,,,,,,,not used by code
+n069,nfro,,,,,,,,not used by code
+n068,ncrb,Ice,,,,,,,not used by code
+n067,ncrb,Bolt,,,,,,,not used by code
+n066,nwld,Hellhound,30,6500,0,33.0,328,,Spell_Tables
+n065,ninf,Ifrit,5,5550,,75.0,300,,Spell_Tables
+n064,noga,Cyclops,15,4500,,40.0,500,,Spell_Tables
+n063,ncrb,Fire,,,,,,,not used by code
+n062,ncrb,Oil Barrel,,,,,,,not used by code
+n061,ncrb,Molotov Cocktail,,,,,,,not used by code
+n060,ncrb,Noxious Mixture,,,,,,,not used by code
+n05Z,ncrb,Alchemy,,,,,,,not used by code
+n05Y,ncrb,Finisher,,,,,,,not used by code
+n05X,ncrb,Curaga,,,,,,,not used by code
+n05W,ncrb,Eclipse,,,,,,,not used by code
+n05V,ncrb,Liquid Steel,,,,,,,not used by code
+n05U,ncrb,Yuffie's Shuriken,,,,,,,not used by code
+n05T,ncrb,Ambush,,,,,,,not used by code
+n05S,ncrb,Rage,,,,,,,not used by code
+n05R,ncrb,Battle Ward,,,,,,,BattleWard
+n05Q,ncrb,Renzokuken,,,,,,,not used by code
+n05P,ncrb,Mirage,,,,,,,not used by code
+n05O,ncrb,Tatsumaki,,,,,,,not used by code
+n05N,ncrb,Mineuchi,,,,,,,not used by code
+n05M,ncrb,Defense Plus,,,,,,,not used by code
+n05L,ncrb,Blitz,,,,,,,not used by code
+n05K,ncrb,Enchantment,,,,,,,not used by code
+n05J,ncrb,Gaya Rage,,,,,,,not used by code
+n05I,ncrb,Attack Speed Plus,,,,,,,not used by code
+n05H,ncrb,Dragon Ally,,,,,,,not used by code
+n05G,ncrb,Dragon Breath,,,,,,,not used by code
+n05F,ncrb,Dragon Slam,,,,,,,not used by code
+n05E,ncrb,Agility Plus,,,,,,,not used by code
+n05D,ncrb,Steal,,,,,,,not used by code
+n05C,ncrb,Stealth,,,,,,,not used by code
+n05B,ncrb,Fan of Knives,,,,,,,not used by code
+n05A,ncrb,Strength Plus,,,,,,,not used by code
+n059,ncrb,Chakra,,,,,,,not used by code
+n058,ncrb,Rave Kick,,,,,,,not used by code
+n057,ncrb,Wave Fist,,,,,,,not used by code
+n056,ncrb,Aim,,,,,,,not used by code
+n055,ncrb,Animal Companion,,,,,,,not used by code
+n054,ncrb,Arrowwave,,,,,,,not used by code
+n053,ncrb,Rapid Fire,,,,,,,not used by code
+n052,ncrb,Damage Plus,,,,,,,not used by code
+n051,ncrb,Shock,,,,,,,not used by code
+n050,ncrb,Runic Shield,,,,,,,not used by code
+n04Z,ncrb,Armor Breaker,,,,,,,not used by code
+n04Y,ncrb,Move Plus,,,,,,,not used by code
+n04X,ncrb,Cover,,,,,,,not used by code
+n04W,ncrb,Accumulate,,,,,,,not used by code
+n04V,ncrb,Knot of Rust,,,,,,,not used by code
+n04U,ncop,Shrine of Individuality,,,,,,,not used by code
+n04T,nwnr,Wendigo,87,60000,6500,73.0,850,,Arena_TeamData
+n04S,nsty,Satyr,68,26000,12000,10.0,504,,Arena_TeamData
+n04R,nnsw,,59,12000,850,2.0,396,,Arena_TeamData
+n04Q,ngst,,48,8500,0,147.0,220,,Arena_TeamData
+n04P,nogr,,40,14000,2000,58.0,412,,Arena_TeamData
+n04O,nhyd,,33,23750,200,7.0,540,,Arena_TeamData
+n04N,ncea,,21,4800,750,27.0,32,,Arena_TeamData
+n04M,nftr,Forest Goblin,19,8080,808,,48,,Arena_TeamData
+n04L,ndrs,Very Annoying Monster,40,9000,2000,23.0,97,,Hunt_Board
+n04K,nwat,Shadow,,250000,0,,50,,"Quest_LostMemories, Shadow_Lifecycle"
+n04J,nech,Chocobo,99,180000,10000,,3093,,"Chocobo_Population, MonsterData"
+n04I,nech,Trickster,35,80000,,,704,,Trickster
+n04H,nech,Trickster,50,80000,,,704,,"Hunt_Board, MonsterData"
+n04G,nhea,Limma,99,70000,100000,56.0,1499,,Arena_TeamData
+n04F,nhea,Yazoo,99,45678,9999,95.0,1482,,Arena_TeamData
+n04E,nhea,Loz,99,123456,9999,45.0,2486,,Arena_TeamData
+n04D,nhea,Kadaj,99,67890,9999,130.0,2799,,Arena_TeamData
+n04C,nbwm,Bahamut Zero,86,26000,1000,40.0,840,,Arena_TeamData
+n04B,nrwm,Neo Bahamut,64,22000,1000,20.0,680,,Arena_TeamData
+n04A,ninf,Ifrit,61,3550,1000,,894,,"Arena_TeamData, FireUnit"
+n049,noga,Cyclops,72,4000,1000,85.0,888,,Arena_TeamData
+n048,nwgs,Quezacotl,48,3500,0,5.0,49,,Arena_TeamData
+n047,nbwm,Bahamut,42,18000,1000,12.0,605,,Arena_TeamData
+n046,nhea,Jessie,50,36000,,2.0,512,,Arena_TeamData
+n045,nsw2,Frakir,77,77777,,77.0,776,,Arena_TeamData
+n044,nvlk,PuPu,,,,,,,Wanderer
+n043,nbsm,Light Pillar,,500000,,,,,not used by code
+n042,nsln,Dark Flan,55,50000,12000,0.0,249,,"Arena_TeamData, Fishing_Setup, FlanHunt, MonsterData"
+n041,nwld,Ruby Dragon,78,30000,6000,203.0,1172,,"Arena_TeamData, DarkBahamut, FireUnit, Lancer, MonsterData, Spawn"
+n040,nwld,Aeshma,73,22222,12000,0.0,704,,"Arena_TeamData, Spawn"
+n03Z,nwld,Lacerta,75,18000,9999,18.0,2376,,"Arena_TeamData, Hunt_Board"
+n03Y,nwld,Tindalos,75,43000,0,150.0,3434,,"Arena_TeamData, Hunt_Board"
+n03X,nslf,Great Malboro,70,150000,9999,,2013,,"Arena_TeamData, Malboro, MonsterData"
+n03W,nslf,Malboro,35,36000,9999,,747,,"Arena_TeamData, Hunt_Board, Malboro, MonsterData"
+n03V,nslf,Jumbo Cactuar,65,80000,9999,,0,,"Arena_TeamData, MonsterData"
+n03U,nslf,Cactuar,25,4000,9999,,9,,"Arena_TeamData, Hunt_Board, MonsterData"
+n03T,ncop,Ring of Darkness,,,,,,,not used by code
+n03S,nech,Boco the Chocobo,70,40000,5000,,694,,"Arena_TeamData, MonsterData"
+n03M,nmgv,,,,,,,,not used by code
+n03L,nwld,Enkidu,80,40000,0,,1024,,MonsterData
+n03J,nmpg,Marsh Crawler,68,9000,800,38.0,179,,"MonsterData, Spawn"
+n03I,nmpg,Toxic Triton,66,9500,500,43.0,137,,"Fishing_Setup, MonsterData, Spawn"
+n03H,nndr,Black Dragon,74,15000,800,97.0,510,,"Arena_TeamData, DragonHunt, Lancer, MonsterData, Spawn"
+n03G,nndr,Dusk Wyrm,64,14000,600,85.0,488,,"Arena_TeamData, DragonHunt, Lancer, MonsterData, Spawn"
+n03F,nndr,Marsh Whelp,60,10000,1000,15.0,92,,"Arena_TeamData, DragonHunt, Lancer, MonsterData, Spawn"
+n03E,nndr,Nether Drake,70,12000,1200,17.0,153,,"Arena_TeamData, DragonHunt, Lancer, MonsterData, Spawn"
+n03C,nslf,Mega-Tonberry,75,200000,9999,,11721,,"Arena_TeamData, MonsterData"
+n03B,nslf,Tonberry,50,80000,9999,,8760,,"Arena_TeamData, Hunt_Board, MonsterData, Wanderer"
+n03A,nfro,Qu's Frog,,,,,,,NameDiary
+n039,nfro,Magic Frog,,,,,,,NameDiary
+n038,nech,Chocobo,75,2250,,50.0,556,,"Chocobo_Breeding, Chocobo_Population, Chocobo_Taming, Chocobo_TechCopy, Chocobo_Upgrades"
+n037,nech,Chocobo,60,1750,,25.0,445,,"Chocobo_Breeding, Chocobo_Digging, Chocobo_Taming, Chocobo_Upgrades"
+n036,nech,Chocobo,50,1250,,10.0,334,,"Chocobo_Breeding, Chocobo_Digging, Chocobo_Taming, Chocobo_Upgrades"
+n035,nech,Chocobo,25,750,,,223,,"Chocobo_Breeding, Chocobo_Taming, Chocobo_Upgrades"
+n034,nvlk,Shinra,,,,,,,not used by code
+n033,nech,Chocobo,50,20000,,,801,,"Arena_TeamData, MonsterData"
+n032,nech,Chocobo,35,7500,,,124,,"Arena_TeamData, MonsterData"
+n031,nvlw,Xu,,,,,,,not used by code
+n030,nmrk,Bazaar Shop,,1000,,,,,Bazaar
+n02Y,ngob,Mae'chen,,200,,,,,not used by code
+n02X,nhyh,Jack's Little Hydra,,2800,,,35,,"HydraEgg, NameDiary"
+n02W,ntav,Kesha's Place,,1000,,,,,Kesha
+n02V,ndrs,Annoying Monster,20,3000,1275,,50,,"Arena_TeamData, MonsterData, Quest_AnnoyingMonster"
+n02U,nech,Chocobo,40,750,,,498,,"Chocobo_Breeding, Chocobo_Population, Chocobo_Taming, Chocobo_Upgrades, Hunt_Encounters, IcyRealm +1"
+n02T,nech,Chocobo,30,750,,,223,,"Chocobo_Breeding, Chocobo_Population, Chocobo_Taming, Chocobo_Upgrades, MonsterData"
+n02S,nech,Chocobo,15,750,,,94,,"Chocobo_Breeding, Chocobo_Population, Chocobo_Taming, Chocobo_Upgrades, MonsterData"
+n02R,nfoh,Armor Vendor,,3000,,,,,News
+n02Q,ntrd,Adaman Taimai,65,35000,10000,900.0,2345,,"AdamantHunt, Arena_TeamData, Hunt_Board"
+n02P,ntrg,Adamantoise,52,24000,10000,620.0,1234,,"AdamantHunt, Arena_TeamData, Fishing_Setup, Hunt_Board"
+n02O,nfoh,Armor Vendor,,3000,,,,,News
+n02N,nfoh,Shield and Helmet Vendor,,3000,,,,,News
+n02M,nfoh,Weapon Vendor,,3000,,,,,News
+n02L,nfoh,Weapon Vendor,,3000,,,,,News
+n02K,nfoh,Fire's Stock,,400,,,,,not used by code
+n02J,nech,Chocobo,5,750,,,9,,"Chocobo_Breeding, Chocobo_Population, Chocobo_Taming, Chocobo_Upgrades, MonsterData"
+n02H,nwgt,,,,,,,,not used by code
+n02G,nech,Caster Dummy,,,,,,,not used by code
+n02F,nvl2,Oaka IV,,,,,3,,Valigarmanda
+n02E,nndr,Zodiac,,220000,,,900,,not used by code
+n02D,nith,Ice Troll Priest,40,6000,600,16.0,130,,"MonsterData, Spawn, Valigarmanda"
+n02C,nadw,Icy Whelp,42,8500,800,23.0,330,,"Lancer, MonsterData, Spawn, Valigarmanda"
+n02B,nnwq,,50,13000,400,45.0,180,,"MonsterData, Spawn"
+n02A,ntkf,Ice Tusk Warrior,47,10000,2000,23.0,200,,"MonsterData, Valigarmanda"
+n029,nith,Ice Troll,42,8000,500,20.0,160,,"MonsterData, Spawn, Valigarmanda"
+n028,nplg,Great Polar Bear,45,10000,400,24.0,210,,"MonsterData, Spawn, Valigarmanda"
+n027,nwns,Elder Wendigo,48,12000,1200,25.0,257,,"MonsterData, Spawn, Valigarmanda, WendigoHunt"
+n026,nwnr,Wendigo,44,9000,800,24.0,158,,"MonsterData, Spawn, Valigarmanda, Wanderer, WendigoHunt"
+n025,nwen,Wendigo Shaman,42,7500,1200,19.0,150,,"MonsterData, Spawn, Valigarmanda, WendigoHunt"
+n023,nsgb,Vodyan,50,30000,4000,40.0,408,,"Arena_TeamData, MonsterData"
+n021,nwgt,Portal,,,,,,,not used by code
+n020,nwzd,Ramuh,20,73000,5000,10.0,2492,,Arena_TeamData
+n01Z,nwgs,Quezacotl,15,4000,500,40.0,101,,"MonsterData, Tower"
+n01Y,nwat,Liniel,,960,1500,,50,,not used by code
+n01X,nvk2,Loz,,,,,,,not used by code
+n01W,nvk2,Yazoo,,,,,,,not used by code
+n01V,nvlk,Kadaj,,,,,,,not used by code
+n01U,njgb,Jungle Predator Elder,28,6000,200,42.0,65,,MonsterData
+n01T,nass,Thief Elite Guard,15,900,250,5.0,46,,MonsterData
+n01S,nhef,Melaniya,,1500,750,5.0,50,,not used by code
+n01R,nvl2,Valera,,,,,,,not used by code
+n01Q,nslf,Aqua Flan,24,2250,1000,,99,,"Arena_TeamData, Fishing_Setup, FlanHunt, MonsterData, Spawn"
+n01P,nslm,Lesser Flan,5,550,1000,,23,,"FlanHunt, MonsterData, Spawn"
+n01O,nslf,Flan,10,2000,1000,,55,,"Arena_TeamData, FlanHunt, MonsterData, Spawn"
+n01N,nsln,Greater Flan,25,2000,1600,0.0,100,,"Arena_TeamData, Fishing_Setup, FlanHunt, MonsterData, Spawn"
+n01M,nstw,Tempest Wyrm,27,12000,1500,12.0,320,,"Arena_TeamData, Hunt_Board"
+n01L,nrwm,Ancient Wyrm,30,6000,,50.0,400,,Spell_Tables
+n01K,nrwm,Ancient Dragon,25,5000,,44.0,320,,Spell_Tables
+n01J,nrwm,Elder Dragon,20,4000,,39.0,250,,Spell_Tables
+n01I,nrdr,Dragon,15,3000,,34.0,180,,Spell_Tables
+n01H,nrdk,Young Dragon,10,1500,,30.0,150,,Spell_Tables
+n01G,noga,Cyclops,15,3000,,15.0,200,,Spell_Tables
+n01F,ninf,Ifrit,3,3550,,45.0,120,,Spell_Tables
+n01E,ninf,Ifrit,3,3500,,35.0,75,,Spell_Tables
+n01D,ninf,Ifrit,3,4000,,60.0,200,,Spell_Tables
+n01C,ntav,Kesha's Place,,1000,,,,,Kesha
+n01B,nfgu,Infernal Templar,35,8000,1200,67.0,384,,"Arena_TeamData, OrcBase, Quest_EyeOfJenova"
+n01A,nfgu,Infernal Knight,8,1500,800,40.0,47,,"Arena_TeamData, Cine, OrcBase, Quest_EyeOfJenova"
+n019,nsth,Satyr Farseer,40,25000,5000,40.0,656,,"Arena_TeamData, MonsterData, Nimphrodel"
+n018,nct2,Big Centaur Tent,,750,,,,,not used by code
+n017,nfoh,Storm the Pandaren Spiritualist,,800,,,,,"Gaya_Inventory, MysticalGlyph"
+n016,nggr,Bloodstone Golem,32,6000,500,320.0,335,,"Arena_TeamData, MonsterData, StrangeKey"
+n015,nsgg,Mithril Golem,30,18000,1000,180.0,759,,"Arena_TeamData, MithrilGolem, MonsterData, NameDiary, Spawn, StrangeCage"
+n014,ncnk,Centaur Genghis Khan,25,9000,1800,15.0,160,,"Arena_TeamData, MonsterData"
+n013,nvl2,Rude,,,,,,,not used by code
+n012,nvil,Reno,,,,,,,not used by code
+n011,nstw,Tempest Lizard,14,4000,1000,42.0,111,,"Arena_TeamData, MonsterData, Quest_Beastslayer"
+n010,nsbm,Vile Spider,25,5000,600,13.0,175,,"MonsterData, Quest_Arachnophobia, Spawn"
+n00Z,nfoh,Shield and Helmet Vendor,,3000,,,,,not used by code
+n00Y,nfoh,Armor Vendor,,3000,,,,,News
+n00X,nfoh,Weapon Vendor,,3000,,,,,News
+n00W,nshe,Help,,100,,,,,"Help, Job"
+n00V,ngza,Ancient Bear,25,5500,,29.0,244,,"Arena_TeamData, Spell_Tables, Turks"
+n00U,ngzd,Dire Bear,20,4200,,26.0,196,,"Arena_TeamData, Spell_Tables, Turks"
+n00T,ngz1,Bear,15,3500,,21.0,136,,"Arena_TeamData, Spell_Tables, Turks"
+n00S,nwld,Dire Wolf,10,2000,0,18.0,97,,Spell_Tables
+n00R,nwlg,Wolf,5,1000,,14.0,59,,Spell_Tables
+n00Q,nbwm,Bahamut Zero,40,12000,2000,178.0,600,,Sorcerer
+n00P,nenp,Corrupted Tree of Life,30,6000,600,140.0,382,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+n00O,nenp,Corrupted Ancient Protector,25,4000,400,110.0,250,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+n00N,nenp,Corrupted Ancient of War,25,4500,400,180.0,345,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+n00M,ntrs,Transport Turtle,1,1500,,0.0,,,not used by code
+n00L,nfoh,Ancient of Wonders,,3000,,,,,not used by code
+n00K,nvil,Zack,,,,,,,not used by code
+n00J,nvlk,Timmy,,,,,,,"NameDiary, Quest_SaveTimmy"
+n00I,nvlw,Katya,,,,,,,NameDiary
+n00H,ngnv,Gnoll Chieftain,25,3000,,10.0,30,,"Arena_TeamData, MonsterData"
+n00G,nrwm,Neo Bahamut,30,10000,1500,145.0,550,,Oracle
+n00F,ninf,Fire Golem,25,14000,5000,43.0,68,,"Arena_TeamData, FireUnit, MonsterData"
+n00E,nech,Boco the Chocobo,,750,,,,,not used by code
+n00D,nhea,Jessie,,1800,,41.0,131,,Spawn
+n00C,nfoh,Earth the Pandaren Merchant,,2000,,,,,not used by code
+n00B,nvil,Sam,,,,,,,not used by code
+n00A,nvl2,Dio,,,,,,,not used by code
+n009,nhem,Kollin,,,,,,,not used by code
+n008,nvlw,Elena,,,,,,,not used by code
+n007,nfoh,Storm the Pandaren Spiritualist,,800,,,,,Gaya_Inventory
+n006,ncop,Shrine of Battle,,,,,,,not used by code
+n005,nbwm,Bahamut,20,8000,1000,123.0,500,,Summon_Bahamut
+n004,noga,Cyclops,15,2500,,10.0,150,,Spell_Tables
+n003,ninf,Ifrit,3,3400,,25.0,50,,Spell_Tables
+n002,ninf,Meteor,1,500000,,,,,not used by code
+n001,nfoh,Fire the Pandaren Merchant,,1200,,,,,not used by code
+n000,ncop,Shrine of Magic,,,,,,,not used by code
+h038,hcth,Gilgamesh,60,40000,,34.0,920,,not used by code
+h037,hrif,Alberich,,6000,,,142,,Valigarmanda
+h035,hcth,Clyde,60,24000,,14.0,777,,HuntFestival
+h034,hfoo,Bansat,50,18000,200,40.0,160,,HuntFestival
+h033,hkni,Ward,50,32000,250,58.0,340,,HuntFestival
+h032,hcth,Ma'kenroh,,150,,13.0,94,,not used by code
+h031,hfoo,Quincy,,800,,3.0,102,,not used by code
+h030,hkni,Ward,,1800,,26.0,160,,not used by code
+h02Z,hfoo,Bansat,,540,,3.0,109,,not used by code
+h02V,hfoo,Cow Portal,,150000,,1000.0,,,CowPortal
+h02U,hfoo,Diablos Summon,,150000,,1000.0,,,not used by code
+h02T,hcth,Thorn,,,,,,,not used by code
+h02S,hfoo,Simple Casting Dummy,,150000,99999,1000.0,,,"Armor, Assault, BadBreath, Calculator, Chemist, Damage +30"
+h02R,hfoo,Jump Dummy,,150000,,1000.0,,,not used by code
+h02K,hcth,Cup Organizer,99,180000,100000,480.0,9998,,Arena_TeamData
+h02J,hcth,General Leo,99,160000,100000,213.0,1999,,Arena_TeamData
+h02I,hcth,General Leo,,7200,,13.0,301,,NameDiary
+h02H,hfoo,Target,,150000,,1000.0,,,AlmightyShinra
+h02G,hcth,Zorn,,,,,,,not used by code
+h02F,hcth,Thorn,,,,,,,not used by code
+h02E,hphx,,52,6000,,9.0,130,,not used by code
+h02D,hcth,Earth,45,33333,,88.0,740,,Arena_TeamData
+h02C,hcth,Storm,45,33333,,23.0,720,,Arena_TeamData
+h02B,hcth,Fire,55,33333,,,693,,"Arena_TeamData, FireUnit"
+h02A,hfoo,Wedge,50,71000,,62.0,1024,,Arena_TeamData
+h029,hcth,Biggs,50,58000,,91.0,2048,,Arena_TeamData
+h027,hfoo,Gilgamesh Dummy,,150000,1000,1000.0,,,"Boss_Gilgamesh, Gilgamesh"
+h026,hfoo,Hades Summon,,150000,,1000.0,,,not used by code
+h025,hfoo,Lightning Attack Dummy,,150000,99999,1000.0,-1,,not used by code
+h024,hfoo,Tonberry Summon,,150000,,1000.0,,,not used by code
+h023,hpea,Holzoff,,,,,,,not used by code
+h022,nqb1,Eden,60,30000,,62.0,999,2,"DarkEden, Tower"
+h020,hrif,Dummy Missile,,,,,,,"Boss_Verc, Filter, Missile, Spell_HolyBlast, Spell_LiquidSteel, Spell_Shuriken"
+h01R,hatw,Old Cursed Tower,,,,,,,not used by code
+h01Q,hatw,Lady Curse,,,,,,,LadyCurse
+h01P,hatw,Lady Curse,,,,,,,not used by code
+h01O,hatw,Old Cursed Tower,,,,,,,not used by code
+h01F,hfoo,Brothers Dummy,,150000,,1000.0,,,not used by code
+h01C,hpea,Hells Dummy,100,500000,,,0,,not used by code
+h01B,hfoo,Proxy Dummy,,150000,99999,1000.0,-1,,"Aqualung, Arrowwave, Auto, Bahamut, Bio, Blizzard +54"
+h01A,hfoo,Hastega Dummy,,150000,,1000.0,,,not used by code
+h019,hfoo,Boco Summon,,150000,,1000.0,,,not used by code
+h018,hfoo,Odin Summon,,150000,,1000.0,,,not used by code
+h017,hfoo,Ultimate Demon,1,1965,,80.0,124,,not used by code
+h016,hfoo,Greater Demon,1,980,,60.0,49,,not used by code
+h015,hfoo,Demon,1,350,,21.0,27,,not used by code
+h014,hfoo,Lesser Demon,1,160,,,,,not used by code
+h013,hfoo,Elite Demon,1,4856,,120.0,562,,not used by code
+h010,hphx,,25,4000,800,30.0,320,,not used by code
+h00Z,haro,Tower of Summoning,,1,100000,,,,not used by code
+h00U,hhes,Link,,2200,,31.0,87,,"MonsterData, MysteriousCurse"
+h00R,hrif,Giott,,1200,,4.0,56,,Valigarmanda
+h00Q,hmtm,Zone and Watts,,1800,,12.0,602,,Valigarmanda
+h00N,hhou,House,,50,,0.0,,20,Research
+h00K,hfoo,Wedge,,2800,,76.0,181,,Spawn
+h007,hcth,Biggs,,3600,,103.0,254,,Spawn
+h006,hhou,House,,50,,0.0,,20,"Player, Research"
+e01N,emtg,Golem,1,15000,,140.0,50,2,Spell_Tables
+e01L,etoe,Memories of a Lost Battle,,,,,,,Ending
+e01K,etrs,Viking Boat,,100000,,,,,Ziegfried
+e01I,earc,Naisha,55,20000,400,52.0,394,,HuntFestival
+e01G,eshd,Armory,,150000,,,521,,Armory
+e01E,earc,Krjn,50,12000,400,9.0,111,,HuntFestival
+e01D,eshd,Outfitter,,,,,34,,not used by code
+e01C,eshd,Outfitter,,,,,34,,not used by code
+e01B,eshd,Outfitter,,,,,34,,not used by code
+e01A,eshd,Outfitter,,,,,34,,not used by code
+e019,earc,Sigroon,,,,,74,,not used by code
+e017,eshd,Aisha,,,,,521,,not used by code
+e016,edot,Kiemarl,,,,,14,,not used by code
+e015,edot,Talon,,600,,2.0,28,,not used by code
+e014,eshd,Olga,,,,,486,,not used by code
+e013,earc,Sarai,,,,,43,,not used by code
+e012,earc,Krjn,,,,,43,,not used by code
+e011,earc,Phantom Archer,,,,,,,NameDiary
+e010,edot,Phantom Wizard,,,,,14,,NameDiary
+e00Y,earc,Mysterious Blue Girl,,,,,43,,"Bernkastel, Ending, NameDiary"
+e00W,earc,Relm,86,59000,,31.0,1076,,Arena_TeamData
+e00V,earc,Relm,,,,,43,,not used by code
+e00U,even,Shiva,12,4600,,50.0,200,,Spell_Tables
+e00T,emtg,Golem,1,18000,,150.0,60,2,Spell_Tables
+e00O,emtg,Golem,70,5700,1000,468.0,803,2,Arena_TeamData
+e00N,even,Shiva,59,3100,1000,,902,,Arena_TeamData
+e00M,ensh,Naisha,72,44000,,74.0,823,,Arena_TeamData
+e00L,even,Shiva,12,3100,,30.0,90,,Spell_Tables
+e00J,eshd,Battle Organizer,,,,,34,,not used by code
+e00I,eshd,Battle Organizer,,,,,34,,not used by code
+e00H,eshd,Battle Organizer,,,,,34,,not used by code
+e00G,eshd,Cup Organizer,,,,,34,,not used by code
+e00F,eshd,Battle Organizer,,,,,34,,not used by code
+e00E,etrs,Night Elf Supply Ship,25,1000,,4.0,,,"ArenaResources, NameDiary"
+e00B,efdr,Mommy Gaya,,,,,,,not used by code
+e00A,even,Shadow Maiden,,1,,,150,,Boss_Lilith
+e009,espv,Shadow Queen Lilith,60,60000,20000,99.0,842,,"Arena_TeamData, MonsterData"
+e008,eshd,Limma,,,,,486,,not used by code
+e007,edot,Feanor,,,,,14,,not used by code
+e006,even,Shiva,12,4200,,40.0,150,,Spell_Tables
+e005,emtg,Golem,1,10000,,120.0,40,2,Spell_Tables
+e001,even,Shiva,12,2750,,20.0,60,,Spell_Tables
+e000,emtg,Golem,1,5000,,80.0,20,2,Spell_Tables
+U01W,Uktl,Majin,99,180000,30000,321.0,3440,,not used by code
+U01U,Uktl,Nightmare,99,225025,5000,235.0,1860,,"MonsterData, Nightmare"
+U01T,Uktl,Sealed Esper,10,69000,3000,75.0,800,,Boss_Ozma
+U01S,Uktl,Night's Terror,,83349,3000,166.0,560,,"Arena_TeamData, MonsterData, Nightmare"
+U01Q,Uktl,Black Pearl Demon,90,200000,3000,123.0,,,"Arena_TeamData, Hunt_Board"
+U01N,Uktl,Zombie Dragon,99,180000,30000,248.0,1820,,"Arena_TeamData, Boss_Shinryu"
+U01K,Uktl,Ice Demon,,10000,3000,100.0,166,,Boss_Echele
+U01J,Uktl,Ice Demon,,20000,3000,80.0,560,,Boss_Echele
+U01I,Uwar,Ice Demon,,100,5000,65.0,40,,Boss_Echele
+U01H,Uktl,Ice Demon,,10000,3000,45.0,,,Boss_Echele
+U01G,Uktl,Ice Demon,,10000,3000,76.0,60,,Boss_Echele
+U01F,Uktl,Ice Demon,,10000,3000,54.0,,,Boss_Echele
+U01E,Uktl,Ice Demon,,10000,3000,66.0,260,,Boss_Echele
+U01D,Uktl,Ice Demon,,10000,3000,144.0,50,,Boss_Echele
+U01C,Uktl,Ice Demon,,20000,3000,95.0,460,,Boss_Echele
+U01B,Uktl,Ice Demon,,10000,3000,58.0,60,,Boss_Echele
+U01A,Uktl,Ice Demon,,10000,3000,49.0,90,,Boss_Echele
+U019,Uktl,Zodiac Brave of Poison,,40000,3000,95.0,460,,"Arena_TeamData, MonsterData, TrueIceAge"
+U015,Uktl,Mage of Malice,10,400000,3000,15.0,,,"Arena_TeamData, Boss_DarkFact"
+U00Q,Uwar,Otherworldly King,,210000,30000,170.0,640,,not used by code
+U00O,Uktl,Zodiac Brave of Wind,,20000,3000,58.0,60,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00N,Uktl,Zodiac Brave of Water,,20000,3000,66.0,260,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00M,Uktl,Winter Queen,,20000,3000,44.0,,,MonsterData
+U00L,Uktl,Zodiac Brave of Ice,,20000,3000,54.0,,,"MonsterData, TrueIceAge"
+U00K,Uktl,Zodiac Brave of Aether,,20000,3000,144.0,50,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00J,Uktl,Zodiac Brave of Gravity,,60000,3000,80.0,560,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00I,Uktl,Zodiac Brave of Soul,,20000,3000,76.0,60,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00H,Uktl,Zodiac Brave of Darkness,,40000,3000,85.0,,,"Arena_TeamData, Ending, MonsterData"
+U00G,Uwar,Blazing Demon,,65000,20000,142.0,640,,"Arena_TeamData, Quest_TrialByFire"
+U00F,Uktl,Zodiac Brave of Holy,,40000,3000,100.0,666,,"Arena_TeamData, MonsterData, TrueIceAge"
+U00E,Uktl,Zodiac Brave of Thunder,,20000,3000,49.0,90,,"Arena_TeamData, KalmSiege2, MonsterData, TrueIceAge"
+U00C,Uktl,King of the Underworld,,50000,3000,136.0,10,,Arena_TeamData
+U00B,Umal,Dark Eidolon,,50000,5000,223.0,10,,not used by code
+U006,Uktl,Necromancer,,8000,,28.0,,,"Arena_TeamData, MonsterData"
+U000,Uktl,Zodiac Brave of Death,,20000,3000,45.0,,,"Arena_TeamData, MonsterData, TrueIceAge"
+O00I,Ocb2,Cow King,,5000,,85.0,10,,not used by code
+O00B,Ocbh,Dark Eidolon,,50000,,165.0,10,,not used by code
+O00A,Ocb2,Dark Eidolon,,50000,,128.0,10,,not used by code
+N0N0,Nbbc,Divine Knight,90,80000,,158.0,1000,,not used by code
+N0LU,Nbbc,Mighty Swordsman,,20000,,75.0,300,,"Arena_TeamData, Boss_Gilgamesh"
+N08G,Nman,Ice Demon,99,20000,100000,125.0,10,,"Boss_Hashmalum, TrueIceAge"
+N03R,Nbbc,Judge Magister,99,70000,,230.0,1500,,Boss_Judges
+N03Q,Nbbc,Judge Magister,99,60000,,188.0,750,,Boss_Judges
+N03P,Nbbc,Judge Magister,99,90000,,297.0,3000,,Boss_Judges
+N03O,Nbbc,Judge Magister,99,45000,,140.0,500,,Boss_Judges
+N03N,Nbbc,Judge Magister,99,40000,,161.0,250,,Boss_Judges
+N03K,Nman,The Judge,,118920,100000,82.0,900,,"Arena_TeamData, Boss_Penance"
+N03D,Nbbc,Mighty Swordsman,,10,,75.0,300,,"Arena_TeamData, Gilgamesh, MonsterData"
+N02Z,Nman,Dark Eidolon,,100000,10000,50.0,2000,,not used by code
+N02I,Nman,Strongest Eidolon,,80000,10000,40.0,1000,,"Arena_TeamData, MonsterData"
+N024,Nman,Ice Demon,,40000,20000,99.0,0,,"Arena_TeamData, Boss_Echele"
+N022,Nman,Weapon,,168500,50000,300.0,999,,"AlmightyShinra, Arena_TeamData, MonsterData"
+H036,Hmbr,Thunder Striker,,40000,,133.0,372,,not used by code
+H02Y,Hkal,Necromancer,6,200,,2.0,,10,"DarkJobs, IceAge, Init, Job, Multiboard, Necro +4"
+H02X,Hapm,Dark Knight,6,200,,12.0,250,9,"DarkJobs, Equip, IceAge, Init, Job, Legend_DarkKnight +6"
+H02W,Ocbh,Nebra King,,300000,,130.0,400,,Arena_TeamData
+H02Q,Hvwd,Freelancer,8,750,,22.0,50,9,"Job, Title"
+H02P,Hvwd,Freelancer,8,2500,,47.0,200,9,"Freelancer, Job, Title"
+H02O,Hvwd,Freelancer,8,1000,,62.0,150,9,"Freelancer, Job, Title"
+H02N,Hapm,Freelancer,8,750,,22.0,50,9,"Job, Title"
+H02M,Hapm,Freelancer,8,2500,,47.0,250,9,"Freelancer, Job, Title"
+H02L,Hapm,Freelancer,8,1000,,62.0,200,9,"Cmd, Freelancer, Job, Title"
+H021,Ecen,Dark Eidolon,,50000,75000,32.0,10,11,not used by code
+H01Z,Ocbh,Dark Eidolon,,50000,,102.0,10,,not used by code
+H01Y,Hmbr,Dark Eidolon,,50000,50000,240.0,10,,not used by code
+H01X,Hmbr,Dark Eidolon,,50000,50000,180.0,10,,not used by code
+H01W,Hmbr,Dark Eidolon,,50000,50000,120.0,10,,not used by code
+H01V,Hmbr,Dark Eidolon,,50000,,468.0,10,,not used by code
+H01U,Hmbr,Dark Eidolon,,50000,,78.0,10,,not used by code
+H01T,Ecen,Dark Eidolon,,50000,35000,51.0,10,11,not used by code
+H01S,Ocbh,Dark Eidolon,,50000,35000,102.0,10,,not used by code
+H01N,Ogrh,Dark Eidolon,,50000,50000,38.0,10,,not used by code
+H01M,Hmbr,Northern God,99,240000,,179.0,1600,,"Arena_TeamData, MonsterData"
+H01L,Ocbh,Friend of Brothers,,15000,1000,58.0,40,,"Arena_TeamData, MonsterData, Spawn"
+H01K,Ocbh,Friend of Brothers,,2750,1000,76.0,5,,"Arena_TeamData, MonsterData, Spawn"
+H01J,Ecen,Friend of Brothers,,13000,1000,53.0,10,11,"Arena_TeamData, MonsterData, Spawn"
+H01I,Ocbh,Friend of Brothers,,5000,2500,111.0,240,,"Arena_TeamData, MonsterData, Spawn"
+H01G,Harf,Engineer,,,,12.0,800,,not used by code
+H01E,Hpal,Forgotten Spirit,,,,,,,not used by code
+H01D,now3,Spirit of Gaya,1,1000000,1000000,,,,"AdamantHunt, Alma, Ambush, AncientHunt, ArenaExpansion, Arena_Access +61"
+H012,Hkal,Archbishop,7,1300,,,125,9,not used by code
+H011,Hvwd,Heavenly Knight,7,2400,,,550,,not used by code
+H00Y,Hvwd,Dark Ranger,,11150,,30.0,,,"Arena_TeamData, MonsterData"
+H00X,Hvwd,Phantom Ranger,,6150,,30.0,,,MonsterData
+H00W,Hmbr,Ogre Crusher,,1000,,72.0,,,"Arena_TeamData, MonsterData, Quest_OgreHunt"
+H00V,Hjai,LTM,,,,,,,Ending
+H00T,Hjai,High Priest,,,,20.0,,,"Arena_TeamData, Spawn"
+H00S,Hapm,Centaur,,,,12.0,,,not used by code
+H00P,Hmbr,Forgefire,,,,27.0,20,,Valigarmanda
+H00O,Huth,???,8,,,100.0,,9,not used by code
+H00M,Hapm,Holy Swordsman,6,200,,12.0,250,9,"Equip, Init, Job, Multiboard, Research, Spring +2"
+H00L,Hkal,Sorcerer,6,200,,2.0,,10,"Damage, Init, Job, Multiboard, Research, Spring +2"
+H00J,Hvwd,Prophet,,200,,2.0,,,"Init, Job, Multiboard, Research, Spring, Title +1"
+H00I,Hvwd,Oracle,4,200,,2.0,,,"Hero_LevelUp, Init, Job, Multiboard, Oracle, Research +3"
+H00H,Efur,Calculator,,200,,,,10,"Damage, Init, Job, Multiboard, Research, Spring +2"
+H00G,Hvwd,Mediator,4,200,,7.0,100,,"Equip, Hero_LevelUp, Init, Job, Mediator, Multiboard +4"
+H00F,Eill,Ninja,,200,,7.0,150,9,"AtkSpd, Debug, Dps, Equip, Init, Job +5"
+H00E,Osam,Samurai,4,200,,12.0,150,,"AtkSpd, Equip, Hero_LevelUp, Init, Job, Multiboard +4"
+H00D,Hapm,Geomancer,4,200,,7.0,150,9,"Damage, Equip, Hero_LevelUp, Init, Job, Multiboard +4"
+H00C,Hapm,Lancer,,200,,12.0,200,9,"Equip, Init, Job, Lancer, Multiboard, Research +3"
+H00B,Nbbc,Thief,3,200,,7.0,80,9,"AtkSpd, Equip, Hero_LevelUp, Init, Job, Multiboard +5"
+H00A,Hapm,Monk,3,200,,7.0,80,9,"Equip, Hero_LevelUp, Init, Job, Multiboard, Research +3"
+H009,Hvwd,Summoner,3,200,,2.0,,,"Damage, Hero_LevelUp, Init, Job, Multiboard, Quest_SpiritOfWater +5"
+H008,Hvwd,Time Mage,3,200,,2.0,,,"Hero_LevelUp, Init, Job, Multiboard, Research, Save +3"
+H005,Hvwd,Priest,2,200,,2.0,,,"Hero_LevelUp, Init, Job, Multiboard, Research, Shemhazai +4"
+H004,Hvwd,Wizard,2,200,,2.0,,,"Damage, Hero_LevelUp, Init, Job, Multiboard, Research +4"
+H003,hcth,Knight,2,200,,12.0,50,9,"Armor, Equip, Hero_LevelUp, Init, Job, Multiboard +5"
+H002,Hapm,Chemist,1,200,,7.0,10,9,"Cmd, Craft, Equip, Hero_LevelUp, Init, Job +6"
+H001,Hvwd,Archer,2,200,,7.0,50,,"AtkSpd, Equip, Hero_LevelUp, Init, Job, Multiboard +6"
+H000,Hapm,Squire,1,200,,12.0,20,9,"Cover, Damage, Equip, Hero_LevelUp, Init, Job +6"
+E01T,Eevi,Majin,90,60000,5000,110.0,650,,not used by code
+E01S,Eevm,Majin,90,60000,5000,110.0,650,,not used by code
+E01R,Etyr,Majin,90,60000,,95.0,1800,,not used by code
+E01Q,Eevi,Majin,90,340000,5000,180.0,2400,,not used by code
+E01P,Eevm,Majin,90,60000,5000,110.0,650,,not used by code
+E01O,Etyr,Divine Queen,90,60000,,95.0,1800,,not used by code
+E01M,Eevm,Nebra Monstrum,,100000,,61.0,300,,"Arena_TeamData, Monstrum"
+E01J,Eevm,Warmech,99,325000,5000,802.0,6400,,"Arena_TeamData, Boss_Shinryu"
+E01H,Eevm,Illusion Hydra,99,666666,,116.0,650,,Arena_TeamData
+E01F,Eevm,Ice Demon,,10000,5000,82.0,70,,Boss_Echele
+E018,Eevi,Arbiter of Time,,160000,,125.0,520,,"Arena_Spawning, Arena_TeamData, MonsterData"
+E00Z,Eevi,Demi Fiend,99,340000,5000,180.0,2400,,Boss_DemiFiend
+E00X,Eevm,Black Devil,60,60000,5000,110.0,650,,"Arena_TeamData, Boss_BlackDevil"
+E00S,Eill,Assassin,,,,24.0,,,"Arena_TeamData, Shadow_Hiring"
+E00R,Eevi,Warring Triad Member,,50000,,312.0,2,,"Arena_TeamData, WarringTriad"
+E00Q,Eevi,Warring Triad Member,,50000,,173.0,7,,"Arena_TeamData, FireUnit, WarringTriad"
+E00P,Eevi,Warring Triad Member,,50000,,185.0,13,,"Arena_TeamData, WarringTriad"
+E00K,Eevi,Just A Kid?,99,160000,,99.0,10,,"AlmightyShinra, Arena_TeamData, MonsterData"
+E00D,Etyr,Dark Eidolon,,50000,17500,82.0,10,,not used by code
+E00C,Etyr,Dark Eidolon,,50000,35000,48.0,10,,not used by code
+E004,Etyr,Dryad,,,,12.0,,,not used by code
+E003,Etyr,Dryad,,,,9.0,,,not used by code
+E002,Eevm,Zodiac Brave of Earth,,20000,5000,82.0,70,,"Arena_TeamData, Cine, MonsterData, TrueIceAge"
+uzig,"(standard, changed)",,,,,,,,not used by code
+uzg2,"(standard, changed)",,,,,,,,not used by code
+uzg1,"(standard, changed)",,,,,,,,not used by code
+utom,"(standard, changed)",,,,,,,,not used by code
+uskm,"(standard, changed)",,,,,,,,not used by code
+uske,"(standard, changed)",,,,,,,,not used by code
+usap,"(standard, changed)",,,,,,,,not used by code
+uplg,"(standard, changed)",,,,,,,,Filter
+unpl,"(standard, changed)",,,,,,,,not used by code
+unp2,"(standard, changed)",,,,,,,,not used by code
+unp1,"(standard, changed)",,,,,,,,not used by code
+ugrv,"(standard, changed)",,,,,,,,not used by code
+ugho,"(standard, changed)",,15,2600,,12.0,150,,"Arena_TeamData, Ghoul"
+ucsC,"(standard, changed)",,,,,,,,not used by code
+ucsB,"(standard, changed)",,,,,,,,not used by code
+ucs3,"(standard, changed)",,,,,,,,not used by code
+ucs2,"(standard, changed)",,,,,,,,not used by code
+ucs1,"(standard, changed)",,,,,,,,not used by code
+uaod,"(standard, changed)",,,,,,,,not used by code
+uaco,"(standard, changed)",,,,,,,,not used by code
+uabo,"(standard, changed)",,18,4000,,39.0,180,,"Arena_TeamData, MonsterData, Quest_KillSetag"
+uabc,"(standard, changed)",Tainted Cúchulainn,35,15000,5000,50.0,582,,"Arena_TeamData, Loot, MonsterData, TrueIceAge"
+owyv,"(standard, changed)",,,,,,,,not used by code
+owtw,"(standard, changed)",,,1500,,25.0,79,,not used by code
+ovln,"(standard, changed)",,,,,,,,not used by code
+otto,"(standard, changed)",,,,,,,,not used by code
+otrb,"(standard, changed)",,,,,,,,not used by code
+otot,"(standard, changed)",,,,,,,,not used by code
+otbr,"(standard, changed)",,,,,,,,not used by code
+otbk,"(standard, changed)",,,,,,,,not used by code
+otau,"(standard, changed)",,,,,,,,not used by code
+osw3,"(standard, changed)",,,,,,,,not used by code
+osw2,"(standard, changed)",,,,,,,,not used by code
+osw1,"(standard, changed)",,,,,,,,not used by code
+ostr,"(standard, changed)",,,,,,,,not used by code
+ospw,"(standard, changed)",,,,,,,,not used by code
+ospm,"(standard, changed)",,,,,,,,not used by code
+osp3,"(standard, changed)",,,,,,,,not used by code
+osp2,"(standard, changed)",,,,,,,,not used by code
+osp1,"(standard, changed)",,,,,,,,not used by code
+osld,"(standard, changed)",,,,,,,,not used by code
+oshm,"(standard, changed)",,,,,,,,not used by code
+orai,"(standard, changed)",,,,,,,,not used by code
+opeo,"(standard, changed)",,,,,,,,not used by code
+okod,"(standard, changed)",,,,,,,,not used by code
+ohwd,"(standard, changed)",,,,,,,,not used by code
+ohun,"(standard, changed)",,,,,,,,not used by code
+ogru,"(standard, changed)",,,,,,,,not used by code
+ogre,"(standard, changed)",,,,,,,,not used by code
+ofrt,"(standard, changed)",,,15000,,,,,not used by code
+ofor,"(standard, changed)",,,5000,,,,,not used by code
+oeye,"(standard, changed)",,,,,,,,not used by code
+odoc,"(standard, changed)",,,,,,,,not used by code
+ocat,"(standard, changed)",,,,,,,,not used by code
+obea,"(standard, changed)",,,,,,,,not used by code
+obar,"(standard, changed)",,,5000,,,,,not used by code
+oalt,"(standard, changed)",,,7500,,,,,not used by code
+nwzr,"(standard, changed)",,6,1000,600,,,,"Arena_TeamData, FadingNotes, MonsterData, Spawn"
+nwzg,"(standard, changed)",,7,1100,700,,,,"FadingNotes, MonsterData, Spawn"
+nwzd,"(standard, changed)",,,,800,,,,"Arena_TeamData, FadingNotes, KalmSiege, MonsterData, Spawn"
+nwwg,"(standard, changed)",,,,,,,,not used by code
+nwwf,"(standard, changed)",,,,,,,,not used by code
+nwwd,"(standard, changed)",,,,,,,,not used by code
+nws1,"(standard, changed)",,,,,,,,not used by code
+nwrg,"(standard, changed)",,9,1600,200,81.0,63,,"Arena_TeamData, MonsterData, OrcBase, Spawn, StrangeKey"
+nwns,"(standard, changed)",,,26589,,,186,,not used by code
+nwnr,"(standard, changed)",,,,,,,,not used by code
+nwna,"(standard, changed)",,50,27000,,24.0,289,,not used by code
+nwlt,"(standard, changed)",Forest Wolf,,360,,18.0,16,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+nwlg,"(standard, changed)",,,,,,22,,"Arena_TeamData, MonsterData, Spawn"
+nwld,"(standard, changed)",,,760,300,24.0,33,,"Arena_TeamData, Hunt_Encounters, MonsterData, Spawn"
+nwiz,"(standard, changed)",Apprentice Dark Wizard,6,800,500,,,,"Arena_TeamData, FadingNotes, MonsterData, Spawn"
+nwgt,"(standard, changed)",,,,,,,,not used by code
+nwgs,"(standard, changed)",,17,1250,,6.0,80,,"Arena_TeamData, MonsterData, Spawn"
+nwen,"(standard, changed)",,,25000,,,167,,not used by code
+nwc1,"(standard, changed)",Strange Cage,,,,,,,not used by code
+nwat,"(standard, changed)",,,380,0,,17,,NameDiary
+nwad,"(standard, changed)",,,,,,,,not used by code
+nvul,"(standard, changed)",,,,,,,,not used by code
+nvlw,"(standard, changed)",Human Female,,,,,,,NameDiary
+nvlk,"(standard, changed)",Human Child,,,,,,,NameDiary
+nvl2,"(standard, changed)",Human Male,,,,,,,NameDiary
+nvk2,"(standard, changed)",Human Child,,,,,,,NameDiary
+nvil,"(standard, changed)",Human Male,,,,,,,NameDiary
+nvdw,"(standard, changed)",,,,,,,,not used by code
+nvdl,"(standard, changed)",,,,,,,,not used by code
+nvdg,"(standard, changed)",Evil Spirit,35,4000,1600,12.0,90,,"MonsterData, Quest_SpiritHunt, Zeromus"
+nvde,"(standard, changed)",,,,,,,,not used by code
+nubw,"(standard, changed)",,,,,,,,not used by code
+nubr,"(standard, changed)",,,,,,,,not used by code
+nubk,"(standard, changed)",,,,,,,,not used by code
+ntrv,"(standard, changed)",,5,,600,,26,,"MonsterData, Spawn"
+ntrt,"(standard, changed)",,10,1800,300,53.0,87,,"MonsterData, Spawn"
+ntrs,"(standard, changed)",,4,650,300,27.0,35,,"MonsterData, Spawn"
+ntrh,"(standard, changed)",,2,420,250,18.0,,,"MonsterData, Spawn"
+ntrg,"(standard, changed)",Adamanchelid,32,8000,400,280.0,324,,"AdamantHunt, Arena_TeamData, MonsterData, Spawn"
+ntrd,"(standard, changed)",Adaman Tortoise,48,20000,,480.0,981,,"AdamantHunt, Arena_TeamData, MonsterData, Spawn"
+ntn2,"(standard, changed)",,,,,,,,not used by code
+ntkw,"(standard, changed)",,,,,,,,not used by code
+ntkt,"(standard, changed)",,,,,,,,not used by code
+ntks,"(standard, changed)",,,,,,,,not used by code
+ntkh,"(standard, changed)",,,,,,,,not used by code
+ntkf,"(standard, changed)",,,,,,,,not used by code
+ntkc,"(standard, changed)",,29,15741,,,168,,not used by code
+ntka,"(standard, changed)",,40,35963,,,158,,not used by code
+nthl,"(standard, changed)",,7,1200,500,29.0,38,,"Arena_TeamData, MonsterData, Spawn"
+nten,"(standard, changed)",,,,,,,,not used by code
+nsw2,"(standard, changed)",Frakir,,7777,,,7776,,not used by code
+nsty,"(standard, changed)",Satyr,20,1500,200,10.0,179,,"Arena_TeamData, MonsterData, Spawn, Wanderer"
+nstw,"(standard, changed)",,,,750,32.0,,,"Arena_TeamData, MonsterData, Spawn"
+nsts,"(standard, changed)",Satyr Shadowdancer,23,1600,,14.0,216,,"Arena_TeamData, MonsterData, Spawn"
+nstl,"(standard, changed)",Satyr Soulstealer,25,2000,,17.0,230,,"Arena_TeamData, MonsterData, Spawn"
+nsth,"(standard, changed)",Satyr Hellcaller,30,3000,,20.0,259,,"Arena_TeamData, MonsterData, Spawn"
+nssp,"(standard, changed)",,,,,,,,Quest_Arachnophobia
+nssn,"(standard, changed)",,,300,,,16,,NameDiary
+nsrw,"(standard, changed)",,,,,,,,not used by code
+nsrv,"(standard, changed)",,7,,600,,43,,"MonsterData, Spawn"
+nsrn,"(standard, changed)",,,,,,,,not used by code
+nsrh,"(standard, changed)",,,,,,,,not used by code
+nsra,"(standard, changed)",,,,,,,,not used by code
+nsqt,"(standard, changed)",,,,,,,,not used by code
+nsqo,"(standard, changed)",,,,,,,,not used by code
+nsqe,"(standard, changed)",,,,,,,,not used by code
+nsqa,"(standard, changed)",,,,,,,,not used by code
+nspr,"(standard, changed)",,,,,,,,Quest_Arachnophobia
+nspg,"(standard, changed)",Forest Spider,,300,,1.0,5,,"Arena_TeamData, MonsterData, Quest_Arachnophobia, Spawn"
+nspd,"(standard, changed)",,,,,,,,not used by code
+nspb,"(standard, changed)",,5,450,300,4.0,29,,"Arena_TeamData, MonsterData, Quest_Arachnophobia, Spawn"
+nsog,"(standard, changed)",,,,,,,,not used by code
+nsoc,"(standard, changed)",,,,,,,,not used by code
+nsnp,"(standard, changed)",,19,1700,,3.0,54,,"Arena_TeamData, MonsterData, Spawn"
+nsno,"(standard, changed)",,,,,,,,not used by code
+nslv,"(standard, changed)",,,,,,,,not used by code
+nslr,"(standard, changed)",Zalamander,38,7000,600,3.0,88,,"FireUnit, MonsterData, Zeromus"
+nsln,"(standard, changed)",,,,,,,,not used by code
+nslm,"(standard, changed)",,,,,,,,not used by code
+nsll,"(standard, changed)",,,,,,,,not used by code
+nslh,"(standard, changed)",,,,,,,,not used by code
+nslf,"(standard, changed)",,,,,,,,not used by code
+nsko,"(standard, changed)",,,,,,,,not used by code
+nskm,"(standard, changed)",,,,,,,,not used by code
+nskg,"(standard, changed)",,,,,,,,not used by code
+nskf,"(standard, changed)",,,,,,,,not used by code
+nska,"(standard, changed)",,,,,,,,not used by code
+nshw,"(standard, changed)",,,,,,,,not used by code
+nshp,"(standard, changed)",Shipyard,,,,,,,not used by code
+nshe,"(standard, changed)",,,,,,,,not used by code
+nsha,"(standard, changed)",,,,,,,,not used by code
+nsgt,"(standard, changed)",,,,,,,,Quest_Arachnophobia
+nsgn,"(standard, changed)",,11,1700,400,19.0,83,,"MonsterData, Spawn"
+nsgh,"(standard, changed)",,17,2725,500,32.0,104,,"MonsterData, Spawn"
+nsgg,"(standard, changed)",,10,1800,300,110.0,85,,"Arena_TeamData, MonsterData, Spawn, StrangeKey"
+nsgb,"(standard, changed)",,21,4500,600,38.0,185,,"Arena_TeamData, MonsterData, Spawn"
+nsel,"(standard, changed)",,15,600,750,,24,,"Arena_TeamData, MonsterData, Spawn"
+nsea,"(standard, changed)",,,,,,,,not used by code
+nscb,"(standard, changed)",,10,1800,400,39.0,19,,"MonsterData, Spawn"
+nsc3,"(standard, changed)",,18,2200,400,52.0,52,,"Arena_TeamData, MonsterData, Spawn"
+nsc2,"(standard, changed)",,13,2000,400,48.0,34,,"MonsterData, Spawn"
+nsbm,"(standard, changed)",Brood Mother,,,,9.0,,,Quest_Arachnophobia
+nsat,"(standard, changed)",Satyr Trickster,21,1250,500,10.0,185,,"Arena_TeamData, MonsterData, Spawn"
+nrzt,"(standard, changed)",,2,500,150,18.0,,,"MonsterData, Spawn"
+nrzs,"(standard, changed)",,2,500,150,16.0,,,"MonsterData, Spawn"
+nrzm,"(standard, changed)",,,650,,24.0,,,"Arena_TeamData, MonsterData, Spawn"
+nrzg,"(standard, changed)",,,750,300,36.0,41,,"Arena_TeamData, MonsterData, Spawn"
+nrzb,"(standard, changed)",,4,650,250,28.0,,,"Arena_TeamData, MonsterData, Spawn"
+nrwm,"(standard, changed)",,,,,,,,not used by code
+nrvs,"(standard, changed)",,,,,,,,not used by code
+nrvl,"(standard, changed)",,,,,,,,not used by code
+nrvi,"(standard, changed)",,,,,,,,not used by code
+nrvf,"(standard, changed)",,,,,,,,not used by code
+nrvd,"(standard, changed)",Etem,30,4500,1200,28.0,62,,"MonsterData, Quest_SpiritHunt, Zeromus"
+nrog,"(standard, changed)",,8,1100,,32.0,55,,"MonsterData, Spawn"
+nrel,"(standard, changed)",,9,450,650,,,,"Arena_TeamData, MonsterData, Spawn"
+nrdr,"(standard, changed)",,,,,,,,not used by code
+nrdk,"(standard, changed)",,,,,,,,not used by code
+nrat,"(standard, changed)",,,,,,,,not used by code
+nrac,"(standard, changed)",,,,,,,,not used by code
+nqbh,"(standard, changed)",,,600,250,19.0,,,"Arena_TeamData, MonsterData, Spawn"
+npnw,"(standard, changed)",,,,,,,,not used by code
+npng,"(standard, changed)",,,,,,,,not used by code
+nplg,"(standard, changed)",,,,,,,,not used by code
+nplb,"(standard, changed)",,,,,,,,not used by code
+npig,"(standard, changed)",,,,,,,,not used by code
+npgf,"(standard, changed)",,,,,,,,not used by code
+npfm,"(standard, changed)",,,,,,,,not used by code
+npfl,"(standard, changed)",,,,,,,,not used by code
+nowl,"(standard, changed)",,,,,,,,not used by code
+nowk,"(standard, changed)",,,1200,,60.0,62,,"Arena_TeamData, MonsterData, Spawn"
+nowe,"(standard, changed)",,,1000,,48.0,41,,"Arena_TeamData, MonsterData, Spawn"
+nowb,"(standard, changed)",,5,850,,44.0,32,,"Arena_TeamData, MonsterData, Spawn"
+now3,"(standard, changed)",,,,,,,,not used by code
+now2,"(standard, changed)",,,,,,,,not used by code
+nomg,"(standard, changed)",,,,800,17.0,,,"Arena_TeamData, KalmSiege, MonsterData, Quest_OgreHunt, Spawn"
+nogr,"(standard, changed)",,5,700,150,28.0,,,"Arena_TeamData, MonsterData, Quest_OgreHunt, Spawn, Wanderer"
+nogm,"(standard, changed)",,6,,250,36.0,,,"MonsterData, Quest_OgreHunt, Spawn"
+nogl,"(standard, changed)",,8,1050,300,41.0,41,,"Arena_TeamData, KalmSiege, MonsterData, Quest_OgreHunt, Spawn"
+nnws,"(standard, changed)",,,,,,,,not used by code
+nnwr,"(standard, changed)",,,,,,,,not used by code
+nnwq,"(standard, changed)",,,,,,,,not used by code
+nnwl,"(standard, changed)",,,,,,,,not used by code
+nnwa,"(standard, changed)",,,,,,,,not used by code
+nntg,"(standard, changed)",,20,2000,,20.0,160,,not used by code
+nnsw,"(standard, changed)",,20,2400,850,7.0,76,,"Arena_TeamData, MonsterData, Spawn, Wanderer"
+nnrg,"(standard, changed)",,27,3500,,30.0,200,,"Arena_TeamData, MonsterData, Spawn"
+nnmg,"(standard, changed)",,15,800,,2.0,35,,"Arena_TeamData, MonsterData, Spawn"
+nnht,"(standard, changed)",,,,,,,,not used by code
+nndr,"(standard, changed)",,,,,,,,not used by code
+nndk,"(standard, changed)",,,,,,,,not used by code
+nmyr,"(standard, changed)",,23,3000,,5.0,70,,"Arena_TeamData, MonsterData, Spawn"
+nmtw,"(standard, changed)",,8,1000,500,,41,,"Arena_TeamData, MonsterData, Spawn"
+nmsn,"(standard, changed)",,10,1000,650,,47,,"Arena_TeamData, MonsterData, Spawn"
+nmsc,"(standard, changed)",,15,1600,800,6.0,60,,"Arena_TeamData, MonsterData, Spawn"
+nmrv,"(standard, changed)",,12,1400,650,,56,,"Arena_TeamData, MonsterData, Spawn"
+nmrr,"(standard, changed)",Triton Huntsman,8,1800,350,19.0,55,,"Arena_TeamData, Fishing_Setup, MonsterData"
+nmrm,"(standard, changed)",Triton Nightcrawler,14,4600,400,22.0,99,,"Fishing_Setup, MonsterData"
+nmrl,"(standard, changed)",Forest Triton,,320,,3.0,4,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+nmpg,"(standard, changed)",Triton Plaguebearer,,,,,,,not used by code
+nmpe,"(standard, changed)",,13,500,,2.0,25,,"Arena_TeamData, MonsterData, Spawn"
+nmmu,"(standard, changed)",Triton Mutant,,,,,,,not used by code
+nmit,"(standard, changed)",,,,,,,,not used by code
+nmgw,"(standard, changed)",Behemoth,40,8000,800,72.0,245,,"MonsterData, Zeromus"
+nmgv,"(standard, changed)",Magic Vault,,,,,,,MagicVault
+nmgr,"(standard, changed)",Grand Behemoth,56,20000,1400,110.0,388,,"MonsterData, Zeromus"
+nmgd,"(standard, changed)",,,,,,,,not used by code
+nmfs,"(standard, changed)",Triton Flesheater,,,,,,,not used by code
+nmed,"(standard, changed)",,,,,,,,not used by code
+nmdr,"(standard, changed)",,,,,,,,not used by code
+nmdm,"(standard, changed)",Map by |cff00ff00ILYAS|r,,100,0,,,,not used by code
+nmcf,"(standard, changed)",,6,800,300,,34,,"MonsterData, Spawn"
+nmbg,"(standard, changed)",,7,1000,500,,53,,"Arena_TeamData, MonsterData, Spawn"
+nmam,"(standard, changed)",,,,,,,,not used by code
+nltl,"(standard, changed)",,5,1000,400,24.0,32,,"MonsterData, Spawn"
+nltc,"(standard, changed)",,9,640,,18.0,26,,"Arena_TeamData, MonsterData, Spawn"
+nlsn,"(standard, changed)",,16,1420,400,30.0,35,,"Arena_TeamData, MonsterData, Spawn"
+nlrv,"(standard, changed)",,13,,750,,92,,"MonsterData, Spawn"
+nlpr,"(standard, changed)",,4,370,200,,,,"MonsterData, Spawn"
+nlpd,"(standard, changed)",,6,510,200,14.0,14,,"MonsterData, Spawn"
+nlkl,"(standard, changed)",,20,2800,400,44.0,52,,"Arena_TeamData, MonsterData, Spawn"
+nlds,"(standard, changed)",,10,880,600,19.0,37,,"MonsterData, Spawn"
+nkot,"(standard, changed)",,4,500,500,4.0,21,,"MonsterData, Spawn"
+nkol,"(standard, changed)",,6,800,800,8.0,43,,"KalmSiege, MonsterData, Spawn"
+nkog,"(standard, changed)",,,350,1000,1.0,,,"KalmSiege, MonsterData, Spawn"
+nkob,"(standard, changed)",,3,400,300,2.0,29,,"MonsterData, Spawn"
+njgb,"(standard, changed)",,16,3200,0,12.0,150,,"Arena_TeamData, MonsterData, Spawn"
+njga,"(standard, changed)",,8,1900,,10.0,62,,"Arena_TeamData, MonsterData, Spawn"
+njg1,"(standard, changed)",,5,620,,8.0,33,,"MonsterData, Spawn"
+nitw,"(standard, changed)",,,,,,,,not used by code
+nitt,"(standard, changed)",,,,,,,,not used by code
+nits,"(standard, changed)",,,,,,,,not used by code
+nitr,"(standard, changed)",,34,24862,,,139,,not used by code
+nitp,"(standard, changed)",,35,26842,,,174,,not used by code
+nith,"(standard, changed)",,,,,,,,not used by code
+ninm,"(standard, changed)",,,,,,,,not used by code
+ninf,"(standard, changed)",,,,,,,,not used by code
+ninc,"(standard, changed)",,,,,,,,not used by code
+nina,"(standard, changed)",,,,,,,,not used by code
+nhyh,"(standard, changed)",,,,200,5.0,,,"HydraEgg, MonsterData"
+nhyd,"(standard, changed)",,8,1000,600,11.0,34,,"HydraEgg, MonsterData, Wanderer"
+nhyc,"(standard, changed)",,23,2400,,48.0,,,"Arena_TeamData, MonsterData, Spawn"
+nhrw,"(standard, changed)",,4,550,600,,,,"Arena_TeamData, MonsterData, Quest_HarpyHunt, Spawn"
+nhrr,"(standard, changed)",,4,450,200,,32,,"Arena_TeamData, MonsterData, Quest_HarpyHunt, Spawn"
+nhrq,"(standard, changed)",,6,,800,,46,,"Arena_TeamData, MonsterData, Quest_HarpyHunt, Spawn"
+nhrh,"(standard, changed)",,,,600,,,,"Arena_TeamData, MonsterData, Quest_HarpyHunt, Spawn"
+nhns,"(standard, changed)",,,,,,,,not used by code
+nhmc,"(standard, changed)",,,,,,,,not used by code
+nhhr,"(standard, changed)",,6,900,2000,,28,,"Arena_TeamData, FadingNotes, MonsterData, Spawn"
+nhfp,"(standard, changed)",Kultist,5,600,1300,,,,"Arena_TeamData, FadingNotes, MonsterData, Spawn"
+nhem,"(standard, changed)",High Elf Male,,,,,,,NameDiary
+nhef,"(standard, changed)",High Elf Female,,,,,,,NameDiary
+nheb,"(standard, changed)",High Elf Barracks,,,,,,,not used by code
+nhea,"(standard, changed)",,,820,,15.0,89,,"NameDiary, Spawn"
+nhdc,"(standard, changed)",,5,750,1800,,,,"Arena_TeamData, FadingNotes, KalmSiege, MonsterData, Spawn"
+nhar,"(standard, changed)",,3,450,200,,14,,"Arena_TeamData, MonsterData, Quest_HarpyHunt, Spawn"
+ngt2,"(standard, changed)",,,,,,,,not used by code
+ngst,"(standard, changed)",,8,1800,,52.0,42,,"Arena_TeamData, MonsterData, Spawn, StrangeKey, Wanderer"
+ngrw,"(standard, changed)",,,,,,,,not used by code
+ngrk,"(standard, changed)",,7,1500,350,38.0,34,,"MonsterData, Spawn, StrangeKey"
+ngrd,"(standard, changed)",,,,,,,,not used by code
+ngol,"(standard, changed)",,,,,,,,not used by code
+ngnw,"(standard, changed)",,6,750,500,10.0,27,,"Arena_TeamData, GnollHunt, KalmSiege, MonsterData, Spawn"
+ngnv,"(standard, changed)",,7,900,450,24.0,60,,"GnollHunt, MonsterData, Spawn"
+ngns,"(standard, changed)",,5,600,250,8.0,29,,"Arena_TeamData, GnollHunt, KalmSiege, MonsterData, Spawn"
+ngno,"(standard, changed)",,3,500,200,12.0,15,,"GnollHunt, MonsterData, Spawn"
+ngnh,"(standard, changed)",,,,,,,,not used by code
+ngnb,"(standard, changed)",Forest Gnoll,2,360,,9.0,6,,"Arena_TeamData, MonsterData, Spawn"
+ngna,"(standard, changed)",,8,800,300,12.0,47,,"Arena_TeamData, GnollHunt, MonsterData, Spawn"
+ngh2,"(standard, changed)",,,,,,,,not used by code
+ngh1,"(standard, changed)",,,,,,,,not used by code
+nggr,"(standard, changed)",,,2200,500,83.0,56,,"Arena_TeamData, MonsterData, OrcBase, Spawn, StrangeKey"
+ngdk,"(standard, changed)",,,,,,,,not used by code
+nftt,"(standard, changed)",Forest Goblin Trapper,2,300,,9.0,10,,"Arena_TeamData, MonsterData, Spawn"
+nftr,"(standard, changed)",Forest Goblin,,320,,8.0,8,,"MonsterData, Spawn, Wanderer"
+nftk,"(standard, changed)",Forest Goblin Warlord,3,250,125,16.0,18,,not used by code
+nftb,"(standard, changed)",Forest Goblin Berserker,3,400,,15.0,12,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+nfsp,"(standard, changed)",Forest Goblin Shaman,,280,100,2.0,6,,"Arena_TeamData, MonsterData, Spawn"
+nfsh,"(standard, changed)",Forest Goblin Great Shaman,3,300,150,4.0,12,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+nfrs,"(standard, changed)",,,,,,,,not used by code
+nfrp,"(standard, changed)",,,,,,,,not used by code
+nfro,"(standard, changed)",,,,,,,,not used by code
+nfrl,"(standard, changed)",,,,,,,,not used by code
+nfrg,"(standard, changed)",,,,,,,,not used by code
+nfre,"(standard, changed)",,,,,,,,not used by code
+nfrb,"(standard, changed)",,,,,,,,not used by code
+nfra,"(standard, changed)",,,,,,,,not used by code
+nfpu,"(standard, changed)",,,,,,,,not used by code
+nfpt,"(standard, changed)",,,,,,,,not used by code
+nfps,"(standard, changed)",,,,,,,,not used by code
+nfpl,"(standard, changed)",,,,,,,,not used by code
+nfpe,"(standard, changed)",,,,,,,,not used by code
+nfpc,"(standard, changed)",,,,,,,,not used by code
+nfov,"(standard, changed)",,,,,,,,not used by code
+nfot,"(standard, changed)",,,,,,,,not used by code
+nfor,"(standard, changed)",,,,,,,,not used by code
+nfod,"(standard, changed)",,,,,,,,not used by code
+nfnp,"(standard, changed)",Fountain of Restoration,,,,,,,"FillVial, Quest_Fountain"
+nfh1,"(standard, changed)",Forest Goblin Hut,,,,,,,not used by code
+nfh0,"(standard, changed)",Forest Goblin Hut,,,,,,,not used by code
+nfgu,"(standard, changed)",,,,,,,,not used by code
+nfgb,"(standard, changed)",,,,,,,,not used by code
+nfel,"(standard, changed)",,,,,,,,not used by code
+net1,"(standard, changed)",,,1500,,,229,,not used by code
+nerw,"(standard, changed)",,,,,,,,not used by code
+ners,"(standard, changed)",,,,,,,,not used by code
+nerd,"(standard, changed)",,,,,,,,not used by code
+nepl,"(standard, changed)",Plague Treant,20,4000,800,35.0,232,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+nenp,"(standard, changed)",Poison Treant,20,4000,800,35.0,244,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+nenf,"(standard, changed)",,11,1200,,31.0,112,,"Arena_TeamData, MonsterData, Spawn"
+nenc,"(standard, changed)",Corrupted Treant,20,3750,800,35.0,215,,"AncientHunt, Arena_TeamData, MonsterData, Spawn"
+nemi,"(standard, changed)",Clemydar,,2200,,35.0,77,,not used by code
+nele,"(standard, changed)",,,,,,,,not used by code
+nelb,"(standard, changed)",,,,,,,,not used by code
+nehy,"(standard, changed)",,16,2000,1200,14.0,68,,"Arena_TeamData, HydraEgg, MonsterData, Spawn"
+necr,"(standard, changed)",,,,,,,,Rabbit
+nech,"(standard, changed)",,,,,,,,not used by code
+ndtw,"(standard, changed)",Dark Goblin Chieftain,13,2350,350,22.0,62,,"Arena_TeamData, Cid"
+ndtt,"(standard, changed)",Dark Goblin Trapper,9,550,250,6.0,25,,"MonsterData, Spawn"
+ndtr,"(standard, changed)",Dark Goblin,6,600,200,8.0,32,,"MonsterData, Spawn"
+ndtp,"(standard, changed)",Dark Goblin Shaman,6,450,400,5.0,,,"Arena_TeamData, MonsterData, Spawn"
+ndth,"(standard, changed)",Dark Goblin Great Shaman,11,800,600,7.0,,,"Arena_TeamData, MonsterData, Spawn"
+ndtb,"(standard, changed)",Dark Goblin Berserker,11,1000,200,13.0,58,,"MonsterData, Spawn"
+ndsa,"(standard, changed)",,,,,,,,not used by code
+ndrw,"(standard, changed)",,,,,,,,not used by code
+ndrv,"(standard, changed)",,9,,600,,82,,"MonsterData, Spawn"
+ndrt,"(standard, changed)",,,,,,,,not used by code
+ndrs,"(standard, changed)",,,,,,,,not used by code
+ndrp,"(standard, changed)",,,,,,,,not used by code
+ndrn,"(standard, changed)",,,,,,,,not used by code
+ndrm,"(standard, changed)",,,,,,,,not used by code
+ndrl,"(standard, changed)",,,,,,,,not used by code
+ndrj,"(standard, changed)",,,,,,,,not used by code
+ndrh,"(standard, changed)",,,,,,,,not used by code
+ndrf,"(standard, changed)",,,,,,,,not used by code
+ndrd,"(standard, changed)",,,,,,,,not used by code
+ndr1,"(standard, changed)",,,,,,,,not used by code
+ndqv,"(standard, changed)",,,,,,,,not used by code
+ndqt,"(standard, changed)",,,,,,,,not used by code
+ndqs,"(standard, changed)",,,,,,,,not used by code
+ndqp,"(standard, changed)",,,,,,,,not used by code
+ndqn,"(standard, changed)",,,,,,,,not used by code
+ndmu,"(standard, changed)",,,,,,,,not used by code
+ndmg,"(standard, changed)",,,,,,,,not used by code
+ndh4,"(standard, changed)",,,,,,,,not used by code
+ndh3,"(standard, changed)",,,,,,,,not used by code
+ndh2,"(standard, changed)",,,,,,,,not used by code
+ndfl,"(standard, changed)",Defiled Fountain of Restoration,,,,,,,FillVial
+nder,"(standard, changed)",,,,,,,,not used by code
+nct2,"(standard, changed)",,,,,,,,not used by code
+nct1,"(standard, changed)",,,,,,,,not used by code
+ncrb,"(standard, changed)",,,,,,,,not used by code
+ncpn,"(standard, changed)",Corrupted Orc Snaga,18,1200,,1.0,28,,MonsterData
+ncnt,"(standard, changed)",,,,,,,,not used by code
+ncnk,"(standard, changed)",,,1200,,44.0,50,,"Arena_TeamData, MonsterData, Spawn"
+ncks,"(standard, changed)",,6,800,,21.0,,,"Arena_TeamData, MonsterData, Spawn"
+nckb,"(standard, changed)",Corrupted Orc Kodo Rider,43,8000,400,24.0,276,,"KalmSiege, MonsterData"
+ncim,"(standard, changed)",,5,900,,16.0,,,"Arena_TeamData, MonsterData, Spawn"
+nchw,"(standard, changed)",Corrupted Orc Warlock,33,3600,1800,9.0,184,,"KalmSiege, MonsterData"
+nchr,"(standard, changed)",Corrupted Orc Wolf Rider,39,6000,400,18.0,392,,"Arena_TeamData, KalmSiege, MonsterData"
+nchg,"(standard, changed)",Corrupted Orc Savage,35,5000,600,31.0,300,,"KalmSiege, MonsterData"
+ncer,"(standard, changed)",,4,800,100,14.0,,,"MonsterData, Spawn"
+ncen,"(standard, changed)",,6,1000,250,30.0,,,"Arena_TeamData, MonsterData, Spawn"
+ncea,"(standard, changed)",,4,750,150,12.0,,,"Arena_TeamData, MonsterData, Spawn, Wanderer"
+ncat,"(standard, changed)",,,,,,,,not used by code
+nbzw,"(standard, changed)",,,,,,,,not used by code
+nbzk,"(standard, changed)",,,,,,,,not used by code
+nbzd,"(standard, changed)",,,,,,,,not used by code
+nbwm,"(standard, changed)",,,,,,,,not used by code
+nbwd,"(standard, changed)",,,,,,,,not used by code
+nbt2,"(standard, changed)",,,,,,,,not used by code
+nbsp,"(standard, changed)",,,,,,,,not used by code
+nbsm,"(standard, changed)",Tome of Demon Warding,,9999,,99.0,,,not used by code
+nbrg,"(standard, changed)",,7,800,,24.0,65,,"Arena_TeamData, MonsterData, Spawn"
+nbot,"(standard, changed)",,1,2500,,,,,"Eidolon, Zeromus"
+nbnb,"(standard, changed)",,,,,,,,not used by code
+nbld,"(standard, changed)",,14,1600,0,46.0,155,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+nbfl,"(standard, changed)",,,30000,,,,,FillVial
+nbee,"(standard, changed)",,,,,,,,not used by code
+nbdw,"(standard, changed)",,30,15951,,,198,,not used by code
+nbds,"(standard, changed)",,,35753,,,175,,not used by code
+nbdr,"(standard, changed)",,,,,,,,not used by code
+nbdo,"(standard, changed)",,,25858,,,156,,not used by code
+nbdm,"(standard, changed)",,40,34865,,,197,,not used by code
+nbdk,"(standard, changed)",,,,,,,,not used by code
+nbda,"(standard, changed)",,45,49653,,,168,,not used by code
+nban,"(standard, changed)",,5,1000,,28.0,38,,"MonsterData, Spawn"
+nbal,"(standard, changed)",,,,,,,,not used by code
+nass,"(standard, changed)",,10,1000,,28.0,99,,"Arena_TeamData, KalmSiege, MonsterData, Spawn"
+narg,"(standard, changed)",,8,1400,200,56.0,48,,"MonsterData, Spawn, StrangeKey"
+nanw,"(standard, changed)",,,,,,,,not used by code
+nano,"(standard, changed)",,,,,,,,not used by code
+nanm,"(standard, changed)",,,,,,,,not used by code
+nane,"(standard, changed)",,,,,,,,not used by code
+nanc,"(standard, changed)",,,,,,,,not used by code
+nanb,"(standard, changed)",,,,,,,,not used by code
+nalb,"(standard, changed)",,,,,,,,not used by code
+nahy,"(standard, changed)",,21,3000,1800,22.0,130,,"HydraEgg, MonsterData, Spawn"
+nadw,"(standard, changed)",,,12589,,,179,,not used by code
+nadr,"(standard, changed)",,38,36501,,,153,,not used by code
+nadk,"(standard, changed)",,,,,,,,not used by code
+hwtw,"(standard, changed)",,,,,50.0,,,not used by code
+hwt3,"(standard, changed)",,,,,,,,not used by code
+hwt2,"(standard, changed)",,,,,,,,not used by code
+hwat,"(standard, changed)",,,,,,,,not used by code
+hvlt,"(standard, changed)",,,,,,,,not used by code
+htow,"(standard, changed)",,,,,,,,not used by code
+hrtt,"(standard, changed)",,,,,,,,not used by code
+hrif,"(standard, changed)",Gunner,,900,,4.0,133,,Spawn
+hrdh,"(standard, changed)",,20,300,,,,,"NameDiary, Quest_Caravan"
+hpxe,"(standard, changed)",,,,,,,,Quest_FireGolem
+hphx,"(standard, changed)",Phoenix,,1800,,3.0,55,,Quest_FireGolem
+hpea,"(standard, changed)",,,,,,,,not used by code
+hmtt,"(standard, changed)",,,,,,,,not used by code
+hmtm,"(standard, changed)",Bomber,,1800,,12.0,602,,Spawn
+hmil,"(standard, changed)",,,,,,,,not used by code
+hlum,"(standard, changed)",,,,,,,,not used by code
+hkni,"(standard, changed)",Mounted Knight,,1800,,55.0,145,,NameDiary
+hkee,"(standard, changed)",,,,,,,,not used by code
+hhou,"(standard, changed)",,,,,,,,not used by code
+hhes,"(standard, changed)",Knight,,1600,,32.0,122,,"MysteriousCurse, NameDiary, Spawn"
+hgyr,"(standard, changed)",,,,,,,,not used by code
+hgry,"(standard, changed)",,,,,,,,not used by code
+hgra,"(standard, changed)",,,,,,,,not used by code
+hfoo,"(standard, changed)",,,1200,,18.0,110,,"NameDiary, Spawn"
+hdhw,"(standard, changed)",,,,,,,,not used by code
+hcth,"(standard, changed)",,,2200,,31.0,87,,NameDiary
+hcas,"(standard, changed)",,,,,,,,not used by code
+hbsh,"(standard, changed)",,,,,,,,not used by code
+hbla,"(standard, changed)",Forge,,,,,,,not used by code
+hbew,"(standard, changed)",,,,,,,,NameDiary
+hbar,"(standard, changed)",,,,,,,,not used by code
+hars,"(standard, changed)",Crystal Sanctum,,,,,,,not used by code
+haro,"(standard, changed)",,,100000,,,,,not used by code
+harm,"(standard, changed)",,,,,,,,not used by code
+halt,"(standard, changed)",,,,,,,,not used by code
+ewsp,"(standard, changed)",,,,,,,,NameDiary
+even,"(standard, changed)",,,,,,,,not used by code
+etrs,"(standard, changed)",Night Elf Fishing Ship,,,,,,,NameDiary
+etrp,"(standard, changed)",,,,,,,,not used by code
+etol,"(standard, changed)",,,,,,,,not used by code
+etoe,"(standard, changed)",,,,,,,,not used by code
+etoa,"(standard, changed)",,,,,,,,not used by code
+espv,"(standard, changed)",,,,,,,,not used by code
+eshy,"(standard, changed)",,,,,,,,not used by code
+eshd,"(standard, changed)",Lenna,,,,40.0,34,,not used by code
+esen,"(standard, changed)",Huntress,,,,,,,NameDiary
+ensh,"(standard, changed)",Naisha,,2000,,8.0,28,,Naisha
+emtg,"(standard, changed)",,,,,,,,not used by code
+emow,"(standard, changed)",,,,,,,,not used by code
+ehpr,"(standard, changed)",,,,,,,,not used by code
+ehip,"(standard, changed)",,,,,,,,not used by code
+egol,"(standard, changed)",,,,,,,,not used by code
+efon,"(standard, changed)",,,,,,,,not used by code
+efdr,"(standard, changed)",,,,,,,,not used by code
+edtm,"(standard, changed)",,,,,,,,not used by code
+edry,"(standard, changed)",,,,,,2285,,not used by code
+edot,"(standard, changed)",Wizard,,,,,14,,NameDiary
+edos,"(standard, changed)",,,,,,,,not used by code
+edoc,"(standard, changed)",Monk,,990,0,2.0,29,,NameDiary
+edob,"(standard, changed)",,,,,,,,not used by code
+edes,"(standard, changed)",,,,,,,,NameDiary
+eden,"(standard, changed)",,,,,,,,not used by code
+echm,"(standard, changed)",,,,,,,,not used by code
+ebsh,"(standard, changed)",,,,,,,,NameDiary
+eate,"(standard, changed)",,,,,,,,not used by code
+earc,"(standard, changed)",,,,,,,,NameDiary
+eaow,"(standard, changed)",,,,,,,,not used by code
+eaom,"(standard, changed)",,,,,,,,not used by code
+eaoe,"(standard, changed)",,,,,,,,not used by code
+Uwar,"(standard, changed)",Zodiac Brave of Fire,,20000,5000,65.0,40,,"Arena_TeamData, MonsterData, TrueIceAge"
+Uvng,"(standard, changed)",Vampire,,14000,,43.0,,,"Arena_TeamData, MonsterData"
+Ulic,"(standard, changed)",,,,,,,,not used by code
+Uear,"(standard, changed)",Dark Knight,,15000,,92.0,100,,"Arena_Spawning, Arena_TeamData, MonsterData, Preload, Spawn"
+Udre,"(standard, changed)",,,,,,,,not used by code
+Udea,"(standard, changed)",,,,,,,,not used by code
+Ucrl,"(standard, changed)",,,,,,,,not used by code
+Othr,"(standard, changed)",Blue Mage,,,,32.0,,,not used by code
+Otch,"(standard, changed)",,,,,,,,not used by code
+Oshd,"(standard, changed)",,,,,,,,not used by code
+Opgh,"(standard, changed)",Corrupted Orc Chieftain,,9000,,62.0,,,"Arena_TeamData, KalmSiege3, MonsterData"
+Ofar,"(standard, changed)",,,,,,,,not used by code
+Ocbh,"(standard, changed)",Brother,,750,,63.0,10,,"Arena_TeamData, MonsterData, Spawn"
+Ocb2,"(standard, changed)",Brother,,10,,47.0,15,,"Arena_TeamData, MonsterData, Spawn"
+Obla,"(standard, changed)",,,,,,,,not used by code
+Nsjs,"(standard, changed)",,,,,9.0,,,not used by code
+Nman,"(standard, changed)",Weapon,80,100000,15000,82.0,50,,"Arena_TeamData, MonsterData"
+Nbbc,"(standard, changed)",Corrupted Samurai,,3000,,24.0,,,MonsterData
+Hvwd,"(standard, changed)",First Ranger,,,,46.0,,,"Arena_TeamData, Spawn"
+Hvsh,"(standard, changed)",Serpent Witch,,8000,,55.0,108,,"Arena_TeamData, MonsterData"
+Hpb1,"(standard, changed)",Engineer,,,,64.0,,,"Arena_TeamData, MonsterData, Spawn"
+Hpal,"(standard, changed)",,,,,,,,not used by code
+Hmkg,"(standard, changed)",,,,,,,,not used by code
+Hmbr,"(standard, changed)",Smith,,,,24.0,52,,Valigarmanda
+Hjai,"(standard, changed)",Cleric,,,,20.0,,,"Arena_TeamData, Quest_LightOfJudgment, Spawn"
+Hgam,"(standard, changed)",Warlock,,,,11.0,,,"Arena_TeamData, MonsterData"
+Hdgo,"(standard, changed)",Blade Knight,,,,62.0,,,"Arena_TeamData, Spawn"
+Hblm,"(standard, changed)",,,,,,,,not used by code
+Hart,"(standard, changed)",Engineer,,,,12.0,,,Mid
+Hapm,"(standard, changed)",Captain,,,,22.0,,,not used by code
+Hant,"(standard, changed)",Archwizard,,,,34.0,30,,not used by code
+Hamg,"(standard, changed)",,,,,,,,not used by code
+Ewrd,"(standard, changed)",Holy Knight,,,,88.0,100,,MonsterData
+Ewar,"(standard, changed)",,,,,,,,not used by code
+Etyr,"(standard, changed)",Priestess of Elune,,,,95.0,15,,Arena_TeamData
+Emoo,"(standard, changed)",,,,,,,,not used by code
+Emns,"(standard, changed)",Keeper of the Forest,,,,123.0,,,Arena_TeamData
+Ekee,"(standard, changed)",,,,,,,,not used by code
+Eill,"(standard, changed)",,,2500,,27.0,99,,not used by code
+Eevm,"(standard, changed)",,,,,,,,not used by code
+Eevi,"(standard, changed)",,,,,,,,Cine
+Edmm,"(standard, changed)",,,,,,,,not used by code
+Edem,"(standard, changed)",,,,,,,,not used by code
+Ecen,"(standard, changed)",Glade Warden,,,,41.0,,,not used by code

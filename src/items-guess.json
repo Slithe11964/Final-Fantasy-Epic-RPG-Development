@@ -1,0 +1,1952 @@
+{
+"1": {
+"id": "pman",
+"name": "Ether",
+"charged": true,
+"sure": true
+},
+"2": {
+"id": "pdiv",
+"name": "Hero Drink",
+"charged": false,
+"sure": false
+},
+"3": {
+"id": "pgma",
+"name": "Hi-Ether",
+"charged": false,
+"sure": false
+},
+"4": {
+"id": "pghe",
+"name": "Hi-Potion",
+"charged": false,
+"sure": false
+},
+"5": {
+"id": "sman",
+"name": "Mega Ether",
+"charged": true,
+"sure": true
+},
+"6": {
+"id": "ankh",
+"name": "Dispel Tonic",
+"charged": false,
+"sure": false
+},
+"7": {
+"id": "phea",
+"name": "Potion",
+"charged": true,
+"sure": true
+},
+"8": {
+"id": "stwp",
+"name": "Scroll of Portal",
+"charged": true,
+"sure": true
+},
+"9": {
+"id": "I001",
+"name": "Mega Potion",
+"charged": true,
+"sure": true
+},
+"10": {
+"id": "I002",
+"name": "Turbo Ether",
+"charged": false,
+"sure": false
+},
+"11": {
+"id": "I000",
+"name": "X-Potion",
+"charged": false,
+"sure": false
+},
+"68": {
+"id": "pres",
+"name": "Elixir",
+"charged": false,
+"sure": false
+},
+"74": {
+"id": "sror",
+"name": "Spirit of Lowtown",
+"charged": false,
+"sure": false
+},
+"78": {
+"id": "I02V",
+"name": "Nectar",
+"charged": false,
+"sure": false
+},
+"83": {
+"id": "I02X",
+"name": "Greater Nectar",
+"charged": false,
+"sure": false
+},
+"96": {
+"id": "I03P",
+"name": "Megalixir",
+"charged": true,
+"sure": true
+},
+"127": {
+"id": "I05I",
+"name": "Spirit Potion",
+"charged": false,
+"sure": false
+},
+"128": {
+"id": "I05H",
+"name": "Blood Ether",
+"charged": false,
+"sure": false
+},
+"187": {
+"id": "I0DI",
+"name": "Remedy",
+"charged": true,
+"sure": true
+},
+"222": {
+"id": "I0ET",
+"name": "Chemist's Nectar",
+"charged": false,
+"sure": false
+},
+"223": {
+"id": "I0EU",
+"name": "Chemist's Greater Nectar",
+"charged": false,
+"sure": false
+},
+"188": {
+"id": "I0KF",
+"name": "Wild Bowl",
+"charged": false,
+"sure": false
+},
+"195": {
+"id": "I0KG",
+"name": "Triton Pot",
+"charged": false,
+"sure": false
+},
+"196": {
+"id": "I0KH",
+"name": "Tropical Dish",
+"charged": false,
+"sure": false
+},
+"197": {
+"id": "I0KI",
+"name": "Fish Soup",
+"charged": false,
+"sure": false
+},
+"147": {
+"id": "I0KL",
+"name": "Spiced Salad",
+"charged": false,
+"sure": false
+},
+"153": {
+"id": "I0KM",
+"name": "Nebra Bread",
+"charged": false,
+"sure": false
+},
+"210": {
+"id": "I0KN",
+"name": "First Class Meat Plate",
+"charged": false,
+"sure": false
+},
+"169": {
+"id": "I0KO",
+"name": "Adamant Stew",
+"charged": false,
+"sure": false
+},
+"69": {
+"id": "I023",
+"name": "Water Materia",
+"charged": true,
+"sure": true
+},
+"70": {
+"id": "I024",
+"name": "Watera Materia",
+"charged": true,
+"sure": true
+},
+"71": {
+"id": "I025",
+"name": "Wateraga Materia",
+"charged": true,
+"sure": true
+},
+"98": {
+"id": "I03G",
+"name": "Quake Materia",
+"charged": true,
+"sure": true
+},
+"99": {
+"id": "I03H",
+"name": "Quakera Materia",
+"charged": true,
+"sure": true
+},
+"148": {
+"id": "I07N",
+"name": "Aero Materia",
+"charged": true,
+"sure": true
+},
+"149": {
+"id": "I07O",
+"name": "Aerora Materia",
+"charged": true,
+"sure": true
+},
+"150": {
+"id": "I07P",
+"name": "Aeroga Materia",
+"charged": true,
+"sure": true
+},
+"194": {
+"id": "I0DT",
+"name": "Curse: Masamune",
+"charged": false,
+"sure": false
+},
+"198": {
+"id": "I0E0",
+"name": "Curse: Fire Wand",
+"charged": false,
+"sure": false
+},
+"199": {
+"id": "I0E1",
+"name": "Curse: Ice Wand",
+"charged": false,
+"sure": false
+},
+"200": {
+"id": "I0E2",
+"name": "Curse: Thunder Wand",
+"charged": false,
+"sure": false
+},
+"209": {
+"id": "I0E7",
+"name": "Curse: Magus Rod",
+"charged": false,
+"sure": false
+},
+"211": {
+"id": "I0ED",
+"name": "Curse: Heady Pipe",
+"charged": false,
+"sure": false
+},
+"224": {
+"id": "I0GE",
+"name": "Curse: Death Skull",
+"charged": false,
+"sure": false
+},
+"239": {
+"id": "I07W",
+"name": "Curse: Zodiac Escutcheon",
+"charged": false,
+"sure": false
+},
+"238": {
+"id": "I0ES",
+"name": "Curse: Ultimate Weapon",
+"charged": false,
+"sure": false
+},
+"269": {
+"id": "I0JV",
+"name": "Curse: Poison Wand",
+"charged": false,
+"sure": false
+},
+"335": {
+"id": "I0BA",
+"name": "Curse: Death Skull X",
+"charged": false,
+"sure": false
+},
+"12": {
+"id": "I00D",
+"name": "|cff00ffffChampion's Belt|r",
+"charged": false,
+"sure": false
+},
+"13": {
+"id": "I00H",
+"name": "|cff00ff00Griever|r",
+"charged": false,
+"sure": false
+},
+"14": {
+"id": "I00B",
+"name": "|cff00ff00Touph Ring|r",
+"charged": false,
+"sure": false
+},
+"17": {
+"id": "I00E",
+"name": "|cff00ffffSprint Shoes|r",
+"charged": false,
+"sure": false
+},
+"18": {
+"id": "I00J",
+"name": "|cff00ffffChimes of Piercing|r",
+"charged": false,
+"sure": false
+},
+"19": {
+"id": "I00G",
+"name": "|cff00ffffArmguard|r",
+"charged": false,
+"sure": false
+},
+"20": {
+"id": "I00K",
+"name": "|cff00ffffBlue Amulet|r",
+"charged": false,
+"sure": false
+},
+"21": {
+"id": "I00I",
+"name": "|cff00ffffGerminas Boots|r",
+"charged": false,
+"sure": false
+},
+"22": {
+"id": "I00P",
+"name": "|cff00ffffGreater Totem of Power|r",
+"charged": false,
+"sure": false
+},
+"23": {
+"id": "I00F",
+"name": "|cff00ffffJade Collar|r",
+"charged": false,
+"sure": false
+},
+"24": {
+"id": "I00C",
+"name": "|cff00ffffBlazer Gloves|r",
+"charged": false,
+"sure": false
+},
+"25": {
+"id": "I00Q",
+"name": "|cff00ffffSteel Gorget|r",
+"charged": false,
+"sure": false
+},
+"26": {
+"id": "I00L",
+"name": "|cff00ffffTotem of Power|r",
+"charged": false,
+"sure": false
+},
+"27": {
+"id": "I00R",
+"name": "|cff00ffffCat's Bell|r",
+"charged": false,
+"sure": false
+},
+"55": {
+"id": "I01X",
+"name": "|cff00ffffHeady Pipe|r",
+"charged": false,
+"sure": false
+},
+"79": {
+"id": "I02W",
+"name": "|cff00ffffNecklace of the Sorcerer|r",
+"charged": false,
+"sure": false
+},
+"87": {
+"id": "I031",
+"name": "|cff00ffffCrusher's Belt|r",
+"charged": false,
+"sure": false
+},
+"92": {
+"id": "I037",
+"name": "|cff00ffffMagic Gloves|r",
+"charged": false,
+"sure": false
+},
+"93": {
+"id": "I039",
+"name": "|cff00ff00Death Skull|r",
+"charged": false,
+"sure": false
+},
+"97": {
+"id": "I03I",
+"name": "|cff00ff00Growth Egg|r",
+"charged": false,
+"sure": false
+},
+"126": {
+"id": "I04D",
+"name": "|cff00ffffLeather Gorget|r",
+"charged": false,
+"sure": false
+},
+"131": {
+"id": "I063",
+"name": "|cff00ffffCharming Banner|r",
+"charged": false,
+"sure": false
+},
+"152": {
+"id": "I08F",
+"name": "|cff00ff00Iron Duke|r",
+"charged": false,
+"sure": false
+},
+"157": {
+"id": "I0A7",
+"name": "|cff00ff00Hidden Hero Medicine|r",
+"charged": false,
+"sure": false
+},
+"166": {
+"id": "I0CN",
+"name": "|cff00ffffSummoner's Horn|r",
+"charged": false,
+"sure": false
+},
+"167": {
+"id": "I0CO",
+"name": "|cff00ffffSilver Glasses|r",
+"charged": false,
+"sure": false
+},
+"168": {
+"id": "I0CP",
+"name": "|cff00ffffSpeed Bracers|r",
+"charged": false,
+"sure": false
+},
+"180": {
+"id": "I0D0",
+"name": "|cff00ffffSetzer's Coin|r",
+"charged": false,
+"sure": false
+},
+"186": {
+"id": "I0DL",
+"name": "|cff00ffffTurtleshell Choker|r",
+"charged": false,
+"sure": false
+},
+"193": {
+"id": "I0DR",
+"name": "|cff00ffffCameo Belt|r",
+"charged": false,
+"sure": false
+},
+"205": {
+"id": "I0DS",
+"name": "|cff00ff00Memento Ring|r",
+"charged": false,
+"sure": false
+},
+"225": {
+"id": "I0FD",
+"name": "|cff00ffffJackboots|r",
+"charged": false,
+"sure": false
+},
+"95": {
+"id": "I0FW",
+"name": "|cff00ffffOrb of Fire|r",
+"charged": false,
+"sure": false
+},
+"158": {
+"id": "I0FX",
+"name": "|cff00ffffOrb of Frost|r",
+"charged": false,
+"sure": false
+},
+"159": {
+"id": "I0FY",
+"name": "|cff00ffffOrb of Lightning|r",
+"charged": false,
+"sure": false
+},
+"160": {
+"id": "I0FZ",
+"name": "|cff00ffffOrb of Water|r",
+"charged": false,
+"sure": false
+},
+"161": {
+"id": "I0G0",
+"name": "|cff00ffffOrb of Earth|r",
+"charged": false,
+"sure": false
+},
+"162": {
+"id": "I0G1",
+"name": "|cff00ffffOrb of Wind|r",
+"charged": false,
+"sure": false
+},
+"94": {
+"id": "I0G6",
+"name": "|cff00ff00Force of Nature|r",
+"charged": false,
+"sure": false
+},
+"235": {
+"id": "I0GD",
+"name": "|cff00ff00Death Skull X|r",
+"charged": false,
+"sure": false
+},
+"236": {
+"id": "I0GJ",
+"name": "|cff00ffffStopwatch|r",
+"charged": false,
+"sure": false
+},
+"252": {
+"id": "I0HT",
+"name": "|cff00ffffProminent Cloak|r",
+"charged": false,
+"sure": false
+},
+"182": {
+"id": "I0IB",
+"name": "|cff00ffffHunter's Cloak|r",
+"charged": false,
+"sure": false
+},
+"271": {
+"id": "I0JX",
+"name": "|cff00ff00Rabite's Foot|r",
+"charged": false,
+"sure": false
+},
+"273": {
+"id": "I0K1",
+"name": "|cff00ffffBag of Tricks|r",
+"charged": false,
+"sure": false
+},
+"275": {
+"id": "I0K2",
+"name": "|cff00ffffFlag of Competition|r",
+"charged": false,
+"sure": false
+},
+"276": {
+"id": "I0K3",
+"name": "|cff00ffffGolden Skull|r",
+"charged": false,
+"sure": false
+},
+"277": {
+"id": "I0K4",
+"name": "|cff00ffffCrystal Skull|r",
+"charged": false,
+"sure": false
+},
+"280": {
+"id": "I0KA",
+"name": "|cff00ffffFirefly|r",
+"charged": false,
+"sure": false
+},
+"281": {
+"id": "I0KC",
+"name": "|cff00ffffRosetta Stone|r",
+"charged": false,
+"sure": false
+},
+"282": {
+"id": "I0KB",
+"name": "|cff00ff00Hero's Badge|r",
+"charged": false,
+"sure": false
+},
+"283": {
+"id": "I0KD",
+"name": "|cff00ffffRing of Rejuvenation|r",
+"charged": false,
+"sure": false
+},
+"322": {
+"id": "I0A9",
+"name": "|cff00ffffBlank Orb|r",
+"charged": false,
+"sure": false
+},
+"334": {
+"id": "I04A",
+"name": "|cff00ff00Sleipnir|r",
+"charged": false,
+"sure": false
+},
+"336": {
+"id": "I0B0",
+"name": "|cff00ffffGenji Gloves|r",
+"charged": false,
+"sure": false
+},
+"340": {
+"id": "I0C8",
+"name": "|cff00ffffOrb of Cetra|r",
+"charged": false,
+"sure": false
+},
+"351": {
+"id": "I0GF",
+"name": "|cff00ff00Yatagarasu|r",
+"charged": false,
+"sure": false
+},
+"15": {
+"id": "I00N",
+"name": "|cffff0000Kotetsu|r",
+"charged": false,
+"sure": false
+},
+"16": {
+"id": "I00M",
+"name": "|cffff0000Poison Spear|r",
+"charged": false,
+"sure": false
+},
+"28": {
+"id": "I00S",
+"name": "|cff00ff00Ultimate Weapon|r",
+"charged": false,
+"sure": true
+},
+"29": {
+"id": "I00U",
+"name": "|cffff0000Long Sword|r",
+"charged": false,
+"sure": false
+},
+"30": {
+"id": "I00V",
+"name": "|cffff0000Mithril Sword|r",
+"charged": false,
+"sure": false
+},
+"31": {
+"id": "I00W",
+"name": "|cffff0000Ancient Sword|r",
+"charged": false,
+"sure": false
+},
+"32": {
+"id": "I00Z",
+"name": "|cffff0000Rune Blade|r",
+"charged": false,
+"sure": false
+},
+"33": {
+"id": "I010",
+"name": "|cff00ff00Save the Queen|r",
+"charged": false,
+"sure": true
+},
+"34": {
+"id": "I011",
+"name": "|cff00ff00Excalibur|r",
+"charged": false,
+"sure": true
+},
+"42": {
+"id": "I019",
+"name": "|cff00ff00Masamune|r",
+"charged": false,
+"sure": false
+},
+"43": {
+"id": "I01A",
+"name": "|cffff0000Battle Axe|r",
+"charged": false,
+"sure": false
+},
+"44": {
+"id": "I01B",
+"name": "|cffff0000Mithril Axe|r",
+"charged": false,
+"sure": false
+},
+"45": {
+"id": "I01C",
+"name": "|cffff0000Giant Axe|r",
+"charged": false,
+"sure": false
+},
+"46": {
+"id": "I01D",
+"name": "|cffff0000Poison Wand|r",
+"charged": false,
+"sure": false
+},
+"47": {
+"id": "I01E",
+"name": "|cffff0000Fire Wand|r",
+"charged": false,
+"sure": false
+},
+"48": {
+"id": "I01F",
+"name": "|cffff0000Thunder Wand|r",
+"charged": false,
+"sure": false
+},
+"49": {
+"id": "I01G",
+"name": "|cffff0000Ice Wand|r",
+"charged": false,
+"sure": false
+},
+"73": {
+"id": "I02C",
+"name": "|cff00ff00Dragon Wand|r",
+"charged": false,
+"sure": true
+},
+"76": {
+"id": "I02P",
+"name": "|cffff0000Dark Claw|r",
+"charged": false,
+"sure": false
+},
+"77": {
+"id": "I02Q",
+"name": "|cffff0000Unholy Claw|r",
+"charged": false,
+"sure": false
+},
+"80": {
+"id": "I02S",
+"name": "|cffff0000Cursed Wand|r",
+"charged": false,
+"sure": false
+},
+"84": {
+"id": "I02Y",
+"name": "|cffff0000Crusher's Mace|r",
+"charged": false,
+"sure": false
+},
+"88": {
+"id": "I033",
+"name": "|cffff0000Trident|r",
+"charged": false,
+"sure": false
+},
+"89": {
+"id": "I035",
+"name": "|cffff0000Platinum Dagger|r",
+"charged": false,
+"sure": false
+},
+"90": {
+"id": "I036",
+"name": "|cffff0000Dark Bow|r",
+"charged": false,
+"sure": false
+},
+"91": {
+"id": "I00O",
+"name": "|cffff0000Fel Axe|r",
+"charged": false,
+"sure": false
+},
+"142": {
+"id": "I066",
+"name": "|cff00ff00Lion Heart|r",
+"charged": false,
+"sure": false
+},
+"143": {
+"id": "I07M",
+"name": "|cff00ff00Excalibur II|r",
+"charged": false,
+"sure": true
+},
+"144": {
+"id": "I07Z",
+"name": "|cff00ff00Zodiac Spear|r",
+"charged": false,
+"sure": false
+},
+"145": {
+"id": "I080",
+"name": "|cff00ff00Artemis Bow|r",
+"charged": false,
+"sure": false
+},
+"146": {
+"id": "I081",
+"name": "|cff00ff00Tournesol|r",
+"charged": false,
+"sure": true
+},
+"151": {
+"id": "I08N",
+"name": "|cff00ff00Nirvana|r",
+"charged": false,
+"sure": true
+},
+"170": {
+"id": "I0CS",
+"name": "|cff00ff00Life Staff|r",
+"charged": false,
+"sure": true
+},
+"171": {
+"id": "I0CT",
+"name": "|cff00ff00Main Gauche|r",
+"charged": false,
+"sure": false
+},
+"172": {
+"id": "I0CU",
+"name": "|cff00ff00Assassin's Dagger|r",
+"charged": false,
+"sure": false
+},
+"184": {
+"id": "I0DH",
+"name": "|cffff0000Strange Vision|r",
+"charged": false,
+"sure": true
+},
+"185": {
+"id": "I0DG",
+"name": "|cffff0000Gladiator's Blade|r",
+"charged": false,
+"sure": false
+},
+"189": {
+"id": "I0DM",
+"name": "|cff00ff00Masamune C|r",
+"charged": false,
+"sure": false
+},
+"201": {
+"id": "I02F",
+"name": "|cffff0000Fire Wand K|r",
+"charged": false,
+"sure": false
+},
+"202": {
+"id": "I0DY",
+"name": "|cffff0000Ice Wand U|r",
+"charged": false,
+"sure": false
+},
+"203": {
+"id": "I0DZ",
+"name": "|cffff0000Thunder Wand J|r",
+"charged": false,
+"sure": false
+},
+"207": {
+"id": "I0E6",
+"name": "|cffff0000Magus Rod A|r",
+"charged": false,
+"sure": false
+},
+"208": {
+"id": "I0E8",
+"name": "|cffff0000Magus Rod|r",
+"charged": false,
+"sure": false
+},
+"212": {
+"id": "I0F2",
+"name": "|cffff0000Icebrand|r",
+"charged": false,
+"sure": false
+},
+"213": {
+"id": "I0F3",
+"name": "|cffff0000Mjolnir|r",
+"charged": false,
+"sure": false
+},
+"214": {
+"id": "I0F4",
+"name": "|cffff0000Longbow|r",
+"charged": false,
+"sure": false
+},
+"215": {
+"id": "I0F5",
+"name": "|cffff0000Dagger|r",
+"charged": false,
+"sure": false
+},
+"216": {
+"id": "I0F6",
+"name": "|cffff0000Wildfire Spear|r",
+"charged": false,
+"sure": false
+},
+"163": {
+"id": "I0FO",
+"name": "|cffff0000Short Lance|r",
+"charged": false,
+"sure": false
+},
+"226": {
+"id": "I0FP",
+"name": "|cff00ff00Wirt's Leg|r",
+"charged": false,
+"sure": false
+},
+"227": {
+"id": "I0EW",
+"name": "|cffff0000Demon Axe|r",
+"charged": false,
+"sure": false
+},
+"154": {
+"id": "I0F7",
+"name": "|cffff0000Muramasa|r",
+"charged": false,
+"sure": false
+},
+"229": {
+"id": "I0GA",
+"name": "|cff00ff00Final Wand|r",
+"charged": false,
+"sure": true
+},
+"230": {
+"id": "I0F8",
+"name": "|cffff0000Ame-no-Murakumo|r",
+"charged": false,
+"sure": false
+},
+"231": {
+"id": "I0EY",
+"name": "|cffff0000Fishing Pole|r",
+"charged": false,
+"sure": false
+},
+"232": {
+"id": "I0EZ",
+"name": "|cffff0000Muramata|r",
+"charged": false,
+"sure": false
+},
+"233": {
+"id": "I0GB",
+"name": "|cffff0000Matamune|r",
+"charged": false,
+"sure": false
+},
+"234": {
+"id": "I0GC",
+"name": "|cff00ff00Lu Shang|r",
+"charged": false,
+"sure": false
+},
+"240": {
+"id": "I0H1",
+"name": "|cff00ff00Mina|r",
+"charged": false,
+"sure": false
+},
+"253": {
+"id": "I0HU",
+"name": "|cff00ff00Angbar|r",
+"charged": false,
+"sure": false
+},
+"256": {
+"id": "I0ER",
+"name": "|cff00ff00Caladbolg|r",
+"charged": false,
+"sure": true
+},
+"266": {
+"id": "I0BW",
+"name": "|cffff0000Phantom Bow|r",
+"charged": false,
+"sure": false
+},
+"134": {
+"id": "I0C0",
+"name": "|cffff0000Vega|r",
+"charged": false,
+"sure": false
+},
+"135": {
+"id": "I0C1",
+"name": "|cffff0000Aldebaran|r",
+"charged": false,
+"sure": false
+},
+"136": {
+"id": "I0C2",
+"name": "|cffff0000Arcturus|r",
+"charged": false,
+"sure": false
+},
+"137": {
+"id": "I0C3",
+"name": "|cff00ff00Formalhaut|r",
+"charged": false,
+"sure": false
+},
+"181": {
+"id": "I0HW",
+"name": "|cffff0000Staff of Light|r",
+"charged": false,
+"sure": false
+},
+"268": {
+"id": "I0JU",
+"name": "|cffff0000Scourge Wand|r",
+"charged": false,
+"sure": false
+},
+"270": {
+"id": "I0JW",
+"name": "|cffff0000Dark Staff|r",
+"charged": false,
+"sure": true
+},
+"272": {
+"id": "I0JY",
+"name": "|cffff0000Heroic Lance|r",
+"charged": false,
+"sure": false
+},
+"278": {
+"id": "I0K8",
+"name": "|cff00ff00Buddha Fist|r",
+"charged": false,
+"sure": false
+},
+"228": {
+"id": "I0G5",
+"name": "|cff00ff00Masakados|r",
+"charged": false,
+"sure": true
+},
+"288": {
+"id": "I0KW",
+"name": "|cffff0000Siphoning Staff|r",
+"charged": false,
+"sure": true
+},
+"289": {
+"id": "I0L0",
+"name": "|cffff0000Aeon Scepter|r",
+"charged": false,
+"sure": true
+},
+"294": {
+"id": "I0L6",
+"name": "|cffff0000Shimmering Spear|r",
+"charged": false,
+"sure": false
+},
+"295": {
+"id": "I0L7",
+"name": "|cffff0000Shimmering Sword|r",
+"charged": false,
+"sure": false
+},
+"296": {
+"id": "I0L8",
+"name": "|cffff0000Shimmering Axe|r",
+"charged": false,
+"sure": false
+},
+"297": {
+"id": "I0L9",
+"name": "|cffff0000Shimmering Katana|r",
+"charged": false,
+"sure": false
+},
+"298": {
+"id": "I0KX",
+"name": "|cffff0000Wand of the Wind|r",
+"charged": false,
+"sure": false
+},
+"299": {
+"id": "I0KY",
+"name": "|cffff0000Serpent Rod|r",
+"charged": false,
+"sure": false
+},
+"300": {
+"id": "I0KZ",
+"name": "|cffff0000Gaya's Rod|r",
+"charged": false,
+"sure": false
+},
+"316": {
+"id": "I0LQ",
+"name": "|cff00ff00Chunchunmaru|r",
+"charged": false,
+"sure": false
+},
+"317": {
+"id": "I05S",
+"name": "|cff00ff00Holy Lance|r",
+"charged": false,
+"sure": false
+},
+"318": {
+"id": "I05T",
+"name": "|cffff0000Kiku-Ichimonji|r",
+"charged": false,
+"sure": false
+},
+"319": {
+"id": "I061",
+"name": "|cff00ff00Auto-Crossbow|r",
+"charged": false,
+"sure": true
+},
+"320": {
+"id": "I060",
+"name": "|cff00ff00Halberd of Justice|r",
+"charged": false,
+"sure": false
+},
+"327": {
+"id": "I0BH",
+"name": "|cffff0000Knuckles|r",
+"charged": false,
+"sure": false
+},
+"328": {
+"id": "I0BI",
+"name": "|cffff0000Pickaxe|r",
+"charged": false,
+"sure": false
+},
+"329": {
+"id": "I0BJ",
+"name": "|cffff0000Miner's Pickaxe|r",
+"charged": false,
+"sure": false
+},
+"333": {
+"id": "I0BM",
+"name": "|cffff0000Gravity Staff|r",
+"charged": false,
+"sure": true
+},
+"337": {
+"id": "I0C5",
+"name": "|cff00ff00Rock Punch|r",
+"charged": false,
+"sure": false
+},
+"338": {
+"id": "I0C6",
+"name": "|cff00ff00Edgar's Drill|r",
+"charged": false,
+"sure": false
+},
+"339": {
+"id": "I0C7",
+"name": "|cff00ff00Ryuujin no Ken|r",
+"charged": false,
+"sure": false
+},
+"341": {
+"id": "I0C9",
+"name": "|cffff0000Beast Claw|r",
+"charged": false,
+"sure": false
+},
+"342": {
+"id": "I0BP",
+"name": "|cff00ff00Executioner Sword|r",
+"charged": false,
+"sure": false
+},
+"343": {
+"id": "I0LP",
+"name": "|cff00ff00True Ice Axe|r",
+"charged": false,
+"sure": false
+},
+"344": {
+"id": "I03D",
+"name": "|cff00ff00Gladius|r",
+"charged": false,
+"sure": false
+},
+"345": {
+"id": "I03O",
+"name": "|cff00ff00Wyrmhero Blade|r",
+"charged": false,
+"sure": false
+},
+"347": {
+"id": "I0BT",
+"name": "|cff00ff00Brotherhood|r",
+"charged": false,
+"sure": false
+},
+"348": {
+"id": "I0D1",
+"name": "|cff00ff00Storm Lance|r",
+"charged": false,
+"sure": false
+},
+"302": {
+"id": "I0LL",
+"name": "Celestium",
+"charged": false,
+"sure": false
+},
+"321": {
+"id": "I0A8",
+"name": "Celestial Psypher",
+"charged": false,
+"sure": false
+},
+"303": {
+"id": "I0LJ",
+"name": "|cffff7f7fChainsaw|r",
+"charged": false,
+"sure": true
+},
+"304": {
+"id": "I0LE",
+"name": "|cffff7f7fDurandal|r",
+"charged": false,
+"sure": false
+},
+"305": {
+"id": "I0LA",
+"name": "|cffff7f7fSagittarius|r",
+"charged": false,
+"sure": false
+},
+"306": {
+"id": "I0LH",
+"name": "|cffff7f7fExeter|r",
+"charged": false,
+"sure": false
+},
+"307": {
+"id": "I0LC",
+"name": "|cffff7f7fEhrgeiz|r",
+"charged": false,
+"sure": true
+},
+"308": {
+"id": "I0LG",
+"name": "|cffff7f7fZwill Crossblade|r",
+"charged": false,
+"sure": false
+},
+"309": {
+"id": "I0LD",
+"name": "|cffff7f7fScorpio|r",
+"charged": false,
+"sure": false
+},
+"310": {
+"id": "I0LI",
+"name": "|cffff7f7fZanmatou|r",
+"charged": false,
+"sure": false
+},
+"311": {
+"id": "I0LB",
+"name": "|cffff7f7fLonginus|r",
+"charged": false,
+"sure": false
+},
+"312": {
+"id": "I0LF",
+"name": "|cffff7f7fRagnarok|r",
+"charged": false,
+"sure": true
+},
+"35": {
+"id": "I012",
+"name": "|cffff8040Round Shield|r",
+"charged": false,
+"sure": true
+},
+"36": {
+"id": "I013",
+"name": "|cffff8040Iron Shield|r",
+"charged": false,
+"sure": true
+},
+"37": {
+"id": "I014",
+"name": "|cffff8040Mithril Shield|r",
+"charged": false,
+"sure": true
+},
+"38": {
+"id": "I015",
+"name": "|cffff8040Aegis Shield|r",
+"charged": false,
+"sure": true
+},
+"39": {
+"id": "I016",
+"name": "|cffff8040Platinum Shield|r",
+"charged": false,
+"sure": true
+},
+"40": {
+"id": "I017",
+"name": "|cffff8040Enchanted Shield|r",
+"charged": false,
+"sure": true
+},
+"41": {
+"id": "I018",
+"name": "|cff00ff00Absorber|r",
+"charged": false,
+"sure": true
+},
+"81": {
+"id": "I02T",
+"name": "|cffff8040Unholy Shield|r",
+"charged": false,
+"sure": true
+},
+"132": {
+"id": "I064",
+"name": "|cff00ff00Zodiac Escutcheon|r",
+"charged": false,
+"sure": true
+},
+"133": {
+"id": "I065",
+"name": "|cff00ff00Ensanguined Shield|r",
+"charged": false,
+"sure": true
+},
+"165": {
+"id": "I0BU",
+"name": "|cff00ff00Genji Shield|r",
+"charged": false,
+"sure": true
+},
+"204": {
+"id": "I0E3",
+"name": "|cff00ff00Interceptor Guard|r",
+"charged": false,
+"sure": true
+},
+"218": {
+"id": "I0FA",
+"name": "|cffff8040Flame Shield|r",
+"charged": false,
+"sure": true
+},
+"219": {
+"id": "I03A",
+"name": "|cffff8040Frost Shield|r",
+"charged": false,
+"sure": true
+},
+"241": {
+"id": "I0HN",
+"name": "|cffff8040Onion Arrows|r",
+"charged": false,
+"sure": true
+},
+"242": {
+"id": "I0HP",
+"name": "|cffff8040Icecloud Arrows|r",
+"charged": false,
+"sure": true
+},
+"243": {
+"id": "I0HQ",
+"name": "|cffff8040Shock Arrows|r",
+"charged": false,
+"sure": true
+},
+"244": {
+"id": "I0HR",
+"name": "|cffff8040Tempest Arrows|r",
+"charged": false,
+"sure": true
+},
+"245": {
+"id": "I0HO",
+"name": "|cffff8040Killer Arrows|r",
+"charged": false,
+"sure": true
+},
+"246": {
+"id": "I0HH",
+"name": "|cffff8040Onion Shot|r",
+"charged": false,
+"sure": true
+},
+"247": {
+"id": "I0HI",
+"name": "|cffff8040Piercing Shot|r",
+"charged": false,
+"sure": true
+},
+"248": {
+"id": "I0HK",
+"name": "|cffff8040Rock Shot|r",
+"charged": false,
+"sure": true
+},
+"249": {
+"id": "I0HJ",
+"name": "|cffff8040Scattershot|r",
+"charged": false,
+"sure": true
+},
+"250": {
+"id": "I0HL",
+"name": "|cffff8040Molotov Shot|r",
+"charged": false,
+"sure": true
+},
+"251": {
+"id": "I0HM",
+"name": "|cffff8040Bubble Shot|r",
+"charged": false,
+"sure": true
+},
+"254": {
+"id": "I0I8",
+"name": "|cffff8040Tome of Agility|r",
+"charged": false,
+"sure": true
+},
+"255": {
+"id": "I0I5",
+"name": "|cffff8040Tome of Crippling|r",
+"charged": false,
+"sure": true
+},
+"257": {
+"id": "I0I2",
+"name": "|cffff8040Tome of Strength|r",
+"charged": false,
+"sure": true
+},
+"258": {
+"id": "I0I6",
+"name": "|cffff8040Tome of the Breaker|r",
+"charged": false,
+"sure": true
+},
+"259": {
+"id": "I0I1",
+"name": "|cffff8040Tome of Banishment|r",
+"charged": false,
+"sure": true
+},
+"260": {
+"id": "I0I4",
+"name": "|cffff8040Tome of Heresy|r",
+"charged": false,
+"sure": true
+},
+"261": {
+"id": "I0HX",
+"name": "|cffff8040Tome of Life|r",
+"charged": false,
+"sure": true
+},
+"262": {
+"id": "I0I7",
+"name": "|cffff8040Tome of Phantasm|r",
+"charged": false,
+"sure": true
+},
+"263": {
+"id": "I0HZ",
+"name": "|cffff8040Tome of Time|r",
+"charged": false,
+"sure": true
+},
+"264": {
+"id": "I0I3",
+"name": "|cff00ff00Holy Book of Galbados|r",
+"charged": false,
+"sure": true
+},
+"265": {
+"id": "I0HY",
+"name": "|cffff8040Tome of the Tortoise|r",
+"charged": false,
+"sure": true
+},
+"274": {
+"id": "I0H0",
+"name": "|cff00ff00Paladin Shield|r",
+"charged": false,
+"sure": true
+},
+"301": {
+"id": "I0LK",
+"name": "|cff00ff00Artemis Arrows|r",
+"charged": false,
+"sure": true
+},
+"313": {
+"id": "I0LN",
+"name": "|cffff8040Shimmering Shield|r",
+"charged": false,
+"sure": true
+},
+"323": {
+"id": "I0B8",
+"name": "|cff00ff00Pulsar Shot|r",
+"charged": false,
+"sure": true
+},
+"190": {
+"id": "I05U",
+"name": "|cffff8040Book of Flames|r",
+"charged": false,
+"sure": true
+},
+"191": {
+"id": "I05V",
+"name": "|cffff8040Book of Glaciers|r",
+"charged": false,
+"sure": true
+},
+"192": {
+"id": "I05W",
+"name": "|cffff8040Book of Storms|r",
+"charged": false,
+"sure": true
+},
+"324": {
+"id": "I05X",
+"name": "|cffff8040Book of Depths|r",
+"charged": false,
+"sure": true
+},
+"325": {
+"id": "I05Y",
+"name": "|cffff8040Book of Tremors|r",
+"charged": false,
+"sure": true
+},
+"326": {
+"id": "I05Z",
+"name": "|cffff8040Book of Winds|r",
+"charged": false,
+"sure": true
+},
+"332": {
+"id": "I0BC",
+"name": "|cffff8040Canister Shot|r",
+"charged": false,
+"sure": true
+},
+"331": {
+"id": "I0BF",
+"name": "|cff00ff00Slither Shield|r",
+"charged": false,
+"sure": true
+},
+"346": {
+"id": "I086",
+"name": "|cff00ff00Akashic Records|r",
+"charged": false,
+"sure": true
+},
+"350": {
+"id": "I0FK",
+"name": "|cff00ff00Invert Shield|r",
+"charged": false,
+"sure": true
+},
+"50": {
+"id": "I01H",
+"name": "|cffffff00Iron Helmet|r",
+"charged": false,
+"sure": false
+},
+"51": {
+"id": "I01I",
+"name": "|cffffff00Mithril Helmet|r",
+"charged": false,
+"sure": false
+},
+"52": {
+"id": "I01J",
+"name": "|cffffff00Diamond Helmet|r",
+"charged": false,
+"sure": true
+},
+"53": {
+"id": "I01K",
+"name": "|cffffff00Platinum Helmet|r",
+"charged": false,
+"sure": false
+},
+"72": {
+"id": "I026",
+"name": "|cffffff00Helm of the Magi|r",
+"charged": false,
+"sure": true
+},
+"54": {
+"id": "I01L",
+"name": "|cff00ff00Grand Helmet|r",
+"charged": false,
+"sure": false
+},
+"75": {
+"id": "I02R",
+"name": "|cffffff00Headgear of the Damned|r",
+"charged": false,
+"sure": true
+},
+"82": {
+"id": "I02U",
+"name": "|cffffff00Helm of the Necromancer|r",
+"charged": false,
+"sure": true
+},
+"85": {
+"id": "I02Z",
+"name": "|cffffff00Barbarian's Helmet|r",
+"charged": false,
+"sure": false
+},
+"129": {
+"id": "I04C",
+"name": "|cffffff00Berserker's Helmet|r",
+"charged": false,
+"sure": false
+},
+"138": {
+"id": "I06A",
+"name": "|cff00ff00Zodiac Helmet|r",
+"charged": false,
+"sure": false
+},
+"139": {
+"id": "I069",
+"name": "|cff00ff00Circlet|r",
+"charged": false,
+"sure": true
+},
+"164": {
+"id": "I0AA",
+"name": "|cff00ff00Genji Mask|r",
+"charged": false,
+"sure": false
+},
+"183": {
+"id": "I0D4",
+"name": "|cff00ff00Helm of Divine Judgement|r",
+"charged": false,
+"sure": false
+},
+"220": {
+"id": "I0FB",
+"name": "|cffffff00Serpent Helmet|r",
+"charged": false,
+"sure": false
+},
+"221": {
+"id": "I0FC",
+"name": "|cffffff00Enchanted Helmet|r",
+"charged": false,
+"sure": true
+},
+"290": {
+"id": "I0L4",
+"name": "|cffffff00Glimmering Hat|r",
+"charged": false,
+"sure": true
+},
+"291": {
+"id": "I0L1",
+"name": "|cffffff00Ice Hat|r",
+"charged": false,
+"sure": true
+},
+"292": {
+"id": "I0L2",
+"name": "|cffffff00Green Hat|r",
+"charged": false,
+"sure": true
+},
+"293": {
+"id": "I0L3",
+"name": "|cffffff00Earth Hat|r",
+"charged": false,
+"sure": true
+},
+"315": {
+"id": "I0LO",
+"name": "|cffffff00Shimmering Helmet|r",
+"charged": false,
+"sure": false
+},
+"56": {
+"id": "I01M",
+"name": "|cffff00ffStudded Leather Armor|r",
+"charged": false,
+"sure": true
+},
+"57": {
+"id": "I01N",
+"name": "|cffff00ffReinforced Leather Armor|r",
+"charged": false,
+"sure": true
+},
+"58": {
+"id": "I01O",
+"name": "|cffff00ffStorm Wyrm Hide Armor|r",
+"charged": false,
+"sure": true
+},
+"59": {
+"id": "I01P",
+"name": "|cffff00ffGrandmasterwork Leather|r",
+"charged": false,
+"sure": true
+},
+"60": {
+"id": "I01Q",
+"name": "|cffff00ffElven Mail|r",
+"charged": false,
+"sure": true
+},
+"61": {
+"id": "I01R",
+"name": "|cffff00ffMithril Mail|r",
+"charged": false,
+"sure": true
+},
+"62": {
+"id": "I01S",
+"name": "|cffff00ffShimmering Mail|r",
+"charged": false,
+"sure": true
+},
+"63": {
+"id": "I01T",
+"name": "|cffff00ffPlatinum Mail|r",
+"charged": false,
+"sure": true
+},
+"64": {
+"id": "I01U",
+"name": "|cffff00ffWizard's Robe|r",
+"charged": false,
+"sure": true
+},
+"65": {
+"id": "I01V",
+"name": "|cffff00ffMagician's Robe|r",
+"charged": false,
+"sure": true
+},
+"66": {
+"id": "I01W",
+"name": "|cffff00ffSorcerer's Robe|r",
+"charged": false,
+"sure": true
+},
+"67": {
+"id": "I01Y",
+"name": "|cff00ff00Genji Armor|r",
+"charged": false,
+"sure": true
+},
+"86": {
+"id": "I030",
+"name": "|cffff00ffFur Armor|r",
+"charged": false,
+"sure": true
+},
+"130": {
+"id": "I05G",
+"name": "|cffff00ffGaia Gear|r",
+"charged": false,
+"sure": true
+},
+"140": {
+"id": "I07X",
+"name": "|cff00ff00Robe of Lords|r",
+"charged": false,
+"sure": true
+},
+"155": {
+"id": "I0A6",
+"name": "|cff00ff00Adamant Armor|r",
+"charged": false,
+"sure": true
+},
+"206": {
+"id": "I0E5",
+"name": "|cff00ff00Maximillian|r",
+"charged": false,
+"sure": true
+},
+"217": {
+"id": "I0F9",
+"name": "|cffff00ffWindbreaker|r",
+"charged": false,
+"sure": true
+},
+"237": {
+"id": "I0GZ",
+"name": "|cff00ff00Nebra Suit|r",
+"charged": false,
+"sure": true
+},
+"267": {
+"id": "I0BX",
+"name": "|cff00ff00Grand Armor|r",
+"charged": false,
+"sure": true
+},
+"279": {
+"id": "I0K9",
+"name": "|cff00ff00Vishnu Vest|r",
+"charged": false,
+"sure": true
+},
+"284": {
+"id": "I0KQ",
+"name": "|cffff00ffGlimmering Robe|r",
+"charged": false,
+"sure": true
+},
+"285": {
+"id": "I0KS",
+"name": "|cffff00ffLight Robe|r",
+"charged": false,
+"sure": true
+},
+"286": {
+"id": "I0KR",
+"name": "|cffff00ffRed Robe|r",
+"charged": false,
+"sure": true
+},
+"287": {
+"id": "I0KT",
+"name": "|cffff00ffAzure Robe|r",
+"charged": false,
+"sure": true
+},
+"314": {
+"id": "I0LM",
+"name": "|cffff00ffShimmering Cloth|r",
+"charged": false,
+"sure": true
+},
+"330": {
+"id": "I0BG",
+"name": "|cff00ff00Mirage Vest|r",
+"charged": false,
+"sure": true
+},
+"349": {
+"id": "I0D2",
+"name": "|cff00ff00White Robe|r",
+"charged": false,
+"sure": true
+},
+"141": {
+"id": "I062",
+"name": "Aire Tam Enib Moc",
+"charged": false,
+"sure": false
+},
+"156": {
+"id": "I084",
+"name": "Adamantite",
+"charged": false,
+"sure": false
+},
+"173": {
+"id": "I0CX",
+"name": "Magic God Token",
+"charged": true,
+"sure": true
+},
+"174": {
+"id": "I08A",
+"name": "Empyreal Soul",
+"charged": false,
+"sure": false
+},
+"175": {
+"id": "I0B7",
+"name": "Grand Crystal",
+"charged": false,
+"sure": false
+},
+"176": {
+"id": "I06P",
+"name": "Scarletite",
+"charged": false,
+"sure": false
+},
+"177": {
+"id": "I08B",
+"name": "Serpent Gem",
+"charged": false,
+"sure": false
+},
+"178": {
+"id": "I089",
+"name": "Soul Powder",
+"charged": false,
+"sure": false
+},
+"179": {
+"id": "I07C",
+"name": "Nethril",
+"charged": false,
+"sure": false
+}
+}

@@ -1,0 +1,78 @@
+id,copied from,name,levels,used by (modules)
+R022,Roch,Enemy-exclusive,,not used by code
+R021,Roch,Naisha Powerup,50,QuestCount
+R020,Roch,Command AI: stomp and thunderclap,,Init
+R01Z,Roch,Command AI: shockwave,,Init
+R01Y,Roch,Command AI: frostnova,,Init
+R01X,Roch,Command AI: flamestrike,,Init
+R01W,Roch,Command AI: thunderbolt,,Init
+R01V,Roch,Attack Speed +300%,,Init
+R01U,Roch,Attack Speed +400%,,Init
+R01T,Roch,Attack Speed +200%,,Init
+R01S,Roch,Attack Speed +100%,,Init
+R01R,Roch,Dark Dragon Marsh,6,Vote
+R01P,Roch,Improved Marksmanship,,not used by code
+R01O,Roch,Dragon Level,11,not used by code
+R01N,Roch,Cyclops Level,11,not used by code
+R01M,Roch,Master Sorcerer,,not used by code
+R01L,Roch,Master Prophet,,not used by code
+R01K,Roch,Master Calculator,,not used by code
+R01J,Roch,Master Oracle,,not used by code
+R01I,Roch,Master Mediator,,not used by code
+R01H,Roch,Master Time Mage,,not used by code
+R01G,Roch,Master Summoner,,not used by code
+R01F,Roch,Master Priest,,not used by code
+R01E,Roch,Master Wizard,,not used by code
+R01D,Roch,Master Chemist,,not used by code
+R01C,Roch,Master Holy Swordsman,,not used by code
+R01B,Roch,Master Ninja,,not used by code
+R01A,Roch,Master Samurai,,not used by code
+R019,Roch,Master Geomancer,,not used by code
+R018,Roch,Master Lancer,,not used by code
+R017,Roch,Master Thief,,not used by code
+R016,Roch,Master Monk,,not used by code
+R015,Roch,Master Archer,,not used by code
+R014,Roch,Master Knight,,not used by code
+R013,Roch,Master Squire,,not used by code
+R012,Roch,Enemy Chocobo,,not used by code
+R011,Roch,Enemy Summons,,Init
+R010,Roch,Enemy Chocobo,,Chocobo_Population
+R00Y,Roch,Attack Speed Eternity Boost,,GameMode
+R00X,Roch,Enemy Chocobo,,Chocobo_Population
+R00W,Roch,Enemy Chocobo,,Chocobo_Population
+R00V,Roch,Sorcerer's Level,99,not used by code
+R00U,Roch,Oracle's Level,99,not used by code
+R00T,Roch,Summoner's Level,99,not used by code
+R00S,Roch,Enemy Chocobo,,Chocobo_Population
+R00R,Roch,Enemy Chocobo,,Chocobo_Population
+R00Q,Roch,Enemy Chocobo,,Chocobo_Population
+R00P,Roch,Defend Chocobos,5,Chocobo_Upgrades
+R00O,Roch,Shiva Level,11,not used by code
+R00N,Roch,Greatsword,10,"Cmd, Damage, Init, Prof, Research, Save +3"
+R00M,Roch,Gun,10,"Cmd, Damage, Element, Init, Mediator, Prof +5"
+R00L,Roch,Inner Mana,10,"Cmd, Init, Oracle, Prof, Research, Save +9"
+R00K,Roch,Golem Level,11,not used by code
+R00J,Roch,Enemy Chocobo,,Chocobo_Population
+R00I,Rhde,Heavens Forged Axe,10,"Damage, Geomancer, Prof, Shock, ShockSmash, Valfodr"
+R00H,Roch,Mana Boost,,not used by code
+R00G,Roch,Buy from Pandaren Spiritualist (6000 Gold + 1 Shard),,"Cmd, Gaya_Inventory, Save"
+R00F,Roch,Buy from Pandaren Spiritualist (3000 Gold + 1 Shard),,"Cmd, Gaya_Inventory, Save"
+R00E,Roch,Ifrit Level,11,not used by code
+R00D,Roch,Shuriken Throwing,,not used by code
+R00C,Roch,General Improvement,,not used by code
+R00B,Roch,Dagger,10,"Cmd, Counter, Damage, Fan, Init, Ninja +7"
+R00A,Roch,Katana,10,"Cmd, Damage, Init, Prof, Research, Samurai +5"
+R009,Roch,Spear,10,"Cmd, Init, Lancer, Prof, Research, Save +3"
+R008,Roch,Axe,10,"Cmd, Init, Research, Save, Titles, Unit +1"
+R007,Roch,Mystic Armor,10,"Cmd, Damage, Init, MagicDefense, Prof, Research +2"
+R006,Roch,Leather Armor,10,"Cmd, Damage, Init, Prof, Research, Save +1"
+R005,Roch,Plate Armor,10,"Cmd, Damage, Init, Prof, Research, Save +1"
+R004,Roch,Staff,10,"Cmd, Init, MagicDefense, Prof, Research, Save +2"
+R003,Roch,Rod,10,"Cmd, Init, Prof, Research, Save, Titles +2"
+R002,Roch,Bow,10,"Arrowwave, Auto, Cmd, Damage, Element, Init +8"
+R001,Roch,Sword,10,"Armor, Cmd, Damage, Init, Prof, Research +5"
+R000,Roch,Tools,10,"Auto, Chainsaw, Chemist, Cmd, Init, Knot +8"
+Rume,"(standard, changed)",,,MapBootstrap
+Ruar,"(standard, changed)",,,MapBootstrap
+Rosp,"(standard, changed)",,,MapBootstrap
+Resi,"(standard, changed)",Buy from Pandaren Spiritualist (1500 Gold + 1 Shard),,"Cmd, Gaya_Inventory, Save"

@@ -17,3 +17,4 @@ tools, so the newest map listed above it is still current.
 | A | `docs/BUGS.md`: suspected bugs found while writing the guides | see git log | (docs only) | Done |
 | B | Developer test commands: module `DevCommands` (folder 11), `docs/DEBUG_COMMANDS.md`; `check_map --allow-new` | see git log | `FFERPG_0.9.7.3-r16-stageB.w3x` | Checks pass (check 6 lists the 2 new triggers). **Needs play test:** type `-dev` in single player |
 | C | Save code tool `tools/savecode.py` (decode/encode/selftest), `-dumpitems` dev command, `tools/sync_module.py` (put a changed module into the playable script) | see git log | `FFERPG_0.9.7.3-r16-stageC.w3x` | Selftest passes. **Needs:** run `-dumpitems`, then decode one of your real codes and compare |
+| D | Object reference: `tools/objects.py` + `tools/objdata.py` (reads/writes object data, byte-exact round trip) → `docs/OBJECTS.md`, `docs/objects/*.md/csv`, `src/items-guess.json` | see git log | (docs/tools only) | Done |
