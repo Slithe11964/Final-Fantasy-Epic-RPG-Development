@@ -15,3 +15,4 @@ tools, so the newest map listed above it is still current.
 |---|---|---|---|---|
 | (start) | r15: phases 8–9 | ba47da7 | `FFERPG_0.9.7.3-r15.w3x` | Checks pass; waiting for your play test |
 | A | `docs/BUGS.md`: suspected bugs found while writing the guides | see git log | (docs only) | Done |
+| B | Developer test commands: module `DevCommands` (folder 11), `docs/DEBUG_COMMANDS.md`; `check_map --allow-new` | see git log | `FFERPG_0.9.7.3-r16-stageB.w3x` | Checks pass (check 6 lists the 2 new triggers). **Needs play test:** type `-dev` in single player |

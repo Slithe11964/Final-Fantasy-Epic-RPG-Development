@@ -4417,5 +4417,11 @@
   "folder": "",
   "library": null,
   "note": "Disabled GUI trigger that references pre-placed units so World Editor generates their gg_unit_ variables. Keep it disabled; do not delete."
+ },
+ {
+  "index": 736,
+  "name": "DevCommands",
+  "folder": "11 Developer tools",
+  "library": "TDevCommands"
  }
 ]

@@ -142,6 +142,10 @@ Small utilities with no gameplay of their own:
 - **Other:** `Music`, `Sound`, `Multiboard`, `Ping`, `PlayerTimer1`…`8`, and `Cheat` (cheat
   detection).
 
+### 11 Developer tools
+`DevCommands`: single-player test commands (`-dev`). Untick it for a public release. See
+[DEBUG_COMMANDS.md](DEBUG_COMMANDS.md).
+
 ### 10 Startup coordinator
 `MapBootstrap` holds `main_old`, the startup sequence (see STARTUP.md).
 

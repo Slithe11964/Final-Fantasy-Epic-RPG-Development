@@ -156,7 +156,8 @@ def blocks(items):
             groups[-1].append(it)
     return stmts, groups
 
-def audit(base_script, cand_script):
+def audit(base_script, cand_script, allow_new=None):
+    """allow_new: regex of trigger variables that may be NEW in the candidate (added on purpose)."""
     b_items = expand(parse_functions(base_script))
     c_items = expand(parse_functions(cand_script))
     report = dict(baseline_statements=len(b_items), candidate_statements=len(c_items), failures=[])
@@ -173,6 +174,10 @@ def audit(base_script, cand_script):
     n_trig = n_moved = 0
     for gi, (bg, cg) in enumerate(zip(b_groups, c_groups)):
         bk = [trigger_key(t[2]) for t in bg]
+        if allow_new:
+            added = [t for t in cg if trigger_key(t[2]) not in bk and re.fullmatch(allow_new, trigger_key(t[2]))]
+            report.setdefault('added', []).extend(trigger_key(t[2]) for t in added)
+            cg = [t for t in cg if t not in added]
         ck = [trigger_key(t[2]) for t in cg]
         if sorted(bk) != sorted(ck):
             fail('startup block %d registers different triggers: missing=%s extra=%s' % (gi, sorted(set(bk) - set(ck))[:5], sorted(set(ck) - set(bk))[:5]))

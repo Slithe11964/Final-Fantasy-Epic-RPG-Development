@@ -1,6 +1,6 @@
 """Automated checks for an FF Epic RPG map. Run after every change, before testing in game.
 
-    python tools/check_map.py MAP.w3x [--baseline BASELINE.w3x] [--pjass PATH] [--common common.j --blizzard blizzard.j]
+    python tools/check_map.py MAP.w3x [--baseline BASELINE.w3x [--allow-new REGEX]] [--pjass PATH] [--common common.j --blizzard blizzard.j]
 
 Checks:
   1. Playable script (war3map.j) passes pjass.
@@ -66,6 +66,7 @@ def declared(globals_text):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('map'); ap.add_argument('--baseline')
+    ap.add_argument('--allow-new', help='regex of trigger variables added on purpose since the baseline (check 6 lists them instead of failing)')
     ap.add_argument('--pjass'); ap.add_argument('--common'); ap.add_argument('--blizzard')
     ap.add_argument('--runtime', help='check this war3map.j instead of the one inside the map')
     a = ap.parse_args()
@@ -199,9 +200,10 @@ def main():
     results['5 native save/load text safety'] = (not msgs, msgs)
 
     if a.baseline:
-        r = startup_audit.audit(startup_audit.load_script(a.baseline), runtime)
+        r = startup_audit.audit(startup_audit.load_script(a.baseline), runtime, a.allow_new)
         results['6 startup sequence matches baseline'] = (r.get('passed', False),
-            r['failures'][:20] or ['%d triggers checked, %d independent trigger pairs reordered' % (r.get('triggers_checked', 0), r.get('reordered_independent_pairs', 0))])
+            r['failures'][:20] or ['%d triggers checked, %d independent trigger pairs reordered' % (r.get('triggers_checked', 0), r.get('reordered_independent_pairs', 0))]
+            + (['added on purpose: ' + ', '.join(r['added'])] if r.get('added') else []))
 
     all_ok = True
     for k, (ok, details) in results.items():

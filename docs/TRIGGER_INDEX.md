@@ -4604,7 +4604,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Title_Grant` | (no event: run by other triggers) | starts off; run by Title, AlmightyShinra, Arena_BattleResults, Arena_Conquest, Arena_Cups, Arena_Rounds +23 more |
+| `Title_Grant` | (no event: run by other triggers) | starts off; run by Title, AlmightyShinra, Arena_BattleResults, Arena_Conquest, Arena_Cups, Arena_Rounds +24 more |
 | `Title_UnlockEffects` | (no event: run by other triggers) | starts off; run by Title |
 | `Title_ApplyStats` | (no event: run by other triggers) | starts off; run by Title, Hero_EndlessGrowth |
 | `Title_ArmsCollection` | (no event: run by other triggers) | starts off; run by Cmd, Weapon |
@@ -4947,3 +4947,12 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `TextSkip_Command` | chat "-skip" | disabled by GameMode |
+
+## 11 Developer tools
+
+### DevCommands
+
+| Trigger | Fires when | Notes |
+|---|---|---|
+| `DevCommands_Chat` | chat "-" |  |
+| `DevCommands_Announce` | once, 5.s after start |  |
