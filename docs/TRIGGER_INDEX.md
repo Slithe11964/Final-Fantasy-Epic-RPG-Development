@@ -175,7 +175,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `HolySwordsman_Eclipse` | a unit uses an ability |  |
-| `HolySwordsman_Finisher` | a unit uses an ability | used by Unused |
+| `HolySwordsman_Finisher` | a unit uses an ability |  |
 
 ### Sorcerer
 

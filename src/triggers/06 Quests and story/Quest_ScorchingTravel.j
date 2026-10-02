@@ -26,38 +26,6 @@ function Trig_Quest_52_Scorching_TravelDialog_Disable takes nothing returns noth
     endif
 endfunction
 
-function Trig_Quest_52_Prepare_Func005Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func006Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func007Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func008Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func009Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func010Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func011Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Prepare_Func012Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
 function Trig_Quest_52_Scorching_Cond_IsIceBlocker1 takes nothing returns boolean
     return(GetDestructableTypeId(GetEnumDestructable())=='ITx1')or(GetDestructableTypeId(GetEnumDestructable())=='ITx3')or(GetDestructableTypeId(GetEnumDestructable())=='ITx2')or(GetDestructableTypeId(GetEnumDestructable())=='ITx4')or(GetDestructableTypeId(GetEnumDestructable())=='ITcr') // 'ITx1': object name not found in map data; 'ITx3': object name not found in map data; 'ITx2': object name not found in map data; 'ITx4': object name not found in map data; 'ITcr': object name not found in map data
 endfunction
@@ -152,74 +120,6 @@ function Trig_Quest_52_Scorching_HideOrKillDest4 takes nothing returns nothing
             call ShowDestructableBJ(false,GetEnumDestructable())
         endif
     endif
-endfunction
-
-function Trig_Quest_52_Scorching_Func035Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func036Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func037Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func038Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func039Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func040Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func041Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func042Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func043Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func044Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func045Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func046Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func047Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func048Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func049Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func050Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Scorching_Func051Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
 endfunction
 
 function Trig_Quest_52_Scorching_Cond_UnitAlive takes nothing returns boolean
@@ -322,74 +222,6 @@ function Trig_Quest_52_Scorching_Actions takes nothing returns nothing
     call Trig_Quest_52_Scorching_TravelDialog_Disable()
     set udg_TravelName[udg_TravelPointIndex]="|cFFFFFFFFI|rnfernal Mountain"
     call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_Quest_52_Unscorching_Func038Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func039Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func040Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func041Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func042Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func043Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func044Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func045Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func046Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func047Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func048Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func049Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func050Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func051Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func052Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func053Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
-endfunction
-
-function Trig_Quest_52_Unscorching_Func054Func001C takes nothing returns boolean
-    return(GetDestructableTypeId(GetEnumDestructable())!='ITtw') // 'ITtw': object name not found in map data
 endfunction
 
 function InitTrig_Quest_ScorchingTravel takes nothing returns nothing

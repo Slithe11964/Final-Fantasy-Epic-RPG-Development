@@ -660,15 +660,6 @@ function Units_CreateAllUnits takes nothing returns nothing
 endfunction
 
 
-// Owned setup helpers; bootstrap controls their original execution order.
-function Units_InitializeMapUnits takes nothing returns nothing
-    call Units_CreateNeutralPassiveBuildings()
-    call Units_CreatePlayerBuildings()
-    call Units_CreateNeutralPassiveCritters()
-    call Units_CreateAllUnits()
-    call ConfigureNeutralVictim()
-endfunction
-
 function InitTrig_Units takes nothing returns nothing
 endfunction
 

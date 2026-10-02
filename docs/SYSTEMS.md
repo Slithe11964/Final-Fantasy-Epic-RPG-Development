@@ -53,7 +53,6 @@ Small utilities with no gameplay of their own:
   quest log, and so on.
 - `QuestLog_Entries` is a GUI trigger with the quest log (F9) help texts. Edit them there.
 - `Preload` preloads models.
-- `MapSetup` and `config` hold editor-generated helpers.
 
 ### 03 Jobs and progression
 - **Job change:** `Job` changes a hero's job when a job is bought at a shrine. `Shrine`,

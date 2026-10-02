@@ -56,16 +56,6 @@ function Medicine_ApplyTimed takes unit t,boolean ph returns nothing
     call TimerStart(udg_StatsRefreshTimer,.01,false,null)
 endfunction
 
-function Medicine_AutoApply takes player p returns nothing
-    local unit u=Player_GetHero(p)
-    local timer tm=udg_SpellCooldownTimer[GetPlayerId(p)]
-    if(GetUnitAbilityLevel(u,'A0FF')>0 and TimerGetRemaining(tm)<=.0)then // 'A0FF': ability "Hidden Hero Medicine"
-        call Medicine_ApplyTimed(Player_GetHero(p),false)
-    endif
-    set u=null
-    set tm=null
-endfunction
-
 function InitTrig_Medicine takes nothing returns nothing
 endfunction
 
