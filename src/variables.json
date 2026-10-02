@@ -1,0 +1,3458 @@
+[
+ {
+  "name": "udg_KnockRemoveTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileCollisionTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileDamageTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileImpactTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobRequirementText",
+  "type": "string",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShrineMenuUnit",
+  "type": "unit array",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MasteryBonusAbility",
+  "type": "integer array",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ComboCount",
+  "type": "integer",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ComboUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ComboAwarded",
+  "type": "boolean",
+  "section": "Shared by modules in \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementOpposite",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementWeaknessAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementResistAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementImmunityAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementAbsorbAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementAttackAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementKnowledgeAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementBoostAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementSpellAmpAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementOrbAmpAbil",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementEnchantBuff",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementAilmentBuff",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementAilmentBuff2",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AllianceTargetSlot",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GolemUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShivaUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_IfritUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CyclopsUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GlyphDemonType",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DodgeUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DodgeAttacker",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GayaRageLoc",
+  "type": "location",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementSpellPrimary",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementSpellSecondary",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GolemSummon",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Eidolon1",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Eidolon2",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Eidolon3",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BahamutSummon",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NeoBahamutSummon",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ManaRefundGold",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ManaRefundUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AnimalCompanionUnit",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpellManaCost",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MeteorDummyIndex",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MeteorDummyAbility",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DmgFlagHealUndead",
+  "type": "boolean",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AdaptPhysTotal",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AdaptMagicTotal",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SleepTarget",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GolemBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShivaBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_IfritBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CyclopsBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BahamutBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NeoBahamutBaseArmor",
+  "type": "real",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RapidFireActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RapidFireList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LiquidSteelActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LiquidSteelList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ClioneActiveCount",
+  "type": "integer",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ClioneList",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaCaster",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaOwner",
+  "type": "player array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RapidFireShooter",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RapidFireIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenCaster",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenDamage",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenAngle",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenX",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenY",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenEffect",
+  "type": "effect array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenOwner",
+  "type": "player array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiCaster",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiTickDamage",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiStompDamage",
+  "type": "real array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiHitTick",
+  "type": "boolean array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiOwner",
+  "type": "player array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LiquidSteelEffect",
+  "type": "effect array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LiquidSteelIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlCaster",
+  "type": "unit array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlEffect",
+  "type": "effect array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ClioneIndex",
+  "type": "integer array",
+  "section": "Shared by modules in \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RecipeResult",
+  "type": "integer array",
+  "section": "Shared by modules in \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RecipeItem1",
+  "type": "integer array",
+  "section": "Shared by modules in \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RecipeItem2",
+  "type": "integer array",
+  "section": "Shared by modules in \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RecipeCharges1",
+  "type": "integer array",
+  "section": "Shared by modules in \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RecipeCharges2",
+  "type": "integer array",
+  "section": "Shared by modules in \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AoMadoushiFacing",
+  "type": "real",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AoMadoushiLoc",
+  "type": "location",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TimmyUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FloatingText",
+  "type": "texttag array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowHireOffer",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowOfferTier",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowKills",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowKatana",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowDagger",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowHelmet",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowArmor",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowPotion",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FluteHolder",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DancingDaggersAbility",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShimmerweedItem",
+  "type": "item",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlueGirl",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_VillagerEffectActive",
+  "type": "boolean",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZoneBoss",
+  "type": "unit array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SiegeNorthUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GhoulMasterDisabled",
+  "type": "boolean",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HiddenDest",
+  "type": "destructable array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HiddenDestCount",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SiegeSouthUnitType",
+  "type": "integer array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PhantomVillagersMet",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DarkFireStage",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShinraFinaleArmed",
+  "type": "boolean",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CidQuestOnHold",
+  "type": "boolean",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RaidPowerLevel",
+  "type": "integer",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FafnirPatrolPoint",
+  "type": "location array",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Fafnir",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_VikingBoat",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LokiReforgeItem",
+  "type": "item",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LokiForgeText",
+  "type": "texttag",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LokiForgeSpot",
+  "type": "location",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CrossbowAdviceGiven",
+  "type": "boolean",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PhantomDiaryUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaMonsterType",
+  "type": "integer array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaRound",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaPickedTeam",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaCheckFlag",
+  "type": "boolean",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaTextTag",
+  "type": "texttag array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaLightning",
+  "type": "lightning array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboCupStage",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSwapTemp",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSwapTemp2",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaShowcaseOn",
+  "type": "boolean",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaUnitsUnlocked",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaIntroSeen",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CrystalShardCount",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaBattleOffer",
+  "type": "integer array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaMonsterItem",
+  "type": "integer array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaLeaderUnit",
+  "type": "unit",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntShopStock",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntRewardItem",
+  "type": "integer array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaOwnerStreak",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaBpTag",
+  "type": "texttag array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaIntermission",
+  "type": "boolean",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSurvivalMode",
+  "type": "boolean",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSoloPlayer",
+  "type": "player",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaEliteKilled",
+  "type": "boolean",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntBoard",
+  "type": "unit array",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSpawnTeam",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSpawnFacing",
+  "type": "real",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaSpawnLoc",
+  "type": "location",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaStallTicks",
+  "type": "integer",
+  "section": "Shared by modules in \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TravelX",
+  "type": "real array",
+  "section": "Shared by modules in \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TravelY",
+  "type": "real array",
+  "section": "Shared by modules in \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WarpEnterTrigger",
+  "type": "trigger",
+  "section": "Shared by modules in \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MusicZoneTrack",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MusicSpecialTrack",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HasLoadedCode",
+  "type": "boolean array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EnemyHpPerPlayer",
+  "type": "real",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BreedPartnerChocobo",
+  "type": "unit",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboAbility",
+  "type": "integer array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BreedTargetChocobo",
+  "type": "unit",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboAbilityIndex",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboDigSpot",
+  "type": "location array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboDigItem",
+  "type": "integer array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboRegionIndex",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_VotesCast",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PendingEventCount",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboDigSpotCount",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishMonster",
+  "type": "integer array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TopVoteCount",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WinningOption",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ActivePlayerCount",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DifficultyName",
+  "type": "string",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GameRunning",
+  "type": "boolean",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunTitleBase",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GameModeName",
+  "type": "string",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveDebug",
+  "type": "boolean",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AutosaveTimerTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NewGamePlusTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NewGameMinusTrig",
+  "type": "trigger",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveBufferFreeHead",
+  "type": "integer",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveBufferNext",
+  "type": "integer array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MusicEnabled",
+  "type": "boolean array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MusicUseCustom",
+  "type": "boolean array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MusicAnnounce",
+  "type": "boolean array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveStructKind",
+  "type": "integer array",
+  "section": "Shared by modules in \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HealCreditPlayer",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FilterOwner",
+  "type": "player",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockSpeed",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockDecay",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockCosA",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockSinA",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockX",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockY",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockDamage",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KnockSource",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveChunkBase",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveSlotFreeCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeSlot",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeSlotStack",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveChunkIndex",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeReadPos",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileCaster",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileTarget",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileCosA",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileSinA",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileX",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileY",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileElement",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileIsPure",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileTrueDamage",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileHealCredit",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileModelEffect",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileTrailEffect",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeFreeTrig",
+  "type": "trigger array",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeCreateTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeWriteIntTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeReadIntTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlizzagaRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RapidFireRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenDamageTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShurikenRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiPullTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiStompTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TatsumakiRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LiquidSteelRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WickedWhirlRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ClioneRemoveTrig",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArgBits",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArgPlayer",
+  "type": "player",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArgReal",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RetInt",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"01 Shared helpers\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerKillCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_InfoQuestItem",
+  "type": "questitem array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ColorCyan",
+  "type": "string",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ColorGreen",
+  "type": "string",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ExpRate",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ColorOrange",
+  "type": "string",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DifficultyQuest",
+  "type": "quest",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilityTextEnabled",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FirePotionCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GameDay",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_StoryFlag",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NewsEntryCooldown",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MaterialOwnedCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MateriaAltarDone",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZoneKillStreak",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZoneStreakID",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WandererSpawned",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LastKillZoneID",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AutoBrewEnabled",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuFrogDraining",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShowDamageText",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GayaReady",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowSpawnFacing",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ExpShareRange",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpiritCalm",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpiritWanderTick",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementalMoveTimer",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementalAlive",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementalKillStreak",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GafgarionRevived",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MapRewardTier",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FestivalScore",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TargetRecordTime",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TitleStatsBlocked",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobLevelTier1",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SecondaryXPRate",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobExtraAbility",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NecrophobeStarted",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BeltStacks",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArmoryParentCategory",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_OversoulKillsNeeded",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeciesKillCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MaterialSpentCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MolotovCooldown",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementalKilledOnce",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NullElementCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WeakElementCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SplashTally",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_OracleMasteryCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_InfinityAbsorbed",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DpsRefresh",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DragonKillCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BankedXP",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CountedItemIndex",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ItemCounted",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"02 Map setup\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempInteger2",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempItemId",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FreelancerHero",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilitySlot1",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilitySlot2",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilitySlot3",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilitySlot4",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobUnitType",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobSkill",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishingControls",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JobCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DarkJobsUnlocked",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunFlag",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SubSkillSlot",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MainSkillSlot",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShrineUnlocked",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PetUnit",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DragonSummonUnit",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NpcUnit",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LegendMarker",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DarkShopsVisible",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestStage",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LegendaryUnlocked",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SummonUnit",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BrewAbility",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EnchantAbility",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CookingStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BahamutZeroBaseArmor",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboGreensFed",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"03 Jobs and progression\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempInteger",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpiritOfGaya",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GolemUnit",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EnemyHandicap",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempPoint",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempString",
+  "type": "string",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerStartRect",
+  "type": "rect array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempBoolean",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuFrogLoc",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MonographDropped",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RewardItem",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuFrogDrainCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SlotIndex",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempPoint2",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RingHintsReady",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SummonItem",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempUnit2",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboGreensStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CurrentHero",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_StoryBoss",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_StatCalcValue",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DamageElement",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_IsPhysicalAttack",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LastDamageDealt",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempHandleId",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CurrentEffectUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DmgFlagUnavoidable",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempReal",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DmgFlagPure",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DexterityBonus",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DmgFlagNoCrit",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DexterityCritMult",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_IsPureDamage",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempPoint5",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CaravanStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PortalRitualActive",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementRecordUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ExcaliburRockHidden",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_IgnoresReduction",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GlyphActivated",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DmgFlagManaDamage",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GatherState",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GatherItem",
+  "type": "item array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishingBobberLoc",
+  "type": "location array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishPullAbil",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishLeftAbil",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishRightAbil",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DifficultyScale",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BravesDefeated",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HolyAnkhUsed",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BossCleanupTrigger",
+  "type": "trigger",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilityLevelShift",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HellSpawnsActive",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TalonUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LootItemID",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RingHintUsed",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChaosBoss",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FogDisabled",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaBonusBattle",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZaleraStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MateusDefeated",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EchelePhase",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BossDefeated",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EcheleFormsKilled",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DropRollSeed",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShemhazaiPhase",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BahamutZeroSummon",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunMode",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BossUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DispelTarget",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HarpyMatriarch",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShinryuUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WarmechUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DragonBattlePhase",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GlyphRect",
+  "type": "rect array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MomentumCharges",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SummonedBoss",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SummonerPlayer",
+  "type": "player",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BlindSpotCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AdaptElementTotal",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MagicDefense",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DodgeStreak",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Vercingetorix",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DamageTally",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CoverAwardCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EnduranceManaCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EnduranceDamageCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HealingTotal",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_UrnBossDeaths",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AbilityLevelIndex",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ImmortalDamage",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ImmortalLife",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ImmortalUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ImmortalSource",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WirtsLegItem",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_OkuuStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileSpeed",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileRange",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileImpactDamage",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileAoE",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileTravelDamage",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileFalloff",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileIsMagic",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileHoming",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MissileHitOnce",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArgIndex",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"04 Combat and abilities\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArmoryCodeSegment",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DropItemIdTable",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LastBazaarShop",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ForgeMaterialSlot",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ForgeText",
+  "type": "texttag",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ItemUseReplacement",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DropTempInt",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LevelItemIdTable",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArtifactCarrier",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ItemIndex",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ForgeGearSlot",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ForgeDropPoint",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"05 Items crafting and shops\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TravelHotkey",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TravelButton",
+  "type": "button array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WarpEffect",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempPlayer",
+  "type": "player",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Mid",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MainQuest",
+  "type": "quest array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZodiacStone",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpecialEffect",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SideQuest",
+  "type": "quest array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestItem",
+  "type": "item array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestReq",
+  "type": "questitem array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CinematicActor",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_InCinematicMode",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestMarkerEffect",
+  "type": "effect array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestsTotal",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestsCompleted",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TalkRange",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NarratorUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KalmNpc",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_QuestFlag",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CupWins",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SceneBusy",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowLoyalty",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Difficulty",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PortalGuardianMet",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_StoryProgress",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ThunderbloomItem",
+  "type": "item",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpiritUnit",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HardcoreOff",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RetreatPoint",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TempPoint3",
+  "type": "location",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZoneEssenceItem",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NaishaUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AreaSpawnUnitA",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AreaSpawnUnitB",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ElementRecord",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishedGilgamesh",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NebraKingSpot",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RangerHero",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EngineerHero",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ClericAlly",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HighPriestAlly",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BladeKnightAlly",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ScriptedBossUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntCounter",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CommonHuntsDone",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HardMode",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_DanaQuestStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HashmalumStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ZodiacQuestStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TentacleCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MontblancHasNews",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_AlmaUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SnowEffect",
+  "type": "weathereffect array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CinematicsDisabled",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HashmalumEncountered",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpiritsCleansed",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CidQuestStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GodDragonUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NaishaTownUnit",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TalonGone",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EcheleBoss",
+  "type": "unit",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SecretDigSpotRevealed",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ExodusQuestStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_KalmTechLevel",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ShadowForcedSpawn",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunStarted",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_EternityMode",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_LothlorienOpen",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntStock",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpawnsPaused",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GenjiGiftStage",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_JudgePlayer",
+  "type": "player",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RukselHintShown",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"06 Quests and story\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ItemIdTable",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaOrganizer",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaCupId",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaBracketSlot",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaBracketTeam",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaGateOpened",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaOrganizerLast",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_RareHuntsDone",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BattlePoints",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArenaRank",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HuntTarget",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PenanceArmsActive",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"07 Hunts and encounters\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_WarpUnlocked",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TravelCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CinematicSkipped",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerTransport",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CameraDistance",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GameHours",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HandicapHPScaling",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"08 World and travel\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerHero",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveFlagCount",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerHouse",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TotalJobLevel",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_HighestJobLevel",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChocoboDigItemCharges",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TextSpeed",
+  "type": "real",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MetaFragments",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_MiracleStage",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_PlayerFishSpot",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_FishLoot",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_GilgameshDefeated",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SeaKingQuestStarted",
+  "type": "boolean",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_NewGamePlusLevel",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ChronicleAbility",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TitleChroniclePoints",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_BonusValue",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TitleChronicleIndex",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveFlagUnitID",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArmoryItemCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_VoteCount",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeDifficulty",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunLevel",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunBoss",
+  "type": "unit array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SpeedrunTimeLimit",
+  "type": "real array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_TitlePrimaryStatOnly",
+  "type": "boolean array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SaveVersion",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_SavePlayer",
+  "type": "player array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeKey",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeBuffer",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_CodeBits",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_Pow2",
+  "type": "integer array",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ },
+ {
+  "name": "udg_ArgInt",
+  "type": "integer",
+  "section": "Shared across folders, mostly by \"09 Player features\"",
+  "initial_value": ""
+ }
+]

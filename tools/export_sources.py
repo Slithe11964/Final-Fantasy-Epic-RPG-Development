@@ -49,6 +49,20 @@ def export(map_path, src_dir):
         with open(os.path.join(folder_dir, entry['name'] + '.j'), 'w', encoding='utf-8', newline='') as f:
             f.write(text)
         result.append(dict(index=index, name=entry['name'], folder=entry['folder'], library=lib))
+    from wtg import read_wtg
+    try:
+        variables = read_wtg(MPQ(map_path).read('war3map.wtg'))['variables']
+    except Exception:
+        variables = None
+    if variables is not None:
+        old_vars = {}
+        vpath = os.path.join(src_dir, 'variables.json')
+        if os.path.exists(vpath):
+            old_vars = {v['name']: v for v in json.load(open(vpath, encoding='utf-8'))}
+        with open(vpath, 'w', encoding='utf-8') as f:
+            json.dump([dict(name='udg_' + v['name'], type=v['type'] + (' array' if v['is_array'] else ''),
+                            section=old_vars.get('udg_' + v['name'], {}).get('section', ''),
+                            initial_value=v['init'] if v['is_init'] else '') for v in variables], f, indent=1)
     with open(list_path, 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=1)
     return result

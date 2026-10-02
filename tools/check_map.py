@@ -170,6 +170,13 @@ def main():
     for t in texts:
         sg.update(gdecls(t))
     rg_all = gdecls(runtime_lf[:runtime_lf.index('\nendglobals') + 12])
+    # Variable Editor variables: World Editor declares them (udg_ + name); compare type only
+    from wtg import read_wtg
+    for v in read_wtg(m.read('war3map.wtg'))['variables']:
+        n = 'udg_' + v['name']
+        sg[n] = rg_all.get(n, sg.get(n))
+        if n not in rg_all or rg_all[n][1] != v['type'] or rg_all[n][2] != bool(v['is_array']):
+            sg[n] = ('variable editor', v['type'], bool(v['is_array']), ())
     errs = ['declared in source but missing from playable script: ' + n for n in sorted(set(sg) - set(rg_all))]
     errs += ['declared differently in source and playable script: ' + n for n in sorted(set(sg) & set(rg_all)) if sg[n] != rg_all[n]]
     errs += ['playable script declares udg_ variable missing from source: ' + n for n in sorted(set(rg_all) - set(sg)) if n.startswith('udg_')]

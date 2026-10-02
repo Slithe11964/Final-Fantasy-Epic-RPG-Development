@@ -161,6 +161,10 @@ def write_globals(mods, header, docs):
                 if mm:
                     decl[mm.group(4)] = (mm.group(2) + (' array' if mm.group(3) else ''), where)
     scan(header, 'map header')
+    vpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'variables.json')
+    if os.path.exists(vpath):
+        for v in json.load(open(vpath, encoding='utf-8')):
+            decl[v['name']] = (v['type'], 'Variable Editor')
     for n, m in mods.items():
         scan(m['text'], n)
     users = collections.defaultdict(set)
