@@ -220,3 +220,60 @@ if __name__ == '__main__':
         print(n, None if d is None else len(d))
         if d is not None:
             open(os.path.join(out, n.replace('\\', '__')), 'wb').write(d)
+
+def _reencrypt(raw, flags, fsize, ss, name, old_pos, new_pos):
+    """Re-key a position-keyed (FIX_KEY) encrypted block for a new position."""
+    base = hash_string(os.path.basename(name.replace('\\', '/')), 3)
+    ok, nk = ((base + old_pos) ^ fsize) & 0xFFFFFFFF, ((base + new_pos) ^ fsize) & 0xFFFFFFFF
+    if flags & FLAG_SINGLE:
+        return encrypt(decrypt(raw, ok), nk)
+    n = (fsize + ss - 1) // ss
+    if flags & (FLAG_COMPRESS | FLAG_IMPLODE):
+        offs_raw = decrypt(raw[:(n + 1) * 4], (ok - 1) & 0xFFFFFFFF)
+        offs = struct.unpack('<%dI' % (n + 1), offs_raw)
+        out = bytearray(encrypt(offs_raw, (nk - 1) & 0xFFFFFFFF))
+    else:
+        offs = [min(i * ss, len(raw)) for i in range(n + 1)]
+        out = bytearray()
+    for i in range(n):
+        blk = raw[offs[i]:offs[i + 1]]
+        out += encrypt(decrypt(blk, (ok + i) & 0xFFFFFFFF), (nk + i) & 0xFFFFFFFF)
+    return bytes(out)
+
+def compact(src, dst):
+    """Write a copy of the archive without the unused space left behind by replace_files."""
+    if os.path.exists(dst):
+        raise FileExistsError(dst)
+    m = MPQ(src)
+    names = {}
+    lf = m.read('(listfile)')
+    cands = (lf.decode('utf-8', 'replace').split('\r\n') if lf else []) + ['(listfile)', '(attributes)', '(signature)']
+    for n in cands:
+        if n:
+            bi = m.block_index(n)
+            if bi is not None:
+                names[bi] = n
+    body = bytearray(m.d[m.o:m.o + m.hdr_size])
+    new_bt = []
+    for bi, (pos, csize, fsize, flags) in enumerate(m.bt):
+        raw = m.d[m.o + pos:m.o + pos + csize]
+        if not flags & FLAG_EXISTS or csize == 0:
+            new_bt.append([len(body) if flags & FLAG_EXISTS else pos, csize, fsize, flags]); body += raw; continue
+        newpos = len(body)
+        if flags & FLAG_ENCRYPTED and flags & FLAG_FIX_KEY:
+            if bi not in names:
+                raise RuntimeError('cannot move position-keyed block %d without its name' % bi)
+            raw = _reencrypt(raw, flags, fsize, m.ss, names[bi], pos, newpos)
+        body += raw
+        new_bt.append([newpos, csize, fsize, flags])
+    hto = len(body)
+    body += encrypt(b''.join(struct.pack('<IIHHI', *e) for e in m.ht), hash_string('(hash table)', 3))
+    bto = len(body)
+    body += encrypt(b''.join(struct.pack('<IIII', *e) for e in new_bt), hash_string('(block table)', 3))
+    struct.pack_into('<IIHHIIII', body, 4, m.hdr_size, len(body), m.fmt, m.bss, hto, bto, len(m.ht), len(new_bt))
+    open(dst, 'wb').write(m.d[:m.o] + bytes(body))
+    a, b = MPQ(src), MPQ(dst)
+    for n in set(names.values()):
+        if a.read(n) != b.read(n):
+            raise RuntimeError('compaction changed ' + n)
+    return dst

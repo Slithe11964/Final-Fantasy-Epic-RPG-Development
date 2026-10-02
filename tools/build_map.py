@@ -6,13 +6,13 @@ Copies BASE_MAP and replaces its trigger-editor source (war3map.wct) with src/ma
 src/triggers/**. Every other archive file is preserved byte-for-byte. With --runtime, the
 playable script (war3map.j) is replaced too; without it the base map's compiled script stays,
 so open the output in World Editor and save it (JassHelper + vJass enabled) to recompile,
-then run Build Play Copy before playing.
+then play the saved map.
 
 The output file must not exist yet (nothing is ever overwritten).
 """
 import argparse, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from mpq import MPQ, replace_files
+from mpq import MPQ, replace_files, compact
 from wct import read_wct, write_wct, raw_of
 
 def crlf(text):
@@ -45,7 +45,14 @@ def main():
     files = {'war3map.wct': build_wct(base.read('war3map.wct'), a.src)}
     if a.runtime:
         files['war3map.j'] = open(a.runtime, 'rb').read()
-    replace_files(a.base, a.output, files)
+    if os.path.exists(a.output):
+        raise SystemExit('output exists: ' + a.output)
+    tmp = a.output + '.tmp'
+    if os.path.exists(tmp):
+        os.remove(tmp)
+    replace_files(a.base, tmp, files)
+    compact(tmp, a.output)     # drop the space the replaced files used to occupy
+    os.remove(tmp)
     print('wrote', a.output, '(' + ', '.join(sorted(files)) + ' replaced; all other files preserved)')
 
 if __name__ == '__main__':
