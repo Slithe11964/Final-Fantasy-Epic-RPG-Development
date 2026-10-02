@@ -84,8 +84,9 @@ The first character is the version: `A` = 0, `B` = 1, and so on.
 - **New jobs:** adding one to `udg_JobUnitType` changes the job-level part of the code. Old
   readers loop over `udg_JobCount`, so they would read one level too many. A new job therefore
   needs a new code version too; the reader for old codes must stop at the old job count.
-- **New items:** items are saved by index (`Item_IdFromIndex`). Add new items at the **end** of
-  the item table. Reordering it changes what old codes load.
+- **New items:** items are saved by their position in `udg_ItemIdTable`, in 9 bits. Add new items
+  at the **end** of the table and stay below 501. Reordering it changes what old codes load.
+  See [LOOT.md](LOOT.md).
 - **Testing:** test every save change by saving, restarting, and loading, in both a code (`-load`)
   and a file (`-loadf`). `-sdebug` prints what is being written.
 - **Long text:** keep long text out of custom script. Very long JASS strings break loading saved

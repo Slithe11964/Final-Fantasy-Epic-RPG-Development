@@ -17,6 +17,10 @@ System explainers (written by hand):
 - [SAVE_CODES.md](SAVE_CODES.md): `-save` / `-load`, what a code holds, how to change the format safely.
 - [JOBS.md](JOBS.md): one hero per job, job change, unlock tree, mastery, the Shrine.
 - [SPAWNS.md](SPAWNS.md): spawn zones, monster pools, the monster data table.
+- [LOOT.md](LOOT.md): item indexes, monster drop chances, chests, steal.
+- [BOSSES.md](BOSSES.md): how boss fights start, fight, die and drop; adding a boss.
+- [ARENA.md](ARENA.md): cups, team data, Battle Points, the duel arena.
+- [../CONTRIBUTING.md](../CONTRIBUTING.md): the routine for every change and naming rules.
 
 ## How a module is laid out
 
@@ -84,8 +88,8 @@ Small utilities with no gameplay of their own:
   hold shared spell code. A few spells register through `RegisterLegacy_*` during startup step 8.
 - **Passive and status abilities:** the many small modules (`Regen`, `Protect`, `Shell`,
   `Haste`, `Sleep` …) each handle one ability or status.
-- **Bosses:** `Boss` holds the shared boss flow and registration lists. Each boss has a
-  `Boss_*` module.
+- **Bosses:** `Boss` holds the registration lists. Each boss has a `Boss_*` module.
+  Details: [BOSSES.md](BOSSES.md).
 - **Summons:** `Summon` and the `Summon_*` modules handle lifecycle, scaling, items and the
   individual summons.
 - **Gaya:** the Spirit of Gaya companion, in `Gaya` and the `Gaya_*` modules: inventory, orders,
@@ -93,7 +97,7 @@ Small utilities with no gameplay of their own:
 
 ### 05 Items, crafting and shops
 - **Loot:** `Loot` holds the drop tables (`Loot_Drop*`, `Loot_Vault_*` …). `Drop` holds
-  special drops.
+  special drops. Details: [LOOT.md](LOOT.md).
 - **Item handling:** `Item` and the `Item_*` modules handle stacking, upgrades and cooldowns.
 - **Armory:** `Armory` is the item storage and code-saved equipment.
 - **Crafting and selling:** `Craft`, `Recipe`, `Forge`, `Bazaar`, `Materia`, `Cooking` and
@@ -114,7 +118,7 @@ Small utilities with no gameplay of their own:
 - **Hunts:** `Hunt` and the `Hunt_*` modules are the hunt board: contracts, encounters, rewards
   and shop. `HuntFestival` is the festival event.
 - **Arena:** `Arena` and the `Arena_*` modules cover access, team selection, cups, rounds,
-  duels and rewards.
+  duels and rewards. Details: [ARENA.md](ARENA.md).
 
 ### 08 World and travel
 - **Zones:** `Zone` and `Zone1`…`Zone8` hold per-zone spawning and effects.

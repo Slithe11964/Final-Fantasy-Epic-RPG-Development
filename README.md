@@ -30,7 +30,7 @@ be reviewed, diffed and reverted with Git.
 
 ## Where things are in the code
 
-Start with `docs/SYSTEMS.md`, a folder-by-folder guide. The top of the map header in the
+Read `CONTRIBUTING.md` (the routine for every change) and `docs/SYSTEMS.md`, a folder-by-folder guide. The top of the map header in the
 Trigger Editor has a short version of it.
 
 - Startup is described in `docs/STARTUP.md`. Short version: `main_old` (in
@@ -40,7 +40,8 @@ Trigger Editor has a short version of it.
 - A module's own variables are in the `globals` block at its top. Shared variables are in the
   Variable Editor (Ctrl+B, folder "Shared variables"); a few that World Editor can't hold the
   same way stay in the map header. `docs/GLOBALS.md` lists them all.
-- System explainers: `docs/SAVE_CODES.md`, `docs/JOBS.md`, `docs/SPAWNS.md`.
+- System explainers: `docs/SAVE_CODES.md`, `JOBS.md`, `SPAWNS.md`, `LOOT.md`, `BOSSES.md`, `ARENA.md`.
+- Older game versions: `docs/LEGACY_129.md`. Tools for doing all this on another map: `../MapToolkit/`.
 - Object IDs such as `'A0B3'` carry a comment with the object's name. Formulas carry comments
   explaining the math.
 

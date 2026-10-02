@@ -24,6 +24,14 @@ Written 2026-10-02 (Claude). Baseline: `FFERPG_0.9.7.3-r12test.w3x`.
 - Explainers: `SAVE_CODES.md`, `JOBS.md` and `SPAWNS.md`.
 - Map `r15test`. Checklist: `PHASE8_TEST_CHECKLIST.md`.
 
+**Phase 9 (hand-off):**
+- The map name and loading-screen title say `0.9.7.3-r15`.
+- The Shared variables folder is split into 9 sub-folders.
+- New `CONTRIBUTING.md`, and guides `LOOT.md`, `BOSSES.md`, `ARENA.md`.
+- 1.29 feasibility study in `LEGACY_129.md`.
+- `WarcraftMapExtractor` archived down to what is used. Reusable tools are in `../MapToolkit` (deprotect/split/document, tested on a second map).
+- Map `r15`.
+
 ## 0. What r12test is
 
 - SHA256 `7583754261997a20dbb01bf844a4b20c189076be1fe79c79858f37114706d6a1`, the same file as `Builder24/NeutralOwnership-fix01/FFERPG_SAVE_SAFE.w3x`.

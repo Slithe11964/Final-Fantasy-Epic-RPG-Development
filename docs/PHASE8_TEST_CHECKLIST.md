@@ -1,6 +1,6 @@
-# Phase 8 test checklist: r15 test map
+# Phase 8–9 test checklist: r15
 
-Map: `release/FFERPG_0.9.7.3-r15test.w3x`.
+Map: `release/FFERPG_0.9.7.3-r15.w3x`. It replaces r15test; the differences are only the map name and the variable sub-folders.
 
 What changed since r14:
 
@@ -16,7 +16,8 @@ reachable.
 ## 1. World Editor (5 min)
 
 - [ ] The map opens with no errors.
-- [ ] The Trigger Editor has a **Shared variables** folder at the top.
+- [ ] The Trigger Editor has a **Shared variables** folder at the top, with 9 sub-folders (Shared helpers … Player features).
+- [ ] The map name and loading screen say **0.9.7.3-r15**.
 - [ ] Ctrl+B (Variable Editor) lists the variables (e.g. `PlayerHero`, `JobUnitType`, `TempPoint`).
 - [ ] **Save As** works with no JassHelper errors. Play test from that saved copy.
 - [ ] Pick a GUI action such as "Set Variable". The shared variables appear in the list.
