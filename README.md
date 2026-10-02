@@ -38,7 +38,9 @@ Trigger Editor has a short version of it.
 - To find where a trigger is created, search for `Register_<TriggerName>`. It sits in the
   same module as the trigger's code.
 - A module's own variables are in the `globals` block at its top. Shared variables are in the
-  map header, grouped by the folders that use them. `docs/GLOBALS.md` lists them all.
+  Variable Editor (Ctrl+B, folder "Shared variables"); a few that World Editor can't hold the
+  same way stay in the map header. `docs/GLOBALS.md` lists them all.
+- System explainers: `docs/SAVE_CODES.md`, `docs/JOBS.md`, `docs/SPAWNS.md`.
 - Object IDs such as `'A0B3'` carry a comment with the object's name. Formulas carry comments
   explaining the math.
 
@@ -58,6 +60,7 @@ still needs the module. `docs/DISABLING.md` lists the answer for every module on
 | `python tools/export_sources.py MAP` | Map → `src/` (for Git). |
 | `python tools/build_map.py BASE OUT [--runtime war3map.j]` | `src/` → map (for tool-driven refactors). |
 | `python tools/disable_check.py MAP MODULE...` | Can these modules be switched off? (`--all` regenerates `docs/DISABLING.md`.) |
+| `python tools/rename_module.py BASE OUT OLD NEW` | Renames a module everywhere (trigger tree, library, `requires`, file). |
 | `python tools/gen_docs.py` | Regenerates `docs/TRIGGER_INDEX.md`, `GLOBALS.md` and `DEAD_CODE.md` from `src/`. |
 
 `check_map.py` needs `pjass`, `common.j` and `blizzard.j`. It finds them in `tools/bin/` or in

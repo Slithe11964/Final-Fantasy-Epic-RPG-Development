@@ -16,6 +16,14 @@ Written 2026-10-02 (Claude). Baseline: `FFERPG_0.9.7.3-r12test.w3x`.
 
 **Dead-code cleanup (after Phase 6):** removed 89 functions and 4 variables that nothing used, including leftover GUI conditions, superseded setup helpers and the old `config_old`. Repeated until nothing else became unused. Deleted 6 triggers that were left empty: `MapSetup`, `InitCustomTeams`, `config`, `DEMissiles`, `Unused` and `Healing`. Every other function is unchanged. Map `r13-cleanup`.
 
+**Phase 8 (developer hand-off, after r14):**
+- New baseline: the user's r14 editor save.
+- `Hero_Part01` → `Hero_Skills` and `Player_Part01` → `Player_Hero`.
+- `CalcDamage` split into 19 step functions (`Trig_Damage_Engine_StepNN_*`) with a per-hit context stack (`DmgCtx_*`). The step bodies are verified token-identical to the original.
+- 576 shared variables moved into the Variable Editor.
+- Explainers: `SAVE_CODES.md`, `JOBS.md` and `SPAWNS.md`.
+- Map `r15test`. Checklist: `PHASE8_TEST_CHECKLIST.md`.
+
 ## 0. What r12test is
 
 - SHA256 `7583754261997a20dbb01bf844a4b20c189076be1fe79c79858f37114706d6a1`, the same file as `Builder24/NeutralOwnership-fix01/FFERPG_SAVE_SAFE.w3x`.

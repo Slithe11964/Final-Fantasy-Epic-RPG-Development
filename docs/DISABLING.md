@@ -306,7 +306,7 @@ switching one of those off also stops the triggers listed under "Also stops".
 | Hero_LevelUp | yes |  |  |
 | Hero_MedicineEvents | no | HeroMedicine |  |
 | Hero_Order | yes |  |  |
-| Hero_Part01 | no | Job |  |
+| Hero_Skills | no | Job |  |
 | Hero_Select | yes |  |  |
 | HeroDrink | yes |  |  |
 | HeroMedicine | no | Hero_MedicineEvents |  |
@@ -476,7 +476,7 @@ switching one of those off also stops the triggers listed under "Also stops".
 | PhantomDiary | no | Quest_DivineOrder |  |
 | Ping | no | Ending, Loot, Quest_AoMadoushi, Quest_EyeOfJenova |  |
 | Player | no | Init |  |
-| Player_Part01 | no | AdamantHunt, Aisha, Alma, AncientHunt, Andre, Angbar, ArenaExpansion, ArenaResources, Arena_BattleResults, Arena_BattleSetup +236 more |  |
+| Player_Hero | no | AdamantHunt, Aisha, Alma, AncientHunt, Andre, Angbar, ArenaExpansion, ArenaResources, Arena_BattleResults, Arena_BattleSetup +236 more |  |
 | PlayerTimer1 | yes |  |  |
 | PlayerTimer2 | yes |  |  |
 | PlayerTimer3 | yes |  |  |

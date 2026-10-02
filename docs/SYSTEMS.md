@@ -12,6 +12,12 @@ Reference lists generated from the code (re-run `python tools/gen_docs.py` after
 - [STARTUP.md](STARTUP.md): how the map starts.
 - [DISABLING.md](DISABLING.md): which modules can be switched off on their own.
 
+System explainers (written by hand):
+
+- [SAVE_CODES.md](SAVE_CODES.md): `-save` / `-load`, what a code holds, how to change the format safely.
+- [JOBS.md](JOBS.md): one hero per job, job change, unlock tree, mastery, the Shrine.
+- [SPAWNS.md](SPAWNS.md): spawn zones, monster pools, the monster data table.
+
 ## How a module is laid out
 
 ```
@@ -61,11 +67,16 @@ Small utilities with no gameplay of their own:
 - **Jobs:** one module per job, such as `Lancer`, `Geomancer`, `Ninja`, `Samurai` and `Chemist`.
   `Legend` and the `Legend_*` modules cover legendary job abilities.
 - **Hero lifecycle:** the `Hero_*` modules handle selecting, ordering, levelling, death and
-  revival, and medicine use.
+  revival, and medicine use. `Hero_Skills` holds shared skill helpers (learning skills to a
+  level), and `Player_Hero` holds `Player_GetHero(p)`, the player's current hero.
+- Details: [JOBS.md](JOBS.md).
 
 ### 04 Combat and abilities (the largest folder)
 - **Damage engine (`Damage`):** every damage event runs through `Trig_Damage_Engine_CalcDamage`.
-  Its header comment lists the parameters, and it is commented step by step.
+  Its header comment lists the parameters. It calls 19 step functions in order:
+  `Trig_Damage_Engine_Step01_Setup` … `Step19_Apply` (Cover, Defense, Elements, Accuracy,
+  Evasion and blocking, Magic …). Each step reads and changes the hit's values in the
+  `DmgCtx_*` arrays (slot `c`, one per nested hit). To change a rule, find its step.
   - `CombatFormulas`, `Armor`, `MagicDefense`, `AttackSpeed`, `Evade`, `Block`, `Counter`
     and `Element` supply the numbers it uses.
   - `Dps` is the damage meter. `Text` (09) draws floating damage numbers.
@@ -99,7 +110,7 @@ Small utilities with no gameplay of their own:
 
 ### 07 Hunts and encounters
 - **Spawns:** `Spawn` holds the spawn pools and timers. `MonsterData` holds the monster data
-  tables. `Wave` holds wave spawns.
+  tables. `Wave` holds wave spawns. Details: [SPAWNS.md](SPAWNS.md).
 - **Hunts:** `Hunt` and the `Hunt_*` modules are the hunt board: contracts, encounters, rewards
   and shop. `HuntFestival` is the festival event.
 - **Arena:** `Arena` and the `Arena_*` modules cover access, team selection, cups, rounds,
@@ -118,7 +129,7 @@ Small utilities with no gameplay of their own:
   `-help`, `-handicap` and `-damagetext`.
 - **Save/load:** `Save` and `Load` hold the save/load codes and files (`-save`, `-load`,
   `-savef`, `-loadf`). `Code` (01) holds the bit encoding. `Autosave` and `SaveDebug` are
-  related.
+  related. Details: [SAVE_CODES.md](SAVE_CODES.md).
 - **Titles and progress:** `Title`, `Titles`, `Speedrun`, `News` and `BattleLog`.
 - **Game options:** `Vote` and `GameMode` handle game-mode voting.
 - **Chocobos:** `Chocobo` and the `Chocobo_*` modules cover taming, breeding, digging, bribing,
@@ -134,8 +145,12 @@ Small utilities with no gameplay of their own:
 
 - **Player numbers:** code uses 0-based ids. `Player(0)`…`Player(7)` are the human players,
   `Player(8)` holds quest/town NPCs, and `Player(11)` is the enemy. GUI shows them as Player 1–12.
-- **Variables:** most use the `udg_` prefix but are declared in code (map header or a module),
-  not in the Variable Editor. Don't create a Variable Editor variable with the same name.
+- **Variables:** shared variables are in the Variable Editor (Ctrl+B), in the "Shared
+  variables" folder. GUI shows them without the prefix; code uses them with `udg_`. Variables
+  only one module uses are declared at the top of that module. A few shared ones stay in the
+  map header (groups, timers, forces, hashtables, string arrays and variables with a starting
+  value). Don't create a Variable Editor variable with the same name as one declared in code;
+  GLOBALS.md lists where each one lives.
 - **Starting state:** a trigger noted "starts off" is turned on by quest/story progress. Check
   TRIGGER_INDEX.md for who enables it before assuming it is unused.
 - **Long text:** a very long string in custom script breaks loading saved games. Put long
