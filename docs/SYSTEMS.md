@@ -20,6 +20,7 @@ System explainers (written by hand):
 - [LOOT.md](LOOT.md): item indexes, monster drop chances, chests, steal.
 - [BOSSES.md](BOSSES.md): how boss fights start, fight, die and drop; adding a boss.
 - [ARENA.md](ARENA.md): cups, team data, Battle Points, the duel arena.
+- [QUESTS.md](QUESTS.md): how quests and story chapters switch each other on (with a graph).
 - [OBJECTS.md](OBJECTS.md): every custom unit, item, ability, buff and upgrade, with the code that uses it.
 - [BUGS.md](BUGS.md): suspected bugs to check. [DEBUG_COMMANDS.md](DEBUG_COMMANDS.md): test commands.
 - [../CONTRIBUTING.md](../CONTRIBUTING.md): the routine for every change and naming rules.
