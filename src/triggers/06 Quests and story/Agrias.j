@@ -1,4 +1,9 @@
 library TAgrias
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Agrias_ShowMarker=null
+endglobals
+
 function Trig_Agrias_ShowMarker_Actions takes nothing returns nothing
     call ShowUnitShow(gg_unit_Ewrd_0120)
     set udg_SpecialEffect[50]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ewrd_0120,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")

@@ -1,4 +1,13 @@
 library TDana requires TCam, TCine, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dana_Prepare=null
+    trigger gg_trg_Dana_Talk1=null
+    trigger gg_trg_Dana_Talk2_Enable=null
+    trigger gg_trg_Dana_Receive_Eye=null
+    trigger gg_trg_Dana_Death=null
+endglobals
+
 function Trig_Dana_Prepare_Actions takes nothing returns nothing
     set udg_SpecialEffect[70]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BN_0171,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Dana_Talk1)

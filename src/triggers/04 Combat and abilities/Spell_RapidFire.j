@@ -1,4 +1,18 @@
 library TSpellRapidFire requires TAbil, TMissile, TProf
+globals
+    // Variables only this module uses.
+    timer udg_RapidFireTimer=CreateTimer()
+    group udg_RapidFireGroup=CreateGroup()
+    integer udg_RapidFireRecycle=0
+    integer udg_RapidFireCount=0
+    integer array udg_RapidFireNext
+    real array udg_RapidFireDmg
+    integer array udg_RapidFireElement
+    string array udg_RapidFireMissileFx
+    string array udg_RapidFireImpactFx
+    integer array udg_RapidFireShots
+endglobals
+
 function Trig_Spell_RapidFire_Alloc takes nothing returns integer
     local integer l_idx=udg_RapidFireRecycle
     if(l_idx!=0)then

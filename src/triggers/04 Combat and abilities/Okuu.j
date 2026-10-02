@@ -1,4 +1,10 @@
 library TOkuu
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Okuu_Leash=null
+    trigger gg_trg_Okuu_Death=null
+endglobals
+
 function Trig_Okuu_Leash_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==udg_HuntTarget[28])and(GetOwningPlayer(GetTriggerUnit())==Player($B)) // $B = 11
 endfunction

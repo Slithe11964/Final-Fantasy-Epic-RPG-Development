@@ -1,4 +1,9 @@
 library THuntGuest
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HuntGuest_DefaultKrjn=null
+endglobals
+
 function Trig_HuntGuest_DefaultKrjn_Actions takes nothing returns nothing
     set udg_NaishaTownUnit=gg_unit_e012_0227
     call DestroyTrigger(GetTriggeringTrigger())

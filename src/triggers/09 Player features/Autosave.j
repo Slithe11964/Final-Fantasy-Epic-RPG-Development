@@ -1,4 +1,9 @@
 library TAutosave requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Autosave_Command=null
+endglobals
+
 function Trig_Autosave_Command_Cond_InAutosaveForce takes nothing returns boolean
     return(IsPlayerInForce(GetTriggerPlayer(),udg_AutosaveForce))
 endfunction

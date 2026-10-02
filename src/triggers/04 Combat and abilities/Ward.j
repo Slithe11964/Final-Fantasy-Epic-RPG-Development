@@ -1,4 +1,9 @@
 library TWard
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ward_ShowTalkIcon=null
+endglobals
+
 function Trig_Ward_ShowTalkIcon_Actions takes nothing returns nothing
     set udg_SpecialEffect[76]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h030_0243,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_WendigoHunt_Start)

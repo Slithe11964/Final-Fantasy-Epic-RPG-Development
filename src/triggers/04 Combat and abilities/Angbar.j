@@ -1,4 +1,10 @@
 library TAngbar requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Angbar_Pickup=null
+    trigger gg_trg_Angbar_Drop=null
+endglobals
+
 function Trig_Angbar_Pickup_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0HU')and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit()))) // 'I0HU': item "Angbar"
 endfunction

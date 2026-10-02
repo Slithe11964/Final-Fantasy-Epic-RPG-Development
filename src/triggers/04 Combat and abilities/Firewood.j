@@ -1,4 +1,9 @@
 library TFirewood requires TForce, TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Firewood_Light_Fireplace=null
+endglobals
+
 function Trig_Firewood_Light_Fireplace_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0BE') // 'I0BE': item "Firewood"
 endfunction

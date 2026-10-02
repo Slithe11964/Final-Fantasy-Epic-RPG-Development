@@ -1,4 +1,9 @@
 library TTransfusion requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Transfusion_Cast=null
+endglobals
+
 function Trig_Transfusion_Cast_IsTransfusion takes nothing returns boolean
     return(GetSpellAbilityId()=='A0HY')or(GetSpellAbilityId()=='A0GL') // 'A0HY': ability "Transfusion"; 'A0GL': ability "Transfusion"
 endfunction

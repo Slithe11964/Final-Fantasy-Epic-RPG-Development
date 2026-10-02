@@ -1,4 +1,9 @@
 library TCooking requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cooking_Recipes_UnlockAll=null
+endglobals
+
 function Trig_Cooking_Recipes_UnlockAll_AddTopRecipes takes nothing returns nothing
     call AddItemToStockBJ('I0CH',GetEnumUnit(),1,1) // 'I0CH': item "Recipe: First Class Meat Plate"
     call AddItemToStockBJ('I0CI',GetEnumUnit(),1,1) // 'I0CI': item "Recipe: Adamant Stew"

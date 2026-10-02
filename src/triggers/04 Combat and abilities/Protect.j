@@ -1,4 +1,9 @@
 library TProtect
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Protect_Cast=null
+endglobals
+
 function Trig_Protect_Cast_IsProtectSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A00G')or(GetSpellAbilityId()=='A056')or(GetSpellAbilityId()=='ACfa')or(GetSpellAbilityId()=='A09K')or(GetSpellAbilityId()=='A0EE')or(GetSpellAbilityId()=='A0BJ')or(GetSpellAbilityId()=='A17J')or(GetSpellAbilityId()=='A17K')or(GetSpellAbilityId()=='A18W')or(GetSpellAbilityId()=='A07D')or(GetSpellAbilityId()=='A0TQ')or(GetSpellAbilityId()=='A0AA')or(GetSpellAbilityId()=='A0ZD')or(GetSpellAbilityId()=='A040')or(GetSpellAbilityId()=='A0V8')or(GetSpellAbilityId()=='A0F0')or(GetSpellAbilityId()=='A1FN')or(GetSpellAbilityId()=='A12D')or(GetSpellAbilityId()=='A1DT')or(GetSpellAbilityId()=='A0UB')or(GetSpellAbilityId()=='A0UD') // 'A00G': ability "Protect"; 'A056': ability "Protect"; 'ACfa': ability "Protect"; 'A09K': ability "Protect"; 'A0EE': ability "Protect"; 'A0BJ': ability "Protect"; 'A17J': ability "Protect"; 'A17K': ability "Protect"; 'A18W': ability "Protect"; 'A07D': ability "Protect"; 'A0TQ': ability "Ice Shield"; 'A0AA': ability "Choco-Protect"; 'A0ZD': ability "Deprotect"; 'A040': ability "Deprotect"; 'A0V8': ability "Deprotect"; 'A0F0': ability "Deprotect"; 'A1FN': ability "Deprotect"; 'A12D': ability "Dewall"; 'A1DT': ability "Cie'Mar Putrescence"; 'A0UB': ability "Wall"; 'A0UD': ability "Wall"
 endfunction

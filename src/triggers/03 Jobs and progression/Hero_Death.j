@@ -1,4 +1,9 @@
 library THeroDeath requires TForce, TGroup, TPlayerPart01, TWait
+globals
+    // Variables only this module uses.
+    boolean udg_SuppressDeathMessages=false
+endglobals
+
 function Trig_Hero_Death_Revive_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D'))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

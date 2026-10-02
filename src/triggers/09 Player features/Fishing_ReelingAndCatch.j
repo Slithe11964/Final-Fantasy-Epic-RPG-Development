@@ -1,4 +1,11 @@
 library TFishingReelingAndCatch requires TForce, TLoc, TPlayerPart01
+globals
+    // Variables only this module uses.
+    texttag array udg_FishingText
+    effect array udg_FishingBubbles
+    integer array udg_FishReleaseAbil
+endglobals
+
 function Trig_Fishing_Tick_StateLost takes nothing returns boolean
     return(udg_GatherState[udg_TempInteger]>=5)
 endfunction

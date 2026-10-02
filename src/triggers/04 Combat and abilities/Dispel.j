@@ -1,4 +1,9 @@
 library TDispel
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dispel_Cast=null
+endglobals
+
 function Trig_Dispel_Cast_IsDispel takes nothing returns boolean
     return(GetSpellAbilityId()=='A0SJ')or(GetSpellAbilityId()=='A0SK')or(GetSpellAbilityId()=='A1DT')or(GetSpellAbilityId()=='A0V2')or(GetSpellAbilityId()=='A112') // 'A0SJ': ability "Dispel"; 'A0SK': ability "Dispel"; 'A1DT': ability "Cie'Mar Putrescence"; 'A0V2': ability "!Full Break"; 'A112': ability "!Surprise Mechanic"
 endfunction

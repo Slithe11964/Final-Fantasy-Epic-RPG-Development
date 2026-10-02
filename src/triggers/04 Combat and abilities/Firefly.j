@@ -1,4 +1,12 @@
 library TFirefly requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Firefly_Drops=null
+    trigger gg_trg_Firefly_Redeem=null
+    // Variables only this module uses.
+    integer udg_FireflyDestCount=0
+endglobals
+
 function Trig_Firefly_Drops_Cond_DropDue takes nothing returns boolean
     // Calculation 1:
     // The remainder after dividing (udg_FireflyDestCount) by (2).

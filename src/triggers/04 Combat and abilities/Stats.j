@@ -1,4 +1,9 @@
 library TStats
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Stats_RefreshOnEvent=null
+endglobals
+
 function Trig_Stats_RefreshOnEvent_Actions takes nothing returns nothing
     call StartTimerBJ(udg_StatsRefreshTimer,false,.01)
 endfunction

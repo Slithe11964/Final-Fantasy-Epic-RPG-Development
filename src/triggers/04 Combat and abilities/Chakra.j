@@ -1,4 +1,9 @@
 library TChakra requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chakra_Cast=null
+endglobals
+
 function Trig_Chakra_Cast_IsChakra takes nothing returns boolean
     return(GetSpellAbilityId()=='A01M')or(GetSpellAbilityId()=='A0O8') // 'A01M': ability "Chakra"; 'A0O8': ability "Chakra"
 endfunction

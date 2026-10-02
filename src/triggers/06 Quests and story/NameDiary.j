@@ -1,4 +1,15 @@
 library TNameDiary requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_NameDiary_Prepare=null
+    trigger gg_trg_NameDiary_Start=null
+    trigger gg_trg_NameDiary_Ping=null
+    trigger gg_trg_NameDiary_Chronicle=null
+    trigger gg_trg_NameDiary_Reward=null
+    // Variables only this module uses.
+    integer udg_DiaryNameCount=0
+endglobals
+
 function Trig_NameDiary_Prepare_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     set udg_SpecialEffect[80]=AddSpecialEffectTargetUnitBJ("overhead",udg_TimmyUnit,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")

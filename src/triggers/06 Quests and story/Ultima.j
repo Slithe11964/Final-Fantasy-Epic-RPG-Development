@@ -1,4 +1,12 @@
 library TUltima requires TAbil, TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TProf, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ultima_Cast=null
+    trigger gg_trg_Ultima_Prepare=null
+    trigger gg_trg_Ultima_Possession=null
+    trigger gg_trg_Ultima_Holyja=null
+endglobals
+
 function Trig_Ultima_Cast_IsUltima takes nothing returns boolean
     return(GetSpellAbilityId()=='A0UG')or(GetSpellAbilityId()=='A0V1') // 'A0UG': ability "!Ultima"; 'A0V1': ability "!Ultima"
 endfunction

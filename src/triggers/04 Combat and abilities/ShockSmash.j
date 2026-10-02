@@ -1,4 +1,9 @@
 library TShockSmash requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ShockSmash_Cast=null
+endglobals
+
 function Trig_ShockSmash_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A01J') // 'A01J': ability "Shock Smash"
 endfunction

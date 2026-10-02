@@ -1,4 +1,10 @@
 library TDarkness requires TAbil, TForce, TGroup, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Darkness_LowHP_Cancel=null
+    trigger gg_trg_Darkness_Cast=null
+endglobals
+
 function Trig_Darkness_LowHP_Cancel_IsDarknessAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0KS')or(GetSpellAbilityId()=='A0U5')or(GetSpellAbilityId()=='A183') // 'A0KS': ability "Darkness"; 'A0U5': ability "Darkness"; 'A183': ability "Darkness"
 endfunction

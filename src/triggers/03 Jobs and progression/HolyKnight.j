@@ -1,4 +1,9 @@
 library THolyKnight
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HolyKnight_Setup=null
+endglobals
+
 function Trig_HolyKnight_Setup_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_Eill_0119,true)
     call ShowUnitHide(gg_unit_Ewrd_0120)

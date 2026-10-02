@@ -1,4 +1,9 @@
 library TKrjn
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Krjn_ShowTalkIcon=null
+endglobals
+
 function Trig_Krjn_ShowTalkIcon_Actions takes nothing returns nothing
     set udg_SpecialEffect[75]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e012_0227,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_AncientHunt_Start)

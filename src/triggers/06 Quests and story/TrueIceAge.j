@@ -1,4 +1,18 @@
 library TTrueIceAge requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_TrueIceAge_GateUnlock=null
+    trigger gg_trg_TrueIceAge_Summon=null
+    trigger gg_trg_TrueIceAge_SpawnBrave=null
+    trigger gg_trg_TrueIceAge_BossIntro=null
+    trigger gg_trg_TrueIceAge_FreezeTimeout=null
+    trigger gg_trg_TrueIceAge_Victory=null
+    // Variables only this module uses.
+    integer array udg_ZodiacBraveType
+    unit udg_Cuchulainn=null
+    boolean udg_DanaAvailable=false
+endglobals
+
 function Trig_TrueIceAge_GateUnlock_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null
 endfunction

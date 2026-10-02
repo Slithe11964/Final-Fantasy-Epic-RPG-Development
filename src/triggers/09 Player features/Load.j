@@ -1,4 +1,19 @@
 library TLoad requires TCmd, TPlayerPart01, TSave
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Load_Warn_5Min=null
+    trigger gg_trg_Load_Disable=null
+    // Variables only this module uses.
+    unit udg_CodeInputUnit
+    trigger udg_LoadCodeOwnerTrig
+    trigger udg_LoadCodeSpellTrig
+    string udg_LoadCodeBuffer
+    integer udg_LoadCharValue
+    boolean udg_LoadBracketOpened
+    boolean udg_LoadHasHighBits
+    trigger udg_LoadFileTrigger=null
+endglobals
+
 function Load_TypeCodeWithUIKeys takes string l_code,player p returns nothing
     local integer i=0
     local integer l_len

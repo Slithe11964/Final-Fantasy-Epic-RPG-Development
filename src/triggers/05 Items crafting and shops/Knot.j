@@ -1,4 +1,9 @@
 library TKnot requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Knot_Of_Rust=null
+endglobals
+
 function Trig_Knot_Of_Rust_IsKnotOfRust takes nothing returns boolean
     return(GetSpellAbilityId()=='A0SP')or(GetSpellAbilityId()=='A17D')or(GetSpellAbilityId()=='A0SQ') // 'A0SP': ability "Knot of Rust"; 'A17D': ability "Knot of Rust"; 'A0SQ': ability "Knot of Rust"
 endfunction

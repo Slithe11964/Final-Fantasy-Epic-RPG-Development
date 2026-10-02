@@ -1,4 +1,16 @@
 library TLoki requires TCam, TCine, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Loki_Talk_Enable=null
+    trigger gg_trg_Loki_Reforge_Unlock=null
+    trigger gg_trg_Loki_Reforge_Offer=null
+    trigger gg_trg_Loki_Reforge_Drop=null
+    trigger gg_trg_Loki_Forge_Text_Clear=null
+    trigger gg_trg_Loki_Reforge_Confirm=null
+    // Variables only this module uses.
+    integer udg_ReforgeResultType=0
+endglobals
+
 function Trig_Loki_Talk_Enable_Actions takes nothing returns nothing
     set udg_SpecialEffect[88]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H00P_0260,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_OreSupplies_Start)

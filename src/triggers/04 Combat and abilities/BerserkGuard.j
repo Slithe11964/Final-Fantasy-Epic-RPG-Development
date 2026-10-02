@@ -1,4 +1,9 @@
 library TBerserkGuard
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BerserkGuard_Decay=null
+endglobals
+
 function Trig_BerserkGuard_Decay_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_BerserkGuards))
 endfunction

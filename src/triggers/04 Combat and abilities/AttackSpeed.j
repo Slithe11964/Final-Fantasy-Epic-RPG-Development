@@ -1,4 +1,9 @@
 library TAttackSpeed
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AttackSpeed_Update=null
+endglobals
+
 function Trig_AttackSpeed_Update_AttackSpeedBonusIs22 takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A00V',udg_CurrentHero)==22) // 'A00V': ability "Attack Speed Bonus"
 endfunction

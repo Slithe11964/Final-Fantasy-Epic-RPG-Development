@@ -1,4 +1,10 @@
 library TBossOzma requires TBattleLog, TCam, TCine, TDifficulty, TLoc, TMusic, TWait
+globals
+    // Variables only this module uses.
+    unit udg_OzmaBoss=null
+    integer udg_OzmaBarrierTimer=0
+endglobals
+
 function Trig_Boss_Ozma_Spawn_IsFirstSummon takes nothing returns boolean
     return(udg_RingHintUsed[8]==false)
 endfunction

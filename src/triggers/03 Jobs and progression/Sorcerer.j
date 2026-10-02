@@ -1,4 +1,12 @@
 library TSorcerer requires TAbil, TGroup, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Sorcerer_Flare=null
+    trigger gg_trg_Sorcerer_Holy=null
+    trigger gg_trg_Sorcerer_MassCripple=null
+    trigger gg_trg_Sorcerer_BahamutZero=null
+endglobals
+
 function Trig_Sorcerer_Flare_IsFlareSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A0TB')or(GetSpellAbilityId()=='A0TD')or(GetSpellAbilityId()=='A0TC')or(GetSpellAbilityId()=='A0TF')or(GetSpellAbilityId()=='A0TE') // 'A0TB': ability "Flare"; 'A0TD': ability "Flare"; 'A0TC': ability "Flare"; 'A0TF': ability "Flare"; 'A0TE': ability "Flare"
 endfunction

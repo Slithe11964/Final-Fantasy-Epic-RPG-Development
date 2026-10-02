@@ -1,4 +1,9 @@
 library TNightElf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_NightElf_TalkPrepare=null
+endglobals
+
 function Trig_NightElf_TalkPrepare_Conditions takes nothing returns boolean
     return(GetOwningPlayer(udg_ShadowUnit)==Player($A)) // $A = 10
 endfunction

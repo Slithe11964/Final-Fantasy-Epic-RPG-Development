@@ -1,4 +1,9 @@
 library TPortal requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Portal_Reveal=null
+endglobals
+
 function Trig_Portal_Reveal_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_ActivePlayers))
 endfunction

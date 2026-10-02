@@ -1,4 +1,18 @@
 library TCid requires TBerserk, TCine, TGroup, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cid_Talk_FindMid=null
+    trigger gg_trg_Cid_Talk_MidReturned=null
+    trigger gg_trg_Cid_Berserk_Start=null
+    trigger gg_trg_Cid_Talk_Hashmalum=null
+    trigger gg_trg_Cid_Berserk_Aggro=null
+    trigger gg_trg_Cid_Berserk_End=null
+    trigger gg_trg_Cid_Berserk_Revive=null
+    trigger gg_trg_Cid_Berserk_Aftermath=null
+    trigger gg_trg_Cid_Research_Done=null
+    trigger gg_trg_Cid_Talk_AoMadoushi=null
+endglobals
+
 function Trig_Cid_Talk_FindMid_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
 endfunction

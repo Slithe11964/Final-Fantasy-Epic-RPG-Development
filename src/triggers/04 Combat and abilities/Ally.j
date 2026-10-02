@@ -1,4 +1,9 @@
 library TAlly
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ally_Death_Cleanup=null
+endglobals
+
 function Trig_Ally_Death_Cleanup_IsDefenderUnit takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_AllyBrothersGroup))or(IsUnitInGroup(GetTriggerUnit(),udg_AllyRangerGroup))or(IsUnitInGroup(GetTriggerUnit(),udg_AllyEngineerGroup))
 endfunction

@@ -1,4 +1,10 @@
 library TDeathSeeker requires TCam, TCine, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DeathSeeker_Give=null
+    trigger gg_trg_DeathSeeker_TurnIn=null
+endglobals
+
 function Trig_DeathSeeker_Give_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D'))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

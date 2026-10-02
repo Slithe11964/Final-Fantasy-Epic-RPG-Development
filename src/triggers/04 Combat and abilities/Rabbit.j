@@ -1,4 +1,9 @@
 library TRabbit requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Rabbit_Wander=null
+endglobals
+
 function Trig_Rabbit_Wander_Conditions takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='necr')and(GetOwningPlayer(GetTriggerUnit())==Player(PLAYER_NEUTRAL_PASSIVE)) // 'necr': object name not found in map data
 endfunction

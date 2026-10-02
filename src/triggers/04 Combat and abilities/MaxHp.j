@@ -1,4 +1,9 @@
 library TMaxHp requires TBerserk
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MaxHp_DrainTick=null
+endglobals
+
 function Trig_MaxHp_DrainTick_DrainMaxHp takes unit u returns nothing
     local integer maximumHealth=BlzGetUnitMaxHP(u)
     // Starting value for currentHealth:

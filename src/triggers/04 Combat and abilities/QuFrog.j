@@ -1,4 +1,13 @@
 library TQuFrog requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_QuFrog_DrainTick=null
+    trigger gg_trg_QuFrog_Death=null
+    // Variables only this module uses.
+    lightning array udg_QuDrainLightning
+    effect array udg_QuDrainEffect
+endglobals
+
 function Trig_QuFrog_DrainTick_Cond_Frog1Boost takes nothing returns boolean
     // A random whole number from 1 through 2.
     return(GetRandomInt(1,2)<=1)and(udg_QuFrogDrainCount>=$F) // $F = 15

@@ -1,4 +1,15 @@
 library TArenaExpansion requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ArenaExpansion_Prepare=null
+    trigger gg_trg_ArenaExpansion_Start=null
+    trigger gg_trg_ArenaExpansion_ShadowStoneSpawn=null
+    trigger gg_trg_ArenaExpansion_ShadowStoneTurnIn=null
+    trigger gg_trg_ArenaExpansion_GatherDust=null
+    trigger gg_trg_ArenaExpansion_PingDust=null
+    trigger gg_trg_ArenaExpansion_Complete=null
+endglobals
+
 function Trig_ArenaExpansion_Prepare_Cond_PrereqQuestPending takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[40])==false)
 endfunction

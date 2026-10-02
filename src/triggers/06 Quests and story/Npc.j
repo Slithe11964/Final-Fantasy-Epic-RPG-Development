@@ -1,4 +1,40 @@
 library TNpc requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Npc_Hints_Create=null
+    trigger gg_trg_Npc_Talk_Woman=null
+    trigger gg_trg_Npc_Talk_Reno=null
+    trigger gg_trg_Npc_Talk_Rude=null
+    trigger gg_trg_Npc_Talk_Footman=null
+    trigger gg_trg_Npc_Talk_Swordsman=null
+    trigger gg_trg_Npc_Talk_Child=null
+    trigger gg_trg_Npc_Talk_Archer=null
+    trigger gg_trg_Npc_Talk_Knight=null
+    trigger gg_trg_Npc_Talk_ChildChocobo=null
+    trigger gg_trg_Npc_Talk_Kenarius=null
+    trigger gg_trg_Npc_Talk_Nimphrodel=null
+    trigger gg_trg_Npc_Talk_Sentry=null
+    trigger gg_trg_Npc_Talk_Kesha=null
+    trigger gg_trg_Npc_Talk_Peasant=null
+    trigger gg_trg_Npc_Talk_PeasantHarvest=null
+    trigger gg_trg_Npc_Talk_MineStory=null
+    trigger gg_trg_Npc_Fire_WantMore=null
+    trigger gg_trg_Npc_Fire_Thanks=null
+    trigger gg_trg_Npc_Priscilla_SummonEden=null
+    trigger gg_trg_Npc_Talk_LinkGuard=null
+    trigger gg_trg_Npc_Talk_Jack=null
+    trigger gg_trg_Npc_Talk_ArcherWall=null
+    trigger gg_trg_Npc_Talk_Ruksel=null
+    trigger gg_trg_Npc_Thorn_BattleWait=null
+    trigger gg_trg_Npc_Talk_Sigroon=null
+    trigger gg_trg_Npc_Talk_Quincy=null
+    trigger gg_trg_Npc_Talk_Gravedigger=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_PandarenBrewmasterReady=null
+    sound gg_snd_VillagerKidWhat=null
+    sound gg_snd_VillagerWomanWhat=null
+endglobals
+
 function Trig_Npc_Hints_Create_Actions takes nothing returns nothing
     set udg_QuestMarkerEffect[1]=AddSpecialEffectTargetUnitBJ("head",gg_unit_nvlw_0048,"Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl")
     set udg_QuestMarkerEffect[4]=AddSpecialEffectTargetUnitBJ("head",gg_unit_hfoo_0090,"Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl")

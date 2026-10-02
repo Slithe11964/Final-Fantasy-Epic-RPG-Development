@@ -1,4 +1,18 @@
 library TCraft requires TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Craft_Recipe=null
+    // Variables only this module uses.
+    integer array udg_RecipeItem3
+    integer array udg_RecipeItem4
+    integer array udg_RecipeItem5
+    integer array udg_RecipeItem6
+    integer array udg_RecipeCount3
+    integer array udg_RecipeCount4
+    integer array udg_RecipeCount5
+    integer array udg_RecipeCount6
+endglobals
+
 function Trig_Craft_Recipe_RemoveChar takes string l_str,string l_chr returns string
     local integer i=1
     loop

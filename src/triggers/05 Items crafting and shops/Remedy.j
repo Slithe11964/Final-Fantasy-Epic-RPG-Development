@@ -1,4 +1,9 @@
 library TRemedy
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Remedy_Use=null
+endglobals
+
 function Trig_Remedy_Use_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0DI') // 'I0DI': item "Remedy"
 endfunction

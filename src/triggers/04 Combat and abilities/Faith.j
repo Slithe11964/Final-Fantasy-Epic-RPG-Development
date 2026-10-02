@@ -1,4 +1,9 @@
 library TFaith
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Faith_Target_Cleanup=null
+endglobals
+
 function Trig_Faith_Target_Cleanup_IsFaithSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A0RW')or(GetSpellAbilityId()=='A0QZ')or(GetSpellAbilityId()=='A0TH')or(GetSpellAbilityId()=='A0UC')or(GetSpellAbilityId()=='A10H')or(GetSpellAbilityId()=='A0N0')or(GetSpellAbilityId()=='A17F')or(GetSpellAbilityId()=='A17G')or(GetSpellAbilityId()=='A1AP')or(GetSpellAbilityId()=='A0ZA')or(GetSpellAbilityId()=='A0P4')or(GetSpellAbilityId()=='A155')or(GetSpellAbilityId()=='A10R')or(GetSpellAbilityId()=='A1DR')or(GetSpellAbilityId()=='A1FM')or(GetSpellAbilityId()=='A0ZB') // 'A0RW': ability "Faith"; 'A0QZ': ability "Faithra"; 'A0TH': ability "Faith"; 'A0UC': ability "Faith"; 'A10H': ability "Faith"; 'A0N0': ability "Faith"; 'A17F': ability "Faith"; 'A17G': ability "Faith"; 'A1AP': ability "Faith"; 'A0ZA': ability "Faith"; 'A0P4': ability "Fog"; 'A155': ability "Fogra"; 'A10R': ability "Fog"; 'A1DR': ability "Fog"; 'A1FM': ability "Fog"; 'A0ZB': ability "Fog"
 endfunction

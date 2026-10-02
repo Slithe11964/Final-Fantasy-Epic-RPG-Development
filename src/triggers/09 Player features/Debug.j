@@ -1,4 +1,9 @@
 library TDebug
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Debug_ImmortalDeath=null
+endglobals
+
 function Trig_Debug_ImmortalDeath_Ninja_HasRescueTimer takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='H00F')and(TimerGetRemaining(udg_NinjaImmortalTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])>.0) // 'H00F': unit "Ninja"
 endfunction

@@ -1,4 +1,9 @@
 library TManaRefund requires TPlayerPart01, TSpellShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ManaRefund_Cast=null
+endglobals
+
 function Trig_ManaRefund_Cast_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A03D',GetTriggerUnit())>0)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit()))) // 'A03D': ability "Refund Mana"
 endfunction

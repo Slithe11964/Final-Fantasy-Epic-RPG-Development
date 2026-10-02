@@ -1,4 +1,14 @@
 library TVerci requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Verci_Awaken=null
+    trigger gg_trg_Verci_Phases=null
+    trigger gg_trg_Verci_Death=null
+    // Variables only this module uses.
+    integer udg_VerciPhaseTimer=0
+    real udg_VerciPhaseLife=0
+endglobals
+
 function Trig_Verci_Awaken_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call SetUnitInvulnerable(udg_Vercingetorix,false)

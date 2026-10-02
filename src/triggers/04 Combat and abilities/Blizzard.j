@@ -1,4 +1,9 @@
 library TBlizzard requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Blizzard_Cast=null
+endglobals
+
 function Trig_Blizzard_Cast_IsBlizzardAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A1AF')or(GetSpellAbilityId()=='A1AU') // 'A1AF': ability "Blizzard"; 'A1AU': ability "Blizzard"
 endfunction

@@ -1,4 +1,9 @@
 library TSoulSplit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_SoulSplit_Clone_Death=null
+endglobals
+
 function Trig_SoulSplit_Clone_Death_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_MirrorCloneGroup))
 endfunction

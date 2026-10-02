@@ -1,4 +1,9 @@
 library TShock requires TAbil, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shock_Cast=null
+endglobals
+
 function Trig_Shock_Cast_IsShock takes nothing returns boolean
     return(GetSpellAbilityId()=='A13K')or(GetSpellAbilityId()=='A15A') // 'A13K': ability "Shock"; 'A15A': ability "Shock"
 endfunction

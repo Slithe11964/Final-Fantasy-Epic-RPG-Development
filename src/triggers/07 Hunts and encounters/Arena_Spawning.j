@@ -1,4 +1,9 @@
 library TArenaSpawning requires TDifficulty, TLoc, TUnit
+globals
+    // Variables only this module uses.
+    real udg_ArenaHpMultiplier=0
+endglobals
+
 function Trig_Arena_Unit_Data_Actions takes nothing returns nothing
     // (1) plus (LoadIntegerBJ(2, 0, udg_GameStateHash)).
     call SaveIntegerBJ(5,2,(1+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash)

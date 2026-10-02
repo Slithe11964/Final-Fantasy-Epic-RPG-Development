@@ -1,4 +1,19 @@
 library TVote requires TDifficulty, TForce, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Vote_TextSpeed_Show=null
+    trigger gg_trg_Vote_TextSpeed_Click=null
+    trigger gg_trg_Vote_TextSpeed_Result=null
+    trigger gg_trg_Vote_Difficulty_Show=null
+    trigger gg_trg_Vote_Difficulty_Click=null
+    trigger gg_trg_Vote_Difficulty_Result=null
+    trigger gg_trg_Vote_GameMode_Show=null
+    trigger gg_trg_Vote_GameMode_Click=null
+    // Variables only this module uses.
+    button array udg_VoteButton
+    real udg_VoteSum=0
+endglobals
+
 function Trig_Vote_TextSpeed_Show_IsMultiplayer takes nothing returns boolean
     return(CountPlayersInForceBJ(udg_PlayingPlayers)>1)
 endfunction

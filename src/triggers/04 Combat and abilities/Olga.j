@@ -1,4 +1,9 @@
 library TOlga
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Olga_ShowTalkIcon=null
+endglobals
+
 function Trig_Olga_ShowTalkIcon_Actions takes nothing returns nothing
     set udg_SpecialEffect[74]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e014_0149,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_FlanHunt_Start)

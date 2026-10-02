@@ -1,4 +1,9 @@
 library TDrainAttack
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DrainAttack_LevelSync=null
+endglobals
+
 function Trig_DrainAttack_LevelSync_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0R1') // 'A0R1': ability "Drain Attack"
 endfunction

@@ -1,4 +1,9 @@
 library TPromotion requires TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Promotion_Award_Random=null
+endglobals
+
 function Trig_Promotion_Award_Random_Conditions takes nothing returns boolean
     return(CountPlayersInForceBJ(udg_PlayingPlayers)==1)
 endfunction

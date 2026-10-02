@@ -1,4 +1,9 @@
 library TSentinel
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Sentinel_Cast=null
+endglobals
+
 function Trig_Sentinel_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ON') // 'A0ON': ability "!Sentinel"
 endfunction

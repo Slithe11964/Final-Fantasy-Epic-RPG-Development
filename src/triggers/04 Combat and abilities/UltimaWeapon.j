@@ -1,4 +1,9 @@
 library TUltimaWeapon
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_UltimaWeapon_Hide=null
+endglobals
+
 function Trig_UltimaWeapon_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_Nman_0151)
     call SetUnitInvulnerable(gg_unit_Nman_0151,true)

@@ -1,4 +1,9 @@
 library TRevive requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Revive_Item_Cleanup=null
+endglobals
+
 function Trig_Revive_Item_Cleanup_ShieldReqUnmet takes nothing returns boolean
     return(UnitHasItemOfTypeBJ(GetEnumUnit(),'I065'))and(BlzGetUnitMaxHP(GetEnumUnit())<$2710) // 'I065': item "Ensanguined Shield"; $2710 = 10000
 endfunction

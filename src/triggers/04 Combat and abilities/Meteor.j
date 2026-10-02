@@ -1,4 +1,9 @@
 library TMeteor requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Meteor_Cast=null
+endglobals
+
 function Trig_Meteor_Cast_IsMeteor takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QM')or(GetSpellAbilityId()=='A0QN')or(GetSpellAbilityId()=='A12I')or(GetSpellAbilityId()=='A1F2') // 'A0QM': ability "Meteor"; 'A0QN': ability "Meteor"; 'A12I': ability "Meteor"; 'A1F2': ability "Meteor"
 endfunction

@@ -1,4 +1,14 @@
 library TShemhazai requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shemhazai_Prepare=null
+    trigger gg_trg_Shemhazai_Appears=null
+    trigger gg_trg_Shemhazai_Spawn_SoulClones=null
+    trigger gg_trg_Shemhazai_SurpriseMechanic=null
+    trigger gg_trg_Shemhazai_Phase2_Cuchulainn=null
+    trigger gg_trg_Shemhazai_SoulSplit=null
+endglobals
+
 function Trig_Shemhazai_Prepare_FreezeBaseUnit takes nothing returns nothing
     call PauseUnitBJ(true,GetEnumUnit())
     call SetUnitInvulnerable(GetEnumUnit(),true)

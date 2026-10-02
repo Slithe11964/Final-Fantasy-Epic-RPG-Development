@@ -1,4 +1,10 @@
 library TMana
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mana_Restore_Delayed=null
+    trigger gg_trg_Mana_Spring_Register=null
+endglobals
+
 function Trig_Mana_Restore_Delayed_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     // (current mana of udg_ManaRefundUnit) plus (udg_ManaRefundGold).

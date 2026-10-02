@@ -1,4 +1,9 @@
 library TAnabel
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Anabel_Appear=null
+endglobals
+
 function Trig_Anabel_Appear_Actions takes nothing returns nothing
     set udg_SeaKingQuestStarted=true
     call RemoveItemFromStockBJ('I0HB',gg_unit_n02Y_0052) // 'I0HB': item "Information: Fishing"

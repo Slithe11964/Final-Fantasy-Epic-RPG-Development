@@ -1,4 +1,15 @@
 library TCmd requires TForce, TJob, TMusic, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cmd_Music=null
+    trigger gg_trg_Cmd_Load_Code=null
+    trigger gg_trg_Cmd_Load_Armory=null
+    // Variables only this module uses.
+    integer array udg_CodeArmoryPos
+    boolean array udg_CodeCapFlag
+    integer array udg_CodeChecksum
+endglobals
+
 function Trig_Cmd_Load_Code_AllocReader takes integer v,player p returns integer
     set udg_ArgInt=v
     set udg_ArgPlayer=p

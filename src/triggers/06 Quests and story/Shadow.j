@@ -1,4 +1,23 @@
 library TShadow requires TShadowCombat, TShadowHiring, TShadowLifecycle, TShadowLoyalty, TShadowSupport
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shadow_Init=null
+    trigger gg_trg_Shadow_FirstAppear=null
+    trigger gg_trg_Shadow_Intro=null
+    trigger gg_trg_Shadow_Respawn=null
+    trigger gg_trg_Shadow_Leave=null
+    trigger gg_trg_Shadow_NearbyDelay=null
+    trigger gg_trg_Shadow_Hire=null
+    trigger gg_trg_Shadow_Death=null
+    trigger gg_trg_Shadow_LoyaltyTick=null
+    trigger gg_trg_Shadow_KillCount=null
+    trigger gg_trg_Shadow_AttackedByParty=null
+    trigger gg_trg_Shadow_HealedBonus=null
+    trigger gg_trg_Shadow_HeroDrink=null
+    trigger gg_trg_Shadow_Disband=null
+    trigger gg_trg_Shadow_FumaShuriken=null
+endglobals
+
 function InitTrig_Shadow takes nothing returns nothing
 endfunction
 

@@ -1,4 +1,15 @@
 library TScorchedEarth requires TCam, TCine, TForce, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ScorchedEarth_Omen=null
+    trigger gg_trg_ScorchedEarth_EnterRegion=null
+    trigger gg_trg_ScorchedEarth_TowerAttack=null
+    trigger gg_trg_ScorchedEarth_HeatFade=null
+    trigger gg_trg_ScorchedEarth_Barrier=null
+    // Variables only this module uses.
+    destructable gg_dest_Dofv_0001=null
+endglobals
+
 function Trig_ScorchedEarth_Omen_Cond_IcyRealmUnbeaten takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[19])==false)
 endfunction

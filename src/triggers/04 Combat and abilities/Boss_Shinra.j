@@ -1,4 +1,16 @@
 library TBossShinra requires TMissile
+globals
+    // Variables only this module uses.
+    constant integer udg_ClioneDuration=$A // $A = 10
+    timer udg_ClioneTimer=CreateTimer()
+    integer udg_ClioneRecycle=0
+    integer udg_ClioneCount=0
+    integer array udg_ClioneNext
+    unit array udg_ClioneCaster
+    real array udg_ClioneDmg
+    integer array udg_ClioneTicks
+endglobals
+
 function Trig_Boss_Shinra_Clione_Alloc takes nothing returns integer
     local integer l_idx=udg_ClioneRecycle
     if(l_idx!=0)then

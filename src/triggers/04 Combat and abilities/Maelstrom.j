@@ -1,4 +1,9 @@
 library TMaelstrom
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Maelstrom_Cast=null
+endglobals
+
 function Trig_Maelstrom_Cast_Cond_IsMaelstrom takes nothing returns boolean
     return(GetSpellAbilityId()=='A0V7')or(GetSpellAbilityId()=='A0YM') // 'A0V7': ability "Maelstrom"; 'A0YM': ability "!Maelstrom"
 endfunction

@@ -1,4 +1,9 @@
 library TTurks requires TForce, TPlayerPart01, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Turks_Give_Flute=null
+endglobals
+
 function Trig_Turks_Give_Flute_IsTurk takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_n012_0163)or(GetTriggerUnit()==gg_unit_n013_0164)
 endfunction

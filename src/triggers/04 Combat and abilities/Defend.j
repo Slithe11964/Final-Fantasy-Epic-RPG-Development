@@ -1,4 +1,9 @@
 library TDefend
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Defend_Toggle=null
+endglobals
+
 function Trig_Defend_Toggle_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A0PP',GetTriggerUnit())>0) // 'A0PP': ability "Defend"
 endfunction

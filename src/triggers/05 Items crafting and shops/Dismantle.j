@@ -1,4 +1,9 @@
 library TDismantle
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dismantle_Cast=null
+endglobals
+
 function Trig_Dismantle_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1BB') // 'A1BB': ability "Dismantle"
 endfunction

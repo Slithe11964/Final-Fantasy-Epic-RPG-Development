@@ -1,4 +1,15 @@
 library TBernkastel requires TCam, TCine, TMusic, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Bernkastel_State_Reset=null
+    trigger gg_trg_Bernkastel_Try_Spawn=null
+    trigger gg_trg_Bernkastel_First_Talk=null
+    trigger gg_trg_Bernkastel_Second_Talk=null
+    trigger gg_trg_Bernkastel_Hint_Talk=null
+    trigger gg_trg_Bernkastel_Final_Talk=null
+    trigger gg_trg_Bernkastel_Despawn=null
+endglobals
+
 function Trig_Bernkastel_State_Reset_Actions takes nothing returns nothing
     set udg_MiracleStage[0]=-1
     call DestroyTrigger(GetTriggeringTrigger())

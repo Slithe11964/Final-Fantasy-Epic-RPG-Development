@@ -1,4 +1,13 @@
 library TOakaIV requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_OakaIV_CutTrees=null
+    trigger gg_trg_OakaIV_ReachNorthTree=null
+    trigger gg_trg_OakaIV_ReachSouthTree=null
+    trigger gg_trg_OakaIV_NorthTreeFelled=null
+    trigger gg_trg_OakaIV_SouthTreeFelled=null
+endglobals
+
 function Trig_OakaIV_CutTrees_Cond_CutNorthValid takes nothing returns boolean
     return(GetSpellAbilityId()=='A0GE')and(IsDestructableAliveBJ(gg_dest_B002_0040)) // 'A0GE': ability "Cut North"
 endfunction

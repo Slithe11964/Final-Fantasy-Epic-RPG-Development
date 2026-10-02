@@ -1,4 +1,9 @@
 library TCover requires TAbil, TLink
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cover_Cast=null
+endglobals
+
 function Trig_Cover_Cast_IsCover takes nothing returns boolean
     return(GetSpellAbilityId()=='A023')or(GetSpellAbilityId()=='A0XZ')or(GetSpellAbilityId()=='A027')or(GetSpellAbilityId()=='A1DZ')or(GetSpellAbilityId()=='A01O') // 'A023': ability "Cover"; 'A0XZ': ability "Cover"; 'A027': ability "Cover"; 'A1DZ': ability "Cover"; 'A01O': ability "Cover"
 endfunction

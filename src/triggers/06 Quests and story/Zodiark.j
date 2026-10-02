@@ -1,4 +1,12 @@
 library TZodiark requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Zodiark_Prepare=null
+    trigger gg_trg_Zodiark_Encounter=null
+    trigger gg_trg_Zodiark_BanishRay=null
+    trigger gg_trg_Zodiark_Darkja=null
+endglobals
+
 function Trig_Zodiark_Prepare_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_U00H_0211)
     call PauseUnitBJ(true,gg_unit_U00H_0211)

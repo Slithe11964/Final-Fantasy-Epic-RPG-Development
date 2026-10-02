@@ -1,4 +1,9 @@
 library TVodyan
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Vodyan_Death_DropTiara=null
+endglobals
+
 function Trig_Vodyan_Death_DropTiara_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)

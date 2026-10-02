@@ -1,4 +1,14 @@
 library TShrine requires TForce, TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shrine_Create=null
+    trigger gg_trg_Shrine_AbilitySwap=null
+    trigger gg_trg_Shrine_SelectEnable=null
+    trigger gg_trg_Shrine_SelectMenu=null
+    trigger gg_trg_Shrine_Unlock=null
+    trigger gg_trg_Shrine_Reveal=null
+endglobals
+
 function Trig_Shrine_Create_Actions takes nothing returns nothing
     set udg_TempPoint=GetUnitLoc(gg_unit_n04U_0204)
     call CreateNUnitsAtLoc(1,'n07J',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07J': unit "Shrine of Individuality"

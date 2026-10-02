@@ -1,4 +1,10 @@
 library TRegen requires TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Regen_Cast=null
+    trigger gg_trg_Regen_Periodic=null
+endglobals
+
 function Trig_Regen_Cast_IsRegen takes nothing returns boolean
     return(GetSpellAbilityId()=='A00L')or(GetSpellAbilityId()=='A0B6')or(GetSpellAbilityId()=='A1F4')or(GetSpellAbilityId()=='A0FW') // 'A00L': ability "Regen"; 'A0B6': ability "Regen"; 'A1F4': ability "Regen"; 'A0FW': ability "Regen"
 endfunction

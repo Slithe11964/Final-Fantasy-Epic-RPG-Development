@@ -1,4 +1,14 @@
 library TCheat requires TEnding, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cheat_Detect_Init=null
+    trigger gg_trg_Cheat_Detect_Fog=null
+    trigger gg_trg_Cheat_Detect_Invuln=null
+    trigger gg_trg_Cheat_Detect_Resources=null
+    trigger gg_trg_Cheat_Detect_Mana=null
+    trigger gg_trg_Cheat_Punish=null
+endglobals
+
 function Trig_Cheat_Detect_Init_IsPlayerRed takes nothing returns boolean
     return(ForcePickRandomPlayer(udg_PlayingPlayers)==Player(0))
 endfunction

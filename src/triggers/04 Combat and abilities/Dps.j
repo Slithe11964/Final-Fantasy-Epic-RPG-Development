@@ -1,4 +1,12 @@
 library TDps requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dps_Start=null
+    trigger gg_trg_Dps_Tick=null
+    // Variables only this module uses.
+    boolean udg_DpsActive=false
+endglobals
+
 function Trig_Dps_Start_Conditions takes nothing returns boolean
     return(udg_DpsActive==false)
 endfunction

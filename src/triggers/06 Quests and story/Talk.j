@@ -1,4 +1,11 @@
 library TTalk requires TCam, TCine, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Talk_PortalGuardian=null
+    trigger gg_trg_Talk_ForestGuardian=null
+    trigger gg_trg_Talk_Lothlorien_Greet=null
+endglobals
+
 function Trig_Talk_PortalGuardian_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ecen_0180,true,true,true))
 endfunction

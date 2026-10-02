@@ -1,4 +1,10 @@
 library TAisha requires TCam, TCine, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Aisha_ArtemisTalk_Prepare=null
+    trigger gg_trg_Aisha_ArtemisTale=null
+endglobals
+
 function Trig_Aisha_ArtemisTalk_Prepare_Conditions takes nothing returns boolean
     return(IsQuestFailed(udg_SideQuest[$E])==false) // $E = 14
 endfunction

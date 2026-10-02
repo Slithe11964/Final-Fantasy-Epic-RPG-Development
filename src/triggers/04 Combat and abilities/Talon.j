@@ -1,4 +1,10 @@
 library TTalon
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Talon_Leash_Gate=null
+    trigger gg_trg_Talon_Death=null
+endglobals
+
 function Trig_Talon_Leash_Gate_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==udg_TalonUnit)and(GetOwningPlayer(GetTriggerUnit())==Player($A)) // $A = 10
 endfunction

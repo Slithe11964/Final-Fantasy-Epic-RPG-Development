@@ -1,4 +1,13 @@
 library TSummon requires TSummonBahamut, TSummonCyclops, TSummonGolem, TSummonIfrit, TSummonItems, TSummonLifecycle, TSummonScaling, TSummonShiva, TSummonTransfusion
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Summon_Detect=null
+    trigger gg_trg_Summon_Powerup=null
+    trigger gg_trg_Summon_Transfusion_Consume=null
+    trigger gg_trg_Summon_Death_Cleanup=null
+    trigger gg_trg_Summon_Item_Dropped=null
+endglobals
+
 function InitTrig_Summon takes nothing returns nothing
 endfunction
 

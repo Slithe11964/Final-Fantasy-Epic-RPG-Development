@@ -1,4 +1,21 @@
 library TSpellBlizzaga requires TAbil, TCombatFormulas, TFilter, TMissile, TPath, TProf
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    timer udg_BlizzagaTimer=CreateTimer()
+    boolexpr udg_BlizzagaFilter
+    integer udg_BlizzagaRecycle=0
+    integer udg_BlizzagaCount=0
+    integer array udg_BlizzagaNext
+    boolean array udg_BlizzagaSplits
+    real array udg_BlizzagaAngle
+    real array udg_BlizzagaDist
+    real array udg_BlizzagaX
+    real array udg_BlizzagaY
+    real array udg_BlizzagaDmg
+    real array udg_BlizzagaShardDmg
+    unit gg_unit_h01B_0270
+endglobals
+
 function Trig_Spell_Blizzaga_DamageGroup takes integer l_idx,real damageAmount returns nothing
     local unit u
     loop

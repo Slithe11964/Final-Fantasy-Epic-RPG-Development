@@ -1,4 +1,13 @@
 library TDarkEden requires TCam, TCine, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkEden_Appear=null
+    trigger gg_trg_DarkEden_Death=null
+    trigger gg_trg_DarkEden_LightningColor=null
+    // Variables only this module uses.
+    lightning udg_AbsorbLightning=null
+endglobals
+
 function Trig_DarkEden_Appear_Conditions takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='h022')and(udg_InCinematicMode==false) // 'h022': unit "Eden"
 endfunction

@@ -1,4 +1,14 @@
 library TKesha requires TCam, TCine, TForce, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Kesha_Stones_Spawn=null
+    trigger gg_trg_Kesha_Return_Stones=null
+    trigger gg_trg_Kesha_Subscription_Toggle=null
+    // Variables only this module uses.
+    integer udg_ExoticStonesReturned=0
+    unit udg_KeshaShop=null
+endglobals
+
 function Trig_Kesha_Stones_Spawn_Cond_SubscriptionDisabled takes nothing returns boolean
     return(udg_HardcoreOff==false)
 endfunction

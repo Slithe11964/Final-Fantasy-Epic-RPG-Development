@@ -1,4 +1,11 @@
 library TIcyRealm requires TGroup, TQuestScorchingTravel
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_IcyRealm_Init=null
+    trigger gg_trg_IcyRealm_GateOpened_Setup=null
+    trigger gg_trg_IcyRealm_Restore=null
+endglobals
+
 function Trig_IcyRealm_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_E002_0075)
     call PauseUnitBJ(true,gg_unit_E002_0075)

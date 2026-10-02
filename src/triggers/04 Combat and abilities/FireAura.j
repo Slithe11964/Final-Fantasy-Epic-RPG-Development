@@ -1,4 +1,10 @@
 library TFireAura requires TGroup, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FireAura_Pulse_Start=null
+    trigger gg_trg_FireAura_Pulse=null
+endglobals
+
 function Trig_FireAura_Pulse_Start_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)and(IsUnitGroupEmptyBJ(udg_ImmolationAuraGroup)==false)
 endfunction

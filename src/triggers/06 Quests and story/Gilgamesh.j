@@ -1,4 +1,15 @@
 library TGilgamesh requires TCam, TCine, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gilgamesh_Gift=null
+    trigger gg_trg_Gilgamesh_Init=null
+    trigger gg_trg_Gilgamesh_Appear=null
+    trigger gg_trg_Gilgamesh_Phase2=null
+    trigger gg_trg_Gilgamesh_Defeat=null
+    // Variables only this module uses.
+    integer udg_GilgameshGift=0
+endglobals
+
 function Trig_Gilgamesh_Gift_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0FG') // 'I0FG': item "Gilgamesh"
 endfunction

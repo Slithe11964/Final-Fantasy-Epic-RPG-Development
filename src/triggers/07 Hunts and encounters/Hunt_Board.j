@@ -1,4 +1,9 @@
 library THuntBoard
+globals
+    // Variables only this module uses.
+    effect array udg_HuntMarkerEffect
+endglobals
+
 function Trig_Hunt_Setup_Actions takes nothing returns nothing
     set udg_HuntLeaderboard=CreateLeaderboardBJ(GetPlayersAll(),"Hunt Club")
     call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)

@@ -1,4 +1,9 @@
 library TSpellTables
+globals
+    // Variables only this module uses.
+    hashtable udg_UnusedHash=null
+endglobals
+
 function Trig_Spell_Tables_Init_DisableBrews takes nothing returns nothing
     set udg_TempInteger=1
     loop

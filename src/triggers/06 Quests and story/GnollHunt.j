@@ -1,4 +1,11 @@
 library TGnollHunt requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GnollHunt_Start=null
+    trigger gg_trg_GnollHunt_Count=null
+    trigger gg_trg_GnollHunt_Reward=null
+endglobals
+
 function Trig_GnollHunt_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0BV_0229,true,true,true))
 endfunction

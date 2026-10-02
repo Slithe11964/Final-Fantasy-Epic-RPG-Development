@@ -1,4 +1,9 @@
 library TTextSpeed
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_TextSpeed_Command=null
+endglobals
+
 function Trig_TextSpeed_Command_Conditions takes nothing returns boolean
     return(SubStringBJ(GetEventPlayerChatString(),1,6)=="-text ")
 endfunction

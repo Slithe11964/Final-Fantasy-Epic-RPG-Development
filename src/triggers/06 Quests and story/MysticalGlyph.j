@@ -1,4 +1,17 @@
 library TMysticalGlyph requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MysticalGlyph_Prepare=null
+    trigger gg_trg_MysticalGlyph_Drop=null
+    trigger gg_trg_MysticalGlyph_Pickup=null
+    trigger gg_trg_MysticalGlyph_Ping=null
+    trigger gg_trg_MysticalGlyph_Deliver=null
+    trigger gg_trg_MysticalGlyph_Result=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    integer udg_GlyphDropCounter=0
+    sound gg_snd_StormPandarenBrewmasterYesAttack=null
+endglobals
+
 function Trig_MysticalGlyph_Prepare_Actions takes nothing returns nothing
     set udg_GlyphDropCounter=$DAC // $DAC = 3500
     call EnableTrigger(gg_trg_MysticalGlyph_Drop)

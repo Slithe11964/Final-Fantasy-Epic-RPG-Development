@@ -1,4 +1,9 @@
 library TSarai
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Sarai_ShowTalkIcon=null
+endglobals
+
 function Trig_Sarai_ShowTalkIcon_Actions takes nothing returns nothing
     set udg_SpecialEffect[77]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e013_0176,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     set udg_TentacleCount=-1

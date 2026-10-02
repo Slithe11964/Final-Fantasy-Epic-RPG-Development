@@ -1,4 +1,11 @@
 library TOversoul requires TItemShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Oversoul_Tables_Init=null
+    trigger gg_trg_Oversoul_OnMonsterDeath=null
+    trigger gg_trg_Oversoul_Activate=null
+endglobals
+
 function Trig_Oversoul_Tables_Init_Actions takes nothing returns nothing
     set udg_SpeciesName[1]="Goblin"
     set udg_SpeciesName[2]="Triton"

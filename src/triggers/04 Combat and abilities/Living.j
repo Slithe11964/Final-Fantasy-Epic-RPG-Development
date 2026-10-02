@@ -1,4 +1,9 @@
 library TLiving requires TGroup, TLink
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Living_Wall=null
+endglobals
+
 function Trig_Living_Wall_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A13L') // 'A13L': ability "!Living Wall"
 endfunction

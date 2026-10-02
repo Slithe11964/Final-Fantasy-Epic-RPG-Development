@@ -1,4 +1,11 @@
 library TSkeletalDefense requires TGroup, TLoc, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_SkeletalDefense_MarkAttacker=null
+    trigger gg_trg_SkeletalDefense_ClearDead=null
+    trigger gg_trg_SkeletalDefense_Spawn=null
+endglobals
+
 function Trig_SkeletalDefense_Spawn_RandomSubGroup takes integer l_want,group l_source returns group
     set bj_randomSubGroupGroup=CreateGroup()
     set bj_randomSubGroupWant=l_want

@@ -1,4 +1,9 @@
 library TMontblanc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Montblanc_Hint_Timer=null
+endglobals
+
 function Trig_Montblanc_Hint_Timer_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[62]))and(IsQuestCompleted(udg_SideQuest[63]))and(udg_MontblancHasNews==false)
 endfunction

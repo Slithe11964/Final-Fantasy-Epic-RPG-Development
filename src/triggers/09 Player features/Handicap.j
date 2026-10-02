@@ -1,4 +1,9 @@
 library THandicap requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Handicap_Command=null
+endglobals
+
 function Trig_Handicap_Command_Actions takes nothing returns nothing
     set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
     call DisplayTimedTextToForce(udg_TempForce,10.,("Enemy base HP: |cffffcc00 "+(R2S(GetPlayerHandicapBJ(Player($B)))+"%|r"))) // $B = 11

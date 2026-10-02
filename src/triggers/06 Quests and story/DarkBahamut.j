@@ -1,4 +1,15 @@
 library TDarkBahamut requires TBerserk, TCam, TCine, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkBahamut_Riddle=null
+    trigger gg_trg_DarkBahamut_DragonDeath=null
+    trigger gg_trg_DarkBahamut_Phase2=null
+    trigger gg_trg_DarkBahamut_Phase3=null
+    trigger gg_trg_DarkBahamut_Phase4=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_LightningBolt=null
+endglobals
+
 function Trig_DarkBahamut_Riddle_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_n043_0021)and(udg_InCinematicMode==false)
 endfunction

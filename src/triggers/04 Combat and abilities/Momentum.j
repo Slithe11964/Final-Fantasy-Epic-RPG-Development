@@ -1,4 +1,11 @@
 library TMomentum requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Momentum_Cast=null
+    trigger gg_trg_Momentum_Apply=null
+    trigger gg_trg_Momentum_Decay=null
+endglobals
+
 function Trig_Momentum_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A197') // 'A197': ability "Momentum"
 endfunction

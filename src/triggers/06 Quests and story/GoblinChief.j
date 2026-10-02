@@ -1,4 +1,9 @@
 library TGoblinChief
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GoblinChief_Death=null
+endglobals
+
 function Trig_GoblinChief_Death_ShouldDropArtifact takes nothing returns boolean
     return(udg_HashmalumStage<=0)and(IsQuestDiscovered(udg_MainQuest[20])==false)
 endfunction

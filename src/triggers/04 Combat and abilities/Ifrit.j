@@ -1,4 +1,9 @@
 library TIfrit requires TAbil, TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ifrit_Hellfire=null
+endglobals
+
 function Trig_Ifrit_Hellfire_IsCastAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0RK')or(GetSpellAbilityId()=='A14J') // 'A0RK': ability "!Hellfire"; 'A14J': ability "!Hellfire"
 endfunction

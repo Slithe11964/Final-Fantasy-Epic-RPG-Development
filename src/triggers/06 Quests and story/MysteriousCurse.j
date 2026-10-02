@@ -1,4 +1,28 @@
 library TMysteriousCurse requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MysteriousCurse_Init=null
+    trigger gg_trg_MysteriousCurse_Link=null
+    trigger gg_trg_MysteriousCurse_Adria=null
+    trigger gg_trg_MysteriousCurse_Confront=null
+    trigger gg_trg_MysteriousCurse_Witness=null
+    trigger gg_trg_MysteriousCurse_AttackLink=null
+    trigger gg_trg_MysteriousCurse_AttackAdria=null
+    trigger gg_trg_MysteriousCurse_LinkDies=null
+    trigger gg_trg_MysteriousCurse_AdriaWitchDead=null
+    trigger gg_trg_MysteriousCurse_BabaYagaAppears=null
+    trigger gg_trg_MysteriousCurse_AdriaRestored=null
+    trigger gg_trg_MysteriousCurse_AdriaReturn=null
+    trigger gg_trg_MysteriousCurse_LinkRestored=null
+    trigger gg_trg_MysteriousCurse_LinkReturn=null
+    trigger gg_trg_MysteriousCurse_AdriaDies=null
+    trigger gg_trg_MysteriousCurse_BabaYagaDead=null
+    // Variables only this module uses.
+    integer udg_CurseLiar=0
+    unit array udg_CurseUnit
+    integer udg_CurseStage=0
+endglobals
+
 function Trig_MysteriousCurse_Init_Cond_LinkIsHonest takes nothing returns boolean
     return(udg_CurseLiar==1)
 endfunction

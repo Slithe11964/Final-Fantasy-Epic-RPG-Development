@@ -1,4 +1,9 @@
 library TVirus requires TAbil, TBerserk
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Virus_Cast=null
+endglobals
+
 function Trig_Virus_Cast_Expire takes nothing returns nothing
     local timer expiredTimer=GetExpiredTimer()
     local unit u=LoadUnitHandle(udg_MaxHpBuffHash,GetHandleId(expiredTimer),3)

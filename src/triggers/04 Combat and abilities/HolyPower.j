@@ -1,4 +1,10 @@
 library THolyPower requires TSpellShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HolyPower_Mastery_Track=null
+    trigger gg_trg_HolyPower_Mastery_Start=null
+endglobals
+
 function Trig_HolyPower_Mastery_Track_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_EnduranceAwardGroup))
 endfunction

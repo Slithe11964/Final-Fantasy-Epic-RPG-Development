@@ -1,4 +1,9 @@
 library TStatus
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Status_AutoCleanse=null
+endglobals
+
 function Trig_Status_AutoCleanse_Conditions takes nothing returns boolean
     return(IsUnitGroupEmptyBJ(udg_ActiveHeroGroup)==false)
 endfunction

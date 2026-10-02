@@ -1,4 +1,14 @@
 library TPath
+globals
+    // Variables only this module uses.
+    real udg_PathProbeX=.0
+    real udg_PathProbeY=.0
+    rect gg_rct_001
+    item udg_PathProbeItem
+    item array udg_PathHiddenItem
+    integer udg_PathHiddenCount=0
+endglobals
+
 function Path_KillTreeFilter takes nothing returns boolean
     local destructable d=GetFilterDestructable()
     if GetWidgetLife(d)>.405 and not IsDestructableInvulnerable(d)then

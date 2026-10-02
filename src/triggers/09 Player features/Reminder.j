@@ -1,4 +1,9 @@
 library TReminder
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Reminder_Periodic=null
+endglobals
+
 function Trig_Reminder_Periodic_Actions takes nothing returns nothing
     call DisplayTimedTextToForce(udg_PlayingPlayers,60.,"|cffb9d1eaLooking for help or discussion related to this map?|r\r\n|cffb9d1eaCheck out the Wiki:|r |cff0000cdfferpg.wikia.com|r\r\n|cffb9d1eaTalk about it in the Forums:|r |cff0000cdfferpg.forumotion.com|r\r\n|cffb9d1eaJoin our Discord:|r |cff0000cddiscord.gg/jXA8DHv|r")
 endfunction

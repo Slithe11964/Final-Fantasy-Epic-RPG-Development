@@ -1,4 +1,9 @@
 library TLegendary
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Legendary_Unlock=null
+endglobals
+
 function Trig_Legendary_Unlock_IsShrineUnlocked takes nothing returns boolean
     return(udg_ShrineUnlocked)
 endfunction

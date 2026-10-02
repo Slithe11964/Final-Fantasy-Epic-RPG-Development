@@ -1,4 +1,10 @@
 library TStrangeKey
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_StrangeKey_Drop=null
+    trigger gg_trg_StrangeKey_Ping=null
+endglobals
+
 function Trig_StrangeKey_Drop_Cond_DyingIsGolem takes nothing returns boolean
     return(GetUnitTypeId(GetDyingUnit())=='ngrk')or(GetUnitTypeId(GetDyingUnit())=='ngst')or(GetUnitTypeId(GetDyingUnit())=='nggr')or(GetUnitTypeId(GetDyingUnit())=='n016')or(GetUnitTypeId(GetDyingUnit())=='narg')or(GetUnitTypeId(GetDyingUnit())=='nwrg')or(GetUnitTypeId(GetDyingUnit())=='nsgg') // 'ngrk': object name not found in map data; 'ngst': object name not found in map data; 'nggr': object name not found in map data; 'n016': unit "Bloodstone Golem"; 'narg': object name not found in map data; 'nwrg': object name not found in map data; 'nsgg': object name not found in map data
 endfunction

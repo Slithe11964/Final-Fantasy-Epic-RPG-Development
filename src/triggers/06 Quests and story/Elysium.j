@@ -1,4 +1,14 @@
 library TElysium requires TGroup, TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Elysium_Prepare=null
+    trigger gg_trg_Elysium_AssignLegends=null
+    trigger gg_trg_Elysium_MarkerTick=null
+    // Variables only this module uses.
+    trigger array udg_LegendTrigger
+    integer array udg_LegendTaskAbility
+endglobals
+
 function Trig_Elysium_Prepare_MakeLegendarySpirit takes nothing returns nothing
     call SetUnitVertexColorBJ(GetEnumUnit(),'d',90.,20.,20.)
     call BlzSetUnitName(GetEnumUnit(),("Legendary "+GetUnitName(GetEnumUnit())))

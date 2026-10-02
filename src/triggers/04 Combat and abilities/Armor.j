@@ -1,4 +1,9 @@
 library TArmor requires TAbil, TPlayerPart01, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Armor_Breaker=null
+endglobals
+
 function Trig_Armor_Breaker_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0P7') // 'A0P7': ability "Armor Breaker"
 endfunction

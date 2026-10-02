@@ -1,4 +1,15 @@
 library TGafgarion requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gafgarion_Join_Party=null
+    trigger gg_trg_Gafgarion_Leash=null
+    trigger gg_trg_Gafgarion_Death_Timer=null
+    trigger gg_trg_Gafgarion_Revive=null
+    trigger gg_trg_Gafgarion_Block_Portal_Scroll=null
+    trigger gg_trg_Gafgarion_Join_Summit=null
+    trigger gg_trg_Gafgarion_RegenBurst=null
+endglobals
+
 function Trig_Gafgarion_Join_Party_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,udg_StoryBoss,true,true,true))
 endfunction

@@ -1,4 +1,9 @@
 library TInfo requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Info_Item_Show_Lore=null
+endglobals
+
 function Trig_Info_Item_Show_Lore_Conditions takes nothing returns boolean
     return(SubStringBJ(GetItemName(GetSoldItem()),1,$D)=="Information: ") // $D = 13
 endfunction

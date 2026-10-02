@@ -1,4 +1,9 @@
 library TQuestUnits
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_QuestUnits_Ping=null
+endglobals
+
 function Trig_QuestUnits_Ping_AnyGroupHasUnits takes nothing returns boolean
     return(IsUnitGroupEmptyBJ(udg_PrimaryQuestUnits)==false)or(IsUnitGroupEmptyBJ(udg_QuestUnits)==false)or(IsUnitGroupEmptyBJ(udg_BossUnits)==false)or(IsUnitGroupEmptyBJ(udg_HuntMonsters)==false)
 endfunction

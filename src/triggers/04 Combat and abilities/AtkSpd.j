@@ -1,4 +1,9 @@
 library TAtkSpd requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AtkSpd_Command=null
+endglobals
+
 function Trig_AtkSpd_Command_Cond_HasCommandAura takes nothing returns boolean
     return(UnitHasBuffBJ(udg_CurrentHero,'B01Q')) // 'B01Q': buff tooltip "Sukugaya"
 endfunction

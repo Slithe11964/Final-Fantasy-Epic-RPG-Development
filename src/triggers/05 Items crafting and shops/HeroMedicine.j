@@ -1,4 +1,10 @@
 library THeroMedicine requires TMedicine, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HeroMedicine_Refill=null
+    trigger gg_trg_HeroMedicine_Pickup=null
+endglobals
+
 function Trig_HeroMedicine_Refill_Cond_CooldownReady takes nothing returns boolean
     return(TimerGetRemaining(udg_SpellCooldownTimer[GetConvertedPlayerId(GetEnumPlayer())])<=.01)
 endfunction

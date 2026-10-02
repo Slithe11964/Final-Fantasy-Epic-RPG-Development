@@ -1,4 +1,9 @@
 library TSpring requires TCam, TCine, TForce, TJob, TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spring_Of_Life_Ritual=null
+endglobals
+
 function Trig_Spring_Of_Life_Ritual_Conditions takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())!='H01D') // 'H01D': unit "Spirit of Gaya"
 endfunction

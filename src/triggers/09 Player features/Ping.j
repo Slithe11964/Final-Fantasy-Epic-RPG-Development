@@ -1,4 +1,10 @@
 library TPing
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ping_ArenaTarget=null
+    trigger gg_trg_Ping_EyeOfJenova=null
+endglobals
+
 function Trig_Ping_ArenaTarget_IsTargetHidden takes nothing returns boolean
     return(IsLocationMaskedToPlayer(udg_TempPoint,ForcePickRandomPlayer(udg_PlayingPlayers)))
 endfunction

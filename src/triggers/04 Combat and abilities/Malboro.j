@@ -1,4 +1,9 @@
 library TMalboro requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Malboro_BadBreath=null
+endglobals
+
 function Trig_Malboro_BadBreath_IsMalboro takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='n03W')or(GetUnitTypeId(GetTriggerUnit())=='n03X') // 'n03W': unit "Malboro"; 'n03X': unit "Great Malboro"
 endfunction

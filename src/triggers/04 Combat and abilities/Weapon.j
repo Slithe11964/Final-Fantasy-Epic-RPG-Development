@@ -1,4 +1,9 @@
 library TWeapon requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Weapon_Research=null
+endglobals
+
 function Trig_Weapon_Research_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))
 endfunction

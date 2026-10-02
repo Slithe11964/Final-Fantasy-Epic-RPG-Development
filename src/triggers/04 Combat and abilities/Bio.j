@@ -1,4 +1,9 @@
 library TBio requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Bio_Cast=null
+endglobals
+
 function Trig_Bio_Cast_IsBio takes nothing returns boolean
     return(GetSpellAbilityId()=='A10J')or(GetSpellAbilityId()=='A10N')or(GetSpellAbilityId()=='A126') // 'A10J': ability "Bio"; 'A10N': ability "Bio"; 'A126': ability "Bio"
 endfunction

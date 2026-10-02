@@ -1,4 +1,9 @@
 library TMechanical requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mechanical_Drill=null
+endglobals
+
 function Trig_Mechanical_Drill_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1D9') // 'A1D9': ability "Drill"
 endfunction

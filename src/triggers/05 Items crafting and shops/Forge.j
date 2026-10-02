@@ -1,4 +1,21 @@
 library TForge requires TCam, TCine, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Forge_Bali_Init=null
+    trigger gg_trg_Forge_Bali_ItemGiven=null
+    trigger gg_trg_Forge_Bali_ItemTaken=null
+    trigger gg_trg_Forge_Bali_Refresh=null
+    trigger gg_trg_Forge_Bali_ClearText=null
+    trigger gg_trg_Forge_Bali_Craft=null
+    trigger gg_trg_Forge_Bali_PsypherTalk=null
+    // Variables only this module uses.
+    integer array udg_ForgeRecipeResult
+    integer array udg_ForgeRecipeBase
+    integer array udg_ForgeRecipeMaterial
+    integer array udg_CelestialWeapon
+    integer udg_ForgeRecipeCount=0
+endglobals
+
 function Trig_Forge_Bali_Init_Actions takes nothing returns nothing
     set udg_SpecialEffect[32]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hmbr_0140,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Arcanium_Start)

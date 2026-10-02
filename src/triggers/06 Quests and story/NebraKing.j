@@ -1,4 +1,13 @@
 library TNebraKing requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_NebraKing_Hide=null
+    trigger gg_trg_NebraKing_Summon=null
+    trigger gg_trg_NebraKing_Escape=null
+    // Variables only this module uses.
+    real udg_NebraKingLife=0
+endglobals
+
 function Trig_NebraKing_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H02W_0246)
     call SetUnitInvulnerable(gg_unit_H02W_0246,true)

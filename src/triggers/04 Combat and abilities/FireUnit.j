@@ -1,4 +1,10 @@
 library TFireUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FireUnit_Enter=null
+    trigger gg_trg_FireUnit_Death=null
+endglobals
+
 function Trig_FireUnit_Enter_IsFireUnitType takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='n041')or(GetUnitTypeId(GetTriggerUnit())=='n0CB')or(GetUnitTypeId(GetTriggerUnit())=='nslr')or(GetUnitTypeId(GetTriggerUnit())=='n00F')or(GetUnitTypeId(GetTriggerUnit())=='E00Q')or(GetUnitTypeId(GetTriggerUnit())=='n04A')or(GetUnitTypeId(GetTriggerUnit())=='h02B') // 'n041': unit "Ruby Dragon"; 'n0CB': unit "Vulcan"; 'nslr': unit "Zalamander"; 'n00F': unit "Fire Golem"; 'E00Q': unit "Warring Triad Member"; 'n04A': unit "Ifrit"; 'h02B': unit "Fire"
 endfunction

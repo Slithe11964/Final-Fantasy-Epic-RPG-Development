@@ -1,4 +1,10 @@
 library TRemove requires TBerserk, TRunic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Remove_Debuffs=null
+    trigger gg_trg_Remove_Buffs=null
+endglobals
+
 function Trig_Remove_Debuffs_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",udg_DispelTarget,"Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())

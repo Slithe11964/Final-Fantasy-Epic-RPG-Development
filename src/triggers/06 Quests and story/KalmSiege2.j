@@ -1,4 +1,21 @@
 library TKalmSiege2 requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_KalmSiege2_Call=null
+    trigger gg_trg_KalmSiege2_Start=null
+    trigger gg_trg_KalmSiege2_Restart=null
+    trigger gg_trg_KalmSiege2_Begin=null
+    trigger gg_trg_KalmSiege2_SouthWave=null
+    trigger gg_trg_KalmSiege2_DemonSpotted=null
+    trigger gg_trg_KalmSiege2_DemonFlee=null
+    trigger gg_trg_KalmSiege2_Defeat=null
+    trigger gg_trg_KalmSiege2_TrackDeaths=null
+    trigger gg_trg_KalmSiege2_Complete=null
+    trigger gg_trg_KalmSiege2_Fail=null
+    // Variables only this module uses.
+    boolean udg_DemonRetreated=false
+endglobals
+
 function Trig_KalmSiege2_Call_Actions takes nothing returns nothing
     call DisplayTextToForce(GetPlayersAll(),"|cffff0000Meliadoul is calling for you !!!|r")
     call PlaySoundBJ(gg_snd_HornOfCenariusSound)

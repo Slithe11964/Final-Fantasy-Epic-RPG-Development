@@ -1,4 +1,9 @@
 library TQuestWolfFangs requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses.
+    integer udg_FangsRemaining=0
+endglobals
+
 function Trig_Quest_WolfFangs_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n01R_0081,true,true,true))
 endfunction

@@ -1,4 +1,11 @@
 library TQuestCount
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_QuestCount_Milestones=null
+    // Variables only this module uses.
+    boolean udg_QuestCountLocked=false
+endglobals
+
 function Trig_QuestCount_Milestones_Conditions takes nothing returns boolean
     return(udg_QuestCountLocked==false)
 endfunction

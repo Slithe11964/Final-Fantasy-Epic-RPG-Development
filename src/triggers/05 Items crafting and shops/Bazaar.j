@@ -1,4 +1,22 @@
 library TBazaar
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Bazaar_Init=null
+    trigger gg_trg_Bazaar_Recipes=null
+    trigger gg_trg_Bazaar_PawnMaterial=null
+    trigger gg_trg_Bazaar_UpdateStock=null
+    trigger gg_trg_Bazaar_Sell_Bundle=null
+    // Variables only this module uses.
+    hashtable udg_BazaarRecipeHash=null
+    integer udg_MaterialTypeCount=0
+    integer udg_BazaarGoodCount=0
+    integer array udg_BazaarGoodItem
+    integer array udg_BazaarResultItem
+    boolean udg_RecipeAffordable=false
+    integer udg_BazaarStockedCount=0
+    unit udg_BazaarShopUnit=null
+endglobals
+
 function Trig_Bazaar_Init_Actions takes nothing returns nothing
     set udg_BazaarShopUnit=gg_unit_n030_0030
     set udg_MaterialTypeCount='j'

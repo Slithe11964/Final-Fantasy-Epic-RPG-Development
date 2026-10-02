@@ -1,4 +1,10 @@
 library TElement requires TProf
+globals
+    // Variables only this module uses.
+    integer array udg_ElementDamageAbil
+    integer array udg_ElementBoostBuff
+endglobals
+
 function Element_InitTables takes nothing returns nothing
     set udg_ElementOpposite[1]=2
     set udg_ElementOpposite[2]=1

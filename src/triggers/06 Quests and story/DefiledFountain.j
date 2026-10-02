@@ -1,4 +1,13 @@
 library TDefiledFountain requires TCam, TCine, TForce, TPlayerPart01, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DefiledFountain_Prepare=null
+    trigger gg_trg_DefiledFountain_Start=null
+    trigger gg_trg_DefiledFountain_Hoof=null
+    trigger gg_trg_DefiledFountain_PingBulb=null
+    trigger gg_trg_DefiledFountain_BulbPickup=null
+endglobals
+
 function Trig_DefiledFountain_Prepare_Actions takes nothing returns nothing
     set udg_SpecialEffect[42]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e007_0154,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_DefiledFountain_Start)

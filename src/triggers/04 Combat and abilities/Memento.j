@@ -1,4 +1,9 @@
 library TMemento requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Memento_Ring_Compass=null
+endglobals
+
 function Trig_Memento_Ring_Compass_Cond_IsMementoSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A1D7')or(GetSpellAbilityId()=='A1D8') // 'A1D7': ability "Memento"; 'A1D8': ability "Memento"
 endfunction

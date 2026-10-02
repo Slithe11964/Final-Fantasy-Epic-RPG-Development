@@ -1,4 +1,16 @@
 library TSpellShuriken requires TAbil, TCombatFormulas, TFilter, TProf
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    timer udg_ShurikenTimer=CreateTimer()
+    boolexpr udg_ShurikenFilter
+    integer udg_ShurikenRecycle=0
+    integer udg_ShurikenCount=0
+    integer array udg_ShurikenNext
+    boolean array udg_ShurikenReturning
+    integer array udg_ShurikenSide
+    real array udg_ShurikenRadius
+endglobals
+
 function Trig_Spell_Shuriken_FireHitEvent takes integer l_idx returns nothing
     set udg_ArgIndex=l_idx
     call TriggerEvaluate(udg_ShurikenDamageTrig)

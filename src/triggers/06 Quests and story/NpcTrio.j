@@ -1,4 +1,10 @@
 library TNpcTrio requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_NpcTrio_Group_Init=null
+    trigger gg_trg_NpcTrio_Turn_Face=null
+endglobals
+
 function Trig_NpcTrio_Group_Init_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_n01V_0168,udg_NpcTrioGroup)
     call GroupAddUnitSimple(gg_unit_n01W_0135,udg_NpcTrioGroup)

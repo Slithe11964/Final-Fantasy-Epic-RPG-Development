@@ -1,4 +1,9 @@
 library TUnit requires TFilter, TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Unit_ApplyUpgradeBonuses=null
+endglobals
+
 function Unit_HasNoEquipment takes unit u returns boolean
     local integer i=0
     local item l_slotItem

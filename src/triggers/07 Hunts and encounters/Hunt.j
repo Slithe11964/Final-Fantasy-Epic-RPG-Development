@@ -1,4 +1,28 @@
 library THunt requires THuntBoard, THuntContracts, THuntEncounters, THuntRewards, THuntShop
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hunt_Setup=null
+    trigger gg_trg_Hunt_Board_Markers=null
+    trigger gg_trg_Hunt_Accept=null
+    trigger gg_trg_Hunt_Complete=null
+    trigger gg_trg_Hunt_Shop_Unlock=null
+    trigger gg_trg_Hunt_Thextera_Escort=null
+    trigger gg_trg_Hunt_Shard_Register=null
+    trigger gg_trg_Hunt_Shard_Drop=null
+    trigger gg_trg_Hunt_Tonberry_Setup=null
+    trigger gg_trg_Hunt_Demon_Setup=null
+    trigger gg_trg_Hunt_Parvati_Setup=null
+    trigger gg_trg_Hunt_PhantomDancer_Setup=null
+    trigger gg_trg_Hunt_Exdeath_Setup=null
+    trigger gg_trg_Hunt_Mephorash_Setup=null
+    trigger gg_trg_Hunt_Trickster_Unlock=null
+    trigger gg_trg_Hunt_Melaiduma_Setup=null
+    trigger gg_trg_Hunt_BlackPearl_Setup=null
+    trigger gg_trg_Hunt_Rabite_Setup=null
+    trigger gg_trg_Hunt_Verci_Setup=null
+    trigger gg_trg_Hunt_Okuu_Setup=null
+endglobals
+
 function InitTrig_Hunt takes nothing returns nothing
 endfunction
 

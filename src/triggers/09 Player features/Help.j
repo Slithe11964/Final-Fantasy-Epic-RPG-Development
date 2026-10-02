@@ -1,4 +1,10 @@
 library THelp
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Help_Unit_Sold=null
+    trigger gg_trg_Help_Unit_Death_Drop=null
+endglobals
+
 function Trig_Help_Unit_Sold_Conditions takes nothing returns boolean
     return(GetUnitTypeId(GetSoldUnit())=='n00W') // 'n00W': unit "Help"
 endfunction

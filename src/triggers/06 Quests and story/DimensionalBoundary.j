@@ -1,4 +1,12 @@
 library TDimensionalBoundary requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait, TZeromus
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DimensionalBoundary_Init=null
+    trigger gg_trg_DimensionalBoundary_Start=null
+    trigger gg_trg_DimensionalBoundary_OpenPortal=null
+    trigger gg_trg_DimensionalBoundary_EmptyEnd=null
+endglobals
+
 function Trig_DimensionalBoundary_Init_Actions takes nothing returns nothing
     set udg_QuFrogLoc=GetUnitLoc(gg_unit_n03A_0136)
     set udg_QuFrogDrainCount=0

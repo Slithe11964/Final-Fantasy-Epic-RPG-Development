@@ -1,4 +1,9 @@
 library TGust requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gust_Cast=null
+endglobals
+
 function Trig_Gust_Cast_IsGustAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A1AD')or(GetSpellAbilityId()=='A044')or(GetSpellAbilityId()=='A1FG') // 'A1AD': ability "Gust"; 'A044': ability "Gust"; 'A1FG': ability "Gust"
 endfunction

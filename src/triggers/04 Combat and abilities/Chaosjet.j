@@ -1,4 +1,9 @@
 library TChaosjet requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chaosjet_Death=null
+endglobals
+
 function Trig_Chaosjet_Death_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_ChaosElementalGroup))
 endfunction

@@ -1,4 +1,9 @@
 library TGhost
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ghost_Despawn=null
+endglobals
+
 function Trig_Ghost_Despawn_Conditions takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='u00D') // 'u00D': unit "Death Ghost"
 endfunction

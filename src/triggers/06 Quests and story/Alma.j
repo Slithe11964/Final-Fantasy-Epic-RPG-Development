@@ -1,4 +1,10 @@
 library TAlma requires TCam, TCine, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Alma_Disappear=null
+    trigger gg_trg_Alma_Missing_Notice=null
+endglobals
+
 function Trig_Alma_Disappear_CinematicBusy takes nothing returns boolean
     return(udg_InCinematicMode)
 endfunction

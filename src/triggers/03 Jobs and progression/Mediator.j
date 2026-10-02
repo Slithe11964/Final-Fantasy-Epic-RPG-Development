@@ -1,4 +1,16 @@
 library TMediator requires TAbil, TForce, TGroup, TLoc, TProf, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mediator_Clone_Reject=null
+    trigger gg_trg_Mediator_Clone=null
+    trigger gg_trg_Mediator_SpellShot=null
+    trigger gg_trg_Mediator_Invitation=null
+    trigger gg_trg_Mediator_Balance=null
+    trigger gg_trg_Mediator_MarkForDeath=null
+    // Variables only this module uses.
+    unit udg_SpellTargetUnit=null
+endglobals
+
 function Trig_Mediator_Clone_Reject_TargetNotCloneable takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A1DH',GetSpellTargetUnit())>0)or(GetUnitAbilityLevelSwapped('A122',GetSpellTargetUnit())<=0) // 'A1DH': ability "Cloned"; 'A122': ability "Summoned Powerup"
 endfunction

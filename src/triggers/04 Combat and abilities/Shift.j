@@ -1,4 +1,10 @@
 library TShift requires TBattleLog, TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shift_Elements_Start=null
+    trigger gg_trg_Shift_Elements_Roll=null
+endglobals
+
 function Trig_Shift_Elements_Start_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A11N',GetTriggerUnit())>0) // 'A11N': ability "Shifting Elements"
 endfunction

@@ -1,4 +1,11 @@
 library TCrystalBall requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_CrystalBall_Drop=null
+    trigger gg_trg_CrystalBall_Ping=null
+    trigger gg_trg_CrystalBall_Pickup=null
+endglobals
+
 function Trig_CrystalBall_Drop_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)

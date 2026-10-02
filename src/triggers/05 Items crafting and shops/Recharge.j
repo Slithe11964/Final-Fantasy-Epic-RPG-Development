@@ -1,4 +1,9 @@
 library TRecharge requires TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Recharge_OnKill=null
+endglobals
+
 function Trig_Recharge_OnKill_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A12S',GetKillingUnitBJ())>0)and(IsUnitEnemy(GetTriggerUnit(),GetOwningPlayer(GetKillingUnitBJ()))) // 'A12S': ability "Recharge"
 endfunction

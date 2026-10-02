@@ -1,4 +1,9 @@
 library TMonica
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Monica_ShowMarker=null
+endglobals
+
 function Trig_Monica_ShowMarker_Actions takes nothing returns nothing
     set udg_SpecialEffect[72]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BW_0094,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_OgreHunt_Start)

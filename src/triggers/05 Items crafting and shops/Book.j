@@ -1,4 +1,9 @@
 library TBook requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Book_TransformGem=null
+endglobals
+
 function Trig_Book_TransformGem_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1CD') // 'A1CD': ability "Transform Book"
 endfunction

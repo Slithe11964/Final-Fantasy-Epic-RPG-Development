@@ -1,4 +1,19 @@
 library TNaisha requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Naisha_Init=null
+    trigger gg_trg_Naisha_Prepare=null
+    trigger gg_trg_Naisha_Recruit=null
+    trigger gg_trg_Naisha_Wounded=null
+    trigger gg_trg_Naisha_AttackedRetreat=null
+    trigger gg_trg_Naisha_Heal=null
+    trigger gg_trg_Naisha_Death=null
+    trigger gg_trg_Naisha_ArriveLothlorien=null
+    trigger gg_trg_Naisha_Whirl=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_NaishaReady=null
+endglobals
+
 function Trig_Naisha_Init_Actions takes nothing returns nothing
     call PauseUnitBJ(true,gg_unit_ensh_0057)
     call SetUnitInvulnerable(gg_unit_ensh_0057,true)

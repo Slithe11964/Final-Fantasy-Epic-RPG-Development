@@ -1,4 +1,9 @@
 library TProvoke requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Provoke_Cast=null
+endglobals
+
 function Trig_Provoke_Cast_IsProvoke takes nothing returns boolean
     return(GetSpellAbilityId()=='A15U')or(GetSpellAbilityId()=='A015') // 'A15U': ability "Provoke"; 'A015': ability "Provoke"
 endfunction

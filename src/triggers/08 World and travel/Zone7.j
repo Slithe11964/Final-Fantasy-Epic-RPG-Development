@@ -1,4 +1,9 @@
 library TZone7
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Zone7_Leash=null
+endglobals
+
 function Trig_Zone7_Leash_IsChocobo_Z7 takes nothing returns boolean
     return(GetUnitName(GetTriggerUnit())=="Chocobo")and(GetOwningPlayer(GetTriggerUnit())==Player(8))
 endfunction

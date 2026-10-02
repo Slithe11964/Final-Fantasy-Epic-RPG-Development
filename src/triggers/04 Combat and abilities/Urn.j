@@ -1,4 +1,11 @@
 library TUrn
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Urn_Guardians_Count=null
+    // Variables only this module uses.
+    integer udg_GuardiansKilled=0
+endglobals
+
 function Trig_Urn_Guardians_Count_Enum_RemoveDestructable takes nothing returns nothing
     call RemoveDestructable(GetEnumDestructable())
 endfunction

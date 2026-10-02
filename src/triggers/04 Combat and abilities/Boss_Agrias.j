@@ -1,4 +1,9 @@
 library TBossAgrias requires TCam, TCine, TPlayerPart01, TText, TWait
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_DarkRangerYesAttack=null
+endglobals
+
 function Trig_Boss_Agrias_Intro_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null
 endfunction

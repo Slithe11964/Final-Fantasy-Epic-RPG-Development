@@ -1,4 +1,10 @@
 library TGate requires TCam, TCine, TForce, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gate_Codeword_Demesne=null
+    trigger gg_trg_Gate_WinterKey_Unlock=null
+endglobals
+
 function Trig_Gate_Codeword_Demesne_Cond_NotAtGate takes nothing returns boolean
     return(udg_InCinematicMode)or(RectContainsUnit(gg_rct_630,Player_GetHero(GetTriggerPlayer()))==false)
 endfunction

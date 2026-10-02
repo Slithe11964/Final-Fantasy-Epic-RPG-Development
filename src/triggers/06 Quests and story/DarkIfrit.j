@@ -1,4 +1,10 @@
 library TDarkIfrit requires TCam, TCine, TLoc, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkIfrit_Appear=null
+    trigger gg_trg_DarkIfrit_Death=null
+endglobals
+
 function Trig_DarkIfrit_Appear_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

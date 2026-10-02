@@ -1,4 +1,9 @@
 library TBossPenance requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerPart01, TWait
+globals
+    // Variables only this module uses.
+    unit udg_PenanceUnit=null
+endglobals
+
 function Trig_Boss_Penance_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[1]==false)
 endfunction

@@ -1,4 +1,10 @@
 library TMephorash requires TBerserk, TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mephorash_Split=null
+    trigger gg_trg_Mephorash_Clone_Death=null
+endglobals
+
 function Trig_Mephorash_Split_PlayBirthAnim takes nothing returns nothing
     call SetUnitAnimation(GetEnumUnit(),"birth")
     call QueueUnitAnimationBJ(GetEnumUnit(),"stand")

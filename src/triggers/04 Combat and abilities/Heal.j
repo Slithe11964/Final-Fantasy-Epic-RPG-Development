@@ -1,4 +1,9 @@
 library THeal requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Heal_Spell_Apply=null
+endglobals
+
 function Trig_Heal_Spell_Apply_IsHealSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A05A')or(GetSpellAbilityId()=='A04O')or(GetSpellAbilityId()=='A03O')or(GetSpellAbilityId()=='A08U')or(GetSpellAbilityId()=='A09X')or(GetSpellAbilityId()=='A12K')or(GetSpellAbilityId()=='A032')or(GetSpellAbilityId()=='A004')or(GetSpellAbilityId()=='A008') // 'A05A': ability "Cura"; 'A04O': ability "Curaga"; 'A03O': ability "Curaga"; 'A08U': ability "Heavenly Light"; 'A09X': ability "Heavenly Light"; 'A12K': ability "Blessed Aether"; 'A032': ability "Blessed Earth"; 'A004': ability "Flames of Life"; 'A008': ability "Naga Light"
 endfunction

@@ -1,4 +1,15 @@
 library TTower requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Tower_Summon_Register=null
+    trigger gg_trg_Tower_Quezacotl_Unregister=null
+    trigger gg_trg_Tower_Buy_RestoreMP=null
+    trigger gg_trg_Tower_Summon_Brothers=null
+    trigger gg_trg_Tower_Summon_Eden=null
+    trigger gg_trg_Tower_Eden_Expire=null
+    trigger gg_trg_Tower_Upgrade_Credit=null
+endglobals
+
 function Trig_Tower_Summon_Register_Conditions takes nothing returns boolean
     return((GetOwningPlayer(GetTriggerUnit())==Player($A))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_SUMMONED))and(GetUnitTypeId(GetTriggerUnit())!='n08D'))!=null // $A = 10; 'n08D': unit "Interceptor"
 endfunction

@@ -1,4 +1,9 @@
 library THuntContracts requires TForce, TReward, TUnit
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_ArrangedTeamInvitation=null
+endglobals
+
 function Trig_Hunt_Accept_Conditions takes nothing returns boolean
     return(SubStringBJ(GetUnitName(GetSoldUnit()),1,6)=="Hunt: ")
 endfunction

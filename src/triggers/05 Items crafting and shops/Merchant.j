@@ -1,4 +1,21 @@
 library TMerchant requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Merchant_Stock_Init=null
+    trigger gg_trg_Merchant_Spawn_Night=null
+    trigger gg_trg_Merchant_Reveal=null
+    trigger gg_trg_Merchant_Leave_Dawn=null
+    trigger gg_trg_Merchant_Leave_OnSale=null
+    trigger gg_trg_Merchant_Stock_Shrink=null
+    // Variables only this module uses.
+    unit udg_KoboldMerchant=null
+    integer udg_KoboldKillCount=0
+    integer array udg_MerchantPotion
+    integer array udg_MerchantAccessory
+    integer array udg_MerchantRod
+    integer array udg_MerchantRareGear
+endglobals
+
 function Trig_Merchant_Stock_Init_Actions takes nothing returns nothing
     set udg_MerchantPotion[0]='I05I' // 'I05I': item "Spirit Potion"
     set udg_MerchantPotion[1]='pdiv' // 'pdiv': item "Hero Drink"

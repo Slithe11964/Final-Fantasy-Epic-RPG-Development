@@ -1,4 +1,9 @@
 library TWirts requires TAbil, TForce, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Wirts_Leg_Club=null
+endglobals
+
 function Trig_Wirts_Leg_Club_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0UA') // 'A0UA': ability "Club"
 endfunction

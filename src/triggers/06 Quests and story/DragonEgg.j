@@ -1,4 +1,13 @@
 library TDragonEgg requires TCam, TCine, TForce, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DragonEgg_Start=null
+    trigger gg_trg_DragonEgg_Ping=null
+    trigger gg_trg_DragonEgg_PickUp=null
+    trigger gg_trg_DragonEgg_Fail=null
+    trigger gg_trg_DragonEgg_Reward=null
+endglobals
+
 function Trig_DragonEgg_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e016_0019,true,true,true))
 endfunction

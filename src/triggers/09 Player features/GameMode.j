@@ -1,4 +1,11 @@
 library TGameMode requires TGroup, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GameMode_Apply=null
+    // Variables only this module uses.
+    boolean udg_ModeFlag=false
+endglobals
+
 function Trig_GameMode_Apply_HideModeDialog takes nothing returns nothing
     call DialogDisplayBJ(false,udg_VoteDialog,GetEnumPlayer())
 endfunction

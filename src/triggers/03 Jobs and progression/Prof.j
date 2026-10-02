@@ -1,4 +1,9 @@
 library TProf requires TPlayerPart01
+globals
+    // Variables only this module uses.
+    constant integer udg_ProfIdUnarmed=$D // $D = 13
+endglobals
+
 function Prof_GetWeaponUpgrade takes unit u returns integer
     if(GetUnitAbilityLevel(u,'A0X6')>0)then // 'A0X6': ability "Upgrade Damage Bonus Dummy"
         return 'R000' // 'R000': upgrade "Tools"

@@ -153,9 +153,37 @@ def main():
             errs.append('in playable script but not in source: ' + n)
     results['4 source matches playable script (startup functions)'] = (not errs, errs[:30])
 
+    # 4b. globals: every variable declared in the source has the same declaration in the playable script
+    def gdecls(text):
+        out = {}
+        for gm2 in GLOBALS_RE.finditer(text.replace('\r\n', '\n')):
+            for l in gm2.group(1).split('\n'):
+                c = strip_comments(l).strip()
+                mm = re.match(r'^(constant\s+)?(\w+)\s+(array\s+)?(\w+)\s*(?:=(.*))?$', c)
+                if mm:
+                    init = re.sub(r'"\s*\+\s*"', '', mm.group(5) or '')
+                    out[mm.group(4)] = (bool(mm.group(1)), mm.group(2), bool(mm.group(3)), tuple(tokens(init)))
+        return out
+    sg = gdecls(header)
+    for t in texts:
+        sg.update(gdecls(t))
+    rg_all = gdecls(runtime_lf[:runtime_lf.index('\nendglobals') + 12])
+    errs = ['declared in source but missing from playable script: ' + n for n in sorted(set(sg) - set(rg_all))]
+    errs += ['declared differently in source and playable script: ' + n for n in sorted(set(sg) & set(rg_all)) if sg[n] != rg_all[n]]
+    errs += ['playable script declares udg_ variable missing from source: ' + n for n in sorted(set(rg_all) - set(sg)) if n.startswith('udg_')]
+    results['4b globals match playable script'] = (not errs, errs[:30])
+
     # 5. literal size
     big = [s for s in re.findall(r'"(?:\\.|[^"\\])*"', code) if len(s.encode('utf-8')) > 1000]
-    results['5 native save/load text safety'] = (not big, ['%d string literal(s) over 1000 bytes - run Build Play Copy on this map before playing' % len(big)] if big else [])
+    unfinal = [n for n, b in functions(runtime_lf).items() if n.startswith('ModuleLongText_') and not re.search(r'return\s+"TRIGSTR_\d+"', b)]
+    msgs = []
+    if big:
+        msgs.append('%d string literal(s) over 1000 bytes' % len(big))
+    if unfinal:
+        msgs.append('long quest text not finalized (%s)' % ', '.join(unfinal))
+    if msgs:
+        msgs.append('-> run Build Play Copy on this map before playing (native saved games crash otherwise)')
+    results['5 native save/load text safety'] = (not msgs, msgs)
 
     if a.baseline:
         r = startup_audit.audit(startup_audit.load_script(a.baseline), runtime)

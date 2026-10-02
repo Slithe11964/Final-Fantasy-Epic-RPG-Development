@@ -1,4 +1,13 @@
 library TFood
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Food_Effects=null
+    // Variables only this module uses.
+    real udg_FoodHealAmount=0
+    integer udg_FoodBuffAbility=0
+    string udg_FoodEffectString=""
+endglobals
+
 function Trig_Food_Effects_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A164')or(GetSpellAbilityId()=='A165')or(GetSpellAbilityId()=='A166')or(GetSpellAbilityId()=='A167')or(GetSpellAbilityId()=='A168')or(GetSpellAbilityId()=='A169')or(GetSpellAbilityId()=='A16A')or(GetSpellAbilityId()=='A16B')or(GetSpellAbilityId()=='A16C')or(GetSpellAbilityId()=='A16D')or(GetSpellAbilityId()=='A09L') // 'A164': ability "Wild Bowl"; 'A165': ability "Triton Pot"; 'A166': ability "Tropical Dish"; 'A167': ability "Fish Soup"; 'A168': ability "Energy Brew"; 'A169': ability "Swift Drink"; 'A16A': ability "Spiced Salad"; 'A16B': ability "Nebra Bread"; 'A16C': ability "First Class Meat Plate"; 'A16D': ability "Adamant Stew"; 'A09L': ability "!Megalixir"
 endfunction

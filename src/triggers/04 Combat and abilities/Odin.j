@@ -1,4 +1,10 @@
 library TOdin requires TBerserk, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Odin_Escort_Teleport=null
+    trigger gg_trg_Odin_Leash_Arena=null
+endglobals
+
 function Trig_Odin_Escort_Teleport_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A00W') // 'A00W': ability "Support Teleport"
 endfunction

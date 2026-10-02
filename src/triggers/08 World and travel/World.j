@@ -1,4 +1,9 @@
 library TWorld
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_World_AfterDemonAppears=null
+endglobals
+
 function Trig_World_AfterDemonAppears_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_TrueIceAge_GateUnlock)
     call DisableTrigger(gg_trg_TrueIceAge_Summon)

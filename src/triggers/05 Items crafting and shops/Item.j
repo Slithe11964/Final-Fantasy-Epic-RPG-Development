@@ -1,4 +1,19 @@
 library TItem requires TItemCooldown, TItemStack, TItemUpgrade
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Item_Stack_Order=null
+    trigger gg_trg_Item_Stack_Pickup=null
+    trigger gg_trg_Item_Cooldown_Start=null
+    trigger gg_trg_Item_Upgrade_Watera=null
+    trigger gg_trg_Item_Upgrade_Wateraga=null
+    trigger gg_trg_Item_Upgrade_Quakera=null
+    trigger gg_trg_Item_Upgrade_Quakeraga=null
+    trigger gg_trg_Item_Upgrade_Demira=null
+    trigger gg_trg_Item_Upgrade_Demiga=null
+    trigger gg_trg_Item_Upgrade_Aerora=null
+    trigger gg_trg_Item_Upgrade_Aeroga=null
+endglobals
+
 function InitTrig_Item takes nothing returns nothing
 endfunction
 

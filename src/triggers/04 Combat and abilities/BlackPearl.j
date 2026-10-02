@@ -1,4 +1,9 @@
 library TBlackPearl
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BlackPearl_Death=null
+endglobals
+
 function Trig_BlackPearl_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)

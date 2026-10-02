@@ -1,4 +1,10 @@
 library TPortalStone requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_PortalStone_Ping=null
+    trigger gg_trg_PortalStone_PickedUp=null
+endglobals
+
 function Trig_PortalStone_Ping_Conditions takes nothing returns boolean
     return(udg_QuestItem[21]!=null)
 endfunction

@@ -1,4 +1,11 @@
 library TDarkShiva requires TBerserk, TCam, TCine, TLoc, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkShiva_Appear=null
+    trigger gg_trg_DarkShiva_Phase2=null
+    trigger gg_trg_DarkShiva_Death=null
+endglobals
+
 function Trig_DarkShiva_Appear_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false)and(udg_HellSpawnsActive==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

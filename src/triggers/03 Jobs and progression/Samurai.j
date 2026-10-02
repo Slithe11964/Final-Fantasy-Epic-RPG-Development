@@ -1,4 +1,11 @@
 library TSamurai requires TAbil, TDamage, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Samurai_Mineuchi=null
+    trigger gg_trg_Samurai_Renzokuken=null
+    trigger gg_trg_Samurai_Iainuki=null
+endglobals
+
 function Trig_Samurai_Mineuchi_IsMineuchiSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A02E')or(GetSpellAbilityId()=='A0XR') // 'A02E': ability "Mineuchi"; 'A0XR': ability "Mineuchi"
 endfunction

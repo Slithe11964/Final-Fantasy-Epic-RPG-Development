@@ -1,4 +1,9 @@
 library TTravel requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Travel_Dialog_Click=null
+endglobals
+
 function Travel_AddDestination takes string l_name,rect l_area,integer hk returns nothing
     set udg_TravelCount=udg_TravelCount+1
     set udg_TravelName[udg_TravelCount]=l_name

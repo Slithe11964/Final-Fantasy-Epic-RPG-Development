@@ -1,4 +1,12 @@
 library THero requires THeroDeath, THeroEndlessGrowth, THeroLevelUp, THeroMedicineEvents, THeroOrder, THeroSelect
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hero_Death_Revive=null
+    trigger gg_trg_Hero_Order_Cooldown=null
+    trigger gg_trg_Hero_Medicine_Pickup=null
+    trigger gg_trg_Hero_Select_Redirect=null
+endglobals
+
 function InitTrig_Hero takes nothing returns nothing
 endfunction
 

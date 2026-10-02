@@ -1,4 +1,10 @@
 library TKiros
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Kiros_Hide=null
+    trigger gg_trg_Kiros_ShowTalkIcon=null
+endglobals
+
 function Trig_Kiros_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_n0BV_0229)
     call DestroyTrigger(GetTriggeringTrigger())

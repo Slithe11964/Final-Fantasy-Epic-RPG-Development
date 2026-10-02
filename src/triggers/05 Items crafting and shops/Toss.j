@@ -1,4 +1,10 @@
 library TToss requires TMedicine
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Toss_Potion=null
+    trigger gg_trg_Toss_HeroDrink=null
+endglobals
+
 function Trig_Toss_Potion_IsTossAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A14X')or(GetSpellAbilityId()=='A14W')or(GetSpellAbilityId()=='A14V')or(GetSpellAbilityId()=='A14U')or(GetSpellAbilityId()=='A0KZ')or(GetSpellAbilityId()=='A0L0')or(GetSpellAbilityId()=='A0G5')or(GetSpellAbilityId()=='A0G3')or(GetSpellAbilityId()=='A0G1')or(GetSpellAbilityId()=='A0FY')or(GetSpellAbilityId()=='A0FN')or(GetSpellAbilityId()=='A0FZ')or(GetSpellAbilityId()=='A0KA')or(GetSpellAbilityId()=='A0DZ') // 'A14X': ability "Toss Potion"; 'A14W': ability "Toss Hi-Potion"; 'A14V': ability "Toss Mega Potion"; 'A14U': ability "Toss X-Potion"; 'A0KZ': ability "Toss Nectar"; 'A0L0': ability "Toss Greater Nectar"; 'A0G5': ability "Toss Ether"; 'A0G3': ability "Toss Hi-Ether"; 'A0G1': ability "Toss Mega Ether"; 'A0FY': ability "Toss Turbo Ether"; 'A0FN': ability "Toss Elixir"; 'A0FZ': ability "Toss Hero Drink"; 'A0KA': ability "!Elixir"; 'A0DZ': ability "!Toss Elixir"
 endfunction

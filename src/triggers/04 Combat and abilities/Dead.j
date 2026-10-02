@@ -1,4 +1,9 @@
 library TDead requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dead_Hero_Item_Drop=null
+endglobals
+
 function Trig_Dead_Hero_Item_Drop_CarriesNecklace takes nothing returns boolean
     return(UnitHasItemOfTypeBJ(Player_GetHero(GetEnumPlayer()),'I04L')) // 'I04L': item "Necklace of the Necromancer"
 endfunction

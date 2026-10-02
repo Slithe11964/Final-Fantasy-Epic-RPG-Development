@@ -1,4 +1,15 @@
 library TKalmSiege1 requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_KalmSiege1_Start=null
+    trigger gg_trg_KalmSiege1_Briefing=null
+    trigger gg_trg_KalmSiege1_Begin=null
+    trigger gg_trg_KalmSiege1_Defeat=null
+    trigger gg_trg_KalmSiege1_TrackDeaths=null
+    trigger gg_trg_KalmSiege1_Complete=null
+    trigger gg_trg_KalmSiege1_Fail=null
+endglobals
+
 function Trig_KalmSiege1_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
 endfunction

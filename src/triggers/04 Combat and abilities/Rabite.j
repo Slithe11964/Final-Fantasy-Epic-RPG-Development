@@ -1,4 +1,11 @@
 library TRabite requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Rabite_Area_Init=null
+    trigger gg_trg_Rabite_Hunt_Unlock=null
+    trigger gg_trg_Rabite_Death=null
+endglobals
+
 function Trig_Rabite_Area_Init_IsNotStructure takes nothing returns boolean
     return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)!=null
 endfunction

@@ -1,4 +1,9 @@
 library TBossDarkFact requires TCam, TCine, TGroup, TMusic, TText, TWait
+globals
+    // Variables only this module uses.
+    unit udg_DarkFactUnit=null
+endglobals
+
 function Trig_Boss_DarkFact_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[6]==false)
 endfunction

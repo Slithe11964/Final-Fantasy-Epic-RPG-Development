@@ -1,4 +1,9 @@
 library TGatherServants requires TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GatherServants_Cast=null
+endglobals
+
 function Trig_GatherServants_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A026') // 'A026': ability "Gather Servants"
 endfunction

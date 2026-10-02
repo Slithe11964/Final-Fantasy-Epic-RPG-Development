@@ -1,4 +1,9 @@
 library TTwoHanded
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_TwoHanded_Check=null
+endglobals
+
 function Trig_TwoHanded_Check_Conditions takes nothing returns boolean
     return((GetUnitAbilityLevelSwapped('A0GP',GetAttacker())>0)and(IsUnitType(GetAttacker(),UNIT_TYPE_MELEE_ATTACKER))and(IsUnitIllusionBJ(GetAttacker())==false)and(IsUnitType(GetAttacker(),UNIT_TYPE_HERO))and(GetUnitStateSwap(UNIT_STATE_MANA,GetAttacker())>=.0))!=null // 'A0GP': ability "Two-Handed"
 endfunction

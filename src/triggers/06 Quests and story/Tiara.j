@@ -1,4 +1,9 @@
 library TTiara
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Tiara_Ping=null
+endglobals
+
 function Trig_Tiara_Ping_Conditions takes nothing returns boolean
     return(udg_QuestItem[22]!=null)
 endfunction

@@ -1,4 +1,9 @@
 library TTatsumaki requires TPath, TWave
+globals
+    // Variables only this module uses.
+    group udg_TatsumakiGroup=CreateGroup()
+endglobals
+
 function Tatsumaki_Pull takes nothing returns boolean
     local integer l_idx=udg_ArgIndex
     local unit u

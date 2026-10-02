@@ -1,4 +1,9 @@
 library TMaechen
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Maechen_Lore_Init=null
+endglobals
+
 function Trig_Maechen_Lore_Init_Actions takes nothing returns nothing
     set udg_LoreText[1]=StringIdentity("Welcome to Kalm! My name is Mae'chen and I have travelled many a plane. While you're here I'll gladly tell you some of the stories and legends about Gaya. If you want to know about the history of this town, I suggest you talk to Frakir, the felhound. You can find him in the east of Kalm.")
     set udg_LoreText[2]=StringIdentity("Yes, Arcanium is a legend in Gaya. It must have been centuries ago now when gear made of Arcanium made its rounds. Many fighters arose in those times, and those with Arcanium gear were unmatched. It was a bloody time, truth be told. No one could challenge those with that kind of godlike weaponry. But then someday the Arcanium mine collapsed, and all Arcanium weapons and armor disappeared from the world. And moreover now the place where the mine used to be is guarded by a mighty beast which in itself seems to be impervious to any attacks much like armor of Arcanium was. It seems unlikely this is all just mere coincidence, but this was all very long ago. Even if you wanted to learn more, you'd be lucky to find someone who survived this entire ordeal and is still alive to this day.")

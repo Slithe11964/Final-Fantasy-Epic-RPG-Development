@@ -1,4 +1,9 @@
 library TWarringTriad
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_WarringTriad_Freeze=null
+endglobals
+
 function Trig_WarringTriad_Freeze_Cond_IsTriadMember takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='E00P')or(GetUnitTypeId(GetTriggerUnit())=='E00Q')or(GetUnitTypeId(GetTriggerUnit())=='E00R') // 'E00P': unit "Warring Triad Member"; 'E00Q': unit "Warring Triad Member"; 'E00R': unit "Warring Triad Member"
 endfunction

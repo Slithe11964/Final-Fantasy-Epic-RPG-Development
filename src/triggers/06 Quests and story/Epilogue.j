@@ -1,4 +1,14 @@
 library TEpilogue requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Epilogue_WaitForCid=null
+    trigger gg_trg_Epilogue_Kalm=null
+    trigger gg_trg_Epilogue_Lothlorien=null
+    trigger gg_trg_Epilogue_BlueMage=null
+    trigger gg_trg_Epilogue_DarkKnight=null
+    trigger gg_trg_Epilogue_Dana=null
+endglobals
+
 function Trig_Epilogue_WaitForCid_CidNotAvailable takes nothing returns boolean
     return(udg_CidQuestOnHold==false)
 endfunction

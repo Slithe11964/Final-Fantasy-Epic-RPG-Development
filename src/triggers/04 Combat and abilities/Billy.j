@@ -1,4 +1,9 @@
 library TBilly
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Billy_ShowTalkIcon=null
+endglobals
+
 function Trig_Billy_ShowTalkIcon_NeedsSelectAbility takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('Aneu',gg_unit_n0KE_0072)<=0) // 'Aneu': standard ability reference "Neutral Building"
 endfunction

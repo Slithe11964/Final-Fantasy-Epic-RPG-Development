@@ -1,4 +1,9 @@
 library THerb
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Herb_Spawn_Start=null
+endglobals
+
 function Trig_Herb_Spawn_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call StartTimerBJ(udg_HerbRespawnTimer[0],false,1.)

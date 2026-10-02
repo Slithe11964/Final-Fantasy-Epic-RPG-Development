@@ -1,4 +1,9 @@
 library TEnemy requires TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Enemy_Summon_Setup=null
+endglobals
+
 function Trig_Enemy_Summon_Setup_Conditions takes nothing returns boolean
     return((IsUnitType(GetSummonedUnit(),UNIT_TYPE_RESISTANT)==false)and(IsUnitIllusionBJ(GetSummonedUnit())==false))!=null
 endfunction

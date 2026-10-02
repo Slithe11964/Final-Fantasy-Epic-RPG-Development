@@ -1,4 +1,14 @@
 library TMonsterData
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MonsterData_Init_1=null
+    trigger gg_trg_MonsterData_Init_2=null
+    trigger gg_trg_MonsterData_Init_3=null
+    trigger gg_trg_MonsterData_Init_4=null
+    // Variables only this module uses.
+    integer udg_MonsterTypeID=0
+endglobals
+
 function Trig_MonsterData_Init_1_Actions takes nothing returns nothing
     call InitHashtableBJ()
     set udg_MonsterDataHash=GetLastCreatedHashtableBJ()

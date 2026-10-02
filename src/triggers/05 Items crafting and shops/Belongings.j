@@ -1,4 +1,10 @@
 library TBelongings requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Belongings_Ping=null
+    trigger gg_trg_Belongings_PickedUp=null
+endglobals
+
 function Trig_Belongings_Ping_Conditions takes nothing returns boolean
     return(udg_QuestItem[23]!=null)
 endfunction

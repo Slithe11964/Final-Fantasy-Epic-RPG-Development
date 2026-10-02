@@ -1,4 +1,23 @@
 library TSpellLiquidSteel requires TAbil, TCombatFormulas, TFilter, TProf
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    timer udg_LiquidSteelTimer=CreateTimer()
+    boolexpr udg_LiquidSteelFilter
+    integer udg_LiquidSteelRecycle=0
+    integer udg_LiquidSteelCount=0
+    integer array udg_LiquidSteelNext
+    unit array udg_LiquidSteelCaster
+    unit array udg_LiquidSteelTarget
+    unit array udg_LiquidSteelPrevTarget
+    real array udg_LiquidSteelDmg
+    real array udg_LiquidSteelX
+    real array udg_LiquidSteelY
+    integer array udg_LiquidSteelBounces
+    integer array udg_LiquidSteelDelay
+    player array udg_LiquidSteelOwner
+    group udg_LiquidSteelGroup=CreateGroup()
+endglobals
+
 // ---- Spell ----
 function Trig_Spell_LiquidSteel_Alloc takes nothing returns integer
     local integer l_idx=udg_LiquidSteelRecycle

@@ -1,4 +1,10 @@
 library TLumber
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Lumber_Cap=null
+    trigger gg_trg_Lumber_Harvest_Start=null
+endglobals
+
 function Trig_Lumber_Cap_Actions takes nothing returns nothing
     call SetPlayerStateBJ(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_LUMBER,999)
 endfunction

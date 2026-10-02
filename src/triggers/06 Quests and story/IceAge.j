@@ -1,4 +1,10 @@
 library TIceAge requires TCam, TCine, TGroup, TJob, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_IceAge_FreezeTimeout=null
+    trigger gg_trg_IceAge_Victory=null
+endglobals
+
 function Trig_IceAge_FreezeTimeout_KnightDead takes nothing returns boolean
     return(IsUnitAliveBJ(udg_StoryBoss)==false)
 endfunction

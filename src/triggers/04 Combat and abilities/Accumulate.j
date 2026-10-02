@@ -1,4 +1,9 @@
 library TAccumulate
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Accumulate_Cast=null
+endglobals
+
 function Trig_Accumulate_Cast_IsAccumulate takes nothing returns boolean
     return(GetSpellAbilityId()=='A003')or(GetSpellAbilityId()=='A03Z') // 'A003': ability "Accumulate"; 'A03Z': ability "Accumulate"
 endfunction

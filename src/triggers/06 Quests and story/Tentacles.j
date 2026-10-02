@@ -1,4 +1,14 @@
 library TTentacles requires TCam, TCine, TLoc, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Tentacles_Start=null
+    trigger gg_trg_Tentacles_Ambush=null
+    trigger gg_trg_Tentacles_Yelp=null
+    trigger gg_trg_Tentacles_Despawn=null
+    trigger gg_trg_Tentacles_Fail=null
+    trigger gg_trg_Tentacles_Reward=null
+endglobals
+
 function Trig_Tentacles_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e013_0176,true,true,true))
 endfunction

@@ -1,4 +1,9 @@
 library TCounter requires TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Counter_Attack_Strike=null
+endglobals
+
 function Trig_Counter_Attack_Strike_AngleNegative takes nothing returns boolean
     return(udg_TempReal<.0)
 endfunction

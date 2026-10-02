@@ -1,4 +1,9 @@
 library TNumerus requires TGroup, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Numerus_ChargeCommand=null
+endglobals
+
 function Trig_Numerus_ChargeCommand_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A13Z') // 'A13Z': ability "!Charge Command"
 endfunction

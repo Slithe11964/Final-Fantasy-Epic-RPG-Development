@@ -1,4 +1,10 @@
 library TBagOfTricks requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BagOfTricks_Setup=null
+    trigger gg_trg_BagOfTricks_Progress=null
+endglobals
+
 function Trig_BagOfTricks_Setup_Cond_IsStructure takes nothing returns boolean
     return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE))!=null
 endfunction

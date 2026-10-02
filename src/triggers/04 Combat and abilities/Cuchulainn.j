@@ -1,4 +1,9 @@
 library TCuchulainn
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cuchulainn_Soul_Death=null
+endglobals
+
 function Trig_Cuchulainn_Soul_Death_CoinFlip takes nothing returns boolean
     // A random whole number from 1 through 2.
     return(GetRandomInt(1,2)<=1)

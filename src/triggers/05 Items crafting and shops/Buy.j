@@ -1,4 +1,9 @@
 library TBuy requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Buy_Kesha_Brew=null
+endglobals
+
 function Trig_Buy_Kesha_Brew_NeedsRestore takes nothing returns boolean
     // Calculation 1:
     // Result 1: current health divided by maximum health for Player_GetHero(GetOwningPlayer(GetBuyingUnit())),

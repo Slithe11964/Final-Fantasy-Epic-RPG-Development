@@ -1,4 +1,17 @@
 library TFire requires TAbil, TCam, TCine, TProf, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fire_Cast=null
+    trigger gg_trg_Fire_Pawn_Nectar=null
+    trigger gg_trg_Fire_Pawn_SpiritPotion=null
+    trigger gg_trg_Fire_Pawn_BloodEther=null
+    trigger gg_trg_Fire_Pawn_HeroDrink=null
+    trigger gg_trg_Fire_Reward_Megalixir=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    boolean udg_FireCastToggle=false
+    sound gg_snd_PandarenBrewmasterYes=null
+endglobals
+
 function Trig_Fire_Cast_IsFire takes nothing returns boolean
     return(GetSpellAbilityId()=='A0PU')or(GetSpellAbilityId()=='A0QA')or(GetSpellAbilityId()=='A19P')or(GetSpellAbilityId()=='A0JD')or(GetSpellAbilityId()=='A0U8')or(GetSpellAbilityId()=='A142')or(GetSpellAbilityId()=='A0SH') // 'A0PU': ability "Fire"; 'A0QA': ability "Fire"; 'A19P': ability "Fire"; 'A0JD': ability "Elementa"; 'A0U8': ability "Elementa"; 'A142': ability "Elementa"; 'A0SH': ability "Fire"
 endfunction

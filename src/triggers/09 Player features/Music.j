@@ -1,4 +1,12 @@
 library TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Music_Prelude=null
+    // Variables only this module uses.
+    string udg_PreludeMusic="war3mapImported\\FF7Prelude.mp3"
+    string array udg_MusicPlayingFile
+endglobals
+
 function Music_InitTracks takes nothing returns nothing
     local integer i=0
     loop

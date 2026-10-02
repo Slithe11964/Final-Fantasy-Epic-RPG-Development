@@ -1,4 +1,9 @@
 library TMiracle
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Miracle_Piece_Use=null
+endglobals
+
 function Trig_Miracle_Piece_Use_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0UQ')and(GetSpellTargetItem()!=null)and(GetItemType(GetSpellTargetItem())==ITEM_TYPE_CHARGED)and(GetItemLevel(GetSpellTargetItem())>0)and(GetItemCharges(GetSpellTargetItem())>0) // 'A0UQ': ability "Miracle"
 endfunction

@@ -1,4 +1,9 @@
 library TWar requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_War_Command=null
+endglobals
+
 function Trig_War_Command_Conditions takes nothing returns boolean
     return(SubStringBJ(GetEventPlayerChatString(),1,5)=="-war ")and(StringLength(GetEventPlayerChatString())==6)
 endfunction

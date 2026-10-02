@@ -1,4 +1,9 @@
 library TMeliadoul
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Meliadoul_Hint_Timer=null
+endglobals
+
 function Trig_Meliadoul_Hint_Timer_QuestNotDiscovered takes nothing returns boolean
     return(IsQuestDiscovered(udg_MainQuest[$D])==false) // $D = 13
 endfunction

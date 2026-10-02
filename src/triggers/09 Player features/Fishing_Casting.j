@@ -1,4 +1,9 @@
 library TFishingCasting requires TAbil, TGroup, TPlayerPart01
+globals
+    // Variables only this module uses.
+    integer udg_FishCatchCount=0
+endglobals
+
 function Trig_Fishing_Cast_IsStartFish takes nothing returns boolean
     return(GetSpellAbilityId()=='A0VB')or(GetSpellAbilityId()=='A0VT')or(GetSpellAbilityId()=='A0VU')or(GetSpellAbilityId()=='A0VV') // 'A0VB': ability "Start Fish"; 'A0VT': ability "Start Fish"; 'A0VU': ability "Start Fish"; 'A0VV': ability "Start Fish"
 endfunction

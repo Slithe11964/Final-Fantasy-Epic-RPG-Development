@@ -1,4 +1,9 @@
 library TNumber requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Number_Command=null
+endglobals
+
 function Trig_Number_Command_Actions takes nothing returns nothing
     call DisplayTextToForce(Force_OfPlayer(GetTriggerPlayer()),("Your number is: "+I2S(GetConvertedPlayerId(GetTriggerPlayer()))))
 endfunction

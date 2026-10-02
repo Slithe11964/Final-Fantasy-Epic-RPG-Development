@@ -1,4 +1,17 @@
 library TGuideBook requires TCam, TCine, TPlayerPart01, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GuideBook_Search1=null
+    trigger gg_trg_GuideBook_Search2=null
+    trigger gg_trg_GuideBook_Search3=null
+    trigger gg_trg_GuideBook_Search4=null
+    trigger gg_trg_GuideBook_Search5=null
+    trigger gg_trg_GuideBook_Search6=null
+    trigger gg_trg_GuideBook_TurnIn=null
+    // Variables only this module uses.
+    integer udg_GuideBookSearches=0
+endglobals
+
 function Trig_GuideBook_Search1_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)))!=null
 endfunction

@@ -1,4 +1,9 @@
 library TQuestCaravan requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses.
+    integer udg_CaravanReward=0
+endglobals
+
 function Trig_Quest_Caravan_SamAvailable_Cond_CaravanStage0 takes nothing returns boolean
     return(udg_CaravanStage==0)
 endfunction

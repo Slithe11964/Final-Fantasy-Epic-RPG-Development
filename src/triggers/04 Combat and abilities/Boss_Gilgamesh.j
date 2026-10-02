@@ -1,4 +1,10 @@
 library TBossGilgamesh requires TCam, TCine, TDifficulty, TJob, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Variables only this module uses.
+    integer udg_GilgameshSwordStage=0
+    unit udg_GilgameshUnit=null
+endglobals
+
 function Trig_Boss_Gilgamesh_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[2]==false)
 endfunction

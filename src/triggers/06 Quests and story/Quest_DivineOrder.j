@@ -1,4 +1,10 @@
 library TQuestDivineOrder requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    lightning udg_ExecutionLightning=null
+    sound gg_snd_004=null
+endglobals
+
 function Trig_Quest_DivineOrder_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_N0N0_0267,true,true,true))
 endfunction

@@ -1,4 +1,9 @@
 library TBerserk
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Berserk_RemoveBuffs=null
+endglobals
+
 function Berserk_Remove takes unit u returns nothing
     local integer maximumHealth=BlzGetUnitMaxHP(u)
     local boolean l_active=LoadBoolean(udg_MaxHpBuffHash,GetHandleId(u),0)

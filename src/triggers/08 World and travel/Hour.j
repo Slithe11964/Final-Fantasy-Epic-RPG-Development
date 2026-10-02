@@ -1,4 +1,9 @@
 library THour
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hour_Timer_Rollover=null
+endglobals
+
 function Trig_Hour_Timer_Rollover_Actions takes nothing returns nothing
     call StartTimerBJ(udg_GameClock,false,3600.)
     set udg_GameHours=(udg_GameHours+1)

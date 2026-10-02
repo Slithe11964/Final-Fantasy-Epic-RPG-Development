@@ -1,4 +1,9 @@
 library TSeekers
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Seekers_TrackEngaged=null
+endglobals
+
 function Trig_Seekers_TrackEngaged_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_SeekerLeaders))and(IsUnitInGroup(GetTriggerUnit(),udg_BossUnits)==false)
 endfunction

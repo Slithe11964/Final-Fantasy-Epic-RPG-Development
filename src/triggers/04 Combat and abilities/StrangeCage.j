@@ -1,4 +1,9 @@
 library TStrangeCage requires TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_StrangeCage_Unlock=null
+endglobals
+
 function Trig_StrangeCage_Unlock_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'kygh')))!=null // 'kygh': item "Strange Key"
 endfunction

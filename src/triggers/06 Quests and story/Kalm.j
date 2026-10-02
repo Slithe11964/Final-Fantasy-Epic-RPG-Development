@@ -1,4 +1,11 @@
 library TKalm requires TForce, TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Kalm_News_Init=null
+    trigger gg_trg_Kalm_News_Read=null
+    trigger gg_trg_Kalm_Init=null
+endglobals
+
 function Trig_Kalm_News_Init_Filter_IsPlaying takes nothing returns boolean
     return(GetPlayerSlotState(GetFilterPlayer())==PLAYER_SLOT_STATE_PLAYING)
 endfunction

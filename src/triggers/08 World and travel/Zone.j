@@ -1,4 +1,14 @@
 library TZone requires TDamage, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Zone_Rects_Init=null
+    trigger gg_trg_Zone_Spawn_System=null
+    // Variables only this module uses.
+    trigger udg_ZoneEnterTrigger
+    group udg_ZoneAliveGroup
+    integer udg_CurrentZoneId
+endglobals
+
 function Trig_Zone_Rects_Init_Actions takes nothing returns nothing
     set udg_SpawnRectHashRef=udg_SpawnRectHash
     set udg_SpawnDataHashRef=udg_SpawnDataHash

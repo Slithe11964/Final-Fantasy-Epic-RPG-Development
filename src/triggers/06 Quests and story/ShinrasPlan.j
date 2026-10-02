@@ -1,4 +1,13 @@
 library TShinrasPlan requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ShinrasPlan_Prepare=null
+    trigger gg_trg_ShinrasPlan_Start=null
+    trigger gg_trg_ShinrasPlan_WaterTurnIn=null
+    trigger gg_trg_ShinrasPlan_ShardTurnIn=null
+    trigger gg_trg_ShinrasPlan_Complete=null
+endglobals
+
 function Trig_ShinrasPlan_Prepare_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[40]))and(IsQuestCompleted(udg_MainQuest[8]))
 endfunction

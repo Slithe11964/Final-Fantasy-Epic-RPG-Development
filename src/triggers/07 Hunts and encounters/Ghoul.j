@@ -1,4 +1,11 @@
 library TGhoul requires TLoc, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ghoul_Group_Cleanup=null
+    trigger gg_trg_Ghoul_Master_Decay=null
+    trigger gg_trg_Ghoul_Master_Spawn=null
+endglobals
+
 function Trig_Ghoul_Group_Cleanup_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_GhoulGroup))
 endfunction

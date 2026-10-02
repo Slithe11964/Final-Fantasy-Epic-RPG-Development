@@ -1,4 +1,9 @@
 library TSteal requires TForce, TItemShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Steal_Cast=null
+endglobals
+
 function Trig_Steal_Cast_RollSteal takes nothing returns nothing
     local integer l_roll
     local integer l_slot=2

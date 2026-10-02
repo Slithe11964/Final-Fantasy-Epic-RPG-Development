@@ -1,4 +1,9 @@
 library TDarkServant
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkServant_Cleanup=null
+endglobals
+
 function Trig_DarkServant_Cleanup_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_DarkServants))
 endfunction

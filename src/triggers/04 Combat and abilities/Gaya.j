@@ -1,4 +1,23 @@
 library TGaya requires TGayaAppearance, TGayaChanneling, TGayaInventory, TGayaMovement, TGayaOrders, TGayaScan, TGayaStats, TGayaSupport
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gaya_Follow=null
+    trigger gg_trg_Gaya_ChannelStart=null
+    trigger gg_trg_Gaya_ChannelEnd=null
+    trigger gg_trg_Gaya_SetTint=null
+    trigger gg_trg_Gaya_ShopPurchase=null
+    trigger gg_trg_Gaya_RefreshStats=null
+    trigger gg_trg_Gaya_ItemChanged=null
+    trigger gg_trg_Gaya_HousePortal=null
+    trigger gg_trg_Gaya_BreakStun=null
+    trigger gg_trg_Gaya_ManaTransfer=null
+    trigger gg_trg_Gaya_MegaHeal=null
+    trigger gg_trg_Gaya_GatherItems=null
+    trigger gg_trg_Gaya_OrderImmediate=null
+    trigger gg_trg_Gaya_OrderPoint=null
+    trigger gg_trg_Gaya_OrderTarget=null
+endglobals
+
 function InitTrig_Gaya takes nothing returns nothing
 endfunction
 

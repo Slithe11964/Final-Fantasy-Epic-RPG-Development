@@ -1,4 +1,9 @@
 library TSaveDebug
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_SaveDebug_Command=null
+endglobals
+
 function Trig_SaveDebug_Command_Cond_DebugOff takes nothing returns boolean
     return(udg_SaveDebug==false)
 endfunction

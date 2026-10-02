@@ -1,4 +1,13 @@
 library TBossJudges requires TCam, TCine, TDifficulty, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Variables only this module uses.
+    unit udg_JudgeGabranth=null
+    unit udg_JudgeGhis=null
+    unit udg_JudgeZargabaath=null
+    unit udg_JudgeDrace=null
+    unit udg_JudgeBergan=null
+endglobals
+
 function Trig_Boss_Judges_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[3]==false)
 endfunction

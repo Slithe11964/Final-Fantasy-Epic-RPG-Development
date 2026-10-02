@@ -1,4 +1,9 @@
 library TShiva requires TAbil
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shiva_DiamondDust=null
+endglobals
+
 function Trig_Shiva_DiamondDust_IsCastAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0RM')or(GetSpellAbilityId()=='A0TX') // 'A0RM': ability "!Diamond Dust"; 'A0TX': ability "!Diamond Dust"
 endfunction

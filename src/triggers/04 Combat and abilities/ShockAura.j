@@ -1,4 +1,10 @@
 library TShockAura requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ShockAura_Pulse_Start=null
+    trigger gg_trg_ShockAura_Pulse=null
+endglobals
+
 function Trig_ShockAura_Pulse_Start_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)and(IsUnitGroupEmptyBJ(udg_ShockAuraUnitGroup)==false)
 endfunction

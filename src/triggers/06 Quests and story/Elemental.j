@@ -1,4 +1,16 @@
 library TElemental requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Elemental_Setup=null
+    trigger gg_trg_Elemental_Spawn=null
+    trigger gg_trg_Elemental_Wander=null
+    trigger gg_trg_Elemental_Aggro=null
+    trigger gg_trg_Elemental_Assist_Attack=null
+    trigger gg_trg_Elemental_Death=null
+    // Variables only this module uses.
+    location array udg_ElementalTargetLoc
+endglobals
+
 function Trig_Elemental_Setup_Cond_ElementDefined takes nothing returns boolean
     return(udg_AreaSpawnUnitA[GetForLoopIndexA()]!=0)
 endfunction

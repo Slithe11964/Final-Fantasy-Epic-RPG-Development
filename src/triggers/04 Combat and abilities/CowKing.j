@@ -1,4 +1,9 @@
 library TCowKing
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_CowKing_Hide=null
+endglobals
+
 function Trig_CowKing_Hide_Actions takes nothing returns nothing
     set udg_PortalRitualActive=false
     call ShowUnitHide(gg_unit_O00I_0239)

@@ -1,4 +1,15 @@
 library TProphet requires TAbil, TGroup, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Prophet_Pray_Start=null
+    trigger gg_trg_Prophet_Pray_Stop=null
+    trigger gg_trg_Prophet_Pray_Tick=null
+    trigger gg_trg_Prophet_Pray_Heal=null
+    trigger gg_trg_Prophet_BlessingOfLight=null
+    trigger gg_trg_Prophet_DivineShield=null
+    trigger gg_trg_Prophet_Infinity=null
+endglobals
+
 function Trig_Prophet_Pray_Start_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0PC') // 'A0PC': ability "Pray"
 endfunction

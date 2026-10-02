@@ -1,4 +1,11 @@
 library TSpawn requires TCam, TLoc, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spawn_Pools_Init=null
+    trigger gg_trg_Spawn_Gafgarion=null
+    trigger gg_trg_Spawn_KalmDefenders=null
+endglobals
+
 function Trig_Spawn_Pools_Init_Actions takes nothing returns nothing
     local unitpool l_pool
     local integer i=1

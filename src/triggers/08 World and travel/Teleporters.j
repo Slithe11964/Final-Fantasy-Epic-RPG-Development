@@ -1,4 +1,9 @@
 library TTeleporters requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Teleporters_Command=null
+endglobals
+
 function Trig_Teleporters_Command_Actions takes nothing returns nothing
     set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
     call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_394),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)

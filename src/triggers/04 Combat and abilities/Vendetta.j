@@ -1,4 +1,11 @@
 library TVendetta requires TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Vendetta_Stance=null
+    trigger gg_trg_Vendetta_Release=null
+    trigger gg_trg_Vendetta_Cancel=null
+endglobals
+
 function Trig_Vendetta_Stance_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0N4') // 'A0N4': ability "!Vendetta"
 endfunction

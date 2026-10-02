@@ -1,4 +1,10 @@
 library TLadyCurse requires TCam, TCine, TPlayerPart01, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_LadyCurse_ShowMarker=null
+    trigger gg_trg_LadyCurse_ReturnBelongings=null
+endglobals
+
 function Trig_LadyCurse_ShowMarker_Actions takes nothing returns nothing
     set udg_SpecialEffect[54]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h01P_0017,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_AnnoyingMonster_Start)

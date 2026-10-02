@@ -1,4 +1,11 @@
 library TPriscilla
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Priscilla_Setup=null
+    trigger gg_trg_Priscilla_ShowMarker=null
+    trigger gg_trg_Priscilla_ShowMarker_Eden=null
+endglobals
+
 function Trig_Priscilla_Setup_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_n023_0121)
     call PauseUnitBJ(true,gg_unit_n023_0121)

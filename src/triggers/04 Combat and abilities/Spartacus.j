@@ -1,4 +1,9 @@
 library TSpartacus requires TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spartacus_Summon=null
+endglobals
+
 function Trig_Spartacus_Summon_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1DV') // 'A1DV': ability "Summon Spartacus"
 endfunction

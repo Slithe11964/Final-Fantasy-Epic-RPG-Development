@@ -1,4 +1,11 @@
 library TTitles requires TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Titles_Init=null
+    trigger gg_trg_Titles_CheckAll=null
+    trigger gg_trg_Titles_CheckBasic=null
+endglobals
+
 function Trig_Titles_Init_Title_BoostsPrimaryOnly takes nothing returns boolean
     return(udg_TitlePrimaryStatOnly[GetForLoopIndexA()])
 endfunction

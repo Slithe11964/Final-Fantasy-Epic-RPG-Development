@@ -1,4 +1,25 @@
 library TSpell requires TSpellAero, TSpellDemi, TSpellDewall, TSpellFlamesOfJudgment, TSpellGayaRage, TSpellHeatWave, TSpellHellhounds, TSpellHoming, TSpellIncandescentHellfire, TSpellInfernoRipple, TSpellJavelinRain, TSpellLivingFlame, TSpellMeteor, TSpellOzmeteor, TSpellQuake, TSpellSatellite, TSpellTables, TSpellTerraBreak, TSpellWater, TSpellWave, TSpellXerosBeat
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spell_Tables_Init=null
+    trigger gg_trg_Spell_Dewall_Apply=null
+    trigger gg_trg_Spell_LivingFlame_Apply=null
+    trigger gg_trg_Spell_LivingFlame_Tick=null
+    trigger gg_trg_Spell_LivingFlame_Spread=null
+    trigger gg_trg_Spell_HeatWave_Cast=null
+    trigger gg_trg_Spell_JavelinRain_Cast=null
+    trigger gg_trg_Spell_XerosBeat_Cast=null
+    trigger gg_trg_Spell_GayaRage_Start=null
+    trigger gg_trg_Spell_GayaRage_Ring=null
+    trigger gg_trg_Spell_GayaRage_Damage=null
+    trigger gg_trg_Spell_Homing_Rockets=null
+    trigger gg_trg_Spell_Satellite_Beam=null
+    trigger gg_trg_Spell_Satellite_Beam_InGroup=null
+    trigger gg_trg_Spell_Satellite_Beam_Death=null
+    trigger gg_trg_Spell_Wave_Cannon=null
+    trigger gg_trg_Spell_Meteor_Wide=null
+endglobals
+
 function InitTrig_Spell takes nothing returns nothing
 endfunction
 

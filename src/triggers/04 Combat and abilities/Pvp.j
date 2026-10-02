@@ -1,4 +1,9 @@
 library TPvp
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Pvp_Command=null
+endglobals
+
 function Trig_Pvp_Command_Cond_DifferentPlayers takes nothing returns boolean
     return(GetForLoopIndexA()!=GetForLoopIndexB())
 endfunction

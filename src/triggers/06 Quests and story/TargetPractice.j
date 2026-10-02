@@ -1,4 +1,20 @@
 library TTargetPractice requires TCam, TCine, TForce, TGroup, TPlayerPart01, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_TargetPractice_Init=null
+    trigger gg_trg_TargetPractice_Begin=null
+    trigger gg_trg_TargetPractice_PingTargets=null
+    trigger gg_trg_TargetPractice_TargetHit=null
+    trigger gg_trg_TargetPractice_Timeout=null
+    trigger gg_trg_TargetPractice_Fail=null
+    trigger gg_trg_TargetPractice_Reward=null
+    // Variables only this module uses.
+    player udg_TargetPracticePlayer=null
+    timerdialog udg_TargetPracticeDialog=null
+    integer udg_TargetPracticeAreaId=0
+    player udg_TargetRecordHolder=null
+endglobals
+
 function Trig_TargetPractice_Init_Actions takes nothing returns nothing
     set udg_SpecialEffect[81]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e017_0018,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_TargetPractice_Start)

@@ -1,4 +1,11 @@
 library TAbilityText requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AbilityText_Command=null
+    // Variables only this module uses.
+    trigger udg_AbilityTextTrigger=null
+endglobals
+
 function AbilityText_Cond takes nothing returns boolean
     return(((not IsUnitType(GetTriggerUnit(),UNIT_TYPE_STRUCTURE))and udg_AbilityTextEnabled)and(not IsUnitHidden(GetTriggerUnit())))!=null
 endfunction

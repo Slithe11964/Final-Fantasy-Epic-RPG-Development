@@ -1,4 +1,12 @@
 library TAoMadoushi
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AoMadoushi_Hide=null
+    trigger gg_trg_AoMadoushi_Summon=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_LoadUnload=null
+endglobals
+
 function Trig_AoMadoushi_Hide_Actions takes nothing returns nothing
     set udg_AoMadoushiFacing=GetUnitFacing(gg_unit_Othr_0106)
     set udg_AoMadoushiLoc=GetUnitLoc(gg_unit_Othr_0106)

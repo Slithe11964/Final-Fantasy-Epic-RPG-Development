@@ -1,4 +1,12 @@
 library TRipper requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ripper_Charge_Buffs=null
+    trigger gg_trg_Ripper_Mass_Dispel=null
+    trigger gg_trg_Ripper_Condemnation=null
+    trigger gg_trg_Ripper_Death_Circle=null
+endglobals
+
 function Trig_Ripper_Charge_Buffs_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1ES') // 'A1ES': ability "Ripper Charge"
 endfunction

@@ -1,4 +1,9 @@
 library TCometeorite
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cometeorite_Rocks_Cleanup=null
+endglobals
+
 function Trig_Cometeorite_Rocks_Cleanup_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A0YP',GetTriggerUnit())>0) // 'A0YP': ability "!Cometeorite"
 endfunction

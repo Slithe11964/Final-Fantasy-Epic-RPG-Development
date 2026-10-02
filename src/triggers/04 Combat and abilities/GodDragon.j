@@ -1,4 +1,10 @@
 library TGodDragon requires TBerserk
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GodDragon_Transfusion=null
+    trigger gg_trg_GodDragon_Death=null
+endglobals
+
 function Trig_GodDragon_Transfusion_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())

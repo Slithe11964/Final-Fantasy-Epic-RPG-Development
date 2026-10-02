@@ -1,4 +1,17 @@
 library TBossVerc requires TFilter
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    constant integer udg_WickedWhirlDuration=$85 // $85 = 133
+    timer udg_WickedWhirlTimer=CreateTimer()
+    boolexpr udg_WickedWhirlFilter
+    integer udg_WickedWhirlRecycle=0
+    integer udg_WickedWhirlCount=0
+    integer array udg_WickedWhirlNext
+    unit array udg_WickedWhirlTarget
+    integer array udg_WickedWhirlTicks
+    real array udg_WickedWhirlAngle
+endglobals
+
 function Trig_Boss_Verc_WickedWhirl_DamageGroup takes integer l_idx returns nothing
     local unit u
     loop

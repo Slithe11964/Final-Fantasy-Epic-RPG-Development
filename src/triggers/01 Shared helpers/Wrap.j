@@ -1,4 +1,10 @@
 library TWrap requires TBlizzaga, TClione, TCode, TKnock, TLiquidSteel, TMissile, TRapidFire, TShuriken, TTatsumaki, TWickedWhirl
+globals
+    // Variables only this module uses.
+    trigger udg_BlizzagaDamageTrig
+    trigger udg_WickedWhirlDamageTrig
+endglobals
+
 function Wrap_InitTriggers takes nothing returns nothing
     set udg_KnockRemoveTrig=CreateTrigger()
     call TriggerAddCondition(udg_KnockRemoveTrig,Condition(function Knock_Remove))

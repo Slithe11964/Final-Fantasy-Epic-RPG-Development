@@ -1,4 +1,11 @@
 library TCalculator requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Calculator_Firaga=null
+    trigger gg_trg_Calculator_Thundaga=null
+    trigger gg_trg_Calculator_Imperil=null
+endglobals
+
 function Trig_Calculator_Firaga_IsFiragaSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QD')or(GetSpellAbilityId()=='A0UX')or(GetSpellAbilityId()=='A0SG') // 'A0QD': ability "Firaga"; 'A0UX': ability "Firaga"; 'A0SG': ability "Firaga"
 endfunction

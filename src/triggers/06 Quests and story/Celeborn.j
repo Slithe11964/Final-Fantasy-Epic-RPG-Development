@@ -1,4 +1,11 @@
 library TCeleborn
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Celeborn_Summon_Alert=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_FurionWarcry=null
+endglobals
+
 function Trig_Celeborn_Summon_Alert_Cond_HashmalumNotMet takes nothing returns boolean
     return(udg_HashmalumEncountered==false)
 endfunction

@@ -1,4 +1,9 @@
 library TGlyph
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Glyph_Area_Enter=null
+endglobals
+
 function Trig_Glyph_Area_Enter_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(GetTriggerUnit())==false)
 endfunction

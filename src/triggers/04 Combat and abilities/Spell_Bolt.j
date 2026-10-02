@@ -1,4 +1,9 @@
 library TSpellBolt requires TAbil, TCombatFormulas, TMissile, TProf
+globals
+    // Variables only this module uses.
+    constant integer udg_BoltRingCount=$A // $A = 10
+endglobals
+
 function Trig_Spell_Bolt_DamageWithElement takes unit l_source,real damageAmount,integer l_element,unit targetUnit,attacktype l_atkType,damagetype l_dmgType returns nothing
     set udg_DamageElement=l_element
     call UnitDamageTarget(l_source,targetUnit,damageAmount,true,false,l_atkType,l_dmgType,null)

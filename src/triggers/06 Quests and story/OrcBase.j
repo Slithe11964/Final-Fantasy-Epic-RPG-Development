@@ -1,4 +1,10 @@
 library TOrcBase
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_OrcBase_GateGuard_Death=null
+    trigger gg_trg_OrcBase_Units_Cleared=null
+endglobals
+
 function Trig_OrcBase_GateGuard_Death_TalkTriggerActive takes nothing returns boolean
     return(IsTriggerEnabled(gg_trg_Quest_CorruptedOrcs_Start))
 endfunction

@@ -1,4 +1,9 @@
 library TGraves
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Graves_Reveal=null
+endglobals
+
 function Trig_Graves_Reveal_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call EnableTrigger(gg_trg_Npc_Talk_Gravedigger)

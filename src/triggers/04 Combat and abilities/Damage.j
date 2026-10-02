@@ -1,4 +1,23 @@
 library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerPart01, TProf, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Damage_Init=null
+    trigger gg_trg_Damage_RegisterEnter=null
+    trigger gg_trg_Damage_RegisterAttacked=null
+    trigger gg_trg_Damage_Engine=null
+    trigger gg_trg_Damage_ProxyCleanup=null
+    trigger gg_trg_Damage_Splash=null
+    // Variables only this module uses.
+    unit udg_ProxyDamageTarget=null
+    unit udg_SplashSource=null
+    real udg_SplashDamage=0
+    boolean udg_DmgArmorProbe=false
+    real udg_DmgArmorProbeResult=0
+    item udg_TwoHandedItem=null
+    boolean udg_DmgFlagMelee=false
+    boolean udg_DmgFlagRedirected=false
+endglobals
+
 function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing
     local integer i=0
     local item l_it

@@ -1,4 +1,10 @@
 library TOsmose requires TForce, TProf, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Osmose_Cancel_NoMP=null
+    trigger gg_trg_Osmose_Cast=null
+endglobals
+
 function Trig_Osmose_Cancel_NoMP_IsOsmoseAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0Z3')or(GetSpellAbilityId()=='A0DG') // 'A0Z3': ability "Osmose"; 'A0DG': ability "Osmose"
 endfunction

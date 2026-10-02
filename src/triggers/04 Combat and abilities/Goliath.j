@@ -1,4 +1,9 @@
 library TGoliath requires TAbil, TBerserk, TGoliathTonic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Goliath_Tonic=null
+endglobals
+
 function Trig_Goliath_Tonic_Expire takes nothing returns nothing
     local timer expiredTimer=GetExpiredTimer()
     local unit u=LoadUnitHandle(udg_MaxHpBuffHash,GetHandleId(expiredTimer),7)

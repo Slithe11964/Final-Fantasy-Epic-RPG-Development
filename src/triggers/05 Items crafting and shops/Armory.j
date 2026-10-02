@@ -1,4 +1,19 @@
 library TArmory requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Armory_Item_List=null
+    trigger gg_trg_Armory_Item_Hash=null
+    trigger gg_trg_Armory_Init=null
+    trigger gg_trg_Armory_Open=null
+    trigger gg_trg_Armory_Select=null
+    trigger gg_trg_Armory_Back=null
+    trigger gg_trg_Armory_Closed=null
+    trigger gg_trg_Armory_Store_Item=null
+    // Variables only this module uses.
+    unit array udg_ArmoryUnit
+    integer udg_ArmoryStockMax=0
+endglobals
+
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
     if udg_ArmoryCodeSegment[GetPlayerId(p)]>0 then
         set udg_ArmoryCodeSegment[GetPlayerId(p)]=0

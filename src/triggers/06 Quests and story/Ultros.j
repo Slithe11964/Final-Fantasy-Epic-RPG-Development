@@ -1,4 +1,12 @@
 library TUltros requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ultros_Spawn=null
+    trigger gg_trg_Ultros_SummonTentacle=null
+    trigger gg_trg_Ultros_TentacleDeath=null
+    trigger gg_trg_Ultros_Death=null
+endglobals
+
 function Trig_Ultros_Spawn_IsQuestActive takes nothing returns boolean
     return(IsQuestFailed(udg_SideQuest[58])==false)
 endfunction

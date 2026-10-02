@@ -1,4 +1,9 @@
 library TFallenRanger
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FallenRanger_Setup=null
+endglobals
+
 function Trig_FallenRanger_Setup_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H00X_0133)
     call PauseUnitBJ(true,gg_unit_H00X_0133)

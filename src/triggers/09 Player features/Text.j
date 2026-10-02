@@ -1,4 +1,10 @@
 library TText
+globals
+    // Variables only this module uses.
+    constant real udg_TextSpeedFast=300
+    string array udg_IntStringCache
+endglobals
+
 function Text_Transmission takes unit l_speaker,string l_name,string l_msg,string l_skipText,sound l_snd,real l_dur,boolean l_forced returns nothing
     local real l_chars
     local integer i

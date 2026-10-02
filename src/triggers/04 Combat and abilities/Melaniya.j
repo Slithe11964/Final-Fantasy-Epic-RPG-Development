@@ -1,4 +1,9 @@
 library TMelaniya requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Melaniya_Setup=null
+endglobals
+
 function Trig_Melaniya_Setup_Enum_HideGuard takes nothing returns nothing
     call ShowUnitHide(GetEnumUnit())
     call PauseUnitBJ(true,GetEnumUnit())

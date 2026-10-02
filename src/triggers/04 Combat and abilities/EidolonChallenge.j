@@ -1,4 +1,9 @@
 library TEidolonChallenge
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_EidolonChallenge_Setup=null
+endglobals
+
 function Trig_EidolonChallenge_Setup_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H01I_0070)
     call PauseUnitBJ(true,gg_unit_H01I_0070)

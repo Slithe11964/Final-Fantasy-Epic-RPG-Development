@@ -1,4 +1,9 @@
 library THypernova requires TGroup, TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hypernova_Cast=null
+endglobals
+
 function Trig_Hypernova_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A1FI') // 'A1FI': ability "!Hypernova"
 endfunction

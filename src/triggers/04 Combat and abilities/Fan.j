@@ -1,4 +1,9 @@
 library TFan requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fan_Of_Knives=null
+endglobals
+
 function Trig_Fan_Of_Knives_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QS') // 'A0QS': ability "Fan of Knives"
 endfunction

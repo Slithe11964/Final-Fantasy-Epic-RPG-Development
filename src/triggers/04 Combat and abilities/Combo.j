@@ -1,4 +1,10 @@
 library TCombo
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Combo_CancelOnAttack=null
+    trigger gg_trg_Combo_CancelOnCast=null
+endglobals
+
 function Trig_Combo_CancelOnAttack_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A137',GetAttacker())>0)and(GetTriggerUnit()!=LoadUnitHandleBJ(1,GetHandleIdBJ(GetAttacker()),udg_ComboHash))and(UnitHasBuffBJ(GetTriggerUnit(),'B063')==false) // 'A137': ability "Combo Strike"; 'B063': buff "Cover"
 endfunction

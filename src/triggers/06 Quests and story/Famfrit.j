@@ -1,4 +1,11 @@
 library TFamfrit requires TAbil, TCam, TCine, TLoc, TMusic, TPlayerPart01, TProf, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Famfrit_Prepare=null
+    trigger gg_trg_Famfrit_Encounter=null
+    trigger gg_trg_Famfrit_TidalWave=null
+endglobals
+
 function Trig_Famfrit_Prepare_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_U00N_0205)
     call PauseUnitBJ(true,gg_unit_U00N_0205)

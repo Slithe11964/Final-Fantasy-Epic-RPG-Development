@@ -1,4 +1,19 @@
 library TMultiboard requires TPlayerPart01, TText, TTime
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Multiboard_Create=null
+    trigger gg_trg_Multiboard_Refresh=null
+    trigger gg_trg_Multiboard_Title=null
+    // Variables only this module uses.
+    integer udg_BoardRowIndex=0
+    multiboard udg_ScoreBoard=null
+    player array udg_BoardPlayer
+    string udg_BoardLevelSeparator="/"
+    string udg_BoardTitlePrefix="Final Fantasy Epic RPG 0.9.7.3 - "
+    string udg_BoardTitleMid=" / "
+    string udg_BoardTimeLabel=" - "
+endglobals
+
 function Trig_Multiboard_Create_HasMultiboard takes nothing returns boolean
     return(udg_PendingEventCount>0)
 endfunction

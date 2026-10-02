@@ -1,4 +1,9 @@
 library TBossBlackDevil requires TCam, TCine, TDifficulty, TMusic, TText, TWait
+globals
+    // Variables only this module uses.
+    unit udg_BlackDevilUnit=null
+endglobals
+
 function Trig_Boss_BlackDevil_Summon_FirstEncounter takes nothing returns boolean
     return(udg_RingHintUsed[4]==false)
 endfunction

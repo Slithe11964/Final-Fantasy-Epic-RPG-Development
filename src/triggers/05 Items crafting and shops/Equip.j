@@ -1,4 +1,9 @@
 library TEquip requires TForce, TJob
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Equip_Restrictions=null
+endglobals
+
 function Trig_Equip_Restrictions_Conditions takes nothing returns boolean
     return((GetManipulatedItem()!=null)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CHARGED)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CAMPAIGN)and(GetUnitTypeId(GetManipulatingUnit())!='H01D')and(IsUnitType(GetManipulatingUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_ActivePlayers)))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

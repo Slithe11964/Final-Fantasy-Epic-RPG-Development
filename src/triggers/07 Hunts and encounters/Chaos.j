@@ -1,4 +1,12 @@
 library TChaos requires TLoc, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chaos_Init=null
+    trigger gg_trg_Chaos_Spawn_Chaosjets=null
+    trigger gg_trg_Chaos_Revive_Chaosjets=null
+    trigger gg_trg_Chaos_Recall_Chaosjets=null
+endglobals
+
 function Trig_Chaos_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_U00O_0191)
     call PauseUnitBJ(true,gg_unit_U00O_0191)

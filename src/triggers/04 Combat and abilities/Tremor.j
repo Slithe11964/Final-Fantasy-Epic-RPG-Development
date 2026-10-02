@@ -1,4 +1,9 @@
 library TTremor requires TAbil, TGroup, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Tremor_Cast=null
+endglobals
+
 function Trig_Tremor_Cast_IsTremorAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A1AH')or(GetSpellAbilityId()=='A0T7') // 'A1AH': ability "Tremor"; 'A0T7': ability "Tremor"
 endfunction

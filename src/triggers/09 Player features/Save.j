@@ -1,4 +1,28 @@
 library TSave requires TCmd, TJob, TPlayerPart01, TUtil
+globals
+    // Variables only this module uses.
+    boolean udg_IsAutosave
+    constant integer udg_MaxChatCodeLength=$79 // $79 = 121
+    constant boolean udg_SaveToFileEnabled=TRUE
+    trigger udg_SaveCommandTrig=null
+    constant integer udg_AutosavePlayerCount=$A // $A = 10
+    integer udg_AutosaveNextPlayer=0
+    trigger udg_SaveToFileTrig
+    integer udg_SaveBufferCount=0
+    integer udg_SaveSlotCount=0
+    integer array udg_SaveLevelValue
+    integer array udg_SaveLevelBase
+    integer array udg_SaveLevelCount
+    integer array udg_SaveLevelMinCount
+    integer array udg_SaveLevelMaxCount
+    integer array udg_SaveTechValue
+    integer array udg_SaveTechBase
+    integer array udg_SaveTechCount
+    integer array udg_SaveTechMinCount
+    integer array udg_SaveTechMaxCount
+    integer array udg_SaveExtraCount
+endglobals
+
 function Save_AllocBuffer takes nothing returns integer
     local integer l_sid=udg_SaveBufferFreeHead
     if(l_sid!=0)then

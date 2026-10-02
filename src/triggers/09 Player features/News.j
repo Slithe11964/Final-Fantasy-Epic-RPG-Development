@@ -1,4 +1,15 @@
 library TNews requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_News_Morning=null
+    trigger gg_trg_News_Evening=null
+    trigger gg_trg_News_SetTitle=null
+    trigger gg_trg_News_SetEntry=null
+    trigger gg_trg_News_SubmitEntry=null
+    // Variables only this module uses.
+    boolean udg_NewsTextAllSpaces=false
+endglobals
+
 function Trig_News_Morning_IsDayPast9 takes nothing returns boolean
     return(udg_GameDay>=$A) // $A = 10
 endfunction

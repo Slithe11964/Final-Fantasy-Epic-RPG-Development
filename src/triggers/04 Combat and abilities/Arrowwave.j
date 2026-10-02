@@ -1,4 +1,9 @@
 library TArrowwave requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arrowwave_Cast=null
+endglobals
+
 function Trig_Arrowwave_Cast_IsArrowwave takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QQ')or(GetSpellAbilityId()=='A0KB')or(GetSpellAbilityId()=='A00R') // 'A0QQ': ability "Arrowwave"; 'A0KB': ability "Arrowwave"; 'A00R': ability "Arrowwave"
 endfunction

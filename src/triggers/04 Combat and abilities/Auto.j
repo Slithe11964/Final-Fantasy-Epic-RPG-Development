@@ -1,4 +1,10 @@
 library TAuto requires TAbil, TProf, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Auto_Potion_AI=null
+    trigger gg_trg_Auto_Crossbow_Volley=null
+endglobals
+
 function Trig_Auto_Potion_AI_Conditions takes nothing returns boolean
     // A random whole number from 1 through 5.
     return(GetRandomInt(1,5)==1)

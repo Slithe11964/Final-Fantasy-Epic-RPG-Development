@@ -1,4 +1,9 @@
 library TIce requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ice_Cast=null
+endglobals
+
 function Trig_Ice_Cast_IsIce takes nothing returns boolean
     return(GetSpellAbilityId()=='A0Q7')or(GetSpellAbilityId()=='A0Q9')or(GetSpellAbilityId()=='A19Q')or(GetSpellAbilityId()=='A0JD')or(GetSpellAbilityId()=='A0U8')or(GetSpellAbilityId()=='A142')or(GetSpellAbilityId()=='A0IO')or(GetSpellAbilityId()=='A0UT')or(GetSpellAbilityId()=='A0BG') // 'A0Q7': ability "Ice"; 'A0Q9': ability "Ice"; 'A19Q': ability "Ice"; 'A0JD': ability "Elementa"; 'A0U8': ability "Elementa"; 'A142': ability "Elementa"; 'A0IO': ability "Ice"; 'A0UT': ability "Ice"; 'A0BG': ability "Ice"
 endfunction

@@ -1,4 +1,13 @@
 library TForestSpirit requires TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ForestSpirit_Spawn=null
+    trigger gg_trg_ForestSpirit_Wander=null
+    trigger gg_trg_ForestSpirit_Flee=null
+    // Variables only this module uses.
+    location array udg_SpiritPoint
+endglobals
+
 function Trig_ForestSpirit_Spawn_Actions takes nothing returns nothing
     set udg_SpiritsCleansed=0
     set udg_SpiritPoint[1]=GetRandomLocInRect(gg_rct_570)

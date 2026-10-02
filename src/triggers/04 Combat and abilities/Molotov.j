@@ -1,4 +1,9 @@
 library TMolotov
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Molotov_DamageOnAttack=null
+endglobals
+
 function Trig_Molotov_DamageOnAttack_Conditions takes nothing returns boolean
     return(UnitHasBuffBJ(GetAttacker(),'B002')) // 'B002': buff tooltip "Burn"
 endfunction

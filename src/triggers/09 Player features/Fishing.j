@@ -1,4 +1,16 @@
 library TFishing requires TFishingCasting, TFishingEncounters, TFishingReelingAndCatch, TFishingSetup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fishing_Pole_Found=null
+    trigger gg_trg_Fishing_Unlock=null
+    trigger gg_trg_Fishing_Cast=null
+    trigger gg_trg_Fishing_Tick=null
+    trigger gg_trg_Fishing_Input=null
+    trigger gg_trg_Fishing_Catch=null
+    trigger gg_trg_Fishing_End=null
+    trigger gg_trg_Fishing_Monster_Spawn=null
+endglobals
+
 function InitTrig_Fishing takes nothing returns nothing
 endfunction
 

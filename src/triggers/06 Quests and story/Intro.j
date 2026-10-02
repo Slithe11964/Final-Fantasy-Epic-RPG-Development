@@ -1,4 +1,12 @@
 library TIntro requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Intro_LockPlayers=null
+    trigger gg_trg_Intro_StartGameModeVote=null
+    trigger gg_trg_Intro_WelcomeMessages=null
+    trigger gg_trg_Intro_FadeToBlack=null
+endglobals
+
 function Trig_Intro_LockPlayers_Actions takes nothing returns nothing
     call SetUserControlForceOff(GetPlayersAll())
     call ClearSelection()

@@ -1,4 +1,9 @@
 library TSound
+globals
+    // Variables only this module uses.
+    sound gg_snd_001
+endglobals
+
 function Sound_PlayError takes player l_p,string l_msg returns nothing
     if(GetLocalPlayer()==l_p)then
         call StartSound(gg_snd_001)

@@ -1,4 +1,9 @@
 library THaste
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Haste_Slow_Cast=null
+endglobals
+
 function Trig_Haste_Slow_Cast_IsHasteOrSlow takes nothing returns boolean
     return(GetSpellAbilityId()=='A01D')or(GetSpellAbilityId()=='A0D9')or(GetSpellAbilityId()=='A059')or(GetSpellAbilityId()=='A0ED')or(GetSpellAbilityId()=='A17L')or(GetSpellAbilityId()=='A17M')or(GetSpellAbilityId()=='A18Y')or(GetSpellAbilityId()=='ACbl')or(GetSpellAbilityId()=='ACbb')or(GetSpellAbilityId()=='A1F5')or(GetSpellAbilityId()=='A0EV')or(GetSpellAbilityId()=='A0A7')or(GetSpellAbilityId()=='A0ZF')or(GetSpellAbilityId()=='A01E')or(GetSpellAbilityId()=='A0DA')or(GetSpellAbilityId()=='A09D')or(GetSpellAbilityId()=='Aslo')or(GetSpellAbilityId()=='ACsw')or(GetSpellAbilityId()=='A1FK')or(GetSpellAbilityId()=='A0ZG') // 'A01D': ability "Haste"; 'A0D9': ability "Chocobo Haste"; 'A059': ability "Haste"; 'A0ED': ability "Haste"; 'A17L': ability "Haste"; 'A17M': ability "Haste"; 'A18Y': ability "Haste"; 'ACbl': ability "Haste"; 'ACbb': ability "Haste"; 'A1F5': ability "Haste"; 'A0EV': ability "Haste"; 'A0A7': ability "Hastega"; 'A0ZF': ability "Haste"; 'A01E': ability "Slow"; 'A0DA': ability "Chocobo Slow"; 'A09D': ability "Slow"; 'Aslo': ability "Slow"; 'ACsw': ability "Slow"; 'A1FK': ability "Slow"; 'A0ZG': ability "Slow"
 endfunction

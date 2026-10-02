@@ -1,4 +1,9 @@
 library TLevels requires TForce, TJob
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Levels_Command=null
+endglobals
+
 function Trig_Levels_Command_Cond_HasNewGamePlus takes nothing returns boolean
     return(udg_NewGamePlusLevel[GetConvertedPlayerId(GetTriggerPlayer())]>0)
 endfunction

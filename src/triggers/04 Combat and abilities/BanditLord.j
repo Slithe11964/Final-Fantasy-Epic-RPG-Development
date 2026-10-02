@@ -1,4 +1,9 @@
 library TBanditLord
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BanditLord_Death=null
+endglobals
+
 function Trig_BanditLord_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call SetDestructableInvulnerableBJ(gg_dest_LOcg_0010,false)

@@ -1,4 +1,10 @@
 library TJudgment requires TCam, TCine, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Judgment_Attack_Alberich=null
+    trigger gg_trg_Judgment_Spare_Alberich=null
+endglobals
+
 function Trig_Judgment_Attack_Alberich_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_h037_0257)
 endfunction

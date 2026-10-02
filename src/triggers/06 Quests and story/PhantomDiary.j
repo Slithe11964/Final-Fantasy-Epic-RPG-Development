@@ -1,4 +1,9 @@
 library TPhantomDiary requires TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_PhantomDiary_Open=null
+endglobals
+
 function Trig_PhantomDiary_Open_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,udg_PhantomDiaryUnit,true,true,false))
 endfunction

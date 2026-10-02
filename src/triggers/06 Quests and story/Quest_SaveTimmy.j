@@ -1,4 +1,11 @@
 library TQuestSaveTimmy requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    boolean udg_FarmGateOpen=false
+    boolean udg_GateGuardTalked=false
+    sound gg_snd_H01VillagerF42=null
+endglobals
+
 function Trig_Quest_SaveTimmy_Init_Enum_SetWorkAnim takes nothing returns nothing
     call SetUnitAnimation(GetEnumUnit(),"stand work")
     call SetUnitTimeScalePercent(GetEnumUnit(),50.)

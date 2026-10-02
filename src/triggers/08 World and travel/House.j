@@ -1,4 +1,9 @@
 library THouse
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_House_Options_Switch=null
+endglobals
+
 function Trig_House_Options_Switch_IsPlayerHouse takes nothing returns boolean
     return(GetSpellAbilityUnit()==udg_PlayerHouse[1])or(GetSpellAbilityUnit()==udg_PlayerHouse[2])or(GetSpellAbilityUnit()==udg_PlayerHouse[3])or(GetSpellAbilityUnit()==udg_PlayerHouse[4])or(GetSpellAbilityUnit()==udg_PlayerHouse[5])or(GetSpellAbilityUnit()==udg_PlayerHouse[6])or(GetSpellAbilityUnit()==udg_PlayerHouse[7])or(GetSpellAbilityUnit()==udg_PlayerHouse[8])
 endfunction

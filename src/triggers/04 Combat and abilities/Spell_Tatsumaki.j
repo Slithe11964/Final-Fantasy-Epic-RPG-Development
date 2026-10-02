@@ -1,4 +1,14 @@
 library TSpellTatsumaki requires TAbil, TCombatFormulas, TFilter, TProf
+globals
+    // Variables only this module uses.
+    constant real udg_TatsumakiDuration=25
+    timer udg_TatsumakiTimer=CreateTimer()
+    integer udg_TatsumakiRecycle=0
+    integer udg_TatsumakiCount=0
+    integer array udg_TatsumakiNext
+    integer array udg_TatsumakiTicks
+endglobals
+
 function Trig_Spell_Tatsumaki_FireTickEvent takes integer l_idx returns nothing
     set udg_ArgIndex=l_idx
     call TriggerEvaluate(udg_TatsumakiPullTrig)

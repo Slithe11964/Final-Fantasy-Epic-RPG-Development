@@ -1,4 +1,19 @@
 library TLoot requires TForce, TItemShared, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Loot_MonsterDrop=null
+    trigger gg_trg_Loot_CancelDespawn=null
+    trigger gg_trg_Loot_Tables_Init=null
+    trigger gg_trg_Loot_EssenceDrop=null
+    trigger gg_trg_Loot_BlockLeaverItems=null
+    trigger gg_trg_Loot_Cuchulainn_EyeDrop=null
+    // Variables only this module uses.
+    integer array udg_MonographItem
+    integer array udg_ZonePowerupItem
+    boolean udg_MonographBonusDrop=false
+    item udg_LastLootItem=null
+endglobals
+
 function Loot_CreateItem takes unit l_source,integer itemTypeId returns item
     if(itemTypeId==-1)then
         return null

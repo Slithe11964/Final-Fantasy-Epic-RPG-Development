@@ -1,4 +1,14 @@
 library TSale
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Sale_MithrilSword=null
+    trigger gg_trg_Sale_MithrilAxe=null
+    trigger gg_trg_Sale_MithrilShield=null
+    trigger gg_trg_Sale_MithrilMail=null
+    trigger gg_trg_Sale_MithrilHelmet=null
+    trigger gg_trg_Sale_Nectar=null
+endglobals
+
 function Trig_Sale_MithrilSword_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I03T') // 'I03T': item "Mithril Sword (25% off!)"
 endfunction

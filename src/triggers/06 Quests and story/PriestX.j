@@ -1,4 +1,11 @@
 library TPriestX requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_PriestX_Appear=null
+    trigger gg_trg_PriestX_Talk1=null
+    trigger gg_trg_PriestX_Talk2=null
+endglobals
+
 function Trig_PriestX_Appear_Quest20NotFound takes nothing returns boolean
     return(IsQuestDiscovered(udg_MainQuest[20])==false)
 endfunction

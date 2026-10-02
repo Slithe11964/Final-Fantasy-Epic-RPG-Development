@@ -1,4 +1,13 @@
 library TKalmSiege requires TGroup, TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_KalmSiege_AITick=null
+    trigger gg_trg_KalmSiege_LeaderRetreat=null
+    trigger gg_trg_KalmSiege_FailRespawn=null
+    trigger gg_trg_KalmSiege_DemonRecover=null
+    trigger gg_trg_KalmSiege_Init=null
+endglobals
+
 function Trig_KalmSiege_AITick_AttackMoveNorth takes nothing returns nothing
     call IssuePointOrderLocBJ(GetEnumUnit(),"attack",udg_TempPoint)
 endfunction

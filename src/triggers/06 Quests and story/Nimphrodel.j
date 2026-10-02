@@ -1,4 +1,12 @@
 library TNimphrodel requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Nimphrodel_Start=null
+    trigger gg_trg_Nimphrodel_Meet=null
+    trigger gg_trg_Nimphrodel_Undomiel=null
+    trigger gg_trg_Nimphrodel_Complete=null
+endglobals
+
 function Trig_Nimphrodel_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ecen_0180,true,true,true))
 endfunction

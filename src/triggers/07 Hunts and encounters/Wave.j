@@ -1,4 +1,9 @@
 library TWave requires TAbil, TKnock, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Wave_Fist=null
+endglobals
+
 function Trig_Wave_Fist_KnockbackStart takes unit c,unit t,real s,real duration,string fx,boolean sf,real damageAmount returns integer
     local integer d=Knock_Create(t,fx)
     // Starting value for a:

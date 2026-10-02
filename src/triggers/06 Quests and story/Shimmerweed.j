@@ -1,4 +1,10 @@
 library TShimmerweed
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shimmerweed_Spawn=null
+    trigger gg_trg_Shimmerweed_Pickup=null
+endglobals
+
 function Trig_Shimmerweed_Spawn_Actions takes nothing returns nothing
     set udg_TempPoint=GetRectCenter(gg_rct_568)
     set udg_ShimmerweedItem=CreateItemLoc('I0FM',udg_TempPoint) // 'I0FM': item "Shimmerweed"

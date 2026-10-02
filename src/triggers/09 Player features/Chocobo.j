@@ -1,4 +1,25 @@
 library TChocobo requires TChocoboBreeding, TChocoboBribing, TChocoboDigging, TChocoboPopulation, TChocoboTaming, TChocoboTechCopy, TChocoboUpgrades, TChocoboWildBehavior
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chocobo_Init=null
+    trigger gg_trg_Chocobo_Spawn_Periodic=null
+    trigger gg_trg_Chocobo_Wild_Death=null
+    trigger gg_trg_Chocobo_Tame_Limit=null
+    trigger gg_trg_Chocobo_Tame_Breed=null
+    trigger gg_trg_Chocobo_Wild_Retaliate=null
+    trigger gg_trg_Chocobo_Breed_Score=null
+    trigger gg_trg_Chocobo_DeadPepper_Dig=null
+    trigger gg_trg_Chocobo_Gysahl_Upgrade=null
+    trigger gg_trg_Chocobo_Mimett_Upgrade=null
+    trigger gg_trg_Chocobo_Silkis_Upgrade=null
+    trigger gg_trg_Chocobo_DigSpot_Nearest=null
+    trigger gg_trg_Chocobo_Bribe=null
+    trigger gg_trg_Chocobo_Defend_Upgrade=null
+    trigger gg_trg_Chocobo_Wild_AI=null
+    trigger gg_trg_Chocobo_Respawn=null
+    trigger gg_trg_Chocobo_Drop_Nut=null
+endglobals
+
 function InitTrig_Chocobo takes nothing returns nothing
 endfunction
 

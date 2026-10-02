@@ -1,4 +1,12 @@
 library TAndre requires TCam, TCine, TForce, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Andre_Elysium_Reveal=null
+    trigger gg_trg_Andre_Legendary_Rules=null
+    // Variables only this module uses.
+    weathereffect udg_ElysiumWeather=null
+endglobals
+
 function Trig_Andre_Elysium_Reveal_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_H00O_0259,true,true,true))
 endfunction

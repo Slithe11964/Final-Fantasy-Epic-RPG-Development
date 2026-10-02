@@ -1,4 +1,14 @@
 library TGeomancer requires TAbil, TElement, TGroup, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Geomancer_Enchant_Cycle=null
+    trigger gg_trg_Geomancer_Enchant_Apply=null
+    trigger gg_trg_Geomancer_Enchant_ClearBuffs=null
+    trigger gg_trg_Geomancer_GayaRage=null
+    // Variables only this module uses.
+    unit udg_EnchantCycleCaster=null
+endglobals
+
 function Trig_Geomancer_Enchant_Cycle_HasEnchantAbility takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A0S8',GetTriggerUnit())>0)or(GetUnitAbilityLevelSwapped('A0S9',GetTriggerUnit())>0)or(GetUnitAbilityLevelSwapped('A0SB',GetTriggerUnit())>0)or(GetUnitAbilityLevelSwapped('A0SC',GetTriggerUnit())>0)or(GetUnitAbilityLevelSwapped('A0SD',GetTriggerUnit())>0)or(GetUnitAbilityLevelSwapped('A0SE',GetTriggerUnit())>0) // 'A0S8': ability "Enfire"; 'A0S9': ability "Enfrost"; 'A0SB': ability "Enthunder"; 'A0SC': ability "Enwater"; 'A0SD': ability "Enstone"; 'A0SE': ability "Enaero"
 endfunction

@@ -1,4 +1,11 @@
 library TMonograph
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Monograph_Drop=null
+    // Variables only this module uses.
+    integer udg_MonographCount=0
+endglobals
+
 function Trig_Monograph_Drop_IsKnightChest takes nothing returns boolean
     return(GetDyingDestructable()==gg_dest_B001_0057)
 endfunction

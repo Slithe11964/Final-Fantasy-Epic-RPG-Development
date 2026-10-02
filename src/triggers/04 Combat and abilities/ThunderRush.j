@@ -1,4 +1,10 @@
 library TThunderRush requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ThunderRush_Cast=null
+    trigger gg_trg_ThunderRush_Cleanup=null
+endglobals
+
 function Trig_ThunderRush_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ZQ') // 'A0ZQ': ability "!Thunder Rush"
 endfunction

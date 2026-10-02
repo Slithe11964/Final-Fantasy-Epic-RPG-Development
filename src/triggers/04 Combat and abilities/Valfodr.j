@@ -1,4 +1,14 @@
 library TValfodr requires TGroup, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Valfodr_SummonSetup=null
+    trigger gg_trg_Valfodr_Gagnrath=null
+    trigger gg_trg_Valfodr_GagnrathEnd=null
+    trigger gg_trg_Valfodr_GagnrathPulse=null
+    trigger gg_trg_Valfodr_GagnrathWave=null
+    trigger gg_trg_Valfodr_Bolverk=null
+endglobals
+
 function Trig_Valfodr_SummonSetup_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A124',GetTriggerUnit())>0) // 'A124': ability "Valfodr Summons"
 endfunction

@@ -1,4 +1,9 @@
 library TQuestLadyNashj requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses.
+    boolean udg_NashjDead=false
+endglobals
+
 function Trig_Quest_LadyNashj_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_Hvsh_0145)
     call SetUnitInvulnerable(gg_unit_Hvsh_0145,true)

@@ -1,4 +1,19 @@
 library TKnock requires TPath
+globals
+    // Variables only this module uses.
+    timer udg_KnockTimer=CreateTimer()
+    integer udg_KnockActiveCount=0
+    integer array udg_KnockList
+    rect udg_KnockTreeRect=Rect(.0,.0,.0,.0)
+    integer udg_KnockFreeHead=0
+    integer udg_KnockCount=0
+    integer array udg_KnockNext
+    unit array udg_KnockUnit
+    real array udg_KnockTreeRadius
+    string array udg_KnockEffect
+    integer array udg_KnockIndex
+endglobals
+
 function Knock_Allocate takes nothing returns integer
     local integer l_idx=udg_KnockFreeHead
     if(l_idx!=0)then

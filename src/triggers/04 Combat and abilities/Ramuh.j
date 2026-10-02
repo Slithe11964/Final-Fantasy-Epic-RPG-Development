@@ -1,4 +1,9 @@
 library TRamuh
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ramuh_Setup=null
+endglobals
+
 function Trig_Ramuh_Setup_Actions takes nothing returns nothing
     set udg_SpecialEffect[48]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n020_0129,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call SetUnitInvulnerable(gg_unit_n020_0129,true)

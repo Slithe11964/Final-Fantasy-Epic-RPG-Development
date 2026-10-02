@@ -1,4 +1,11 @@
 library TDemon
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Demon_Drop_Magatama=null
+    // Variables only this module uses.
+    integer udg_DemonKillCount=0
+endglobals
+
 function Trig_Demon_Drop_Magatama_IsEvenKill takes nothing returns boolean
     // The remainder after dividing (udg_DemonKillCount) by (2).
     return(ModuloInteger(udg_DemonKillCount,2)==0)

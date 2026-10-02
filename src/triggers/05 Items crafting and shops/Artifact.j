@@ -1,4 +1,11 @@
 library TArtifact requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Artifact_Ping=null
+    trigger gg_trg_Artifact_PickedUp=null
+    trigger gg_trg_Artifact_Carrier=null
+endglobals
+
 function Trig_Artifact_Ping_ArtifactSpawned takes nothing returns boolean
     return(udg_QuestItem[$B]!=null)or(udg_HashmalumStage>0) // $B = 11
 endfunction

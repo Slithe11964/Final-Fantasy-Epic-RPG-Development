@@ -1,4 +1,11 @@
 library TResearch requires TForce, TJob
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Research_Requirements=null
+    // Variables only this module uses.
+    integer udg_ResearchReqLevel=0
+endglobals
+
 function Trig_Research_Requirements_IsHouse takes nothing returns boolean
     return(GetUnitTypeId(GetTriggerUnit())=='h006')or(GetUnitTypeId(GetTriggerUnit())=='h00N') // 'h006': unit "House"; 'h00N': unit "House"
 endfunction

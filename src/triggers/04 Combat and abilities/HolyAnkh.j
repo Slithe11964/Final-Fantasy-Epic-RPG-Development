@@ -1,4 +1,9 @@
 library THolyAnkh
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HolyAnkh_Waygate=null
+endglobals
+
 function Trig_HolyAnkh_Waygate_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BZ')) // 'I0BZ': item "Holy Ankh"
 endfunction

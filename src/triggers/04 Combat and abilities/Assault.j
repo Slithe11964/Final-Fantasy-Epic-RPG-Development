@@ -1,4 +1,9 @@
 library TAssault requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Assault_Cast=null
+endglobals
+
 function Trig_Assault_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A14L') // 'A14L': ability "!Assault"
 endfunction

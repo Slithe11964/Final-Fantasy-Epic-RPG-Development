@@ -1,4 +1,11 @@
 library TBridgeBattle requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BridgeBattle_Prepare=null
+    trigger gg_trg_BridgeBattle_Start=null
+    trigger gg_trg_BridgeBattle_Complete=null
+endglobals
+
 function Trig_BridgeBattle_Prepare_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[40]))and(udg_StoryProgress>=$F) // $F = 15
 endfunction

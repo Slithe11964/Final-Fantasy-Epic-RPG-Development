@@ -1,4 +1,11 @@
 library TDarkEidolons requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkEidolons_Init=null
+    trigger gg_trg_DarkEidolons_SpawnGhosts=null
+    trigger gg_trg_DarkEidolons_Unlock=null
+endglobals
+
 function Trig_DarkEidolons_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_E00C_0046)
     call PauseUnitBJ(true,gg_unit_E00C_0046)

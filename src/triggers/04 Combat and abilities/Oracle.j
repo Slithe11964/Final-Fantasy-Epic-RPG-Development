@@ -1,4 +1,16 @@
 library TOracle requires TAbil, TProf, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Oracle_Jinx=null
+    trigger gg_trg_Oracle_Blind=null
+    trigger gg_trg_Oracle_PredictStrength=null
+    trigger gg_trg_Oracle_PredictMagic=null
+    trigger gg_trg_Oracle_Scourge=null
+    trigger gg_trg_Oracle_NeoBahamut=null
+    // Variables only this module uses.
+    unit udg_JinxTarget=null
+endglobals
+
 function Trig_Oracle_Jinx_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A14A') // 'A14A': ability "Jinx"
 endfunction

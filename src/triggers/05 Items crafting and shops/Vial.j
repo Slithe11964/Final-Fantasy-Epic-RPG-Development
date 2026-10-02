@@ -1,4 +1,9 @@
 library TVial
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Vial_EmptyOnUse=null
+endglobals
+
 function Trig_Vial_EmptyOnUse_Cond_ItemIsFilledVial takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='bzbf')or(GetItemTypeId(GetManipulatedItem())=='I0JL')or(GetItemTypeId(GetManipulatedItem())=='I0JM') // 'bzbf': item "Filled Vial"; 'I0JL': item "Filled Vial"; 'I0JM': item "Filled Vial"
 endfunction

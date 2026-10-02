@@ -1,4 +1,11 @@
 library TCloak requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cloak_Equip=null
+    trigger gg_trg_Cloak_UpdateStats=null
+    trigger gg_trg_Cloak_Drop=null
+endglobals
+
 function Trig_Cloak_Equip_Cond_IsCloakItem takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0HT')or(GetItemTypeId(GetManipulatedItem())=='I0IB')or(GetItemTypeId(GetManipulatedItem())=='I00D')or(GetItemTypeId(GetManipulatedItem())=='I0J8') // 'I0HT': item "Prominent Cloak"; 'I0IB': item "Hunter's Cloak"; 'I00D': item "Champion's Belt"; 'I0J8': item "Champion's Belt (BP)"
 endfunction

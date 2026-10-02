@@ -1,4 +1,15 @@
 library TValigarmanda requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Valigarmanda_Confront=null
+    trigger gg_trg_Valigarmanda_Wave_Cleared=null
+    trigger gg_trg_Valigarmanda_Wave_Spawn=null
+    trigger gg_trg_Valigarmanda_Wave_Reset=null
+    trigger gg_trg_Valigarmanda_Death=null
+    // Variables only this module uses.
+    integer udg_ValigarmandaWaveIndex=0
+endglobals
+
 function Trig_Valigarmanda_Confront_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_n0MC_0265)==false)and(udg_InCinematicMode==false))!=null
 endfunction

@@ -1,4 +1,9 @@
 library TWeather
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Weather_Snow_Init=null
+endglobals
+
 function Trig_Weather_Snow_Init_Actions takes nothing returns nothing
     set udg_SnowEffect[0]=AddWeatherEffectSaveLast(gg_rct_592,'SNhs') // 'SNhs': object name not found in map data
     set udg_SnowEffect[1]=AddWeatherEffectSaveLast(gg_rct_593,'SNhs') // 'SNhs': object name not found in map data

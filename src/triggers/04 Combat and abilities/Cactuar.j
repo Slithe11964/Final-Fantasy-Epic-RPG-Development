@@ -1,4 +1,9 @@
 library TCactuar
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cactuar_Haste_Cast=null
+endglobals
+
 function Trig_Cactuar_Haste_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0EV') // 'A0EV': ability "Haste"
 endfunction

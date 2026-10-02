@@ -1,4 +1,9 @@
 library TManablow requires TProf, TSpellShared
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Manablow_Cast=null
+endglobals
+
 function Trig_Manablow_Cast_IsManablowAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A1BD')or(GetSpellAbilityId()=='A1BE') // 'A1BD': ability "Manablow"; 'A1BE': ability "Manablow"
 endfunction

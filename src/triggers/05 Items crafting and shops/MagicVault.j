@@ -1,4 +1,10 @@
 library TMagicVault
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MagicVault_Dim=null
+    trigger gg_trg_MagicVault_Death=null
+endglobals
+
 function Trig_MagicVault_Dim_Actions takes nothing returns nothing
     call SetUnitVertexColorBJ(gg_unit_n03M_0166,'d','d','d',100.)
     call DestroyTrigger(GetTriggeringTrigger())

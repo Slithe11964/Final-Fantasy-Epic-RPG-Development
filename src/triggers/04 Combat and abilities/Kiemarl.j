@@ -1,4 +1,9 @@
 library TKiemarl
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Kiemarl_ShowTalkIcon=null
+endglobals
+
 function Trig_Kiemarl_ShowTalkIcon_Actions takes nothing returns nothing
     set udg_SpecialEffect[79]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e016_0019,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_DragonEgg_Start)

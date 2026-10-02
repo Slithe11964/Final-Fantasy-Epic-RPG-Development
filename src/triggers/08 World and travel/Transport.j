@@ -1,4 +1,9 @@
 library TTransport
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Transport_HeroLoaded=null
+endglobals
+
 function Trig_Transport_HeroLoaded_Conditions takes nothing returns boolean
     return(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))!=null
 endfunction

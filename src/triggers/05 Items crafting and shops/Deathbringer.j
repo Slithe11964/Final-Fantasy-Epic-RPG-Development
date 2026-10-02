@@ -1,4 +1,9 @@
 library TDeathbringer
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Deathbringer_Warning=null
+endglobals
+
 function Trig_Deathbringer_Warning_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0EQ')and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)) // 'I0EQ': item "Deathbringer"
 endfunction

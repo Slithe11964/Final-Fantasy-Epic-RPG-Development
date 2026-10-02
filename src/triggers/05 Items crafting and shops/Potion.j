@@ -1,4 +1,9 @@
 library TPotion requires TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Potion_Use=null
+endglobals
+
 function Trig_Potion_Use_IsPotionItem takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='phea')or(GetItemTypeId(GetManipulatedItem())=='pman')or(GetItemTypeId(GetManipulatedItem())=='pghe')or(GetItemTypeId(GetManipulatedItem())=='pgma')or(GetItemTypeId(GetManipulatedItem())=='I001')or(GetItemTypeId(GetManipulatedItem())=='sman')or(GetItemTypeId(GetManipulatedItem())=='I000')or(GetItemTypeId(GetManipulatedItem())=='I002')or(GetItemTypeId(GetManipulatedItem())=='I02V')or(GetItemTypeId(GetManipulatedItem())=='I02X')or(GetItemTypeId(GetManipulatedItem())=='I05I')or(GetItemTypeId(GetManipulatedItem())=='I05H')or(GetItemTypeId(GetManipulatedItem())=='pres') // 'phea': item "Potion"; 'pman': item "Ether"; 'pghe': item "Hi-Potion"; 'pgma': item "Hi-Ether"; 'I001': item "Mega Potion"; 'sman': item "Mega Ether"; 'I000': item "X-Potion"; 'I002': item "Turbo Ether"; 'I02V': item "Nectar"; 'I02X': item "Greater Nectar"; 'I05I': item "Spirit Potion"; 'I05H': item "Blood Ether"; 'pres': item "Elixir"
 endfunction

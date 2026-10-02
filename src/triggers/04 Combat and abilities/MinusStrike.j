@@ -1,4 +1,9 @@
 library TMinusStrike requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MinusStrike_Cast=null
+endglobals
+
 function Trig_MinusStrike_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0Z5') // 'A0Z5': ability "Minus Strike"
 endfunction

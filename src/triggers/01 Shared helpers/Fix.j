@@ -1,4 +1,10 @@
 library TFix
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    hashtable udg_FixChemistItemHash=null
+    item array udg_FixItemSlotDummy
+endglobals
+
 function Fix_ItemSlot_Add takes unit u,item it,integer slot returns nothing
     local integer i=0
     if(slot<0 or slot>=bj_MAX_INVENTORY or UnitItemInSlot(u,slot)!=null)then

@@ -1,4 +1,10 @@
 library TShell requires TAbil
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shell_Cast=null
+    trigger gg_trg_Shell_AI_Cast=null
+endglobals
+
 function Trig_Shell_Cast_IsShellSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A0TZ')or(GetSpellAbilityId()=='A0L1')or(GetSpellAbilityId()=='A17N')or(GetSpellAbilityId()=='A17O')or(GetSpellAbilityId()=='A18V')or(GetSpellAbilityId()=='A0U0')or(GetSpellAbilityId()=='A0ZE')or(GetSpellAbilityId()=='A10S')or(GetSpellAbilityId()=='A11D')or(GetSpellAbilityId()=='A1FO') // 'A0TZ': ability "Shell"; 'A0L1': ability "Shell"; 'A17N': ability "Shell"; 'A17O': ability "Shell"; 'A18V': ability "Shell"; 'A0U0': ability "Choco-Shell"; 'A0ZE': ability "Deshell"; 'A10S': ability "Deshell"; 'A11D': ability "Deshell"; 'A1FO': ability "Deshell"
 endfunction

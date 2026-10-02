@@ -1,4 +1,11 @@
 library TTeleport
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Teleport_Spell=null
+    trigger gg_trg_Teleport_ToKalm=null
+    trigger gg_trg_Teleport_ToArena=null
+endglobals
+
 function Trig_Teleport_Spell_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0C9' or GetSpellAbilityId()=='A12Z') // 'A0C9': ability "Teleport"; 'A12Z': ability "Teleport"
 endfunction

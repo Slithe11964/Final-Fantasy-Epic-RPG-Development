@@ -1,4 +1,11 @@
 library TBlazingDemon requires TCam, TCine, TLoc, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BlazingDemon_Hide=null
+    trigger gg_trg_BlazingDemon_Appear=null
+    trigger gg_trg_BlazingDemon_FullHeat=null
+endglobals
+
 function Trig_BlazingDemon_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_U00G_0220)
     call SetUnitInvulnerable(gg_unit_U00G_0220,true)

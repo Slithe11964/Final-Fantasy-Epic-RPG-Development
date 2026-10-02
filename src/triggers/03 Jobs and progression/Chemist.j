@@ -1,4 +1,16 @@
 library TChemist requires TAbil, TFix, TForce, TMedicine, TProf, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chemist_TakeItem=null
+    trigger gg_trg_Chemist_Pharmacology=null
+    trigger gg_trg_Chemist_LearnAlchemy=null
+    trigger gg_trg_Chemist_Brew=null
+    trigger gg_trg_Chemist_NoxiousMixture=null
+    trigger gg_trg_Chemist_Molotov=null
+    // Variables only this module uses.
+    item udg_ChemistItem=null
+endglobals
+
 function Trig_Chemist_TakeItem_Cond_LastCharge takes nothing returns boolean
     return(GetItemCharges(udg_ChemistItem)==1)
 endfunction

@@ -1,4 +1,10 @@
 library TThunderbloom
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Thunderbloom_Spawn=null
+    trigger gg_trg_Thunderbloom_Pickup=null
+endglobals
+
 function Trig_Thunderbloom_Spawn_Actions takes nothing returns nothing
     set udg_TempPoint=GetRectCenter(gg_rct_569)
     set udg_ThunderbloomItem=CreateItemLoc('I0FN',udg_TempPoint) // 'I0FN': item "Thunderbloom Bulb"

@@ -1,4 +1,9 @@
 library TLoop
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Loop_MadoushiChanneling=null
+endglobals
+
 function Trig_Loop_MadoushiChanneling_ShouldStopChanneling takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[18]))
 endfunction

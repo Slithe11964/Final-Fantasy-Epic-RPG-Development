@@ -1,4 +1,11 @@
 library TVortex requires TGroup, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Vortex_Warning=null
+    trigger gg_trg_Vortex_Suck=null
+    trigger gg_trg_Vortex_Drain=null
+endglobals
+
 function Trig_Vortex_Warning_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ZO') // 'A0ZO': ability "Vortex"
 endfunction

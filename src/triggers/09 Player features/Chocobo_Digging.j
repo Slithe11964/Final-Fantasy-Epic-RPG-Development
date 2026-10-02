@@ -1,4 +1,11 @@
 library TChocoboDigging
+globals
+    // Variables only this module uses.
+    location udg_ChocoboNearestDigSpot=null
+    integer udg_ChocoboDigSpotIndex=0
+    integer udg_ChocoboDigCount=0
+endglobals
+
 function Trig_Chocobo_DeadPepper_Dig_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0DJ') // 'A0DJ': ability "Dead Pepper"
 endfunction

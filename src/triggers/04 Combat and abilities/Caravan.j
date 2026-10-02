@@ -1,4 +1,9 @@
 library TCaravan
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Caravan_Init=null
+endglobals
+
 function Trig_Caravan_Init_Actions takes nothing returns nothing
     set udg_CaravanStage=0
     call SetUnitInvulnerable(gg_unit_hrdh_0102,true)

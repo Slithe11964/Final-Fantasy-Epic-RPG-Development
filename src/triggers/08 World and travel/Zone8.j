@@ -1,4 +1,9 @@
 library TZone8 requires TGroup, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Zone8_Heal_Assist=null
+endglobals
+
 function Trig_Zone8_Heal_Assist_Conditions takes nothing returns boolean
     // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
     // missing or its maximum is 0).

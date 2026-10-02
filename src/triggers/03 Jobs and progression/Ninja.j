@@ -1,4 +1,11 @@
 library TNinja requires TAbil, TProf, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ninja_Ambush=null
+    trigger gg_trg_Ninja_Rage_ClearBuffs=null
+    trigger gg_trg_Ninja_Trance=null
+endglobals
+
 function Trig_Ninja_Ambush_Conditions takes nothing returns boolean
     return GetSpellAbilityId()=='A156' // 'A156': ability "Ambush"
 endfunction

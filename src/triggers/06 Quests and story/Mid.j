@@ -1,4 +1,13 @@
 library TMid requires TCam, TCine, TGroup, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mid_Cage_Ping=null
+    trigger gg_trg_Mid_Freed=null
+    trigger gg_trg_Mid_Letter_Give=null
+    trigger gg_trg_Mid_Letter_Ping=null
+    trigger gg_trg_Mid_Crossbow_Talk_Enable=null
+endglobals
+
 function Trig_Mid_Cage_Ping_Actions takes nothing returns nothing
     set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0010)
     call PingMinimapLocForForceEx(GetPlayersAll(),udg_TempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',80.,.0)

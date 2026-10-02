@@ -1,4 +1,9 @@
 library TWait
+globals
+    // Variables only this module uses.
+    timer udg_PolledWaitTimer=null
+endglobals
+
 function Wait_Polled takes real duration returns nothing
     local real l_remaining
     local real st=TimerGetElapsed(udg_PolledWaitTimer)

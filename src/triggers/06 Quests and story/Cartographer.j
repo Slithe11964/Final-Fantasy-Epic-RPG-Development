@@ -1,4 +1,16 @@
 library TCartographer requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cartographer_Prepare=null
+    trigger gg_trg_Cartographer_Start=null
+    trigger gg_trg_Cartographer_Update=null
+    trigger gg_trg_Cartographer_Report=null
+    trigger gg_trg_Cartographer_Fail=null
+    // Variables only this module uses.
+    integer udg_MapRewardStage=0
+    real udg_MapExploredPct=0
+endglobals
+
 function Trig_Cartographer_Prepare_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)and(IsQuestCompleted(udg_MainQuest[1]))and(udg_CommonHuntsDone>0)
 endfunction

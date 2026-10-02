@@ -1,4 +1,11 @@
 library TEnding requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ending_FrozenWorld=null
+    trigger gg_trg_Ending_Wasteland=null
+    trigger gg_trg_Ending_ReturnToStart=null
+endglobals
+
 function Trig_Ending_ReturnToStart_EnumUnitsInRect takes rect r returns group
     set udg_EnumGroup=CreateGroup()
     call GroupEnumUnitsInRect(udg_EnumGroup,r,udg_FilterTrue)

@@ -1,4 +1,9 @@
 library TMegalixir
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Megalixir_Remove_Stock=null
+endglobals
+
 function Trig_Megalixir_Remove_Stock_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetSoldItem())=='I03P') // 'I03P': item "Megalixir"
 endfunction

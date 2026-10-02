@@ -1,4 +1,9 @@
 library TRoll
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Roll_Command=null
+endglobals
+
 function Trig_Roll_Command_Actions takes nothing returns nothing
     // A random whole number from 1 through 100.
     call DisplayTimedTextToForce(GetPlayersAll(),15.,((udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+" rolled |cffffcc00")+(I2S(GetRandomInt(1,'d'))+"|r (1-100)!")))

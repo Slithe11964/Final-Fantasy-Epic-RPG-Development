@@ -1,4 +1,9 @@
 library TGreedIsGood
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GreedIsGood_DropStone=null
+endglobals
+
 function Trig_GreedIsGood_DropStone_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)

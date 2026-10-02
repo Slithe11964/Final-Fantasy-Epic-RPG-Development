@@ -1,4 +1,10 @@
 library TIceCache
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_IceCache_Open=null
+    trigger gg_trg_IceCache_SpearClaimed=null
+endglobals
+
 function Trig_IceCache_Open_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D'))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction

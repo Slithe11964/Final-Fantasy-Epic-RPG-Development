@@ -1,4 +1,10 @@
 library THolySwordsman requires TAbil, TGroup, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HolySwordsman_Eclipse=null
+    trigger gg_trg_HolySwordsman_Finisher=null
+endglobals
+
 function Trig_HolySwordsman_Eclipse_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QJ') // 'A0QJ': ability "Eclipse"
 endfunction

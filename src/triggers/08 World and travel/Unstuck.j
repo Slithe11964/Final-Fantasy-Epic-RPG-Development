@@ -1,4 +1,9 @@
 library TUnstuck requires TCine, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Unstuck_Command=null
+endglobals
+
 function Trig_Unstuck_Command_Cond_UnstuckBlocked takes nothing returns boolean
     return(udg_InCinematicMode)
 endfunction

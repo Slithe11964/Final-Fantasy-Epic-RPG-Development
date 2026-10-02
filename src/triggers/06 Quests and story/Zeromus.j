@@ -1,4 +1,10 @@
 library TZeromus requires TCam, TCine, TGroup, TMusic, TPlayerPart01, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Zeromus_Encounter=null
+    trigger gg_trg_Zeromus_Death=null
+endglobals
+
 function Trig_Zeromus_Death_UpgradeSpawnPools takes nothing returns nothing
     local unitpool l_pool
     set l_pool=LoadUnitPoolHandle(udg_SpawnDataHash,3,1)

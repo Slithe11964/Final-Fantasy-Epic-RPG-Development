@@ -1,4 +1,13 @@
 library TExodus requires TCam, TCine, TMusic, TPlayerPart01, TProf, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Exodus_Prepare=null
+    trigger gg_trg_Exodus_Reveal=null
+    trigger gg_trg_Exodus_Stomp=null
+    trigger gg_trg_Exodus_SummonTrees=null
+    trigger gg_trg_Exodus_Cometeorite=null
+endglobals
+
 function Trig_Exodus_Prepare_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_U00K_0208)
     call PauseUnitBJ(true,gg_unit_U00K_0208)

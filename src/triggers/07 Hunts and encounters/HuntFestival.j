@@ -1,4 +1,24 @@
 library THuntFestival requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HuntFestival_Announce=null
+    trigger gg_trg_HuntFestival_Invite=null
+    trigger gg_trg_HuntFestival_Begin=null
+    trigger gg_trg_HuntFestival_Teleport=null
+    trigger gg_trg_HuntFestival_KeepAway=null
+    trigger gg_trg_HuntFestival_Reorder=null
+    trigger gg_trg_HuntFestival_Respawn=null
+    trigger gg_trg_HuntFestival_Score=null
+    trigger gg_trg_HuntFestival_End=null
+    // Variables only this module uses.
+    timerdialog udg_FestivalTimerDialog=null
+    unit udg_FestivalBansat=null
+    unit udg_FestivalMonica=null
+    unit udg_FestivalWard=null
+    unit udg_FestivalGuest=null
+    player udg_FestivalWinner=null
+endglobals
+
 function Trig_HuntFestival_Announce_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[$B]))and(IsQuestDiscovered(udg_SideQuest[24]))and(IsQuestDiscovered(udg_SideQuest[53]))and(IsQuestDiscovered(udg_SideQuest[57]))and(udg_CommonHuntsDone>=2)and(udg_RareHuntsDone>=3)and(udg_MontblancHasNews==false) // $B = 11
 endfunction

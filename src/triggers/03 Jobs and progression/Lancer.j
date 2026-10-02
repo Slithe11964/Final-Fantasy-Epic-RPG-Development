@@ -1,4 +1,14 @@
 library TLancer requires TAbil, TForce, TGroup, TPlayerPart01, TProf, TWait, TWave
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Lancer_DragonBreath=null
+    trigger gg_trg_Lancer_DragonSlam=null
+    trigger gg_trg_Lancer_DragonAlly=null
+    trigger gg_trg_Lancer_Jump_RangeCheck=null
+    trigger gg_trg_Lancer_Jump=null
+    trigger gg_trg_Lancer_Task_Dragons=null
+endglobals
+
 function Trig_Lancer_DragonBreath_IsCastAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A11R')or(GetSpellAbilityId()=='A0SL') // 'A11R': ability "Dragon Breath"; 'A0SL': ability "Dragon Breath"
 endfunction

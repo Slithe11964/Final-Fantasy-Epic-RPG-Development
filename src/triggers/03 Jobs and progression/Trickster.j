@@ -1,4 +1,13 @@
 library TTrickster requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Trickster_Decoy_Spawn=null
+    trigger gg_trg_Trickster_Reveal=null
+    // Variables only this module uses.
+    unit udg_TricksterDecoy=null
+    unit udg_TricksterReal=null
+endglobals
+
 function Trig_Trickster_Decoy_Spawn_Actions takes nothing returns nothing
     set udg_TricksterReal=GetLastCreatedUnit()
     call GroupRemoveUnitSimple(GetLastCreatedUnit(),udg_HuntMonsters)

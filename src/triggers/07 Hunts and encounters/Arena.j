@@ -1,4 +1,49 @@
 library TArena requires TArenaAccess, TArenaBattleResults, TArenaBattleSetup, TArenaBoundaries, TArenaConfiguration, TArenaConquest, TArenaCups, TArenaDuel, TArenaIntroduction, TArenaPresentation, TArenaRewards, TArenaRounds, TArenaSpawning, TArenaTeamData, TArenaTeamSelection
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Arena_Leash=null
+    trigger gg_trg_Arena_FreezeNpcs=null
+    trigger gg_trg_Arena_Unlock=null
+    trigger gg_trg_Arena_LeoIntro=null
+    trigger gg_trg_Arena_InitData=null
+    trigger gg_trg_Arena_TeamData1=null
+    trigger gg_trg_Arena_TeamData2=null
+    trigger gg_trg_Arena_Team_Data_A=null
+    trigger gg_trg_Arena_Team_Data_B=null
+    trigger gg_trg_Arena_Unit_Data=null
+    trigger gg_trg_Arena_Lock_Controls=null
+    trigger gg_trg_Arena_Enter_Region=null
+    trigger gg_trg_Arena_Start_Cup=null
+    trigger gg_trg_Arena_Pick_Team=null
+    trigger gg_trg_Arena_Round_Start=null
+    trigger gg_trg_Arena_Spawn_Team=null
+    trigger gg_trg_Arena_Round_End=null
+    trigger gg_trg_Arena_Cup_Won=null
+    trigger gg_trg_Arena_UnlockCups=null
+    trigger gg_trg_Arena_SyncTeams=null
+    trigger gg_trg_Arena_StartBattle=null
+    trigger gg_trg_Arena_FoeDeath=null
+    trigger gg_trg_Arena_PlayerLeft=null
+    trigger gg_trg_Arena_BattleLost=null
+    trigger gg_trg_Arena_BuyPrize=null
+    trigger gg_trg_Arena_OutOfBounds=null
+    trigger gg_trg_Arena_GateWrongSide=null
+    trigger gg_trg_Arena_GateOpen=null
+    trigger gg_trg_Arena_ToggleShowcase=null
+    trigger gg_trg_Arena_ToggleCupMode=null
+    trigger gg_trg_Arena_ExchangeBP=null
+    trigger gg_trg_Arena_RefreshBPTags=null
+    trigger gg_trg_Arena_Enter_Eject=null
+    trigger gg_trg_Arena_Leave_Player=null
+    trigger gg_trg_Arena_Abandoned_Reset=null
+    trigger gg_trg_Arena_Duel_AI=null
+    trigger gg_trg_Arena_Omega_Absorbs=null
+    trigger gg_trg_Arena_Shinryu_Absorbs=null
+    trigger gg_trg_Arena_Duel_Ascend=null
+    trigger gg_trg_Arena_Duel_Victory=null
+    trigger gg_trg_Arena_Duel_Cleanup=null
+endglobals
+
 function InitTrig_Arena takes nothing returns nothing
 endfunction
 

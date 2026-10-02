@@ -1,4 +1,9 @@
 library TMagicGodToken requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MagicGodToken_Use=null
+endglobals
+
 function Trig_MagicGodToken_Use_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0CX')and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)) // 'I0CX': item "Magic God Token"
 endfunction

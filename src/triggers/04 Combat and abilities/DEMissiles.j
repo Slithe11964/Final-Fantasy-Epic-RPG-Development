@@ -1,4 +1,10 @@
 library TDEMissiles
+globals
+    // Variables only this module uses.
+    item array udg_HiddenItem
+    integer udg_HiddenItemCount=0
+endglobals
+
 function DEMissiles___HideBothersomeItem takes nothing returns nothing
     if IsItemVisible(GetEnumItem())then
         set udg_HiddenItem[udg_HiddenItemCount]=GetEnumItem()

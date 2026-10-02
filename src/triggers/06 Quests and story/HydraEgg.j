@@ -1,4 +1,14 @@
 library THydraEgg requires TCam, TCine, TForce, TLoc, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HydraEgg_Prepare=null
+    trigger gg_trg_HydraEgg_Start=null
+    trigger gg_trg_HydraEgg_Drop=null
+    trigger gg_trg_HydraEgg_Pickup=null
+    trigger gg_trg_HydraEgg_Ping=null
+    trigger gg_trg_HydraEgg_Deliver=null
+endglobals
+
 function Trig_HydraEgg_Prepare_Actions takes nothing returns nothing
     set udg_SpecialEffect[36]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hapm_0179,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call DestroyTrigger(GetTriggeringTrigger())

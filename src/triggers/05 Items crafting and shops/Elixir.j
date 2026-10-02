@@ -1,4 +1,11 @@
 library TElixir requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Elixir_Prepare=null
+    trigger gg_trg_Elixir_Start=null
+    trigger gg_trg_Elixir_Deliver=null
+endglobals
+
 function Trig_Elixir_Prepare_Actions takes nothing returns nothing
     set udg_SpecialEffect[17]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n001_0012,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Elixir_Start)

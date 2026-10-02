@@ -1,4 +1,19 @@
 library TFafnir
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Fafnir_Spawn=null
+    trigger gg_trg_Fafnir_Patrol_Move=null
+    trigger gg_trg_Fafnir_Patrol_Waypoint1=null
+    trigger gg_trg_Fafnir_Patrol_Waypoint2=null
+    trigger gg_trg_Fafnir_Patrol_Waypoint3=null
+    trigger gg_trg_Fafnir_Patrol_Waypoint0=null
+    trigger gg_trg_Fafnir_Attack_Delay=null
+    trigger gg_trg_Fafnir_LowLife_Credit=null
+    trigger gg_trg_Fafnir_Battle_Begin=null
+    // Variables only this module uses.
+    integer udg_FafnirPatrolIndex=0
+endglobals
+
 function Trig_Fafnir_Spawn_Actions takes nothing returns nothing
     set udg_FafnirPatrolPoint[0]=GetRectCenter(gg_rct_676)
     set udg_FafnirPatrolPoint[1]=GetRectCenter(gg_rct_677)

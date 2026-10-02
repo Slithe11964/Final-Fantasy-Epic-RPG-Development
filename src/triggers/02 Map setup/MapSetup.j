@@ -1,4 +1,10 @@
 library TMapSetup requires TCine
+globals
+    // Variables only this module uses.
+    integer array udg_SaveLoadBuffer
+    integer udg_SaveLoadBufferMax
+endglobals
+
 function DisableCinematicWithDestroy takes nothing returns nothing
     call Cine_Exit()
     call DestroyTrigger(GetTriggeringTrigger())

@@ -1,4 +1,9 @@
 library TStealth
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Stealth_Break_OnAttack=null
+endglobals
+
 function Trig_Stealth_Break_OnAttack_Conditions takes nothing returns boolean
     return((UnitHasBuffBJ(GetAttacker(),'B016'))and(IsUnitType(GetAttacker(),UNIT_TYPE_HERO))and(IsUnitIllusionBJ(GetAttacker())==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_STRUCTURE)==false)and(GetUnitStateSwap(UNIT_STATE_MANA,GetAttacker())>=.0))!=null // 'B016': buff tooltip "Stealth"
 endfunction

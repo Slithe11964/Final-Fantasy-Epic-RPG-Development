@@ -1,4 +1,10 @@
 library TOmegaWeapon requires TGroup, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_OmegaWeapon_Hide=null
+    trigger gg_trg_OmegaWeapon_SpellRotation=null
+endglobals
+
 function Trig_OmegaWeapon_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_N022_0125)
     call SetUnitInvulnerable(gg_unit_N022_0125,true)

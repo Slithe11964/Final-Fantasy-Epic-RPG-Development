@@ -1,4 +1,9 @@
 library TQuick
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Quick_Cast=null
+endglobals
+
 function Trig_Quick_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0HO') // 'A0HO': ability "!Quick"
 endfunction

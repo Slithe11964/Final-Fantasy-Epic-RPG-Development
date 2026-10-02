@@ -1,4 +1,12 @@
 library TAmbush requires TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ambush_Skeletons_1=null
+    trigger gg_trg_Ambush_Skeletons_2=null
+    trigger gg_trg_Ambush_Skeletons_3=null
+    trigger gg_trg_Ambush_Skeletons_4=null
+endglobals
+
 function Trig_Ambush_Skeletons_1_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_ActivePlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false) // 'H01D': unit "Spirit of Gaya"
 endfunction

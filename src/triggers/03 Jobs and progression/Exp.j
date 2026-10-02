@@ -1,4 +1,14 @@
 library TExp requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Exp_Distribution=null
+    // Variables only this module uses.
+    real udg_ExpAmount=0
+    location udg_TempPoint4=null
+    real udg_ExpBase=0
+    integer udg_PlayerIndex=0
+endglobals
+
 function Trig_Exp_Distribution_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_STRUCTURE)==false)and(IsUnitIllusionBJ(GetTriggerUnit())==false)and(GetUnitAbilityLevelSwapped('A0QY',GetTriggerUnit())<=0)and(GetKillingUnitBJ()!=null)and(IsPlayerInForce(GetOwningPlayer(GetKillingUnitBJ()),udg_ActivePlayers)))!=null // 'A0QY': ability "Devalued"
 endfunction

@@ -1,4 +1,12 @@
 library TPreload
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Preload_HeroChronicles=null
+    trigger gg_trg_Preload_DrinkPowerup=null
+    trigger gg_trg_Preload_AgiAttackSpeed=null
+    trigger gg_trg_Preload_JobUnits=null
+endglobals
+
 function Trig_Preload_HeroChronicles_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A0AR',gg_unit_n02Y_0052) // 'A0AR': ability "Hero Chronicles"
     call UnitRemoveAbilityBJ('A0AR',gg_unit_n02Y_0052) // 'A0AR': ability "Hero Chronicles"

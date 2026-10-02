@@ -1,4 +1,10 @@
 library TDarkPhoenix requires TCam, TCine, TLoc, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkPhoenix_Appear=null
+    trigger gg_trg_DarkPhoenix_Death=null
+endglobals
+
 function Trig_DarkPhoenix_Appear_InPhoenixRect takes nothing returns boolean
     return(RectContainsUnit(gg_rct_123,GetTriggerUnit()))or(RectContainsUnit(gg_rct_123,GetSpellTargetUnit()))
 endfunction

@@ -1,4 +1,12 @@
 library TOblivion requires TAbil, TGroup, TLoc, TProf, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Oblivion_Cast=null
+    trigger gg_trg_Oblivion_Pulse_Start=null
+    trigger gg_trg_Oblivion_Pulse=null
+    trigger gg_trg_Oblivion_Dummy_Death=null
+endglobals
+
 function Trig_Oblivion_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ZV') // 'A0ZV': ability "!Oblivion"
 endfunction

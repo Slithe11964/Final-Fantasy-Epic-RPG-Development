@@ -1,4 +1,9 @@
 library TMelaiduma requires TMusic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Melaiduma_Death=null
+endglobals
+
 function Trig_Melaiduma_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)

@@ -1,4 +1,9 @@
 library TDwarves
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Dwarves_Disappear=null
+endglobals
+
 function Trig_Dwarves_Disappear_ReforgeItemHeld takes nothing returns boolean
     return(udg_LokiReforgeItem!=null)
 endfunction

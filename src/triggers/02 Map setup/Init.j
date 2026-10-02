@@ -1,4 +1,48 @@
 library TInit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Init_AbilityLevelShift=null
+    trigger gg_trg_Init_JobTables=null
+    trigger gg_trg_Init_PlayerForces=null
+    trigger gg_trg_Init_PlayerColors=null
+    trigger gg_trg_Init_RevealStartArea=null
+    trigger gg_trg_Init_HideScoreScreen=null
+    trigger gg_trg_Init_NeutralPlayer8=null
+    trigger gg_trg_Init_AllyPlayer9=null
+    trigger gg_trg_Init_AllyPlayer10=null
+    trigger gg_trg_Init_RemoveGuards=null
+    trigger gg_trg_Init_FoodCap=null
+    trigger gg_trg_Init_EnemyUpgrades=null
+    trigger gg_trg_Init_InvulnerableGates=null
+    trigger gg_trg_Init_TimeOfDay=null
+    trigger gg_trg_Init_LockTrading=null
+    trigger gg_trg_Init_HideUiAbilities=null
+    trigger gg_trg_Init_InfoQuest=null
+    trigger gg_trg_Init_QuestLog=null
+    trigger gg_trg_Init_VoteOptionText=null
+    trigger gg_trg_Init_SkyAndSubtitles=null
+    trigger gg_trg_Init_AncientForestNpcs=null
+    trigger gg_trg_Init_ZaleraChapter=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    quest udg_InfoQuest=null
+    group udg_unused_group_01=null
+    group udg_unused_group_02=null
+    timer udg_unused_timer_01=null
+    force udg_unused_force_01=null
+    group udg_unused_group_03=null
+    group udg_unused_group_04=null
+    timer udg_unused_timer_02=null
+    integer array udg_BombAbility
+    timer udg_unused_timer_03=null
+    force udg_unused_force_02=null
+    string array udg_unused_string_01
+    string array udg_unused_string_02
+    integer array udg_unused_integer_01
+    timer udg_unused_timer_04=null
+    group udg_unused_group_05=null
+    group udg_unused_group_06=null
+endglobals
+
 function ModuleLongText_1 takes nothing returns string
     local string text = ""
     set text = text + "You can save your char using loading codes. \r\n\r\nJob levels, gold, upgrades and gaya/hero/house items are saved. Crystal Shards are not saved but converted to gold. You can load only once and save anytime. You can load only during the first 15 minutes of the game. And don't worry about mistyping your code - there's an automatic protection that will not allow your game to be ruined.\r\nUse \"-save\" command to get a loading code and type \"-load loading code\" to restore your character.\r\nQuest items and regular loot are not saved.\r\n\r\nThere are also other Save-Load-Commands, which save/load on the hard disk. Read in 'File Saving and Loading' for more informations.\r\n\r\nHere's a usef"

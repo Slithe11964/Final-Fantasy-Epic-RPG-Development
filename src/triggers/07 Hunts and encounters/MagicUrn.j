@@ -1,4 +1,12 @@
 library TMagicUrn requires TForce, TMusic, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MagicUrn_Setup=null
+    trigger gg_trg_MagicUrn_Drop=null
+    trigger gg_trg_MagicUrn_Open=null
+    trigger gg_trg_MagicUrn_Boss_Death=null
+endglobals
+
 function Trig_MagicUrn_Setup_Actions takes nothing returns nothing
     set udg_UrnBossDeaths=0
     call ShowUnitHide(gg_unit_U00C_0024)

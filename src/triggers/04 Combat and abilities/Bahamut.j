@@ -1,4 +1,9 @@
 library TBahamut requires TAbil, TLoc, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Bahamut_MegaFlare=null
+endglobals
+
 function Trig_Bahamut_MegaFlare_IsCastAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A13M')or(GetSpellAbilityId()=='A13X')or(GetSpellAbilityId()=='A13Y') // 'A13M': ability "!Mega Flare"; 'A13X': ability "!Giga Flare"; 'A13Y': ability "!Tera Flare"
 endfunction

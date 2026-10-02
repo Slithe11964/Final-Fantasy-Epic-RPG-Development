@@ -1,4 +1,19 @@
 library TJob requires TBerserk, TForce, TGayaShared, TGroup, THeroPart01, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Job_Change=null
+    trigger gg_trg_Job_XP_Handicap=null
+    // Variables only this module uses.
+    real udg_SavedLifePercent=0
+    real udg_SavedManaPercent=0
+    unit udg_NewHero=null
+    boolean udg_JobUnlocked=false
+    location udg_HeroLoc=null
+    item array udg_SavedItem
+    real udg_SavedFacing=0
+    integer udg_SelectedJobId=0
+endglobals
+
 function Job_GetIndex takes unit u returns integer
     local integer i=0
     if(GetUnitAbilityLevel(u,'A15I')>0)then // 'A15I': ability "Versatility"

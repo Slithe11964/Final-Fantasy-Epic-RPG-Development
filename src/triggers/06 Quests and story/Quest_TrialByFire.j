@@ -1,4 +1,9 @@
 library TQuestTrialByFire requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Variables only this module uses.
+    integer udg_TrialByFireSeconds=0
+endglobals
+
 function Trig_Quest_TrialByFire_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0AX_0188,true,true,true))
 endfunction

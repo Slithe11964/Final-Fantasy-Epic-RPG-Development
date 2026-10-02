@@ -1,4 +1,14 @@
 library TZiegfried requires TCam, TCine, TGroup, TLoc, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Ziegfried_Mine_Arrive=null
+    trigger gg_trg_Ziegfried_Advance_Order=null
+    trigger gg_trg_Ziegfried_Attack_Fafnir=null
+    trigger gg_trg_Ziegfried_Meltdown=null
+    trigger gg_trg_Ziegfried_Confront=null
+    trigger gg_trg_Ziegfried_Arena_Leash=null
+endglobals
+
 function Trig_Ziegfried_Mine_Arrive_NewsWindowOpen takes nothing returns boolean
     return(udg_GameDay<=20)
 endfunction

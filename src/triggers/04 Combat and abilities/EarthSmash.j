@@ -1,4 +1,9 @@
 library TEarthSmash requires TAbil, TGroup, TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_EarthSmash_Cast=null
+endglobals
+
 function Trig_EarthSmash_Cast_IsEarthSmashAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ZM')or(GetSpellAbilityId()=='A0FG')or(GetSpellAbilityId()=='A0CC')or(GetSpellAbilityId()=='A0FH') // 'A0ZM': ability "Earth Smash"; 'A0FG': ability "Earth Smash"; 'A0CC': ability "Earth Smash"; 'A0FH': ability "Earth Smash"
 endfunction

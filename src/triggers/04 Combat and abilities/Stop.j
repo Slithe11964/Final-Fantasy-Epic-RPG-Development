@@ -1,4 +1,9 @@
 library TStop
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Stop_Friendly_Attack=null
+endglobals
+
 function Trig_Stop_Friendly_Attack_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetAttacker()),udg_ActivePlayers))and(IsPlayerInForce(GetOwningPlayer(GetAttackedUnitBJ()),udg_PlayingPlayers))and(IsUnitEnemy(GetTriggerUnit(),GetOwningPlayer(GetAttacker()))==false)
 endfunction

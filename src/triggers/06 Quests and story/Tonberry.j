@@ -1,4 +1,9 @@
 library TTonberry
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Tonberry_Gate_Open=null
+endglobals
+
 function Trig_Tonberry_Gate_Open_Actions takes nothing returns nothing
     call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ATg3_0012)
     call RemoveDestructable(gg_dest_Dofw_0016)

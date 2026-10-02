@@ -1,4 +1,16 @@
 library TNightmare requires TPlayerPart01, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Nightmare_Spawn=null
+    trigger gg_trg_Nightmare_Despawn=null
+    trigger gg_trg_Nightmare_Death_Charge=null
+    trigger gg_trg_Nightmare_Roam=null
+    trigger gg_trg_Nightmare_Death=null
+    // Variables only this module uses.
+    integer udg_NightmareZone=0
+    boolean udg_DeathbringerDropped=false
+endglobals
+
 function Trig_Nightmare_Spawn_Cond_ZoneIndexTaken takes nothing returns boolean
     return(udg_TempInteger>=udg_NightmareZone)
 endfunction

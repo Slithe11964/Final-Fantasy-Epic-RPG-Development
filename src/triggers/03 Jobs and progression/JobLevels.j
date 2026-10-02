@@ -1,4 +1,10 @@
 library TJobLevels requires TJob
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_JobLevels_Update=null
+    trigger gg_trg_JobLevels_Init=null
+endglobals
+
 function Trig_JobLevels_Update_IsHighestJob takes nothing returns boolean
     return(Job_GetSavedLevel(GetEnumPlayer(),udg_JobUnitType[GetForLoopIndexA()])>udg_HighestJobLevel[GetConvertedPlayerId(GetEnumPlayer())])
 endfunction

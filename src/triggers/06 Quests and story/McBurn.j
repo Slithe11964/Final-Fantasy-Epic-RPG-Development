@@ -1,4 +1,14 @@
 library TMcBurn requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_McBurn_Arena_Hide=null
+    trigger gg_trg_McBurn_Arena_Appear=null
+    trigger gg_trg_McBurn_Heat_Color=null
+    trigger gg_trg_McBurn_TrueForm_Reveal=null
+    trigger gg_trg_McBurn_Arena_Return=null
+    trigger gg_trg_McBurn_Volcano=null
+endglobals
+
 function Trig_McBurn_Arena_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_n0AX_0188)
     set udg_DarkFireStage=0

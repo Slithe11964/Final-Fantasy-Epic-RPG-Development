@@ -1,4 +1,9 @@
 library TGame requires TPlayerPart01, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Game_Start=null
+endglobals
+
 function Trig_Game_Start_StartPlayerHero takes nothing returns nothing
     call SelectUnitForPlayerSingle(Player_GetHero(GetEnumPlayer()),GetEnumPlayer())
     call SetUnitInvulnerable(Player_GetHero(GetEnumPlayer()),false)

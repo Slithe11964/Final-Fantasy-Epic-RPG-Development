@@ -1,4 +1,9 @@
 library TTextSkip
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_TextSkip_Command=null
+endglobals
+
 function Trig_TextSkip_Command_Actions takes nothing returns nothing
     set udg_CinematicsDisabled=true
     set udg_TextSpeed=.0

@@ -1,4 +1,9 @@
 library TSuicide requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Suicide_Command=null
+endglobals
+
 function Trig_Suicide_Command_Cond_HasMaxCharges takes nothing returns boolean
     return(udg_GatherState[GetConvertedPlayerId(GetTriggerPlayer())]>=3)
 endfunction

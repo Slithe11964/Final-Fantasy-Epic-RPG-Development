@@ -1,4 +1,9 @@
 library TSpirit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Spirit_Create=null
+endglobals
+
 function Trig_Spirit_Create_CreateSpirit takes nothing returns nothing
     set udg_TempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetEnumPlayer())])
     call CreateNUnitsAtLoc(1,'H01D',GetEnumPlayer(),udg_TempPoint,bj_UNIT_FACING) // 'H01D': unit "Spirit of Gaya"

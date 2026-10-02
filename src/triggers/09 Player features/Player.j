@@ -1,4 +1,10 @@
 library TPlayer requires TDifficulty, TForce, TGroup, TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Player_Init=null
+    trigger gg_trg_Player_Leaves_Game=null
+endglobals
+
 function Trig_Player_Init_StripTag takes string l_name returns string
     local integer i=0
     local integer l_len=StringLength(l_name)

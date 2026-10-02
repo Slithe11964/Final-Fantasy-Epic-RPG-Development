@@ -1,4 +1,9 @@
 library TRune requires TGroup, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Rune_Pickup=null
+endglobals
+
 function Trig_Rune_Pickup_IsRuneItem takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='rhe1')or(GetItemTypeId(GetManipulatedItem())=='rman')or(GetItemTypeId(GetManipulatedItem())=='rhe2')or(GetItemTypeId(GetManipulatedItem())=='rdis')or(GetItemTypeId(GetManipulatedItem())=='rsps')or(GetItemTypeId(GetManipulatedItem())=='rma2')or(GetItemTypeId(GetManipulatedItem())=='rhe3')or(GetItemTypeId(GetManipulatedItem())=='rres') // 'rhe1': item "Heal"; 'rman': item "Mana"; 'rhe2': item "Healara"; 'rdis': item "Bravega"; 'rsps': item "Faithga"; 'rma2': item "Greater Mana"; 'rhe3': item "Healaga"; 'rres': item "Restoration"
 endfunction

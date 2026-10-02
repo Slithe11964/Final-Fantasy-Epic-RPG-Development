@@ -1,4 +1,9 @@
 library TAbilityTags requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AbilityTags_Show=null
+endglobals
+
 function Trig_AbilityTags_Show_UseBaseCost_Tier6 takes nothing returns boolean
     return(udg_AbilityLevelShift)
 endfunction

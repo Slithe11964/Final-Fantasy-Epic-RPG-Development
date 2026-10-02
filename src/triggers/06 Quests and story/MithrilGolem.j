@@ -1,4 +1,14 @@
 library TMithrilGolem requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MithrilGolem_Prepare=null
+    trigger gg_trg_MithrilGolem_Start=null
+    trigger gg_trg_MithrilGolem_Death=null
+    trigger gg_trg_MithrilGolem_Activate=null
+    // Variables only this module uses.
+    real udg_AlmaSavedFacing=0
+endglobals
+
 function Trig_MithrilGolem_Prepare_Cond_PrereqQuestNotDone takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[9])==false)
 endfunction

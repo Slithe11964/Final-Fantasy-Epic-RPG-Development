@@ -1,4 +1,9 @@
 library TPassive requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Passive_Bonus_Sync=null
+endglobals
+
 function Trig_Passive_Bonus_Sync_EarnsStrengthFeat takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A1C8',Player_GetHero(GetEnumPlayer()))>=$B)and(GetHeroStatBJ(bj_HEROSTAT_STR,Player_GetHero(GetEnumPlayer()),true)>=$3E8)and(GetUnitAbilityLevelSwapped('A02F',Player_GetHero(GetEnumPlayer()))==3)and(IsPlayerInForce(GetEnumPlayer(),udg_JobMasterForce[3])==false) // 'A1C8': ability "Strength Burst"; $B = 11; $3E8 = 1000; 'A02F': ability "Mastery"
 endfunction

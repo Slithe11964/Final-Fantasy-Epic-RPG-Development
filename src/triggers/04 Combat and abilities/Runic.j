@@ -1,4 +1,9 @@
 library TRunic requires TAbil
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Runic_Shield=null
+endglobals
+
 function Runic_Remove takes unit u returns nothing
     local timer t=LoadTimerHandle(udg_RunicHash,GetHandleId(u),7)
     call UnitRemoveAbility(u,'A1AV') // 'A1AV': ability "Runic Damage Bonus"

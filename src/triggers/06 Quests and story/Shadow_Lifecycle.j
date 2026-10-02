@@ -1,4 +1,9 @@
 library TShadowLifecycle requires TCam, TCine, TText, TUnit
+globals
+    // Variables only this module uses.
+    location array udg_ShadowSpawnPoint
+endglobals
+
 function Trig_Shadow_Init_Actions takes nothing returns nothing
     set udg_ShadowLoyalty=80
     set udg_ShadowHireOffer[0]='n07T' // 'n07T': unit "200 Gil - Shadow Offer"

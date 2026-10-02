@@ -1,4 +1,11 @@
 library TEden requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Eden_Setup=null
+    trigger gg_trg_Eden_Summon=null
+    trigger gg_trg_Eden_Despawn=null
+endglobals
+
 function Trig_Eden_Setup_Actions takes nothing returns nothing
     call SetUnitVertexColorBJ(gg_unit_N02I_0074,'d',40.,'d',15.)
     call ShowUnitHide(gg_unit_N02I_0074)

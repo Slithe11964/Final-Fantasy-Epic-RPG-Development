@@ -1,4 +1,14 @@
 library THauntedTree requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HauntedTree_Init=null
+    trigger gg_trg_HauntedTree_Prepare=null
+    trigger gg_trg_HauntedTree_Start=null
+    trigger gg_trg_HauntedTree_GhostRoam=null
+    trigger gg_trg_HauntedTree_CaptureSpirit=null
+    trigger gg_trg_HauntedTree_Complete=null
+endglobals
+
 function Trig_HauntedTree_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_n02F_0108)
     call SetDestructableInvulnerableBJ(gg_dest_B002_0040,true)

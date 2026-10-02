@@ -1,4 +1,9 @@
 library TAim requires TAbil
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Aim_Cast=null
+endglobals
+
 function Trig_Aim_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A14B') // 'A14B': ability "Aim"
 endfunction

@@ -1,4 +1,9 @@
 library TFrogHead requires TCam, TCine, TPlayerPart01, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FrogHead_TurnIn=null
+endglobals
+
 function Trig_FrogHead_TurnIn_Conditions takes nothing returns boolean
     return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I07I'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I07I': item "Qu's Frog Head"
 endfunction

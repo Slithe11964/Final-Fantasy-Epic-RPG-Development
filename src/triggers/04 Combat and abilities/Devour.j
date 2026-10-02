@@ -1,4 +1,9 @@
 library TDevour requires TBerserk, TGoliathTonic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Devour_Absorb=null
+endglobals
+
 function Trig_Devour_Absorb_Conditions takes nothing returns boolean
     return((GetSpellAbilityId()=='A0YR')and(IsUnitType(GetSpellTargetUnit(),UNIT_TYPE_HERO)==false)and(IsUnitType(GetSpellTargetUnit(),UNIT_TYPE_RESISTANT)==false))!=null // 'A0YR': ability "!Devour"
 endfunction

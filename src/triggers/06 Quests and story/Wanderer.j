@@ -1,4 +1,17 @@
 library TWanderer requires TForce, TMusic, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Wanderer_Quest_Init=null
+    trigger gg_trg_Wanderer_Spawn=null
+    trigger gg_trg_Wanderer_Request=null
+    trigger gg_trg_Wanderer_Give_Item=null
+    // Variables only this module uses.
+    integer array udg_WandererUnitType
+    integer array udg_WandererWantedItem
+    integer array udg_WandererReward
+    integer udg_WandererChainCount=0
+endglobals
+
 function Trig_Wanderer_Quest_Init_Actions takes nothing returns nothing
     set udg_WandererUnitType[1]='nftr' // 'nftr': unit "Forest Goblin"
     set udg_WandererUnitType[2]='ncea' // 'ncea': object name not found in map data

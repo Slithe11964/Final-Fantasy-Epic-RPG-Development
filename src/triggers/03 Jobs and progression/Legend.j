@@ -1,4 +1,31 @@
 library TLegend requires TLegendArcher, TLegendCalculator, TLegendChemist, TLegendDarkKnight, TLegendFreelancer, TLegendGeomancer, TLegendHolySwordsman, TLegendKnight, TLegendLancer, TLegendMediator, TLegendMonk, TLegendNecromancer, TLegendNinja, TLegendOracle, TLegendPriest, TLegendProphet, TLegendSamurai, TLegendSorcerer, TLegendSquire, TLegendSummoner, TLegendThief, TLegendTimeMage, TLegendWizard
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Legend_Squire_Talk=null
+    trigger gg_trg_Legend_Knight_Talk=null
+    trigger gg_trg_Legend_Archer_Talk=null
+    trigger gg_trg_Legend_Monk_Talk=null
+    trigger gg_trg_Legend_Thief_Talk=null
+    trigger gg_trg_Legend_Geomancer_Talk=null
+    trigger gg_trg_Legend_Samurai_Talk=null
+    trigger gg_trg_Legend_Lancer_Talk=null
+    trigger gg_trg_Legend_Ninja_Talk=null
+    trigger gg_trg_Legend_HolySwordsman_Talk=null
+    trigger gg_trg_Legend_Chemist_Talk=null
+    trigger gg_trg_Legend_Wizard_Talk=null
+    trigger gg_trg_Legend_Priest_Talk=null
+    trigger gg_trg_Legend_Summoner_Talk=null
+    trigger gg_trg_Legend_TimeMage_Talk=null
+    trigger gg_trg_Legend_Mediator_Talk=null
+    trigger gg_trg_Legend_Oracle_Talk=null
+    trigger gg_trg_Legend_Calculator_Talk=null
+    trigger gg_trg_Legend_Prophet_Talk=null
+    trigger gg_trg_Legend_Sorcerer_Talk=null
+    trigger gg_trg_Legend_DarkKnight_Talk=null
+    trigger gg_trg_Legend_Necromancer_Talk=null
+    trigger gg_trg_Legend_Freelancer_Talk=null
+endglobals
+
 function InitTrig_Legend takes nothing returns nothing
 endfunction
 

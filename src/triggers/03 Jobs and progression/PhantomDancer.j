@@ -1,4 +1,10 @@
 library TPhantomDancer requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_PhantomDancer_Blink=null
+    trigger gg_trg_PhantomDancer_Berserk=null
+endglobals
+
 function Trig_PhantomDancer_Blink_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())

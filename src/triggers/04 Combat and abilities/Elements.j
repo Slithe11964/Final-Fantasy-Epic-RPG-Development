@@ -1,4 +1,9 @@
 library TElements
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Elements_Init=null
+endglobals
+
 function Trig_Elements_Init_Actions takes nothing returns nothing
     set udg_ElementSpellPrimary[1]='A0SG' // 'A0SG': ability "Firaga"
     set udg_ElementSpellSecondary[1]='A0SH' // 'A0SH': ability "Fire"

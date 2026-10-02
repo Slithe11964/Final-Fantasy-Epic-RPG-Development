@@ -1,4 +1,9 @@
 library TAnimal
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Animal_Companion=null
+endglobals
+
 function Trig_Animal_Companion_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A14H') // 'A14H': ability "Animal Companion"
 endfunction

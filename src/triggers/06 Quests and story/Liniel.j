@@ -1,4 +1,9 @@
 library TLiniel
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Liniel_ShowMarker=null
+endglobals
+
 function Trig_Liniel_ShowMarker_Actions takes nothing returns nothing
     set udg_SpecialEffect[46]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n01Y_0131,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_FallenRanger_Start)

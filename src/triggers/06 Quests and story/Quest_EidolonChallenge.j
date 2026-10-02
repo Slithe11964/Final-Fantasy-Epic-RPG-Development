@@ -1,4 +1,9 @@
 library TQuestEidolonChallenge requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses.
+    integer udg_EidolonsDefeated=0
+endglobals
+
 function Trig_Quest_EidolonChallenge_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ocb2_0147,true,true,true))
 endfunction

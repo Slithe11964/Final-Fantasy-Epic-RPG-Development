@@ -1,4 +1,9 @@
 library TEveryonesGrudge
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_EveryonesGrudge_Cast=null
+endglobals
+
 function Trig_EveryonesGrudge_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0CW') // 'A0CW': ability "!Everyone's Grudge"
 endfunction

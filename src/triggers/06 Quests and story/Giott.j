@@ -1,4 +1,10 @@
 library TGiott requires TCam, TCine, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Giott_FirstTalk=null
+    trigger gg_trg_Giott_Letter_Deliver=null
+endglobals
+
 function Trig_Giott_FirstTalk_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h00R_0256,true,true,true))
 endfunction

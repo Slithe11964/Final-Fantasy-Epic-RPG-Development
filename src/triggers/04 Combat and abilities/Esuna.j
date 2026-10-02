@@ -1,4 +1,9 @@
 library TEsuna
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Esuna_Cast=null
+endglobals
+
 function Trig_Esuna_Cast_IsEsuna takes nothing returns boolean
     return(GetSpellAbilityId()=='A0W9')or(GetSpellAbilityId()=='A12K')or(GetSpellAbilityId()=='A032')or(GetSpellAbilityId()=='A140')or(GetSpellAbilityId()=='A0HV') // 'A0W9': ability "Esuna"; 'A12K': ability "Blessed Aether"; 'A032': ability "Blessed Earth"; 'A140': ability "Charge Command"; 'A0HV': ability "Toss Remedy"
 endfunction

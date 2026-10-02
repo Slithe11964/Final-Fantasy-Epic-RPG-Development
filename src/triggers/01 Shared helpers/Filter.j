@@ -1,4 +1,10 @@
 library TFilter
+globals
+    // Variables only this module uses.
+    real udg_EnumDestX=.0
+    real udg_EnumDestY=.0
+endglobals
+
 function Filter_DestInRange takes nothing returns boolean
     // Starting value for dx:
     // (GetDestructableX(GetFilterDestructable())) minus (udg_EnumDestX).

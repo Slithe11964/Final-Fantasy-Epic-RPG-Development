@@ -1,4 +1,15 @@
 library TFadingNotes requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FadingNotes_Init=null
+    trigger gg_trg_FadingNotes_DropCultist=null
+    trigger gg_trg_FadingNotes_DropWizard=null
+    // Variables only this module uses.
+    item udg_NoteFromCultist=null
+    item udg_NoteFromWizard=null
+    integer udg_FadingNoteIndex=0
+endglobals
+
 function Trig_FadingNotes_Init_Actions takes nothing returns nothing
     set udg_FadingNoteIndex=0
     set udg_RewardItem[1]='I0AB' // 'I0AB': item "Fading Note"

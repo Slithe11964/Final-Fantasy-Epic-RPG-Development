@@ -1,4 +1,12 @@
 library TSpeedrun requires TForce, TTime
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Speedrun_Announce=null
+    trigger gg_trg_Speedrun_FirstCast=null
+    trigger gg_trg_Speedrun_Accolade=null
+    trigger gg_trg_Speedrun_Record=null
+endglobals
+
 function Trig_Speedrun_Announce_HasNoLoadedSave takes nothing returns boolean
     return(udg_SpeedrunLevel[GetConvertedPlayerId(GetFilterPlayer())]<=0)
 endfunction

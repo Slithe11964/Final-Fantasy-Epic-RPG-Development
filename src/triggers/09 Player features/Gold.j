@@ -1,4 +1,11 @@
 library TGold requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Gold_Cap=null
+    trigger gg_trg_Gold_Pickup=null
+    trigger gg_trg_Gold_Share_Pickup=null
+endglobals
+
 function Trig_Gold_Cap_Actions takes nothing returns nothing
     call SetPlayerStateBJ(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_GOLD,$F423F) // $F423F = 999999
 endfunction

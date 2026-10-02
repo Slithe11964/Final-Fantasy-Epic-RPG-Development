@@ -1,4 +1,9 @@
 library TExdeath
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Exdeath_Drop_Scroll=null
+endglobals
+
 function Trig_Exdeath_Drop_Scroll_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())

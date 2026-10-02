@@ -1,4 +1,10 @@
 library TBoco requires TCam, TCine, TReward, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Boco_Feed_Greens=null
+    trigger gg_trg_Boco_Meet_Again=null
+endglobals
+
 function Trig_Boco_Feed_Greens_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A15X')and(GetSpellTargetUnit()==gg_unit_n00E_0138)and(IsUnitHiddenBJ(gg_unit_n00E_0138)==false)and(udg_InCinematicMode==false) // 'A15X': ability "Gysahl Greens"
 endfunction

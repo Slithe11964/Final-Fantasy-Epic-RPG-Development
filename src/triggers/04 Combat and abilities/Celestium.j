@@ -1,4 +1,9 @@
 library TCelestium requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Celestium_Trade=null
+endglobals
+
 function Trig_Celestium_Trade_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0B6') // 'I0B6': item "Celestial Psypher (Celestium Trade)"
 endfunction

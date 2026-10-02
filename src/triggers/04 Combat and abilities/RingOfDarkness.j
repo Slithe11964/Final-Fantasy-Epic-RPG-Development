@@ -1,4 +1,9 @@
 library TRingOfDarkness
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_RingOfDarkness_Init=null
+endglobals
+
 function Trig_RingOfDarkness_Init_Actions takes nothing returns nothing
     set udg_RingHintsReady=true
     call UnitAddAbilityBJ('A1BG',gg_unit_n03T_0008) // 'A1BG': ability "Madain Sari Horn Hint"

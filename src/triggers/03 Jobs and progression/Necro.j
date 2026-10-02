@@ -1,4 +1,16 @@
 library TNecro requires TAbil, TGroup, TLoc, TPlayerPart01, TProf, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Necro_RaiseDead_Reset=null
+    trigger gg_trg_Necro_Release=null
+    trigger gg_trg_Necro_DeathScreech=null
+    trigger gg_trg_Necro_Drain_Start=null
+    trigger gg_trg_Necro_Drain_End=null
+    trigger gg_trg_Necro_Drain_Tick=null
+    // Variables only this module uses.
+    real udg_NecroReleaseHealTotal=0
+endglobals
+
 function Trig_Necro_RaiseDead_Reset_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0Z2') // 'A0Z2': ability "Raise Dead"
 endfunction

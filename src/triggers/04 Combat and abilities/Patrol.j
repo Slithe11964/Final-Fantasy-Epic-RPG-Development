@@ -1,4 +1,11 @@
 library TPatrol
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Patrol_Disabled=null
+    // Variables only this module uses.
+    boolean udg_PatrolAllowed=false
+endglobals
+
 function Trig_Patrol_Disabled_Conditions takes nothing returns boolean
     return(GetIssuedOrderIdBJ()==$D0016)and(udg_PatrolAllowed==false) // $D0016 = 851990
 endfunction

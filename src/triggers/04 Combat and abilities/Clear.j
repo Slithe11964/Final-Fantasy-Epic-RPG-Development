@@ -1,4 +1,9 @@
 library TClear requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Clear_Command=null
+endglobals
+
 function Trig_Clear_Command_Actions takes nothing returns nothing
     set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
     call ClearTextMessagesBJ(udg_TempForce)

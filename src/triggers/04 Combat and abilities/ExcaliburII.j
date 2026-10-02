@@ -1,4 +1,11 @@
 library TExcaliburII
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ExcaliburII_HideRock=null
+    trigger gg_trg_ExcaliburII_ShowRock=null
+    trigger gg_trg_ExcaliburII_Drop=null
+endglobals
+
 function Trig_ExcaliburII_HideRock_Actions takes nothing returns nothing
     set udg_ExcaliburRockHidden=true
     call ShowDestructableBJ(false,gg_dest_LTcr_0019)

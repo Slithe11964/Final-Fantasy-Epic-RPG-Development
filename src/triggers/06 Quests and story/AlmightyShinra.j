@@ -1,4 +1,16 @@
 library TAlmightyShinra requires TCam, TCine, TGroup, TLoc, TReward, TText, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_AlmightyShinra_Arm=null
+    trigger gg_trg_AlmightyShinra_Cinematic=null
+    trigger gg_trg_AlmightyShinra_Spiral=null
+    trigger gg_trg_AlmightyShinra_Defeat=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    integer udg_SpiralAngle=0
+    unit udg_ShinraSpellTarget=null
+    sound gg_snd_SargerasRoar=null
+endglobals
+
 function Trig_AlmightyShinra_Arm_Conditions takes nothing returns boolean
     return(udg_ShinraFinaleArmed==false)and(IsQuestCompleted(udg_SideQuest[42]))and(IsQuestCompleted(udg_SideQuest[47]))and(udg_CupWins[$A]>=1)and(udg_ArenaRank>=3) // $A = 10
 endfunction

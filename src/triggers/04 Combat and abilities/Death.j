@@ -1,4 +1,14 @@
 library TDeath requires TBerserk, TGoliathTonic, TGroup, TRunic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Death_Watch_Group1=null
+    trigger gg_trg_Death_Watch_Group2=null
+    trigger gg_trg_Death_Watch_Group3=null
+    trigger gg_trg_Death_Explosion_Queue=null
+    trigger gg_trg_Death_Explosion_Start=null
+    trigger gg_trg_Death_Explosion_Blast=null
+endglobals
+
 function Trig_Death_Watch_Group1_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_BerserkGroup))
 endfunction

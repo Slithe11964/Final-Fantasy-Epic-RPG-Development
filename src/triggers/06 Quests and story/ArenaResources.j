@@ -1,4 +1,19 @@
 library TArenaResources requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_ArenaResources_Prepare=null
+    trigger gg_trg_ArenaResources_Start=null
+    trigger gg_trg_ArenaResources_Escort=null
+    trigger gg_trg_ArenaResources_ShipMove=null
+    trigger gg_trg_ArenaResources_ShipDamaged=null
+    trigger gg_trg_ArenaResources_ShipLost=null
+    trigger gg_trg_ArenaResources_Complete=null
+    // Variables only this module uses.
+    unit udg_SupplyShip=null
+    integer udg_ArenaEscortReward=0
+    boolean udg_ShipUndamaged=false
+endglobals
+
 function Trig_ArenaResources_Prepare_Actions takes nothing returns nothing
     set udg_ArenaEscortReward=$DAC // $DAC = 3500
     set udg_SpecialEffect[59]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e008_0132,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")

@@ -1,4 +1,9 @@
 library TQuestLostMemories requires TCam, TCine, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Variables only this module uses.
+    unit udg_MementoRingHero=null
+endglobals
+
 function Trig_Quest_LostMemories_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e00V_0009,true,true,true))
 endfunction

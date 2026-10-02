@@ -1,4 +1,9 @@
 library TQuestDeliverLetter requires TCam, TCine, TGroup, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_CaptainPissed=null
+endglobals
+
 function Trig_Quest_DeliverLetter_Init_Enum_MakeCorpse takes nothing returns nothing
     call SetUnitVertexColorBJ(GetEnumUnit(),'d',.0,.0,0)
     call SetUnitAnimation(GetEnumUnit(),"decay flesh")

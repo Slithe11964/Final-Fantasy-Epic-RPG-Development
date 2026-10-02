@@ -1,4 +1,31 @@
 library TMissile requires TFilter, TKnock, TPath
+globals
+    // Variables only this module uses.
+    timer udg_MissileTimer=CreateTimer()
+    integer udg_MissileActiveCount=0
+    integer array udg_MissileList
+    boolexpr udg_MissileFilter
+    real udg_MissileDamageDealt
+    boolexpr udg_KillDestFilter
+    rect gg_rct_002
+    item udg_DummyItem
+    integer udg_MissileFreeHead=0
+    integer udg_MissileCount=0
+    integer array udg_MissileNext
+    real array udg_MissileCollisionRange
+    real array udg_MissileSplashRadius
+    boolean array udg_MissileKnockback
+    string array udg_MissileImpactEffect
+    string array udg_MissileImpactEffect2
+    integer array udg_MissileIndex
+    group udg_MissileEnumGroup=CreateGroup()
+    real udg_MissileDX
+    real udg_MissileDY
+    real udg_MissileDistance
+    unit udg_ArgUnit
+    real udg_ArgRadius
+endglobals
+
 function Missile_RunOnLoop takes integer l_idx returns nothing
     set udg_ArgIndex=l_idx
     call TriggerEvaluate(udg_MissileCollisionTrig)

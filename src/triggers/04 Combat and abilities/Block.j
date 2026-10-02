@@ -1,4 +1,9 @@
 library TBlock
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Block_Item_Destroy=null
+endglobals
+
 function Trig_Block_Item_Destroy_Conditions takes nothing returns boolean
     return(GetIssuedOrderIdBJ()==$D000F) // $D000F = 851983
 endfunction

@@ -1,4 +1,18 @@
 library TTitle requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Title_Grant=null
+    trigger gg_trg_Title_UnlockEffects=null
+    trigger gg_trg_Title_ApplyStats=null
+    trigger gg_trg_Title_ArmsCollection=null
+    trigger gg_trg_Title_JuniorAdventurer=null
+    trigger gg_trg_Title_RumoredAdventurer=null
+    trigger gg_trg_Title_SeniorAdventurer=null
+    trigger gg_trg_Title_HeroicSpirit=null
+    // Variables only this module uses.
+    integer udg_CountedItemTotal=0
+endglobals
+
 function Trig_Title_ApplyStats_AddPrimaryStat takes unit l_hero,integer l_amount returns nothing
     local integer unitTypeId=GetUnitTypeId(l_hero)
     if(unitTypeId=='H000' or unitTypeId=='H003' or unitTypeId=='H00A' or unitTypeId=='H00D' or unitTypeId=='H00C' or unitTypeId=='H00M' or unitTypeId=='H02X' or unitTypeId=='H02L' or unitTypeId=='H02O')then // 'H000': unit "Squire"; 'H003': unit "Knight"; 'H00A': unit "Monk"; 'H00D': unit "Geomancer"; 'H00C': unit "Lancer"; 'H00M': unit "Holy Swordsman"; 'H02X': unit "Dark Knight"; 'H02L': unit "Freelancer"; 'H02O': unit "Freelancer"

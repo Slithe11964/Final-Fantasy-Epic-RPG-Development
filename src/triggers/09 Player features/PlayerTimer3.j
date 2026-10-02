@@ -1,4 +1,9 @@
 library TPlayerTimer3
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_PlayerTimer3_Expire=null
+endglobals
+
 function Trig_PlayerTimer3_Expire_Actions takes nothing returns nothing
     set udg_TempInteger=3
     call ConditionalTriggerExecute(gg_trg_Fishing_Tick)

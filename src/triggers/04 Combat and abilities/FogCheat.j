@@ -1,4 +1,9 @@
 library TFogCheat
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FogCheat_Reset=null
+endglobals
+
 function Trig_FogCheat_Reset_Actions takes nothing returns nothing
     set udg_FogDisabled=false
     call DestroyTrigger(GetTriggeringTrigger())

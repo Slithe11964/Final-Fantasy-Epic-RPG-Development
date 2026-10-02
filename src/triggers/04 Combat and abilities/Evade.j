@@ -1,4 +1,18 @@
 library TEvade requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Evade_Counter_Cost=null
+    trigger gg_trg_Evade_Counter_Decay=null
+    trigger gg_trg_Evade_Counter_Reset_P1=null
+    trigger gg_trg_Evade_Counter_Reset_P2=null
+    trigger gg_trg_Evade_Counter_Reset_P3=null
+    trigger gg_trg_Evade_Counter_Reset_P4=null
+    trigger gg_trg_Evade_Counter_Reset_P5=null
+    trigger gg_trg_Evade_Counter_Reset_P6=null
+    trigger gg_trg_Evade_Counter_Reset_P7=null
+    trigger gg_trg_Evade_Counter_Reset_P8=null
+endglobals
+
 function Trig_Evade_Counter_Cost_Conditions takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetSpellAbilityId()=='A0R3') // 'A0R3': ability "Evade & Counter"
 endfunction

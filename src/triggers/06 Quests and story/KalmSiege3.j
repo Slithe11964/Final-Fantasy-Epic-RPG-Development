@@ -1,4 +1,22 @@
 library TKalmSiege3 requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_KalmSiege3_Call=null
+    trigger gg_trg_KalmSiege3_CidTalk=null
+    trigger gg_trg_KalmSiege3_Start=null
+    trigger gg_trg_KalmSiege3_Restart=null
+    trigger gg_trg_KalmSiege3_Begin=null
+    trigger gg_trg_KalmSiege3_DemonArrive=null
+    trigger gg_trg_KalmSiege3_DemonSummon=null
+    trigger gg_trg_KalmSiege3_ChiefGuard=null
+    trigger gg_trg_KalmSiege3_TrackDeaths=null
+    trigger gg_trg_KalmSiege3_Defeat=null
+    trigger gg_trg_KalmSiege3_Complete=null
+    trigger gg_trg_KalmSiege3_Fail=null
+    // Variables only this module uses.
+    unit udg_PossessedChieftain=null
+endglobals
+
 function Trig_KalmSiege3_Call_IsCidVisible takes nothing returns boolean
     return(IsUnitHiddenBJ(gg_unit_Hpb1_0013)==false)
 endfunction

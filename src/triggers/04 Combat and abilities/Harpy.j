@@ -1,4 +1,10 @@
 library THarpy requires TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Harpy_Matriarch_CallAid=null
+    trigger gg_trg_Harpy_Trickster_Cleanup=null
+endglobals
+
 function Trig_Harpy_Matriarch_CallAid_MatriarchInCombat takes nothing returns boolean
     return(GetTriggerUnit()==udg_HarpyMatriarch)or(GetAttacker()==udg_HarpyMatriarch)
 endfunction

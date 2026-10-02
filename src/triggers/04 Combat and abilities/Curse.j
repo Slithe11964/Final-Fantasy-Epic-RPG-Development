@@ -1,4 +1,9 @@
 library TCurse requires TCraft, TPlayerPart01
+globals
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    trigger udg_CurseItemTrigger=null
+endglobals
+
 function Curse_CondIsCurseItem takes nothing returns boolean
     return SubString(GetItemName(GetManipulatedItem()),0,7)=="Curse: "
 endfunction

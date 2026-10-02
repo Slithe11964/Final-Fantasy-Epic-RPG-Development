@@ -1,4 +1,10 @@
 library TGolemHeart requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GolemHeart_Ping=null
+    trigger gg_trg_GolemHeart_Pickup=null
+endglobals
+
 function Trig_GolemHeart_Ping_Conditions takes nothing returns boolean
     return(udg_QuestItem[2]!=null)
 endfunction

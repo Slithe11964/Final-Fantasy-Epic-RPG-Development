@@ -1,4 +1,10 @@
 library TNeedles
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Needles_Cast=null
+    trigger gg_trg_Needles_99999_Cast=null
+endglobals
+
 function Trig_Needles_Cast_IsNeedlesAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A0W5')or(GetSpellAbilityId()=='A0W6')or(GetSpellAbilityId()=='A0W7') // 'A0W5': ability "1000 Needles"; 'A0W6': ability "!9999 Needles"; 'A0W7': ability "10000 Needles"
 endfunction

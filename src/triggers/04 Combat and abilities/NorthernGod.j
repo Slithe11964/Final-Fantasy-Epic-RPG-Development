@@ -1,4 +1,9 @@
 library TNorthernGod
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_NorthernGod_Setup=null
+endglobals
+
 function Trig_NorthernGod_Setup_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H01M_0071)
     call PauseUnitBJ(true,gg_unit_H01M_0071)

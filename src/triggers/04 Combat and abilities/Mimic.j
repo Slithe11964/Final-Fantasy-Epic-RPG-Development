@@ -1,4 +1,12 @@
 library TMimic
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Mimic_Reveal=null
+    trigger gg_trg_Mimic_Death_Loot=null
+    // Variables only this module uses.
+    unit udg_MimicUnit=null
+endglobals
+
 function Trig_Mimic_Reveal_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_nmgv_0262)
 endfunction

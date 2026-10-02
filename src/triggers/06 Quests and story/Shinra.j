@@ -1,4 +1,9 @@
 library TShinra
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Shinra_TalkPrepare=null
+endglobals
+
 function Trig_Shinra_TalkPrepare_Actions takes nothing returns nothing
     set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_DimensionalBoundary_Start)

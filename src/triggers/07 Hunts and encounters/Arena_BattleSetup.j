@@ -1,4 +1,9 @@
 library TArenaBattleSetup requires TForce, TGroup, TLink, TMusic, TPlayerPart01, TWait
+globals
+    // Variables only this module uses.
+    integer udg_ArenaFinalTeam=0
+endglobals
+
 function Trig_Arena_Start_Cup_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==udg_ArenaOrganizer[0])
 endfunction

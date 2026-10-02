@@ -1,4 +1,9 @@
 library TCooldown requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cooldown_Scaling=null
+endglobals
+
 function Trig_Cooldown_Scaling_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('Avul',GetTriggerUnit())<=0)and(GetSpellAbilityId()!='A0S8')and(GetSpellAbilityId()!='A0S9')and(GetSpellAbilityId()!='A0SB')and(GetSpellAbilityId()!='A0SC')and(GetSpellAbilityId()!='A0SD')and(GetSpellAbilityId()!='A0SE')and(GetSpellAbilityId()!='A0R3')and(GetSpellAbilityId()!='A00Q')and(GetSpellAbilityId()!='A0Z2')and(GetSpellAbilityId()!='A197')and(GetSpellAbilityId()!='A0C7')and(GetSpellAbilityId()!='A0C6')and(GetSpellAbilityId()!='A12H')and(GetSpellAbilityId()!='A12G')and(GetSpellAbilityId()!='A11A')and(GetSpellAbilityId()!='A0D4')and(GetSpellAbilityId()!='A18N') // 'Avul': standard ability reference "Invulnerable"; 'A0S8': ability "Enfire"; 'A0S9': ability "Enfrost"; 'A0SB': ability "Enthunder"; 'A0SC': ability "Enwater"; 'A0SD': ability "Enstone"; 'A0SE': ability "Enaero"; 'A0R3': ability "Evade & Counter"; 'A00Q': ability "Frog"; 'A0Z2': ability "Raise Dead"; 'A197': ability "Momentum"; 'A0C7': ability "Spirit Potion"; 'A0C6': ability "Blood Ether"; 'A12H': ability "Fill Vial"; 'A12G': ability "Empty Vial"; 'A11A': ability "Essence Crystal"; 'A0D4': ability "Magic Urn"; 'A18N': ability "Firewood"
 endfunction

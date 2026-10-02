@@ -1,4 +1,10 @@
 library TMakenroh requires TCam, TCine, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Makenroh_Greet=null
+    trigger gg_trg_Makenroh_ShowTalkIcon=null
+endglobals
+
 function Trig_Makenroh_Greet_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_h032_0007,true,true,true))
 endfunction

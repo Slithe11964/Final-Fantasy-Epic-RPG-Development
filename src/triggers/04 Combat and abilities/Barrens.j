@@ -1,4 +1,9 @@
 library TBarrens
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Barrens_Forge_Setup=null
+endglobals
+
 function Trig_Barrens_Forge_Setup_Actions takes nothing returns nothing
     set udg_SpecialEffect[87]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h00R_0256,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     set udg_KalmTechLevel=0

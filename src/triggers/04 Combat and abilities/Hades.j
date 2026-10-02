@@ -1,4 +1,9 @@
 library THades requires TGroup, TLoc, TProf, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Hades_BlackCauldron=null
+endglobals
+
 function Trig_Hades_BlackCauldron_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A02Q') // 'A02Q': ability "!Black Cauldron"
 endfunction

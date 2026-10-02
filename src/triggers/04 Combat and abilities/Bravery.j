@@ -1,4 +1,10 @@
 library TBravery
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Bravery_Caster_Cleanup=null
+    trigger gg_trg_Bravery_Target_Cleanup=null
+endglobals
+
 function Trig_Bravery_Caster_Cleanup_IsBraverySpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A0ZH')or(GetSpellAbilityId()=='A158') // 'A0ZH': ability "Spirit of Lowtown"; 'A158': ability "Whirl"
 endfunction

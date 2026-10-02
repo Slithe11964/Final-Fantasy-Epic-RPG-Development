@@ -1,4 +1,10 @@
 library TStatue
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Statue_Keeper_Anim=null
+    trigger gg_trg_Statue_Guardian_Anim=null
+endglobals
+
 function Trig_Statue_Keeper_Anim_Actions takes nothing returns nothing
     call SetDoodadAnimationRectBJ("stand alternate",'AOks',gg_rct_448) // 'AOks': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())

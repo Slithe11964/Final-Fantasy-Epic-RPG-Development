@@ -1,4 +1,9 @@
 library TMagDef requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MagDef_Command=null
+endglobals
+
 function Trig_MagDef_Command_Actions takes nothing returns nothing
     set udg_CurrentHero=Player_GetHero(GetTriggerPlayer())
     call ConditionalTriggerExecute(gg_trg_MagicDefense_Calc)

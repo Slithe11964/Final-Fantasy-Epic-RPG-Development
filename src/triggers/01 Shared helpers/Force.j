@@ -1,4 +1,9 @@
 library TForce
+globals
+    // Variables only this module uses.
+    force udg_EnumForce=null
+endglobals
+
 function Force_OfPlayer takes player l_owner returns force
     set udg_EnumForce=CreateForce()
     call ForceAddPlayer(udg_EnumForce,l_owner)

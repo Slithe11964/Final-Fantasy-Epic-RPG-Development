@@ -1,4 +1,20 @@
 library TMonstrum requires TLoc, TPlayerPart01, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Monstrum_Ambush_Arm=null
+    trigger gg_trg_Monstrum_Tentacle_Ambush=null
+    trigger gg_trg_Monstrum_Summon=null
+    trigger gg_trg_Monstrum_Ambush_Rearm=null
+    trigger gg_trg_Monstrum_Phase_Check=null
+    trigger gg_trg_Monstrum_DepthCharge=null
+    trigger gg_trg_Monstrum_Tentacle_Cleanup=null
+    // Variables only this module uses.
+    unit udg_NebraMonstrum=null
+    unit array udg_MonstrumTentacle
+    integer udg_MonstrumPhase=0
+    real udg_MonstrumPhaseLife=0
+endglobals
+
 function Trig_Monstrum_Ambush_Arm_Conditions takes nothing returns boolean
     return(udg_BossDefeated[2])
 endfunction

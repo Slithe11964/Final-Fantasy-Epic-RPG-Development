@@ -1,4 +1,9 @@
 library TStorm requires TCam, TCine, TText
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Storm_Greet=null
+endglobals
+
 function Trig_Storm_Greet_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_n007_0105)and(udg_InCinematicMode==false)
 endfunction

@@ -1,4 +1,15 @@
 library THealingWaters requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_HealingWaters_HideFamily=null
+    trigger gg_trg_HealingWaters_Prepare=null
+    trigger gg_trg_HealingWaters_Start=null
+    trigger gg_trg_HealingWaters_PingVial=null
+    trigger gg_trg_HealingWaters_DefiledVial=null
+    trigger gg_trg_HealingWaters_Cure=null
+    trigger gg_trg_HealingWaters_CureBlood=null
+endglobals
+
 function Trig_HealingWaters_HideFamily_Actions takes nothing returns nothing
     call SetUnitAnimation(gg_unit_nvlk_0184,"death")
     call ShowUnitHide(gg_unit_nvlk_0184)

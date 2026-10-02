@@ -1,4 +1,9 @@
 library TMagicDefense
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_MagicDefense_Calc=null
+endglobals
+
 function Trig_MagicDefense_Calc_Has_MysticArmorUpgrade takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('A0KN',udg_CurrentHero)>0) // 'A0KN': ability "Upgrade Life Bonus Dummy"
 endfunction

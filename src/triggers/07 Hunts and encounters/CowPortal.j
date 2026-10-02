@@ -1,4 +1,13 @@
 library TCowPortal requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_CowPortal_Open=null
+    trigger gg_trg_CowPortal_Spawn_Cows=null
+    // Variables only this module uses.
+    unit udg_CowPortal=null
+    integer udg_CowSpawnCount=0
+endglobals
+
 function Trig_CowPortal_Open_Conditions takes nothing returns boolean
     return(udg_PortalRitualActive==false)
 endfunction

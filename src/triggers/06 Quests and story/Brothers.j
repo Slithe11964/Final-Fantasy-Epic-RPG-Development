@@ -1,4 +1,12 @@
 library TBrothers requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Brothers_Alert_Eidolons=null
+    trigger gg_trg_Brothers_Alert_Rematch=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    sound gg_snd_HeroTaurenChieftainYesAttack=null
+endglobals
+
 function Trig_Brothers_Alert_Eidolons_Cond_SiegeNotDone takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[9])==false)
 endfunction

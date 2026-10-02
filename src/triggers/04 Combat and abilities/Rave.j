@@ -1,4 +1,9 @@
 library TRave requires TAbil, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Rave_Kick=null
+endglobals
+
 function Trig_Rave_Kick_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0QO') // 'A0QO': ability "Rave Kick"
 endfunction

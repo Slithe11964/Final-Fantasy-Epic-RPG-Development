@@ -1,4 +1,13 @@
 library TFrakir requires TCam, TCine, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Frakir_ShowMarker=null
+    trigger gg_trg_Frakir_Lore_Talk=null
+    trigger gg_trg_Frakir_NextMarker=null
+    // Variables only this module uses.
+    boolean udg_FrakirLoreHeard=false
+endglobals
+
 function Trig_Frakir_ShowMarker_Actions takes nothing returns nothing
     set udg_FrakirLoreHeard=false
     set udg_SpecialEffect[9]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_nsw2_0056,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")

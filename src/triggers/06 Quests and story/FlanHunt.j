@@ -1,4 +1,12 @@
 library TFlanHunt requires TCam, TCine, TPlayerPart01, TReward, TText, TUnit
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_FlanHunt_Start=null
+    trigger gg_trg_FlanHunt_Count=null
+    trigger gg_trg_FlanHunt_Fail=null
+    trigger gg_trg_FlanHunt_Reward=null
+endglobals
+
 function Trig_FlanHunt_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e014_0149,true,true,true))
 endfunction

@@ -54,14 +54,15 @@ def flatten(header, trigger_texts, extra_globals='', tail=''):
     lib_globals, lib_code = [], []
     for name in order:
         body = libs[name]['body']
+        lib_globals.append('constant boolean LIBRARY_%s=true\n' % name)
         for gm in GLOBALS_RE.finditer(body):
             lib_globals.append(gm.group(1))
         body = GLOBALS_RE.sub('', body)
         body = re.sub(r'^([ \t]*)(?:private|public)\s+(function|constant)', r'\1\2', body, flags=re.M)
         lib_code.append('//library %s:\n%s//library %s ends\n' % (name, body, name))
-        lib_globals.append('constant boolean LIBRARY_%s=true\n' % name)
     rest_code = '\n'.join(rest)
     if re.search(r'^\s*(struct|scope|module|interface|method)\b', rest_code + ''.join(lib_code), re.M):
         raise ValueError('vJass feature not supported by vjass_lite (struct/scope/module/method)')
-    return ('globals\n' + header_globals + extra_globals + ''.join(lib_globals) + 'endglobals\n'
+    # JassHelper order: library globals, then World Editor generated globals, then the map header's
+    return ('globals\n' + ''.join(lib_globals) + extra_globals + header_globals + 'endglobals\n'
             + header_code + '\n' + ''.join(lib_code) + rest_code + '\n' + tail), order

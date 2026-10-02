@@ -1,4 +1,11 @@
 library TVoiceOfForest requires TCam, TCine, TForce, TGroup, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_VoiceOfForest_Start=null
+    trigger gg_trg_VoiceOfForest_PingCrystal=null
+    trigger gg_trg_VoiceOfForest_SummonChaos=null
+endglobals
+
 function Trig_VoiceOfForest_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Etyr_0155,true,true,true))
 endfunction

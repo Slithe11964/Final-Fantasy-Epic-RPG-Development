@@ -1,4 +1,10 @@
 library TSiegfried
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Siegfried_Hide_Init=null
+    trigger gg_trg_Siegfried_Appear=null
+endglobals
+
 function Trig_Siegfried_Hide_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_N0N0_0267)
     call PauseUnitBJ(true,gg_unit_N0N0_0267)

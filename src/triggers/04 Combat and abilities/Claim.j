@@ -1,4 +1,9 @@
 library TClaim requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Claim_Command=null
+endglobals
+
 function Trig_Claim_Command_Conditions takes nothing returns boolean
     return(CountPlayersInForceBJ(udg_PlayingPlayers)>1)
 endfunction

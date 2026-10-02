@@ -1,4 +1,11 @@
 library TGrandVampire
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GrandVampire_Hide=null
+    trigger gg_trg_GrandVampire_Awaken=null
+    trigger gg_trg_GrandVampire_Death=null
+endglobals
+
 function Trig_GrandVampire_Hide_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_Uvng_0076)
     call PauseUnitBJ(true,gg_unit_Uvng_0076)

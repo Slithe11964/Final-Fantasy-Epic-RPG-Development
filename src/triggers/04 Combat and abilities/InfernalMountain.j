@@ -1,4 +1,9 @@
 library TInfernalMountain requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_InfernalMountain_Hide=null
+endglobals
+
 function Trig_InfernalMountain_Hide_HideTower takes nothing returns nothing
     call ShowUnitHide(GetEnumUnit())
     call PauseUnitBJ(true,GetEnumUnit())

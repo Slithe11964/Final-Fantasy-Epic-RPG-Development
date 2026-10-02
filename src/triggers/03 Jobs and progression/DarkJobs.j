@@ -1,4 +1,10 @@
 library TDarkJobs
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DarkJobs_Unlock=null
+    trigger gg_trg_DarkJobs_Reveal=null
+endglobals
+
 function Trig_DarkJobs_Unlock_AreDarkShopsVisible takes nothing returns boolean
     return(udg_DarkShopsVisible)
 endfunction

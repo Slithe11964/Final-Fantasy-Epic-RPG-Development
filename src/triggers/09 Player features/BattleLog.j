@@ -1,4 +1,13 @@
 library TBattleLog requires TForce, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Battlelog_Command=null
+    // Variables only this module uses.
+    string udg_ColorEnd="|r"
+    string udg_TextUses="uses "
+    trigger udg_BattleLogTrigger=null
+endglobals
+
 function BattleLog_Show takes string l_msg,unit t returns nothing
     local real tx=GetUnitX(t)
     local real ty=GetUnitY(t)

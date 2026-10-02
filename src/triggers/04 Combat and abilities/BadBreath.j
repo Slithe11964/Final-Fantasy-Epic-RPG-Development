@@ -1,4 +1,9 @@
 library TBadBreath requires TGroup
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BadBreath_Cast=null
+endglobals
+
 function Trig_BadBreath_Cast_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0EX') // 'A0EX': ability "!Bad Breath"
 endfunction

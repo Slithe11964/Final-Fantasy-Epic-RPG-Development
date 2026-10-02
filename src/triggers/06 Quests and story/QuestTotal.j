@@ -1,4 +1,10 @@
 library TQuestTotal
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_QuestTotal_Add=null
+    trigger gg_trg_QuestTotal_Add71=null
+endglobals
+
 function Trig_QuestTotal_Add_Actions takes nothing returns nothing
     // Increase udg_QuestsTotal by 19.
     set udg_QuestsTotal=(udg_QuestsTotal+19)

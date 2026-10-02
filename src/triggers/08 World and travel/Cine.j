@@ -1,4 +1,19 @@
 library TCine requires TCam, TGroup, TLoc, TMusic, TPlayerPart01, TText, TUnit, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cine_StoneBreaks=null
+    trigger gg_trg_Cine_ScryingVision=null
+    trigger gg_trg_Cine_Belias_Gafgarion=null
+    trigger gg_trg_Cine_StoneBreaks_Alt=null
+    // Variables only this module uses (MapBootstrap sets some starting values).
+    boolexpr udg_CinematicUnitFilter
+    group udg_CinematicPausedUnits
+    real udg_StoneTint=0
+    real udg_StoneScale=0
+    boolean udg_BeliasArrived=false
+    sound gg_snd_U08Archimonde19=null
+endglobals
+
 function Cine_UnitFilter takes nothing returns boolean
     return(not IsUnitHidden(GetFilterUnit())and GetUnitAbilityLevel(GetFilterUnit(),'A0VJ')<=0 and GetWidgetLife(GetFilterUnit())>.405) // 'A0VJ': ability "Unaffected by Cinematics"
 endfunction

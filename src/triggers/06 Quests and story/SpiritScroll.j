@@ -1,4 +1,10 @@
 library TSpiritScroll requires TForce, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_SpiritScroll_Pickup=null
+    trigger gg_trg_SpiritScroll_Cleanse=null
+endglobals
+
 function Trig_SpiritScroll_Pickup_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0EV') // 'I0EV': item "Spirit Scroll"
 endfunction

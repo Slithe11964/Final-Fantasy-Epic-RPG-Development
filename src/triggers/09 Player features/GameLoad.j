@@ -1,4 +1,9 @@
 library TGameLoad requires TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_GameLoad_RestoreTitles=null
+endglobals
+
 function Trig_GameLoad_RestoreTitles_KillLoadedHero takes nothing returns nothing
     call UnitApplyTimedLifeBJ(.01,'BTLF',Player_GetHero(GetEnumPlayer())) // 'BTLF': object name not found in map data
 endfunction

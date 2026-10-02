@@ -1,4 +1,13 @@
 library TBossDemiFiend requires TCam, TCine, TDifficulty, TGroup, TJob, TLoc, TMusic, TPlayerPart01, TText, TWait
+globals
+    // Variables only this module uses.
+    unit udg_DemiFiendUnit=null
+    unit udg_DemiFiendDemon1=null
+    unit udg_DemiFiendDemon2=null
+    integer udg_DemiFiendDemonIndex=0
+    boolean udg_DemiFiendHealed=false
+endglobals
+
 function Trig_Boss_DemiFiend_Summon_FilterPlayerUnit takes nothing returns boolean
     return(IsPlayerInForce(GetOwningPlayer(GetFilterUnit()),udg_PlayingPlayers))
 endfunction

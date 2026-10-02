@@ -1,4 +1,10 @@
 library TEidolon requires TLoc, TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Eidolon_Found_Reveal=null
+    trigger gg_trg_Eidolon_Leviathan_Ambush=null
+endglobals
+
 function Trig_Eidolon_Found_Reveal_Conditions takes nothing returns boolean
     return(IsUnitInGroup(GetTriggerUnit(),udg_BossUnits)==false)and(GetOwningPlayer(GetTriggerUnit())==Player($B)) // $B = 11
 endfunction

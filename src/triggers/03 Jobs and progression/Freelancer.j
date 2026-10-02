@@ -1,4 +1,9 @@
 library TFreelancer requires TJob, TPlayerPart01
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Freelancer_Stats=null
+endglobals
+
 function Trig_Freelancer_Stats_Conditions takes nothing returns boolean
     return(GetUnitName(Player_GetHero(ConvertedPlayer(udg_TempInteger)))=="Freelancer")
 endfunction

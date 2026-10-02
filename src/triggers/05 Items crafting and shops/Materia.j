@@ -1,4 +1,9 @@
 library TMateria requires TWait
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Materia_Altar_Ritual=null
+endglobals
+
 function Trig_Materia_Altar_Ritual_Conditions takes nothing returns boolean
     // (StringLength(GetItemName(the item being used or moved))) minus (6).
     return(SubStringBJ(GetItemName(GetManipulatedItem()),(StringLength(GetItemName(GetManipulatedItem()))-6),StringLength(GetItemName(GetManipulatedItem())))=="Materia")

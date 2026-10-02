@@ -1,4 +1,9 @@
 library TSleep
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Sleep_Cast=null
+endglobals
+
 function Trig_Sleep_Cast_IsSleepSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A1ED')or(GetSpellAbilityId()=='A0U4')or(GetSpellAbilityId()=='A16M')or(GetSpellAbilityId()=='A0E9') // 'A1ED': ability "Sleep"; 'A0U4': ability "Sleep"; 'A16M': ability "Dormina"; 'A0E9': ability "Sleep"
 endfunction

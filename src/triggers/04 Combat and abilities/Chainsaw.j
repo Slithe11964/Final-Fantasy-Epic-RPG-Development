@@ -1,4 +1,9 @@
 library TChainsaw requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Chainsaw_Saw=null
+endglobals
+
 function Trig_Chainsaw_Saw_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A19A') // 'A19A': ability "Saw"
 endfunction

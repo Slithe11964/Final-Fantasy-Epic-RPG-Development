@@ -1,4 +1,9 @@
 library TDamageText requires TForce
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_DamageText_Command=null
+endglobals
+
 function Trig_DamageText_Command_Cond_InDamageTextForce takes nothing returns boolean
     return(IsPlayerInForce(GetTriggerPlayer(),udg_TrackedPlayers))
 endfunction

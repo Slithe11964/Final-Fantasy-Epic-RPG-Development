@@ -1,4 +1,9 @@
 library TCyclops requires TAbil, TGroup, TLoc
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Cyclops_FinalSmash=null
+endglobals
+
 function Trig_Cyclops_FinalSmash_IsCastAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A13U')or(GetSpellAbilityId()=='A1F0') // 'A13U': ability "!Final Smash"; 'A1F0': ability "!Final Smash"
 endfunction

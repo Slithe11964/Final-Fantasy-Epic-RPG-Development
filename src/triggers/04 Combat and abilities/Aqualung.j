@@ -1,4 +1,9 @@
 library TAqualung requires TAbil, TProf
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_Aqualung_Cast=null
+endglobals
+
 function Trig_Aqualung_Cast_IsAqualungAbility takes nothing returns boolean
     return(GetSpellAbilityId()=='A1AB')or(GetSpellAbilityId()=='A0SN')or(GetSpellAbilityId()=='A0WB') // 'A1AB': ability "Aqualung"; 'A0SN': ability "Aqualung"; 'A0WB': ability "Aqualung"
 endfunction

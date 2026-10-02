@@ -1,4 +1,9 @@
 library TLionHeart
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_LionHeart_LowLifeBonus=null
+endglobals
+
 function Trig_LionHeart_LowLifeBonus_Conditions takes nothing returns boolean
     // Result 1: current health divided by maximum health for GetAttacker(), times 100 (or 0 if the unit is missing
     // or its maximum is 0).

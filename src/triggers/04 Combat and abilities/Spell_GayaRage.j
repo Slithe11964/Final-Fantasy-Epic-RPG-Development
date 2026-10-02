@@ -1,4 +1,10 @@
 library TSpellGayaRage requires TGroup, TLoc
+globals
+    // Variables only this module uses.
+    real udg_GayaRageRadius=0
+    effect udg_GayaRageEffect=null
+endglobals
+
 function Trig_Spell_GayaRage_Start_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0TR') // 'A0TR': ability "Gaya Rage"
 endfunction

@@ -1,4 +1,10 @@
 library TBattleWard
+globals
+    // Trigger variables. Each is created by the matching Register_* function in this module.
+    trigger gg_trg_BattleWard_Enter=null
+    trigger gg_trg_BattleWard_Death=null
+endglobals
+
 function Trig_BattleWard_Enter_Conditions takes nothing returns boolean
     return(GetUnitName(GetTriggerUnit())=="Battle Ward")and(GetUnitTypeId(GetTriggerUnit())!='n05R') // 'n05R': unit "Battle Ward"
 endfunction
