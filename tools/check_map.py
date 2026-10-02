@@ -181,7 +181,11 @@ def main():
         msgs.append('%d string literal(s) over 1000 bytes' % len(big))
     if unfinal:
         msgs.append('long quest text not finalized (%s)' % ', '.join(unfinal))
-    if msgs:
+    wts_ids = set(int(x) for x in re.findall(r'^STRING (\d+)', m.read('war3map.wts').decode('utf-8-sig', 'replace'), re.M))
+    missing = sorted(set(int(x) for x in re.findall(r'"TRIGSTR_(\d+)"', code)) - wts_ids)
+    if missing:
+        msgs.append('text references missing from the string table: %s' % missing[:10])
+    if msgs and not missing:
         msgs.append('-> run Build Play Copy on this map before playing (native saved games crash otherwise)')
     results['5 native save/load text safety'] = (not msgs, msgs)
 
