@@ -5,19 +5,21 @@ function Trig_Krjn_ShowTalkIcon_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Krjn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Krjn (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Krjn takes nothing returns nothing
 endfunction
-function RegisterR11_Krjn_ShowTalkIcon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Krjn_ShowTalkIcon takes nothing returns nothing
     set gg_trg_Krjn_ShowTalkIcon=CreateTrigger()
     call DisableTrigger(gg_trg_Krjn_ShowTalkIcon)
     call TriggerAddAction(gg_trg_Krjn_ShowTalkIcon,function Trig_Krjn_ShowTalkIcon_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Krjn takes nothing returns nothing
+    call Register_Krjn_ShowTalkIcon()
+endfunction
 
 endlibrary

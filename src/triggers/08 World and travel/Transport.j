@@ -10,20 +10,22 @@ function Trig_Transport_HeroLoaded_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Transport automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Transport (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Transport takes nothing returns nothing
 endfunction
-function RegisterR11_Transport_HeroLoaded takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Transport_HeroLoaded takes nothing returns nothing
     set gg_trg_Transport_HeroLoaded=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Transport_HeroLoaded,EVENT_PLAYER_UNIT_LOADED)
     call TriggerAddCondition(gg_trg_Transport_HeroLoaded,Condition(function Trig_Transport_HeroLoaded_Conditions))
     call TriggerAddAction(gg_trg_Transport_HeroLoaded,function Trig_Transport_HeroLoaded_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Transport takes nothing returns nothing
+    call Register_Transport_HeroLoaded()
+endfunction
 
 endlibrary

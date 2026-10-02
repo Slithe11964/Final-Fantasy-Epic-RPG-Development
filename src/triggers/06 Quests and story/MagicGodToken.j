@@ -39,20 +39,22 @@ function Trig_MagicGodToken_Use_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MagicGodToken automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MagicGodToken (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MagicGodToken takes nothing returns nothing
 endfunction
-function RegisterR11_MagicGodToken_Use takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicGodToken_Use takes nothing returns nothing
     set gg_trg_MagicGodToken_Use=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MagicGodToken_Use,EVENT_PLAYER_UNIT_USE_ITEM)
     call TriggerAddCondition(gg_trg_MagicGodToken_Use,Condition(function Trig_MagicGodToken_Use_Conditions))
     call TriggerAddAction(gg_trg_MagicGodToken_Use,function Trig_MagicGodToken_Use_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_MagicGodToken takes nothing returns nothing
+    call Register_MagicGodToken_Use()
+endfunction
 
 endlibrary

@@ -24,19 +24,8 @@ library TMapBootstrap requires TAbilityTags, TAbilityText, TAccumulate, TAdamant
 // Initializes: udg_CupWins
 // Initializes: udg_MateriaAltarDone, udg_JudgeTimer, udg_HerbRespawnTimer
 // Initializes: udg_ChocoboDigItemCharges
-function main_old takes nothing returns nothing
-    local weathereffect we
-    local destructable d
-    local trigger t
-    local real life
-    local integer i
-    local trigger l_trigger_01
-    local trigger l_trigger_02
-    local integer l_integer_01
-    local integer l_integer_02
-    local version v
-    local integer l_integer_03
-    set udg_InitTrigFromMain=true
+// Startup step 1: camera bounds, day/night models, fog, ambient sounds and music.
+function Startup_MapEnvironment takes nothing returns nothing
     call SetCameraBounds(-3968.+GetCameraMargin(CAMERA_MARGIN_LEFT),-28672.+GetCameraMargin(CAMERA_MARGIN_BOTTOM),28672.-GetCameraMargin(CAMERA_MARGIN_RIGHT),4096.-GetCameraMargin(CAMERA_MARGIN_TOP),-3968.+GetCameraMargin(CAMERA_MARGIN_LEFT),4096.-GetCameraMargin(CAMERA_MARGIN_TOP),28672.-GetCameraMargin(CAMERA_MARGIN_RIGHT),-28672.+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
     call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl","Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
     call SetTerrainFogEx(0,.0,5000.,1.,.0,.0,.0)
@@ -44,6 +33,10 @@ function main_old takes nothing returns nothing
     call SetAmbientDaySound("LordaeronSummerDay")
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music",true,0)
+endfunction
+
+// Startup step 2: creates the gg_snd_ sound variables used by triggers.
+function Startup_CreateSounds takes nothing returns nothing
     set gg_snd_BlinkTarget=CreateSound("Abilities\\Spells\\NightElf\\Blink\\BlinkArrival1.wav",false,true,true,$A,$A,"SpellsEAX") // $A = 10
     call SetSoundParamsFromLabel(gg_snd_BlinkTarget,"BlinkTarget")
     call SetSoundDuration(gg_snd_BlinkTarget,$5B9) // $5B9 = 1465
@@ -187,930 +180,117 @@ function main_old takes nothing returns nothing
     call SetSoundChannel(gg_snd_004,0)
     call SetSoundVolume(gg_snd_004,$7F) // $7F = 127
     call SetSoundPitch(gg_snd_004,.8)
-    call SetPlayerTechResearched(Player(0),'Rhme',3)
-    call SetPlayerTechResearched(Player(0),'Rhra',3)
-    call SetPlayerTechResearched(Player(0),'Rhde',1)
-    call SetPlayerTechResearched(Player(0),'Rhan',1)
-    call SetPlayerTechResearched(Player(0),'Rhpt',2)
-    call SetPlayerTechResearched(Player(0),'Rhst',2)
-    call SetPlayerTechResearched(Player(0),'Rhla',3)
-    call SetPlayerTechResearched(Player(0),'Rhri',1)
-    call SetPlayerTechResearched(Player(0),'Rhlh',2)
-    call SetPlayerTechResearched(Player(0),'Rhse',1)
-    call SetPlayerTechResearched(Player(0),'Rhfl',1)
-    call SetPlayerTechResearched(Player(0),'Rhss',1)
-    call SetPlayerTechResearched(Player(0),'Rhrt',1)
-    call SetPlayerTechResearched(Player(0),'Rhfc',1)
-    call SetPlayerTechResearched(Player(0),'Rhfs',1)
-    call SetPlayerTechResearched(Player(0),'Rhcd',1)
-    call SetPlayerTechResearched(Player(0),'Rhar',3)
-    call SetPlayerTechResearched(Player(0),'Rhgb',1)
-    call SetPlayerTechResearched(Player(0),'Rhac',3)
-    call SetPlayerTechResearched(Player(0),'Rhhb',1)
-    call SetPlayerTechResearched(Player(0),'Rome',3)
-    call SetPlayerTechResearched(Player(0),'Rora',3)
-    call SetPlayerTechResearched(Player(0),'Roar',3)
-    call SetPlayerTechResearched(Player(0),'Rwdm',1)
-    call SetPlayerTechResearched(Player(0),'Ropg',1)
-    call SetPlayerTechResearched(Player(0),'Robs',1)
-    call SetPlayerTechResearched(Player(0),'Rows',1)
-    call SetPlayerTechResearched(Player(0),'Roen',1)
-    call SetPlayerTechResearched(Player(0),'Rovs',1)
-    call SetPlayerTechResearched(Player(0),'Rowd',2)
-    call SetPlayerTechResearched(Player(0),'Rost',2)
-    call SetPlayerTechResearched(Player(0),'Rosp',3)
-    call SetPlayerTechResearched(Player(0),'Rotr',1)
-    call SetPlayerTechResearched(Player(0),'Rolf',1)
-    call SetPlayerTechResearched(Player(0),'Rowt',2)
-    call SetPlayerTechResearched(Player(0),'Rorb',1)
-    call SetPlayerTechResearched(Player(0),'Robk',1)
-    call SetPlayerTechResearched(Player(0),'Robf',1)
-    call SetPlayerTechResearched(Player(0),'Rume',3)
-    call SetPlayerTechResearched(Player(0),'Rura',3)
-    call SetPlayerTechResearched(Player(0),'Ruar',3)
-    call SetPlayerTechResearched(Player(0),'Rugf',1)
-    call SetPlayerTechResearched(Player(0),'Ruwb',1)
-    call SetPlayerTechResearched(Player(0),'Rusf',1)
-    call SetPlayerTechResearched(Player(0),'Rune',2)
-    call SetPlayerTechResearched(Player(0),'Ruba',2)
-    call SetPlayerTechResearched(Player(0),'Rufb',1)
-    call SetPlayerTechResearched(Player(0),'Rusl',1)
-    call SetPlayerTechResearched(Player(0),'Rucr',3)
-    call SetPlayerTechResearched(Player(0),'Rupc',1)
-    call SetPlayerTechResearched(Player(0),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(0),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Ruac',0)
-    call SetPlayerTechResearched(Player(0),'Resm',3)
-    call SetPlayerTechResearched(Player(0),'Resw',3)
-    call SetPlayerTechResearched(Player(0),'Rema',3)
-    call SetPlayerTechResearched(Player(0),'Rerh',3)
-    call SetPlayerTechResearched(Player(0),'Reuv',1)
-    call SetPlayerTechResearched(Player(0),'Renb',1)
-    call SetPlayerTechResearched(Player(0),'Resc',1)
-    call SetPlayerTechResearched(Player(0),'Remg',1)
-    call SetPlayerTechResearched(Player(0),'Reib',1)
-    call SetPlayerTechResearched(Player(0),'Remk',1)
-    call SetPlayerTechResearched(Player(0),'Redt',2)
-    call SetPlayerTechResearched(Player(0),'Redc',2)
-    call SetPlayerTechResearched(Player(0),'Recb',1)
-    call SetPlayerTechResearched(Player(0),'Reht',1)
-    call SetPlayerTechResearched(Player(0),'Repb',1)
-    call SetPlayerTechResearched(Player(0),'Rers',1)
-    call SetPlayerTechResearched(Player(0),'Rehs',1)
-    call SetPlayerTechResearched(Player(0),'Reeb',1)
-    call SetPlayerTechResearched(Player(0),'Reec',1)
-    call SetPlayerTechResearched(Player(0),'Rews',1)
-    call SetPlayerTechResearched(Player(0),'Rnsw',2)
-    call SetPlayerTechResearched(Player(0),'Rnsi',1)
-    call SetPlayerTechResearched(Player(0),'Rnat',3)
-    call SetPlayerTechResearched(Player(0),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(0),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(0),'Ruex',0)
-    call SetPlayerTechResearched(Player(1),'Rhme',3)
-    call SetPlayerTechResearched(Player(1),'Rhra',3)
-    call SetPlayerTechResearched(Player(1),'Rhde',1)
-    call SetPlayerTechResearched(Player(1),'Rhan',1)
-    call SetPlayerTechResearched(Player(1),'Rhpt',2)
-    call SetPlayerTechResearched(Player(1),'Rhst',2)
-    call SetPlayerTechResearched(Player(1),'Rhla',3)
-    call SetPlayerTechResearched(Player(1),'Rhri',1)
-    call SetPlayerTechResearched(Player(1),'Rhlh',2)
-    call SetPlayerTechResearched(Player(1),'Rhse',1)
-    call SetPlayerTechResearched(Player(1),'Rhfl',1)
-    call SetPlayerTechResearched(Player(1),'Rhss',1)
-    call SetPlayerTechResearched(Player(1),'Rhrt',1)
-    call SetPlayerTechResearched(Player(1),'Rhfc',1)
-    call SetPlayerTechResearched(Player(1),'Rhfs',1)
-    call SetPlayerTechResearched(Player(1),'Rhcd',1)
-    call SetPlayerTechResearched(Player(1),'Rhar',3)
-    call SetPlayerTechResearched(Player(1),'Rhgb',1)
-    call SetPlayerTechResearched(Player(1),'Rhac',3)
-    call SetPlayerTechResearched(Player(1),'Rhhb',1)
-    call SetPlayerTechResearched(Player(1),'Rome',3)
-    call SetPlayerTechResearched(Player(1),'Rora',3)
-    call SetPlayerTechResearched(Player(1),'Roar',3)
-    call SetPlayerTechResearched(Player(1),'Rwdm',1)
-    call SetPlayerTechResearched(Player(1),'Ropg',1)
-    call SetPlayerTechResearched(Player(1),'Robs',1)
-    call SetPlayerTechResearched(Player(1),'Rows',1)
-    call SetPlayerTechResearched(Player(1),'Roen',1)
-    call SetPlayerTechResearched(Player(1),'Rovs',1)
-    call SetPlayerTechResearched(Player(1),'Rowd',2)
-    call SetPlayerTechResearched(Player(1),'Rost',2)
-    call SetPlayerTechResearched(Player(1),'Rosp',3)
-    call SetPlayerTechResearched(Player(1),'Rotr',1)
-    call SetPlayerTechResearched(Player(1),'Rolf',1)
-    call SetPlayerTechResearched(Player(1),'Rowt',2)
-    call SetPlayerTechResearched(Player(1),'Rorb',1)
-    call SetPlayerTechResearched(Player(1),'Robk',1)
-    call SetPlayerTechResearched(Player(1),'Robf',1)
-    call SetPlayerTechResearched(Player(1),'Rume',3)
-    call SetPlayerTechResearched(Player(1),'Rura',3)
-    call SetPlayerTechResearched(Player(1),'Ruar',3)
-    call SetPlayerTechResearched(Player(1),'Rugf',1)
-    call SetPlayerTechResearched(Player(1),'Ruwb',1)
-    call SetPlayerTechResearched(Player(1),'Rusf',1)
-    call SetPlayerTechResearched(Player(1),'Rune',2)
-    call SetPlayerTechResearched(Player(1),'Ruba',2)
-    call SetPlayerTechResearched(Player(1),'Rufb',1)
-    call SetPlayerTechResearched(Player(1),'Rusl',1)
-    call SetPlayerTechResearched(Player(1),'Rucr',3)
-    call SetPlayerTechResearched(Player(1),'Rupc',1)
-    call SetPlayerTechResearched(Player(1),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(1),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Ruac',0)
-    call SetPlayerTechResearched(Player(1),'Resm',3)
-    call SetPlayerTechResearched(Player(1),'Resw',3)
-    call SetPlayerTechResearched(Player(1),'Rema',3)
-    call SetPlayerTechResearched(Player(1),'Rerh',3)
-    call SetPlayerTechResearched(Player(1),'Reuv',1)
-    call SetPlayerTechResearched(Player(1),'Renb',1)
-    call SetPlayerTechResearched(Player(1),'Resc',1)
-    call SetPlayerTechResearched(Player(1),'Remg',1)
-    call SetPlayerTechResearched(Player(1),'Reib',1)
-    call SetPlayerTechResearched(Player(1),'Remk',1)
-    call SetPlayerTechResearched(Player(1),'Redt',2)
-    call SetPlayerTechResearched(Player(1),'Redc',2)
-    call SetPlayerTechResearched(Player(1),'Recb',1)
-    call SetPlayerTechResearched(Player(1),'Reht',1)
-    call SetPlayerTechResearched(Player(1),'Repb',1)
-    call SetPlayerTechResearched(Player(1),'Rers',1)
-    call SetPlayerTechResearched(Player(1),'Rehs',1)
-    call SetPlayerTechResearched(Player(1),'Reeb',1)
-    call SetPlayerTechResearched(Player(1),'Reec',1)
-    call SetPlayerTechResearched(Player(1),'Rews',1)
-    call SetPlayerTechResearched(Player(1),'Rnsw',2)
-    call SetPlayerTechResearched(Player(1),'Rnsi',1)
-    call SetPlayerTechResearched(Player(1),'Rnat',3)
-    call SetPlayerTechResearched(Player(1),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(1),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(1),'Ruex',0)
-    call SetPlayerTechResearched(Player(2),'Rhme',3)
-    call SetPlayerTechResearched(Player(2),'Rhra',3)
-    call SetPlayerTechResearched(Player(2),'Rhde',1)
-    call SetPlayerTechResearched(Player(2),'Rhan',1)
-    call SetPlayerTechResearched(Player(2),'Rhpt',2)
-    call SetPlayerTechResearched(Player(2),'Rhst',2)
-    call SetPlayerTechResearched(Player(2),'Rhla',3)
-    call SetPlayerTechResearched(Player(2),'Rhri',1)
-    call SetPlayerTechResearched(Player(2),'Rhlh',2)
-    call SetPlayerTechResearched(Player(2),'Rhse',1)
-    call SetPlayerTechResearched(Player(2),'Rhfl',1)
-    call SetPlayerTechResearched(Player(2),'Rhss',1)
-    call SetPlayerTechResearched(Player(2),'Rhrt',1)
-    call SetPlayerTechResearched(Player(2),'Rhfc',1)
-    call SetPlayerTechResearched(Player(2),'Rhfs',1)
-    call SetPlayerTechResearched(Player(2),'Rhcd',1)
-    call SetPlayerTechResearched(Player(2),'Rhar',3)
-    call SetPlayerTechResearched(Player(2),'Rhgb',1)
-    call SetPlayerTechResearched(Player(2),'Rhac',3)
-    call SetPlayerTechResearched(Player(2),'Rhhb',1)
-    call SetPlayerTechResearched(Player(2),'Rome',3)
-    call SetPlayerTechResearched(Player(2),'Rora',3)
-    call SetPlayerTechResearched(Player(2),'Roar',3)
-    call SetPlayerTechResearched(Player(2),'Rwdm',1)
-    call SetPlayerTechResearched(Player(2),'Ropg',1)
-    call SetPlayerTechResearched(Player(2),'Robs',1)
-    call SetPlayerTechResearched(Player(2),'Rows',1)
-    call SetPlayerTechResearched(Player(2),'Roen',1)
-    call SetPlayerTechResearched(Player(2),'Rovs',1)
-    call SetPlayerTechResearched(Player(2),'Rowd',2)
-    call SetPlayerTechResearched(Player(2),'Rost',2)
-    call SetPlayerTechResearched(Player(2),'Rosp',3)
-    call SetPlayerTechResearched(Player(2),'Rotr',1)
-    call SetPlayerTechResearched(Player(2),'Rolf',1)
-    call SetPlayerTechResearched(Player(2),'Rowt',2)
-    call SetPlayerTechResearched(Player(2),'Rorb',1)
-    call SetPlayerTechResearched(Player(2),'Robk',1)
-    call SetPlayerTechResearched(Player(2),'Robf',1)
-    call SetPlayerTechResearched(Player(2),'Rume',3)
-    call SetPlayerTechResearched(Player(2),'Rura',3)
-    call SetPlayerTechResearched(Player(2),'Ruar',3)
-    call SetPlayerTechResearched(Player(2),'Rugf',1)
-    call SetPlayerTechResearched(Player(2),'Ruwb',1)
-    call SetPlayerTechResearched(Player(2),'Rusf',1)
-    call SetPlayerTechResearched(Player(2),'Rune',2)
-    call SetPlayerTechResearched(Player(2),'Ruba',2)
-    call SetPlayerTechResearched(Player(2),'Rufb',1)
-    call SetPlayerTechResearched(Player(2),'Rusl',1)
-    call SetPlayerTechResearched(Player(2),'Rucr',3)
-    call SetPlayerTechResearched(Player(2),'Rupc',1)
-    call SetPlayerTechResearched(Player(2),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(2),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Ruac',0)
-    call SetPlayerTechResearched(Player(2),'Resm',3)
-    call SetPlayerTechResearched(Player(2),'Resw',3)
-    call SetPlayerTechResearched(Player(2),'Rema',3)
-    call SetPlayerTechResearched(Player(2),'Rerh',3)
-    call SetPlayerTechResearched(Player(2),'Reuv',1)
-    call SetPlayerTechResearched(Player(2),'Renb',1)
-    call SetPlayerTechResearched(Player(2),'Resc',1)
-    call SetPlayerTechResearched(Player(2),'Remg',1)
-    call SetPlayerTechResearched(Player(2),'Reib',1)
-    call SetPlayerTechResearched(Player(2),'Remk',1)
-    call SetPlayerTechResearched(Player(2),'Redt',2)
-    call SetPlayerTechResearched(Player(2),'Redc',2)
-    call SetPlayerTechResearched(Player(2),'Recb',1)
-    call SetPlayerTechResearched(Player(2),'Reht',1)
-    call SetPlayerTechResearched(Player(2),'Repb',1)
-    call SetPlayerTechResearched(Player(2),'Rers',1)
-    call SetPlayerTechResearched(Player(2),'Rehs',1)
-    call SetPlayerTechResearched(Player(2),'Reeb',1)
-    call SetPlayerTechResearched(Player(2),'Reec',1)
-    call SetPlayerTechResearched(Player(2),'Rews',1)
-    call SetPlayerTechResearched(Player(2),'Rnsw',2)
-    call SetPlayerTechResearched(Player(2),'Rnsi',1)
-    call SetPlayerTechResearched(Player(2),'Rnat',3)
-    call SetPlayerTechResearched(Player(2),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(2),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(2),'Ruex',0)
-    call SetPlayerTechResearched(Player(3),'Rhme',3)
-    call SetPlayerTechResearched(Player(3),'Rhra',3)
-    call SetPlayerTechResearched(Player(3),'Rhde',1)
-    call SetPlayerTechResearched(Player(3),'Rhan',1)
-    call SetPlayerTechResearched(Player(3),'Rhpt',2)
-    call SetPlayerTechResearched(Player(3),'Rhst',2)
-    call SetPlayerTechResearched(Player(3),'Rhla',3)
-    call SetPlayerTechResearched(Player(3),'Rhri',1)
-    call SetPlayerTechResearched(Player(3),'Rhlh',2)
-    call SetPlayerTechResearched(Player(3),'Rhse',1)
-    call SetPlayerTechResearched(Player(3),'Rhfl',1)
-    call SetPlayerTechResearched(Player(3),'Rhss',1)
-    call SetPlayerTechResearched(Player(3),'Rhrt',1)
-    call SetPlayerTechResearched(Player(3),'Rhfc',1)
-    call SetPlayerTechResearched(Player(3),'Rhfs',1)
-    call SetPlayerTechResearched(Player(3),'Rhcd',1)
-    call SetPlayerTechResearched(Player(3),'Rhar',3)
-    call SetPlayerTechResearched(Player(3),'Rhgb',1)
-    call SetPlayerTechResearched(Player(3),'Rhac',3)
-    call SetPlayerTechResearched(Player(3),'Rhhb',1)
-    call SetPlayerTechResearched(Player(3),'Rome',3)
-    call SetPlayerTechResearched(Player(3),'Rora',3)
-    call SetPlayerTechResearched(Player(3),'Roar',3)
-    call SetPlayerTechResearched(Player(3),'Rwdm',1)
-    call SetPlayerTechResearched(Player(3),'Ropg',1)
-    call SetPlayerTechResearched(Player(3),'Robs',1)
-    call SetPlayerTechResearched(Player(3),'Rows',1)
-    call SetPlayerTechResearched(Player(3),'Roen',1)
-    call SetPlayerTechResearched(Player(3),'Rovs',1)
-    call SetPlayerTechResearched(Player(3),'Rowd',2)
-    call SetPlayerTechResearched(Player(3),'Rost',2)
-    call SetPlayerTechResearched(Player(3),'Rosp',3)
-    call SetPlayerTechResearched(Player(3),'Rotr',1)
-    call SetPlayerTechResearched(Player(3),'Rolf',1)
-    call SetPlayerTechResearched(Player(3),'Rowt',2)
-    call SetPlayerTechResearched(Player(3),'Rorb',1)
-    call SetPlayerTechResearched(Player(3),'Robk',1)
-    call SetPlayerTechResearched(Player(3),'Robf',1)
-    call SetPlayerTechResearched(Player(3),'Rume',3)
-    call SetPlayerTechResearched(Player(3),'Rura',3)
-    call SetPlayerTechResearched(Player(3),'Ruar',3)
-    call SetPlayerTechResearched(Player(3),'Rugf',1)
-    call SetPlayerTechResearched(Player(3),'Ruwb',1)
-    call SetPlayerTechResearched(Player(3),'Rusf',1)
-    call SetPlayerTechResearched(Player(3),'Rune',2)
-    call SetPlayerTechResearched(Player(3),'Ruba',2)
-    call SetPlayerTechResearched(Player(3),'Rufb',1)
-    call SetPlayerTechResearched(Player(3),'Rusl',1)
-    call SetPlayerTechResearched(Player(3),'Rucr',3)
-    call SetPlayerTechResearched(Player(3),'Rupc',1)
-    call SetPlayerTechResearched(Player(3),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(3),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Ruac',0)
-    call SetPlayerTechResearched(Player(3),'Resm',3)
-    call SetPlayerTechResearched(Player(3),'Resw',3)
-    call SetPlayerTechResearched(Player(3),'Rema',3)
-    call SetPlayerTechResearched(Player(3),'Rerh',3)
-    call SetPlayerTechResearched(Player(3),'Reuv',1)
-    call SetPlayerTechResearched(Player(3),'Renb',1)
-    call SetPlayerTechResearched(Player(3),'Resc',1)
-    call SetPlayerTechResearched(Player(3),'Remg',1)
-    call SetPlayerTechResearched(Player(3),'Reib',1)
-    call SetPlayerTechResearched(Player(3),'Remk',1)
-    call SetPlayerTechResearched(Player(3),'Redt',2)
-    call SetPlayerTechResearched(Player(3),'Redc',2)
-    call SetPlayerTechResearched(Player(3),'Recb',1)
-    call SetPlayerTechResearched(Player(3),'Reht',1)
-    call SetPlayerTechResearched(Player(3),'Repb',1)
-    call SetPlayerTechResearched(Player(3),'Rers',1)
-    call SetPlayerTechResearched(Player(3),'Rehs',1)
-    call SetPlayerTechResearched(Player(3),'Reeb',1)
-    call SetPlayerTechResearched(Player(3),'Reec',1)
-    call SetPlayerTechResearched(Player(3),'Rews',1)
-    call SetPlayerTechResearched(Player(3),'Rnsw',2)
-    call SetPlayerTechResearched(Player(3),'Rnsi',1)
-    call SetPlayerTechResearched(Player(3),'Rnat',3)
-    call SetPlayerTechResearched(Player(3),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(3),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(3),'Ruex',0)
-    call SetPlayerTechResearched(Player(4),'Rhme',3)
-    call SetPlayerTechResearched(Player(4),'Rhra',3)
-    call SetPlayerTechResearched(Player(4),'Rhde',1)
-    call SetPlayerTechResearched(Player(4),'Rhan',1)
-    call SetPlayerTechResearched(Player(4),'Rhpt',2)
-    call SetPlayerTechResearched(Player(4),'Rhst',2)
-    call SetPlayerTechResearched(Player(4),'Rhla',3)
-    call SetPlayerTechResearched(Player(4),'Rhri',1)
-    call SetPlayerTechResearched(Player(4),'Rhlh',2)
-    call SetPlayerTechResearched(Player(4),'Rhse',1)
-    call SetPlayerTechResearched(Player(4),'Rhfl',1)
-    call SetPlayerTechResearched(Player(4),'Rhss',1)
-    call SetPlayerTechResearched(Player(4),'Rhrt',1)
-    call SetPlayerTechResearched(Player(4),'Rhfc',1)
-    call SetPlayerTechResearched(Player(4),'Rhfs',1)
-    call SetPlayerTechResearched(Player(4),'Rhcd',1)
-    call SetPlayerTechResearched(Player(4),'Rhar',3)
-    call SetPlayerTechResearched(Player(4),'Rhgb',1)
-    call SetPlayerTechResearched(Player(4),'Rhac',3)
-    call SetPlayerTechResearched(Player(4),'Rhhb',1)
-    call SetPlayerTechResearched(Player(4),'Rome',3)
-    call SetPlayerTechResearched(Player(4),'Rora',3)
-    call SetPlayerTechResearched(Player(4),'Roar',3)
-    call SetPlayerTechResearched(Player(4),'Rwdm',1)
-    call SetPlayerTechResearched(Player(4),'Ropg',1)
-    call SetPlayerTechResearched(Player(4),'Robs',1)
-    call SetPlayerTechResearched(Player(4),'Rows',1)
-    call SetPlayerTechResearched(Player(4),'Roen',1)
-    call SetPlayerTechResearched(Player(4),'Rovs',1)
-    call SetPlayerTechResearched(Player(4),'Rowd',2)
-    call SetPlayerTechResearched(Player(4),'Rost',2)
-    call SetPlayerTechResearched(Player(4),'Rosp',3)
-    call SetPlayerTechResearched(Player(4),'Rotr',1)
-    call SetPlayerTechResearched(Player(4),'Rolf',1)
-    call SetPlayerTechResearched(Player(4),'Rowt',2)
-    call SetPlayerTechResearched(Player(4),'Rorb',1)
-    call SetPlayerTechResearched(Player(4),'Robk',1)
-    call SetPlayerTechResearched(Player(4),'Robf',1)
-    call SetPlayerTechResearched(Player(4),'Rume',3)
-    call SetPlayerTechResearched(Player(4),'Rura',3)
-    call SetPlayerTechResearched(Player(4),'Ruar',3)
-    call SetPlayerTechResearched(Player(4),'Rugf',1)
-    call SetPlayerTechResearched(Player(4),'Ruwb',1)
-    call SetPlayerTechResearched(Player(4),'Rusf',1)
-    call SetPlayerTechResearched(Player(4),'Rune',2)
-    call SetPlayerTechResearched(Player(4),'Ruba',2)
-    call SetPlayerTechResearched(Player(4),'Rufb',1)
-    call SetPlayerTechResearched(Player(4),'Rusl',1)
-    call SetPlayerTechResearched(Player(4),'Rucr',3)
-    call SetPlayerTechResearched(Player(4),'Rupc',1)
-    call SetPlayerTechResearched(Player(4),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(4),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Ruac',0)
-    call SetPlayerTechResearched(Player(4),'Resm',3)
-    call SetPlayerTechResearched(Player(4),'Resw',3)
-    call SetPlayerTechResearched(Player(4),'Rema',3)
-    call SetPlayerTechResearched(Player(4),'Rerh',3)
-    call SetPlayerTechResearched(Player(4),'Reuv',1)
-    call SetPlayerTechResearched(Player(4),'Renb',1)
-    call SetPlayerTechResearched(Player(4),'Resc',1)
-    call SetPlayerTechResearched(Player(4),'Remg',1)
-    call SetPlayerTechResearched(Player(4),'Reib',1)
-    call SetPlayerTechResearched(Player(4),'Remk',1)
-    call SetPlayerTechResearched(Player(4),'Redt',2)
-    call SetPlayerTechResearched(Player(4),'Redc',2)
-    call SetPlayerTechResearched(Player(4),'Recb',1)
-    call SetPlayerTechResearched(Player(4),'Reht',1)
-    call SetPlayerTechResearched(Player(4),'Repb',1)
-    call SetPlayerTechResearched(Player(4),'Rers',1)
-    call SetPlayerTechResearched(Player(4),'Rehs',1)
-    call SetPlayerTechResearched(Player(4),'Reeb',1)
-    call SetPlayerTechResearched(Player(4),'Reec',1)
-    call SetPlayerTechResearched(Player(4),'Rews',1)
-    call SetPlayerTechResearched(Player(4),'Rnsw',2)
-    call SetPlayerTechResearched(Player(4),'Rnsi',1)
-    call SetPlayerTechResearched(Player(4),'Rnat',3)
-    call SetPlayerTechResearched(Player(4),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(4),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(4),'Ruex',0)
-    call SetPlayerTechResearched(Player(5),'Rhme',3)
-    call SetPlayerTechResearched(Player(5),'Rhra',3)
-    call SetPlayerTechResearched(Player(5),'Rhde',1)
-    call SetPlayerTechResearched(Player(5),'Rhan',1)
-    call SetPlayerTechResearched(Player(5),'Rhpt',2)
-    call SetPlayerTechResearched(Player(5),'Rhst',2)
-    call SetPlayerTechResearched(Player(5),'Rhla',3)
-    call SetPlayerTechResearched(Player(5),'Rhri',1)
-    call SetPlayerTechResearched(Player(5),'Rhlh',2)
-    call SetPlayerTechResearched(Player(5),'Rhse',1)
-    call SetPlayerTechResearched(Player(5),'Rhfl',1)
-    call SetPlayerTechResearched(Player(5),'Rhss',1)
-    call SetPlayerTechResearched(Player(5),'Rhrt',1)
-    call SetPlayerTechResearched(Player(5),'Rhfc',1)
-    call SetPlayerTechResearched(Player(5),'Rhfs',1)
-    call SetPlayerTechResearched(Player(5),'Rhcd',1)
-    call SetPlayerTechResearched(Player(5),'Rhar',3)
-    call SetPlayerTechResearched(Player(5),'Rhgb',1)
-    call SetPlayerTechResearched(Player(5),'Rhac',3)
-    call SetPlayerTechResearched(Player(5),'Rhhb',1)
-    call SetPlayerTechResearched(Player(5),'Rome',3)
-    call SetPlayerTechResearched(Player(5),'Rora',3)
-    call SetPlayerTechResearched(Player(5),'Roar',3)
-    call SetPlayerTechResearched(Player(5),'Rwdm',1)
-    call SetPlayerTechResearched(Player(5),'Ropg',1)
-    call SetPlayerTechResearched(Player(5),'Robs',1)
-    call SetPlayerTechResearched(Player(5),'Rows',1)
-    call SetPlayerTechResearched(Player(5),'Roen',1)
-    call SetPlayerTechResearched(Player(5),'Rovs',1)
-    call SetPlayerTechResearched(Player(5),'Rowd',2)
-    call SetPlayerTechResearched(Player(5),'Rost',2)
-    call SetPlayerTechResearched(Player(5),'Rosp',3)
-    call SetPlayerTechResearched(Player(5),'Rotr',1)
-    call SetPlayerTechResearched(Player(5),'Rolf',1)
-    call SetPlayerTechResearched(Player(5),'Rowt',2)
-    call SetPlayerTechResearched(Player(5),'Rorb',1)
-    call SetPlayerTechResearched(Player(5),'Robk',1)
-    call SetPlayerTechResearched(Player(5),'Robf',1)
-    call SetPlayerTechResearched(Player(5),'Rume',3)
-    call SetPlayerTechResearched(Player(5),'Rura',3)
-    call SetPlayerTechResearched(Player(5),'Ruar',3)
-    call SetPlayerTechResearched(Player(5),'Rugf',1)
-    call SetPlayerTechResearched(Player(5),'Ruwb',1)
-    call SetPlayerTechResearched(Player(5),'Rusf',1)
-    call SetPlayerTechResearched(Player(5),'Rune',2)
-    call SetPlayerTechResearched(Player(5),'Ruba',2)
-    call SetPlayerTechResearched(Player(5),'Rufb',1)
-    call SetPlayerTechResearched(Player(5),'Rusl',1)
-    call SetPlayerTechResearched(Player(5),'Rucr',3)
-    call SetPlayerTechResearched(Player(5),'Rupc',1)
-    call SetPlayerTechResearched(Player(5),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(5),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Ruac',0)
-    call SetPlayerTechResearched(Player(5),'Resm',3)
-    call SetPlayerTechResearched(Player(5),'Resw',3)
-    call SetPlayerTechResearched(Player(5),'Rema',3)
-    call SetPlayerTechResearched(Player(5),'Rerh',3)
-    call SetPlayerTechResearched(Player(5),'Reuv',1)
-    call SetPlayerTechResearched(Player(5),'Renb',1)
-    call SetPlayerTechResearched(Player(5),'Resc',1)
-    call SetPlayerTechResearched(Player(5),'Remg',1)
-    call SetPlayerTechResearched(Player(5),'Reib',1)
-    call SetPlayerTechResearched(Player(5),'Remk',1)
-    call SetPlayerTechResearched(Player(5),'Redt',2)
-    call SetPlayerTechResearched(Player(5),'Redc',2)
-    call SetPlayerTechResearched(Player(5),'Recb',1)
-    call SetPlayerTechResearched(Player(5),'Reht',1)
-    call SetPlayerTechResearched(Player(5),'Repb',1)
-    call SetPlayerTechResearched(Player(5),'Rers',1)
-    call SetPlayerTechResearched(Player(5),'Rehs',1)
-    call SetPlayerTechResearched(Player(5),'Reeb',1)
-    call SetPlayerTechResearched(Player(5),'Reec',1)
-    call SetPlayerTechResearched(Player(5),'Rews',1)
-    call SetPlayerTechResearched(Player(5),'Rnsw',2)
-    call SetPlayerTechResearched(Player(5),'Rnsi',1)
-    call SetPlayerTechResearched(Player(5),'Rnat',3)
-    call SetPlayerTechResearched(Player(5),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(5),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(5),'Ruex',0)
-    call SetPlayerTechResearched(Player(6),'Rhme',3)
-    call SetPlayerTechResearched(Player(6),'Rhra',3)
-    call SetPlayerTechResearched(Player(6),'Rhde',1)
-    call SetPlayerTechResearched(Player(6),'Rhan',1)
-    call SetPlayerTechResearched(Player(6),'Rhpt',2)
-    call SetPlayerTechResearched(Player(6),'Rhst',2)
-    call SetPlayerTechResearched(Player(6),'Rhla',3)
-    call SetPlayerTechResearched(Player(6),'Rhri',1)
-    call SetPlayerTechResearched(Player(6),'Rhlh',2)
-    call SetPlayerTechResearched(Player(6),'Rhse',1)
-    call SetPlayerTechResearched(Player(6),'Rhfl',1)
-    call SetPlayerTechResearched(Player(6),'Rhss',1)
-    call SetPlayerTechResearched(Player(6),'Rhrt',1)
-    call SetPlayerTechResearched(Player(6),'Rhfc',1)
-    call SetPlayerTechResearched(Player(6),'Rhfs',1)
-    call SetPlayerTechResearched(Player(6),'Rhcd',1)
-    call SetPlayerTechResearched(Player(6),'Rhar',3)
-    call SetPlayerTechResearched(Player(6),'Rhgb',1)
-    call SetPlayerTechResearched(Player(6),'Rhac',3)
-    call SetPlayerTechResearched(Player(6),'Rhhb',1)
-    call SetPlayerTechResearched(Player(6),'Rome',3)
-    call SetPlayerTechResearched(Player(6),'Rora',3)
-    call SetPlayerTechResearched(Player(6),'Roar',3)
-    call SetPlayerTechResearched(Player(6),'Rwdm',1)
-    call SetPlayerTechResearched(Player(6),'Ropg',1)
-    call SetPlayerTechResearched(Player(6),'Robs',1)
-    call SetPlayerTechResearched(Player(6),'Rows',1)
-    call SetPlayerTechResearched(Player(6),'Roen',1)
-    call SetPlayerTechResearched(Player(6),'Rovs',1)
-    call SetPlayerTechResearched(Player(6),'Rowd',2)
-    call SetPlayerTechResearched(Player(6),'Rost',2)
-    call SetPlayerTechResearched(Player(6),'Rosp',3)
-    call SetPlayerTechResearched(Player(6),'Rotr',1)
-    call SetPlayerTechResearched(Player(6),'Rolf',1)
-    call SetPlayerTechResearched(Player(6),'Rowt',2)
-    call SetPlayerTechResearched(Player(6),'Rorb',1)
-    call SetPlayerTechResearched(Player(6),'Robk',1)
-    call SetPlayerTechResearched(Player(6),'Robf',1)
-    call SetPlayerTechResearched(Player(6),'Rume',3)
-    call SetPlayerTechResearched(Player(6),'Rura',3)
-    call SetPlayerTechResearched(Player(6),'Ruar',3)
-    call SetPlayerTechResearched(Player(6),'Rugf',1)
-    call SetPlayerTechResearched(Player(6),'Ruwb',1)
-    call SetPlayerTechResearched(Player(6),'Rusf',1)
-    call SetPlayerTechResearched(Player(6),'Rune',2)
-    call SetPlayerTechResearched(Player(6),'Ruba',2)
-    call SetPlayerTechResearched(Player(6),'Rufb',1)
-    call SetPlayerTechResearched(Player(6),'Rusl',1)
-    call SetPlayerTechResearched(Player(6),'Rucr',3)
-    call SetPlayerTechResearched(Player(6),'Rupc',1)
-    call SetPlayerTechResearched(Player(6),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(6),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Ruac',0)
-    call SetPlayerTechResearched(Player(6),'Resm',3)
-    call SetPlayerTechResearched(Player(6),'Resw',3)
-    call SetPlayerTechResearched(Player(6),'Rema',3)
-    call SetPlayerTechResearched(Player(6),'Rerh',3)
-    call SetPlayerTechResearched(Player(6),'Reuv',1)
-    call SetPlayerTechResearched(Player(6),'Renb',1)
-    call SetPlayerTechResearched(Player(6),'Resc',1)
-    call SetPlayerTechResearched(Player(6),'Remg',1)
-    call SetPlayerTechResearched(Player(6),'Reib',1)
-    call SetPlayerTechResearched(Player(6),'Remk',1)
-    call SetPlayerTechResearched(Player(6),'Redt',2)
-    call SetPlayerTechResearched(Player(6),'Redc',2)
-    call SetPlayerTechResearched(Player(6),'Recb',1)
-    call SetPlayerTechResearched(Player(6),'Reht',1)
-    call SetPlayerTechResearched(Player(6),'Repb',1)
-    call SetPlayerTechResearched(Player(6),'Rers',1)
-    call SetPlayerTechResearched(Player(6),'Rehs',1)
-    call SetPlayerTechResearched(Player(6),'Reeb',1)
-    call SetPlayerTechResearched(Player(6),'Reec',1)
-    call SetPlayerTechResearched(Player(6),'Rews',1)
-    call SetPlayerTechResearched(Player(6),'Rnsw',2)
-    call SetPlayerTechResearched(Player(6),'Rnsi',1)
-    call SetPlayerTechResearched(Player(6),'Rnat',3)
-    call SetPlayerTechResearched(Player(6),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(6),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(6),'Ruex',0)
-    call SetPlayerTechResearched(Player(7),'Rhme',3)
-    call SetPlayerTechResearched(Player(7),'Rhra',3)
-    call SetPlayerTechResearched(Player(7),'Rhde',1)
-    call SetPlayerTechResearched(Player(7),'Rhan',1)
-    call SetPlayerTechResearched(Player(7),'Rhpt',2)
-    call SetPlayerTechResearched(Player(7),'Rhst',2)
-    call SetPlayerTechResearched(Player(7),'Rhla',3)
-    call SetPlayerTechResearched(Player(7),'Rhri',1)
-    call SetPlayerTechResearched(Player(7),'Rhlh',2)
-    call SetPlayerTechResearched(Player(7),'Rhse',1)
-    call SetPlayerTechResearched(Player(7),'Rhfl',1)
-    call SetPlayerTechResearched(Player(7),'Rhss',1)
-    call SetPlayerTechResearched(Player(7),'Rhrt',1)
-    call SetPlayerTechResearched(Player(7),'Rhfc',1)
-    call SetPlayerTechResearched(Player(7),'Rhfs',1)
-    call SetPlayerTechResearched(Player(7),'Rhcd',1)
-    call SetPlayerTechResearched(Player(7),'Rhar',3)
-    call SetPlayerTechResearched(Player(7),'Rhgb',1)
-    call SetPlayerTechResearched(Player(7),'Rhac',3)
-    call SetPlayerTechResearched(Player(7),'Rhhb',1)
-    call SetPlayerTechResearched(Player(7),'Rome',3)
-    call SetPlayerTechResearched(Player(7),'Rora',3)
-    call SetPlayerTechResearched(Player(7),'Roar',3)
-    call SetPlayerTechResearched(Player(7),'Rwdm',1)
-    call SetPlayerTechResearched(Player(7),'Ropg',1)
-    call SetPlayerTechResearched(Player(7),'Robs',1)
-    call SetPlayerTechResearched(Player(7),'Rows',1)
-    call SetPlayerTechResearched(Player(7),'Roen',1)
-    call SetPlayerTechResearched(Player(7),'Rovs',1)
-    call SetPlayerTechResearched(Player(7),'Rowd',2)
-    call SetPlayerTechResearched(Player(7),'Rost',2)
-    call SetPlayerTechResearched(Player(7),'Rosp',3)
-    call SetPlayerTechResearched(Player(7),'Rotr',1)
-    call SetPlayerTechResearched(Player(7),'Rolf',1)
-    call SetPlayerTechResearched(Player(7),'Rowt',2)
-    call SetPlayerTechResearched(Player(7),'Rorb',1)
-    call SetPlayerTechResearched(Player(7),'Robk',1)
-    call SetPlayerTechResearched(Player(7),'Robf',1)
-    call SetPlayerTechResearched(Player(7),'Rume',3)
-    call SetPlayerTechResearched(Player(7),'Rura',3)
-    call SetPlayerTechResearched(Player(7),'Ruar',3)
-    call SetPlayerTechResearched(Player(7),'Rugf',1)
-    call SetPlayerTechResearched(Player(7),'Ruwb',1)
-    call SetPlayerTechResearched(Player(7),'Rusf',1)
-    call SetPlayerTechResearched(Player(7),'Rune',2)
-    call SetPlayerTechResearched(Player(7),'Ruba',2)
-    call SetPlayerTechResearched(Player(7),'Rufb',1)
-    call SetPlayerTechResearched(Player(7),'Rusl',1)
-    call SetPlayerTechResearched(Player(7),'Rucr',3)
-    call SetPlayerTechResearched(Player(7),'Rupc',1)
-    call SetPlayerTechResearched(Player(7),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(7),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Ruac',0)
-    call SetPlayerTechResearched(Player(7),'Resm',3)
-    call SetPlayerTechResearched(Player(7),'Resw',3)
-    call SetPlayerTechResearched(Player(7),'Rema',3)
-    call SetPlayerTechResearched(Player(7),'Rerh',3)
-    call SetPlayerTechResearched(Player(7),'Reuv',1)
-    call SetPlayerTechResearched(Player(7),'Renb',1)
-    call SetPlayerTechResearched(Player(7),'Resc',1)
-    call SetPlayerTechResearched(Player(7),'Remg',1)
-    call SetPlayerTechResearched(Player(7),'Reib',1)
-    call SetPlayerTechResearched(Player(7),'Remk',1)
-    call SetPlayerTechResearched(Player(7),'Redt',2)
-    call SetPlayerTechResearched(Player(7),'Redc',2)
-    call SetPlayerTechResearched(Player(7),'Recb',1)
-    call SetPlayerTechResearched(Player(7),'Reht',1)
-    call SetPlayerTechResearched(Player(7),'Repb',1)
-    call SetPlayerTechResearched(Player(7),'Rers',1)
-    call SetPlayerTechResearched(Player(7),'Rehs',1)
-    call SetPlayerTechResearched(Player(7),'Reeb',1)
-    call SetPlayerTechResearched(Player(7),'Reec',1)
-    call SetPlayerTechResearched(Player(7),'Rews',1)
-    call SetPlayerTechResearched(Player(7),'Rnsw',2)
-    call SetPlayerTechResearched(Player(7),'Rnsi',1)
-    call SetPlayerTechResearched(Player(7),'Rnat',3)
-    call SetPlayerTechResearched(Player(7),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(7),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(7),'Ruex',0)
-    call SetPlayerTechResearched(Player(9),'Rhme',3)
-    call SetPlayerTechResearched(Player(9),'Rhra',3)
-    call SetPlayerTechResearched(Player(9),'Rhde',1)
-    call SetPlayerTechResearched(Player(9),'Rhan',1)
-    call SetPlayerTechResearched(Player(9),'Rhpt',2)
-    call SetPlayerTechResearched(Player(9),'Rhst',2)
-    call SetPlayerTechResearched(Player(9),'Rhla',3)
-    call SetPlayerTechResearched(Player(9),'Rhri',1)
-    call SetPlayerTechResearched(Player(9),'Rhlh',2)
-    call SetPlayerTechResearched(Player(9),'Rhse',1)
-    call SetPlayerTechResearched(Player(9),'Rhfl',1)
-    call SetPlayerTechResearched(Player(9),'Rhss',1)
-    call SetPlayerTechResearched(Player(9),'Rhrt',1)
-    call SetPlayerTechResearched(Player(9),'Rhfc',1)
-    call SetPlayerTechResearched(Player(9),'Rhfs',1)
-    call SetPlayerTechResearched(Player(9),'Rhcd',1)
-    call SetPlayerTechResearched(Player(9),'Rhar',3)
-    call SetPlayerTechResearched(Player(9),'Rhgb',1)
-    call SetPlayerTechResearched(Player(9),'Rhac',3)
-    call SetPlayerTechResearched(Player(9),'Rhhb',1)
-    call SetPlayerTechResearched(Player(9),'Rome',3)
-    call SetPlayerTechResearched(Player(9),'Rora',3)
-    call SetPlayerTechResearched(Player(9),'Roar',3)
-    call SetPlayerTechResearched(Player(9),'Rwdm',1)
-    call SetPlayerTechResearched(Player(9),'Ropg',1)
-    call SetPlayerTechResearched(Player(9),'Robs',1)
-    call SetPlayerTechResearched(Player(9),'Rows',1)
-    call SetPlayerTechResearched(Player(9),'Roen',1)
-    call SetPlayerTechResearched(Player(9),'Rovs',1)
-    call SetPlayerTechResearched(Player(9),'Rowd',2)
-    call SetPlayerTechResearched(Player(9),'Rost',2)
-    call SetPlayerTechResearched(Player(9),'Rosp',3)
-    call SetPlayerTechResearched(Player(9),'Rotr',1)
-    call SetPlayerTechResearched(Player(9),'Rolf',1)
-    call SetPlayerTechResearched(Player(9),'Rowt',2)
-    call SetPlayerTechResearched(Player(9),'Rorb',1)
-    call SetPlayerTechResearched(Player(9),'Robk',1)
-    call SetPlayerTechResearched(Player(9),'Robf',1)
-    call SetPlayerTechResearched(Player(9),'Rume',3)
-    call SetPlayerTechResearched(Player(9),'Rura',3)
-    call SetPlayerTechResearched(Player(9),'Ruar',3)
-    call SetPlayerTechResearched(Player(9),'Rugf',1)
-    call SetPlayerTechResearched(Player(9),'Ruwb',1)
-    call SetPlayerTechResearched(Player(9),'Rusf',1)
-    call SetPlayerTechResearched(Player(9),'Rune',2)
-    call SetPlayerTechResearched(Player(9),'Ruba',2)
-    call SetPlayerTechResearched(Player(9),'Rufb',1)
-    call SetPlayerTechResearched(Player(9),'Rusl',1)
-    call SetPlayerTechResearched(Player(9),'Rucr',3)
-    call SetPlayerTechResearched(Player(9),'Rupc',1)
-    call SetPlayerTechResearched(Player(9),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player(9),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Ruac',0)
-    call SetPlayerTechResearched(Player(9),'Resm',3)
-    call SetPlayerTechResearched(Player(9),'Resw',3)
-    call SetPlayerTechResearched(Player(9),'Rema',3)
-    call SetPlayerTechResearched(Player(9),'Rerh',3)
-    call SetPlayerTechResearched(Player(9),'Reuv',1)
-    call SetPlayerTechResearched(Player(9),'Renb',1)
-    call SetPlayerTechResearched(Player(9),'Resc',1)
-    call SetPlayerTechResearched(Player(9),'Remg',1)
-    call SetPlayerTechResearched(Player(9),'Reib',1)
-    call SetPlayerTechResearched(Player(9),'Remk',1)
-    call SetPlayerTechResearched(Player(9),'Redt',2)
-    call SetPlayerTechResearched(Player(9),'Redc',2)
-    call SetPlayerTechResearched(Player(9),'Recb',1)
-    call SetPlayerTechResearched(Player(9),'Reht',1)
-    call SetPlayerTechResearched(Player(9),'Repb',1)
-    call SetPlayerTechResearched(Player(9),'Rers',1)
-    call SetPlayerTechResearched(Player(9),'Rehs',1)
-    call SetPlayerTechResearched(Player(9),'Reeb',1)
-    call SetPlayerTechResearched(Player(9),'Reec',1)
-    call SetPlayerTechResearched(Player(9),'Rews',1)
-    call SetPlayerTechResearched(Player(9),'Rnsw',2)
-    call SetPlayerTechResearched(Player(9),'Rnsi',1)
-    call SetPlayerTechResearched(Player(9),'Rnat',3)
-    call SetPlayerTechResearched(Player(9),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player(9),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player(9),'Ruex',0)
-    call SetPlayerTechResearched(Player($A),'Rhme',3)
-    call SetPlayerTechResearched(Player($A),'Rhra',3)
-    call SetPlayerTechResearched(Player($A),'Rhde',1)
-    call SetPlayerTechResearched(Player($A),'Rhan',1)
-    call SetPlayerTechResearched(Player($A),'Rhpt',2)
-    call SetPlayerTechResearched(Player($A),'Rhst',2)
-    call SetPlayerTechResearched(Player($A),'Rhla',3)
-    call SetPlayerTechResearched(Player($A),'Rhri',1)
-    call SetPlayerTechResearched(Player($A),'Rhlh',2)
-    call SetPlayerTechResearched(Player($A),'Rhse',1)
-    call SetPlayerTechResearched(Player($A),'Rhfl',1)
-    call SetPlayerTechResearched(Player($A),'Rhss',1)
-    call SetPlayerTechResearched(Player($A),'Rhrt',1)
-    call SetPlayerTechResearched(Player($A),'Rhfc',1)
-    call SetPlayerTechResearched(Player($A),'Rhfs',1)
-    call SetPlayerTechResearched(Player($A),'Rhcd',1)
-    call SetPlayerTechResearched(Player($A),'Rhar',3)
-    call SetPlayerTechResearched(Player($A),'Rhgb',1)
-    call SetPlayerTechResearched(Player($A),'Rhac',3)
-    call SetPlayerTechResearched(Player($A),'Rhhb',1)
-    call SetPlayerTechResearched(Player($A),'Rome',3)
-    call SetPlayerTechResearched(Player($A),'Rora',3)
-    call SetPlayerTechResearched(Player($A),'Roar',3)
-    call SetPlayerTechResearched(Player($A),'Rwdm',1)
-    call SetPlayerTechResearched(Player($A),'Ropg',1)
-    call SetPlayerTechResearched(Player($A),'Robs',1)
-    call SetPlayerTechResearched(Player($A),'Rows',1)
-    call SetPlayerTechResearched(Player($A),'Roen',1)
-    call SetPlayerTechResearched(Player($A),'Rovs',1)
-    call SetPlayerTechResearched(Player($A),'Rowd',2)
-    call SetPlayerTechResearched(Player($A),'Rost',2)
-    call SetPlayerTechResearched(Player($A),'Rosp',3)
-    call SetPlayerTechResearched(Player($A),'Rotr',1)
-    call SetPlayerTechResearched(Player($A),'Rolf',1)
-    call SetPlayerTechResearched(Player($A),'Rowt',2)
-    call SetPlayerTechResearched(Player($A),'Rorb',1)
-    call SetPlayerTechResearched(Player($A),'Robk',1)
-    call SetPlayerTechResearched(Player($A),'Robf',1)
-    call SetPlayerTechResearched(Player($A),'Rume',3)
-    call SetPlayerTechResearched(Player($A),'Rura',3)
-    call SetPlayerTechResearched(Player($A),'Ruar',3)
-    call SetPlayerTechResearched(Player($A),'Rugf',1)
-    call SetPlayerTechResearched(Player($A),'Ruwb',1)
-    call SetPlayerTechResearched(Player($A),'Rusf',1)
-    call SetPlayerTechResearched(Player($A),'Rune',2)
-    call SetPlayerTechResearched(Player($A),'Ruba',2)
-    call SetPlayerTechResearched(Player($A),'Rufb',1)
-    call SetPlayerTechResearched(Player($A),'Rusl',1)
-    call SetPlayerTechResearched(Player($A),'Rucr',3)
-    call SetPlayerTechResearched(Player($A),'Rupc',1)
-    call SetPlayerTechResearched(Player($A),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player($A),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Ruac',0)
-    call SetPlayerTechResearched(Player($A),'Resm',3)
-    call SetPlayerTechResearched(Player($A),'Resw',3)
-    call SetPlayerTechResearched(Player($A),'Rema',3)
-    call SetPlayerTechResearched(Player($A),'Rerh',3)
-    call SetPlayerTechResearched(Player($A),'Reuv',1)
-    call SetPlayerTechResearched(Player($A),'Renb',1)
-    call SetPlayerTechResearched(Player($A),'Resc',1)
-    call SetPlayerTechResearched(Player($A),'Remg',1)
-    call SetPlayerTechResearched(Player($A),'Reib',1)
-    call SetPlayerTechResearched(Player($A),'Remk',1)
-    call SetPlayerTechResearched(Player($A),'Redt',2)
-    call SetPlayerTechResearched(Player($A),'Redc',2)
-    call SetPlayerTechResearched(Player($A),'Recb',1)
-    call SetPlayerTechResearched(Player($A),'Reht',1)
-    call SetPlayerTechResearched(Player($A),'Repb',1)
-    call SetPlayerTechResearched(Player($A),'Rers',1)
-    call SetPlayerTechResearched(Player($A),'Rehs',1)
-    call SetPlayerTechResearched(Player($A),'Reeb',1)
-    call SetPlayerTechResearched(Player($A),'Reec',1)
-    call SetPlayerTechResearched(Player($A),'Rews',1)
-    call SetPlayerTechResearched(Player($A),'Rnsw',2)
-    call SetPlayerTechResearched(Player($A),'Rnsi',1)
-    call SetPlayerTechResearched(Player($A),'Rnat',3)
-    call SetPlayerTechResearched(Player($A),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player($A),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player($A),'Ruex',0)
-    call SetPlayerTechResearched(Player($B),'Rhme',3)
-    call SetPlayerTechResearched(Player($B),'Rhra',3)
-    call SetPlayerTechResearched(Player($B),'Rhde',1)
-    call SetPlayerTechResearched(Player($B),'Rhan',1)
-    call SetPlayerTechResearched(Player($B),'Rhpt',2)
-    call SetPlayerTechResearched(Player($B),'Rhst',2)
-    call SetPlayerTechResearched(Player($B),'Rhla',3)
-    call SetPlayerTechResearched(Player($B),'Rhri',1)
-    call SetPlayerTechResearched(Player($B),'Rhlh',2)
-    call SetPlayerTechResearched(Player($B),'Rhse',1)
-    call SetPlayerTechResearched(Player($B),'Rhfl',1)
-    call SetPlayerTechResearched(Player($B),'Rhss',1)
-    call SetPlayerTechResearched(Player($B),'Rhrt',1)
-    call SetPlayerTechResearched(Player($B),'Rhfc',1)
-    call SetPlayerTechResearched(Player($B),'Rhfs',1)
-    call SetPlayerTechResearched(Player($B),'Rhcd',1)
-    call SetPlayerTechResearched(Player($B),'Rhar',3)
-    call SetPlayerTechResearched(Player($B),'Rhgb',1)
-    call SetPlayerTechResearched(Player($B),'Rhac',3)
-    call SetPlayerTechResearched(Player($B),'Rhhb',1)
-    call SetPlayerTechResearched(Player($B),'Rome',3)
-    call SetPlayerTechResearched(Player($B),'Rora',3)
-    call SetPlayerTechResearched(Player($B),'Roar',3)
-    call SetPlayerTechResearched(Player($B),'Rwdm',1)
-    call SetPlayerTechResearched(Player($B),'Ropg',1)
-    call SetPlayerTechResearched(Player($B),'Robs',1)
-    call SetPlayerTechResearched(Player($B),'Rows',1)
-    call SetPlayerTechResearched(Player($B),'Roen',1)
-    call SetPlayerTechResearched(Player($B),'Rovs',1)
-    call SetPlayerTechResearched(Player($B),'Rowd',2)
-    call SetPlayerTechResearched(Player($B),'Rost',2)
-    call SetPlayerTechResearched(Player($B),'Rosp',3)
-    call SetPlayerTechResearched(Player($B),'Rotr',1)
-    call SetPlayerTechResearched(Player($B),'Rolf',1)
-    call SetPlayerTechResearched(Player($B),'Rowt',2)
-    call SetPlayerTechResearched(Player($B),'Rorb',1)
-    call SetPlayerTechResearched(Player($B),'Robk',1)
-    call SetPlayerTechResearched(Player($B),'Robf',1)
-    call SetPlayerTechResearched(Player($B),'Rume',3)
-    call SetPlayerTechResearched(Player($B),'Rura',3)
-    call SetPlayerTechResearched(Player($B),'Ruar',3)
-    call SetPlayerTechResearched(Player($B),'Rugf',1)
-    call SetPlayerTechResearched(Player($B),'Ruwb',1)
-    call SetPlayerTechResearched(Player($B),'Rusf',1)
-    call SetPlayerTechResearched(Player($B),'Rune',2)
-    call SetPlayerTechResearched(Player($B),'Ruba',2)
-    call SetPlayerTechResearched(Player($B),'Rufb',1)
-    call SetPlayerTechResearched(Player($B),'Rusl',1)
-    call SetPlayerTechResearched(Player($B),'Rucr',3)
-    call SetPlayerTechResearched(Player($B),'Rupc',1)
-    call SetPlayerTechResearched(Player($B),'Rusm',1)
-    call SetPlayerTechMaxAllowed(Player($B),'Rusp',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Rubu',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Ruac',0)
-    call SetPlayerTechResearched(Player($B),'Resm',3)
-    call SetPlayerTechResearched(Player($B),'Resw',3)
-    call SetPlayerTechResearched(Player($B),'Rema',3)
-    call SetPlayerTechResearched(Player($B),'Rerh',3)
-    call SetPlayerTechResearched(Player($B),'Reuv',1)
-    call SetPlayerTechResearched(Player($B),'Renb',1)
-    call SetPlayerTechResearched(Player($B),'Resc',1)
-    call SetPlayerTechResearched(Player($B),'Remg',1)
-    call SetPlayerTechResearched(Player($B),'Reib',1)
-    call SetPlayerTechResearched(Player($B),'Remk',1)
-    call SetPlayerTechResearched(Player($B),'Redt',2)
-    call SetPlayerTechResearched(Player($B),'Redc',2)
-    call SetPlayerTechResearched(Player($B),'Recb',1)
-    call SetPlayerTechResearched(Player($B),'Reht',1)
-    call SetPlayerTechResearched(Player($B),'Repb',1)
-    call SetPlayerTechResearched(Player($B),'Rers',1)
-    call SetPlayerTechResearched(Player($B),'Rehs',1)
-    call SetPlayerTechResearched(Player($B),'Reeb',1)
-    call SetPlayerTechResearched(Player($B),'Reec',1)
-    call SetPlayerTechResearched(Player($B),'Rews',1)
-    call SetPlayerTechResearched(Player($B),'Rnsw',2)
-    call SetPlayerTechResearched(Player($B),'Rnsi',1)
-    call SetPlayerTechResearched(Player($B),'Rnat',3)
-    call SetPlayerTechResearched(Player($B),'Rnam',3)
-    call SetPlayerTechMaxAllowed(Player($B),'Rnsb',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Rhpm',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Ropm',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Rupm',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Repm',0)
-    call SetPlayerTechMaxAllowed(Player($B),'Ruex',0)
+endfunction
+
+// Upgrade/tech rules shared by every player slot that uses them (called by Startup_ApplyTechRules).
+function Startup_ApplyTechRulesForPlayer takes player p returns nothing
+    call SetPlayerTechResearched(p,'Rhme',3)
+    call SetPlayerTechResearched(p,'Rhra',3)
+    call SetPlayerTechResearched(p,'Rhde',1)
+    call SetPlayerTechResearched(p,'Rhan',1)
+    call SetPlayerTechResearched(p,'Rhpt',2)
+    call SetPlayerTechResearched(p,'Rhst',2)
+    call SetPlayerTechResearched(p,'Rhla',3)
+    call SetPlayerTechResearched(p,'Rhri',1)
+    call SetPlayerTechResearched(p,'Rhlh',2)
+    call SetPlayerTechResearched(p,'Rhse',1)
+    call SetPlayerTechResearched(p,'Rhfl',1)
+    call SetPlayerTechResearched(p,'Rhss',1)
+    call SetPlayerTechResearched(p,'Rhrt',1)
+    call SetPlayerTechResearched(p,'Rhfc',1)
+    call SetPlayerTechResearched(p,'Rhfs',1)
+    call SetPlayerTechResearched(p,'Rhcd',1)
+    call SetPlayerTechResearched(p,'Rhar',3)
+    call SetPlayerTechResearched(p,'Rhgb',1)
+    call SetPlayerTechResearched(p,'Rhac',3)
+    call SetPlayerTechResearched(p,'Rhhb',1)
+    call SetPlayerTechResearched(p,'Rome',3)
+    call SetPlayerTechResearched(p,'Rora',3)
+    call SetPlayerTechResearched(p,'Roar',3)
+    call SetPlayerTechResearched(p,'Rwdm',1)
+    call SetPlayerTechResearched(p,'Ropg',1)
+    call SetPlayerTechResearched(p,'Robs',1)
+    call SetPlayerTechResearched(p,'Rows',1)
+    call SetPlayerTechResearched(p,'Roen',1)
+    call SetPlayerTechResearched(p,'Rovs',1)
+    call SetPlayerTechResearched(p,'Rowd',2)
+    call SetPlayerTechResearched(p,'Rost',2)
+    call SetPlayerTechResearched(p,'Rosp',3)
+    call SetPlayerTechResearched(p,'Rotr',1)
+    call SetPlayerTechResearched(p,'Rolf',1)
+    call SetPlayerTechResearched(p,'Rowt',2)
+    call SetPlayerTechResearched(p,'Rorb',1)
+    call SetPlayerTechResearched(p,'Robk',1)
+    call SetPlayerTechResearched(p,'Robf',1)
+    call SetPlayerTechResearched(p,'Rume',3)
+    call SetPlayerTechResearched(p,'Rura',3)
+    call SetPlayerTechResearched(p,'Ruar',3)
+    call SetPlayerTechResearched(p,'Rugf',1)
+    call SetPlayerTechResearched(p,'Ruwb',1)
+    call SetPlayerTechResearched(p,'Rusf',1)
+    call SetPlayerTechResearched(p,'Rune',2)
+    call SetPlayerTechResearched(p,'Ruba',2)
+    call SetPlayerTechResearched(p,'Rufb',1)
+    call SetPlayerTechResearched(p,'Rusl',1)
+    call SetPlayerTechResearched(p,'Rucr',3)
+    call SetPlayerTechResearched(p,'Rupc',1)
+    call SetPlayerTechResearched(p,'Rusm',1)
+    call SetPlayerTechMaxAllowed(p,'Rusp',0)
+    call SetPlayerTechMaxAllowed(p,'Rubu',0)
+    call SetPlayerTechMaxAllowed(p,'Ruac',0)
+    call SetPlayerTechResearched(p,'Resm',3)
+    call SetPlayerTechResearched(p,'Resw',3)
+    call SetPlayerTechResearched(p,'Rema',3)
+    call SetPlayerTechResearched(p,'Rerh',3)
+    call SetPlayerTechResearched(p,'Reuv',1)
+    call SetPlayerTechResearched(p,'Renb',1)
+    call SetPlayerTechResearched(p,'Resc',1)
+    call SetPlayerTechResearched(p,'Remg',1)
+    call SetPlayerTechResearched(p,'Reib',1)
+    call SetPlayerTechResearched(p,'Remk',1)
+    call SetPlayerTechResearched(p,'Redt',2)
+    call SetPlayerTechResearched(p,'Redc',2)
+    call SetPlayerTechResearched(p,'Recb',1)
+    call SetPlayerTechResearched(p,'Reht',1)
+    call SetPlayerTechResearched(p,'Repb',1)
+    call SetPlayerTechResearched(p,'Rers',1)
+    call SetPlayerTechResearched(p,'Rehs',1)
+    call SetPlayerTechResearched(p,'Reeb',1)
+    call SetPlayerTechResearched(p,'Reec',1)
+    call SetPlayerTechResearched(p,'Rews',1)
+    call SetPlayerTechResearched(p,'Rnsw',2)
+    call SetPlayerTechResearched(p,'Rnsi',1)
+    call SetPlayerTechResearched(p,'Rnat',3)
+    call SetPlayerTechResearched(p,'Rnam',3)
+    call SetPlayerTechMaxAllowed(p,'Rnsb',0)
+    call SetPlayerTechMaxAllowed(p,'Rhpm',0)
+    call SetPlayerTechMaxAllowed(p,'Ropm',0)
+    call SetPlayerTechMaxAllowed(p,'Rupm',0)
+    call SetPlayerTechMaxAllowed(p,'Repm',0)
+    call SetPlayerTechMaxAllowed(p,'Ruex',0)
+endfunction
+
+// Startup step 3: applies the tech rules to each player slot, in the original order.
+// Player slot 8 is intentionally not included (it was not in the original list).
+function Startup_ApplyTechRules takes nothing returns nothing
+    call Startup_ApplyTechRulesForPlayer(Player(0))
+    call Startup_ApplyTechRulesForPlayer(Player(1))
+    call Startup_ApplyTechRulesForPlayer(Player(2))
+    call Startup_ApplyTechRulesForPlayer(Player(3))
+    call Startup_ApplyTechRulesForPlayer(Player(4))
+    call Startup_ApplyTechRulesForPlayer(Player(5))
+    call Startup_ApplyTechRulesForPlayer(Player(6))
+    call Startup_ApplyTechRulesForPlayer(Player(7))
+    call Startup_ApplyTechRulesForPlayer(Player(9))
+    call Startup_ApplyTechRulesForPlayer(Player(10))
+    call Startup_ApplyTechRulesForPlayer(Player(11))
+endfunction
+
+// Startup step 4: creates script-placed destructables. Breakable barrels/crates get a death
+// trigger that drops their loot (Loot_* / Trig_Drop_* actions).
+function Startup_CreateDestructables takes nothing returns nothing
+    local destructable d
+    local trigger t
     set gg_dest_ATg3_0012=CreateDestructable('ATg3',-2048.,-1088.,.0,.9,0) // 'ATg3': object name not found in map data
     set gg_dest_B001_0051=CreateDestructable('B001',26560.,-15552.,305.,.8,0) // 'B001': destructable "Secret Barrel"
     set gg_dest_B001_0047=CreateDestructable('B001',1472.,-28416.,70.,.8,0) // 'B001': destructable "Secret Barrel"
@@ -1413,11 +593,24 @@ function main_old takes nothing returns nothing
     set gg_dest_LTlt_0007=CreateDestructable('LTlt',16192.,-5120.,270.,1.12,8) // 'LTlt': object name not found in map data
     set gg_dest_LTt1_0014=CreateDestructable('LTt1',19712.,-10560.,90.,1.,0) // 'LTt1': object name not found in map data
     set gg_dest_ZTsg_0025=CreateDestructable('ZTsg',1024.,-25984.,180.,1.,0) // 'ZTsg': object name not found in map data
+endfunction
+
+// Startup step 5: creates the script-placed buildings, critters and units (see the Units module).
+function Startup_CreateUnits takes nothing returns nothing
     call Units_CreateNeutralPassiveBuildings()
     call Units_CreatePlayerBuildings()
     call Units_CreateNeutralPassiveCritters()
     call Units_CreateAllUnits()
     call ConfigureNeutralVictim()
+endfunction
+
+// Startup step 6: Blizzard library state the original map initialised here (player forces,
+// queued triggers, single-player detection, item stock, etc.).
+function Startup_BlizzardSupport takes nothing returns nothing
+    local integer l_integer_01
+    local integer l_integer_02
+    local version v
+    local integer l_integer_03
     set udg_FilterTrue=Filter(function Filter_True)
     set filterIssueHauntOrderAtLocBJ=Filter(function IssueHauntOrderAtLocBJFilter)
     set filterEnumDestructablesInCircleBJ=Filter(function Filter_DestInRange)
@@ -1495,6 +688,11 @@ function main_old takes nothing returns nothing
     call TriggerRegisterPlayerUnitEvent(bj_stockItemPurchased,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_SELL_ITEM,null)
     call TriggerAddAction(bj_stockItemPurchased,function RemovePurchasedItem)
     call DetectGameStarted()
+endfunction
+
+// Startup step 7: shared system tables (paths, job heroes, music, save codes, missiles ...).
+// Each runs in its own thread (ExecuteFunc), as in the original map.
+function Startup_InitSharedSystems takes nothing returns nothing
     call ExecuteFunc("Wrap_InitTriggers")
     call ExecuteFunc("Path_Init")
     call ExecuteFunc("JobHero_InitHash")
@@ -1506,6 +704,15 @@ function main_old takes nothing returns nothing
     call ExecuteFunc("Element_InitTables")
     call ExecuteFunc("Missile_Init")
     call ExecuteFunc("Load_InitCodeUnit")
+endfunction
+
+// Startup step 8: spell triggers the original map registered directly in its startup code,
+// with the effect models they preload.
+function Startup_LegacySpellTriggers takes nothing returns nothing
+    local trigger t
+    local integer i
+    local trigger l_trigger_01
+    local trigger l_trigger_02
     set t=CreateTrigger()
     set i=0
     loop
@@ -1628,6 +835,12 @@ function main_old takes nothing returns nothing
     call TriggerAddAction(t,function Trig_Boss_Shinra_Clione_Actions)
     call Preload("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
     call Preload("Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl")
+endfunction
+
+// Startup step 9: initial values of shared gameplay variables (udg_*): timers, groups,
+// per-player tables and quest state.
+function Startup_InitGameplayState takes nothing returns nothing
+    local integer i
     set i=0
     set i=0
     loop
@@ -2080,1614 +1293,604 @@ function main_old takes nothing returns nothing
         set i=i+1
     endloop
     set udg_VisionShareTimer=CreateTimer()
-    call ExecuteFunc("RegisterR11_Music_Prelude")
-    call ExecuteFunc("RegisterR11_Init_AbilityLevelShift")
-    call ExecuteFunc("RegisterR11_Init_JobTables")
-    call ExecuteFunc("RegisterR11_Init_PlayerForces")
-    call ExecuteFunc("RegisterR11_Init_PlayerColors")
-    call ExecuteFunc("RegisterR11_Init_RevealStartArea")
-    call ExecuteFunc("RegisterR11_Init_HideScoreScreen")
-    call ExecuteFunc("RegisterR11_Init_NeutralPlayer8")
-    call ExecuteFunc("RegisterR11_Init_AllyPlayer9")
-    call ExecuteFunc("RegisterR11_Init_AllyPlayer10")
-    call ExecuteFunc("RegisterR11_Init_RemoveGuards")
-    call ExecuteFunc("RegisterR11_Init_FoodCap")
-    call ExecuteFunc("RegisterR11_Init_EnemyUpgrades")
-    call ExecuteFunc("RegisterR11_Init_InvulnerableGates")
-    call ExecuteFunc("RegisterR11_Init_TimeOfDay")
-    call ExecuteFunc("RegisterR11_Init_LockTrading")
-    call ExecuteFunc("RegisterR11_Init_HideUiAbilities")
-    call ExecuteFunc("RegisterR11_Speedrun_Announce")
-    call ExecuteFunc("RegisterR11_Speedrun_FirstCast")
-    call ExecuteFunc("RegisterR11_Init_InfoQuest")
-    call ExecuteFunc("RegisterR11_Init_QuestLog")
-    call ExecuteFunc("RegisterR11_Preload_HeroChronicles")
-    call ExecuteFunc("RegisterR11_Preload_DrinkPowerup")
-    call ExecuteFunc("RegisterR11_Preload_AgiAttackSpeed")
-    call ExecuteFunc("RegisterR11_Preload_JobUnits")
-    call ExecuteFunc("RegisterR11_Intro_LockPlayers")
-    call ExecuteFunc("RegisterR11_Intro_StartGameModeVote")
-    call ExecuteFunc("RegisterR11_Intro_WelcomeMessages")
-    call ExecuteFunc("RegisterR11_Reminder_Periodic")
-    call ExecuteFunc("RegisterR11_Intro_FadeToBlack")
-    call ExecuteFunc("RegisterR11_Init_VoteOptionText")
-    call ExecuteFunc("RegisterR11_Vote_TextSpeed_Show")
-    call ExecuteFunc("RegisterR11_Vote_TextSpeed_Click")
-    call ExecuteFunc("RegisterR11_Vote_TextSpeed_Result")
-    call ExecuteFunc("RegisterR11_Vote_Difficulty_Show")
-    call ExecuteFunc("RegisterR11_Vote_Difficulty_Click")
-    call ExecuteFunc("RegisterR11_Vote_Difficulty_Result")
-    call ExecuteFunc("RegisterR11_Vote_GameMode_Show")
-    call ExecuteFunc("RegisterR11_Vote_GameMode_Click")
-    call ExecuteFunc("RegisterR11_GameMode_Apply")
-    call ExecuteFunc("RegisterR11_Game_Start")
-    call ExecuteFunc("RegisterR11_Player_Init")
-    call ExecuteFunc("RegisterR11_Spirit_Create")
-    call ExecuteFunc("RegisterR11_Job_Change")
-    call ExecuteFunc("RegisterR11_Freelancer_Stats")
-    call ExecuteFunc("RegisterR11_Hero_LevelUp")
-    call ExecuteFunc("RegisterR11_JobLevels_Update")
-    call ExecuteFunc("RegisterR11_JobLevels_Init")
-    call ExecuteFunc("RegisterR11_Shrine_Create")
-    call ExecuteFunc("RegisterR11_Shrine_AbilitySwap")
-    call ExecuteFunc("RegisterR11_Shrine_SelectEnable")
-    call ExecuteFunc("RegisterR11_Shrine_SelectMenu")
-    call ExecuteFunc("RegisterR11_Shrine_Unlock")
-    call ExecuteFunc("RegisterR11_Shrine_Reveal")
-    call ExecuteFunc("RegisterR11_Legendary_Unlock")
-    call ExecuteFunc("RegisterR11_DarkJobs_Unlock")
-    call ExecuteFunc("RegisterR11_DarkJobs_Reveal")
-    call ExecuteFunc("RegisterR11_Weapon_Research")
-    call ExecuteFunc("RegisterR11_Stats_RefreshOnEvent")
-    call ExecuteFunc("RegisterR11_Passive_Bonus_Sync")
-    call ExecuteFunc("RegisterR11_AttackSpeed_Update")
-    call ExecuteFunc("RegisterR11_MagicDefense_Calc")
-    call ExecuteFunc("RegisterR11_Unit_ApplyUpgradeBonuses")
-    call ExecuteFunc("RegisterR11_Titles_Init")
-    call ExecuteFunc("RegisterR11_Hero_EndlessGrowth")
-    call ExecuteFunc("RegisterR11_Title_Grant")
-    call ExecuteFunc("RegisterR11_Title_UnlockEffects")
-    call ExecuteFunc("RegisterR11_Title_ApplyStats")
-    call ExecuteFunc("RegisterR11_Titles_CheckAll")
-    call ExecuteFunc("RegisterR11_Title_ArmsCollection")
-    call ExecuteFunc("RegisterR11_Titles_CheckBasic")
-    call ExecuteFunc("RegisterR11_Title_JuniorAdventurer")
-    call ExecuteFunc("RegisterR11_Title_RumoredAdventurer")
-    call ExecuteFunc("RegisterR11_Title_SeniorAdventurer")
-    call ExecuteFunc("RegisterR11_Title_HeroicSpirit")
-    call ExecuteFunc("RegisterR11_Summon_Detect")
-    call ExecuteFunc("RegisterR11_Summon_Powerup")
-    call ExecuteFunc("RegisterR11_GameLoad_RestoreTitles")
-    call ExecuteFunc("RegisterR11_Debug_ImmortalDeath")
-    call ExecuteFunc("RegisterR11_Damage_Init")
-    call ExecuteFunc("RegisterR11_Damage_RegisterEnter")
-    call ExecuteFunc("RegisterR11_Damage_RegisterAttacked")
-    call ExecuteFunc("RegisterR11_Damage_Engine")
-    call ExecuteFunc("RegisterR11_Damage_ProxyCleanup")
-    call ExecuteFunc("RegisterR11_Damage_Splash")
-    call ExecuteFunc("RegisterR11_Dps_Start")
-    call ExecuteFunc("RegisterR11_Dps_Tick")
-    call ExecuteFunc("RegisterR11_Combo_CancelOnAttack")
-    call ExecuteFunc("RegisterR11_Combo_CancelOnCast")
+endfunction
+
+// Startup step 10: creates every gameplay trigger.
+//
+// Each line runs one module's RegisterTriggers_* function (defined at the end of that
+// module) in its own thread. The order is the original registration order. A few modules
+// are registered in several parts (_Part1, _Part2 ...) because some of their triggers
+// react to the same event as triggers of other modules, and Warcraft runs triggers on the
+// same event in the order they were registered - so those keep their original position.
+// New triggers you add in World Editor do not need to be listed here: World Editor creates
+// them itself through their InitTrig_ function.
+function Startup_RegisterTriggers takes nothing returns nothing
+    call ExecuteFunc("RegisterTriggers_Music") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Init_Part1") // 02 Map setup
+    call ExecuteFunc("RegisterTriggers_Speedrun_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Preload") // 02 Map setup
+    call ExecuteFunc("RegisterTriggers_Intro") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Reminder") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Vote") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_GameMode") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Game") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Player_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Spirit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Job_Part1") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Freelancer") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Hero_Part1") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_JobLevels") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Shrine") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Legendary") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_DarkJobs") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Weapon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Stats") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Passive") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_AttackSpeed") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagicDefense") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Unit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Titles") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Title") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Summon_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_GameLoad") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Debug") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Damage") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Dps") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Combo") // 04 Combat and abilities
+    // Runs here, between registration blocks, exactly where the original startup ran it.
     call AbilityText_Init()
     call BattleLog_Init()
-    call ExecuteFunc("RegisterR11_Status_AutoCleanse")
-    call ExecuteFunc("RegisterR11_MaxHp_DrainTick")
-    call ExecuteFunc("RegisterR11_Death_Watch_Group1")
-    call ExecuteFunc("RegisterR11_Death_Watch_Group2")
-    call ExecuteFunc("RegisterR11_Death_Watch_Group3")
-    call ExecuteFunc("RegisterR11_Hour_Timer_Rollover")
-    call ExecuteFunc("RegisterR11_Hero_Death_Revive")
-    call ExecuteFunc("RegisterR11_Revive_Item_Cleanup")
-    call ExecuteFunc("RegisterR11_Dead_Hero_Item_Drop")
-    call ExecuteFunc("RegisterR11_Job_XP_Handicap")
-    call ExecuteFunc("RegisterR11_Exp_Distribution")
-    call ExecuteFunc("RegisterR11_Hero_Order_Cooldown")
-    call ExecuteFunc("RegisterR11_Research_Requirements")
-    call ExecuteFunc("RegisterR11_Gold_Cap")
-    call ExecuteFunc("RegisterR11_Lumber_Cap")
-    call ExecuteFunc("RegisterR11_Patrol_Disabled")
-    call ExecuteFunc("RegisterR11_House_Options_Switch")
-    call ExecuteFunc("RegisterR11_Quest_Log_Update")
-    call ExecuteFunc("RegisterR11_Help_Unit_Sold")
-    call ExecuteFunc("RegisterR11_Help_Unit_Death_Drop")
-    call ExecuteFunc("RegisterR11_Zone7_Leash")
-    call ExecuteFunc("RegisterR11_Zone6_Leash")
-    call ExecuteFunc("RegisterR11_Zone1_Leash")
-    call ExecuteFunc("RegisterR11_Zone4_Leash")
-    call ExecuteFunc("RegisterR11_Zone4_Leash_North")
-    call ExecuteFunc("RegisterR11_Zone4_Leash_Mid")
-    call ExecuteFunc("RegisterR11_Zone6_Leash_West")
-    call ExecuteFunc("RegisterR11_Arena_Leash")
-    call ExecuteFunc("RegisterR11_Buy_Kesha_Brew")
-    call ExecuteFunc("RegisterR11_Rabbit_Wander")
-    call ExecuteFunc("RegisterR11_Player_Leaves_Game")
-    call ExecuteFunc("RegisterR11_Stop_Friendly_Attack")
-    call ExecuteFunc("RegisterR11_Elements_Init")
-    call ExecuteFunc("RegisterR11_Shift_Elements_Start")
-    call ExecuteFunc("RegisterR11_Shift_Elements_Roll")
-    call ExecuteFunc("RegisterR11_Speedrun_Accolade")
-    call ExecuteFunc("RegisterR11_Speedrun_Record")
-    call ExecuteFunc("RegisterR11_Lumber_Harvest_Start")
-    call ExecuteFunc("RegisterR11_Statue_Keeper_Anim")
-    call ExecuteFunc("RegisterR11_Statue_Guardian_Anim")
-    call ExecuteFunc("RegisterR11_Weather_Snow_Init")
+    call ExecuteFunc("RegisterTriggers_Status") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MaxHp") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Death_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Hour") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Hero_Part2") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Revive") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Dead") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Job_Part2") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Exp") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Research") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Gold_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Lumber") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Patrol") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_House") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Quest_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Help") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Zone7") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Zone6_Part1") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Zone1") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Zone4") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Zone6_Part2") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Arena_Part1") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Buy") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Rabbit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Player_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Stop") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Elements") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Shift") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Speedrun_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Statue") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Weather") // 08 World and travel
+    // Runs here, between registration blocks, exactly where the original startup ran it.
     call Warp_Init()
-    call ExecuteFunc("RegisterR11_Travel_Dialog_Click")
-    call ExecuteFunc("RegisterR11_Zone_Rects_Init")
-    call ExecuteFunc("RegisterR11_Spawn_Pools_Init")
-    call ExecuteFunc("RegisterR11_Zone_Spawn_System")
-    call ExecuteFunc("RegisterR11_Zone8_Heal_Assist")
-    call ExecuteFunc("RegisterR11_Enemy_Summon_Setup")
-    call ExecuteFunc("RegisterR11_MonsterData_Init_1")
-    call ExecuteFunc("RegisterR11_MonsterData_Init_2")
-    call ExecuteFunc("RegisterR11_MonsterData_Init_3")
-    call ExecuteFunc("RegisterR11_MonsterData_Init_4")
-    call ExecuteFunc("RegisterR11_Loot_MonsterDrop")
-    call ExecuteFunc("RegisterR11_Loot_CancelDespawn")
-    call ExecuteFunc("RegisterR11_Loot_Tables_Init")
-    call ExecuteFunc("RegisterR11_Loot_EssenceDrop")
-    call ExecuteFunc("RegisterR11_Oversoul_Tables_Init")
-    call ExecuteFunc("RegisterR11_Oversoul_OnMonsterDeath")
-    call ExecuteFunc("RegisterR11_Oversoul_Activate")
-    call ExecuteFunc("RegisterR11_Merchant_Stock_Init")
-    call ExecuteFunc("RegisterR11_Merchant_Spawn_Night")
-    call ExecuteFunc("RegisterR11_Merchant_Reveal")
-    call ExecuteFunc("RegisterR11_Merchant_Leave_Dawn")
-    call ExecuteFunc("RegisterR11_Merchant_Leave_OnSale")
-    call ExecuteFunc("RegisterR11_Merchant_Stock_Shrink")
-    call ExecuteFunc("RegisterR11_Loot_BlockLeaverItems")
-    call ExecuteFunc("RegisterR11_Equip_Restrictions")
-    call ExecuteFunc("RegisterR11_Block_Item_Destroy")
-    call ExecuteFunc("RegisterR11_Armory_Item_List")
-    call ExecuteFunc("RegisterR11_Armory_Item_Hash")
+    call ExecuteFunc("RegisterTriggers_Travel") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Zone") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Spawn_Part1") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Zone8") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Enemy") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MonsterData") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Loot_Part1") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Oversoul") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Merchant") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Equip") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Block") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Armory_Part1") // 05 Items crafting and shops
+    // Runs here, between registration blocks, exactly where the original startup ran it.
     call Curse_Init()
-    call ExecuteFunc("RegisterR11_Craft_Recipe")
-    call ExecuteFunc("RegisterR11_Herb_Spawn_Start")
-    call ExecuteFunc("RegisterR11_Shimmerweed_Spawn")
-    call ExecuteFunc("RegisterR11_Shimmerweed_Pickup")
-    call ExecuteFunc("RegisterR11_Thunderbloom_Spawn")
-    call ExecuteFunc("RegisterR11_Thunderbloom_Pickup")
-    call ExecuteFunc("RegisterR11_Item_Stack_Order")
-    call ExecuteFunc("RegisterR11_Item_Stack_Pickup")
-    call ExecuteFunc("RegisterR11_Armory_Init")
-    call ExecuteFunc("RegisterR11_Armory_Open")
-    call ExecuteFunc("RegisterR11_Armory_Select")
-    call ExecuteFunc("RegisterR11_Armory_Back")
-    call ExecuteFunc("RegisterR11_Armory_Closed")
-    call ExecuteFunc("RegisterR11_Armory_Store_Item")
-    call ExecuteFunc("RegisterR11_Potion_Use")
-    call ExecuteFunc("RegisterR11_HeroDrink_Cast")
-    call ExecuteFunc("RegisterR11_Toss_Potion")
-    call ExecuteFunc("RegisterR11_Toss_HeroDrink")
-    call ExecuteFunc("RegisterR11_Remedy_Use")
-    call ExecuteFunc("RegisterR11_Food_Effects")
-    call ExecuteFunc("RegisterR11_Auto_Potion_AI")
-    call ExecuteFunc("RegisterR11_Gold_Pickup")
-    call ExecuteFunc("RegisterR11_Gold_Share_Pickup")
-    call ExecuteFunc("RegisterR11_Rune_Pickup")
-    call ExecuteFunc("RegisterR11_Monograph_Drop")
-    call ExecuteFunc("RegisterR11_Item_Cooldown_Start")
-    call ExecuteFunc("RegisterR11_Hero_Medicine_Pickup")
-    call ExecuteFunc("RegisterR11_HeroMedicine_Refill")
-    call ExecuteFunc("RegisterR11_HeroMedicine_Pickup")
-    call ExecuteFunc("RegisterR11_Cloak_Equip")
-    call ExecuteFunc("RegisterR11_Cloak_UpdateStats")
-    call ExecuteFunc("RegisterR11_Cloak_Drop")
-    call ExecuteFunc("RegisterR11_ExcaliburII_HideRock")
-    call ExecuteFunc("RegisterR11_ExcaliburII_ShowRock")
-    call ExecuteFunc("RegisterR11_ExcaliburII_Drop")
-    call ExecuteFunc("RegisterR11_MagicVault_Dim")
-    call ExecuteFunc("RegisterR11_MagicVault_Death")
-    call ExecuteFunc("RegisterR11_Book_TransformGem")
-    call ExecuteFunc("RegisterR11_ManaRefund_Cast")
-    call ExecuteFunc("RegisterR11_Recharge_OnKill")
-    call ExecuteFunc("RegisterR11_LionHeart_LowLifeBonus")
-    call ExecuteFunc("RegisterR11_Angbar_Pickup")
-    call ExecuteFunc("RegisterR11_Angbar_Drop")
-    call ExecuteFunc("RegisterR11_MetaFragment_Pickup")
-    call ExecuteFunc("RegisterR11_Masakados_Drop")
-    call ExecuteFunc("RegisterR11_BagOfTricks_Setup")
-    call ExecuteFunc("RegisterR11_BagOfTricks_Progress")
-    call ExecuteFunc("RegisterR11_Firefly_Drops")
-    call ExecuteFunc("RegisterR11_Firefly_Redeem")
-    call ExecuteFunc("RegisterR11_Deathbringer_Warning")
-    call ExecuteFunc("RegisterR11_Gaya_Follow")
-    call ExecuteFunc("RegisterR11_Transport_HeroLoaded")
-    call ExecuteFunc("RegisterR11_Gaya_ChannelStart")
-    call ExecuteFunc("RegisterR11_Gaya_ChannelEnd")
-    call ExecuteFunc("RegisterR11_Gaya_SetTint")
-    call ExecuteFunc("RegisterR11_Gaya_ShopPurchase")
-    call ExecuteFunc("RegisterR11_Gaya_RefreshStats")
-    call ExecuteFunc("RegisterR11_Gaya_ItemChanged")
-    call ExecuteFunc("RegisterR11_Gaya_HousePortal")
-    call ExecuteFunc("RegisterR11_Gaya_BreakStun")
-    call ExecuteFunc("RegisterR11_Gaya_ManaTransfer")
-    call ExecuteFunc("RegisterR11_Gaya_MegaHeal")
-    call ExecuteFunc("RegisterR11_Gaya_Scan")
-    call ExecuteFunc("RegisterR11_Gaya_GatherItems")
-    call ExecuteFunc("RegisterR11_Gaya_OrderImmediate")
-    call ExecuteFunc("RegisterR11_Gaya_OrderPoint")
-    call ExecuteFunc("RegisterR11_Gaya_OrderTarget")
-    call ExecuteFunc("RegisterR11_Cam_Command")
-    call ExecuteFunc("RegisterR11_TextSpeed_Command")
-    call ExecuteFunc("RegisterR11_Claim_Command")
-    call ExecuteFunc("RegisterR11_MagDef_Command")
-    call ExecuteFunc("RegisterR11_AtkSpd_Command")
-    call ExecuteFunc("RegisterR11_Roll_Command")
-    call ExecuteFunc("RegisterR11_TextInstant_Command")
-    call ExecuteFunc("RegisterR11_TextSkip_Command")
-    call ExecuteFunc("RegisterR11_Suicide_Command")
-    call ExecuteFunc("RegisterR11_SaveDebug_Command")
-    call ExecuteFunc("RegisterR11_Levels_Command")
-    call ExecuteFunc("RegisterR11_Handicap_Command")
-    call ExecuteFunc("RegisterR11_Teleporters_Command")
-    call ExecuteFunc("RegisterR11_Unstuck_Command")
-    call ExecuteFunc("RegisterR11_Autosave_Command")
-    call ExecuteFunc("RegisterR11_Battlelog_Command")
-    call ExecuteFunc("RegisterR11_AbilityText_Command")
-    call ExecuteFunc("RegisterR11_DamageText_Command")
-    call ExecuteFunc("RegisterR11_Clear_Command")
-    call ExecuteFunc("RegisterR11_Pvp_Command")
-    call ExecuteFunc("RegisterR11_Number_Command")
-    call ExecuteFunc("RegisterR11_War_Command")
-    call ExecuteFunc("RegisterR11_Peace_Command")
-    call ExecuteFunc("RegisterR11_Chemist_TakeItem")
-    call ExecuteFunc("RegisterR11_Chemist_Pharmacology")
-    call ExecuteFunc("RegisterR11_Chemist_LearnAlchemy")
-    call ExecuteFunc("RegisterR11_Chemist_Brew")
-    call ExecuteFunc("RegisterR11_Chemist_NoxiousMixture")
-    call ExecuteFunc("RegisterR11_Chemist_Molotov")
-    call ExecuteFunc("RegisterR11_Molotov_DamageOnAttack")
-    call ExecuteFunc("RegisterR11_Goliath_Tonic")
-    call ExecuteFunc("RegisterR11_Spell_Tables_Init")
-    call ExecuteFunc("RegisterR11_Cooldown_Scaling")
-    call ExecuteFunc("RegisterR11_Bio_Cast")
-    call ExecuteFunc("RegisterR11_Ultima_Cast")
-    call ExecuteFunc("RegisterR11_Death_Explosion_Queue")
-    call ExecuteFunc("RegisterR11_Death_Explosion_Start")
-    call ExecuteFunc("RegisterR11_Death_Explosion_Blast")
-    call ExecuteFunc("RegisterR11_Teleport_Spell")
-    call ExecuteFunc("RegisterR11_Mana_Restore_Delayed")
-    call ExecuteFunc("RegisterR11_Dispel_Cast")
-    call ExecuteFunc("RegisterR11_Remove_Debuffs")
-    call ExecuteFunc("RegisterR11_Remove_Buffs")
-    call ExecuteFunc("RegisterR11_Dismantle_Cast")
-    call ExecuteFunc("RegisterR11_Wirts_Leg_Club")
-    call ExecuteFunc("RegisterR11_Auto_Crossbow_Volley")
-    call ExecuteFunc("RegisterR11_Mechanical_Drill")
-    call ExecuteFunc("RegisterR11_Chainsaw_Saw")
-    call ExecuteFunc("RegisterR11_Momentum_Cast")
-    call ExecuteFunc("RegisterR11_Momentum_Apply")
-    call ExecuteFunc("RegisterR11_Momentum_Decay")
-    call ExecuteFunc("RegisterR11_Defend_Toggle")
-    call ExecuteFunc("RegisterR11_Knot_Of_Rust")
-    call ExecuteFunc("RegisterR11_Cover_Cast")
-    call ExecuteFunc("RegisterR11_Accumulate_Cast")
-    call ExecuteFunc("RegisterR11_Sentinel_Cast")
-    call ExecuteFunc("RegisterR11_Armor_Breaker")
-    call ExecuteFunc("RegisterR11_Runic_Shield")
-    call ExecuteFunc("RegisterR11_Shock_Cast")
-    call ExecuteFunc("RegisterR11_Assault_Cast")
-    call ExecuteFunc("RegisterR11_Arrowwave_Cast")
-    call ExecuteFunc("RegisterR11_Animal_Companion")
-    call ExecuteFunc("RegisterR11_Aim_Cast")
-    call ExecuteFunc("RegisterR11_Myriad_Arrows")
-    call ExecuteFunc("RegisterR11_Mana_Spring_Register")
-    call ExecuteFunc("RegisterR11_Fire_Cast")
-    call ExecuteFunc("RegisterR11_Ice_Cast")
-    call ExecuteFunc("RegisterR11_Tornado_Cast")
-    call ExecuteFunc("RegisterR11_Esuna_Cast")
-    call ExecuteFunc("RegisterR11_Regen_Cast")
-    call ExecuteFunc("RegisterR11_Protect_Cast")
-    call ExecuteFunc("RegisterR11_Shell_Cast")
-    call ExecuteFunc("RegisterR11_Shell_AI_Cast")
-    call ExecuteFunc("RegisterR11_Virus_Cast")
-    call ExecuteFunc("RegisterR11_Haste_Slow_Cast")
-    call ExecuteFunc("RegisterR11_Meteor_Cast")
-    call ExecuteFunc("RegisterR11_Immobilize_Cast")
-    call ExecuteFunc("RegisterR11_Quick_Cast")
-    call ExecuteFunc("RegisterR11_Wave_Fist")
-    call ExecuteFunc("RegisterR11_Chakra_Cast")
-    call ExecuteFunc("RegisterR11_Rave_Kick")
-    call ExecuteFunc("RegisterR11_Inner_Fire")
-    call ExecuteFunc("RegisterR11_Steal_Cast")
-    call ExecuteFunc("RegisterR11_Fan_Of_Knives")
-    call ExecuteFunc("RegisterR11_Stealth_Break_OnAttack")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Cost")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Decay")
-    call ExecuteFunc("RegisterR11_Counter_Attack_Strike")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P1")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P2")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P3")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P4")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P5")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P6")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P7")
-    call ExecuteFunc("RegisterR11_Evade_Counter_Reset_P8")
-    call ExecuteFunc("RegisterR11_Transfusion_Cast")
-    call ExecuteFunc("RegisterR11_Summon_Shiva")
-    call ExecuteFunc("RegisterR11_Summon_Ifrit")
-    call ExecuteFunc("RegisterR11_Summon_Golem")
-    call ExecuteFunc("RegisterR11_Summon_Cyclops")
-    call ExecuteFunc("RegisterR11_Summon_Bahamut")
-    call ExecuteFunc("RegisterR11_Living_Wall")
-    call ExecuteFunc("RegisterR11_Shiva_DiamondDust")
-    call ExecuteFunc("RegisterR11_Ifrit_Hellfire")
-    call ExecuteFunc("RegisterR11_Cyclops_FinalSmash")
-    call ExecuteFunc("RegisterR11_Bahamut_MegaFlare")
-    call ExecuteFunc("RegisterR11_Summon_Transfusion_Consume")
-    call ExecuteFunc("RegisterR11_Summon_Death_Cleanup")
-    call ExecuteFunc("RegisterR11_Lancer_DragonBreath")
-    call ExecuteFunc("RegisterR11_Lancer_DragonSlam")
-    call ExecuteFunc("RegisterR11_Lancer_DragonAlly")
-    call ExecuteFunc("RegisterR11_Lancer_Jump_RangeCheck")
-    call ExecuteFunc("RegisterR11_Lancer_Jump")
-    call ExecuteFunc("RegisterR11_Geomancer_Enchant_Cycle")
-    call ExecuteFunc("RegisterR11_Geomancer_Enchant_Apply")
-    call ExecuteFunc("RegisterR11_Geomancer_Enchant_ClearBuffs")
-    call ExecuteFunc("RegisterR11_Geomancer_GayaRage")
-    call ExecuteFunc("RegisterR11_Mediator_Clone_Reject")
-    call ExecuteFunc("RegisterR11_Mediator_Clone")
-    call ExecuteFunc("RegisterR11_Mediator_SpellShot")
-    call ExecuteFunc("RegisterR11_Mediator_Invitation")
-    call ExecuteFunc("RegisterR11_Mediator_Balance")
-    call ExecuteFunc("RegisterR11_Mediator_MarkForDeath")
-    call ExecuteFunc("RegisterR11_Oracle_Jinx")
-    call ExecuteFunc("RegisterR11_Bravery_Caster_Cleanup")
-    call ExecuteFunc("RegisterR11_Oracle_Blind")
-    call ExecuteFunc("RegisterR11_Bravery_Target_Cleanup")
-    call ExecuteFunc("RegisterR11_Faith_Target_Cleanup")
-    call ExecuteFunc("RegisterR11_Oracle_PredictStrength")
-    call ExecuteFunc("RegisterR11_Oracle_PredictMagic")
-    call ExecuteFunc("RegisterR11_Oracle_Scourge")
-    call ExecuteFunc("RegisterR11_Oracle_NeoBahamut")
-    call ExecuteFunc("RegisterR11_Samurai_Mineuchi")
-    call ExecuteFunc("RegisterR11_Samurai_Renzokuken")
-    call ExecuteFunc("RegisterR11_Samurai_Iainuki")
-    call ExecuteFunc("RegisterR11_Ninja_Ambush")
-    call ExecuteFunc("RegisterR11_BattleWard_Enter")
-    call ExecuteFunc("RegisterR11_BattleWard_Death")
-    call ExecuteFunc("RegisterR11_Ninja_Rage_ClearBuffs")
-    call ExecuteFunc("RegisterR11_Ninja_Trance")
-    call ExecuteFunc("RegisterR11_Calculator_Firaga")
-    call ExecuteFunc("RegisterR11_Calculator_Thundaga")
-    call ExecuteFunc("RegisterR11_Calculator_Imperil")
-    call ExecuteFunc("RegisterR11_Prophet_Pray_Start")
-    call ExecuteFunc("RegisterR11_Prophet_Pray_Stop")
-    call ExecuteFunc("RegisterR11_Prophet_Pray_Tick")
-    call ExecuteFunc("RegisterR11_Prophet_Pray_Heal")
-    call ExecuteFunc("RegisterR11_Prophet_BlessingOfLight")
-    call ExecuteFunc("RegisterR11_Prophet_DivineShield")
-    call ExecuteFunc("RegisterR11_Prophet_Infinity")
-    call ExecuteFunc("RegisterR11_TwoHanded_Check")
-    call ExecuteFunc("RegisterR11_Heal_Spell_Apply")
-    call ExecuteFunc("RegisterR11_HolySwordsman_Eclipse")
-    call ExecuteFunc("RegisterR11_HolySwordsman_Finisher")
-    call ExecuteFunc("RegisterR11_HolyPower_Mastery_Track")
-    call ExecuteFunc("RegisterR11_HolyPower_Mastery_Start")
-    call ExecuteFunc("RegisterR11_Sleep_Cast")
-    call ExecuteFunc("RegisterR11_Sorcerer_Flare")
-    call ExecuteFunc("RegisterR11_Sorcerer_Holy")
-    call ExecuteFunc("RegisterR11_Sorcerer_MassCripple")
-    call ExecuteFunc("RegisterR11_Sorcerer_BahamutZero")
-    call ExecuteFunc("RegisterR11_Darkness_LowHP_Cancel")
-    call ExecuteFunc("RegisterR11_Darkness_Cast")
-    call ExecuteFunc("RegisterR11_MinusStrike_Cast")
-    call ExecuteFunc("RegisterR11_DrainAttack_LevelSync")
-    call ExecuteFunc("RegisterR11_Necro_RaiseDead_Reset")
-    call ExecuteFunc("RegisterR11_Necro_Release")
-    call ExecuteFunc("RegisterR11_Necro_DeathScreech")
-    call ExecuteFunc("RegisterR11_Necro_Drain_Start")
-    call ExecuteFunc("RegisterR11_Necro_Drain_End")
-    call ExecuteFunc("RegisterR11_Necro_Drain_Tick")
-    call ExecuteFunc("RegisterR11_Osmose_Cancel_NoMP")
-    call ExecuteFunc("RegisterR11_Osmose_Cast")
-    call ExecuteFunc("RegisterR11_Oblivion_Cast")
-    call ExecuteFunc("RegisterR11_Oblivion_Pulse_Start")
-    call ExecuteFunc("RegisterR11_Oblivion_Pulse")
-    call ExecuteFunc("RegisterR11_Oblivion_Dummy_Death")
-    call ExecuteFunc("RegisterR11_Regen_Periodic")
-    call ExecuteFunc("RegisterR11_Blizzard_Cast")
-    call ExecuteFunc("RegisterR11_Aqualung_Cast")
-    call ExecuteFunc("RegisterR11_Gust_Cast")
-    call ExecuteFunc("RegisterR11_Tremor_Cast")
-    call ExecuteFunc("RegisterR11_EarthSmash_Cast")
-    call ExecuteFunc("RegisterR11_ShockSmash_Cast")
-    call ExecuteFunc("RegisterR11_Manablow_Cast")
-    call ExecuteFunc("RegisterR11_Berserk_RemoveBuffs")
-    call ExecuteFunc("RegisterR11_Devour_Absorb")
-    call ExecuteFunc("RegisterR11_EveryonesGrudge_Cast")
-    call ExecuteFunc("RegisterR11_Needles_Cast")
-    call ExecuteFunc("RegisterR11_Needles_99999_Cast")
-    call ExecuteFunc("RegisterR11_Cactuar_Haste_Cast")
-    call ExecuteFunc("RegisterR11_BadBreath_Cast")
-    call ExecuteFunc("RegisterR11_FireUnit_Enter")
-    call ExecuteFunc("RegisterR11_FireUnit_Death")
-    call ExecuteFunc("RegisterR11_FireAura_Pulse_Start")
-    call ExecuteFunc("RegisterR11_FireAura_Pulse")
-    call ExecuteFunc("RegisterR11_ShockAura_Pulse_Start")
-    call ExecuteFunc("RegisterR11_ShockAura_Pulse")
-    call ExecuteFunc("RegisterR11_Chocobo_Init")
-    call ExecuteFunc("RegisterR11_Chocobo_Spawn_Periodic")
-    call ExecuteFunc("RegisterR11_Chocobo_Wild_Death")
-    call ExecuteFunc("RegisterR11_Chocobo_Tame_Limit")
-    call ExecuteFunc("RegisterR11_Chocobo_Tame_Breed")
-    call ExecuteFunc("RegisterR11_Chocobo_Wild_Retaliate")
-    call ExecuteFunc("RegisterR11_Chocobo_Breed_Score")
-    call ExecuteFunc("RegisterR11_Chocobo_DeadPepper_Dig")
-    call ExecuteFunc("RegisterR11_Chocobo_Gysahl_Upgrade")
-    call ExecuteFunc("RegisterR11_Chocobo_Mimett_Upgrade")
-    call ExecuteFunc("RegisterR11_Chocobo_Silkis_Upgrade")
-    call ExecuteFunc("RegisterR11_Chocobo_DigSpot_Nearest")
-    call ExecuteFunc("RegisterR11_Chocobo_Bribe")
-    call ExecuteFunc("RegisterR11_Chocobo_Defend_Upgrade")
-    call ExecuteFunc("RegisterR11_Chocobo_TechCopy")
-    call ExecuteFunc("RegisterR11_Chocobo_Wild_AI")
-    call ExecuteFunc("RegisterR11_Kalm_News_Init")
-    call ExecuteFunc("RegisterR11_Kalm_News_Read")
-    call ExecuteFunc("RegisterR11_News_Morning")
-    call ExecuteFunc("RegisterR11_News_Evening")
-    call ExecuteFunc("RegisterR11_Sale_MithrilSword")
-    call ExecuteFunc("RegisterR11_Sale_MithrilAxe")
-    call ExecuteFunc("RegisterR11_Sale_MithrilShield")
-    call ExecuteFunc("RegisterR11_Sale_MithrilMail")
-    call ExecuteFunc("RegisterR11_Sale_MithrilHelmet")
-    call ExecuteFunc("RegisterR11_Sale_Nectar")
-    call ExecuteFunc("RegisterR11_News_SetTitle")
-    call ExecuteFunc("RegisterR11_News_SetEntry")
-    call ExecuteFunc("RegisterR11_News_SubmitEntry")
-    call ExecuteFunc("RegisterR11_Shadow_Init")
-    call ExecuteFunc("RegisterR11_Shadow_FirstAppear")
-    call ExecuteFunc("RegisterR11_Shadow_Intro")
-    call ExecuteFunc("RegisterR11_Shadow_Respawn")
-    call ExecuteFunc("RegisterR11_Shadow_Leave")
-    call ExecuteFunc("RegisterR11_Shadow_NearbyDelay")
-    call ExecuteFunc("RegisterR11_Shadow_Hire")
-    call ExecuteFunc("RegisterR11_Shadow_Death")
-    call ExecuteFunc("RegisterR11_Shadow_LoyaltyTick")
-    call ExecuteFunc("RegisterR11_Shadow_KillCount")
-    call ExecuteFunc("RegisterR11_Shadow_AttackedByParty")
-    call ExecuteFunc("RegisterR11_Shadow_HealedBonus")
-    call ExecuteFunc("RegisterR11_Shadow_HeroDrink")
-    call ExecuteFunc("RegisterR11_Shadow_Disband")
-    call ExecuteFunc("RegisterR11_Shadow_FumaShuriken")
-    call ExecuteFunc("RegisterR11_Arena_FreezeNpcs")
-    call ExecuteFunc("RegisterR11_Arena_Unlock")
-    call ExecuteFunc("RegisterR11_Arena_LeoIntro")
-    call ExecuteFunc("RegisterR11_Arena_InitData")
-    call ExecuteFunc("RegisterR11_Arena_TeamData1")
-    call ExecuteFunc("RegisterR11_Arena_TeamData2")
-    call ExecuteFunc("RegisterR11_Arena_Team_Data_A")
-    call ExecuteFunc("RegisterR11_Arena_Team_Data_B")
-    call ExecuteFunc("RegisterR11_Arena_Unit_Data")
-    call ExecuteFunc("RegisterR11_Arena_Lock_Controls")
-    call ExecuteFunc("RegisterR11_Arena_Enter_Region")
-    call ExecuteFunc("RegisterR11_Arena_Start_Cup")
-    call ExecuteFunc("RegisterR11_Arena_Pick_Team")
-    call ExecuteFunc("RegisterR11_Arena_Round_Start")
-    call ExecuteFunc("RegisterR11_Arena_Spawn_Team")
-    call ExecuteFunc("RegisterR11_Arena_Round_End")
-    call ExecuteFunc("RegisterR11_Arena_Cup_Won")
-    call ExecuteFunc("RegisterR11_Arena_UnlockCups")
-    call ExecuteFunc("RegisterR11_Arena_SyncTeams")
-    call ExecuteFunc("RegisterR11_Arena_StartBattle")
-    call ExecuteFunc("RegisterR11_Arena_FoeDeath")
-    call ExecuteFunc("RegisterR11_Arena_PlayerLeft")
-    call ExecuteFunc("RegisterR11_Arena_BattleLost")
-    call ExecuteFunc("RegisterR11_Arena_BuyPrize")
-    call ExecuteFunc("RegisterR11_Arena_OutOfBounds")
-    call ExecuteFunc("RegisterR11_Arena_GateWrongSide")
-    call ExecuteFunc("RegisterR11_Arena_GateOpen")
-    call ExecuteFunc("RegisterR11_Teleport_ToKalm")
-    call ExecuteFunc("RegisterR11_Teleport_ToArena")
-    call ExecuteFunc("RegisterR11_Arena_ToggleShowcase")
-    call ExecuteFunc("RegisterR11_Arena_ToggleCupMode")
-    call ExecuteFunc("RegisterR11_Arena_ExchangeBP")
-    call ExecuteFunc("RegisterR11_Arena_Conquest")
-    call ExecuteFunc("RegisterR11_Arena_RefreshBPTags")
-    call ExecuteFunc("RegisterR11_Valfodr_SummonSetup")
-    call ExecuteFunc("RegisterR11_Valfodr_Gagnrath")
-    call ExecuteFunc("RegisterR11_Valfodr_GagnrathEnd")
-    call ExecuteFunc("RegisterR11_Valfodr_GagnrathPulse")
-    call ExecuteFunc("RegisterR11_Valfodr_GagnrathWave")
-    call ExecuteFunc("RegisterR11_Valfodr_Bolverk")
-    call ExecuteFunc("RegisterR11_Numerus_ChargeCommand")
-    call ExecuteFunc("RegisterR11_FadingNotes_Init")
-    call ExecuteFunc("RegisterR11_FadingNotes_DropCultist")
-    call ExecuteFunc("RegisterR11_FadingNotes_DropWizard")
-    call ExecuteFunc("RegisterR11_Bazaar_Init")
-    call ExecuteFunc("RegisterR11_Bazaar_Recipes")
-    call ExecuteFunc("RegisterR11_Bazaar_PawnMaterial")
-    call ExecuteFunc("RegisterR11_Bazaar_UpdateStock")
-    call ExecuteFunc("RegisterR11_Bazaar_Sell_Bundle")
-    call ExecuteFunc("RegisterR11_DeathSeeker_Give")
-    call ExecuteFunc("RegisterR11_Materia_Altar_Ritual")
-    call ExecuteFunc("RegisterR11_Hunt_Setup")
-    call ExecuteFunc("RegisterR11_Hunt_Board_Markers")
-    call ExecuteFunc("RegisterR11_Hunt_Accept")
-    call ExecuteFunc("RegisterR11_Hunt_Complete")
-    call ExecuteFunc("RegisterR11_Hunt_Shop_Unlock")
-    call ExecuteFunc("RegisterR11_Makenroh_Greet")
-    call ExecuteFunc("RegisterR11_Hunt_Thextera_Escort")
-    call ExecuteFunc("RegisterR11_Hunt_Shard_Register")
-    call ExecuteFunc("RegisterR11_Hunt_Shard_Drop")
-    call ExecuteFunc("RegisterR11_Hunt_Tonberry_Setup")
-    call ExecuteFunc("RegisterR11_Tonberry_Gate_Open")
-    call ExecuteFunc("RegisterR11_Hunt_Demon_Setup")
-    call ExecuteFunc("RegisterR11_Demon_Drop_Magatama")
-    call ExecuteFunc("RegisterR11_Provoke_Cast")
-    call ExecuteFunc("RegisterR11_Hunt_Parvati_Setup")
-    call ExecuteFunc("RegisterR11_Malboro_BadBreath")
-    call ExecuteFunc("RegisterR11_Hunt_PhantomDancer_Setup")
-    call ExecuteFunc("RegisterR11_PhantomDancer_Blink")
-    call ExecuteFunc("RegisterR11_PhantomDancer_Berserk")
-    call ExecuteFunc("RegisterR11_Hunt_Exdeath_Setup")
-    call ExecuteFunc("RegisterR11_Exdeath_Drop_Scroll")
-    call ExecuteFunc("RegisterR11_Hunt_Mephorash_Setup")
-    call ExecuteFunc("RegisterR11_Mephorash_Split")
-    call ExecuteFunc("RegisterR11_Mephorash_Clone_Death")
-    call ExecuteFunc("RegisterR11_Vendetta_Stance")
-    call ExecuteFunc("RegisterR11_Vendetta_Release")
-    call ExecuteFunc("RegisterR11_Vendetta_Cancel")
-    call ExecuteFunc("RegisterR11_Hunt_Trickster_Unlock")
-    call ExecuteFunc("RegisterR11_Trickster_Decoy_Spawn")
-    call ExecuteFunc("RegisterR11_Trickster_Reveal")
-    call ExecuteFunc("RegisterR11_Hunt_Melaiduma_Setup")
-    call ExecuteFunc("RegisterR11_Melaiduma_Death")
-    call ExecuteFunc("RegisterR11_ThunderRush_Cast")
-    call ExecuteFunc("RegisterR11_ThunderRush_Cleanup")
-    call ExecuteFunc("RegisterR11_Vortex_Warning")
-    call ExecuteFunc("RegisterR11_Vortex_Suck")
-    call ExecuteFunc("RegisterR11_Vortex_Drain")
-    call ExecuteFunc("RegisterR11_Chocobo_Respawn")
-    call ExecuteFunc("RegisterR11_Chocobo_Drop_Nut")
-    call ExecuteFunc("RegisterR11_Hunt_BlackPearl_Setup")
-    call ExecuteFunc("RegisterR11_GatherServants_Cast")
-    call ExecuteFunc("RegisterR11_DarkServant_Cleanup")
-    call ExecuteFunc("RegisterR11_BlackPearl_Death")
-    call ExecuteFunc("RegisterR11_Rabite_Area_Init")
-    call ExecuteFunc("RegisterR11_Rabite_Hunt_Unlock")
-    call ExecuteFunc("RegisterR11_Hunt_Rabite_Setup")
-    call ExecuteFunc("RegisterR11_Rabite_Death")
-    call ExecuteFunc("RegisterR11_Hunt_Verci_Setup")
-    call ExecuteFunc("RegisterR11_Verci_Awaken")
-    call ExecuteFunc("RegisterR11_Verci_Phases")
-    call ExecuteFunc("RegisterR11_WindShear_Cast")
-    call ExecuteFunc("RegisterR11_Spartacus_Summon")
-    call ExecuteFunc("RegisterR11_Verci_Death")
-    call ExecuteFunc("RegisterR11_Hunt_Okuu_Setup")
-    call ExecuteFunc("RegisterR11_Okuu_Leash")
-    call ExecuteFunc("RegisterR11_Hypernova_Cast")
-    call ExecuteFunc("RegisterR11_Okuu_Death")
-    call ExecuteFunc("RegisterR11_Fishing_Setup")
-    call ExecuteFunc("RegisterR11_Fishing_Pole_Found")
-    call ExecuteFunc("RegisterR11_Fishing_Unlock")
-    call ExecuteFunc("RegisterR11_Fishing_Cast")
-    call ExecuteFunc("RegisterR11_Fishing_Tick")
-    call ExecuteFunc("RegisterR11_Fishing_Input")
-    call ExecuteFunc("RegisterR11_Fishing_Catch")
-    call ExecuteFunc("RegisterR11_Fishing_End")
-    call ExecuteFunc("RegisterR11_Gilgamesh_Gift")
-    call ExecuteFunc("RegisterR11_Fishing_Monster_Spawn")
-    call ExecuteFunc("RegisterR11_AbilityTags_Show")
-    call ExecuteFunc("RegisterR11_Hero_Select_Redirect")
-    call ExecuteFunc("RegisterR11_PlayerTimer1_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer2_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer3_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer4_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer5_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer6_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer7_Expire")
-    call ExecuteFunc("RegisterR11_PlayerTimer8_Expire")
-    call ExecuteFunc("RegisterR11_DarkEidolons_Init")
-    call ExecuteFunc("RegisterR11_DarkEidolons_SpawnGhosts")
-    call ExecuteFunc("RegisterR11_DarkEidolons_Unlock")
-    call ExecuteFunc("RegisterR11_DarkEidolon_Death")
-    call ExecuteFunc("RegisterR11_DarkShiva_Appear")
-    call ExecuteFunc("RegisterR11_DarkShiva_Phase2")
-    call ExecuteFunc("RegisterR11_DarkShiva_Death")
-    call ExecuteFunc("RegisterR11_DarkIfrit_Appear")
-    call ExecuteFunc("RegisterR11_DarkIfrit_Death")
-    call ExecuteFunc("RegisterR11_DarkGolem_Appear")
-    call ExecuteFunc("RegisterR11_DarkCyclops_Appear")
-    call ExecuteFunc("RegisterR11_DarkTitan_Appear")
-    call ExecuteFunc("RegisterR11_DarkBahamut_Riddle")
-    call ExecuteFunc("RegisterR11_DarkBahamut_DragonDeath")
-    call ExecuteFunc("RegisterR11_DarkBahamut_Phase2")
-    call ExecuteFunc("RegisterR11_DarkBahamut_Phase3")
-    call ExecuteFunc("RegisterR11_DarkBahamut_Phase4")
-    call ExecuteFunc("RegisterR11_DarkLeviathan_Appear")
-    call ExecuteFunc("RegisterR11_DarkQuezacotl_Appear")
-    call ExecuteFunc("RegisterR11_DarkQuezacotl_Death")
-    call ExecuteFunc("RegisterR11_DarkPhoenix_Appear")
-    call ExecuteFunc("RegisterR11_DarkPhoenix_Death")
-    call ExecuteFunc("RegisterR11_DarkBrothers_Appear")
-    call ExecuteFunc("RegisterR11_DarkEden_Appear")
-    call ExecuteFunc("RegisterR11_DarkEden_Death")
-    call ExecuteFunc("RegisterR11_DarkEden_LightningColor")
-    call ExecuteFunc("RegisterR11_Init_SkyAndSubtitles")
-    call ExecuteFunc("RegisterR11_QuestUnits_Ping")
-    call ExecuteFunc("RegisterR11_QuestTotal_Add")
-    call ExecuteFunc("RegisterR11_Kalm_Init")
-    call ExecuteFunc("RegisterR11_Cid_Talk_FindMid")
-    call ExecuteFunc("RegisterR11_Mid_Cage_Ping")
-    call ExecuteFunc("RegisterR11_BanditLord_Death")
-    call ExecuteFunc("RegisterR11_Mid_Freed")
-    call ExecuteFunc("RegisterR11_Cid_Talk_MidReturned")
-    call ExecuteFunc("RegisterR11_GoblinChief_Death")
-    call ExecuteFunc("RegisterR11_Artifact_Ping")
-    call ExecuteFunc("RegisterR11_Artifact_PickedUp")
-    call ExecuteFunc("RegisterR11_Artifact_Carrier")
-    call ExecuteFunc("RegisterR11_Cid_Berserk_Start")
-    call ExecuteFunc("RegisterR11_Cid_Talk_Hashmalum")
-    call ExecuteFunc("RegisterR11_Cid_Berserk_Aggro")
-    call ExecuteFunc("RegisterR11_BerserkGuard_Decay")
-    call ExecuteFunc("RegisterR11_Cid_Berserk_End")
-    call ExecuteFunc("RegisterR11_Cid_Berserk_Revive")
-    call ExecuteFunc("RegisterR11_Cid_Berserk_Aftermath")
-    call ExecuteFunc("RegisterR11_AoMadoushi_Hide")
-    call ExecuteFunc("RegisterR11_Cid_Research_Done")
-    call ExecuteFunc("RegisterR11_Cid_Talk_AoMadoushi")
-    call ExecuteFunc("RegisterR11_Turks_Give_Flute")
-    call ExecuteFunc("RegisterR11_AoMadoushi_Summon")
-    call ExecuteFunc("RegisterR11_Quest_AoMadoushi_Talk")
-    call ExecuteFunc("RegisterR11_Cine_StoneBreaks")
-    call ExecuteFunc("RegisterR11_World_AfterDemonAppears")
-    call ExecuteFunc("RegisterR11_Quest_AoMadoushi_Report")
-    call ExecuteFunc("RegisterR11_Ping_ArenaTarget")
-    call ExecuteFunc("RegisterR11_Loot_Cuchulainn_EyeDrop")
-    call ExecuteFunc("RegisterR11_Ping_EyeOfJenova")
-    call ExecuteFunc("RegisterR11_Quest_EyeOfJenova_PickUp")
-    call ExecuteFunc("RegisterR11_Quest_EyeOfJenova_Deliver")
-    call ExecuteFunc("RegisterR11_Loop_MadoushiChanneling")
-    call ExecuteFunc("RegisterR11_Init_AncientForestNpcs")
-    call ExecuteFunc("RegisterR11_Quest_NightElves_Start")
-    call ExecuteFunc("RegisterR11_Portal_Reveal")
-    call ExecuteFunc("RegisterR11_Talk_PortalGuardian")
-    call ExecuteFunc("RegisterR11_Talk_ForestGuardian")
-    call ExecuteFunc("RegisterR11_Quest_NightElves_Complete")
-    call ExecuteFunc("RegisterR11_Talk_Lothlorien_Greet")
-    call ExecuteFunc("RegisterR11_Quest_NightElves_Report")
-    call ExecuteFunc("RegisterR11_Spawn_Gafgarion")
-    call ExecuteFunc("RegisterR11_Init_ZaleraChapter")
-    call ExecuteFunc("RegisterR11_Cine_ScryingVision")
-    call ExecuteFunc("RegisterR11_Cine_Belias_Gafgarion")
-    call ExecuteFunc("RegisterR11_Quest_DarkKnight_Start")
-    call ExecuteFunc("RegisterR11_Boss_Gafgarion_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Gafgarion_Death")
-    call ExecuteFunc("RegisterR11_Ghost_Despawn")
-    call ExecuteFunc("RegisterR11_Boss_Zalera_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Gafgarion_Guard_Death")
-    call ExecuteFunc("RegisterR11_Boss_Zalera_Death")
-    call ExecuteFunc("RegisterR11_Quest_WorldLiberation_Count")
-    call ExecuteFunc("RegisterR11_Quest_WorldLiberation_Reward")
-    call ExecuteFunc("RegisterR11_Cine_StoneBreaks_Alt")
-    call ExecuteFunc("RegisterR11_Spawn_KalmDefenders")
-    call ExecuteFunc("RegisterR11_Ally_Death_Cleanup")
-    call ExecuteFunc("RegisterR11_KalmSiege_AITick")
-    call ExecuteFunc("RegisterR11_KalmSiege_LeaderRetreat")
-    call ExecuteFunc("RegisterR11_KalmSiege_FailRespawn")
-    call ExecuteFunc("RegisterR11_KalmSiege_DemonRecover")
-    call ExecuteFunc("RegisterR11_KalmSiege_Init")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Start")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Briefing")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Begin")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Defeat")
-    call ExecuteFunc("RegisterR11_KalmSiege1_TrackDeaths")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Complete")
-    call ExecuteFunc("RegisterR11_KalmSiege1_Fail")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Call")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Start")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Restart")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Begin")
-    call ExecuteFunc("RegisterR11_KalmSiege2_SouthWave")
-    call ExecuteFunc("RegisterR11_KalmSiege2_DemonSpotted")
-    call ExecuteFunc("RegisterR11_KalmSiege2_DemonFlee")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Defeat")
-    call ExecuteFunc("RegisterR11_KalmSiege2_TrackDeaths")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Complete")
-    call ExecuteFunc("RegisterR11_KalmSiege2_Fail")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Call")
-    call ExecuteFunc("RegisterR11_KalmSiege3_CidTalk")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Start")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Restart")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Begin")
-    call ExecuteFunc("RegisterR11_KalmSiege3_DemonArrive")
-    call ExecuteFunc("RegisterR11_KalmSiege3_DemonSummon")
-    call ExecuteFunc("RegisterR11_KalmSiege3_ChiefGuard")
-    call ExecuteFunc("RegisterR11_KalmSiege3_TrackDeaths")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Defeat")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Complete")
-    call ExecuteFunc("RegisterR11_KalmSiege3_Fail")
-    call ExecuteFunc("RegisterR11_Chaos_Init")
-    call ExecuteFunc("RegisterR11_ForestSpirit_Spawn")
-    call ExecuteFunc("RegisterR11_ForestSpirit_Wander")
-    call ExecuteFunc("RegisterR11_ForestSpirit_Flee")
-    call ExecuteFunc("RegisterR11_SpiritScroll_Pickup")
-    call ExecuteFunc("RegisterR11_SpiritScroll_Cleanse")
-    call ExecuteFunc("RegisterR11_VoiceOfForest_Start")
-    call ExecuteFunc("RegisterR11_VoiceOfForest_PingCrystal")
-    call ExecuteFunc("RegisterR11_VoiceOfForest_SummonChaos")
-    call ExecuteFunc("RegisterR11_Chaos_Spawn_Chaosjets")
-    call ExecuteFunc("RegisterR11_Chaosjet_Death")
-    call ExecuteFunc("RegisterR11_Chaos_Revive_Chaosjets")
-    call ExecuteFunc("RegisterR11_Chaos_Recall_Chaosjets")
-    call ExecuteFunc("RegisterR11_Boss_Chaos_Death")
-    call ExecuteFunc("RegisterR11_Shemhazai_Prepare")
-    call ExecuteFunc("RegisterR11_Meliadoul_Hint_Timer")
-    call ExecuteFunc("RegisterR11_Quest_CorruptedOrcs_Start")
-    call ExecuteFunc("RegisterR11_OrcBase_GateGuard_Death")
-    call ExecuteFunc("RegisterR11_Boss_OrcChieftain_Death")
-    call ExecuteFunc("RegisterR11_OrcBase_Units_Cleared")
-    call ExecuteFunc("RegisterR11_Shemhazai_Appears")
-    call ExecuteFunc("RegisterR11_Shemhazai_Spawn_SoulClones")
-    call ExecuteFunc("RegisterR11_Shemhazai_SurpriseMechanic")
-    call ExecuteFunc("RegisterR11_Shemhazai_Phase2_Cuchulainn")
-    call ExecuteFunc("RegisterR11_Cuchulainn_Soul_Death")
-    call ExecuteFunc("RegisterR11_Shemhazai_SoulSplit")
-    call ExecuteFunc("RegisterR11_SoulSplit_Clone_Death")
-    call ExecuteFunc("RegisterR11_Boss_Shemhazai_Death")
-    call ExecuteFunc("RegisterR11_Exodus_Prepare")
-    call ExecuteFunc("RegisterR11_PriestX_Appear")
-    call ExecuteFunc("RegisterR11_PriestX_Talk1")
-    call ExecuteFunc("RegisterR11_PriestX_Talk2")
-    call ExecuteFunc("RegisterR11_Quest_LastRites_Start")
-    call ExecuteFunc("RegisterR11_Exodus_Reveal")
-    call ExecuteFunc("RegisterR11_Exodus_Stomp")
-    call ExecuteFunc("RegisterR11_Exodus_SummonTrees")
-    call ExecuteFunc("RegisterR11_Exodus_Cometeorite")
-    call ExecuteFunc("RegisterR11_Boss_Exodus_Death")
-    call ExecuteFunc("RegisterR11_Cometeorite_Rocks_Cleanup")
-    call ExecuteFunc("RegisterR11_Famfrit_Prepare")
-    call ExecuteFunc("RegisterR11_Dana_Prepare")
-    call ExecuteFunc("RegisterR11_Dana_Talk1")
-    call ExecuteFunc("RegisterR11_Dana_Talk2_Enable")
-    call ExecuteFunc("RegisterR11_Quest_Illusions_Start")
-    call ExecuteFunc("RegisterR11_Dana_Receive_Eye")
-    call ExecuteFunc("RegisterR11_Dana_Death")
-    call ExecuteFunc("RegisterR11_Famfrit_Encounter")
-    call ExecuteFunc("RegisterR11_Famfrit_TidalWave")
-    call ExecuteFunc("RegisterR11_Boss_Famfrit_Death")
-    call ExecuteFunc("RegisterR11_Ultima_Prepare")
-    call ExecuteFunc("RegisterR11_Alma_Disappear")
-    call ExecuteFunc("RegisterR11_Alma_Missing_Notice")
-    call ExecuteFunc("RegisterR11_Quest_LightOfJudgment_Start")
-    call ExecuteFunc("RegisterR11_Ultima_Possession")
-    call ExecuteFunc("RegisterR11_Ultima_Holyja")
-    call ExecuteFunc("RegisterR11_Boss_Ultima_Death")
-    call ExecuteFunc("RegisterR11_Zodiark_Prepare")
-    call ExecuteFunc("RegisterR11_Montblanc_Hint_Timer")
-    call ExecuteFunc("RegisterR11_Quest_GodDragon_Start")
-    call ExecuteFunc("RegisterR11_Zodiark_Encounter")
-    call ExecuteFunc("RegisterR11_GodDragon_Transfusion")
-    call ExecuteFunc("RegisterR11_GodDragon_Death")
-    call ExecuteFunc("RegisterR11_Spell_Dewall_Apply")
-    call ExecuteFunc("RegisterR11_Zodiark_BanishRay")
-    call ExecuteFunc("RegisterR11_Zodiark_Darkja")
-    call ExecuteFunc("RegisterR11_Boss_GodDragon_Death")
-    call ExecuteFunc("RegisterR11_IcyRealm_Init")
-    call ExecuteFunc("RegisterR11_Celeborn_Summon_Alert")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_Start")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_GateBlocked")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_AskCeleborn")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_AskTalon")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_GetPendant")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_ShowPendant")
-    call ExecuteFunc("RegisterR11_Quest_ZodiacAge_TalonOpensGate")
-    call ExecuteFunc("RegisterR11_Talon_Leash_Gate")
-    call ExecuteFunc("RegisterR11_Talon_Death")
-    call ExecuteFunc("RegisterR11_Gate_Codeword_Demesne")
-    call ExecuteFunc("RegisterR11_IcyRealm_GateOpened_Setup")
-    call ExecuteFunc("RegisterR11_Boss_Mateus_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Mateus_CoverSwap")
-    call ExecuteFunc("RegisterR11_Boss_Demesne_CoverSwap")
-    call ExecuteFunc("RegisterR11_Boss_Demesne_Death_Revive")
-    call ExecuteFunc("RegisterR11_Boss_Demesne_Revived")
-    call ExecuteFunc("RegisterR11_Boss_Mateus_Death")
-    call ExecuteFunc("RegisterR11_Gate_WinterKey_Unlock")
-    call ExecuteFunc("RegisterR11_Ambush_Skeletons_1")
-    call ExecuteFunc("RegisterR11_Ambush_Skeletons_2")
-    call ExecuteFunc("RegisterR11_Ambush_Skeletons_3")
-    call ExecuteFunc("RegisterR11_Ambush_Skeletons_4")
-    call ExecuteFunc("RegisterR11_Boss_Hashmalum_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Hashmalum_Revive_Belias")
-    call ExecuteFunc("RegisterR11_Boss_Hashmalum_Revive_Loop")
-    call ExecuteFunc("RegisterR11_Spell_InfernoRipple")
-    call ExecuteFunc("RegisterR11_Boss_Belias_Rescue_Mateus")
-    call ExecuteFunc("RegisterR11_Boss_Belias_Revive_Loop")
-    call ExecuteFunc("RegisterR11_Boss_Mateus_Death_Final")
-    call ExecuteFunc("RegisterR11_Boss_Belias_Rescue_Gafgarion")
-    call ExecuteFunc("RegisterR11_Boss_Belias_Gafgarion_Death")
-    call ExecuteFunc("RegisterR11_Boss_Belias_Death_Final")
-    call ExecuteFunc("RegisterR11_Boss_Hashmalum_Death_Final")
-    call ExecuteFunc("RegisterR11_Gafgarion_Join_Party")
-    call ExecuteFunc("RegisterR11_Gafgarion_Leash")
-    call ExecuteFunc("RegisterR11_Gafgarion_Death_Timer")
-    call ExecuteFunc("RegisterR11_Gafgarion_Revive")
-    call ExecuteFunc("RegisterR11_Gafgarion_Block_Portal_Scroll")
-    call ExecuteFunc("RegisterR11_Gafgarion_Join_Summit")
-    call ExecuteFunc("RegisterR11_Gafgarion_RegenBurst")
-    call ExecuteFunc("RegisterR11_Boss_Echele_Start")
-    call ExecuteFunc("RegisterR11_Boss_Echele_SpawnForm")
-    call ExecuteFunc("RegisterR11_Boss_Echele_FormChange")
-    call ExecuteFunc("RegisterR11_Boss_Echele_KillMinions")
-    call ExecuteFunc("RegisterR11_Boss_Echele_Leash")
-    call ExecuteFunc("RegisterR11_IceAge_FreezeTimeout")
-    call ExecuteFunc("RegisterR11_Ending_FrozenWorld")
-    call ExecuteFunc("RegisterR11_Ending_Wasteland")
-    call ExecuteFunc("RegisterR11_Ending_ReturnToStart")
-    call ExecuteFunc("RegisterR11_IceAge_Victory")
-    call ExecuteFunc("RegisterR11_TrueIceAge_GateUnlock")
-    call ExecuteFunc("RegisterR11_TrueIceAge_Summon")
-    call ExecuteFunc("RegisterR11_TrueIceAge_SpawnBrave")
-    call ExecuteFunc("RegisterR11_TrueIceAge_BossIntro")
-    call ExecuteFunc("RegisterR11_TrueIceAge_FreezeTimeout")
-    call ExecuteFunc("RegisterR11_TrueIceAge_Victory")
-    call ExecuteFunc("RegisterR11_Epilogue_WaitForCid")
-    call ExecuteFunc("RegisterR11_Epilogue_Kalm")
-    call ExecuteFunc("RegisterR11_Epilogue_Lothlorien")
-    call ExecuteFunc("RegisterR11_Epilogue_BlueMage")
-    call ExecuteFunc("RegisterR11_Epilogue_DarkKnight")
-    call ExecuteFunc("RegisterR11_Epilogue_Dana")
-    call ExecuteFunc("RegisterR11_QuestTotal_Add71")
-    call ExecuteFunc("RegisterR11_QuestCount_Milestones")
-    call ExecuteFunc("RegisterR11_Quest_Shimmerweed_Offer")
-    call ExecuteFunc("RegisterR11_Quest_Shimmerweed_Start")
-    call ExecuteFunc("RegisterR11_Quest_Shimmerweed_Ping")
-    call ExecuteFunc("RegisterR11_Quest_Shimmerweed_Pickup")
-    call ExecuteFunc("RegisterR11_Quest_Shimmerweed_Deliver")
-    call ExecuteFunc("RegisterR11_Quest_Arachnophobia_Offer")
-    call ExecuteFunc("RegisterR11_Quest_Arachnophobia_Start")
-    call ExecuteFunc("RegisterR11_Quest_Arachnophobia_Count")
-    call ExecuteFunc("RegisterR11_Quest_Arachnophobia_Reward")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Hide")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Offer")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Start")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Ambush")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Failed")
-    call ExecuteFunc("RegisterR11_Quest_KillSetag_Complete")
-    call ExecuteFunc("RegisterR11_Quest_Phoenix_Available")
-    call ExecuteFunc("RegisterR11_Quest_Phoenix_Start")
-    call ExecuteFunc("RegisterR11_Quest_Phoenix_Ping")
-    call ExecuteFunc("RegisterR11_Quest_Phoenix_EggTaken")
-    call ExecuteFunc("RegisterR11_Quest_Phoenix_Complete")
-    call ExecuteFunc("RegisterR11_Caravan_Init")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_SamAvailable")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_SamRequest")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_DioRefuses")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Enable")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Start")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_HorsesVulnerable")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Deliver")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Failed")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Ping")
-    call ExecuteFunc("RegisterR11_Quest_Caravan_Complete")
-    call ExecuteFunc("RegisterR11_Quest_KillElmdor_Init")
-    call ExecuteFunc("RegisterR11_Quest_KillElmdor_Available")
-    call ExecuteFunc("RegisterR11_Quest_KillElmdor_Start")
-    call ExecuteFunc("RegisterR11_Quest_KillElmdor_Slain")
-    call ExecuteFunc("RegisterR11_Quest_KillElmdor_Complete")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_Init")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_Alert")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_Start")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_HeartDropped")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_Ping")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_HeartTaken")
-    call ExecuteFunc("RegisterR11_Quest_FireGolem_Complete")
-    call ExecuteFunc("RegisterR11_Quest_Brothers_Init")
-    call ExecuteFunc("RegisterR11_Quest_Brothers_Available")
-    call ExecuteFunc("RegisterR11_Quest_Brothers_Start")
-    call ExecuteFunc("RegisterR11_Quest_Brothers_Defeated")
-    call ExecuteFunc("RegisterR11_Quest_Brothers_Complete")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_Init")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_Start")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_Ping")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_GateRefused")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_GateAsk")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_GateOpen")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_CampFlank")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_CampAlerted")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_CampCleared")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_Freed")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_TimmyReturns")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_RescueFirst")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_Complete")
-    call ExecuteFunc("RegisterR11_Quest_SaveTimmy_CompleteAlt")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_Init")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_Available")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_Start")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_PingZack")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_PingWedge")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_GiveZack")
-    call ExecuteFunc("RegisterR11_Quest_DeliverLetter_Complete")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_Available")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_Start")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_ArrowDropped")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_Ping")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_ArrowTaken")
-    call ExecuteFunc("RegisterR11_Quest_Beastslayer_Complete")
-    call ExecuteFunc("RegisterR11_Quest_LadyNashj_Init")
-    call ExecuteFunc("RegisterR11_Quest_LadyNashj_Available")
-    call ExecuteFunc("RegisterR11_Quest_LadyNashj_Start")
-    call ExecuteFunc("RegisterR11_Quest_LadyNashj_Slain")
-    call ExecuteFunc("RegisterR11_Quest_LadyNashj_Complete")
-    call ExecuteFunc("RegisterR11_Forge_Bali_Init")
-    call ExecuteFunc("RegisterR11_Quest_Arcanium_Start")
-    call ExecuteFunc("RegisterR11_Quest_Arcanium_Taken")
-    call ExecuteFunc("RegisterR11_Quest_Arcanium_Complete")
-    call ExecuteFunc("RegisterR11_Forge_Bali_ItemGiven")
-    call ExecuteFunc("RegisterR11_Forge_Bali_ItemTaken")
-    call ExecuteFunc("RegisterR11_Forge_Bali_Refresh")
-    call ExecuteFunc("RegisterR11_Forge_Bali_ClearText")
-    call ExecuteFunc("RegisterR11_Forge_Bali_Craft")
-    call ExecuteFunc("RegisterR11_Forge_Bali_PsypherTalk")
-    call ExecuteFunc("RegisterR11_TargetPractice_Init")
-    call ExecuteFunc("RegisterR11_Quest_TargetPractice_Start")
-    call ExecuteFunc("RegisterR11_TargetPractice_Begin")
-    call ExecuteFunc("RegisterR11_TargetPractice_PingTargets")
-    call ExecuteFunc("RegisterR11_TargetPractice_TargetHit")
-    call ExecuteFunc("RegisterR11_TargetPractice_Timeout")
-    call ExecuteFunc("RegisterR11_TargetPractice_Fail")
-    call ExecuteFunc("RegisterR11_TargetPractice_Reward")
-    call ExecuteFunc("RegisterR11_Aisha_ArtemisTalk_Prepare")
-    call ExecuteFunc("RegisterR11_Aisha_ArtemisTale")
-    call ExecuteFunc("RegisterR11_HealingWaters_HideFamily")
-    call ExecuteFunc("RegisterR11_HealingWaters_Prepare")
-    call ExecuteFunc("RegisterR11_HealingWaters_Start")
-    call ExecuteFunc("RegisterR11_HealingWaters_PingVial")
-    call ExecuteFunc("RegisterR11_FillVial_Cast")
-    call ExecuteFunc("RegisterR11_Vial_EmptyOnUse")
-    call ExecuteFunc("RegisterR11_HealingWaters_DefiledVial")
-    call ExecuteFunc("RegisterR11_HealingWaters_Cure")
-    call ExecuteFunc("RegisterR11_HealingWaters_CureBlood")
-    call ExecuteFunc("RegisterR11_MithrilGolem_Prepare")
-    call ExecuteFunc("RegisterR11_MithrilGolem_Start")
-    call ExecuteFunc("RegisterR11_StrangeKey_Drop")
-    call ExecuteFunc("RegisterR11_StrangeKey_Ping")
-    call ExecuteFunc("RegisterR11_StrangeCage_Unlock")
-    call ExecuteFunc("RegisterR11_MithrilGolem_Death")
-    call ExecuteFunc("RegisterR11_GolemHeart_Ping")
-    call ExecuteFunc("RegisterR11_GolemHeart_Pickup")
-    call ExecuteFunc("RegisterR11_MithrilGolem_Activate")
-    call ExecuteFunc("RegisterR11_Naisha_Init")
-    call ExecuteFunc("RegisterR11_Naisha_Prepare")
-    call ExecuteFunc("RegisterR11_Naisha_Recruit")
-    call ExecuteFunc("RegisterR11_Naisha_Wounded")
-    call ExecuteFunc("RegisterR11_Naisha_AttackedRetreat")
-    call ExecuteFunc("RegisterR11_Naisha_Heal")
-    call ExecuteFunc("RegisterR11_Naisha_Death")
-    call ExecuteFunc("RegisterR11_Naisha_ArriveLothlorien")
-    call ExecuteFunc("RegisterR11_Naisha_Whirl")
-    call ExecuteFunc("RegisterR11_HydraEgg_Prepare")
-    call ExecuteFunc("RegisterR11_HydraEgg_Start")
-    call ExecuteFunc("RegisterR11_HydraEgg_Drop")
-    call ExecuteFunc("RegisterR11_HydraEgg_Pickup")
-    call ExecuteFunc("RegisterR11_HydraEgg_Ping")
-    call ExecuteFunc("RegisterR11_HydraEgg_Deliver")
-    call ExecuteFunc("RegisterR11_Elixir_Prepare")
-    call ExecuteFunc("RegisterR11_Elixir_Start")
-    call ExecuteFunc("RegisterR11_Elixir_Deliver")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Prepare")
-    call ExecuteFunc("RegisterR11_Storm_Greet")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Drop")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Pickup")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Ping")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Deliver")
-    call ExecuteFunc("RegisterR11_MysticalGlyph_Result")
-    call ExecuteFunc("RegisterR11_Nimphrodel_Start")
-    call ExecuteFunc("RegisterR11_Nimphrodel_Meet")
-    call ExecuteFunc("RegisterR11_Nimphrodel_Undomiel")
-    call ExecuteFunc("RegisterR11_CrystalBall_Drop")
-    call ExecuteFunc("RegisterR11_CrystalBall_Ping")
-    call ExecuteFunc("RegisterR11_CrystalBall_Pickup")
-    call ExecuteFunc("RegisterR11_Nimphrodel_Complete")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_Init")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_Link")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_Adria")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_Confront")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_Witness")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AttackLink")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AttackAdria")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_LinkDies")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AdriaWitchDead")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_BabaYagaAppears")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AdriaRestored")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AdriaReturn")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_LinkRestored")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_LinkReturn")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_AdriaDies")
-    call ExecuteFunc("RegisterR11_MysteriousCurse_BabaYagaDead")
-    call ExecuteFunc("RegisterR11_DefiledFountain_Prepare")
-    call ExecuteFunc("RegisterR11_DefiledFountain_Start")
-    call ExecuteFunc("RegisterR11_DefiledFountain_Hoof")
-    call ExecuteFunc("RegisterR11_DefiledFountain_PingBulb")
-    call ExecuteFunc("RegisterR11_DefiledFountain_BulbPickup")
-    call ExecuteFunc("RegisterR11_Quest_Fountain_Bulb")
-    call ExecuteFunc("RegisterR11_Quest_Fountain_Complete")
-    call ExecuteFunc("RegisterR11_Monica_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_OgreHunt_Start")
-    call ExecuteFunc("RegisterR11_Quest_OgreHunt_Count")
-    call ExecuteFunc("RegisterR11_Quest_OgreHunt_Complete")
-    call ExecuteFunc("RegisterR11_Clemydar_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_SeekDestroy_Start")
-    call ExecuteFunc("RegisterR11_Seekers_TrackEngaged")
-    call ExecuteFunc("RegisterR11_Seeker_Teleport_Cast")
-    call ExecuteFunc("RegisterR11_Quest_SeekDestroy_Count")
-    call ExecuteFunc("RegisterR11_Quest_SeekDestroy_Complete")
-    call ExecuteFunc("RegisterR11_Valera_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_WolfFangs_Start")
-    call ExecuteFunc("RegisterR11_Quest_WolfFangs_TurnIn")
-    call ExecuteFunc("RegisterR11_Melaniya_Setup")
-    call ExecuteFunc("RegisterR11_Quest_GreedIsGood_Start")
-    call ExecuteFunc("RegisterR11_GreedIsGood_DropStone")
-    call ExecuteFunc("RegisterR11_PortalStone_Ping")
-    call ExecuteFunc("RegisterR11_PortalStone_PickedUp")
-    call ExecuteFunc("RegisterR11_Quest_GreedIsGood_Complete")
-    call ExecuteFunc("RegisterR11_FallenRanger_Setup")
-    call ExecuteFunc("RegisterR11_Liniel_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_FallenRanger_Start")
-    call ExecuteFunc("RegisterR11_Boss_Yukale_Death_Revive")
-    call ExecuteFunc("RegisterR11_Boss_DarkRanger_Death")
-    call ExecuteFunc("RegisterR11_Quest_FallenRanger_Complete")
-    call ExecuteFunc("RegisterR11_Priscilla_Setup")
-    call ExecuteFunc("RegisterR11_Priscilla_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_SpiritOfWater_Start")
-    call ExecuteFunc("RegisterR11_Quest_SpiritOfWater_WaterGem")
-    call ExecuteFunc("RegisterR11_Vodyan_Death_DropTiara")
-    call ExecuteFunc("RegisterR11_Tiara_Ping")
-    call ExecuteFunc("RegisterR11_Quest_SpiritOfWater_Complete")
-    call ExecuteFunc("RegisterR11_Ramuh_Setup")
-    call ExecuteFunc("RegisterR11_Quest_TowerSummoning_Start")
-    call ExecuteFunc("RegisterR11_Quest_TowerSummoning_Complete")
-    call ExecuteFunc("RegisterR11_Tower_Summon_Register")
-    call ExecuteFunc("RegisterR11_Tower_Quezacotl_Unregister")
-    call ExecuteFunc("RegisterR11_Tower_Buy_RestoreMP")
-    call ExecuteFunc("RegisterR11_Tower_Summon_Brothers")
-    call ExecuteFunc("RegisterR11_Tower_Summon_Eden")
-    call ExecuteFunc("RegisterR11_Tower_Eden_Expire")
-    call ExecuteFunc("RegisterR11_Tower_Upgrade_Credit")
-    call ExecuteFunc("RegisterR11_HolyKnight_Setup")
-    call ExecuteFunc("RegisterR11_Agrias_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_HolyKnight_Start")
-    call ExecuteFunc("RegisterR11_Quest_HolyKnight_AskRamza")
-    call ExecuteFunc("RegisterR11_Boss_Agrias_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Agrias_Death_Lilith")
-    call ExecuteFunc("RegisterR11_Boss_Lilith_Death")
-    call ExecuteFunc("RegisterR11_EidolonChallenge_Setup")
-    call ExecuteFunc("RegisterR11_Brothers_Alert_Eidolons")
-    call ExecuteFunc("RegisterR11_Quest_EidolonChallenge_Start")
-    call ExecuteFunc("RegisterR11_Eidolon_Found_Reveal")
-    call ExecuteFunc("RegisterR11_Eidolon_Leviathan_Ambush")
-    call ExecuteFunc("RegisterR11_Quest_EidolonChallenge_Count")
-    call ExecuteFunc("RegisterR11_Quest_EidolonChallenge_Complete")
-    call ExecuteFunc("RegisterR11_Eden_Setup")
-    call ExecuteFunc("RegisterR11_Priscilla_ShowMarker_Eden")
-    call ExecuteFunc("RegisterR11_Quest_StrongestEidolon_Start")
-    call ExecuteFunc("RegisterR11_Eden_Summon")
-    call ExecuteFunc("RegisterR11_Eden_Despawn")
-    call ExecuteFunc("RegisterR11_Quest_StrongestEidolon_Complete")
-    call ExecuteFunc("RegisterR11_Brothers_Alert_Rematch")
-    call ExecuteFunc("RegisterR11_Quest_Rematch_Start")
-    call ExecuteFunc("RegisterR11_Quest_Rematch_Begin")
-    call ExecuteFunc("RegisterR11_Quest_Rematch_Complete")
-    call ExecuteFunc("RegisterR11_NorthernGod_Setup")
-    call ExecuteFunc("RegisterR11_PhantomDiary_Open")
-    call ExecuteFunc("RegisterR11_Quest_PhantomDiary_ShowAlberich")
-    call ExecuteFunc("RegisterR11_Quest_NorthernGod_Judgment")
-    call ExecuteFunc("RegisterR11_Judgment_Attack_Alberich")
-    call ExecuteFunc("RegisterR11_Judgment_Spare_Alberich")
-    call ExecuteFunc("RegisterR11_Boss_Odin_Intro")
-    call ExecuteFunc("RegisterR11_Boss_Odin_Escort_AI")
-    call ExecuteFunc("RegisterR11_Odin_Escort_Teleport")
-    call ExecuteFunc("RegisterR11_Odin_Leash_Arena")
-    call ExecuteFunc("RegisterR11_Boss_Odin_Death")
-    call ExecuteFunc("RegisterR11_LadyCurse_ShowMarker")
-    call ExecuteFunc("RegisterR11_Quest_AnnoyingMonster_Start")
-    call ExecuteFunc("RegisterR11_AnnoyingMonster_DropBelongings")
-    call ExecuteFunc("RegisterR11_Belongings_Ping")
-    call ExecuteFunc("RegisterR11_Belongings_PickedUp")
-    call ExecuteFunc("RegisterR11_LadyCurse_ReturnBelongings")
-    call ExecuteFunc("RegisterR11_ArenaResources_Prepare")
-    call ExecuteFunc("RegisterR11_ArenaResources_Start")
-    call ExecuteFunc("RegisterR11_ArenaResources_Escort")
-    call ExecuteFunc("RegisterR11_ArenaResources_ShipMove")
-    call ExecuteFunc("RegisterR11_ArenaResources_ShipDamaged")
-    call ExecuteFunc("RegisterR11_ArenaResources_ShipLost")
-    call ExecuteFunc("RegisterR11_ArenaResources_Complete")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_Prepare")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_Start")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_ShadowStoneSpawn")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_ShadowStoneTurnIn")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_GatherDust")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_PingDust")
-    call ExecuteFunc("RegisterR11_ArenaExpansion_Complete")
-    call ExecuteFunc("RegisterR11_HauntedTree_Init")
-    call ExecuteFunc("RegisterR11_HauntedTree_Prepare")
-    call ExecuteFunc("RegisterR11_HauntedTree_Start")
-    call ExecuteFunc("RegisterR11_HauntedTree_GhostRoam")
-    call ExecuteFunc("RegisterR11_HauntedTree_CaptureSpirit")
-    call ExecuteFunc("RegisterR11_HauntedTree_Complete")
-    call ExecuteFunc("RegisterR11_OakaIV_CutTrees")
-    call ExecuteFunc("RegisterR11_OakaIV_ReachNorthTree")
-    call ExecuteFunc("RegisterR11_OakaIV_ReachSouthTree")
-    call ExecuteFunc("RegisterR11_OakaIV_NorthTreeFelled")
-    call ExecuteFunc("RegisterR11_OakaIV_SouthTreeFelled")
-    call ExecuteFunc("RegisterR11_IceCache_Open")
-    call ExecuteFunc("RegisterR11_IceCache_SpearClaimed")
-    call ExecuteFunc("RegisterR11_DimensionalBoundary_Init")
-    call ExecuteFunc("RegisterR11_Shinra_TalkPrepare")
-    call ExecuteFunc("RegisterR11_DimensionalBoundary_Start")
-    call ExecuteFunc("RegisterR11_GuideBook_Search1")
-    call ExecuteFunc("RegisterR11_GuideBook_Search2")
-    call ExecuteFunc("RegisterR11_GuideBook_Search3")
-    call ExecuteFunc("RegisterR11_GuideBook_Search4")
-    call ExecuteFunc("RegisterR11_GuideBook_Search5")
-    call ExecuteFunc("RegisterR11_GuideBook_Search6")
-    call ExecuteFunc("RegisterR11_GuideBook_TurnIn")
-    call ExecuteFunc("RegisterR11_TropicalEssence_TurnIn")
-    call ExecuteFunc("RegisterR11_DeathSeeker_TurnIn")
-    call ExecuteFunc("RegisterR11_QuFrog_DrainTick")
-    call ExecuteFunc("RegisterR11_QuFrog_Death")
-    call ExecuteFunc("RegisterR11_FrogHead_TurnIn")
-    call ExecuteFunc("RegisterR11_DimensionalBoundary_OpenPortal")
-    call ExecuteFunc("RegisterR11_Zeromus_Encounter")
-    call ExecuteFunc("RegisterR11_Zeromus_Death")
-    call ExecuteFunc("RegisterR11_DimensionalBoundary_EmptyEnd")
-    call ExecuteFunc("RegisterR11_SkeletalDefense_MarkAttacker")
-    call ExecuteFunc("RegisterR11_SkeletalDefense_ClearDead")
-    call ExecuteFunc("RegisterR11_SkeletalDefense_Spawn")
-    call ExecuteFunc("RegisterR11_Maelstrom_Cast")
-    call ExecuteFunc("RegisterR11_Gilgamesh_Init")
-    call ExecuteFunc("RegisterR11_BridgeBattle_Prepare")
-    call ExecuteFunc("RegisterR11_BridgeBattle_Start")
-    call ExecuteFunc("RegisterR11_Gilgamesh_Appear")
-    call ExecuteFunc("RegisterR11_Gilgamesh_Phase2")
-    call ExecuteFunc("RegisterR11_Gilgamesh_Defeat")
-    call ExecuteFunc("RegisterR11_BridgeBattle_Complete")
-    call ExecuteFunc("RegisterR11_ShinrasPlan_Prepare")
-    call ExecuteFunc("RegisterR11_ShinrasPlan_Start")
-    call ExecuteFunc("RegisterR11_ShinrasPlan_WaterTurnIn")
-    call ExecuteFunc("RegisterR11_ShinrasPlan_ShardTurnIn")
-    call ExecuteFunc("RegisterR11_ShinrasPlan_Complete")
-    call ExecuteFunc("RegisterR11_AlmightyShinra_Arm")
-    call ExecuteFunc("RegisterR11_AlmightyShinra_Cinematic")
-    call ExecuteFunc("RegisterR11_AlmightyShinra_Spiral")
-    call ExecuteFunc("RegisterR11_AlmightyShinra_Defeat")
-    call ExecuteFunc("RegisterR11_FinalImpact_Cast")
-    call ExecuteFunc("RegisterR11_NightElf_TalkPrepare")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_Start")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_RingFade")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_Fail")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_Pickup")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_ShadowLie")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_ShadowTruth")
-    call ExecuteFunc("RegisterR11_Quest_LostMemories_Reunion")
-    call ExecuteFunc("RegisterR11_Memento_Ring_Compass")
-    call ExecuteFunc("RegisterR11_Quest_HarpyHunt_Start")
-    call ExecuteFunc("RegisterR11_Quest_HarpyHunt_Count")
-    call ExecuteFunc("RegisterR11_Quest_HarpyHunt_Reward")
-    call ExecuteFunc("RegisterR11_UltimaWeapon_Hide")
-    call ExecuteFunc("RegisterR11_Quest_UltimaWeapon_Start")
-    call ExecuteFunc("RegisterR11_Quest_UltimaWeapon_Slain")
-    call ExecuteFunc("RegisterR11_OmegaWeapon_Hide")
-    call ExecuteFunc("RegisterR11_Quest_OmegaWeapon_Start")
-    call ExecuteFunc("RegisterR11_OmegaWeapon_SpellRotation")
-    call ExecuteFunc("RegisterR11_Spell_TerraBreak")
-    call ExecuteFunc("RegisterR11_Quest_OmegaWeapon_Slain")
-    call ExecuteFunc("RegisterR11_NebraKing_Hide")
-    call ExecuteFunc("RegisterR11_NebraKing_Summon")
-    call ExecuteFunc("RegisterR11_NebraKing_Escape")
-    call ExecuteFunc("RegisterR11_Quest_KingOfSea_Slain")
-    call ExecuteFunc("RegisterR11_Quest_KingOfSea_Reward")
-    call ExecuteFunc("RegisterR11_Anabel_Appear")
-    call ExecuteFunc("RegisterR11_Quest_NebraAngler_Start")
-    call ExecuteFunc("RegisterR11_Quest_NebraAngler_Reward")
-    call ExecuteFunc("RegisterR11_McBurn_Arena_Hide")
-    call ExecuteFunc("RegisterR11_McBurn_Arena_Appear")
-    call ExecuteFunc("RegisterR11_Quest_TrialByFire_Start")
-    call ExecuteFunc("RegisterR11_Quest_TrialByFire_Begin")
-    call ExecuteFunc("RegisterR11_Quest_TrialByFire_Countdown")
-    call ExecuteFunc("RegisterR11_Quest_TrialByFire_Fail")
-    call ExecuteFunc("RegisterR11_Quest_TrialByFire_Survive")
-    call ExecuteFunc("RegisterR11_McBurn_Heat_Color")
-    call ExecuteFunc("RegisterR11_Spell_FlamesOfJudgment")
-    call ExecuteFunc("RegisterR11_Spell_Hellhounds")
-    call ExecuteFunc("RegisterR11_Spell_LivingFlame_Apply")
-    call ExecuteFunc("RegisterR11_Spell_LivingFlame_Tick")
-    call ExecuteFunc("RegisterR11_Spell_LivingFlame_Spread")
-    call ExecuteFunc("RegisterR11_BlazingDemon_Hide")
-    call ExecuteFunc("RegisterR11_BlazingDemon_Appear")
-    call ExecuteFunc("RegisterR11_Quest_BlazingDemon_Start")
-    call ExecuteFunc("RegisterR11_Quest_BlazingDemon_EndWeak")
-    call ExecuteFunc("RegisterR11_BlazingDemon_FullHeat")
-    call ExecuteFunc("RegisterR11_Quest_BlazingDemon_End")
-    call ExecuteFunc("RegisterR11_Quest_BlazingDemon_Escape")
-    call ExecuteFunc("RegisterR11_InfernalMountain_Hide")
-    call ExecuteFunc("RegisterR11_ScorchedEarth_Omen")
-    call ExecuteFunc("RegisterR11_Quest_52_Scorching")
-    call ExecuteFunc("RegisterR11_ScorchedEarth_EnterRegion")
-    call ExecuteFunc("RegisterR11_ScorchedEarth_TowerAttack")
-    call ExecuteFunc("RegisterR11_Quest_ScorchedEarth_Start")
-    call ExecuteFunc("RegisterR11_ScorchedEarth_HeatFade")
-    call ExecuteFunc("RegisterR11_ScorchedEarth_Barrier")
-    call ExecuteFunc("RegisterR11_McBurn_TrueForm_Reveal")
-    call ExecuteFunc("RegisterR11_McBurn_Arena_Return")
-    call ExecuteFunc("RegisterR11_McBurn_Volcano")
-    call ExecuteFunc("RegisterR11_Spell_IncandescentHellfire")
-    call ExecuteFunc("RegisterR11_Quest_ScorchedEarth_End")
-    call ExecuteFunc("RegisterR11_IcyRealm_Restore")
-    call ExecuteFunc("RegisterR11_Bansat_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_AdamantHunt_Start")
-    call ExecuteFunc("RegisterR11_AdamantHunt_Count")
-    call ExecuteFunc("RegisterR11_AdamantHunt_Reward")
-    call ExecuteFunc("RegisterR11_Kiros_Hide")
-    call ExecuteFunc("RegisterR11_Kiros_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_GnollHunt_Start")
-    call ExecuteFunc("RegisterR11_GnollHunt_Count")
-    call ExecuteFunc("RegisterR11_GnollHunt_Reward")
-    call ExecuteFunc("RegisterR11_Olga_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_FlanHunt_Start")
-    call ExecuteFunc("RegisterR11_FlanHunt_Count")
-    call ExecuteFunc("RegisterR11_FlanHunt_Fail")
-    call ExecuteFunc("RegisterR11_FlanHunt_Reward")
-    call ExecuteFunc("RegisterR11_Krjn_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_AncientHunt_Start")
-    call ExecuteFunc("RegisterR11_AncientHunt_Count")
-    call ExecuteFunc("RegisterR11_AncientHunt_Reward")
-    call ExecuteFunc("RegisterR11_Ward_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_WendigoHunt_Start")
-    call ExecuteFunc("RegisterR11_WendigoHunt_Count")
-    call ExecuteFunc("RegisterR11_WendigoHunt_Reward")
-    call ExecuteFunc("RegisterR11_Sarai_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_Tentacles_Start")
-    call ExecuteFunc("RegisterR11_Tentacles_Ambush")
-    call ExecuteFunc("RegisterR11_Tentacles_Yelp")
-    call ExecuteFunc("RegisterR11_Tentacles_Despawn")
-    call ExecuteFunc("RegisterR11_Ultros_Spawn")
-    call ExecuteFunc("RegisterR11_Ultros_SummonTentacle")
-    call ExecuteFunc("RegisterR11_Ultros_TentacleDeath")
-    call ExecuteFunc("RegisterR11_Ultros_Death")
-    call ExecuteFunc("RegisterR11_Tentacles_Fail")
-    call ExecuteFunc("RegisterR11_Tentacles_Reward")
-    call ExecuteFunc("RegisterR11_Kiemarl_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_DragonEgg_Start")
-    call ExecuteFunc("RegisterR11_DragonEgg_Ping")
-    call ExecuteFunc("RegisterR11_DragonEgg_PickUp")
-    call ExecuteFunc("RegisterR11_DragonEgg_Fail")
-    call ExecuteFunc("RegisterR11_DragonEgg_Reward")
-    call ExecuteFunc("RegisterR11_NameDiary_Prepare")
-    call ExecuteFunc("RegisterR11_NameDiary_Start")
-    call ExecuteFunc("RegisterR11_NameDiary_Ping")
-    call ExecuteFunc("RegisterR11_NameDiary_Chronicle")
-    call ExecuteFunc("RegisterR11_NameDiary_Reward")
-    call ExecuteFunc("RegisterR11_FogCheat_Reset")
-    call ExecuteFunc("RegisterR11_Cartographer_Prepare")
-    call ExecuteFunc("RegisterR11_Cartographer_Start")
-    call ExecuteFunc("RegisterR11_Cartographer_Update")
-    call ExecuteFunc("RegisterR11_Cartographer_Report")
-    call ExecuteFunc("RegisterR11_Cartographer_Fail")
-    call ExecuteFunc("RegisterR11_HuntGuest_DefaultKrjn")
-    call ExecuteFunc("RegisterR11_HuntFestival_Announce")
-    call ExecuteFunc("RegisterR11_HuntFestival_Invite")
-    call ExecuteFunc("RegisterR11_HuntFestival_Begin")
-    call ExecuteFunc("RegisterR11_HuntFestival_Teleport")
-    call ExecuteFunc("RegisterR11_HuntFestival_KeepAway")
-    call ExecuteFunc("RegisterR11_HuntFestival_Reorder")
-    call ExecuteFunc("RegisterR11_HuntFestival_Respawn")
-    call ExecuteFunc("RegisterR11_HuntFestival_Score")
-    call ExecuteFunc("RegisterR11_HuntFestival_End")
-    call ExecuteFunc("RegisterR11_Makenroh_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_DragonHunt_Start")
-    call ExecuteFunc("RegisterR11_DragonHunt_Count")
-    call ExecuteFunc("RegisterR11_DragonHunt_Reward")
-    call ExecuteFunc("RegisterR11_Billy_ShowTalkIcon")
-    call ExecuteFunc("RegisterR11_ChocoboRider_Start")
-    call ExecuteFunc("RegisterR11_ChocoboRider_StartWithChocobo")
-    call ExecuteFunc("RegisterR11_ChocoboRider_Progress")
-    call ExecuteFunc("RegisterR11_ChocoboRider_FoundTreasure")
-    call ExecuteFunc("RegisterR11_ChocoboRider_Reward")
-    call ExecuteFunc("RegisterR11_Graves_Reveal")
-    call ExecuteFunc("RegisterR11_Fafnir_Spawn")
-    call ExecuteFunc("RegisterR11_Fafnir_Patrol_Move")
-    call ExecuteFunc("RegisterR11_Fafnir_Patrol_Waypoint1")
-    call ExecuteFunc("RegisterR11_Fafnir_Patrol_Waypoint2")
-    call ExecuteFunc("RegisterR11_Fafnir_Patrol_Waypoint3")
-    call ExecuteFunc("RegisterR11_Fafnir_Patrol_Waypoint0")
-    call ExecuteFunc("RegisterR11_Fafnir_Attack_Delay")
-    call ExecuteFunc("RegisterR11_Fafnir_LowLife_Credit")
-    call ExecuteFunc("RegisterR11_Mimic_Reveal")
-    call ExecuteFunc("RegisterR11_Mimic_Death_Loot")
-    call ExecuteFunc("RegisterR11_Ziegfried_Mine_Arrive")
-    call ExecuteFunc("RegisterR11_Quest_ImperviousBeast_Start")
-    call ExecuteFunc("RegisterR11_Ziegfried_Advance_Order")
-    call ExecuteFunc("RegisterR11_Ziegfried_Attack_Fafnir")
-    call ExecuteFunc("RegisterR11_Fafnir_Battle_Begin")
-    call ExecuteFunc("RegisterR11_Ziegfried_Meltdown")
-    call ExecuteFunc("RegisterR11_Quest_ImperviousBeast_Complete")
-    call ExecuteFunc("RegisterR11_Barrens_Forge_Setup")
-    call ExecuteFunc("RegisterR11_Giott_FirstTalk")
-    call ExecuteFunc("RegisterR11_Mid_Letter_Give")
-    call ExecuteFunc("RegisterR11_Mid_Letter_Ping")
-    call ExecuteFunc("RegisterR11_Giott_Letter_Deliver")
-    call ExecuteFunc("RegisterR11_Dwarves_Disappear")
-    call ExecuteFunc("RegisterR11_Quest_DwarfDisappearance_Start")
-    call ExecuteFunc("RegisterR11_Valigarmanda_Confront")
-    call ExecuteFunc("RegisterR11_Valigarmanda_Wave_Cleared")
-    call ExecuteFunc("RegisterR11_Valigarmanda_Wave_Spawn")
-    call ExecuteFunc("RegisterR11_Valigarmanda_Wave_Reset")
-    call ExecuteFunc("RegisterR11_Valigarmanda_Death")
-    call ExecuteFunc("RegisterR11_Loki_Talk_Enable")
-    call ExecuteFunc("RegisterR11_Quest_OreSupplies_Start")
-    call ExecuteFunc("RegisterR11_Quest_OreSupplies_Deliver")
-    call ExecuteFunc("RegisterR11_Loki_Reforge_Unlock")
-    call ExecuteFunc("RegisterR11_Loki_Reforge_Offer")
-    call ExecuteFunc("RegisterR11_Loki_Reforge_Drop")
-    call ExecuteFunc("RegisterR11_Loki_Forge_Text_Clear")
-    call ExecuteFunc("RegisterR11_Loki_Reforge_Confirm")
-    call ExecuteFunc("RegisterR11_Watts_Talk_Enable")
-    call ExecuteFunc("RegisterR11_Quest_FieryWings_Start")
-    call ExecuteFunc("RegisterR11_Harpy_Matriarch_CallAid")
-    call ExecuteFunc("RegisterR11_Harpy_Trickster_Cleanup")
-    call ExecuteFunc("RegisterR11_Quest_FieryWings_Matriarch_Dead")
-    call ExecuteFunc("RegisterR11_Quest_FieryWings_Complete")
-    call ExecuteFunc("RegisterR11_Fireplace_Init")
-    call ExecuteFunc("RegisterR11_Quest_Cooking_Start")
-    call ExecuteFunc("RegisterR11_Quest_Cooking_Complete")
-    call ExecuteFunc("RegisterR11_Firewood_Light_Fireplace")
-    call ExecuteFunc("RegisterR11_Cooking_Recipes_UnlockAll")
-    call ExecuteFunc("RegisterR11_Siegfried_Hide_Init")
-    call ExecuteFunc("RegisterR11_Siegfried_Appear")
-    call ExecuteFunc("RegisterR11_Quest_DivineOrder_Start")
-    call ExecuteFunc("RegisterR11_Ziegfried_Confront")
-    call ExecuteFunc("RegisterR11_Ziegfried_Arena_Leash")
-    call ExecuteFunc("RegisterR11_Quest_DivineOrder_Complete")
-    call ExecuteFunc("RegisterR11_Monstrum_Ambush_Arm")
-    call ExecuteFunc("RegisterR11_Monstrum_Tentacle_Ambush")
-    call ExecuteFunc("RegisterR11_Monstrum_Summon")
-    call ExecuteFunc("RegisterR11_Monstrum_Ambush_Rearm")
-    call ExecuteFunc("RegisterR11_Monstrum_Phase_Check")
-    call ExecuteFunc("RegisterR11_Monstrum_DepthCharge")
-    call ExecuteFunc("RegisterR11_Monstrum_Tentacle_Cleanup")
-    call ExecuteFunc("RegisterR11_Quest_Monstrum_Complete")
-    call ExecuteFunc("RegisterR11_Mid_Crossbow_Talk_Enable")
-    call ExecuteFunc("RegisterR11_Quest_YoungEngineer_Start")
-    call ExecuteFunc("RegisterR11_Quest_YoungEngineer_Ping")
-    call ExecuteFunc("RegisterR11_Quest_Crossbow_NeedEnemies")
-    call ExecuteFunc("RegisterR11_Quest_Crossbow_Tested")
-    call ExecuteFunc("RegisterR11_Quest_Engineer_GetAdvice")
-    call ExecuteFunc("RegisterR11_Quest_YoungEngineer_Complete")
-    call ExecuteFunc("RegisterR11_Frakir_ShowMarker")
-    call ExecuteFunc("RegisterR11_Frakir_Lore_Talk")
-    call ExecuteFunc("RegisterR11_Frakir_NextMarker")
-    call ExecuteFunc("RegisterR11_Quest_SpiritHunt_Start")
-    call ExecuteFunc("RegisterR11_Quest_SpiritHunt_Count")
-    call ExecuteFunc("RegisterR11_Quest_SpiritHunt_Complete")
-    call ExecuteFunc("RegisterR11_Quest_FishyDeals_Start")
-    call ExecuteFunc("RegisterR11_Quest_FishyDeals_Complete")
-    call ExecuteFunc("RegisterR11_Elysium_Prepare")
-    call ExecuteFunc("RegisterR11_Elysium_AssignLegends")
-    call ExecuteFunc("RegisterR11_Andre_Elysium_Reveal")
-    call ExecuteFunc("RegisterR11_Andre_Legendary_Rules")
-    call ExecuteFunc("RegisterR11_Elysium_MarkerTick")
-    call ExecuteFunc("RegisterR11_Legend_Squire_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Knight_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Archer_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Monk_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Thief_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Geomancer_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Samurai_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Lancer_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Ninja_Talk")
-    call ExecuteFunc("RegisterR11_Legend_HolySwordsman_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Chemist_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Wizard_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Priest_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Summoner_Talk")
-    call ExecuteFunc("RegisterR11_Legend_TimeMage_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Mediator_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Oracle_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Calculator_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Prophet_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Sorcerer_Talk")
-    call ExecuteFunc("RegisterR11_Legend_DarkKnight_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Necromancer_Talk")
-    call ExecuteFunc("RegisterR11_Legend_Freelancer_Talk")
-    call ExecuteFunc("RegisterR11_Spring_Of_Life_Ritual")
-    call ExecuteFunc("RegisterR11_Promotion_Award_Random")
-    call ExecuteFunc("RegisterR11_Celestium_Trade")
-    call ExecuteFunc("RegisterR11_Lancer_Task_Dragons")
-    call ExecuteFunc("RegisterR11_Maechen_Lore_Init")
-    call ExecuteFunc("RegisterR11_Info_Item_Show_Lore")
-    call ExecuteFunc("RegisterR11_Kesha_Stones_Spawn")
-    call ExecuteFunc("RegisterR11_Kesha_Return_Stones")
-    call ExecuteFunc("RegisterR11_Kesha_Subscription_Toggle")
-    call ExecuteFunc("RegisterR11_Boco_Feed_Greens")
-    call ExecuteFunc("RegisterR11_Boco_Meet_Again")
-    call ExecuteFunc("RegisterR11_Fire_Pawn_Nectar")
-    call ExecuteFunc("RegisterR11_Fire_Pawn_SpiritPotion")
-    call ExecuteFunc("RegisterR11_Fire_Pawn_BloodEther")
-    call ExecuteFunc("RegisterR11_Fire_Pawn_HeroDrink")
-    call ExecuteFunc("RegisterR11_Fire_Reward_Megalixir")
-    call ExecuteFunc("RegisterR11_Megalixir_Remove_Stock")
-    call ExecuteFunc("RegisterR11_Wanderer_Quest_Init")
-    call ExecuteFunc("RegisterR11_Wanderer_Spawn")
-    call ExecuteFunc("RegisterR11_Wanderer_Request")
-    call ExecuteFunc("RegisterR11_Wanderer_Give_Item")
-    call ExecuteFunc("RegisterR11_NpcTrio_Group_Init")
-    call ExecuteFunc("RegisterR11_NpcTrio_Turn_Face")
-    call ExecuteFunc("RegisterR11_Elemental_Setup")
-    call ExecuteFunc("RegisterR11_Elemental_Spawn")
-    call ExecuteFunc("RegisterR11_Elemental_Wander")
-    call ExecuteFunc("RegisterR11_Elemental_Aggro")
-    call ExecuteFunc("RegisterR11_Elemental_Assist_Attack")
-    call ExecuteFunc("RegisterR11_Elemental_Death")
-    call ExecuteFunc("RegisterR11_CowKing_Hide")
-    call ExecuteFunc("RegisterR11_CowPortal_Open")
-    call ExecuteFunc("RegisterR11_CowPortal_Spawn_Cows")
-    call ExecuteFunc("RegisterR11_Bernkastel_State_Reset")
-    call ExecuteFunc("RegisterR11_Bernkastel_Try_Spawn")
-    call ExecuteFunc("RegisterR11_Bernkastel_First_Talk")
-    call ExecuteFunc("RegisterR11_Bernkastel_Second_Talk")
-    call ExecuteFunc("RegisterR11_Bernkastel_Hint_Talk")
-    call ExecuteFunc("RegisterR11_Bernkastel_Final_Talk")
-    call ExecuteFunc("RegisterR11_Bernkastel_Despawn")
-    call ExecuteFunc("RegisterR11_Miracle_Piece_Use")
-    call ExecuteFunc("RegisterR11_Npc_Hints_Create")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Woman")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Reno")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Rude")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Footman")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Swordsman")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Child")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Archer")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Knight")
-    call ExecuteFunc("RegisterR11_Npc_Talk_ChildChocobo")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Kenarius")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Nimphrodel")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Sentry")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Kesha")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Peasant")
-    call ExecuteFunc("RegisterR11_Npc_Talk_PeasantHarvest")
-    call ExecuteFunc("RegisterR11_Npc_Talk_MineStory")
-    call ExecuteFunc("RegisterR11_Npc_Fire_WantMore")
-    call ExecuteFunc("RegisterR11_Npc_Fire_Thanks")
-    call ExecuteFunc("RegisterR11_Npc_Priscilla_SummonEden")
-    call ExecuteFunc("RegisterR11_Npc_Talk_LinkGuard")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Jack")
-    call ExecuteFunc("RegisterR11_Npc_Talk_ArcherWall")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Ruksel")
-    call ExecuteFunc("RegisterR11_Npc_Thorn_BattleWait")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Sigroon")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Quincy")
-    call ExecuteFunc("RegisterR11_Npc_Talk_Gravedigger")
-    call ExecuteFunc("RegisterR11_GrandVampire_Hide")
-    call ExecuteFunc("RegisterR11_GrandVampire_Awaken")
-    call ExecuteFunc("RegisterR11_Ghoul_Group_Cleanup")
-    call ExecuteFunc("RegisterR11_Ghoul_Master_Decay")
-    call ExecuteFunc("RegisterR11_GrandVampire_Death")
-    call ExecuteFunc("RegisterR11_Ghoul_Master_Spawn")
-    call ExecuteFunc("RegisterR11_Boss_Drop_TomeOfLife")
-    call ExecuteFunc("RegisterR11_Boss_Drop_CrushersMace")
-    call ExecuteFunc("RegisterR11_Boss_Drop_FurArmor")
-    call ExecuteFunc("RegisterR11_MagicUrn_Setup")
-    call ExecuteFunc("RegisterR11_Urn_Guardians_Count")
-    call ExecuteFunc("RegisterR11_MagicUrn_Drop")
-    call ExecuteFunc("RegisterR11_MagicUrn_Open")
-    call ExecuteFunc("RegisterR11_Hades_BlackCauldron")
-    call ExecuteFunc("RegisterR11_MagicUrn_Boss_Death")
-    call ExecuteFunc("RegisterR11_Nightmare_Spawn")
-    call ExecuteFunc("RegisterR11_Nightmare_Despawn")
-    call ExecuteFunc("RegisterR11_Nightmare_Death_Charge")
-    call ExecuteFunc("RegisterR11_Nightmare_Roam")
-    call ExecuteFunc("RegisterR11_Nightmare_Death")
-    call ExecuteFunc("RegisterR11_Ripper_Charge_Buffs")
-    call ExecuteFunc("RegisterR11_Ripper_Mass_Dispel")
-    call ExecuteFunc("RegisterR11_Ripper_Condemnation")
-    call ExecuteFunc("RegisterR11_Ripper_Death_Circle")
-    call ExecuteFunc("RegisterR11_MagicGodToken_Use")
-    call ExecuteFunc("RegisterR11_WarringTriad_Freeze")
-    call ExecuteFunc("RegisterR11_RingOfDarkness_Init")
-    call ExecuteFunc("RegisterR11_HolyAnkh_Waygate")
-    call ExecuteFunc("RegisterR11_Glyph_Area_Enter")
-    call ExecuteFunc("RegisterR11_Summon_Item_Dropped")
-    call ExecuteFunc("RegisterR11_Arena_Enter_Eject")
-    call ExecuteFunc("RegisterR11_Arena_Leave_Player")
-    call ExecuteFunc("RegisterR11_Arena_Abandoned_Reset")
-    call ExecuteFunc("RegisterR11_Boss_Penance_Summon")
-    call ExecuteFunc("RegisterR11_Boss_Penance_Judgment_Loop")
-    call ExecuteFunc("RegisterR11_Boss_Penance_JudgmentDay_Cast")
-    call ExecuteFunc("RegisterR11_Boss_Penance_JudgmentDay_Damage")
-    call ExecuteFunc("RegisterR11_Boss_Penance_Arm_Death")
-    call ExecuteFunc("RegisterR11_Boss_Penance_Death")
-    call ExecuteFunc("RegisterR11_Boss_Penance_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_Gilgamesh_Summon")
-    call ExecuteFunc("RegisterR11_Boss_Gilgamesh_NextSword")
-    call ExecuteFunc("RegisterR11_Boss_Gilgamesh_Death")
-    call ExecuteFunc("RegisterR11_Boss_Gilgamesh_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Summon")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Ultimates")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Ghis_AI")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Gabranth_AI")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Zargabaath_AI")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Drace_AI")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Death")
-    call ExecuteFunc("RegisterR11_Boss_Judges_UseMegalixir")
-    call ExecuteFunc("RegisterR11_Boss_Judge_ImperialRage")
-    call ExecuteFunc("RegisterR11_Boss_Judge_Sentence")
-    call ExecuteFunc("RegisterR11_Boss_Judge_ChainMagick")
-    call ExecuteFunc("RegisterR11_Boss_Judges_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_BlackDevil_Summon")
-    call ExecuteFunc("RegisterR11_Boss_BlackDevil_Death")
-    call ExecuteFunc("RegisterR11_Boss_BlackDevil_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Summon")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Demon1_Death")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Demon2_Death")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Demon1_Spawn")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Demon2_Spawn")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Mediarahan")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Death")
-    call ExecuteFunc("RegisterR11_Spell_HeatWave_Cast")
-    call ExecuteFunc("RegisterR11_Spell_JavelinRain_Cast")
-    call ExecuteFunc("RegisterR11_Spell_XerosBeat_Cast")
-    call ExecuteFunc("RegisterR11_Spell_GayaRage_Start")
-    call ExecuteFunc("RegisterR11_Spell_GayaRage_Ring")
-    call ExecuteFunc("RegisterR11_Spell_GayaRage_Damage")
-    call ExecuteFunc("RegisterR11_Boss_DemiFiend_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_Summon")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_Death")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_FactStrike")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_PingPong")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_Orb_Bounce")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_Orb_Attack")
-    call ExecuteFunc("RegisterR11_Boss_DarkFact_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_Shinryu_Warmech_Summon")
-    call ExecuteFunc("RegisterR11_Arena_Duel_AI")
-    call ExecuteFunc("RegisterR11_Spell_Homing_Rockets")
-    call ExecuteFunc("RegisterR11_Spell_Satellite_Beam")
-    call ExecuteFunc("RegisterR11_Spell_Satellite_Beam_InGroup")
-    call ExecuteFunc("RegisterR11_Spell_Satellite_Beam_Death")
-    call ExecuteFunc("RegisterR11_Spell_Wave_Cannon")
-    call ExecuteFunc("RegisterR11_Spell_Meteor_Wide")
-    call ExecuteFunc("RegisterR11_Arena_Omega_Absorbs")
-    call ExecuteFunc("RegisterR11_Arena_Shinryu_Absorbs")
-    call ExecuteFunc("RegisterR11_Arena_Duel_Ascend")
-    call ExecuteFunc("RegisterR11_Arena_Duel_Victory")
-    call ExecuteFunc("RegisterR11_Arena_Duel_Cleanup")
-    call ExecuteFunc("RegisterR11_Boss_Ozma_Spawn")
-    call ExecuteFunc("RegisterR11_Boss_Ozma_Barrier")
-    call ExecuteFunc("RegisterR11_Spell_Ozmeteor")
-    call ExecuteFunc("RegisterR11_Boss_Ozma_Death")
-    call ExecuteFunc("RegisterR11_Boss_Ozma_Cleanup")
-    call ExecuteFunc("RegisterR11_Spell_Water")
-    call ExecuteFunc("RegisterR11_Spell_Quake")
-    call ExecuteFunc("RegisterR11_Spell_Aero")
-    call ExecuteFunc("RegisterR11_Spell_Demi")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Watera")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Wateraga")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Quakera")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Quakeraga")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Demira")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Demiga")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Aerora")
-    call ExecuteFunc("RegisterR11_Item_Upgrade_Aeroga")
-    call ExecuteFunc("RegisterR11_Cmd_Music")
-    call ExecuteFunc("RegisterR11_Boss_Defeat_Announce")
-    call ExecuteFunc("RegisterR11_Multiboard_Create")
-    call ExecuteFunc("RegisterR11_Multiboard_Refresh")
-    call ExecuteFunc("RegisterR11_Multiboard_Title")
-    call ExecuteFunc("RegisterR11_Cheat_Detect_Init")
-    call ExecuteFunc("RegisterR11_Cheat_Detect_Fog")
-    call ExecuteFunc("RegisterR11_Cheat_Detect_Invuln")
-    call ExecuteFunc("RegisterR11_Cheat_Detect_Resources")
-    call ExecuteFunc("RegisterR11_Cheat_Detect_Mana")
-    call ExecuteFunc("RegisterR11_Cheat_Punish")
-    call ExecuteFunc("RegisterR11_Cmd_Load_Code")
+    call ExecuteFunc("RegisterTriggers_Craft") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Herb") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Shimmerweed") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Thunderbloom") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Item_Part1") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Armory_Part2") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Potion") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_HeroDrink") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Toss") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Remedy") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Food") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Auto_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Gold_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Rune") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Monograph") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Item_Part2") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Hero_Part3") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_HeroMedicine") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Cloak") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_ExcaliburII") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagicVault") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Book") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_ManaRefund") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Recharge") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_LionHeart") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Angbar") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MetaFragment") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Masakados") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_BagOfTricks") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Firefly") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Deathbringer") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Gaya") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Transport") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Cam") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_TextSpeed") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Claim") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagDef") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_AtkSpd") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Roll") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_TextInstant") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_TextSkip") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Suicide") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_SaveDebug") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Levels") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Handicap") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Teleporters") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Unstuck") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Autosave") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_BattleLog") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_AbilityText") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_DamageText") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Clear") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Pvp") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Number") // 01 Shared helpers
+    call ExecuteFunc("RegisterTriggers_War") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Peace") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Chemist") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Molotov") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Goliath") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cooldown") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Bio") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ultima_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Death_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Teleport_Part1") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Mana_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Dispel") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Remove") // 01 Shared helpers
+    call ExecuteFunc("RegisterTriggers_Dismantle") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Wirts") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Auto_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Mechanical") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Chainsaw") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Momentum") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Defend") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Knot") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Cover") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Accumulate") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Sentinel") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Armor") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Runic") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Shock") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Assault") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Arrowwave") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Animal") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Aim") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Myriad") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Mana_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Fire_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ice") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Tornado") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Esuna") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Regen_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Protect") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Shell") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Virus") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Haste") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Meteor") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Immobilize") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Quick") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Wave") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Chakra") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Rave") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Inner") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Steal") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Fan") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Stealth") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Evade") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Counter") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Transfusion") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Summon_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Living") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Shiva") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ifrit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cyclops") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Bahamut") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Summon_Part3") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Lancer_Part1") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Geomancer") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Mediator") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Oracle_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Bravery_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Oracle_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Bravery_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Faith") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Oracle_Part3") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Samurai") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Ninja") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_BattleWard") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Calculator") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Prophet") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_TwoHanded") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Heal") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_HolySwordsman") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_HolyPower") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Sleep") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Sorcerer") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Darkness") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MinusStrike") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DrainAttack") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Necro") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Osmose") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Oblivion") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Regen_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Blizzard") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Aqualung") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Gust") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Tremor") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_EarthSmash") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_ShockSmash") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Manablow") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Berserk") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Devour") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_EveryonesGrudge") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Needles") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cactuar") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_BadBreath") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_FireUnit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_FireAura") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_ShockAura") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Chocobo_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Kalm") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_News_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Sale") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_News_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Shadow") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Arena_Part2") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Teleport_Part2") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Arena_Part3") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Valfodr") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Numerus") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_FadingNotes") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Bazaar") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_DeathSeeker_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Materia") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Hunt") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Makenroh_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Tonberry") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Demon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Provoke") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Malboro") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_PhantomDancer") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Exdeath") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Mephorash") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Vendetta") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Trickster") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Melaiduma") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_ThunderRush") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Vortex") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Chocobo_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_GatherServants") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkServant") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_BlackPearl") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Rabite") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Verci") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_WindShear") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spartacus") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Okuu") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Hypernova") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Fishing_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Gilgamesh_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Fishing_Part2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_AbilityTags") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Hero_Part4") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_PlayerTimer1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer2") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer3") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer4") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer5") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer6") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer7") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_PlayerTimer8") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_DarkEidolons") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DarkEidolon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkShiva") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkIfrit") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DarkGolem") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkCyclops") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkTitan") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkBahamut") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DarkLeviathan") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkQuezacotl") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkPhoenix") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DarkBrothers") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DarkEden") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Init_Part2") // 02 Map setup
+    call ExecuteFunc("RegisterTriggers_QuestUnits") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_QuestTotal") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Cid_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Mid_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_BanditLord") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_GoblinChief") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Artifact") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_BerserkGuard") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cid_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_AoMadoushi") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Turks") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Cine") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_World") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Ping") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Loot_Part2") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Loop") // 01 Shared helpers
+    call ExecuteFunc("RegisterTriggers_Portal") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Talk_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part3") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Talk_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part4") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Spawn_Part2") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Boss_Part1") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ghost") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ally") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_KalmSiege") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_KalmSiege1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_KalmSiege2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_KalmSiege3") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Chaos_Part1") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_ForestSpirit") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_SpiritScroll") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_VoiceOfForest") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Chaosjet") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Chaos_Part2") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Boss_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Shemhazai_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Meliadoul") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part5") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_OrcBase_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part3") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_OrcBase_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Shemhazai_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Cuchulainn") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_SoulSplit") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Boss_Part4") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Exodus_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_PriestX") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part6") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Exodus_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Cometeorite") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Famfrit") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Dana") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part7") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part5") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Alma") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ultima_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Zodiark_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Montblanc") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part8") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_GodDragon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Zodiark_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_IcyRealm") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Celeborn") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Talon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Gate") // 08 World and travel
+    call ExecuteFunc("RegisterTriggers_Boss_Part6") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ambush") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part3") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Gafgarion") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part7") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_IceAge") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ending") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_TrueIceAge") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Epilogue") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_QuestCount") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part9") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Caravan") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Forge") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_TargetPractice") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Aisha") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_HealingWaters") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_FillVial") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Vial") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_MithrilGolem") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_StrangeKey") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_StrangeCage") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_GolemHeart") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Naisha") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_HydraEgg") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Elixir") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_MysticalGlyph_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Storm") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_MysticalGlyph_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Nimphrodel") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_CrystalBall") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_MysteriousCurse") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DefiledFountain") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part10") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Monica") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Clemydar") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Seekers") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Seeker") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Valera") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Melaniya") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_GreedIsGood") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_PortalStone") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_FallenRanger") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Liniel") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part8") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Priscilla") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Vodyan") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Tiara") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ramuh") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Quest_Part11") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Tower") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_HolyKnight") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Agrias") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part9") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_EidolonChallenge") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Brothers") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Eidolon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Quest_Part12") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Eden") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_NorthernGod") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_PhantomDiary") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part13") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Judgment") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part10") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Odin") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_LadyCurse") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part14") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_AnnoyingMonster") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Belongings") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_ArenaResources") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_ArenaExpansion") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_HauntedTree") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_OakaIV") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_IceCache") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DimensionalBoundary_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Shinra") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_GuideBook") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_TropicalEssence") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DeathSeeker_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_QuFrog") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_FrogHead") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Zeromus") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DimensionalBoundary_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_SkeletalDefense") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Maelstrom") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_BridgeBattle") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Gilgamesh_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_ShinrasPlan") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_AlmightyShinra") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_FinalImpact") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_NightElf") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part15") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Memento") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_UltimaWeapon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_OmegaWeapon") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part4") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_NebraKing") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Anabel") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_McBurn_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_BlazingDemon") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part16") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_InfernalMountain") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_ScorchedEarth") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_McBurn_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Bansat") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_AdamantHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Kiros") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_GnollHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Olga") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_FlanHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Krjn") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_AncientHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ward") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_WendigoHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Sarai") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Tentacles") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ultros") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Kiemarl") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_DragonEgg") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_NameDiary") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_FogCheat") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cartographer") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_HuntGuest") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_HuntFestival") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Makenroh_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_DragonHunt") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Billy") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_ChocoboRider") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Graves") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Fafnir_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Mimic") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Ziegfried_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part17") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Fafnir_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Barrens") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Giott") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Mid_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Dwarves") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Valigarmanda") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Loki_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part18") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Loki_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Watts") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part19") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Harpy") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Fireplace") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Firewood") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Cooking") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Siegfried") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ziegfried_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part20") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Monstrum") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Frakir") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Quest_Part21") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Elysium") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Andre") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Legend") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Spring") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Promotion") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Celestium") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Lancer_Part2") // 03 Jobs and progression
+    call ExecuteFunc("RegisterTriggers_Maechen") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Info") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Kesha") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boco") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Fire_Part2") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Megalixir") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Wanderer") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_NpcTrio") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Elemental") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_CowKing") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_CowPortal") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Bernkastel") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Miracle") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Npc") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_GrandVampire_Part1") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Ghoul") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_GrandVampire_Part2") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_Boss_Part11") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagicUrn_Part1") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Urn") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagicUrn_Part2") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Hades") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Nightmare") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Ripper") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_MagicGodToken") // 06 Quests and story
+    call ExecuteFunc("RegisterTriggers_WarringTriad") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_RingOfDarkness") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_HolyAnkh") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Glyph") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Summon_Part4") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Arena_Part4") // 07 Hunts and encounters
+    call ExecuteFunc("RegisterTriggers_Boss_Part12") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part5") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Boss_Part13") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Spell_Part6") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Item_Part3") // 05 Items crafting and shops
+    call ExecuteFunc("RegisterTriggers_Cmd_Part1") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Boss_Part14") // 04 Combat and abilities
+    call ExecuteFunc("RegisterTriggers_Multiboard") // 09 Player features
+    call ExecuteFunc("RegisterTriggers_Cheat") // 09 Player features
+    // Runs here, between registration blocks, exactly where the original startup ran it.
     call Load_InitFileCommands()
-    call ExecuteFunc("RegisterR11_Cmd_Load_Armory")
+    call ExecuteFunc("RegisterTriggers_Cmd_Part2") // 09 Player features
+    // Runs here, between registration blocks, exactly where the original startup ran it.
     call Save_InitCommands()
-    call ExecuteFunc("RegisterR11_Load_Warn_5Min")
-    call ExecuteFunc("RegisterR11_Load_Disable")
+    call ExecuteFunc("RegisterTriggers_Load") // 09 Player features
+endfunction
+
+// Startup step 11: runs the "map initialization" triggers (quest setup, hiding NPCs, etc.).
+function Startup_RunMapInitTriggers takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Music_Prelude)
     call ConditionalTriggerExecute(gg_trg_Init_AbilityLevelShift)
     call ConditionalTriggerExecute(gg_trg_Init_PlayerForces)
@@ -3759,6 +1962,26 @@ function main_old takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_GrandVampire_Hide)
     call ConditionalTriggerExecute(gg_trg_MagicUrn_Setup)
     set udg_FixChemistItemHash=InitHashtable()
+endfunction
+
+// ==========================================================================================
+// main_old: the map's startup sequence.
+// MainDeprotected (a GUI trigger with a Map Initialization event) calls this once. Each step
+// is a function above, run in this exact order. Keep the order: later steps use what earlier
+// steps create (units, sounds, variables, triggers).
+// ==========================================================================================
+function main_old takes nothing returns nothing
+    call Startup_MapEnvironment()
+    call Startup_CreateSounds()
+    call Startup_ApplyTechRules()
+    call Startup_CreateDestructables()
+    call Startup_CreateUnits()
+    call Startup_BlizzardSupport()
+    call Startup_InitSharedSystems()
+    call Startup_LegacySpellTriggers()
+    call Startup_InitGameplayState()
+    call Startup_RegisterTriggers()
+    call Startup_RunMapInitTriggers()
 endfunction
 
 

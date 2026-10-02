@@ -289,35 +289,35 @@ function Trig_Elysium_MarkerTick_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Elysium automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Elysium (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Elysium takes nothing returns nothing
 endfunction
-function RegisterR11_Elysium_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elysium_Prepare takes nothing returns nothing
     set gg_trg_Elysium_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Elysium_Prepare,function Trig_Elysium_Prepare_Actions)
 endfunction
-function RegisterR11_Elysium_AssignLegends takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elysium_AssignLegends takes nothing returns nothing
     set gg_trg_Elysium_AssignLegends=CreateTrigger()
     call DisableTrigger(gg_trg_Elysium_AssignLegends)
     call TriggerAddAction(gg_trg_Elysium_AssignLegends,function Trig_Elysium_AssignLegends_Actions)
 endfunction
-function RegisterR11_Elysium_MarkerTick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elysium_MarkerTick takes nothing returns nothing
     set gg_trg_Elysium_MarkerTick=CreateTrigger()
     call DisableTrigger(gg_trg_Elysium_MarkerTick)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Elysium_MarkerTick,udg_UnitUpdateTimer)
     call TriggerAddAction(gg_trg_Elysium_MarkerTick,function Trig_Elysium_MarkerTick_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Elysium takes nothing returns nothing
+    call Register_Elysium_Prepare()
+    call Register_Elysium_AssignLegends()
+    call Register_Elysium_MarkerTick()
+endfunction
 
 endlibrary

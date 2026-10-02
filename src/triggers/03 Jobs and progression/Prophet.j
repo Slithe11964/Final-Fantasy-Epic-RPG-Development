@@ -394,76 +394,72 @@ function Trig_Prophet_Infinity_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Prophet automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Prophet (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Prophet takes nothing returns nothing
 endfunction
-function RegisterR11_Prophet_Pray_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_Pray_Start takes nothing returns nothing
     set gg_trg_Prophet_Pray_Start=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_Pray_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Prophet_Pray_Start,Condition(function Trig_Prophet_Pray_Start_Conditions))
     call TriggerAddAction(gg_trg_Prophet_Pray_Start,function Trig_Prophet_Pray_Start_Actions)
 endfunction
-function RegisterR11_Prophet_Pray_Stop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_Pray_Stop takes nothing returns nothing
     set gg_trg_Prophet_Pray_Stop=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_Pray_Stop,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_Pray_Stop,EVENT_PLAYER_UNIT_SPELL_FINISH)
     call TriggerAddCondition(gg_trg_Prophet_Pray_Stop,Condition(function Trig_Prophet_Pray_Stop_Conditions))
     call TriggerAddAction(gg_trg_Prophet_Pray_Stop,function Trig_Prophet_Pray_Stop_Actions)
 endfunction
-function RegisterR11_Prophet_Pray_Tick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_Pray_Tick takes nothing returns nothing
     set gg_trg_Prophet_Pray_Tick=CreateTrigger()
     call DisableTrigger(gg_trg_Prophet_Pray_Tick)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Prophet_Pray_Tick,1.)
     call TriggerAddCondition(gg_trg_Prophet_Pray_Tick,Condition(function Trig_Prophet_Pray_Tick_Conditions))
     call TriggerAddAction(gg_trg_Prophet_Pray_Tick,function Trig_Prophet_Pray_Tick_Actions)
 endfunction
-function RegisterR11_Prophet_Pray_Heal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_Pray_Heal takes nothing returns nothing
     set gg_trg_Prophet_Pray_Heal=CreateTrigger()
     call DisableTrigger(gg_trg_Prophet_Pray_Heal)
     call TriggerAddCondition(gg_trg_Prophet_Pray_Heal,Condition(function Trig_Prophet_Pray_Heal_Conditions))
     call TriggerAddAction(gg_trg_Prophet_Pray_Heal,function Trig_Prophet_Pray_Heal_Actions)
 endfunction
-function RegisterR11_Prophet_BlessingOfLight takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_BlessingOfLight takes nothing returns nothing
     set gg_trg_Prophet_BlessingOfLight=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_BlessingOfLight,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Prophet_BlessingOfLight,Condition(function Trig_Prophet_BlessingOfLight_Conditions))
     call TriggerAddAction(gg_trg_Prophet_BlessingOfLight,function Trig_Prophet_BlessingOfLight_Actions)
 endfunction
-function RegisterR11_Prophet_DivineShield takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_DivineShield takes nothing returns nothing
     set gg_trg_Prophet_DivineShield=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_DivineShield,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Prophet_DivineShield,Condition(function Trig_Prophet_DivineShield_Conditions))
     call TriggerAddAction(gg_trg_Prophet_DivineShield,function Trig_Prophet_DivineShield_Actions)
 endfunction
-function RegisterR11_Prophet_Infinity takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Prophet_Infinity takes nothing returns nothing
     set gg_trg_Prophet_Infinity=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Prophet_Infinity,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Prophet_Infinity,Condition(function Trig_Prophet_Infinity_Conditions))
     call TriggerAddAction(gg_trg_Prophet_Infinity,function Trig_Prophet_Infinity_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Prophet takes nothing returns nothing
+    call Register_Prophet_Pray_Start()
+    call Register_Prophet_Pray_Stop()
+    call Register_Prophet_Pray_Tick()
+    call Register_Prophet_Pray_Heal()
+    call Register_Prophet_BlessingOfLight()
+    call Register_Prophet_DivineShield()
+    call Register_Prophet_Infinity()
+endfunction
 
 endlibrary

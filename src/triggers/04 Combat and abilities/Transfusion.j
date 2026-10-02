@@ -139,20 +139,22 @@ function Trig_Transfusion_Cast_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Transfusion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Transfusion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Transfusion takes nothing returns nothing
 endfunction
-function RegisterR11_Transfusion_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Transfusion_Cast takes nothing returns nothing
     set gg_trg_Transfusion_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Transfusion_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Transfusion_Cast,Condition(function Trig_Transfusion_Cast_Conditions))
     call TriggerAddAction(gg_trg_Transfusion_Cast,function Trig_Transfusion_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Transfusion takes nothing returns nothing
+    call Register_Transfusion_Cast()
+endfunction
 
 endlibrary

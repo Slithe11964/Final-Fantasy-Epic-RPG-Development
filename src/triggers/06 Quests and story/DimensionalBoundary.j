@@ -157,20 +157,18 @@ function Trig_DimensionalBoundary_EmptyEnd_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DimensionalBoundary automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DimensionalBoundary_Part1 / RegisterTriggers_DimensionalBoundary_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DimensionalBoundary takes nothing returns nothing
 endfunction
-function RegisterR11_DimensionalBoundary_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DimensionalBoundary_Init takes nothing returns nothing
     set gg_trg_DimensionalBoundary_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_DimensionalBoundary_Init,function Trig_DimensionalBoundary_Init_Actions)
 endfunction
-function RegisterR11_DimensionalBoundary_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DimensionalBoundary_Start takes nothing returns nothing
     set gg_trg_DimensionalBoundary_Start=CreateTrigger()
     call DisableTrigger(gg_trg_DimensionalBoundary_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_Start,Player(0),true)
@@ -184,10 +182,8 @@ function RegisterR11_DimensionalBoundary_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_DimensionalBoundary_Start,Condition(function Trig_DimensionalBoundary_Start_Conditions))
     call TriggerAddAction(gg_trg_DimensionalBoundary_Start,function Trig_DimensionalBoundary_Start_Actions)
 endfunction
-function RegisterR11_DimensionalBoundary_OpenPortal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DimensionalBoundary_OpenPortal takes nothing returns nothing
     set gg_trg_DimensionalBoundary_OpenPortal=CreateTrigger()
     call DisableTrigger(gg_trg_DimensionalBoundary_OpenPortal)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DimensionalBoundary_OpenPortal,Player(0),true)
@@ -201,10 +197,8 @@ function RegisterR11_DimensionalBoundary_OpenPortal takes nothing returns nothin
     call TriggerAddCondition(gg_trg_DimensionalBoundary_OpenPortal,Condition(function Trig_DimensionalBoundary_OpenPortal_Conditions))
     call TriggerAddAction(gg_trg_DimensionalBoundary_OpenPortal,function Trig_DimensionalBoundary_OpenPortal_Actions)
 endfunction
-function RegisterR11_DimensionalBoundary_EmptyEnd takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DimensionalBoundary_EmptyEnd takes nothing returns nothing
     set gg_trg_DimensionalBoundary_EmptyEnd=CreateTrigger()
     call DisableTrigger(gg_trg_DimensionalBoundary_EmptyEnd)
     call TriggerRegisterEnterRectSimple(gg_trg_DimensionalBoundary_EmptyEnd,gg_rct_590)
@@ -212,7 +206,20 @@ function RegisterR11_DimensionalBoundary_EmptyEnd takes nothing returns nothing
     call TriggerAddAction(gg_trg_DimensionalBoundary_EmptyEnd,function Trig_DimensionalBoundary_EmptyEnd_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_DimensionalBoundary_Part1 takes nothing returns nothing
+    call Register_DimensionalBoundary_Init()
+    call Register_DimensionalBoundary_Start()
+    call Register_DimensionalBoundary_OpenPortal()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_DimensionalBoundary_Part2 takes nothing returns nothing
+    call Register_DimensionalBoundary_EmptyEnd()
+endfunction
 
 endlibrary

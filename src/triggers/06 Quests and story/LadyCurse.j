@@ -47,21 +47,19 @@ function Trig_LadyCurse_ReturnBelongings_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_LadyCurse automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_LadyCurse (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_LadyCurse takes nothing returns nothing
 endfunction
-function RegisterR11_LadyCurse_ShowMarker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_LadyCurse_ShowMarker takes nothing returns nothing
     set gg_trg_LadyCurse_ShowMarker=CreateTrigger()
     call DisableTrigger(gg_trg_LadyCurse_ShowMarker)
     call TriggerAddAction(gg_trg_LadyCurse_ShowMarker,function Trig_LadyCurse_ShowMarker_Actions)
 endfunction
-function RegisterR11_LadyCurse_ReturnBelongings takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_LadyCurse_ReturnBelongings takes nothing returns nothing
     set gg_trg_LadyCurse_ReturnBelongings=CreateTrigger()
     call DisableTrigger(gg_trg_LadyCurse_ReturnBelongings)
     call TriggerRegisterUnitInRangeSimple(gg_trg_LadyCurse_ReturnBelongings,450.,gg_unit_h01P_0017)
@@ -69,7 +67,10 @@ function RegisterR11_LadyCurse_ReturnBelongings takes nothing returns nothing
     call TriggerAddAction(gg_trg_LadyCurse_ReturnBelongings,function Trig_LadyCurse_ReturnBelongings_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_LadyCurse takes nothing returns nothing
+    call Register_LadyCurse_ShowMarker()
+    call Register_LadyCurse_ReturnBelongings()
+endfunction
 
 endlibrary

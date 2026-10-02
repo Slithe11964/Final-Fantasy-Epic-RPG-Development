@@ -48,38 +48,38 @@ function Trig_Zone4_Leash_Mid_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zone4 automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zone4 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zone4 takes nothing returns nothing
 endfunction
-function RegisterR11_Zone4_Leash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone4_Leash takes nothing returns nothing
     set gg_trg_Zone4_Leash=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash,gg_rct_225)
     call TriggerAddCondition(gg_trg_Zone4_Leash,Condition(function Trig_Zone4_Leash_Conditions))
     call TriggerAddAction(gg_trg_Zone4_Leash,function Trig_Zone4_Leash_Actions)
 endfunction
-function RegisterR11_Zone4_Leash_North takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone4_Leash_North takes nothing returns nothing
     set gg_trg_Zone4_Leash_North=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_North,gg_rct_664)
     call TriggerAddCondition(gg_trg_Zone4_Leash_North,Condition(function Trig_Zone4_Leash_North_Conditions))
     call TriggerAddAction(gg_trg_Zone4_Leash_North,function Trig_Zone4_Leash_North_Actions)
 endfunction
-function RegisterR11_Zone4_Leash_Mid takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone4_Leash_Mid takes nothing returns nothing
     set gg_trg_Zone4_Leash_Mid=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Zone4_Leash_Mid,gg_rct_670)
     call TriggerAddCondition(gg_trg_Zone4_Leash_Mid,Condition(function Trig_Zone4_Leash_Mid_Conditions))
     call TriggerAddAction(gg_trg_Zone4_Leash_Mid,function Trig_Zone4_Leash_Mid_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Zone4 takes nothing returns nothing
+    call Register_Zone4_Leash()
+    call Register_Zone4_Leash_North()
+    call Register_Zone4_Leash_Mid()
+endfunction
 
 endlibrary

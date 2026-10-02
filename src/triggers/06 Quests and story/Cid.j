@@ -656,13 +656,13 @@ function Trig_Cid_Talk_AoMadoushi_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cid automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cid_Part1 / RegisterTriggers_Cid_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cid takes nothing returns nothing
 endfunction
-function RegisterR11_Cid_Talk_FindMid takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Talk_FindMid takes nothing returns nothing
     set gg_trg_Cid_Talk_FindMid=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cid_Talk_FindMid,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cid_Talk_FindMid,Player(1),true)
@@ -675,86 +675,68 @@ function RegisterR11_Cid_Talk_FindMid takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Cid_Talk_FindMid,Condition(function Trig_Cid_Talk_FindMid_Conditions))
     call TriggerAddAction(gg_trg_Cid_Talk_FindMid,function Trig_Cid_Talk_FindMid_Actions)
 endfunction
-function RegisterR11_Cid_Talk_MidReturned takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Talk_MidReturned takes nothing returns nothing
     set gg_trg_Cid_Talk_MidReturned=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Talk_MidReturned)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Cid_Talk_MidReturned,450.,gg_unit_Hpb1_0013)
     call TriggerAddCondition(gg_trg_Cid_Talk_MidReturned,Condition(function Trig_Cid_Talk_MidReturned_Conditions))
     call TriggerAddAction(gg_trg_Cid_Talk_MidReturned,function Trig_Cid_Talk_MidReturned_Actions)
 endfunction
-function RegisterR11_Cid_Berserk_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Berserk_Start takes nothing returns nothing
     set gg_trg_Cid_Berserk_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Berserk_Start)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Cid_Berserk_Start,450.,gg_unit_Hpb1_0013)
     call TriggerAddCondition(gg_trg_Cid_Berserk_Start,Condition(function Trig_Cid_Berserk_Start_Conditions))
     call TriggerAddAction(gg_trg_Cid_Berserk_Start,function Trig_Cid_Berserk_Start_Actions)
 endfunction
-function RegisterR11_Cid_Talk_Hashmalum takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Talk_Hashmalum takes nothing returns nothing
     set gg_trg_Cid_Talk_Hashmalum=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Talk_Hashmalum)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Cid_Talk_Hashmalum,450.,gg_unit_Hpb1_0013)
     call TriggerAddCondition(gg_trg_Cid_Talk_Hashmalum,Condition(function Trig_Cid_Talk_Hashmalum_Conditions))
     call TriggerAddAction(gg_trg_Cid_Talk_Hashmalum,function Trig_Cid_Talk_Hashmalum_Actions)
 endfunction
-function RegisterR11_Cid_Berserk_Aggro takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Berserk_Aggro takes nothing returns nothing
     set gg_trg_Cid_Berserk_Aggro=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Berserk_Aggro)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Cid_Berserk_Aggro,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Cid_Berserk_Aggro,Condition(function Trig_Cid_Berserk_Aggro_Conditions))
     call TriggerAddAction(gg_trg_Cid_Berserk_Aggro,function Trig_Cid_Berserk_Aggro_Actions)
 endfunction
-function RegisterR11_Cid_Berserk_End takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Berserk_End takes nothing returns nothing
     set gg_trg_Cid_Berserk_End=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Berserk_End)
     call TriggerRegisterUnitEvent(gg_trg_Cid_Berserk_End,gg_unit_Hpb1_0013,EVENT_UNIT_DAMAGED)
     call TriggerAddCondition(gg_trg_Cid_Berserk_End,Condition(function Trig_Cid_Berserk_End_Conditions))
     call TriggerAddAction(gg_trg_Cid_Berserk_End,function Trig_Cid_Berserk_End_Actions)
 endfunction
-function RegisterR11_Cid_Berserk_Revive takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Berserk_Revive takes nothing returns nothing
     set gg_trg_Cid_Berserk_Revive=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Berserk_Revive)
     call TriggerRegisterUnitEvent(gg_trg_Cid_Berserk_Revive,gg_unit_Hpb1_0013,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Cid_Berserk_Revive,function Trig_Cid_Berserk_Revive_Actions)
 endfunction
-function RegisterR11_Cid_Berserk_Aftermath takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Berserk_Aftermath takes nothing returns nothing
     set gg_trg_Cid_Berserk_Aftermath=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Berserk_Aftermath)
     call TriggerAddAction(gg_trg_Cid_Berserk_Aftermath,function Trig_Cid_Berserk_Aftermath_Actions)
 endfunction
-function RegisterR11_Cid_Research_Done takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Research_Done takes nothing returns nothing
     set gg_trg_Cid_Research_Done=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Research_Done)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Cid_Research_Done,udg_CidResearchTimer)
     call TriggerAddAction(gg_trg_Cid_Research_Done,function Trig_Cid_Research_Done_Actions)
 endfunction
-function RegisterR11_Cid_Talk_AoMadoushi takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cid_Talk_AoMadoushi takes nothing returns nothing
     set gg_trg_Cid_Talk_AoMadoushi=CreateTrigger()
     call DisableTrigger(gg_trg_Cid_Talk_AoMadoushi)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cid_Talk_AoMadoushi,Player(0),true)
@@ -769,7 +751,26 @@ function RegisterR11_Cid_Talk_AoMadoushi takes nothing returns nothing
     call TriggerAddAction(gg_trg_Cid_Talk_AoMadoushi,function Trig_Cid_Talk_AoMadoushi_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Cid_Part1 takes nothing returns nothing
+    call Register_Cid_Talk_FindMid()
+    call Register_Cid_Talk_MidReturned()
+    call Register_Cid_Berserk_Start()
+    call Register_Cid_Talk_Hashmalum()
+    call Register_Cid_Berserk_Aggro()
+    call Register_Cid_Berserk_End()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Cid_Part2 takes nothing returns nothing
+    call Register_Cid_Berserk_Revive()
+    call Register_Cid_Berserk_Aftermath()
+    call Register_Cid_Research_Done()
+    call Register_Cid_Talk_AoMadoushi()
+endfunction
 
 endlibrary

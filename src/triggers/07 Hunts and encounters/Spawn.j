@@ -862,34 +862,42 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     call ForGroupBJ(udg_AllyRangerGroup,function Trig_Spawn_KalmDefenders_SetupRearUnit)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Spawn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Spawn_Part1 / RegisterTriggers_Spawn_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Spawn takes nothing returns nothing
 endfunction
-function RegisterR11_Spawn_Pools_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Spawn_Pools_Init takes nothing returns nothing
     set gg_trg_Spawn_Pools_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Spawn_Pools_Init,function Trig_Spawn_Pools_Init_Actions)
 endfunction
-function RegisterR11_Spawn_Gafgarion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Spawn_Gafgarion takes nothing returns nothing
     set gg_trg_Spawn_Gafgarion=CreateTrigger()
     call DisableTrigger(gg_trg_Spawn_Gafgarion)
     call TriggerAddAction(gg_trg_Spawn_Gafgarion,function Trig_Spawn_Gafgarion_Actions)
 endfunction
-function RegisterR11_Spawn_KalmDefenders takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Spawn_KalmDefenders takes nothing returns nothing
     set gg_trg_Spawn_KalmDefenders=CreateTrigger()
     call DisableTrigger(gg_trg_Spawn_KalmDefenders)
     call TriggerAddAction(gg_trg_Spawn_KalmDefenders,function Trig_Spawn_KalmDefenders_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Spawn_Part1 takes nothing returns nothing
+    call Register_Spawn_Pools_Init()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Spawn_Part2 takes nothing returns nothing
+    call Register_Spawn_Gafgarion()
+    call Register_Spawn_KalmDefenders()
+endfunction
 
 endlibrary

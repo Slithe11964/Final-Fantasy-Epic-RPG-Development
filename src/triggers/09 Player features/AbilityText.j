@@ -108,13 +108,13 @@ function Trig_AbilityText_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AbilityText automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AbilityText (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AbilityText takes nothing returns nothing
 endfunction
-function RegisterR11_AbilityText_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AbilityText_Command takes nothing returns nothing
     set gg_trg_AbilityText_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(0),"-abilitytext",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_AbilityText_Command,Player(1),"-abilitytext",false)
@@ -127,7 +127,9 @@ function RegisterR11_AbilityText_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_AbilityText_Command,function Trig_AbilityText_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AbilityText takes nothing returns nothing
+    call Register_AbilityText_Command()
+endfunction
 
 endlibrary

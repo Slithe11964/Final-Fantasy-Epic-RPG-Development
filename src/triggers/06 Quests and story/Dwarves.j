@@ -40,19 +40,21 @@ function Trig_Dwarves_Disappear_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Dwarves automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Dwarves (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Dwarves takes nothing returns nothing
 endfunction
-function RegisterR11_Dwarves_Disappear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dwarves_Disappear takes nothing returns nothing
     set gg_trg_Dwarves_Disappear=CreateTrigger()
     call DisableTrigger(gg_trg_Dwarves_Disappear)
     call TriggerAddAction(gg_trg_Dwarves_Disappear,function Trig_Dwarves_Disappear_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Dwarves takes nothing returns nothing
+    call Register_Dwarves_Disappear()
+endfunction
 
 endlibrary

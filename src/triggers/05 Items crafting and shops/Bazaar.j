@@ -1027,52 +1027,50 @@ function Trig_Bazaar_Sell_Bundle_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Bazaar automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Bazaar (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Bazaar takes nothing returns nothing
 endfunction
-function RegisterR11_Bazaar_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bazaar_Init takes nothing returns nothing
     set gg_trg_Bazaar_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Init,3.)
     call TriggerAddAction(gg_trg_Bazaar_Init,function Trig_Bazaar_Init_Actions)
 endfunction
-function RegisterR11_Bazaar_Recipes takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bazaar_Recipes takes nothing returns nothing
     set gg_trg_Bazaar_Recipes=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Bazaar_Recipes,3.)
     call TriggerAddAction(gg_trg_Bazaar_Recipes,function Trig_Bazaar_Recipes_Actions)
 endfunction
-function RegisterR11_Bazaar_PawnMaterial takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bazaar_PawnMaterial takes nothing returns nothing
     set gg_trg_Bazaar_PawnMaterial=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_PawnMaterial,EVENT_PLAYER_UNIT_PAWN_ITEM)
     call TriggerAddAction(gg_trg_Bazaar_PawnMaterial,function Trig_Bazaar_PawnMaterial_Actions)
 endfunction
-function RegisterR11_Bazaar_UpdateStock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bazaar_UpdateStock takes nothing returns nothing
     set gg_trg_Bazaar_UpdateStock=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Bazaar_UpdateStock,udg_BazaarUpdateTimer)
     call TriggerAddAction(gg_trg_Bazaar_UpdateStock,function Trig_Bazaar_UpdateStock_Actions)
 endfunction
-function RegisterR11_Bazaar_Sell_Bundle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bazaar_Sell_Bundle takes nothing returns nothing
     set gg_trg_Bazaar_Sell_Bundle=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Bazaar_Sell_Bundle,EVENT_PLAYER_UNIT_SELL_ITEM)
     call TriggerAddCondition(gg_trg_Bazaar_Sell_Bundle,Condition(function Trig_Bazaar_Sell_Bundle_Conditions))
     call TriggerAddAction(gg_trg_Bazaar_Sell_Bundle,function Trig_Bazaar_Sell_Bundle_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Bazaar takes nothing returns nothing
+    call Register_Bazaar_Init()
+    call Register_Bazaar_Recipes()
+    call Register_Bazaar_PawnMaterial()
+    call Register_Bazaar_UpdateStock()
+    call Register_Bazaar_Sell_Bundle()
+endfunction
 
 endlibrary

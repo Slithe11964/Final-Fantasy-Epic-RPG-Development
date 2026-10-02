@@ -47,28 +47,29 @@ function Trig_BagOfTricks_Progress_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_BagOfTricks automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_BagOfTricks (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_BagOfTricks takes nothing returns nothing
 endfunction
-function RegisterR11_BagOfTricks_Setup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_BagOfTricks_Setup takes nothing returns nothing
     set gg_trg_BagOfTricks_Setup=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_BagOfTricks_Setup,40.)
     call TriggerAddAction(gg_trg_BagOfTricks_Setup,function Trig_BagOfTricks_Setup_Actions)
 endfunction
-function RegisterR11_BagOfTricks_Progress takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_BagOfTricks_Progress takes nothing returns nothing
     set gg_trg_BagOfTricks_Progress=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_BagOfTricks_Progress,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_BagOfTricks_Progress,Condition(function Trig_BagOfTricks_Progress_Conditions))
     call TriggerAddAction(gg_trg_BagOfTricks_Progress,function Trig_BagOfTricks_Progress_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_BagOfTricks takes nothing returns nothing
+    call Register_BagOfTricks_Setup()
+    call Register_BagOfTricks_Progress()
+endfunction
 
 endlibrary

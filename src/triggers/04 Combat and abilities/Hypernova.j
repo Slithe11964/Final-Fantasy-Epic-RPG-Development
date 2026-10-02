@@ -87,20 +87,22 @@ function Trig_Hypernova_Cast_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Hypernova automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Hypernova (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Hypernova takes nothing returns nothing
 endfunction
-function RegisterR11_Hypernova_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Hypernova_Cast takes nothing returns nothing
     set gg_trg_Hypernova_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Hypernova_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Hypernova_Cast,Condition(function Trig_Hypernova_Cast_Conditions))
     call TriggerAddAction(gg_trg_Hypernova_Cast,function Trig_Hypernova_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Hypernova takes nothing returns nothing
+    call Register_Hypernova_Cast()
+endfunction
 
 endlibrary

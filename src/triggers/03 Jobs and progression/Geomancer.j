@@ -143,47 +143,46 @@ function Trig_Geomancer_GayaRage_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Geomancer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Geomancer (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Geomancer takes nothing returns nothing
 endfunction
-function RegisterR11_Geomancer_Enchant_Cycle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Geomancer_Enchant_Cycle takes nothing returns nothing
     set gg_trg_Geomancer_Enchant_Cycle=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_Cycle,EVENT_PLAYER_UNIT_ISSUED_ORDER)
     call TriggerAddCondition(gg_trg_Geomancer_Enchant_Cycle,Condition(function Trig_Geomancer_Enchant_Cycle_Conditions))
     call TriggerAddAction(gg_trg_Geomancer_Enchant_Cycle,function Trig_Geomancer_Enchant_Cycle_Actions)
 endfunction
-function RegisterR11_Geomancer_Enchant_Apply takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Geomancer_Enchant_Apply takes nothing returns nothing
     set gg_trg_Geomancer_Enchant_Apply=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Geomancer_Enchant_Apply,udg_EnchantCycleTimer)
     call TriggerAddCondition(gg_trg_Geomancer_Enchant_Apply,Condition(function Trig_Geomancer_Enchant_Apply_Conditions))
     call TriggerAddAction(gg_trg_Geomancer_Enchant_Apply,function Trig_Geomancer_Enchant_Apply_Actions)
 endfunction
-function RegisterR11_Geomancer_Enchant_ClearBuffs takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Geomancer_Enchant_ClearBuffs takes nothing returns nothing
     set gg_trg_Geomancer_Enchant_ClearBuffs=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_Enchant_ClearBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Geomancer_Enchant_ClearBuffs,Condition(function Trig_Geomancer_Enchant_ClearBuffs_Conditions))
     call TriggerAddAction(gg_trg_Geomancer_Enchant_ClearBuffs,function Trig_Geomancer_Enchant_ClearBuffs_Actions)
 endfunction
-function RegisterR11_Geomancer_GayaRage takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Geomancer_GayaRage takes nothing returns nothing
     set gg_trg_Geomancer_GayaRage=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Geomancer_GayaRage,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Geomancer_GayaRage,Condition(function Trig_Geomancer_GayaRage_Conditions))
     call TriggerAddAction(gg_trg_Geomancer_GayaRage,function Trig_Geomancer_GayaRage_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Geomancer takes nothing returns nothing
+    call Register_Geomancer_Enchant_Cycle()
+    call Register_Geomancer_Enchant_Apply()
+    call Register_Geomancer_Enchant_ClearBuffs()
+    call Register_Geomancer_GayaRage()
+endfunction
 
 endlibrary

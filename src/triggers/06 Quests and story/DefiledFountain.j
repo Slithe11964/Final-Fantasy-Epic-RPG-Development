@@ -121,21 +121,19 @@ function Trig_DefiledFountain_BulbPickup_Actions takes nothing returns nothing
     call QuestSetDescriptionBJ(udg_SideQuest[23],"Bring the Thunderbloom Bulb to Feanor.")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DefiledFountain automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DefiledFountain (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DefiledFountain takes nothing returns nothing
 endfunction
-function RegisterR11_DefiledFountain_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DefiledFountain_Prepare takes nothing returns nothing
     set gg_trg_DefiledFountain_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_DefiledFountain_Prepare)
     call TriggerAddAction(gg_trg_DefiledFountain_Prepare,function Trig_DefiledFountain_Prepare_Actions)
 endfunction
-function RegisterR11_DefiledFountain_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DefiledFountain_Start takes nothing returns nothing
     set gg_trg_DefiledFountain_Start=CreateTrigger()
     call DisableTrigger(gg_trg_DefiledFountain_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DefiledFountain_Start,Player(0),true)
@@ -149,30 +147,24 @@ function RegisterR11_DefiledFountain_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_DefiledFountain_Start,Condition(function Trig_DefiledFountain_Start_Conditions))
     call TriggerAddAction(gg_trg_DefiledFountain_Start,function Trig_DefiledFountain_Start_Actions)
 endfunction
-function RegisterR11_DefiledFountain_Hoof takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DefiledFountain_Hoof takes nothing returns nothing
     set gg_trg_DefiledFountain_Hoof=CreateTrigger()
     call DisableTrigger(gg_trg_DefiledFountain_Hoof)
     call TriggerRegisterUnitInRangeSimple(gg_trg_DefiledFountain_Hoof,450.,gg_unit_e007_0154)
     call TriggerAddCondition(gg_trg_DefiledFountain_Hoof,Condition(function Trig_DefiledFountain_Hoof_Conditions))
     call TriggerAddAction(gg_trg_DefiledFountain_Hoof,function Trig_DefiledFountain_Hoof_Actions)
 endfunction
-function RegisterR11_DefiledFountain_PingBulb takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DefiledFountain_PingBulb takes nothing returns nothing
     set gg_trg_DefiledFountain_PingBulb=CreateTrigger()
     call DisableTrigger(gg_trg_DefiledFountain_PingBulb)
     call TriggerRegisterTimerEventPeriodic(gg_trg_DefiledFountain_PingBulb,15.)
     call TriggerAddCondition(gg_trg_DefiledFountain_PingBulb,Condition(function Trig_DefiledFountain_PingBulb_Conditions))
     call TriggerAddAction(gg_trg_DefiledFountain_PingBulb,function Trig_DefiledFountain_PingBulb_Actions)
 endfunction
-function RegisterR11_DefiledFountain_BulbPickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DefiledFountain_BulbPickup takes nothing returns nothing
     set gg_trg_DefiledFountain_BulbPickup=CreateTrigger()
     call DisableTrigger(gg_trg_DefiledFountain_BulbPickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DefiledFountain_BulbPickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -180,7 +172,13 @@ function RegisterR11_DefiledFountain_BulbPickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_DefiledFountain_BulbPickup,function Trig_DefiledFountain_BulbPickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DefiledFountain takes nothing returns nothing
+    call Register_DefiledFountain_Prepare()
+    call Register_DefiledFountain_Start()
+    call Register_DefiledFountain_Hoof()
+    call Register_DefiledFountain_PingBulb()
+    call Register_DefiledFountain_BulbPickup()
+endfunction
 
 endlibrary

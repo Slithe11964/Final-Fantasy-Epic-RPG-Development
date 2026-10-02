@@ -32,20 +32,22 @@ function Trig_Berserk_RemoveBuffs_Actions takes nothing returns nothing
     call UnitRemoveBuffBJ('B07P',GetSpellTargetUnit()) // 'B07P': buff "Enraged"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Berserk automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Berserk (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Berserk takes nothing returns nothing
 endfunction
-function RegisterR11_Berserk_RemoveBuffs takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Berserk_RemoveBuffs takes nothing returns nothing
     set gg_trg_Berserk_RemoveBuffs=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Berserk_RemoveBuffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Berserk_RemoveBuffs,Condition(function Trig_Berserk_RemoveBuffs_Conditions))
     call TriggerAddAction(gg_trg_Berserk_RemoveBuffs,function Trig_Berserk_RemoveBuffs_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Berserk takes nothing returns nothing
+    call Register_Berserk_RemoveBuffs()
+endfunction
 
 endlibrary

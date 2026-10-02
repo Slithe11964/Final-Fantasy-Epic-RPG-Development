@@ -21,20 +21,22 @@ function Trig_Recharge_OnKill_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Recharge automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Recharge (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Recharge takes nothing returns nothing
 endfunction
-function RegisterR11_Recharge_OnKill takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Recharge_OnKill takes nothing returns nothing
     set gg_trg_Recharge_OnKill=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Recharge_OnKill,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Recharge_OnKill,Condition(function Trig_Recharge_OnKill_Conditions))
     call TriggerAddAction(gg_trg_Recharge_OnKill,function Trig_Recharge_OnKill_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Recharge takes nothing returns nothing
+    call Register_Recharge_OnKill()
+endfunction
 
 endlibrary

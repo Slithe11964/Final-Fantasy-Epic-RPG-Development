@@ -157,29 +157,30 @@ function Trig_Toss_HeroDrink_Actions takes nothing returns nothing
     call Medicine_ApplyTimed(GetSpellTargetUnit(),(GetUnitAbilityLevel(GetTriggerUnit(),'A0HL')>0)) // 'A0HL': ability "Pharmacology"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Toss automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Toss (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Toss takes nothing returns nothing
 endfunction
-function RegisterR11_Toss_Potion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Toss_Potion takes nothing returns nothing
     set gg_trg_Toss_Potion=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_Potion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Toss_Potion,Condition(function Trig_Toss_Potion_Conditions))
     call TriggerAddAction(gg_trg_Toss_Potion,function Trig_Toss_Potion_Actions)
 endfunction
-function RegisterR11_Toss_HeroDrink takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Toss_HeroDrink takes nothing returns nothing
     set gg_trg_Toss_HeroDrink=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Toss_HeroDrink,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Toss_HeroDrink,Condition(function Trig_Toss_HeroDrink_Conditions))
     call TriggerAddAction(gg_trg_Toss_HeroDrink,function Trig_Toss_HeroDrink_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Toss takes nothing returns nothing
+    call Register_Toss_Potion()
+    call Register_Toss_HeroDrink()
+endfunction
 
 endlibrary

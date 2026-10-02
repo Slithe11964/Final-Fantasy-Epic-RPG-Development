@@ -55,19 +55,21 @@ function Trig_Revive_Item_Cleanup_Actions takes nothing returns nothing
     call GroupClear(udg_RevivedHeroes)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Revive automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Revive (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Revive takes nothing returns nothing
 endfunction
-function RegisterR11_Revive_Item_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Revive_Item_Cleanup takes nothing returns nothing
     set gg_trg_Revive_Item_Cleanup=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Revive_Item_Cleanup,udg_ReviveCleanupTimer)
     call TriggerAddAction(gg_trg_Revive_Item_Cleanup,function Trig_Revive_Item_Cleanup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Revive takes nothing returns nothing
+    call Register_Revive_Item_Cleanup()
+endfunction
 
 endlibrary

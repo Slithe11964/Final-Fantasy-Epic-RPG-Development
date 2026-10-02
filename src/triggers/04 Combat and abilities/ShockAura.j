@@ -57,29 +57,30 @@ function Trig_ShockAura_Pulse_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_ShockAura automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_ShockAura (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_ShockAura takes nothing returns nothing
 endfunction
-function RegisterR11_ShockAura_Pulse_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShockAura_Pulse_Start takes nothing returns nothing
     set gg_trg_ShockAura_Pulse_Start=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_ShockAura_Pulse_Start,.5)
     call TriggerAddCondition(gg_trg_ShockAura_Pulse_Start,Condition(function Trig_ShockAura_Pulse_Start_Conditions))
     call TriggerAddAction(gg_trg_ShockAura_Pulse_Start,function Trig_ShockAura_Pulse_Start_Actions)
 endfunction
-function RegisterR11_ShockAura_Pulse takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShockAura_Pulse takes nothing returns nothing
     set gg_trg_ShockAura_Pulse=CreateTrigger()
     call DisableTrigger(gg_trg_ShockAura_Pulse)
     call TriggerAddCondition(gg_trg_ShockAura_Pulse,Condition(function Trig_ShockAura_Pulse_Conditions))
     call TriggerAddAction(gg_trg_ShockAura_Pulse,function Trig_ShockAura_Pulse_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_ShockAura takes nothing returns nothing
+    call Register_ShockAura_Pulse_Start()
+    call Register_ShockAura_Pulse()
+endfunction
 
 endlibrary

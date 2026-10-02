@@ -28,22 +28,20 @@ function Trig_IceCache_SpearClaimed_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_IceCache automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_IceCache (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_IceCache takes nothing returns nothing
 endfunction
-function RegisterR11_IceCache_Open takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_IceCache_Open takes nothing returns nothing
     set gg_trg_IceCache_Open=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_IceCache_Open,gg_rct_474)
     call TriggerAddCondition(gg_trg_IceCache_Open,Condition(function Trig_IceCache_Open_Conditions))
     call TriggerAddAction(gg_trg_IceCache_Open,function Trig_IceCache_Open_Actions)
 endfunction
-function RegisterR11_IceCache_SpearClaimed takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_IceCache_SpearClaimed takes nothing returns nothing
     set gg_trg_IceCache_SpearClaimed=CreateTrigger()
     call TriggerRegisterDeathEvent(gg_trg_IceCache_SpearClaimed,gg_dest_LTbs_0046)
     call TriggerRegisterDeathEvent(gg_trg_IceCache_SpearClaimed,gg_dest_LTba_0044)
@@ -53,7 +51,10 @@ function RegisterR11_IceCache_SpearClaimed takes nothing returns nothing
     call TriggerAddAction(gg_trg_IceCache_SpearClaimed,function Trig_IceCache_SpearClaimed_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_IceCache takes nothing returns nothing
+    call Register_IceCache_Open()
+    call Register_IceCache_SpearClaimed()
+endfunction
 
 endlibrary

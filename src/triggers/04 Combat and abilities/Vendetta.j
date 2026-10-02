@@ -58,38 +58,38 @@ function Trig_Vendetta_Cancel_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_AbsorbShieldGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Vendetta automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Vendetta (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Vendetta takes nothing returns nothing
 endfunction
-function RegisterR11_Vendetta_Stance takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vendetta_Stance takes nothing returns nothing
     set gg_trg_Vendetta_Stance=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Stance,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
     call TriggerAddCondition(gg_trg_Vendetta_Stance,Condition(function Trig_Vendetta_Stance_Conditions))
     call TriggerAddAction(gg_trg_Vendetta_Stance,function Trig_Vendetta_Stance_Actions)
 endfunction
-function RegisterR11_Vendetta_Release takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vendetta_Release takes nothing returns nothing
     set gg_trg_Vendetta_Release=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Vendetta_Release,Condition(function Trig_Vendetta_Release_Conditions))
     call TriggerAddAction(gg_trg_Vendetta_Release,function Trig_Vendetta_Release_Actions)
 endfunction
-function RegisterR11_Vendetta_Cancel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vendetta_Cancel takes nothing returns nothing
     set gg_trg_Vendetta_Cancel=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Vendetta_Cancel,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
     call TriggerAddCondition(gg_trg_Vendetta_Cancel,Condition(function Trig_Vendetta_Cancel_Conditions))
     call TriggerAddAction(gg_trg_Vendetta_Cancel,function Trig_Vendetta_Cancel_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Vendetta takes nothing returns nothing
+    call Register_Vendetta_Stance()
+    call Register_Vendetta_Release()
+    call Register_Vendetta_Cancel()
+endfunction
 
 endlibrary

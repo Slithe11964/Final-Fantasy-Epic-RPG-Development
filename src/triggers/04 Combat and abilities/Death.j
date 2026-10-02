@@ -96,64 +96,69 @@ function Trig_Death_Explosion_Blast_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Death automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Death_Part1 / RegisterTriggers_Death_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Death takes nothing returns nothing
 endfunction
-function RegisterR11_Death_Watch_Group1 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Watch_Group1 takes nothing returns nothing
     set gg_trg_Death_Watch_Group1=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group1,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Death_Watch_Group1,Condition(function Trig_Death_Watch_Group1_Conditions))
     call TriggerAddAction(gg_trg_Death_Watch_Group1,function Trig_Death_Watch_Group1_Actions)
 endfunction
-function RegisterR11_Death_Watch_Group2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Watch_Group2 takes nothing returns nothing
     set gg_trg_Death_Watch_Group2=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group2,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Death_Watch_Group2,Condition(function Trig_Death_Watch_Group2_Conditions))
     call TriggerAddAction(gg_trg_Death_Watch_Group2,function Trig_Death_Watch_Group2_Actions)
 endfunction
-function RegisterR11_Death_Watch_Group3 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Watch_Group3 takes nothing returns nothing
     set gg_trg_Death_Watch_Group3=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Watch_Group3,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Death_Watch_Group3,Condition(function Trig_Death_Watch_Group3_Conditions))
     call TriggerAddAction(gg_trg_Death_Watch_Group3,function Trig_Death_Watch_Group3_Actions)
 endfunction
-function RegisterR11_Death_Explosion_Queue takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Explosion_Queue takes nothing returns nothing
     set gg_trg_Death_Explosion_Queue=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Death_Explosion_Queue,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Death_Explosion_Queue,Condition(function Trig_Death_Explosion_Queue_Conditions))
     call TriggerAddAction(gg_trg_Death_Explosion_Queue,function Trig_Death_Explosion_Queue_Actions)
 endfunction
-function RegisterR11_Death_Explosion_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Explosion_Start takes nothing returns nothing
     set gg_trg_Death_Explosion_Start=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Death_Explosion_Start,udg_DeathExplodeTimer)
     call TriggerAddAction(gg_trg_Death_Explosion_Start,function Trig_Death_Explosion_Start_Actions)
 endfunction
-function RegisterR11_Death_Explosion_Blast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Death_Explosion_Blast takes nothing returns nothing
     set gg_trg_Death_Explosion_Blast=CreateTrigger()
     call DisableTrigger(gg_trg_Death_Explosion_Blast)
     call TriggerAddCondition(gg_trg_Death_Explosion_Blast,Condition(function Trig_Death_Explosion_Blast_Conditions))
     call TriggerAddAction(gg_trg_Death_Explosion_Blast,function Trig_Death_Explosion_Blast_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Death_Part1 takes nothing returns nothing
+    call Register_Death_Watch_Group1()
+    call Register_Death_Watch_Group2()
+    call Register_Death_Watch_Group3()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Death_Part2 takes nothing returns nothing
+    call Register_Death_Explosion_Queue()
+    call Register_Death_Explosion_Start()
+    call Register_Death_Explosion_Blast()
+endfunction
 
 endlibrary

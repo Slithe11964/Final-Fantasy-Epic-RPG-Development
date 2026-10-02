@@ -24,13 +24,13 @@ function Trig_StrangeCage_Unlock_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_StrangeCage automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_StrangeCage (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_StrangeCage takes nothing returns nothing
 endfunction
-function RegisterR11_StrangeCage_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_StrangeCage_Unlock takes nothing returns nothing
     set gg_trg_StrangeCage_Unlock=CreateTrigger()
     call DisableTrigger(gg_trg_StrangeCage_Unlock)
     call TriggerRegisterUnitInRangeSimple(gg_trg_StrangeCage_Unlock,200.,gg_unit_nwc1_0187)
@@ -38,7 +38,9 @@ function RegisterR11_StrangeCage_Unlock takes nothing returns nothing
     call TriggerAddAction(gg_trg_StrangeCage_Unlock,function Trig_StrangeCage_Unlock_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_StrangeCage takes nothing returns nothing
+    call Register_StrangeCage_Unlock()
+endfunction
 
 endlibrary

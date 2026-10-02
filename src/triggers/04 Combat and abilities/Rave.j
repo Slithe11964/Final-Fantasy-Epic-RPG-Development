@@ -68,20 +68,22 @@ function Trig_Rave_Kick_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Rave automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Rave (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Rave takes nothing returns nothing
 endfunction
-function RegisterR11_Rave_Kick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Rave_Kick takes nothing returns nothing
     set gg_trg_Rave_Kick=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Rave_Kick,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Rave_Kick,Condition(function Trig_Rave_Kick_Conditions))
     call TriggerAddAction(gg_trg_Rave_Kick,function Trig_Rave_Kick_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Rave takes nothing returns nothing
+    call Register_Rave_Kick()
+endfunction
 
 endlibrary

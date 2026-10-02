@@ -163,29 +163,25 @@ function Trig_Wanderer_Give_Item_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Wanderer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Wanderer (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Wanderer takes nothing returns nothing
 endfunction
-function RegisterR11_Wanderer_Quest_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wanderer_Quest_Init takes nothing returns nothing
     set gg_trg_Wanderer_Quest_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Wanderer_Quest_Init,2.)
     call TriggerAddAction(gg_trg_Wanderer_Quest_Init,function Trig_Wanderer_Quest_Init_Actions)
 endfunction
-function RegisterR11_Wanderer_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wanderer_Spawn takes nothing returns nothing
     set gg_trg_Wanderer_Spawn=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Wanderer_Spawn,8.)
     call TriggerAddAction(gg_trg_Wanderer_Spawn,function Trig_Wanderer_Spawn_Actions)
 endfunction
-function RegisterR11_Wanderer_Request takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wanderer_Request takes nothing returns nothing
     set gg_trg_Wanderer_Request=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Wanderer_Request,Player(1),true)
@@ -198,17 +194,20 @@ function RegisterR11_Wanderer_Request takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Wanderer_Request,Condition(function Trig_Wanderer_Request_Conditions))
     call TriggerAddAction(gg_trg_Wanderer_Request,function Trig_Wanderer_Request_Actions)
 endfunction
-function RegisterR11_Wanderer_Give_Item takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wanderer_Give_Item takes nothing returns nothing
     set gg_trg_Wanderer_Give_Item=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Wanderer_Give_Item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Wanderer_Give_Item,Condition(function Trig_Wanderer_Give_Item_Conditions))
     call TriggerAddAction(gg_trg_Wanderer_Give_Item,function Trig_Wanderer_Give_Item_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Wanderer takes nothing returns nothing
+    call Register_Wanderer_Quest_Init()
+    call Register_Wanderer_Spawn()
+    call Register_Wanderer_Request()
+    call Register_Wanderer_Give_Item()
+endfunction
 
 endlibrary

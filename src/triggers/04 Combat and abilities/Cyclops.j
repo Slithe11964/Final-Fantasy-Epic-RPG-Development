@@ -77,20 +77,22 @@ function Trig_Cyclops_FinalSmash_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cyclops automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cyclops (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cyclops takes nothing returns nothing
 endfunction
-function RegisterR11_Cyclops_FinalSmash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cyclops_FinalSmash takes nothing returns nothing
     set gg_trg_Cyclops_FinalSmash=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Cyclops_FinalSmash,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Cyclops_FinalSmash,Condition(function Trig_Cyclops_FinalSmash_Conditions))
     call TriggerAddAction(gg_trg_Cyclops_FinalSmash,function Trig_Cyclops_FinalSmash_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cyclops takes nothing returns nothing
+    call Register_Cyclops_FinalSmash()
+endfunction
 
 endlibrary

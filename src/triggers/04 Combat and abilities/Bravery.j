@@ -45,29 +45,38 @@ function Trig_Bravery_Target_Cleanup_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Bravery automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Bravery_Part1 / RegisterTriggers_Bravery_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Bravery takes nothing returns nothing
 endfunction
-function RegisterR11_Bravery_Caster_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bravery_Caster_Cleanup takes nothing returns nothing
     set gg_trg_Bravery_Caster_Cleanup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Caster_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Bravery_Caster_Cleanup,Condition(function Trig_Bravery_Caster_Cleanup_Conditions))
     call TriggerAddAction(gg_trg_Bravery_Caster_Cleanup,function Trig_Bravery_Caster_Cleanup_Actions)
 endfunction
-function RegisterR11_Bravery_Target_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bravery_Target_Cleanup takes nothing returns nothing
     set gg_trg_Bravery_Target_Cleanup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Bravery_Target_Cleanup,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Bravery_Target_Cleanup,Condition(function Trig_Bravery_Target_Cleanup_Conditions))
     call TriggerAddAction(gg_trg_Bravery_Target_Cleanup,function Trig_Bravery_Target_Cleanup_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Bravery_Part1 takes nothing returns nothing
+    call Register_Bravery_Caster_Cleanup()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Bravery_Part2 takes nothing returns nothing
+    call Register_Bravery_Target_Cleanup()
+endfunction
 
 endlibrary

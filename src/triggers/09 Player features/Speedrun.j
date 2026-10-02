@@ -185,39 +185,33 @@ function Trig_Speedrun_Record_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Speedrun automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Speedrun_Part1 / RegisterTriggers_Speedrun_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Speedrun takes nothing returns nothing
 endfunction
-function RegisterR11_Speedrun_Announce takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Speedrun_Announce takes nothing returns nothing
     set gg_trg_Speedrun_Announce=CreateTrigger()
     call DisableTrigger(gg_trg_Speedrun_Announce)
     call TriggerAddAction(gg_trg_Speedrun_Announce,function Trig_Speedrun_Announce_Actions)
 endfunction
-function RegisterR11_Speedrun_FirstCast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Speedrun_FirstCast takes nothing returns nothing
     set gg_trg_Speedrun_FirstCast=CreateTrigger()
     call DisableTrigger(gg_trg_Speedrun_FirstCast)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Speedrun_FirstCast,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerAddCondition(gg_trg_Speedrun_FirstCast,Condition(function Trig_Speedrun_FirstCast_Conditions))
     call TriggerAddAction(gg_trg_Speedrun_FirstCast,function Trig_Speedrun_FirstCast_Actions)
 endfunction
-function RegisterR11_Speedrun_Accolade takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Speedrun_Accolade takes nothing returns nothing
     set gg_trg_Speedrun_Accolade=CreateTrigger()
     call DisableTrigger(gg_trg_Speedrun_Accolade)
     call TriggerAddAction(gg_trg_Speedrun_Accolade,function Trig_Speedrun_Accolade_Actions)
 endfunction
-function RegisterR11_Speedrun_Record takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Speedrun_Record takes nothing returns nothing
     set gg_trg_Speedrun_Record=CreateTrigger()
     call DisableTrigger(gg_trg_Speedrun_Record)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Speedrun_Record,udg_AccoladeTimer)
@@ -225,7 +219,20 @@ function RegisterR11_Speedrun_Record takes nothing returns nothing
     call TriggerAddAction(gg_trg_Speedrun_Record,function Trig_Speedrun_Record_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Speedrun_Part1 takes nothing returns nothing
+    call Register_Speedrun_Announce()
+    call Register_Speedrun_FirstCast()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Speedrun_Part2 takes nothing returns nothing
+    call Register_Speedrun_Accolade()
+    call Register_Speedrun_Record()
+endfunction
 
 endlibrary

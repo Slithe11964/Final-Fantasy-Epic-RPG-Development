@@ -15,19 +15,21 @@ function Trig_Legendary_Unlock_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Legendary automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Legendary (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Legendary takes nothing returns nothing
 endfunction
-function RegisterR11_Legendary_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Legendary_Unlock takes nothing returns nothing
     set gg_trg_Legendary_Unlock=CreateTrigger()
     call DisableTrigger(gg_trg_Legendary_Unlock)
     call TriggerAddAction(gg_trg_Legendary_Unlock,function Trig_Legendary_Unlock_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Legendary takes nothing returns nothing
+    call Register_Legendary_Unlock()
+endfunction
 
 endlibrary

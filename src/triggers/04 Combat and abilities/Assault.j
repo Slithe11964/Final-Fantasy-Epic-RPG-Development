@@ -69,20 +69,22 @@ function Trig_Assault_Cast_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Assault automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Assault (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Assault takes nothing returns nothing
 endfunction
-function RegisterR11_Assault_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Assault_Cast takes nothing returns nothing
     set gg_trg_Assault_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Assault_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Assault_Cast,Condition(function Trig_Assault_Cast_Conditions))
     call TriggerAddAction(gg_trg_Assault_Cast,function Trig_Assault_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Assault takes nothing returns nothing
+    call Register_Assault_Cast()
+endfunction
 
 endlibrary

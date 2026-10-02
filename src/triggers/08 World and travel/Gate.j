@@ -211,13 +211,13 @@ function Trig_Gate_WinterKey_Unlock_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Gate automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Gate (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Gate takes nothing returns nothing
 endfunction
-function RegisterR11_Gate_Codeword_Demesne takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gate_Codeword_Demesne takes nothing returns nothing
     set gg_trg_Gate_Codeword_Demesne=CreateTrigger()
     call DisableTrigger(gg_trg_Gate_Codeword_Demesne)
     call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(0),"Demesne",false)
@@ -230,17 +230,18 @@ function RegisterR11_Gate_Codeword_Demesne takes nothing returns nothing
     call TriggerRegisterPlayerChatEvent(gg_trg_Gate_Codeword_Demesne,Player(7),"Demesne",false)
     call TriggerAddAction(gg_trg_Gate_Codeword_Demesne,function Trig_Gate_Codeword_Demesne_Actions)
 endfunction
-function RegisterR11_Gate_WinterKey_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gate_WinterKey_Unlock takes nothing returns nothing
     set gg_trg_Gate_WinterKey_Unlock=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Gate_WinterKey_Unlock,gg_rct_631)
     call TriggerAddCondition(gg_trg_Gate_WinterKey_Unlock,Condition(function Trig_Gate_WinterKey_Unlock_Conditions))
     call TriggerAddAction(gg_trg_Gate_WinterKey_Unlock,function Trig_Gate_WinterKey_Unlock_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Gate takes nothing returns nothing
+    call Register_Gate_Codeword_Demesne()
+    call Register_Gate_WinterKey_Unlock()
+endfunction
 
 endlibrary

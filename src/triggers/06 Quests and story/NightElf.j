@@ -10,13 +10,13 @@ function Trig_NightElf_TalkPrepare_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_NightElf automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_NightElf (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_NightElf takes nothing returns nothing
 endfunction
-function RegisterR11_NightElf_TalkPrepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NightElf_TalkPrepare takes nothing returns nothing
     set gg_trg_NightElf_TalkPrepare=CreateTrigger()
     call DisableTrigger(gg_trg_NightElf_TalkPrepare)
     call TriggerRegisterTimerEventPeriodic(gg_trg_NightElf_TalkPrepare,5.)
@@ -24,7 +24,9 @@ function RegisterR11_NightElf_TalkPrepare takes nothing returns nothing
     call TriggerAddAction(gg_trg_NightElf_TalkPrepare,function Trig_NightElf_TalkPrepare_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_NightElf takes nothing returns nothing
+    call Register_NightElf_TalkPrepare()
+endfunction
 
 endlibrary

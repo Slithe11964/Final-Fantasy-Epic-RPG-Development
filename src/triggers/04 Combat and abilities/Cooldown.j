@@ -220,20 +220,22 @@ function Trig_Cooldown_Scaling_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cooldown automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cooldown (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cooldown takes nothing returns nothing
 endfunction
-function RegisterR11_Cooldown_Scaling takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cooldown_Scaling takes nothing returns nothing
     set gg_trg_Cooldown_Scaling=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Cooldown_Scaling,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Cooldown_Scaling,Condition(function Trig_Cooldown_Scaling_Conditions))
     call TriggerAddAction(gg_trg_Cooldown_Scaling,function Trig_Cooldown_Scaling_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cooldown takes nothing returns nothing
+    call Register_Cooldown_Scaling()
+endfunction
 
 endlibrary

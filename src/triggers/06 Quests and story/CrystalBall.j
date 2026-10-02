@@ -45,31 +45,27 @@ function Trig_CrystalBall_Pickup_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_CrystalBall automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_CrystalBall (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_CrystalBall takes nothing returns nothing
 endfunction
-function RegisterR11_CrystalBall_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_CrystalBall_Drop takes nothing returns nothing
     set gg_trg_CrystalBall_Drop=CreateTrigger()
     call DisableTrigger(gg_trg_CrystalBall_Drop)
     call TriggerAddAction(gg_trg_CrystalBall_Drop,function Trig_CrystalBall_Drop_Actions)
 endfunction
-function RegisterR11_CrystalBall_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_CrystalBall_Ping takes nothing returns nothing
     set gg_trg_CrystalBall_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_CrystalBall_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_CrystalBall_Ping,15.)
     call TriggerAddCondition(gg_trg_CrystalBall_Ping,Condition(function Trig_CrystalBall_Ping_Conditions))
     call TriggerAddAction(gg_trg_CrystalBall_Ping,function Trig_CrystalBall_Ping_Actions)
 endfunction
-function RegisterR11_CrystalBall_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_CrystalBall_Pickup takes nothing returns nothing
     set gg_trg_CrystalBall_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_CrystalBall_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_CrystalBall_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -77,7 +73,11 @@ function RegisterR11_CrystalBall_Pickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_CrystalBall_Pickup,function Trig_CrystalBall_Pickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_CrystalBall takes nothing returns nothing
+    call Register_CrystalBall_Drop()
+    call Register_CrystalBall_Ping()
+    call Register_CrystalBall_Pickup()
+endfunction
 
 endlibrary

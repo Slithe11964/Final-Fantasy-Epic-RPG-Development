@@ -42,20 +42,22 @@ function Trig_Zone8_Heal_Assist_Actions takes nothing returns nothing
     call EnableTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zone8 automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zone8 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zone8 takes nothing returns nothing
 endfunction
-function RegisterR11_Zone8_Heal_Assist takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone8_Heal_Assist takes nothing returns nothing
     set gg_trg_Zone8_Heal_Assist=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Zone8_Heal_Assist,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
     call TriggerAddCondition(gg_trg_Zone8_Heal_Assist,Condition(function Trig_Zone8_Heal_Assist_Conditions))
     call TriggerAddAction(gg_trg_Zone8_Heal_Assist,function Trig_Zone8_Heal_Assist_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Zone8 takes nothing returns nothing
+    call Register_Zone8_Heal_Assist()
+endfunction
 
 endlibrary

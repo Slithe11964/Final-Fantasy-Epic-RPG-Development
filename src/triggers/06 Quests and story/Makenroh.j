@@ -37,13 +37,13 @@ function Trig_Makenroh_ShowTalkIcon_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Makenroh automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Makenroh_Part1 / RegisterTriggers_Makenroh_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Makenroh takes nothing returns nothing
 endfunction
-function RegisterR11_Makenroh_Greet takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Makenroh_Greet takes nothing returns nothing
     set gg_trg_Makenroh_Greet=CreateTrigger()
     call DisableTrigger(gg_trg_Makenroh_Greet)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Makenroh_Greet,Player(0),true)
@@ -57,10 +57,8 @@ function RegisterR11_Makenroh_Greet takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Makenroh_Greet,Condition(function Trig_Makenroh_Greet_Conditions))
     call TriggerAddAction(gg_trg_Makenroh_Greet,function Trig_Makenroh_Greet_Actions)
 endfunction
-function RegisterR11_Makenroh_ShowTalkIcon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Makenroh_ShowTalkIcon takes nothing returns nothing
     set gg_trg_Makenroh_ShowTalkIcon=CreateTrigger()
     call DisableTrigger(gg_trg_Makenroh_ShowTalkIcon)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Makenroh_ShowTalkIcon,20.)
@@ -68,7 +66,18 @@ function RegisterR11_Makenroh_ShowTalkIcon takes nothing returns nothing
     call TriggerAddAction(gg_trg_Makenroh_ShowTalkIcon,function Trig_Makenroh_ShowTalkIcon_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Makenroh_Part1 takes nothing returns nothing
+    call Register_Makenroh_Greet()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Makenroh_Part2 takes nothing returns nothing
+    call Register_Makenroh_ShowTalkIcon()
+endfunction
 
 endlibrary

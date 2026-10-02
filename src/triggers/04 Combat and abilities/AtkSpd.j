@@ -231,13 +231,13 @@ function Trig_AtkSpd_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AtkSpd automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AtkSpd (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AtkSpd takes nothing returns nothing
 endfunction
-function RegisterR11_AtkSpd_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AtkSpd_Command takes nothing returns nothing
     set gg_trg_AtkSpd_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(0),"-atkspd",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_AtkSpd_Command,Player(1),"-atkspd",true)
@@ -250,7 +250,9 @@ function RegisterR11_AtkSpd_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_AtkSpd_Command,function Trig_AtkSpd_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AtkSpd takes nothing returns nothing
+    call Register_AtkSpd_Command()
+endfunction
 
 endlibrary

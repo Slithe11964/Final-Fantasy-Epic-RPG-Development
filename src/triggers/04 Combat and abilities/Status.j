@@ -67,20 +67,22 @@ function Trig_Status_AutoCleanse_Actions takes nothing returns nothing
     call GroupClear(udg_ActiveHeroGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Status automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Status (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Status takes nothing returns nothing
 endfunction
-function RegisterR11_Status_AutoCleanse takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Status_AutoCleanse takes nothing returns nothing
     set gg_trg_Status_AutoCleanse=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Status_AutoCleanse,udg_HeroRefreshTimer)
     call TriggerAddCondition(gg_trg_Status_AutoCleanse,Condition(function Trig_Status_AutoCleanse_Conditions))
     call TriggerAddAction(gg_trg_Status_AutoCleanse,function Trig_Status_AutoCleanse_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Status takes nothing returns nothing
+    call Register_Status_AutoCleanse()
+endfunction
 
 endlibrary

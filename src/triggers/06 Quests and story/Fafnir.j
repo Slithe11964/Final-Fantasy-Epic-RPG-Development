@@ -108,88 +108,72 @@ function Trig_Fafnir_Battle_Begin_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Fafnir automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Fafnir_Part1 / RegisterTriggers_Fafnir_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Fafnir takes nothing returns nothing
 endfunction
-function RegisterR11_Fafnir_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Spawn takes nothing returns nothing
     set gg_trg_Fafnir_Spawn=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Fafnir_Spawn,45.)
     call TriggerAddAction(gg_trg_Fafnir_Spawn,function Trig_Fafnir_Spawn_Actions)
 endfunction
-function RegisterR11_Fafnir_Patrol_Move takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Patrol_Move takes nothing returns nothing
     set gg_trg_Fafnir_Patrol_Move=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Fafnir_Patrol_Move,udg_FafnirPatrolTimer)
     call TriggerAddAction(gg_trg_Fafnir_Patrol_Move,function Trig_Fafnir_Patrol_Move_Actions)
 endfunction
-function RegisterR11_Fafnir_Patrol_Waypoint1 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Patrol_Waypoint1 takes nothing returns nothing
     set gg_trg_Fafnir_Patrol_Waypoint1=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint1)
     call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint1,gg_rct_676)
     call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint1,Condition(function Trig_Fafnir_Patrol_Waypoint1_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint1,function Trig_Fafnir_Patrol_Waypoint1_Actions)
 endfunction
-function RegisterR11_Fafnir_Patrol_Waypoint2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Patrol_Waypoint2 takes nothing returns nothing
     set gg_trg_Fafnir_Patrol_Waypoint2=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint2)
     call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint2,gg_rct_677)
     call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint2,Condition(function Trig_Fafnir_Patrol_Waypoint2_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint2,function Trig_Fafnir_Patrol_Waypoint2_Actions)
 endfunction
-function RegisterR11_Fafnir_Patrol_Waypoint3 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Patrol_Waypoint3 takes nothing returns nothing
     set gg_trg_Fafnir_Patrol_Waypoint3=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint3)
     call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint3,gg_rct_678)
     call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint3,Condition(function Trig_Fafnir_Patrol_Waypoint3_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint3,function Trig_Fafnir_Patrol_Waypoint3_Actions)
 endfunction
-function RegisterR11_Fafnir_Patrol_Waypoint0 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Patrol_Waypoint0 takes nothing returns nothing
     set gg_trg_Fafnir_Patrol_Waypoint0=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Patrol_Waypoint0)
     call TriggerRegisterEnterRectSimple(gg_trg_Fafnir_Patrol_Waypoint0,gg_rct_679)
     call TriggerAddCondition(gg_trg_Fafnir_Patrol_Waypoint0,Condition(function Trig_Fafnir_Patrol_Waypoint0_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_Patrol_Waypoint0,function Trig_Fafnir_Patrol_Waypoint0_Actions)
 endfunction
-function RegisterR11_Fafnir_Attack_Delay takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Attack_Delay takes nothing returns nothing
     set gg_trg_Fafnir_Attack_Delay=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Attack_Delay)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fafnir_Attack_Delay,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Fafnir_Attack_Delay,Condition(function Trig_Fafnir_Attack_Delay_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_Attack_Delay,function Trig_Fafnir_Attack_Delay_Actions)
 endfunction
-function RegisterR11_Fafnir_LowLife_Credit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_LowLife_Credit takes nothing returns nothing
     set gg_trg_Fafnir_LowLife_Credit=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_LowLife_Credit)
     call TriggerAddCondition(gg_trg_Fafnir_LowLife_Credit,Condition(function Trig_Fafnir_LowLife_Credit_Conditions))
     call TriggerAddAction(gg_trg_Fafnir_LowLife_Credit,function Trig_Fafnir_LowLife_Credit_Actions)
 endfunction
-function RegisterR11_Fafnir_Battle_Begin takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fafnir_Battle_Begin takes nothing returns nothing
     set gg_trg_Fafnir_Battle_Begin=CreateTrigger()
     call DisableTrigger(gg_trg_Fafnir_Battle_Begin)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Fafnir_Battle_Begin,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
@@ -197,7 +181,25 @@ function RegisterR11_Fafnir_Battle_Begin takes nothing returns nothing
     call TriggerAddAction(gg_trg_Fafnir_Battle_Begin,function Trig_Fafnir_Battle_Begin_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Fafnir_Part1 takes nothing returns nothing
+    call Register_Fafnir_Spawn()
+    call Register_Fafnir_Patrol_Move()
+    call Register_Fafnir_Patrol_Waypoint1()
+    call Register_Fafnir_Patrol_Waypoint2()
+    call Register_Fafnir_Patrol_Waypoint3()
+    call Register_Fafnir_Patrol_Waypoint0()
+    call Register_Fafnir_Attack_Delay()
+    call Register_Fafnir_LowLife_Credit()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Fafnir_Part2 takes nothing returns nothing
+    call Register_Fafnir_Battle_Begin()
+endfunction
 
 endlibrary

@@ -75,20 +75,22 @@ function Trig_Numerus_ChargeCommand_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Numerus automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Numerus (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Numerus takes nothing returns nothing
 endfunction
-function RegisterR11_Numerus_ChargeCommand takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Numerus_ChargeCommand takes nothing returns nothing
     set gg_trg_Numerus_ChargeCommand=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Numerus_ChargeCommand,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Numerus_ChargeCommand,Condition(function Trig_Numerus_ChargeCommand_Conditions))
     call TriggerAddAction(gg_trg_Numerus_ChargeCommand,function Trig_Numerus_ChargeCommand_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Numerus takes nothing returns nothing
+    call Register_Numerus_ChargeCommand()
+endfunction
 
 endlibrary

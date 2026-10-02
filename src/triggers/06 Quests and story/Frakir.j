@@ -58,21 +58,19 @@ function Trig_Frakir_NextMarker_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Frakir automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Frakir (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Frakir takes nothing returns nothing
 endfunction
-function RegisterR11_Frakir_ShowMarker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Frakir_ShowMarker takes nothing returns nothing
     set gg_trg_Frakir_ShowMarker=CreateTrigger()
     call DisableTrigger(gg_trg_Frakir_ShowMarker)
     call TriggerAddAction(gg_trg_Frakir_ShowMarker,function Trig_Frakir_ShowMarker_Actions)
 endfunction
-function RegisterR11_Frakir_Lore_Talk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Frakir_Lore_Talk takes nothing returns nothing
     set gg_trg_Frakir_Lore_Talk=CreateTrigger()
     call DisableTrigger(gg_trg_Frakir_Lore_Talk)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Frakir_Lore_Talk,Player(0),true)
@@ -86,16 +84,18 @@ function RegisterR11_Frakir_Lore_Talk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Frakir_Lore_Talk,Condition(function Trig_Frakir_Lore_Talk_Conditions))
     call TriggerAddAction(gg_trg_Frakir_Lore_Talk,function Trig_Frakir_Lore_Talk_Actions)
 endfunction
-function RegisterR11_Frakir_NextMarker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Frakir_NextMarker takes nothing returns nothing
     set gg_trg_Frakir_NextMarker=CreateTrigger()
     call DisableTrigger(gg_trg_Frakir_NextMarker)
     call TriggerAddAction(gg_trg_Frakir_NextMarker,function Trig_Frakir_NextMarker_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Frakir takes nothing returns nothing
+    call Register_Frakir_ShowMarker()
+    call Register_Frakir_Lore_Talk()
+    call Register_Frakir_NextMarker()
+endfunction
 
 endlibrary

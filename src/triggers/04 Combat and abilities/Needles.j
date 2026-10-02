@@ -75,29 +75,30 @@ function Trig_Needles_99999_Cast_Actions takes nothing returns nothing
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"fanofknives")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Needles automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Needles (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Needles takes nothing returns nothing
 endfunction
-function RegisterR11_Needles_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Needles_Cast takes nothing returns nothing
     set gg_trg_Needles_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Needles_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Needles_Cast,Condition(function Trig_Needles_Cast_Conditions))
     call TriggerAddAction(gg_trg_Needles_Cast,function Trig_Needles_Cast_Actions)
 endfunction
-function RegisterR11_Needles_99999_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Needles_99999_Cast takes nothing returns nothing
     set gg_trg_Needles_99999_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Needles_99999_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Needles_99999_Cast,Condition(function Trig_Needles_99999_Cast_Conditions))
     call TriggerAddAction(gg_trg_Needles_99999_Cast,function Trig_Needles_99999_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Needles takes nothing returns nothing
+    call Register_Needles_Cast()
+    call Register_Needles_99999_Cast()
+endfunction
 
 endlibrary

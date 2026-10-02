@@ -110,74 +110,70 @@ function Trig_Tower_Upgrade_Credit_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Tower automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Tower (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Tower takes nothing returns nothing
 endfunction
-function RegisterR11_Tower_Summon_Register takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Summon_Register takes nothing returns nothing
     set gg_trg_Tower_Summon_Register=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Tower_Summon_Register,GetPlayableMapRect())
     call TriggerAddCondition(gg_trg_Tower_Summon_Register,Condition(function Trig_Tower_Summon_Register_Conditions))
     call TriggerAddAction(gg_trg_Tower_Summon_Register,function Trig_Tower_Summon_Register_Actions)
 endfunction
-function RegisterR11_Tower_Quezacotl_Unregister takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Quezacotl_Unregister takes nothing returns nothing
     set gg_trg_Tower_Quezacotl_Unregister=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Tower_Quezacotl_Unregister,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Tower_Quezacotl_Unregister,Condition(function Trig_Tower_Quezacotl_Unregister_Conditions))
     call TriggerAddAction(gg_trg_Tower_Quezacotl_Unregister,function Trig_Tower_Quezacotl_Unregister_Actions)
 endfunction
-function RegisterR11_Tower_Buy_RestoreMP takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Buy_RestoreMP takes nothing returns nothing
     set gg_trg_Tower_Buy_RestoreMP=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tower_Buy_RestoreMP,Player($A),EVENT_PLAYER_UNIT_SELL) // $A = 10
     call TriggerAddCondition(gg_trg_Tower_Buy_RestoreMP,Condition(function Trig_Tower_Buy_RestoreMP_Conditions))
     call TriggerAddAction(gg_trg_Tower_Buy_RestoreMP,function Trig_Tower_Buy_RestoreMP_Actions)
 endfunction
-function RegisterR11_Tower_Summon_Brothers takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Summon_Brothers takes nothing returns nothing
     set gg_trg_Tower_Summon_Brothers=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Tower_Summon_Brothers,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Tower_Summon_Brothers,Condition(function Trig_Tower_Summon_Brothers_Conditions))
     call TriggerAddAction(gg_trg_Tower_Summon_Brothers,function Trig_Tower_Summon_Brothers_Actions)
 endfunction
-function RegisterR11_Tower_Summon_Eden takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Summon_Eden takes nothing returns nothing
     set gg_trg_Tower_Summon_Eden=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Tower_Summon_Eden,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Tower_Summon_Eden,Condition(function Trig_Tower_Summon_Eden_Conditions))
     call TriggerAddAction(gg_trg_Tower_Summon_Eden,function Trig_Tower_Summon_Eden_Actions)
 endfunction
-function RegisterR11_Tower_Eden_Expire takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Eden_Expire takes nothing returns nothing
     set gg_trg_Tower_Eden_Expire=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Tower_Eden_Expire,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Tower_Eden_Expire,Condition(function Trig_Tower_Eden_Expire_Conditions))
     call TriggerAddAction(gg_trg_Tower_Eden_Expire,function Trig_Tower_Eden_Expire_Actions)
 endfunction
-function RegisterR11_Tower_Upgrade_Credit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tower_Upgrade_Credit takes nothing returns nothing
     set gg_trg_Tower_Upgrade_Credit=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Tower_Upgrade_Credit,5.)
     call TriggerAddCondition(gg_trg_Tower_Upgrade_Credit,Condition(function Trig_Tower_Upgrade_Credit_Conditions))
     call TriggerAddAction(gg_trg_Tower_Upgrade_Credit,function Trig_Tower_Upgrade_Credit_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Tower takes nothing returns nothing
+    call Register_Tower_Summon_Register()
+    call Register_Tower_Quezacotl_Unregister()
+    call Register_Tower_Buy_RestoreMP()
+    call Register_Tower_Summon_Brothers()
+    call Register_Tower_Summon_Eden()
+    call Register_Tower_Eden_Expire()
+    call Register_Tower_Upgrade_Credit()
+endfunction
 
 endlibrary

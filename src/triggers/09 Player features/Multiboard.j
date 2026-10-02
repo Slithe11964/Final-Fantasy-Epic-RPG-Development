@@ -151,37 +151,37 @@ function Trig_Multiboard_Title_Actions takes nothing returns nothing
     call MultiboardSetTitleText(udg_ScoreBoard,(udg_BoardTitlePrefix+udg_GameModeName+udg_BoardTitleMid+udg_DifficultyName+udg_BoardTimeLabel+Time_ElapsedString()))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Multiboard automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Multiboard (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Multiboard takes nothing returns nothing
 endfunction
-function RegisterR11_Multiboard_Create takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Multiboard_Create takes nothing returns nothing
     set gg_trg_Multiboard_Create=CreateTrigger()
     call DisableTrigger(gg_trg_Multiboard_Create)
     call TriggerAddAction(gg_trg_Multiboard_Create,function Trig_Multiboard_Create_Actions)
 endfunction
-function RegisterR11_Multiboard_Refresh takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Multiboard_Refresh takes nothing returns nothing
     set gg_trg_Multiboard_Refresh=CreateTrigger()
     call DisableTrigger(gg_trg_Multiboard_Refresh)
     call TriggerRegisterTimerEvent(gg_trg_Multiboard_Refresh,2.,true)
     call TriggerAddAction(gg_trg_Multiboard_Refresh,function Trig_Multiboard_Refresh_Actions)
 endfunction
-function RegisterR11_Multiboard_Title takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Multiboard_Title takes nothing returns nothing
     set gg_trg_Multiboard_Title=CreateTrigger()
     call DisableTrigger(gg_trg_Multiboard_Title)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Multiboard_Title,1.)
     call TriggerAddAction(gg_trg_Multiboard_Title,function Trig_Multiboard_Title_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Multiboard takes nothing returns nothing
+    call Register_Multiboard_Create()
+    call Register_Multiboard_Refresh()
+    call Register_Multiboard_Title()
+endfunction
 
 endlibrary

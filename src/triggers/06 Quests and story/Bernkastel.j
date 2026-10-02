@@ -286,29 +286,25 @@ function Trig_Bernkastel_Despawn_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Bernkastel automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Bernkastel (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Bernkastel takes nothing returns nothing
 endfunction
-function RegisterR11_Bernkastel_State_Reset takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_State_Reset takes nothing returns nothing
     set gg_trg_Bernkastel_State_Reset=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Bernkastel_State_Reset,1.)
     call TriggerAddAction(gg_trg_Bernkastel_State_Reset,function Trig_Bernkastel_State_Reset_Actions)
 endfunction
-function RegisterR11_Bernkastel_Try_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_Try_Spawn takes nothing returns nothing
     set gg_trg_Bernkastel_Try_Spawn=CreateTrigger()
     call DisableTrigger(gg_trg_Bernkastel_Try_Spawn)
     call TriggerAddAction(gg_trg_Bernkastel_Try_Spawn,function Trig_Bernkastel_Try_Spawn_Actions)
 endfunction
-function RegisterR11_Bernkastel_First_Talk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_First_Talk takes nothing returns nothing
     set gg_trg_Bernkastel_First_Talk=CreateTrigger()
     call DisableTrigger(gg_trg_Bernkastel_First_Talk)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_First_Talk,Player(0),true)
@@ -322,10 +318,8 @@ function RegisterR11_Bernkastel_First_Talk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Bernkastel_First_Talk,Condition(function Trig_Bernkastel_First_Talk_Conditions))
     call TriggerAddAction(gg_trg_Bernkastel_First_Talk,function Trig_Bernkastel_First_Talk_Actions)
 endfunction
-function RegisterR11_Bernkastel_Second_Talk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_Second_Talk takes nothing returns nothing
     set gg_trg_Bernkastel_Second_Talk=CreateTrigger()
     call DisableTrigger(gg_trg_Bernkastel_Second_Talk)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Second_Talk,Player(0),true)
@@ -339,10 +333,8 @@ function RegisterR11_Bernkastel_Second_Talk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Bernkastel_Second_Talk,Condition(function Trig_Bernkastel_Second_Talk_Conditions))
     call TriggerAddAction(gg_trg_Bernkastel_Second_Talk,function Trig_Bernkastel_Second_Talk_Actions)
 endfunction
-function RegisterR11_Bernkastel_Hint_Talk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_Hint_Talk takes nothing returns nothing
     set gg_trg_Bernkastel_Hint_Talk=CreateTrigger()
     call DisableTrigger(gg_trg_Bernkastel_Hint_Talk)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Hint_Talk,Player(0),true)
@@ -356,10 +348,8 @@ function RegisterR11_Bernkastel_Hint_Talk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Bernkastel_Hint_Talk,Condition(function Trig_Bernkastel_Hint_Talk_Conditions))
     call TriggerAddAction(gg_trg_Bernkastel_Hint_Talk,function Trig_Bernkastel_Hint_Talk_Actions)
 endfunction
-function RegisterR11_Bernkastel_Final_Talk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_Final_Talk takes nothing returns nothing
     set gg_trg_Bernkastel_Final_Talk=CreateTrigger()
     call DisableTrigger(gg_trg_Bernkastel_Final_Talk)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Bernkastel_Final_Talk,Player(0),true)
@@ -373,16 +363,22 @@ function RegisterR11_Bernkastel_Final_Talk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Bernkastel_Final_Talk,Condition(function Trig_Bernkastel_Final_Talk_Conditions))
     call TriggerAddAction(gg_trg_Bernkastel_Final_Talk,function Trig_Bernkastel_Final_Talk_Actions)
 endfunction
-function RegisterR11_Bernkastel_Despawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bernkastel_Despawn takes nothing returns nothing
     set gg_trg_Bernkastel_Despawn=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Bernkastel_Despawn,udg_BlueGirlTimer)
     call TriggerAddAction(gg_trg_Bernkastel_Despawn,function Trig_Bernkastel_Despawn_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Bernkastel takes nothing returns nothing
+    call Register_Bernkastel_State_Reset()
+    call Register_Bernkastel_Try_Spawn()
+    call Register_Bernkastel_First_Talk()
+    call Register_Bernkastel_Second_Talk()
+    call Register_Bernkastel_Hint_Talk()
+    call Register_Bernkastel_Final_Talk()
+    call Register_Bernkastel_Despawn()
+endfunction
 
 endlibrary

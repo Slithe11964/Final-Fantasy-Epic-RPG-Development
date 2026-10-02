@@ -43,19 +43,21 @@ function Trig_GameLoad_RestoreTitles_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GameLoad automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GameLoad (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GameLoad takes nothing returns nothing
 endfunction
-function RegisterR11_GameLoad_RestoreTitles takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GameLoad_RestoreTitles takes nothing returns nothing
     set gg_trg_GameLoad_RestoreTitles=CreateTrigger()
     call TriggerRegisterGameLoadedEventBJ(gg_trg_GameLoad_RestoreTitles)
     call TriggerAddAction(gg_trg_GameLoad_RestoreTitles,function Trig_GameLoad_RestoreTitles_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GameLoad takes nothing returns nothing
+    call Register_GameLoad_RestoreTitles()
+endfunction
 
 endlibrary

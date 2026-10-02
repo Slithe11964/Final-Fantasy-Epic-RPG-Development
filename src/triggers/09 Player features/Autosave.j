@@ -46,13 +46,13 @@ function Trig_Autosave_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Autosave automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Autosave (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Autosave takes nothing returns nothing
 endfunction
-function RegisterR11_Autosave_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Autosave_Command takes nothing returns nothing
     set gg_trg_Autosave_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(0),"-autosave",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Autosave_Command,Player(1),"-autosave",false)
@@ -65,7 +65,9 @@ function RegisterR11_Autosave_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Autosave_Command,function Trig_Autosave_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Autosave takes nothing returns nothing
+    call Register_Autosave_Command()
+endfunction
 
 endlibrary

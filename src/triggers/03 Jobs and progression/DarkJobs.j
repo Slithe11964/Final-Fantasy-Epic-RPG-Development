@@ -61,21 +61,19 @@ function Trig_DarkJobs_Reveal_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkJobs automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkJobs (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkJobs takes nothing returns nothing
 endfunction
-function RegisterR11_DarkJobs_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkJobs_Unlock takes nothing returns nothing
     set gg_trg_DarkJobs_Unlock=CreateTrigger()
     call DisableTrigger(gg_trg_DarkJobs_Unlock)
     call TriggerAddAction(gg_trg_DarkJobs_Unlock,function Trig_DarkJobs_Unlock_Actions)
 endfunction
-function RegisterR11_DarkJobs_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkJobs_Reveal takes nothing returns nothing
     set gg_trg_DarkJobs_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_DarkJobs_Reveal)
     call TriggerRegisterTimerEventPeriodic(gg_trg_DarkJobs_Reveal,12.)
@@ -83,7 +81,10 @@ function RegisterR11_DarkJobs_Reveal takes nothing returns nothing
     call TriggerAddAction(gg_trg_DarkJobs_Reveal,function Trig_DarkJobs_Reveal_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkJobs takes nothing returns nothing
+    call Register_DarkJobs_Unlock()
+    call Register_DarkJobs_Reveal()
+endfunction
 
 endlibrary

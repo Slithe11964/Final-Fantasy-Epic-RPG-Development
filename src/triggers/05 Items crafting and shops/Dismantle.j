@@ -19,20 +19,22 @@ function Trig_Dismantle_Cast_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Dismantle automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Dismantle (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Dismantle takes nothing returns nothing
 endfunction
-function RegisterR11_Dismantle_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dismantle_Cast takes nothing returns nothing
     set gg_trg_Dismantle_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Dismantle_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Dismantle_Cast,Condition(function Trig_Dismantle_Cast_Conditions))
     call TriggerAddAction(gg_trg_Dismantle_Cast,function Trig_Dismantle_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Dismantle takes nothing returns nothing
+    call Register_Dismantle_Cast()
+endfunction
 
 endlibrary

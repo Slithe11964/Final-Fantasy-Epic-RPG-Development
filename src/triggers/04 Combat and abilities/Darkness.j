@@ -93,29 +93,30 @@ function Trig_Darkness_Cast_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Darkness automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Darkness (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Darkness takes nothing returns nothing
 endfunction
-function RegisterR11_Darkness_LowHP_Cancel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Darkness_LowHP_Cancel takes nothing returns nothing
     set gg_trg_Darkness_LowHP_Cancel=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_LowHP_Cancel,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerAddCondition(gg_trg_Darkness_LowHP_Cancel,Condition(function Trig_Darkness_LowHP_Cancel_Conditions))
     call TriggerAddAction(gg_trg_Darkness_LowHP_Cancel,function Trig_Darkness_LowHP_Cancel_Actions)
 endfunction
-function RegisterR11_Darkness_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Darkness_Cast takes nothing returns nothing
     set gg_trg_Darkness_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Darkness_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Darkness_Cast,Condition(function Trig_Darkness_Cast_Conditions))
     call TriggerAddAction(gg_trg_Darkness_Cast,function Trig_Darkness_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Darkness takes nothing returns nothing
+    call Register_Darkness_LowHP_Cancel()
+    call Register_Darkness_Cast()
+endfunction
 
 endlibrary

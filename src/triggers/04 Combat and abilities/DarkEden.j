@@ -137,39 +137,39 @@ function Trig_DarkEden_LightningColor_Actions takes nothing returns nothing
     call SetLightningColorBJ(udg_AbsorbLightning,GetRandomReal(0,1),GetRandomReal(0,1),GetRandomReal(0,1),GetRandomReal(.5,1))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkEden automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkEden (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkEden takes nothing returns nothing
 endfunction
-function RegisterR11_DarkEden_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEden_Appear takes nothing returns nothing
     set gg_trg_DarkEden_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkEden_Appear)
     call TriggerRegisterEnterRectSimple(gg_trg_DarkEden_Appear,gg_rct_118)
     call TriggerAddCondition(gg_trg_DarkEden_Appear,Condition(function Trig_DarkEden_Appear_Conditions))
     call TriggerAddAction(gg_trg_DarkEden_Appear,function Trig_DarkEden_Appear_Actions)
 endfunction
-function RegisterR11_DarkEden_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEden_Death takes nothing returns nothing
     set gg_trg_DarkEden_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkEden_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkEden_Death,gg_unit_N02Z_0031,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_DarkEden_Death,function Trig_DarkEden_Death_Actions)
 endfunction
-function RegisterR11_DarkEden_LightningColor takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEden_LightningColor takes nothing returns nothing
     set gg_trg_DarkEden_LightningColor=CreateTrigger()
     call DisableTrigger(gg_trg_DarkEden_LightningColor)
     call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEden_LightningColor,.25)
     call TriggerAddAction(gg_trg_DarkEden_LightningColor,function Trig_DarkEden_LightningColor_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkEden takes nothing returns nothing
+    call Register_DarkEden_Appear()
+    call Register_DarkEden_Death()
+    call Register_DarkEden_LightningColor()
+endfunction
 
 endlibrary

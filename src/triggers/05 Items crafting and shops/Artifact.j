@@ -45,33 +45,29 @@ function Trig_Artifact_Carrier_Actions takes nothing returns nothing
     set udg_ArtifactCarrier=GetTriggerUnit()
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Artifact automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Artifact (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Artifact takes nothing returns nothing
 endfunction
-function RegisterR11_Artifact_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Artifact_Ping takes nothing returns nothing
     set gg_trg_Artifact_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_Artifact_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Artifact_Ping,15.)
     call TriggerAddCondition(gg_trg_Artifact_Ping,Condition(function Trig_Artifact_Ping_Conditions))
     call TriggerAddAction(gg_trg_Artifact_Ping,function Trig_Artifact_Ping_Actions)
 endfunction
-function RegisterR11_Artifact_PickedUp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Artifact_PickedUp takes nothing returns nothing
     set gg_trg_Artifact_PickedUp=CreateTrigger()
     call DisableTrigger(gg_trg_Artifact_PickedUp)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_PickedUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Artifact_PickedUp,Condition(function Trig_Artifact_PickedUp_Conditions))
     call TriggerAddAction(gg_trg_Artifact_PickedUp,function Trig_Artifact_PickedUp_Actions)
 endfunction
-function RegisterR11_Artifact_Carrier takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Artifact_Carrier takes nothing returns nothing
     set gg_trg_Artifact_Carrier=CreateTrigger()
     call DisableTrigger(gg_trg_Artifact_Carrier)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Artifact_Carrier,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -79,7 +75,11 @@ function RegisterR11_Artifact_Carrier takes nothing returns nothing
     call TriggerAddAction(gg_trg_Artifact_Carrier,function Trig_Artifact_Carrier_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Artifact takes nothing returns nothing
+    call Register_Artifact_Ping()
+    call Register_Artifact_PickedUp()
+    call Register_Artifact_Carrier()
+endfunction
 
 endlibrary

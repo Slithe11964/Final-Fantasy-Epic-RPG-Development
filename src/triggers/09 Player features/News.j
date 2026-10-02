@@ -432,30 +432,26 @@ function Trig_News_SubmitEntry_Actions takes nothing returns nothing
     set udg_NewsEntryCooldown[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=false
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_News automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_News_Part1 / RegisterTriggers_News_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_News takes nothing returns nothing
 endfunction
-function RegisterR11_News_Morning takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_News_Morning takes nothing returns nothing
     set gg_trg_News_Morning=CreateTrigger()
     call DisableTrigger(gg_trg_News_Morning)
     call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Morning,EQUAL,6.)
     call TriggerAddAction(gg_trg_News_Morning,function Trig_News_Morning_Actions)
 endfunction
-function RegisterR11_News_Evening takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_News_Evening takes nothing returns nothing
     set gg_trg_News_Evening=CreateTrigger()
     call TriggerRegisterGameStateEventTimeOfDay(gg_trg_News_Evening,EQUAL,18.)
     call TriggerAddAction(gg_trg_News_Evening,function Trig_News_Evening_Actions)
 endfunction
-function RegisterR11_News_SetTitle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_News_SetTitle takes nothing returns nothing
     set gg_trg_News_SetTitle=CreateTrigger()
     call DisableTrigger(gg_trg_News_SetTitle)
     call TriggerRegisterPlayerChatEvent(gg_trg_News_SetTitle,Player(0),"-news title ",false)
@@ -469,10 +465,8 @@ function RegisterR11_News_SetTitle takes nothing returns nothing
     call TriggerAddCondition(gg_trg_News_SetTitle,Condition(function Trig_News_SetTitle_Conditions))
     call TriggerAddAction(gg_trg_News_SetTitle,function Trig_News_SetTitle_Actions)
 endfunction
-function RegisterR11_News_SetEntry takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_News_SetEntry takes nothing returns nothing
     set gg_trg_News_SetEntry=CreateTrigger()
     call DisableTrigger(gg_trg_News_SetEntry)
     call TriggerRegisterPlayerChatEvent(gg_trg_News_SetEntry,Player(0),"-news entry ",false)
@@ -486,10 +480,8 @@ function RegisterR11_News_SetEntry takes nothing returns nothing
     call TriggerAddCondition(gg_trg_News_SetEntry,Condition(function Trig_News_SetEntry_Conditions))
     call TriggerAddAction(gg_trg_News_SetEntry,function Trig_News_SetEntry_Actions)
 endfunction
-function RegisterR11_News_SubmitEntry takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_News_SubmitEntry takes nothing returns nothing
     set gg_trg_News_SubmitEntry=CreateTrigger()
     call DisableTrigger(gg_trg_News_SubmitEntry)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_News_SubmitEntry,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -497,7 +489,21 @@ function RegisterR11_News_SubmitEntry takes nothing returns nothing
     call TriggerAddAction(gg_trg_News_SubmitEntry,function Trig_News_SubmitEntry_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_News_Part1 takes nothing returns nothing
+    call Register_News_Morning()
+    call Register_News_Evening()
+    call Register_News_SetTitle()
+    call Register_News_SetEntry()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_News_Part2 takes nothing returns nothing
+    call Register_News_SubmitEntry()
+endfunction
 
 endlibrary

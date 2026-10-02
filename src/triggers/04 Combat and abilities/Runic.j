@@ -67,20 +67,22 @@ function Trig_Runic_Shield_Actions takes nothing returns nothing
     call Trig_Runic_Shield_Apply(GetSpellTargetUnit(),udg_TempInteger)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Runic automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Runic (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Runic takes nothing returns nothing
 endfunction
-function RegisterR11_Runic_Shield takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Runic_Shield takes nothing returns nothing
     set gg_trg_Runic_Shield=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Runic_Shield,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Runic_Shield,Condition(function Trig_Runic_Shield_Conditions))
     call TriggerAddAction(gg_trg_Runic_Shield,function Trig_Runic_Shield_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Runic takes nothing returns nothing
+    call Register_Runic_Shield()
+endfunction
 
 endlibrary

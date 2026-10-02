@@ -46,20 +46,22 @@ function Trig_Celestium_Trade_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Celestium automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Celestium (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Celestium takes nothing returns nothing
 endfunction
-function RegisterR11_Celestium_Trade takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Celestium_Trade takes nothing returns nothing
     set gg_trg_Celestium_Trade=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Celestium_Trade,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Celestium_Trade,Condition(function Trig_Celestium_Trade_Conditions))
     call TriggerAddAction(gg_trg_Celestium_Trade,function Trig_Celestium_Trade_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Celestium takes nothing returns nothing
+    call Register_Celestium_Trade()
+endfunction
 
 endlibrary

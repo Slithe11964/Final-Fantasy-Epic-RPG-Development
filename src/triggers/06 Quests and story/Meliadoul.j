@@ -14,20 +14,22 @@ function Trig_Meliadoul_Hint_Timer_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Meliadoul automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Meliadoul (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Meliadoul takes nothing returns nothing
 endfunction
-function RegisterR11_Meliadoul_Hint_Timer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Meliadoul_Hint_Timer takes nothing returns nothing
     set gg_trg_Meliadoul_Hint_Timer=CreateTrigger()
     call DisableTrigger(gg_trg_Meliadoul_Hint_Timer)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Meliadoul_Hint_Timer,udg_SiegeTimer)
     call TriggerAddAction(gg_trg_Meliadoul_Hint_Timer,function Trig_Meliadoul_Hint_Timer_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Meliadoul takes nothing returns nothing
+    call Register_Meliadoul_Hint_Timer()
+endfunction
 
 endlibrary

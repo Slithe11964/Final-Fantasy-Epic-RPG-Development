@@ -15,13 +15,13 @@ function Trig_Glyph_Area_Enter_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Glyph automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Glyph (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Glyph takes nothing returns nothing
 endfunction
-function RegisterR11_Glyph_Area_Enter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Glyph_Area_Enter takes nothing returns nothing
     set gg_trg_Glyph_Area_Enter=CreateTrigger()
     call DisableTrigger(gg_trg_Glyph_Area_Enter)
     call TriggerRegisterEnterRectSimple(gg_trg_Glyph_Area_Enter,gg_rct_496)
@@ -29,7 +29,9 @@ function RegisterR11_Glyph_Area_Enter takes nothing returns nothing
     call TriggerAddAction(gg_trg_Glyph_Area_Enter,function Trig_Glyph_Area_Enter_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Glyph takes nothing returns nothing
+    call Register_Glyph_Area_Enter()
+endfunction
 
 endlibrary

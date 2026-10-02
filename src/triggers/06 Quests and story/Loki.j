@@ -274,21 +274,19 @@ function Trig_Loki_Reforge_Confirm_Actions takes nothing returns nothing
     set udg_LokiReforgeItem=null
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Loki automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Loki_Part1 / RegisterTriggers_Loki_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Loki takes nothing returns nothing
 endfunction
-function RegisterR11_Loki_Talk_Enable takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Talk_Enable takes nothing returns nothing
     set gg_trg_Loki_Talk_Enable=CreateTrigger()
     call DisableTrigger(gg_trg_Loki_Talk_Enable)
     call TriggerAddAction(gg_trg_Loki_Talk_Enable,function Trig_Loki_Talk_Enable_Actions)
 endfunction
-function RegisterR11_Loki_Reforge_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Reforge_Unlock takes nothing returns nothing
     set gg_trg_Loki_Reforge_Unlock=CreateTrigger()
     call DisableTrigger(gg_trg_Loki_Reforge_Unlock)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Loki_Reforge_Unlock,Player(0),true)
@@ -302,38 +300,30 @@ function RegisterR11_Loki_Reforge_Unlock takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Loki_Reforge_Unlock,Condition(function Trig_Loki_Reforge_Unlock_Conditions))
     call TriggerAddAction(gg_trg_Loki_Reforge_Unlock,function Trig_Loki_Reforge_Unlock_Actions)
 endfunction
-function RegisterR11_Loki_Reforge_Offer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Reforge_Offer takes nothing returns nothing
     set gg_trg_Loki_Reforge_Offer=CreateTrigger()
     call DisableTrigger(gg_trg_Loki_Reforge_Offer)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Loki_Reforge_Offer,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Loki_Reforge_Offer,Condition(function Trig_Loki_Reforge_Offer_Conditions))
     call TriggerAddAction(gg_trg_Loki_Reforge_Offer,function Trig_Loki_Reforge_Offer_Actions)
 endfunction
-function RegisterR11_Loki_Reforge_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Reforge_Drop takes nothing returns nothing
     set gg_trg_Loki_Reforge_Drop=CreateTrigger()
     call DisableTrigger(gg_trg_Loki_Reforge_Drop)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Loki_Reforge_Drop,Player(9),EVENT_PLAYER_UNIT_DROP_ITEM)
     call TriggerAddCondition(gg_trg_Loki_Reforge_Drop,Condition(function Trig_Loki_Reforge_Drop_Conditions))
     call TriggerAddAction(gg_trg_Loki_Reforge_Drop,function Trig_Loki_Reforge_Drop_Actions)
 endfunction
-function RegisterR11_Loki_Forge_Text_Clear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Forge_Text_Clear takes nothing returns nothing
     set gg_trg_Loki_Forge_Text_Clear=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Loki_Forge_Text_Clear,udg_LokiForgeTextTimer)
     call TriggerAddAction(gg_trg_Loki_Forge_Text_Clear,function Trig_Loki_Forge_Text_Clear_Actions)
 endfunction
-function RegisterR11_Loki_Reforge_Confirm takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loki_Reforge_Confirm takes nothing returns nothing
     set gg_trg_Loki_Reforge_Confirm=CreateTrigger()
     call DisableTrigger(gg_trg_Loki_Reforge_Confirm)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Loki_Reforge_Confirm,EVENT_PLAYER_UNIT_SELL)
@@ -341,7 +331,22 @@ function RegisterR11_Loki_Reforge_Confirm takes nothing returns nothing
     call TriggerAddAction(gg_trg_Loki_Reforge_Confirm,function Trig_Loki_Reforge_Confirm_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Loki_Part1 takes nothing returns nothing
+    call Register_Loki_Talk_Enable()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Loki_Part2 takes nothing returns nothing
+    call Register_Loki_Reforge_Unlock()
+    call Register_Loki_Reforge_Offer()
+    call Register_Loki_Reforge_Drop()
+    call Register_Loki_Forge_Text_Clear()
+    call Register_Loki_Reforge_Confirm()
+endfunction
 
 endlibrary

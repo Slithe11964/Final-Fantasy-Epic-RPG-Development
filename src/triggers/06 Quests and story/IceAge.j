@@ -344,29 +344,30 @@ function Trig_IceAge_Victory_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_IceAge automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_IceAge (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_IceAge takes nothing returns nothing
 endfunction
-function RegisterR11_IceAge_FreezeTimeout takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_IceAge_FreezeTimeout takes nothing returns nothing
     set gg_trg_IceAge_FreezeTimeout=CreateTrigger()
     call DisableTrigger(gg_trg_IceAge_FreezeTimeout)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_IceAge_FreezeTimeout,udg_WorldFreezeTimer)
     call TriggerAddAction(gg_trg_IceAge_FreezeTimeout,function Trig_IceAge_FreezeTimeout_Actions)
 endfunction
-function RegisterR11_IceAge_Victory takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_IceAge_Victory takes nothing returns nothing
     set gg_trg_IceAge_Victory=CreateTrigger()
     call DisableTrigger(gg_trg_IceAge_Victory)
     call TriggerAddCondition(gg_trg_IceAge_Victory,Condition(function Trig_IceAge_Victory_Conditions))
     call TriggerAddAction(gg_trg_IceAge_Victory,function Trig_IceAge_Victory_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_IceAge takes nothing returns nothing
+    call Register_IceAge_FreezeTimeout()
+    call Register_IceAge_Victory()
+endfunction
 
 endlibrary

@@ -136,35 +136,35 @@ function Trig_DarkEidolons_Unlock_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkEidolons automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkEidolons (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkEidolons takes nothing returns nothing
 endfunction
-function RegisterR11_DarkEidolons_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEidolons_Init takes nothing returns nothing
     set gg_trg_DarkEidolons_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_DarkEidolons_Init,function Trig_DarkEidolons_Init_Actions)
 endfunction
-function RegisterR11_DarkEidolons_SpawnGhosts takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEidolons_SpawnGhosts takes nothing returns nothing
     set gg_trg_DarkEidolons_SpawnGhosts=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_DarkEidolons_SpawnGhosts,20.)
     call TriggerAddAction(gg_trg_DarkEidolons_SpawnGhosts,function Trig_DarkEidolons_SpawnGhosts_Actions)
 endfunction
-function RegisterR11_DarkEidolons_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEidolons_Unlock takes nothing returns nothing
     set gg_trg_DarkEidolons_Unlock=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_DarkEidolons_Unlock,15.)
     call TriggerAddCondition(gg_trg_DarkEidolons_Unlock,Condition(function Trig_DarkEidolons_Unlock_Conditions))
     call TriggerAddAction(gg_trg_DarkEidolons_Unlock,function Trig_DarkEidolons_Unlock_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkEidolons takes nothing returns nothing
+    call Register_DarkEidolons_Init()
+    call Register_DarkEidolons_SpawnGhosts()
+    call Register_DarkEidolons_Unlock()
+endfunction
 
 endlibrary

@@ -380,258 +380,204 @@ function Trig_Npc_Talk_Gravedigger_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Npc automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Npc (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Npc takes nothing returns nothing
 endfunction
-function RegisterR11_Npc_Hints_Create takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Hints_Create takes nothing returns nothing
     set gg_trg_Npc_Hints_Create=CreateTrigger()
     call TriggerAddAction(gg_trg_Npc_Hints_Create,function Trig_Npc_Hints_Create_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Woman takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Woman takes nothing returns nothing
     set gg_trg_Npc_Talk_Woman=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Woman,150.,gg_unit_nvlw_0048)
     call TriggerAddCondition(gg_trg_Npc_Talk_Woman,Condition(function Trig_Npc_Talk_Woman_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Woman,function Trig_Npc_Talk_Woman_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Reno takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Reno takes nothing returns nothing
     set gg_trg_Npc_Talk_Reno=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Reno)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Reno,150.,gg_unit_n012_0163)
     call TriggerAddCondition(gg_trg_Npc_Talk_Reno,Condition(function Trig_Npc_Talk_Reno_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Reno,function Trig_Npc_Talk_Reno_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Rude takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Rude takes nothing returns nothing
     set gg_trg_Npc_Talk_Rude=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Rude)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Rude,150.,gg_unit_n013_0164)
     call TriggerAddCondition(gg_trg_Npc_Talk_Rude,Condition(function Trig_Npc_Talk_Rude_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Rude,function Trig_Npc_Talk_Rude_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Footman takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Footman takes nothing returns nothing
     set gg_trg_Npc_Talk_Footman=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Footman,150.,gg_unit_hfoo_0090)
     call TriggerAddCondition(gg_trg_Npc_Talk_Footman,Condition(function Trig_Npc_Talk_Footman_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Footman,function Trig_Npc_Talk_Footman_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Swordsman takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Swordsman takes nothing returns nothing
     set gg_trg_Npc_Talk_Swordsman=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Swordsman,150.,gg_unit_hhes_0088)
     call TriggerAddCondition(gg_trg_Npc_Talk_Swordsman,Condition(function Trig_Npc_Talk_Swordsman_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Swordsman,function Trig_Npc_Talk_Swordsman_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Child takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Child takes nothing returns nothing
     set gg_trg_Npc_Talk_Child=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Child,150.,gg_unit_nvlk_0004)
     call TriggerAddCondition(gg_trg_Npc_Talk_Child,Condition(function Trig_Npc_Talk_Child_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Child,function Trig_Npc_Talk_Child_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Archer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Archer takes nothing returns nothing
     set gg_trg_Npc_Talk_Archer=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Archer,150.,gg_unit_nhea_0084)
     call TriggerAddCondition(gg_trg_Npc_Talk_Archer,Condition(function Trig_Npc_Talk_Archer_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Archer,function Trig_Npc_Talk_Archer_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Knight takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Knight takes nothing returns nothing
     set gg_trg_Npc_Talk_Knight=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Knight,150.,gg_unit_hkni_0092)
     call TriggerAddCondition(gg_trg_Npc_Talk_Knight,Condition(function Trig_Npc_Talk_Knight_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Knight,function Trig_Npc_Talk_Knight_Actions)
 endfunction
-function RegisterR11_Npc_Talk_ChildChocobo takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_ChildChocobo takes nothing returns nothing
     set gg_trg_Npc_Talk_ChildChocobo=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_ChildChocobo,150.,gg_unit_nvlk_0146)
     call TriggerAddCondition(gg_trg_Npc_Talk_ChildChocobo,Condition(function Trig_Npc_Talk_ChildChocobo_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_ChildChocobo,function Trig_Npc_Talk_ChildChocobo_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Kenarius takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Kenarius takes nothing returns nothing
     set gg_trg_Npc_Talk_Kenarius=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Kenarius)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Kenarius,150.,gg_unit_Ecen_0180)
     call TriggerAddCondition(gg_trg_Npc_Talk_Kenarius,Condition(function Trig_Npc_Talk_Kenarius_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Kenarius,function Trig_Npc_Talk_Kenarius_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Nimphrodel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Nimphrodel takes nothing returns nothing
     set gg_trg_Npc_Talk_Nimphrodel=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Nimphrodel)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Nimphrodel,150.,gg_unit_E003_0182)
     call TriggerAddCondition(gg_trg_Npc_Talk_Nimphrodel,Condition(function Trig_Npc_Talk_Nimphrodel_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Nimphrodel,function Trig_Npc_Talk_Nimphrodel_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Sentry takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Sentry takes nothing returns nothing
     set gg_trg_Npc_Talk_Sentry=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Sentry,150.,gg_unit_nwat_0157)
     call TriggerAddCondition(gg_trg_Npc_Talk_Sentry,Condition(function Trig_Npc_Talk_Sentry_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Sentry,function Trig_Npc_Talk_Sentry_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Kesha takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Kesha takes nothing returns nothing
     set gg_trg_Npc_Talk_Kesha=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Kesha,150.,gg_unit_Nsjs_0194)
     call TriggerAddCondition(gg_trg_Npc_Talk_Kesha,Condition(function Trig_Npc_Talk_Kesha_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Kesha,function Trig_Npc_Talk_Kesha_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Peasant takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Peasant takes nothing returns nothing
     set gg_trg_Npc_Talk_Peasant=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Peasant,150.,gg_unit_nvil_0003)
     call TriggerAddCondition(gg_trg_Npc_Talk_Peasant,Condition(function Trig_Npc_Talk_Peasant_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Peasant,function Trig_Npc_Talk_Peasant_Actions)
 endfunction
-function RegisterR11_Npc_Talk_PeasantHarvest takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_PeasantHarvest takes nothing returns nothing
     set gg_trg_Npc_Talk_PeasantHarvest=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_PeasantHarvest)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_PeasantHarvest,150.,gg_unit_nvil_0003)
     call TriggerAddCondition(gg_trg_Npc_Talk_PeasantHarvest,Condition(function Trig_Npc_Talk_PeasantHarvest_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_PeasantHarvest,function Trig_Npc_Talk_PeasantHarvest_Actions)
 endfunction
-function RegisterR11_Npc_Talk_MineStory takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_MineStory takes nothing returns nothing
     set gg_trg_Npc_Talk_MineStory=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_MineStory,150.,gg_unit_hhes_0086)
     call TriggerAddCondition(gg_trg_Npc_Talk_MineStory,Condition(function Trig_Npc_Talk_MineStory_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_MineStory,function Trig_Npc_Talk_MineStory_Actions)
 endfunction
-function RegisterR11_Npc_Fire_WantMore takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Fire_WantMore takes nothing returns nothing
     set gg_trg_Npc_Fire_WantMore=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Fire_WantMore)
     call TriggerAddAction(gg_trg_Npc_Fire_WantMore,function Trig_Npc_Fire_WantMore_Actions)
 endfunction
-function RegisterR11_Npc_Fire_Thanks takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Fire_Thanks takes nothing returns nothing
     set gg_trg_Npc_Fire_Thanks=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Fire_Thanks)
     call TriggerAddAction(gg_trg_Npc_Fire_Thanks,function Trig_Npc_Fire_Thanks_Actions)
 endfunction
-function RegisterR11_Npc_Priscilla_SummonEden takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Priscilla_SummonEden takes nothing returns nothing
     set gg_trg_Npc_Priscilla_SummonEden=CreateTrigger()
     call TriggerAddCondition(gg_trg_Npc_Priscilla_SummonEden,Condition(function Trig_Npc_Priscilla_SummonEden_Conditions))
     call TriggerAddAction(gg_trg_Npc_Priscilla_SummonEden,function Trig_Npc_Priscilla_SummonEden_Actions)
 endfunction
-function RegisterR11_Npc_Talk_LinkGuard takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_LinkGuard takes nothing returns nothing
     set gg_trg_Npc_Talk_LinkGuard=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_LinkGuard,150.,gg_unit_hhes_0099)
     call TriggerAddCondition(gg_trg_Npc_Talk_LinkGuard,Condition(function Trig_Npc_Talk_LinkGuard_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_LinkGuard,function Trig_Npc_Talk_LinkGuard_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Jack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Jack takes nothing returns nothing
     set gg_trg_Npc_Talk_Jack=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Jack)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Jack,150.,gg_unit_Hapm_0179)
     call TriggerAddCondition(gg_trg_Npc_Talk_Jack,Condition(function Trig_Npc_Talk_Jack_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Jack,function Trig_Npc_Talk_Jack_Actions)
 endfunction
-function RegisterR11_Npc_Talk_ArcherWall takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_ArcherWall takes nothing returns nothing
     set gg_trg_Npc_Talk_ArcherWall=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_ArcherWall,150.,gg_unit_nhea_0096)
     call TriggerAddCondition(gg_trg_Npc_Talk_ArcherWall,Condition(function Trig_Npc_Talk_ArcherWall_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_ArcherWall,function Trig_Npc_Talk_ArcherWall_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Ruksel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Ruksel takes nothing returns nothing
     set gg_trg_Npc_Talk_Ruksel=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Ruksel,150.,gg_unit_n0AW_0223)
     call TriggerAddCondition(gg_trg_Npc_Talk_Ruksel,Condition(function Trig_Npc_Talk_Ruksel_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Ruksel,function Trig_Npc_Talk_Ruksel_Actions)
 endfunction
-function RegisterR11_Npc_Thorn_BattleWait takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Thorn_BattleWait takes nothing returns nothing
     set gg_trg_Npc_Thorn_BattleWait=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Thorn_BattleWait)
     call TriggerAddAction(gg_trg_Npc_Thorn_BattleWait,function Trig_Npc_Thorn_BattleWait_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Sigroon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Sigroon takes nothing returns nothing
     set gg_trg_Npc_Talk_Sigroon=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Sigroon)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Sigroon,150.,gg_unit_e019_0228)
     call TriggerAddCondition(gg_trg_Npc_Talk_Sigroon,Condition(function Trig_Npc_Talk_Sigroon_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Sigroon,function Trig_Npc_Talk_Sigroon_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Quincy takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Quincy takes nothing returns nothing
     set gg_trg_Npc_Talk_Quincy=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Quincy)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Quincy,150.,gg_unit_h031_0114)
     call TriggerAddCondition(gg_trg_Npc_Talk_Quincy,Condition(function Trig_Npc_Talk_Quincy_Conditions))
     call TriggerAddAction(gg_trg_Npc_Talk_Quincy,function Trig_Npc_Talk_Quincy_Actions)
 endfunction
-function RegisterR11_Npc_Talk_Gravedigger takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Npc_Talk_Gravedigger takes nothing returns nothing
     set gg_trg_Npc_Talk_Gravedigger=CreateTrigger()
     call DisableTrigger(gg_trg_Npc_Talk_Gravedigger)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Npc_Talk_Gravedigger,150.,gg_unit_nvl2_0266)
@@ -639,7 +585,36 @@ function RegisterR11_Npc_Talk_Gravedigger takes nothing returns nothing
     call TriggerAddAction(gg_trg_Npc_Talk_Gravedigger,function Trig_Npc_Talk_Gravedigger_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Npc takes nothing returns nothing
+    call Register_Npc_Hints_Create()
+    call Register_Npc_Talk_Woman()
+    call Register_Npc_Talk_Reno()
+    call Register_Npc_Talk_Rude()
+    call Register_Npc_Talk_Footman()
+    call Register_Npc_Talk_Swordsman()
+    call Register_Npc_Talk_Child()
+    call Register_Npc_Talk_Archer()
+    call Register_Npc_Talk_Knight()
+    call Register_Npc_Talk_ChildChocobo()
+    call Register_Npc_Talk_Kenarius()
+    call Register_Npc_Talk_Nimphrodel()
+    call Register_Npc_Talk_Sentry()
+    call Register_Npc_Talk_Kesha()
+    call Register_Npc_Talk_Peasant()
+    call Register_Npc_Talk_PeasantHarvest()
+    call Register_Npc_Talk_MineStory()
+    call Register_Npc_Fire_WantMore()
+    call Register_Npc_Fire_Thanks()
+    call Register_Npc_Priscilla_SummonEden()
+    call Register_Npc_Talk_LinkGuard()
+    call Register_Npc_Talk_Jack()
+    call Register_Npc_Talk_ArcherWall()
+    call Register_Npc_Talk_Ruksel()
+    call Register_Npc_Thorn_BattleWait()
+    call Register_Npc_Talk_Sigroon()
+    call Register_Npc_Talk_Quincy()
+    call Register_Npc_Talk_Gravedigger()
+endfunction
 
 endlibrary

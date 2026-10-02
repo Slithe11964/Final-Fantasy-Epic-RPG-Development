@@ -82,19 +82,21 @@ function Trig_Counter_Attack_Strike_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Counter automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Counter (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Counter takes nothing returns nothing
 endfunction
-function RegisterR11_Counter_Attack_Strike takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Counter_Attack_Strike takes nothing returns nothing
     set gg_trg_Counter_Attack_Strike=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Counter_Attack_Strike,udg_DodgeFaceTimer[0])
     call TriggerAddAction(gg_trg_Counter_Attack_Strike,function Trig_Counter_Attack_Strike_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Counter takes nothing returns nothing
+    call Register_Counter_Attack_Strike()
+endfunction
 
 endlibrary

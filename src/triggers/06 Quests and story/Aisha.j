@@ -52,23 +52,21 @@ function Trig_Aisha_ArtemisTale_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Aisha automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Aisha (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Aisha takes nothing returns nothing
 endfunction
-function RegisterR11_Aisha_ArtemisTalk_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Aisha_ArtemisTalk_Prepare takes nothing returns nothing
     set gg_trg_Aisha_ArtemisTalk_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_Aisha_ArtemisTalk_Prepare)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Aisha_ArtemisTalk_Prepare,udg_AishaTalkTimer)
     call TriggerAddCondition(gg_trg_Aisha_ArtemisTalk_Prepare,Condition(function Trig_Aisha_ArtemisTalk_Prepare_Conditions))
     call TriggerAddAction(gg_trg_Aisha_ArtemisTalk_Prepare,function Trig_Aisha_ArtemisTalk_Prepare_Actions)
 endfunction
-function RegisterR11_Aisha_ArtemisTale takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Aisha_ArtemisTale takes nothing returns nothing
     set gg_trg_Aisha_ArtemisTale=CreateTrigger()
     call DisableTrigger(gg_trg_Aisha_ArtemisTale)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Aisha_ArtemisTale,Player(0),true)
@@ -83,7 +81,10 @@ function RegisterR11_Aisha_ArtemisTale takes nothing returns nothing
     call TriggerAddAction(gg_trg_Aisha_ArtemisTale,function Trig_Aisha_ArtemisTale_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Aisha takes nothing returns nothing
+    call Register_Aisha_ArtemisTalk_Prepare()
+    call Register_Aisha_ArtemisTale()
+endfunction
 
 endlibrary

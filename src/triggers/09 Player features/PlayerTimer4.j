@@ -4,19 +4,21 @@ function Trig_PlayerTimer4_Expire_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Fishing_Tick)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_PlayerTimer4 automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_PlayerTimer4 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_PlayerTimer4 takes nothing returns nothing
 endfunction
-function RegisterR11_PlayerTimer4_Expire takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PlayerTimer4_Expire takes nothing returns nothing
     set gg_trg_PlayerTimer4_Expire=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_PlayerTimer4_Expire,udg_FishingTimer[4])
     call TriggerAddAction(gg_trg_PlayerTimer4_Expire,function Trig_PlayerTimer4_Expire_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_PlayerTimer4 takes nothing returns nothing
+    call Register_PlayerTimer4_Expire()
+endfunction
 
 endlibrary

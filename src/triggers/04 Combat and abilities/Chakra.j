@@ -56,20 +56,22 @@ function Trig_Chakra_Cast_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Chakra automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Chakra (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Chakra takes nothing returns nothing
 endfunction
-function RegisterR11_Chakra_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chakra_Cast takes nothing returns nothing
     set gg_trg_Chakra_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Chakra_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Chakra_Cast,Condition(function Trig_Chakra_Cast_Conditions))
     call TriggerAddAction(gg_trg_Chakra_Cast,function Trig_Chakra_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Chakra takes nothing returns nothing
+    call Register_Chakra_Cast()
+endfunction
 
 endlibrary

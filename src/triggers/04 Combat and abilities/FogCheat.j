@@ -4,19 +4,21 @@ function Trig_FogCheat_Reset_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FogCheat automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FogCheat (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FogCheat takes nothing returns nothing
 endfunction
-function RegisterR11_FogCheat_Reset takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FogCheat_Reset takes nothing returns nothing
     set gg_trg_FogCheat_Reset=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_FogCheat_Reset,5)
     call TriggerAddAction(gg_trg_FogCheat_Reset,function Trig_FogCheat_Reset_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FogCheat takes nothing returns nothing
+    call Register_FogCheat_Reset()
+endfunction
 
 endlibrary

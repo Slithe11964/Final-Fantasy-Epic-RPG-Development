@@ -52,20 +52,22 @@ function Trig_Portal_Reveal_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Portal automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Portal (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Portal takes nothing returns nothing
 endfunction
-function RegisterR11_Portal_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Portal_Reveal takes nothing returns nothing
     set gg_trg_Portal_Reveal=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_Portal_Reveal,512.,gg_unit_nwgt_0142)
     call TriggerAddCondition(gg_trg_Portal_Reveal,Condition(function Trig_Portal_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Portal_Reveal,function Trig_Portal_Reveal_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Portal takes nothing returns nothing
+    call Register_Portal_Reveal()
+endfunction
 
 endlibrary

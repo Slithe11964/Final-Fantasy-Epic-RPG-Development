@@ -62,22 +62,20 @@ function Trig_Boco_Meet_Again_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Boco automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Boco (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Boco takes nothing returns nothing
 endfunction
-function RegisterR11_Boco_Feed_Greens takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Boco_Feed_Greens takes nothing returns nothing
     set gg_trg_Boco_Feed_Greens=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Boco_Feed_Greens,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Boco_Feed_Greens,Condition(function Trig_Boco_Feed_Greens_Conditions))
     call TriggerAddAction(gg_trg_Boco_Feed_Greens,function Trig_Boco_Feed_Greens_Actions)
 endfunction
-function RegisterR11_Boco_Meet_Again takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Boco_Meet_Again takes nothing returns nothing
     set gg_trg_Boco_Meet_Again=CreateTrigger()
     call DisableTrigger(gg_trg_Boco_Meet_Again)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Boco_Meet_Again,700.,gg_unit_n00E_0138)
@@ -85,7 +83,10 @@ function RegisterR11_Boco_Meet_Again takes nothing returns nothing
     call TriggerAddAction(gg_trg_Boco_Meet_Again,function Trig_Boco_Meet_Again_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Boco takes nothing returns nothing
+    call Register_Boco_Feed_Greens()
+    call Register_Boco_Meet_Again()
+endfunction
 
 endlibrary

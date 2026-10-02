@@ -27,13 +27,13 @@ function Trig_DarkTitan_Appear_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkTitan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkTitan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkTitan takes nothing returns nothing
 endfunction
-function RegisterR11_DarkTitan_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkTitan_Appear takes nothing returns nothing
     set gg_trg_DarkTitan_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkTitan_Appear)
     call TriggerRegisterUnitInRangeSimple(gg_trg_DarkTitan_Appear,400.,gg_unit_H01U_0040)
@@ -41,7 +41,9 @@ function RegisterR11_DarkTitan_Appear takes nothing returns nothing
     call TriggerAddAction(gg_trg_DarkTitan_Appear,function Trig_DarkTitan_Appear_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkTitan takes nothing returns nothing
+    call Register_DarkTitan_Appear()
+endfunction
 
 endlibrary

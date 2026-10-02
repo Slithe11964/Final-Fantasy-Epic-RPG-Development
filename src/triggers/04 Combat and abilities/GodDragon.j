@@ -59,27 +59,28 @@ function Trig_GodDragon_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GodDragon automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GodDragon (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GodDragon takes nothing returns nothing
 endfunction
-function RegisterR11_GodDragon_Transfusion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GodDragon_Transfusion takes nothing returns nothing
     set gg_trg_GodDragon_Transfusion=CreateTrigger()
     call DisableTrigger(gg_trg_GodDragon_Transfusion)
     call TriggerAddAction(gg_trg_GodDragon_Transfusion,function Trig_GodDragon_Transfusion_Actions)
 endfunction
-function RegisterR11_GodDragon_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GodDragon_Death takes nothing returns nothing
     set gg_trg_GodDragon_Death=CreateTrigger()
     call DisableTrigger(gg_trg_GodDragon_Death)
     call TriggerAddAction(gg_trg_GodDragon_Death,function Trig_GodDragon_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GodDragon takes nothing returns nothing
+    call Register_GodDragon_Transfusion()
+    call Register_GodDragon_Death()
+endfunction
 
 endlibrary

@@ -108,13 +108,13 @@ function Trig_DragonHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DragonHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DragonHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DragonHunt takes nothing returns nothing
 endfunction
-function RegisterR11_DragonHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonHunt_Start takes nothing returns nothing
     set gg_trg_DragonHunt_Start=CreateTrigger()
     call DisableTrigger(gg_trg_DragonHunt_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonHunt_Start,Player(0),true)
@@ -128,20 +128,16 @@ function RegisterR11_DragonHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_DragonHunt_Start,Condition(function Trig_DragonHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_DragonHunt_Start,function Trig_DragonHunt_Start_Actions)
 endfunction
-function RegisterR11_DragonHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonHunt_Count takes nothing returns nothing
     set gg_trg_DragonHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_DragonHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_DragonHunt_Count,Condition(function Trig_DragonHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_DragonHunt_Count,function Trig_DragonHunt_Count_Actions)
 endfunction
-function RegisterR11_DragonHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonHunt_Reward takes nothing returns nothing
     set gg_trg_DragonHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_DragonHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_DragonHunt_Reward,450.,gg_unit_h032_0007)
@@ -149,7 +145,11 @@ function RegisterR11_DragonHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_DragonHunt_Reward,function Trig_DragonHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DragonHunt takes nothing returns nothing
+    call Register_DragonHunt_Start()
+    call Register_DragonHunt_Count()
+    call Register_DragonHunt_Reward()
+endfunction
 
 endlibrary

@@ -199,44 +199,51 @@ function Trig_Chaos_Recall_Chaosjets_Actions takes nothing returns nothing
     call EnableTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Chaos automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Chaos_Part1 / RegisterTriggers_Chaos_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Chaos takes nothing returns nothing
 endfunction
-function RegisterR11_Chaos_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chaos_Init takes nothing returns nothing
     set gg_trg_Chaos_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Chaos_Init,function Trig_Chaos_Init_Actions)
 endfunction
-function RegisterR11_Chaos_Spawn_Chaosjets takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chaos_Spawn_Chaosjets takes nothing returns nothing
     set gg_trg_Chaos_Spawn_Chaosjets=CreateTrigger()
     call DisableTrigger(gg_trg_Chaos_Spawn_Chaosjets)
     call TriggerAddAction(gg_trg_Chaos_Spawn_Chaosjets,function Trig_Chaos_Spawn_Chaosjets_Actions)
 endfunction
-function RegisterR11_Chaos_Revive_Chaosjets takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chaos_Revive_Chaosjets takes nothing returns nothing
     set gg_trg_Chaos_Revive_Chaosjets=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Chaos_Revive_Chaosjets,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Chaos_Revive_Chaosjets,Condition(function Trig_Chaos_Revive_Chaosjets_Conditions))
     call TriggerAddAction(gg_trg_Chaos_Revive_Chaosjets,function Trig_Chaos_Revive_Chaosjets_Actions)
 endfunction
-function RegisterR11_Chaos_Recall_Chaosjets takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chaos_Recall_Chaosjets takes nothing returns nothing
     set gg_trg_Chaos_Recall_Chaosjets=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaos_Recall_Chaosjets,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
     call TriggerAddCondition(gg_trg_Chaos_Recall_Chaosjets,Condition(function Trig_Chaos_Recall_Chaosjets_Conditions))
     call TriggerAddAction(gg_trg_Chaos_Recall_Chaosjets,function Trig_Chaos_Recall_Chaosjets_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Chaos_Part1 takes nothing returns nothing
+    call Register_Chaos_Init()
+    call Register_Chaos_Spawn_Chaosjets()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Chaos_Part2 takes nothing returns nothing
+    call Register_Chaos_Revive_Chaosjets()
+    call Register_Chaos_Recall_Chaosjets()
+endfunction
 
 endlibrary

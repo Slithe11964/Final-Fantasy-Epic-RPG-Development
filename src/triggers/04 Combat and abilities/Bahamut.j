@@ -74,20 +74,22 @@ function Trig_Bahamut_MegaFlare_Actions takes nothing returns nothing
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"stomp")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Bahamut automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Bahamut (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Bahamut takes nothing returns nothing
 endfunction
-function RegisterR11_Bahamut_MegaFlare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Bahamut_MegaFlare takes nothing returns nothing
     set gg_trg_Bahamut_MegaFlare=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Bahamut_MegaFlare,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Bahamut_MegaFlare,Condition(function Trig_Bahamut_MegaFlare_Conditions))
     call TriggerAddAction(gg_trg_Bahamut_MegaFlare,function Trig_Bahamut_MegaFlare_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Bahamut takes nothing returns nothing
+    call Register_Bahamut_MegaFlare()
+endfunction
 
 endlibrary

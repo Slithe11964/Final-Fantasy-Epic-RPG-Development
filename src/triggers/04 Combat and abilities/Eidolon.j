@@ -87,13 +87,13 @@ function Trig_Eidolon_Leviathan_Ambush_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Eidolon automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Eidolon (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Eidolon takes nothing returns nothing
 endfunction
-function RegisterR11_Eidolon_Found_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Eidolon_Found_Reveal takes nothing returns nothing
     set gg_trg_Eidolon_Found_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_Eidolon_Found_Reveal)
     call TriggerRegisterUnitEvent(gg_trg_Eidolon_Found_Reveal,gg_unit_H01I_0070,EVENT_UNIT_DAMAGED)
@@ -102,10 +102,8 @@ function RegisterR11_Eidolon_Found_Reveal takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Eidolon_Found_Reveal,Condition(function Trig_Eidolon_Found_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Eidolon_Found_Reveal,function Trig_Eidolon_Found_Reveal_Actions)
 endfunction
-function RegisterR11_Eidolon_Leviathan_Ambush takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Eidolon_Leviathan_Ambush takes nothing returns nothing
     set gg_trg_Eidolon_Leviathan_Ambush=CreateTrigger()
     call DisableTrigger(gg_trg_Eidolon_Leviathan_Ambush)
     call TriggerRegisterEnterRectSimple(gg_trg_Eidolon_Leviathan_Ambush,gg_rct_231)
@@ -113,7 +111,10 @@ function RegisterR11_Eidolon_Leviathan_Ambush takes nothing returns nothing
     call TriggerAddAction(gg_trg_Eidolon_Leviathan_Ambush,function Trig_Eidolon_Leviathan_Ambush_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Eidolon takes nothing returns nothing
+    call Register_Eidolon_Found_Reveal()
+    call Register_Eidolon_Leviathan_Ambush()
+endfunction
 
 endlibrary

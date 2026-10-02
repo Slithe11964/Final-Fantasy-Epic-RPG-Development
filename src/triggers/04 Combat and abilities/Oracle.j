@@ -341,65 +341,76 @@ function Trig_Oracle_NeoBahamut_Actions takes nothing returns nothing
     set udg_NeoBahamutBaseArmor=BlzGetUnitArmor(GetLastCreatedUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Oracle automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Oracle_Part1 ... RegisterTriggers_Oracle_Part3 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Oracle takes nothing returns nothing
 endfunction
-function RegisterR11_Oracle_Jinx takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_Jinx takes nothing returns nothing
     set gg_trg_Oracle_Jinx=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Jinx,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_Jinx,Condition(function Trig_Oracle_Jinx_Conditions))
     call TriggerAddAction(gg_trg_Oracle_Jinx,function Trig_Oracle_Jinx_Actions)
 endfunction
-function RegisterR11_Oracle_Blind takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_Blind takes nothing returns nothing
     set gg_trg_Oracle_Blind=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Blind,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_Blind,Condition(function Trig_Oracle_Blind_Conditions))
     call TriggerAddAction(gg_trg_Oracle_Blind,function Trig_Oracle_Blind_Actions)
 endfunction
-function RegisterR11_Oracle_PredictStrength takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_PredictStrength takes nothing returns nothing
     set gg_trg_Oracle_PredictStrength=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictStrength,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_PredictStrength,Condition(function Trig_Oracle_PredictStrength_Conditions))
     call TriggerAddAction(gg_trg_Oracle_PredictStrength,function Trig_Oracle_PredictStrength_Actions)
 endfunction
-function RegisterR11_Oracle_PredictMagic takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_PredictMagic takes nothing returns nothing
     set gg_trg_Oracle_PredictMagic=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_PredictMagic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_PredictMagic,Condition(function Trig_Oracle_PredictMagic_Conditions))
     call TriggerAddAction(gg_trg_Oracle_PredictMagic,function Trig_Oracle_PredictMagic_Actions)
 endfunction
-function RegisterR11_Oracle_Scourge takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_Scourge takes nothing returns nothing
     set gg_trg_Oracle_Scourge=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_Scourge,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_Scourge,Condition(function Trig_Oracle_Scourge_Conditions))
     call TriggerAddAction(gg_trg_Oracle_Scourge,function Trig_Oracle_Scourge_Actions)
 endfunction
-function RegisterR11_Oracle_NeoBahamut takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oracle_NeoBahamut takes nothing returns nothing
     set gg_trg_Oracle_NeoBahamut=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oracle_NeoBahamut,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oracle_NeoBahamut,Condition(function Trig_Oracle_NeoBahamut_Conditions))
     call TriggerAddAction(gg_trg_Oracle_NeoBahamut,function Trig_Oracle_NeoBahamut_Actions)
 endfunction
 
+// Creates part 1 of 3 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Oracle_Part1 takes nothing returns nothing
+    call Register_Oracle_Jinx()
+endfunction
 
+// Creates part 2 of 3 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Oracle_Part2 takes nothing returns nothing
+    call Register_Oracle_Blind()
+endfunction
 
+// Creates part 3 of 3 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Oracle_Part3 takes nothing returns nothing
+    call Register_Oracle_PredictStrength()
+    call Register_Oracle_PredictMagic()
+    call Register_Oracle_Scourge()
+    call Register_Oracle_NeoBahamut()
+endfunction
 
 endlibrary

@@ -122,13 +122,13 @@ function Trig_DragonEgg_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DragonEgg automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DragonEgg (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DragonEgg takes nothing returns nothing
 endfunction
-function RegisterR11_DragonEgg_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonEgg_Start takes nothing returns nothing
     set gg_trg_DragonEgg_Start=CreateTrigger()
     call DisableTrigger(gg_trg_DragonEgg_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_DragonEgg_Start,Player(0),true)
@@ -142,38 +142,30 @@ function RegisterR11_DragonEgg_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_DragonEgg_Start,Condition(function Trig_DragonEgg_Start_Conditions))
     call TriggerAddAction(gg_trg_DragonEgg_Start,function Trig_DragonEgg_Start_Actions)
 endfunction
-function RegisterR11_DragonEgg_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonEgg_Ping takes nothing returns nothing
     set gg_trg_DragonEgg_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_DragonEgg_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_DragonEgg_Ping,15.)
     call TriggerAddCondition(gg_trg_DragonEgg_Ping,Condition(function Trig_DragonEgg_Ping_Conditions))
     call TriggerAddAction(gg_trg_DragonEgg_Ping,function Trig_DragonEgg_Ping_Actions)
 endfunction
-function RegisterR11_DragonEgg_PickUp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonEgg_PickUp takes nothing returns nothing
     set gg_trg_DragonEgg_PickUp=CreateTrigger()
     call DisableTrigger(gg_trg_DragonEgg_PickUp)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DragonEgg_PickUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_DragonEgg_PickUp,Condition(function Trig_DragonEgg_PickUp_Conditions))
     call TriggerAddAction(gg_trg_DragonEgg_PickUp,function Trig_DragonEgg_PickUp_Actions)
 endfunction
-function RegisterR11_DragonEgg_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonEgg_Fail takes nothing returns nothing
     set gg_trg_DragonEgg_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_DragonEgg_Fail)
     call TriggerAddAction(gg_trg_DragonEgg_Fail,function Trig_DragonEgg_Fail_Actions)
 endfunction
-function RegisterR11_DragonEgg_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DragonEgg_Reward takes nothing returns nothing
     set gg_trg_DragonEgg_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_DragonEgg_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_DragonEgg_Reward,200.,gg_unit_e016_0019)
@@ -182,7 +174,13 @@ function RegisterR11_DragonEgg_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_DragonEgg_Reward,function Trig_DragonEgg_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DragonEgg takes nothing returns nothing
+    call Register_DragonEgg_Start()
+    call Register_DragonEgg_Ping()
+    call Register_DragonEgg_PickUp()
+    call Register_DragonEgg_Fail()
+    call Register_DragonEgg_Reward()
+endfunction
 
 endlibrary

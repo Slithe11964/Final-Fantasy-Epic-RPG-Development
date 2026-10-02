@@ -80,26 +80,27 @@ function Trig_Mephorash_Clone_Death_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Mephorash automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Mephorash (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Mephorash takes nothing returns nothing
 endfunction
-function RegisterR11_Mephorash_Split takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mephorash_Split takes nothing returns nothing
     set gg_trg_Mephorash_Split=CreateTrigger()
     call TriggerAddAction(gg_trg_Mephorash_Split,function Trig_Mephorash_Split_Actions)
 endfunction
-function RegisterR11_Mephorash_Clone_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mephorash_Clone_Death takes nothing returns nothing
     set gg_trg_Mephorash_Clone_Death=CreateTrigger()
     call TriggerAddCondition(gg_trg_Mephorash_Clone_Death,Condition(function Trig_Mephorash_Clone_Death_Conditions))
     call TriggerAddAction(gg_trg_Mephorash_Clone_Death,function Trig_Mephorash_Clone_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Mephorash takes nothing returns nothing
+    call Register_Mephorash_Split()
+    call Register_Mephorash_Clone_Death()
+endfunction
 
 endlibrary

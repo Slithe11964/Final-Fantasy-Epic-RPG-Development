@@ -151,61 +151,51 @@ function Trig_MysticalGlyph_Result_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MysticalGlyph automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MysticalGlyph_Part1 / RegisterTriggers_MysticalGlyph_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MysticalGlyph takes nothing returns nothing
 endfunction
-function RegisterR11_MysticalGlyph_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Prepare takes nothing returns nothing
     set gg_trg_MysticalGlyph_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Prepare)
     call TriggerAddAction(gg_trg_MysticalGlyph_Prepare,function Trig_MysticalGlyph_Prepare_Actions)
 endfunction
-function RegisterR11_MysticalGlyph_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Drop takes nothing returns nothing
     set gg_trg_MysticalGlyph_Drop=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Drop)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_MysticalGlyph_Drop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_MysticalGlyph_Drop,Condition(function Trig_MysticalGlyph_Drop_Conditions))
     call TriggerAddAction(gg_trg_MysticalGlyph_Drop,function Trig_MysticalGlyph_Drop_Actions)
 endfunction
-function RegisterR11_MysticalGlyph_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Pickup takes nothing returns nothing
     set gg_trg_MysticalGlyph_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MysticalGlyph_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_MysticalGlyph_Pickup,Condition(function Trig_MysticalGlyph_Pickup_Conditions))
     call TriggerAddAction(gg_trg_MysticalGlyph_Pickup,function Trig_MysticalGlyph_Pickup_Actions)
 endfunction
-function RegisterR11_MysticalGlyph_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Ping takes nothing returns nothing
     set gg_trg_MysticalGlyph_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_MysticalGlyph_Ping,15.)
     call TriggerAddCondition(gg_trg_MysticalGlyph_Ping,Condition(function Trig_MysticalGlyph_Ping_Conditions))
     call TriggerAddAction(gg_trg_MysticalGlyph_Ping,function Trig_MysticalGlyph_Ping_Actions)
 endfunction
-function RegisterR11_MysticalGlyph_Deliver takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Deliver takes nothing returns nothing
     set gg_trg_MysticalGlyph_Deliver=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Deliver)
     call TriggerRegisterUnitInRangeSimple(gg_trg_MysticalGlyph_Deliver,450.,gg_unit_n007_0105)
     call TriggerAddCondition(gg_trg_MysticalGlyph_Deliver,Condition(function Trig_MysticalGlyph_Deliver_Conditions))
     call TriggerAddAction(gg_trg_MysticalGlyph_Deliver,function Trig_MysticalGlyph_Deliver_Actions)
 endfunction
-function RegisterR11_MysticalGlyph_Result takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysticalGlyph_Result takes nothing returns nothing
     set gg_trg_MysticalGlyph_Result=CreateTrigger()
     call DisableTrigger(gg_trg_MysticalGlyph_Result)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysticalGlyph_Result,Player(0),true)
@@ -220,7 +210,22 @@ function RegisterR11_MysticalGlyph_Result takes nothing returns nothing
     call TriggerAddAction(gg_trg_MysticalGlyph_Result,function Trig_MysticalGlyph_Result_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_MysticalGlyph_Part1 takes nothing returns nothing
+    call Register_MysticalGlyph_Prepare()
+    call Register_MysticalGlyph_Drop()
+    call Register_MysticalGlyph_Pickup()
+    call Register_MysticalGlyph_Ping()
+    call Register_MysticalGlyph_Deliver()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_MysticalGlyph_Part2 takes nothing returns nothing
+    call Register_MysticalGlyph_Result()
+endfunction
 
 endlibrary

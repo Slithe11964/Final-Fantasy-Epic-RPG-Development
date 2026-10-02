@@ -195,20 +195,18 @@ function Trig_Player_Leaves_Game_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Player automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Player_Part1 / RegisterTriggers_Player_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Player takes nothing returns nothing
 endfunction
-function RegisterR11_Player_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Player_Init takes nothing returns nothing
     set gg_trg_Player_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Player_Init,function Trig_Player_Init_Actions)
 endfunction
-function RegisterR11_Player_Leaves_Game takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Player_Leaves_Game takes nothing returns nothing
     set gg_trg_Player_Leaves_Game=CreateTrigger()
     call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(0))
     call TriggerRegisterPlayerEventLeave(gg_trg_Player_Leaves_Game,Player(1))
@@ -221,7 +219,18 @@ function RegisterR11_Player_Leaves_Game takes nothing returns nothing
     call TriggerAddAction(gg_trg_Player_Leaves_Game,function Trig_Player_Leaves_Game_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Player_Part1 takes nothing returns nothing
+    call Register_Player_Init()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Player_Part2 takes nothing returns nothing
+    call Register_Player_Leaves_Game()
+endfunction
 
 endlibrary

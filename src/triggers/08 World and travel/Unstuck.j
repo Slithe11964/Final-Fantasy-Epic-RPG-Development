@@ -18,13 +18,13 @@ function Trig_Unstuck_Command_Actions takes nothing returns nothing
     call EnableTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Unstuck automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Unstuck (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Unstuck takes nothing returns nothing
 endfunction
-function RegisterR11_Unstuck_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Unstuck_Command takes nothing returns nothing
     set gg_trg_Unstuck_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(0),"-unstuck",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_Unstuck_Command,Player(1),"-unstuck",true)
@@ -37,7 +37,9 @@ function RegisterR11_Unstuck_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Unstuck_Command,function Trig_Unstuck_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Unstuck takes nothing returns nothing
+    call Register_Unstuck_Command()
+endfunction
 
 endlibrary

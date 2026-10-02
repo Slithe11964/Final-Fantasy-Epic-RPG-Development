@@ -99,31 +99,27 @@ function Trig_FadingNotes_DropWizard_Actions takes nothing returns nothing
     call EnableTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FadingNotes automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FadingNotes (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FadingNotes takes nothing returns nothing
 endfunction
-function RegisterR11_FadingNotes_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FadingNotes_Init takes nothing returns nothing
     set gg_trg_FadingNotes_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_FadingNotes_Init,3.)
     call TriggerAddAction(gg_trg_FadingNotes_Init,function Trig_FadingNotes_Init_Actions)
 endfunction
-function RegisterR11_FadingNotes_DropCultist takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FadingNotes_DropCultist takes nothing returns nothing
     set gg_trg_FadingNotes_DropCultist=CreateTrigger()
     call DisableTrigger(gg_trg_FadingNotes_DropCultist)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropCultist,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_FadingNotes_DropCultist,Condition(function Trig_FadingNotes_DropCultist_Conditions))
     call TriggerAddAction(gg_trg_FadingNotes_DropCultist,function Trig_FadingNotes_DropCultist_Actions)
 endfunction
-function RegisterR11_FadingNotes_DropWizard takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FadingNotes_DropWizard takes nothing returns nothing
     set gg_trg_FadingNotes_DropWizard=CreateTrigger()
     call DisableTrigger(gg_trg_FadingNotes_DropWizard)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_FadingNotes_DropWizard,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -131,7 +127,11 @@ function RegisterR11_FadingNotes_DropWizard takes nothing returns nothing
     call TriggerAddAction(gg_trg_FadingNotes_DropWizard,function Trig_FadingNotes_DropWizard_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FadingNotes takes nothing returns nothing
+    call Register_FadingNotes_Init()
+    call Register_FadingNotes_DropCultist()
+    call Register_FadingNotes_DropWizard()
+endfunction
 
 endlibrary

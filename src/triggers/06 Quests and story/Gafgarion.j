@@ -135,13 +135,13 @@ function Trig_Gafgarion_RegenBurst_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped('A0TU',GetTriggerUnit(),$A) // 'A0TU': ability "HP Regeneration Bonus"; $A = 10
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Gafgarion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Gafgarion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Gafgarion takes nothing returns nothing
 endfunction
-function RegisterR11_Gafgarion_Join_Party takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Join_Party takes nothing returns nothing
     set gg_trg_Gafgarion_Join_Party=CreateTrigger()
     call DisableTrigger(gg_trg_Gafgarion_Join_Party)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Gafgarion_Join_Party,Player(0),true)
@@ -155,63 +155,59 @@ function RegisterR11_Gafgarion_Join_Party takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Gafgarion_Join_Party,Condition(function Trig_Gafgarion_Join_Party_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_Join_Party,function Trig_Gafgarion_Join_Party_Actions)
 endfunction
-function RegisterR11_Gafgarion_Leash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Leash takes nothing returns nothing
     set gg_trg_Gafgarion_Leash=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Gafgarion_Leash,gg_rct_575)
     call TriggerRegisterEnterRectSimple(gg_trg_Gafgarion_Leash,gg_rct_576)
     call TriggerAddCondition(gg_trg_Gafgarion_Leash,Condition(function Trig_Gafgarion_Leash_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_Leash,function Trig_Gafgarion_Leash_Actions)
 endfunction
-function RegisterR11_Gafgarion_Death_Timer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Death_Timer takes nothing returns nothing
     set gg_trg_Gafgarion_Death_Timer=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Gafgarion_Death_Timer,Player($A),EVENT_PLAYER_UNIT_DEATH) // $A = 10
     call TriggerAddCondition(gg_trg_Gafgarion_Death_Timer,Condition(function Trig_Gafgarion_Death_Timer_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_Death_Timer,function Trig_Gafgarion_Death_Timer_Actions)
 endfunction
-function RegisterR11_Gafgarion_Revive takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Revive takes nothing returns nothing
     set gg_trg_Gafgarion_Revive=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Gafgarion_Revive,udg_GafgarionReviveTimer)
     call TriggerAddAction(gg_trg_Gafgarion_Revive,function Trig_Gafgarion_Revive_Actions)
 endfunction
-function RegisterR11_Gafgarion_Block_Portal_Scroll takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Block_Portal_Scroll takes nothing returns nothing
     set gg_trg_Gafgarion_Block_Portal_Scroll=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Gafgarion_Block_Portal_Scroll,Player($A),EVENT_PLAYER_UNIT_PICKUP_ITEM) // $A = 10
     call TriggerAddCondition(gg_trg_Gafgarion_Block_Portal_Scroll,Condition(function Trig_Gafgarion_Block_Portal_Scroll_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_Block_Portal_Scroll,function Trig_Gafgarion_Block_Portal_Scroll_Actions)
 endfunction
-function RegisterR11_Gafgarion_Join_Summit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_Join_Summit takes nothing returns nothing
     set gg_trg_Gafgarion_Join_Summit=CreateTrigger()
     call DisableTrigger(gg_trg_Gafgarion_Join_Summit)
     call TriggerRegisterEnterRectSimple(gg_trg_Gafgarion_Join_Summit,gg_rct_643)
     call TriggerAddCondition(gg_trg_Gafgarion_Join_Summit,Condition(function Trig_Gafgarion_Join_Summit_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_Join_Summit,function Trig_Gafgarion_Join_Summit_Actions)
 endfunction
-function RegisterR11_Gafgarion_RegenBurst takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gafgarion_RegenBurst takes nothing returns nothing
     set gg_trg_Gafgarion_RegenBurst=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Gafgarion_RegenBurst,Player($A),EVENT_PLAYER_UNIT_SPELL_EFFECT) // $A = 10
     call TriggerAddCondition(gg_trg_Gafgarion_RegenBurst,Condition(function Trig_Gafgarion_RegenBurst_Conditions))
     call TriggerAddAction(gg_trg_Gafgarion_RegenBurst,function Trig_Gafgarion_RegenBurst_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Gafgarion takes nothing returns nothing
+    call Register_Gafgarion_Join_Party()
+    call Register_Gafgarion_Leash()
+    call Register_Gafgarion_Death_Timer()
+    call Register_Gafgarion_Revive()
+    call Register_Gafgarion_Block_Portal_Scroll()
+    call Register_Gafgarion_Join_Summit()
+    call Register_Gafgarion_RegenBurst()
+endfunction
 
 endlibrary

@@ -5,19 +5,21 @@ function Trig_Watts_Talk_Enable_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Watts automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Watts (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Watts takes nothing returns nothing
 endfunction
-function RegisterR11_Watts_Talk_Enable takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Watts_Talk_Enable takes nothing returns nothing
     set gg_trg_Watts_Talk_Enable=CreateTrigger()
     call DisableTrigger(gg_trg_Watts_Talk_Enable)
     call TriggerAddAction(gg_trg_Watts_Talk_Enable,function Trig_Watts_Talk_Enable_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Watts takes nothing returns nothing
+    call Register_Watts_Talk_Enable()
+endfunction
 
 endlibrary

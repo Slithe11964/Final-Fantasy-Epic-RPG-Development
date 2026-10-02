@@ -39,13 +39,13 @@ function Trig_Cam_Command_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cam automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cam (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cam takes nothing returns nothing
 endfunction
-function RegisterR11_Cam_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cam_Command takes nothing returns nothing
     set gg_trg_Cam_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(0),"-cam ",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Cam_Command,Player(1),"-cam ",false)
@@ -63,7 +63,9 @@ function RegisterR11_Cam_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Cam_Command,function Trig_Cam_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cam takes nothing returns nothing
+    call Register_Cam_Command()
+endfunction
 
 endlibrary

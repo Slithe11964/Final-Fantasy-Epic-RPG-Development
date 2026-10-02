@@ -23,29 +23,30 @@ function Trig_FireUnit_Death_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_ImmolationAuraGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FireUnit automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FireUnit (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FireUnit takes nothing returns nothing
 endfunction
-function RegisterR11_FireUnit_Enter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FireUnit_Enter takes nothing returns nothing
     set gg_trg_FireUnit_Enter=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_FireUnit_Enter,GetPlayableMapRect())
     call TriggerAddCondition(gg_trg_FireUnit_Enter,Condition(function Trig_FireUnit_Enter_Conditions))
     call TriggerAddAction(gg_trg_FireUnit_Enter,function Trig_FireUnit_Enter_Actions)
 endfunction
-function RegisterR11_FireUnit_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FireUnit_Death takes nothing returns nothing
     set gg_trg_FireUnit_Death=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_FireUnit_Death,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_FireUnit_Death,Condition(function Trig_FireUnit_Death_Conditions))
     call TriggerAddAction(gg_trg_FireUnit_Death,function Trig_FireUnit_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FireUnit takes nothing returns nothing
+    call Register_FireUnit_Enter()
+    call Register_FireUnit_Death()
+endfunction
 
 endlibrary

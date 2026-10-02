@@ -10,20 +10,22 @@ function Trig_GreedIsGood_DropStone_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GreedIsGood automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GreedIsGood (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GreedIsGood takes nothing returns nothing
 endfunction
-function RegisterR11_GreedIsGood_DropStone takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GreedIsGood_DropStone takes nothing returns nothing
     set gg_trg_GreedIsGood_DropStone=CreateTrigger()
     call DisableTrigger(gg_trg_GreedIsGood_DropStone)
     call TriggerRegisterUnitEvent(gg_trg_GreedIsGood_DropStone,gg_unit_nmgv_0115,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_GreedIsGood_DropStone,function Trig_GreedIsGood_DropStone_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GreedIsGood takes nothing returns nothing
+    call Register_GreedIsGood_DropStone()
+endfunction
 
 endlibrary

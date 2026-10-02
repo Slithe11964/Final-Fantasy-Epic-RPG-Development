@@ -7,20 +7,22 @@ function Trig_HeroDrink_Cast_Actions takes nothing returns nothing
     call Medicine_ApplyTimed(GetTriggerUnit(),(GetUnitAbilityLevel(GetTriggerUnit(),'A0HL')>0)) // 'A0HL': ability "Pharmacology"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HeroDrink automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HeroDrink (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HeroDrink takes nothing returns nothing
 endfunction
-function RegisterR11_HeroDrink_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HeroDrink_Cast takes nothing returns nothing
     set gg_trg_HeroDrink_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HeroDrink_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_HeroDrink_Cast,Condition(function Trig_HeroDrink_Cast_Conditions))
     call TriggerAddAction(gg_trg_HeroDrink_Cast,function Trig_HeroDrink_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HeroDrink takes nothing returns nothing
+    call Register_HeroDrink_Cast()
+endfunction
 
 endlibrary

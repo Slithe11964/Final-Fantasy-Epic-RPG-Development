@@ -277,20 +277,22 @@ function Trig_Equip_Restrictions_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Equip automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Equip (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Equip takes nothing returns nothing
 endfunction
-function RegisterR11_Equip_Restrictions takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Equip_Restrictions takes nothing returns nothing
     set gg_trg_Equip_Restrictions=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Equip_Restrictions,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Equip_Restrictions,Condition(function Trig_Equip_Restrictions_Conditions))
     call TriggerAddAction(gg_trg_Equip_Restrictions,function Trig_Equip_Restrictions_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Equip takes nothing returns nothing
+    call Register_Equip_Restrictions()
+endfunction
 
 endlibrary

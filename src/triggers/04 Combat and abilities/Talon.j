@@ -26,13 +26,13 @@ function Trig_Talon_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Talon automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Talon (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Talon takes nothing returns nothing
 endfunction
-function RegisterR11_Talon_Leash_Gate takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Talon_Leash_Gate takes nothing returns nothing
     set gg_trg_Talon_Leash_Gate=CreateTrigger()
     call DisableTrigger(gg_trg_Talon_Leash_Gate)
     call TriggerRegisterEnterRectSimple(gg_trg_Talon_Leash_Gate,gg_rct_638)
@@ -40,10 +40,8 @@ function RegisterR11_Talon_Leash_Gate takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Talon_Leash_Gate,Condition(function Trig_Talon_Leash_Gate_Conditions))
     call TriggerAddAction(gg_trg_Talon_Leash_Gate,function Trig_Talon_Leash_Gate_Actions)
 endfunction
-function RegisterR11_Talon_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Talon_Death takes nothing returns nothing
     set gg_trg_Talon_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Talon_Death)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Talon_Death,Player($A),EVENT_PLAYER_UNIT_DEATH) // $A = 10
@@ -51,7 +49,10 @@ function RegisterR11_Talon_Death takes nothing returns nothing
     call TriggerAddAction(gg_trg_Talon_Death,function Trig_Talon_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Talon takes nothing returns nothing
+    call Register_Talon_Leash_Gate()
+    call Register_Talon_Death()
+endfunction
 
 endlibrary

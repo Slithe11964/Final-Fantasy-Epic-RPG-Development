@@ -17,13 +17,13 @@ function Trig_Suicide_Command_Actions takes nothing returns nothing
     call KillUnit(Player_GetHero(GetTriggerPlayer()))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Suicide automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Suicide (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Suicide takes nothing returns nothing
 endfunction
-function RegisterR11_Suicide_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Suicide_Command takes nothing returns nothing
     set gg_trg_Suicide_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Suicide_Command,Player(0),"-suicide",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_Suicide_Command,Player(1),"-suicide",true)
@@ -36,7 +36,9 @@ function RegisterR11_Suicide_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Suicide_Command,function Trig_Suicide_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Suicide takes nothing returns nothing
+    call Register_Suicide_Command()
+endfunction
 
 endlibrary

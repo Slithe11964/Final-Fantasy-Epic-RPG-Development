@@ -149,13 +149,13 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Levels automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Levels (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Levels takes nothing returns nothing
 endfunction
-function RegisterR11_Levels_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Levels_Command takes nothing returns nothing
     set gg_trg_Levels_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(0),"-levels",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_Levels_Command,Player(1),"-levels",true)
@@ -168,7 +168,9 @@ function RegisterR11_Levels_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Levels_Command,function Trig_Levels_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Levels takes nothing returns nothing
+    call Register_Levels_Command()
+endfunction
 
 endlibrary

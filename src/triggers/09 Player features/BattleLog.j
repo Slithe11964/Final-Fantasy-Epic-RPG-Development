@@ -131,13 +131,13 @@ function Trig_Battlelog_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_BattleLog automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_BattleLog (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_BattleLog takes nothing returns nothing
 endfunction
-function RegisterR11_Battlelog_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Battlelog_Command takes nothing returns nothing
     set gg_trg_Battlelog_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(0),"-battlelog",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Battlelog_Command,Player(1),"-battlelog",false)
@@ -150,7 +150,9 @@ function RegisterR11_Battlelog_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Battlelog_Command,function Trig_Battlelog_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_BattleLog takes nothing returns nothing
+    call Register_Battlelog_Command()
+endfunction
 
 endlibrary

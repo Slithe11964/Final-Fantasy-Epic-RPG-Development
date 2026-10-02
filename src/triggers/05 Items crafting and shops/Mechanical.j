@@ -36,20 +36,22 @@ function Trig_Mechanical_Drill_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"acidbomb",GetSpellTargetUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Mechanical automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Mechanical (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Mechanical takes nothing returns nothing
 endfunction
-function RegisterR11_Mechanical_Drill takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mechanical_Drill takes nothing returns nothing
     set gg_trg_Mechanical_Drill=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Mechanical_Drill,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Mechanical_Drill,Condition(function Trig_Mechanical_Drill_Conditions))
     call TriggerAddAction(gg_trg_Mechanical_Drill,function Trig_Mechanical_Drill_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Mechanical takes nothing returns nothing
+    call Register_Mechanical_Drill()
+endfunction
 
 endlibrary

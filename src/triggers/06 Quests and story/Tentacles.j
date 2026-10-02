@@ -212,13 +212,13 @@ function Trig_Tentacles_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Tentacles automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Tentacles (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Tentacles takes nothing returns nothing
 endfunction
-function RegisterR11_Tentacles_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Start takes nothing returns nothing
     set gg_trg_Tentacles_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Tentacles_Start,Player(0),true)
@@ -232,47 +232,37 @@ function RegisterR11_Tentacles_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Tentacles_Start,Condition(function Trig_Tentacles_Start_Conditions))
     call TriggerAddAction(gg_trg_Tentacles_Start,function Trig_Tentacles_Start_Actions)
 endfunction
-function RegisterR11_Tentacles_Ambush takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Ambush takes nothing returns nothing
     set gg_trg_Tentacles_Ambush=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Ambush)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Ambush,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
     call TriggerAddCondition(gg_trg_Tentacles_Ambush,Condition(function Trig_Tentacles_Ambush_Conditions))
     call TriggerAddAction(gg_trg_Tentacles_Ambush,function Trig_Tentacles_Ambush_Actions)
 endfunction
-function RegisterR11_Tentacles_Yelp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Yelp takes nothing returns nothing
     set gg_trg_Tentacles_Yelp=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Yelp)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Tentacles_Yelp,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Tentacles_Yelp,Condition(function Trig_Tentacles_Yelp_Conditions))
     call TriggerAddAction(gg_trg_Tentacles_Yelp,function Trig_Tentacles_Yelp_Actions)
 endfunction
-function RegisterR11_Tentacles_Despawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Despawn takes nothing returns nothing
     set gg_trg_Tentacles_Despawn=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Despawn)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Tentacles_Despawn,udg_TentacleTimer)
     call TriggerAddAction(gg_trg_Tentacles_Despawn,function Trig_Tentacles_Despawn_Actions)
 endfunction
-function RegisterR11_Tentacles_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Fail takes nothing returns nothing
     set gg_trg_Tentacles_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Fail)
     call TriggerAddAction(gg_trg_Tentacles_Fail,function Trig_Tentacles_Fail_Actions)
 endfunction
-function RegisterR11_Tentacles_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tentacles_Reward takes nothing returns nothing
     set gg_trg_Tentacles_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_Tentacles_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Tentacles_Reward,200.,gg_unit_e013_0176)
@@ -281,7 +271,14 @@ function RegisterR11_Tentacles_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_Tentacles_Reward,function Trig_Tentacles_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Tentacles takes nothing returns nothing
+    call Register_Tentacles_Start()
+    call Register_Tentacles_Ambush()
+    call Register_Tentacles_Yelp()
+    call Register_Tentacles_Despawn()
+    call Register_Tentacles_Fail()
+    call Register_Tentacles_Reward()
+endfunction
 
 endlibrary

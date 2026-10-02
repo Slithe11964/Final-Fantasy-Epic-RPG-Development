@@ -66,20 +66,22 @@ function Trig_QuestUnits_Ping_Actions takes nothing returns nothing
     call ForGroupBJ(udg_HuntMonsters,function Trig_QuestUnits_Ping_Ping_Extra)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_QuestUnits automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_QuestUnits (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_QuestUnits takes nothing returns nothing
 endfunction
-function RegisterR11_QuestUnits_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_QuestUnits_Ping takes nothing returns nothing
     set gg_trg_QuestUnits_Ping=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_QuestUnits_Ping,15.)
     call TriggerAddCondition(gg_trg_QuestUnits_Ping,Condition(function Trig_QuestUnits_Ping_Conditions))
     call TriggerAddAction(gg_trg_QuestUnits_Ping,function Trig_QuestUnits_Ping_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_QuestUnits takes nothing returns nothing
+    call Register_QuestUnits_Ping()
+endfunction
 
 endlibrary

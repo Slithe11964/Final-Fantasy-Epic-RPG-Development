@@ -41,19 +41,21 @@ function Trig_Game_Start_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Game automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Game (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Game takes nothing returns nothing
 endfunction
-function RegisterR11_Game_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Game_Start takes nothing returns nothing
     set gg_trg_Game_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Game_Start)
     call TriggerAddAction(gg_trg_Game_Start,function Trig_Game_Start_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Game takes nothing returns nothing
+    call Register_Game_Start()
+endfunction
 
 endlibrary

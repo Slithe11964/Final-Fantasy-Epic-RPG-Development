@@ -14,20 +14,22 @@ function Trig_Celeborn_Summon_Alert_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Celeborn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Celeborn (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Celeborn takes nothing returns nothing
 endfunction
-function RegisterR11_Celeborn_Summon_Alert takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Celeborn_Summon_Alert takes nothing returns nothing
     set gg_trg_Celeborn_Summon_Alert=CreateTrigger()
     call DisableTrigger(gg_trg_Celeborn_Summon_Alert)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Celeborn_Summon_Alert,udg_KalmSiegeTimer)
     call TriggerAddAction(gg_trg_Celeborn_Summon_Alert,function Trig_Celeborn_Summon_Alert_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Celeborn takes nothing returns nothing
+    call Register_Celeborn_Summon_Alert()
+endfunction
 
 endlibrary

@@ -270,19 +270,21 @@ function Trig_Passive_Bonus_Sync_Actions takes nothing returns nothing
     call StartTimerBJ(udg_HeroRefreshTimer,false,.01)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Passive automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Passive (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Passive takes nothing returns nothing
 endfunction
-function RegisterR11_Passive_Bonus_Sync takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Passive_Bonus_Sync takes nothing returns nothing
     set gg_trg_Passive_Bonus_Sync=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Passive_Bonus_Sync,udg_StatsRefreshTimer)
     call TriggerAddAction(gg_trg_Passive_Bonus_Sync,function Trig_Passive_Bonus_Sync_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Passive takes nothing returns nothing
+    call Register_Passive_Bonus_Sync()
+endfunction
 
 endlibrary

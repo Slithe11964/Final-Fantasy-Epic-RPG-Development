@@ -453,19 +453,21 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MagicDefense automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MagicDefense (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MagicDefense takes nothing returns nothing
 endfunction
-function RegisterR11_MagicDefense_Calc takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicDefense_Calc takes nothing returns nothing
     set gg_trg_MagicDefense_Calc=CreateTrigger()
     call DisableTrigger(gg_trg_MagicDefense_Calc)
     call TriggerAddAction(gg_trg_MagicDefense_Calc,function Trig_MagicDefense_Calc_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_MagicDefense takes nothing returns nothing
+    call Register_MagicDefense_Calc()
+endfunction
 
 endlibrary

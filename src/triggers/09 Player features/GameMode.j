@@ -132,20 +132,22 @@ function Trig_GameMode_Apply_Actions takes nothing returns nothing
     call TriggerExecute(gg_trg_Vote_Difficulty_Show)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GameMode automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GameMode (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GameMode takes nothing returns nothing
 endfunction
-function RegisterR11_GameMode_Apply takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GameMode_Apply takes nothing returns nothing
     set gg_trg_GameMode_Apply=CreateTrigger()
     call DisableTrigger(gg_trg_GameMode_Apply)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_GameMode_Apply,udg_VoteTimer)
     call TriggerAddAction(gg_trg_GameMode_Apply,function Trig_GameMode_Apply_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GameMode takes nothing returns nothing
+    call Register_GameMode_Apply()
+endfunction
 
 endlibrary

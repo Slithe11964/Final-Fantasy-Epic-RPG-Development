@@ -134,22 +134,20 @@ function Trig_ScorchedEarth_Barrier_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_ScorchedEarth automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_ScorchedEarth (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_ScorchedEarth takes nothing returns nothing
 endfunction
-function RegisterR11_ScorchedEarth_Omen takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ScorchedEarth_Omen takes nothing returns nothing
     set gg_trg_ScorchedEarth_Omen=CreateTrigger()
     call DisableTrigger(gg_trg_ScorchedEarth_Omen)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_ScorchedEarth_Omen,udg_ScorchedEarthTimer)
     call TriggerAddAction(gg_trg_ScorchedEarth_Omen,function Trig_ScorchedEarth_Omen_Actions)
 endfunction
-function RegisterR11_ScorchedEarth_EnterRegion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ScorchedEarth_EnterRegion takes nothing returns nothing
     set gg_trg_ScorchedEarth_EnterRegion=CreateTrigger()
     call DisableTrigger(gg_trg_ScorchedEarth_EnterRegion)
     call TriggerRegisterEnterRectSimple(gg_trg_ScorchedEarth_EnterRegion,gg_rct_592)
@@ -161,30 +159,24 @@ function RegisterR11_ScorchedEarth_EnterRegion takes nothing returns nothing
     call TriggerAddCondition(gg_trg_ScorchedEarth_EnterRegion,Condition(function Trig_ScorchedEarth_EnterRegion_Conditions))
     call TriggerAddAction(gg_trg_ScorchedEarth_EnterRegion,function Trig_ScorchedEarth_EnterRegion_Actions)
 endfunction
-function RegisterR11_ScorchedEarth_TowerAttack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ScorchedEarth_TowerAttack takes nothing returns nothing
     set gg_trg_ScorchedEarth_TowerAttack=CreateTrigger()
     call DisableTrigger(gg_trg_ScorchedEarth_TowerAttack)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_ScorchedEarth_TowerAttack,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_ScorchedEarth_TowerAttack,Condition(function Trig_ScorchedEarth_TowerAttack_Conditions))
     call TriggerAddAction(gg_trg_ScorchedEarth_TowerAttack,function Trig_ScorchedEarth_TowerAttack_Actions)
 endfunction
-function RegisterR11_ScorchedEarth_HeatFade takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ScorchedEarth_HeatFade takes nothing returns nothing
     set gg_trg_ScorchedEarth_HeatFade=CreateTrigger()
     call DisableTrigger(gg_trg_ScorchedEarth_HeatFade)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_ScorchedEarth_HeatFade,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_ScorchedEarth_HeatFade,Condition(function Trig_ScorchedEarth_HeatFade_Conditions))
     call TriggerAddAction(gg_trg_ScorchedEarth_HeatFade,function Trig_ScorchedEarth_HeatFade_Actions)
 endfunction
-function RegisterR11_ScorchedEarth_Barrier takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ScorchedEarth_Barrier takes nothing returns nothing
     set gg_trg_ScorchedEarth_Barrier=CreateTrigger()
     call DisableTrigger(gg_trg_ScorchedEarth_Barrier)
     call TriggerRegisterEnterRectSimple(gg_trg_ScorchedEarth_Barrier,gg_rct_646)
@@ -192,7 +184,13 @@ function RegisterR11_ScorchedEarth_Barrier takes nothing returns nothing
     call TriggerAddAction(gg_trg_ScorchedEarth_Barrier,function Trig_ScorchedEarth_Barrier_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_ScorchedEarth takes nothing returns nothing
+    call Register_ScorchedEarth_Omen()
+    call Register_ScorchedEarth_EnterRegion()
+    call Register_ScorchedEarth_TowerAttack()
+    call Register_ScorchedEarth_HeatFade()
+    call Register_ScorchedEarth_Barrier()
+endfunction
 
 endlibrary

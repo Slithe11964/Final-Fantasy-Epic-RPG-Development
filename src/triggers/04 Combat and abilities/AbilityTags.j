@@ -84,20 +84,22 @@ function Trig_AbilityTags_Show_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AbilityTags automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AbilityTags (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AbilityTags takes nothing returns nothing
 endfunction
-function RegisterR11_AbilityTags_Show takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AbilityTags_Show takes nothing returns nothing
     set gg_trg_AbilityTags_Show=CreateTrigger()
     call DisableTrigger(gg_trg_AbilityTags_Show)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_AbilityTags_Show,udg_FishingTimer[0])
     call TriggerAddAction(gg_trg_AbilityTags_Show,function Trig_AbilityTags_Show_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AbilityTags takes nothing returns nothing
+    call Register_AbilityTags_Show()
+endfunction
 
 endlibrary

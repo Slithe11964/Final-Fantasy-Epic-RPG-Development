@@ -152,29 +152,38 @@ function Trig_Regen_Periodic_Actions takes nothing returns nothing
     call GroupClear(udg_PendingEffectGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Regen automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Regen_Part1 / RegisterTriggers_Regen_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Regen takes nothing returns nothing
 endfunction
-function RegisterR11_Regen_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Regen_Cast takes nothing returns nothing
     set gg_trg_Regen_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Regen_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Regen_Cast,Condition(function Trig_Regen_Cast_Conditions))
     call TriggerAddAction(gg_trg_Regen_Cast,function Trig_Regen_Cast_Actions)
 endfunction
-function RegisterR11_Regen_Periodic takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Regen_Periodic takes nothing returns nothing
     set gg_trg_Regen_Periodic=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Regen_Periodic,1.)
     call TriggerAddCondition(gg_trg_Regen_Periodic,Condition(function Trig_Regen_Periodic_Conditions))
     call TriggerAddAction(gg_trg_Regen_Periodic,function Trig_Regen_Periodic_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Regen_Part1 takes nothing returns nothing
+    call Register_Regen_Cast()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Regen_Part2 takes nothing returns nothing
+    call Register_Regen_Periodic()
+endfunction
 
 endlibrary

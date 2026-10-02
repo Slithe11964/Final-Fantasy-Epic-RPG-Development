@@ -9,20 +9,22 @@ function Trig_LionHeart_LowLifeBonus_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0F1',GetAttacker()) // 'I0F1': item "Lion Heart Bonus"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_LionHeart automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_LionHeart (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_LionHeart takes nothing returns nothing
 endfunction
-function RegisterR11_LionHeart_LowLifeBonus takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_LionHeart_LowLifeBonus takes nothing returns nothing
     set gg_trg_LionHeart_LowLifeBonus=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_LionHeart_LowLifeBonus,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_LionHeart_LowLifeBonus,Condition(function Trig_LionHeart_LowLifeBonus_Conditions))
     call TriggerAddAction(gg_trg_LionHeart_LowLifeBonus,function Trig_LionHeart_LowLifeBonus_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_LionHeart takes nothing returns nothing
+    call Register_LionHeart_LowLifeBonus()
+endfunction
 
 endlibrary

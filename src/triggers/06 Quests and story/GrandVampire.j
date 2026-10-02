@@ -44,34 +44,42 @@ function Trig_GrandVampire_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GrandVampire automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GrandVampire_Part1 / RegisterTriggers_GrandVampire_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GrandVampire takes nothing returns nothing
 endfunction
-function RegisterR11_GrandVampire_Hide takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GrandVampire_Hide takes nothing returns nothing
     set gg_trg_GrandVampire_Hide=CreateTrigger()
     call TriggerAddAction(gg_trg_GrandVampire_Hide,function Trig_GrandVampire_Hide_Actions)
 endfunction
-function RegisterR11_GrandVampire_Awaken takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GrandVampire_Awaken takes nothing returns nothing
     set gg_trg_GrandVampire_Awaken=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Awaken,gg_unit_nbsm_0080,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_GrandVampire_Awaken,function Trig_GrandVampire_Awaken_Actions)
 endfunction
-function RegisterR11_GrandVampire_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GrandVampire_Death takes nothing returns nothing
     set gg_trg_GrandVampire_Death=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_GrandVampire_Death,gg_unit_Uvng_0076,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_GrandVampire_Death,function Trig_GrandVampire_Death_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_GrandVampire_Part1 takes nothing returns nothing
+    call Register_GrandVampire_Hide()
+    call Register_GrandVampire_Awaken()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_GrandVampire_Part2 takes nothing returns nothing
+    call Register_GrandVampire_Death()
+endfunction
 
 endlibrary

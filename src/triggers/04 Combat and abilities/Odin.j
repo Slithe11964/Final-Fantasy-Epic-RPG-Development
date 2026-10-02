@@ -45,23 +45,21 @@ function Trig_Odin_Leash_Arena_Actions takes nothing returns nothing
     call SetUnitLifePercentBJ(GetTriggerUnit(),(GetUnitLifePercent(GetTriggerUnit())+5.))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Odin automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Odin (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Odin takes nothing returns nothing
 endfunction
-function RegisterR11_Odin_Escort_Teleport takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Odin_Escort_Teleport takes nothing returns nothing
     set gg_trg_Odin_Escort_Teleport=CreateTrigger()
     call DisableTrigger(gg_trg_Odin_Escort_Teleport)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Odin_Escort_Teleport,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Odin_Escort_Teleport,Condition(function Trig_Odin_Escort_Teleport_Conditions))
     call TriggerAddAction(gg_trg_Odin_Escort_Teleport,function Trig_Odin_Escort_Teleport_Actions)
 endfunction
-function RegisterR11_Odin_Leash_Arena takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Odin_Leash_Arena takes nothing returns nothing
     set gg_trg_Odin_Leash_Arena=CreateTrigger()
     call DisableTrigger(gg_trg_Odin_Leash_Arena)
     call TriggerRegisterEnterRectSimple(gg_trg_Odin_Leash_Arena,gg_rct_710)
@@ -69,7 +67,10 @@ function RegisterR11_Odin_Leash_Arena takes nothing returns nothing
     call TriggerAddAction(gg_trg_Odin_Leash_Arena,function Trig_Odin_Leash_Arena_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Odin takes nothing returns nothing
+    call Register_Odin_Escort_Teleport()
+    call Register_Odin_Leash_Arena()
+endfunction
 
 endlibrary

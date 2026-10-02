@@ -53,30 +53,31 @@ function Trig_DarkQuezacotl_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkQuezacotl automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkQuezacotl (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkQuezacotl takes nothing returns nothing
 endfunction
-function RegisterR11_DarkQuezacotl_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkQuezacotl_Appear takes nothing returns nothing
     set gg_trg_DarkQuezacotl_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkQuezacotl_Appear)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DarkQuezacotl_Appear,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_DarkQuezacotl_Appear,Condition(function Trig_DarkQuezacotl_Appear_Conditions))
     call TriggerAddAction(gg_trg_DarkQuezacotl_Appear,function Trig_DarkQuezacotl_Appear_Actions)
 endfunction
-function RegisterR11_DarkQuezacotl_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkQuezacotl_Death takes nothing returns nothing
     set gg_trg_DarkQuezacotl_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkQuezacotl_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkQuezacotl_Death,gg_unit_H01N_0035,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_DarkQuezacotl_Death,function Trig_DarkQuezacotl_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkQuezacotl takes nothing returns nothing
+    call Register_DarkQuezacotl_Appear()
+    call Register_DarkQuezacotl_Death()
+endfunction
 
 endlibrary

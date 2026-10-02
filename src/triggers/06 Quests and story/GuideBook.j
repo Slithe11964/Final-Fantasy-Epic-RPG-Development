@@ -226,73 +226,61 @@ function Trig_GuideBook_TurnIn_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GuideBook automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GuideBook (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GuideBook takes nothing returns nothing
 endfunction
-function RegisterR11_GuideBook_Search1 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search1 takes nothing returns nothing
     set gg_trg_GuideBook_Search1=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search1)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search1,gg_rct_415)
     call TriggerAddCondition(gg_trg_GuideBook_Search1,Condition(function Trig_GuideBook_Search1_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search1,function Trig_GuideBook_Search1_Actions)
 endfunction
-function RegisterR11_GuideBook_Search2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search2 takes nothing returns nothing
     set gg_trg_GuideBook_Search2=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search2)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search2,gg_rct_416)
     call TriggerAddCondition(gg_trg_GuideBook_Search2,Condition(function Trig_GuideBook_Search2_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search2,function Trig_GuideBook_Search2_Actions)
 endfunction
-function RegisterR11_GuideBook_Search3 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search3 takes nothing returns nothing
     set gg_trg_GuideBook_Search3=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search3)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search3,gg_rct_417)
     call TriggerAddCondition(gg_trg_GuideBook_Search3,Condition(function Trig_GuideBook_Search3_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search3,function Trig_GuideBook_Search3_Actions)
 endfunction
-function RegisterR11_GuideBook_Search4 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search4 takes nothing returns nothing
     set gg_trg_GuideBook_Search4=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search4)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search4,gg_rct_418)
     call TriggerAddCondition(gg_trg_GuideBook_Search4,Condition(function Trig_GuideBook_Search4_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search4,function Trig_GuideBook_Search4_Actions)
 endfunction
-function RegisterR11_GuideBook_Search5 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search5 takes nothing returns nothing
     set gg_trg_GuideBook_Search5=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search5)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search5,gg_rct_419)
     call TriggerAddCondition(gg_trg_GuideBook_Search5,Condition(function Trig_GuideBook_Search5_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search5,function Trig_GuideBook_Search5_Actions)
 endfunction
-function RegisterR11_GuideBook_Search6 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_Search6 takes nothing returns nothing
     set gg_trg_GuideBook_Search6=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_Search6)
     call TriggerRegisterEnterRectSimple(gg_trg_GuideBook_Search6,gg_rct_489)
     call TriggerAddCondition(gg_trg_GuideBook_Search6,Condition(function Trig_GuideBook_Search6_Conditions))
     call TriggerAddAction(gg_trg_GuideBook_Search6,function Trig_GuideBook_Search6_Actions)
 endfunction
-function RegisterR11_GuideBook_TurnIn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GuideBook_TurnIn takes nothing returns nothing
     set gg_trg_GuideBook_TurnIn=CreateTrigger()
     call DisableTrigger(gg_trg_GuideBook_TurnIn)
     call TriggerRegisterUnitInRangeSimple(gg_trg_GuideBook_TurnIn,250.,gg_unit_n034_0109)
@@ -300,7 +288,15 @@ function RegisterR11_GuideBook_TurnIn takes nothing returns nothing
     call TriggerAddAction(gg_trg_GuideBook_TurnIn,function Trig_GuideBook_TurnIn_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GuideBook takes nothing returns nothing
+    call Register_GuideBook_Search1()
+    call Register_GuideBook_Search2()
+    call Register_GuideBook_Search3()
+    call Register_GuideBook_Search4()
+    call Register_GuideBook_Search5()
+    call Register_GuideBook_Search6()
+    call Register_GuideBook_TurnIn()
+endfunction
 
 endlibrary

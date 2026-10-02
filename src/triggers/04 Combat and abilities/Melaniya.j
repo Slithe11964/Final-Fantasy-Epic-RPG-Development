@@ -13,18 +13,20 @@ function Trig_Melaniya_Setup_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Melaniya automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Melaniya (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Melaniya takes nothing returns nothing
 endfunction
-function RegisterR11_Melaniya_Setup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Melaniya_Setup takes nothing returns nothing
     set gg_trg_Melaniya_Setup=CreateTrigger()
     call TriggerAddAction(gg_trg_Melaniya_Setup,function Trig_Melaniya_Setup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Melaniya takes nothing returns nothing
+    call Register_Melaniya_Setup()
+endfunction
 
 endlibrary

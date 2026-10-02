@@ -66,13 +66,13 @@ function Trig_Turks_Give_Flute_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Turks automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Turks (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Turks takes nothing returns nothing
 endfunction
-function RegisterR11_Turks_Give_Flute takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Turks_Give_Flute takes nothing returns nothing
     set gg_trg_Turks_Give_Flute=CreateTrigger()
     call DisableTrigger(gg_trg_Turks_Give_Flute)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Turks_Give_Flute,Player(0),true)
@@ -87,7 +87,9 @@ function RegisterR11_Turks_Give_Flute takes nothing returns nothing
     call TriggerAddAction(gg_trg_Turks_Give_Flute,function Trig_Turks_Give_Flute_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Turks takes nothing returns nothing
+    call Register_Turks_Give_Flute()
+endfunction
 
 endlibrary

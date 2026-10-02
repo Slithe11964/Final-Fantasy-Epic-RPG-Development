@@ -67,20 +67,22 @@ function Trig_Wirts_Leg_Club_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Wirts automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Wirts (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Wirts takes nothing returns nothing
 endfunction
-function RegisterR11_Wirts_Leg_Club takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wirts_Leg_Club takes nothing returns nothing
     set gg_trg_Wirts_Leg_Club=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Wirts_Leg_Club,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Wirts_Leg_Club,Condition(function Trig_Wirts_Leg_Club_Conditions))
     call TriggerAddAction(gg_trg_Wirts_Leg_Club,function Trig_Wirts_Leg_Club_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Wirts takes nothing returns nothing
+    call Register_Wirts_Leg_Club()
+endfunction
 
 endlibrary

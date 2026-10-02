@@ -87,20 +87,22 @@ function Trig_Wave_Fist_Actions takes nothing returns nothing
     call UnitDamageTarget(GetTriggerUnit(),GetSpellTargetUnit(),udg_TempInteger,true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Wave automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Wave (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Wave takes nothing returns nothing
 endfunction
-function RegisterR11_Wave_Fist takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Wave_Fist takes nothing returns nothing
     set gg_trg_Wave_Fist=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Wave_Fist,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Wave_Fist,Condition(function Trig_Wave_Fist_Conditions))
     call TriggerAddAction(gg_trg_Wave_Fist,function Trig_Wave_Fist_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Wave takes nothing returns nothing
+    call Register_Wave_Fist()
+endfunction
 
 endlibrary

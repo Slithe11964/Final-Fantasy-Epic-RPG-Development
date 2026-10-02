@@ -80,28 +80,29 @@ function Trig_Shift_Elements_Roll_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Shift automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Shift (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Shift takes nothing returns nothing
 endfunction
-function RegisterR11_Shift_Elements_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shift_Elements_Start takes nothing returns nothing
     set gg_trg_Shift_Elements_Start=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Shift_Elements_Start,GetPlayableMapRect())
     call TriggerAddCondition(gg_trg_Shift_Elements_Start,Condition(function Trig_Shift_Elements_Start_Conditions))
     call TriggerAddAction(gg_trg_Shift_Elements_Start,function Trig_Shift_Elements_Start_Actions)
 endfunction
-function RegisterR11_Shift_Elements_Roll takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shift_Elements_Roll takes nothing returns nothing
     set gg_trg_Shift_Elements_Roll=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Shift_Elements_Roll,udg_ShiftElementsTimer)
     call TriggerAddAction(gg_trg_Shift_Elements_Roll,function Trig_Shift_Elements_Roll_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Shift takes nothing returns nothing
+    call Register_Shift_Elements_Start()
+    call Register_Shift_Elements_Roll()
+endfunction
 
 endlibrary

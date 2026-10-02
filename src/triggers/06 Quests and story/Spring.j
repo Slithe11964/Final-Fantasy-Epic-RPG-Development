@@ -285,20 +285,22 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Spring automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Spring (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Spring takes nothing returns nothing
 endfunction
-function RegisterR11_Spring_Of_Life_Ritual takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Spring_Of_Life_Ritual takes nothing returns nothing
     set gg_trg_Spring_Of_Life_Ritual=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Spring_Of_Life_Ritual,gg_rct_673)
     call TriggerAddCondition(gg_trg_Spring_Of_Life_Ritual,Condition(function Trig_Spring_Of_Life_Ritual_Conditions))
     call TriggerAddAction(gg_trg_Spring_Of_Life_Ritual,function Trig_Spring_Of_Life_Ritual_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Spring takes nothing returns nothing
+    call Register_Spring_Of_Life_Ritual()
+endfunction
 
 endlibrary

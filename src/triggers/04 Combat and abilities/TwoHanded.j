@@ -46,20 +46,22 @@ function Trig_TwoHanded_Check_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_TwoHanded automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_TwoHanded (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_TwoHanded takes nothing returns nothing
 endfunction
-function RegisterR11_TwoHanded_Check takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TwoHanded_Check takes nothing returns nothing
     set gg_trg_TwoHanded_Check=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_TwoHanded_Check,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_TwoHanded_Check,Condition(function Trig_TwoHanded_Check_Conditions))
     call TriggerAddAction(gg_trg_TwoHanded_Check,function Trig_TwoHanded_Check_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_TwoHanded takes nothing returns nothing
+    call Register_TwoHanded_Check()
+endfunction
 
 endlibrary

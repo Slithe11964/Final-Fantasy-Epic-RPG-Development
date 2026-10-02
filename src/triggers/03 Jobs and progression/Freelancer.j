@@ -274,20 +274,22 @@ function Trig_Freelancer_Stats_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Freelancer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Freelancer (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Freelancer takes nothing returns nothing
 endfunction
-function RegisterR11_Freelancer_Stats takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Freelancer_Stats takes nothing returns nothing
     set gg_trg_Freelancer_Stats=CreateTrigger()
     call DisableTrigger(gg_trg_Freelancer_Stats)
     call TriggerAddCondition(gg_trg_Freelancer_Stats,Condition(function Trig_Freelancer_Stats_Conditions))
     call TriggerAddAction(gg_trg_Freelancer_Stats,function Trig_Freelancer_Stats_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Freelancer takes nothing returns nothing
+    call Register_Freelancer_Stats()
+endfunction
 
 endlibrary

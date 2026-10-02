@@ -108,27 +108,28 @@ function Trig_OmegaWeapon_SpellRotation_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_OmegaWeapon automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_OmegaWeapon (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_OmegaWeapon takes nothing returns nothing
 endfunction
-function RegisterR11_OmegaWeapon_Hide takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_OmegaWeapon_Hide takes nothing returns nothing
     set gg_trg_OmegaWeapon_Hide=CreateTrigger()
     call TriggerAddAction(gg_trg_OmegaWeapon_Hide,function Trig_OmegaWeapon_Hide_Actions)
 endfunction
-function RegisterR11_OmegaWeapon_SpellRotation takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_OmegaWeapon_SpellRotation takes nothing returns nothing
     set gg_trg_OmegaWeapon_SpellRotation=CreateTrigger()
     call DisableTrigger(gg_trg_OmegaWeapon_SpellRotation)
     call TriggerRegisterTimerEventPeriodic(gg_trg_OmegaWeapon_SpellRotation,10.)
     call TriggerAddAction(gg_trg_OmegaWeapon_SpellRotation,function Trig_OmegaWeapon_SpellRotation_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_OmegaWeapon takes nothing returns nothing
+    call Register_OmegaWeapon_Hide()
+    call Register_OmegaWeapon_SpellRotation()
+endfunction
 
 endlibrary

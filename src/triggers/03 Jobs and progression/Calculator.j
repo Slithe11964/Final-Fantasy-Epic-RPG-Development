@@ -128,38 +128,38 @@ function Trig_Calculator_Imperil_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"drunkenhaze",GetSpellTargetUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Calculator automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Calculator (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Calculator takes nothing returns nothing
 endfunction
-function RegisterR11_Calculator_Firaga takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Calculator_Firaga takes nothing returns nothing
     set gg_trg_Calculator_Firaga=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Firaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Calculator_Firaga,Condition(function Trig_Calculator_Firaga_Conditions))
     call TriggerAddAction(gg_trg_Calculator_Firaga,function Trig_Calculator_Firaga_Actions)
 endfunction
-function RegisterR11_Calculator_Thundaga takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Calculator_Thundaga takes nothing returns nothing
     set gg_trg_Calculator_Thundaga=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Thundaga,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Calculator_Thundaga,Condition(function Trig_Calculator_Thundaga_Conditions))
     call TriggerAddAction(gg_trg_Calculator_Thundaga,function Trig_Calculator_Thundaga_Actions)
 endfunction
-function RegisterR11_Calculator_Imperil takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Calculator_Imperil takes nothing returns nothing
     set gg_trg_Calculator_Imperil=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Calculator_Imperil,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Calculator_Imperil,Condition(function Trig_Calculator_Imperil_Conditions))
     call TriggerAddAction(gg_trg_Calculator_Imperil,function Trig_Calculator_Imperil_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Calculator takes nothing returns nothing
+    call Register_Calculator_Firaga()
+    call Register_Calculator_Thundaga()
+    call Register_Calculator_Imperil()
+endfunction
 
 endlibrary

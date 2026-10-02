@@ -108,13 +108,13 @@ function Trig_Giott_Letter_Deliver_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Giott automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Giott (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Giott takes nothing returns nothing
 endfunction
-function RegisterR11_Giott_FirstTalk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Giott_FirstTalk takes nothing returns nothing
     set gg_trg_Giott_FirstTalk=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Giott_FirstTalk,Player(1),true)
@@ -127,10 +127,8 @@ function RegisterR11_Giott_FirstTalk takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Giott_FirstTalk,Condition(function Trig_Giott_FirstTalk_Conditions))
     call TriggerAddAction(gg_trg_Giott_FirstTalk,function Trig_Giott_FirstTalk_Actions)
 endfunction
-function RegisterR11_Giott_Letter_Deliver takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Giott_Letter_Deliver takes nothing returns nothing
     set gg_trg_Giott_Letter_Deliver=CreateTrigger()
     call DisableTrigger(gg_trg_Giott_Letter_Deliver)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Giott_Letter_Deliver,450.,gg_unit_h00R_0256)
@@ -138,7 +136,10 @@ function RegisterR11_Giott_Letter_Deliver takes nothing returns nothing
     call TriggerAddAction(gg_trg_Giott_Letter_Deliver,function Trig_Giott_Letter_Deliver_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Giott takes nothing returns nothing
+    call Register_Giott_FirstTalk()
+    call Register_Giott_Letter_Deliver()
+endfunction
 
 endlibrary

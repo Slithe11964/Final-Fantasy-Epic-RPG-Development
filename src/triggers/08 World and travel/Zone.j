@@ -547,26 +547,27 @@ function Trig_Zone_Spawn_System_Actions takes nothing returns nothing
     call TriggerAddCondition(udg_ZoneEnterTrigger,Condition(function Trig_Zone_Spawn_System_SpawnsEnabled))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zone automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zone (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zone takes nothing returns nothing
 endfunction
-function RegisterR11_Zone_Rects_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone_Rects_Init takes nothing returns nothing
     set gg_trg_Zone_Rects_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Zone_Rects_Init,function Trig_Zone_Rects_Init_Actions)
 endfunction
-function RegisterR11_Zone_Spawn_System takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone_Spawn_System takes nothing returns nothing
     set gg_trg_Zone_Spawn_System=CreateTrigger()
     call TriggerRegisterTimerEvent(gg_trg_Zone_Spawn_System,.5,false)
     call TriggerAddAction(gg_trg_Zone_Spawn_System,function Trig_Zone_Spawn_System_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Zone takes nothing returns nothing
+    call Register_Zone_Rects_Init()
+    call Register_Zone_Spawn_System()
+endfunction
 
 endlibrary

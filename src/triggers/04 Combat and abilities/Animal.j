@@ -23,20 +23,22 @@ function Trig_Animal_Companion_Actions takes nothing returns nothing
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Animal automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Animal (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Animal takes nothing returns nothing
 endfunction
-function RegisterR11_Animal_Companion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Animal_Companion takes nothing returns nothing
     set gg_trg_Animal_Companion=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Animal_Companion,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Animal_Companion,Condition(function Trig_Animal_Companion_Conditions))
     call TriggerAddAction(gg_trg_Animal_Companion,function Trig_Animal_Companion_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Animal takes nothing returns nothing
+    call Register_Animal_Companion()
+endfunction
 
 endlibrary

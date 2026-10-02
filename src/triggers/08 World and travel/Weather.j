@@ -15,19 +15,21 @@ function Trig_Weather_Snow_Init_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Weather automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Weather (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Weather takes nothing returns nothing
 endfunction
-function RegisterR11_Weather_Snow_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Weather_Snow_Init takes nothing returns nothing
     set gg_trg_Weather_Snow_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Weather_Snow_Init,5)
     call TriggerAddAction(gg_trg_Weather_Snow_Init,function Trig_Weather_Snow_Init_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Weather takes nothing returns nothing
+    call Register_Weather_Snow_Init()
+endfunction
 
 endlibrary

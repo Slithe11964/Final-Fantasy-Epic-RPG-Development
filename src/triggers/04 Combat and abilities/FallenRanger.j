@@ -9,18 +9,20 @@ function Trig_FallenRanger_Setup_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FallenRanger automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FallenRanger (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FallenRanger takes nothing returns nothing
 endfunction
-function RegisterR11_FallenRanger_Setup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FallenRanger_Setup takes nothing returns nothing
     set gg_trg_FallenRanger_Setup=CreateTrigger()
     call TriggerAddAction(gg_trg_FallenRanger_Setup,function Trig_FallenRanger_Setup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FallenRanger takes nothing returns nothing
+    call Register_FallenRanger_Setup()
+endfunction
 
 endlibrary

@@ -57,20 +57,22 @@ function Trig_Ice_Cast_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"frostnova",GetSpellTargetUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ice automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ice (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ice takes nothing returns nothing
 endfunction
-function RegisterR11_Ice_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ice_Cast takes nothing returns nothing
     set gg_trg_Ice_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ice_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ice_Cast,Condition(function Trig_Ice_Cast_Conditions))
     call TriggerAddAction(gg_trg_Ice_Cast,function Trig_Ice_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ice takes nothing returns nothing
+    call Register_Ice_Cast()
+endfunction
 
 endlibrary

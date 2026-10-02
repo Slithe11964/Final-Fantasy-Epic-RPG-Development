@@ -30,20 +30,22 @@ function Trig_QuestCount_Milestones_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_QuestCount automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_QuestCount (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_QuestCount takes nothing returns nothing
 endfunction
-function RegisterR11_QuestCount_Milestones takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_QuestCount_Milestones takes nothing returns nothing
     set gg_trg_QuestCount_Milestones=CreateTrigger()
     call DisableTrigger(gg_trg_QuestCount_Milestones)
     call TriggerAddCondition(gg_trg_QuestCount_Milestones,Condition(function Trig_QuestCount_Milestones_Conditions))
     call TriggerAddAction(gg_trg_QuestCount_Milestones,function Trig_QuestCount_Milestones_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_QuestCount takes nothing returns nothing
+    call Register_QuestCount_Milestones()
+endfunction
 
 endlibrary

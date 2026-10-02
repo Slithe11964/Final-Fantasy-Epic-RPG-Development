@@ -109,20 +109,22 @@ function Trig_Armor_Breaker_Actions takes nothing returns nothing
     set owningPlayer=null
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Armor automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Armor (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Armor takes nothing returns nothing
 endfunction
-function RegisterR11_Armor_Breaker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Armor_Breaker takes nothing returns nothing
     set gg_trg_Armor_Breaker=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Armor_Breaker,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Armor_Breaker,Condition(function Trig_Armor_Breaker_Conditions))
     call TriggerAddAction(gg_trg_Armor_Breaker,function Trig_Armor_Breaker_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Armor takes nothing returns nothing
+    call Register_Armor_Breaker()
+endfunction
 
 endlibrary

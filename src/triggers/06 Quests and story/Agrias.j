@@ -6,19 +6,21 @@ function Trig_Agrias_ShowMarker_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Agrias automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Agrias (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Agrias takes nothing returns nothing
 endfunction
-function RegisterR11_Agrias_ShowMarker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Agrias_ShowMarker takes nothing returns nothing
     set gg_trg_Agrias_ShowMarker=CreateTrigger()
     call DisableTrigger(gg_trg_Agrias_ShowMarker)
     call TriggerAddAction(gg_trg_Agrias_ShowMarker,function Trig_Agrias_ShowMarker_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Agrias takes nothing returns nothing
+    call Register_Agrias_ShowMarker()
+endfunction
 
 endlibrary

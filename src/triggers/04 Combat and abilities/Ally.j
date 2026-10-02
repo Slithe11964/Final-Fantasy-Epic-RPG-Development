@@ -14,20 +14,22 @@ function Trig_Ally_Death_Cleanup_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetTriggerUnit(),udg_InactiveUnits)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ally automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ally (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ally takes nothing returns nothing
 endfunction
-function RegisterR11_Ally_Death_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ally_Death_Cleanup takes nothing returns nothing
     set gg_trg_Ally_Death_Cleanup=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ally_Death_Cleanup,Player(9),EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Ally_Death_Cleanup,Condition(function Trig_Ally_Death_Cleanup_Conditions))
     call TriggerAddAction(gg_trg_Ally_Death_Cleanup,function Trig_Ally_Death_Cleanup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ally takes nothing returns nothing
+    call Register_Ally_Death_Cleanup()
+endfunction
 
 endlibrary

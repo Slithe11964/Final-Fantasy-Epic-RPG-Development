@@ -305,49 +305,41 @@ function Trig_Ziegfried_Arena_Leash_Actions takes nothing returns nothing
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ziegfried automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ziegfried_Part1 / RegisterTriggers_Ziegfried_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ziegfried takes nothing returns nothing
 endfunction
-function RegisterR11_Ziegfried_Mine_Arrive takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Mine_Arrive takes nothing returns nothing
     set gg_trg_Ziegfried_Mine_Arrive=CreateTrigger()
     call DisableTrigger(gg_trg_Ziegfried_Mine_Arrive)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Ziegfried_Mine_Arrive,udg_SharedDelayTimer5)
     call TriggerAddAction(gg_trg_Ziegfried_Mine_Arrive,function Trig_Ziegfried_Mine_Arrive_Actions)
 endfunction
-function RegisterR11_Ziegfried_Advance_Order takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Advance_Order takes nothing returns nothing
     set gg_trg_Ziegfried_Advance_Order=CreateTrigger()
     call DisableTrigger(gg_trg_Ziegfried_Advance_Order)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Advance_Order,4.)
     call TriggerAddAction(gg_trg_Ziegfried_Advance_Order,function Trig_Ziegfried_Advance_Order_Actions)
 endfunction
-function RegisterR11_Ziegfried_Attack_Fafnir takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Attack_Fafnir takes nothing returns nothing
     set gg_trg_Ziegfried_Attack_Fafnir=CreateTrigger()
     call DisableTrigger(gg_trg_Ziegfried_Attack_Fafnir)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Ziegfried_Attack_Fafnir,10.)
     call TriggerAddAction(gg_trg_Ziegfried_Attack_Fafnir,function Trig_Ziegfried_Attack_Fafnir_Actions)
 endfunction
-function RegisterR11_Ziegfried_Meltdown takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Meltdown takes nothing returns nothing
     set gg_trg_Ziegfried_Meltdown=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ziegfried_Meltdown,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ziegfried_Meltdown,Condition(function Trig_Ziegfried_Meltdown_Conditions))
     call TriggerAddAction(gg_trg_Ziegfried_Meltdown,function Trig_Ziegfried_Meltdown_Actions)
 endfunction
-function RegisterR11_Ziegfried_Confront takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Confront takes nothing returns nothing
     set gg_trg_Ziegfried_Confront=CreateTrigger()
     call DisableTrigger(gg_trg_Ziegfried_Confront)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Ziegfried_Confront,800.,gg_unit_H036_0254)
@@ -355,10 +347,8 @@ function RegisterR11_Ziegfried_Confront takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Ziegfried_Confront,Condition(function Trig_Ziegfried_Confront_Conditions))
     call TriggerAddAction(gg_trg_Ziegfried_Confront,function Trig_Ziegfried_Confront_Actions)
 endfunction
-function RegisterR11_Ziegfried_Arena_Leash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ziegfried_Arena_Leash takes nothing returns nothing
     set gg_trg_Ziegfried_Arena_Leash=CreateTrigger()
     call DisableTrigger(gg_trg_Ziegfried_Arena_Leash)
     call TriggerRegisterEnterRectSimple(gg_trg_Ziegfried_Arena_Leash,gg_rct_710)
@@ -366,7 +356,22 @@ function RegisterR11_Ziegfried_Arena_Leash takes nothing returns nothing
     call TriggerAddAction(gg_trg_Ziegfried_Arena_Leash,function Trig_Ziegfried_Arena_Leash_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Ziegfried_Part1 takes nothing returns nothing
+    call Register_Ziegfried_Mine_Arrive()
+    call Register_Ziegfried_Advance_Order()
+    call Register_Ziegfried_Attack_Fafnir()
+    call Register_Ziegfried_Meltdown()
+    call Register_Ziegfried_Confront()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Ziegfried_Part2 takes nothing returns nothing
+    call Register_Ziegfried_Arena_Leash()
+endfunction
 
 endlibrary

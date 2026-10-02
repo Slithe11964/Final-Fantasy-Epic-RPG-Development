@@ -90,37 +90,37 @@ function Trig_Famfrit_TidalWave_Actions takes nothing returns nothing
     call DestroyGroup(l_hitGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Famfrit automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Famfrit (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Famfrit takes nothing returns nothing
 endfunction
-function RegisterR11_Famfrit_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Famfrit_Prepare takes nothing returns nothing
     set gg_trg_Famfrit_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Famfrit_Prepare,function Trig_Famfrit_Prepare_Actions)
 endfunction
-function RegisterR11_Famfrit_Encounter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Famfrit_Encounter takes nothing returns nothing
     set gg_trg_Famfrit_Encounter=CreateTrigger()
     call DisableTrigger(gg_trg_Famfrit_Encounter)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Famfrit_Encounter,700.,gg_unit_U00N_0205)
     call TriggerAddCondition(gg_trg_Famfrit_Encounter,Condition(function Trig_Famfrit_Encounter_Conditions))
     call TriggerAddAction(gg_trg_Famfrit_Encounter,function Trig_Famfrit_Encounter_Actions)
 endfunction
-function RegisterR11_Famfrit_TidalWave takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Famfrit_TidalWave takes nothing returns nothing
     set gg_trg_Famfrit_TidalWave=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Famfrit_TidalWave,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Famfrit_TidalWave,Condition(function Trig_Famfrit_TidalWave_Conditions))
     call TriggerAddAction(gg_trg_Famfrit_TidalWave,function Trig_Famfrit_TidalWave_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Famfrit takes nothing returns nothing
+    call Register_Famfrit_Prepare()
+    call Register_Famfrit_Encounter()
+    call Register_Famfrit_TidalWave()
+endfunction
 
 endlibrary

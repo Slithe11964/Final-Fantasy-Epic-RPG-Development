@@ -151,13 +151,13 @@ function Trig_FlanHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FlanHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FlanHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FlanHunt takes nothing returns nothing
 endfunction
-function RegisterR11_FlanHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FlanHunt_Start takes nothing returns nothing
     set gg_trg_FlanHunt_Start=CreateTrigger()
     call DisableTrigger(gg_trg_FlanHunt_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_FlanHunt_Start,Player(0),true)
@@ -171,28 +171,22 @@ function RegisterR11_FlanHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_FlanHunt_Start,Condition(function Trig_FlanHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_FlanHunt_Start,function Trig_FlanHunt_Start_Actions)
 endfunction
-function RegisterR11_FlanHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FlanHunt_Count takes nothing returns nothing
     set gg_trg_FlanHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_FlanHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_FlanHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_FlanHunt_Count,Condition(function Trig_FlanHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_FlanHunt_Count,function Trig_FlanHunt_Count_Actions)
 endfunction
-function RegisterR11_FlanHunt_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FlanHunt_Fail takes nothing returns nothing
     set gg_trg_FlanHunt_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_FlanHunt_Fail)
     call TriggerAddAction(gg_trg_FlanHunt_Fail,function Trig_FlanHunt_Fail_Actions)
 endfunction
-function RegisterR11_FlanHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FlanHunt_Reward takes nothing returns nothing
     set gg_trg_FlanHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_FlanHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_FlanHunt_Reward,200.,gg_unit_e014_0149)
@@ -201,7 +195,12 @@ function RegisterR11_FlanHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_FlanHunt_Reward,function Trig_FlanHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FlanHunt takes nothing returns nothing
+    call Register_FlanHunt_Start()
+    call Register_FlanHunt_Count()
+    call Register_FlanHunt_Fail()
+    call Register_FlanHunt_Reward()
+endfunction
 
 endlibrary

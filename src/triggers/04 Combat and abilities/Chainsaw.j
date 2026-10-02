@@ -36,20 +36,22 @@ function Trig_Chainsaw_Saw_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"acidbomb",GetSpellTargetUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Chainsaw automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Chainsaw (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Chainsaw takes nothing returns nothing
 endfunction
-function RegisterR11_Chainsaw_Saw takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chainsaw_Saw takes nothing returns nothing
     set gg_trg_Chainsaw_Saw=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Chainsaw_Saw,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Chainsaw_Saw,Condition(function Trig_Chainsaw_Saw_Conditions))
     call TriggerAddAction(gg_trg_Chainsaw_Saw,function Trig_Chainsaw_Saw_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Chainsaw takes nothing returns nothing
+    call Register_Chainsaw_Saw()
+endfunction
 
 endlibrary

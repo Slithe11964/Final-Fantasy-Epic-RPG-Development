@@ -120,37 +120,37 @@ function Trig_Vortex_Drain_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Vortex automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Vortex (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Vortex takes nothing returns nothing
 endfunction
-function RegisterR11_Vortex_Warning takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vortex_Warning takes nothing returns nothing
     set gg_trg_Vortex_Warning=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Warning,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
     call TriggerAddCondition(gg_trg_Vortex_Warning,Condition(function Trig_Vortex_Warning_Conditions))
     call TriggerAddAction(gg_trg_Vortex_Warning,function Trig_Vortex_Warning_Actions)
 endfunction
-function RegisterR11_Vortex_Suck takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vortex_Suck takes nothing returns nothing
     set gg_trg_Vortex_Suck=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Vortex_Suck,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Vortex_Suck,Condition(function Trig_Vortex_Suck_Conditions))
     call TriggerAddAction(gg_trg_Vortex_Suck,function Trig_Vortex_Suck_Actions)
 endfunction
-function RegisterR11_Vortex_Drain takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vortex_Drain takes nothing returns nothing
     set gg_trg_Vortex_Drain=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Vortex_Drain,udg_VortexTimer)
     call TriggerAddAction(gg_trg_Vortex_Drain,function Trig_Vortex_Drain_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Vortex takes nothing returns nothing
+    call Register_Vortex_Warning()
+    call Register_Vortex_Suck()
+    call Register_Vortex_Drain()
+endfunction
 
 endlibrary

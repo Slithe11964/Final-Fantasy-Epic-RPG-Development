@@ -534,80 +534,75 @@ function Trig_Vote_GameMode_Click_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Vote automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Vote (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Vote takes nothing returns nothing
 endfunction
-function RegisterR11_Vote_TextSpeed_Show takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_TextSpeed_Show takes nothing returns nothing
     set gg_trg_Vote_TextSpeed_Show=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_TextSpeed_Show)
     call TriggerAddAction(gg_trg_Vote_TextSpeed_Show,function Trig_Vote_TextSpeed_Show_Actions)
 endfunction
-function RegisterR11_Vote_TextSpeed_Click takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_TextSpeed_Click takes nothing returns nothing
     set gg_trg_Vote_TextSpeed_Click=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_TextSpeed_Click)
     call TriggerRegisterDialogEventBJ(gg_trg_Vote_TextSpeed_Click,udg_VoteDialog)
     call TriggerAddAction(gg_trg_Vote_TextSpeed_Click,function Trig_Vote_TextSpeed_Click_Actions)
 endfunction
-function RegisterR11_Vote_TextSpeed_Result takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_TextSpeed_Result takes nothing returns nothing
     set gg_trg_Vote_TextSpeed_Result=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_TextSpeed_Result)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_TextSpeed_Result,udg_VoteTimer)
     call TriggerAddAction(gg_trg_Vote_TextSpeed_Result,function Trig_Vote_TextSpeed_Result_Actions)
 endfunction
-function RegisterR11_Vote_Difficulty_Show takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_Difficulty_Show takes nothing returns nothing
     set gg_trg_Vote_Difficulty_Show=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_Difficulty_Show)
     call TriggerAddAction(gg_trg_Vote_Difficulty_Show,function Trig_Vote_Difficulty_Show_Actions)
 endfunction
-function RegisterR11_Vote_Difficulty_Click takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_Difficulty_Click takes nothing returns nothing
     set gg_trg_Vote_Difficulty_Click=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_Difficulty_Click)
     call TriggerRegisterDialogEventBJ(gg_trg_Vote_Difficulty_Click,udg_VoteDialog)
     call TriggerAddAction(gg_trg_Vote_Difficulty_Click,function Trig_Vote_Difficulty_Click_Actions)
 endfunction
-function RegisterR11_Vote_Difficulty_Result takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_Difficulty_Result takes nothing returns nothing
     set gg_trg_Vote_Difficulty_Result=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_Difficulty_Result)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Vote_Difficulty_Result,udg_VoteTimer)
     call TriggerAddAction(gg_trg_Vote_Difficulty_Result,function Trig_Vote_Difficulty_Result_Actions)
 endfunction
-function RegisterR11_Vote_GameMode_Show takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_GameMode_Show takes nothing returns nothing
     set gg_trg_Vote_GameMode_Show=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_GameMode_Show)
     call TriggerAddAction(gg_trg_Vote_GameMode_Show,function Trig_Vote_GameMode_Show_Actions)
 endfunction
-function RegisterR11_Vote_GameMode_Click takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vote_GameMode_Click takes nothing returns nothing
     set gg_trg_Vote_GameMode_Click=CreateTrigger()
     call DisableTrigger(gg_trg_Vote_GameMode_Click)
     call TriggerRegisterDialogEventBJ(gg_trg_Vote_GameMode_Click,udg_VoteDialog)
     call TriggerAddAction(gg_trg_Vote_GameMode_Click,function Trig_Vote_GameMode_Click_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Vote takes nothing returns nothing
+    call Register_Vote_TextSpeed_Show()
+    call Register_Vote_TextSpeed_Click()
+    call Register_Vote_TextSpeed_Result()
+    call Register_Vote_Difficulty_Show()
+    call Register_Vote_Difficulty_Click()
+    call Register_Vote_Difficulty_Result()
+    call Register_Vote_GameMode_Show()
+    call Register_Vote_GameMode_Click()
+endfunction
 
 endlibrary

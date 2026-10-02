@@ -205,30 +205,31 @@ function Trig_DarkPhoenix_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkPhoenix automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkPhoenix (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkPhoenix takes nothing returns nothing
 endfunction
-function RegisterR11_DarkPhoenix_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkPhoenix_Appear takes nothing returns nothing
     set gg_trg_DarkPhoenix_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkPhoenix_Appear)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DarkPhoenix_Appear,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_DarkPhoenix_Appear,Condition(function Trig_DarkPhoenix_Appear_Conditions))
     call TriggerAddAction(gg_trg_DarkPhoenix_Appear,function Trig_DarkPhoenix_Appear_Actions)
 endfunction
-function RegisterR11_DarkPhoenix_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkPhoenix_Death takes nothing returns nothing
     set gg_trg_DarkPhoenix_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkPhoenix_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkPhoenix_Death,gg_unit_H021_0034,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_DarkPhoenix_Death,function Trig_DarkPhoenix_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkPhoenix takes nothing returns nothing
+    call Register_DarkPhoenix_Appear()
+    call Register_DarkPhoenix_Death()
+endfunction
 
 endlibrary

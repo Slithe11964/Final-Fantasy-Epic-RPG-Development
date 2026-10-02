@@ -54,19 +54,21 @@ function Trig_Dead_Hero_Item_Drop_Actions takes nothing returns nothing
     call ForForce(udg_PlayingPlayers,function Trig_Dead_Hero_Item_Drop_DropItemsOnDeath)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Dead automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Dead (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Dead takes nothing returns nothing
 endfunction
-function RegisterR11_Dead_Hero_Item_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dead_Hero_Item_Drop takes nothing returns nothing
     set gg_trg_Dead_Hero_Item_Drop=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Dead_Hero_Item_Drop,6.)
     call TriggerAddAction(gg_trg_Dead_Hero_Item_Drop,function Trig_Dead_Hero_Item_Drop_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Dead takes nothing returns nothing
+    call Register_Dead_Hero_Item_Drop()
+endfunction
 
 endlibrary

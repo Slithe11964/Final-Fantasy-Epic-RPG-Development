@@ -114,47 +114,46 @@ function Trig_Ripper_Death_Circle_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ripper automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ripper (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ripper takes nothing returns nothing
 endfunction
-function RegisterR11_Ripper_Charge_Buffs takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ripper_Charge_Buffs takes nothing returns nothing
     set gg_trg_Ripper_Charge_Buffs=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ripper_Charge_Buffs,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ripper_Charge_Buffs,Condition(function Trig_Ripper_Charge_Buffs_Conditions))
     call TriggerAddAction(gg_trg_Ripper_Charge_Buffs,function Trig_Ripper_Charge_Buffs_Actions)
 endfunction
-function RegisterR11_Ripper_Mass_Dispel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ripper_Mass_Dispel takes nothing returns nothing
     set gg_trg_Ripper_Mass_Dispel=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ripper_Mass_Dispel,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ripper_Mass_Dispel,Condition(function Trig_Ripper_Mass_Dispel_Conditions))
     call TriggerAddAction(gg_trg_Ripper_Mass_Dispel,function Trig_Ripper_Mass_Dispel_Actions)
 endfunction
-function RegisterR11_Ripper_Condemnation takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ripper_Condemnation takes nothing returns nothing
     set gg_trg_Ripper_Condemnation=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ripper_Condemnation,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ripper_Condemnation,Condition(function Trig_Ripper_Condemnation_Conditions))
     call TriggerAddAction(gg_trg_Ripper_Condemnation,function Trig_Ripper_Condemnation_Actions)
 endfunction
-function RegisterR11_Ripper_Death_Circle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ripper_Death_Circle takes nothing returns nothing
     set gg_trg_Ripper_Death_Circle=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ripper_Death_Circle,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ripper_Death_Circle,Condition(function Trig_Ripper_Death_Circle_Conditions))
     call TriggerAddAction(gg_trg_Ripper_Death_Circle,function Trig_Ripper_Death_Circle_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ripper takes nothing returns nothing
+    call Register_Ripper_Charge_Buffs()
+    call Register_Ripper_Mass_Dispel()
+    call Register_Ripper_Condemnation()
+    call Register_Ripper_Death_Circle()
+endfunction
 
 endlibrary

@@ -38,35 +38,35 @@ function Trig_Rabite_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Rabite automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Rabite (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Rabite takes nothing returns nothing
 endfunction
-function RegisterR11_Rabite_Area_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Rabite_Area_Init takes nothing returns nothing
     set gg_trg_Rabite_Area_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Rabite_Area_Init,20.)
     call TriggerAddAction(gg_trg_Rabite_Area_Init,function Trig_Rabite_Area_Init_Actions)
 endfunction
-function RegisterR11_Rabite_Hunt_Unlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Rabite_Hunt_Unlock takes nothing returns nothing
     set gg_trg_Rabite_Hunt_Unlock=CreateTrigger()
     call DisableTrigger(gg_trg_Rabite_Hunt_Unlock)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Rabite_Hunt_Unlock,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Rabite_Hunt_Unlock,function Trig_Rabite_Hunt_Unlock_Actions)
 endfunction
-function RegisterR11_Rabite_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Rabite_Death takes nothing returns nothing
     set gg_trg_Rabite_Death=CreateTrigger()
     call TriggerAddAction(gg_trg_Rabite_Death,function Trig_Rabite_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Rabite takes nothing returns nothing
+    call Register_Rabite_Area_Init()
+    call Register_Rabite_Hunt_Unlock()
+    call Register_Rabite_Death()
+endfunction
 
 endlibrary

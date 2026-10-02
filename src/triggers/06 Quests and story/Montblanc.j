@@ -19,13 +19,13 @@ function Trig_Montblanc_Hint_Timer_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Montblanc automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Montblanc (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Montblanc takes nothing returns nothing
 endfunction
-function RegisterR11_Montblanc_Hint_Timer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Montblanc_Hint_Timer takes nothing returns nothing
     set gg_trg_Montblanc_Hint_Timer=CreateTrigger()
     call DisableTrigger(gg_trg_Montblanc_Hint_Timer)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Montblanc_Hint_Timer,20.)
@@ -33,7 +33,9 @@ function RegisterR11_Montblanc_Hint_Timer takes nothing returns nothing
     call TriggerAddAction(gg_trg_Montblanc_Hint_Timer,function Trig_Montblanc_Hint_Timer_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Montblanc takes nothing returns nothing
+    call Register_Montblanc_Hint_Timer()
+endfunction
 
 endlibrary

@@ -7,20 +7,22 @@ function Trig_DarkServant_Cleanup_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_DarkServants)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkServant automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkServant (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkServant takes nothing returns nothing
 endfunction
-function RegisterR11_DarkServant_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkServant_Cleanup takes nothing returns nothing
     set gg_trg_DarkServant_Cleanup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_DarkServant_Cleanup,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_DarkServant_Cleanup,Condition(function Trig_DarkServant_Cleanup_Conditions))
     call TriggerAddAction(gg_trg_DarkServant_Cleanup,function Trig_DarkServant_Cleanup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkServant takes nothing returns nothing
+    call Register_DarkServant_Cleanup()
+endfunction
 
 endlibrary

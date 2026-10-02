@@ -31,22 +31,20 @@ function Trig_Ping_EyeOfJenova_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ping automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ping (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ping takes nothing returns nothing
 endfunction
-function RegisterR11_Ping_ArenaTarget takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ping_ArenaTarget takes nothing returns nothing
     set gg_trg_Ping_ArenaTarget=CreateTrigger()
     call DisableTrigger(gg_trg_Ping_ArenaTarget)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_ArenaTarget,15.)
     call TriggerAddAction(gg_trg_Ping_ArenaTarget,function Trig_Ping_ArenaTarget_Actions)
 endfunction
-function RegisterR11_Ping_EyeOfJenova takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ping_EyeOfJenova takes nothing returns nothing
     set gg_trg_Ping_EyeOfJenova=CreateTrigger()
     call DisableTrigger(gg_trg_Ping_EyeOfJenova)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Ping_EyeOfJenova,15.)
@@ -54,7 +52,10 @@ function RegisterR11_Ping_EyeOfJenova takes nothing returns nothing
     call TriggerAddAction(gg_trg_Ping_EyeOfJenova,function Trig_Ping_EyeOfJenova_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ping takes nothing returns nothing
+    call Register_Ping_ArenaTarget()
+    call Register_Ping_EyeOfJenova()
+endfunction
 
 endlibrary

@@ -26,20 +26,22 @@ function Trig_Heal_Spell_Apply_Actions takes nothing returns nothing
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(udg_TempInteger)*udg_TempReal),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Heal automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Heal (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Heal takes nothing returns nothing
 endfunction
-function RegisterR11_Heal_Spell_Apply takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Heal_Spell_Apply takes nothing returns nothing
     set gg_trg_Heal_Spell_Apply=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Heal_Spell_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Heal_Spell_Apply,Condition(function Trig_Heal_Spell_Apply_Conditions))
     call TriggerAddAction(gg_trg_Heal_Spell_Apply,function Trig_Heal_Spell_Apply_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Heal takes nothing returns nothing
+    call Register_Heal_Spell_Apply()
+endfunction
 
 endlibrary

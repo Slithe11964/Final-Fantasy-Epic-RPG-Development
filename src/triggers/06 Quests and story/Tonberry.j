@@ -9,18 +9,20 @@ function Trig_Tonberry_Gate_Open_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Tonberry automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Tonberry (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Tonberry takes nothing returns nothing
 endfunction
-function RegisterR11_Tonberry_Gate_Open takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tonberry_Gate_Open takes nothing returns nothing
     set gg_trg_Tonberry_Gate_Open=CreateTrigger()
     call TriggerAddAction(gg_trg_Tonberry_Gate_Open,function Trig_Tonberry_Gate_Open_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Tonberry takes nothing returns nothing
+    call Register_Tonberry_Gate_Open()
+endfunction
 
 endlibrary

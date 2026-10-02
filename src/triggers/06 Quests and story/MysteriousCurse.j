@@ -718,20 +718,18 @@ function Trig_MysteriousCurse_BabaYagaDead_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MysteriousCurse automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MysteriousCurse (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MysteriousCurse takes nothing returns nothing
 endfunction
-function RegisterR11_MysteriousCurse_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_Init takes nothing returns nothing
     set gg_trg_MysteriousCurse_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_MysteriousCurse_Init,function Trig_MysteriousCurse_Init_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_Link takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_Link takes nothing returns nothing
     set gg_trg_MysteriousCurse_Link=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_Link,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_Link,Player(1),true)
@@ -744,10 +742,8 @@ function RegisterR11_MysteriousCurse_Link takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_Link,Condition(function Trig_MysteriousCurse_Link_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_Link,function Trig_MysteriousCurse_Link_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_Adria takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_Adria takes nothing returns nothing
     set gg_trg_MysteriousCurse_Adria=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_Adria)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_Adria,Player(0),true)
@@ -761,10 +757,8 @@ function RegisterR11_MysteriousCurse_Adria takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_Adria,Condition(function Trig_MysteriousCurse_Adria_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_Adria,function Trig_MysteriousCurse_Adria_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_Confront takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_Confront takes nothing returns nothing
     set gg_trg_MysteriousCurse_Confront=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_Confront)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_Confront,Player(0),true)
@@ -778,10 +772,8 @@ function RegisterR11_MysteriousCurse_Confront takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_Confront,Condition(function Trig_MysteriousCurse_Confront_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_Confront,function Trig_MysteriousCurse_Confront_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_Witness takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_Witness takes nothing returns nothing
     set gg_trg_MysteriousCurse_Witness=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_Witness)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_Witness,Player(0),true)
@@ -795,66 +787,52 @@ function RegisterR11_MysteriousCurse_Witness takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_Witness,Condition(function Trig_MysteriousCurse_Witness_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_Witness,function Trig_MysteriousCurse_Witness_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AttackLink takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AttackLink takes nothing returns nothing
     set gg_trg_MysteriousCurse_AttackLink=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_AttackLink)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_MysteriousCurse_AttackLink,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_MysteriousCurse_AttackLink,Condition(function Trig_MysteriousCurse_AttackLink_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AttackLink,function Trig_MysteriousCurse_AttackLink_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AttackAdria takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AttackAdria takes nothing returns nothing
     set gg_trg_MysteriousCurse_AttackAdria=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_AttackAdria)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_MysteriousCurse_AttackAdria,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_MysteriousCurse_AttackAdria,Condition(function Trig_MysteriousCurse_AttackAdria_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AttackAdria,function Trig_MysteriousCurse_AttackAdria_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_LinkDies takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_LinkDies takes nothing returns nothing
     set gg_trg_MysteriousCurse_LinkDies=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_MysteriousCurse_LinkDies,gg_unit_u001_0195,EVENT_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_LinkDies,Condition(function Trig_MysteriousCurse_LinkDies_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_LinkDies,function Trig_MysteriousCurse_LinkDies_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AdriaWitchDead takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AdriaWitchDead takes nothing returns nothing
     set gg_trg_MysteriousCurse_AdriaWitchDead=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MysteriousCurse_AdriaWitchDead,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_AdriaWitchDead,Condition(function Trig_MysteriousCurse_AdriaWitchDead_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AdriaWitchDead,function Trig_MysteriousCurse_AdriaWitchDead_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_BabaYagaAppears takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_BabaYagaAppears takes nothing returns nothing
     set gg_trg_MysteriousCurse_BabaYagaAppears=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_MysteriousCurse_BabaYagaAppears,gg_unit_u001_0195,EVENT_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_BabaYagaAppears,Condition(function Trig_MysteriousCurse_BabaYagaAppears_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_BabaYagaAppears,function Trig_MysteriousCurse_BabaYagaAppears_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AdriaRestored takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AdriaRestored takes nothing returns nothing
     set gg_trg_MysteriousCurse_AdriaRestored=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MysteriousCurse_AdriaRestored,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_AdriaRestored,Condition(function Trig_MysteriousCurse_AdriaRestored_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AdriaRestored,function Trig_MysteriousCurse_AdriaRestored_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AdriaReturn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AdriaReturn takes nothing returns nothing
     set gg_trg_MysteriousCurse_AdriaReturn=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_AdriaReturn)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_AdriaReturn,Player(0),true)
@@ -868,19 +846,15 @@ function RegisterR11_MysteriousCurse_AdriaReturn takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_AdriaReturn,Condition(function Trig_MysteriousCurse_AdriaReturn_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AdriaReturn,function Trig_MysteriousCurse_AdriaReturn_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_LinkRestored takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_LinkRestored takes nothing returns nothing
     set gg_trg_MysteriousCurse_LinkRestored=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MysteriousCurse_LinkRestored,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_LinkRestored,Condition(function Trig_MysteriousCurse_LinkRestored_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_LinkRestored,function Trig_MysteriousCurse_LinkRestored_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_LinkReturn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_LinkReturn takes nothing returns nothing
     set gg_trg_MysteriousCurse_LinkReturn=CreateTrigger()
     call DisableTrigger(gg_trg_MysteriousCurse_LinkReturn)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MysteriousCurse_LinkReturn,Player(0),true)
@@ -894,26 +868,39 @@ function RegisterR11_MysteriousCurse_LinkReturn takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MysteriousCurse_LinkReturn,Condition(function Trig_MysteriousCurse_LinkReturn_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_LinkReturn,function Trig_MysteriousCurse_LinkReturn_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_AdriaDies takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_AdriaDies takes nothing returns nothing
     set gg_trg_MysteriousCurse_AdriaDies=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_MysteriousCurse_AdriaDies,gg_unit_u002_0196,EVENT_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_AdriaDies,Condition(function Trig_MysteriousCurse_AdriaDies_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_AdriaDies,function Trig_MysteriousCurse_AdriaDies_Actions)
 endfunction
-function RegisterR11_MysteriousCurse_BabaYagaDead takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MysteriousCurse_BabaYagaDead takes nothing returns nothing
     set gg_trg_MysteriousCurse_BabaYagaDead=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MysteriousCurse_BabaYagaDead,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_MysteriousCurse_BabaYagaDead,Condition(function Trig_MysteriousCurse_BabaYagaDead_Conditions))
     call TriggerAddAction(gg_trg_MysteriousCurse_BabaYagaDead,function Trig_MysteriousCurse_BabaYagaDead_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_MysteriousCurse takes nothing returns nothing
+    call Register_MysteriousCurse_Init()
+    call Register_MysteriousCurse_Link()
+    call Register_MysteriousCurse_Adria()
+    call Register_MysteriousCurse_Confront()
+    call Register_MysteriousCurse_Witness()
+    call Register_MysteriousCurse_AttackLink()
+    call Register_MysteriousCurse_AttackAdria()
+    call Register_MysteriousCurse_LinkDies()
+    call Register_MysteriousCurse_AdriaWitchDead()
+    call Register_MysteriousCurse_BabaYagaAppears()
+    call Register_MysteriousCurse_AdriaRestored()
+    call Register_MysteriousCurse_AdriaReturn()
+    call Register_MysteriousCurse_LinkRestored()
+    call Register_MysteriousCurse_LinkReturn()
+    call Register_MysteriousCurse_AdriaDies()
+    call Register_MysteriousCurse_BabaYagaDead()
+endfunction
 
 endlibrary

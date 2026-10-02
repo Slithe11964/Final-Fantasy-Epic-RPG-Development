@@ -27,13 +27,13 @@ function Trig_DarkCyclops_Appear_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkCyclops automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkCyclops (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkCyclops takes nothing returns nothing
 endfunction
-function RegisterR11_DarkCyclops_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkCyclops_Appear takes nothing returns nothing
     set gg_trg_DarkCyclops_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkCyclops_Appear)
     call TriggerRegisterUnitInRangeSimple(gg_trg_DarkCyclops_Appear,400.,gg_unit_U00B_0042)
@@ -41,7 +41,9 @@ function RegisterR11_DarkCyclops_Appear takes nothing returns nothing
     call TriggerAddAction(gg_trg_DarkCyclops_Appear,function Trig_DarkCyclops_Appear_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkCyclops takes nothing returns nothing
+    call Register_DarkCyclops_Appear()
+endfunction
 
 endlibrary

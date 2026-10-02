@@ -31,23 +31,21 @@ function Trig_PortalStone_PickedUp_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_PortalStone automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_PortalStone (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_PortalStone takes nothing returns nothing
 endfunction
-function RegisterR11_PortalStone_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PortalStone_Ping takes nothing returns nothing
     set gg_trg_PortalStone_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_PortalStone_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_PortalStone_Ping,15.)
     call TriggerAddCondition(gg_trg_PortalStone_Ping,Condition(function Trig_PortalStone_Ping_Conditions))
     call TriggerAddAction(gg_trg_PortalStone_Ping,function Trig_PortalStone_Ping_Actions)
 endfunction
-function RegisterR11_PortalStone_PickedUp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PortalStone_PickedUp takes nothing returns nothing
     set gg_trg_PortalStone_PickedUp=CreateTrigger()
     call DisableTrigger(gg_trg_PortalStone_PickedUp)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_PortalStone_PickedUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -55,7 +53,10 @@ function RegisterR11_PortalStone_PickedUp takes nothing returns nothing
     call TriggerAddAction(gg_trg_PortalStone_PickedUp,function Trig_PortalStone_PickedUp_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_PortalStone takes nothing returns nothing
+    call Register_PortalStone_Ping()
+    call Register_PortalStone_PickedUp()
+endfunction
 
 endlibrary

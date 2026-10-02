@@ -162,36 +162,36 @@ function Trig_Verci_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Verci automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Verci (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Verci takes nothing returns nothing
 endfunction
-function RegisterR11_Verci_Awaken takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Verci_Awaken takes nothing returns nothing
     set gg_trg_Verci_Awaken=CreateTrigger()
     call DisableTrigger(gg_trg_Verci_Awaken)
     call TriggerAddAction(gg_trg_Verci_Awaken,function Trig_Verci_Awaken_Actions)
 endfunction
-function RegisterR11_Verci_Phases takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Verci_Phases takes nothing returns nothing
     set gg_trg_Verci_Phases=CreateTrigger()
     call DisableTrigger(gg_trg_Verci_Phases)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Verci_Phases,1.)
     call TriggerAddCondition(gg_trg_Verci_Phases,Condition(function Trig_Verci_Phases_Conditions))
     call TriggerAddAction(gg_trg_Verci_Phases,function Trig_Verci_Phases_Actions)
 endfunction
-function RegisterR11_Verci_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Verci_Death takes nothing returns nothing
     set gg_trg_Verci_Death=CreateTrigger()
     call TriggerAddAction(gg_trg_Verci_Death,function Trig_Verci_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Verci takes nothing returns nothing
+    call Register_Verci_Awaken()
+    call Register_Verci_Phases()
+    call Register_Verci_Death()
+endfunction
 
 endlibrary

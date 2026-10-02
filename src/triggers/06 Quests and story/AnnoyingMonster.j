@@ -10,19 +10,21 @@ function Trig_AnnoyingMonster_DropBelongings_Actions takes nothing returns nothi
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AnnoyingMonster automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AnnoyingMonster (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AnnoyingMonster takes nothing returns nothing
 endfunction
-function RegisterR11_AnnoyingMonster_DropBelongings takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AnnoyingMonster_DropBelongings takes nothing returns nothing
     set gg_trg_AnnoyingMonster_DropBelongings=CreateTrigger()
     call DisableTrigger(gg_trg_AnnoyingMonster_DropBelongings)
     call TriggerAddAction(gg_trg_AnnoyingMonster_DropBelongings,function Trig_AnnoyingMonster_DropBelongings_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AnnoyingMonster takes nothing returns nothing
+    call Register_AnnoyingMonster_DropBelongings()
+endfunction
 
 endlibrary

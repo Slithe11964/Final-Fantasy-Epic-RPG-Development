@@ -74,29 +74,30 @@ function Trig_Osmose_Cast_Actions takes nothing returns nothing
     call Text_FloatingDamage(GetTriggerUnit(),true,0,udg_LastDamageDealt,true,0)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Osmose automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Osmose (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Osmose takes nothing returns nothing
 endfunction
-function RegisterR11_Osmose_Cancel_NoMP takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Osmose_Cancel_NoMP takes nothing returns nothing
     set gg_trg_Osmose_Cancel_NoMP=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Osmose_Cancel_NoMP,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerAddCondition(gg_trg_Osmose_Cancel_NoMP,Condition(function Trig_Osmose_Cancel_NoMP_Conditions))
     call TriggerAddAction(gg_trg_Osmose_Cancel_NoMP,function Trig_Osmose_Cancel_NoMP_Actions)
 endfunction
-function RegisterR11_Osmose_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Osmose_Cast takes nothing returns nothing
     set gg_trg_Osmose_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Osmose_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Osmose_Cast,Condition(function Trig_Osmose_Cast_Conditions))
     call TriggerAddAction(gg_trg_Osmose_Cast,function Trig_Osmose_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Osmose takes nothing returns nothing
+    call Register_Osmose_Cancel_NoMP()
+    call Register_Osmose_Cast()
+endfunction
 
 endlibrary

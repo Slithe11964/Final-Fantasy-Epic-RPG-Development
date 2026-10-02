@@ -4,19 +4,21 @@ function Trig_HuntGuest_DefaultKrjn_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HuntGuest automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HuntGuest (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HuntGuest takes nothing returns nothing
 endfunction
-function RegisterR11_HuntGuest_DefaultKrjn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntGuest_DefaultKrjn takes nothing returns nothing
     set gg_trg_HuntGuest_DefaultKrjn=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_HuntGuest_DefaultKrjn,12.)
     call TriggerAddAction(gg_trg_HuntGuest_DefaultKrjn,function Trig_HuntGuest_DefaultKrjn_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HuntGuest takes nothing returns nothing
+    call Register_HuntGuest_DefaultKrjn()
+endfunction
 
 endlibrary

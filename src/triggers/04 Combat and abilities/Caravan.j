@@ -14,18 +14,20 @@ function Trig_Caravan_Init_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Caravan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Caravan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Caravan takes nothing returns nothing
 endfunction
-function RegisterR11_Caravan_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Caravan_Init takes nothing returns nothing
     set gg_trg_Caravan_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Caravan_Init,function Trig_Caravan_Init_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Caravan takes nothing returns nothing
+    call Register_Caravan_Init()
+endfunction
 
 endlibrary

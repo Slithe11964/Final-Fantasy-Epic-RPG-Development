@@ -353,22 +353,20 @@ function Trig_Cartographer_Fail_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cartographer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cartographer (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cartographer takes nothing returns nothing
 endfunction
-function RegisterR11_Cartographer_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cartographer_Prepare takes nothing returns nothing
     set gg_trg_Cartographer_Prepare=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Prepare,4.)
     call TriggerAddCondition(gg_trg_Cartographer_Prepare,Condition(function Trig_Cartographer_Prepare_Conditions))
     call TriggerAddAction(gg_trg_Cartographer_Prepare,function Trig_Cartographer_Prepare_Actions)
 endfunction
-function RegisterR11_Cartographer_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cartographer_Start takes nothing returns nothing
     set gg_trg_Cartographer_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Cartographer_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Start,Player(0),true)
@@ -382,20 +380,16 @@ function RegisterR11_Cartographer_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Cartographer_Start,Condition(function Trig_Cartographer_Start_Conditions))
     call TriggerAddAction(gg_trg_Cartographer_Start,function Trig_Cartographer_Start_Actions)
 endfunction
-function RegisterR11_Cartographer_Update takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cartographer_Update takes nothing returns nothing
     set gg_trg_Cartographer_Update=CreateTrigger()
     call DisableTrigger(gg_trg_Cartographer_Update)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Cartographer_Update,5.)
     call TriggerAddCondition(gg_trg_Cartographer_Update,Condition(function Trig_Cartographer_Update_Conditions))
     call TriggerAddAction(gg_trg_Cartographer_Update,function Trig_Cartographer_Update_Actions)
 endfunction
-function RegisterR11_Cartographer_Report takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cartographer_Report takes nothing returns nothing
     set gg_trg_Cartographer_Report=CreateTrigger()
     call DisableTrigger(gg_trg_Cartographer_Report)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Report,Player(0),true)
@@ -409,10 +403,8 @@ function RegisterR11_Cartographer_Report takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Cartographer_Report,Condition(function Trig_Cartographer_Report_Conditions))
     call TriggerAddAction(gg_trg_Cartographer_Report,function Trig_Cartographer_Report_Actions)
 endfunction
-function RegisterR11_Cartographer_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cartographer_Fail takes nothing returns nothing
     set gg_trg_Cartographer_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_Cartographer_Fail)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Cartographer_Fail,Player(0),true)
@@ -427,7 +419,13 @@ function RegisterR11_Cartographer_Fail takes nothing returns nothing
     call TriggerAddAction(gg_trg_Cartographer_Fail,function Trig_Cartographer_Fail_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cartographer takes nothing returns nothing
+    call Register_Cartographer_Prepare()
+    call Register_Cartographer_Start()
+    call Register_Cartographer_Update()
+    call Register_Cartographer_Report()
+    call Register_Cartographer_Fail()
+endfunction
 
 endlibrary

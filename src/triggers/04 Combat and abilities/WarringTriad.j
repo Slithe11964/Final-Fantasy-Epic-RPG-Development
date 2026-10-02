@@ -12,20 +12,22 @@ function Trig_WarringTriad_Freeze_Actions takes nothing returns nothing
     call SetUnitTimeScalePercent(GetTriggerUnit(),.0)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_WarringTriad automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_WarringTriad (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_WarringTriad takes nothing returns nothing
 endfunction
-function RegisterR11_WarringTriad_Freeze takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_WarringTriad_Freeze takes nothing returns nothing
     set gg_trg_WarringTriad_Freeze=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_WarringTriad_Freeze,GetPlayableMapRect())
     call TriggerAddCondition(gg_trg_WarringTriad_Freeze,Condition(function Trig_WarringTriad_Freeze_Conditions))
     call TriggerAddAction(gg_trg_WarringTriad_Freeze,function Trig_WarringTriad_Freeze_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_WarringTriad takes nothing returns nothing
+    call Register_WarringTriad_Freeze()
+endfunction
 
 endlibrary

@@ -137,20 +137,18 @@ function Trig_HydraEgg_Deliver_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HydraEgg automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HydraEgg (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HydraEgg takes nothing returns nothing
 endfunction
-function RegisterR11_HydraEgg_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Prepare takes nothing returns nothing
     set gg_trg_HydraEgg_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_HydraEgg_Prepare,function Trig_HydraEgg_Prepare_Actions)
 endfunction
-function RegisterR11_HydraEgg_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Start takes nothing returns nothing
     set gg_trg_HydraEgg_Start=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HydraEgg_Start,Player(1),true)
@@ -163,40 +161,32 @@ function RegisterR11_HydraEgg_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_HydraEgg_Start,Condition(function Trig_HydraEgg_Start_Conditions))
     call TriggerAddAction(gg_trg_HydraEgg_Start,function Trig_HydraEgg_Start_Actions)
 endfunction
-function RegisterR11_HydraEgg_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Drop takes nothing returns nothing
     set gg_trg_HydraEgg_Drop=CreateTrigger()
     call DisableTrigger(gg_trg_HydraEgg_Drop)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Drop,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_HydraEgg_Drop,Condition(function Trig_HydraEgg_Drop_Conditions))
     call TriggerAddAction(gg_trg_HydraEgg_Drop,function Trig_HydraEgg_Drop_Actions)
 endfunction
-function RegisterR11_HydraEgg_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Pickup takes nothing returns nothing
     set gg_trg_HydraEgg_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_HydraEgg_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HydraEgg_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_HydraEgg_Pickup,Condition(function Trig_HydraEgg_Pickup_Conditions))
     call TriggerAddAction(gg_trg_HydraEgg_Pickup,function Trig_HydraEgg_Pickup_Actions)
 endfunction
-function RegisterR11_HydraEgg_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Ping takes nothing returns nothing
     set gg_trg_HydraEgg_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_HydraEgg_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_HydraEgg_Ping,15.)
     call TriggerAddCondition(gg_trg_HydraEgg_Ping,Condition(function Trig_HydraEgg_Ping_Conditions))
     call TriggerAddAction(gg_trg_HydraEgg_Ping,function Trig_HydraEgg_Ping_Actions)
 endfunction
-function RegisterR11_HydraEgg_Deliver takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HydraEgg_Deliver takes nothing returns nothing
     set gg_trg_HydraEgg_Deliver=CreateTrigger()
     call DisableTrigger(gg_trg_HydraEgg_Deliver)
     call TriggerRegisterUnitInRangeSimple(gg_trg_HydraEgg_Deliver,450.,gg_unit_Hapm_0179)
@@ -204,7 +194,14 @@ function RegisterR11_HydraEgg_Deliver takes nothing returns nothing
     call TriggerAddAction(gg_trg_HydraEgg_Deliver,function Trig_HydraEgg_Deliver_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HydraEgg takes nothing returns nothing
+    call Register_HydraEgg_Prepare()
+    call Register_HydraEgg_Start()
+    call Register_HydraEgg_Drop()
+    call Register_HydraEgg_Pickup()
+    call Register_HydraEgg_Ping()
+    call Register_HydraEgg_Deliver()
+endfunction
 
 endlibrary

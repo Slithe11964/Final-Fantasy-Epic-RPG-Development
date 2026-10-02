@@ -134,64 +134,61 @@ function Trig_Cheat_Punish_Actions takes nothing returns nothing
     call ForGroupBJ(Trig_Ending_ReturnToStart_EnumUnitsInRect(GetPlayableMapRect()),function Trig_Cheat_Punish_RemoveEnumUnit)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cheat automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cheat (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cheat takes nothing returns nothing
 endfunction
-function RegisterR11_Cheat_Detect_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Detect_Init takes nothing returns nothing
     set gg_trg_Cheat_Detect_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Cheat_Detect_Init,function Trig_Cheat_Detect_Init_Actions)
 endfunction
-function RegisterR11_Cheat_Detect_Fog takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Detect_Fog takes nothing returns nothing
     set gg_trg_Cheat_Detect_Fog=CreateTrigger()
     call DisableTrigger(gg_trg_Cheat_Detect_Fog)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Cheat_Detect_Fog,10.)
     call TriggerAddAction(gg_trg_Cheat_Detect_Fog,function Trig_Cheat_Detect_Fog_Actions)
 endfunction
-function RegisterR11_Cheat_Detect_Invuln takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Detect_Invuln takes nothing returns nothing
     set gg_trg_Cheat_Detect_Invuln=CreateTrigger()
     call DisableTrigger(gg_trg_Cheat_Detect_Invuln)
     call TriggerRegisterUnitEvent(gg_trg_Cheat_Detect_Invuln,gg_unit_o007_0122,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Cheat_Detect_Invuln,function Trig_Cheat_Detect_Invuln_Actions)
 endfunction
-function RegisterR11_Cheat_Detect_Resources takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Detect_Resources takes nothing returns nothing
     set gg_trg_Cheat_Detect_Resources=CreateTrigger()
     call DisableTrigger(gg_trg_Cheat_Detect_Resources)
     call TriggerRegisterPlayerStateEvent(gg_trg_Cheat_Detect_Resources,Player($B),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN_OR_EQUAL,1.) // $B = 11
     call TriggerRegisterPlayerStateEvent(gg_trg_Cheat_Detect_Resources,Player($B),PLAYER_STATE_RESOURCE_LUMBER,GREATER_THAN_OR_EQUAL,1.) // $B = 11
     call TriggerAddAction(gg_trg_Cheat_Detect_Resources,function Trig_Cheat_Detect_Resources_Actions)
 endfunction
-function RegisterR11_Cheat_Detect_Mana takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Detect_Mana takes nothing returns nothing
     set gg_trg_Cheat_Detect_Mana=CreateTrigger()
     call DisableTrigger(gg_trg_Cheat_Detect_Mana)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Cheat_Detect_Mana,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerAddCondition(gg_trg_Cheat_Detect_Mana,Condition(function Trig_Cheat_Detect_Mana_Conditions))
     call TriggerAddAction(gg_trg_Cheat_Detect_Mana,function Trig_Cheat_Detect_Mana_Actions)
 endfunction
-function RegisterR11_Cheat_Punish takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cheat_Punish takes nothing returns nothing
     set gg_trg_Cheat_Punish=CreateTrigger()
     call DisableTrigger(gg_trg_Cheat_Punish)
     call TriggerAddAction(gg_trg_Cheat_Punish,function Trig_Cheat_Punish_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cheat takes nothing returns nothing
+    call Register_Cheat_Detect_Init()
+    call Register_Cheat_Detect_Fog()
+    call Register_Cheat_Detect_Invuln()
+    call Register_Cheat_Detect_Resources()
+    call Register_Cheat_Detect_Mana()
+    call Register_Cheat_Punish()
+endfunction
 
 endlibrary

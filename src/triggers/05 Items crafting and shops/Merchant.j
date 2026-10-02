@@ -192,66 +192,63 @@ function Trig_Merchant_Stock_Shrink_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Merchant automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Merchant (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Merchant takes nothing returns nothing
 endfunction
-function RegisterR11_Merchant_Stock_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Stock_Init takes nothing returns nothing
     set gg_trg_Merchant_Stock_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Merchant_Stock_Init,120.)
     call TriggerAddAction(gg_trg_Merchant_Stock_Init,function Trig_Merchant_Stock_Init_Actions)
 endfunction
-function RegisterR11_Merchant_Spawn_Night takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Spawn_Night takes nothing returns nothing
     set gg_trg_Merchant_Spawn_Night=CreateTrigger()
     call DisableTrigger(gg_trg_Merchant_Spawn_Night)
     call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Merchant_Spawn_Night,EQUAL,18.)
     call TriggerAddCondition(gg_trg_Merchant_Spawn_Night,Condition(function Trig_Merchant_Spawn_Night_Conditions))
     call TriggerAddAction(gg_trg_Merchant_Spawn_Night,function Trig_Merchant_Spawn_Night_Actions)
 endfunction
-function RegisterR11_Merchant_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Reveal takes nothing returns nothing
     set gg_trg_Merchant_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_Merchant_Reveal)
     call TriggerAddCondition(gg_trg_Merchant_Reveal,Condition(function Trig_Merchant_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Merchant_Reveal,function Trig_Merchant_Reveal_Actions)
 endfunction
-function RegisterR11_Merchant_Leave_Dawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Leave_Dawn takes nothing returns nothing
     set gg_trg_Merchant_Leave_Dawn=CreateTrigger()
     call DisableTrigger(gg_trg_Merchant_Leave_Dawn)
     call TriggerRegisterGameStateEventTimeOfDay(gg_trg_Merchant_Leave_Dawn,EQUAL,6.)
     call TriggerAddAction(gg_trg_Merchant_Leave_Dawn,function Trig_Merchant_Leave_Dawn_Actions)
 endfunction
-function RegisterR11_Merchant_Leave_OnSale takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Leave_OnSale takes nothing returns nothing
     set gg_trg_Merchant_Leave_OnSale=CreateTrigger()
     call DisableTrigger(gg_trg_Merchant_Leave_OnSale)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Merchant_Leave_OnSale,Player(8),EVENT_PLAYER_UNIT_SELL_ITEM)
     call TriggerAddCondition(gg_trg_Merchant_Leave_OnSale,Condition(function Trig_Merchant_Leave_OnSale_Conditions))
     call TriggerAddAction(gg_trg_Merchant_Leave_OnSale,function Trig_Merchant_Leave_OnSale_Actions)
 endfunction
-function RegisterR11_Merchant_Stock_Shrink takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Merchant_Stock_Shrink takes nothing returns nothing
     set gg_trg_Merchant_Stock_Shrink=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Merchant_Stock_Shrink,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Merchant_Stock_Shrink,Condition(function Trig_Merchant_Stock_Shrink_Conditions))
     call TriggerAddAction(gg_trg_Merchant_Stock_Shrink,function Trig_Merchant_Stock_Shrink_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Merchant takes nothing returns nothing
+    call Register_Merchant_Stock_Init()
+    call Register_Merchant_Spawn_Night()
+    call Register_Merchant_Reveal()
+    call Register_Merchant_Leave_Dawn()
+    call Register_Merchant_Leave_OnSale()
+    call Register_Merchant_Stock_Shrink()
+endfunction
 
 endlibrary

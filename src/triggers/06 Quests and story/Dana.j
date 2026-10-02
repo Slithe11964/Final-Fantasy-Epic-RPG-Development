@@ -206,21 +206,19 @@ function Trig_Dana_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Dana automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Dana (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Dana takes nothing returns nothing
 endfunction
-function RegisterR11_Dana_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dana_Prepare takes nothing returns nothing
     set gg_trg_Dana_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_Dana_Prepare)
     call TriggerAddAction(gg_trg_Dana_Prepare,function Trig_Dana_Prepare_Actions)
 endfunction
-function RegisterR11_Dana_Talk1 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dana_Talk1 takes nothing returns nothing
     set gg_trg_Dana_Talk1=CreateTrigger()
     call DisableTrigger(gg_trg_Dana_Talk1)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Dana_Talk1,Player(0),true)
@@ -234,37 +232,37 @@ function RegisterR11_Dana_Talk1 takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Dana_Talk1,Condition(function Trig_Dana_Talk1_Conditions))
     call TriggerAddAction(gg_trg_Dana_Talk1,function Trig_Dana_Talk1_Actions)
 endfunction
-function RegisterR11_Dana_Talk2_Enable takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dana_Talk2_Enable takes nothing returns nothing
     set gg_trg_Dana_Talk2_Enable=CreateTrigger()
     call DisableTrigger(gg_trg_Dana_Talk2_Enable)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Dana_Talk2_Enable,5.)
     call TriggerAddCondition(gg_trg_Dana_Talk2_Enable,Condition(function Trig_Dana_Talk2_Enable_Conditions))
     call TriggerAddAction(gg_trg_Dana_Talk2_Enable,function Trig_Dana_Talk2_Enable_Actions)
 endfunction
-function RegisterR11_Dana_Receive_Eye takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dana_Receive_Eye takes nothing returns nothing
     set gg_trg_Dana_Receive_Eye=CreateTrigger()
     call DisableTrigger(gg_trg_Dana_Receive_Eye)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Dana_Receive_Eye,Player(9),EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Dana_Receive_Eye,Condition(function Trig_Dana_Receive_Eye_Conditions))
     call TriggerAddAction(gg_trg_Dana_Receive_Eye,function Trig_Dana_Receive_Eye_Actions)
 endfunction
-function RegisterR11_Dana_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dana_Death takes nothing returns nothing
     set gg_trg_Dana_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Dana_Death)
     call TriggerRegisterUnitEvent(gg_trg_Dana_Death,gg_unit_n0BN_0171,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Dana_Death,function Trig_Dana_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Dana takes nothing returns nothing
+    call Register_Dana_Prepare()
+    call Register_Dana_Talk1()
+    call Register_Dana_Talk2_Enable()
+    call Register_Dana_Receive_Eye()
+    call Register_Dana_Death()
+endfunction
 
 endlibrary

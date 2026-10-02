@@ -99,35 +99,35 @@ function Trig_Kalm_Init_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Kalm automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Kalm (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Kalm takes nothing returns nothing
 endfunction
-function RegisterR11_Kalm_News_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Kalm_News_Init takes nothing returns nothing
     set gg_trg_Kalm_News_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Kalm_News_Init,5.)
     call TriggerAddAction(gg_trg_Kalm_News_Init,function Trig_Kalm_News_Init_Actions)
 endfunction
-function RegisterR11_Kalm_News_Read takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Kalm_News_Read takes nothing returns nothing
     set gg_trg_Kalm_News_Read=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Kalm_News_Read,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Kalm_News_Read,Condition(function Trig_Kalm_News_Read_Conditions))
     call TriggerAddAction(gg_trg_Kalm_News_Read,function Trig_Kalm_News_Read_Actions)
 endfunction
-function RegisterR11_Kalm_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Kalm_Init takes nothing returns nothing
     set gg_trg_Kalm_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Kalm_Init,function Trig_Kalm_Init_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Kalm takes nothing returns nothing
+    call Register_Kalm_News_Init()
+    call Register_Kalm_News_Read()
+    call Register_Kalm_Init()
+endfunction
 
 endlibrary

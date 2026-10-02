@@ -22,20 +22,22 @@ function Trig_Chaosjet_Death_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Chaosjet automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Chaosjet (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Chaosjet takes nothing returns nothing
 endfunction
-function RegisterR11_Chaosjet_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Chaosjet_Death takes nothing returns nothing
     set gg_trg_Chaosjet_Death=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Chaosjet_Death,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Chaosjet_Death,Condition(function Trig_Chaosjet_Death_Conditions))
     call TriggerAddAction(gg_trg_Chaosjet_Death,function Trig_Chaosjet_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Chaosjet takes nothing returns nothing
+    call Register_Chaosjet_Death()
+endfunction
 
 endlibrary

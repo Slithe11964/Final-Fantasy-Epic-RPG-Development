@@ -59,30 +59,31 @@ function Trig_HolyPower_Mastery_Start_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_HolyPower_Mastery_Track)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HolyPower automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HolyPower (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HolyPower takes nothing returns nothing
 endfunction
-function RegisterR11_HolyPower_Mastery_Track takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HolyPower_Mastery_Track takes nothing returns nothing
     set gg_trg_HolyPower_Mastery_Track=CreateTrigger()
     call DisableTrigger(gg_trg_HolyPower_Mastery_Track)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Track,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_HolyPower_Mastery_Track,Condition(function Trig_HolyPower_Mastery_Track_Conditions))
     call TriggerAddAction(gg_trg_HolyPower_Mastery_Track,function Trig_HolyPower_Mastery_Track_Actions)
 endfunction
-function RegisterR11_HolyPower_Mastery_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HolyPower_Mastery_Start takes nothing returns nothing
     set gg_trg_HolyPower_Mastery_Start=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HolyPower_Mastery_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_HolyPower_Mastery_Start,Condition(function Trig_HolyPower_Mastery_Start_Conditions))
     call TriggerAddAction(gg_trg_HolyPower_Mastery_Start,function Trig_HolyPower_Mastery_Start_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HolyPower takes nothing returns nothing
+    call Register_HolyPower_Mastery_Track()
+    call Register_HolyPower_Mastery_Start()
+endfunction
 
 endlibrary

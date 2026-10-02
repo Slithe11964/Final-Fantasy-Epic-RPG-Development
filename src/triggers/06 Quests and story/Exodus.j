@@ -157,20 +157,18 @@ function Trig_Exodus_Cometeorite_Actions takes nothing returns nothing
     call ForGroupBJ(udg_MeteoriteRocks,function Trig_Exodus_Cometeorite_ShowRock)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Exodus automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Exodus_Part1 / RegisterTriggers_Exodus_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Exodus takes nothing returns nothing
 endfunction
-function RegisterR11_Exodus_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exodus_Prepare takes nothing returns nothing
     set gg_trg_Exodus_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Exodus_Prepare,function Trig_Exodus_Prepare_Actions)
 endfunction
-function RegisterR11_Exodus_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exodus_Reveal takes nothing returns nothing
     set gg_trg_Exodus_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_Exodus_Reveal)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Exodus_Reveal,Player(0),true)
@@ -184,35 +182,43 @@ function RegisterR11_Exodus_Reveal takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Exodus_Reveal,Condition(function Trig_Exodus_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Exodus_Reveal,function Trig_Exodus_Reveal_Actions)
 endfunction
-function RegisterR11_Exodus_Stomp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exodus_Stomp takes nothing returns nothing
     set gg_trg_Exodus_Stomp=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_Exodus_Stomp,gg_unit_U00K_0208,EVENT_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Exodus_Stomp,Condition(function Trig_Exodus_Stomp_Conditions))
     call TriggerAddAction(gg_trg_Exodus_Stomp,function Trig_Exodus_Stomp_Actions)
 endfunction
-function RegisterR11_Exodus_SummonTrees takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exodus_SummonTrees takes nothing returns nothing
     set gg_trg_Exodus_SummonTrees=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_SummonTrees,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Exodus_SummonTrees,Condition(function Trig_Exodus_SummonTrees_Conditions))
     call TriggerAddAction(gg_trg_Exodus_SummonTrees,function Trig_Exodus_SummonTrees_Actions)
 endfunction
-function RegisterR11_Exodus_Cometeorite takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exodus_Cometeorite takes nothing returns nothing
     set gg_trg_Exodus_Cometeorite=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Exodus_Cometeorite,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Exodus_Cometeorite,Condition(function Trig_Exodus_Cometeorite_Conditions))
     call TriggerAddAction(gg_trg_Exodus_Cometeorite,function Trig_Exodus_Cometeorite_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Exodus_Part1 takes nothing returns nothing
+    call Register_Exodus_Prepare()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Exodus_Part2 takes nothing returns nothing
+    call Register_Exodus_Reveal()
+    call Register_Exodus_Stomp()
+    call Register_Exodus_SummonTrees()
+    call Register_Exodus_Cometeorite()
+endfunction
 
 endlibrary

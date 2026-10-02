@@ -354,22 +354,20 @@ function Trig_NameDiary_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_NameDiary automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_NameDiary (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_NameDiary takes nothing returns nothing
 endfunction
-function RegisterR11_NameDiary_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NameDiary_Prepare takes nothing returns nothing
     set gg_trg_NameDiary_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_NameDiary_Prepare)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_NameDiary_Prepare,udg_TimmyQuestTimer)
     call TriggerAddAction(gg_trg_NameDiary_Prepare,function Trig_NameDiary_Prepare_Actions)
 endfunction
-function RegisterR11_NameDiary_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NameDiary_Start takes nothing returns nothing
     set gg_trg_NameDiary_Start=CreateTrigger()
     call DisableTrigger(gg_trg_NameDiary_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NameDiary_Start,Player(0),true)
@@ -383,37 +381,37 @@ function RegisterR11_NameDiary_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_NameDiary_Start,Condition(function Trig_NameDiary_Start_Conditions))
     call TriggerAddAction(gg_trg_NameDiary_Start,function Trig_NameDiary_Start_Actions)
 endfunction
-function RegisterR11_NameDiary_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NameDiary_Ping takes nothing returns nothing
     set gg_trg_NameDiary_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_NameDiary_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_NameDiary_Ping,15.)
     call TriggerAddCondition(gg_trg_NameDiary_Ping,Condition(function Trig_NameDiary_Ping_Conditions))
     call TriggerAddAction(gg_trg_NameDiary_Ping,function Trig_NameDiary_Ping_Actions)
 endfunction
-function RegisterR11_NameDiary_Chronicle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NameDiary_Chronicle takes nothing returns nothing
     set gg_trg_NameDiary_Chronicle=CreateTrigger()
     call DisableTrigger(gg_trg_NameDiary_Chronicle)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_NameDiary_Chronicle,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_NameDiary_Chronicle,Condition(function Trig_NameDiary_Chronicle_Conditions))
     call TriggerAddAction(gg_trg_NameDiary_Chronicle,function Trig_NameDiary_Chronicle_Actions)
 endfunction
-function RegisterR11_NameDiary_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NameDiary_Reward takes nothing returns nothing
     set gg_trg_NameDiary_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_NameDiary_Reward)
     call TriggerAddCondition(gg_trg_NameDiary_Reward,Condition(function Trig_NameDiary_Reward_Conditions))
     call TriggerAddAction(gg_trg_NameDiary_Reward,function Trig_NameDiary_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_NameDiary takes nothing returns nothing
+    call Register_NameDiary_Prepare()
+    call Register_NameDiary_Start()
+    call Register_NameDiary_Ping()
+    call Register_NameDiary_Chronicle()
+    call Register_NameDiary_Reward()
+endfunction
 
 endlibrary

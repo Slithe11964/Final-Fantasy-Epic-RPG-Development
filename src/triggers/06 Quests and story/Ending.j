@@ -654,21 +654,19 @@ function Trig_Ending_ReturnToStart_Actions takes nothing returns nothing
     call ForGroupBJ(Trig_Ending_ReturnToStart_EnumUnitsInRect(GetPlayableMapRect()),function Trig_Ending_ReturnToStart_RemoveEnumUnitFinal)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ending automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ending (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ending takes nothing returns nothing
 endfunction
-function RegisterR11_Ending_FrozenWorld takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ending_FrozenWorld takes nothing returns nothing
     set gg_trg_Ending_FrozenWorld=CreateTrigger()
     call DisableTrigger(gg_trg_Ending_FrozenWorld)
     call TriggerAddAction(gg_trg_Ending_FrozenWorld,function Trig_Ending_FrozenWorld_Actions)
 endfunction
-function RegisterR11_Ending_Wasteland takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ending_Wasteland takes nothing returns nothing
     set gg_trg_Ending_Wasteland=CreateTrigger()
     call DisableTrigger(gg_trg_Ending_Wasteland)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_Wasteland,Player(0),true)
@@ -682,10 +680,8 @@ function RegisterR11_Ending_Wasteland takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Ending_Wasteland,Condition(function Trig_Ending_Wasteland_Conditions))
     call TriggerAddAction(gg_trg_Ending_Wasteland,function Trig_Ending_Wasteland_Actions)
 endfunction
-function RegisterR11_Ending_ReturnToStart takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ending_ReturnToStart takes nothing returns nothing
     set gg_trg_Ending_ReturnToStart=CreateTrigger()
     call DisableTrigger(gg_trg_Ending_ReturnToStart)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ending_ReturnToStart,Player(0),true)
@@ -700,7 +696,11 @@ function RegisterR11_Ending_ReturnToStart takes nothing returns nothing
     call TriggerAddAction(gg_trg_Ending_ReturnToStart,function Trig_Ending_ReturnToStart_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ending takes nothing returns nothing
+    call Register_Ending_FrozenWorld()
+    call Register_Ending_Wasteland()
+    call Register_Ending_ReturnToStart()
+endfunction
 
 endlibrary

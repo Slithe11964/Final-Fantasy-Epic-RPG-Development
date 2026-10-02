@@ -348,56 +348,54 @@ function Trig_KalmSiege_Init_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_KalmSiege automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_KalmSiege (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_KalmSiege takes nothing returns nothing
 endfunction
-function RegisterR11_KalmSiege_AITick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege_AITick takes nothing returns nothing
     set gg_trg_KalmSiege_AITick=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege_AITick)
     call TriggerRegisterTimerEventPeriodic(gg_trg_KalmSiege_AITick,5.)
     call TriggerAddAction(gg_trg_KalmSiege_AITick,function Trig_KalmSiege_AITick_Actions)
 endfunction
-function RegisterR11_KalmSiege_LeaderRetreat takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege_LeaderRetreat takes nothing returns nothing
     set gg_trg_KalmSiege_LeaderRetreat=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege_LeaderRetreat)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege_LeaderRetreat,Player(9),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_KalmSiege_LeaderRetreat,Condition(function Trig_KalmSiege_LeaderRetreat_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege_LeaderRetreat,function Trig_KalmSiege_LeaderRetreat_Actions)
 endfunction
-function RegisterR11_KalmSiege_FailRespawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege_FailRespawn takes nothing returns nothing
     set gg_trg_KalmSiege_FailRespawn=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege_FailRespawn)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege_FailRespawn,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_KalmSiege_FailRespawn,Condition(function Trig_KalmSiege_FailRespawn_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege_FailRespawn,function Trig_KalmSiege_FailRespawn_Actions)
 endfunction
-function RegisterR11_KalmSiege_DemonRecover takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege_DemonRecover takes nothing returns nothing
     set gg_trg_KalmSiege_DemonRecover=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege_DemonRecover)
     call TriggerRegisterUnitLifeEvent(gg_trg_KalmSiege_DemonRecover,gg_unit_U00E_0222,LESS_THAN,100.)
     call TriggerAddAction(gg_trg_KalmSiege_DemonRecover,function Trig_KalmSiege_DemonRecover_Actions)
 endfunction
-function RegisterR11_KalmSiege_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege_Init takes nothing returns nothing
     set gg_trg_KalmSiege_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_KalmSiege_Init,function Trig_KalmSiege_Init_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_KalmSiege takes nothing returns nothing
+    call Register_KalmSiege_AITick()
+    call Register_KalmSiege_LeaderRetreat()
+    call Register_KalmSiege_FailRespawn()
+    call Register_KalmSiege_DemonRecover()
+    call Register_KalmSiege_Init()
+endfunction
 
 endlibrary

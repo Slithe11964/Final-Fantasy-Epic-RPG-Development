@@ -73,29 +73,30 @@ function Trig_FireAura_Pulse_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_FireAura automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_FireAura (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_FireAura takes nothing returns nothing
 endfunction
-function RegisterR11_FireAura_Pulse_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FireAura_Pulse_Start takes nothing returns nothing
     set gg_trg_FireAura_Pulse_Start=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_FireAura_Pulse_Start,1.)
     call TriggerAddCondition(gg_trg_FireAura_Pulse_Start,Condition(function Trig_FireAura_Pulse_Start_Conditions))
     call TriggerAddAction(gg_trg_FireAura_Pulse_Start,function Trig_FireAura_Pulse_Start_Actions)
 endfunction
-function RegisterR11_FireAura_Pulse takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_FireAura_Pulse takes nothing returns nothing
     set gg_trg_FireAura_Pulse=CreateTrigger()
     call DisableTrigger(gg_trg_FireAura_Pulse)
     call TriggerAddCondition(gg_trg_FireAura_Pulse,Condition(function Trig_FireAura_Pulse_Conditions))
     call TriggerAddAction(gg_trg_FireAura_Pulse,function Trig_FireAura_Pulse_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_FireAura takes nothing returns nothing
+    call Register_FireAura_Pulse_Start()
+    call Register_FireAura_Pulse()
+endfunction
 
 endlibrary

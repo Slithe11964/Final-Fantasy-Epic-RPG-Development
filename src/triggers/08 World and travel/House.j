@@ -17,20 +17,22 @@ function Trig_House_Options_Switch_Actions takes nothing returns nothing
     endloop
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_House automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_House (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_House takes nothing returns nothing
 endfunction
-function RegisterR11_House_Options_Switch takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_House_Options_Switch takes nothing returns nothing
     set gg_trg_House_Options_Switch=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_House_Options_Switch,EVENT_PLAYER_UNIT_SPELL_FINISH)
     call TriggerAddCondition(gg_trg_House_Options_Switch,Condition(function Trig_House_Options_Switch_Conditions))
     call TriggerAddAction(gg_trg_House_Options_Switch,function Trig_House_Options_Switch_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_House takes nothing returns nothing
+    call Register_House_Options_Switch()
+endfunction
 
 endlibrary

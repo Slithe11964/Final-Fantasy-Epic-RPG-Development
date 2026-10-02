@@ -186,22 +186,20 @@ function Trig_MithrilGolem_Activate_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MithrilGolem automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MithrilGolem (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MithrilGolem takes nothing returns nothing
 endfunction
-function RegisterR11_MithrilGolem_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MithrilGolem_Prepare takes nothing returns nothing
     set gg_trg_MithrilGolem_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_MithrilGolem_Prepare)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_MithrilGolem_Prepare,udg_SharedDelayTimer1)
     call TriggerAddAction(gg_trg_MithrilGolem_Prepare,function Trig_MithrilGolem_Prepare_Actions)
 endfunction
-function RegisterR11_MithrilGolem_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MithrilGolem_Start takes nothing returns nothing
     set gg_trg_MithrilGolem_Start=CreateTrigger()
     call DisableTrigger(gg_trg_MithrilGolem_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_MithrilGolem_Start,Player(0),true)
@@ -215,18 +213,14 @@ function RegisterR11_MithrilGolem_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_MithrilGolem_Start,Condition(function Trig_MithrilGolem_Start_Conditions))
     call TriggerAddAction(gg_trg_MithrilGolem_Start,function Trig_MithrilGolem_Start_Actions)
 endfunction
-function RegisterR11_MithrilGolem_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MithrilGolem_Death takes nothing returns nothing
     set gg_trg_MithrilGolem_Death=CreateTrigger()
     call DisableTrigger(gg_trg_MithrilGolem_Death)
     call TriggerAddAction(gg_trg_MithrilGolem_Death,function Trig_MithrilGolem_Death_Actions)
 endfunction
-function RegisterR11_MithrilGolem_Activate takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MithrilGolem_Activate takes nothing returns nothing
     set gg_trg_MithrilGolem_Activate=CreateTrigger()
     call DisableTrigger(gg_trg_MithrilGolem_Activate)
     call TriggerRegisterUnitInRangeSimple(gg_trg_MithrilGolem_Activate,450.,gg_unit_Hjai_0093)
@@ -234,7 +228,12 @@ function RegisterR11_MithrilGolem_Activate takes nothing returns nothing
     call TriggerAddAction(gg_trg_MithrilGolem_Activate,function Trig_MithrilGolem_Activate_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_MithrilGolem takes nothing returns nothing
+    call Register_MithrilGolem_Prepare()
+    call Register_MithrilGolem_Start()
+    call Register_MithrilGolem_Death()
+    call Register_MithrilGolem_Activate()
+endfunction
 
 endlibrary

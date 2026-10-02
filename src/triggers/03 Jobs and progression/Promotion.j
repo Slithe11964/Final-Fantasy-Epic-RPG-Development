@@ -17,20 +17,22 @@ function Trig_Promotion_Award_Random_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Promotion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Promotion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Promotion takes nothing returns nothing
 endfunction
-function RegisterR11_Promotion_Award_Random takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Promotion_Award_Random takes nothing returns nothing
     set gg_trg_Promotion_Award_Random=CreateTrigger()
     call DisableTrigger(gg_trg_Promotion_Award_Random)
     call TriggerAddCondition(gg_trg_Promotion_Award_Random,Condition(function Trig_Promotion_Award_Random_Conditions))
     call TriggerAddAction(gg_trg_Promotion_Award_Random,function Trig_Promotion_Award_Random_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Promotion takes nothing returns nothing
+    call Register_Promotion_Award_Random()
+endfunction
 
 endlibrary

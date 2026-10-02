@@ -14,20 +14,22 @@ function Trig_Stealth_Break_OnAttack_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Stealth automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Stealth (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Stealth takes nothing returns nothing
 endfunction
-function RegisterR11_Stealth_Break_OnAttack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Stealth_Break_OnAttack takes nothing returns nothing
     set gg_trg_Stealth_Break_OnAttack=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Stealth_Break_OnAttack,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Stealth_Break_OnAttack,Condition(function Trig_Stealth_Break_OnAttack_Conditions))
     call TriggerAddAction(gg_trg_Stealth_Break_OnAttack,function Trig_Stealth_Break_OnAttack_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Stealth takes nothing returns nothing
+    call Register_Stealth_Break_OnAttack()
+endfunction
 
 endlibrary

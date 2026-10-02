@@ -159,46 +159,38 @@ function Trig_McBurn_Volcano_Actions takes nothing returns nothing
     call EnableTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_McBurn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_McBurn_Part1 / RegisterTriggers_McBurn_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_McBurn takes nothing returns nothing
 endfunction
-function RegisterR11_McBurn_Arena_Hide takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_Arena_Hide takes nothing returns nothing
     set gg_trg_McBurn_Arena_Hide=CreateTrigger()
     call TriggerAddAction(gg_trg_McBurn_Arena_Hide,function Trig_McBurn_Arena_Hide_Actions)
 endfunction
-function RegisterR11_McBurn_Arena_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_Arena_Appear takes nothing returns nothing
     set gg_trg_McBurn_Arena_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_McBurn_Arena_Appear)
     call TriggerAddAction(gg_trg_McBurn_Arena_Appear,function Trig_McBurn_Arena_Appear_Actions)
 endfunction
-function RegisterR11_McBurn_Heat_Color takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_Heat_Color takes nothing returns nothing
     set gg_trg_McBurn_Heat_Color=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_McBurn_Heat_Color,udg_PostReviveTimer)
     call TriggerAddAction(gg_trg_McBurn_Heat_Color,function Trig_McBurn_Heat_Color_Actions)
 endfunction
-function RegisterR11_McBurn_TrueForm_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_TrueForm_Reveal takes nothing returns nothing
     set gg_trg_McBurn_TrueForm_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_McBurn_TrueForm_Reveal)
     call TriggerRegisterUnitInRangeSimple(gg_trg_McBurn_TrueForm_Reveal,800.,gg_unit_U00Q_0023)
     call TriggerAddCondition(gg_trg_McBurn_TrueForm_Reveal,Condition(function Trig_McBurn_TrueForm_Reveal_Conditions))
     call TriggerAddAction(gg_trg_McBurn_TrueForm_Reveal,function Trig_McBurn_TrueForm_Reveal_Actions)
 endfunction
-function RegisterR11_McBurn_Arena_Return takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_Arena_Return takes nothing returns nothing
     set gg_trg_McBurn_Arena_Return=CreateTrigger()
     call DisableTrigger(gg_trg_McBurn_Arena_Return)
     call TriggerRegisterEnterRectSimple(gg_trg_McBurn_Arena_Return,gg_rct_575)
@@ -206,10 +198,8 @@ function RegisterR11_McBurn_Arena_Return takes nothing returns nothing
     call TriggerAddCondition(gg_trg_McBurn_Arena_Return,Condition(function Trig_McBurn_Arena_Return_Conditions))
     call TriggerAddAction(gg_trg_McBurn_Arena_Return,function Trig_McBurn_Arena_Return_Actions)
 endfunction
-function RegisterR11_McBurn_Volcano takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_McBurn_Volcano takes nothing returns nothing
     set gg_trg_McBurn_Volcano=CreateTrigger()
     call DisableTrigger(gg_trg_McBurn_Volcano)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_McBurn_Volcano,EVENT_PLAYER_UNIT_SPELL_CAST)
@@ -217,7 +207,22 @@ function RegisterR11_McBurn_Volcano takes nothing returns nothing
     call TriggerAddAction(gg_trg_McBurn_Volcano,function Trig_McBurn_Volcano_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_McBurn_Part1 takes nothing returns nothing
+    call Register_McBurn_Arena_Hide()
+    call Register_McBurn_Arena_Appear()
+    call Register_McBurn_Heat_Color()
+    call Register_McBurn_TrueForm_Reveal()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_McBurn_Part2 takes nothing returns nothing
+    call Register_McBurn_Arena_Return()
+    call Register_McBurn_Volcano()
+endfunction
 
 endlibrary

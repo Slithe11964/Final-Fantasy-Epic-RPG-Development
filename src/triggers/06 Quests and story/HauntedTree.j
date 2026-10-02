@@ -127,28 +127,24 @@ function Trig_HauntedTree_Complete_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HauntedTree automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HauntedTree (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HauntedTree takes nothing returns nothing
 endfunction
-function RegisterR11_HauntedTree_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_Init takes nothing returns nothing
     set gg_trg_HauntedTree_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_HauntedTree_Init,function Trig_HauntedTree_Init_Actions)
 endfunction
-function RegisterR11_HauntedTree_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_Prepare takes nothing returns nothing
     set gg_trg_HauntedTree_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_HauntedTree_Prepare)
     call TriggerAddAction(gg_trg_HauntedTree_Prepare,function Trig_HauntedTree_Prepare_Actions)
 endfunction
-function RegisterR11_HauntedTree_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_Start takes nothing returns nothing
     set gg_trg_HauntedTree_Start=CreateTrigger()
     call DisableTrigger(gg_trg_HauntedTree_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HauntedTree_Start,Player(0),true)
@@ -162,28 +158,22 @@ function RegisterR11_HauntedTree_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_HauntedTree_Start,Condition(function Trig_HauntedTree_Start_Conditions))
     call TriggerAddAction(gg_trg_HauntedTree_Start,function Trig_HauntedTree_Start_Actions)
 endfunction
-function RegisterR11_HauntedTree_GhostRoam takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_GhostRoam takes nothing returns nothing
     set gg_trg_HauntedTree_GhostRoam=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_HauntedTree_GhostRoam,4.)
     call TriggerAddAction(gg_trg_HauntedTree_GhostRoam,function Trig_HauntedTree_GhostRoam_Actions)
 endfunction
-function RegisterR11_HauntedTree_CaptureSpirit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_CaptureSpirit takes nothing returns nothing
     set gg_trg_HauntedTree_CaptureSpirit=CreateTrigger()
     call DisableTrigger(gg_trg_HauntedTree_CaptureSpirit)
     call TriggerRegisterEnterRectSimple(gg_trg_HauntedTree_CaptureSpirit,gg_rct_366)
     call TriggerAddCondition(gg_trg_HauntedTree_CaptureSpirit,Condition(function Trig_HauntedTree_CaptureSpirit_Conditions))
     call TriggerAddAction(gg_trg_HauntedTree_CaptureSpirit,function Trig_HauntedTree_CaptureSpirit_Actions)
 endfunction
-function RegisterR11_HauntedTree_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HauntedTree_Complete takes nothing returns nothing
     set gg_trg_HauntedTree_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_HauntedTree_Complete)
     call TriggerRegisterUnitInRangeSimple(gg_trg_HauntedTree_Complete,450.,gg_unit_n02F_0108)
@@ -191,7 +181,14 @@ function RegisterR11_HauntedTree_Complete takes nothing returns nothing
     call TriggerAddAction(gg_trg_HauntedTree_Complete,function Trig_HauntedTree_Complete_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HauntedTree takes nothing returns nothing
+    call Register_HauntedTree_Init()
+    call Register_HauntedTree_Prepare()
+    call Register_HauntedTree_Start()
+    call Register_HauntedTree_GhostRoam()
+    call Register_HauntedTree_CaptureSpirit()
+    call Register_HauntedTree_Complete()
+endfunction
 
 endlibrary

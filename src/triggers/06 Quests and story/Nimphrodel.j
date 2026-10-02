@@ -190,13 +190,13 @@ function Trig_Nimphrodel_Complete_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Nimphrodel automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Nimphrodel (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Nimphrodel takes nothing returns nothing
 endfunction
-function RegisterR11_Nimphrodel_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Nimphrodel_Start takes nothing returns nothing
     set gg_trg_Nimphrodel_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Nimphrodel_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Start,Player(0),true)
@@ -210,10 +210,8 @@ function RegisterR11_Nimphrodel_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Nimphrodel_Start,Condition(function Trig_Nimphrodel_Start_Conditions))
     call TriggerAddAction(gg_trg_Nimphrodel_Start,function Trig_Nimphrodel_Start_Actions)
 endfunction
-function RegisterR11_Nimphrodel_Meet takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Nimphrodel_Meet takes nothing returns nothing
     set gg_trg_Nimphrodel_Meet=CreateTrigger()
     call DisableTrigger(gg_trg_Nimphrodel_Meet)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Meet,Player(0),true)
@@ -227,10 +225,8 @@ function RegisterR11_Nimphrodel_Meet takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Nimphrodel_Meet,Condition(function Trig_Nimphrodel_Meet_Conditions))
     call TriggerAddAction(gg_trg_Nimphrodel_Meet,function Trig_Nimphrodel_Meet_Actions)
 endfunction
-function RegisterR11_Nimphrodel_Undomiel takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Nimphrodel_Undomiel takes nothing returns nothing
     set gg_trg_Nimphrodel_Undomiel=CreateTrigger()
     call DisableTrigger(gg_trg_Nimphrodel_Undomiel)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Nimphrodel_Undomiel,Player(0),true)
@@ -244,10 +240,8 @@ function RegisterR11_Nimphrodel_Undomiel takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Nimphrodel_Undomiel,Condition(function Trig_Nimphrodel_Undomiel_Conditions))
     call TriggerAddAction(gg_trg_Nimphrodel_Undomiel,function Trig_Nimphrodel_Undomiel_Actions)
 endfunction
-function RegisterR11_Nimphrodel_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Nimphrodel_Complete takes nothing returns nothing
     set gg_trg_Nimphrodel_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_Nimphrodel_Complete)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Nimphrodel_Complete,450.,gg_unit_E004_0190)
@@ -255,7 +249,12 @@ function RegisterR11_Nimphrodel_Complete takes nothing returns nothing
     call TriggerAddAction(gg_trg_Nimphrodel_Complete,function Trig_Nimphrodel_Complete_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Nimphrodel takes nothing returns nothing
+    call Register_Nimphrodel_Start()
+    call Register_Nimphrodel_Meet()
+    call Register_Nimphrodel_Undomiel()
+    call Register_Nimphrodel_Complete()
+endfunction
 
 endlibrary

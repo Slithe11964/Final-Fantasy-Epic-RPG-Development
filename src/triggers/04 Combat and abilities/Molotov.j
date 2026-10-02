@@ -9,20 +9,22 @@ function Trig_Molotov_DamageOnAttack_Actions takes nothing returns nothing
     call UnitDamageTargetBJ(LoadUnitHandleBJ(0,GetHandleIdBJ(GetAttacker()),udg_MolotovHash),GetAttacker(),LoadRealBJ(1,GetHandleIdBJ(GetAttacker()),udg_MolotovHash),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Molotov automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Molotov (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Molotov takes nothing returns nothing
 endfunction
-function RegisterR11_Molotov_DamageOnAttack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Molotov_DamageOnAttack takes nothing returns nothing
     set gg_trg_Molotov_DamageOnAttack=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Molotov_DamageOnAttack,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Molotov_DamageOnAttack,Condition(function Trig_Molotov_DamageOnAttack_Conditions))
     call TriggerAddAction(gg_trg_Molotov_DamageOnAttack,function Trig_Molotov_DamageOnAttack_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Molotov takes nothing returns nothing
+    call Register_Molotov_DamageOnAttack()
+endfunction
 
 endlibrary

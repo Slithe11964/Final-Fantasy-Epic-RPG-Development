@@ -5,19 +5,21 @@ function Trig_Herb_Spawn_Start_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Herb automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Herb (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Herb takes nothing returns nothing
 endfunction
-function RegisterR11_Herb_Spawn_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Herb_Spawn_Start takes nothing returns nothing
     set gg_trg_Herb_Spawn_Start=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Herb_Spawn_Start,10.)
     call TriggerAddAction(gg_trg_Herb_Spawn_Start,function Trig_Herb_Spawn_Start_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Herb takes nothing returns nothing
+    call Register_Herb_Spawn_Start()
+endfunction
 
 endlibrary

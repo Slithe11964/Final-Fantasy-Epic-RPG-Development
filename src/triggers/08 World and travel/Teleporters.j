@@ -15,13 +15,13 @@ function Trig_Teleporters_Command_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Teleporters automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Teleporters (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Teleporters takes nothing returns nothing
 endfunction
-function RegisterR11_Teleporters_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Teleporters_Command takes nothing returns nothing
     set gg_trg_Teleporters_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(0),"-teleporters",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_Teleporters_Command,Player(1),"-teleporters",true)
@@ -34,7 +34,9 @@ function RegisterR11_Teleporters_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Teleporters_Command,function Trig_Teleporters_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Teleporters takes nothing returns nothing
+    call Register_Teleporters_Command()
+endfunction
 
 endlibrary

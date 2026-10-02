@@ -108,20 +108,22 @@ function Trig_Memento_Ring_Compass_Actions takes nothing returns nothing
     call DestroyForce(udg_TempForce)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Memento automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Memento (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Memento takes nothing returns nothing
 endfunction
-function RegisterR11_Memento_Ring_Compass takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Memento_Ring_Compass takes nothing returns nothing
     set gg_trg_Memento_Ring_Compass=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Memento_Ring_Compass,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Memento_Ring_Compass,Condition(function Trig_Memento_Ring_Compass_Conditions))
     call TriggerAddAction(gg_trg_Memento_Ring_Compass,function Trig_Memento_Ring_Compass_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Memento takes nothing returns nothing
+    call Register_Memento_Ring_Compass()
+endfunction
 
 endlibrary

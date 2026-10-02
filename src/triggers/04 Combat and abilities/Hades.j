@@ -129,20 +129,22 @@ function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Hades automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Hades (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Hades takes nothing returns nothing
 endfunction
-function RegisterR11_Hades_BlackCauldron takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Hades_BlackCauldron takes nothing returns nothing
     set gg_trg_Hades_BlackCauldron=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Hades_BlackCauldron,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Hades_BlackCauldron,Condition(function Trig_Hades_BlackCauldron_Conditions))
     call TriggerAddAction(gg_trg_Hades_BlackCauldron,function Trig_Hades_BlackCauldron_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Hades takes nothing returns nothing
+    call Register_Hades_BlackCauldron()
+endfunction
 
 endlibrary

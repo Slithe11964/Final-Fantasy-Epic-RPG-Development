@@ -41,20 +41,22 @@ function Trig_Myriad_Arrows_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Myriad automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Myriad (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Myriad takes nothing returns nothing
 endfunction
-function RegisterR11_Myriad_Arrows takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Myriad_Arrows takes nothing returns nothing
     set gg_trg_Myriad_Arrows=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Myriad_Arrows,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Myriad_Arrows,Condition(function Trig_Myriad_Arrows_Conditions))
     call TriggerAddAction(gg_trg_Myriad_Arrows,function Trig_Myriad_Arrows_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Myriad takes nothing returns nothing
+    call Register_Myriad_Arrows()
+endfunction
 
 endlibrary

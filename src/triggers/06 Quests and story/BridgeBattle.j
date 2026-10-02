@@ -80,23 +80,21 @@ function Trig_BridgeBattle_Complete_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_BridgeBattle automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_BridgeBattle (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_BridgeBattle takes nothing returns nothing
 endfunction
-function RegisterR11_BridgeBattle_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_BridgeBattle_Prepare takes nothing returns nothing
     set gg_trg_BridgeBattle_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_BridgeBattle_Prepare)
     call TriggerRegisterTimerEventPeriodic(gg_trg_BridgeBattle_Prepare,15.)
     call TriggerAddCondition(gg_trg_BridgeBattle_Prepare,Condition(function Trig_BridgeBattle_Prepare_Conditions))
     call TriggerAddAction(gg_trg_BridgeBattle_Prepare,function Trig_BridgeBattle_Prepare_Actions)
 endfunction
-function RegisterR11_BridgeBattle_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_BridgeBattle_Start takes nothing returns nothing
     set gg_trg_BridgeBattle_Start=CreateTrigger()
     call DisableTrigger(gg_trg_BridgeBattle_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_BridgeBattle_Start,Player(0),true)
@@ -110,10 +108,8 @@ function RegisterR11_BridgeBattle_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_BridgeBattle_Start,Condition(function Trig_BridgeBattle_Start_Conditions))
     call TriggerAddAction(gg_trg_BridgeBattle_Start,function Trig_BridgeBattle_Start_Actions)
 endfunction
-function RegisterR11_BridgeBattle_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_BridgeBattle_Complete takes nothing returns nothing
     set gg_trg_BridgeBattle_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_BridgeBattle_Complete)
     call TriggerRegisterUnitInRangeSimple(gg_trg_BridgeBattle_Complete,450.,gg_unit_n02Y_0052)
@@ -121,7 +117,11 @@ function RegisterR11_BridgeBattle_Complete takes nothing returns nothing
     call TriggerAddAction(gg_trg_BridgeBattle_Complete,function Trig_BridgeBattle_Complete_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_BridgeBattle takes nothing returns nothing
+    call Register_BridgeBattle_Prepare()
+    call Register_BridgeBattle_Start()
+    call Register_BridgeBattle_Complete()
+endfunction
 
 endlibrary

@@ -29,13 +29,13 @@ function Trig_DarkLeviathan_Appear_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkLeviathan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkLeviathan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkLeviathan takes nothing returns nothing
 endfunction
-function RegisterR11_DarkLeviathan_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkLeviathan_Appear takes nothing returns nothing
     set gg_trg_DarkLeviathan_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkLeviathan_Appear)
     call TriggerRegisterEnterRectSimple(gg_trg_DarkLeviathan_Appear,gg_rct_121)
@@ -43,7 +43,9 @@ function RegisterR11_DarkLeviathan_Appear takes nothing returns nothing
     call TriggerAddAction(gg_trg_DarkLeviathan_Appear,function Trig_DarkLeviathan_Appear_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkLeviathan takes nothing returns nothing
+    call Register_DarkLeviathan_Appear()
+endfunction
 
 endlibrary

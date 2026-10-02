@@ -18,20 +18,22 @@ function Trig_Zone7_Leash_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zone7 automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zone7 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zone7 takes nothing returns nothing
 endfunction
-function RegisterR11_Zone7_Leash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zone7_Leash takes nothing returns nothing
     set gg_trg_Zone7_Leash=CreateTrigger()
     call TriggerRegisterEnterRectSimple(gg_trg_Zone7_Leash,gg_rct_364)
     call TriggerAddCondition(gg_trg_Zone7_Leash,Condition(function Trig_Zone7_Leash_Conditions))
     call TriggerAddAction(gg_trg_Zone7_Leash,function Trig_Zone7_Leash_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Zone7 takes nothing returns nothing
+    call Register_Zone7_Leash()
+endfunction
 
 endlibrary

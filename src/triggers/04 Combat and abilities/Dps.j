@@ -100,27 +100,28 @@ function Trig_Dps_Tick_Actions takes nothing returns nothing
     call TriggerExecute(gg_trg_Multiboard_Refresh)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Dps automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Dps (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Dps takes nothing returns nothing
 endfunction
-function RegisterR11_Dps_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dps_Start takes nothing returns nothing
     set gg_trg_Dps_Start=CreateTrigger()
     call TriggerAddCondition(gg_trg_Dps_Start,Condition(function Trig_Dps_Start_Conditions))
     call TriggerAddAction(gg_trg_Dps_Start,function Trig_Dps_Start_Actions)
 endfunction
-function RegisterR11_Dps_Tick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Dps_Tick takes nothing returns nothing
     set gg_trg_Dps_Tick=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Dps_Tick,udg_DpsTimer)
     call TriggerAddAction(gg_trg_Dps_Tick,function Trig_Dps_Tick_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Dps takes nothing returns nothing
+    call Register_Dps_Start()
+    call Register_Dps_Tick()
+endfunction
 
 endlibrary

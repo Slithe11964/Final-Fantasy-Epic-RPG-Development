@@ -314,29 +314,25 @@ function Trig_Ultima_Holyja_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ultima automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ultima_Part1 / RegisterTriggers_Ultima_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ultima takes nothing returns nothing
 endfunction
-function RegisterR11_Ultima_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultima_Cast takes nothing returns nothing
     set gg_trg_Ultima_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ultima_Cast,Condition(function Trig_Ultima_Cast_Conditions))
     call TriggerAddAction(gg_trg_Ultima_Cast,function Trig_Ultima_Cast_Actions)
 endfunction
-function RegisterR11_Ultima_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultima_Prepare takes nothing returns nothing
     set gg_trg_Ultima_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Ultima_Prepare,function Trig_Ultima_Prepare_Actions)
 endfunction
-function RegisterR11_Ultima_Possession takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultima_Possession takes nothing returns nothing
     set gg_trg_Ultima_Possession=CreateTrigger()
     call DisableTrigger(gg_trg_Ultima_Possession)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Ultima_Possession,Player(0),true)
@@ -350,17 +346,28 @@ function RegisterR11_Ultima_Possession takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Ultima_Possession,Condition(function Trig_Ultima_Possession_Conditions))
     call TriggerAddAction(gg_trg_Ultima_Possession,function Trig_Ultima_Possession_Actions)
 endfunction
-function RegisterR11_Ultima_Holyja takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultima_Holyja takes nothing returns nothing
     set gg_trg_Ultima_Holyja=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Ultima_Holyja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Ultima_Holyja,Condition(function Trig_Ultima_Holyja_Conditions))
     call TriggerAddAction(gg_trg_Ultima_Holyja,function Trig_Ultima_Holyja_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Ultima_Part1 takes nothing returns nothing
+    call Register_Ultima_Cast()
+    call Register_Ultima_Prepare()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Ultima_Part2 takes nothing returns nothing
+    call Register_Ultima_Possession()
+    call Register_Ultima_Holyja()
+endfunction
 
 endlibrary

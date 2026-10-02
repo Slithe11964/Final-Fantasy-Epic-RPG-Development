@@ -254,65 +254,62 @@ function Trig_Elemental_Death_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Elemental_Spawn)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Elemental automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Elemental (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Elemental takes nothing returns nothing
 endfunction
-function RegisterR11_Elemental_Setup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Setup takes nothing returns nothing
     set gg_trg_Elemental_Setup=CreateTrigger()
     call DisableTrigger(gg_trg_Elemental_Setup)
     call TriggerAddAction(gg_trg_Elemental_Setup,function Trig_Elemental_Setup_Actions)
 endfunction
-function RegisterR11_Elemental_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Spawn takes nothing returns nothing
     set gg_trg_Elemental_Spawn=CreateTrigger()
     call DisableTrigger(gg_trg_Elemental_Spawn)
     call TriggerAddCondition(gg_trg_Elemental_Spawn,Condition(function Trig_Elemental_Spawn_Conditions))
     call TriggerAddAction(gg_trg_Elemental_Spawn,function Trig_Elemental_Spawn_Actions)
 endfunction
-function RegisterR11_Elemental_Wander takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Wander takes nothing returns nothing
     set gg_trg_Elemental_Wander=CreateTrigger()
     call DisableTrigger(gg_trg_Elemental_Wander)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Elemental_Wander,20.)
     call TriggerAddAction(gg_trg_Elemental_Wander,function Trig_Elemental_Wander_Actions)
 endfunction
-function RegisterR11_Elemental_Aggro takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Aggro takes nothing returns nothing
     set gg_trg_Elemental_Aggro=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Elemental_Aggro,Player(8),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Elemental_Aggro,Condition(function Trig_Elemental_Aggro_Conditions))
     call TriggerAddAction(gg_trg_Elemental_Aggro,function Trig_Elemental_Aggro_Actions)
 endfunction
-function RegisterR11_Elemental_Assist_Attack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Assist_Attack takes nothing returns nothing
     set gg_trg_Elemental_Assist_Attack=CreateTrigger()
     call DisableTrigger(gg_trg_Elemental_Assist_Attack)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Elemental_Assist_Attack,udg_ElementRecordTimer)
     call TriggerAddCondition(gg_trg_Elemental_Assist_Attack,Condition(function Trig_Elemental_Assist_Attack_Conditions))
     call TriggerAddAction(gg_trg_Elemental_Assist_Attack,function Trig_Elemental_Assist_Attack_Actions)
 endfunction
-function RegisterR11_Elemental_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elemental_Death takes nothing returns nothing
     set gg_trg_Elemental_Death=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Elemental_Death,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Elemental_Death,Condition(function Trig_Elemental_Death_Conditions))
     call TriggerAddAction(gg_trg_Elemental_Death,function Trig_Elemental_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Elemental takes nothing returns nothing
+    call Register_Elemental_Setup()
+    call Register_Elemental_Spawn()
+    call Register_Elemental_Wander()
+    call Register_Elemental_Aggro()
+    call Register_Elemental_Assist_Attack()
+    call Register_Elemental_Death()
+endfunction
 
 endlibrary

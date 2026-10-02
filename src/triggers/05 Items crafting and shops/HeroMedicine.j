@@ -38,22 +38,20 @@ function Trig_HeroMedicine_Pickup_Actions takes nothing returns nothing
     call Medicine_ApplyTimed(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),false)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HeroMedicine automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HeroMedicine (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HeroMedicine takes nothing returns nothing
 endfunction
-function RegisterR11_HeroMedicine_Refill takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HeroMedicine_Refill takes nothing returns nothing
     set gg_trg_HeroMedicine_Refill=CreateTrigger()
     call DisableTrigger(gg_trg_HeroMedicine_Refill)
     call TriggerRegisterTimerEventPeriodic(gg_trg_HeroMedicine_Refill,6.)
     call TriggerAddAction(gg_trg_HeroMedicine_Refill,function Trig_HeroMedicine_Refill_Actions)
 endfunction
-function RegisterR11_HeroMedicine_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HeroMedicine_Pickup takes nothing returns nothing
     set gg_trg_HeroMedicine_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_HeroMedicine_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HeroMedicine_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -61,7 +59,10 @@ function RegisterR11_HeroMedicine_Pickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_HeroMedicine_Pickup,function Trig_HeroMedicine_Pickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HeroMedicine takes nothing returns nothing
+    call Register_HeroMedicine_Refill()
+    call Register_HeroMedicine_Pickup()
+endfunction
 
 endlibrary

@@ -600,76 +600,62 @@ function Trig_Title_HeroicSpirit_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Title automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Title (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Title takes nothing returns nothing
 endfunction
-function RegisterR11_Title_Grant takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_Grant takes nothing returns nothing
     set gg_trg_Title_Grant=CreateTrigger()
     call DisableTrigger(gg_trg_Title_Grant)
     call TriggerAddAction(gg_trg_Title_Grant,function Trig_Title_Grant_Actions)
 endfunction
-function RegisterR11_Title_UnlockEffects takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_UnlockEffects takes nothing returns nothing
     set gg_trg_Title_UnlockEffects=CreateTrigger()
     call DisableTrigger(gg_trg_Title_UnlockEffects)
     call TriggerAddAction(gg_trg_Title_UnlockEffects,function Trig_Title_UnlockEffects_Actions)
 endfunction
-function RegisterR11_Title_ApplyStats takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_ApplyStats takes nothing returns nothing
     set gg_trg_Title_ApplyStats=CreateTrigger()
     call DisableTrigger(gg_trg_Title_ApplyStats)
     call TriggerAddCondition(gg_trg_Title_ApplyStats,Condition(function Trig_Title_ApplyStats_Conditions))
     call TriggerAddAction(gg_trg_Title_ApplyStats,function Trig_Title_ApplyStats_Actions)
 endfunction
-function RegisterR11_Title_ArmsCollection takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_ArmsCollection takes nothing returns nothing
     set gg_trg_Title_ArmsCollection=CreateTrigger()
     call DisableTrigger(gg_trg_Title_ArmsCollection)
     call TriggerAddCondition(gg_trg_Title_ArmsCollection,Condition(function Trig_Title_ArmsCollection_Conditions))
     call TriggerAddAction(gg_trg_Title_ArmsCollection,function Trig_Title_ArmsCollection_Actions)
 endfunction
-function RegisterR11_Title_JuniorAdventurer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_JuniorAdventurer takes nothing returns nothing
     set gg_trg_Title_JuniorAdventurer=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Title_JuniorAdventurer,5.)
     call TriggerAddCondition(gg_trg_Title_JuniorAdventurer,Condition(function Trig_Title_JuniorAdventurer_Conditions))
     call TriggerAddAction(gg_trg_Title_JuniorAdventurer,function Trig_Title_JuniorAdventurer_Actions)
 endfunction
-function RegisterR11_Title_RumoredAdventurer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_RumoredAdventurer takes nothing returns nothing
     set gg_trg_Title_RumoredAdventurer=CreateTrigger()
     call DisableTrigger(gg_trg_Title_RumoredAdventurer)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Title_RumoredAdventurer,5.)
     call TriggerAddCondition(gg_trg_Title_RumoredAdventurer,Condition(function Trig_Title_RumoredAdventurer_Conditions))
     call TriggerAddAction(gg_trg_Title_RumoredAdventurer,function Trig_Title_RumoredAdventurer_Actions)
 endfunction
-function RegisterR11_Title_SeniorAdventurer takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_SeniorAdventurer takes nothing returns nothing
     set gg_trg_Title_SeniorAdventurer=CreateTrigger()
     call DisableTrigger(gg_trg_Title_SeniorAdventurer)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Title_SeniorAdventurer,5.)
     call TriggerAddCondition(gg_trg_Title_SeniorAdventurer,Condition(function Trig_Title_SeniorAdventurer_Conditions))
     call TriggerAddAction(gg_trg_Title_SeniorAdventurer,function Trig_Title_SeniorAdventurer_Actions)
 endfunction
-function RegisterR11_Title_HeroicSpirit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Title_HeroicSpirit takes nothing returns nothing
     set gg_trg_Title_HeroicSpirit=CreateTrigger()
     call DisableTrigger(gg_trg_Title_HeroicSpirit)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Title_HeroicSpirit,5.)
@@ -677,7 +663,16 @@ function RegisterR11_Title_HeroicSpirit takes nothing returns nothing
     call TriggerAddAction(gg_trg_Title_HeroicSpirit,function Trig_Title_HeroicSpirit_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Title takes nothing returns nothing
+    call Register_Title_Grant()
+    call Register_Title_UnlockEffects()
+    call Register_Title_ApplyStats()
+    call Register_Title_ArmsCollection()
+    call Register_Title_JuniorAdventurer()
+    call Register_Title_RumoredAdventurer()
+    call Register_Title_SeniorAdventurer()
+    call Register_Title_HeroicSpirit()
+endfunction
 
 endlibrary

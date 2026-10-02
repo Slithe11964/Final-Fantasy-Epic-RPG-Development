@@ -68,19 +68,21 @@ function Trig_Travel_Dialog_Click_Actions takes nothing returns nothing
     call EnableTrigger(udg_WarpEnterTrigger)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Travel automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Travel (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Travel takes nothing returns nothing
 endfunction
-function RegisterR11_Travel_Dialog_Click takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Travel_Dialog_Click takes nothing returns nothing
     set gg_trg_Travel_Dialog_Click=CreateTrigger()
     call TriggerRegisterDialogEvent(gg_trg_Travel_Dialog_Click,udg_WarpDialog)
     call TriggerAddAction(gg_trg_Travel_Dialog_Click,function Trig_Travel_Dialog_Click_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Travel takes nothing returns nothing
+    call Register_Travel_Dialog_Click()
+endfunction
 
 endlibrary

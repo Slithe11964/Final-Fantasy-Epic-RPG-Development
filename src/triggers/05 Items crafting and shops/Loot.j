@@ -2474,57 +2474,47 @@ function Trig_Loot_Cuchulainn_EyeDrop_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Loot automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Loot_Part1 / RegisterTriggers_Loot_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Loot takes nothing returns nothing
 endfunction
-function RegisterR11_Loot_MonsterDrop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_MonsterDrop takes nothing returns nothing
     set gg_trg_Loot_MonsterDrop=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Loot_MonsterDrop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Loot_MonsterDrop,Condition(function Trig_Loot_MonsterDrop_Conditions))
     call TriggerAddAction(gg_trg_Loot_MonsterDrop,function Trig_Loot_MonsterDrop_Actions)
 endfunction
-function RegisterR11_Loot_CancelDespawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_CancelDespawn takes nothing returns nothing
     set gg_trg_Loot_CancelDespawn=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Loot_CancelDespawn,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Loot_CancelDespawn,Condition(function Trig_Loot_CancelDespawn_Conditions))
     call TriggerAddAction(gg_trg_Loot_CancelDespawn,function Trig_Loot_CancelDespawn_Actions)
 endfunction
-function RegisterR11_Loot_Tables_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_Tables_Init takes nothing returns nothing
     set gg_trg_Loot_Tables_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Loot_Tables_Init,2.)
     call TriggerAddAction(gg_trg_Loot_Tables_Init,function Trig_Loot_Tables_Init_Actions)
 endfunction
-function RegisterR11_Loot_EssenceDrop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_EssenceDrop takes nothing returns nothing
     set gg_trg_Loot_EssenceDrop=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Loot_EssenceDrop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Loot_EssenceDrop,Condition(function Trig_Loot_EssenceDrop_Conditions))
     call TriggerAddAction(gg_trg_Loot_EssenceDrop,function Trig_Loot_EssenceDrop_Actions)
 endfunction
-function RegisterR11_Loot_BlockLeaverItems takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_BlockLeaverItems takes nothing returns nothing
     set gg_trg_Loot_BlockLeaverItems=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Loot_BlockLeaverItems,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Loot_BlockLeaverItems,Condition(function Trig_Loot_BlockLeaverItems_Conditions))
     call TriggerAddAction(gg_trg_Loot_BlockLeaverItems,function Trig_Loot_BlockLeaverItems_Actions)
 endfunction
-function RegisterR11_Loot_Cuchulainn_EyeDrop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Loot_Cuchulainn_EyeDrop takes nothing returns nothing
     set gg_trg_Loot_Cuchulainn_EyeDrop=CreateTrigger()
     call DisableTrigger(gg_trg_Loot_Cuchulainn_EyeDrop)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Loot_Cuchulainn_EyeDrop,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -2532,7 +2522,22 @@ function RegisterR11_Loot_Cuchulainn_EyeDrop takes nothing returns nothing
     call TriggerAddAction(gg_trg_Loot_Cuchulainn_EyeDrop,function Trig_Loot_Cuchulainn_EyeDrop_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Loot_Part1 takes nothing returns nothing
+    call Register_Loot_MonsterDrop()
+    call Register_Loot_CancelDespawn()
+    call Register_Loot_Tables_Init()
+    call Register_Loot_EssenceDrop()
+    call Register_Loot_BlockLeaverItems()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Loot_Part2 takes nothing returns nothing
+    call Register_Loot_Cuchulainn_EyeDrop()
+endfunction
 
 endlibrary

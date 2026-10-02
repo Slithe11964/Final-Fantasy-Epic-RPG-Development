@@ -31,13 +31,13 @@ function Trig_Storm_Greet_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Storm automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Storm (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Storm takes nothing returns nothing
 endfunction
-function RegisterR11_Storm_Greet takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Storm_Greet takes nothing returns nothing
     set gg_trg_Storm_Greet=CreateTrigger()
     call DisableTrigger(gg_trg_Storm_Greet)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Storm_Greet,Player(0),true)
@@ -52,7 +52,9 @@ function RegisterR11_Storm_Greet takes nothing returns nothing
     call TriggerAddAction(gg_trg_Storm_Greet,function Trig_Storm_Greet_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Storm takes nothing returns nothing
+    call Register_Storm_Greet()
+endfunction
 
 endlibrary

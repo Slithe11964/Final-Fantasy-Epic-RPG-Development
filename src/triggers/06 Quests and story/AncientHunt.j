@@ -128,13 +128,13 @@ function Trig_AncientHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AncientHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AncientHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AncientHunt takes nothing returns nothing
 endfunction
-function RegisterR11_AncientHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AncientHunt_Start takes nothing returns nothing
     set gg_trg_AncientHunt_Start=CreateTrigger()
     call DisableTrigger(gg_trg_AncientHunt_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AncientHunt_Start,Player(0),true)
@@ -148,20 +148,16 @@ function RegisterR11_AncientHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_AncientHunt_Start,Condition(function Trig_AncientHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_AncientHunt_Start,function Trig_AncientHunt_Start_Actions)
 endfunction
-function RegisterR11_AncientHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AncientHunt_Count takes nothing returns nothing
     set gg_trg_AncientHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_AncientHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_AncientHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_AncientHunt_Count,Condition(function Trig_AncientHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_AncientHunt_Count,function Trig_AncientHunt_Count_Actions)
 endfunction
-function RegisterR11_AncientHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AncientHunt_Reward takes nothing returns nothing
     set gg_trg_AncientHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_AncientHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_AncientHunt_Reward,450.,gg_unit_e012_0227)
@@ -169,7 +165,11 @@ function RegisterR11_AncientHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_AncientHunt_Reward,function Trig_AncientHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AncientHunt takes nothing returns nothing
+    call Register_AncientHunt_Start()
+    call Register_AncientHunt_Count()
+    call Register_AncientHunt_Reward()
+endfunction
 
 endlibrary

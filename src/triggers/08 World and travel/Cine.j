@@ -875,48 +875,47 @@ function Trig_Cine_StoneBreaks_Alt_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cine automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cine (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cine takes nothing returns nothing
 endfunction
-function RegisterR11_Cine_StoneBreaks takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cine_StoneBreaks takes nothing returns nothing
     set gg_trg_Cine_StoneBreaks=CreateTrigger()
     call DisableTrigger(gg_trg_Cine_StoneBreaks)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Cine_StoneBreaks,450.,gg_unit_Hpb1_0013)
     call TriggerAddCondition(gg_trg_Cine_StoneBreaks,Condition(function Trig_Cine_StoneBreaks_Conditions))
     call TriggerAddAction(gg_trg_Cine_StoneBreaks,function Trig_Cine_StoneBreaks_Actions)
 endfunction
-function RegisterR11_Cine_ScryingVision takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cine_ScryingVision takes nothing returns nothing
     set gg_trg_Cine_ScryingVision=CreateTrigger()
     call DisableTrigger(gg_trg_Cine_ScryingVision)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Cine_ScryingVision,udg_StoryEventTimer)
     call TriggerAddAction(gg_trg_Cine_ScryingVision,function Trig_Cine_ScryingVision_Actions)
 endfunction
-function RegisterR11_Cine_Belias_Gafgarion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cine_Belias_Gafgarion takes nothing returns nothing
     set gg_trg_Cine_Belias_Gafgarion=CreateTrigger()
     call DisableTrigger(gg_trg_Cine_Belias_Gafgarion)
     call TriggerRegisterEnterRectSimple(gg_trg_Cine_Belias_Gafgarion,gg_rct_409)
     call TriggerAddCondition(gg_trg_Cine_Belias_Gafgarion,Condition(function Trig_Cine_Belias_Gafgarion_Conditions))
     call TriggerAddAction(gg_trg_Cine_Belias_Gafgarion,function Trig_Cine_Belias_Gafgarion_Actions)
 endfunction
-function RegisterR11_Cine_StoneBreaks_Alt takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cine_StoneBreaks_Alt takes nothing returns nothing
     set gg_trg_Cine_StoneBreaks_Alt=CreateTrigger()
     call DisableTrigger(gg_trg_Cine_StoneBreaks_Alt)
     call TriggerAddAction(gg_trg_Cine_StoneBreaks_Alt,function Trig_Cine_StoneBreaks_Alt_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cine takes nothing returns nothing
+    call Register_Cine_StoneBreaks()
+    call Register_Cine_ScryingVision()
+    call Register_Cine_Belias_Gafgarion()
+    call Register_Cine_StoneBreaks_Alt()
+endfunction
 
 endlibrary

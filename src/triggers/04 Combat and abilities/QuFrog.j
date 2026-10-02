@@ -126,29 +126,30 @@ function Trig_QuFrog_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_QuFrog automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_QuFrog (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_QuFrog takes nothing returns nothing
 endfunction
-function RegisterR11_QuFrog_DrainTick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_QuFrog_DrainTick takes nothing returns nothing
     set gg_trg_QuFrog_DrainTick=CreateTrigger()
     call DisableTrigger(gg_trg_QuFrog_DrainTick)
     call TriggerRegisterTimerEventPeriodic(gg_trg_QuFrog_DrainTick,2.)
     call TriggerAddAction(gg_trg_QuFrog_DrainTick,function Trig_QuFrog_DrainTick_Actions)
 endfunction
-function RegisterR11_QuFrog_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_QuFrog_Death takes nothing returns nothing
     set gg_trg_QuFrog_Death=CreateTrigger()
     call DisableTrigger(gg_trg_QuFrog_Death)
     call TriggerRegisterUnitEvent(gg_trg_QuFrog_Death,gg_unit_n03A_0136,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_QuFrog_Death,function Trig_QuFrog_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_QuFrog takes nothing returns nothing
+    call Register_QuFrog_DrainTick()
+    call Register_QuFrog_Death()
+endfunction
 
 endlibrary

@@ -421,46 +421,45 @@ function Trig_AlmightyShinra_Defeat_Actions takes nothing returns nothing
     call ForForce(udg_PlayingPlayers,function Trig_AlmightyShinra_Defeat_GrantAchievement)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AlmightyShinra automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AlmightyShinra (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AlmightyShinra takes nothing returns nothing
 endfunction
-function RegisterR11_AlmightyShinra_Arm takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AlmightyShinra_Arm takes nothing returns nothing
     set gg_trg_AlmightyShinra_Arm=CreateTrigger()
     call DisableTrigger(gg_trg_AlmightyShinra_Arm)
     call TriggerAddCondition(gg_trg_AlmightyShinra_Arm,Condition(function Trig_AlmightyShinra_Arm_Conditions))
     call TriggerAddAction(gg_trg_AlmightyShinra_Arm,function Trig_AlmightyShinra_Arm_Actions)
 endfunction
-function RegisterR11_AlmightyShinra_Cinematic takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AlmightyShinra_Cinematic takes nothing returns nothing
     set gg_trg_AlmightyShinra_Cinematic=CreateTrigger()
     call DisableTrigger(gg_trg_AlmightyShinra_Cinematic)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_AlmightyShinra_Cinematic,udg_SharedDelayTimer3)
     call TriggerAddAction(gg_trg_AlmightyShinra_Cinematic,function Trig_AlmightyShinra_Cinematic_Actions)
 endfunction
-function RegisterR11_AlmightyShinra_Spiral takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AlmightyShinra_Spiral takes nothing returns nothing
     set gg_trg_AlmightyShinra_Spiral=CreateTrigger()
     call DisableTrigger(gg_trg_AlmightyShinra_Spiral)
     call TriggerRegisterTimerEventPeriodic(gg_trg_AlmightyShinra_Spiral,.25)
     call TriggerAddAction(gg_trg_AlmightyShinra_Spiral,function Trig_AlmightyShinra_Spiral_Actions)
 endfunction
-function RegisterR11_AlmightyShinra_Defeat takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AlmightyShinra_Defeat takes nothing returns nothing
     set gg_trg_AlmightyShinra_Defeat=CreateTrigger()
     call DisableTrigger(gg_trg_AlmightyShinra_Defeat)
     call TriggerAddAction(gg_trg_AlmightyShinra_Defeat,function Trig_AlmightyShinra_Defeat_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AlmightyShinra takes nothing returns nothing
+    call Register_AlmightyShinra_Arm()
+    call Register_AlmightyShinra_Cinematic()
+    call Register_AlmightyShinra_Spiral()
+    call Register_AlmightyShinra_Defeat()
+endfunction
 
 endlibrary

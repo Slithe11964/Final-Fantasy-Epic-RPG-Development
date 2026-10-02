@@ -589,23 +589,21 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HuntFestival automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HuntFestival (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HuntFestival takes nothing returns nothing
 endfunction
-function RegisterR11_HuntFestival_Announce takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Announce takes nothing returns nothing
     set gg_trg_HuntFestival_Announce=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Announce)
     call TriggerRegisterTimerEventPeriodic(gg_trg_HuntFestival_Announce,20.)
     call TriggerAddCondition(gg_trg_HuntFestival_Announce,Condition(function Trig_HuntFestival_Announce_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_Announce,function Trig_HuntFestival_Announce_Actions)
 endfunction
-function RegisterR11_HuntFestival_Invite takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Invite takes nothing returns nothing
     set gg_trg_HuntFestival_Invite=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Invite)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_HuntFestival_Invite,Player(0),true)
@@ -619,29 +617,23 @@ function RegisterR11_HuntFestival_Invite takes nothing returns nothing
     call TriggerAddCondition(gg_trg_HuntFestival_Invite,Condition(function Trig_HuntFestival_Invite_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_Invite,function Trig_HuntFestival_Invite_Actions)
 endfunction
-function RegisterR11_HuntFestival_Begin takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Begin takes nothing returns nothing
     set gg_trg_HuntFestival_Begin=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Begin)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_HuntFestival_Begin,udg_FestivalTimer)
     call TriggerAddAction(gg_trg_HuntFestival_Begin,function Trig_HuntFestival_Begin_Actions)
 endfunction
-function RegisterR11_HuntFestival_Teleport takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Teleport takes nothing returns nothing
     set gg_trg_HuntFestival_Teleport=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Teleport)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_HuntFestival_Teleport,Player(9),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_HuntFestival_Teleport,Condition(function Trig_HuntFestival_Teleport_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_Teleport,function Trig_HuntFestival_Teleport_Actions)
 endfunction
-function RegisterR11_HuntFestival_KeepAway takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_KeepAway takes nothing returns nothing
     set gg_trg_HuntFestival_KeepAway=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_KeepAway)
     call TriggerRegisterEnterRectSimple(gg_trg_HuntFestival_KeepAway,gg_rct_224)
@@ -657,46 +649,48 @@ function RegisterR11_HuntFestival_KeepAway takes nothing returns nothing
     call TriggerAddCondition(gg_trg_HuntFestival_KeepAway,Condition(function Trig_HuntFestival_KeepAway_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_KeepAway,function Trig_HuntFestival_KeepAway_Actions)
 endfunction
-function RegisterR11_HuntFestival_Reorder takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Reorder takes nothing returns nothing
     set gg_trg_HuntFestival_Reorder=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Reorder)
     call TriggerRegisterTimerEventPeriodic(gg_trg_HuntFestival_Reorder,25.)
     call TriggerAddAction(gg_trg_HuntFestival_Reorder,function Trig_HuntFestival_Reorder_Actions)
 endfunction
-function RegisterR11_HuntFestival_Respawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Respawn takes nothing returns nothing
     set gg_trg_HuntFestival_Respawn=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Respawn)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_HuntFestival_Respawn,Player(9),EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_HuntFestival_Respawn,Condition(function Trig_HuntFestival_Respawn_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_Respawn,function Trig_HuntFestival_Respawn_Actions)
 endfunction
-function RegisterR11_HuntFestival_Score takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_Score takes nothing returns nothing
     set gg_trg_HuntFestival_Score=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_Score)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_HuntFestival_Score,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_HuntFestival_Score,Condition(function Trig_HuntFestival_Score_Conditions))
     call TriggerAddAction(gg_trg_HuntFestival_Score,function Trig_HuntFestival_Score_Actions)
 endfunction
-function RegisterR11_HuntFestival_End takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HuntFestival_End takes nothing returns nothing
     set gg_trg_HuntFestival_End=CreateTrigger()
     call DisableTrigger(gg_trg_HuntFestival_End)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_HuntFestival_End,udg_FestivalTimer)
     call TriggerAddAction(gg_trg_HuntFestival_End,function Trig_HuntFestival_End_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HuntFestival takes nothing returns nothing
+    call Register_HuntFestival_Announce()
+    call Register_HuntFestival_Invite()
+    call Register_HuntFestival_Begin()
+    call Register_HuntFestival_Teleport()
+    call Register_HuntFestival_KeepAway()
+    call Register_HuntFestival_Reorder()
+    call Register_HuntFestival_Respawn()
+    call Register_HuntFestival_Score()
+    call Register_HuntFestival_End()
+endfunction
 
 endlibrary

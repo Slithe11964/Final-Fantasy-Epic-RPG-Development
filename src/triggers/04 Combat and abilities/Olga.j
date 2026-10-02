@@ -5,19 +5,21 @@ function Trig_Olga_ShowTalkIcon_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Olga automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Olga (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Olga takes nothing returns nothing
 endfunction
-function RegisterR11_Olga_ShowTalkIcon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Olga_ShowTalkIcon takes nothing returns nothing
     set gg_trg_Olga_ShowTalkIcon=CreateTrigger()
     call DisableTrigger(gg_trg_Olga_ShowTalkIcon)
     call TriggerAddAction(gg_trg_Olga_ShowTalkIcon,function Trig_Olga_ShowTalkIcon_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Olga takes nothing returns nothing
+    call Register_Olga_ShowTalkIcon()
+endfunction
 
 endlibrary

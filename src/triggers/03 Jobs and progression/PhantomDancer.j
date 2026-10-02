@@ -21,27 +21,28 @@ function Trig_PhantomDancer_Berserk_Actions takes nothing returns nothing
     call IssueImmediateOrderBJ(GetTriggerUnit(),"berserk")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_PhantomDancer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_PhantomDancer (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_PhantomDancer takes nothing returns nothing
 endfunction
-function RegisterR11_PhantomDancer_Blink takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PhantomDancer_Blink takes nothing returns nothing
     set gg_trg_PhantomDancer_Blink=CreateTrigger()
     call DisableTrigger(gg_trg_PhantomDancer_Blink)
     call TriggerAddAction(gg_trg_PhantomDancer_Blink,function Trig_PhantomDancer_Blink_Actions)
 endfunction
-function RegisterR11_PhantomDancer_Berserk takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PhantomDancer_Berserk takes nothing returns nothing
     set gg_trg_PhantomDancer_Berserk=CreateTrigger()
     call DisableTrigger(gg_trg_PhantomDancer_Berserk)
     call TriggerAddAction(gg_trg_PhantomDancer_Berserk,function Trig_PhantomDancer_Berserk_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_PhantomDancer takes nothing returns nothing
+    call Register_PhantomDancer_Blink()
+    call Register_PhantomDancer_Berserk()
+endfunction
 
 endlibrary

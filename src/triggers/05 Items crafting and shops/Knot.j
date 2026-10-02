@@ -42,20 +42,22 @@ function Trig_Knot_Of_Rust_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetSpellTargetUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Knot automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Knot (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Knot takes nothing returns nothing
 endfunction
-function RegisterR11_Knot_Of_Rust takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Knot_Of_Rust takes nothing returns nothing
     set gg_trg_Knot_Of_Rust=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Knot_Of_Rust,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Knot_Of_Rust,Condition(function Trig_Knot_Of_Rust_Conditions))
     call TriggerAddAction(gg_trg_Knot_Of_Rust,function Trig_Knot_Of_Rust_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Knot takes nothing returns nothing
+    call Register_Knot_Of_Rust()
+endfunction
 
 endlibrary

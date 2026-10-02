@@ -70,13 +70,13 @@ function Trig_Firefly_Redeem_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Firefly automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Firefly (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Firefly takes nothing returns nothing
 endfunction
-function RegisterR11_Firefly_Drops takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Firefly_Drops takes nothing returns nothing
     set gg_trg_Firefly_Drops=CreateTrigger()
     call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0008)
     call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTbx_0017)
@@ -96,17 +96,18 @@ function RegisterR11_Firefly_Drops takes nothing returns nothing
     call TriggerRegisterDeathEvent(gg_trg_Firefly_Drops,gg_dest_LTcr_0067)
     call TriggerAddAction(gg_trg_Firefly_Drops,function Trig_Firefly_Drops_Actions)
 endfunction
-function RegisterR11_Firefly_Redeem takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Firefly_Redeem takes nothing returns nothing
     set gg_trg_Firefly_Redeem=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Firefly_Redeem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Firefly_Redeem,Condition(function Trig_Firefly_Redeem_Conditions))
     call TriggerAddAction(gg_trg_Firefly_Redeem,function Trig_Firefly_Redeem_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Firefly takes nothing returns nothing
+    call Register_Firefly_Drops()
+    call Register_Firefly_Redeem()
+endfunction
 
 endlibrary

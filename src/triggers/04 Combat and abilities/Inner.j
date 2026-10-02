@@ -32,20 +32,22 @@ function Trig_Inner_Fire_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Inner automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Inner (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Inner takes nothing returns nothing
 endfunction
-function RegisterR11_Inner_Fire takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Inner_Fire takes nothing returns nothing
     set gg_trg_Inner_Fire=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Inner_Fire,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Inner_Fire,Condition(function Trig_Inner_Fire_Conditions))
     call TriggerAddAction(gg_trg_Inner_Fire,function Trig_Inner_Fire_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Inner takes nothing returns nothing
+    call Register_Inner_Fire()
+endfunction
 
 endlibrary

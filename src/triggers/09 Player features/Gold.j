@@ -142,13 +142,13 @@ function Trig_Gold_Share_Pickup_Actions takes nothing returns nothing
     call RemoveItem(GetManipulatedItem())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Gold automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Gold_Part1 / RegisterTriggers_Gold_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Gold takes nothing returns nothing
 endfunction
-function RegisterR11_Gold_Cap takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gold_Cap takes nothing returns nothing
     set gg_trg_Gold_Cap=CreateTrigger()
     call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(0),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
     call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(1),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
@@ -160,26 +160,34 @@ function RegisterR11_Gold_Cap takes nothing returns nothing
     call TriggerRegisterPlayerStateEvent(gg_trg_Gold_Cap,Player(7),PLAYER_STATE_RESOURCE_GOLD,GREATER_THAN,999999.)
     call TriggerAddAction(gg_trg_Gold_Cap,function Trig_Gold_Cap_Actions)
 endfunction
-function RegisterR11_Gold_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gold_Pickup takes nothing returns nothing
     set gg_trg_Gold_Pickup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Gold_Pickup,Condition(function Trig_Gold_Pickup_Conditions))
     call TriggerAddAction(gg_trg_Gold_Pickup,function Trig_Gold_Pickup_Actions)
 endfunction
-function RegisterR11_Gold_Share_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gold_Share_Pickup takes nothing returns nothing
     set gg_trg_Gold_Share_Pickup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Gold_Share_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Gold_Share_Pickup,Condition(function Trig_Gold_Share_Pickup_Conditions))
     call TriggerAddAction(gg_trg_Gold_Share_Pickup,function Trig_Gold_Share_Pickup_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Gold_Part1 takes nothing returns nothing
+    call Register_Gold_Cap()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Gold_Part2 takes nothing returns nothing
+    call Register_Gold_Pickup()
+    call Register_Gold_Share_Pickup()
+endfunction
 
 endlibrary

@@ -72,13 +72,13 @@ function Trig_Claim_Command_Actions takes nothing returns nothing
     call ForForce(udg_PlayingPlayers,function Trig_Claim_Command_ClaimItemsFromPlayer)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Claim automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Claim (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Claim takes nothing returns nothing
 endfunction
-function RegisterR11_Claim_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Claim_Command takes nothing returns nothing
     set gg_trg_Claim_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(0),"-claim",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_Claim_Command,Player(1),"-claim",true)
@@ -92,7 +92,9 @@ function RegisterR11_Claim_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_Claim_Command,function Trig_Claim_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Claim takes nothing returns nothing
+    call Register_Claim_Command()
+endfunction
 
 endlibrary

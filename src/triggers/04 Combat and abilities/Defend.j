@@ -15,13 +15,13 @@ function Trig_Defend_Toggle_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Defend automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Defend (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Defend takes nothing returns nothing
 endfunction
-function RegisterR11_Defend_Toggle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Defend_Toggle takes nothing returns nothing
     set gg_trg_Defend_Toggle=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Defend_Toggle,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Defend_Toggle,EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER)
@@ -30,7 +30,9 @@ function RegisterR11_Defend_Toggle takes nothing returns nothing
     call TriggerAddAction(gg_trg_Defend_Toggle,function Trig_Defend_Toggle_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Defend takes nothing returns nothing
+    call Register_Defend_Toggle()
+endfunction
 
 endlibrary

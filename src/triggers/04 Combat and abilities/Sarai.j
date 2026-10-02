@@ -6,19 +6,21 @@ function Trig_Sarai_ShowTalkIcon_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Sarai automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Sarai (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Sarai takes nothing returns nothing
 endfunction
-function RegisterR11_Sarai_ShowTalkIcon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Sarai_ShowTalkIcon takes nothing returns nothing
     set gg_trg_Sarai_ShowTalkIcon=CreateTrigger()
     call DisableTrigger(gg_trg_Sarai_ShowTalkIcon)
     call TriggerAddAction(gg_trg_Sarai_ShowTalkIcon,function Trig_Sarai_ShowTalkIcon_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Sarai takes nothing returns nothing
+    call Register_Sarai_ShowTalkIcon()
+endfunction
 
 endlibrary

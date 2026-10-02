@@ -16,20 +16,22 @@ function Trig_Block_Item_Destroy_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Block automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Block (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Block takes nothing returns nothing
 endfunction
-function RegisterR11_Block_Item_Destroy takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Block_Item_Destroy takes nothing returns nothing
     set gg_trg_Block_Item_Destroy=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Block_Item_Destroy,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
     call TriggerAddCondition(gg_trg_Block_Item_Destroy,Condition(function Trig_Block_Item_Destroy_Conditions))
     call TriggerAddAction(gg_trg_Block_Item_Destroy,function Trig_Block_Item_Destroy_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Block takes nothing returns nothing
+    call Register_Block_Item_Destroy()
+endfunction
 
 endlibrary

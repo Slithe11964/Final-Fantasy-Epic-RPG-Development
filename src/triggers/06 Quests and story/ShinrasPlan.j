@@ -179,22 +179,20 @@ function Trig_ShinrasPlan_Complete_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_ShinrasPlan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_ShinrasPlan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_ShinrasPlan takes nothing returns nothing
 endfunction
-function RegisterR11_ShinrasPlan_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShinrasPlan_Prepare takes nothing returns nothing
     set gg_trg_ShinrasPlan_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_ShinrasPlan_Prepare)
     call TriggerAddCondition(gg_trg_ShinrasPlan_Prepare,Condition(function Trig_ShinrasPlan_Prepare_Conditions))
     call TriggerAddAction(gg_trg_ShinrasPlan_Prepare,function Trig_ShinrasPlan_Prepare_Actions)
 endfunction
-function RegisterR11_ShinrasPlan_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShinrasPlan_Start takes nothing returns nothing
     set gg_trg_ShinrasPlan_Start=CreateTrigger()
     call DisableTrigger(gg_trg_ShinrasPlan_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ShinrasPlan_Start,Player(0),true)
@@ -208,30 +206,24 @@ function RegisterR11_ShinrasPlan_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_ShinrasPlan_Start,Condition(function Trig_ShinrasPlan_Start_Conditions))
     call TriggerAddAction(gg_trg_ShinrasPlan_Start,function Trig_ShinrasPlan_Start_Actions)
 endfunction
-function RegisterR11_ShinrasPlan_WaterTurnIn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShinrasPlan_WaterTurnIn takes nothing returns nothing
     set gg_trg_ShinrasPlan_WaterTurnIn=CreateTrigger()
     call DisableTrigger(gg_trg_ShinrasPlan_WaterTurnIn)
     call TriggerRegisterUnitInRangeSimple(gg_trg_ShinrasPlan_WaterTurnIn,250.,gg_unit_n034_0109)
     call TriggerAddCondition(gg_trg_ShinrasPlan_WaterTurnIn,Condition(function Trig_ShinrasPlan_WaterTurnIn_Conditions))
     call TriggerAddAction(gg_trg_ShinrasPlan_WaterTurnIn,function Trig_ShinrasPlan_WaterTurnIn_Actions)
 endfunction
-function RegisterR11_ShinrasPlan_ShardTurnIn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShinrasPlan_ShardTurnIn takes nothing returns nothing
     set gg_trg_ShinrasPlan_ShardTurnIn=CreateTrigger()
     call DisableTrigger(gg_trg_ShinrasPlan_ShardTurnIn)
     call TriggerRegisterUnitInRangeSimple(gg_trg_ShinrasPlan_ShardTurnIn,250.,gg_unit_n034_0109)
     call TriggerAddCondition(gg_trg_ShinrasPlan_ShardTurnIn,Condition(function Trig_ShinrasPlan_ShardTurnIn_Conditions))
     call TriggerAddAction(gg_trg_ShinrasPlan_ShardTurnIn,function Trig_ShinrasPlan_ShardTurnIn_Actions)
 endfunction
-function RegisterR11_ShinrasPlan_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ShinrasPlan_Complete takes nothing returns nothing
     set gg_trg_ShinrasPlan_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_ShinrasPlan_Complete)
     call TriggerRegisterUnitInRangeSimple(gg_trg_ShinrasPlan_Complete,250.,gg_unit_n034_0109)
@@ -239,7 +231,13 @@ function RegisterR11_ShinrasPlan_Complete takes nothing returns nothing
     call TriggerAddAction(gg_trg_ShinrasPlan_Complete,function Trig_ShinrasPlan_Complete_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_ShinrasPlan takes nothing returns nothing
+    call Register_ShinrasPlan_Prepare()
+    call Register_ShinrasPlan_Start()
+    call Register_ShinrasPlan_WaterTurnIn()
+    call Register_ShinrasPlan_ShardTurnIn()
+    call Register_ShinrasPlan_Complete()
+endfunction
 
 endlibrary

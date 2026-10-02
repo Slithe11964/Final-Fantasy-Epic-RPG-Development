@@ -136,39 +136,39 @@ function Trig_DarkShiva_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkShiva automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkShiva (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkShiva takes nothing returns nothing
 endfunction
-function RegisterR11_DarkShiva_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkShiva_Appear takes nothing returns nothing
     set gg_trg_DarkShiva_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkShiva_Appear)
     call TriggerRegisterEnterRectSimple(gg_trg_DarkShiva_Appear,gg_rct_126)
     call TriggerAddCondition(gg_trg_DarkShiva_Appear,Condition(function Trig_DarkShiva_Appear_Conditions))
     call TriggerAddAction(gg_trg_DarkShiva_Appear,function Trig_DarkShiva_Appear_Actions)
 endfunction
-function RegisterR11_DarkShiva_Phase2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkShiva_Phase2 takes nothing returns nothing
     set gg_trg_DarkShiva_Phase2=CreateTrigger()
     call DisableTrigger(gg_trg_DarkShiva_Phase2)
     call TriggerRegisterUnitLifeEvent(gg_trg_DarkShiva_Phase2,gg_unit_E00C_0046,LESS_THAN,100.)
     call TriggerAddAction(gg_trg_DarkShiva_Phase2,function Trig_DarkShiva_Phase2_Actions)
 endfunction
-function RegisterR11_DarkShiva_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkShiva_Death takes nothing returns nothing
     set gg_trg_DarkShiva_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkShiva_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkShiva_Death,gg_unit_E00C_0046,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_DarkShiva_Death,function Trig_DarkShiva_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkShiva takes nothing returns nothing
+    call Register_DarkShiva_Appear()
+    call Register_DarkShiva_Phase2()
+    call Register_DarkShiva_Death()
+endfunction
 
 endlibrary

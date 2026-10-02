@@ -15,21 +15,19 @@ function Trig_Shimmerweed_Pickup_Actions takes nothing returns nothing
     call StartTimerBJ(udg_HerbRespawnTimer[0],false,180.)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Shimmerweed automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Shimmerweed (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Shimmerweed takes nothing returns nothing
 endfunction
-function RegisterR11_Shimmerweed_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shimmerweed_Spawn takes nothing returns nothing
     set gg_trg_Shimmerweed_Spawn=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Shimmerweed_Spawn,udg_HerbRespawnTimer[0])
     call TriggerAddAction(gg_trg_Shimmerweed_Spawn,function Trig_Shimmerweed_Spawn_Actions)
 endfunction
-function RegisterR11_Shimmerweed_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shimmerweed_Pickup takes nothing returns nothing
     set gg_trg_Shimmerweed_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_Shimmerweed_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Shimmerweed_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -37,7 +35,10 @@ function RegisterR11_Shimmerweed_Pickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_Shimmerweed_Pickup,function Trig_Shimmerweed_Pickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Shimmerweed takes nothing returns nothing
+    call Register_Shimmerweed_Spawn()
+    call Register_Shimmerweed_Pickup()
+endfunction
 
 endlibrary

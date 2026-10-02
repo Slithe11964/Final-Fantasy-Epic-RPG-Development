@@ -32,20 +32,22 @@ function Trig_Fan_Of_Knives_Actions takes nothing returns nothing
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"fanofknives")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Fan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Fan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Fan takes nothing returns nothing
 endfunction
-function RegisterR11_Fan_Of_Knives takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fan_Of_Knives takes nothing returns nothing
     set gg_trg_Fan_Of_Knives=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fan_Of_Knives,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Fan_Of_Knives,Condition(function Trig_Fan_Of_Knives_Conditions))
     call TriggerAddAction(gg_trg_Fan_Of_Knives,function Trig_Fan_Of_Knives_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Fan takes nothing returns nothing
+    call Register_Fan_Of_Knives()
+endfunction
 
 endlibrary

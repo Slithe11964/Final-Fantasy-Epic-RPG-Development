@@ -149,20 +149,22 @@ function Trig_Potion_Use_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Potion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Potion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Potion takes nothing returns nothing
 endfunction
-function RegisterR11_Potion_Use takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Potion_Use takes nothing returns nothing
     set gg_trg_Potion_Use=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Potion_Use,EVENT_PLAYER_UNIT_USE_ITEM)
     call TriggerAddCondition(gg_trg_Potion_Use,Condition(function Trig_Potion_Use_Conditions))
     call TriggerAddAction(gg_trg_Potion_Use,function Trig_Potion_Use_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Potion takes nothing returns nothing
+    call Register_Potion_Use()
+endfunction
 
 endlibrary

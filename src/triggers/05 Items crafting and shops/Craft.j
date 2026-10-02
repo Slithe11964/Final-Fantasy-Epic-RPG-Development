@@ -148,20 +148,22 @@ function Trig_Craft_Recipe_Actions takes nothing returns nothing
     set l_recipeName=""
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Craft automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Craft (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Craft takes nothing returns nothing
 endfunction
-function RegisterR11_Craft_Recipe takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Craft_Recipe takes nothing returns nothing
     set gg_trg_Craft_Recipe=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Craft_Recipe,EVENT_PLAYER_UNIT_SELL_ITEM)
     call TriggerAddCondition(gg_trg_Craft_Recipe,Condition(function Trig_Craft_Recipe_Conditions))
     call TriggerAddAction(gg_trg_Craft_Recipe,function Trig_Craft_Recipe_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Craft takes nothing returns nothing
+    call Register_Craft_Recipe()
+endfunction
 
 endlibrary

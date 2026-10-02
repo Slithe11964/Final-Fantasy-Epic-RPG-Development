@@ -169,20 +169,22 @@ function Trig_Food_Effects_Actions takes nothing returns nothing
     set g=null
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Food automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Food (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Food takes nothing returns nothing
 endfunction
-function RegisterR11_Food_Effects takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Food_Effects takes nothing returns nothing
     set gg_trg_Food_Effects=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Food_Effects,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Food_Effects,Condition(function Trig_Food_Effects_Conditions))
     call TriggerAddAction(gg_trg_Food_Effects,function Trig_Food_Effects_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Food takes nothing returns nothing
+    call Register_Food_Effects()
+endfunction
 
 endlibrary

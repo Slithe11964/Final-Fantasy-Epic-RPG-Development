@@ -844,28 +844,37 @@ function Trig_Job_XP_Handicap_Actions takes nothing returns nothing
     call TriggerExecute(gg_trg_Multiboard_Refresh)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Job automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Job_Part1 / RegisterTriggers_Job_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Job takes nothing returns nothing
 endfunction
-function RegisterR11_Job_Change takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Job_Change takes nothing returns nothing
     set gg_trg_Job_Change=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Job_Change,EVENT_PLAYER_UNIT_SELL)
     call TriggerAddCondition(gg_trg_Job_Change,Condition(function Trig_Job_Change_Conditions))
     call TriggerAddAction(gg_trg_Job_Change,function Trig_Job_Change_Actions)
 endfunction
-function RegisterR11_Job_XP_Handicap takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Job_XP_Handicap takes nothing returns nothing
     set gg_trg_Job_XP_Handicap=CreateTrigger()
     call DisableTrigger(gg_trg_Job_XP_Handicap)
     call TriggerAddAction(gg_trg_Job_XP_Handicap,function Trig_Job_XP_Handicap_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Job_Part1 takes nothing returns nothing
+    call Register_Job_Change()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Job_Part2 takes nothing returns nothing
+    call Register_Job_XP_Handicap()
+endfunction
 
 endlibrary

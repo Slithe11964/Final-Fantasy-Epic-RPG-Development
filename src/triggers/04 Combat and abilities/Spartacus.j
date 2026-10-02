@@ -15,20 +15,22 @@ function Trig_Spartacus_Summon_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"drunkenhaze",GetTriggerUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Spartacus automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Spartacus (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Spartacus takes nothing returns nothing
 endfunction
-function RegisterR11_Spartacus_Summon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Spartacus_Summon takes nothing returns nothing
     set gg_trg_Spartacus_Summon=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Spartacus_Summon,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Spartacus_Summon,Condition(function Trig_Spartacus_Summon_Conditions))
     call TriggerAddAction(gg_trg_Spartacus_Summon,function Trig_Spartacus_Summon_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Spartacus takes nothing returns nothing
+    call Register_Spartacus_Summon()
+endfunction
 
 endlibrary

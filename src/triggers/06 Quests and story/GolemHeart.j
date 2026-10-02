@@ -31,23 +31,21 @@ function Trig_GolemHeart_Pickup_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GolemHeart automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GolemHeart (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GolemHeart takes nothing returns nothing
 endfunction
-function RegisterR11_GolemHeart_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GolemHeart_Ping takes nothing returns nothing
     set gg_trg_GolemHeart_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_GolemHeart_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_GolemHeart_Ping,15.)
     call TriggerAddCondition(gg_trg_GolemHeart_Ping,Condition(function Trig_GolemHeart_Ping_Conditions))
     call TriggerAddAction(gg_trg_GolemHeart_Ping,function Trig_GolemHeart_Ping_Actions)
 endfunction
-function RegisterR11_GolemHeart_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GolemHeart_Pickup takes nothing returns nothing
     set gg_trg_GolemHeart_Pickup=CreateTrigger()
     call DisableTrigger(gg_trg_GolemHeart_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_GolemHeart_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -55,7 +53,10 @@ function RegisterR11_GolemHeart_Pickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_GolemHeart_Pickup,function Trig_GolemHeart_Pickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GolemHeart takes nothing returns nothing
+    call Register_GolemHeart_Ping()
+    call Register_GolemHeart_Pickup()
+endfunction
 
 endlibrary

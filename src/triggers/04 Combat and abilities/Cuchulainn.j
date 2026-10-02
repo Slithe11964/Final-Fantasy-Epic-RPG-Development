@@ -23,20 +23,22 @@ function Trig_Cuchulainn_Soul_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cuchulainn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cuchulainn (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cuchulainn takes nothing returns nothing
 endfunction
-function RegisterR11_Cuchulainn_Soul_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cuchulainn_Soul_Death takes nothing returns nothing
     set gg_trg_Cuchulainn_Soul_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Cuchulainn_Soul_Death)
     call TriggerRegisterUnitEvent(gg_trg_Cuchulainn_Soul_Death,gg_unit_U019_0253,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Cuchulainn_Soul_Death,function Trig_Cuchulainn_Soul_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cuchulainn takes nothing returns nothing
+    call Register_Cuchulainn_Soul_Death()
+endfunction
 
 endlibrary

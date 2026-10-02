@@ -202,64 +202,61 @@ function Trig_Necro_Drain_Tick_Actions takes nothing returns nothing
     call ForGroupBJ(udg_DrainChannelGroup,function Trig_Necro_Drain_Tick_DrainTickUnit)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Necro automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Necro (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Necro takes nothing returns nothing
 endfunction
-function RegisterR11_Necro_RaiseDead_Reset takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_RaiseDead_Reset takes nothing returns nothing
     set gg_trg_Necro_RaiseDead_Reset=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_RaiseDead_Reset,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Necro_RaiseDead_Reset,Condition(function Trig_Necro_RaiseDead_Reset_Conditions))
     call TriggerAddAction(gg_trg_Necro_RaiseDead_Reset,function Trig_Necro_RaiseDead_Reset_Actions)
 endfunction
-function RegisterR11_Necro_Release takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_Release takes nothing returns nothing
     set gg_trg_Necro_Release=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Release,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Necro_Release,Condition(function Trig_Necro_Release_Conditions))
     call TriggerAddAction(gg_trg_Necro_Release,function Trig_Necro_Release_Actions)
 endfunction
-function RegisterR11_Necro_DeathScreech takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_DeathScreech takes nothing returns nothing
     set gg_trg_Necro_DeathScreech=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_DeathScreech,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Necro_DeathScreech,Condition(function Trig_Necro_DeathScreech_Conditions))
     call TriggerAddAction(gg_trg_Necro_DeathScreech,function Trig_Necro_DeathScreech_Actions)
 endfunction
-function RegisterR11_Necro_Drain_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_Drain_Start takes nothing returns nothing
     set gg_trg_Necro_Drain_Start=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_Start,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Necro_Drain_Start,Condition(function Trig_Necro_Drain_Start_Conditions))
     call TriggerAddAction(gg_trg_Necro_Drain_Start,function Trig_Necro_Drain_Start_Actions)
 endfunction
-function RegisterR11_Necro_Drain_End takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_Drain_End takes nothing returns nothing
     set gg_trg_Necro_Drain_End=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Necro_Drain_End,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
     call TriggerAddCondition(gg_trg_Necro_Drain_End,Condition(function Trig_Necro_Drain_End_Conditions))
     call TriggerAddAction(gg_trg_Necro_Drain_End,function Trig_Necro_Drain_End_Actions)
 endfunction
-function RegisterR11_Necro_Drain_Tick takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Necro_Drain_Tick takes nothing returns nothing
     set gg_trg_Necro_Drain_Tick=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Necro_Drain_Tick,1.)
     call TriggerAddAction(gg_trg_Necro_Drain_Tick,function Trig_Necro_Drain_Tick_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Necro takes nothing returns nothing
+    call Register_Necro_RaiseDead_Reset()
+    call Register_Necro_Release()
+    call Register_Necro_DeathScreech()
+    call Register_Necro_Drain_Start()
+    call Register_Necro_Drain_End()
+    call Register_Necro_Drain_Tick()
+endfunction
 
 endlibrary

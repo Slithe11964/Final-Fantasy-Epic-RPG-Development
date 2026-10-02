@@ -709,35 +709,35 @@ function Trig_Titles_CheckBasic_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Titles automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Titles (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Titles takes nothing returns nothing
 endfunction
-function RegisterR11_Titles_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Titles_Init takes nothing returns nothing
     set gg_trg_Titles_Init=CreateTrigger()
     call DisableTrigger(gg_trg_Titles_Init)
     call TriggerAddAction(gg_trg_Titles_Init,function Trig_Titles_Init_Actions)
 endfunction
-function RegisterR11_Titles_CheckAll takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Titles_CheckAll takes nothing returns nothing
     set gg_trg_Titles_CheckAll=CreateTrigger()
     call DisableTrigger(gg_trg_Titles_CheckAll)
     call TriggerAddAction(gg_trg_Titles_CheckAll,function Trig_Titles_CheckAll_Actions)
 endfunction
-function RegisterR11_Titles_CheckBasic takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Titles_CheckBasic takes nothing returns nothing
     set gg_trg_Titles_CheckBasic=CreateTrigger()
     call DisableTrigger(gg_trg_Titles_CheckBasic)
     call TriggerAddAction(gg_trg_Titles_CheckBasic,function Trig_Titles_CheckBasic_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Titles takes nothing returns nothing
+    call Register_Titles_Init()
+    call Register_Titles_CheckAll()
+    call Register_Titles_CheckBasic()
+endfunction
 
 endlibrary

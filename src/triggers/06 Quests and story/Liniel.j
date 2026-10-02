@@ -5,19 +5,21 @@ function Trig_Liniel_ShowMarker_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Liniel automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Liniel (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Liniel takes nothing returns nothing
 endfunction
-function RegisterR11_Liniel_ShowMarker takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Liniel_ShowMarker takes nothing returns nothing
     set gg_trg_Liniel_ShowMarker=CreateTrigger()
     call DisableTrigger(gg_trg_Liniel_ShowMarker)
     call TriggerAddAction(gg_trg_Liniel_ShowMarker,function Trig_Liniel_ShowMarker_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Liniel takes nothing returns nothing
+    call Register_Liniel_ShowMarker()
+endfunction
 
 endlibrary

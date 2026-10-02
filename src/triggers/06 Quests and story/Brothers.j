@@ -35,29 +35,30 @@ function Trig_Brothers_Alert_Rematch_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Brothers automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Brothers (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Brothers takes nothing returns nothing
 endfunction
-function RegisterR11_Brothers_Alert_Eidolons takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Brothers_Alert_Eidolons takes nothing returns nothing
     set gg_trg_Brothers_Alert_Eidolons=CreateTrigger()
     call DisableTrigger(gg_trg_Brothers_Alert_Eidolons)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Eidolons,udg_SharedDelayTimer4)
     call TriggerAddAction(gg_trg_Brothers_Alert_Eidolons,function Trig_Brothers_Alert_Eidolons_Actions)
 endfunction
-function RegisterR11_Brothers_Alert_Rematch takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Brothers_Alert_Rematch takes nothing returns nothing
     set gg_trg_Brothers_Alert_Rematch=CreateTrigger()
     call DisableTrigger(gg_trg_Brothers_Alert_Rematch)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Brothers_Alert_Rematch,udg_SharedDelayTimer4)
     call TriggerAddAction(gg_trg_Brothers_Alert_Rematch,function Trig_Brothers_Alert_Rematch_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Brothers takes nothing returns nothing
+    call Register_Brothers_Alert_Eidolons()
+    call Register_Brothers_Alert_Rematch()
+endfunction
 
 endlibrary

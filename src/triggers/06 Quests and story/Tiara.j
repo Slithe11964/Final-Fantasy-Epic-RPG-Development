@@ -17,13 +17,13 @@ function Trig_Tiara_Ping_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Tiara automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Tiara (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Tiara takes nothing returns nothing
 endfunction
-function RegisterR11_Tiara_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Tiara_Ping takes nothing returns nothing
     set gg_trg_Tiara_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_Tiara_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Tiara_Ping,15.)
@@ -31,7 +31,9 @@ function RegisterR11_Tiara_Ping takes nothing returns nothing
     call TriggerAddAction(gg_trg_Tiara_Ping,function Trig_Tiara_Ping_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Tiara takes nothing returns nothing
+    call Register_Tiara_Ping()
+endfunction
 
 endlibrary

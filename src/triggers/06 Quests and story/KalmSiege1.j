@@ -483,13 +483,13 @@ function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_KalmSiege1 automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_KalmSiege1 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_KalmSiege1 takes nothing returns nothing
 endfunction
-function RegisterR11_KalmSiege1_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Start takes nothing returns nothing
     set gg_trg_KalmSiege1_Start=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege1_Start,Player(0),true)
@@ -503,10 +503,8 @@ function RegisterR11_KalmSiege1_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_KalmSiege1_Start,Condition(function Trig_KalmSiege1_Start_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege1_Start,function Trig_KalmSiege1_Start_Actions)
 endfunction
-function RegisterR11_KalmSiege1_Briefing takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Briefing takes nothing returns nothing
     set gg_trg_KalmSiege1_Briefing=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Briefing)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_KalmSiege1_Briefing,Player(0),true)
@@ -520,29 +518,23 @@ function RegisterR11_KalmSiege1_Briefing takes nothing returns nothing
     call TriggerAddCondition(gg_trg_KalmSiege1_Briefing,Condition(function Trig_KalmSiege1_Briefing_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege1_Briefing,function Trig_KalmSiege1_Briefing_Actions)
 endfunction
-function RegisterR11_KalmSiege1_Begin takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Begin takes nothing returns nothing
     set gg_trg_KalmSiege1_Begin=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Begin)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege1_Begin,udg_SiegeTimer)
     call TriggerAddAction(gg_trg_KalmSiege1_Begin,function Trig_KalmSiege1_Begin_Actions)
 endfunction
-function RegisterR11_KalmSiege1_Defeat takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Defeat takes nothing returns nothing
     set gg_trg_KalmSiege1_Defeat=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Defeat)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege1_Defeat,Player(9),EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_KalmSiege1_Defeat,Condition(function Trig_KalmSiege1_Defeat_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege1_Defeat,function Trig_KalmSiege1_Defeat_Actions)
 endfunction
-function RegisterR11_KalmSiege1_TrackDeaths takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_TrackDeaths takes nothing returns nothing
     set gg_trg_KalmSiege1_TrackDeaths=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_TrackDeaths)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege1_TrackDeaths,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -550,19 +542,15 @@ function RegisterR11_KalmSiege1_TrackDeaths takes nothing returns nothing
     call TriggerAddCondition(gg_trg_KalmSiege1_TrackDeaths,Condition(function Trig_KalmSiege1_TrackDeaths_Conditions))
     call TriggerAddAction(gg_trg_KalmSiege1_TrackDeaths,function Trig_KalmSiege1_TrackDeaths_Actions)
 endfunction
-function RegisterR11_KalmSiege1_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Complete takes nothing returns nothing
     set gg_trg_KalmSiege1_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Complete)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_KalmSiege1_Complete,udg_SiegeTimer)
     call TriggerAddAction(gg_trg_KalmSiege1_Complete,function Trig_KalmSiege1_Complete_Actions)
 endfunction
-function RegisterR11_KalmSiege1_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_KalmSiege1_Fail takes nothing returns nothing
     set gg_trg_KalmSiege1_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_KalmSiege1_Fail)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_KalmSiege1_Fail,Player(9),EVENT_PLAYER_UNIT_DEATH)
@@ -570,7 +558,15 @@ function RegisterR11_KalmSiege1_Fail takes nothing returns nothing
     call TriggerAddAction(gg_trg_KalmSiege1_Fail,function Trig_KalmSiege1_Fail_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_KalmSiege1 takes nothing returns nothing
+    call Register_KalmSiege1_Start()
+    call Register_KalmSiege1_Briefing()
+    call Register_KalmSiege1_Begin()
+    call Register_KalmSiege1_Defeat()
+    call Register_KalmSiege1_TrackDeaths()
+    call Register_KalmSiege1_Complete()
+    call Register_KalmSiege1_Fail()
+endfunction
 
 endlibrary

@@ -29,23 +29,21 @@ function Trig_Belongings_PickedUp_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Belongings automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Belongings (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Belongings takes nothing returns nothing
 endfunction
-function RegisterR11_Belongings_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Belongings_Ping takes nothing returns nothing
     set gg_trg_Belongings_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_Belongings_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Belongings_Ping,15.)
     call TriggerAddCondition(gg_trg_Belongings_Ping,Condition(function Trig_Belongings_Ping_Conditions))
     call TriggerAddAction(gg_trg_Belongings_Ping,function Trig_Belongings_Ping_Actions)
 endfunction
-function RegisterR11_Belongings_PickedUp takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Belongings_PickedUp takes nothing returns nothing
     set gg_trg_Belongings_PickedUp=CreateTrigger()
     call DisableTrigger(gg_trg_Belongings_PickedUp)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Belongings_PickedUp,EVENT_PLAYER_UNIT_PICKUP_ITEM)
@@ -53,7 +51,10 @@ function RegisterR11_Belongings_PickedUp takes nothing returns nothing
     call TriggerAddAction(gg_trg_Belongings_PickedUp,function Trig_Belongings_PickedUp_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Belongings takes nothing returns nothing
+    call Register_Belongings_Ping()
+    call Register_Belongings_PickedUp()
+endfunction
 
 endlibrary

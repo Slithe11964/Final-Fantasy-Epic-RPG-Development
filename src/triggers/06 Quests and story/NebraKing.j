@@ -109,36 +109,36 @@ function Trig_NebraKing_Escape_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Remove_Buffs)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_NebraKing automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_NebraKing (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_NebraKing takes nothing returns nothing
 endfunction
-function RegisterR11_NebraKing_Hide takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NebraKing_Hide takes nothing returns nothing
     set gg_trg_NebraKing_Hide=CreateTrigger()
     call TriggerAddAction(gg_trg_NebraKing_Hide,function Trig_NebraKing_Hide_Actions)
 endfunction
-function RegisterR11_NebraKing_Summon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NebraKing_Summon takes nothing returns nothing
     set gg_trg_NebraKing_Summon=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_NebraKing_Summon,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_NebraKing_Summon,Condition(function Trig_NebraKing_Summon_Conditions))
     call TriggerAddAction(gg_trg_NebraKing_Summon,function Trig_NebraKing_Summon_Actions)
 endfunction
-function RegisterR11_NebraKing_Escape takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NebraKing_Escape takes nothing returns nothing
     set gg_trg_NebraKing_Escape=CreateTrigger()
     call DisableTrigger(gg_trg_NebraKing_Escape)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_NebraKing_Escape,udg_NebraKingTimer)
     call TriggerAddAction(gg_trg_NebraKing_Escape,function Trig_NebraKing_Escape_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_NebraKing takes nothing returns nothing
+    call Register_NebraKing_Hide()
+    call Register_NebraKing_Summon()
+    call Register_NebraKing_Escape()
+endfunction
 
 endlibrary

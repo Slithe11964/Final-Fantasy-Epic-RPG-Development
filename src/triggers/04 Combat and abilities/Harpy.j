@@ -63,23 +63,21 @@ function Trig_Harpy_Trickster_Cleanup_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_HarpyTricksters)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Harpy automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Harpy (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Harpy takes nothing returns nothing
 endfunction
-function RegisterR11_Harpy_Matriarch_CallAid takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Harpy_Matriarch_CallAid takes nothing returns nothing
     set gg_trg_Harpy_Matriarch_CallAid=CreateTrigger()
     call DisableTrigger(gg_trg_Harpy_Matriarch_CallAid)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Matriarch_CallAid,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Harpy_Matriarch_CallAid,Condition(function Trig_Harpy_Matriarch_CallAid_Conditions))
     call TriggerAddAction(gg_trg_Harpy_Matriarch_CallAid,function Trig_Harpy_Matriarch_CallAid_Actions)
 endfunction
-function RegisterR11_Harpy_Trickster_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Harpy_Trickster_Cleanup takes nothing returns nothing
     set gg_trg_Harpy_Trickster_Cleanup=CreateTrigger()
     call DisableTrigger(gg_trg_Harpy_Trickster_Cleanup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Harpy_Trickster_Cleanup,EVENT_PLAYER_UNIT_CHANGE_OWNER)
@@ -88,7 +86,10 @@ function RegisterR11_Harpy_Trickster_Cleanup takes nothing returns nothing
     call TriggerAddAction(gg_trg_Harpy_Trickster_Cleanup,function Trig_Harpy_Trickster_Cleanup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Harpy takes nothing returns nothing
+    call Register_Harpy_Matriarch_CallAid()
+    call Register_Harpy_Trickster_Cleanup()
+endfunction
 
 endlibrary

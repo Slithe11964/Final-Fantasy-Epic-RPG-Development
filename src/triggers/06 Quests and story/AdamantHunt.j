@@ -116,13 +116,13 @@ function Trig_AdamantHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AdamantHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AdamantHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AdamantHunt takes nothing returns nothing
 endfunction
-function RegisterR11_AdamantHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AdamantHunt_Start takes nothing returns nothing
     set gg_trg_AdamantHunt_Start=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AdamantHunt_Start,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_AdamantHunt_Start,Player(1),true)
@@ -135,20 +135,16 @@ function RegisterR11_AdamantHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_AdamantHunt_Start,Condition(function Trig_AdamantHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_AdamantHunt_Start,function Trig_AdamantHunt_Start_Actions)
 endfunction
-function RegisterR11_AdamantHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AdamantHunt_Count takes nothing returns nothing
     set gg_trg_AdamantHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_AdamantHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_AdamantHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_AdamantHunt_Count,Condition(function Trig_AdamantHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_AdamantHunt_Count,function Trig_AdamantHunt_Count_Actions)
 endfunction
-function RegisterR11_AdamantHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AdamantHunt_Reward takes nothing returns nothing
     set gg_trg_AdamantHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_AdamantHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_AdamantHunt_Reward,450.,gg_unit_h02Z_0230)
@@ -156,7 +152,11 @@ function RegisterR11_AdamantHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_AdamantHunt_Reward,function Trig_AdamantHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AdamantHunt takes nothing returns nothing
+    call Register_AdamantHunt_Start()
+    call Register_AdamantHunt_Count()
+    call Register_AdamantHunt_Reward()
+endfunction
 
 endlibrary

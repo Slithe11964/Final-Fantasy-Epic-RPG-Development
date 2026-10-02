@@ -200,30 +200,31 @@ function Trig_DarkIfrit_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkIfrit automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkIfrit (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkIfrit takes nothing returns nothing
 endfunction
-function RegisterR11_DarkIfrit_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkIfrit_Appear takes nothing returns nothing
     set gg_trg_DarkIfrit_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_DarkIfrit_Appear)
     call TriggerRegisterEnterRectSimple(gg_trg_DarkIfrit_Appear,gg_rct_120)
     call TriggerAddCondition(gg_trg_DarkIfrit_Appear,Condition(function Trig_DarkIfrit_Appear_Conditions))
     call TriggerAddAction(gg_trg_DarkIfrit_Appear,function Trig_DarkIfrit_Appear_Actions)
 endfunction
-function RegisterR11_DarkIfrit_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkIfrit_Death takes nothing returns nothing
     set gg_trg_DarkIfrit_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkIfrit_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkIfrit_Death,gg_unit_E00D_0043,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_DarkIfrit_Death,function Trig_DarkIfrit_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkIfrit takes nothing returns nothing
+    call Register_DarkIfrit_Appear()
+    call Register_DarkIfrit_Death()
+endfunction
 
 endlibrary

@@ -303,30 +303,31 @@ function Trig_Zeromus_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zeromus automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zeromus (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zeromus takes nothing returns nothing
 endfunction
-function RegisterR11_Zeromus_Encounter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zeromus_Encounter takes nothing returns nothing
     set gg_trg_Zeromus_Encounter=CreateTrigger()
     call DisableTrigger(gg_trg_Zeromus_Encounter)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Zeromus_Encounter,.05)
     call TriggerAddCondition(gg_trg_Zeromus_Encounter,Condition(function Trig_Zeromus_Encounter_Conditions))
     call TriggerAddAction(gg_trg_Zeromus_Encounter,function Trig_Zeromus_Encounter_Actions)
 endfunction
-function RegisterR11_Zeromus_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zeromus_Death takes nothing returns nothing
     set gg_trg_Zeromus_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Zeromus_Death)
     call TriggerRegisterUnitEvent(gg_trg_Zeromus_Death,gg_unit_U00J_0209,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Zeromus_Death,function Trig_Zeromus_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Zeromus takes nothing returns nothing
+    call Register_Zeromus_Encounter()
+    call Register_Zeromus_Death()
+endfunction
 
 endlibrary

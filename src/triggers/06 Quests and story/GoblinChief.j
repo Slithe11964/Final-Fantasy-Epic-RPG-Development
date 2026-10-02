@@ -23,19 +23,21 @@ function Trig_GoblinChief_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GoblinChief automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GoblinChief (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GoblinChief takes nothing returns nothing
 endfunction
-function RegisterR11_GoblinChief_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GoblinChief_Death takes nothing returns nothing
     set gg_trg_GoblinChief_Death=CreateTrigger()
     call DisableTrigger(gg_trg_GoblinChief_Death)
     call TriggerAddAction(gg_trg_GoblinChief_Death,function Trig_GoblinChief_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GoblinChief takes nothing returns nothing
+    call Register_GoblinChief_Death()
+endfunction
 
 endlibrary

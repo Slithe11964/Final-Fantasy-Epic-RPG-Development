@@ -35,43 +35,42 @@ function Trig_Intro_FadeToBlack_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Intro automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Intro (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Intro takes nothing returns nothing
 endfunction
-function RegisterR11_Intro_LockPlayers takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Intro_LockPlayers takes nothing returns nothing
     set gg_trg_Intro_LockPlayers=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Intro_LockPlayers,.01)
     call TriggerAddAction(gg_trg_Intro_LockPlayers,function Trig_Intro_LockPlayers_Actions)
 endfunction
-function RegisterR11_Intro_StartGameModeVote takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Intro_StartGameModeVote takes nothing returns nothing
     set gg_trg_Intro_StartGameModeVote=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Intro_StartGameModeVote,10.)
     call TriggerAddAction(gg_trg_Intro_StartGameModeVote,function Trig_Intro_StartGameModeVote_Actions)
 endfunction
-function RegisterR11_Intro_WelcomeMessages takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Intro_WelcomeMessages takes nothing returns nothing
     set gg_trg_Intro_WelcomeMessages=CreateTrigger()
     call DisableTrigger(gg_trg_Intro_WelcomeMessages)
     call TriggerAddAction(gg_trg_Intro_WelcomeMessages,function Trig_Intro_WelcomeMessages_Actions)
 endfunction
-function RegisterR11_Intro_FadeToBlack takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Intro_FadeToBlack takes nothing returns nothing
     set gg_trg_Intro_FadeToBlack=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Intro_FadeToBlack,.01)
     call TriggerAddAction(gg_trg_Intro_FadeToBlack,function Trig_Intro_FadeToBlack_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Intro takes nothing returns nothing
+    call Register_Intro_LockPlayers()
+    call Register_Intro_StartGameModeVote()
+    call Register_Intro_WelcomeMessages()
+    call Register_Intro_FadeToBlack()
+endfunction
 
 endlibrary

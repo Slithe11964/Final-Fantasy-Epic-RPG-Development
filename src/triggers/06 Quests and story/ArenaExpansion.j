@@ -255,22 +255,20 @@ function Trig_ArenaExpansion_Complete_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_ArenaExpansion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_ArenaExpansion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_ArenaExpansion takes nothing returns nothing
 endfunction
-function RegisterR11_ArenaExpansion_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_Prepare takes nothing returns nothing
     set gg_trg_ArenaExpansion_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_Prepare)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_ArenaExpansion_Prepare,udg_SharedDelayTimer2)
     call TriggerAddAction(gg_trg_ArenaExpansion_Prepare,function Trig_ArenaExpansion_Prepare_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_Start takes nothing returns nothing
     set gg_trg_ArenaExpansion_Start=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_ArenaExpansion_Start,Player(0),true)
@@ -284,50 +282,40 @@ function RegisterR11_ArenaExpansion_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_ArenaExpansion_Start,Condition(function Trig_ArenaExpansion_Start_Conditions))
     call TriggerAddAction(gg_trg_ArenaExpansion_Start,function Trig_ArenaExpansion_Start_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_ShadowStoneSpawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_ShadowStoneSpawn takes nothing returns nothing
     set gg_trg_ArenaExpansion_ShadowStoneSpawn=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneSpawn)
     call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_ShadowStoneSpawn,gg_rct_565)
     call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneSpawn,Condition(function Trig_ArenaExpansion_ShadowStoneSpawn_Conditions))
     call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneSpawn,function Trig_ArenaExpansion_ShadowStoneSpawn_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_ShadowStoneTurnIn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_ShadowStoneTurnIn takes nothing returns nothing
     set gg_trg_ArenaExpansion_ShadowStoneTurnIn=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_ShadowStoneTurnIn)
     call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_ShadowStoneTurnIn,450.,gg_unit_e008_0132)
     call TriggerAddCondition(gg_trg_ArenaExpansion_ShadowStoneTurnIn,Condition(function Trig_ArenaExpansion_ShadowStoneTurnIn_Conditions))
     call TriggerAddAction(gg_trg_ArenaExpansion_ShadowStoneTurnIn,function Trig_ArenaExpansion_ShadowStoneTurnIn_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_GatherDust takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_GatherDust takes nothing returns nothing
     set gg_trg_ArenaExpansion_GatherDust=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_GatherDust)
     call TriggerRegisterEnterRectSimple(gg_trg_ArenaExpansion_GatherDust,gg_rct_372)
     call TriggerAddCondition(gg_trg_ArenaExpansion_GatherDust,Condition(function Trig_ArenaExpansion_GatherDust_Conditions))
     call TriggerAddAction(gg_trg_ArenaExpansion_GatherDust,function Trig_ArenaExpansion_GatherDust_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_PingDust takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_PingDust takes nothing returns nothing
     set gg_trg_ArenaExpansion_PingDust=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_PingDust)
     call TriggerRegisterTimerEventPeriodic(gg_trg_ArenaExpansion_PingDust,15.)
     call TriggerAddCondition(gg_trg_ArenaExpansion_PingDust,Condition(function Trig_ArenaExpansion_PingDust_Conditions))
     call TriggerAddAction(gg_trg_ArenaExpansion_PingDust,function Trig_ArenaExpansion_PingDust_Actions)
 endfunction
-function RegisterR11_ArenaExpansion_Complete takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_ArenaExpansion_Complete takes nothing returns nothing
     set gg_trg_ArenaExpansion_Complete=CreateTrigger()
     call DisableTrigger(gg_trg_ArenaExpansion_Complete)
     call TriggerRegisterUnitInRangeSimple(gg_trg_ArenaExpansion_Complete,450.,gg_unit_e008_0132)
@@ -335,7 +323,15 @@ function RegisterR11_ArenaExpansion_Complete takes nothing returns nothing
     call TriggerAddAction(gg_trg_ArenaExpansion_Complete,function Trig_ArenaExpansion_Complete_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_ArenaExpansion takes nothing returns nothing
+    call Register_ArenaExpansion_Prepare()
+    call Register_ArenaExpansion_Start()
+    call Register_ArenaExpansion_ShadowStoneSpawn()
+    call Register_ArenaExpansion_ShadowStoneTurnIn()
+    call Register_ArenaExpansion_GatherDust()
+    call Register_ArenaExpansion_PingDust()
+    call Register_ArenaExpansion_Complete()
+endfunction
 
 endlibrary

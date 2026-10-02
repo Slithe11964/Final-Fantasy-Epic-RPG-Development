@@ -79,20 +79,22 @@ function Trig_Book_TransformGem_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Book automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Book (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Book takes nothing returns nothing
 endfunction
-function RegisterR11_Book_TransformGem takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Book_TransformGem takes nothing returns nothing
     set gg_trg_Book_TransformGem=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Book_TransformGem,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Book_TransformGem,Condition(function Trig_Book_TransformGem_Conditions))
     call TriggerAddAction(gg_trg_Book_TransformGem,function Trig_Book_TransformGem_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Book takes nothing returns nothing
+    call Register_Book_TransformGem()
+endfunction
 
 endlibrary

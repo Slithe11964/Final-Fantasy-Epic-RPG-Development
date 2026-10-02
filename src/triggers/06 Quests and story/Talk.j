@@ -127,13 +127,13 @@ function Trig_Talk_Lothlorien_Greet_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Talk automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Talk_Part1 / RegisterTriggers_Talk_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Talk takes nothing returns nothing
 endfunction
-function RegisterR11_Talk_PortalGuardian takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Talk_PortalGuardian takes nothing returns nothing
     set gg_trg_Talk_PortalGuardian=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_PortalGuardian,Player(1),true)
@@ -146,10 +146,8 @@ function RegisterR11_Talk_PortalGuardian takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Talk_PortalGuardian,Condition(function Trig_Talk_PortalGuardian_Conditions))
     call TriggerAddAction(gg_trg_Talk_PortalGuardian,function Trig_Talk_PortalGuardian_Actions)
 endfunction
-function RegisterR11_Talk_ForestGuardian takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Talk_ForestGuardian takes nothing returns nothing
     set gg_trg_Talk_ForestGuardian=CreateTrigger()
     call DisableTrigger(gg_trg_Talk_ForestGuardian)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_ForestGuardian,Player(0),true)
@@ -163,10 +161,8 @@ function RegisterR11_Talk_ForestGuardian takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Talk_ForestGuardian,Condition(function Trig_Talk_ForestGuardian_Conditions))
     call TriggerAddAction(gg_trg_Talk_ForestGuardian,function Trig_Talk_ForestGuardian_Actions)
 endfunction
-function RegisterR11_Talk_Lothlorien_Greet takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Talk_Lothlorien_Greet takes nothing returns nothing
     set gg_trg_Talk_Lothlorien_Greet=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Talk_Lothlorien_Greet,Player(1),true)
@@ -180,7 +176,19 @@ function RegisterR11_Talk_Lothlorien_Greet takes nothing returns nothing
     call TriggerAddAction(gg_trg_Talk_Lothlorien_Greet,function Trig_Talk_Lothlorien_Greet_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Talk_Part1 takes nothing returns nothing
+    call Register_Talk_PortalGuardian()
+    call Register_Talk_ForestGuardian()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Talk_Part2 takes nothing returns nothing
+    call Register_Talk_Lothlorien_Greet()
+endfunction
 
 endlibrary

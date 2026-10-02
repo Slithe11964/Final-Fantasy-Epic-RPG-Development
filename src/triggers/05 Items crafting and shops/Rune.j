@@ -202,20 +202,22 @@ function Trig_Rune_Pickup_Actions takes nothing returns nothing
     call RemoveItem(GetManipulatedItem())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Rune automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Rune (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Rune takes nothing returns nothing
 endfunction
-function RegisterR11_Rune_Pickup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Rune_Pickup takes nothing returns nothing
     set gg_trg_Rune_Pickup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Rune_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Rune_Pickup,Condition(function Trig_Rune_Pickup_Conditions))
     call TriggerAddAction(gg_trg_Rune_Pickup,function Trig_Rune_Pickup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Rune takes nothing returns nothing
+    call Register_Rune_Pickup()
+endfunction
 
 endlibrary

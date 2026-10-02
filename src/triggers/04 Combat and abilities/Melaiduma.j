@@ -10,18 +10,20 @@ function Trig_Melaiduma_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Melaiduma automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Melaiduma (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Melaiduma takes nothing returns nothing
 endfunction
-function RegisterR11_Melaiduma_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Melaiduma_Death takes nothing returns nothing
     set gg_trg_Melaiduma_Death=CreateTrigger()
     call TriggerAddAction(gg_trg_Melaiduma_Death,function Trig_Melaiduma_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Melaiduma takes nothing returns nothing
+    call Register_Melaiduma_Death()
+endfunction
 
 endlibrary

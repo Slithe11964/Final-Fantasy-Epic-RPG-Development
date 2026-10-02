@@ -2920,65 +2920,62 @@ function Trig_Damage_Splash_Actions takes nothing returns nothing
     call DestroyGroup(udg_SplashGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Damage automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Damage (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Damage takes nothing returns nothing
 endfunction
-function RegisterR11_Damage_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_Init takes nothing returns nothing
     set gg_trg_Damage_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_Damage_Init,8.18)
     call TriggerAddAction(gg_trg_Damage_Init,function Trig_Damage_Init_Actions)
 endfunction
-function RegisterR11_Damage_RegisterEnter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_RegisterEnter takes nothing returns nothing
     set gg_trg_Damage_RegisterEnter=CreateTrigger()
     call DisableTrigger(gg_trg_Damage_RegisterEnter)
     call TriggerRegisterEnterRectSimple(gg_trg_Damage_RegisterEnter,GetPlayableMapRect())
     call TriggerAddCondition(gg_trg_Damage_RegisterEnter,Condition(function Trig_Damage_RegisterEnter_Conditions))
     call TriggerAddAction(gg_trg_Damage_RegisterEnter,function Trig_Damage_RegisterEnter_Actions)
 endfunction
-function RegisterR11_Damage_RegisterAttacked takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_RegisterAttacked takes nothing returns nothing
     set gg_trg_Damage_RegisterAttacked=CreateTrigger()
     call DisableTrigger(gg_trg_Damage_RegisterAttacked)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Damage_RegisterAttacked,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Damage_RegisterAttacked,Condition(function Trig_Damage_RegisterAttacked_Conditions))
     call TriggerAddAction(gg_trg_Damage_RegisterAttacked,function Trig_Damage_RegisterAttacked_Actions)
 endfunction
-function RegisterR11_Damage_Engine takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_Engine takes nothing returns nothing
     set gg_trg_Damage_Engine=CreateTrigger()
     call DisableTrigger(gg_trg_Damage_Engine)
     call TriggerAddCondition(gg_trg_Damage_Engine,Condition(function Trig_Damage_Engine_Conditions))
     call TriggerAddAction(gg_trg_Damage_Engine,function Trig_Damage_Engine_Actions)
 endfunction
-function RegisterR11_Damage_ProxyCleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_ProxyCleanup takes nothing returns nothing
     set gg_trg_Damage_ProxyCleanup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Damage_ProxyCleanup,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Damage_ProxyCleanup,Condition(function Trig_Damage_ProxyCleanup_Conditions))
     call TriggerAddAction(gg_trg_Damage_ProxyCleanup,function Trig_Damage_ProxyCleanup_Actions)
 endfunction
-function RegisterR11_Damage_Splash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Damage_Splash takes nothing returns nothing
     set gg_trg_Damage_Splash=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Damage_Splash,udg_SplashTimer)
     call TriggerAddAction(gg_trg_Damage_Splash,function Trig_Damage_Splash_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Damage takes nothing returns nothing
+    call Register_Damage_Init()
+    call Register_Damage_RegisterEnter()
+    call Register_Damage_RegisterAttacked()
+    call Register_Damage_Engine()
+    call Register_Damage_ProxyCleanup()
+    call Register_Damage_Splash()
+endfunction
 
 endlibrary

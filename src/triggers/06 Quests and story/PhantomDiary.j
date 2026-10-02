@@ -32,13 +32,13 @@ function Trig_PhantomDiary_Open_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_PhantomDiary automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_PhantomDiary (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_PhantomDiary takes nothing returns nothing
 endfunction
-function RegisterR11_PhantomDiary_Open takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_PhantomDiary_Open takes nothing returns nothing
     set gg_trg_PhantomDiary_Open=CreateTrigger()
     call DisableTrigger(gg_trg_PhantomDiary_Open)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_PhantomDiary_Open,Player(0),true)
@@ -53,7 +53,9 @@ function RegisterR11_PhantomDiary_Open takes nothing returns nothing
     call TriggerAddAction(gg_trg_PhantomDiary_Open,function Trig_PhantomDiary_Open_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_PhantomDiary takes nothing returns nothing
+    call Register_PhantomDiary_Open()
+endfunction
 
 endlibrary

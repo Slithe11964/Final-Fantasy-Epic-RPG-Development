@@ -246,20 +246,22 @@ function Trig_Exp_Distribution_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint3)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Exp automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Exp (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Exp takes nothing returns nothing
 endfunction
-function RegisterR11_Exp_Distribution takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Exp_Distribution takes nothing returns nothing
     set gg_trg_Exp_Distribution=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Exp_Distribution,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Exp_Distribution,Condition(function Trig_Exp_Distribution_Conditions))
     call TriggerAddAction(gg_trg_Exp_Distribution,function Trig_Exp_Distribution_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Exp takes nothing returns nothing
+    call Register_Exp_Distribution()
+endfunction
 
 endlibrary

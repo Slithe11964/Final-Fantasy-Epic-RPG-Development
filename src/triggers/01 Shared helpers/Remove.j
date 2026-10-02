@@ -60,27 +60,28 @@ function Trig_Remove_Buffs_Actions takes nothing returns nothing
     call Runic_Remove(udg_DispelTarget)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Remove automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Remove (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Remove takes nothing returns nothing
 endfunction
-function RegisterR11_Remove_Debuffs takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Remove_Debuffs takes nothing returns nothing
     set gg_trg_Remove_Debuffs=CreateTrigger()
     call DisableTrigger(gg_trg_Remove_Debuffs)
     call TriggerAddAction(gg_trg_Remove_Debuffs,function Trig_Remove_Debuffs_Actions)
 endfunction
-function RegisterR11_Remove_Buffs takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Remove_Buffs takes nothing returns nothing
     set gg_trg_Remove_Buffs=CreateTrigger()
     call DisableTrigger(gg_trg_Remove_Buffs)
     call TriggerAddAction(gg_trg_Remove_Buffs,function Trig_Remove_Buffs_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Remove takes nothing returns nothing
+    call Register_Remove_Debuffs()
+    call Register_Remove_Buffs()
+endfunction
 
 endlibrary

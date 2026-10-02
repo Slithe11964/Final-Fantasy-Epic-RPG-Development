@@ -70,20 +70,22 @@ function Trig_Haste_Slow_Cast_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Haste automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Haste (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Haste takes nothing returns nothing
 endfunction
-function RegisterR11_Haste_Slow_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Haste_Slow_Cast takes nothing returns nothing
     set gg_trg_Haste_Slow_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Haste_Slow_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Haste_Slow_Cast,Condition(function Trig_Haste_Slow_Cast_Conditions))
     call TriggerAddAction(gg_trg_Haste_Slow_Cast,function Trig_Haste_Slow_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Haste takes nothing returns nothing
+    call Register_Haste_Slow_Cast()
+endfunction
 
 endlibrary

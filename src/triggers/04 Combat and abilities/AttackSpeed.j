@@ -45,19 +45,21 @@ function Trig_AttackSpeed_Update_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped('A0KJ',udg_CurrentHero,((ModuloInteger(udg_StatCalcValue,50)/ 2)+1)) // 'A0KJ': ability "Agility to Attack Speed - 2% Steps"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_AttackSpeed automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_AttackSpeed (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_AttackSpeed takes nothing returns nothing
 endfunction
-function RegisterR11_AttackSpeed_Update takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_AttackSpeed_Update takes nothing returns nothing
     set gg_trg_AttackSpeed_Update=CreateTrigger()
     call DisableTrigger(gg_trg_AttackSpeed_Update)
     call TriggerAddAction(gg_trg_AttackSpeed_Update,function Trig_AttackSpeed_Update_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_AttackSpeed takes nothing returns nothing
+    call Register_AttackSpeed_Update()
+endfunction
 
 endlibrary

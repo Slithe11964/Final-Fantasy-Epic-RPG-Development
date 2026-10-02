@@ -18,13 +18,13 @@ function Trig_Okuu_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Okuu automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Okuu (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Okuu takes nothing returns nothing
 endfunction
-function RegisterR11_Okuu_Leash takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Okuu_Leash takes nothing returns nothing
     set gg_trg_Okuu_Leash=CreateTrigger()
     call DisableTrigger(gg_trg_Okuu_Leash)
     call TriggerRegisterEnterRectSimple(gg_trg_Okuu_Leash,gg_rct_638)
@@ -32,15 +32,16 @@ function RegisterR11_Okuu_Leash takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Okuu_Leash,Condition(function Trig_Okuu_Leash_Conditions))
     call TriggerAddAction(gg_trg_Okuu_Leash,function Trig_Okuu_Leash_Actions)
 endfunction
-function RegisterR11_Okuu_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Okuu_Death takes nothing returns nothing
     set gg_trg_Okuu_Death=CreateTrigger()
     call TriggerAddAction(gg_trg_Okuu_Death,function Trig_Okuu_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Okuu takes nothing returns nothing
+    call Register_Okuu_Leash()
+    call Register_Okuu_Death()
+endfunction
 
 endlibrary

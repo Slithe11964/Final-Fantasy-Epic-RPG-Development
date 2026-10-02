@@ -2934,7 +2934,6 @@ globals
     item udg_LastLootItem=null
     hashtable udg_FixChemistItemHash=null
     item array udg_FixItemSlotDummy
-    boolean udg_InitTrigFromMain=false
 endglobals
 
 

@@ -267,62 +267,52 @@ function Trig_Fire_Reward_Megalixir_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Fire automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Fire_Part1 / RegisterTriggers_Fire_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Fire takes nothing returns nothing
 endfunction
-function RegisterR11_Fire_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Cast takes nothing returns nothing
     set gg_trg_Fire_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Fire_Cast,Condition(function Trig_Fire_Cast_Conditions))
     call TriggerAddAction(gg_trg_Fire_Cast,function Trig_Fire_Cast_Actions)
 endfunction
-function RegisterR11_Fire_Pawn_Nectar takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Pawn_Nectar takes nothing returns nothing
     set gg_trg_Fire_Pawn_Nectar=CreateTrigger()
     call DisableTrigger(gg_trg_Fire_Pawn_Nectar)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_Nectar,EVENT_PLAYER_UNIT_PAWN_ITEM)
     call TriggerAddCondition(gg_trg_Fire_Pawn_Nectar,Condition(function Trig_Fire_Pawn_Nectar_Conditions))
     call TriggerAddAction(gg_trg_Fire_Pawn_Nectar,function Trig_Fire_Pawn_Nectar_Actions)
 endfunction
-function RegisterR11_Fire_Pawn_SpiritPotion takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Pawn_SpiritPotion takes nothing returns nothing
     set gg_trg_Fire_Pawn_SpiritPotion=CreateTrigger()
     call DisableTrigger(gg_trg_Fire_Pawn_SpiritPotion)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_SpiritPotion,EVENT_PLAYER_UNIT_PAWN_ITEM)
     call TriggerAddCondition(gg_trg_Fire_Pawn_SpiritPotion,Condition(function Trig_Fire_Pawn_SpiritPotion_Conditions))
     call TriggerAddAction(gg_trg_Fire_Pawn_SpiritPotion,function Trig_Fire_Pawn_SpiritPotion_Actions)
 endfunction
-function RegisterR11_Fire_Pawn_BloodEther takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Pawn_BloodEther takes nothing returns nothing
     set gg_trg_Fire_Pawn_BloodEther=CreateTrigger()
     call DisableTrigger(gg_trg_Fire_Pawn_BloodEther)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_BloodEther,EVENT_PLAYER_UNIT_PAWN_ITEM)
     call TriggerAddCondition(gg_trg_Fire_Pawn_BloodEther,Condition(function Trig_Fire_Pawn_BloodEther_Conditions))
     call TriggerAddAction(gg_trg_Fire_Pawn_BloodEther,function Trig_Fire_Pawn_BloodEther_Actions)
 endfunction
-function RegisterR11_Fire_Pawn_HeroDrink takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Pawn_HeroDrink takes nothing returns nothing
     set gg_trg_Fire_Pawn_HeroDrink=CreateTrigger()
     call DisableTrigger(gg_trg_Fire_Pawn_HeroDrink)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fire_Pawn_HeroDrink,EVENT_PLAYER_UNIT_PAWN_ITEM)
     call TriggerAddCondition(gg_trg_Fire_Pawn_HeroDrink,Condition(function Trig_Fire_Pawn_HeroDrink_Conditions))
     call TriggerAddAction(gg_trg_Fire_Pawn_HeroDrink,function Trig_Fire_Pawn_HeroDrink_Actions)
 endfunction
-function RegisterR11_Fire_Reward_Megalixir takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Fire_Reward_Megalixir takes nothing returns nothing
     set gg_trg_Fire_Reward_Megalixir=CreateTrigger()
     call DisableTrigger(gg_trg_Fire_Reward_Megalixir)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Fire_Reward_Megalixir,Player(0),true)
@@ -337,7 +327,22 @@ function RegisterR11_Fire_Reward_Megalixir takes nothing returns nothing
     call TriggerAddAction(gg_trg_Fire_Reward_Megalixir,function Trig_Fire_Reward_Megalixir_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Fire_Part1 takes nothing returns nothing
+    call Register_Fire_Cast()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Fire_Part2 takes nothing returns nothing
+    call Register_Fire_Pawn_Nectar()
+    call Register_Fire_Pawn_SpiritPotion()
+    call Register_Fire_Pawn_BloodEther()
+    call Register_Fire_Pawn_HeroDrink()
+    call Register_Fire_Reward_Megalixir()
+endfunction
 
 endlibrary

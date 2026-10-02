@@ -226,20 +226,22 @@ function Trig_Materia_Altar_Ritual_Actions takes nothing returns nothing
     set udg_MateriaAltarDone[4]=false
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Materia automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Materia (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Materia takes nothing returns nothing
 endfunction
-function RegisterR11_Materia_Altar_Ritual takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Materia_Altar_Ritual takes nothing returns nothing
     set gg_trg_Materia_Altar_Ritual=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Materia_Altar_Ritual,EVENT_PLAYER_UNIT_DROP_ITEM)
     call TriggerAddCondition(gg_trg_Materia_Altar_Ritual,Condition(function Trig_Materia_Altar_Ritual_Conditions))
     call TriggerAddAction(gg_trg_Materia_Altar_Ritual,function Trig_Materia_Altar_Ritual_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Materia takes nothing returns nothing
+    call Register_Materia_Altar_Ritual()
+endfunction
 
 endlibrary

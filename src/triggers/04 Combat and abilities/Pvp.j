@@ -37,19 +37,21 @@ function Trig_Pvp_Command_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Pvp automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Pvp (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Pvp takes nothing returns nothing
 endfunction
-function RegisterR11_Pvp_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Pvp_Command takes nothing returns nothing
     set gg_trg_Pvp_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Pvp_Command,Player(0),"-pvp",true)
     call TriggerAddAction(gg_trg_Pvp_Command,function Trig_Pvp_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Pvp takes nothing returns nothing
+    call Register_Pvp_Command()
+endfunction
 
 endlibrary

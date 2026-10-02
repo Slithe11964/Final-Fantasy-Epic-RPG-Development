@@ -45,22 +45,20 @@ function Trig_Mimic_Death_Loot_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Mimic automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Mimic (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Mimic takes nothing returns nothing
 endfunction
-function RegisterR11_Mimic_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mimic_Reveal takes nothing returns nothing
     set gg_trg_Mimic_Reveal=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Reveal,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Mimic_Reveal,Condition(function Trig_Mimic_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Mimic_Reveal,function Trig_Mimic_Reveal_Actions)
 endfunction
-function RegisterR11_Mimic_Death_Loot takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mimic_Death_Loot takes nothing returns nothing
     set gg_trg_Mimic_Death_Loot=CreateTrigger()
     call DisableTrigger(gg_trg_Mimic_Death_Loot)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Mimic_Death_Loot,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -68,7 +66,10 @@ function RegisterR11_Mimic_Death_Loot takes nothing returns nothing
     call TriggerAddAction(gg_trg_Mimic_Death_Loot,function Trig_Mimic_Death_Loot_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Mimic takes nothing returns nothing
+    call Register_Mimic_Reveal()
+    call Register_Mimic_Death_Loot()
+endfunction
 
 endlibrary

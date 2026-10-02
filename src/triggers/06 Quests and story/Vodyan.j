@@ -11,20 +11,22 @@ function Trig_Vodyan_Death_DropTiara_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Vodyan automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Vodyan (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Vodyan takes nothing returns nothing
 endfunction
-function RegisterR11_Vodyan_Death_DropTiara takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Vodyan_Death_DropTiara takes nothing returns nothing
     set gg_trg_Vodyan_Death_DropTiara=CreateTrigger()
     call DisableTrigger(gg_trg_Vodyan_Death_DropTiara)
     call TriggerRegisterUnitEvent(gg_trg_Vodyan_Death_DropTiara,gg_unit_n023_0121,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Vodyan_Death_DropTiara,function Trig_Vodyan_Death_DropTiara_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Vodyan takes nothing returns nothing
+    call Register_Vodyan_Death_DropTiara()
+endfunction
 
 endlibrary

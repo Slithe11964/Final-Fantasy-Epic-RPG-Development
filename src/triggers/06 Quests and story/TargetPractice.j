@@ -410,66 +410,54 @@ function Trig_TargetPractice_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_TargetPractice automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_TargetPractice (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_TargetPractice takes nothing returns nothing
 endfunction
-function RegisterR11_TargetPractice_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_Init takes nothing returns nothing
     set gg_trg_TargetPractice_Init=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_Init)
     call TriggerAddAction(gg_trg_TargetPractice_Init,function Trig_TargetPractice_Init_Actions)
 endfunction
-function RegisterR11_TargetPractice_Begin takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_Begin takes nothing returns nothing
     set gg_trg_TargetPractice_Begin=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_Begin)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_TargetPractice_Begin,Player(8),EVENT_PLAYER_UNIT_SELL)
     call TriggerAddCondition(gg_trg_TargetPractice_Begin,Condition(function Trig_TargetPractice_Begin_Conditions))
     call TriggerAddAction(gg_trg_TargetPractice_Begin,function Trig_TargetPractice_Begin_Actions)
 endfunction
-function RegisterR11_TargetPractice_PingTargets takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_PingTargets takes nothing returns nothing
     set gg_trg_TargetPractice_PingTargets=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_PingTargets)
     call TriggerRegisterTimerEventPeriodic(gg_trg_TargetPractice_PingTargets,5.)
     call TriggerAddAction(gg_trg_TargetPractice_PingTargets,function Trig_TargetPractice_PingTargets_Actions)
 endfunction
-function RegisterR11_TargetPractice_TargetHit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_TargetHit takes nothing returns nothing
     set gg_trg_TargetPractice_TargetHit=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_TargetHit)
     call TriggerAddCondition(gg_trg_TargetPractice_TargetHit,Condition(function Trig_TargetPractice_TargetHit_Conditions))
     call TriggerAddAction(gg_trg_TargetPractice_TargetHit,function Trig_TargetPractice_TargetHit_Actions)
 endfunction
-function RegisterR11_TargetPractice_Timeout takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_Timeout takes nothing returns nothing
     set gg_trg_TargetPractice_Timeout=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_Timeout)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_TargetPractice_Timeout,udg_TargetPracticeTimer)
     call TriggerAddAction(gg_trg_TargetPractice_Timeout,function Trig_TargetPractice_Timeout_Actions)
 endfunction
-function RegisterR11_TargetPractice_Fail takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_Fail takes nothing returns nothing
     set gg_trg_TargetPractice_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_Fail)
     call TriggerAddAction(gg_trg_TargetPractice_Fail,function Trig_TargetPractice_Fail_Actions)
 endfunction
-function RegisterR11_TargetPractice_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TargetPractice_Reward takes nothing returns nothing
     set gg_trg_TargetPractice_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_TargetPractice_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_TargetPractice_Reward,200.,gg_unit_e017_0018)
@@ -478,7 +466,15 @@ function RegisterR11_TargetPractice_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_TargetPractice_Reward,function Trig_TargetPractice_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_TargetPractice takes nothing returns nothing
+    call Register_TargetPractice_Init()
+    call Register_TargetPractice_Begin()
+    call Register_TargetPractice_PingTargets()
+    call Register_TargetPractice_TargetHit()
+    call Register_TargetPractice_Timeout()
+    call Register_TargetPractice_Fail()
+    call Register_TargetPractice_Reward()
+endfunction
 
 endlibrary

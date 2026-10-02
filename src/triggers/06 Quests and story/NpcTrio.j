@@ -38,21 +38,19 @@ function Trig_NpcTrio_Turn_Face_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_NpcTrio automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_NpcTrio (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_NpcTrio takes nothing returns nothing
 endfunction
-function RegisterR11_NpcTrio_Group_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NpcTrio_Group_Init takes nothing returns nothing
     set gg_trg_NpcTrio_Group_Init=CreateTrigger()
     call TriggerRegisterTimerEventSingle(gg_trg_NpcTrio_Group_Init,2.)
     call TriggerAddAction(gg_trg_NpcTrio_Group_Init,function Trig_NpcTrio_Group_Init_Actions)
 endfunction
-function RegisterR11_NpcTrio_Turn_Face takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_NpcTrio_Turn_Face takes nothing returns nothing
     set gg_trg_NpcTrio_Turn_Face=CreateTrigger()
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(0),true)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_NpcTrio_Turn_Face,Player(1),true)
@@ -66,7 +64,10 @@ function RegisterR11_NpcTrio_Turn_Face takes nothing returns nothing
     call TriggerAddAction(gg_trg_NpcTrio_Turn_Face,function Trig_NpcTrio_Turn_Face_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_NpcTrio takes nothing returns nothing
+    call Register_NpcTrio_Group_Init()
+    call Register_NpcTrio_Turn_Face()
+endfunction
 
 endlibrary

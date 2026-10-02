@@ -85,45 +85,52 @@ function Trig_MagicUrn_Boss_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_MagicUrn automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_MagicUrn_Part1 / RegisterTriggers_MagicUrn_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_MagicUrn takes nothing returns nothing
 endfunction
-function RegisterR11_MagicUrn_Setup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicUrn_Setup takes nothing returns nothing
     set gg_trg_MagicUrn_Setup=CreateTrigger()
     call TriggerAddAction(gg_trg_MagicUrn_Setup,function Trig_MagicUrn_Setup_Actions)
 endfunction
-function RegisterR11_MagicUrn_Drop takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicUrn_Drop takes nothing returns nothing
     set gg_trg_MagicUrn_Drop=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Drop,gg_unit_nmgv_0065,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_MagicUrn_Drop,function Trig_MagicUrn_Drop_Actions)
 endfunction
-function RegisterR11_MagicUrn_Open takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicUrn_Open takes nothing returns nothing
     set gg_trg_MagicUrn_Open=CreateTrigger()
     call DisableTrigger(gg_trg_MagicUrn_Open)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_MagicUrn_Open,EVENT_PLAYER_UNIT_USE_ITEM)
     call TriggerAddCondition(gg_trg_MagicUrn_Open,Condition(function Trig_MagicUrn_Open_Conditions))
     call TriggerAddAction(gg_trg_MagicUrn_Open,function Trig_MagicUrn_Open_Actions)
 endfunction
-function RegisterR11_MagicUrn_Boss_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_MagicUrn_Boss_Death takes nothing returns nothing
     set gg_trg_MagicUrn_Boss_Death=CreateTrigger()
     call DisableTrigger(gg_trg_MagicUrn_Boss_Death)
     call TriggerRegisterUnitEvent(gg_trg_MagicUrn_Boss_Death,gg_unit_U00C_0024,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_MagicUrn_Boss_Death,function Trig_MagicUrn_Boss_Death_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_MagicUrn_Part1 takes nothing returns nothing
+    call Register_MagicUrn_Setup()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_MagicUrn_Part2 takes nothing returns nothing
+    call Register_MagicUrn_Drop()
+    call Register_MagicUrn_Open()
+    call Register_MagicUrn_Boss_Death()
+endfunction
 
 endlibrary

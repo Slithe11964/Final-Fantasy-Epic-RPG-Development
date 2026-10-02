@@ -10,13 +10,13 @@ function Trig_Patrol_Disabled_Actions takes nothing returns nothing
     call PauseUnitBJ(false,GetTriggerUnit())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Patrol automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Patrol (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Patrol takes nothing returns nothing
 endfunction
-function RegisterR11_Patrol_Disabled takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Patrol_Disabled takes nothing returns nothing
     set gg_trg_Patrol_Disabled=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Patrol_Disabled,Player(0),EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Patrol_Disabled,Player(1),EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER)
@@ -30,7 +30,9 @@ function RegisterR11_Patrol_Disabled takes nothing returns nothing
     call TriggerAddAction(gg_trg_Patrol_Disabled,function Trig_Patrol_Disabled_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Patrol takes nothing returns nothing
+    call Register_Patrol_Disabled()
+endfunction
 
 endlibrary

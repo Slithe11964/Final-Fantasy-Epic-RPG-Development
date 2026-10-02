@@ -308,65 +308,70 @@ function Trig_Lancer_Task_Dragons_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Lancer automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Lancer_Part1 / RegisterTriggers_Lancer_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Lancer takes nothing returns nothing
 endfunction
-function RegisterR11_Lancer_DragonBreath takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_DragonBreath takes nothing returns nothing
     set gg_trg_Lancer_DragonBreath=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonBreath,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Lancer_DragonBreath,Condition(function Trig_Lancer_DragonBreath_Conditions))
     call TriggerAddAction(gg_trg_Lancer_DragonBreath,function Trig_Lancer_DragonBreath_Actions)
 endfunction
-function RegisterR11_Lancer_DragonSlam takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_DragonSlam takes nothing returns nothing
     set gg_trg_Lancer_DragonSlam=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonSlam,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Lancer_DragonSlam,Condition(function Trig_Lancer_DragonSlam_Conditions))
     call TriggerAddAction(gg_trg_Lancer_DragonSlam,function Trig_Lancer_DragonSlam_Actions)
 endfunction
-function RegisterR11_Lancer_DragonAlly takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_DragonAlly takes nothing returns nothing
     set gg_trg_Lancer_DragonAlly=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_DragonAlly,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Lancer_DragonAlly,Condition(function Trig_Lancer_DragonAlly_Conditions))
     call TriggerAddAction(gg_trg_Lancer_DragonAlly,function Trig_Lancer_DragonAlly_Actions)
 endfunction
-function RegisterR11_Lancer_Jump_RangeCheck takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_Jump_RangeCheck takes nothing returns nothing
     set gg_trg_Lancer_Jump_RangeCheck=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump_RangeCheck,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerAddCondition(gg_trg_Lancer_Jump_RangeCheck,Condition(function Trig_Lancer_Jump_RangeCheck_Conditions))
     call TriggerAddAction(gg_trg_Lancer_Jump_RangeCheck,function Trig_Lancer_Jump_RangeCheck_Actions)
 endfunction
-function RegisterR11_Lancer_Jump takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_Jump takes nothing returns nothing
     set gg_trg_Lancer_Jump=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Lancer_Jump,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Lancer_Jump,Condition(function Trig_Lancer_Jump_Conditions))
     call TriggerAddAction(gg_trg_Lancer_Jump,function Trig_Lancer_Jump_Actions)
 endfunction
-function RegisterR11_Lancer_Task_Dragons takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Lancer_Task_Dragons takes nothing returns nothing
     set gg_trg_Lancer_Task_Dragons=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Lancer_Task_Dragons,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Lancer_Task_Dragons,Condition(function Trig_Lancer_Task_Dragons_Conditions))
     call TriggerAddAction(gg_trg_Lancer_Task_Dragons,function Trig_Lancer_Task_Dragons_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Lancer_Part1 takes nothing returns nothing
+    call Register_Lancer_DragonBreath()
+    call Register_Lancer_DragonSlam()
+    call Register_Lancer_DragonAlly()
+    call Register_Lancer_Jump_RangeCheck()
+    call Register_Lancer_Jump()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Lancer_Part2 takes nothing returns nothing
+    call Register_Lancer_Task_Dragons()
+endfunction
 
 endlibrary

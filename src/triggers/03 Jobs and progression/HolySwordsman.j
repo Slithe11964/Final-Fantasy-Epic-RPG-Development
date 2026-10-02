@@ -174,29 +174,30 @@ function Trig_HolySwordsman_Finisher_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_HolySwordsman automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_HolySwordsman (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_HolySwordsman takes nothing returns nothing
 endfunction
-function RegisterR11_HolySwordsman_Eclipse takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HolySwordsman_Eclipse takes nothing returns nothing
     set gg_trg_HolySwordsman_Eclipse=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Eclipse,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_HolySwordsman_Eclipse,Condition(function Trig_HolySwordsman_Eclipse_Conditions))
     call TriggerAddAction(gg_trg_HolySwordsman_Eclipse,function Trig_HolySwordsman_Eclipse_Actions)
 endfunction
-function RegisterR11_HolySwordsman_Finisher takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_HolySwordsman_Finisher takes nothing returns nothing
     set gg_trg_HolySwordsman_Finisher=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HolySwordsman_Finisher,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_HolySwordsman_Finisher,Condition(function Trig_HolySwordsman_Finisher_Conditions))
     call TriggerAddAction(gg_trg_HolySwordsman_Finisher,function Trig_HolySwordsman_Finisher_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_HolySwordsman takes nothing returns nothing
+    call Register_HolySwordsman_Eclipse()
+    call Register_HolySwordsman_Finisher()
+endfunction
 
 endlibrary

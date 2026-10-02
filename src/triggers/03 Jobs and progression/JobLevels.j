@@ -100,28 +100,29 @@ function Trig_JobLevels_Init_Actions takes nothing returns nothing
     call ForForce(udg_PlayingPlayers,function Trig_JobLevels_Init_ComputeJobTotals)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_JobLevels automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_JobLevels (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_JobLevels takes nothing returns nothing
 endfunction
-function RegisterR11_JobLevels_Update takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_JobLevels_Update takes nothing returns nothing
     set gg_trg_JobLevels_Update=CreateTrigger()
     call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Update,udg_JobLevelTimer)
     call TriggerAddAction(gg_trg_JobLevels_Update,function Trig_JobLevels_Update_Actions)
 endfunction
-function RegisterR11_JobLevels_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_JobLevels_Init takes nothing returns nothing
     set gg_trg_JobLevels_Init=CreateTrigger()
     call DisableTrigger(gg_trg_JobLevels_Init)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_JobLevels_Init,udg_JobLevelTimer)
     call TriggerAddAction(gg_trg_JobLevels_Init,function Trig_JobLevels_Init_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_JobLevels takes nothing returns nothing
+    call Register_JobLevels_Update()
+    call Register_JobLevels_Init()
+endfunction
 
 endlibrary

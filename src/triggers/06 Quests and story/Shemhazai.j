@@ -462,63 +462,68 @@ function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A12F',GetTriggerUnit()) // 'A12F': ability "Soul Split"
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Shemhazai automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Shemhazai_Part1 / RegisterTriggers_Shemhazai_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Shemhazai takes nothing returns nothing
 endfunction
-function RegisterR11_Shemhazai_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_Prepare takes nothing returns nothing
     set gg_trg_Shemhazai_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Shemhazai_Prepare,function Trig_Shemhazai_Prepare_Actions)
 endfunction
-function RegisterR11_Shemhazai_Appears takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_Appears takes nothing returns nothing
     set gg_trg_Shemhazai_Appears=CreateTrigger()
     call DisableTrigger(gg_trg_Shemhazai_Appears)
     call TriggerRegisterUnitEvent(gg_trg_Shemhazai_Appears,gg_unit_nbfl_0170,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Shemhazai_Appears,function Trig_Shemhazai_Appears_Actions)
 endfunction
-function RegisterR11_Shemhazai_Spawn_SoulClones takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_Spawn_SoulClones takes nothing returns nothing
     set gg_trg_Shemhazai_Spawn_SoulClones=CreateTrigger()
     call DisableTrigger(gg_trg_Shemhazai_Spawn_SoulClones)
     call TriggerAddAction(gg_trg_Shemhazai_Spawn_SoulClones,function Trig_Shemhazai_Spawn_SoulClones_Actions)
 endfunction
-function RegisterR11_Shemhazai_SurpriseMechanic takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_SurpriseMechanic takes nothing returns nothing
     set gg_trg_Shemhazai_SurpriseMechanic=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SurpriseMechanic,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Shemhazai_SurpriseMechanic,Condition(function Trig_Shemhazai_SurpriseMechanic_Conditions))
     call TriggerAddAction(gg_trg_Shemhazai_SurpriseMechanic,function Trig_Shemhazai_SurpriseMechanic_Actions)
 endfunction
-function RegisterR11_Shemhazai_Phase2_Cuchulainn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_Phase2_Cuchulainn takes nothing returns nothing
     set gg_trg_Shemhazai_Phase2_Cuchulainn=CreateTrigger()
     call DisableTrigger(gg_trg_Shemhazai_Phase2_Cuchulainn)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Shemhazai_Phase2_Cuchulainn,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Shemhazai_Phase2_Cuchulainn,Condition(function Trig_Shemhazai_Phase2_Cuchulainn_Conditions))
     call TriggerAddAction(gg_trg_Shemhazai_Phase2_Cuchulainn,function Trig_Shemhazai_Phase2_Cuchulainn_Actions)
 endfunction
-function RegisterR11_Shemhazai_SoulSplit takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Shemhazai_SoulSplit takes nothing returns nothing
     set gg_trg_Shemhazai_SoulSplit=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Shemhazai_SoulSplit,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Shemhazai_SoulSplit,Condition(function Trig_Shemhazai_SoulSplit_Conditions))
     call TriggerAddAction(gg_trg_Shemhazai_SoulSplit,function Trig_Shemhazai_SoulSplit_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Shemhazai_Part1 takes nothing returns nothing
+    call Register_Shemhazai_Prepare()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Shemhazai_Part2 takes nothing returns nothing
+    call Register_Shemhazai_Appears()
+    call Register_Shemhazai_Spawn_SoulClones()
+    call Register_Shemhazai_SurpriseMechanic()
+    call Register_Shemhazai_Phase2_Cuchulainn()
+    call Register_Shemhazai_SoulSplit()
+endfunction
 
 endlibrary

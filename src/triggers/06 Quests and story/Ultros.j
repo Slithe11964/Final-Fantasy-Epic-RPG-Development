@@ -90,46 +90,45 @@ function Trig_Ultros_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ultros automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ultros (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ultros takes nothing returns nothing
 endfunction
-function RegisterR11_Ultros_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultros_Spawn takes nothing returns nothing
     set gg_trg_Ultros_Spawn=CreateTrigger()
     call DisableTrigger(gg_trg_Ultros_Spawn)
     call TriggerAddAction(gg_trg_Ultros_Spawn,function Trig_Ultros_Spawn_Actions)
 endfunction
-function RegisterR11_Ultros_SummonTentacle takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultros_SummonTentacle takes nothing returns nothing
     set gg_trg_Ultros_SummonTentacle=CreateTrigger()
     call DisableTrigger(gg_trg_Ultros_SummonTentacle)
     call TriggerAddCondition(gg_trg_Ultros_SummonTentacle,Condition(function Trig_Ultros_SummonTentacle_Conditions))
     call TriggerAddAction(gg_trg_Ultros_SummonTentacle,function Trig_Ultros_SummonTentacle_Actions)
 endfunction
-function RegisterR11_Ultros_TentacleDeath takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultros_TentacleDeath takes nothing returns nothing
     set gg_trg_Ultros_TentacleDeath=CreateTrigger()
     call DisableTrigger(gg_trg_Ultros_TentacleDeath)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Ultros_TentacleDeath,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Ultros_TentacleDeath,Condition(function Trig_Ultros_TentacleDeath_Conditions))
     call TriggerAddAction(gg_trg_Ultros_TentacleDeath,function Trig_Ultros_TentacleDeath_Actions)
 endfunction
-function RegisterR11_Ultros_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ultros_Death takes nothing returns nothing
     set gg_trg_Ultros_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Ultros_Death)
     call TriggerAddAction(gg_trg_Ultros_Death,function Trig_Ultros_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ultros takes nothing returns nothing
+    call Register_Ultros_Spawn()
+    call Register_Ultros_SummonTentacle()
+    call Register_Ultros_TentacleDeath()
+    call Register_Ultros_Death()
+endfunction
 
 endlibrary

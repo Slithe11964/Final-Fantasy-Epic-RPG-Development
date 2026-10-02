@@ -48,22 +48,20 @@ function Trig_Alma_Missing_Notice_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Alma automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Alma (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Alma takes nothing returns nothing
 endfunction
-function RegisterR11_Alma_Disappear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Alma_Disappear takes nothing returns nothing
     set gg_trg_Alma_Disappear=CreateTrigger()
     call DisableTrigger(gg_trg_Alma_Disappear)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Alma_Disappear,udg_AlmaDisappearTimer)
     call TriggerAddAction(gg_trg_Alma_Disappear,function Trig_Alma_Disappear_Actions)
 endfunction
-function RegisterR11_Alma_Missing_Notice takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Alma_Missing_Notice takes nothing returns nothing
     set gg_trg_Alma_Missing_Notice=CreateTrigger()
     call DisableTrigger(gg_trg_Alma_Missing_Notice)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Alma_Missing_Notice,550.,gg_unit_Hjai_0093)
@@ -71,7 +69,10 @@ function RegisterR11_Alma_Missing_Notice takes nothing returns nothing
     call TriggerAddAction(gg_trg_Alma_Missing_Notice,function Trig_Alma_Missing_Notice_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Alma takes nothing returns nothing
+    call Register_Alma_Disappear()
+    call Register_Alma_Missing_Notice()
+endfunction
 
 endlibrary

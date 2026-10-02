@@ -67,20 +67,22 @@ function Trig_Quick_Cast_Actions takes nothing returns nothing
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Quick automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Quick (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Quick takes nothing returns nothing
 endfunction
-function RegisterR11_Quick_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Quick_Cast takes nothing returns nothing
     set gg_trg_Quick_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Quick_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Quick_Cast,Condition(function Trig_Quick_Cast_Conditions))
     call TriggerAddAction(gg_trg_Quick_Cast,function Trig_Quick_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Quick takes nothing returns nothing
+    call Register_Quick_Cast()
+endfunction
 
 endlibrary

@@ -116,13 +116,13 @@ function Trig_GnollHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_GnollHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_GnollHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_GnollHunt takes nothing returns nothing
 endfunction
-function RegisterR11_GnollHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GnollHunt_Start takes nothing returns nothing
     set gg_trg_GnollHunt_Start=CreateTrigger()
     call DisableTrigger(gg_trg_GnollHunt_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_GnollHunt_Start,Player(0),true)
@@ -136,20 +136,16 @@ function RegisterR11_GnollHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_GnollHunt_Start,Condition(function Trig_GnollHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_GnollHunt_Start,function Trig_GnollHunt_Start_Actions)
 endfunction
-function RegisterR11_GnollHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GnollHunt_Count takes nothing returns nothing
     set gg_trg_GnollHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_GnollHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_GnollHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_GnollHunt_Count,Condition(function Trig_GnollHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_GnollHunt_Count,function Trig_GnollHunt_Count_Actions)
 endfunction
-function RegisterR11_GnollHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_GnollHunt_Reward takes nothing returns nothing
     set gg_trg_GnollHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_GnollHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_GnollHunt_Reward,450.,gg_unit_n0BV_0229)
@@ -157,7 +153,11 @@ function RegisterR11_GnollHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_GnollHunt_Reward,function Trig_GnollHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_GnollHunt takes nothing returns nothing
+    call Register_GnollHunt_Start()
+    call Register_GnollHunt_Count()
+    call Register_GnollHunt_Reward()
+endfunction
 
 endlibrary

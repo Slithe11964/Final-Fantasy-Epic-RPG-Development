@@ -99,43 +99,37 @@ function Trig_Ambush_Skeletons_4_Actions takes nothing returns nothing
     call RemoveLocation(udg_RetreatPoint)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Ambush automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Ambush (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Ambush takes nothing returns nothing
 endfunction
-function RegisterR11_Ambush_Skeletons_1 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ambush_Skeletons_1 takes nothing returns nothing
     set gg_trg_Ambush_Skeletons_1=CreateTrigger()
     call DisableTrigger(gg_trg_Ambush_Skeletons_1)
     call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_1,gg_rct_681)
     call TriggerAddCondition(gg_trg_Ambush_Skeletons_1,Condition(function Trig_Ambush_Skeletons_1_Conditions))
     call TriggerAddAction(gg_trg_Ambush_Skeletons_1,function Trig_Ambush_Skeletons_1_Actions)
 endfunction
-function RegisterR11_Ambush_Skeletons_2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ambush_Skeletons_2 takes nothing returns nothing
     set gg_trg_Ambush_Skeletons_2=CreateTrigger()
     call DisableTrigger(gg_trg_Ambush_Skeletons_2)
     call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_2,gg_rct_683)
     call TriggerAddCondition(gg_trg_Ambush_Skeletons_2,Condition(function Trig_Ambush_Skeletons_2_Conditions))
     call TriggerAddAction(gg_trg_Ambush_Skeletons_2,function Trig_Ambush_Skeletons_2_Actions)
 endfunction
-function RegisterR11_Ambush_Skeletons_3 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ambush_Skeletons_3 takes nothing returns nothing
     set gg_trg_Ambush_Skeletons_3=CreateTrigger()
     call DisableTrigger(gg_trg_Ambush_Skeletons_3)
     call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_3,gg_rct_680)
     call TriggerAddCondition(gg_trg_Ambush_Skeletons_3,Condition(function Trig_Ambush_Skeletons_3_Conditions))
     call TriggerAddAction(gg_trg_Ambush_Skeletons_3,function Trig_Ambush_Skeletons_3_Actions)
 endfunction
-function RegisterR11_Ambush_Skeletons_4 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Ambush_Skeletons_4 takes nothing returns nothing
     set gg_trg_Ambush_Skeletons_4=CreateTrigger()
     call DisableTrigger(gg_trg_Ambush_Skeletons_4)
     call TriggerRegisterEnterRectSimple(gg_trg_Ambush_Skeletons_4,gg_rct_682)
@@ -143,7 +137,12 @@ function RegisterR11_Ambush_Skeletons_4 takes nothing returns nothing
     call TriggerAddAction(gg_trg_Ambush_Skeletons_4,function Trig_Ambush_Skeletons_4_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Ambush takes nothing returns nothing
+    call Register_Ambush_Skeletons_1()
+    call Register_Ambush_Skeletons_2()
+    call Register_Ambush_Skeletons_3()
+    call Register_Ambush_Skeletons_4()
+endfunction
 
 endlibrary

@@ -182,47 +182,46 @@ function Trig_Oblivion_Dummy_Death_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_OblivionDummyGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Oblivion automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Oblivion (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Oblivion takes nothing returns nothing
 endfunction
-function RegisterR11_Oblivion_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oblivion_Cast takes nothing returns nothing
     set gg_trg_Oblivion_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Oblivion_Cast,Condition(function Trig_Oblivion_Cast_Conditions))
     call TriggerAddAction(gg_trg_Oblivion_Cast,function Trig_Oblivion_Cast_Actions)
 endfunction
-function RegisterR11_Oblivion_Pulse_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oblivion_Pulse_Start takes nothing returns nothing
     set gg_trg_Oblivion_Pulse_Start=CreateTrigger()
     call TriggerRegisterTimerEventPeriodic(gg_trg_Oblivion_Pulse_Start,.8)
     call TriggerAddCondition(gg_trg_Oblivion_Pulse_Start,Condition(function Trig_Oblivion_Pulse_Start_Conditions))
     call TriggerAddAction(gg_trg_Oblivion_Pulse_Start,function Trig_Oblivion_Pulse_Start_Actions)
 endfunction
-function RegisterR11_Oblivion_Pulse takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oblivion_Pulse takes nothing returns nothing
     set gg_trg_Oblivion_Pulse=CreateTrigger()
     call DisableTrigger(gg_trg_Oblivion_Pulse)
     call TriggerAddCondition(gg_trg_Oblivion_Pulse,Condition(function Trig_Oblivion_Pulse_Conditions))
     call TriggerAddAction(gg_trg_Oblivion_Pulse,function Trig_Oblivion_Pulse_Actions)
 endfunction
-function RegisterR11_Oblivion_Dummy_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Oblivion_Dummy_Death takes nothing returns nothing
     set gg_trg_Oblivion_Dummy_Death=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Oblivion_Dummy_Death,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Oblivion_Dummy_Death,Condition(function Trig_Oblivion_Dummy_Death_Conditions))
     call TriggerAddAction(gg_trg_Oblivion_Dummy_Death,function Trig_Oblivion_Dummy_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Oblivion takes nothing returns nothing
+    call Register_Oblivion_Cast()
+    call Register_Oblivion_Pulse_Start()
+    call Register_Oblivion_Pulse()
+    call Register_Oblivion_Dummy_Death()
+endfunction
 
 endlibrary

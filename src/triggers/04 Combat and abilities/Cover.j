@@ -27,20 +27,22 @@ function Trig_Cover_Cast_Actions takes nothing returns nothing
     call Link_SaveCaster(GetTriggerUnit(),GetSpellTargetUnit(),I2R(udg_TempInteger))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cover automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cover (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cover takes nothing returns nothing
 endfunction
-function RegisterR11_Cover_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cover_Cast takes nothing returns nothing
     set gg_trg_Cover_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Cover_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Cover_Cast,Condition(function Trig_Cover_Cast_Conditions))
     call TriggerAddAction(gg_trg_Cover_Cast,function Trig_Cover_Cast_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Cover takes nothing returns nothing
+    call Register_Cover_Cast()
+endfunction
 
 endlibrary

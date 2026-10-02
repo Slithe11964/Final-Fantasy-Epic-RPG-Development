@@ -5,13 +5,13 @@ function Trig_TextSkip_Command_Actions takes nothing returns nothing
     call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+" changed text speed to |cffffcc00Skip|r"))
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_TextSkip automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_TextSkip (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_TextSkip takes nothing returns nothing
 endfunction
-function RegisterR11_TextSkip_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TextSkip_Command takes nothing returns nothing
     set gg_trg_TextSkip_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_TextSkip_Command,Player(0),"-skip",true)
     call TriggerRegisterPlayerChatEvent(gg_trg_TextSkip_Command,Player(1),"-skip",true)
@@ -24,7 +24,9 @@ function RegisterR11_TextSkip_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_TextSkip_Command,function Trig_TextSkip_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_TextSkip takes nothing returns nothing
+    call Register_TextSkip_Command()
+endfunction
 
 endlibrary

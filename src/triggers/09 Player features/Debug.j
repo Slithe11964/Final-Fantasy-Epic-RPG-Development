@@ -22,20 +22,22 @@ function Trig_Debug_ImmortalDeath_Actions takes nothing returns nothing
     call DisplayTimedTextToForce(GetPlayersAll(),30,"Please screenshot this information and post it in our bug reports.")
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Debug automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Debug (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Debug takes nothing returns nothing
 endfunction
-function RegisterR11_Debug_ImmortalDeath takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Debug_ImmortalDeath takes nothing returns nothing
     set gg_trg_Debug_ImmortalDeath=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Debug_ImmortalDeath,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Debug_ImmortalDeath,Condition(function Trig_Debug_ImmortalDeath_Conditions))
     call TriggerAddAction(gg_trg_Debug_ImmortalDeath,function Trig_Debug_ImmortalDeath_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Debug takes nothing returns nothing
+    call Register_Debug_ImmortalDeath()
+endfunction
 
 endlibrary

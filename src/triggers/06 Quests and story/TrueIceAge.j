@@ -1029,66 +1029,63 @@ function Trig_TrueIceAge_Victory_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_TrueIceAge automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_TrueIceAge (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_TrueIceAge takes nothing returns nothing
 endfunction
-function RegisterR11_TrueIceAge_GateUnlock takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_GateUnlock takes nothing returns nothing
     set gg_trg_TrueIceAge_GateUnlock=CreateTrigger()
     call TriggerRegisterUnitInRangeSimple(gg_trg_TrueIceAge_GateUnlock,700.,gg_unit_ndmg_0124)
     call TriggerAddCondition(gg_trg_TrueIceAge_GateUnlock,Condition(function Trig_TrueIceAge_GateUnlock_Conditions))
     call TriggerAddAction(gg_trg_TrueIceAge_GateUnlock,function Trig_TrueIceAge_GateUnlock_Actions)
 endfunction
-function RegisterR11_TrueIceAge_Summon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_Summon takes nothing returns nothing
     set gg_trg_TrueIceAge_Summon=CreateTrigger()
     call DisableTrigger(gg_trg_TrueIceAge_Summon)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_TrueIceAge_Summon,Player($B),EVENT_PLAYER_UNIT_SPELL_EFFECT) // $B = 11
     call TriggerAddCondition(gg_trg_TrueIceAge_Summon,Condition(function Trig_TrueIceAge_Summon_Conditions))
     call TriggerAddAction(gg_trg_TrueIceAge_Summon,function Trig_TrueIceAge_Summon_Actions)
 endfunction
-function RegisterR11_TrueIceAge_SpawnBrave takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_SpawnBrave takes nothing returns nothing
     set gg_trg_TrueIceAge_SpawnBrave=CreateTrigger()
     call DisableTrigger(gg_trg_TrueIceAge_SpawnBrave)
     call TriggerAddAction(gg_trg_TrueIceAge_SpawnBrave,function Trig_TrueIceAge_SpawnBrave_Actions)
 endfunction
-function RegisterR11_TrueIceAge_BossIntro takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_BossIntro takes nothing returns nothing
     set gg_trg_TrueIceAge_BossIntro=CreateTrigger()
     call DisableTrigger(gg_trg_TrueIceAge_BossIntro)
     call TriggerRegisterEnterRectSimple(gg_trg_TrueIceAge_BossIntro,gg_rct_657)
     call TriggerAddCondition(gg_trg_TrueIceAge_BossIntro,Condition(function Trig_TrueIceAge_BossIntro_Conditions))
     call TriggerAddAction(gg_trg_TrueIceAge_BossIntro,function Trig_TrueIceAge_BossIntro_Actions)
 endfunction
-function RegisterR11_TrueIceAge_FreezeTimeout takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_FreezeTimeout takes nothing returns nothing
     set gg_trg_TrueIceAge_FreezeTimeout=CreateTrigger()
     call DisableTrigger(gg_trg_TrueIceAge_FreezeTimeout)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_TrueIceAge_FreezeTimeout,udg_WorldFreezeTimer)
     call TriggerAddAction(gg_trg_TrueIceAge_FreezeTimeout,function Trig_TrueIceAge_FreezeTimeout_Actions)
 endfunction
-function RegisterR11_TrueIceAge_Victory takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TrueIceAge_Victory takes nothing returns nothing
     set gg_trg_TrueIceAge_Victory=CreateTrigger()
     call DisableTrigger(gg_trg_TrueIceAge_Victory)
     call TriggerAddCondition(gg_trg_TrueIceAge_Victory,Condition(function Trig_TrueIceAge_Victory_Conditions))
     call TriggerAddAction(gg_trg_TrueIceAge_Victory,function Trig_TrueIceAge_Victory_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_TrueIceAge takes nothing returns nothing
+    call Register_TrueIceAge_GateUnlock()
+    call Register_TrueIceAge_Summon()
+    call Register_TrueIceAge_SpawnBrave()
+    call Register_TrueIceAge_BossIntro()
+    call Register_TrueIceAge_FreezeTimeout()
+    call Register_TrueIceAge_Victory()
+endfunction
 
 endlibrary

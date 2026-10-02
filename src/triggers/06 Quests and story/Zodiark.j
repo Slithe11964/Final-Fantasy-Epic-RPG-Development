@@ -246,45 +246,52 @@ function Trig_Zodiark_Darkja_Actions takes nothing returns nothing
     call DestroyGroup(udg_TempGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Zodiark automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Zodiark_Part1 / RegisterTriggers_Zodiark_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Zodiark takes nothing returns nothing
 endfunction
-function RegisterR11_Zodiark_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zodiark_Prepare takes nothing returns nothing
     set gg_trg_Zodiark_Prepare=CreateTrigger()
     call TriggerAddAction(gg_trg_Zodiark_Prepare,function Trig_Zodiark_Prepare_Actions)
 endfunction
-function RegisterR11_Zodiark_Encounter takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zodiark_Encounter takes nothing returns nothing
     set gg_trg_Zodiark_Encounter=CreateTrigger()
     call DisableTrigger(gg_trg_Zodiark_Encounter)
     call TriggerAddCondition(gg_trg_Zodiark_Encounter,Condition(function Trig_Zodiark_Encounter_Conditions))
     call TriggerAddAction(gg_trg_Zodiark_Encounter,function Trig_Zodiark_Encounter_Actions)
 endfunction
-function RegisterR11_Zodiark_BanishRay takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zodiark_BanishRay takes nothing returns nothing
     set gg_trg_Zodiark_BanishRay=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_BanishRay,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Zodiark_BanishRay,Condition(function Trig_Zodiark_BanishRay_Conditions))
     call TriggerAddAction(gg_trg_Zodiark_BanishRay,function Trig_Zodiark_BanishRay_Actions)
 endfunction
-function RegisterR11_Zodiark_Darkja takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Zodiark_Darkja takes nothing returns nothing
     set gg_trg_Zodiark_Darkja=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Zodiark_Darkja,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Zodiark_Darkja,Condition(function Trig_Zodiark_Darkja_Conditions))
     call TriggerAddAction(gg_trg_Zodiark_Darkja,function Trig_Zodiark_Darkja_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Zodiark_Part1 takes nothing returns nothing
+    call Register_Zodiark_Prepare()
+    call Register_Zodiark_Encounter()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Zodiark_Part2 takes nothing returns nothing
+    call Register_Zodiark_BanishRay()
+    call Register_Zodiark_Darkja()
+endfunction
 
 endlibrary

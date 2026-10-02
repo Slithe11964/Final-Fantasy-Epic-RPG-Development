@@ -342,29 +342,25 @@ function Trig_Gilgamesh_Defeat_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Gilgamesh automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Gilgamesh_Part1 / RegisterTriggers_Gilgamesh_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Gilgamesh takes nothing returns nothing
 endfunction
-function RegisterR11_Gilgamesh_Gift takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gilgamesh_Gift takes nothing returns nothing
     set gg_trg_Gilgamesh_Gift=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Gilgamesh_Gift,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_Gilgamesh_Gift,Condition(function Trig_Gilgamesh_Gift_Conditions))
     call TriggerAddAction(gg_trg_Gilgamesh_Gift,function Trig_Gilgamesh_Gift_Actions)
 endfunction
-function RegisterR11_Gilgamesh_Init takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gilgamesh_Init takes nothing returns nothing
     set gg_trg_Gilgamesh_Init=CreateTrigger()
     call TriggerAddAction(gg_trg_Gilgamesh_Init,function Trig_Gilgamesh_Init_Actions)
 endfunction
-function RegisterR11_Gilgamesh_Appear takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gilgamesh_Appear takes nothing returns nothing
     set gg_trg_Gilgamesh_Appear=CreateTrigger()
     call DisableTrigger(gg_trg_Gilgamesh_Appear)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Gilgamesh_Appear,128.,gg_unit_N03D_0165)
@@ -373,26 +369,36 @@ function RegisterR11_Gilgamesh_Appear takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Gilgamesh_Appear,Condition(function Trig_Gilgamesh_Appear_Conditions))
     call TriggerAddAction(gg_trg_Gilgamesh_Appear,function Trig_Gilgamesh_Appear_Actions)
 endfunction
-function RegisterR11_Gilgamesh_Phase2 takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gilgamesh_Phase2 takes nothing returns nothing
     set gg_trg_Gilgamesh_Phase2=CreateTrigger()
     call DisableTrigger(gg_trg_Gilgamesh_Phase2)
     call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Phase2,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Gilgamesh_Phase2,function Trig_Gilgamesh_Phase2_Actions)
 endfunction
-function RegisterR11_Gilgamesh_Defeat takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Gilgamesh_Defeat takes nothing returns nothing
     set gg_trg_Gilgamesh_Defeat=CreateTrigger()
     call DisableTrigger(gg_trg_Gilgamesh_Defeat)
     call TriggerRegisterUnitEvent(gg_trg_Gilgamesh_Defeat,gg_unit_N03D_0165,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Gilgamesh_Defeat,function Trig_Gilgamesh_Defeat_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Gilgamesh_Part1 takes nothing returns nothing
+    call Register_Gilgamesh_Gift()
+    call Register_Gilgamesh_Init()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Gilgamesh_Part2 takes nothing returns nothing
+    call Register_Gilgamesh_Appear()
+    call Register_Gilgamesh_Phase2()
+    call Register_Gilgamesh_Defeat()
+endfunction
 
 endlibrary

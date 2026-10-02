@@ -71,38 +71,38 @@ function Trig_Momentum_Decay_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Momentum automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Momentum (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Momentum takes nothing returns nothing
 endfunction
-function RegisterR11_Momentum_Cast takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Momentum_Cast takes nothing returns nothing
     set gg_trg_Momentum_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Momentum_Cast,Condition(function Trig_Momentum_Cast_Conditions))
     call TriggerAddAction(gg_trg_Momentum_Cast,function Trig_Momentum_Cast_Actions)
 endfunction
-function RegisterR11_Momentum_Apply takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Momentum_Apply takes nothing returns nothing
     set gg_trg_Momentum_Apply=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Momentum_Apply,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Momentum_Apply,Condition(function Trig_Momentum_Apply_Conditions))
     call TriggerAddAction(gg_trg_Momentum_Apply,function Trig_Momentum_Apply_Actions)
 endfunction
-function RegisterR11_Momentum_Decay takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Momentum_Decay takes nothing returns nothing
     set gg_trg_Momentum_Decay=CreateTrigger()
     call DisableTrigger(gg_trg_Momentum_Decay)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Momentum_Decay,udg_MomentumTimer)
     call TriggerAddAction(gg_trg_Momentum_Decay,function Trig_Momentum_Decay_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Momentum takes nothing returns nothing
+    call Register_Momentum_Cast()
+    call Register_Momentum_Apply()
+    call Register_Momentum_Decay()
+endfunction
 
 endlibrary

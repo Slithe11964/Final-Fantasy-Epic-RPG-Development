@@ -113,13 +113,13 @@ function Trig_WendigoHunt_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_WendigoHunt automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_WendigoHunt (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_WendigoHunt takes nothing returns nothing
 endfunction
-function RegisterR11_WendigoHunt_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_WendigoHunt_Start takes nothing returns nothing
     set gg_trg_WendigoHunt_Start=CreateTrigger()
     call DisableTrigger(gg_trg_WendigoHunt_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_WendigoHunt_Start,Player(0),true)
@@ -133,20 +133,16 @@ function RegisterR11_WendigoHunt_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_WendigoHunt_Start,Condition(function Trig_WendigoHunt_Start_Conditions))
     call TriggerAddAction(gg_trg_WendigoHunt_Start,function Trig_WendigoHunt_Start_Actions)
 endfunction
-function RegisterR11_WendigoHunt_Count takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_WendigoHunt_Count takes nothing returns nothing
     set gg_trg_WendigoHunt_Count=CreateTrigger()
     call DisableTrigger(gg_trg_WendigoHunt_Count)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_WendigoHunt_Count,EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_WendigoHunt_Count,Condition(function Trig_WendigoHunt_Count_Conditions))
     call TriggerAddAction(gg_trg_WendigoHunt_Count,function Trig_WendigoHunt_Count_Actions)
 endfunction
-function RegisterR11_WendigoHunt_Reward takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_WendigoHunt_Reward takes nothing returns nothing
     set gg_trg_WendigoHunt_Reward=CreateTrigger()
     call DisableTrigger(gg_trg_WendigoHunt_Reward)
     call TriggerRegisterUnitInRangeSimple(gg_trg_WendigoHunt_Reward,450.,gg_unit_h030_0243)
@@ -154,7 +150,11 @@ function RegisterR11_WendigoHunt_Reward takes nothing returns nothing
     call TriggerAddAction(gg_trg_WendigoHunt_Reward,function Trig_WendigoHunt_Reward_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_WendigoHunt takes nothing returns nothing
+    call Register_WendigoHunt_Start()
+    call Register_WendigoHunt_Count()
+    call Register_WendigoHunt_Reward()
+endfunction
 
 endlibrary

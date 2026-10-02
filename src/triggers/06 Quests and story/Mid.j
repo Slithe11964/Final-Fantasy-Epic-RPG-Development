@@ -170,31 +170,27 @@ function Trig_Mid_Crossbow_Talk_Enable_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Mid automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Mid_Part1 / RegisterTriggers_Mid_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Mid takes nothing returns nothing
 endfunction
-function RegisterR11_Mid_Cage_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mid_Cage_Ping takes nothing returns nothing
     set gg_trg_Mid_Cage_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_Mid_Cage_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Cage_Ping,15.)
     call TriggerAddAction(gg_trg_Mid_Cage_Ping,function Trig_Mid_Cage_Ping_Actions)
 endfunction
-function RegisterR11_Mid_Freed takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mid_Freed takes nothing returns nothing
     set gg_trg_Mid_Freed=CreateTrigger()
     call DisableTrigger(gg_trg_Mid_Freed)
     call TriggerRegisterDeathEvent(gg_trg_Mid_Freed,gg_dest_LOcg_0010)
     call TriggerAddAction(gg_trg_Mid_Freed,function Trig_Mid_Freed_Actions)
 endfunction
-function RegisterR11_Mid_Letter_Give takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mid_Letter_Give takes nothing returns nothing
     set gg_trg_Mid_Letter_Give=CreateTrigger()
     call DisableTrigger(gg_trg_Mid_Letter_Give)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Mid_Letter_Give,Player(0),true)
@@ -208,26 +204,36 @@ function RegisterR11_Mid_Letter_Give takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Mid_Letter_Give,Condition(function Trig_Mid_Letter_Give_Conditions))
     call TriggerAddAction(gg_trg_Mid_Letter_Give,function Trig_Mid_Letter_Give_Actions)
 endfunction
-function RegisterR11_Mid_Letter_Ping takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mid_Letter_Ping takes nothing returns nothing
     set gg_trg_Mid_Letter_Ping=CreateTrigger()
     call DisableTrigger(gg_trg_Mid_Letter_Ping)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Mid_Letter_Ping,15.)
     call TriggerAddCondition(gg_trg_Mid_Letter_Ping,Condition(function Trig_Mid_Letter_Ping_Conditions))
     call TriggerAddAction(gg_trg_Mid_Letter_Ping,function Trig_Mid_Letter_Ping_Actions)
 endfunction
-function RegisterR11_Mid_Crossbow_Talk_Enable takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Mid_Crossbow_Talk_Enable takes nothing returns nothing
     set gg_trg_Mid_Crossbow_Talk_Enable=CreateTrigger()
     call DisableTrigger(gg_trg_Mid_Crossbow_Talk_Enable)
     call TriggerAddAction(gg_trg_Mid_Crossbow_Talk_Enable,function Trig_Mid_Crossbow_Talk_Enable_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Mid_Part1 takes nothing returns nothing
+    call Register_Mid_Cage_Ping()
+    call Register_Mid_Freed()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Mid_Part2 takes nothing returns nothing
+    call Register_Mid_Letter_Give()
+    call Register_Mid_Letter_Ping()
+    call Register_Mid_Crossbow_Talk_Enable()
+endfunction
 
 endlibrary

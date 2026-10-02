@@ -145,29 +145,38 @@ function Trig_Auto_Crossbow_Volley_Actions takes nothing returns nothing
     set owningPlayer=null
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Auto automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Auto_Part1 / RegisterTriggers_Auto_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Auto takes nothing returns nothing
 endfunction
-function RegisterR11_Auto_Potion_AI takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Auto_Potion_AI takes nothing returns nothing
     set gg_trg_Auto_Potion_AI=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Potion_AI,EVENT_PLAYER_UNIT_ATTACKED)
     call TriggerAddCondition(gg_trg_Auto_Potion_AI,Condition(function Trig_Auto_Potion_AI_Conditions))
     call TriggerAddAction(gg_trg_Auto_Potion_AI,function Trig_Auto_Potion_AI_Actions)
 endfunction
-function RegisterR11_Auto_Crossbow_Volley takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Auto_Crossbow_Volley takes nothing returns nothing
     set gg_trg_Auto_Crossbow_Volley=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Auto_Crossbow_Volley,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Auto_Crossbow_Volley,Condition(function Trig_Auto_Crossbow_Volley_Conditions))
     call TriggerAddAction(gg_trg_Auto_Crossbow_Volley,function Trig_Auto_Crossbow_Volley_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Auto_Part1 takes nothing returns nothing
+    call Register_Auto_Potion_AI()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Auto_Part2 takes nothing returns nothing
+    call Register_Auto_Crossbow_Volley()
+endfunction
 
 endlibrary

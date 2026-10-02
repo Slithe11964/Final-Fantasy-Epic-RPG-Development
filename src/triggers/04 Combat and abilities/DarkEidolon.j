@@ -51,13 +51,13 @@ function Trig_DarkEidolon_Death_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_DarkEidolon automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_DarkEidolon (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_DarkEidolon takes nothing returns nothing
 endfunction
-function RegisterR11_DarkEidolon_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_DarkEidolon_Death takes nothing returns nothing
     set gg_trg_DarkEidolon_Death=CreateTrigger()
     call DisableTrigger(gg_trg_DarkEidolon_Death)
     call TriggerRegisterUnitEvent(gg_trg_DarkEidolon_Death,gg_unit_E00C_0046,EVENT_UNIT_DEATH)
@@ -80,7 +80,9 @@ function RegisterR11_DarkEidolon_Death takes nothing returns nothing
     call TriggerAddAction(gg_trg_DarkEidolon_Death,function Trig_DarkEidolon_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_DarkEidolon takes nothing returns nothing
+    call Register_DarkEidolon_Death()
+endfunction
 
 endlibrary

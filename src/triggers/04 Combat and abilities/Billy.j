@@ -12,19 +12,21 @@ function Trig_Billy_ShowTalkIcon_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Billy automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Billy (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Billy takes nothing returns nothing
 endfunction
-function RegisterR11_Billy_ShowTalkIcon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Billy_ShowTalkIcon takes nothing returns nothing
     set gg_trg_Billy_ShowTalkIcon=CreateTrigger()
     call DisableTrigger(gg_trg_Billy_ShowTalkIcon)
     call TriggerAddAction(gg_trg_Billy_ShowTalkIcon,function Trig_Billy_ShowTalkIcon_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Billy takes nothing returns nothing
+    call Register_Billy_ShowTalkIcon()
+endfunction
 
 endlibrary

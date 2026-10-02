@@ -57,13 +57,13 @@ function Trig_War_Command_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_War automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_War (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_War takes nothing returns nothing
 endfunction
-function RegisterR11_War_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_War_Command takes nothing returns nothing
     set gg_trg_War_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(0),"-war",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_War_Command,Player(1),"-war",false)
@@ -77,7 +77,9 @@ function RegisterR11_War_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_War_Command,function Trig_War_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_War takes nothing returns nothing
+    call Register_War_Command()
+endfunction
 
 endlibrary

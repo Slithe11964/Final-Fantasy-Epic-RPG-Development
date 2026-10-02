@@ -518,13 +518,13 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Valigarmanda automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Valigarmanda (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Valigarmanda takes nothing returns nothing
 endfunction
-function RegisterR11_Valigarmanda_Confront takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Valigarmanda_Confront takes nothing returns nothing
     set gg_trg_Valigarmanda_Confront=CreateTrigger()
     call DisableTrigger(gg_trg_Valigarmanda_Confront)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Valigarmanda_Confront,250.,gg_unit_n0MC_0265)
@@ -533,10 +533,8 @@ function RegisterR11_Valigarmanda_Confront takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Valigarmanda_Confront,Condition(function Trig_Valigarmanda_Confront_Conditions))
     call TriggerAddAction(gg_trg_Valigarmanda_Confront,function Trig_Valigarmanda_Confront_Actions)
 endfunction
-function RegisterR11_Valigarmanda_Wave_Cleared takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Valigarmanda_Wave_Cleared takes nothing returns nothing
     set gg_trg_Valigarmanda_Wave_Cleared=CreateTrigger()
     call DisableTrigger(gg_trg_Valigarmanda_Wave_Cleared)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Valigarmanda_Wave_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -544,34 +542,34 @@ function RegisterR11_Valigarmanda_Wave_Cleared takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Valigarmanda_Wave_Cleared,Condition(function Trig_Valigarmanda_Wave_Cleared_Conditions))
     call TriggerAddAction(gg_trg_Valigarmanda_Wave_Cleared,function Trig_Valigarmanda_Wave_Cleared_Actions)
 endfunction
-function RegisterR11_Valigarmanda_Wave_Spawn takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Valigarmanda_Wave_Spawn takes nothing returns nothing
     set gg_trg_Valigarmanda_Wave_Spawn=CreateTrigger()
     call DisableTrigger(gg_trg_Valigarmanda_Wave_Spawn)
     call TriggerAddAction(gg_trg_Valigarmanda_Wave_Spawn,function Trig_Valigarmanda_Wave_Spawn_Actions)
 endfunction
-function RegisterR11_Valigarmanda_Wave_Reset takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Valigarmanda_Wave_Reset takes nothing returns nothing
     set gg_trg_Valigarmanda_Wave_Reset=CreateTrigger()
     call DisableTrigger(gg_trg_Valigarmanda_Wave_Reset)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Valigarmanda_Wave_Reset,udg_ValigarmandaWaveTimer)
     call TriggerAddAction(gg_trg_Valigarmanda_Wave_Reset,function Trig_Valigarmanda_Wave_Reset_Actions)
 endfunction
-function RegisterR11_Valigarmanda_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Valigarmanda_Death takes nothing returns nothing
     set gg_trg_Valigarmanda_Death=CreateTrigger()
     call DisableTrigger(gg_trg_Valigarmanda_Death)
     call TriggerRegisterUnitEvent(gg_trg_Valigarmanda_Death,gg_unit_n0MC_0265,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Valigarmanda_Death,function Trig_Valigarmanda_Death_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Valigarmanda takes nothing returns nothing
+    call Register_Valigarmanda_Confront()
+    call Register_Valigarmanda_Wave_Cleared()
+    call Register_Valigarmanda_Wave_Spawn()
+    call Register_Valigarmanda_Wave_Reset()
+    call Register_Valigarmanda_Death()
+endfunction
 
 endlibrary

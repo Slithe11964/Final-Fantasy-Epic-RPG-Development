@@ -159,13 +159,13 @@ function Trig_Andre_Legendary_Rules_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Andre automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Andre (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Andre takes nothing returns nothing
 endfunction
-function RegisterR11_Andre_Elysium_Reveal takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Andre_Elysium_Reveal takes nothing returns nothing
     set gg_trg_Andre_Elysium_Reveal=CreateTrigger()
     call DisableTrigger(gg_trg_Andre_Elysium_Reveal)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Elysium_Reveal,Player(0),true)
@@ -179,10 +179,8 @@ function RegisterR11_Andre_Elysium_Reveal takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Andre_Elysium_Reveal,Condition(function Trig_Andre_Elysium_Reveal_Conditions))
     call TriggerAddAction(gg_trg_Andre_Elysium_Reveal,function Trig_Andre_Elysium_Reveal_Actions)
 endfunction
-function RegisterR11_Andre_Legendary_Rules takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Andre_Legendary_Rules takes nothing returns nothing
     set gg_trg_Andre_Legendary_Rules=CreateTrigger()
     call DisableTrigger(gg_trg_Andre_Legendary_Rules)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Andre_Legendary_Rules,Player(0),true)
@@ -197,7 +195,10 @@ function RegisterR11_Andre_Legendary_Rules takes nothing returns nothing
     call TriggerAddAction(gg_trg_Andre_Legendary_Rules,function Trig_Andre_Legendary_Rules_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Andre takes nothing returns nothing
+    call Register_Andre_Elysium_Reveal()
+    call Register_Andre_Legendary_Rules()
+endfunction
 
 endlibrary

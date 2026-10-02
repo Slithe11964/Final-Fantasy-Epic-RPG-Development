@@ -86,21 +86,19 @@ function Trig_Elixir_Deliver_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Elixir automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Elixir (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Elixir takes nothing returns nothing
 endfunction
-function RegisterR11_Elixir_Prepare takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elixir_Prepare takes nothing returns nothing
     set gg_trg_Elixir_Prepare=CreateTrigger()
     call DisableTrigger(gg_trg_Elixir_Prepare)
     call TriggerAddAction(gg_trg_Elixir_Prepare,function Trig_Elixir_Prepare_Actions)
 endfunction
-function RegisterR11_Elixir_Start takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elixir_Start takes nothing returns nothing
     set gg_trg_Elixir_Start=CreateTrigger()
     call DisableTrigger(gg_trg_Elixir_Start)
     call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Elixir_Start,Player(0),true)
@@ -114,10 +112,8 @@ function RegisterR11_Elixir_Start takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Elixir_Start,Condition(function Trig_Elixir_Start_Conditions))
     call TriggerAddAction(gg_trg_Elixir_Start,function Trig_Elixir_Start_Actions)
 endfunction
-function RegisterR11_Elixir_Deliver takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Elixir_Deliver takes nothing returns nothing
     set gg_trg_Elixir_Deliver=CreateTrigger()
     call DisableTrigger(gg_trg_Elixir_Deliver)
     call TriggerRegisterUnitInRangeSimple(gg_trg_Elixir_Deliver,450.,gg_unit_n001_0012)
@@ -125,7 +121,11 @@ function RegisterR11_Elixir_Deliver takes nothing returns nothing
     call TriggerAddAction(gg_trg_Elixir_Deliver,function Trig_Elixir_Deliver_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Elixir takes nothing returns nothing
+    call Register_Elixir_Prepare()
+    call Register_Elixir_Start()
+    call Register_Elixir_Deliver()
+endfunction
 
 endlibrary

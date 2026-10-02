@@ -60,29 +60,30 @@ function Trig_CowPortal_Spawn_Cows_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_CowPortal automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_CowPortal (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_CowPortal takes nothing returns nothing
 endfunction
-function RegisterR11_CowPortal_Open takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_CowPortal_Open takes nothing returns nothing
     set gg_trg_CowPortal_Open=CreateTrigger()
     call DisableTrigger(gg_trg_CowPortal_Open)
     call TriggerAddCondition(gg_trg_CowPortal_Open,Condition(function Trig_CowPortal_Open_Conditions))
     call TriggerAddAction(gg_trg_CowPortal_Open,function Trig_CowPortal_Open_Actions)
 endfunction
-function RegisterR11_CowPortal_Spawn_Cows takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_CowPortal_Spawn_Cows takes nothing returns nothing
     set gg_trg_CowPortal_Spawn_Cows=CreateTrigger()
     call DisableTrigger(gg_trg_CowPortal_Spawn_Cows)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_CowPortal_Spawn_Cows,udg_CowSpawnTimer)
     call TriggerAddAction(gg_trg_CowPortal_Spawn_Cows,function Trig_CowPortal_Spawn_Cows_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_CowPortal takes nothing returns nothing
+    call Register_CowPortal_Open()
+    call Register_CowPortal_Spawn_Cows()
+endfunction
 
 endlibrary

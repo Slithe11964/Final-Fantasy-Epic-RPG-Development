@@ -1401,13 +1401,13 @@ function Trig_Cmd_Load_Armory_Actions takes nothing returns nothing
     set p=null
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Cmd automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Cmd_Part1 / RegisterTriggers_Cmd_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Cmd takes nothing returns nothing
 endfunction
-function RegisterR11_Cmd_Music takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cmd_Music takes nothing returns nothing
     set gg_trg_Cmd_Music=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(0),"-music",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Music,Player(1),"-music",false)
@@ -1420,10 +1420,8 @@ function RegisterR11_Cmd_Music takes nothing returns nothing
     call TriggerAddCondition(gg_trg_Cmd_Music,Condition(function Trig_Cmd_Music_Conditions))
     call TriggerAddAction(gg_trg_Cmd_Music,function Trig_Cmd_Music_Actions)
 endfunction
-function RegisterR11_Cmd_Load_Code takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cmd_Load_Code takes nothing returns nothing
     set gg_trg_Cmd_Load_Code=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(0),"-load ",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(1),"-load ",false)
@@ -1435,10 +1433,8 @@ function RegisterR11_Cmd_Load_Code takes nothing returns nothing
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Code,Player(7),"-load ",false)
     call TriggerAddAction(gg_trg_Cmd_Load_Code,function Trig_Cmd_Load_Code_Actions)
 endfunction
-function RegisterR11_Cmd_Load_Armory takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Cmd_Load_Armory takes nothing returns nothing
     set gg_trg_Cmd_Load_Armory=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(0),"-loada",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_Cmd_Load_Armory,Player(1),"-loada",false)
@@ -1451,7 +1447,19 @@ function RegisterR11_Cmd_Load_Armory takes nothing returns nothing
     call TriggerAddAction(gg_trg_Cmd_Load_Armory,function Trig_Cmd_Load_Armory_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Cmd_Part1 takes nothing returns nothing
+    call Register_Cmd_Music()
+    call Register_Cmd_Load_Code()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_Cmd_Part2 takes nothing returns nothing
+    call Register_Cmd_Load_Armory()
+endfunction
 
 endlibrary

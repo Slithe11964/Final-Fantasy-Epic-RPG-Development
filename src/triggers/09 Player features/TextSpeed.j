@@ -40,13 +40,13 @@ function Trig_TextSpeed_Command_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_TextSpeed automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_TextSpeed (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_TextSpeed takes nothing returns nothing
 endfunction
-function RegisterR11_TextSpeed_Command takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_TextSpeed_Command takes nothing returns nothing
     set gg_trg_TextSpeed_Command=CreateTrigger()
     call TriggerRegisterPlayerChatEvent(gg_trg_TextSpeed_Command,Player(0),"-text",false)
     call TriggerRegisterPlayerChatEvent(gg_trg_TextSpeed_Command,Player(1),"-text",false)
@@ -60,7 +60,9 @@ function RegisterR11_TextSpeed_Command takes nothing returns nothing
     call TriggerAddAction(gg_trg_TextSpeed_Command,function Trig_TextSpeed_Command_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_TextSpeed takes nothing returns nothing
+    call Register_TextSpeed_Command()
+endfunction
 
 endlibrary

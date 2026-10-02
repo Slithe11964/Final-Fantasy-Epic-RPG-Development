@@ -54,21 +54,19 @@ function Trig_OrcBase_Units_Cleared_Actions takes nothing returns nothing
     endif
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_OrcBase automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_OrcBase_Part1 / RegisterTriggers_OrcBase_Part2 (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_OrcBase takes nothing returns nothing
 endfunction
-function RegisterR11_OrcBase_GateGuard_Death takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_OrcBase_GateGuard_Death takes nothing returns nothing
     set gg_trg_OrcBase_GateGuard_Death=CreateTrigger()
     call TriggerRegisterUnitEvent(gg_trg_OrcBase_GateGuard_Death,gg_unit_ncpn_0025,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_OrcBase_GateGuard_Death,function Trig_OrcBase_GateGuard_Death_Actions)
 endfunction
-function RegisterR11_OrcBase_Units_Cleared takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_OrcBase_Units_Cleared takes nothing returns nothing
     set gg_trg_OrcBase_Units_Cleared=CreateTrigger()
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_OrcBase_Units_Cleared,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerRegisterAnyUnitEventBJ(gg_trg_OrcBase_Units_Cleared,EVENT_PLAYER_UNIT_CHANGE_OWNER)
@@ -76,7 +74,18 @@ function RegisterR11_OrcBase_Units_Cleared takes nothing returns nothing
     call TriggerAddAction(gg_trg_OrcBase_Units_Cleared,function Trig_OrcBase_Units_Cleared_Actions)
 endfunction
 
+// Creates part 1 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_OrcBase_Part1 takes nothing returns nothing
+    call Register_OrcBase_GateGuard_Death()
+endfunction
 
-
+// Creates part 2 of 2 of this module's triggers. Called once at startup from
+// Startup_RegisterTriggers (MapBootstrap). The parts are registered at different points so that
+// triggers sharing an event with other modules keep their original firing order.
+function RegisterTriggers_OrcBase_Part2 takes nothing returns nothing
+    call Register_OrcBase_Units_Cleared()
+endfunction
 
 endlibrary

@@ -270,70 +270,58 @@ function Trig_Monstrum_Tentacle_Cleanup_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_TentacleGroup)
 endfunction
 
-// Registration ownership; called at the original bootstrap positions.
+// World Editor calls InitTrig_Monstrum automatically; it is intentionally empty. This module's
+// triggers are created by RegisterTriggers_Monstrum (bottom of this module), which
+// MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
 function InitTrig_Monstrum takes nothing returns nothing
 endfunction
-function RegisterR11_Monstrum_Ambush_Arm takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Ambush_Arm takes nothing returns nothing
     set gg_trg_Monstrum_Ambush_Arm=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Ambush_Arm)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Monstrum_Ambush_Arm,30.)
     call TriggerAddCondition(gg_trg_Monstrum_Ambush_Arm,Condition(function Trig_Monstrum_Ambush_Arm_Conditions))
     call TriggerAddAction(gg_trg_Monstrum_Ambush_Arm,function Trig_Monstrum_Ambush_Arm_Actions)
 endfunction
-function RegisterR11_Monstrum_Tentacle_Ambush takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Tentacle_Ambush takes nothing returns nothing
     set gg_trg_Monstrum_Tentacle_Ambush=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Tentacle_Ambush)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Monstrum_Tentacle_Ambush,Player($B),EVENT_PLAYER_UNIT_ATTACKED) // $B = 11
     call TriggerAddCondition(gg_trg_Monstrum_Tentacle_Ambush,Condition(function Trig_Monstrum_Tentacle_Ambush_Conditions))
     call TriggerAddAction(gg_trg_Monstrum_Tentacle_Ambush,function Trig_Monstrum_Tentacle_Ambush_Actions)
 endfunction
-function RegisterR11_Monstrum_Summon takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Summon takes nothing returns nothing
     set gg_trg_Monstrum_Summon=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Summon)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Monstrum_Summon,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
     call TriggerAddCondition(gg_trg_Monstrum_Summon,Condition(function Trig_Monstrum_Summon_Conditions))
     call TriggerAddAction(gg_trg_Monstrum_Summon,function Trig_Monstrum_Summon_Actions)
 endfunction
-function RegisterR11_Monstrum_Ambush_Rearm takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Ambush_Rearm takes nothing returns nothing
     set gg_trg_Monstrum_Ambush_Rearm=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Ambush_Rearm)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Monstrum_Ambush_Rearm,udg_TentacleTimer)
     call TriggerAddAction(gg_trg_Monstrum_Ambush_Rearm,function Trig_Monstrum_Ambush_Rearm_Actions)
 endfunction
-function RegisterR11_Monstrum_Phase_Check takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Phase_Check takes nothing returns nothing
     set gg_trg_Monstrum_Phase_Check=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Phase_Check)
     call TriggerRegisterTimerEventPeriodic(gg_trg_Monstrum_Phase_Check,2)
     call TriggerAddAction(gg_trg_Monstrum_Phase_Check,function Trig_Monstrum_Phase_Check_Actions)
 endfunction
-function RegisterR11_Monstrum_DepthCharge takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_DepthCharge takes nothing returns nothing
     set gg_trg_Monstrum_DepthCharge=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Monstrum_DepthCharge,EVENT_PLAYER_UNIT_SPELL_EFFECT)
     call TriggerAddCondition(gg_trg_Monstrum_DepthCharge,Condition(function Trig_Monstrum_DepthCharge_Conditions))
     call TriggerAddAction(gg_trg_Monstrum_DepthCharge,function Trig_Monstrum_DepthCharge_Actions)
 endfunction
-function RegisterR11_Monstrum_Tentacle_Cleanup takes nothing returns nothing
-    if not udg_InitTrigFromMain then
-        return
-    endif
+
+function Register_Monstrum_Tentacle_Cleanup takes nothing returns nothing
     set gg_trg_Monstrum_Tentacle_Cleanup=CreateTrigger()
     call DisableTrigger(gg_trg_Monstrum_Tentacle_Cleanup)
     call TriggerRegisterPlayerUnitEventSimple(gg_trg_Monstrum_Tentacle_Cleanup,Player($B),EVENT_PLAYER_UNIT_DEATH) // $B = 11
@@ -341,7 +329,15 @@ function RegisterR11_Monstrum_Tentacle_Cleanup takes nothing returns nothing
     call TriggerAddAction(gg_trg_Monstrum_Tentacle_Cleanup,function Trig_Monstrum_Tentacle_Cleanup_Actions)
 endfunction
 
-
-
+// Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
+function RegisterTriggers_Monstrum takes nothing returns nothing
+    call Register_Monstrum_Ambush_Arm()
+    call Register_Monstrum_Tentacle_Ambush()
+    call Register_Monstrum_Summon()
+    call Register_Monstrum_Ambush_Rearm()
+    call Register_Monstrum_Phase_Check()
+    call Register_Monstrum_DepthCharge()
+    call Register_Monstrum_Tentacle_Cleanup()
+endfunction
 
 endlibrary
