@@ -2,7 +2,7 @@
 
 ## Status (stage E, 2026-10-02): first 1.29.2 test map built
 
-`release/FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x` was made from the stage C map by
+`release/FFERPG_0.9.7.3-r16-stageI-1.29.2.w3x` was made from the stage C map by
 `MapToolkit/tools/downgrade.py`. Each converted file was checked against the old r7 map:
 
 - **Terrain:** byte-identical to r7.
@@ -18,6 +18,7 @@
 1. Put the map in `Documents\\Warcraft III\\Maps\\Download` (1.29.2 lists this folder under Custom Game → Download, the same folder Reforged uses).
    The map file must start with the 512-byte `HM3W` header, or the map list skips it silently. `downgrade.py` adds it; for other maps use
    `python ../MapToolkit/tools/add_header.py IN.w3x OUT.w3x --from FFERPG_0.9.7.3-r7.w3x --name "..."`.
+   1.29.2 also crashes when the map is selected if `war3map.wts` is huge (Reforged keeps all object text there). `downgrade.py` moves that text back into the object files; current map: `FFERPG_0.9.7.3-r16-stageI-1.29.2.w3x`.
 2. Start 1.29.2 → Single Player → Custom Game, and pick it.
 3. Check, and note anything wrong:
    - the map shows in the list with the right name and loading screen;
