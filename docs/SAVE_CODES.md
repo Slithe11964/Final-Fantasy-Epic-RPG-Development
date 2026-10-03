@@ -95,7 +95,7 @@ The first character is the version: `A` = 0, `B` = 1, and so on.
 ## Reading a code outside the game: `tools/savecode.py`
 
 ```
-python tools/savecode.py decode "<code>" --items itemtable.txt [--log]
+python tools/savecode.py decode "<code>" [--name PLAYER] [--log]
 python tools/savecode.py selftest
 ```
 
@@ -105,9 +105,11 @@ which is handy when a code fails to load. It follows the game's reader (`LoadCod
 for G/H codes.
 
 **Item charges:** a charged item stores 7 extra bits, so the tool must know which items are
-charged. In game, the developer command `-dumpitems` writes `itemtable.txt` (see
-`DEBUG_COMMANDS.md`); pass it with `--items`. Without it, the tool guesses from the object data
-(`src/items-guess.json`, made by `tools/objects.py`) and may fail on codes with charged items.
+charged. The in-game developer command `-dumpitems` writes `itemtable.txt` (see
+`DEBUG_COMMANDS.md`). A copy from 0.9.7.3-r16 is in `src/itemtable.txt` (351 items, 63 charged) and is
+used by default. Run `-dumpitems` again and replace it whenever an item table changes. `--items FILE`
+uses another table. Checked on a real level-923 code: every field decodes and nothing is left over.
+A charged item can show `x0`: that is the value the game saved (`GetItemCharges`).
 
 **Testing:** `selftest` writes 2,000 random codes with a Python copy of `Save_WriteCode` and reads
 them back. That proves reader and writer agree with each other. **It still needs checking against

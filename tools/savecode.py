@@ -17,9 +17,9 @@ inventories, weapon/armor upgrades, titles and the other flags. It mirrors the g
 
 Item charges: a charged item (potions ...) stores 7 extra bits, and only the game knows which
 items are charged. In game, the developer command -dumpitems writes
-Documents/Warcraft III/CustomMapData/FFERPG/itemtable.txt; pass it with --items. Without it the
-tool guesses from the map's object data (src/items-guess.json, made by tools/objects.py) and
-says so.
+Documents/Warcraft III/CustomMapData/FFERPG/itemtable.txt. A copy is kept as src/itemtable.txt and used
+by default (refresh it with -dumpitems whenever the item tables change); --items uses another one.
+Without either, the tool guesses from the map's object data (src/items-guess.json) and says so.
 
 selftest writes random codes with the Python writer (a copy of Save.j's writer) and reads them
 back: it proves the reader and writer agree. It cannot prove they match the game exactly - for
@@ -316,7 +316,8 @@ def load_items(path):
     for line in open(path, encoding='utf-8', errors='replace'):
         m = re.search(r'ITEM (\d+) (\S{4}) ([01]) (.*?)(?:"\s*\)|$)', line)
         if m:
-            table[int(m.group(1))] = dict(id=m.group(2), charged=m.group(3) == '1', name=m.group(4).strip())
+            name = re.sub(r'\|c[0-9A-Fa-f]{8}|\|r', '', m.group(4)).strip()    # drop colour codes
+            table[int(m.group(1))] = dict(id=m.group(2), charged=m.group(3) == '1', name=name)
     return table
 
 def titles():
@@ -412,8 +413,9 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('cmd'); ap.add_argument('code'); ap.add_argument('--items'); ap.add_argument('--log', action='store_true'); ap.add_argument('--name')
     a = ap.parse_args()
     items, note = {}, ''
-    if a.items:
-        items = load_items(a.items)
+    default_table = os.path.join(ROOT, 'src', 'itemtable.txt')     # from -dumpitems, kept in the repo
+    if a.items or os.path.exists(default_table):
+        items = load_items(a.items or default_table)
     else:
         gp = os.path.join(ROOT, 'src', 'items-guess.json')
         if os.path.exists(gp):
