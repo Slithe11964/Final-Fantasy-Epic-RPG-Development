@@ -1,4 +1,4 @@
-library TKiros
+library TKiros requires optional TGnollHunt
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Kiros_Hide=null
@@ -11,8 +11,9 @@ function Trig_Kiros_Hide_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Kiros_ShowTalkIcon_Actions takes nothing returns nothing
-    set udg_SpecialEffect[73]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BV_0229,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_GnollHunt_Start)
+    static if LIBRARY_TGnollHunt then
+        call ExecuteFunc("GnollHunt_Available") // the "!" over Kiros; the Gnoll Hunt quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

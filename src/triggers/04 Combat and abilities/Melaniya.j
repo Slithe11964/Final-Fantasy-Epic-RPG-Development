@@ -1,4 +1,4 @@
-library TMelaniya requires TGroup
+library TMelaniya requires TGroup, optional TQuestGreedIsGood
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Melaniya_Setup=null
@@ -12,7 +12,9 @@ endfunction
 
 function Trig_Melaniya_Setup_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("chest",gg_unit_n01S_0082,"Abilities\\Spells\\Undead\\AntiMagicShell\\AntiMagicShell.mdl")
-    set udg_SpecialEffect[45]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n01S_0082,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
+    static if LIBRARY_TQuestGreedIsGood then
+        call ExecuteFunc("QuestGreedIsGood_Available") // the "!" over Melaniya; the Greed is Good quest can start
+    endif
     set udg_HideoutGuards=Group_UnitsInRectOfPlayer(gg_rct_404,Player($B)) // $B = 11
     call ForGroupBJ(udg_HideoutGuards,function Trig_Melaniya_Setup_Enum_HideGuard)
     call DestroyTrigger(GetTriggeringTrigger())

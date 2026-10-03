@@ -9,15 +9,15 @@ touches the quest-log entry.
 
 | Group | Quests | Meaning |
 |---|---|---|
-| engine | 2 | Already written for the quest engine (docs/QUEST_ENGINE.md). |
-| fits | 23 | Only standard steps and rewards: can be written entirely as data. |
+| engine | 10 | Already written for the quest engine (docs/QUEST_ENGINE.md). |
+| fits | 15 | Only standard steps and rewards: can be written entirely as data. |
 | hooks | 21 | Standard steps plus some custom actions (spawning units, gates, moving NPCs) or a boss fight; those stay as small functions or boss modules the quest points to. |
 | custom | 45 | Timers, spells, failing, several endings, or no clear finish: these use custom steps whose special code stays in the module. |
 
 ## What this means for a quest engine
 
-- **Already on the quest engine: 2.** Of the rest, 44 of 91 quests (48%) can move to the quest engine with
-  standard steps only: 23 fully as data, 21 with small custom hooks (spawning
+- **Already on the quest engine: 10.** Of the rest, 36 of 91 quests (40%) can move to the quest engine with
+  standard steps only: 15 fully as data, 21 with small custom hooks (spawning
   a boss, opening a gate, moving an NPC) or a boss fight that stays in its boss module.
 - **45 need custom steps** (`Quest_Custom` + `Quest_StepDone`): the main story chapters, the Kalm sieges, the
   Tower of Summoning and Eidolon quests, the hunt festival, quests with timers or that can fail. Their special
@@ -28,25 +28,24 @@ touches the quest-log entry.
 - **Other systems check quests** (`IsQuestCompleted(...)`, 99 places, 33 of them outside the quest folder: News, hunts,
   spawns, bosses ...). The engine must keep creating the same `udg_MainQuest[n]`/`udg_SideQuest[n]`
   entries so those checks keep working.
-- **Step types the engine needs**: talk to an NPC (select it nearby, or walk up to it), kill a unit, kill
-  N units of some types (with the hunt leaderboard counter), pick up an item, reach a place, attack a
-  unit, plus a minimap ping on the target. **Per step**: dialogue lines (skipped when cinematics are off),
-  quest-log text update, the "!" marker over the NPC, rewards (XP, item, title).
-- **Prototype**: Harpy Hunt (`Quest_HarpyHunt`). It is a typical "talk, kill N, report back" quest: about 160 lines of
-  code today, which would become a short table entry.
+- **Step types the engine has** (docs/QUEST_ENGINE.md): talk to an NPC, walk up to it, kill a unit, kill
+  N units of some types (hunt leaderboard), deliver an item (with a pickup note and a minimap ping), and
+  custom steps. **Per step**: dialogue lines (skipped when cinematics are off), quest-log text and
+  announcement, the "!" / "?" markers, rewards, a camera, custom code. Still to add when a quest needs
+  them: reach a place, attack a unit.
 
 Step types across all quests (a quest can have several):
 
 | Step waits for | Quests |
 |---|---|
-| talk | 79 |
-| in range | 63 |
-| kill unit | 43 |
-| run by another step | 38 |
-| kill any | 24 |
-| get item | 19 |
+| talk | 71 |
+| in range | 55 |
+| kill unit | 42 |
+| run by another step | 37 |
+| kill any | 21 |
 | periodic | 18 |
 | timer | 18 |
+| get item | 16 |
 | spell | 14 |
 | reach place | 10 |
 | attacked | 8 |
@@ -58,12 +57,12 @@ What the steps do:
 
 | Feature | Quests |
 |---|---|
-| dialogue | 88 |
-| cinematic | 88 |
-| gives XP | 88 |
-| effects | 88 |
-| gives item | 63 |
-| waits | 57 |
+| dialogue | 80 |
+| cinematic | 80 |
+| gives XP | 80 |
+| effects | 80 |
+| gives item | 59 |
+| waits | 54 |
 | moves units | 44 |
 | spawns units | 39 |
 | loops/counters | 28 |
@@ -72,36 +71,36 @@ What the steps do:
 | can fail | 12 |
 | gives gold | 1 |
 
-## engine (2)
+## engine (10)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules | Why |
 |---|---|---|---|---|---|---|---|
+| SideQuest[19] | Elixir | quest engine | 2 |  | 5 | Elixir |  |
+| SideQuest[1] | Find Shimmerweed | quest engine | 2 |  | 5 | Quest_Shimmerweed |  |
 | SideQuest[26] | Wolf Fangs | quest engine | 2 |  | 11 | Quest_WolfFangs |  |
+| SideQuest[4] | Phoenix | quest engine | 2 |  | 9 | Quest_Phoenix |  |
+| SideQuest[10] | Deliver Letter | quest engine | 3 |  | 18 | Quest_DeliverLetter |  |
+| SideQuest[27] | Greed is Good | quest engine | 3 |  | 18 | Quest_GreedIsGood |  |
+| SideQuest[2] | Arachnophobia | quest engine | 3 |  | 10 | Quest_Arachnophobia |  |
+| SideQuest[45] | Harpy Hunt | quest engine | 3 |  | 11 | Quest_HarpyHunt |  |
+| SideQuest[54] | Gnoll Hunt | quest engine | 3 |  | 13 | GnollHunt |  |
 | SideQuest[6] | Kill Elmdor | quest engine | 3 |  | 7 | Quest_KillElmdor |  |
 
-## fits (23)
+## fits (15)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules |
 |---|---|---|---|---|---|---|
-| SideQuest[19] | Elixir | talk | 2 | talk, in range | 1 | Elixir |
 | SideQuest[49] | Nebra Angler | talk | 2 | talk, in range | 44 | Quest_NebraAngler |
 | SideQuest[72] | Young Engineer | talk | 2 | talk, run by another step | 15 | Quest_YoungEngineer |
 | SideQuest[74] | Fishy Deals | talk | 2 | talk, in range | 14 | Quest_FishyDeals |
-| SideQuest[10] | Deliver Letter | talk | 3 | talk, in range | 17 | Quest_DeliverLetter |
 | SideQuest[12] | Lady Nashj | talk | 3 | talk, kill unit, in range | 11 | Quest_LadyNashj |
 | SideQuest[20] | Mystical Glyph | get item | 3 | get item, in range, talk | 3 | MysticalGlyph |
-| SideQuest[2] | Arachnophobia | talk | 3 | talk, kill any, in range | 10 | Quest_Arachnophobia |
 | SideQuest[32] | Eidolon Challenge | talk | 3 | talk, kill unit | 22 | Quest_EidolonChallenge |
 | SideQuest[39] | Haunted Tree | talk | 3 | talk, reach place, in range | 11 | HauntedTree |
-| SideQuest[45] | Harpy Hunt | talk | 3 | talk, kill any, in range | 11 | Quest_HarpyHunt |
 | SideQuest[47] | Omega Weapon | attacked | 3 | attacked, kill unit, run by another step | 0 | Quest_OmegaWeapon, AlmightyShinra |
-| SideQuest[4] | Phoenix | talk | 3 | talk, get item, in range | 9 | Quest_Phoenix |
-| SideQuest[54] | Gnoll Hunt | talk | 3 | talk, kill any, in range | 13 | GnollHunt |
 | SideQuest[56] | Ancient Hunt | talk | 3 | talk, kill any, in range | 18 | AncientHunt |
 | SideQuest[65] | Impervious Beast | talk | 3 | talk, attacked, run by another step | 15 | Quest_ImperviousBeast, Fafnir |
 | SideQuest[73] | Spirit Hunt | talk | 3 | talk, kill any, in range | 11 | Quest_SpiritHunt |
-| SideQuest[1] | Find Shimmerweed | talk | 4 | talk, in range, get item, run by another step | 5 | Quest_Shimmerweed, News |
-| SideQuest[27] | Greed is Good | talk | 4 | talk, kill unit, get item, in range | 18 | Quest_GreedIsGood, GreedIsGood, PortalStone |
 | SideQuest[46] | Ultima Weapon | attacked | 4 | attacked, kill unit, in range, run by another step | 6 | Quest_UltimaWeapon, Quest_SpiritOfWater, Quest_WorldLiberation |
 | SideQuest[23] | Defiled Fountain | talk | 5 | talk, in range, get item | 40 | DefiledFountain, Quest_Fountain |
 | SideQuest[29] | Spirit of Water | talk | 5 | talk, in range, kill unit | 24 | Quest_SpiritOfWater, Vodyan, Quest_UltimaWeapon |
@@ -165,10 +164,10 @@ What the steps do:
 | SideQuest[48] | King of the Sea | get item | 6 | get item, in range, kill unit, run by another step, timer | 11 | NebraKing, Quest_KingOfSea, Quest_Monstrum, Fishing_ReelingAndCatch | timer |
 | SideQuest[50] | Trial By Fire | talk | 6 | talk, run by another step, buy, reach place, spell | 33 | Quest_TrialByFire, DarkIfrit, DarkPhoenix | spell, can fail |
 | SideQuest[7] | Fire Golem's Heart | talk | 6 | talk, kill unit, get item, in range, periodic | 25 | Quest_FireGolem, DarkEidolons, Tower | periodic |
+| SideQuest[9] | Save Timmy | talk | 6 | talk, timer, in range | 15 | Quest_SaveTimmy, ChocoboRider | timer several finishing triggers |
 | MainQuest[13] | Corrupted Orcs | talk | 7 | talk, kill unit, spell, timer, kill any | 32 | Quest_CorruptedOrcs, OrcBase, Boss_Shemhazai, Shemhazai, TrueIceAge, Meliadoul | spell, timer several finishing triggers |
 | MainQuest[7] | Dark Knight | run by another step | 7 | run by another step, in range, kill unit, timer | 54 | Quest_DarkKnight, Boss_Gafgarion, Boss_Zalera, Cine, Boss_Belias, Boss_Chaos | timer |
 | SideQuest[64] | Chocobo Rider | talk | 7 | talk, in range, get item, kill unit, spell | 43 | ChocoboRider, Boss_Exodus, TrueIceAge | spell |
-| SideQuest[9] | Save Timmy | talk | 7 | talk, timer, in range | 23 | Quest_SaveTimmy, ChocoboRider, Quest_DeliverLetter | timer several finishing triggers |
 | SideQuest[14] | Target Practice | talk | 8 | talk, buy, run by another step, in range, kill unit, timer | 18 | Quest_TargetPractice, TargetPractice, Dana, Aisha | timer, can fail |
 | SideQuest[44] | Lost Memories | talk | 8 | talk, get item, in range, timer, periodic, attacked | 212 | Quest_LostMemories, Shadow_Lifecycle, Shadow_Loyalty | periodic, timer, can fail several finishing triggers |
 | SideQuest[58] | Tentacles | talk | 8 | talk, attacked, kill any, run by another step, in range, kill unit | 19 | Tentacles, Ultros, Dana | can fail |

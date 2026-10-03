@@ -127,9 +127,9 @@ def main():
     for n, text in mods.items():
         for m in re.finditer(r'Quest_Define\(\s*"([^"]*)"\s*,\s*QUEST_(SIDE|MAIN)\s*,\s*(\$?\w+)', text):
             key = '%sQuest[%d]' % ('Side' if m.group(2) == 'SIDE' else 'Main', num(m.group(3)))
-            steps = len(re.findall(r'\bcall\s+Quest_(?:Talk|Return|Kill|Deliver|Custom)\s*\(', text))
+            steps = len(re.findall(r'\bcall\s+Quest_(?:Talk|Return|Kill|Hunt|Deliver|Custom)\s*\(', text))
             rows.append(dict(key=key, kind=m.group(2).lower(), title=m.group(1), start='', start_event='quest engine',
-                             steps=steps, step_kinds='', dialogue_lines=len(re.findall(r'\bcall\s+Quest_Say\s*\(', text)),
+                             steps=steps, step_kinds='', dialogue_lines=len(re.findall(r'\bcall\s+Quest_Say(?:As|IfSideQuestDone)?\s*\(', text)),
                              features='', modules=n, finished_by='quest engine', group='engine', why=''))
     for key, q in quests.items():
         kind, idx = key[:-1].split('[')
@@ -200,7 +200,6 @@ def main():
 
 def FINDINGS(g, rows):
     total = len(rows)
-    fit = sorted((r for r in rows if r['group'] == 'fits'), key=lambda r: (r['steps'], r['dialogue_lines']))
     return [
         '- **Already on the quest engine: %d.** Of the rest, %d of %d quests (%d%%) can move to the quest engine with'
         % (g['engine'], g['fits'] + g['hooks'], total, round(100 * (g['fits'] + g['hooks']) / total)),
@@ -215,13 +214,11 @@ def FINDINGS(g, rows):
         '- **Other systems check quests** (`IsQuestCompleted(...)`, 99 places, 33 of them outside the quest folder: News, hunts,',
         '  spawns, bosses ...). The engine must keep creating the same `udg_MainQuest[n]`/`udg_SideQuest[n]`',
         '  entries so those checks keep working.',
-        '- **Step types the engine needs**: talk to an NPC (select it nearby, or walk up to it), kill a unit, kill',
-        '  N units of some types (with the hunt leaderboard counter), pick up an item, reach a place, attack a',
-        '  unit, plus a minimap ping on the target. **Per step**: dialogue lines (skipped when cinematics are off),',
-        '  quest-log text update, the "!" marker over the NPC, rewards (XP, item, title).',
-        '- **Prototype**: %s (`%s`). It is a typical "talk, kill N, report back" quest: about %s lines of'
-        % (('Harpy Hunt', 'Quest_HarpyHunt', '160') if any(r['title'] == 'Harpy Hunt' for r in fit) else (fit[0]['title'], fit[0]['modules'], '?')),
-        '  code today, which would become a short table entry.',
+        '- **Step types the engine has** (docs/QUEST_ENGINE.md): talk to an NPC, walk up to it, kill a unit, kill',
+        '  N units of some types (hunt leaderboard), deliver an item (with a pickup note and a minimap ping), and',
+        '  custom steps. **Per step**: dialogue lines (skipped when cinematics are off), quest-log text and',
+        '  announcement, the "!" / "?" markers, rewards, a camera, custom code. Still to add when a quest needs',
+        '  them: reach a place, attack a unit.',
     ]
 
 def write(rows):

@@ -117,17 +117,8 @@ endfunction
 // holds that trigger's code (search for its name).
 // Registered in parts so triggers sharing an event with other modules keep their firing order.
 function RegisterTriggers_Quest_Part9 takes nothing returns nothing
-    static if LIBRARY_TQuestShimmerweed then
-        call Register_Quest_Shimmerweed_Start() // starts off; enabled by Quest_Shimmerweed
-        call Register_Quest_Shimmerweed_Ping() // starts off; enabled by Quest_Shimmerweed; disabled by Quest_Shimmerweed; destroyed by Quest_Shimmerweed
-        call Register_Quest_Shimmerweed_Pickup() // starts off; enabled by Quest_Shimmerweed; disabled by Quest_Shimmerweed; destroyed by Quest_Shimmerweed
-        call Register_Quest_Shimmerweed_Deliver() // starts off; enabled by Quest_Shimmerweed
-    endif
     static if LIBRARY_TQuestArachnophobia then
         call Register_Quest_Arachnophobia_Offer() // starts off; run by Cid, Mid
-        call Register_Quest_Arachnophobia_Start() // starts off; enabled by Quest_Arachnophobia
-        call Register_Quest_Arachnophobia_Count() // starts off; enabled by Quest_Arachnophobia
-        call Register_Quest_Arachnophobia_Reward() // starts off; enabled by Quest_Arachnophobia
     endif
     static if LIBRARY_TQuestKillSetag then
         call Register_Quest_KillSetag_Hide() // run by MapBootstrap
@@ -139,10 +130,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     endif
     static if LIBRARY_TQuestPhoenix then
         call Register_Quest_Phoenix_Available() // starts off; run by QuestCount
-        call Register_Quest_Phoenix_Start() // starts off; enabled by Quest_Phoenix
-        call Register_Quest_Phoenix_Ping() // starts off; enabled by Quest_Phoenix; disabled by Quest_Phoenix; destroyed by Quest_Phoenix
-        call Register_Quest_Phoenix_EggTaken() // starts off; enabled by Quest_Phoenix
-        call Register_Quest_Phoenix_Complete() // starts off; enabled by Quest_Phoenix
     endif
     static if LIBRARY_TQuestCaravan then
         call Register_Quest_Caravan_SamAvailable() // starts off; run by Cid, Epilogue
@@ -195,11 +182,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     static if LIBRARY_TQuestDeliverLetter then
         call Register_Quest_DeliverLetter_Init() // run by MapBootstrap
         call Register_Quest_DeliverLetter_Available() // starts off; run by Cid, Epilogue
-        call Register_Quest_DeliverLetter_Start() // starts off; enabled by Quest_DeliverLetter
-        call Register_Quest_DeliverLetter_PingZack() // starts off; enabled by Quest_DeliverLetter; disabled by Quest_DeliverLetter
-        call Register_Quest_DeliverLetter_PingWedge() // starts off; enabled by Quest_DeliverLetter; disabled by Quest_DeliverLetter
-        call Register_Quest_DeliverLetter_GiveZack() // starts off; enabled by Quest_DeliverLetter
-        call Register_Quest_DeliverLetter_Complete() // starts off; enabled by Quest_DeliverLetter
     endif
     static if LIBRARY_TQuestBeastslayer then
         call Register_Quest_Beastslayer_Available() // starts off; run by Cid, Epilogue
@@ -244,10 +226,6 @@ function RegisterTriggers_Quest_Part10 takes nothing returns nothing
         call Register_Quest_SeekDestroy_Start() // starts off; enabled by Clemydar
         call Register_Quest_SeekDestroy_Count() // starts off; enabled by Quest_SeekDestroy
         call Register_Quest_SeekDestroy_Complete() // starts off; enabled by Quest_SeekDestroy
-    endif
-    static if LIBRARY_TQuestGreedIsGood then
-        call Register_Quest_GreedIsGood_Start()
-        call Register_Quest_GreedIsGood_Complete() // starts off; enabled by PortalStone
     endif
     static if LIBRARY_TQuestFallenRanger then
         call Register_Quest_FallenRanger_Start() // starts off; enabled by Liniel
@@ -336,11 +314,6 @@ function RegisterTriggers_Quest_Part15 takes nothing returns nothing
         call Register_Quest_LostMemories_ShadowLie() // starts off; enabled by Quest_LostMemories; disabled by Quest_LostMemories; destroyed by Quest_LostMemories
         call Register_Quest_LostMemories_ShadowTruth() // starts off; enabled by Quest_LostMemories
         call Register_Quest_LostMemories_Reunion() // starts off; enabled by Quest_LostMemories
-    endif
-    static if LIBRARY_TQuestHarpyHunt then
-        call Register_Quest_HarpyHunt_Start() // starts off; enabled by Quest_Arachnophobia
-        call Register_Quest_HarpyHunt_Count() // starts off; enabled by Quest_HarpyHunt
-        call Register_Quest_HarpyHunt_Reward() // starts off; enabled by Quest_HarpyHunt
     endif
     static if LIBRARY_TQuestUltimaWeapon then
         call Register_Quest_UltimaWeapon_Start() // starts off; enabled by Tonberry

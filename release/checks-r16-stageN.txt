@@ -1,0 +1,10 @@
+note: 1 disabled trigger(s) left out of the source checks: DevCommands
+PASS 1 playable script compiles (pjass)
+PASS 2 trigger-editor source compiles (vjass_lite + pjass)
+PASS 3 startup wiring
+PASS 4 source matches playable script (startup functions)
+PASS 4b globals match playable script
+PASS 5 native save/load text safety
+PASS 6 startup sequence matches baseline
+     1568 triggers checked, 0 independent trigger pairs reordered
+     removed on purpose: gg_trg_Quest_Shimmerweed_Start, gg_trg_Quest_Shimmerweed_Ping, gg_trg_Quest_Shimmerweed_Pickup, gg_trg_Quest_Shimmerweed_Deliver, gg_trg_Quest_Arachnophobia_Start, gg_trg_Quest_Arachnophobia_Count, gg_trg_Quest_Arachnophobia_Reward, gg_trg_Quest_Phoenix_Start, gg_trg_Quest_Phoenix_Ping, gg_trg_Quest_Phoenix_EggTaken, gg_trg_Quest_Phoenix_Complete, gg_trg_Quest_KillElmdor_Start, gg_trg_Quest_KillElmdor_Slain, gg_trg_Quest_KillElmdor_Complete, gg_trg_Quest_DeliverLetter_Start, gg_trg_Quest_DeliverLetter_PingZack, gg_trg_Quest_DeliverLetter_PingWedge, gg_trg_Quest_DeliverLetter_GiveZack, gg_trg_Quest_DeliverLetter_Complete, gg_trg_Elixir_Start, gg_trg_Elixir_Deliver, gg_trg_Quest_WolfFangs_Start, gg_trg_Quest_WolfFangs_TurnIn, gg_trg_Quest_GreedIsGood_Start, gg_trg_Quest_GreedIsGood_Complete, gg_trg_GreedIsGood_DropStone, gg_trg_PortalStone_Ping, gg_trg_PortalStone_PickedUp, gg_trg_Quest_HarpyHunt_Start, gg_trg_Quest_HarpyHunt_Count, gg_trg_Quest_HarpyHunt_Reward, gg_trg_GnollHunt_Start, gg_trg_GnollHunt_Count, gg_trg_GnollHunt_Reward
