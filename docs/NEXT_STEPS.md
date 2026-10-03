@@ -1,6 +1,12 @@
 # FF Epic RPG: what's left before handing the map to a new developer
 
-Current map: `release/FFERPG_0.9.7.3-r15.w3x` (baseline: your r14 editor save). Read `README.md` first.
+Current maps:
+
+- Reforged: `release/FFERPG_0.9.7.3-r16-stageC.w3x` (r15 plus developer test commands).
+- 1.29.2: `release/FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x`.
+- Baseline: your r14 editor save.
+
+**What each stage changed, and what still needs testing: `docs/STAGES.md`.** Read `README.md` first.
 
 ## Quick wins (small, low risk)
 1. ~~**Release naming.**~~ Done: the map name and loading-screen title say `0.9.7.3-r15`. Once r15 passes its play test, tag it in Git (`git tag r15`) and make it the new baseline.
@@ -19,7 +25,21 @@ Current map: `release/FFERPG_0.9.7.3-r15.w3x` (baseline: your r14 editor save). 
 10. **Legacy 1.29 version.** Study done: `docs/LEGACY_129.md`. The code already works with 1.29.2. The world and object files need a converter (a `downgrade.py` in MapToolkit), which can only be built and proven with a 1.29.2 install to test in.
 11. **Split giant functions.** `Trig_Damage_Engine_CalcDamage` is done: 19 step functions with a per-hit context stack (`DmgCtx_*`), so nested hits stay safe. Left: `MonsterData_Init_*` and `Bazaar` (data tables; splitting them gains little).
 
-12. **Reusable toolkit.** `../MapToolkit` runs deprotect → split → document on other protected JASS maps (tested on one). Ideas: carry module variables into the modules automatically, and support Reforged-format output.
+12. **Done in the long run (stages A–G):**
+    - suspected bugs list (`BUGS.md`);
+    - developer test commands (`DEBUG_COMMANDS.md`);
+    - save code reader/writer (`tools/savecode.py`);
+    - object reference (`OBJECTS.md`);
+    - first 1.29.2 map (`LEGACY_129.md`);
+    - quest map (`QUESTS.md`);
+    - guides: Chocobos, Gaya, Summons/Shadows, Crafting, Hunts.
+13. **Next:**
+    - play-test results for stages B/C/E;
+    - confirm or fix the items in `BUGS.md`;
+    - phase 16 code tidy-up: remove shared `udg_Temp*` hand-offs and leaks, module by module, with the
+      same function-equality checks;
+    - check a real save code with `savecode.py`.
+14. **Reusable toolkit.** `../MapToolkit` runs deprotect → split → document on other protected JASS maps (tested on one). Ideas: carry module variables into the modules automatically, and support Reforged-format output.
 
 ## How to resume with Claude or ChatGPT
 Point the assistant at `README.md`, `docs/READABILITY_GAMEPLAN.md` and this file. Tools:
