@@ -1,0 +1,283 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Save Code Name Swap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow column of three steps (code, old name, new name) ending in the new code. */
+:root {
+  --bg: #eef0f4; --panel: #ffffff; --ink: #1c2233; --muted: #5b6478; --line: #d5dae4;
+  --accent: #1f6f8b; --accent-ink: #ffffff; --ok: #1d7a46; --ok-bg: #e3f3ea; --bad: #a3322b; --bad-bg: #f8e4e2;
+  --warn: #8a5a00; --warn-bg: #fbf0d9; --code-bg: #f4f6fa;
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151f; --panel: #1a2030; --ink: #e6e9f0; --muted: #9aa3b8; --line: #2c3447;
+  --accent: #5fb8d6; --accent-ink: #0d1520; --ok: #6fd39b; --ok-bg: #173126; --bad: #f08a80; --bad-bg: #3a1d1c;
+  --warn: #f0c46a; --warn-bg: #362b14; --code-bg: #141927; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151f; --panel: #1a2030; --ink: #e6e9f0; --muted: #9aa3b8; --line: #2c3447;
+  --accent: #5fb8d6; --accent-ink: #0d1520; --ok: #6fd39b; --ok-bg: #173126; --bad: #f08a80; --bad-bg: #3a1d1c;
+  --warn: #f0c46a; --warn-bg: #362b14; --code-bg: #141927; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); }
+.wrap { max-width: 46rem; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; display: grid; gap: 22px }
+header h1 { font: 700 clamp(1.6rem, 4vw, 2.2rem)/1.15 var(--display); letter-spacing: .02em; margin: 0; text-wrap: balance }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 62ch }
+.eyebrow { font: 600 .74rem var(--body); text-transform: uppercase; letter-spacing: .14em; color: var(--accent); margin-bottom: 6px }
+.step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; min-width: 0 }
+.step h2 { margin: 0; font: 600 1.05rem var(--body); display: flex; gap: 10px; align-items: baseline }
+.step h2 .n { font: 700 .95rem var(--display); color: var(--accent) }
+label { font-weight: 600; font-size: .92rem }
+.hint { color: var(--muted); font-size: .88rem; margin: 0 }
+textarea, input[type=text] { width: 100%; background: var(--code-bg); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: 400 .92rem/1.5 var(--mono) }
+textarea { min-height: 7.5rem; resize: vertical; word-break: break-all }
+input[type=text] { font-family: var(--body); font-size: 1rem }
+textarea:focus, input:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+button, .filebtn { font: 600 .92rem var(--body); border-radius: 8px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--ink) }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+button:disabled { opacity: .5; cursor: not-allowed }
+.filebtn input { display: none }
+.status { display: flex; flex-wrap: wrap; gap: 8px; font-size: .88rem }
+.chip { border-radius: 999px; padding: 3px 10px; background: var(--code-bg); border: 1px solid var(--line); font-variant-numeric: tabular-nums }
+.chip.ok { background: var(--ok-bg); color: var(--ok); border-color: transparent }
+.chip.bad { background: var(--bad-bg); color: var(--bad); border-color: transparent }
+.chip.warn { background: var(--warn-bg); color: var(--warn); border-color: transparent }
+.msg { border-radius: 8px; padding: 10px 12px; font-size: .92rem }
+.msg.bad { background: var(--bad-bg); color: var(--bad) }
+.msg.warn { background: var(--warn-bg); color: var(--warn) }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: .9rem; font-weight: 400; color: var(--muted) }
+.check input { margin-top: 4px }
+.result { border-color: var(--accent) }
+.out { font: 400 .92rem/1.5 var(--mono); background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; word-break: break-all; user-select: all; min-height: 3rem }
+.out.empty { font-family: var(--body); color: var(--muted); user-select: none; word-break: normal }
+.example { font-size: .88rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+details { color: var(--muted); font-size: .92rem }
+details summary { cursor: pointer; font-weight: 600; color: var(--ink) }
+details ul { padding-left: 1.2rem; margin: 8px 0 0; display: grid; gap: 6px }
+code { font-family: var(--mono); font-size: .88em }
+@media (prefers-reduced-motion: no-preference) { button { transition: filter .15s } button:hover:not(:disabled) { filter: brightness(1.08) } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">FF Epic RPG · maintainer tool</div>
+    <h1>Save Code Name Swap</h1>
+    <p>A save code only loads for the account that saved it. When a player renames their Battle.net account, paste their code here to make the same code for the new name. Jobs, items, titles and the armory stay exactly as they were.</p>
+  </header>
+
+  <div class="example" id="exampleBar">
+    <span class="chip warn">Example loaded</span>
+    <span>A real level-923 code saved by Slithe. Replace it with the player's code.</span>
+    <button id="clearBtn" type="button">Clear</button>
+  </div>
+
+  <section class="step">
+    <h2><span class="n">1</span> The player's code</h2>
+    <label for="code">Save code</label>
+    <textarea id="code" spellcheck="false" autocomplete="off"></textarea>
+    <div class="row">
+      <label class="filebtn">Open a save .txt<input id="file" type="file" accept=".txt,text/plain"></label>
+      <p class="hint">Paste the code, a <code>-load</code> line, or the whole file from <code>CustomMapData\FFERPG</code>.</p>
+    </div>
+    <div class="status" id="codeStatus"></div>
+    <div class="msg bad" id="codeError" hidden></div>
+  </section>
+
+  <section class="step">
+    <h2><span class="n">2</span> Check it belongs to them</h2>
+    <label for="old">Old account name</label>
+    <input type="text" id="old" autocomplete="off" spellcheck="false">
+    <div class="status" id="oldStatus"></div>
+    <label class="check"><input type="checkbox" id="override"> <span>I don't know the old name, but I've confirmed another way that this code belongs to this player.</span></label>
+  </section>
+
+  <section class="step">
+    <h2><span class="n">3</span> New account name</h2>
+    <label for="new">New account name</label>
+    <input type="text" id="new" autocomplete="off" spellcheck="false">
+    <p class="hint">The <code>#1234</code> part of a BattleTag is ignored, and so is upper or lower case.</p>
+    <div class="msg warn" id="nameWarn" hidden>This name has letters outside plain English. 1.29 and Reforged can hash those differently, so ask the player to test the new code before relying on it.</div>
+  </section>
+
+  <section class="step result" aria-live="polite">
+    <h2>New code</h2>
+    <div class="out empty" id="out">Fill in the three steps above.</div>
+    <div class="status" id="outStatus"></div>
+    <div class="row">
+      <button class="primary" id="copyCode" type="button" disabled>Copy code</button>
+      <button id="copyLoad" type="button" disabled>Copy as -load command</button>
+      <span class="hint" id="copyNote"></span>
+    </div>
+  </section>
+
+  <details>
+    <summary>How it works</summary>
+    <ul>
+      <li>The first field of every code is a 20-bit hash of the account name: <code>abs(StringHash(name)) mod 2^20</code>. The game compares it with the loading player's name.</li>
+      <li>This page rewrites only that field and the 3-character checksum, which is characters 2 to 8 of the code. Nothing else changes.</li>
+      <li>Same method as <code>tools/savecode.py rename</code> in the FFERPG repository, and checked against real codes.</li>
+      <li>Works for current codes (they start with G or H). Everything runs in your browser; nothing is sent anywhere.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+// FF Epic RPG save codes: name hash check and account-name swap (mirror of tools/savecode.py)
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#';
+const P20 = 1 << 20, P18 = 1 << 18;
+
+function valueOf(ch) {
+  const k = ALPHABET.indexOf(ch);
+  if (k < 0) throw new Error('"' + ch + '" is not a save-code character. Check that the whole code was pasted.');
+  return k;
+}
+
+function mix(a, b, c) {
+  a = (a - b - c) >>> 0; a = (a ^ (c >>> 13)) >>> 0;
+  b = (b - c - a) >>> 0; b = (b ^ (a << 8)) >>> 0;
+  c = (c - a - b) >>> 0; c = (c ^ (b >>> 13)) >>> 0;
+  a = (a - b - c) >>> 0; a = (a ^ (c >>> 12)) >>> 0;
+  b = (b - c - a) >>> 0; b = (b ^ (a << 16)) >>> 0;
+  c = (c - a - b) >>> 0; c = (c ^ (b >>> 5)) >>> 0;
+  a = (a - b - c) >>> 0; a = (a ^ (c >>> 3)) >>> 0;
+  b = (b - c - a) >>> 0; b = (b ^ (a << 10)) >>> 0;
+  c = (c - a - b) >>> 0; c = (c ^ (b >>> 15)) >>> 0;
+  return [a, b, c];
+}
+
+// Warcraft III StringHash (Storm SStrHash2): Bob Jenkins' 1997 hash, a-z upper-cased, '/' read as '\'.
+function stringHash(text) {
+  const k = Array.from(new TextEncoder().encode(text), ch => (ch >= 97 && ch <= 122) ? ch - 32 : (ch === 47 ? 92 : ch));
+  const word = i => (k[i] | (k[i + 1] << 8) | (k[i + 2] << 16) | (k[i + 3] << 24)) >>> 0;
+  let a = 0x9E3779B9, b = 0x9E3779B9, c = 0, i = 0;
+  const n = k.length;
+  while (n - i >= 12) {
+    a = (a + word(i)) >>> 0; b = (b + word(i + 4)) >>> 0; c = (c + word(i + 8)) >>> 0;
+    [a, b, c] = mix(a, b, c); i += 12;
+  }
+  c = (c + n) >>> 0;
+  for (let j = 0; i + j < n; j++) {
+    const v = k[i + j] * Math.pow(2, 8 * (j < 4 ? j : j < 8 ? j - 4 : j - 7));
+    if (j < 4) a = (a + v) >>> 0; else if (j < 8) b = (b + v) >>> 0; else c = (c + v) >>> 0;
+  }
+  [a, b, c] = mix(a, b, c);
+  return c | 0;
+}
+
+const gameName = name => name.split('#')[0];
+const nameHash = name => Math.abs(stringHash(gameName(name))) % P20;
+const isPlainAscii = s => /^[\x20-\x7e]*$/.test(s);
+
+function checksum(body) {
+  let s = 11941;
+  for (const ch of body) { if (ch === '(' || ch === ')') break; s += valueOf(ch); }
+  return s > P18 ? s % P18 : s;
+}
+
+function clean(code) {
+  return code.replace(/\|c[0-9A-Fa-f]{8}|\|r|\s/g, '');
+}
+
+// Pull a code out of whatever was pasted: the code itself, "-load CODE", or a whole .txt save file.
+function extractCode(text) {
+  let m = text.match(/set code=(\S+)/) || text.match(/SetPlayerName\([^,]*,\s*"([^"]+)"/) || text.match(/-load[fx]?\s+(\S+)/);
+  return clean(m ? m[1] : text);
+}
+
+function readCode(raw) {
+  const code = clean(raw);
+  if (code.length < 8) throw new Error('This is too short to be a save code.');
+  const version = valueOf(code[0]);
+  let stored = 0;
+  for (const ch of code.slice(1, 4)) stored = stored * 64 + valueOf(ch);
+  const body = code.slice(4);
+  if (stored !== checksum(body)) throw new Error('The checksum does not match, so the code was changed or cut off. Paste the whole code again.');
+  let first = 0;
+  for (const ch of body.slice(0, 4)) first = first * 64 + valueOf(ch);
+  let h = (first >>> 4) - ((13 * version) % P20);
+  if (h < 0) h += P20;
+  return { code, version, letter: code[0], hash: h, armory: body.includes('(') };
+}
+
+function renameCode(raw, newName) {
+  const r = readCode(raw);
+  if (r.version !== 6 && r.version !== 7) throw new Error('Only current codes (starting with G or H) can be moved. This one starts with ' + r.letter + '.');
+  const body = r.code.slice(4);
+  let first = 0;
+  for (const ch of body.slice(0, 4)) first = first * 64 + valueOf(ch);
+  const m = ((13 * r.version) + nameHash(newName)) % P20;
+  first = (m * 16) + (first & 15);
+  const newBody = [18, 12, 6, 0].map(s => ALPHABET[Math.floor(first / Math.pow(2, s)) & 63]).join('') + body.slice(4);
+  const cs = checksum(newBody);
+  const out = r.code[0] + [12, 6, 0].map(s => ALPHABET[(cs >> s) & 63]).join('') + newBody;
+  if (readCode(out).hash !== nameHash(newName)) throw new Error('Internal check failed; the new code was not produced.');
+  return out;
+}
+
+
+const $ = id => document.getElementById(id);
+const EXAMPLE = { code: 'HDjpQYY1H2#lf06$JNyebkxONXbXzT64TV3#0gL4KdpCCgGDN1#QYr4XcvjBT9ajr8EEw3dWFyH1CUOa1stqoC(DUJDjp$JqqiSkqhqp5wqz8saAAGZ69VWqtFGSoUveXwmq2VZFyVXUR)', old: 'Slithe', nw: 'NewName#1234' };
+let current = '';
+
+function chip(text, cls) { const s = document.createElement('span'); s.className = 'chip' + (cls ? ' ' + cls : ''); s.textContent = text; return s; }
+
+function update() {
+  const st = $('codeStatus'), err = $('codeError'), os = $('oldStatus'), out = $('out'), outS = $('outStatus');
+  st.replaceChildren(); os.replaceChildren(); outS.replaceChildren(); err.hidden = true; current = '';
+  $('copyCode').disabled = $('copyLoad').disabled = true; $('copyNote').textContent = '';
+  const showOut = t => { out.textContent = t; out.className = 'out empty'; };
+  const raw = $('code').value.trim();
+  const nw = $('new').value, old = $('old').value;
+  $('nameWarn').hidden = isPlainAscii(gameName(nw)) && isPlainAscii(gameName(old));
+  if (!raw) { showOut('Paste a save code in step 1.'); return; }
+  let info;
+  try { info = readCode(extractCode(raw)); }
+  catch (e) { err.textContent = e.message; err.hidden = false; showOut('The code in step 1 could not be read.'); return; }
+  st.append(chip('Version ' + info.letter, info.version === 6 || info.version === 7 ? '' : 'warn'), chip('Checksum OK', 'ok'),
+            chip('Name hash ' + info.hash), chip(info.armory ? 'Has armory part' : 'No armory part'));
+  let owned = false;
+  if (old.trim()) {
+    owned = nameHash(old) === info.hash;
+    os.append(owned ? chip('Belongs to ' + gameName(old), 'ok') : chip('Does not belong to ' + gameName(old) + ' (that name gives ' + nameHash(old) + ')', 'bad'));
+  }
+  if (!owned && !$('override').checked) { showOut(old.trim() ? 'The old name does not match this code. Check the spelling, or tick the box in step 2 if you confirmed ownership another way.' : 'Enter the old account name in step 2.'); return; }
+  if (!gameName(nw).trim()) { showOut('Enter the new account name in step 3.'); return; }
+  try {
+    current = renameCode(info.code, nw);
+    out.textContent = current; out.className = 'out';
+    outS.append(chip('Loads for ' + gameName(nw), 'ok'), chip('Name hash ' + nameHash(nw)));
+    if (current === info.code) outS.append(chip('Same name hash as before: the code is unchanged', 'warn'));
+    $('copyCode').disabled = $('copyLoad').disabled = false;
+  } catch (e) { showOut(e.message); }
+}
+
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); $('copyNote').textContent = 'Copied.'; }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents($('out')); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    $('copyNote').textContent = 'Copying was blocked; the code is selected, press Ctrl+C.';
+  }
+}
+
+function markEdited() { $('exampleBar').hidden = true; }
+['code', 'old', 'new'].forEach(id => $(id).addEventListener('input', () => { markEdited(); update(); }));
+$('override').addEventListener('change', update);
+$('file').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => { $('code').value = extractCode(String(rd.result)); markEdited(); update(); };
+  rd.readAsText(f); e.target.value = '';
+});
+$('clearBtn').addEventListener('click', () => { $('code').value = $('old').value = $('new').value = ''; $('override').checked = false; markEdited(); update(); $('code').focus(); });
+$('copyCode').addEventListener('click', () => copy(current));
+$('copyLoad').addEventListener('click', () => copy('-load ' + current));
+
+$('code').value = EXAMPLE.code; $('old').value = EXAMPLE.old; $('new').value = EXAMPLE.nw;
+update();
+</script>
