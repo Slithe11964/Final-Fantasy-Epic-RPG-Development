@@ -26,15 +26,11 @@ function Tatsumaki_Pull takes nothing returns boolean
         if IsUnitEnemy(u,udg_TatsumakiOwner[l_idx])then
             set ux=GetUnitX(u)
             set uy=GetUnitY(u)
-            // (ux) minus (cx).
             set dx=ux-cx
-            // (uy) minus (cy).
             set dy=uy-cy
             // The square root of ((the square of (dx)) plus (the square of (dy))).
             set distance=SquareRoot(dx*dx+dy*dy)
-            // (distance) minus (25).
             if(distance-25.<60.)then
-                // (distance) minus (60).
                 set l_step=distance-60.
             else
                 set l_step=25.
@@ -42,9 +38,7 @@ function Tatsumaki_Pull takes nothing returns boolean
             if(GetUnitDefaultMoveSpeed(u)>0)then
                 // The angle in radians from the y gap (dy) and x gap (dx).
                 set l_ang=Atan2(dy,dx)
-                // (ux) minus ((l_step) times (the horizontal direction share for angle (l_ang) in radians)).
                 set tx=ux-l_step*Cos(l_ang)
-                // (uy) minus ((l_step) times (the vertical direction share for angle (l_ang) in radians)).
                 set ty=uy-l_step*Sin(l_ang)
                 if Path_IsWalkable(tx,ty,10.)then
                     call SetUnitX(u,tx)
@@ -83,15 +77,11 @@ function Tatsumaki_Stomp takes nothing returns boolean
             if(GetUnitDefaultMoveSpeed(u)>0)then
                 set ux=GetUnitX(u)
                 set uy=GetUnitY(u)
-                // (ux) minus (cx).
                 set dx=ux-cx
-                // (uy) minus (cy).
                 set dy=uy-cy
                 // The angle in radians from the y gap (dy) and x gap (dx).
                 set l_ang=Atan2(dy,dx)
-                // (ux) plus ((100) times (the horizontal direction share for angle (l_ang) in radians)).
                 set tx=ux+100.*Cos(l_ang)
-                // (uy) plus ((100) times (the vertical direction share for angle (l_ang) in radians)).
                 set ty=uy+100.*Sin(l_ang)
                 call SetUnitX(u,tx)
                 call SetUnitY(u,ty)

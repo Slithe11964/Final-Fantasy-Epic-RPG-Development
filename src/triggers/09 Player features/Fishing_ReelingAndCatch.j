@@ -83,9 +83,7 @@ function Trig_Fishing_Tick_Actions takes nothing returns nothing
         call IssueTargetOrderBJ(udg_SpiritOfGaya[udg_TempInteger],"smart",Player_GetHero(ConvertedPlayer(udg_TempInteger)))
         call UnitRemoveAbilityBJ('A0P3',udg_SpiritOfGaya[udg_TempInteger]) // 'A0P3': ability "House Portal"
         call SetUnitPositionLocFacingBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_TempPoint,udg_TempReal)
-        // (udg_TempInteger) minus (1).
         call SetUnitX(Player_GetHero(Player(udg_TempInteger-1)),GetUnitX(udg_PlayerFishSpot[udg_TempInteger]))
-        // (udg_TempInteger) minus (1).
         call SetUnitY(Player_GetHero(Player(udg_TempInteger-1)),GetUnitY(udg_PlayerFishSpot[udg_TempInteger]))
         call SelectUnitForPlayerSingle(udg_FishingControls[udg_TempInteger],ConvertedPlayer(udg_TempInteger))
         if(Trig_Fishing_Tick_FacingEast())then
@@ -138,7 +136,6 @@ function Trig_Fishing_Tick_Actions takes nothing returns nothing
         else
             if(Trig_Fishing_Tick_StateHooked())then
                 call StartTimerBJ(udg_FishingTimer[0],false,.02)
-                // (4) plus (a random whole number from 1 through 2).
                 set udg_GatherState[udg_TempInteger]=(4+GetRandomInt(1,2))
                 call AddSpecialEffectLocBJ(udg_FishingBobberLoc[udg_TempInteger],"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -183,10 +180,6 @@ function Trig_Fishing_Input_IsCorrectSide takes nothing returns boolean
 endfunction
 
 function Trig_Fishing_Input_IsFishInReach takes nothing returns boolean
-    // Calculation 1:
-    // The straight-line distance between udg_TempPoint and udg_FishingBobberLoc at position udg_TempInteger.
-    // Calculation 2:
-    // (128) plus (udg_TempReal).
     return(DistanceBetweenPoints(udg_TempPoint,udg_FishingBobberLoc[udg_TempInteger])<=(128.+udg_TempReal))
 endfunction
 
@@ -211,7 +204,6 @@ function Trig_Fishing_Input_IsSlackInput takes nothing returns boolean
 endfunction
 
 function Trig_Fishing_Input_IsFishAtHand takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_FishingBobberLoc at position udg_TempInteger.
     return(DistanceBetweenPoints(udg_TempPoint,udg_FishingBobberLoc[udg_TempInteger])<=128.)
 endfunction
 

@@ -39,13 +39,11 @@ function Trig_Boss_BlackDevil_Summon_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call Wait_Polled(1.5)
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set l_tempPoint=GetRectCenter(gg_rct_473)
     call CreateNUnitsAtLoc(1,'E00X',Player($B),l_tempPoint,270.) // 'E00X': unit "Black Devil"; $B = 11
     call RemoveLocation(l_tempPoint)
     set udg_BlackDevilUnit=GetLastCreatedUnit()
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call SetHeroLevelBJ(udg_BlackDevilUnit,85,false)
     call UnitAddItemByIdSwapped('I0H5',udg_BlackDevilUnit) // 'I0H5': item "Dark Energy"

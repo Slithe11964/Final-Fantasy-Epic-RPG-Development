@@ -101,7 +101,6 @@ function Trig_Quest_Caravan_Enable_Actions takes nothing returns nothing
         call DisableTrigger(gg_trg_Quest_Caravan_DioRefuses)
         call DestroyTrigger(gg_trg_Quest_Caravan_DioRefuses)
     endif
-    // Increase udg_CaravanStage by 3.
     set udg_CaravanStage=(udg_CaravanStage+3)
     call Unit_ScaleToLevel60(gg_unit_hrdh_0102)
     call Unit_ScaleToLevel60(gg_unit_hrdh_0103)
@@ -186,7 +185,6 @@ function Trig_Quest_Caravan_Deliver_Cond_CinematicsEnabled takes nothing returns
 endfunction
 
 function Trig_Quest_Caravan_Deliver_Cond_HorseNearby takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=1280.)
 endfunction
 
@@ -198,7 +196,6 @@ function Trig_Quest_Caravan_Deliver_Enum_ScoreHorse takes nothing returns nothin
     if(Trig_Quest_Caravan_Deliver_Cond_NotArrivedHorse())then
         set udg_TempPoint2=GetUnitLoc(GetEnumUnit())
         if(Trig_Quest_Caravan_Deliver_Cond_HorseNearby())then
-            // Increase udg_CaravanReward by 2000.
             set udg_CaravanReward=(udg_CaravanReward+$7D0) // $7D0 = 2000
         endif
         call RemoveLocation(udg_TempPoint2)

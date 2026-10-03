@@ -104,7 +104,6 @@ function Trig_Spell_LivingFlame_Spread_Actions takes nothing returns nothing
             call ForGroupBJ(udg_TempGroup,function Trig_Spell_LivingFlame_Spread_InfectUnit)
             call DestroyGroup(udg_TempGroup)
             set udg_DamageElement=1
-            // (4000) times ((a random decimal number between 15 and 16) divided by (16)).
             call UnitDamageTargetBJ(udg_ScriptedBossUnit,udg_CurrentEffectUnit,(4000.*(GetRandomReal(15.,16.)/ 16.)),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
         else
             if(Trig_Spell_LivingFlame_Spread_Cond_HasFlameBuff())then

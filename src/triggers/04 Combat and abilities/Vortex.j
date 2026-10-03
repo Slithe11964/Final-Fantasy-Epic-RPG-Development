@@ -62,8 +62,6 @@ function Trig_Vortex_Suck_PullIntoVortex takes nothing returns nothing
 endfunction
 
 function Trig_Vortex_Suck_IsEnragedPhase takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<50.)or(UnitHasBuffBJ(GetTriggerUnit(),'B05V')) // 'B05V': buff tooltip "Disease"
 endfunction
 
@@ -99,8 +97,6 @@ function Trig_Vortex_Suck_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Vortex_Drain_IsNearlyDead takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the unit being visited, times 100 (or 0 if the unit
-    // is missing or its maximum is 0).
     return(GetUnitLifePercent(GetEnumUnit())<=10.)
 endfunction
 
@@ -114,9 +110,6 @@ function Trig_Vortex_Drain_DrainVictim takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call GroupRemoveUnitSimple(GetEnumUnit(),udg_VortexVictims)
     else
-        // Result 1: current health divided by maximum health for the unit being visited, times 100 (or 0 if the unit
-        // is missing or its maximum is 0).
-        // Result 2: (result 1) minus (10).
         call SetUnitLifePercentBJ(GetEnumUnit(),(GetUnitLifePercent(GetEnumUnit())-10.))
     endif
 endfunction

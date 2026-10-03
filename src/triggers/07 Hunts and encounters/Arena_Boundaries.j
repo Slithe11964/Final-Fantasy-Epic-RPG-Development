@@ -36,9 +36,6 @@ function Trig_Arena_OutOfBounds_PunishPlayer takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set udg_DmgFlagPure=true
         set udg_DmgFlagUnavoidable=-1
-        // Result 1: udg_ArenaStallTicks treated as a decimal-capable number.
-        // Result 2: (result 1) times (0.05).
-        // Result 3: (maximum health of Player_GetHero(the player being visited)) times (result 2).
         call UnitDamageTargetBJ(GroupPickRandomUnit(udg_CupArenaUnits),Player_GetHero(GetEnumPlayer()),(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,Player_GetHero(GetEnumPlayer()))*(I2R(udg_ArenaStallTicks)*.05)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     endif
 endfunction

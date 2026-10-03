@@ -21,20 +21,12 @@ function Trig_Devour_Absorb_Actions takes nothing returns nothing
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call AddSpecialEffectTargetUnitBJ("head",GetTriggerUnit(),"Abilities\\Spells\\Orc\\Devour\\DevourEffectArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // Calculation 1:
-    // (BlzGetUnitBaseDamage(the triggering unit, 0)) plus (BlzGetUnitBaseDamage(the spell target, 0)).
-    // Calculation 2:
-    // (1) minus (1).
     call BlzSetUnitBaseDamage(GetTriggerUnit(),(BlzGetUnitBaseDamage(GetTriggerUnit(),0)+BlzGetUnitBaseDamage(GetSpellTargetUnit(),0)),(1-1))
-    // (BlzGetUnitBaseDamage(the triggering unit, 1)) plus (BlzGetUnitBaseDamage(the spell target, 1)).
     call BlzSetUnitBaseDamage(GetTriggerUnit(),(BlzGetUnitBaseDamage(GetTriggerUnit(),1)+BlzGetUnitBaseDamage(GetSpellTargetUnit(),1)),1)
     call GoliathTonic_Remove(GetSpellTargetUnit())
     call Berserk_Remove(GetSpellTargetUnit())
-    // (maximum health of the triggering unit) plus (maximum health of the spell target).
     call BlzSetUnitMaxHP(GetTriggerUnit(),(BlzGetUnitMaxHP(GetTriggerUnit())+BlzGetUnitMaxHP(GetSpellTargetUnit())))
-    // (BlzGetUnitMaxMana(the triggering unit)) plus (BlzGetUnitMaxMana(the spell target)).
     call BlzSetUnitMaxMana(GetTriggerUnit(),(BlzGetUnitMaxMana(GetTriggerUnit())+BlzGetUnitMaxMana(GetSpellTargetUnit())))
-    // (BlzGetUnitArmor(the triggering unit)) plus (BlzGetUnitArmor(the spell target)).
     call BlzSetUnitArmor(GetTriggerUnit(),(BlzGetUnitArmor(GetTriggerUnit())+BlzGetUnitArmor(GetSpellTargetUnit())))
     if(Trig_Devour_Absorb_IsCasterNotResistant())then
         call UnitAddAbilityBJ('ACrk',GetTriggerUnit()) // 'ACrk': object name not found in map data

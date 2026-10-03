@@ -22,16 +22,11 @@ function Trig_Fan_Of_Knives_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (2).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
     if(Trig_Fan_Of_Knives_IsHero())then
-        // (l_tempInteger) plus ((Agility of the triggering unit) times (4)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true)*4))
     endif
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00B'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00B')) // $A = 10; 'R00B': upgrade "Dagger"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)

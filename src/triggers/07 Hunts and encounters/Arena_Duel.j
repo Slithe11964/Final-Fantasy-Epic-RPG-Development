@@ -12,7 +12,6 @@ function Trig_Arena_Duel_AI_IsSecondHalfStart takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Duel_AI_IsTargetNearSecond takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<400.)
 endfunction
 
@@ -31,7 +30,6 @@ function Trig_Arena_Duel_AI_IsFirstHalfStart takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Duel_AI_IsTargetNearFirst takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<400.)
 endfunction
 
@@ -51,7 +49,6 @@ endfunction
 
 function Trig_Arena_Duel_AI_Actions takes nothing returns nothing
     call StartTimerBJ(udg_DragonBattleTimer,false,1.5)
-    // (the remainder after dividing (udg_DragonBattlePhase) by (40)) plus (1).
     set udg_DragonBattlePhase=(ModuloInteger(udg_DragonBattlePhase,40)+1)
     if(Trig_Arena_Duel_AI_IsFirstHalf())then
         if(Trig_Arena_Duel_AI_IsFirstHalfStart())then
@@ -83,7 +80,6 @@ function Trig_Arena_Duel_AI_Actions takes nothing returns nothing
             set udg_TempReal=AngleBetweenPoints(udg_TempPoint,udg_TempPoint2)
             call RemoveLocation(udg_TempPoint)
             call RemoveLocation(udg_TempPoint2)
-            // ((udg_TempReal) with its decimal part removed) divided by (90).
             set udg_TempPoint=GetRectCenter(udg_GlyphRect[(R2I(udg_TempReal)/ 90)])
         else
             if(Trig_Arena_Duel_AI_IsCoinFlipFirst())then
@@ -135,7 +131,6 @@ function Trig_Arena_Duel_AI_Actions takes nothing returns nothing
             set udg_TempReal=AngleBetweenPoints(udg_TempPoint,udg_TempPoint2)
             call RemoveLocation(udg_TempPoint)
             call RemoveLocation(udg_TempPoint2)
-            // ((udg_TempReal) with its decimal part removed) divided by (90).
             set udg_TempPoint=GetRectCenter(udg_GlyphRect[(R2I(udg_TempReal)/ 90)])
         else
             if(Trig_Arena_Duel_AI_IsCoinFlipSecond())then

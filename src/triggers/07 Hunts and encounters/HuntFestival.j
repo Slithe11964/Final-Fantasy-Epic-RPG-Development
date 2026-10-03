@@ -94,13 +94,11 @@ endfunction
 
 function Trig_HuntFestival_Begin_EmpowerHunter takes nothing returns nothing
     call UnitAddAbilityBJ('S00J',GetEnumUnit()) // 'S00J': ability "Festival Spirit"
-    // (BlzGetUnitBaseDamage(the unit being visited, udg_AbilityLevelIndex)) times ((udg_Difficulty) plus (1)).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),udg_AbilityLevelIndex)*(udg_Difficulty+1)),udg_AbilityLevelIndex)
 endfunction
 
 function Trig_HuntFestival_Begin_EmpowerHunterHigh takes nothing returns nothing
     call UnitAddAbilityBJ('S00J',GetEnumUnit()) // 'S00J': ability "Festival Spirit"
-    // (BlzGetUnitBaseDamage(the unit being visited, udg_AbilityLevelIndex)) times ((udg_Difficulty) plus (4)).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),udg_AbilityLevelIndex)*(udg_Difficulty+4)),udg_AbilityLevelIndex)
 endfunction
 
@@ -391,7 +389,6 @@ function Trig_HuntFestival_Score_Actions takes nothing returns nothing
         else
             set udg_TempPlayer=ConvertedPlayer(GetUnitPointValue(GetKillingUnitBJ()))
         endif
-        // (udg_FestivalScore at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_Difficulty).
         set udg_FestivalScore[GetConvertedPlayerId(udg_TempPlayer)]=(udg_FestivalScore[GetConvertedPlayerId(udg_TempPlayer)]+udg_Difficulty)
     else
         set udg_TempPlayer=GetOwningPlayer(GetKillingUnitBJ())

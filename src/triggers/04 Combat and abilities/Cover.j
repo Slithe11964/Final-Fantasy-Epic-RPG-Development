@@ -25,11 +25,7 @@ function Trig_Cover_Cast_Actions takes nothing returns nothing
     else
         call UnitRemoveAbilityBJ('A0O4',GetSpellTargetUnit()) // 'A0O4': ability "Cover"
     endif
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) times (5).
-    // Result 2: (result 1) plus (250).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)+$FA // $FA = 250
-    // Udg_TempInteger treated as a decimal-capable number.
     call Link_SaveCaster(GetTriggerUnit(),GetSpellTargetUnit(),I2R(l_tempInteger))
 endfunction
 

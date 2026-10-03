@@ -54,7 +54,6 @@ function Trig_Boss_Odin_Intro_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Boss_Odin_Escort_AI_Cond_QueenFarFromOdin takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>1600.)
 endfunction
 
@@ -71,7 +70,6 @@ function Trig_Boss_Odin_Escort_AI_Cond_OdinNeedsCover takes nothing returns bool
 endfunction
 
 function Trig_Boss_Odin_Escort_AI_Cond_KnightFarFromOdin takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>1600.)
 endfunction
 
@@ -175,10 +173,6 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=CountPlayersInForceBJ(udg_PlayingPlayers)
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // Result 1: loop counter A treated as a decimal-capable number.
-            // Result 2: (360) times (result 1).
-            // Result 3: CountPlayersInForceBJ(udg_PlayingPlayers) treated as a decimal-capable number.
-            // Result 4: (result 2) divided by (result 3).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
             call CreateItemLoc('I04A',udg_TempPoint2) // 'I04A': item "Sleipnir"
             call RemoveLocation(udg_TempPoint2)

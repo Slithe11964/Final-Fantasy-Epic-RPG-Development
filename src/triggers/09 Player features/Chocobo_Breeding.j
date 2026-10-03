@@ -65,23 +65,18 @@ function Trig_Chocobo_Breed_Score_Actions takes nothing returns nothing
         set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+1)
     else
         if(Trig_Chocobo_Breed_Score_TargetIsTier2())then
-            // Increase udg_ChocoboAbilityIndex by 2.
             set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+2)
         else
             if(Trig_Chocobo_Breed_Score_TargetIsTier3())then
-                // Increase udg_ChocoboAbilityIndex by 3.
                 set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+3)
             else
                 if(Trig_Chocobo_Breed_Score_TargetIsTier4())then
-                    // Increase udg_ChocoboAbilityIndex by 4.
                     set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+4)
                 else
                     if(Trig_Chocobo_Breed_Score_TargetIsTier5())then
-                        // Increase udg_ChocoboAbilityIndex by 5.
                         set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+5)
                     else
                         if(Trig_Chocobo_Breed_Score_TargetIsTier6())then
-                            // Increase udg_ChocoboAbilityIndex by 6.
                             set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+6)
                         endif
                     endif
@@ -93,23 +88,18 @@ function Trig_Chocobo_Breed_Score_Actions takes nothing returns nothing
         set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+1)
     else
         if(Trig_Chocobo_Breed_Score_PartnerIsTier2())then
-            // Increase udg_ChocoboAbilityIndex by 2.
             set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+2)
         else
             if(Trig_Chocobo_Breed_Score_PartnerIsTier3())then
-                // Increase udg_ChocoboAbilityIndex by 3.
                 set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+3)
             else
                 if(Trig_Chocobo_Breed_Score_PartnerIsTier4())then
-                    // Increase udg_ChocoboAbilityIndex by 4.
                     set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+4)
                 else
                     if(Trig_Chocobo_Breed_Score_PartnerIsTier5())then
-                        // Increase udg_ChocoboAbilityIndex by 5.
                         set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+5)
                     else
                         if(Trig_Chocobo_Breed_Score_PartnerIsTier6())then
-                            // Increase udg_ChocoboAbilityIndex by 6.
                             set udg_ChocoboAbilityIndex=(udg_ChocoboAbilityIndex+6)
                         endif
                     endif

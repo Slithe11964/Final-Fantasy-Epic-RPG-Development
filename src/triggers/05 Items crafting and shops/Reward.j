@@ -15,22 +15,15 @@ function Reward_GiveAll takes integer l_gold,integer xp,unit l_speaker returns n
                 set l_mult=2
             endif
             if(l_gold>0)then
-                // (GetPlayerState(p, PLAYER_STATE_RESOURCE_GOLD)) plus ((l_gold) times (l_mult)).
                 call SetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)+(l_gold*l_mult))
-                // (GetPlayerState(p, PLAYER_STATE_GOLD_GATHERED)) plus ((l_gold) times (l_mult)).
                 call SetPlayerState(p,PLAYER_STATE_GOLD_GATHERED,GetPlayerState(p,PLAYER_STATE_GOLD_GATHERED)+(l_gold*l_mult))
             endif
             if(xp>0)then
                 if(GetUnitAbilityLevel(Player_GetHero(p),'A14Q')<=0)then // 'A14Q': ability "Pointless"
-                    // (xp) times (l_mult).
                     call AddHeroXP(Player_GetHero(p),(xp*l_mult),false)
                     // The secondary hero gets the title-adjusted XP times the secondary-XP rate, with decimals dropped.
                     call AddHeroXP(udg_SpiritOfGaya[i+1],R2I(I2R((xp*l_mult))*udg_SecondaryXPRate),false)
                 else
-                    // Calculation 1:
-                    // (i) plus (1).
-                    // Calculation 2:
-                    // (udg_BankedXP at position (i) plus (1)) plus ((xp) times (l_mult) treated as a decimal-capable number).
                     set udg_BankedXP[i+1]=udg_BankedXP[i+1]+I2R(xp*l_mult)
                 endif
             endif
@@ -66,7 +59,6 @@ function Reward_Give takes integer l_gold,integer xp,unit l_speaker returns noth
                 // (((l_gold) divided by (500); drop the remainder) plus (1)) times (500).
                 set l_gold=((l_gold/ 500)+1)*500
             endif
-            // Increase l_gold by 2000.
             set l_gold=l_gold+$7D0 // $7D0 = 2000
         endif
         if(xp>0 and xp<=6000)then
@@ -75,7 +67,6 @@ function Reward_Give takes integer l_gold,integer xp,unit l_speaker returns noth
                 // (((xp) divided by (500); drop the remainder) plus (1)) times (500).
                 set xp=((xp/ 500)+1)*500
             endif
-            // Increase xp by 2000.
             set xp=xp+$7D0 // $7D0 = 2000
         endif
     endif

@@ -26,12 +26,6 @@ function Trig_Urn_Guardians_Count_Actions takes nothing returns nothing
         call EnumDestructablesInRectAll(gg_rct_552,function Trig_Urn_Guardians_Count_Enum_RemoveDestructable)
         call DestroyTrigger(GetTriggeringTrigger())
     else
-        // Calculation 1:
-        // (25) times (udg_GuardiansKilled treated as a decimal-capable number).
-        // Calculation 2:
-        // (25) times (udg_GuardiansKilled treated as a decimal-capable number).
-        // Calculation 3:
-        // (25) times (udg_GuardiansKilled treated as a decimal-capable number).
         call SetUnitVertexColorBJ(gg_unit_nmgv_0065,(25.*I2R(udg_GuardiansKilled)),(25.*I2R(udg_GuardiansKilled)),(25.*I2R(udg_GuardiansKilled)),0)
     endif
 endfunction

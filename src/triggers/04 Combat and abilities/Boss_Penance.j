@@ -56,12 +56,10 @@ function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
     call Wait_Polled(1.)
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set udg_TempPoint=GetRectCenter(gg_rct_633)
     call CreateNUnitsAtLoc(1,'N03K',Player($B),udg_TempPoint,.0) // 'N03K': unit "The Judge"; $B = 11
     set udg_PenanceUnit=GetLastCreatedUnit()
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call SetUnitInvulnerable(udg_PenanceUnit,true)
     call PauseUnitBJ(true,udg_PenanceUnit)
@@ -83,7 +81,6 @@ function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_PenanceArms)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     set l_tempPoint2=OffsetLocation(udg_TempPoint,256.,-128.)
     call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
@@ -93,7 +90,6 @@ function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_PenanceArms)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call RemoveLocation(udg_TempPoint)
     call Wait_Polled(2.)
@@ -199,7 +195,6 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
         set bj_forLoopAIndexEnd=6
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,((I2R(GetForLoopIndexA())*60.)-30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -207,7 +202,6 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
-            // (loop counter A treated as a decimal-capable number) times (60).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,650.,(I2R(GetForLoopIndexA())*60.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -215,7 +209,6 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
-            // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,975.,((I2R(GetForLoopIndexA())*60.)-30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -281,12 +274,10 @@ endfunction
 function Trig_Boss_Penance_JudgmentDay_Damage_DamageTarget takes nothing returns nothing
     local real l_tempReal
     call UnitRemoveBuffBJ('B063',GetEnumUnit()) // 'B063': buff "Cover"
-    // (a random decimal number between 15 and 16) divided by (16).
     set l_tempReal=(GetRandomReal(15.,16.)/ 16.)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    // (99999.9) times (l_tempReal).
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*l_tempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
 endfunction
 
@@ -296,7 +287,6 @@ function Trig_Boss_Penance_JudgmentDay_Damage_Actions takes nothing returns noth
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -304,7 +294,6 @@ function Trig_Boss_Penance_JudgmentDay_Damage_Actions takes nothing returns noth
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,650.,((I2R(GetForLoopIndexA())*60.)-30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -312,7 +301,6 @@ function Trig_Boss_Penance_JudgmentDay_Damage_Actions takes nothing returns noth
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,975.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())

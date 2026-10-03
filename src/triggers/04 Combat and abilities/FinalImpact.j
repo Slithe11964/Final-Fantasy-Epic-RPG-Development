@@ -22,7 +22,6 @@ function Trig_FinalImpact_Cast_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (1000) divided by (udg_DifficultyScale).
     call SaveRealBJ((1000./ udg_DifficultyScale),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

@@ -97,7 +97,6 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
     call DisplayTimedTextToForce(l_tempForce,20.,udg_TempString)
     set udg_TempString="Jobs mastered: |cff00ffff"
     set bj_forLoopAIndex=0
-    // (udg_JobCount) minus (1).
     set bj_forLoopAIndexEnd=(udg_JobCount-1)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
@@ -117,7 +116,6 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
     endif
     set udg_TempString="Jobs ultimately mastered: |cff00ffff"
     set bj_forLoopAIndex=0
-    // (udg_JobCount) minus (1).
     set bj_forLoopAIndexEnd=(udg_JobCount-1)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
@@ -135,7 +133,6 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
     if(Trig_Levels_Command_Cond_LegendaryModeOn())then
         set udg_TempString="Jobs legendarily mastered: |cff00ffff"
         set bj_forLoopAIndex=0
-        // (udg_JobCount) minus (1).
         set bj_forLoopAIndexEnd=(udg_JobCount-1)
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd

@@ -33,15 +33,9 @@ function Trig_Knot_Of_Rust_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (4).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
-    // (l_tempInteger) plus (((current health of the triggering unit) times (0.2)) with its decimal part
-    // removed).
     set l_tempInteger=(l_tempInteger+R2I((GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit())*.2)))
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R000'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R000')) // $A = 10; 'R000': upgrade "Tools"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)

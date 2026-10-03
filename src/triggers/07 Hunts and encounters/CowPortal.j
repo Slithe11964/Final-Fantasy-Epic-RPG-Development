@@ -13,7 +13,6 @@ function Trig_CowPortal_Open_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_CowPortal_Open_Actions takes nothing returns nothing
-    // (4) plus ((udg_Difficulty) times (2)).
     set udg_CowSpawnCount=(4+(udg_Difficulty*2))
     set udg_PortalRitualActive=true
     call CreateNUnitsAtLoc(1,'h02V',Player(8),udg_TempPoint,bj_UNIT_FACING) // 'h02V': unit "Cow Portal"
@@ -40,9 +39,6 @@ function Trig_CowPortal_Spawn_Cows_Actions takes nothing returns nothing
     local location l_tempPoint
     set l_tempPoint=GetUnitLoc(udg_CowPortal)
     if(Trig_CowPortal_Spawn_Cows_Cond_MoreCowsLeft())then
-        // Calculation 1:
-        // (udg_CowSpawnCount treated as a decimal-capable number) times (45).
-        // Calculation 2:
         // A random decimal number between 200 and 340.
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,(I2R(udg_CowSpawnCount)*45.),GetRandomReal(200.,340.))
         call CreateNUnitsAtLocFacingLocBJ(1,'n0AE',Player($B),l_tempPoint,udg_TempPoint2) // 'n0AE': unit "Hell Bovine"; $B = 11

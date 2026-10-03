@@ -109,13 +109,11 @@ function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=16
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (22.5) times (loop counter A treated as a decimal-capable number).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,(22.5*I2R(GetForLoopIndexA())))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call RemoveLocation(udg_TempPoint2)
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
-            // (22.5) times (loop counter A treated as a decimal-capable number).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call RemoveLocation(udg_TempPoint2)
@@ -126,7 +124,6 @@ function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
         set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
         set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-        // (10000) times (udg_TempReal).
         call SaveRealBJ((10000.*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
         call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
         call ShowUnitHide(GetLastCreatedUnit())

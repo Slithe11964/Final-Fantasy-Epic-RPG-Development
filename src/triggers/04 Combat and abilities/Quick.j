@@ -31,12 +31,10 @@ function Trig_Quick_Cast_Actions takes nothing returns nothing
             set bj_forLoopBIndexEnd=4
             loop
                 exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
-                // ((loop counter A) times (5)) plus (loop counter B).
                 call BlzEndUnitAbilityCooldown(GetSpellTargetUnit(),udg_JobSkill[((GetForLoopIndexA()*5)+GetForLoopIndexB())])
                 set bj_forLoopBIndex=bj_forLoopBIndex+1
             endloop
             if(Trig_Quick_Cast_NotLastJobSlot())then
-                // ((loop counter A) times (5)) plus (5).
                 call BlzEndUnitAbilityCooldown(GetSpellTargetUnit(),udg_JobSkill[((GetForLoopIndexA()*5)+5)])
             endif
             set bj_forLoopAIndex=bj_forLoopAIndex+1

@@ -82,10 +82,6 @@ function Trig_Quest_TrialByFire_Countdown_Actions takes nothing returns nothing
             // (50) plus ((udg_TrialByFireSeconds treated as a decimal-capable number) times ((5) divided by (3))).
             call SetUnitLifePercentBJ(udg_ScriptedBossUnit,(50.+(I2R(udg_TrialByFireSeconds)*(5./ 3.))))
             set udg_TempPoint=GetRectCenter(gg_rct_046)
-            // Calculation 1:
-            // (udg_TrialByFireSeconds treated as a decimal-capable number) times (5).
-            // Calculation 2:
-            // (udg_TrialByFireSeconds treated as a decimal-capable number) times (5).
             call CreateTextTagLocBJ(I2S(udg_TrialByFireSeconds),udg_TempPoint,0,$A,'d',(I2R(udg_TrialByFireSeconds)*5.),(I2R(udg_TrialByFireSeconds)*5.),0) // $A = 10
             call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)
             call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)

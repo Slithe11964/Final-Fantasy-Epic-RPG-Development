@@ -107,7 +107,6 @@ function Cine_Exit takes nothing returns nothing
     call DestroyGroup(udg_CinematicPausedUnits)
     set udg_CinematicPausedUnits=null
     set l_hero=Player_GetHero(GetLocalPlayer())
-    // (GetPlayerId(GetLocalPlayer())) plus (1).
     set i=GetPlayerId(GetLocalPlayer())+1
     if udg_PlayerTransport[i]!=null and IsUnitLoaded(l_hero)then
         set l_hero=udg_PlayerTransport[i]
@@ -163,112 +162,92 @@ function Trig_Cine_StoneBreaks_Actions takes nothing returns nothing
         call PlayThematicMusicBJ("Sound\\Music\\mp3Music\\Tension.mp3")
         set udg_StoneTint=100.
         set udg_StoneScale=100.
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         set udg_SpecialEffect[21]=AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\Purge\\PurgeBuffTarget.mdl")
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
         call DestroyEffectBJ(udg_SpecialEffect[21])
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         set udg_SpecialEffect[21]=AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Possession\\PossessionCaster.mdl")
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
         call DestroyEffectBJ(udg_SpecialEffect[21])
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
-        // Decrease udg_StoneTint by 10.
         set udg_StoneTint=(udg_StoneTint-10.)
         set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-        // Increase udg_StoneScale by 50.
         set udg_StoneScale=(udg_StoneScale+50.)
         call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
         call Wait_Polled(1.)
@@ -443,7 +422,6 @@ function Trig_Cine_ScryingVision_Actions takes nothing returns nothing
             set bj_forLoopAIndexEnd=4
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                // (loop counter A treated as a decimal-capable number) times (90).
                 set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(I2R(GetForLoopIndexA())*90.))
                 call CreateNUnitsAtLoc(1,'u00D',Player(8),udg_TempPoint2,bj_UNIT_FACING) // 'u00D': unit "Death Ghost"
                 call RemoveLocation(udg_TempPoint2)
@@ -694,112 +672,92 @@ function Trig_Cine_StoneBreaks_Alt_Actions takes nothing returns nothing
             call PlayThematicMusicBJ("Sound\\Music\\mp3Music\\Tension.mp3")
             set udg_StoneTint=100.
             set udg_StoneScale=100.
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             set udg_SpecialEffect[21]=AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\Purge\\PurgeBuffTarget.mdl")
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
             call DestroyEffectBJ(udg_SpecialEffect[21])
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             set udg_SpecialEffect[21]=AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Possession\\PossessionCaster.mdl")
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
             call DestroyEffectBJ(udg_SpecialEffect[21])
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)
-            // Decrease udg_StoneTint by 10.
             set udg_StoneTint=(udg_StoneTint-10.)
             set udg_TempPoint=GetUnitLoc(udg_ZodiacStone)
             call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint)
             call SetUnitVertexColorBJ(udg_ZodiacStone,'d',udg_StoneTint,udg_StoneTint,0)
-            // Increase udg_StoneScale by 50.
             set udg_StoneScale=(udg_StoneScale+50.)
             call SetUnitScalePercent(udg_ZodiacStone,udg_StoneScale,udg_StoneScale,udg_StoneScale)
             call Wait_Polled(1.)

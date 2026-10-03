@@ -120,98 +120,74 @@ function Trig_AtkSpd_Command_Actions takes nothing returns nothing
     local force l_tempForce
     set udg_CurrentHero=Player_GetHero(GetTriggerPlayer())
     call ConditionalTriggerExecute(gg_trg_AttackSpeed_Update)
-    // Increase udg_StatCalcValue by 100.
     set udg_StatCalcValue=(udg_StatCalcValue+'d')
     if(Trig_AtkSpd_Command_Cond_HasCommandAura())then
-        // Increase udg_StatCalcValue by 20.
         set udg_StatCalcValue=(udg_StatCalcValue+20)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeedMinus50())then
-        // Decrease udg_StatCalcValue by 50.
         set udg_StatCalcValue=(udg_StatCalcValue-50)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeedMinus100())then
-        // Decrease udg_StatCalcValue by 100.
         set udg_StatCalcValue=(udg_StatCalcValue-'d')
     endif
     if(Trig_AtkSpd_Command_Cond_HasWyrmhero())then
-        // Decrease udg_StatCalcValue by 1000.
         set udg_StatCalcValue=(udg_StatCalcValue-$3E8) // $3E8 = 1000
     endif
     if(Trig_AtkSpd_Command_Cond_HasAdamantArmor())then
-        // Decrease udg_StatCalcValue by 60.
         set udg_StatCalcValue=(udg_StatCalcValue-60)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed10())then
-        // Increase udg_StatCalcValue by 10.
         set udg_StatCalcValue=(udg_StatCalcValue+$A) // $A = 10
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed100())then
-        // Increase udg_StatCalcValue by 100.
         set udg_StatCalcValue=(udg_StatCalcValue+'d')
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed120())then
-        // Increase udg_StatCalcValue by 120.
         set udg_StatCalcValue=(udg_StatCalcValue+'x')
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed140())then
-        // Increase udg_StatCalcValue by 140.
         set udg_StatCalcValue=(udg_StatCalcValue+$8C) // $8C = 140
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed150())then
-        // Increase udg_StatCalcValue by 150.
         set udg_StatCalcValue=(udg_StatCalcValue+$96) // $96 = 150
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed16())then
-        // Increase udg_StatCalcValue by 16.
         set udg_StatCalcValue=(udg_StatCalcValue+16)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed20())then
-        // Increase udg_StatCalcValue by 20.
         set udg_StatCalcValue=(udg_StatCalcValue+20)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed24())then
-        // Increase udg_StatCalcValue by 24.
         set udg_StatCalcValue=(udg_StatCalcValue+24)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed30())then
-        // Increase udg_StatCalcValue by 30.
         set udg_StatCalcValue=(udg_StatCalcValue+30)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed40())then
-        // Increase udg_StatCalcValue by 40.
         set udg_StatCalcValue=(udg_StatCalcValue+40)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed50())then
-        // Increase udg_StatCalcValue by 50.
         set udg_StatCalcValue=(udg_StatCalcValue+50)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed60())then
-        // Increase udg_StatCalcValue by 60.
         set udg_StatCalcValue=(udg_StatCalcValue+60)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed70())then
-        // Increase udg_StatCalcValue by 70.
         set udg_StatCalcValue=(udg_StatCalcValue+70)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed74())then
-        // Increase udg_StatCalcValue by 74.
         set udg_StatCalcValue=(udg_StatCalcValue+74)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed76())then
-        // Increase udg_StatCalcValue by 76.
         set udg_StatCalcValue=(udg_StatCalcValue+76)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed80())then
-        // Increase udg_StatCalcValue by 80.
         set udg_StatCalcValue=(udg_StatCalcValue+80)
     endif
     if(Trig_AtkSpd_Command_Cond_HasSpeed90())then
-        // Increase udg_StatCalcValue by 90.
         set udg_StatCalcValue=(udg_StatCalcValue+90)
     endif
     if(Trig_AtkSpd_Command_Cond_HasIncreasedSpeed())then
-        // Increase udg_StatCalcValue by 50.
         set udg_StatCalcValue=(udg_StatCalcValue+50)
     endif
     if(Trig_AtkSpd_Command_Cond_SpeedBelowFloor())then
@@ -226,7 +202,6 @@ function Trig_AtkSpd_Command_Actions takes nothing returns nothing
     else
         set udg_TempReal=2.
     endif
-    // ((udg_StatCalcValue treated as a decimal-capable number) times (0.01)) divided by (udg_TempReal).
     set udg_TempReal=((I2R(udg_StatCalcValue)*.01)/ udg_TempReal)
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(udg_CurrentHero))
     if(Trig_AtkSpd_Command_Cond_HasDualWield())then

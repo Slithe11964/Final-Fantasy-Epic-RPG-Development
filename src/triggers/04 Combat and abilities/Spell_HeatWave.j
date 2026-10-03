@@ -30,7 +30,6 @@ function Trig_Spell_HeatWave_Cast_Actions takes nothing returns nothing
     call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // ((Strength of the triggering unit) times (5)) plus (4000) treated as a decimal-capable number.
     call SaveRealBJ(I2R(((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+$FA0)),1,l_tempHandleId,udg_ProxyDamageHash) // $FA0 = 4000
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)

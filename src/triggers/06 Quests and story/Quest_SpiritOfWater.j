@@ -65,7 +65,6 @@ endfunction
 function Trig_Quest_SpiritOfWater_WaterGem_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_SpiritOfWater_WaterGem_Cond_ExtraCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0FT')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT'))-1)) // 'I0FT': item "Water Gem"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT')) // 'I0FT': item "Water Gem"

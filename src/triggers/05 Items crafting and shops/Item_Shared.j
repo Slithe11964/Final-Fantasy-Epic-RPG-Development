@@ -132,10 +132,8 @@ function Item_IdFromIndex takes integer i returns integer
     if(i<$3E8)then // $3E8 = 1000
         return udg_DropItemIdTable[i]
     elseif(i<$7D0)then // $7D0 = 2000
-        // (i) minus (1000).
         return udg_ItemIdTable[i-$3E8] // $3E8 = 1000
     elseif(i<$BB8)then // $BB8 = 3000
-        // (i) minus (2000).
         return udg_LevelItemIdTable[i-$7D0] // $7D0 = 2000
     endif
     return 0

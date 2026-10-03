@@ -34,11 +34,9 @@ function Trig_Aqualung_Cast_Actions takes nothing returns nothing
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId())))
     if(Trig_Aqualung_Cast_IsCasterHero())then
-        // (l_tempInteger) plus (Intelligence of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     endif
     set l_tempReal=Prof_RodPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

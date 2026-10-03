@@ -146,7 +146,6 @@ endfunction
 function Trig_Wanderer_Give_Item_Actions takes nothing returns nothing
     if(Trig_Wanderer_Give_Item_Cond_IsWantedItem())then
         if(Trig_Wanderer_Give_Item_Cond_ItemStackMulti())then
-            // (item charges of the item being used or moved) minus (1).
             call SetItemCharges(GetManipulatedItem(),(GetItemCharges(GetManipulatedItem())-1))
             call UnitRemoveItemSwapped(GetManipulatedItem(),GetTriggerUnit())
         else
@@ -155,7 +154,6 @@ function Trig_Wanderer_Give_Item_Actions takes nothing returns nothing
         set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // (GetUnitPointValue(the triggering unit)) plus (1).
         call CreateItemLoc(udg_WandererWantedItem[(GetUnitPointValue(GetTriggerUnit())+1)],udg_TempPoint)
         call CreateItemLoc(udg_WandererReward[GetUnitPointValue(GetTriggerUnit())],udg_TempPoint)
         call RemoveLocation(udg_TempPoint)
@@ -163,7 +161,6 @@ function Trig_Wanderer_Give_Item_Actions takes nothing returns nothing
             set udg_WandererChainCount=(udg_WandererChainCount+1)
         endif
         if(Trig_Wanderer_Give_Item_Cond_IsEarlyWanderer())then
-            // (154) plus (GetUnitPointValue(the triggering unit)).
             call SaveIntegerBJ(1,2,($9A+GetUnitPointValue(GetTriggerUnit())),udg_GameStateHash) // $9A = 154
         else
             if(Trig_Wanderer_Give_Item_Cond_IsNinthWanderer())then

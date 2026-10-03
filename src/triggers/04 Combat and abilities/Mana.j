@@ -7,7 +7,6 @@ endglobals
 
 function Trig_Mana_Restore_Delayed_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    // (current mana of udg_ManaRefundUnit) plus (udg_ManaRefundGold).
     call SetUnitManaBJ(udg_ManaRefundUnit,(GetUnitStateSwap(UNIT_STATE_MANA,udg_ManaRefundUnit)+udg_ManaRefundGold))
 endfunction
 

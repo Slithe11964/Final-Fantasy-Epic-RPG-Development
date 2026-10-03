@@ -34,11 +34,8 @@ function Trig_Gaya_ManaTransfer_Actions takes nothing returns nothing
     local player owningPlayer=GetOwningPlayer(us)
     local unit uh=Player_GetHero(owningPlayer)
     local integer abilityLevel=GetUnitAbilityLevel(us,GetSpellAbilityId())
-    // Starting value for currentMana:
-    // ((abilityLevel) plus (1)) times (50).
     local integer currentMana=((abilityLevel+1)*50)
     call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl",uh,"origin"))
-    // (current mana of uh) plus (currentMana).
     call SetUnitState(uh,UNIT_STATE_MANA,GetUnitState(uh,UNIT_STATE_MANA)+currentMana)
     // L_mana treated as a decimal-capable number.
     call Text_FloatingDamage(uh,true,0,I2R(currentMana),true,0)
@@ -66,7 +63,6 @@ function Trig_Gaya_MegaHeal_Actions takes nothing returns nothing
     // Result 6: (result 3) times (result 5).
     local real l_heal=((l_heroLvl+26)*abilityLevel*50*(GetRandomReal(15.,16.)/ 16.))
     call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl",uh,"origin"))
-    // (current health of uh) plus (l_heal).
     call SetUnitState(uh,UNIT_STATE_LIFE,GetUnitState(uh,UNIT_STATE_LIFE)+l_heal)
     call Text_FloatingDamage(uh,true,0,l_heal,false,0)
     set us=null

@@ -30,7 +30,6 @@ function AbilityText_Show takes nothing returns nothing
             set triggeringUnit=null
             return
         endif
-        // (GetPlayerId(tp)) plus (1).
         set l_spellName=udg_PlayerColorCode[GetPlayerId(tp)+1]+l_spellName
     endif
     set tt=CreateTextTag()
@@ -39,7 +38,6 @@ function AbilityText_Show takes nothing returns nothing
     else
         call SetTextTagText(tt,l_spellName,.023)
     endif
-    // (y) plus (64).
     call SetTextTagPos(tt,x,y+64,.0)
     call SetTextTagColor(tt,$FF,$FF,$FF,l_alpha) // $FF = 255
     call SetTextTagVelocity(tt,.0,.044375)

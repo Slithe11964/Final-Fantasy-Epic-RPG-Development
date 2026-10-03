@@ -461,8 +461,6 @@ endfunction
 function Trig_Init_QuestLog_Actions takes nothing returns nothing
     set udg_DifficultyQuest=CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"Difficulty","(null)","ReplaceableTextures\\CommandButtons\\BTNCrystalBall.blp")
     // The help entries are the "Create Quest" actions of the GUI trigger QuestLog_Entries
-    // (folder 02 Map setup). Edit their text there: World Editor keeps GUI text in the map's
-    // string table, which native save/load needs for long text.
     call TriggerExecute(gg_trg_QuestLog_Entries)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

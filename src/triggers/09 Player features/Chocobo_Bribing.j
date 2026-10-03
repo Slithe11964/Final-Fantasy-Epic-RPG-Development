@@ -47,7 +47,6 @@ function Trig_Chocobo_Bribe_Actions takes nothing returns nothing
                 // Multiply the item's starting charges by a randomly chosen 3, 4, or 5.
                 call SetItemCharges(GetLastCreatedItem(),(GetItemCharges(GetLastCreatedItem())*GetRandomInt(3,5)))
             endif
-            // (-1) times (udg_TempInteger2).
             call AdjustPlayerStateBJ((-1*udg_TempInteger2),GetOwningPlayer(GetTriggerUnit()),PLAYER_STATE_RESOURCE_GOLD)
             call UnitAddAbilityBJ('A14Q',GetSpellTargetUnit()) // 'A14Q': ability "Pointless"
             call UnitApplyTimedLifeBJ(.01,'BTLF',GetSpellTargetUnit()) // 'BTLF': object name not found in map data

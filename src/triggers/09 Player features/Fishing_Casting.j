@@ -152,7 +152,6 @@ function Trig_Fishing_Cast_Actions takes nothing returns nothing
             // Each catch-score group has 10 loot entries. Jump to that group, then add the chosen entry from 0 to 9.
             set udg_TempInteger=(((udg_TempInteger-1)*$A)+R2I(udg_TempReal)) // $A = 10
         else
-            // Udg_TempInteger treated as a decimal-capable number.
             set udg_TempReal=I2R(udg_TempInteger)
             // Choose the first loot entry in this catch-score group; each group occupies 10 entries.
             set udg_TempInteger=((udg_TempInteger-1)*$A) // $A = 10

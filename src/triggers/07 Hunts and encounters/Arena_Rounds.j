@@ -6,7 +6,6 @@ globals
 endglobals
 
 function Trig_Arena_Round_Start_IsEliminatedSlot takes nothing returns boolean
-    // (9) minus (udg_ArenaRound).
     return(GetForLoopIndexA()>(9-udg_ArenaRound))
 endfunction
 
@@ -264,7 +263,6 @@ function Trig_Arena_Round_Start_Actions takes nothing returns nothing
     set bj_forLoopBIndexEnd=8
     loop
         exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
-        // (-128) times ((loop counter B treated as a decimal-capable number) minus (1)).
         set udg_TempPoint=OffsetLocation(GetRectCenter(gg_rct_044),0,(-128.*(I2R(GetForLoopIndexB())-1)))
         set udg_ArenaTextTag[GetForLoopIndexB()]=CreateTextTagLocBJ(LoadStringBJ(1,udg_ArenaBracketSlot[GetForLoopIndexB()],udg_GameStateHash),udg_TempPoint,0,12.,'d',100.,100.,0)
         call RemoveLocation(udg_TempPoint)
@@ -541,17 +539,11 @@ function Trig_Arena_Round_End_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Round_End_RollDropChance takes nothing returns boolean
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (10) plus ((2) times (loop counter A)).
-    // Calculation 3:
-    // (GetUnitUserData(the triggering unit)) minus (10).
     return(GetRandomInt(1,'d')<=LoadIntegerBJ(($A+(2*GetForLoopIndexA())),(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)) // $A = 10
 endfunction
 
 function Trig_Arena_Round_End_HasLootTable takes nothing returns boolean
-    // (GetUnitUserData(the triggering unit)) minus (10).
     return(IsUnitDeadBJ(GetTriggerUnit()))and(GetUnitUserData(GetTriggerUnit())>=$A)and(LoadIntegerBJ($A,(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)>=1) // $A = 10
 endfunction
 
@@ -695,14 +687,10 @@ function Trig_Arena_Round_End_GiveBattlePoints takes nothing returns nothing
     local force l_tempForce
     set l_tempForce=Force_OfPlayer(GetEnumPlayer())
     if(Trig_Arena_Round_End_HasDoubleBP())then
-        // Result 1: (udg_BattlePoints at position 0) times (2).
-        // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+(udg_BattlePoints[0]*2))
         // (udg_BattlePoints at position 0) times (2).
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points.|r"))
     else
-        // (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (udg_BattlePoints at
-        // position 0).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+udg_BattlePoints[0])
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S(udg_BattlePoints[0]))+" Battle Points.|r"))
     endif
@@ -718,9 +706,6 @@ function Trig_Arena_Round_End_GiveBattlePoints takes nothing returns nothing
 endfunction
 
 function Trig_Arena_Round_End_RollWinnerPair1 takes nothing returns boolean
-    // Result 1: a random whole number from 1 through 20.
-    // Result 2: (LoadIntegerBJ(5, udg_ArenaBracketSlot at position 3, udg_GameStateHash)) plus (result 1).
-    // Result 3: (result 2) minus (10).
     return(((LoadIntegerBJ(5,udg_ArenaBracketSlot[3],udg_GameStateHash)+GetRandomInt(1,20))-$A)<=LoadIntegerBJ(5,udg_ArenaBracketSlot[4],udg_GameStateHash)) // $A = 10
 endfunction
 
@@ -729,16 +714,10 @@ function Trig_Arena_Round_End_IsEarlyRound takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Round_End_RollWinnerPair2 takes nothing returns boolean
-    // Result 1: a random whole number from 1 through 20.
-    // Result 2: (LoadIntegerBJ(5, udg_ArenaBracketSlot at position 5, udg_GameStateHash)) plus (result 1).
-    // Result 3: (result 2) minus (10).
     return(((LoadIntegerBJ(5,udg_ArenaBracketSlot[5],udg_GameStateHash)+GetRandomInt(1,20))-$A)<=LoadIntegerBJ(5,udg_ArenaBracketSlot[6],udg_GameStateHash)) // $A = 10
 endfunction
 
 function Trig_Arena_Round_End_RollWinnerPair3 takes nothing returns boolean
-    // Result 1: a random whole number from 1 through 20.
-    // Result 2: (LoadIntegerBJ(5, udg_ArenaBracketSlot at position 7, udg_GameStateHash)) plus (result 1).
-    // Result 3: (result 2) minus (10).
     return(((LoadIntegerBJ(5,udg_ArenaBracketSlot[7],udg_GameStateHash)+GetRandomInt(1,20))-$A)<=LoadIntegerBJ(5,udg_ArenaBracketSlot[8],udg_GameStateHash)) // $A = 10
 endfunction
 
@@ -794,15 +773,10 @@ function Trig_Arena_Round_End_Actions takes nothing returns nothing
     if(Trig_Arena_Round_End_HasLootTable())then
         set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
         set bj_forLoopAIndex=1
-        // (GetUnitUserData(the triggering unit)) minus (10).
         set bj_forLoopAIndexEnd=LoadIntegerBJ($A,(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash) // $A = 10
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             if(Trig_Arena_Round_End_RollDropChance())then
-                // Calculation 1:
-                // (9) plus ((2) times (loop counter A)).
-                // Calculation 2:
-                // (GetUnitUserData(the triggering unit)) minus (10).
                 call CreateItemLoc(udg_ItemIdTable[LoadIntegerBJ((9+(2*GetForLoopIndexA())),(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)],udg_TempPoint) // $A = 10
             endif
             set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -862,10 +836,8 @@ function Trig_Arena_Round_End_Actions takes nothing returns nothing
     call GroupClear(udg_CupArenaUnits)
     call ForGroupBJ(udg_ArenaSummonGroup,function Trig_Arena_Round_End_KillLeftoverSummon)
     call GroupClear(udg_ArenaSummonGroup)
-    // (LoadIntegerBJ(5, udg_ArenaBracketSlot at position 2, udg_GameStateHash)) plus (2).
     set udg_BattlePoints[0]=(LoadIntegerBJ(5,udg_ArenaBracketSlot[2],udg_GameStateHash)+2)
     if(Trig_Arena_Round_End_HasBpBonusFlag())then
-        // Increase udg_BattlePoints at position 0 by 60.
         set udg_BattlePoints[0]=(udg_BattlePoints[0]+60)
     endif
     // Multiply base battle points by 10 x (elapsed seconds + 30) / (2 x elapsed seconds + 30), then drop decimals.
@@ -874,23 +846,11 @@ function Trig_Arena_Round_End_Actions takes nothing returns nothing
     if(Trig_Arena_Round_End_IsCup5Plus())then
         if(Trig_Arena_Round_End_IsCup8Plus())then
             if(Trig_Arena_Round_End_IsCup10Plus())then
-                // Result 1: udg_BattlePoints at position 0 treated as a decimal-capable number.
-                // Result 2: (result 1) times (4).
-                // Result 3: (result 2) plus (50).
-                // Result 4: (result 3) with its decimal part removed.
                 set udg_BattlePoints[0]=R2I(((I2R(udg_BattlePoints[0])*4.)+50.))
             else
-                // Result 1: udg_BattlePoints at position 0 treated as a decimal-capable number.
-                // Result 2: (result 1) times (2).
-                // Result 3: (result 2) plus (25).
-                // Result 4: (result 3) with its decimal part removed.
                 set udg_BattlePoints[0]=R2I(((I2R(udg_BattlePoints[0])*2.)+25.))
             endif
         else
-            // Result 1: udg_BattlePoints at position 0 treated as a decimal-capable number.
-            // Result 2: (result 1) times (1.5).
-            // Result 3: (result 2) plus (10).
-            // Result 4: (result 3) with its decimal part removed.
             set udg_BattlePoints[0]=R2I(((I2R(udg_BattlePoints[0])*1.5)+10.))
         endif
     endif

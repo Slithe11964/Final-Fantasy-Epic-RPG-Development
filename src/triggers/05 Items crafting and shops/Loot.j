@@ -2126,7 +2126,6 @@ endfunction
 
 function Trig_Loot_MonsterDrop_Cond_MonographBonus takes nothing returns boolean
     if(((GetUnitUserData(GetTriggerUnit())>0)and(GetUnitUserData(GetTriggerUnit())<=9))and(GetKillingUnit()==Player_GetHero(GetOwningPlayer(GetKillingUnit()))))then
-        // (GetPlayerId(GetOwningPlayer(GetKillingUnit()))) plus (1).
         if(((Trig_Loot_MonsterDrop_HasItemOfType(GetKillingUnit(),udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))or(Trig_Loot_MonsterDrop_HasItemOfType(udg_SpiritOfGaya[GetPlayerId(GetOwningPlayer(GetKillingUnit()))+1],udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))))then
             return true
         endif
@@ -2137,7 +2136,6 @@ endfunction
 function Trig_Loot_MonsterDrop_PickDropItem takes nothing returns nothing
     local integer l_dropSlot=2
     local real l_elapsed=TimerGetElapsed(udg_GameClock)
-    // Starting value for l_timeSeed:
     // The remainder after dividing (((elapsed time) times (1000)) with its decimal part removed) by (400).
     local integer l_timeSeed=ModuloInteger(R2I(l_elapsed*1000.),400)
     // Starting value for l_roll:
@@ -2265,23 +2263,18 @@ function Trig_Loot_MonsterDrop_Actions takes nothing returns nothing
             if(Trig_Loot_MonsterDrop_Cond_VictimNotPlentiful())then
                 set udg_DropTempInt=4
                 if(Trig_Loot_MonsterDrop_Cond_EternityMode())then
-                    // Increase udg_DropTempInt by 4.
                     set udg_DropTempInt=(udg_DropTempInt+4)
                 endif
                 if(Trig_Loot_MonsterDrop_Cond_KillerHasImmolation())then
-                    // Increase udg_DropTempInt by 2.
                     set udg_DropTempInt=(udg_DropTempInt+2)
                 endif
                 if(Trig_Loot_MonsterDrop_Cond_KillerHasTreasureHunter())then
-                    // Increase udg_DropTempInt by 4.
                     set udg_DropTempInt=(udg_DropTempInt+4)
                 endif
                 if(Trig_Loot_MonsterDrop_Cond_KillerMasteredJobsA())then
-                    // Increase udg_DropTempInt by 2.
                     set udg_DropTempInt=(udg_DropTempInt+2)
                 endif
                 if(Trig_Loot_MonsterDrop_Cond_KillerMasteredJobsB())then
-                    // Increase udg_DropTempInt by 2.
                     set udg_DropTempInt=(udg_DropTempInt+2)
                 endif
             else
@@ -2305,7 +2298,6 @@ function Trig_Loot_MonsterDrop_Actions takes nothing returns nothing
                     call SetItemCharges(GetLastCreatedItem(),GetRandomInt(1,8))
                 else
                     if(Trig_Loot_MonsterDrop_Cond_BonusChargesItem())then
-                        // (item charges of the last created item) times (2).
                         call SetItemCharges(GetLastCreatedItem(),(GetItemCharges(GetLastCreatedItem())*2))
                     endif
                 endif
@@ -2428,11 +2420,9 @@ function Trig_Loot_EssenceDrop_Actions takes nothing returns nothing
         if(Trig_Loot_EssenceDrop_Cond_DropEssence())then
             call CreateItemLoc(udg_ZoneEssenceItem[GetUnitUserData(GetTriggerUnit())],udg_TempPoint3)
             if(Trig_Loot_EssenceDrop_Cond_DoubleEssenceCharges())then
-                // (item charges of the last created item) times (2).
                 call SetItemCharges(GetLastCreatedItem(),(GetItemCharges(GetLastCreatedItem())*2))
             endif
         else
-            // (GetUnitUserData(the triggering unit)) plus (a random whole number from 0 through 7).
             call CreateItemLoc(udg_ZonePowerupItem[(GetUnitUserData(GetTriggerUnit())+GetRandomInt(0,7))],udg_TempPoint3)
         endif
         call RemoveLocation(udg_TempPoint3)

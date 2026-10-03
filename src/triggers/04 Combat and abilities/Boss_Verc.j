@@ -59,54 +59,27 @@ function Trig_Boss_Verc_WickedWhirl_Loop takes nothing returns nothing
     loop
         exitwhen i>=udg_WickedWhirlActiveCount
         set d=udg_WickedWhirlList[i]
-        // (udg_WickedWhirlAngle at position d) plus ((12) times (bj_DEGTORAD)).
         set udg_WickedWhirlAngle[d]=udg_WickedWhirlAngle[d]+(12.*bj_DEGTORAD)
         if(udg_WickedWhirlTicks[d]>=udg_WickedWhirlDuration or GetUnitAbilityLevel(udg_WickedWhirlTarget[d],'Avul')>0)then // 'Avul': standard ability reference "Invulnerable"
             call Trig_Boss_Verc_WickedWhirl_Free(d)
         else
             set x=GetUnitX(udg_WickedWhirlTarget[d])
             set y=GetUnitY(udg_WickedWhirlTarget[d])
-            // (x) plus ((300) times (the horizontal direction share for angle (udg_WickedWhirlAngle at position d) in
-            // radians)).
             call SetUnitX(gg_unit_h020_0273[d],x+300.*Cos(udg_WickedWhirlAngle[d]))
-            // (y) plus ((300) times (the vertical direction share for angle (udg_WickedWhirlAngle at position d) in
-            // radians)).
             call SetUnitY(gg_unit_h020_0273[d],y+300.*Sin(udg_WickedWhirlAngle[d]))
-            // Calculation 1:
             // The remainder after dividing (udg_WickedWhirlTicks at position d) by (10).
-            // Calculation 2:
             // The remainder after dividing (udg_WickedWhirlTicks at position d) by (2).
             if(ModuloInteger(udg_WickedWhirlTicks[d],$A)==0 or(udg_WickedWhirlTicks[d]>'x' and ModuloInteger(udg_WickedWhirlTicks[d],2)==0))then // $A = 10
                 // The remainder after dividing (udg_WickedWhirlTicks at position d) by (4).
                 if(ModuloInteger(udg_WickedWhirlTicks[d],4)==0)then
-                    // (x) plus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x+$96,y) // $96 = 150
-                    // (x) minus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x-$96,y) // $96 = 150
-                    // (y) plus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x,y+$96) // $96 = 150
-                    // (y) minus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x,y-$96) // $96 = 150
                 else
-                    // Calculation 1:
-                    // (x) plus (150).
-                    // Calculation 2:
-                    // (y) plus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x+$96,y+$96) // $96 = 150
-                    // Calculation 1:
-                    // (x) minus (150).
-                    // Calculation 2:
-                    // (y) plus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x-$96,y+$96) // $96 = 150
-                    // Calculation 1:
-                    // (x) plus (150).
-                    // Calculation 2:
-                    // (y) minus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x+$96,y-$96) // $96 = 150
-                    // Calculation 1:
-                    // (x) minus (150).
-                    // Calculation 2:
-                    // (y) minus (150).
                     call AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl",x-$96,y-$96) // $96 = 150
                 endif
                 call GroupEnumUnitsInRange(udg_WickedWhirlGroup,x,y,300.,udg_WickedWhirlFilter)
@@ -143,15 +116,8 @@ function Trig_Boss_Verc_WickedWhirl_Actions takes nothing returns nothing
     local real l_facing=GetUnitFacing(udg_WickedWhirlCaster[d])
     local real x
     local real y
-    // ((l_facing) plus (180)) times (bj_DEGTORAD).
     set udg_WickedWhirlAngle[d]=(l_facing+$B4)*bj_DEGTORAD // $B4 = 180
-    // Result 1: the horizontal direction share for angle (udg_WickedWhirlAngle at position d) in radians.
-    // Result 2: (300) times (result 1).
-    // Result 3: (x position of udg_WickedWhirlTarget at position d) plus (result 2).
     set x=GetUnitX(udg_WickedWhirlTarget[d])+300.*Cos(udg_WickedWhirlAngle[d])
-    // Result 1: the vertical direction share for angle (udg_WickedWhirlAngle at position d) in radians.
-    // Result 2: (300) times (result 1).
-    // Result 3: (y position of udg_WickedWhirlTarget at position d) plus (result 2).
     set y=GetUnitY(udg_WickedWhirlTarget[d])+300.*Sin(udg_WickedWhirlAngle[d])
     set gg_unit_h020_0273[d]=CreateUnit(Player($B),'h020',x,y,l_facing) // $B = 11; 'h020': unit "Dummy Missile"
     set udg_WickedWhirlEffect[d]=AddSpecialEffectTarget("units\\undead\\Gargoyle\\Gargoyle.mdl",gg_unit_h020_0273[d],"chest")

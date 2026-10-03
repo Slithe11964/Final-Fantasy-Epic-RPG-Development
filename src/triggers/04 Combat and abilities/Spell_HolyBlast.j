@@ -6,11 +6,7 @@ function Trig_Spell_HolyBlast_MissileCreate takes unit c,string l_missileFx,stri
     set udg_MissileTarget[d]=t
     set udg_MissileX[d]=GetUnitX(c)
     set udg_MissileY[d]=GetUnitY(c)
-    // Result 1: (y position of udg_MissileTarget at position d) minus (udg_MissileY at position d).
-    // Result 2: (x position of udg_MissileTarget at position d) minus (udg_MissileX at position d).
-    // Result 3: the angle in radians from the y gap (result 1) and x gap (result 2).
     set a=Atan2(GetUnitY(udg_MissileTarget[d])-udg_MissileY[d],GetUnitX(udg_MissileTarget[d])-udg_MissileX[d])
-    // (a) times (bj_RADTODEG).
     set gg_unit_h020_0269[d]=CreateUnit(GetOwningPlayer(udg_MissileCaster[d]),'h020',udg_MissileX[d],udg_MissileY[d],a*bj_RADTODEG) // 'h020': unit "Dummy Missile"
     call SetUnitX(gg_unit_h020_0269[d],udg_MissileX[d])
     call SetUnitY(gg_unit_h020_0269[d],udg_MissileY[d])
@@ -51,7 +47,6 @@ function Trig_Spell_HolyBlast_Actions takes nothing returns nothing
     local unit spellTarget=GetSpellTargetUnit()
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(triggeringUnit,GetSpellAbilityId()))
     local real r=Trig_Spell_HolyBlast_DamageFormula(manaCost,GetHeroInt(triggeringUnit,true),Prof_StaffPowerAlt(triggeringUnit))
-    // (r) times (0.66).
     call Trig_Spell_HolyBlast_MissileLaunchDamage(triggeringUnit,"Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl",spellTarget,.0,20.,256.,r*.66,r,true,0,ATTACK_TYPE_NORMAL,true)
     set triggeringUnit=null
     set spellTarget=null

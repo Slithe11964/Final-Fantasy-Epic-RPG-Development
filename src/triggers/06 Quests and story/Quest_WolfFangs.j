@@ -63,12 +63,10 @@ function Trig_Quest_WolfFangs_TurnIn_Actions takes nothing returns nothing
     // 'I08H')).
     set udg_TempInteger=IMinBJ(udg_FangsRemaining,GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I08H'))) // 'I08H': item "Wolf Fang"
     if(Trig_Quest_WolfFangs_TurnIn_Cond_FangsToSpare())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I08H')) minus (udg_TempInteger).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I08H'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I08H'))-udg_TempInteger)) // 'I08H': item "Wolf Fang"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I08H')) // 'I08H': item "Wolf Fang"
     endif
-    // (udg_FangsRemaining) minus (udg_TempInteger).
     set udg_FangsRemaining=(udg_FangsRemaining-udg_TempInteger)
     // (3) minus (udg_FangsRemaining).
     call DisplayTextToForce(GetPlayersAll(),("Fangs brought to Valera: "+(I2S((3-udg_FangsRemaining))+"/3")))
@@ -92,7 +90,6 @@ function Trig_Quest_WolfFangs_TurnIn_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Wolf Fangs|r")
     call QuestSetCompletedBJ(udg_SideQuest[26],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    // Increase udg_MaterialOwnedCount at position 61 by 10.
     set udg_MaterialOwnedCount[61]=(udg_MaterialOwnedCount[61]+$A) // $A = 10
     set udg_LastBazaarShop=gg_unit_n01R_0081
     call ConditionalTriggerExecute(gg_trg_Bazaar_UpdateStock)

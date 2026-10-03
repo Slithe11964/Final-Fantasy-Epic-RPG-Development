@@ -9,26 +9,18 @@ function Trig_MinusStrike_Cast_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_MinusStrike_Cast_IsCasterBelow4Pct takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<=4.)
 endfunction
 
 function Trig_MinusStrike_Cast_IsCasterBelow16Pct takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<=16.)
 endfunction
 
 function Trig_MinusStrike_Cast_IsCasterBelow36Pct takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<=36.)
 endfunction
 
 function Trig_MinusStrike_Cast_IsCasterBelow64Pct takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<=64.)
 endfunction
 
@@ -61,14 +53,10 @@ function Trig_MinusStrike_Cast_Actions takes nothing returns nothing
             endif
         endif
     endif
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (30).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*30)
     if(Trig_MinusStrike_Cast_IsCasterHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (25)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*25))
     endif
-    // (0.1) times ((10) plus (Prof_GetHybridLevel(the triggering unit))).
     set l_tempReal=.1*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
     set udg_IsPhysicalAttack=true
     // Result 1: l_tempInteger treated as a decimal-capable number.

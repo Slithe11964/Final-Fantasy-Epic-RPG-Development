@@ -65,7 +65,6 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             set bj_forLoopAIndexEnd=$A // $A = 10
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                // (loop counter A treated as a decimal-capable number) times (36).
                 set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -83,7 +82,6 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             set bj_forLoopAIndexEnd=$C // $C = 12
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                // (loop counter A treated as a decimal-capable number) times (30).
                 set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
                 call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
@@ -139,7 +137,6 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             set bj_forLoopAIndexEnd=$A // $A = 10
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                // (loop counter A treated as a decimal-capable number) times (36).
                 set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -157,7 +154,6 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             set bj_forLoopAIndexEnd=$C // $C = 12
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                // (loop counter A treated as a decimal-capable number) times (30).
                 set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
                 call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)

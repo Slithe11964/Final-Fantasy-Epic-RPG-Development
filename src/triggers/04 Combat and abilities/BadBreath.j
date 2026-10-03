@@ -62,9 +62,6 @@ function Trig_BadBreath_Cast_ApplyDebuffs takes nothing returns nothing
     call UnitApplyTimedLifeBJ(1.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A1DR',GetLastCreatedUnit()) // 'A1DR': ability "Fog"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"curse",GetEnumUnit())
-    // Result 1: current mana divided by maximum mana for the unit being visited, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
-    // Result 2: (result 1) minus (25).
     call SetUnitManaPercentBJ(GetEnumUnit(),(GetUnitManaPercent(GetEnumUnit())-25.))
 endfunction
 

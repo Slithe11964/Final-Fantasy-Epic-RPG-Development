@@ -87,7 +87,6 @@ function Trig_Judgment_Spare_Alberich_Cond_CinematicRunning takes nothing return
 endfunction
 
 function Trig_Judgment_Spare_Alberich_Cond_HeroNearAlberich takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=800.)
 endfunction
 

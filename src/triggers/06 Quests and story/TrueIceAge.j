@@ -284,7 +284,6 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call Wait_Polled(1.5)
     call Text_Say(Player_GetHero(udg_TempPlayer),"Suddenly I'm not sure this was such a good idea after all...",true)
     call Cine_ExitAction()
-    // Decrease udg_QuestsTotal by 13.
     set udg_QuestsTotal=(udg_QuestsTotal-$D) // $D = 13
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00True Ice Age|r")
     call CreateFogModifierRectBJ(true,Player($B),FOG_OF_WAR_VISIBLE,gg_rct_658) // $B = 11
@@ -434,7 +433,6 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
         call ShowUnitShow(gg_unit_Othr_0106)
     endif
     if(Trig_TrueIceAge_Summon_StageBelow5())then
-        // Decrease udg_QuestsTotal by 3.
         set udg_QuestsTotal=(udg_QuestsTotal-3)
         if(Trig_TrueIceAge_Summon_StageAtLeast3())then
             call DisableTrigger(gg_trg_Cid_Berserk_Start)

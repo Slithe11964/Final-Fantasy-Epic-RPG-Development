@@ -20,7 +20,6 @@ function Trig_Ambush_Skeletons_1_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
         set udg_TempPoint=OffsetLocation(l_tempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
@@ -47,7 +46,6 @@ function Trig_Ambush_Skeletons_2_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
         set udg_TempPoint=OffsetLocation(l_tempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
@@ -74,7 +72,6 @@ function Trig_Ambush_Skeletons_3_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
         set udg_TempPoint=OffsetLocation(l_tempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
@@ -101,7 +98,6 @@ function Trig_Ambush_Skeletons_4_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
         set udg_TempPoint=OffsetLocation(l_tempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)

@@ -16,11 +16,8 @@ function Trig_Spell_Hellhounds_Actions takes nothing returns nothing
     local integer l_tempInteger
     local location l_tempPoint
     local real l_tempReal
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Spell_Hellhounds_Cond_IsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (4)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*4))
     endif
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
@@ -33,7 +30,6 @@ function Trig_Spell_Hellhounds_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -50,7 +46,6 @@ function Trig_Spell_Hellhounds_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -67,7 +62,6 @@ function Trig_Spell_Hellhounds_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)

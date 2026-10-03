@@ -227,7 +227,6 @@ endfunction
 function Trig_Elysium_MarkerTick_Actions takes nothing returns nothing
     if(Trig_Elysium_MarkerTick_Cond_AndreState5())then
         set bj_forLoopAIndex=0
-        // (udg_JobCount) minus (1).
         set bj_forLoopAIndexEnd=(udg_JobCount-1)
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd

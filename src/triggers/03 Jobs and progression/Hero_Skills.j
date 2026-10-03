@@ -4,7 +4,6 @@ library THeroSkills
 function Hero_LearnSkillTo takes unit l_hero,integer l_skillId,integer l_targetLevel returns nothing
     local integer l_curLevel=GetUnitAbilityLevel(l_hero,l_skillId)
     local integer l_missing
-    // (l_targetLevel) minus (l_curLevel).
     set l_missing=l_targetLevel-l_curLevel
     loop
         exitwhen l_missing<=0

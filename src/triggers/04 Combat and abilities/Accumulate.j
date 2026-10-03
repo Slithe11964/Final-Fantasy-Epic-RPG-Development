@@ -16,7 +16,6 @@ function Trig_Accumulate_Cast_Actions takes nothing returns nothing
     call UnitRemoveBuffBJ('B03D',GetTriggerUnit()) // 'B03D': buff tooltip "Spawn Protection"
     set udg_DmgFlagPure=true
     set udg_IsPureDamage=true
-    // (maximum health of the triggering unit) times (0.3).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetTriggerUnit())*.3),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
 endfunction
 

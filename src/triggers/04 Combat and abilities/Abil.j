@@ -53,7 +53,6 @@ endfunction
 function Abil_GetLevel takes unit u,integer l_abilId returns integer
     local integer l_level=GetUnitAbilityLevel(u,l_abilId)
     if udg_AbilityLevelShift then
-        // (l_level) minus (1).
         return l_level-1
     else
         return l_level

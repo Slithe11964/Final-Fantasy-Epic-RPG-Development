@@ -6,10 +6,6 @@ globals
 endglobals
 
 function Trig_Shadow_Hire_IsHireOffer takes nothing returns boolean
-    // Calculation 1:
-    // (udg_ShadowOfferTier) plus (1).
-    // Calculation 2:
-    // (udg_ShadowOfferTier) plus (2).
     return(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[udg_ShadowOfferTier])or(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[(udg_ShadowOfferTier+1)])or(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[(udg_ShadowOfferTier+2)])or(GetUnitTypeId(GetSoldUnit())=='n085') // 'n085': unit "Hiring Shadow For Free"
 endfunction
 
@@ -30,8 +26,6 @@ function Trig_Shadow_Hire_IsLoyaltyAbove160 takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_Hire_AddPartyHeroLevel takes nothing returns nothing
-    // (udg_TempInteger) plus (hero level of udg_SpiritOfGaya at position GetConvertedPlayerId(the player being
-    // visited)).
     set udg_TempInteger=(udg_TempInteger+GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())]))
 endfunction
 
@@ -48,12 +42,10 @@ function Trig_Shadow_Hire_ShareShadowVision takes nothing returns nothing
 endfunction
 
 function Trig_Shadow_Hire_IsThirdOffer takes nothing returns boolean
-    // (udg_ShadowOfferTier) plus (2).
     return(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[(udg_ShadowOfferTier+2)])
 endfunction
 
 function Trig_Shadow_Hire_IsSecondOffer takes nothing returns boolean
-    // (udg_ShadowOfferTier) plus (1).
     return(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[(udg_ShadowOfferTier+1)])
 endfunction
 
@@ -93,7 +85,6 @@ function Trig_Shadow_Hire_TakeLowestHero takes nothing returns nothing
 endfunction
 
 function Trig_Shadow_Hire_AddPoolHeroLevel takes nothing returns nothing
-    // (udg_TempInteger) plus (hero level of Player_GetHero(the player being visited)).
     set udg_TempInteger=(udg_TempInteger+GetHeroLevel(Player_GetHero(GetEnumPlayer())))
 endfunction
 
@@ -144,22 +135,18 @@ function Trig_Shadow_Hire_HasDancingDaggers takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_Hire_HasKatanaForTier takes nothing returns boolean
-    // ((udg_TempInteger) plus (1)) divided by (10); drop the remainder.
     return(udg_ShadowKatana[((udg_TempInteger+1)/ $A)]!='tkno') // $A = 10; 'tkno': object name not found in map data
 endfunction
 
 function Trig_Shadow_Hire_HasDaggerForTier takes nothing returns boolean
-    // ((udg_TempInteger) plus (3)) divided by (10); drop the remainder.
     return(udg_ShadowDagger[((udg_TempInteger+3)/ $A)]!='tkno') // $A = 10; 'tkno': object name not found in map data
 endfunction
 
 function Trig_Shadow_Hire_HasHelmetForTier takes nothing returns boolean
-    // ((udg_TempInteger) plus (5)) divided by (10); drop the remainder.
     return(udg_ShadowHelmet[((udg_TempInteger+5)/ $A)]!='tkno') // $A = 10; 'tkno': object name not found in map data
 endfunction
 
 function Trig_Shadow_Hire_HasArmorForTier takes nothing returns boolean
-    // ((udg_TempInteger) minus (1)) divided by (10); drop the remainder.
     return(udg_ShadowArmor[((udg_TempInteger-1)/ $A)]!='tkno') // $A = 10; 'tkno': object name not found in map data
 endfunction
 
@@ -168,7 +155,6 @@ function Trig_Shadow_Hire_IsFreeHireGear takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_Hire_HasPotionForTier takes nothing returns boolean
-    // ((udg_TempInteger) plus (7)) divided by (10); drop the remainder.
     return(udg_ShadowPotion[((udg_TempInteger+7)/ $A)]!='tkno') // $A = 10; 'tkno': object name not found in map data
 endfunction
 
@@ -177,7 +163,6 @@ function Trig_Shadow_Hire_IsBoughtBySpirit takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_Hire_IsOfferRefused takes nothing returns boolean
-    // (udg_TempInteger) divided by (CountPlayersInForceBJ(udg_PlayingPlayers)); drop the remainder.
     return(GetUnitTypeId(GetSoldUnit())==udg_ShadowHireOffer[udg_ShadowOfferTier])and(udg_ShadowLoyalty<(udg_TempInteger/ CountPlayersInForceBJ(udg_PlayingPlayers)))
 endfunction
 
@@ -207,7 +192,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         call RemoveUnit(udg_ShadowUnit)
-        // Decrease udg_ShadowLoyalty by 6.
         set udg_ShadowLoyalty=(udg_ShadowLoyalty-6)
         if(Trig_Shadow_Hire_IsLoyaltyDrained())then
             call ConditionalTriggerExecute(gg_trg_Shadow_Disband)
@@ -230,26 +214,18 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(GetPlayersAll(),15.,"Shadow joins your party.")
         set udg_ShadowKills=0
         if(Trig_Shadow_Hire_IsFirstOffer())then
-            // Udg_ShadowLoyalty treated as a decimal-capable number.
             call UnitApplyTimedLifeBJ(I2R(udg_ShadowLoyalty),'BEfn',udg_ShadowUnit) // 'BEfn': buff tooltip "Time Limit"
-            // Decrease udg_ShadowLoyalty by 12.
             set udg_ShadowLoyalty=(udg_ShadowLoyalty-$C) // $C = 12
         else
             if(Trig_Shadow_Hire_IsSecondOffer())then
-                // (udg_ShadowLoyalty) plus (40) treated as a decimal-capable number.
                 call UnitApplyTimedLifeBJ(I2R((udg_ShadowLoyalty+40)),'BEfn',udg_ShadowUnit) // 'BEfn': buff tooltip "Time Limit"
-                // Increase udg_ShadowLoyalty by 2.
                 set udg_ShadowLoyalty=(udg_ShadowLoyalty+2)
             else
                 if(Trig_Shadow_Hire_IsThirdOffer())then
-                    // (udg_ShadowLoyalty) plus (100) treated as a decimal-capable number.
                     call UnitApplyTimedLifeBJ(I2R((udg_ShadowLoyalty+'d')),'BEfn',udg_ShadowUnit) // 'BEfn': buff tooltip "Time Limit"
-                    // Increase udg_ShadowLoyalty by 12.
                     set udg_ShadowLoyalty=(udg_ShadowLoyalty+$C) // $C = 12
                 else
-                    // (udg_ShadowLoyalty) plus (270) treated as a decimal-capable number.
                     call UnitApplyTimedLifeBJ(I2R((udg_ShadowLoyalty+270)),'BEfn',udg_ShadowUnit) // 'BEfn': buff tooltip "Time Limit"
-                    // Increase udg_ShadowLoyalty by 8.
                     set udg_ShadowLoyalty=(udg_ShadowLoyalty+8)
                 endif
             endif
@@ -274,14 +250,11 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         call EnableTrigger(gg_trg_Shadow_AttackedByParty)
         call EnableTrigger(gg_trg_Shadow_Death)
         if(Trig_Shadow_Hire_IsSoloParty())then
-            // Result 1: the larger of (hero level of Player_GetHero(ForcePickRandomPlayer(udg_PlayingPlayers))) and (1).
-            // Result 2: the smaller of (result 1) and (99).
             set udg_TempInteger=IMinBJ(IMaxBJ(GetHeroLevel(Player_GetHero(ForcePickRandomPlayer(udg_PlayingPlayers))),1),99)
         else
             call ForceClear(udg_ShadowLevelPool)
             call ForForce(udg_PlayingPlayers,function Trig_Shadow_Hire_AddPlayerToPool)
             set bj_forLoopBIndex=1
-            // (CountPlayersInForceBJ(udg_PlayingPlayers)) divided by (2); drop the remainder.
             set bj_forLoopBIndexEnd=(CountPlayersInForceBJ(udg_PlayingPlayers)/ 2)
             loop
                 exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
@@ -292,9 +265,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
             endloop
             set udg_TempInteger=0
             call ForForce(udg_ShadowLevelPool,function Trig_Shadow_Hire_AddPoolHeroLevel)
-            // Result 1: (udg_TempInteger) divided by (CountPlayersInForceBJ(udg_ShadowLevelPool)); drop the remainder.
-            // Result 2: the larger of (result 1) and (1).
-            // Result 3: the smaller of (result 2) and (99).
             set udg_TempInteger=IMinBJ(IMaxBJ((udg_TempInteger/ CountPlayersInForceBJ(udg_ShadowLevelPool)),1),99)
         endif
         // Result 1: (udg_TempInteger) plus (25).
@@ -308,7 +278,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         call SuspendHeroXPBJ(false,udg_ShadowUnit)
         if(Trig_Shadow_Hire_IsFumaMastered())then
             if(Trig_Shadow_Hire_IsOldPatchFumaMax())then
-                // (1) minus (1).
                 call BlzSetAbilityTooltip('A0WS',"Fuma Shuriken (|cffffcc00Q|r) - [|cffffcc00MASTER|r]",(1-1)) // 'A0WS': ability "Fuma Shuriken"
             else
                 call BlzSetAbilityTooltip('A0WS',"Fuma Shuriken (|cffffcc00Q|r) - [|cffffcc00MASTER|r]",1) // 'A0WS': ability "Fuma Shuriken"
@@ -337,7 +306,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         endif
         if(Trig_Shadow_Hire_IsDexterityMastered())then
             if(Trig_Shadow_Hire_IsOldPatchDexMax())then
-                // (1) minus (1).
                 call BlzSetAbilityTooltip('A0R6',"Dexterity - [|cffffcc00MASTER|r]",(1-1)) // 'A0R6': ability "Dexterity"
             else
                 call BlzSetAbilityTooltip('A0R6',"Dexterity - [|cffffcc00MASTER|r]",1) // 'A0R6': ability "Dexterity"
@@ -379,7 +347,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
             if(Trig_Shadow_Hire_IsDuoParty())then
                 set udg_DexterityCritMult=2.2
             else
-                // (2.3) minus ((0.1) times (CountPlayersInForceBJ(udg_PlayingPlayers) treated as a decimal-capable number)).
                 set udg_DexterityCritMult=(2.3-(.1*I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
             endif
         endif
@@ -419,7 +386,6 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
         call ModifyHeroStat(bj_HEROSTAT_INT,udg_ShadowUnit,bj_MODIFYMETHOD_ADD,R2I((I2R(udg_ShadowLoyalty)*((1-(I2R(CountPlayersInForceBJ(udg_PlayingPlayers))*.1))*.3))))
         call DisableTrigger(gg_trg_Equip_Restrictions)
         if(Trig_Shadow_Hire_HasKatanaForTier())then
-            // ((udg_TempInteger) plus (1)) divided by (10); drop the remainder.
             call UnitAddItemByIdSwapped(udg_ShadowKatana[((udg_TempInteger+1)/ $A)],udg_ShadowUnit) // $A = 10
             call SetItemDroppableBJ(GetLastCreatedItem(),false)
             call SetItemUserData(GetLastCreatedItem(),$B) // $B = 11
@@ -446,26 +412,22 @@ function Trig_Shadow_Hire_Actions takes nothing returns nothing
             call UnitRemoveAbilityBJ('A0PA',udg_ShadowUnit) // 'A0PA': ability "Adrenaline"
             call UnitRemoveAbilityBJ('A0T9',udg_ShadowUnit) // 'A0T9': ability "Last Stand"
             if(Trig_Shadow_Hire_HasDaggerForTier())then
-                // ((udg_TempInteger) plus (3)) divided by (10); drop the remainder.
                 call UnitAddItemByIdSwapped(udg_ShadowDagger[((udg_TempInteger+3)/ $A)],udg_ShadowUnit) // $A = 10
                 call SetItemDroppableBJ(GetLastCreatedItem(),false)
                 call SetItemUserData(GetLastCreatedItem(),$B) // $B = 11
             endif
             if(Trig_Shadow_Hire_HasHelmetForTier())then
-                // ((udg_TempInteger) plus (5)) divided by (10); drop the remainder.
                 call UnitAddItemByIdSwapped(udg_ShadowHelmet[((udg_TempInteger+5)/ $A)],udg_ShadowUnit) // $A = 10
                 call SetItemDroppableBJ(GetLastCreatedItem(),false)
                 call SetItemUserData(GetLastCreatedItem(),$B) // $B = 11
             endif
             if(Trig_Shadow_Hire_HasArmorForTier())then
-                // ((udg_TempInteger) minus (1)) divided by (10); drop the remainder.
                 call UnitAddItemByIdSwapped(udg_ShadowArmor[((udg_TempInteger-1)/ $A)],udg_ShadowUnit) // $A = 10
                 call SetItemDroppableBJ(GetLastCreatedItem(),false)
                 call SetItemUserData(GetLastCreatedItem(),$B) // $B = 11
             endif
         endif
         if(Trig_Shadow_Hire_HasPotionForTier())then
-            // ((udg_TempInteger) plus (7)) divided by (10); drop the remainder.
             call UnitAddItemByIdSwapped(udg_ShadowPotion[((udg_TempInteger+7)/ $A)],udg_ShadowUnit) // $A = 10
             call SetItemDroppableBJ(GetLastCreatedItem(),false)
             call SetItemUserData(GetLastCreatedItem(),$B) // $B = 11

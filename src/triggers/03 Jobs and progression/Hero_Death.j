@@ -59,7 +59,6 @@ function Trig_Hero_Death_Revive_NoGoldLoss takes nothing returns boolean
 endfunction
 
 function Trig_Hero_Death_Revive_CanAutoFullRestore takes nothing returns boolean
-    // (unit level of the triggering unit) times (3).
     return(udg_AutoBrewEnabled[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])and(GetPlayerState(GetOwningPlayer(GetTriggerUnit()),PLAYER_STATE_RESOURCE_GOLD)>=(GetUnitLevel(GetTriggerUnit())*3))
 endfunction
 
@@ -142,11 +141,9 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
         // Result 4: (result 2) times (result 3).
         set udg_StatCalcValue=((4*(GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])+1))*(GetHeroLevel(GetTriggerUnit())+1))
         if(Trig_Hero_Death_Revive_HasGoldPenaltyPerk1())then
-            // Decrease udg_StatCalcValue by 10000.
             set udg_StatCalcValue=(udg_StatCalcValue-$2710) // $2710 = 10000
         endif
         if(Trig_Hero_Death_Revive_HasGoldPenaltyPerk2())then
-            // Decrease udg_StatCalcValue by 10000.
             set udg_StatCalcValue=(udg_StatCalcValue-$2710) // $2710 = 10000
         endif
         if(Trig_Hero_Death_Revive_HasGoldLossCap())then
@@ -155,7 +152,6 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
         if(Trig_Hero_Death_Revive_NoGoldLoss())then
             set udg_StatCalcValue=0
         else
-            // (-1) times (udg_StatCalcValue).
             call AdjustPlayerStateBJ((-1*udg_StatCalcValue),GetOwningPlayer(GetDyingUnit()),PLAYER_STATE_RESOURCE_GOLD)
         endif
         call DisplayTextToForce(udg_TempForce,("You lose "+(I2S(udg_StatCalcValue)+" gold.")))
@@ -166,7 +162,6 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
             call SetUnitLifePercentBJ(GetTriggerUnit(),'d')
             call SetUnitManaPercentBJ(GetTriggerUnit(),'d')
             call SetUnitManaBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],990000.)
-            // (-3) times (unit level of the triggering unit).
             call AdjustPlayerStateBJ((-3*GetUnitLevel(GetTriggerUnit())),GetOwningPlayer(GetTriggerUnit()),PLAYER_STATE_RESOURCE_GOLD)
         else
             call SetUnitLifePercentBJ(GetTriggerUnit(),50.)

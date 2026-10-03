@@ -2,7 +2,6 @@ library TPlayerHero
 // Player
 
 function Player_GetHero takes player l_p returns unit
-    // (GetPlayerId(l_p)) plus (1).
     return udg_PlayerHero[GetPlayerId(l_p)+1]
 endfunction
 

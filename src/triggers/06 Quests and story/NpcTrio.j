@@ -21,7 +21,6 @@ function Trig_NpcTrio_Turn_Face_Cond_TrioAllTurned takes nothing returns boolean
 endfunction
 
 function Trig_NpcTrio_Turn_Face_Cond_InTalkRange takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=udg_TalkRange)
 endfunction
 

@@ -24,13 +24,11 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
     call Wait_Polled(1.)
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set l_tempPoint=GetRectCenter(gg_rct_633)
     call CreateNUnitsAtLoc(1,'U01N',Player($B),l_tempPoint,bj_UNIT_FACING) // 'U01N': unit "Zombie Dragon"; $B = 11
     set udg_ShinryuUnit=GetLastCreatedUnit()
     call RemoveLocation(l_tempPoint)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call AddSpecialEffectTargetUnitBJ("origin",udg_ShinryuUnit,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -47,13 +45,11 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
         call Text_Say(udg_CinematicActor,"So this is the true form of the God Dragon is it... it seems immensely powerful.",true)
     endif
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set l_tempPoint=GetRectCenter(gg_rct_639)
     call CreateNUnitsAtLoc(1,'E01J',Player($B),l_tempPoint,270.) // 'E01J': unit "Warmech"; $B = 11
     set udg_WarmechUnit=GetLastCreatedUnit()
     call RemoveLocation(l_tempPoint)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call AddSpecialEffectTargetUnitBJ("origin",udg_WarmechUnit,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())

@@ -69,7 +69,6 @@ function Trig_Multiboard_Refresh_Actions takes nothing returns nothing
     local string l_dpsText
     loop
         exitwhen i>udg_PendingEventCount
-        // (GetPlayerId(udg_BoardPlayer at position i)) plus (1).
         set l_pid=GetPlayerId(udg_BoardPlayer[i])+1
         set l_hero=Player_GetHero(udg_BoardPlayer[i])
         set l_heroLevel=GetHeroLevel(l_hero)
@@ -144,7 +143,6 @@ function Trig_Multiboard_Refresh_Actions takes nothing returns nothing
         call MultiboardReleaseItem(l_cell)
         if udg_DpsRefresh then
             set l_cell=MultiboardGetItem(udg_ScoreBoard,i,3)
-            // (StringLength(l_dpsText)) minus (2).
             call MultiboardSetItemValue(l_cell,SubString(l_dpsText,0,StringLength(l_dpsText)-2))
             call MultiboardReleaseItem(l_cell)
         endif

@@ -42,7 +42,6 @@ function Trig_ShockAura_Pulse_ShockEnemy takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Orc\\LightningShield\\LightningShieldBuff.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     set udg_DamageElement=3
-    // ((unit level of udg_CurrentEffectUnit) plus (1) treated as a decimal-capable number) times (15).
     call UnitDamageTargetBJ(udg_CurrentEffectUnit,GetEnumUnit(),(I2R((GetUnitLevel(udg_CurrentEffectUnit)+1))*15.),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC)
 endfunction
 

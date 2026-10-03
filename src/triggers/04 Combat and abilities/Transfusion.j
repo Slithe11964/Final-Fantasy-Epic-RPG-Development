@@ -13,8 +13,6 @@ function Trig_Transfusion_Cast_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Transfusion_Cast_WouldKillCaster takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(udg_TempReal>=GetUnitLifePercent(GetTriggerUnit()))
 endfunction
 
@@ -66,64 +64,39 @@ function Trig_Transfusion_Cast_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Items\\AIim\\AIimTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-        // missing or its maximum is 0).
-        // Result 2: current health divided by maximum health for the spell target, times 100 (or 0 if the unit is
-        // missing or its maximum is 0).
-        // Result 3: (100) minus (result 2).
-        // Result 4: (result 3) divided by (2).
-        // Result 5: the smaller of (result 1) and (result 4).
         set udg_TempReal=RMinBJ(GetUnitLifePercent(GetTriggerUnit()),((100.-GetUnitLifePercent(GetSpellTargetUnit()))/ 2.))
         if(Trig_Transfusion_Cast_WouldKillCaster())then
             call SetUnitLifeBJ(GetTriggerUnit(),1.)
         else
-            // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
-            // Result 2: (result 1) minus (udg_TempReal).
             call SetUnitLifePercentBJ(GetTriggerUnit(),(GetUnitLifePercent(GetTriggerUnit())-udg_TempReal))
         endif
         set udg_IsPureDamage=true
-        // (udg_TempReal) times ((maximum health of the spell target) divided by (20)).
         call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(udg_TempReal*(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit())/ 20.)),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
         if(Trig_Transfusion_Cast_NotEmpowered())then
             call UnitAddAbilityBJ('A0I3',GetSpellTargetUnit()) // 'A0I3': ability "Transfusion Powerup"
-            // Result 1: BlzGetUnitBaseDamage(the spell target, 0) treated as a decimal-capable number.
-            // Result 2: (result 1) times (1.5).
-            // Result 3: (result 2) with its decimal part removed.
             call BlzSetUnitBaseDamage(GetSpellTargetUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetSpellTargetUnit(),0))*1.5)),0)
-            // Result 1: BlzGetUnitBaseDamage(the spell target, 1) treated as a decimal-capable number.
-            // Result 2: (result 1) times (1.5).
-            // Result 3: (result 2) with its decimal part removed.
             call BlzSetUnitBaseDamage(GetSpellTargetUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetSpellTargetUnit(),1))*1.5)),1)
             if(Trig_Transfusion_Cast_IsGolem())then
-                // (udg_GolemBaseArmor) times (1.5).
                 call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_GolemBaseArmor*1.5))
             else
                 if(Trig_Transfusion_Cast_IsShiva())then
-                    // (udg_ShivaBaseArmor) times (1.5).
                     call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_ShivaBaseArmor*1.5))
                 else
                     if(Trig_Transfusion_Cast_IsIfrit())then
-                        // (udg_IfritBaseArmor) times (1.5).
                         call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_IfritBaseArmor*1.5))
                     else
                         if(Trig_Transfusion_Cast_IsCyclops())then
-                            // (udg_CyclopsBaseArmor) times (1.5).
                             call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_CyclopsBaseArmor*1.5))
                         else
                             if(Trig_Transfusion_Cast_IsBahamut())then
-                                // (udg_BahamutBaseArmor) times (1.5).
                                 call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_BahamutBaseArmor*1.5))
                             else
                                 if(Trig_Transfusion_Cast_IsNeoBahamut())then
-                                    // (udg_NeoBahamutBaseArmor) times (1.5).
                                     call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_NeoBahamutBaseArmor*1.5))
                                 else
                                     if(Trig_Transfusion_Cast_IsBahamutZero())then
-                                        // (udg_BahamutZeroBaseArmor) times (1.5).
                                         call BlzSetUnitArmor(GetSpellTargetUnit(),(udg_BahamutZeroBaseArmor*1.5))
                                     else
-                                        // (BlzGetUnitArmor(the spell target)) times (1.5).
                                         call BlzSetUnitArmor(GetSpellTargetUnit(),(BlzGetUnitArmor(GetSpellTargetUnit())*1.5))
                                     endif
                                 endif

@@ -99,9 +99,7 @@ function Trig_QuFrog_DrainTick_Actions takes nothing returns nothing
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         if(Trig_QuFrog_DrainTick_Cond_FrogLinkActive())then
             call DestroyLightningBJ(udg_QuDrainLightning[GetForLoopIndexA()])
-            // ((loop counter A) times (2)) minus (1).
             call DestroyEffectBJ(udg_QuDrainEffect[((GetForLoopIndexA()*2)-1)])
-            // (loop counter A) times (2).
             call DestroyEffectBJ(udg_QuDrainEffect[(GetForLoopIndexA()*2)])
             set udg_QuFrogDraining[GetForLoopIndexA()]=false
         endif

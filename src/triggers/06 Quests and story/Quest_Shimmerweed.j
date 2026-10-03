@@ -87,7 +87,6 @@ function Trig_Quest_Shimmerweed_Deliver_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[2])
     if(Trig_Quest_Shimmerweed_Deliver_HasSpareCharge())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0FM')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FM'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FM'))-1)) // 'I0FM': item "Shimmerweed"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FM')) // 'I0FM': item "Shimmerweed"

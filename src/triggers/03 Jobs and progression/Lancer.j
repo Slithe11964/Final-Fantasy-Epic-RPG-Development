@@ -41,22 +41,14 @@ function Trig_Lancer_DragonBreath_Actions takes nothing returns nothing
     call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (4).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Lancer_DragonBreath_CasterIsHero())then
-        // (l_tempInteger) plus (Strength of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true))
-        // (l_tempInteger) plus (Agility of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))
-        // (l_tempInteger) plus (Intelligence of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     endif
-    // (l_tempInteger) divided by (4); drop the remainder.
     set l_tempInteger=(l_tempInteger/ 4)
-    // (0.2) times ((5) plus (Prof_GetLevel(the triggering unit, 'R009'))).
     set l_tempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(1,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -104,15 +96,12 @@ function Trig_Lancer_DragonSlam_KnockbackAndDamage takes nothing returns nothing
     local real l_tempReal
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set l_tempPoint2=GetUnitLoc(GetEnumUnit())
-    // The straight-line distance between l_tempPoint and l_tempPoint2.
     set l_tempReal=DistanceBetweenPoints(l_tempPoint,l_tempPoint2)
     call RemoveLocation(l_tempPoint)
     call RemoveLocation(l_tempPoint2)
-    // (0.14) minus ((l_tempReal) divided by (3820)).
     call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetEnumUnit(),.14-(l_tempReal/ 3820.),.5,null,true,.0)
     set udg_IsPhysicalAttack=true
     set udg_DamageElement=5
-    // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),I2R(udg_TempInteger),true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)
     set l_tempPoint=null
     set l_tempPoint2=null
@@ -125,20 +114,13 @@ function Trig_Lancer_DragonSlam_Actions takes nothing returns nothing
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set l_tempGroup=Group_UnitsInRangeOfLoc(382.,l_tempPoint,Condition(function Trig_Lancer_DragonSlam_FilterTarget))
     call RemoveLocation(l_tempPoint)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Lancer_DragonSlam_CasterIsHero())then
-        // (udg_TempInteger) plus (Strength of the triggering unit).
         set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true))
-        // (udg_TempInteger) plus (Agility of the triggering unit).
         set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))
-        // (udg_TempInteger) plus (Intelligence of the triggering unit).
         set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     endif
-    // (0.2) times ((5) plus (Prof_GetLevel(the triggering unit, 'R009'))).
     set l_tempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
-    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
     set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
     call ForGroupBJ(l_tempGroup,function Trig_Lancer_DragonSlam_KnockbackAndDamage)
     call DestroyGroup(l_tempGroup)
@@ -177,7 +159,6 @@ function Trig_Lancer_Jump_RangeCheck_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Lancer_Jump_RangeCheck_TargetTooClose takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=64.)
 endfunction
 
@@ -209,11 +190,7 @@ function Trig_Lancer_Jump_Actions takes nothing returns nothing
     local real l_casterY=GetUnitY(triggeringUnit)
     local real l_targetX=GetUnitX(spellTarget)
     local real l_targetY=GetUnitY(spellTarget)
-    // Starting value for l_dx:
-    // (l_casterX) minus (l_targetX).
     local real l_dx=l_casterX-l_targetX
-    // Starting value for l_dy:
-    // (l_casterY) minus (l_targetY).
     local real l_dy=l_casterY-l_targetY
     // Starting value for distance:
     // The square root of ((the square of (l_dx)) plus (the square of (l_dy))).
@@ -268,7 +245,6 @@ function Trig_Lancer_Jump_Actions takes nothing returns nothing
     call UnitAddAbility(l_dummy,'A0ID') // 'A0ID': ability "Jump"
     call IssueTargetOrderById(l_dummy,$D008A,spellTarget) // $D008A = 852106
     call ShowUnit(triggeringUnit,false)
-    // (distance) times (0.0025).
     call Wait_Polled(distance*.0025)
     call SetUnitX(triggeringUnit,l_targetX)
     call SetUnitY(triggeringUnit,l_targetY)
@@ -280,7 +256,6 @@ function Trig_Lancer_Jump_Actions takes nothing returns nothing
     set l_dummy=CreateUnit(owningPlayer,'h01B',l_targetX,l_targetY,.0) // 'h01B': unit "Proxy Dummy"
     set l_dummyId=GetHandleId(l_dummy)
     call SaveUnitHandle(udg_ProxyDamageHash,l_dummyId,0,triggeringUnit)
-    // (damage) times (0.5).
     call SaveReal(udg_ProxyDamageHash,l_dummyId,1,damageAmount*.5)
     call SaveInteger(udg_ProxyDamageHash,l_dummyId,2,1)
     call SaveInteger(udg_ProxyDamageHash,l_dummyId,3,2)

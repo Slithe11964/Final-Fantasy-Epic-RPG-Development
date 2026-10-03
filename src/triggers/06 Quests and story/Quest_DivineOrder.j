@@ -45,7 +45,6 @@ function Trig_Quest_DivineOrder_Start_Actions takes nothing returns nothing
     call ModifyHeroStat(bj_HEROSTAT_STR,gg_unit_H036_0254,bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_AGI,gg_unit_H036_0254,bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_INT,gg_unit_H036_0254,bj_MODIFYMETHOD_ADD,$96) // $96 = 150
-    // (maximum health of gg_unit_H036_0254) times (2).
     call BlzSetUnitMaxHP(gg_unit_H036_0254,(BlzGetUnitMaxHP(gg_unit_H036_0254)*2))
     call SetUnitLifePercentBJ(gg_unit_H036_0254,'d')
     call SetUnitManaPercentBJ(gg_unit_H036_0254,'d')

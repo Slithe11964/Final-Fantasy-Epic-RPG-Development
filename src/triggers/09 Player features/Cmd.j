@@ -56,15 +56,9 @@ function Trig_Cmd_Load_Code_ApplyJobLevel takes player l_owner,integer l_jobType
     local integer i
     local unit l_jobHero=LoadUnitHandle(udg_JobHeroHash,l_jobTypeId,GetPlayerId(l_owner))
     local integer l_oldLevel=GetHeroLevel(l_jobHero)
-    // (GetPlayerId(l_owner)) plus (1).
     if(l_level>udg_HighestJobLevel[GetPlayerId(l_owner)+1])then
-        // (GetPlayerId(l_owner)) plus (1).
         set udg_HighestJobLevel[GetPlayerId(l_owner)+1]=l_level
     endif
-    // Calculation 1:
-    // (GetPlayerId(l_owner)) plus (1).
-    // Calculation 2:
-    // ((udg_TotalJobLevel at position (GetPlayerId(l_owner)) plus (1)) plus (l_level)) minus (l_oldLevel).
     set udg_TotalJobLevel[GetPlayerId(l_owner)+1]=udg_TotalJobLevel[GetPlayerId(l_owner)+1]+l_level-l_oldLevel
     if(l_jobTypeId=='H002' and l_level>=50)then // 'H002': unit "Chemist"
         set i=1
@@ -78,52 +72,34 @@ function Trig_Cmd_Load_Code_ApplyJobLevel takes player l_owner,integer l_jobType
         if(l_level>='d')then
             call SetUnitAbilityLevel(l_jobHero,'A02F',4) // 'A02F': ability "Mastery"
             if(l_oldLevel<50)then
-                // (Strength of l_jobHero) plus (100).
                 call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+'d',true)
-                // (Agility of l_jobHero) plus (100).
                 call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+'d',true)
-                // (Intelligence of l_jobHero) plus (100).
                 call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+'d',true)
             elseif(l_oldLevel<99)then
-                // (Strength of l_jobHero) plus (80).
                 call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+80,true)
-                // (Agility of l_jobHero) plus (80).
                 call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+80,true)
-                // (Intelligence of l_jobHero) plus (80).
                 call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+80,true)
             else
-                // (Strength of l_jobHero) plus (50).
                 call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+50,true)
-                // (Agility of l_jobHero) plus (50).
                 call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+50,true)
-                // (Intelligence of l_jobHero) plus (50).
                 call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+50,true)
             endif
             set l_level=99
         elseif(l_level==99)then
             call SetUnitAbilityLevel(l_jobHero,'A02F',3) // 'A02F': ability "Mastery"
             if(l_oldLevel<50)then
-                // (Strength of l_jobHero) plus (50).
                 call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+50,true)
-                // (Agility of l_jobHero) plus (50).
                 call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+50,true)
-                // (Intelligence of l_jobHero) plus (50).
                 call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+50,true)
             else
-                // (Strength of l_jobHero) plus (30).
                 call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+30,true)
-                // (Agility of l_jobHero) plus (30).
                 call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+30,true)
-                // (Intelligence of l_jobHero) plus (30).
                 call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+30,true)
             endif
         elseif(l_level>=50)then
             call SetUnitAbilityLevel(l_jobHero,'A02F',2) // 'A02F': ability "Mastery"
-            // (Strength of l_jobHero) plus (20).
             call SetHeroStr(l_jobHero,GetHeroStr(l_jobHero,false)+20,true)
-            // (Agility of l_jobHero) plus (20).
             call SetHeroAgi(l_jobHero,GetHeroAgi(l_jobHero,false)+20,true)
-            // (Intelligence of l_jobHero) plus (20).
             call SetHeroInt(l_jobHero,GetHeroInt(l_jobHero,false)+20,true)
         endif
         call SetHeroLevel(l_jobHero,l_level,false)
@@ -138,7 +114,6 @@ function Trig_Cmd_Load_Code_ApplyJobLevel takes player l_owner,integer l_jobType
         call SaveInteger(udg_JobLevelHash,l_jobTypeId,GetPlayerId(l_owner),l_level)
     endif
     if(l_oldLevel<99 and l_level>=99)then
-        // (GetPlayerState(l_owner, PLAYER_STATE_RESOURCE_FOOD_USED)) plus (1).
         call SetPlayerState(l_owner,PLAYER_STATE_RESOURCE_FOOD_USED,(GetPlayerState(l_owner,PLAYER_STATE_RESOURCE_FOOD_USED)+1))
     endif
 endfunction
@@ -167,14 +142,9 @@ function Trig_Cmd_Music_NormalizePath takes string in returns string
     local string l_ch
     loop
         exitwhen i>=l_len
-        // (i) plus (1).
         set l_ch=SubString(in,i,i+1)
         if l_ch=="/" then
             set l_outPath=l_outPath+"\\"
-        // Calculation 1:
-        // (i) plus (1).
-        // Calculation 2:
-        // (i) plus (2).
         elseif(l_ch=="\\" and SubString(in,i+1,i+2)!="\\")then
             set l_outPath=l_outPath+"\\"
         else
@@ -185,7 +155,6 @@ function Trig_Cmd_Music_NormalizePath takes string in returns string
     set l_len=StringLength(l_outPath)
     if(l_len<2)then
         return""
-    // (l_len) minus (2).
     elseif(SubString(l_outPath,l_len-2,l_len)=="\\")then
         return l_outPath
     else
@@ -221,7 +190,6 @@ function Trig_Cmd_Load_Code_CharToValue takes string l_ch returns integer
     local integer l_value
     set l_value=LoadInteger(udg_CodeCharIndex,0,StringHash(l_ch))
     if(l_value<52)and(StringCase(l_ch,true)==l_ch)then
-        // Decrease l_value by 26.
         set l_value=l_value-26
     endif
     return l_value
@@ -234,14 +202,12 @@ function Trig_Cmd_Load_Code_TrimSpaces takes string s returns string
         if(i>=l_len)then
             return""
         endif
-        // (i) plus (1).
         exitwhen SubString(s,i,i+1)!=" "
         set i=i+1
     endloop
     set s=SubString(s,i,l_len)
     set i=StringLength(s)
     loop
-        // (i) minus (1).
         exitwhen SubString(s,i-1,i)!=" "
         set i=i-1
     endloop
@@ -254,12 +220,7 @@ function Trig_Cmd_Load_Code_Checksum takes integer l_reader,string l_text return
     local integer i=0
     local integer l_len=StringLength(l_text)
     loop
-        // Calculation 1:
-        // (i) plus (1).
-        // Calculation 2:
-        // (i) plus (1).
         exitwhen(i>=l_len or(SubString(l_text,i,i+1)=="(" or SubString(l_text,i,i+1)==")"))
-        // (l_sum) plus (Trig_Cmd_Load_Code_CharToValue(SubString(l_text, i, (i) plus (1)))).
         set l_sum=l_sum+Trig_Cmd_Load_Code_CharToValue(SubString(l_text,i,i+1))
         set i=i+1
     endloop
@@ -276,10 +237,6 @@ function Trig_Cmd_Load_Code_ExpectedChecksum takes integer l_reader returns inte
 endfunction
 
 function Trig_Cmd_Load_Code_PlayerNameHash takes integer l_reader returns integer
-    // Starting value for l_hash:
-    // Result 1: (GetPlayerId(udg_SavePlayer at position l_reader)) plus (1).
-    // Result 2: the size of (StringHash(udg_PlayerName at position result 1)) without its sign; for example, -5
-    // becomes 5.
     local integer l_hash=IAbsBJ(StringHash(udg_PlayerName[GetPlayerId(udg_SavePlayer[l_reader])+1]))
     // Result 1: (l_hash) divided by (udg_Pow2 at position 20); drop the remainder.
     // Result 2: (result 1) times (udg_Pow2 at position 20).
@@ -317,7 +274,6 @@ function Trig_Cmd_Load_Code_OpenCode takes player p,string l_code returns intege
     endif
     set i=Trig_Cmd_Load_Code_ReadValue(l,2)
     if udg_Difficulty==6 then
-        // (GetPlayerId(p)) plus (1).
         set udg_CodeDifficulty[GetPlayerId(p)+1]=i
     elseif(udg_Difficulty>1 and i>0 and((udg_Difficulty==5 and i<3)or i<2))then
         if udg_Difficulty==5 then
@@ -340,15 +296,10 @@ function Trig_Cmd_Load_Code_GetCodeChecksum takes integer l_reader returns integ
 endfunction
 
 function Trig_Cmd_Load_Code_ArmoryChecksum takes integer l_reader returns integer
-    // Calculation 1:
-    // (udg_CodeArmoryPos at position l_reader) plus (3).
-    // Calculation 2:
-    // (StringLength(udg_SaveCodePlain at position l_reader)) minus (1).
     return Trig_Cmd_Load_Code_Checksum(l_reader,SubString(udg_SaveCodePlain[l_reader],udg_CodeArmoryPos[l_reader]+3,StringLength(udg_SaveCodePlain[l_reader])-1))
 endfunction
 
 function Trig_Cmd_Load_Code_ArmoryHeader takes integer l_reader returns string
-    // (udg_CodeArmoryPos at position l_reader) plus (6).
     return SubString(udg_SaveCodePlain[l_reader],udg_CodeArmoryPos[l_reader],udg_CodeArmoryPos[l_reader]+6)
 endfunction
 
@@ -358,10 +309,6 @@ function Trig_Cmd_Load_Code_ReadBits takes integer l_reader,integer l_bits retur
     if l_bits<=9 then
         set udg_CodeFormatRead[l_reader]=udg_CodeFormatRead[l_reader]+I2S(l_bits)
     else
-        // Calculation 1:
-        // (l_bits) minus (10).
-        // Calculation 2:
-        // (l_bits) minus (9).
         set udg_CodeFormatRead[l_reader]=udg_CodeFormatRead[l_reader]+SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_bits-$A,l_bits-9) // $A = 10
     endif
     loop
@@ -372,16 +319,10 @@ function Trig_Cmd_Load_Code_ReadBits takes integer l_reader,integer l_bits retur
         // udg_CodeReadPos at position l_reader, result 2))).
         set udg_CodeBuffer[l_reader]=udg_CodeBuffer[l_reader]*64+Trig_Cmd_Load_Code_CharToValue(SubString(udg_SaveCodePlain[l_reader],udg_CodeReadPos[l_reader],udg_CodeReadPos[l_reader]+1))
         set udg_CodeReadPos[l_reader]=udg_CodeReadPos[l_reader]+1
-        // Increase udg_CodeBits at position l_reader by 6.
         set udg_CodeBits[l_reader]=udg_CodeBits[l_reader]+6
     endloop
-    // (udg_CodeBits at position l_reader) minus (l_bits).
     set udg_CodeBits[l_reader]=udg_CodeBits[l_reader]-l_bits
-    // Result 1: (udg_CodeBuffer at position l_reader) divided by (udg_Pow2 at position udg_CodeBits at position
-    // l_reader); drop the remainder.
     set l_value=udg_CodeBuffer[l_reader]/ udg_Pow2[udg_CodeBits[l_reader]]
-    // Result 1: (l_value) times (udg_Pow2 at position udg_CodeBits at position l_reader).
-    // Result 2: (udg_CodeBuffer at position l_reader) minus (result 1).
     set udg_CodeBuffer[l_reader]=udg_CodeBuffer[l_reader]-l_value*udg_Pow2[udg_CodeBits[l_reader]]
     // Result 1: (udg_CodeKey at position l_reader) divided by (udg_Pow2 at position l_bits); drop the remainder.
     // Result 2: (result 1) times (udg_Pow2 at position l_bits).
@@ -389,10 +330,8 @@ function Trig_Cmd_Load_Code_ReadBits takes integer l_reader,integer l_bits retur
     // Result 4: (l_value) minus (result 3).
     set l_value=l_value-(udg_CodeKey[l_reader]-(udg_CodeKey[l_reader]/ udg_Pow2[l_bits])*udg_Pow2[l_bits])
     if(l_value<0)then
-        // (l_value) plus (udg_Pow2 at position l_bits).
         set l_value=l_value+udg_Pow2[l_bits]
     endif
-    // Increase udg_CodeKey at position l_reader by 211.
     set udg_CodeKey[l_reader]=udg_CodeKey[l_reader]+$D3 // $D3 = 211
     if false then
         call DisplayTimedTextToPlayer(udg_SavePlayer[l_reader],0,0,60,"Val "+I2S(l_value)+" ["+I2S(l_bits)+"]")
@@ -408,7 +347,6 @@ endfunction
 
 function Trig_Cmd_Load_Code_SeekArmory takes integer l_reader returns boolean
     local string l_ch
-    // (udg_CodeReadPos at position l_reader) plus (1).
     set l_ch=SubString(udg_SaveCodePlain[l_reader],udg_CodeReadPos[l_reader],udg_CodeReadPos[l_reader]+1)
     if l_ch=="(" then
         set udg_CodeReadPos[l_reader]=udg_CodeReadPos[l_reader]+1
@@ -446,7 +384,6 @@ function Trig_Cmd_Load_Code_ReadLevel takes integer l_reader returns integer
             if(udg_SaveVersion[l_reader]<=Trig_Cmd_Load_Code_CharToValue("F"))then
                 return 99
             else
-                // (Trig_Cmd_Load_Code_ReadBits(l_reader, 1)) plus (99).
                 return Trig_Cmd_Load_Code_ReadBits(l_reader,1)+99
             endif
         else
@@ -469,8 +406,6 @@ function Trig_Cmd_Load_Code_LoadInventory takes integer l_reader,unit u returns 
     local integer i=0
     local real x=GetUnitX(u)
     local real y=GetUnitY(u)
-    // Starting value for l_pid:
-    // (GetPlayerId(udg_SavePlayer at position l_reader)) plus (1).
     local integer l_pid=GetPlayerId(udg_SavePlayer[l_reader])+1
     local integer l_itemCount=Trig_Cmd_Load_Code_ReadBits(l_reader,3)
     local integer l_itemIndex
@@ -576,7 +511,6 @@ function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns n
                         if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==0)then
                             set l_rawLog=l_rawLog+"000"
                             set l_runLog=l_runLog+"X"
-                            // (GetPlayerId(p)) plus (1).
                             set udg_ArmoryItemCount[GetPlayerId(p)+1]=l_owned
                             call Trig_Cmd_Load_Code_FreeReader(l_reader)
                             call DisplayTimedTextToPlayer(p,0,0,$A,"Armory loaded.") // $A = 10
@@ -620,7 +554,6 @@ function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns n
         endif
         set i=i+1
     endloop
-    // (GetPlayerId(p)) plus (1).
     set udg_ArmoryItemCount[GetPlayerId(p)+1]=l_owned
     call Trig_Cmd_Load_Code_FreeReader(l_reader)
     call DisplayTimedTextToPlayer(p,0,0,$A,"Armory load successful.") // $A = 10
@@ -662,30 +595,20 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
     endloop
     set l_value=Trig_Cmd_Load_Code_ReadLevel(l_reader)
     if(l_value>0)then
-        // (l_pid) plus (1).
         if(udg_FreelancerHero[l_pid+1]==null)then
-            // (l_pid) plus (1).
             set udg_FreelancerHero[l_pid+1]=Job_GetHero(p,'H02L') // 'H02L': unit "Freelancer"
-            // (l_pid) plus (1).
             call SetUnitOwner(udg_FreelancerHero[l_pid+1],Player(PLAYER_NEUTRAL_PASSIVE),true)
-            // (l_pid) plus (1).
             call SetUnitPosition(udg_FreelancerHero[l_pid+1],GetPlayerStartLocationX(p),GetPlayerStartLocationY(p))
         endif
-        // (l_pid) plus (1).
         if(l_value>=99 and GetHeroLevel(udg_FreelancerHero[l_pid+1])<99)then
-            // (GetPlayerState(p, PLAYER_STATE_RESOURCE_FOOD_USED)) plus (1).
             call SetPlayerState(p,PLAYER_STATE_RESOURCE_FOOD_USED,(GetPlayerState(p,PLAYER_STATE_RESOURCE_FOOD_USED)+1))
         endif
-        // (l_pid) plus (1).
         call SetHeroLevel(udg_FreelancerHero[l_pid+1],l_value,false)
         if(l_value>='d')then
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F',4) // 'A02F': ability "Mastery"
         elseif(l_value>=99)then
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F',3) // 'A02F': ability "Mastery"
         elseif(l_value>=50)then
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F',2) // 'A02F': ability "Mastery"
         endif
     endif
@@ -693,28 +616,19 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
         if false then
             call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Mastered")
         endif
-        // (l_pid) plus (1).
         call SetHeroLevel(udg_SpiritOfGaya[l_pid+1],99,false)
         call SetPlayerTechResearched(p,'Resi',1) // 'Resi': upgrade "Buy from Pandaren Spiritualist (1500 Gold + 1 Shard)"
         call SetPlayerTechResearched(p,'R00F',1) // 'R00F': upgrade "Buy from Pandaren Spiritualist (3000 Gold + 1 Shard)"
         call SetPlayerTechResearched(p,'R00G',1) // 'R00G': upgrade "Buy from Pandaren Spiritualist (6000 Gold + 1 Shard)"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A0B4',3) // 'A0B4': ability "Break Stun"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02K',3) // 'A02K': ability "Mana Transfer"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02L',3) // 'A02L': ability "Mega Heal"
         call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',8) // 'A10F': ability "Spiritual Power"
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A058') // 'A058': ability "Tarugaya"
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'S004') // 'S004': ability "Sukugaya"
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A07E') // 'A07E': ability "Rakugaya"
     else
-        // (l_pid) plus (1).
         call Trig_Cmd_Load_Code_LoadHeroLevel(l_reader,udg_SpiritOfGaya[l_pid+1])
         if false then
             call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Skill Breakstun-Manatransfer-Megaheal")
@@ -722,56 +636,37 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
         set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
         if(l_value>0)then
             call SetPlayerTechResearched(p,'Resi',1) // 'Resi': upgrade "Buy from Pandaren Spiritualist (1500 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A0B4',l_value) // 'A0B4': ability "Break Stun"
         endif
         set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
         if(l_value>0)then
             call SetPlayerTechResearched(p,'R00F',1) // 'R00F': upgrade "Buy from Pandaren Spiritualist (3000 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02K',l_value) // 'A02K': ability "Mana Transfer"
         endif
         set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
         if(l_value>0)then
             call SetPlayerTechResearched(p,'R00G',1) // 'R00G': upgrade "Buy from Pandaren Spiritualist (6000 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02L',l_value) // 'A02L': ability "Mega Heal"
         endif
         if false then
             call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Skill Taru-Suku-Raku")
         endif
         if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-            // (l_pid) plus (1).
             call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A058') // 'A058': ability "Tarugaya"
             call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-            // Calculation 1:
-            // (l_pid) plus (1).
-            // Calculation 2:
-            // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (1).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+1) // 'A10F': ability "Spiritual Power"
         endif
         if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-            // (l_pid) plus (1).
             call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'S004') // 'S004': ability "Sukugaya"
             call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-            // Calculation 1:
-            // (l_pid) plus (1).
-            // Calculation 2:
-            // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (2).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+2) // 'A10F': ability "Spiritual Power"
         endif
         if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-            // (l_pid) plus (1).
             call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A07E') // 'A07E': ability "Rakugaya"
             call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-            // Calculation 1:
-            // (l_pid) plus (1).
-            // Calculation 2:
-            // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (4).
             call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+4) // 'A10F': ability "Spiritual Power"
         endif
     endif
-    // (l_ngPlusBits) plus ((Trig_Cmd_Load_Code_ReadBits(l_reader, 1)) times (4)).
     set l_ngPlusBits=l_ngPlusBits+(Trig_Cmd_Load_Code_ReadBits(l_reader,1)*4)
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Hero Inventory")
@@ -780,12 +675,10 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Inventory")
     endif
-    // (l_pid) plus (1).
     call Trig_Cmd_Load_Code_LoadInventory(l_reader,udg_SpiritOfGaya[l_pid+1])
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: House Inventory")
     endif
-    // (l_pid) plus (1).
     call Trig_Cmd_Load_Code_LoadInventory(l_reader,udg_PlayerHouse[l_pid+1])
     call Trig_Cmd_Load_Code_ReadUpgradeCapFlag(l_reader)
     if false then
@@ -812,7 +705,6 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
     call Trig_Cmd_Load_Code_LoadUpgradeCapped(l_reader,'R00M') // 'R00M': upgrade "Gun"
     call Trig_Cmd_Load_Code_LoadUpgradeCapped(l_reader,'R00N') // 'R00N': upgrade "Greatsword"
     call Trig_Cmd_Load_Code_LoadUpgradeCapped(l_reader,'R00L') // 'R00L': upgrade "Inner Mana"
-    // (l_ngPlusBits) plus ((Trig_Cmd_Load_Code_ReadBits(l_reader, 1)) times (2)).
     set l_ngPlusBits=l_ngPlusBits+(Trig_Cmd_Load_Code_ReadBits(l_reader,1)*2)
     call Trig_Cmd_Load_Code_LoadForceFlag(l_reader,udg_TitleForce[18])
     call Trig_Cmd_Load_Code_ReadBits(l_reader,1)
@@ -890,34 +782,22 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
     endif
     call Trig_Cmd_Load_Code_LoadForceFlag(l_reader,udg_TitleForce[55])
     call Trig_Cmd_Load_Code_ReadBits(l_reader,1)
-    // (l_pid) plus (1).
     set udg_SpeedrunLevel[l_pid+1]=Trig_Cmd_Load_Code_ReadBits(l_reader,4)
     call Trig_Cmd_Load_Code_ReadBits(l_reader,1)
     call Trig_Cmd_Load_Code_ReadBits(l_reader,1)
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Miracle/Replays")
     endif
-    // (l_pid) plus (1).
     set udg_MiracleStage[l_pid+1]=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
-    // (l_pid) plus (1).
     set udg_MetaFragments[l_pid+1]=Trig_Cmd_Load_Code_ReadBits(l_reader,3)
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Construct NGP")
     endif
-    // (l_ngPlusBits) plus ((Trig_Cmd_Load_Code_ReadBits(l_reader, 1)) times (8)).
     set l_ngPlusBits=l_ngPlusBits+(Trig_Cmd_Load_Code_ReadBits(l_reader,1)*8)
     call Trig_Cmd_Load_Code_LoadForceFlag(l_reader,udg_LegendaryGuardianForce)
     if(l_ngPlusBits>=$B)then // $B = 11
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (15) minus (l_ngPlusBits).
         set udg_NewGamePlusLevel[l_pid+1]=$F-l_ngPlusBits // $F = 15
     elseif(l_ngPlusBits<=5)then
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (5) plus (l_ngPlusBits).
         set udg_NewGamePlusLevel[l_pid+1]=5+l_ngPlusBits
     else
         call ForceAddPlayer(udg_CheaterForce,p)
@@ -941,7 +821,6 @@ function Trig_Cmd_Load_Code_LoadCodeV3 takes string l_code,player p,boolean l_wi
         else
             set udg_ArmoryCodeSegment[l_pid]=l_reader
             set l_value=StringLength(l_code)
-            // (l_value) minus (1).
             if(SubString(l_code,l_value-1,l_value)==")")then
                 if Trig_Cmd_Load_Code_SeekArmory(l_reader)then
                     call Trig_Cmd_Load_Code_LoadArmory(l_reader,p)
@@ -981,31 +860,21 @@ function Trig_Cmd_Load_Code_LoadCodeV2 takes string l_code,player p,boolean l_wi
     endloop
     set l_value=Trig_Cmd_Load_Code_ReadLevel(l_reader)
     if(l_value>0)then
-        // (l_pid) plus (1).
         if(udg_FreelancerHero[l_pid+1]==null)then
-            // (l_pid) plus (1).
             set udg_FreelancerHero[l_pid+1]=Job_GetHero(p,'H02L') // 'H02L': unit "Freelancer"
-            // (l_pid) plus (1).
             call SetUnitOwner(udg_FreelancerHero[l_pid+1],Player(PLAYER_NEUTRAL_PASSIVE),true)
-            // (l_pid) plus (1).
             call SetUnitPosition(udg_FreelancerHero[l_pid+1],GetPlayerStartLocationX(p),GetPlayerStartLocationY(p))
         endif
-        // (l_pid) plus (1).
         if(l_value>=99 and GetHeroLevel(udg_FreelancerHero[l_pid+1])<99)then
-            // (GetPlayerState(p, PLAYER_STATE_RESOURCE_FOOD_USED)) plus (1).
             call SetPlayerState(p,PLAYER_STATE_RESOURCE_FOOD_USED,(GetPlayerState(p,PLAYER_STATE_RESOURCE_FOOD_USED)+1))
         endif
-        // (l_pid) plus (1).
         call SetHeroLevel(udg_FreelancerHero[l_pid+1],l_value,false)
         if(l_value>=99)then
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F',3) // 'A02F': ability "Mastery"
         elseif(l_value>=50)then
-            // (l_pid) plus (1).
             call SetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F',2) // 'A02F': ability "Mastery"
         endif
     endif
-    // (l_pid) plus (1).
     call Trig_Cmd_Load_Code_LoadHeroLevel(l_reader,udg_SpiritOfGaya[l_pid+1])
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Hero Inventory")
@@ -1014,12 +883,10 @@ function Trig_Cmd_Load_Code_LoadCodeV2 takes string l_code,player p,boolean l_wi
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Inventory")
     endif
-    // (l_pid) plus (1).
     call Trig_Cmd_Load_Code_LoadInventory(l_reader,udg_SpiritOfGaya[l_pid+1])
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: House Inventory")
     endif
-    // (l_pid) plus (1).
     call Trig_Cmd_Load_Code_LoadInventory(l_reader,udg_PlayerHouse[l_pid+1])
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Upgrades Tools-Sword-Bow-Rod-Staff")
@@ -1051,52 +918,34 @@ function Trig_Cmd_Load_Code_LoadCodeV2 takes string l_code,player p,boolean l_wi
     set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
     if(l_value>0)then
         call SetPlayerTechResearched(p,'Resi',1) // 'Resi': upgrade "Buy from Pandaren Spiritualist (1500 Gold + 1 Shard)"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A0B4',l_value) // 'A0B4': ability "Break Stun"
     endif
     set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
     if(l_value>0)then
         call SetPlayerTechResearched(p,'R00F',1) // 'R00F': upgrade "Buy from Pandaren Spiritualist (3000 Gold + 1 Shard)"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02K',l_value) // 'A02K': ability "Mana Transfer"
     endif
     set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
     if(l_value>0)then
         call SetPlayerTechResearched(p,'R00G',1) // 'R00G': upgrade "Buy from Pandaren Spiritualist (6000 Gold + 1 Shard)"
-        // (l_pid) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02L',l_value) // 'A02L': ability "Mega Heal"
     endif
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Gaya Skill Taru-Suku-Raku")
     endif
     if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A058') // 'A058': ability "Tarugaya"
         call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (1).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+1) // 'A10F': ability "Spiritual Power"
     endif
     if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'S004') // 'S004': ability "Sukugaya"
         call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (2).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+2) // 'A10F': ability "Spiritual Power"
     endif
     if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
-        // (l_pid) plus (1).
         call UnitAddAbility(udg_SpiritOfGaya[l_pid+1],'A07E') // 'A07E': ability "Rakugaya"
         call SetPlayerAbilityAvailable(p,'A10F',true) // 'A10F': ability "Spiritual Power"
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (GetUnitAbilityLevel(udg_SpiritOfGaya at position (l_pid) plus (1), 'A10F')) plus (4).
         call SetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F',GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A10F')+4) // 'A10F': ability "Spiritual Power"
     endif
     if false then
@@ -1127,16 +976,13 @@ function Trig_Cmd_Load_Code_LoadCodeV2 takes string l_code,player p,boolean l_wi
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: Miracle-Fragments")
     endif
-    // (l_pid) plus (1).
     set udg_MiracleStage[l_pid+1]=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
-    // (l_pid) plus (1).
     set udg_MetaFragments[l_pid+1]=Trig_Cmd_Load_Code_ReadBits(l_reader,2)
     if false then
         call DisplayTimedTextToPlayer(p,0,0,60,"Load: NGP3-NGM1")
     endif
     set l_value=Trig_Cmd_Load_Code_ReadBits(l_reader,3)
     if(l_value<=5)then
-        // (l_pid) plus (1).
         set udg_NewGamePlusLevel[l_pid+1]=l_value
     endif
     if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
@@ -1154,7 +1000,6 @@ function Trig_Cmd_Load_Code_LoadCodeV2 takes string l_code,player p,boolean l_wi
     if l_withArmory then
         set udg_ArmoryCodeSegment[l_pid]=l_reader
         set l_value=StringLength(l_code)
-        // (l_value) minus (1).
         if(SubString(l_code,l_value-1,l_value)==")")then
             if Trig_Cmd_Load_Code_SeekArmory(l_reader)then
                 call Trig_Cmd_Load_Code_LoadArmoryLegacy(l_reader,p)
@@ -1389,9 +1234,7 @@ function Trig_Cmd_Load_Armory_Actions takes nothing returns nothing
     set l_code=SubString(l_code,7,StringLength(l_code))
     set l_code=Trig_Cmd_Load_Code_TrimSpaces(l_code)
     if(SubString(l_code,0,1)=="(")then
-        // (StringLength(l_code)) minus (1).
         if(SubString(l_code,StringLength(l_code)-1,StringLength(l_code))==")")then
-            // (StringLength(l_code)) minus (1).
             set l_code=SubString(l_code,1,StringLength(l_code)-1)
         else
             call DisplayTimedTextToPlayer(p,0,0,30,"|cFFFF0000Invalid armory code!|r (Closing brackets missing?)")

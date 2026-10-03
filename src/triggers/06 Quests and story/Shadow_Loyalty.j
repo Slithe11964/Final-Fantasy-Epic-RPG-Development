@@ -12,26 +12,18 @@ function Trig_Shadow_LoyaltyTick_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_LoyaltyTick_IsLifeUnder70 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=70.)
 endfunction
 
 function Trig_Shadow_LoyaltyTick_IsLifeUnder50 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=50.)
 endfunction
 
 function Trig_Shadow_LoyaltyTick_IsLifeUnder25 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=25.)
 endfunction
 
 function Trig_Shadow_LoyaltyTick_IsLifeOver85 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)>=85.)
 endfunction
 
@@ -44,11 +36,9 @@ function Trig_Shadow_LoyaltyTick_Actions takes nothing returns nothing
         set udg_ShadowLoyalty=(udg_ShadowLoyalty+1)
     else
         if(Trig_Shadow_LoyaltyTick_IsLifeUnder25())then
-            // Decrease udg_ShadowLoyalty by 5.
             set udg_ShadowLoyalty=(udg_ShadowLoyalty-5)
         else
             if(Trig_Shadow_LoyaltyTick_IsLifeUnder50())then
-                // Decrease udg_ShadowLoyalty by 3.
                 set udg_ShadowLoyalty=(udg_ShadowLoyalty-3)
             else
                 if(Trig_Shadow_LoyaltyTick_IsLifeUnder70())then
@@ -74,7 +64,6 @@ endfunction
 function Trig_Shadow_KillCount_Actions takes nothing returns nothing
     set udg_ShadowKills=(udg_ShadowKills+1)
     if(Trig_Shadow_KillCount_IsHeroKill())then
-        // Increase udg_ShadowLoyalty by 3.
         set udg_ShadowLoyalty=(udg_ShadowLoyalty+3)
     endif
 endfunction
@@ -100,20 +89,14 @@ function Trig_Shadow_HealedBonus_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_HealedBonus_IsHealLifeUnder90 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=90.)
 endfunction
 
 function Trig_Shadow_HealedBonus_IsHealLifeUnder80 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=80.)
 endfunction
 
 function Trig_Shadow_HealedBonus_IsHealLifeUnder50 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ShadowUnit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ShadowUnit)<=50.)
 endfunction
 
@@ -123,19 +106,15 @@ endfunction
 
 function Trig_Shadow_HealedBonus_Actions takes nothing returns nothing
     if(Trig_Shadow_HealedBonus_IsWastedHeal())then
-        // Decrease udg_ShadowLoyalty by 5.
         set udg_ShadowLoyalty=(udg_ShadowLoyalty-5)
     else
         if(Trig_Shadow_HealedBonus_IsHealLifeUnder50())then
-            // Increase udg_ShadowLoyalty by 5.
             set udg_ShadowLoyalty=(udg_ShadowLoyalty+5)
         else
             if(Trig_Shadow_HealedBonus_IsHealLifeUnder80())then
-                // Increase udg_ShadowLoyalty by 3.
                 set udg_ShadowLoyalty=(udg_ShadowLoyalty+3)
             else
                 if(Trig_Shadow_HealedBonus_IsHealLifeUnder90())then
-                    // Increase udg_ShadowLoyalty by 2.
                     set udg_ShadowLoyalty=(udg_ShadowLoyalty+2)
                 else
                     set udg_ShadowLoyalty=(udg_ShadowLoyalty+1)

@@ -92,10 +92,8 @@ function Trig_Armor_Breaker_Actions takes nothing returns nothing
     // The debuff lasts 10 seconds plus 5 seconds per ability level; the next check can add 10 more.
     set duration=((abilityLevel*5)+$A) // $A = 10
     if(GetUnitAbilityLevel(caster,'A0P7')>=$B)then // 'A0P7': ability "Armor Breaker"; $B = 11
-        // Increase duration by 10.
         set duration=(duration+$A) // $A = 10
     endif
-    // (l_armor) minus (armorRemoved).
     call BlzSetUnitArmor(targetUnit,(l_armor-armorRemoved))
     call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl",targetUnit,"origin"))
     call DestroyEffect(AddSpecialEffectTarget("Objects\\Spawnmodels\\Human\\FragmentationShards\\FragBoomSpawn.mdl",targetUnit,"origin"))

@@ -15,11 +15,7 @@ function Trig_Tornado_Cast_Actions takes nothing returns nothing
     local real l_ux=GetUnitX(triggeringUnit)
     local real l_uy=GetUnitY(triggeringUnit)
     local integer l_dummyId
-    // Starting value for l_manaDmg:
-    // (BlzGetAbilityManaCost(l_abilId, Abil_GetLevel(triggeringUnit, l_abilId))) times (3).
     local integer l_manaDmg=BlzGetAbilityManaCost(l_abilId,Abil_GetLevel(triggeringUnit,l_abilId))*3
-    // Starting value for l_intDmg:
-    // (Intelligence of triggeringUnit) times (4).
     local integer l_intDmg=GetHeroInt(triggeringUnit,true)*4
     local real damageAmount
     local unit l_dummy
@@ -28,7 +24,6 @@ function Trig_Tornado_Cast_Actions takes nothing returns nothing
     set l_dummy=CreateUnit(owningPlayer,'h01B',l_ux,l_uy,.0) // 'h01B': unit "Proxy Dummy"
     set l_dummyId=GetHandleId(l_dummy)
     call SaveUnitHandle(udg_ProxyDamageHash,l_dummyId,0,triggeringUnit)
-    // ((l_manaDmg) plus (l_intDmg)) times (Prof_RodPower(triggeringUnit)).
     set damageAmount=(l_manaDmg+l_intDmg)*Prof_RodPower(triggeringUnit)
     call SaveReal(udg_ProxyDamageHash,l_dummyId,1,damageAmount)
     call SaveInteger(udg_ProxyDamageHash,l_dummyId,2,3)

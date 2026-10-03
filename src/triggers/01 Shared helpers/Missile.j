@@ -96,18 +96,13 @@ function Missile_Update takes nothing returns nothing
     loop
         exitwhen i>=udg_MissileActiveCount
         set d=udg_MissileList[i]
-        // (udg_MissileRange at position d) minus (udg_MissileSpeed at position d).
         set udg_MissileRange[d]=udg_MissileRange[d]-udg_MissileSpeed[d]
         if udg_MissileHoming[d]then
-            // Result 1: (y position of udg_MissileTarget at position d) minus (udg_MissileY at position d).
-            // Result 2: (x position of udg_MissileTarget at position d) minus (udg_MissileX at position d).
-            // Result 3: the angle in radians from the y gap (result 1) and x gap (result 2).
             set a=Atan2(GetUnitY(udg_MissileTarget[d])-udg_MissileY[d],GetUnitX(udg_MissileTarget[d])-udg_MissileX[d])
             // The horizontal direction share for angle (a) in radians.
             set udg_MissileCosA[d]=Cos(a)
             // The vertical direction share for angle (a) in radians.
             set udg_MissileSinA[d]=Sin(a)
-            // (a) times (bj_RADTODEG).
             call SetUnitFacing(gg_unit_h020_0269[d],a*bj_RADTODEG)
         endif
         // Move the projectile horizontally using travel distance times the horizontal direction share.
@@ -133,9 +128,7 @@ function Missile_Update takes nothing returns nothing
                 endloop
             endif
             if udg_MissileHoming[d]then
-                // (x position of udg_MissileTarget at position d) minus (udg_MissileX at position d).
                 set udg_MissileDX=GetUnitX(udg_MissileTarget[d])-udg_MissileX[d]
-                // (y position of udg_MissileTarget at position d) minus (udg_MissileY at position d).
                 set udg_MissileDY=GetUnitY(udg_MissileTarget[d])-udg_MissileY[d]
                 // Find straight-line distance: square both coordinate gaps, add them, then take the square root.
                 set udg_MissileDistance=SquareRoot(udg_MissileDX*udg_MissileDX+udg_MissileDY*udg_MissileDY)
@@ -194,9 +187,7 @@ function Missile_DamageUnit takes integer l_idx,unit t,real damageAmount,real rd
     else
         set l_dmgType=DAMAGE_TYPE_NORMAL
     endif
-    // (x position of t) minus (udg_MissileX at position l_idx).
     set udg_MissileDX=GetUnitX(t)-udg_MissileX[l_idx]
-    // (y position of t) minus (udg_MissileY at position l_idx).
     set udg_MissileDY=GetUnitY(t)-udg_MissileY[l_idx]
     set udg_MissileDamageDealt=damageAmount
     if udg_MissileFalloff[l_idx]then
@@ -242,7 +233,6 @@ function Missile_Launch takes unit c,string l_modelPath,string l_hitFx,string l_
     set udg_MissileSpeed[d]=s
     set udg_MissileRange[d]=md
     set udg_MissileAoE[d]=l_aoe
-    // (l_dps) times (0.03).
     set udg_MissileTravelDamage[d]=l_dps*.03
     set udg_MissileSplashRadius[d]=l_hitRadius
     set udg_MissileImpactDamage[d]=l_hitDamage

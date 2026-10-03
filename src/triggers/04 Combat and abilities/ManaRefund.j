@@ -15,12 +15,8 @@ endfunction
 function Trig_ManaRefund_Cast_Actions takes nothing returns nothing
     call Spell_StoreManaCost()
     if(Trig_ManaRefund_Cast_Cond_HasManaCost())then
-        // Result 1: the smaller of (udg_SpellManaCost) and (GetPlayerState(GetOwningPlayer(the triggering unit),
-        // PLAYER_STATE_RESOURCE_GOLD)).
         set udg_TempInteger=IMinBJ(udg_SpellManaCost,GetPlayerState(GetOwningPlayer(GetTriggerUnit()),PLAYER_STATE_RESOURCE_GOLD))
-        // (-1) times (udg_TempInteger).
         call AdjustPlayerStateBJ((-1*udg_TempInteger),GetOwningPlayer(GetTriggerUnit()),PLAYER_STATE_RESOURCE_GOLD)
-        // Udg_TempInteger treated as a decimal-capable number.
         set udg_ManaRefundGold=I2R(udg_TempInteger)
         set udg_ManaRefundUnit=GetTriggerUnit()
         call EnableTrigger(gg_trg_Mana_Restore_Delayed)

@@ -73,8 +73,6 @@ function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget4 takes nothing return
 endfunction
 
 function Trig_OmegaWeapon_SpellRotation_Cond_CanCastFlameStrike takes nothing returns boolean
-    // Result 1: current health divided by maximum health for gg_unit_N022_0125, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(CountUnitsInGroup(udg_TempGroup)>0)and(GetUnitCurrentOrder(gg_unit_N022_0125)!=$D009D)and(GetUnitLifePercent(gg_unit_N022_0125)<=75.) // $D009D = 852125
 endfunction
 

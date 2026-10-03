@@ -20,7 +20,6 @@ endfunction
 function Trig_Quest_Fountain_Bulb_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_Fountain_Bulb_Cond_ExtraCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0FN')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN'))-1)) // 'I0FN': item "Thunderbloom Bulb"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN')) // 'I0FN': item "Thunderbloom Bulb"
@@ -79,7 +78,6 @@ function Trig_Quest_Fountain_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[42])
     if(Trig_Quest_Fountain_Complete_Cond_ExtraCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I02G')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G'))-1)) // 'I02G': item "Scroll of Rejuvenation"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G')) // 'I02G': item "Scroll of Rejuvenation"

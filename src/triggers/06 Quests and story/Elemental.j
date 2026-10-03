@@ -85,7 +85,6 @@ function Trig_Elemental_Spawn_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Elemental_Wander_Cond_NearTargetLoc takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_ElementalTargetLoc at position loop counter A.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ElementalTargetLoc[GetForLoopIndexA()])<=512.)
 endfunction
 
@@ -113,7 +112,6 @@ function Trig_Elemental_Wander_Actions takes nothing returns nothing
         if(Trig_Elemental_Wander_Cond_ElementalAlive())then
             set udg_TempPoint=GetUnitLoc(udg_ZoneBoss[GetForLoopIndexA()])
             if(Trig_Elemental_Wander_Cond_NearTargetLoc())then
-                // Increase udg_ElementalMoveTimer at position loop counter A by 2.
                 set udg_ElementalMoveTimer[GetForLoopIndexA()]=(udg_ElementalMoveTimer[GetForLoopIndexA()]+2)
             else
                 set udg_ElementalMoveTimer[GetForLoopIndexA()]=(udg_ElementalMoveTimer[GetForLoopIndexA()]+1)
@@ -149,7 +147,6 @@ function Trig_Elemental_Assist_Attack_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Elemental_Assist_Attack_Cond_ChosenInRange takes nothing returns boolean
-    // The straight-line distance between udg_RetreatPoint and udg_TempPoint5.
     return(DistanceBetweenPoints(udg_RetreatPoint,udg_TempPoint5)<=1000.)
 endfunction
 
@@ -158,7 +155,6 @@ function Trig_Elemental_Assist_Attack_Cond_ChosenElementalFree takes nothing ret
 endfunction
 
 function Trig_Elemental_Assist_Attack_Cond_HolyInRange takes nothing returns boolean
-    // The straight-line distance between udg_RetreatPoint and udg_TempPoint5.
     return(DistanceBetweenPoints(udg_RetreatPoint,udg_TempPoint5)<=1000.)
 endfunction
 

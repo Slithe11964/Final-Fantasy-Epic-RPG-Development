@@ -25,7 +25,6 @@ function Trig_Momentum_Cast_Actions takes nothing returns nothing
     if(Trig_Momentum_Cast_NoMomentumStacks())then
         call SetUnitAbilityLevelSwapped('A0H0',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A0H0': ability "Momentum"
     else
-        // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
         call SetUnitAbilityLevelSwapped('A0H0',GetLastCreatedUnit(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)) // 'A0H0': ability "Momentum"
     endif
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetTriggerUnit())
@@ -39,9 +38,7 @@ endfunction
 function Trig_Momentum_Apply_Actions takes nothing returns nothing
     call UnitRemoveBuffBJ('B07W',GetSpellTargetUnit()) // 'B07W': buff tooltip "Momentum"
     call UnitRemoveBuffBJ('B07V',GetSpellTargetUnit()) // 'B07V': buff tooltip "Momentum"
-    // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) plus (1).
     call SetUnitAbilityLevelSwapped('A197',GetSpellTargetUnit(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+1)) // 'A197': ability "Momentum"
-    // ((GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) plus (1)) times (10).
     set udg_MomentumCharges[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=((GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+1)*$A) // $A = 10
     call StartTimerBJ(udg_MomentumTimer,false,.01)
     call EnableTrigger(gg_trg_Momentum_Decay)

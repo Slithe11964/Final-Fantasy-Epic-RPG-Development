@@ -11,7 +11,6 @@ endfunction
 function Trig_Cactuar_Haste_Cast_Actions takes nothing returns nothing
     set udg_IsPureDamage=true
     set udg_DmgFlagManaDamage=true
-    // (maximum mana of the spell target) divided by (2).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetSpellTargetUnit())/ 2.),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())

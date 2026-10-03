@@ -30,9 +30,7 @@ function Trig_Boss_Gilgamesh_Summon_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set udg_GilgameshUnit=GetLastCreatedUnit()
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call Cam_PanToUnit(udg_GilgameshUnit,.2)
     call PauseUnitBJ(true,udg_GilgameshUnit)
@@ -108,7 +106,6 @@ function Trig_Boss_Gilgamesh_NextSword_Actions takes nothing returns nothing
     call RemoveItem(GetItemOfTypeFromUnitBJ(udg_GilgameshUnit,'sror')) // 'sror': item "Spirit of Lowtown"
     call Wait_Polled(1.)
     call UnitAddItemByIdSwapped('sror',udg_GilgameshUnit) // 'sror': item "Spirit of Lowtown"
-    // (udg_GilgameshSwordStage) plus (1).
     call RemoveItem(UnitItemInSlotBJ(udg_GilgameshUnit,(udg_GilgameshSwordStage+1)))
     call Text_Say(udg_GilgameshUnit,"Hmph. How about this?",false)
     if(Trig_Boss_Gilgamesh_NextSword_IsStage1())then

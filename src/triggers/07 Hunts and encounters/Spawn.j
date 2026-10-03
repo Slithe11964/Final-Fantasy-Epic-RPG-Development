@@ -519,7 +519,6 @@ endfunction
 
 function Trig_Spawn_KalmDefenders_SetupEngineerUnit takes nothing returns nothing
     if(Trig_Spawn_KalmDefenders_IsNotHero())then
-        // (BlzGetUnitBaseDamage(the unit being visited, udg_AbilityLevelIndex)) times (2).
         call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),udg_AbilityLevelIndex)*2),udg_AbilityLevelIndex)
     endif
     call Unit_ScaleToLevel60(GetEnumUnit())
@@ -551,7 +550,6 @@ endfunction
 
 function Trig_Spawn_KalmDefenders_SetupFrontUnit takes nothing returns nothing
     if(Trig_Spawn_KalmDefenders_IsNotHeroUnit())then
-        // (BlzGetUnitBaseDamage(the unit being visited, udg_AbilityLevelIndex)) times (2).
         call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),udg_AbilityLevelIndex)*2),udg_AbilityLevelIndex)
     endif
     call Unit_ScaleToLevel60(GetEnumUnit())
@@ -567,7 +565,6 @@ endfunction
 
 function Trig_Spawn_KalmDefenders_SetupRearUnit takes nothing returns nothing
     if(Trig_Spawn_KalmDefenders_IsNotHeroMember())then
-        // (BlzGetUnitBaseDamage(the unit being visited, udg_AbilityLevelIndex)) times (2).
         call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),udg_AbilityLevelIndex)*2),udg_AbilityLevelIndex)
     endif
     call Unit_ScaleToLevel60(GetEnumUnit())
@@ -654,9 +651,7 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     if(Trig_Spawn_KalmDefenders_HasGolemQuest())then
         call CreateNUnitsAtLoc(1,'n015',Player(9),l_tempPoint,135.) // 'n015': unit "Mithril Golem"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-        // (maximum health of GetLastCreatedUnit()) divided by (3).
         call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 3))
-        // (BlzGetUnitArmor(GetLastCreatedUnit())) divided by (3).
         call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())/ 3.))
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionGolem)
         set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,135.)

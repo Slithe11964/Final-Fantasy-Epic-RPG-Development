@@ -51,13 +51,11 @@ function Trig_Boss_DemiFiend_Summon_Actions takes nothing returns nothing
         call Text_Say(null,"You feel faint...",true)
     endif
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set l_tempPoint=GetRectCenter(gg_rct_632)
     call CreateNUnitsAtLoc(1,'E00Z',Player($B),l_tempPoint,270.) // 'E00Z': unit "Demi Fiend"; $B = 11
     call RemoveLocation(l_tempPoint)
     set udg_DemiFiendUnit=GetLastCreatedUnit()
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call SetHeroLevelBJ(udg_DemiFiendUnit,99,false)
     call SetUnitLifePercentBJ(udg_DemiFiendUnit,'d')
@@ -162,7 +160,6 @@ endfunction
 function Trig_Boss_DemiFiend_Demon1_Spawn_Actions takes nothing returns nothing
     if(Trig_Boss_DemiFiend_Demon1_Spawn_Demon1Dead())then
         set udg_TempPoint=GetUnitLoc(udg_DemiFiendUnit)
-        // (facing in degrees of udg_DemiFiendUnit) plus (135).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(GetUnitFacing(udg_DemiFiendUnit)+135.))
         call RemoveLocation(udg_TempPoint)
         call CreateNUnitsAtLoc(1,udg_GlyphDemonType[udg_DemiFiendDemonIndex],Player($B),udg_TempPoint2,GetUnitFacing(udg_DemiFiendUnit)) // $B = 11
@@ -184,7 +181,6 @@ function Trig_Boss_DemiFiend_Demon1_Spawn_Actions takes nothing returns nothing
             call DestroyGroup(udg_TempGroup)
             call IssueImmediateOrderBJ(udg_DemiFiendUnit,"channel")
         endif
-        // (the remainder after dividing (udg_DemiFiendDemonIndex) by (6)) plus (1).
         set udg_DemiFiendDemonIndex=(ModuloInteger(udg_DemiFiendDemonIndex,6)+1)
         call StartTimerBJ(udg_DemiFiendDemon1Timer,false,120.)
     else
@@ -236,7 +232,6 @@ endfunction
 function Trig_Boss_DemiFiend_Demon2_Spawn_Actions takes nothing returns nothing
     if(Trig_Boss_DemiFiend_Demon2_Spawn_Demon2Dead())then
         set udg_TempPoint=GetUnitLoc(udg_DemiFiendUnit)
-        // (facing in degrees of udg_DemiFiendUnit) plus (225).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(GetUnitFacing(udg_DemiFiendUnit)+225.))
         call RemoveLocation(udg_TempPoint)
         call CreateNUnitsAtLoc(1,udg_GlyphDemonType[udg_DemiFiendDemonIndex],Player($B),udg_TempPoint2,GetUnitFacing(udg_DemiFiendUnit)) // $B = 11
@@ -258,7 +253,6 @@ function Trig_Boss_DemiFiend_Demon2_Spawn_Actions takes nothing returns nothing
             call DestroyGroup(udg_TempGroup)
             call IssueImmediateOrderBJ(udg_DemiFiendUnit,"channel")
         endif
-        // (the remainder after dividing (udg_DemiFiendDemonIndex) by (6)) plus (1).
         set udg_DemiFiendDemonIndex=(ModuloInteger(udg_DemiFiendDemonIndex,6)+1)
         call StartTimerBJ(udg_DemiFiendDemon2Timer,false,120.)
     else
@@ -307,8 +301,6 @@ function Trig_Boss_DemiFiend_Mediarahan_Demon2Alive takes nothing returns boolea
 endfunction
 
 function Trig_Boss_DemiFiend_Mediarahan_ShouldHeal takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(udg_DemiFiendHealed==false)and(GetUnitLifePercent(GetTriggerUnit())<50.)
 endfunction
 
@@ -420,10 +412,6 @@ function Trig_Boss_DemiFiend_Death_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=CountPlayersInForceBJ(udg_PlayingPlayers)
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // Result 1: loop counter A treated as a decimal-capable number.
-            // Result 2: (360) times (result 1).
-            // Result 3: CountPlayersInForceBJ(udg_PlayingPlayers) treated as a decimal-capable number.
-            // Result 4: (result 2) divided by (result 3).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
             call CreateItemLoc('I0G5',udg_TempPoint2) // 'I0G5': item "Masakados"
             call RemoveLocation(udg_TempPoint2)

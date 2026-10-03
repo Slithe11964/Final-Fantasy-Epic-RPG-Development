@@ -6,13 +6,11 @@ globals
 endglobals
 
 function Trig_QuestTotal_Add_Actions takes nothing returns nothing
-    // Increase udg_QuestsTotal by 19.
     set udg_QuestsTotal=(udg_QuestsTotal+19)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
 function Trig_QuestTotal_Add71_Actions takes nothing returns nothing
-    // Increase udg_QuestsTotal by 71.
     set udg_QuestsTotal=(udg_QuestsTotal+71)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

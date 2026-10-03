@@ -42,9 +42,6 @@ function Trig_AbilityTags_Show_Actions takes nothing returns nothing
             if(Trig_AbilityTags_Show_IsTier4())then
                 call CreateTextTagLocBJ(GetAbilityName(udg_FishPullAbil[GetForLoopIndexA()]),udg_FishingBobberLoc[GetForLoopIndexA()],0,10.,'d','d','d',0)
                 if(Trig_AbilityTags_Show_UseBaseCost_Tier4())then
-                    // Result 1: (1) minus (1).
-                    // Result 2: BlzGetAbilityManaCost(udg_FishPullAbil at position loop counter A, result 1) treated as a
-                    // decimal-capable number.
                     call SetTextTagVelocityBJ(GetLastCreatedTextTag(),128.,I2R(BlzGetAbilityManaCost(udg_FishPullAbil[GetForLoopIndexA()],(1-1))))
                 else
                     // BlzGetAbilityManaCost(udg_FishPullAbil at position loop counter A, 1) treated as a decimal-capable number.
@@ -54,9 +51,6 @@ function Trig_AbilityTags_Show_Actions takes nothing returns nothing
                 if(Trig_AbilityTags_Show_IsTier5())then
                     call CreateTextTagLocBJ(GetAbilityName(udg_FishLeftAbil[GetForLoopIndexA()]),udg_FishingBobberLoc[GetForLoopIndexA()],0,12.,'d','d','d',0)
                     if(Trig_AbilityTags_Show_UseBaseCost_Tier5())then
-                        // Result 1: (1) minus (1).
-                        // Result 2: BlzGetAbilityManaCost(udg_FishLeftAbil at position loop counter A, result 1) treated as a
-                        // decimal-capable number.
                         call SetTextTagVelocityBJ(GetLastCreatedTextTag(),150.,I2R(BlzGetAbilityManaCost(udg_FishLeftAbil[GetForLoopIndexA()],(1-1))))
                     else
                         // BlzGetAbilityManaCost(udg_FishLeftAbil at position loop counter A, 1) treated as a decimal-capable number.
@@ -66,9 +60,6 @@ function Trig_AbilityTags_Show_Actions takes nothing returns nothing
                     if(Trig_AbilityTags_Show_IsTier6())then
                         call CreateTextTagLocBJ(GetAbilityName(udg_FishRightAbil[GetForLoopIndexA()]),udg_FishingBobberLoc[GetForLoopIndexA()],0,12.,'d','d','d',0)
                         if(Trig_AbilityTags_Show_UseBaseCost_Tier6())then
-                            // Result 1: (1) minus (1).
-                            // Result 2: BlzGetAbilityManaCost(udg_FishRightAbil at position loop counter A, result 1) treated as a
-                            // decimal-capable number.
                             call SetTextTagVelocityBJ(GetLastCreatedTextTag(),150.,I2R(BlzGetAbilityManaCost(udg_FishRightAbil[GetForLoopIndexA()],(1-1))))
                         else
                             // BlzGetAbilityManaCost(udg_FishRightAbil at position loop counter A, 1) treated as a decimal-capable number.

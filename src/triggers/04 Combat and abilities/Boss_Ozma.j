@@ -23,81 +23,59 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
     if(Trig_Boss_Ozma_Spawn_IsFirstSummon())then
         set udg_RingHintUsed[8]=true
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
-        // Calculation 1:
         // A random whole number from 0 through 255.
-        // Calculation 2:
         // A random whole number from 0 through 255.
-        // Calculation 3:
         // A random whole number from 0 through 255.
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),GetRandomInt(0,$FF),GetRandomInt(0,$FF),GetRandomInt(0,$FF)) // $FF = 255
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.8)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
-        // Calculation 1:
         // A random whole number from 0 through 255.
-        // Calculation 2:
         // A random whole number from 0 through 255.
-        // Calculation 3:
         // A random whole number from 0 through 255.
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),GetRandomInt(0,$FF),GetRandomInt(0,$FF),GetRandomInt(0,$FF)) // $FF = 255
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.8)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
-        // Calculation 1:
         // A random whole number from 0 through 255.
-        // Calculation 2:
         // A random whole number from 0 through 255.
-        // Calculation 3:
         // A random whole number from 0 through 255.
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),GetRandomInt(0,$FF),GetRandomInt(0,$FF),GetRandomInt(0,$FF)) // $FF = 255
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.8)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
-        // Calculation 1:
         // A random whole number from 0 through 255.
-        // Calculation 2:
         // A random whole number from 0 through 255.
-        // Calculation 3:
         // A random whole number from 0 through 255.
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),GetRandomInt(0,$FF),GetRandomInt(0,$FF),GetRandomInt(0,$FF)) // $FF = 255
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.4)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -106,9 +84,7 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.4)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -117,9 +93,7 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.4)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -128,17 +102,13 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.4)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -147,17 +117,13 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.3)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -166,17 +132,13 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.3)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -185,17 +147,13 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.3)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -204,17 +162,13 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         call Wait_Polled(.3)
         set udg_TempPoint=GetRectCenter(gg_rct_639)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // Calculation 1:
         // A random decimal number between -256 and 256.
-        // Calculation 2:
         // A random decimal number between -256 and 256.
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
         call RemoveLocation(udg_TempPoint)
@@ -228,7 +182,6 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,192.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\Demon\\Infernal\\InfernalBirth.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -238,13 +191,11 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
     call Wait_Polled(.8)
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set udg_TempPoint=GetRectCenter(gg_rct_639)
     call CreateNUnitsAtLoc(1,'U01T',Player($B),udg_TempPoint,.0) // 'U01T': unit "Sealed Esper"; $B = 11
     call RemoveLocation(udg_TempPoint)
     set udg_OzmaBoss=GetLastCreatedUnit()
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call SetHeroLevelBJ(udg_OzmaBoss,80,false)
     set udg_OzmaBarrierTimer=4
@@ -297,9 +248,7 @@ function Trig_Boss_Ozma_Barrier_Actions takes nothing returns nothing
         set udg_OzmaBarrierTimer=(udg_OzmaBarrierTimer-1)
     else
         set udg_OzmaBarrierTimer=8
-        // (udg_AdaptMagicTotal) times (0.8).
         set udg_AdaptMagicTotal=(udg_AdaptMagicTotal*.8)
-        // (udg_AdaptPhysTotal) times (0.8).
         set udg_AdaptPhysTotal=(udg_AdaptPhysTotal*.8)
         set udg_TempPoint=GetUnitLoc(udg_OzmaBoss)
         if(Trig_Boss_Ozma_Barrier_IsBarrierNeutral())then
@@ -309,16 +258,12 @@ function Trig_Boss_Ozma_Barrier_Actions takes nothing returns nothing
             if(Trig_Boss_Ozma_Barrier_IsBarrierPhysical())then
                 call AddSpecialEffectTargetUnitBJ("chest",udg_OzmaBoss,"Abilities\\Spells\\Human\\Defend\\DefendCaster.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-                // (6) minus (udg_TempInteger).
                 call BattleLog_ShowUnit("shifts Adaptive Barrier to Physical Level "+I2S(6-udg_TempInteger),udg_OzmaBoss)
-                // (6) minus (udg_TempInteger).
                 call CreateTextTagLocBJ(("|cffffcc00ADAPTIVE BARRIER: PHYSICAL LV. "+I2S((6-udg_TempInteger))),udg_TempPoint,0,13.,'d','d','d',0)
             else
                 call AddSpecialEffectTargetUnitBJ("chest",udg_OzmaBoss,"Abilities\\Spells\\Items\\SpellShieldAmulet\\SpellShieldCaster.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-                // (udg_TempInteger) minus (8).
                 call BattleLog_ShowUnit("shifts Adaptive Barrier to Magical Level "+I2S(udg_TempInteger-8),udg_OzmaBoss)
-                // (udg_TempInteger) minus (8).
                 call CreateTextTagLocBJ(("|cffffcc00ADAPTIVE BARRIER: MAGICAL LV. "+I2S((udg_TempInteger-8))),udg_TempPoint,0,13.,'d','d','d',0)
             endif
         endif

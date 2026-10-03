@@ -70,19 +70,16 @@ function Trig_Hypernova_Cast_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=16
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (22.5) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // (22.5) times ((loop counter A treated as a decimal-capable number) minus (0.5)).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(22.5*(I2R(GetForLoopIndexA())-.5)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // (22.5) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,768.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)

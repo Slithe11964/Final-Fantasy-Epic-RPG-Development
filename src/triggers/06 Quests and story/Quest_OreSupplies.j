@@ -84,16 +84,12 @@ endfunction
 
 function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
     local location l_tempPoint
-    // Result 1: the smaller of (udg_OreSuppliesRemaining) and (item charges of GetItemOfTypeFromUnitBJ(the
-    // triggering unit, 'I074')).
     set udg_TempInteger=IMinBJ(udg_OreSuppliesRemaining,GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))) // 'I074': item "Mine Mineral"
     if(Trig_Quest_OreSupplies_Deliver_HasSpareCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I074')) minus (udg_TempInteger).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))-udg_TempInteger)) // 'I074': item "Mine Mineral"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074')) // 'I074': item "Mine Mineral"
     endif
-    // (udg_OreSuppliesRemaining) minus (udg_TempInteger).
     set udg_OreSuppliesRemaining=(udg_OreSuppliesRemaining-udg_TempInteger)
     // (5) minus (udg_OreSuppliesRemaining).
     call DisplayTextToForce(GetPlayersAll(),("Minerals brought to Loki: "+(I2S((5-udg_OreSuppliesRemaining))+"/5")))

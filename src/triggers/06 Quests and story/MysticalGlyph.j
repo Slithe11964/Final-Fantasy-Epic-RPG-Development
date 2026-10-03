@@ -38,12 +38,7 @@ endfunction
 
 function Trig_MysticalGlyph_Drop_Actions takes nothing returns nothing
     local location l_tempPoint
-    // Result 1: unit level of the triggering unit treated as a decimal-capable number.
-    // Result 2: the square root of (result 1).
-    // Result 3: (result 2) with its decimal part removed.
-    // Result 4: (udg_GlyphDropCounter) minus (result 3).
     set udg_GlyphDropCounter=(udg_GlyphDropCounter-R2I(SquareRoot(I2R(GetUnitLevel(GetTriggerUnit())))))
-    // (udg_GlyphDropCounter) minus (GetUnitUserData(the triggering unit)).
     set udg_GlyphDropCounter=(udg_GlyphDropCounter-GetUnitUserData(GetTriggerUnit()))
     if(Trig_MysticalGlyph_Drop_Cond_CounterRemaining())then
         set l_tempPoint=null

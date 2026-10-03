@@ -24,7 +24,6 @@ endfunction
 
 function Trig_DarkBahamut_Riddle_PunishHero takes nothing returns nothing
     if(Trig_DarkBahamut_Riddle_HeroInPillarRect())then
-        // ((current health of Player_GetHero(the player being visited)) divided by (2)) plus (1).
         call SetUnitLifeBJ(Player_GetHero(GetEnumPlayer()),((GetUnitStateSwap(UNIT_STATE_LIFE,Player_GetHero(GetEnumPlayer()))/ 2.)+1))
         call PlaySoundBJ(gg_snd_LightningBolt)
         set udg_TempPoint=GetRandomLocInRect(gg_rct_492)
@@ -302,7 +301,6 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -316,7 +314,6 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -330,7 +327,6 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -344,7 +340,6 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())

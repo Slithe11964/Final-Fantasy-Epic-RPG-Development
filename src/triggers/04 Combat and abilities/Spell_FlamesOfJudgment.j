@@ -15,11 +15,8 @@ function Trig_Spell_FlamesOfJudgment_Actions takes nothing returns nothing
     local integer l_tempHandleId
     local integer l_tempInteger
     local real l_tempReal
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (2).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 2)
     if(Trig_Spell_FlamesOfJudgment_Cond_IsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     endif
     set l_tempReal=Prof_RodPower(GetTriggerUnit())
@@ -31,7 +28,6 @@ function Trig_Spell_FlamesOfJudgment_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -43,12 +39,10 @@ function Trig_Spell_FlamesOfJudgment_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,(I2R(GetForLoopIndexA())*60.))
         call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
         set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-        // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
         call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
         call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
         call ShowUnitHide(GetLastCreatedUnit())

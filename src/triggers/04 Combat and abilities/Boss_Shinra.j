@@ -59,13 +59,7 @@ function Trig_Boss_Shinra_Clione_Loop takes nothing returns nothing
             else
                 set a=-1.
             endif
-            // (facing in degrees of udg_ClioneCaster at position d) plus ((a) times (a random decimal number between 0 and
-            // 9)).
             set a=GetUnitFacing(udg_ClioneCaster[d])+a*GetRandomReal(0,9.)
-            // Calculation 1:
-            // (650) plus (a random decimal number between -150 and 150).
-            // Calculation 2:
-            // ((udg_ClioneDmg at position d) times (a random decimal number between 15 and 16)) divided by (16).
             call Missile_Launch(udg_ClioneCaster[d],"Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl","Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl",null,a,100.,40.,650.+GetRandomReal(-$96,$96),.0,.0,350.,udg_ClioneDmg[d]*GetRandomReal(15.,16.)/ 16.,0,ATTACK_TYPE_CHAOS,false) // $96 = 150
         else
             call Trig_Boss_Shinra_Clione_Free(d)

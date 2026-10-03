@@ -11,14 +11,10 @@ function Trig_Auto_Potion_AI_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Auto_Potion_AI_AttackerHurt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for GetAttacker(), times 100 (or 0 if the unit is missing
-    // or its maximum is 0).
     return((IsPlayerInForce(GetOwningPlayer(GetAttacker()),udg_PlayingPlayers)==false)and(IsUnitType(GetAttacker(),UNIT_TYPE_HERO))and(GetUnitLifePercent(GetAttacker())<50.))!=null
 endfunction
 
 function Trig_Auto_Potion_AI_VictimHurt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitLifePercent(GetTriggerUnit())<50.))!=null
 endfunction
 
@@ -120,11 +116,8 @@ function Trig_Auto_Crossbow_Volley_Actions takes nothing returns nothing
     local real damageAmount
     local unit l_dummy=CreateUnit(owningPlayer,'h01B',x,y,.0) // 'h01B': unit "Proxy Dummy"
     local integer l_dummyId=GetHandleId(l_dummy)
-    // (BlzGetAbilityManaCost(l_abilId, Abil_GetLevel(triggeringUnit, l_abilId))) plus ((Agility of triggeringUnit) times (2)).
     set l_power=BlzGetAbilityManaCost(l_abilId,Abil_GetLevel(triggeringUnit,l_abilId))+(GetHeroAgi(triggeringUnit,true)*2)
-    // ((10) plus (Prof_GetLevel(triggeringUnit, 'R000'))) plus (Prof_GetLevel(triggeringUnit, 'R002')).
     set l_upgrades=$A+Prof_GetLevel(triggeringUnit,'R000')+Prof_GetLevel(triggeringUnit,'R002') // $A = 10; 'R000': upgrade "Tools"; 'R002': upgrade "Bow"
-    // ((l_power) times (l_upgrades)) times (0.1).
     set damageAmount=l_power*l_upgrades*.1
     call SaveUnitHandle(udg_ProxyDamageHash,l_dummyId,0,triggeringUnit)
     call SaveReal(udg_ProxyDamageHash,l_dummyId,1,damageAmount)

@@ -16,14 +16,12 @@ function Trig_Fishing_Monster_Spawn_Actions takes nothing returns nothing
     local location l_tempPoint
     local location l_tempPoint2
     local real l_tempReal
-    // (facing in degrees of the triggering unit) plus (180).
     set l_tempReal=(GetUnitFacing(GetTriggerUnit())+180.)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,l_tempReal)
     call RemoveLocation(l_tempPoint)
     call AddSpecialEffectLocBJ(l_tempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // (GetItemLifeBJ(the item being used or moved)) with its decimal part removed.
     call CreateNUnitsAtLocFacingLocBJ(R2I(GetItemLifeBJ(GetManipulatedItem())),udg_FishMonster[GetItemLevel(GetManipulatedItem())],Player($B),l_tempPoint2,l_tempPoint) // $B = 11
     call RemoveLocation(l_tempPoint2)
     set l_tempPoint=null

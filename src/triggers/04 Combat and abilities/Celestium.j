@@ -30,7 +30,6 @@ function Trig_Celestium_Trade_Actions takes nothing returns nothing
         if(Trig_Celestium_Trade_Cond_IsOwnCelestiumStack())then
             set udg_TempBoolean=true
             if(Trig_Celestium_Trade_Cond_StackOverThree())then
-                // (item charges of UnitItemInSlotBJ(the triggering unit, loop counter A)) minus (3).
                 call SetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),GetForLoopIndexA()),(GetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),GetForLoopIndexA()))-3))
             else
                 call RemoveItem(UnitItemInSlotBJ(GetTriggerUnit(),GetForLoopIndexA()))

@@ -75,7 +75,6 @@ function Trig_Gilgamesh_Gift_Actions takes nothing returns nothing
     local location l_tempPoint2
     local real l_tempReal
     call DisableTrigger(GetTriggeringTrigger())
-    // (facing in degrees of the triggering unit) plus (180).
     set l_tempReal=(GetUnitFacing(GetTriggerUnit())+180.)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,l_tempReal)
@@ -93,7 +92,6 @@ function Trig_Gilgamesh_Gift_Actions takes nothing returns nothing
         call ForceRemovePlayerSimple(ConvertedPlayer(udg_TempInteger),udg_LuShangPending)
         set udg_GilgameshGift='I0GC' // 'I0GC': item "Lu Shang"
     else
-        // (the remainder after dividing (udg_GenjiGiftStage) by (4)) plus (1).
         set udg_GenjiGiftStage=(ModuloInteger(udg_GenjiGiftStage,4)+1)
         if(Trig_Gilgamesh_Gift_IsGiftStage1())then
             if(Trig_Gilgamesh_Gift_OwnsRyuujin())then

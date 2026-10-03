@@ -5,8 +5,6 @@ globals
 endglobals
 
 function Trig_Zone8_Heal_Assist_Conditions takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return((GetUnitUserData(GetTriggerUnit())==8)and(GetUnitLifePercent(GetTriggerUnit())<90.)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_UNDEAD)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_RESISTANT)==false))!=null
 endfunction
 

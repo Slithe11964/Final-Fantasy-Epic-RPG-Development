@@ -185,7 +185,6 @@ function Trig_Arena_Start_Cup_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         set udg_ArenaBracketSlot[GetForLoopIndexA()]=0
-        // (LoadIntegerBJ(2, 0, udg_GameStateHash)) plus (1).
         set udg_ArenaBracketTeam[GetForLoopIndexA()]=(LoadIntegerBJ(2,0,udg_GameStateHash)+1)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
@@ -196,7 +195,6 @@ function Trig_Arena_Start_Cup_Actions takes nothing returns nothing
                 call Music_SetTrack(45)
             else
                 if(Trig_Arena_Start_Cup_HasCustomFinalTeam())then
-                    // (165) plus (udg_ArenaOwnerStreak).
                     set udg_ArenaFinalTeam=($A5+udg_ArenaOwnerStreak) // $A5 = 165
                 else
                     // A random whole number from 1 through udg_ArenaBonusBattle at position 0.
@@ -224,16 +222,12 @@ function Trig_Arena_Start_Cup_Actions takes nothing returns nothing
             if(Trig_Arena_Start_Cup_NotPlacedYet())then
                 if(Trig_Arena_Start_Cup_NeedsShiftDown())then
                     set udg_ArenaCheckFlag=true
-                    // (loop counter A) plus (1).
                     set udg_ArenaSwapTemp=udg_ArenaBracketTeam[(GetForLoopIndexA()+1)]
-                    // (loop counter A) plus (1).
                     set udg_ArenaBracketTeam[(GetForLoopIndexA()+1)]=udg_ArenaBracketTeam[GetForLoopIndexA()]
                     set udg_ArenaBracketTeam[GetForLoopIndexA()]=udg_ArenaPickedTeam
                 endif
             else
-                // (loop counter A) plus (1).
                 set udg_ArenaSwapTemp2=udg_ArenaBracketTeam[(GetForLoopIndexA()+1)]
-                // (loop counter A) plus (1).
                 set udg_ArenaBracketTeam[(GetForLoopIndexA()+1)]=udg_ArenaSwapTemp
                 set udg_ArenaSwapTemp=udg_ArenaSwapTemp2
             endif

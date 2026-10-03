@@ -118,7 +118,6 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
                 set bj_forLoopAIndexEnd=4
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (90) times (loop counter A treated as a decimal-capable number).
                     set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,(90.*I2R(GetForLoopIndexA())))
                     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -132,7 +131,6 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
                 set bj_forLoopAIndexEnd=4
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (45) plus ((90) times (loop counter A treated as a decimal-capable number)).
                     set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,(45.+(90.*I2R(GetForLoopIndexA()))))
                     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -163,7 +161,6 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
                 set bj_forLoopAIndexEnd=4
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (90) times (loop counter A treated as a decimal-capable number).
                     set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,(90.*I2R(GetForLoopIndexA())))
                     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -177,7 +174,6 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
                 set bj_forLoopAIndexEnd=4
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (45) plus ((90) times (loop counter A treated as a decimal-capable number)).
                     set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,(45.+(90.*I2R(GetForLoopIndexA()))))
                     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -204,7 +200,6 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
             call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[udg_TempInteger])
             call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_QuestForce[udg_TempInteger])
             if(Trig_Spring_Of_Life_Ritual_Cond_HasSpareCrystal())then
-                // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0B7')) minus (1).
                 call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7'))-1)) // 'I0B7': item "Grand Crystal"
             else
                 call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7')) // 'I0B7': item "Grand Crystal"

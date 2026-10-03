@@ -16,10 +16,7 @@ function Trig_Bernkastel_State_Reset_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Bernkastel_Try_Spawn_Enum_SumLuck takes nothing returns nothing
-    // (udg_TempInteger) plus (udg_MetaFragments at position GetConvertedPlayerId(the player being visited)).
     set udg_TempInteger=(udg_TempInteger+udg_MetaFragments[GetConvertedPlayerId(GetEnumPlayer())])
-    // Result 1: the larger of (udg_MiracleStage at position 0) and (udg_MiracleStage at position
-    // GetConvertedPlayerId(the player being visited)).
     set udg_MiracleStage[0]=IMaxBJ(udg_MiracleStage[0],udg_MiracleStage[GetConvertedPlayerId(GetEnumPlayer())])
 endfunction
 

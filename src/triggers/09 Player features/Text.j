@@ -13,10 +13,8 @@ function Text_Transmission takes unit l_speaker,string l_name,string l_msg,strin
         return
     endif
     if(l_skipText==null or l_skipText=="(null)")then
-        // (StringLength(l_msg)) times (0.2).
         set l_chars=StringLength(l_msg)*.2
     else
-        // ((StringLength(l_msg)) minus (StringLength(l_skipText))) times (0.2).
         set l_chars=(StringLength(l_msg)-StringLength(l_skipText))*.2
     endif
     if(l_dur>0)then
@@ -31,7 +29,6 @@ function Text_Transmission takes unit l_speaker,string l_name,string l_msg,strin
     if(l_name==null)then
         if(l_speaker==null)then
         elseif(GetPlayerController(GetOwningPlayer(l_speaker))==MAP_CONTROL_USER)then
-            // (GetPlayerId(GetOwningPlayer(l_speaker))) plus (1).
             set l_name=udg_PlayerName[GetPlayerId(GetOwningPlayer(l_speaker))+1]
         elseif(IsUnitType(l_speaker,UNIT_TYPE_HERO))then
             set l_name=GetHeroProperName(l_speaker)
@@ -41,16 +38,11 @@ function Text_Transmission takes unit l_speaker,string l_name,string l_msg,strin
     endif
     if(l_snd!=null)then
         call StartSound(l_snd)
-        // Result 1: GetSoundDuration(l_snd) treated as a decimal-capable number.
-        // Result 2: (result 1) times (0.001).
-        // Result 3: the larger of (bj_lastTransmissionDuration) and (result 2).
         set bj_lastTransmissionDuration=RMaxBJ(bj_lastTransmissionDuration,I2R(GetSoundDuration(l_snd))*.001)
     endif
     if(l_speaker==null)then
-        // (bj_lastTransmissionDuration) plus (bj_TRANSMISSION_PORT_HANGTIME).
         call SetCinematicScene(0,PLAYER_COLOR_RED,l_name,l_msg,bj_lastTransmissionDuration+bj_TRANSMISSION_PORT_HANGTIME,bj_lastTransmissionDuration)
     else
-        // (bj_lastTransmissionDuration) plus (bj_TRANSMISSION_PORT_HANGTIME).
         call SetCinematicScene(GetUnitTypeId(l_speaker),GetPlayerColor(GetOwningPlayer(l_speaker)),l_name,l_msg,bj_lastTransmissionDuration+bj_TRANSMISSION_PORT_HANGTIME,bj_lastTransmissionDuration)
         call PingMinimap(GetUnitX(l_speaker),GetUnitY(l_speaker),bj_TRANSMISSION_PING_TIME)
         if(not IsUnitHidden(l_speaker))then
@@ -60,7 +52,6 @@ function Text_Transmission takes unit l_speaker,string l_name,string l_msg,strin
     if(l_forced or l_dur>0 or bj_lastTransmissionDuration<=2.5)then
         call TriggerSleepAction(bj_lastTransmissionDuration)
     else
-        // (bj_lastTransmissionDuration) minus (2).
         set l_rest=bj_lastTransmissionDuration-2.
         call TriggerSleepAction(2.)
         if(not udg_CinematicSkipped)then
@@ -110,10 +101,8 @@ function Text_FloatingDamage takes unit u,boolean l_isHeal,integer l_msgType,rea
     endif
     if(l_msgType==0)then
         if mp then
-            // ((amount) plus (0.5)) with its decimal part removed.
             call SetTextTagText(l_tag,Text_IntToString(R2I(l_amount+.5))+" MP",l_size)
         else
-            // ((amount) plus (0.5)) with its decimal part removed.
             call SetTextTagText(l_tag,Text_IntToString(R2I(l_amount+.5)),l_size)
         endif
     elseif(l_msgType==1)then
@@ -130,7 +119,6 @@ function Text_FloatingDamage takes unit u,boolean l_isHeal,integer l_msgType,rea
         call SetTextTagText(l_tag,"DEATH",l_size)
     endif
     if mp then
-        // (y) minus (64).
         call SetTextTagPos(l_tag,x,y-64.,0)
     else
         call SetTextTagPos(l_tag,x,y,0)

@@ -34,7 +34,6 @@ function Trig_Chemist_TakeItem_Actions takes nothing returns nothing
         if(Trig_Chemist_TakeItem_Cond_IsChemistItem())then
             set l_tempItemId=GetItemTypeId(udg_ChemistItem)
             if(Trig_Chemist_TakeItem_Cond_HasSpareCharges())then
-                // (item charges of udg_ChemistItem) minus (1).
                 call SetItemCharges(udg_ChemistItem,(GetItemCharges(udg_ChemistItem)-1))
             else
                 if(Trig_Chemist_TakeItem_Cond_LastCharge())then
@@ -175,7 +174,6 @@ function Trig_Chemist_Pharmacology_Actions takes nothing returns nothing
                         endif
                     endif
                 endif
-                // ((udg_TempInteger) times (3)) divided by (2); drop the remainder.
                 set udg_TempInteger=((udg_TempInteger*3)/ 2)
                 if(Trig_Chemist_Pharmacology_Cond_RestoresMana())then
                     call AddSpecialEffectTargetUnitBJ("origin",udg_TempUnit2,"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
@@ -185,7 +183,6 @@ function Trig_Chemist_Pharmacology_Actions takes nothing returns nothing
                     set udg_IgnoresReduction=true
                     set udg_IsPureDamage=true
                     set udg_DmgFlagManaDamage=true
-                    // (udg_TempInteger) divided by (2); drop the remainder treated as a decimal-capable number.
                     call UnitDamageTargetBJ(GetTriggerUnit(),udg_TempUnit2,I2R((udg_TempInteger/ 2)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 endif
                 if(Trig_Chemist_Pharmacology_Cond_RestoresLife())then
@@ -195,7 +192,6 @@ function Trig_Chemist_Pharmacology_Actions takes nothing returns nothing
                     set udg_DmgFlagUnavoidable=-1
                     set udg_IgnoresReduction=true
                     set udg_IsPureDamage=true
-                    // Udg_TempInteger treated as a decimal-capable number.
                     call UnitDamageTargetBJ(GetTriggerUnit(),udg_TempUnit2,I2R(udg_TempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 endif
             endif
@@ -351,11 +347,7 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
     local real y=GetSpellTargetY()
     local integer l_dummyId
     local integer l_tempItemId
-    // Starting value for manaCost:
-    // (BlzGetAbilityManaCost(l_abilId, Abil_GetLevel(triggeringUnit, l_abilId))) divided by (10).
     local integer manaCost=BlzGetAbilityManaCost(l_abilId,Abil_GetLevel(triggeringUnit,l_abilId))/ $A // $A = 10
-    // Starting value for l_intBonus:
-    // (Intelligence of triggeringUnit) times (6).
     local integer l_intBonus=GetHeroInt(triggeringUnit,true)*6
     local integer l_potency=1
     local integer l_cloudKind=3
@@ -390,10 +382,8 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
         set l_potency=500
     endif
     if(l_cloudKind==3)then
-        // ((l_potency) times (5)) divided by (4); drop the remainder.
         set l_potency=(l_potency*5)/ 4
     elseif(l_cloudKind==4)then
-        // (l_intBonus) divided by (2); drop the remainder.
         set l_intBonus=l_intBonus/ 2
     endif
     call DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Other\\AcidBomb\\BottleMissile.mdl",x,y))
@@ -414,7 +404,6 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
         set l_fx=AddSpecialEffect("Units\\Undead\\PlagueCloud\\PlagueCloud.mdl",x,y)
         call BlzSetSpecialEffectScale(l_fx,3.)
     elseif(l_cloudKind==4)then
-        // (l_power) times (udg_DifficultyScale).
         call SaveReal(udg_ProxyDamageHash,l_dummyId,1,l_power*udg_DifficultyScale)
         call SaveInteger(udg_ProxyDamageHash,l_dummyId,2,4)
         set l_fx=AddSpecialEffect("Abilities\\Spells\\NightElf\\TargetArtLumber\\TargetArtLumber.mdl",x,y)
@@ -442,17 +431,12 @@ function Trig_Chemist_Molotov_Actions takes nothing returns nothing
     local integer l_tempInteger
     local location l_tempPoint
     local real l_tempReal
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (5).
-    // Result 2: (result 1) plus (2).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 5)+2
     if(Trig_Chemist_Molotov_Cond_CasterIsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (1)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*1))
     endif
     set l_tempReal=Prof_GetSpellPower(GetTriggerUnit(),'R000',.5) // 'R000': upgrade "Tools"
     call SaveUnitHandleBJ(GetTriggerUnit(),0,GetHandleIdBJ(GetSpellTargetUnit()),udg_MolotovHash)
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_MolotovHash)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"

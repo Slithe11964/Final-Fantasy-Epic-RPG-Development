@@ -297,15 +297,11 @@ function Trig_Oracle_Scourge_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
     if(Trig_Oracle_Scourge_CasterIsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     endif
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -341,7 +337,6 @@ function Trig_Oracle_NeoBahamut_Actions takes nothing returns nothing
     call UnitApplyTimedLifeBJ(60.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00L'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
     // Result 2: (l_tempReal) times (0.6).

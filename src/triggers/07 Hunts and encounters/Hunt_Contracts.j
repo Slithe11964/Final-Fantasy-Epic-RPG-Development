@@ -125,7 +125,6 @@ function Trig_Hunt_Complete_Actions takes nothing returns nothing
             call CreateItemLoc(udg_ItemIdTable[LoadIntegerBJ(7,GetUnitPointValue(GetTriggerUnit()),udg_HuntData)],udg_TempPoint)
         else
             if(Trig_Hunt_Complete_IsCommonReward())then
-                // (LoadIntegerBJ(7, GetUnitPointValue(the triggering unit), udg_HuntData)) minus (1000).
                 call CreateItemLoc(udg_DropItemIdTable[(LoadIntegerBJ(7,GetUnitPointValue(GetTriggerUnit()),udg_HuntData)-$3E8)],udg_TempPoint) // $3E8 = 1000
             endif
         endif

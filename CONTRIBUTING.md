@@ -51,6 +51,10 @@ A one-page guide for anyone changing the map. For where things are, read `docs/S
 - **Variables:** shared variables use the `udg_` prefix in code. The Variable Editor shows them
   without the prefix.
 - **Object IDs:** add the object's name as a comment, e.g. `'A0B3' // 'A0B3': ability "Cover"`.
+- **Calculation comments:** only for calculations with some complexity (a formula with several steps,
+  e.g. a damage or reward formula). Don't comment `+5`, a random roll or a single multiplication:
+  the code already says it. Prefer saying *why* (what the formula is for) over restating the math.
+  `tools/refactor/trim_calc_comments.py` removed the old word-for-word ones on simple lines.
 
 ## Things that break easily
 

@@ -63,7 +63,6 @@ function Trig_Fire_Cast_Actions takes nothing returns nothing
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     endif
     set l_tempReal=Prof_RodPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -101,7 +100,6 @@ function Trig_Fire_Pawn_Nectar_Cond_NectarQuotaLow takes nothing returns boolean
 endfunction
 
 function Trig_Fire_Pawn_Nectar_Actions takes nothing returns nothing
-    // (udg_FirePotionCount at position 1) plus (item charges of GetSoldItem()).
     set udg_FirePotionCount[1]=(udg_FirePotionCount[1]+GetItemCharges(GetSoldItem()))
     if(Trig_Fire_Pawn_Nectar_Cond_NectarQuotaLow())then
         call ConditionalTriggerExecute(gg_trg_Npc_Fire_WantMore)
@@ -146,7 +144,6 @@ function Trig_Fire_Pawn_SpiritPotion_Cond_PotionQuotaLow takes nothing returns b
 endfunction
 
 function Trig_Fire_Pawn_SpiritPotion_Actions takes nothing returns nothing
-    // (udg_FirePotionCount at position 2) plus (item charges of GetSoldItem()).
     set udg_FirePotionCount[2]=(udg_FirePotionCount[2]+GetItemCharges(GetSoldItem()))
     if(Trig_Fire_Pawn_SpiritPotion_Cond_PotionQuotaLow())then
         call ConditionalTriggerExecute(gg_trg_Npc_Fire_WantMore)
@@ -191,7 +188,6 @@ function Trig_Fire_Pawn_BloodEther_Cond_EtherQuotaLow takes nothing returns bool
 endfunction
 
 function Trig_Fire_Pawn_BloodEther_Actions takes nothing returns nothing
-    // (udg_FirePotionCount at position 3) plus (item charges of GetSoldItem()).
     set udg_FirePotionCount[3]=(udg_FirePotionCount[3]+GetItemCharges(GetSoldItem()))
     if(Trig_Fire_Pawn_BloodEther_Cond_EtherQuotaLow())then
         call ConditionalTriggerExecute(gg_trg_Npc_Fire_WantMore)
@@ -236,7 +232,6 @@ function Trig_Fire_Pawn_HeroDrink_Cond_DrinkQuotaLow takes nothing returns boole
 endfunction
 
 function Trig_Fire_Pawn_HeroDrink_Actions takes nothing returns nothing
-    // (udg_FirePotionCount at position 4) plus (item charges of GetSoldItem()).
     set udg_FirePotionCount[4]=(udg_FirePotionCount[4]+GetItemCharges(GetSoldItem()))
     if(Trig_Fire_Pawn_HeroDrink_Cond_DrinkQuotaLow())then
         call ConditionalTriggerExecute(gg_trg_Npc_Fire_WantMore)

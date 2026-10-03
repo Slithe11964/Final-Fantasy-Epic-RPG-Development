@@ -129,7 +129,6 @@ function Trig_Toss_Potion_Actions takes nothing returns nothing
                 endif
             endif
             if(Trig_Toss_Potion_HasPharmaBonus())then
-                // ((udg_TempInteger) times (3)) divided by (2); drop the remainder.
                 set udg_TempInteger=((udg_TempInteger*3)/ 2)
             endif
             if(Trig_Toss_Potion_Cond_TossMana())then
@@ -139,7 +138,6 @@ function Trig_Toss_Potion_Actions takes nothing returns nothing
                 set udg_DmgFlagUnavoidable=-1
                 set udg_IsPureDamage=true
                 set udg_DmgFlagManaDamage=true
-                // (udg_TempInteger) divided by (2); drop the remainder treated as a decimal-capable number.
                 call UnitDamageTargetBJ(GetTriggerUnit(),udg_TempUnit2,I2R((udg_TempInteger/ 2)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
             endif
             if(Trig_Toss_Potion_Cond_TossLife())then
@@ -148,7 +146,6 @@ function Trig_Toss_Potion_Actions takes nothing returns nothing
                 set udg_DmgFlagPure=true
                 set udg_DmgFlagUnavoidable=-1
                 set udg_IsPureDamage=true
-                // Udg_TempInteger treated as a decimal-capable number.
                 call UnitDamageTargetBJ(GetTriggerUnit(),udg_TempUnit2,I2R(udg_TempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
             endif
         endif

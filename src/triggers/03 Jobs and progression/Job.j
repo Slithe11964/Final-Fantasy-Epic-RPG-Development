@@ -44,15 +44,10 @@ function Job_MaxSkills takes unit l_hero returns nothing
     if l_variantLevel>1 then
         call SetUnitAbilityLevel(l_hero,'A0SI',1) // 'A0SI': ability "Enchantment Variant"
     endif
-    // ((i) times (5)) plus (1).
     call Hero_LearnSkillTo(l_hero,udg_JobSkill[i*5+1],$B) // $B = 11
-    // ((i) times (5)) plus (2).
     call Hero_LearnSkillTo(l_hero,udg_JobSkill[i*5+2],$B) // $B = 11
-    // ((i) times (5)) plus (3).
     call Hero_LearnSkillTo(l_hero,udg_JobSkill[i*5+3],$B) // $B = 11
-    // ((i) times (5)) plus (4).
     call Hero_LearnSkillTo(l_hero,udg_JobSkill[i*5+4],$B) // $B = 11
-    // ((i) times (5)) plus (5).
     call Hero_LearnSkillTo(l_hero,udg_JobSkill[i*5+5],6)
     if l_variantLevel>1 then
         call SetUnitAbilityLevel(l_hero,'A0SI',l_variantLevel) // 'A0SI': ability "Enchantment Variant"
@@ -90,34 +85,24 @@ function Job_GetHero takes player l_owner,integer l_jobId returns unit
         return l_hero
     endif
     set l_hero=CreateUnit(l_owner,l_jobId,GetUnitX(gg_unit_Hpb1_0013),GetUnitY(gg_unit_Hpb1_0013),0)
-    // (GetPlayerId(l_owner)) plus (1).
     call BlzSetHeroProperName(l_hero,udg_PlayerName[GetPlayerId(l_owner)+1])
     set l_savedLevel=LoadInteger(udg_JobLevelHash,l_jobId,GetPlayerId(l_owner))
     if(l_savedLevel>1)then
         if(l_savedLevel=='d')then
             call SetUnitAbilityLevel(l_hero,'A02F',4) // 'A02F': ability "Mastery"
-            // (Strength of l_hero) plus (100).
             call SetHeroStr(l_hero,GetHeroStr(l_hero,false)+'d',true)
-            // (Agility of l_hero) plus (100).
             call SetHeroAgi(l_hero,GetHeroAgi(l_hero,false)+'d',true)
-            // (Intelligence of l_hero) plus (100).
             call SetHeroInt(l_hero,GetHeroInt(l_hero,false)+'d',true)
             set l_savedLevel=99
         elseif(l_savedLevel==99)then
             call SetUnitAbilityLevel(l_hero,'A02F',3) // 'A02F': ability "Mastery"
-            // (Strength of l_hero) plus (50).
             call SetHeroStr(l_hero,GetHeroStr(l_hero,false)+50,true)
-            // (Agility of l_hero) plus (50).
             call SetHeroAgi(l_hero,GetHeroAgi(l_hero,false)+50,true)
-            // (Intelligence of l_hero) plus (50).
             call SetHeroInt(l_hero,GetHeroInt(l_hero,false)+50,true)
         elseif(l_savedLevel>=50)then
             call SetUnitAbilityLevel(l_hero,'A02F',2) // 'A02F': ability "Mastery"
-            // (Strength of l_hero) plus (20).
             call SetHeroStr(l_hero,GetHeroStr(l_hero,false)+20,true)
-            // (Agility of l_hero) plus (20).
             call SetHeroAgi(l_hero,GetHeroAgi(l_hero,false)+20,true)
-            // (Intelligence of l_hero) plus (20).
             call SetHeroInt(l_hero,GetHeroInt(l_hero,false)+20,true)
         endif
         call SetHeroLevel(l_hero,l_savedLevel,false)
@@ -644,11 +629,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
         set udg_SavedItem[GetForLoopIndexA()]=UnitItemInSlotBJ(Player_GetHero(udg_TempPlayer),GetForLoopIndexA())
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    // Result 1: current health divided by maximum health for Player_GetHero(udg_TempPlayer), times 100 (or 0 if
-    // the unit is missing or its maximum is 0).
     set udg_SavedLifePercent=GetUnitLifePercent(Player_GetHero(udg_TempPlayer))
-    // Result 1: current mana divided by maximum mana for Player_GetHero(udg_TempPlayer), times 100 (or 0 if the
-    // unit is missing or its maximum is 0).
     set udg_SavedManaPercent=GetUnitManaPercent(Player_GetHero(udg_TempPlayer))
     if(Trig_Job_Change_HasDivineShield())then
         call UnitRemoveBuffBJ('B051',LoadUnitHandleBJ(1,GetHandleIdBJ(Player_GetHero(udg_TempPlayer)),udg_DivineShieldHash)) // 'B051': buff "Divine Shield"
@@ -853,7 +834,6 @@ function Trig_Job_XP_Handicap_ApplyJobXPRate takes nothing returns nothing
     else
         set l_rate=1.
     endif
-    // (l_rate) times (udg_ExpRate).
     call SetPlayerHandicapXP(p,l_rate*udg_ExpRate)
     set u=null
     set p=null

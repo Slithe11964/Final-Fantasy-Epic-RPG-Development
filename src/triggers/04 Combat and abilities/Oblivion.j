@@ -27,18 +27,12 @@ function Trig_Oblivion_Cast_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
-    // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
     set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     set l_tempReal=Prof_StaffPower(GetTriggerUnit())
-    // ((l_tempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((I2R(l_tempInteger)*l_tempReal)))
-    // (l_tempInteger) times (3).
     set l_tempInteger=(l_tempInteger*3)
     set l_tempReal=Prof_StaffPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -109,19 +103,10 @@ function Trig_Oblivion_Pulse_HealAlly takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     if(Trig_Oblivion_Pulse_IsEnumHero())then
-        // Result 1: udg_TempInteger treated as a decimal-capable number.
-        // Result 2: a random decimal number between 15 and 16.
-        // Result 3: (result 2) divided by (16).
-        // Result 4: (result 1) times (result 3).
         set udg_TempReal=(I2R(udg_TempInteger)*(GetRandomReal(15.,16.)/ 16.))
     else
-        // Result 1: udg_TempInteger treated as a decimal-capable number.
-        // Result 2: a random decimal number between 15 and 16.
-        // Result 3: (result 2) divided by (32).
-        // Result 4: (result 1) times (result 3).
         set udg_TempReal=(I2R(udg_TempInteger)*(GetRandomReal(15.,16.)/ 32.))
     endif
-    // (current health of the unit being visited) plus (udg_TempReal).
     call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_TempReal))
     call Text_FloatingDamage(GetEnumUnit(),true,0,udg_TempReal,false,0)
 endfunction
@@ -160,10 +145,7 @@ function Trig_Oblivion_Pulse_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Calculation 1:
         // A random decimal number between 256 and 836.
-        // Calculation 2:
-        // (30) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(256.,836.),(30.*I2R(GetForLoopIndexA())))
         if(Trig_Oblivion_Pulse_IsEvenLoopIndex())then
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Undead\\Unsummon\\UnsummonTarget.mdl")

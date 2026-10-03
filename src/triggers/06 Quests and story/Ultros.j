@@ -15,7 +15,6 @@ function Trig_Ultros_Spawn_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'n0C1',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0C1': unit "Ultros"; $B = 11
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_PINK)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossUnits)
-    // (udg_Difficulty) plus (1).
     set udg_TentacleCount=(udg_Difficulty+1)
     call TriggerRegisterUnitEvent(gg_trg_Ultros_SummonTentacle,GetLastCreatedUnit(),EVENT_UNIT_ATTACKED)
     call TriggerRegisterUnitEvent(gg_trg_Ultros_Death,GetLastCreatedUnit(),EVENT_UNIT_DEATH)

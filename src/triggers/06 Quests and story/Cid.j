@@ -35,17 +35,10 @@ endfunction
 
 function Trig_Cid_Talk_FindMid_WeakenUnit_Area1 takes nothing returns nothing
     call SetUnitLifePercentBJ(GetEnumUnit(),50.)
-    // (maximum health of the unit being visited) divided by (2).
     call BlzSetUnitMaxHP(GetEnumUnit(),(BlzGetUnitMaxHP(GetEnumUnit())/ 2))
     call UnitAddAbilityBJ('A0ZU',GetEnumUnit()) // 'A0ZU': ability "Double Vulnerable"
-    // Calculation 1:
-    // (BlzGetUnitBaseDamage(the unit being visited, 0)) divided by (4).
-    // Calculation 2:
-    // (1) minus (1).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),0)/ 4),(1-1))
-    // (BlzGetUnitBaseDamage(the unit being visited, 1)) divided by (4).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),1)/ 4),1)
-    // (BlzGetUnitArmor(the unit being visited)) times (0.5).
     call BlzSetUnitArmor(GetEnumUnit(),(BlzGetUnitArmor(GetEnumUnit())*.5))
     call SetUnitVertexColorBJ(GetEnumUnit(),'d','d','d',0)
 endfunction
@@ -60,17 +53,10 @@ endfunction
 
 function Trig_Cid_Talk_FindMid_WeakenUnit_Area2 takes nothing returns nothing
     call SetUnitLifePercentBJ(GetEnumUnit(),50.)
-    // (maximum health of the unit being visited) divided by (2).
     call BlzSetUnitMaxHP(GetEnumUnit(),(BlzGetUnitMaxHP(GetEnumUnit())/ 2))
     call UnitAddAbilityBJ('A0ZU',GetEnumUnit()) // 'A0ZU': ability "Double Vulnerable"
-    // Calculation 1:
-    // (BlzGetUnitBaseDamage(the unit being visited, 0)) divided by (4).
-    // Calculation 2:
-    // (1) minus (1).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),0)/ 4),(1-1))
-    // (BlzGetUnitBaseDamage(the unit being visited, 1)) divided by (4).
     call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),1)/ 4),1)
-    // (BlzGetUnitArmor(the unit being visited)) times (0.5).
     call BlzSetUnitArmor(GetEnumUnit(),(BlzGetUnitArmor(GetEnumUnit())*.5))
     call SetUnitVertexColorBJ(GetEnumUnit(),'d','d','d',0)
 endfunction
@@ -212,7 +198,6 @@ function Trig_Cid_Talk_MidReturned_Actions takes nothing returns nothing
             call EnableTrigger(gg_trg_Cid_Research_Done)
             call SetUnitAnimation(gg_unit_Hpb1_0013,"channel")
             call SetUnitAnimation(udg_Mid,"channel")
-            // Decrease udg_QuestsTotal by 2.
             set udg_QuestsTotal=(udg_QuestsTotal-2)
             call SaveIntegerBJ(1,2,97,udg_GameStateHash)
         else

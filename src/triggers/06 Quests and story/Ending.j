@@ -109,7 +109,6 @@ function Trig_Ending_FrozenWorld_FreezePlayerHeroes takes nothing returns nothin
     set udg_SpecialEffect[GetConvertedPlayerId(GetEnumPlayer())]=AddSpecialEffectTargetUnitBJ("origin",Player_GetHero(GetEnumPlayer()),"Abilities\\Spells\\Undead\\FreezingBreath\\FreezingBreathTargetArt.mdl")
     call SetUnitVertexColorBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],.0,.0,'d',0)
     call SetUnitTimeScalePercent(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],.0)
-    // (GetConvertedPlayerId(the player being visited)) plus (10).
     set udg_SpecialEffect[(GetConvertedPlayerId(GetEnumPlayer())+$A)]=AddSpecialEffectTargetUnitBJ("origin",udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],"Abilities\\Spells\\Undead\\FreezingBreath\\FreezingBreathTargetArt.mdl") // $A = 10
     call UnitRemoveAbilityBJ('AInv',Player_GetHero(GetEnumPlayer())) // 'AInv': standard ability reference "Inventory"
     call UnitRemoveAbilityBJ('AInv',udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())]) // 'AInv': standard ability reference "Inventory"
@@ -200,9 +199,7 @@ function Trig_Ending_FrozenWorld_FreezeTrees takes nothing returns nothing
         if(Trig_Ending_FrozenWorld_IsSummerOrFallTreeCheck())then
             set udg_TempPoint=GetDestructableLoc(GetEnumDestructable())
             call RemoveDestructable(GetEnumDestructable())
-            // Calculation 1:
             // A random decimal number between 0.8 and 1.2.
-            // Calculation 2:
             // A random whole number from 0 through 9.
             call CreateDestructableLoc('WTst',udg_TempPoint,GetRandomDirectionDeg(),GetRandomReal(.8,1.2),GetRandomInt(0,9)) // 'WTst': object name not found in map data
             call RemoveLocation(udg_TempPoint)
@@ -210,9 +207,7 @@ function Trig_Ending_FrozenWorld_FreezeTrees takes nothing returns nothing
             if(Trig_Ending_FrozenWorld_IsGreenTreeCheck())then
                 set udg_TempPoint=GetDestructableLoc(GetEnumDestructable())
                 call RemoveDestructable(GetEnumDestructable())
-                // Calculation 1:
                 // A random decimal number between 0.8 and 1.2.
-                // Calculation 2:
                 // A random whole number from 0 through 9.
                 call CreateDestructableLoc('ITtw',udg_TempPoint,GetRandomDirectionDeg(),GetRandomReal(.8,1.2),GetRandomInt(0,9)) // 'ITtw': object name not found in map data
                 call RemoveLocation(udg_TempPoint)
@@ -243,7 +238,6 @@ function Trig_Ending_FrozenWorld_UnfreezePlayerHeroes takes nothing returns noth
     call DestroyEffectBJ(udg_SpecialEffect[GetConvertedPlayerId(GetEnumPlayer())])
     call SetUnitVertexColorBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],60.,60.,'d',0)
     call SetUnitTimeScalePercent(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],80.)
-    // (GetConvertedPlayerId(the player being visited)) plus (10).
     call DestroyEffectBJ(udg_SpecialEffect[(GetConvertedPlayerId(GetEnumPlayer())+$A)]) // $A = 10
 endfunction
 
@@ -382,7 +376,6 @@ function Trig_Ending_FrozenWorld_Actions takes nothing returns nothing
     set udg_TempPoint=GetUnitLoc(udg_CinematicActor)
     set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256,GetUnitFacing(udg_CinematicActor))
     call RemoveLocation(udg_TempPoint)
-    // (facing in degrees of udg_CinematicActor) plus (180).
     call CreateNUnitsAtLoc(1,'U00H',Player(8),l_tempPoint2,(GetUnitFacing(udg_CinematicActor)+180.)) // 'U00H': unit "Zodiac Brave of Darkness"
     call RemoveLocation(l_tempPoint2)
     set udg_ZodiacStone=GetLastCreatedUnit()
@@ -465,9 +458,7 @@ function Trig_Ending_Wasteland_RuinUnit takes nothing returns nothing
         if(Trig_Ending_Wasteland_IsNotHeroUnit())then
             set udg_TempPoint=GetUnitLoc(GetEnumUnit())
             call CreatePermanentCorpseLocBJ(bj_CORPSETYPE_FLESH,GetUnitTypeId(GetEnumUnit()),Player(8),udg_TempPoint,GetRandomDirectionDeg())
-            // Calculation 1:
             // A random decimal number between -256 and 256.
-            // Calculation 2:
             // A random decimal number between -256 and 256.
             set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal(-256.,256.),GetRandomReal(-256.,256.))
             call RemoveLocation(udg_TempPoint)
@@ -513,9 +504,7 @@ function Trig_Ending_Wasteland_BurnTrees takes nothing returns nothing
     if(Trig_Ending_Wasteland_IsSnowTreeCheck())then
         set udg_TempPoint=GetDestructableLoc(GetEnumDestructable())
         call RemoveDestructable(GetEnumDestructable())
-        // Calculation 1:
         // A random decimal number between 0.8 and 1.2.
-        // Calculation 2:
         // A random whole number from 0 through 9.
         call CreateDestructableLoc('NTtw',udg_TempPoint,GetRandomDirectionDeg(),GetRandomReal(.8,1.2),GetRandomInt(0,9)) // 'NTtw': object name not found in map data
         if(Trig_Ending_Wasteland_OneInTenChance())then
@@ -580,14 +569,6 @@ function Trig_Ending_Wasteland_Actions takes nothing returns nothing
             // Result 4: (GetRectMinY(GetPlayableMapRect())) plus (result 3).
             set udg_TempPoint=Location((GetRectMinX(GetPlayableMapRect())+(I2R(GetForLoopIndexA())*(GetRectWidthBJ(GetPlayableMapRect())*.02))),(GetRectMinY(GetPlayableMapRect())+(I2R(GetForLoopIndexB())*(GetRectHeightBJ(GetPlayableMapRect())*.02))))
             call SetTerrainTypeBJ(udg_TempPoint,'Odtr',-1,5,1) // 'Odtr': object name not found in map data
-            // Calculation 1:
-            // Result 1: (GetRectWidthBJ(GetPlayableMapRect())) times (-0.02).
-            // Result 2: (GetRectWidthBJ(GetPlayableMapRect())) times (0.02).
-            // Result 3: a random decimal number between result 1 and result 2.
-            // Calculation 2:
-            // Result 1: (GetRectHeightBJ(GetPlayableMapRect())) times (-0.02).
-            // Result 2: (GetRectHeightBJ(GetPlayableMapRect())) times (0.02).
-            // Result 3: a random decimal number between result 1 and result 2.
             set udg_TempPoint2=OffsetLocation(udg_TempPoint,GetRandomReal((GetRectWidthBJ(GetPlayableMapRect())*-.02),(GetRectWidthBJ(GetPlayableMapRect())*.02)),GetRandomReal((GetRectHeightBJ(GetPlayableMapRect())*-.02),(GetRectHeightBJ(GetPlayableMapRect())*.02)))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Environment\\UndeadBuildingFire\\UndeadLargeBuildingFire2.mdl")
             call RemoveLocation(udg_TempPoint2)

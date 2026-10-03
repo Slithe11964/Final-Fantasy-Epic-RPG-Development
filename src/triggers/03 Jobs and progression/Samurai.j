@@ -30,19 +30,13 @@ function Trig_Samurai_Mineuchi_Actions takes nothing returns nothing
     call UnitRemoveBuffBJ('B005',GetSpellTargetUnit()) // 'B005': buff "Shell"
     call UnitRemoveBuffBJ('B07H',GetSpellTargetUnit()) // 'B07H': buff "Shell"
     call UnitRemoveBuffBJ('B08S',GetSpellTargetUnit()) // 'B08S': buff "Shellra"
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Samurai_Mineuchi_CasterIsHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*2))
-        // (l_tempInteger) plus ((Agility of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true)*2))
     endif
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00A'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00A')) // $A = 10; 'R00A': upgrade "Katana"
     set udg_IsPhysicalAttack=true
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(l_tempInteger)*l_tempReal),ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL)
 endfunction
 
@@ -59,8 +53,6 @@ function Trig_Samurai_Renzokuken_AbilityAtMaxLevel takes nothing returns boolean
 endfunction
 
 function Trig_Samurai_Renzokuken_AtFullLife takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())>=100.)
 endfunction
 
@@ -116,40 +108,24 @@ function Trig_Samurai_Iainuki_Actions takes nothing returns nothing
     local real l_targetY=GetUnitY(targetUnit)
     local real l_landX
     local real l_landY
-    // Starting value for dx:
-    // (l_targetX) minus (l_casterX).
     local real dx=l_targetX-l_casterX
-    // Starting value for dy:
-    // (l_targetY) minus (l_casterY).
     local real dy=l_targetY-l_casterY
-    // Starting value for angle:
     // The angle in radians from the y gap (dy) and x gap (dx).
     local real angle=Atan2(dy,dx)
-    // Starting value for l_facing:
-    // (angle) times (bj_RADTODEG).
     local real l_facing=angle*bj_RADTODEG
-    // Starting value for manaCost:
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(caster, GetSpellAbilityId()))) times (10).
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(caster,GetSpellAbilityId()))*$A // $A = 10
-    // Starting value for l_strBonus:
-    // (Strength of caster) times (8).
     local integer l_strBonus=GetHeroStr(caster,true)*8
-    // Starting value for l_agiBonus:
-    // (Agility of caster) times (8).
     local integer l_agiBonus=GetHeroAgi(caster,true)*8
     local integer l_comboCount=0
     local real l_comboMult=1.
     local real damageAmount
     call SetUnitFacing(caster,l_facing)
-    // (l_targetX) plus ((100) times (the horizontal direction share for angle (angle) in radians)).
     set l_landX=l_targetX+'d'*Cos(angle)
-    // (l_targetY) plus ((100) times (the vertical direction share for angle (angle) in radians)).
     set l_landY=l_targetY+'d'*Sin(angle)
     call SetUnitX(caster,l_landX)
     call SetUnitY(caster,l_landY)
     if(GetUnitAbilityLevel(caster,'A137')>0)then // 'A137': ability "Combo Strike"
         set l_comboCount=LoadInteger(udg_ComboHash,GetHandleId(caster),5)
-        // (1) plus ((l_comboCount) times (0.1)).
         set l_comboMult=1.+(l_comboCount*.1)
         if(GetUnitAbilityLevel(caster,'A1DG')<=0)then // 'A1DG': ability "Combo Dragon"
             call Trig_Damage_Engine_ComboEnd(caster)

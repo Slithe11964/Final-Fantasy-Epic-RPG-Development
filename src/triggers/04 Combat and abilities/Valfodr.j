@@ -75,7 +75,6 @@ function Trig_Valfodr_Gagnrath_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,275.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -86,11 +85,8 @@ function Trig_Valfodr_Gagnrath_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // ((Strength of the triggering unit) times (5)) plus (5000).
     set l_tempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+5000)
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(1,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -147,7 +143,6 @@ endfunction
 function Trig_Valfodr_GagnrathWave_DamageTarget takes nothing returns nothing
     set udg_DamageElement=5
     set udg_IsPhysicalAttack=true
-    // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTargetBJ(udg_CurrentEffectUnit,GetEnumUnit(),I2R(udg_TempInteger),ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL)
 endfunction
 
@@ -161,7 +156,6 @@ function Trig_Valfodr_GagnrathWave_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,275.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -170,11 +164,8 @@ function Trig_Valfodr_GagnrathWave_Actions takes nothing returns nothing
     endloop
     set udg_TempGroup=Group_UnitsInRangeOfLoc(600.,udg_TempPoint,Condition(function Trig_Valfodr_GagnrathWave_FilterWaveTarget))
     call RemoveLocation(udg_TempPoint)
-    // ((Strength of udg_CurrentEffectUnit) times (5)) plus (5000).
     set udg_TempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,udg_CurrentEffectUnit,true)*5)+5000)
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
     set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
     set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
     call ForGroupBJ(udg_TempGroup,function Trig_Valfodr_GagnrathWave_DamageTarget)
     call DestroyGroup(udg_TempGroup)
@@ -197,7 +188,6 @@ function Trig_Valfodr_Bolverk_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ManaFlare\\ManaFlareBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -209,9 +199,7 @@ function Trig_Valfodr_Bolverk_Actions takes nothing returns nothing
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     set l_tempInteger=9999
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(1,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)

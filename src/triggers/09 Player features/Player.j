@@ -11,7 +11,6 @@ function Trig_Player_Init_StripTag takes string l_name returns string
     local string l_ch=""
     local string l_out=""
     loop
-        // (i) plus (1).
         set l_ch=SubString(l_name,i,i+1)
         if(l_ch=="#")then
             return l_out
@@ -35,13 +34,10 @@ function Trig_Player_Init_SetupPlayer takes nothing returns nothing
     set l_tempGroup=Group_UnitsOfPlayerAndType(GetEnumPlayer(),'h006') // 'h006': unit "House"
     set udg_PlayerHouse[GetConvertedPlayerId(GetEnumPlayer())]=GroupPickRandomUnit(l_tempGroup)
     call DestroyGroup(l_tempGroup)
-    // (GetPlayerId(the player being visited)) plus (1).
     set udg_PlayerName[GetPlayerId(GetEnumPlayer())+1]=Trig_Player_Init_StripTag(GetPlayerName(GetEnumPlayer()))
     if(Trig_Player_Init_CoinFlip())then
-        // (GetPlayerId(the player being visited)) plus (1).
         set udg_PlayerHero[GetPlayerId(GetEnumPlayer())+1]=Job_GetHero(GetEnumPlayer(),'H000') // 'H000': unit "Squire"
     else
-        // (GetPlayerId(the player being visited)) plus (1).
         set udg_PlayerHero[GetPlayerId(GetEnumPlayer())+1]=Job_GetHero(GetEnumPlayer(),'H002') // 'H002': unit "Chemist"
     endif
     call SetUnitInvulnerable(Player_GetHero(GetEnumPlayer()),true)

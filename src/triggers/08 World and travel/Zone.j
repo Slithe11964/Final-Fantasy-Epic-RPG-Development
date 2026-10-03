@@ -381,8 +381,6 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
     local unit l_spawned
     local group l_zoneGroup=LoadGroupHandle(udg_SpawnTimerHash,5,i)
     local integer j=Trig_Zone_Spawn_System_GroupSize(l_zoneGroup)
-    // Starting value for targetUnitCount:
-    // (amount) plus (j).
     local integer targetUnitCount=l_amount+j
     local integer l_missing
     local integer l_poolRow=3
@@ -397,7 +395,6 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
     if targetUnitCount>l_maxUnits then
         set targetUnitCount=l_maxUnits
     endif
-    // (targetUnitCount) minus (j).
     set l_missing=targetUnitCount-j
     loop
         exitwhen j>=targetUnitCount
@@ -417,7 +414,6 @@ function Trig_Zone_Spawn_System_SpawnZoneUnits takes integer i,integer l_amount 
         if Trig_Damage_Engine_IsNight()then
             call SetUnitState(l_spawned,UNIT_STATE_MANA,GetUnitState(l_spawned,UNIT_STATE_MAX_MANA))
         else
-            // (maximum mana of l_spawned) times (0.5).
             call SetUnitState(l_spawned,UNIT_STATE_MANA,GetUnitState(l_spawned,UNIT_STATE_MAX_MANA)*.5)
         endif
         // A random whole number from 1 through l_rectCount.
@@ -520,7 +516,6 @@ function Trig_Zone_Spawn_System_OnZoneEntered takes nothing returns nothing
         call Trig_Zone_Spawn_System_SpawnZoneUnits(i,l_startCount)
         call TimerStart(l_waveTimer,30,true,function Trig_Zone_Spawn_System_ZoneRespawnTick)
     endif
-    // Increase l_remaining by 60.
     set l_remaining=l_remaining+60.
     if l_remaining>300. then
         set l_remaining=300.

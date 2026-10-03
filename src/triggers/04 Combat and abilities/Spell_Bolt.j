@@ -26,14 +26,11 @@ function Trig_Spell_Bolt_Actions takes nothing returns nothing
     local integer l_bolts=udg_BoltRingCount
     local real l_splitRatio=.3
     local integer l_tempHandleId
-    // Starting value for a:
-    // (360) divided by (l_bolts); drop the remainder.
     local real a=360/ l_bolts
     local real l_ang
     local integer i=1
     local unit u=CreateUnit(GetOwningPlayer(triggeringUnit),'h01B',x,y,.0) // 'h01B': unit "Proxy Dummy"
     if((GetSpellAbilityId()=='A0JD')or(GetSpellAbilityId()=='A0U8'))then // 'A0JD': ability "Elementa"; 'A0U8': ability "Elementa"
-        // (mana cost) divided by (2); drop the remainder.
         set manaCost=manaCost/ 2
     endif
     set r=Trig_Spell_Bolt_DamageFormula(manaCost,GetHeroInt(triggeringUnit,true),Prof_RodPower(triggeringUnit))
@@ -46,11 +43,9 @@ function Trig_Spell_Bolt_Actions takes nothing returns nothing
     call Trig_Spell_Bolt_DamageWithElement(triggeringUnit,r,3,spellTarget,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC)
     call DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Other\\Monsoon\\MonsoonBoltTarget.mdl",x,y))
     call DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl",x,y))
-    // (r) times (l_splitRatio).
     set r=r*l_splitRatio
     loop
         exitwhen i>l_bolts
-        // (a) times (i).
         set l_ang=a*i
         // (x) plus ((100) times (the horizontal direction share for angle ((l_ang) times (bj_DEGTORAD)) in radians)).
         set l_bx=x+100.*Cos(l_ang*bj_DEGTORAD)

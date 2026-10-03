@@ -27,20 +27,14 @@ endfunction
 function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
     local integer l_tempHandleId
     local integer l_tempInteger
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (2).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 2)
-    // (l_tempInteger) plus ((unit level of the triggering unit) divided by (3)).
     set l_tempInteger=(l_tempInteger+(GetUnitLevel(GetTriggerUnit())/ 3))
     if(Trig_Ifrit_Hellfire_CasterIsHero())then
-        // (l_tempInteger) plus (Intelligence of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     else
         if(Trig_Ifrit_Hellfire_UsesFirstWeapon())then
-            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) divided by (3)).
             set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)/ 3))
         else
-            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) divided by (3)).
             set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)/ 3))
         endif
     endif
@@ -52,7 +46,6 @@ function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -64,12 +57,10 @@ function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,(I2R(GetForLoopIndexA())*60.))
         call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
         set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-        // Udg_TempInteger treated as a decimal-capable number.
         call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
         call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
         call ShowUnitHide(GetLastCreatedUnit())

@@ -17,7 +17,6 @@ function Trig_Dead_Hero_Item_Drop_CarriesDeathSkull takes nothing returns boolea
 endfunction
 
 function Trig_Dead_Hero_Item_Drop_HeroIsDead takes nothing returns boolean
-    // (current health of Player_GetHero(the player being visited)) with its decimal part removed.
     return(R2I(GetUnitStateSwap(UNIT_STATE_LIFE,Player_GetHero(GetEnumPlayer())))<=0)
 endfunction
 

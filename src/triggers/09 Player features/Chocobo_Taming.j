@@ -65,7 +65,6 @@ function Trig_Chocobo_Tame_Breed_IsNotPramNut takes nothing returns boolean
 endfunction
 
 function Trig_Chocobo_Tame_Breed_IsChocoboTooHighLevel takes nothing returns boolean
-    // (udg_TempInteger) plus (29).
     return(GetUnitLevel(GetSpellTargetUnit())>=(udg_TempInteger+29))
 endfunction
 
@@ -194,9 +193,6 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                     call GroupRemoveUnitSimple(GetSpellTargetUnit(),udg_TownNpcUnits)
                     call SetUnitOwner(GetSpellTargetUnit(),GetOwningPlayer(GetTriggerUnit()),true)
                     call UnitRemoveAbilityBJ('Awan',GetSpellTargetUnit()) // 'Awan': object name not found in map data
-                    // Result 1: (GetUnitMoveSpeed(the spell target)) minus (20).
-                    // Result 2: (GetUnitMoveSpeed(the spell target)) plus (20).
-                    // Result 3: a random decimal number between result 1 and result 2.
                     call SetUnitMoveSpeed(GetSpellTargetUnit(),GetRandomReal((GetUnitMoveSpeed(GetSpellTargetUnit())-20.),(GetUnitMoveSpeed(GetSpellTargetUnit())+20.)))
                     call UnitRemoveAbilityBJ('A0AB',GetSpellTargetUnit()) // 'A0AB': ability "Choco-Shell"
                     call UnitRemoveAbilityBJ('A0U0',GetSpellTargetUnit()) // 'A0U0': ability "Choco-Shell"

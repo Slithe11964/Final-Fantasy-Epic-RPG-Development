@@ -40,7 +40,6 @@ function Trig_Runic_Shield_Apply takes unit t,integer duration returns nothing
     call UnitAddAbility(t,'A1AW') // 'A1AW': ability "Runic Damage Bonus"
     call UnitAddAbility(t,'A1AX') // 'A1AX': ability "Runic Damage Bonus"
     call UnitAddAbility(t,'A1AY') // 'A1AY': ability "Runic Damage Bonus"
-    // (duration) divided by (2); drop the remainder.
     call SaveInteger(udg_RunicHash,GetHandleId(t),6,duration/ 2)
     call SaveTimerHandle(udg_RunicHash,GetHandleId(t),7,tm)
     call SaveUnitHandle(udg_RunicHash,GetHandleId(tm),8,t)
@@ -49,7 +48,6 @@ function Trig_Runic_Shield_Apply takes unit t,integer duration returns nothing
     call UnitApplyTimedLife(u,'BTLF',1.5) // 'BTLF': object name not found in map data
     call UnitAddAbility(u,'A17R') // 'A17R': ability "Runic Revenge"
     call IssueTargetOrderById(u,$D0085,t) // $D0085 = 852101
-    // (duration) minus (8).
     call TimerStart(tm,duration-8,false,function Trig_Runic_Shield_Expire)
     set u=null
     set t=null
@@ -66,9 +64,6 @@ endfunction
 
 function Trig_Runic_Shield_Actions takes nothing returns nothing
     local integer l_tempInteger
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (10).
-    // Result 2: (result 1) plus (10).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A)+$A // $A = 10
     call Trig_Runic_Shield_Apply(GetSpellTargetUnit(),l_tempInteger)
 endfunction

@@ -129,7 +129,6 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsStrBonus())then
         call UnitAddAbilityBJ('A16N',Player_GetHero(GetEnumPlayer())) // 'A16N': ability "Strength Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyStr())then
-            // (GetUnitAbilityLevelSwapped('A1C8', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A16N',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1C8',Player_GetHero(GetEnumPlayer()))*2)) // 'A16N': ability "Strength Bonus"; 'A1C8': ability "Strength Burst"
             if(Trig_Passive_Bonus_Sync_EarnsStrengthFeat())then
                 call ForceAddPlayerSimple(GetEnumPlayer(),udg_JobMasterForce[3])
@@ -137,7 +136,6 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
             endif
         else
-            // (GetUnitAbilityLevelSwapped('A1C8', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A16N',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1C8',Player_GetHero(GetEnumPlayer()))*1)) // 'A16N': ability "Strength Bonus"; 'A1C8': ability "Strength Burst"
         endif
     else
@@ -148,10 +146,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsAgiBonus())then
         call UnitAddAbilityBJ('A16O',Player_GetHero(GetEnumPlayer())) // 'A16O': ability "Agility Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyAgi())then
-            // (GetUnitAbilityLevelSwapped('A1C9', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A16O',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1C9',Player_GetHero(GetEnumPlayer()))*2)) // 'A16O': ability "Agility Bonus"; 'A1C9': ability "Agility Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1C9', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A16O',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1C9',Player_GetHero(GetEnumPlayer()))*1)) // 'A16O': ability "Agility Bonus"; 'A1C9': ability "Agility Burst"
         endif
     else
@@ -162,10 +158,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsIntBonus())then
         call UnitAddAbilityBJ('A16P',Player_GetHero(GetEnumPlayer())) // 'A16P': ability "Intelligence Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyInt())then
-            // (GetUnitAbilityLevelSwapped('A1CA', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A16P',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1CA',Player_GetHero(GetEnumPlayer()))*2)) // 'A16P': ability "Intelligence Bonus"; 'A1CA': ability "Intelligence Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1CA', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A16P',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1CA',Player_GetHero(GetEnumPlayer()))*1)) // 'A16P': ability "Intelligence Bonus"; 'A1CA': ability "Intelligence Burst"
         endif
     else
@@ -176,10 +170,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsMoveBonus())then
         call UnitAddAbilityBJ('A006',Player_GetHero(GetEnumPlayer())) // 'A006': ability "Move Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyMove())then
-            // (GetUnitAbilityLevelSwapped('A1E7', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A006',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E7',Player_GetHero(GetEnumPlayer()))*2)) // 'A006': ability "Move Bonus"; 'A1E7': ability "Move Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E7', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A006',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E7',Player_GetHero(GetEnumPlayer()))*1)) // 'A006': ability "Move Bonus"; 'A1E7': ability "Move Burst"
         endif
     else
@@ -190,10 +182,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsAttackSpeedBonus())then
         call UnitAddAbilityBJ('A00V',Player_GetHero(GetEnumPlayer())) // 'A00V': ability "Attack Speed Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyAttackSpeed())then
-            // (GetUnitAbilityLevelSwapped('A1E6', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A00V',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E6',Player_GetHero(GetEnumPlayer()))*2)) // 'A00V': ability "Attack Speed Bonus"; 'A1E6': ability "Attack Speed Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E6', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A00V',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E6',Player_GetHero(GetEnumPlayer()))*1)) // 'A00V': ability "Attack Speed Bonus"; 'A1E6': ability "Attack Speed Burst"
         endif
     else
@@ -204,10 +194,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsDamageBonus())then
         call UnitAddAbilityBJ('A0QW',Player_GetHero(GetEnumPlayer())) // 'A0QW': ability "Damage Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyDamage())then
-            // (GetUnitAbilityLevelSwapped('A1E4', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A0QW',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E4',Player_GetHero(GetEnumPlayer()))*2)) // 'A0QW': ability "Damage Bonus"; 'A1E4': ability "Damage Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E4', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A0QW',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E4',Player_GetHero(GetEnumPlayer()))*1)) // 'A0QW': ability "Damage Bonus"; 'A1E4': ability "Damage Burst"
         endif
     else
@@ -218,10 +206,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsDefenseBonus())then
         call UnitAddAbilityBJ('A0EM',Player_GetHero(GetEnumPlayer())) // 'A0EM': ability "Defense Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyDefense())then
-            // (GetUnitAbilityLevelSwapped('A1E5', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A0EM',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E5',Player_GetHero(GetEnumPlayer()))*2)) // 'A0EM': ability "Defense Bonus"; 'A1E5': ability "Defense Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E5', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A0EM',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E5',Player_GetHero(GetEnumPlayer()))*1)) // 'A0EM': ability "Defense Bonus"; 'A1E5': ability "Defense Burst"
         endif
     else
@@ -232,10 +218,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsHpRegenBonus())then
         call UnitAddAbilityBJ('A0TU',Player_GetHero(GetEnumPlayer())) // 'A0TU': ability "HP Regeneration Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyHpRegen())then
-            // (GetUnitAbilityLevelSwapped('A1E8', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A0TU',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E8',Player_GetHero(GetEnumPlayer()))*2)) // 'A0TU': ability "HP Regeneration Bonus"; 'A1E8': ability "HP Regeneration Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E8', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A0TU',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E8',Player_GetHero(GetEnumPlayer()))*1)) // 'A0TU': ability "HP Regeneration Bonus"; 'A1E8': ability "HP Regeneration Burst"
         endif
     else
@@ -246,10 +230,8 @@ function Trig_Passive_Bonus_Sync_SyncPlayerPassives takes nothing returns nothin
     if(Trig_Passive_Bonus_Sync_NeedsMpRegenBonus())then
         call UnitAddAbilityBJ('A033',Player_GetHero(GetEnumPlayer())) // 'A033': ability "MP Regeneration Bonus"
         if(Trig_Passive_Bonus_Sync_HasFrenzyMpRegen())then
-            // (GetUnitAbilityLevelSwapped('A1E9', Player_GetHero(the player being visited))) times (2).
             call SetUnitAbilityLevelSwapped('A033',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E9',Player_GetHero(GetEnumPlayer()))*2)) // 'A033': ability "MP Regeneration Bonus"; 'A1E9': ability "MP Regeneration Burst"
         else
-            // (GetUnitAbilityLevelSwapped('A1E9', Player_GetHero(the player being visited))) times (1).
             call SetUnitAbilityLevelSwapped('A033',Player_GetHero(GetEnumPlayer()),(GetUnitAbilityLevelSwapped('A1E9',Player_GetHero(GetEnumPlayer()))*1)) // 'A033': ability "MP Regeneration Bonus"; 'A1E9': ability "MP Regeneration Burst"
         endif
     else

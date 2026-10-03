@@ -85,17 +85,12 @@ function Trig_Spell_Satellite_Beam_Actions takes nothing returns nothing
     endif
     call UnitApplyTimedLifeBJ(3.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call ForForce(udg_DuelArenaPlayers,function Trig_Spell_Satellite_Beam_BeamAtPlayerHero)
-    // (CountPlayersInForceBJ(udg_DuelArenaPlayers)) plus (3).
     set l_tempInteger=(CountPlayersInForceBJ(udg_DuelArenaPlayers)+3)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=l_tempInteger
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Result 1: loop counter A treated as a decimal-capable number.
-        // Result 2: l_tempInteger treated as a decimal-capable number.
-        // Result 3: (360) divided by (result 2).
-        // Result 4: (result 1) times (result 3).
         set l_tempPoint2=Loc_PolarOffset(l_tempPoint,90.,(I2R(GetForLoopIndexA())*(360./ I2R(l_tempInteger))))
         call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\Flare\\FlareCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -171,17 +166,12 @@ function Trig_Spell_Satellite_Beam_InGroup_Actions takes nothing returns nothing
     endif
     call UnitApplyTimedLifeBJ(3.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call ForForce(udg_CupArenaPlayers,function Trig_Spell_Satellite_Beam_InGroup_BeamAtPlayerHero)
-    // (CountPlayersInForceBJ(udg_CupArenaPlayers)) plus (2).
     set l_tempInteger=(CountPlayersInForceBJ(udg_CupArenaPlayers)+2)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=l_tempInteger
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Result 1: loop counter A treated as a decimal-capable number.
-        // Result 2: l_tempInteger treated as a decimal-capable number.
-        // Result 3: (360) divided by (result 2).
-        // Result 4: (result 1) times (result 3).
         set l_tempPoint2=Loc_PolarOffset(l_tempPoint,90.,(I2R(GetForLoopIndexA())*(360./ I2R(l_tempInteger))))
         call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\Flare\\FlareCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())

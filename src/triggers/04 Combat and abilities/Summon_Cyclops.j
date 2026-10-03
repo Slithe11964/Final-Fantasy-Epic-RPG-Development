@@ -23,7 +23,6 @@ function Trig_Summon_Cyclops_Actions takes nothing returns nothing
     call UnitApplyTimedLifeBJ(90.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00L'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
     // Result 2: (l_tempReal) times (0.7).

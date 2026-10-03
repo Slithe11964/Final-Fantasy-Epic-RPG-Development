@@ -52,7 +52,6 @@ endfunction
 function Trig_Elixir_Deliver_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Elixir_Deliver_Cond_HasSpareCharge())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'pres')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'pres'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'pres'))-1)) // 'pres': item "Elixir"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'pres')) // 'pres': item "Elixir"

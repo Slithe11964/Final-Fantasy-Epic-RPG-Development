@@ -100,7 +100,6 @@ endfunction
 function Trig_ArenaExpansion_ShadowStoneTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ArenaExpansion_ShadowStoneTurnIn_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I05Q')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I05Q'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I05Q'))-1)) // 'I05Q': item "Shadow Stone"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I05Q')) // 'I05Q': item "Shadow Stone"

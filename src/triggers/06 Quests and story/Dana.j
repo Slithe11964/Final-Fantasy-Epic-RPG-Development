@@ -87,7 +87,6 @@ function Trig_Dana_Talk2_Enable_Actions takes nothing returns nothing
     if(Trig_Dana_Talk2_Enable_Quest20NotFound())then
         set udg_SpecialEffect[70]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BN_0171,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
         call EnableTrigger(gg_trg_Quest_Illusions_Start)
-        // Increase udg_DanaQuestStage by 3.
         set udg_DanaQuestStage=(udg_DanaQuestStage+3)
     endif
     call DestroyTrigger(GetTriggeringTrigger())

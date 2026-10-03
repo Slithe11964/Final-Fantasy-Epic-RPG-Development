@@ -64,7 +64,6 @@ function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[92])
     if(Trig_Quest_FishyDeals_Complete_Cond_HasNebraBread())then
         if(Trig_Quest_FishyDeals_Complete_Cond_BreadHasCharges())then
-            // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0KM')) minus (1).
             call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'))-1)) // 'I0KM': item "Nebra Bread"
         else
             call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
@@ -85,7 +84,6 @@ function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
         endif
     else
         if(Trig_Quest_FishyDeals_Complete_Cond_SoupHasCharges())then
-            // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0KI')) minus (1).
             call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI'))-1)) // 'I0KI': item "Fish Soup"
         else
             call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI')) // 'I0KI': item "Fish Soup"

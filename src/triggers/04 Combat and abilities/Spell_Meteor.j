@@ -30,11 +30,9 @@ function Trig_Spell_Meteor_Wide_Actions takes nothing returns nothing
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     set l_tempInteger='d'
     if(Trig_Spell_Meteor_Wide_IsCasterHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

@@ -825,7 +825,6 @@ function Trig_Bazaar_PawnMaterial_Actions takes nothing returns nothing
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         if(Trig_Bazaar_PawnMaterial_IsMaterial())then
             if(Trig_Bazaar_PawnMaterial_HasCharges())then
-                // (udg_MaterialOwnedCount at position loop counter A) plus (item charges of GetSoldItem()).
                 set udg_MaterialOwnedCount[GetForLoopIndexA()]=(udg_MaterialOwnedCount[GetForLoopIndexA()]+GetItemCharges(GetSoldItem()))
             else
                 set udg_MaterialOwnedCount[GetForLoopIndexA()]=(udg_MaterialOwnedCount[GetForLoopIndexA()]+1)
@@ -838,7 +837,6 @@ function Trig_Bazaar_PawnMaterial_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Bazaar_UpdateStock_HasIngredient takes nothing returns boolean
-    // (loop counter B) plus (1).
     return(udg_RecipeAffordable)and(udg_MaterialOwnedCount[LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash)]>=LoadIntegerBJ(GetForLoopIndexB(),GetForLoopIndexA(),udg_BazaarRecipeHash))
 endfunction
 
@@ -895,16 +893,11 @@ function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
         set udg_RecipeAffordable=true
         set udg_MaterialOwnedCount[0]=99
         set bj_forLoopBIndex=3
-        // ((LoadIntegerBJ(1, loop counter A, udg_BazaarRecipeHash)) times (2)) plus (2).
         set bj_forLoopBIndexEnd=((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+2)
         loop
             exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
             if(Trig_Bazaar_UpdateStock_IsIngredientSlot())then
                 if(Trig_Bazaar_UpdateStock_HasIngredient())then
-                    // Result 1: (loop counter B) plus (1).
-                    // Result 2: (udg_MaterialOwnedCount at position LoadIntegerBJ(result 1, loop counter A, udg_BazaarRecipeHash))
-                    // divided by (LoadIntegerBJ(loop counter B, loop counter A, udg_BazaarRecipeHash)); drop the remainder.
-                    // Result 3: the smaller of (udg_MaterialOwnedCount at position 0) and (result 2).
                     set udg_MaterialOwnedCount[0]=IMinBJ(udg_MaterialOwnedCount[0],(udg_MaterialOwnedCount[LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash)]/ LoadIntegerBJ(GetForLoopIndexB(),GetForLoopIndexA(),udg_BazaarRecipeHash)))
                 else
                     set udg_RecipeAffordable=false
@@ -927,19 +920,10 @@ function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
             // Result 4: (4) plus (result 3).
             call SaveIntegerBJ((LoadIntegerBJ((4+((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+(LoadIntegerBJ(2,GetForLoopIndexA(),udg_BazaarRecipeHash)*2))),GetForLoopIndexA(),udg_BazaarRecipeHash)+udg_MaterialOwnedCount[0]),(4+((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+(LoadIntegerBJ(2,GetForLoopIndexA(),udg_BazaarRecipeHash)*2))),GetForLoopIndexA(),udg_BazaarRecipeHash)
             set bj_forLoopBIndex=3
-            // ((LoadIntegerBJ(1, loop counter A, udg_BazaarRecipeHash)) times (2)) plus (2).
             set bj_forLoopBIndexEnd=((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+2)
             loop
                 exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
                 if(Trig_Bazaar_UpdateStock_IsIngredientSlotSpend())then
-                    // Calculation 1:
-                    // (loop counter B) plus (1).
-                    // Calculation 2:
-                    // Result 1: (loop counter B) plus (1).
-                    // Result 2: (LoadIntegerBJ(loop counter B, loop counter A, udg_BazaarRecipeHash)) times
-                    // (udg_MaterialOwnedCount at position 0).
-                    // Result 3: the larger of (udg_MaterialSpentCount at position LoadIntegerBJ(result 1, loop counter A,
-                    // udg_BazaarRecipeHash)) and (result 2).
                     set udg_MaterialSpentCount[LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash)]=IMaxBJ(udg_MaterialSpentCount[LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash)],(LoadIntegerBJ(GetForLoopIndexB(),GetForLoopIndexA(),udg_BazaarRecipeHash)*udg_MaterialOwnedCount[0]))
                 endif
                 set bj_forLoopBIndex=bj_forLoopBIndex+1
@@ -969,8 +953,6 @@ function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         if(Trig_Bazaar_UpdateStock_HasSpentMaterial())then
-            // (udg_MaterialOwnedCount at position loop counter A) minus (udg_MaterialSpentCount at position loop counter
-            // A).
             set udg_MaterialOwnedCount[GetForLoopIndexA()]=(udg_MaterialOwnedCount[GetForLoopIndexA()]-udg_MaterialSpentCount[GetForLoopIndexA()])
         endif
         set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -983,7 +965,6 @@ function Trig_Bazaar_Sell_Bundle_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Bazaar_Sell_Bundle_HasCharges takes nothing returns boolean
-    // (loop counter B) plus (1).
     return(LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash)>=1)and(GetItemType(GetLastCreatedItem())==ITEM_TYPE_CHARGED)
 endfunction
 
@@ -1018,7 +999,6 @@ function Trig_Bazaar_Sell_Bundle_Actions takes nothing returns nothing
             // Result 3: (result 1) plus (result 2).
             // Result 4: (4) plus (result 3).
             call SaveIntegerBJ((LoadIntegerBJ((4+((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+(LoadIntegerBJ(2,GetForLoopIndexA(),udg_BazaarRecipeHash)*2))),GetForLoopIndexA(),udg_BazaarRecipeHash)-1),(4+((LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2)+(LoadIntegerBJ(2,GetForLoopIndexA(),udg_BazaarRecipeHash)*2))),GetForLoopIndexA(),udg_BazaarRecipeHash)
-            // (4) plus ((LoadIntegerBJ(1, loop counter A, udg_BazaarRecipeHash)) times (2)).
             set bj_forLoopBIndex=(4+(LoadIntegerBJ(1,GetForLoopIndexA(),udg_BazaarRecipeHash)*2))
             // Result 1: (2) times (LoadIntegerBJ(2, loop counter A, udg_BazaarRecipeHash)).
             // Result 2: (LoadIntegerBJ(1, loop counter A, udg_BazaarRecipeHash)) times (2).
@@ -1032,7 +1012,6 @@ function Trig_Bazaar_Sell_Bundle_Actions takes nothing returns nothing
                     call CreateItemLoc(udg_BazaarResultItem[LoadIntegerBJ(GetForLoopIndexB(),GetForLoopIndexA(),udg_BazaarRecipeHash)],udg_TempPoint)
                     call RemoveLocation(udg_TempPoint)
                     if(Trig_Bazaar_Sell_Bundle_HasCharges())then
-                        // (loop counter B) plus (1).
                         call SetItemCharges(GetLastCreatedItem(),LoadIntegerBJ((GetForLoopIndexB()+1),GetForLoopIndexA(),udg_BazaarRecipeHash))
                     endif
                     call UnitAddItemSwapped(GetLastCreatedItem(),GetBuyingUnit())

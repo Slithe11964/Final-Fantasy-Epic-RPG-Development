@@ -111,7 +111,6 @@ function Prof_GetLevel takes unit u,integer upgradeId returns integer
         loop
             set l_itm=UnitItemInSlot(u,i)
             if(l_itm!=null and(GetItemType(l_itm)==l_slotType and GetItemLevel(l_itm)==proficiencyIndex))then
-                // (GetItemLifeBJ(l_itm)) with its decimal part removed.
                 set storedItemLife=R2I(GetItemLifeBJ(l_itm))
                 if(storedItemLife>=30)then
                     if((upgradeId=='R003' or upgradeId=='R004' or upgradeId=='R00L')or GetUnitAbilityLevel(u,'A15I')>0)then // 'R003': upgrade "Rod"; 'R004': upgrade "Staff"; 'R00L': upgrade "Inner Mana"; 'A15I': ability "Versatility"
@@ -124,7 +123,6 @@ function Prof_GetLevel takes unit u,integer upgradeId returns integer
                         set l_total=l_total+(storedItemLife/ $A)+1 // $A = 10
                     endif
                 else
-                    // Increase l_total by 3.
                     set l_total=l_total+3
                 endif
             endif
@@ -141,39 +139,29 @@ function Prof_GetLevel takes unit u,integer upgradeId returns integer
         endif
         if(upgradeId==l_equipped)then
             if(l_isArmor)then
-                // (l_total) plus (GetPlayerTechCount(p, upgradeId, true)).
                 set l_total=l_total+GetPlayerTechCount(p,upgradeId,true)
             else
-                // ((l_total) plus (GetPlayerTechCount(p, upgradeId, true))) plus (1).
                 set l_total=l_total+GetPlayerTechCount(p,upgradeId,true)+1
                 if(GetUnitAbilityLevel(u,'A1DK')>0)then // 'A1DK': ability "Tarugaya Hero Bonus"
-                    // Increase l_total by 2.
                     set l_total=l_total+2
                 endif
             endif
         elseif(GetUnitAbilityLevel(u,'A135')>0)then // 'A135': ability "Joker Proficiency"
-            // (l_total) plus (GetPlayerTechCount(p, upgradeId, true)).
             set l_total=l_total+GetPlayerTechCount(p,upgradeId,true)
         endif
     endif
     if(upgradeId=='R00M' and GetUnitAbilityLevel(u,'A079')>0)then // 'R00M': upgrade "Gun"; 'A079': ability "Proficiency Bonus"
-        // Increase l_total by 10.
         set l_total=l_total+$A // $A = 10
     elseif(upgradeId=='R00I' and GetUnitAbilityLevel(u,'A1A1')>0)then // 'R00I': upgrade "Heavens Forged Axe"; 'A1A1': ability "Spear Hybrid"
-        // Increase l_total by 9.
         set l_total=l_total+9
     elseif(upgradeId=='R00B' and GetUnitAbilityLevel(u,'A182')>0)then // 'R00B': upgrade "Dagger"; 'A182': ability "Kazuma Effect"
-        // Increase l_total by 8.
         set l_total=l_total+8
     elseif(upgradeId=='R000' and GetUnitAbilityLevel(u,'A1A2')>0)then // 'R000': upgrade "Tools"; 'A1A2': ability "Crossbow Tool"
-        // Increase l_total by 7.
         set l_total=l_total+7
     elseif(upgradeId=='R004' and GetUnitAbilityLevel(u,'A07H')>0)then // 'R004': upgrade "Staff"; 'A07H': ability "White Robe"
-        // Increase l_total by 6.
         set l_total=l_total+6
     endif
     if(l_total>0 and GetUnitAbilityLevel(u,'A136')>0 and not l_isArmor)then // 'A136': ability "High Proficiency"
-        // Increase proficiency by 50%, dropping any fraction: 5 points becomes 7, not 8.
         set l_total=(l_total*3)/ 2
     endif
     if(upgradeId=='R001' or upgradeId=='R004')then // 'R001': upgrade "Sword"; 'R004': upgrade "Staff"
@@ -206,11 +194,9 @@ function Prof_GetSpellPower takes unit u,integer upgradeId,real manaWeight retur
     // Example: factor 1.3, half mana, and weight 0.5 give 1 + 1.3 x 0.5 x 0.5 = 1.325.
     set l_mult=l_mult+1
     if(GetUnitAbilityLevel(u,'B06N')>0)then // 'B06N': buff tooltip "Mind Charge"
-        // (l_mult) times (2).
         set l_mult=l_mult*2.
     endif
     if(GetUnitAbilityLevel(u,'A16K')>0 and currentMana>=maximumMana)then // 'A16K': ability "Concentration"
-        // (l_mult) times (1.5).
         set l_mult=l_mult*1.5
     endif
     return l_mult

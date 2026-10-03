@@ -61,14 +61,10 @@ function Trig_Zeromus_Encounter_Filter_PulledUnit takes nothing returns boolean
 endfunction
 
 function Trig_Zeromus_Encounter_Cond_AtCenterX takes nothing returns boolean
-    // Result 1: (x position of udg_TempPoint) minus (x position of udg_TempPoint2).
-    // Result 2: the size of (result 1) without its sign; for example, -5 becomes 5.
     return(RAbsBJ((GetLocationX(udg_TempPoint)-GetLocationX(udg_TempPoint2)))<=32.)
 endfunction
 
 function Trig_Zeromus_Encounter_Cond_AtCenterY takes nothing returns boolean
-    // Result 1: (y position of udg_TempPoint) minus (y position of udg_TempPoint2).
-    // Result 2: the size of (result 1) without its sign; for example, -5 becomes 5.
     return(RAbsBJ((GetLocationY(udg_TempPoint)-GetLocationY(udg_TempPoint2)))<=32.)
 endfunction
 
@@ -77,13 +73,10 @@ function Trig_Zeromus_Encounter_Cond_TargetVulnerable takes nothing returns bool
 endfunction
 
 function Trig_Zeromus_Encounter_Cond_HeroLowLife takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the unit being visited, times 100 (or 0 if the unit
-    // is missing or its maximum is 0).
     return(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_PlayingPlayers))and(GetEnumUnit()==Player_GetHero(GetOwningPlayer(GetEnumUnit())))and(GetUnitLifePercent(GetEnumUnit())<=50.)
 endfunction
 
 function Trig_Zeromus_Encounter_Cond_ReachedCenter takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=64.)
 endfunction
 
@@ -93,28 +86,16 @@ function Trig_Zeromus_Encounter_PullUnitToCenter takes nothing returns nothing
     if(Trig_Zeromus_Encounter_Cond_AtCenterX())then
         set udg_TempReal=GetLocationX(udg_TempPoint)
     else
-        // (x position of udg_TempPoint) minus (x position of udg_TempPoint2).
         set udg_TempReal=(GetLocationX(udg_TempPoint)-GetLocationX(udg_TempPoint2))
-        // Result 1: the size of (udg_TempReal) without its sign; for example, -5 becomes 5.
-        // Result 2: (1024) minus (result 1).
-        // Result 3: the square root of (result 2).
-        // Result 4: (result 3) times (RSignBJ(udg_TempReal)).
         set udg_TempReal=(SquareRoot((1024.-RAbsBJ(udg_TempReal)))*RSignBJ(udg_TempReal))
-        // (x position of udg_TempPoint2) plus ((udg_TempReal) times (0.66)).
         set udg_TempReal=(GetLocationX(udg_TempPoint2)+(udg_TempReal*.66))
     endif
     call SetUnitX(GetEnumUnit(),udg_TempReal)
     if(Trig_Zeromus_Encounter_Cond_AtCenterY())then
         set udg_TempReal=GetLocationY(udg_TempPoint)
     else
-        // (y position of udg_TempPoint) minus (y position of udg_TempPoint2).
         set udg_TempReal=(GetLocationY(udg_TempPoint)-GetLocationY(udg_TempPoint2))
-        // Result 1: the size of (udg_TempReal) without its sign; for example, -5 becomes 5.
-        // Result 2: (1024) minus (result 1).
-        // Result 3: the square root of (result 2).
-        // Result 4: (result 3) times (RSignBJ(udg_TempReal)).
         set udg_TempReal=(SquareRoot((1024.-RAbsBJ(udg_TempReal)))*RSignBJ(udg_TempReal))
-        // (y position of udg_TempPoint2) plus ((udg_TempReal) times (0.66)).
         set udg_TempReal=(GetLocationY(udg_TempPoint2)+(udg_TempReal*.66))
     endif
     call SetUnitY(GetEnumUnit(),udg_TempReal)

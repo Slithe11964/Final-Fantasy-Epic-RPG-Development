@@ -75,7 +75,6 @@ endfunction
 function Trig_ShinrasPlan_WaterTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_WaterTurnIn_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I06T')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T'))-1)) // 'I06T': item "Theurgic Water"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T')) // 'I06T': item "Theurgic Water"
@@ -112,7 +111,6 @@ endfunction
 function Trig_ShinrasPlan_ShardTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_ShardTurnIn_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I06X')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X'))-1)) // 'I06X': item "Unique Ice Shard"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X')) // 'I06X': item "Unique Ice Shard"
@@ -151,7 +149,6 @@ endfunction
 function Trig_ShinrasPlan_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_Complete_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I062')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062'))-1)) // 'I062': item "Aire Tam Enib Moc"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062')) // 'I062': item "Aire Tam Enib Moc"

@@ -57,7 +57,6 @@ function Trig_Needles_Cast_Actions takes nothing returns nothing
             endif
         endif
     endif
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

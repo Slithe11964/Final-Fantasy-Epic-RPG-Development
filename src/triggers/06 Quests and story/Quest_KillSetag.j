@@ -127,14 +127,8 @@ function Trig_Quest_KillSetag_Ambush_Actions takes nothing returns nothing
         if(Trig_Quest_KillSetag_Ambush_EternityMode())then
             call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         else
-            // Calculation 1:
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) divided by (2).
-            // Calculation 2:
-            // (1) minus (1).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)/ 2),(1-1))
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) divided by (2).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)/ 2),1)
-            // (maximum health of GetLastCreatedUnit()) divided by (2).
             call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 2))
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         endif

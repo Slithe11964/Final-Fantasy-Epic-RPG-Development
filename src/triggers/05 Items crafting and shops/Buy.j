@@ -5,17 +5,10 @@ globals
 endglobals
 
 function Trig_Buy_Kesha_Brew_NeedsRestore takes nothing returns boolean
-    // Calculation 1:
-    // Result 1: current health divided by maximum health for Player_GetHero(GetOwningPlayer(GetBuyingUnit())),
-    // times 100 (or 0 if the unit is missing or its maximum is 0).
-    // Calculation 2:
-    // Result 1: current mana divided by maximum mana for Player_GetHero(GetOwningPlayer(GetBuyingUnit())), times
-    // 100 (or 0 if the unit is missing or its maximum is 0).
     return(GetUnitLifePercent(Player_GetHero(GetOwningPlayer(GetBuyingUnit())))<100.)or(GetUnitManaPercent(Player_GetHero(GetOwningPlayer(GetBuyingUnit())))<100.)
 endfunction
 
 function Trig_Buy_Kesha_Brew_Conditions takes nothing returns boolean
-    // (hero level of Player_GetHero(GetOwningPlayer(GetBuyingUnit()))) times (3).
     return((GetItemTypeId(GetSoldItem())=='I020')and(IsPlayerInForce(GetOwningPlayer(GetBuyingUnit()),udg_PlayingPlayers))and(GetPlayerState(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD)>=(GetHeroLevel(Player_GetHero(GetOwningPlayer(GetBuyingUnit())))*3))and(Trig_Buy_Kesha_Brew_NeedsRestore())and(IsUnitType(GetBuyingUnit(),UNIT_TYPE_HERO)))!=null // 'I020': item "Kesha's Special Brew"
 endfunction
 
@@ -27,7 +20,6 @@ function Trig_Buy_Kesha_Brew_Actions takes nothing returns nothing
     call SetUnitLifePercentBJ(Player_GetHero(GetOwningPlayer(GetBuyingUnit())),'d')
     call SetUnitManaPercentBJ(Player_GetHero(GetOwningPlayer(GetBuyingUnit())),'d')
     call SetUnitManaBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))],990000.)
-    // (-3) times (hero level of Player_GetHero(GetOwningPlayer(GetBuyingUnit()))).
     call AdjustPlayerStateBJ((-3*GetHeroLevel(Player_GetHero(GetOwningPlayer(GetBuyingUnit())))),GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD)
 endfunction
 

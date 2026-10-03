@@ -137,13 +137,9 @@ function Trig_DarkEden_Death_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DarkEden_LightningColor_Actions takes nothing returns nothing
-    // Calculation 1:
     // A random decimal number between 0 and 1.
-    // Calculation 2:
     // A random decimal number between 0 and 1.
-    // Calculation 3:
     // A random decimal number between 0 and 1.
-    // Calculation 4:
     // A random decimal number between 0.5 and 1.
     call SetLightningColorBJ(udg_AbsorbLightning,GetRandomReal(0,1),GetRandomReal(0,1),GetRandomReal(0,1),GetRandomReal(.5,1))
 endfunction

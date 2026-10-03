@@ -19,7 +19,6 @@ endfunction
 function Trig_TropicalEssence_TurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_TropicalEssence_TurnIn_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I06N')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N'))-1)) // 'I06N': item "Tropical Essence"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N')) // 'I06N': item "Tropical Essence"

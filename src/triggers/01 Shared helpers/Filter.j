@@ -6,11 +6,7 @@ globals
 endglobals
 
 function Filter_DestInRange takes nothing returns boolean
-    // Starting value for dx:
-    // (GetDestructableX(GetFilterDestructable())) minus (udg_EnumDestX).
     local real dx=GetDestructableX(GetFilterDestructable())-udg_EnumDestX
-    // Starting value for dy:
-    // (GetDestructableY(GetFilterDestructable())) minus (udg_EnumDestY).
     local real dy=GetDestructableY(GetFilterDestructable())-udg_EnumDestY
     // (the square of (dx)) plus (the square of (dy)).
     return(dx*dx+dy*dy<=bj_enumDestructableRadius)

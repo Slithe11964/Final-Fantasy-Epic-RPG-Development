@@ -70,11 +70,8 @@ function Save_AllocSlot takes integer v,player p returns integer
         set udg_SaveSlotFreeCount=udg_SaveSlotFreeCount-1
     endif
     set udg_CodeSlot[l_sid]=l_slot
-    // ((l_slot) minus (1)) times (5).
     set udg_SaveChunkBase[l_sid]=(l_slot-1)*5
-    // ((l_slot) minus (1)) times (23).
     set udg_SaveLevelBase[l_sid]=(l_slot-1)*23
-    // ((l_slot) minus (1)) times (15).
     set udg_SaveTechBase[l_sid]=(l_slot-1)*$F // $F = 15
     set udg_SaveChunkIndex[l_sid]=0
     set udg_SaveLevelCount[l_sid]=0
@@ -94,7 +91,6 @@ function Save_Init takes nothing returns nothing
     set udg_Pow2[0]=1
     loop
         exitwhen i>31
-        // (udg_Pow2 at position (i) minus (1)) times (2).
         set udg_Pow2[i]=udg_Pow2[i-1]*2
         set i=i+1
     endloop
@@ -108,10 +104,6 @@ function Save_Init takes nothing returns nothing
     set udg_CodeCharIndex=InitHashtable()
     loop
         exitwhen i>64
-        // Calculation 1:
-        // (i) minus (1).
-        // Calculation 2:
-        // (i) minus (1).
         call SaveInteger(udg_CodeCharIndex,0,StringHash(SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",i-1,i)),i-1)
         set i=i+1
     endloop
@@ -184,7 +176,6 @@ function Save_Begin takes integer v,player p,boolean l_blank returns integer
     if l_blank then
         call Save_Write(s,0,2)
     elseif(udg_Difficulty==6)then
-        // (GetPlayerId(p)) plus (1).
         call Save_Write(s,udg_CodeDifficulty[GetPlayerId(p)+1],2)
     elseif(udg_Difficulty>=5)then
         call Save_Write(s,3,2)
@@ -196,7 +187,6 @@ function Save_Begin takes integer v,player p,boolean l_blank returns integer
     if l_blank then
         call Save_Write(s,300,20)
     else
-        // (l_gold) plus ((1500) times (GetPlayerState(p, PLAYER_STATE_RESOURCE_LUMBER))).
         set l_gold=l_gold+$5DC*GetPlayerState(p,PLAYER_STATE_RESOURCE_LUMBER) // $5DC = 1500
         if(l_gold>$F423F)then // $F423F = 999999
             set l_gold=$F423F // $F423F = 999999
@@ -223,39 +213,25 @@ function Save_ColorChar takes integer l_sid,integer l_charIdx returns string
 endfunction
 
 function Save_WriteBits takes integer l_sid,integer l_value,integer l_radix returns nothing
-    // Starting value for l_carry:
-    // (udg_CodeKey at position l_sid) plus (l_value).
     local integer l_carry=udg_CodeKey[l_sid]+l_value
     local integer l_charIdx
     local string l_color
     if l_radix<=9 then
         set udg_CodeFormat[l_sid]=udg_CodeFormat[l_sid]+I2S(l_radix)
     else
-        // Calculation 1:
-        // (l_radix) minus (10).
-        // Calculation 2:
-        // (l_radix) minus (9).
         set udg_CodeFormat[l_sid]=udg_CodeFormat[l_sid]+SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_radix-$A,l_radix-9) // $A = 10
     endif
-    // Increase udg_CodeKey at position l_sid by 211.
     set udg_CodeKey[l_sid]=udg_CodeKey[l_sid]+$D3 // $D3 = 211
     // Result 1: (l_carry) divided by (udg_Pow2 at position l_radix); drop the remainder.
     // Result 2: (result 1) times (udg_Pow2 at position l_radix).
     // Result 3: (l_carry) minus (result 2).
     set l_carry=l_carry-(l_carry/ udg_Pow2[l_radix])*udg_Pow2[l_radix]
-    // ((udg_CodeBuffer at position l_sid) times (udg_Pow2 at position l_radix)) plus (l_carry).
     set udg_CodeBuffer[l_sid]=udg_CodeBuffer[l_sid]*udg_Pow2[l_radix]+l_carry
-    // (udg_CodeBits at position l_sid) plus (l_radix).
     set udg_CodeBits[l_sid]=udg_CodeBits[l_sid]+l_radix
     loop
         exitwhen udg_CodeBits[l_sid]<6
-        // Decrease udg_CodeBits at position l_sid by 6.
         set udg_CodeBits[l_sid]=udg_CodeBits[l_sid]-6
-        // Result 1: (udg_CodeBuffer at position l_sid) divided by (udg_Pow2 at position udg_CodeBits at position
-        // l_sid); drop the remainder.
         set l_charIdx=udg_CodeBuffer[l_sid]/ udg_Pow2[udg_CodeBits[l_sid]]
-        // (udg_CodeBuffer at position l_sid) minus ((l_charIdx) times (udg_Pow2 at position udg_CodeBits at position
-        // l_sid)).
         set udg_CodeBuffer[l_sid]=udg_CodeBuffer[l_sid]-l_charIdx*udg_Pow2[udg_CodeBits[l_sid]]
         if l_charIdx<26 then
             set l_color="|c00C8C8C8"
@@ -266,20 +242,11 @@ function Save_WriteBits takes integer l_sid,integer l_value,integer l_radix retu
         else
             set l_color="|c0016D116"
         endif
-        // Calculation 1:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
-        // Calculation 2:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
-        // Calculation 3:
-        // (l_charIdx) plus (1).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]+l_color+SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_charIdx,l_charIdx+1)+"|r"
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
         if(StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]])>=$3E8)then // $3E8 = 1000
             set udg_SaveChunkIndex[l_sid]=udg_SaveChunkIndex[l_sid]+1
-            // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
             set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=""
         endif
-        // (l_charIdx) plus (1).
         set udg_SaveCodePlain[l_sid]=udg_SaveCodePlain[l_sid]+SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_charIdx,l_charIdx+1)
     endloop
 endfunction
@@ -290,7 +257,6 @@ function Save_PushLevel takes integer l_sid,integer l_level returns nothing
     elseif(l_level>=99)then
         set udg_SaveLevelMaxCount[l_sid]=udg_SaveLevelMaxCount[l_sid]+1
     endif
-    // (udg_SaveLevelBase at position l_sid) plus (udg_SaveLevelCount at position l_sid).
     set udg_SaveLevelValue[udg_SaveLevelBase[l_sid]+udg_SaveLevelCount[l_sid]]=l_level
     set udg_SaveLevelCount[l_sid]=udg_SaveLevelCount[l_sid]+1
 endfunction
@@ -318,21 +284,17 @@ function Save_EncodeLevels takes integer l_sid returns nothing
     endif
     loop
         exitwhen(i>=udg_SaveLevelCount[l_sid])
-        // (udg_SaveLevelBase at position l_sid) plus (i).
         if(l_mostlyMax and udg_SaveLevelValue[udg_SaveLevelBase[l_sid]+i]>=99)then
             call Save_WriteBits(l_sid,1,1)
-            // (udg_SaveLevelBase at position l_sid) plus (i).
             if(udg_SaveLevelValue[udg_SaveLevelBase[l_sid]+i]==99)then
                 call Save_WriteBits(l_sid,0,1)
             else
                 call Save_WriteBits(l_sid,1,1)
             endif
-        // (udg_SaveLevelBase at position l_sid) plus (i).
         elseif(not l_mostlyMax and udg_SaveLevelValue[udg_SaveLevelBase[l_sid]+i]<=1)then
             call Save_WriteBits(l_sid,1,1)
         else
             call Save_WriteBits(l_sid,0,1)
-            // (udg_SaveLevelBase at position l_sid) plus (i).
             call Save_WriteBits(l_sid,udg_SaveLevelValue[udg_SaveLevelBase[l_sid]+i],7)
         endif
         set i=i+1
@@ -343,8 +305,6 @@ function Save_EncodeInventory takes integer l_sid,unit u returns nothing
     local integer i=0
     local integer l_count=0
     local item l_itm
-    // Starting value for l_ownerIdx:
-    // (GetPlayerId(udg_SavePlayer at position l_sid)) plus (1).
     local integer l_ownerIdx=GetPlayerId(udg_SavePlayer[l_sid])+1
     loop
         set l_itm=UnitItemInSlot(u,i)
@@ -386,7 +346,6 @@ function Save_PushTechLevel takes integer l_sid,integer l_techID returns nothing
     elseif(l_level>=$A)then // $A = 10
         set udg_SaveTechMaxCount[l_sid]=udg_SaveTechMaxCount[l_sid]+1
     endif
-    // (udg_SaveTechBase at position l_sid) plus (udg_SaveTechCount at position l_sid).
     set udg_SaveTechValue[udg_SaveTechBase[l_sid]+udg_SaveTechCount[l_sid]]=l_level
     set udg_SaveTechCount[l_sid]=udg_SaveTechCount[l_sid]+1
 endfunction
@@ -401,15 +360,12 @@ function Save_EncodeTechs takes integer l_sid returns nothing
     endif
     loop
         exitwhen(i>=udg_SaveTechCount[l_sid])
-        // (udg_SaveTechBase at position l_sid) plus (i).
         if(l_mostlyMax and udg_SaveTechValue[udg_SaveTechBase[l_sid]+i]>=$A)then // $A = 10
             call Save_WriteBits(l_sid,1,1)
-        // (udg_SaveTechBase at position l_sid) plus (i).
         elseif(not l_mostlyMax and udg_SaveTechValue[udg_SaveTechBase[l_sid]+i]<=0)then
             call Save_WriteBits(l_sid,1,1)
         else
             call Save_WriteBits(l_sid,0,1)
-            // (udg_SaveTechBase at position l_sid) plus (i).
             call Save_WriteBits(l_sid,udg_SaveTechValue[udg_SaveTechBase[l_sid]+i],4)
         endif
         set i=i+1
@@ -443,8 +399,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
     local integer l_startLen=StringLength(udg_SaveCodePlain[l_sid])
     local string l_tail
     local integer l_chunk=udg_SaveChunkIndex[l_sid]
-    // Starting value for l_chunkLen:
-    // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
     local integer l_chunkLen=StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]])
     call Save_WriteBits(l_sid,0,18)
     call Save_WriteBits(l_sid,0,18)
@@ -463,7 +417,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                 set l_count=l_count+1
                 set l_bits=l_bits+I2S(l_bit)
                 set l_modes=l_modes+"M5("+I2S(i)+"/"+I2S(l_runStart)+")-"
-                // (l_runStart) minus (1).
                 set i=l_runStart-1
                 set l_mode=5
                 call Save_WriteBits(l_sid,0,1)
@@ -500,7 +453,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                 if(l_bit==l_lastBit)then
                     set l_runLen=l_runLen+1
                     if(l_mode==1 and l_runLen>=$F)then // $F = 15
-                        // (l_count) minus (l_runLen).
                         set l_count=l_count-l_runLen
                         if(l_count>0)then
                             if(l_ones>0)then
@@ -518,7 +470,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                                 set l_modes=l_modes+"M2a("+I2S(i)+"/"+I2S(l_runStart)+")-"
                             else
                                 set l_modes=l_modes+"M3("+I2S(i)+"/"+I2S(l_runStart)+")-"
-                                // (l_runStart) minus (1).
                                 set i=l_runStart-1
                                 set l_mode=3
                                 call Save_WriteBits(l_sid,0,1)
@@ -543,7 +494,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                                 set l_raw=l_raw+"YYY63Y"
                                 set l_opcodes=l_opcodes+"R"+I2S(l_lastBit)+"(63)-"
                                 call Save_WriteBits(l_sid,63,6)
-                                // Decrease l_runLen by 63.
                                 set l_runLen=l_runLen-63
                             else
                                 set l_raw=l_raw+"YYY"+I2S(l_runLen)+"Y"
@@ -587,7 +537,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                     set l_raw=l_raw+"YYY63Y"
                     set l_opcodes=l_opcodes+"R"+I2S(l_lastBit)+"(63)-"
                     call Save_WriteBits(l_sid,63,6)
-                    // Decrease l_runLen by 63.
                     set l_runLen=l_runLen-63
                 else
                     set l_raw=l_raw+"YYY"+I2S(l_runLen)+"Y"
@@ -600,7 +549,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
     elseif(l_mode==1)then
         set l_modes=l_modes+"M1("+I2S(l_count)+")-"
         if(l_bit==0)then
-            // (l_count) minus (l_runLen).
             set l_count=l_count-l_runLen
         endif
         if(l_count>0)then
@@ -623,7 +571,6 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                 if(l_count>$FF)then // $FF = 255
                     set l_raw=l_raw+"01XXXXX255X"
                     set l_opcodes=l_opcodes+"E(255)-"
-                    // Decrease l_count by 255.
                     set l_count=l_count-$FF // $FF = 255
                     call Save_WriteBits(l_sid,$FF,8) // $FF = 255
                     set l_runStart=$FF // $FF = 255
@@ -677,32 +624,16 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
         call DisplayTimedTextToPlayer(udg_SavePlayer[l_sid],0,0,60,l_modes)
     endif
     if(udg_CodeBits[l_sid]>0)then
-        // (6) minus (udg_CodeBits at position l_sid).
         call Save_WriteBits(l_sid,0,6-udg_CodeBits[l_sid])
     endif
-    // (l_startLen) plus (6).
     set l_tail=SubString(udg_SaveCodePlain[l_sid],l_startLen+6,StringLength(udg_SaveCodePlain[l_sid]))
     set i=6
     loop
         exitwhen i<=3
         // (l_checksum) minus (((l_checksum) divided by (64); drop the remainder) times (64)).
         set l_bit=l_checksum-(l_checksum/ 64)*64
-        // (l_bit) plus (1).
         set l_tail=SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_bit,l_bit+1)+l_tail
-        // (l_checksum) divided by (64); drop the remainder.
         set l_checksum=l_checksum/ 64
-        // Calculation 1:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 2:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 3:
-        // (l_chunkLen) plus ((13) times ((i) minus (1))).
-        // Calculation 4:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 5:
-        // (l_chunkLen) plus ((13) times (i)).
-        // Calculation 6:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk]=SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk],0,l_chunkLen+$D*(i-1))+Save_ColorChar(l_sid,l_bit)+SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk],l_chunkLen+$D*i,StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk])) // $D = 13
         set i=i-1
     endloop
@@ -711,22 +642,8 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
         exitwhen i<=0
         // (l_checksum) minus (((l_checksum) divided by (64); drop the remainder) times (64)).
         set l_bit=l_checksum-(l_checksum/ 64)*64
-        // (l_bit) plus (1).
         set l_tail=SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_bit,l_bit+1)+l_tail
-        // (l_checksum) divided by (64); drop the remainder.
         set l_checksum=l_checksum/ 64
-        // Calculation 1:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 2:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 3:
-        // (l_chunkLen) plus ((13) times ((i) minus (1))).
-        // Calculation 4:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
-        // Calculation 5:
-        // (l_chunkLen) plus ((13) times (i)).
-        // Calculation 6:
-        // (udg_SaveChunkBase at position l_sid) plus (l_chunk).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk]=SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk],0,l_chunkLen+$D*(i-1))+Save_ColorChar(l_sid,l_bit)+SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk],l_chunkLen+$D*i,StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+l_chunk])) // $D = 13
         set i=i-1
     endloop
@@ -741,7 +658,6 @@ function Save_DisplayCode takes integer l_sid returns nothing
     call DisplayTimedTextToPlayer(udg_SavePlayer[l_sid],0,0,60,"Your save code is: \r\n")
     loop
         exitwhen i>udg_SaveChunkIndex[l_sid]
-        // (udg_SaveChunkBase at position l_sid) plus (i).
         call DisplayTimedTextToPlayer(udg_SavePlayer[l_sid],0,0,60,udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+i])
         set i=i+1
     endloop
@@ -757,7 +673,6 @@ function Save_Finish takes integer l_sid,boolean l_withFlags returns nothing
     local integer l_charIdx
     local integer i=3
     if(udg_CodeBits[l_sid]>0)then
-        // (6) minus (udg_CodeBits at position l_sid).
         call Save_WriteBits(l_sid,0,6-udg_CodeBits[l_sid])
     endif
     set l_checksum=Trig_Cmd_Load_Code_ExpectedChecksum(l_sid)
@@ -766,66 +681,40 @@ function Save_Finish takes integer l_sid,boolean l_withFlags returns nothing
         exitwhen i<=0
         // (l_checksum) minus (((l_checksum) divided by (64); drop the remainder) times (64)).
         set l_charIdx=l_checksum-(l_checksum/ 64)*64
-        // (l_charIdx) plus (1).
         set udg_SaveCodePlain[l_sid]=SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_charIdx,l_charIdx+1)+udg_SaveCodePlain[l_sid]
-        // (l_checksum) divided by (64); drop the remainder.
         set l_checksum=l_checksum/ 64
-        // Calculation 1:
-        // (13) times (i).
-        // Calculation 2:
-        // (13) times ((i) plus (1)).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]]=SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]],0,$D*i)+Save_ColorChar(l_sid,l_charIdx)+SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]],$D*(i+1),StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]])) // $D = 13
         set i=i-1
     endloop
     if(l_withFlags)then
-        // Calculation 1:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
-        // Calculation 2:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]+"|c0016D116"+"("+"|r"
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
         if(StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]])>=935)then
             set udg_SaveChunkIndex[l_sid]=udg_SaveChunkIndex[l_sid]+1
-            // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
             set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=""
         endif
         set udg_SaveCodePlain[l_sid]=udg_SaveCodePlain[l_sid]+"("
         call Save_EncodeUnitFlags(l_sid,l_checksumCopy)
-        // Calculation 1:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
-        // Calculation 2:
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
         set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]+"|c0016D116"+")"+"|r"
-        // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
         if(StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]])>=$3E8)then // $3E8 = 1000
             set udg_SaveChunkIndex[l_sid]=udg_SaveChunkIndex[l_sid]+1
-            // (udg_SaveChunkBase at position l_sid) plus (udg_SaveChunkIndex at position l_sid).
             set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]+udg_SaveChunkIndex[l_sid]]=""
         endif
         set udg_SaveCodePlain[l_sid]=udg_SaveCodePlain[l_sid]+")"
     endif
-    // (udg_SaveVersion at position l_sid) plus (1).
     set udg_SaveCodePlain[l_sid]=SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",udg_SaveVersion[l_sid],udg_SaveVersion[l_sid]+1)+udg_SaveCodePlain[l_sid]
     set udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]]=Save_ColorChar(l_sid,udg_SaveVersion[l_sid])+SubString(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]],$D,StringLength(udg_SaveCodeChunk[udg_SaveChunkBase[l_sid]])) // $D = 13
     call Save_DisplayCode(l_sid)
 endfunction
 
 function Save_WriteCode takes player p,boolean l_toFile,string l_fileName returns nothing
-    // Starting value for l_hasArmory:
-    // (GetPlayerId(p)) plus (1).
     local boolean l_hasArmory=udg_ArmoryItemCount[GetPlayerId(p)+1]>0
-    // Starting value for l_version:
-    // (6) plus (Util_BoolToInt(l_hasArmory)).
     local integer l_version=6+Util_BoolToInt(l_hasArmory)
     local integer l_stream=Save_Begin(l_version,p,false)
     local integer i=0
     local integer l_pid=GetPlayerId(p)
     local boolean l_gayaMaxed=false
-    // Starting value for l_ngLevel:
-    // (l_pid) plus (1).
     local integer l_ngLevel=udg_NewGamePlusLevel[l_pid+1]
     local boolean l_ngBit4=(l_ngLevel<4 or l_ngLevel>=9)and not IsPlayerInForce(p,udg_CheaterForce)
-    // (l_pid) plus (1).
     if(IsPlayerInForce(p,udg_TitleForce[52])and GetHeroLevel(udg_SpiritOfGaya[l_pid+1])>=99)then
         call Save_WriteBits(l_stream,1,1)
         set l_gayaMaxed=true
@@ -839,42 +728,33 @@ function Save_WriteCode takes player p,boolean l_toFile,string l_fileName return
         call Save_PushJobLevel(l_stream,udg_JobUnitType[i])
         set i=i+1
     endloop
-    // (l_pid) plus (1).
     if(GetUnitAbilityLevel(udg_FreelancerHero[l_pid+1],'A02F')>=4)then // 'A02F': ability "Mastery"
         call Save_PushLevel(l_stream,'d')
     else
-        // (l_pid) plus (1).
         call Save_PushUnitLevel(l_stream,udg_FreelancerHero[l_pid+1])
     endif
     if(l_gayaMaxed)then
         call Save_EncodeLevels(l_stream)
     else
-        // (l_pid) plus (1).
         call Save_PushUnitLevel(l_stream,udg_SpiritOfGaya[l_pid+1])
         call Save_EncodeLevels(l_stream)
         if GetPlayerTechCount(p,'Resi',true)>0 then // 'Resi': upgrade "Buy from Pandaren Spiritualist (1500 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A0B4'),2) // 'A0B4': ability "Break Stun"
         else
             call Save_WriteBits(l_stream,0,2)
         endif
         if GetPlayerTechCount(p,'R00F',true)>0 then // 'R00F': upgrade "Buy from Pandaren Spiritualist (3000 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02K'),2) // 'A02K': ability "Mana Transfer"
         else
             call Save_WriteBits(l_stream,0,2)
         endif
         if GetPlayerTechCount(p,'R00G',true)>0 then // 'R00G': upgrade "Buy from Pandaren Spiritualist (6000 Gold + 1 Shard)"
-            // (l_pid) plus (1).
             call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A02L'),2) // 'A02L': ability "Mega Heal"
         else
             call Save_WriteBits(l_stream,0,2)
         endif
-        // (l_pid) plus (1).
         call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A058'),1) // 'A058': ability "Tarugaya"
-        // (l_pid) plus (1).
         call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'S004'),1) // 'S004': ability "Sukugaya"
-        // (l_pid) plus (1).
         call Save_WriteBits(l_stream,GetUnitAbilityLevel(udg_SpiritOfGaya[l_pid+1],'A07E'),1) // 'A07E': ability "Rakugaya"
     endif
     if l_ngBit4 then
@@ -883,9 +763,7 @@ function Save_WriteCode takes player p,boolean l_toFile,string l_fileName return
         call Save_WriteBits(l_stream,0,1)
     endif
     call Save_EncodeInventory(l_stream,Player_GetHero(p))
-    // (l_pid) plus (1).
     call Save_EncodeInventory(l_stream,udg_SpiritOfGaya[l_pid+1])
-    // (l_pid) plus (1).
     call Save_EncodeInventory(l_stream,udg_PlayerHouse[l_pid+1])
     call Save_PushTechLevel(l_stream,'R000') // 'R000': upgrade "Tools"
     call Save_PushTechLevel(l_stream,'R001') // 'R001': upgrade "Sword"
@@ -978,12 +856,10 @@ function Save_WriteCode takes player p,boolean l_toFile,string l_fileName return
     endif
     call Save_PushForceFlag(l_stream,udg_TitleForce[55])
     call Save_WriteBits(l_stream,0,1)
-    // (l_pid) plus (1).
     call Save_WriteBits(l_stream,udg_SpeedrunLevel[l_pid+1],4)
     call Save_WriteBits(l_stream,0,1)
     call Save_WriteBits(l_stream,0,1)
     if(udg_MiracleStage[0]==-1)then
-        // (l_pid) plus (1).
         call Save_WriteBits(l_stream,udg_MiracleStage[l_pid+1],2)
     else
         call Save_WriteBits(l_stream,udg_MiracleStage[0],2)
@@ -1001,10 +877,6 @@ function Save_WriteCode takes player p,boolean l_toFile,string l_fileName return
     if(l_toFile)then
         call Save_WriteCodeFile(udg_SaveCodePlain[l_stream],p,"Last save")
         if(l_fileName==null or l_fileName=="")then
-            // Calculation 1:
-            // (l_pid) plus (1).
-            // Calculation 2:
-            // (l_pid) plus (1).
             set l_fileName=udg_PlayerName[l_pid+1]+I2S(udg_Difficulty)+" lv"+I2S(udg_TotalJobLevel[l_pid+1])
         endif
         call Save_WriteCodeFile(udg_SaveCodePlain[l_stream],p,l_fileName)
@@ -1020,20 +892,12 @@ function Save_WriteNewGameCode takes player p,boolean l_isMinus returns nothing
     local string l_fileName
     local integer i=0
     local integer l_pid=GetPlayerId(p)
-    // Starting value for l_hasArmory:
-    // Calculation 1:
-    // (l_pid) plus (1).
-    // Calculation 2:
-    // (l_pid) plus (1).
     local boolean l_hasArmory=not l_isMinus and(udg_ArmoryItemCount[l_pid+1]>0 and udg_Difficulty>1 and not(udg_Difficulty==6 and udg_CodeDifficulty[l_pid+1]==1))
-    // Starting value for l_version:
-    // (6) plus (Util_BoolToInt(l_hasArmory)).
     local integer l_version=6+Util_BoolToInt(l_hasArmory)
     local integer l_stream=Save_Begin(l_version,p,true)
     local integer l_ngLevel=0
     local boolean l_ngBit4=false
     if not l_isMinus then
-        // (udg_NewGamePlusLevel at position (l_pid) plus (1)) plus (1).
         set l_ngLevel=udg_NewGamePlusLevel[l_pid+1]+1
         if(IsPlayerInForce(p,udg_LegendaryGuardianForce))then
             set l_ngLevel=l_ngLevel+1
@@ -1110,7 +974,6 @@ function Save_WriteNewGameCode takes player p,boolean l_isMinus returns nothing
     call Save_WriteBits(l_stream,0,1)
     call Save_WriteBits(l_stream,0,1)
     if(udg_MiracleStage[0]==-1)then
-        // (l_pid) plus (1).
         call Save_WriteBits(l_stream,udg_MiracleStage[l_pid+1],2)
     else
         call Save_WriteBits(l_stream,udg_MiracleStage[0],2)
@@ -1120,7 +983,6 @@ function Save_WriteNewGameCode takes player p,boolean l_isMinus returns nothing
         call Save_WriteBits(l_stream,1,1)
         call Save_WriteBits(l_stream,0,1)
         call Save_WriteBits(l_stream,0,1)
-        // (l_pid) plus (1).
         set l_fileName=udg_PlayerName[l_pid+1]+" ngminus"
         call Save_Finish(l_stream,false)
     else
@@ -1132,10 +994,6 @@ function Save_WriteNewGameCode takes player p,boolean l_isMinus returns nothing
         call Save_PushForceFlag(l_stream,udg_LegendaryGuardianForce)
         // (l_pid) plus (1).
         set l_fileName=udg_PlayerName[l_pid+1]+" ngplus"+I2S(l_ngLevel)
-        // Calculation 1:
-        // (l_pid) plus (1).
-        // Calculation 2:
-        // (l_pid) plus (1).
         if(udg_Difficulty==5 or(udg_Difficulty==6 and(udg_CodeDifficulty[l_pid+1]==0 or udg_CodeDifficulty[l_pid+1]==3)))then
             call Save_WriteBits(l_stream,1,1)
         else
@@ -1169,7 +1027,6 @@ function Save_OnNewGameMinus takes nothing returns nothing
 endfunction
 
 function Save_CondNewGamePlus takes nothing returns boolean
-    // (GetPlayerId(the triggering player)) plus (1).
     return(IsPlayerInForce(GetTriggerPlayer(),udg_TitleForce[$E]))and(udg_NewGamePlusLevel[GetPlayerId(GetTriggerPlayer())+1]<$A)and( not(IsPlayerInForce(GetTriggerPlayer(),udg_CheaterForce))) // $E = 14; $A = 10
 endfunction
 
@@ -1209,7 +1066,6 @@ function Save_Autosave takes nothing returns nothing
         call Save_WriteCode(Player(udg_AutosaveNextPlayer),true,"autosave")
         set udg_IsAutosave=FALSE
     endif
-    // (udg_AutosaveNextPlayer) plus (1).
     if(udg_AutosaveNextPlayer+1>=udg_AutosavePlayerCount)then
         set udg_AutosaveNextPlayer=0
     else

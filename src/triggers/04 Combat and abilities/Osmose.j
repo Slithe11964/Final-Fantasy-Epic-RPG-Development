@@ -57,18 +57,12 @@ function Trig_Osmose_Cast_Actions takes nothing returns nothing
         call DestroyForce(udg_TempForce)
         return
     endif
-    // ((GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) plus (4)) times (40).
     set l_tempInteger=((GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+4)*40)
     if(Trig_Osmose_Cast_IsCasterHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    // Result 1: l_tempInteger treated as a decimal-capable number.
-    // Result 2: (result 1) times (Prof_StaffPower(the triggering unit)).
-    // Result 3: (result 2) with its decimal part removed.
     set l_tempInteger=R2I((I2R(l_tempInteger)*Prof_StaffPower(GetTriggerUnit())))
     set udg_DmgFlagManaDamage=true
-    // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),I2R(l_tempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     if(Trig_Osmose_Cast_DrainExceedsTargetMana())then
         set udg_LastDamageDealt=udg_TempReal
@@ -78,7 +72,6 @@ function Trig_Osmose_Cast_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // (current mana of the triggering unit) plus (udg_LastDamageDealt).
     call SetUnitManaBJ(GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MANA,GetTriggerUnit())+udg_LastDamageDealt))
     call Text_FloatingDamage(GetTriggerUnit(),true,0,udg_LastDamageDealt,true,0)
 endfunction

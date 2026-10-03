@@ -185,16 +185,13 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_TitleChroniclePoints[54]=5
     set udg_TitleChroniclePoints[55]=$A // $A = 10
     set udg_SpeedrunTitleBase=60
-    // (udg_SpeedrunTitleBase) plus (1).
     set bj_forLoopAIndex=(udg_SpeedrunTitleBase+1)
-    // (udg_SpeedrunTitleBase) plus (5).
     set bj_forLoopAIndexEnd=(udg_SpeedrunTitleBase+5)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         set udg_TitleChroniclePoints[GetForLoopIndexA()]=1
         set udg_TitleChronicleIndex[GetForLoopIndexA()]=$B // $B = 11
         set udg_BonusValue[GetForLoopIndexA()]=5
-        // (loop counter A) minus (udg_SpeedrunTitleBase).
         set udg_TitleName[GetForLoopIndexA()]=("Speedrunner Level "+I2S((GetForLoopIndexA()-udg_SpeedrunTitleBase)))
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
@@ -318,30 +315,10 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_BonusText[56]="There is no longer any penalty for death and you always revive with full HP and MP!"
     set udg_BonusText[57]="Your base damage increases by 20 and defense by 5!"
     set udg_BonusText[58]="Your base damage increases by 20 and defense by 5!"
-    // Calculation 1:
-    // (udg_SpeedrunTitleBase) plus (1).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (1).
     set udg_BonusText[(udg_SpeedrunTitleBase+1)]=(udg_BonusText[(udg_SpeedrunTitleBase+1)]+" Next Speedrun Challenge: Defeat Zalera within 8 minutes of game time.")
-    // Calculation 1:
-    // (udg_SpeedrunTitleBase) plus (2).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (2).
     set udg_BonusText[(udg_SpeedrunTitleBase+2)]=(udg_BonusText[(udg_SpeedrunTitleBase+2)]+" Next Speedrun Challenge: Defeat Zeromus within 15 minutes of game time.")
-    // Calculation 1:
-    // (udg_SpeedrunTitleBase) plus (3).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (3).
     set udg_BonusText[(udg_SpeedrunTitleBase+3)]=(udg_BonusText[(udg_SpeedrunTitleBase+3)]+" Next Speedrun Challenge: Defeat Hashmalum within 20 minutes of game time.")
-    // Calculation 1:
-    // (udg_SpeedrunTitleBase) plus (4).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (4).
     set udg_BonusText[(udg_SpeedrunTitleBase+4)]=(udg_BonusText[(udg_SpeedrunTitleBase+4)]+" Next Speedrun Challenge: Defeat Echele (Level 50 Final Form) within 30 minutes of game time.")
-    // Calculation 1:
-    // (udg_SpeedrunTitleBase) plus (5).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (5).
     set udg_BonusText[(udg_SpeedrunTitleBase+5)]=(udg_BonusText[(udg_SpeedrunTitleBase+5)]+" You cleared all speedrun challenges! Congratulations!")
     call ForForce(udg_ActivePlayers,function Trig_Titles_Init_HideChronicleAbilities)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -388,7 +365,6 @@ function Trig_Titles_CheckAll_GayaMaster_Met takes nothing returns boolean
 endfunction
 
 function Trig_Titles_CheckAll_HighGuardian_Met takes nothing returns boolean
-    // (udg_JobCount) plus (1).
     return(GetPlayerState(udg_TempPlayer,PLAYER_STATE_RESOURCE_FOOD_USED)>=(udg_JobCount+1))
 endfunction
 
@@ -552,30 +528,13 @@ function Trig_Titles_CheckAll_Actions takes nothing returns nothing
         call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,1)
         call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,1)
         call SetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer),GetHeroLevel(Player_GetHero(udg_TempPlayer))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
     endif
     if(Trig_Titles_CheckAll_HasSpeedrunClears())then
-        // (udg_SpeedrunTitleBase) plus (1).
         set udg_TempInteger=(udg_SpeedrunTitleBase+1)
         loop
-            // (udg_SpeedrunTitleBase) plus (udg_SpeedrunLevel at position GetConvertedPlayerId(udg_TempPlayer)).
             exitwhen udg_TempInteger>(udg_SpeedrunTitleBase+udg_SpeedrunLevel[GetConvertedPlayerId(udg_TempPlayer)])
             call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[udg_TempInteger])
             call ConditionalTriggerExecute(gg_trg_Title_Grant)
@@ -653,7 +612,6 @@ function Trig_Titles_CheckBasic_Grindmaster_Ready takes nothing returns boolean
 endfunction
 
 function Trig_Titles_CheckBasic_HighGuardian_Ready takes nothing returns boolean
-    // (udg_JobCount) plus (1).
     return(IsPlayerInForce(udg_TempPlayer,udg_TitleForce[$E])==false)and(GetPlayerState(udg_TempPlayer,PLAYER_STATE_RESOURCE_FOOD_USED)>=(udg_JobCount+1)) // $E = 14
 endfunction
 

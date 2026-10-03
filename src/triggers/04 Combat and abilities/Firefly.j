@@ -8,10 +8,7 @@ globals
 endglobals
 
 function Trig_Firefly_Drops_Cond_DropDue takes nothing returns boolean
-    // Calculation 1:
     // The remainder after dividing (udg_FireflyDestCount) by (2).
-    // Calculation 2:
-    // (9) minus ((udg_FireflyDestCount) divided by (2); drop the remainder).
     return(ModuloInteger(udg_FireflyDestCount,2)==0)and(CountPlayersInForceBJ(udg_PlayingPlayers)>=(9-(udg_FireflyDestCount/ 2)))
 endfunction
 
@@ -53,23 +50,14 @@ function Trig_Firefly_Redeem_Actions takes nothing returns nothing
     local force l_tempForce
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Firefly_Redeem_Cond_RedeemConfirmed())then
-        // (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) with its decimal part
-        // removed.
         call DisplayTimedTextToForce(l_tempForce,10.,("|cffffcc00You get "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp.|r")))
         call DestroyForce(l_tempForce)
-        // Result 1: (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) times
-        // (udg_SecondaryXPRate).
-        // Result 2: (result 1) with its decimal part removed.
         call AddHeroXPSwapped(R2I((udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*udg_SecondaryXPRate)),udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],true)
-        // (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) with its decimal part
-        // removed.
         call AddHeroXPSwapped(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]),Player_GetHero(GetOwningPlayer(GetTriggerUnit())),true)
         set udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=.0
         call StartTimerBJ(udg_ExpBankTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,.01)
     else
         if(Trig_Firefly_Redeem_Cond_HasStoredExp())then
-            // (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) with its decimal part
-            // removed.
             call DisplayTimedTextToForce(l_tempForce,5.,("You can redeem "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp from the Firefly onto your current hero. Use it again to proceed.")))
             call StartTimerBJ(udg_ExpBankTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,6.)
         else

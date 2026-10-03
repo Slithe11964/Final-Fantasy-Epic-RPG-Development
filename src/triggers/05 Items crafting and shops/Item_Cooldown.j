@@ -6,7 +6,6 @@ endglobals
 
 // ---- Item ----
 function Trig_Item_Cooldown_Start_StartItemCooldown takes player p,real l_dur returns nothing
-    // (GetPlayerId(p)) plus (1).
     call TimerStart(udg_SpellCooldownTimer[GetPlayerId(p)+1],l_dur,false,null)
 endfunction
 

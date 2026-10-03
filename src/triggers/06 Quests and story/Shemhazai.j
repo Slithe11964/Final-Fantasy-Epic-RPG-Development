@@ -149,7 +149,6 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     local location l_tempPoint
     local location l_tempPoint2
     set l_tempPoint=GetUnitLoc(gg_unit_U00I_0210)
-    // (facing in degrees of gg_unit_U00I_0210) plus (330).
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+330.))
     call CreateNUnitsAtLoc(1,'H003',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H003': unit "Knight"; $B = 11
     call RemoveLocation(l_tempPoint2)
@@ -172,15 +171,12 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped(udg_JobSkill[$A],GetLastCreatedUnit(),5) // $A = 10
     call UnitAddAbilityBJ('A0SF',GetLastCreatedUnit()) // 'A0SF': ability "Command AI"
     call SetUnitAbilityLevelSwapped('A0SF',GetLastCreatedUnit(),17) // 'A0SF': ability "Command AI"
-    // (BlzGetUnitArmor(GetLastCreatedUnit())) plus (80).
     call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())+80.))
     call UnitAddAbilityBJ('A0I0',GetLastCreatedUnit()) // 'A0I0': ability "Magicdamage Reduction"
     call ModifyHeroStat(bj_HEROSTAT_STR,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
     call ModifyHeroStat(bj_HEROSTAT_AGI,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_INT,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
-    // ((maximum health of GetLastCreatedUnit()) plus (750)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+750)*2))
-    // (facing in degrees of gg_unit_U00I_0210) plus (30).
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+30.))
     call CreateNUnitsAtLoc(1,'H001',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H001': unit "Archer"; $B = 11
     call RemoveLocation(l_tempPoint2)
@@ -203,15 +199,12 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped(udg_JobSkill[$F],GetLastCreatedUnit(),5) // $F = 15
     call UnitAddAbilityBJ('A0SF',GetLastCreatedUnit()) // 'A0SF': ability "Command AI"
     call SetUnitAbilityLevelSwapped('A0SF',GetLastCreatedUnit(),2) // 'A0SF': ability "Command AI"
-    // (BlzGetUnitArmor(GetLastCreatedUnit())) plus (60).
     call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())+60.))
     call UnitAddAbilityBJ('A0I0',GetLastCreatedUnit()) // 'A0I0': ability "Magicdamage Reduction"
     call ModifyHeroStat(bj_HEROSTAT_STR,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_AGI,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
     call ModifyHeroStat(bj_HEROSTAT_INT,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
-    // ((maximum health of GetLastCreatedUnit()) plus (1500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+$5DC)*2)) // $5DC = 1500
-    // (facing in degrees of gg_unit_U00I_0210) plus (270).
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+270.))
     call CreateNUnitsAtLoc(1,'H004',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H004': unit "Wizard"; $B = 11
     call RemoveLocation(l_tempPoint2)
@@ -234,15 +227,12 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped(udg_JobSkill[60],GetLastCreatedUnit(),5)
     call UnitAddAbilityBJ('A0SF',GetLastCreatedUnit()) // 'A0SF': ability "Command AI"
     call SetUnitAbilityLevelSwapped('A0SF',GetLastCreatedUnit(),24) // 'A0SF': ability "Command AI"
-    // (BlzGetUnitArmor(GetLastCreatedUnit())) plus (40).
     call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())+40.))
     call UnitAddAbilityBJ('A0ET',GetLastCreatedUnit()) // 'A0ET': ability "Magicdamage Reduction"
     call ModifyHeroStat(bj_HEROSTAT_STR,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_AGI,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_INT,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
-    // ((maximum health of GetLastCreatedUnit()) plus (500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+500)*2))
-    // (facing in degrees of gg_unit_U00I_0210) plus (90).
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+90.))
     call CreateNUnitsAtLoc(1,'H005',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H005': unit "Priest"; $B = 11
     call RemoveLocation(l_tempPoint2)
@@ -261,13 +251,11 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A08H',GetLastCreatedUnit()) // 'A08H': ability "Shell"
     call UnitAddAbilityBJ(udg_JobSkill[65],GetLastCreatedUnit())
     call SetUnitAbilityLevelSwapped(udg_JobSkill[65],GetLastCreatedUnit(),5)
-    // (BlzGetUnitArmor(GetLastCreatedUnit())) plus (40).
     call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())+40.))
     call UnitAddAbilityBJ('A0ET',GetLastCreatedUnit()) // 'A0ET': ability "Magicdamage Reduction"
     call ModifyHeroStat(bj_HEROSTAT_STR,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_AGI,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$96) // $96 = 150
     call ModifyHeroStat(bj_HEROSTAT_INT,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
-    // ((maximum health of GetLastCreatedUnit()) plus (500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+500)*2))
     call RemoveLocation(l_tempPoint)
     set l_tempPoint=null
@@ -435,7 +423,6 @@ function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=3
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A) times (90) treated as a decimal-capable number.
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,220.,I2R((GetForLoopIndexA()*90)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -464,11 +451,7 @@ function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
                     set bj_forLoopBIndex=bj_forLoopBIndex+1
                 endloop
             endif
-            // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),GetUnitLifePercent(GetTriggerUnit()))
-            // Result 1: current mana divided by maximum mana for the triggering unit, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
             call SetUnitManaPercentBJ(GetLastCreatedUnit(),GetUnitManaPercent(GetTriggerUnit()))
         endif
         call RemoveLocation(udg_TempPoint2)

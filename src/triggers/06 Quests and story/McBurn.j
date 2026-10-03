@@ -41,12 +41,6 @@ endfunction
 
 function Trig_McBurn_Heat_Color_TintByLife takes nothing returns nothing
     if(Trig_McBurn_Heat_Color_Cond_EnumHeating())then
-        // Calculation 1:
-        // Result 1: current health divided by maximum health for the unit being visited, times 100 (or 0 if the unit
-        // is missing or its maximum is 0).
-        // Calculation 2:
-        // Result 1: current health divided by maximum health for the unit being visited, times 100 (or 0 if the unit
-        // is missing or its maximum is 0).
         call SetUnitVertexColorBJ(GetEnumUnit(),'d',GetUnitLifePercent(GetEnumUnit()),GetUnitLifePercent(GetEnumUnit()),0)
     endif
 endfunction
@@ -139,8 +133,6 @@ function Trig_McBurn_Volcano_ClearCameraShake takes nothing returns nothing
 endfunction
 
 function Trig_McBurn_Volcano_Cond_NotEnraged takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(UnitHasBuffBJ(GetTriggerUnit(),'B05V')==false)and(GetUnitLifePercent(GetTriggerUnit())>40.) // 'B05V': buff tooltip "Disease"
 endfunction
 
@@ -150,10 +142,7 @@ function Trig_McBurn_Volcano_Actions takes nothing returns nothing
     local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    // Calculation 1:
     // A random decimal number between 256 and 512.
-    // Calculation 2:
-    // (facing in degrees of the triggering unit) plus (a random decimal number between 270 and 450).
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,GetRandomReal(256.,512.),(GetUnitFacing(GetTriggerUnit())+GetRandomReal(270.,450.)))
     call RemoveLocation(l_tempPoint)
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,l_tempPoint2) // 'h01B': unit "Proxy Dummy"

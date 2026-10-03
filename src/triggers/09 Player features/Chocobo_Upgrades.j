@@ -273,7 +273,6 @@ function Trig_Chocobo_Defend_Upgrade_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_TempForce,5.,"Chocobo Defending is already maxed out!")
         call DestroyForce(udg_TempForce)
     else
-        // (GetPlayerTechCountSimple('R00P', GetOwningPlayer(the triggering unit))) plus (1).
         call SetPlayerTechResearchedSwap('R00P',(GetPlayerTechCountSimple('R00P',GetOwningPlayer(GetTriggerUnit()))+1),GetOwningPlayer(GetTriggerUnit())) // 'R00P': upgrade "Defend Chocobos"
     endif
 endfunction

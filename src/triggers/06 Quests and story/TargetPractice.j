@@ -50,7 +50,6 @@ function Trig_TargetPractice_Init_Actions takes nothing returns nothing
             call TriggerRegisterUnitEvent(gg_trg_TargetPractice_TargetHit,GetLastCreatedUnit(),EVENT_UNIT_DAMAGED)
             set bj_forLoopBIndex=bj_forLoopBIndex+1
         endloop
-        // (the remainder after dividing (l_tempInteger) by (3)) plus (1).
         set l_tempInteger=(ModuloInteger(l_tempInteger,3)+1)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
@@ -62,7 +61,6 @@ function Trig_TargetPractice_Begin_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_TargetPractice_Begin_Cond_HeroTooFar takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>=512.)
 endfunction
 

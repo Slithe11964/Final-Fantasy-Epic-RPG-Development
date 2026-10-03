@@ -30,7 +30,6 @@ endfunction
 
 function Trig_Cloak_UpdateStats_Cond_BeltStacksOdd takes nothing returns boolean
     // The remainder after dividing (udg_BeltStacks at position GetConvertedPlayerId(the player being visited)) by
-    // (2).
     return(ModuloInteger(udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())],2)==1)
 endfunction
 
@@ -68,9 +67,7 @@ function Trig_Cloak_UpdateStats_UpdateCloakDigits takes nothing returns nothing
             call UnitAddAbilityBJ('A0Z7',Player_GetHero(GetEnumPlayer())) // 'A0Z7': ability "Cloak"
             call UnitAddAbilityBJ('A15T',Player_GetHero(GetEnumPlayer())) // 'A15T': ability "Cloak"
         endif
-        // (the remainder after dividing (udg_QuestsCompleted) by (10)) plus (1).
         call SetUnitAbilityLevelSwapped('A0Z7',Player_GetHero(GetEnumPlayer()),(ModuloInteger(udg_QuestsCompleted,$A)+1)) // 'A0Z7': ability "Cloak"; $A = 10
-        // ((udg_QuestsCompleted) divided by (10); drop the remainder) plus (1).
         call SetUnitAbilityLevelSwapped('A15T',Player_GetHero(GetEnumPlayer()),((udg_QuestsCompleted/ $A)+1)) // 'A15T': ability "Cloak"; $A = 10
         set udg_TempBoolean=true
     else
@@ -83,14 +80,7 @@ function Trig_Cloak_UpdateStats_UpdateCloakDigits takes nothing returns nothing
                 call SetUnitAbilityLevelSwapped('A0Z7',Player_GetHero(GetEnumPlayer()),1) // 'A0Z7': ability "Cloak"
                 call SetUnitAbilityLevelSwapped('A15T',Player_GetHero(GetEnumPlayer()),$B) // 'A15T': ability "Cloak"; $B = 11
             else
-                // Result 1: (udg_PlayerKillCount at position GetConvertedPlayerId(the player being visited)) divided by (20);
-                // drop the remainder.
-                // Result 2: the remainder after dividing (result 1) by (10).
-                // Result 3: (result 2) plus (1).
                 call SetUnitAbilityLevelSwapped('A0Z7',Player_GetHero(GetEnumPlayer()),(ModuloInteger((udg_PlayerKillCount[GetConvertedPlayerId(GetEnumPlayer())]/ 20),$A)+1)) // 'A0Z7': ability "Cloak"; $A = 10
-                // Result 1: (udg_PlayerKillCount at position GetConvertedPlayerId(the player being visited)) divided by (200);
-                // drop the remainder.
-                // Result 2: (result 1) plus (1).
                 call SetUnitAbilityLevelSwapped('A15T',Player_GetHero(GetEnumPlayer()),((udg_PlayerKillCount[GetConvertedPlayerId(GetEnumPlayer())]/ $C8)+1)) // 'A15T': ability "Cloak"; $C8 = 200
             endif
             set udg_TempBoolean=true
@@ -109,9 +99,6 @@ function Trig_Cloak_UpdateStats_UpdateCloakDigits takes nothing returns nothing
                     else
                         call SetUnitAbilityLevelSwapped('A0Z7',Player_GetHero(GetEnumPlayer()),1) // 'A0Z7': ability "Cloak"
                     endif
-                    // Result 1: (udg_BeltStacks at position GetConvertedPlayerId(the player being visited)) divided by (2); drop
-                    // the remainder.
-                    // Result 2: (result 1) plus (1).
                     call SetUnitAbilityLevelSwapped('A15T',Player_GetHero(GetEnumPlayer()),((udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())]/ 2)+1)) // 'A15T': ability "Cloak"
                 endif
                 set udg_TempBoolean=true

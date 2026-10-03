@@ -33,18 +33,12 @@ function Trig_HolySwordsman_Eclipse_Actions takes nothing returns nothing
     call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (2).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
     if(Trig_HolySwordsman_Eclipse_CasterIsHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (5)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5))
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    // (0.1) times ((10) plus (Prof_GetHybridLevel(the triggering unit))).
     set l_tempReal=.1*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(7,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -104,7 +98,6 @@ endfunction
 
 function Trig_HolySwordsman_Finisher_DamageEnum takes nothing returns nothing
     set udg_IsPhysicalAttack=true
-    // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),I2R(udg_TempInteger),true,false,ATTACK_TYPE_HERO,DAMAGE_TYPE_NORMAL,WEAPON_TYPE_METAL_HEAVY_SLICE)
 endfunction
 
@@ -120,9 +113,6 @@ function Trig_HolySwordsman_Finisher_Actions takes nothing returns nothing
     if(Trig_HolySwordsman_Finisher_HasEnduranceAura())then
         set udg_TempInteger=20
     else
-        // Result 1: (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) plus (25).
-        // Result 2: a random whole number from GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)
-        // through result 1.
         set udg_TempInteger=GetRandomInt(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+25))
     endif
     if(Trig_HolySwordsman_Finisher_RollFailed())then
@@ -141,9 +131,7 @@ function Trig_HolySwordsman_Finisher_Actions takes nothing returns nothing
             set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
             set udg_TempGroup=Group_UnitsInRangeOfLoc(300.,udg_TempPoint,Condition(function Trig_HolySwordsman_Finisher_FilterTarget))
             call RemoveLocation(udg_TempPoint)
-            // ((Strength of the triggering unit) times (3)) plus (200).
             set udg_TempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*3)+$C8) // $C8 = 200
-            // (udg_TempInteger) times ((10) plus (Prof_GetHybridLevel(the triggering unit))).
             set udg_TempInteger=udg_TempInteger*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
             call ForGroupBJ(udg_TempGroup,function Trig_HolySwordsman_Finisher_DamageEnum)
             call DestroyGroup(udg_TempGroup)
@@ -155,13 +143,10 @@ function Trig_HolySwordsman_Finisher_Actions takes nothing returns nothing
                 call SetUnitAnimation(GetTriggerUnit(),"attack")
                 call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-                // ((Strength of the triggering unit) times (2)) plus (50).
                 set udg_TempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*2)+50)
-                // (udg_TempInteger) times ((10) plus (Prof_GetHybridLevel(the triggering unit))).
                 set udg_TempInteger=udg_TempInteger*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
                 set udg_IsPhysicalAttack=true
                 set udg_IgnoresReduction=true
-                // Udg_TempInteger treated as a decimal-capable number.
                 call UnitDamageTarget(GetTriggerUnit(),GetSpellTargetUnit(),I2R(udg_TempInteger),true,false,ATTACK_TYPE_HERO,DAMAGE_TYPE_NORMAL,WEAPON_TYPE_METAL_HEAVY_SLICE)
             else
                 if(Trig_HolySwordsman_Finisher_NoElementRecorded())then
@@ -174,7 +159,6 @@ function Trig_HolySwordsman_Finisher_Actions takes nothing returns nothing
                     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),2.)
                     call SetUnitAnimation(GetTriggerUnit(),"attack")
                     set udg_DmgFlagPure=true
-                    // (GetUnitAbilityLevelSwapped('A0PO', the triggering unit)) minus (1).
                     set udg_DamageElement=(GetUnitAbilityLevelSwapped('A0PO',GetTriggerUnit())-1) // 'A0PO': ability "Latest Used Element"
                     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),udg_EffectModelPath[udg_DamageElement])
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())

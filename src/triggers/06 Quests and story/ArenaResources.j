@@ -118,7 +118,6 @@ function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ArenaResources_ShipMove_Cond_LimmaTooFar takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>=3000.)
 endfunction
 
@@ -178,7 +177,6 @@ function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
     call RemoveUnit(udg_SupplyShip)
     call SetUnitOwner(gg_unit_e008_0132,Player(8),false)
     if(Trig_ArenaResources_ShipLost_Cond_CanReduceReward())then
-        // Decrease udg_ArenaEscortReward by 1000.
         set udg_ArenaEscortReward=(udg_ArenaEscortReward-$3E8) // $3E8 = 1000
     endif
     set l_tempPoint=GetRectCenter(gg_rct_232)
@@ -233,7 +231,6 @@ function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
         call Text_Say(gg_unit_e008_0132,"Thank you very much. The ship has been successfully escorted.",false)
         if(Trig_ArenaResources_Complete_Cond_ShipUndamaged())then
             call Text_Say(gg_unit_e008_0132,"Wow, it seems like none of the goods have been scratched in the slightest! Very impressive!",false)
-            // Increase udg_ArenaEscortReward by 2500.
             set udg_ArenaEscortReward=(udg_ArenaEscortReward+$9C4) // $9C4 = 2500
         endif
         call Reward_Give(udg_ArenaEscortReward,$DAC,gg_unit_e008_0132) // $DAC = 3500
@@ -241,7 +238,6 @@ function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
         call Cine_ExitAction()
     else
         if(Trig_ArenaResources_Complete_Cond_ShipUndamagedNoTalk())then
-            // Increase udg_ArenaEscortReward by 2500.
             set udg_ArenaEscortReward=(udg_ArenaEscortReward+$9C4) // $9C4 = 2500
         endif
         call Reward_Give(udg_ArenaEscortReward,$DAC,gg_unit_e008_0132) // $DAC = 3500

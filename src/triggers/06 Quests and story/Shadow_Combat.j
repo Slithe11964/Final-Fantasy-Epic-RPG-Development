@@ -36,7 +36,6 @@ function Trig_Shadow_FumaShuriken_Actions takes nothing returns nothing
     // Result 6: (CountPlayersInForceBJ(udg_PlayingPlayers)) plus (1).
     // Result 7: (result 5) divided by (result 6).
     set l_tempInteger=((((GetUnitLevel(GetTriggerUnit())+1)*'d')+((udg_ShadowLoyalty*udg_ShadowLoyalty)/ 2))/(CountPlayersInForceBJ(udg_PlayingPlayers)+1))
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)

@@ -84,7 +84,6 @@ function Trig_Boss_Gafgarion_Death_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=4
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (90).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(I2R(GetForLoopIndexA())*90.))
         call CreateNUnitsAtLoc(1,'u00D',Player(8),udg_TempPoint2,bj_UNIT_FACING) // 'u00D': unit "Death Ghost"
         call RemoveLocation(udg_TempPoint2)

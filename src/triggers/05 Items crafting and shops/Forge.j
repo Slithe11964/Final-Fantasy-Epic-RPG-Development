@@ -471,7 +471,6 @@ function Trig_Forge_Bali_Craft_Actions takes nothing returns nothing
                 call RemoveItem(udg_ForgeGearSlot)
                 set udg_ForgeGearSlot=null
                 if(Trig_Forge_Bali_Craft_Cond_MaterialHasCharges_Celestial())then
-                    // (item charges of udg_ForgeMaterialSlot) minus (1).
                     call SetItemCharges(udg_ForgeMaterialSlot,(GetItemCharges(udg_ForgeMaterialSlot)-1))
                     call UnitRemoveItemSwapped(udg_ForgeMaterialSlot,gg_unit_Hmbr_0140)
                     call SetItemPositionLoc(udg_ForgeMaterialSlot,udg_ForgeDropPoint)
@@ -506,7 +505,6 @@ function Trig_Forge_Bali_Craft_Actions takes nothing returns nothing
                 call RemoveItem(udg_ForgeGearSlot)
                 set udg_ForgeGearSlot=null
                 if(Trig_Forge_Bali_Craft_Cond_MaterialHasCharges_Normal())then
-                    // (item charges of udg_ForgeMaterialSlot) minus (1).
                     call SetItemCharges(udg_ForgeMaterialSlot,(GetItemCharges(udg_ForgeMaterialSlot)-1))
                     call UnitRemoveItemSwapped(udg_ForgeMaterialSlot,gg_unit_Hmbr_0140)
                     call SetItemPositionLoc(udg_ForgeMaterialSlot,udg_ForgeDropPoint)

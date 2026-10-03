@@ -16,11 +16,9 @@ function Trig_Recharge_OnKill_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",GetKillingUnitBJ(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     if(Trig_Recharge_OnKill_Cond_RechargeBoosted())then
-        // (current mana of the killing unit) plus (200).
         call SetUnitManaBJ(GetKillingUnitBJ(),(GetUnitStateSwap(UNIT_STATE_MANA,GetKillingUnitBJ())+200.))
         call Text_FloatingDamage(GetKillingUnit(),true,0,200.,true,0)
     else
-        // (current mana of the killing unit) plus (100).
         call SetUnitManaBJ(GetKillingUnitBJ(),(GetUnitStateSwap(UNIT_STATE_MANA,GetKillingUnitBJ())+100.))
         call Text_FloatingDamage(GetKillingUnit(),true,0,100.,true,0)
     endif

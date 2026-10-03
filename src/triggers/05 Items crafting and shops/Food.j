@@ -108,7 +108,6 @@ function Trig_Food_Effects_Actions takes nothing returns nothing
     if(l_pharma)then
         // Multiply the current healing by 1.5: 100 becomes 150, before any later adjustments.
         set l_heal=l_heal*1.5
-        // (currentMana) times (1.5).
         set currentMana=currentMana*1.5
         call ForGroup(g,function Trig_Food_Effects_CleanseEnum)
     endif

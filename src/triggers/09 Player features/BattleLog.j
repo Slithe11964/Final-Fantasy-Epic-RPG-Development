@@ -25,15 +25,12 @@ function BattleLog_Show takes string l_msg,unit t returns nothing
                 call DisplayTimedTextToPlayer(hp,0,0,5,l_msg)
             elseif(IsUnitVisible(t,tp))then
                 set h=Player_GetHero(hp)
-                // (x position of h) minus (tx).
                 set hx=GetUnitX(h)-tx
-                // (y position of h) minus (ty).
                 set hy=GetUnitY(h)-ty
                 // The square of (hx).
                 set hx=hx*hx
                 // The square of (hy).
                 set hy=hy*hy
-                // (hx) plus (hy).
                 if(hx+hy<$1E8480)then // $1E8480 = 2000000
                     call DisplayTimedTextToPlayer(hp,0,0,5,l_msg)
                 endif

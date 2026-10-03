@@ -12,8 +12,6 @@ endfunction
 function Trig_Item_Stack_Order_Actions takes nothing returns nothing
     local unit a=GetOrderedUnit()
     local item b=GetOrderTargetItem()
-    // Starting value for c:
-    // (GetIssuedOrderId()) minus (852002).
     local item c=UnitItemInSlot(a,(GetIssuedOrderId()-$D0022)) // $D0022 = 852002
     local integer d=GetItemCharges(b)
     local integer e=GetItemLevel(b)
@@ -29,9 +27,7 @@ function Trig_Item_Stack_Order_Actions takes nothing returns nothing
                 if(not IsItemOwned(c))then
                     call RemoveItem(c)
                 else
-                    // ((d) divided by (2); drop the remainder) with its decimal part removed.
                     set e=R2I(d/ 2)
-                    // (d) minus (e).
                     set f=d-e
                     call SetItemCharges(c,e)
                     call SetItemCharges(b,f)
@@ -42,17 +38,14 @@ function Trig_Item_Stack_Order_Actions takes nothing returns nothing
         else
             if GetItemTypeId(c)==GetItemTypeId(b)then
                 if g==h or g==0 or h==0 then
-                    // (d) plus (f).
                     if(d+f<=e)then
                         call RemoveItem(b)
-                        // (d) plus (f).
                         call SetItemCharges(c,d+f)
                         if(g!=0)then
                             call SetItemUserData(c,g)
                         endif
                     elseif(d<e and f<e)then
                         call SetItemCharges(c,e)
-                        // ((d) plus (f)) minus (e).
                         call SetItemCharges(b,d+f-e)
                         if h==0 then
                             call SetItemUserData(c,g)
@@ -88,8 +81,6 @@ function Trig_Item_Stack_Pickup_PickedFreeSlotMine takes nothing returns boolean
 endfunction
 
 function Trig_Item_Stack_Pickup_FitsInStack takes nothing returns boolean
-    // Result 1: (item charges of the item being used or moved) plus (item charges of UnitItemInSlotBJ(the
-    // triggering unit, udg_SlotIndex)).
     return((GetItemCharges(GetManipulatedItem())+GetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),udg_SlotIndex)))<=99)
 endfunction
 
@@ -111,13 +102,9 @@ function Trig_Item_Stack_Pickup_Actions takes nothing returns nothing
         exitwhen udg_SlotIndex>6
         if(Trig_Item_Stack_Pickup_SlotStackable())then
             if(Trig_Item_Stack_Pickup_FitsInStack())then
-                // Result 1: (item charges of UnitItemInSlotBJ(the triggering unit, udg_SlotIndex)) plus (item charges of the
-                // item being used or moved).
                 call SetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),udg_SlotIndex),(GetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),udg_SlotIndex))+GetItemCharges(GetManipulatedItem())))
                 call RemoveItem(GetManipulatedItem())
             else
-                // Result 1: (99) minus (item charges of UnitItemInSlotBJ(the triggering unit, udg_SlotIndex)).
-                // Result 2: (item charges of the item being used or moved) minus (result 1).
                 call SetItemCharges(GetManipulatedItem(),(GetItemCharges(GetManipulatedItem())-(99-GetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),udg_SlotIndex)))))
                 call SetItemCharges(UnitItemInSlotBJ(GetTriggerUnit(),udg_SlotIndex),99)
                 if(Trig_Item_Stack_Pickup_PickedFreeSlotMine())then

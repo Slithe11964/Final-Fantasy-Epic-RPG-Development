@@ -34,7 +34,6 @@ function Trig_Eidolon_Found_Reveal_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=6
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (60).
             set udg_TempPoint5=Loc_PolarOffset(udg_TempPoint,275.,(I2R(GetForLoopIndexA())*60.))
             call AddSpecialEffectLocBJ(udg_TempPoint5,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -82,7 +81,6 @@ function Trig_Eidolon_Leviathan_Ambush_Actions takes nothing returns nothing
     call IssueTargetOrderBJ(gg_unit_H01L_0067,"attack",GetTriggerUnit())
     if(Trig_Eidolon_Leviathan_Ambush_Cond_TargetIsShip())then
         set udg_DmgFlagPure=true
-        // (current health of the triggering unit) times ((a random decimal number between 15 and 16) divided by (18)).
         call UnitDamageTargetBJ(gg_unit_H01L_0067,GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit())*(GetRandomReal(15.,16.)/ 18.)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     endif
     call Wait_Polled(5.)

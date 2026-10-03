@@ -7,8 +7,6 @@ globals
 endglobals
 
 function Trig_Boss_Demesne_CoverSwap_Conditions takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<50.)and(IsUnitAliveBJ(GetTriggerUnit()))
 endfunction
 

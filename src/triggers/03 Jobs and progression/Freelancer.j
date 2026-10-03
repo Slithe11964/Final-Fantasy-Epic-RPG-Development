@@ -171,96 +171,58 @@ function Trig_Freelancer_Stats_Actions takes nothing returns nothing
         call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,$A) // $A = 10
     endif
     if(Trig_Freelancer_Stats_IsStrengthVariant())then
-        // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) plus (39).
         call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))+39))
-        // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) divided by (2).
         call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))/ 2))
-        // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) divided by (2).
         call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))/ 2))
     else
-        // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) divided by (2).
         call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))/ 2))
         if(Trig_Freelancer_Stats_IsAgilityVariant())then
-            // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) plus (39).
             call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))+39))
-            // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) divided by (2).
             call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))/ 2))
         else
-            // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) divided by (2).
             call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))/ 2))
-            // (hero level of Player_GetHero(ConvertedPlayer(udg_TempInteger))) plus (39).
             call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(ConvertedPlayer(udg_TempInteger)),bj_MODIFYMETHOD_ADD,(GetHeroLevel(Player_GetHero(ConvertedPlayer(udg_TempInteger)))+39))
         endif
     endif
     call UnitRemoveAbilityBJ('A10E',Player_GetHero(ConvertedPlayer(udg_TempInteger))) // 'A10E': ability "Endless"
     if(Trig_Freelancer_Stats_InBonusGroup36())then
         if(Trig_Freelancer_Stats_RangedCheck36())then
-            // Calculation 1:
-            // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 0)) minus (20).
-            // Calculation 2:
-            // (1) minus (1).
             call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),0)-20),(1-1))
         else
-            // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 1)) minus (20).
             call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),1)-20),1)
         endif
-        // (BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))) minus (5).
         call BlzSetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))-5.))
         call GroupRemoveUnitSimple(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_BonusGroup[36])
         if(Trig_Freelancer_Stats_InBonusGroup37())then
             if(Trig_Freelancer_Stats_RangedCheck37())then
-                // Calculation 1:
-                // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 0)) minus (20).
-                // Calculation 2:
-                // (1) minus (1).
                 call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),0)-20),(1-1))
             else
-                // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 1)) minus (20).
                 call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),1)-20),1)
             endif
-            // (BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))) minus (5).
             call BlzSetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))-5.))
             call GroupRemoveUnitSimple(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_BonusGroup[37])
             if(Trig_Freelancer_Stats_InBonusGroup38())then
                 if(Trig_Freelancer_Stats_RangedCheck38())then
-                    // Calculation 1:
-                    // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 0)) minus (20).
-                    // Calculation 2:
-                    // (1) minus (1).
                     call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),0)-20),(1-1))
                 else
-                    // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 1)) minus (20).
                     call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),1)-20),1)
                 endif
-                // (BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))) minus (5).
                 call BlzSetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))-5.))
                 call GroupRemoveUnitSimple(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_BonusGroup[38])
                 if(Trig_Freelancer_Stats_InBonusGroup57())then
                     if(Trig_Freelancer_Stats_RangedCheck57())then
-                        // Calculation 1:
-                        // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 0)) minus (20).
-                        // Calculation 2:
-                        // (1) minus (1).
                         call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),0)-20),(1-1))
                     else
-                        // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 1)) minus (20).
                         call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),1)-20),1)
                     endif
-                    // (BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))) minus (5).
                     call BlzSetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))-5.))
                     call GroupRemoveUnitSimple(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_BonusGroup[57])
                     if(Trig_Freelancer_Stats_InBonusGroup58())then
                         if(Trig_Freelancer_Stats_RangedCheck58())then
-                            // Calculation 1:
-                            // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 0)) minus (20).
-                            // Calculation 2:
-                            // (1) minus (1).
                             call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),0)-20),(1-1))
                         else
-                            // (BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 1)) minus (20).
                             call BlzSetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitBaseDamage(Player_GetHero(ConvertedPlayer(udg_TempInteger)),1)-20),1)
                         endif
-                        // (BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))) minus (5).
                         call BlzSetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)),(BlzGetUnitArmor(Player_GetHero(ConvertedPlayer(udg_TempInteger)))-5.))
                         call GroupRemoveUnitSimple(Player_GetHero(ConvertedPlayer(udg_TempInteger)),udg_BonusGroup[58])
                     endif

@@ -7,8 +7,6 @@ endglobals
 function Berserk_Remove takes unit u returns nothing
     local integer maximumHealth=BlzGetUnitMaxHP(u)
     local boolean l_active=LoadBoolean(udg_MaxHpBuffHash,GetHandleId(u),0)
-    // Starting value for l_bonus:
-    // (LoadReal(udg_MaxHpBuffHash, GetHandleId(u), 1)) with its decimal part removed.
     local integer l_bonus=R2I(LoadReal(udg_MaxHpBuffHash,GetHandleId(u),1))
     local timer t
     call UnitRemoveAbility(u,'B05V') // 'B05V': buff tooltip "Disease"
@@ -19,7 +17,6 @@ function Berserk_Remove takes unit u returns nothing
     call FlushChildHashtable(udg_MaxHpBuffHash,GetHandleId(t))
     call PauseTimer(t)
     call DestroyTimer(t)
-    // (maximum health) plus (l_bonus).
     call BlzSetUnitMaxHP(u,maximumHealth+l_bonus)
     call SaveReal(udg_MaxHpBuffHash,GetHandleId(u),1,.0)
     call SaveBoolean(udg_MaxHpBuffHash,GetHandleId(u),0,false)

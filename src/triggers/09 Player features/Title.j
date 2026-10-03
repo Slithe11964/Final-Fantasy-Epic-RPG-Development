@@ -16,13 +16,10 @@ endglobals
 function Trig_Title_ApplyStats_AddPrimaryStat takes unit l_hero,integer l_amount returns nothing
     local integer unitTypeId=GetUnitTypeId(l_hero)
     if(unitTypeId=='H000' or unitTypeId=='H003' or unitTypeId=='H00A' or unitTypeId=='H00D' or unitTypeId=='H00C' or unitTypeId=='H00M' or unitTypeId=='H02X' or unitTypeId=='H02L' or unitTypeId=='H02O')then // 'H000': unit "Squire"; 'H003': unit "Knight"; 'H00A': unit "Monk"; 'H00D': unit "Geomancer"; 'H00C': unit "Lancer"; 'H00M': unit "Holy Swordsman"; 'H02X': unit "Dark Knight"; 'H02L': unit "Freelancer"; 'H02O': unit "Freelancer"
-        // (Strength of l_hero) plus (amount).
         call SetHeroStr(l_hero,GetHeroStr(l_hero,false)+l_amount,true)
     elseif(unitTypeId=='H001' or unitTypeId=='H00B' or unitTypeId=='H00E' or unitTypeId=='H00F' or unitTypeId=='H02M' or unitTypeId=='H02P')then // 'H001': unit "Archer"; 'H00B': unit "Thief"; 'H00E': unit "Samurai"; 'H00F': unit "Ninja"; 'H02M': unit "Freelancer"; 'H02P': unit "Freelancer"
-        // (Agility of l_hero) plus (amount).
         call SetHeroAgi(l_hero,GetHeroAgi(l_hero,false)+l_amount,true)
     elseif(unitTypeId=='H002' or unitTypeId=='H004' or unitTypeId=='H005' or unitTypeId=='H009' or unitTypeId=='H008' or unitTypeId=='H00G' or unitTypeId=='H00I' or unitTypeId=='H00H' or unitTypeId=='H00J' or unitTypeId=='H00L' or unitTypeId=='H02Y' or unitTypeId=='H02N' or unitTypeId=='H02Q')then // 'H002': unit "Chemist"; 'H004': unit "Wizard"; 'H005': unit "Priest"; 'H009': unit "Summoner"; 'H008': unit "Time Mage"; 'H00G': unit "Mediator"; 'H00I': unit "Oracle"; 'H00H': unit "Calculator"; 'H00J': unit "Prophet"; 'H00L': unit "Sorcerer"; 'H02Y': unit "Necromancer"; 'H02N': unit "Freelancer"; 'H02Q': unit "Freelancer"
-        // (Intelligence of l_hero) plus (amount).
         call SetHeroInt(l_hero,GetHeroInt(l_hero,false)+l_amount,true)
     endif
 endfunction
@@ -41,9 +38,6 @@ function Trig_Title_Grant_Actions takes nothing returns nothing
     endif
     call SetPlayerAbilityAvailableBJ(true,'A0AR',udg_TempPlayer) // 'A0AR': ability "Hero Chronicles"
     call SetPlayerAbilityAvailableBJ(true,udg_ChronicleAbility[udg_TitleChronicleIndex[udg_TempInteger]],udg_TempPlayer)
-    // Result 1: (GetUnitAbilityLevelSwapped(udg_ChronicleAbility at position udg_TitleChronicleIndex at position
-    // udg_TempInteger, udg_SpiritOfGaya at position GetConvertedPlayerId(udg_TempPlayer))) plus
-    // (udg_TitleChroniclePoints at position udg_TempInteger).
     call SetUnitAbilityLevelSwapped(udg_ChronicleAbility[udg_TitleChronicleIndex[udg_TempInteger]],udg_SpiritOfGaya[GetConvertedPlayerId(udg_TempPlayer)],(GetUnitAbilityLevelSwapped(udg_ChronicleAbility[udg_TitleChronicleIndex[udg_TempInteger]],udg_SpiritOfGaya[GetConvertedPlayerId(udg_TempPlayer)])+udg_TitleChroniclePoints[udg_TempInteger]))
     call GroupAddUnitSimple(Player_GetHero(udg_TempPlayer),udg_BonusGroup[udg_TempInteger])
     call ConditionalTriggerExecute(gg_trg_Title_UnlockEffects)
@@ -355,14 +349,8 @@ function Trig_Title_ApplyStats_Actions takes nothing returns nothing
             endif
         else
             if(Trig_Title_ApplyStats_IsArmsTitle())then
-                // Calculation 1:
-                // (BlzGetUnitBaseDamage(Player_GetHero(udg_TempPlayer), 0)) plus (20).
-                // Calculation 2:
-                // (1) minus (1).
                 call BlzSetUnitBaseDamage(Player_GetHero(udg_TempPlayer),(BlzGetUnitBaseDamage(Player_GetHero(udg_TempPlayer),0)+20),(1-1))
-                // (BlzGetUnitBaseDamage(Player_GetHero(udg_TempPlayer), 1)) plus (20).
                 call BlzSetUnitBaseDamage(Player_GetHero(udg_TempPlayer),(BlzGetUnitBaseDamage(Player_GetHero(udg_TempPlayer),1)+20),1)
-                // (BlzGetUnitArmor(Player_GetHero(udg_TempPlayer))) plus (5).
                 call BlzSetUnitArmor(Player_GetHero(udg_TempPlayer),(BlzGetUnitArmor(Player_GetHero(udg_TempPlayer))+5.))
             endif
         endif
@@ -397,27 +385,22 @@ function Trig_Title_ArmsCollection_Arms_ItemMissing takes nothing returns boolea
 endfunction
 
 function Trig_Title_ArmsCollection_ArmsCount_250 takes nothing returns boolean
-    // (udg_ArmoryItemCount at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_CountedItemTotal).
     return((udg_ArmoryItemCount[GetConvertedPlayerId(udg_TempPlayer)]+udg_CountedItemTotal)>=$FA) // $FA = 250
 endfunction
 
 function Trig_Title_ArmsCollection_ArmsCount_200 takes nothing returns boolean
-    // (udg_ArmoryItemCount at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_CountedItemTotal).
     return((udg_ArmoryItemCount[GetConvertedPlayerId(udg_TempPlayer)]+udg_CountedItemTotal)>=$C8) // $C8 = 200
 endfunction
 
 function Trig_Title_ArmsCollection_ArmsCount_150 takes nothing returns boolean
-    // (udg_ArmoryItemCount at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_CountedItemTotal).
     return((udg_ArmoryItemCount[GetConvertedPlayerId(udg_TempPlayer)]+udg_CountedItemTotal)>=$96) // $96 = 150
 endfunction
 
 function Trig_Title_ArmsCollection_ArmsCount_100 takes nothing returns boolean
-    // (udg_ArmoryItemCount at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_CountedItemTotal).
     return((udg_ArmoryItemCount[GetConvertedPlayerId(udg_TempPlayer)]+udg_CountedItemTotal)>='d')
 endfunction
 
 function Trig_Title_ArmsCollection_ArmsCount_50 takes nothing returns boolean
-    // (udg_ArmoryItemCount at position GetConvertedPlayerId(udg_TempPlayer)) plus (udg_CountedItemTotal).
     return((udg_ArmoryItemCount[GetConvertedPlayerId(udg_TempPlayer)]+udg_CountedItemTotal)>=50)
 endfunction
 
@@ -448,14 +431,12 @@ function Trig_Title_ArmsCollection_Actions takes nothing returns nothing
             set udg_CountedItemTotal=(udg_CountedItemTotal+1)
             set udg_CountedItemIndex[udg_CountedItemTotal]=udg_ItemIndex
         endif
-        // (GetPlayerId(udg_TempPlayer)) plus (1).
         set udg_ItemIndex=LoadInteger(udg_ItemSaveID,0,GetItemTypeId(UnitItemInSlotBJ(udg_SpiritOfGaya[GetPlayerId(udg_TempPlayer)+1],udg_TempInteger)))
         if(Trig_Title_ArmsCollection_Item_NewOnSpirit())then
             set udg_ItemCounted[udg_ItemIndex]=true
             set udg_CountedItemTotal=(udg_CountedItemTotal+1)
             set udg_CountedItemIndex[udg_CountedItemTotal]=udg_ItemIndex
         endif
-        // (GetPlayerId(udg_TempPlayer)) plus (1).
         set udg_ItemIndex=LoadInteger(udg_ItemSaveID,0,GetItemTypeId(UnitItemInSlotBJ(udg_PlayerHouse[GetPlayerId(udg_TempPlayer)+1],udg_TempInteger)))
         if(Trig_Title_ArmsCollection_Item_NewOnExtraUnit())then
             set udg_ItemCounted[udg_ItemIndex]=true

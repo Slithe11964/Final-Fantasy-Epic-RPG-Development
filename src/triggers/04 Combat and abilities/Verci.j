@@ -36,8 +36,6 @@ function Trig_Verci_Phases_HasAutoHaste takes nothing returns boolean
 endfunction
 
 function Trig_Verci_Phases_PhaseEnded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_Vercingetorix, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(udg_VerciPhaseTimer<=0)or(GetUnitLifePercent(udg_Vercingetorix)<=udg_VerciPhaseLife)
 endfunction
 
@@ -62,8 +60,6 @@ function Trig_Verci_Phases_NoHeroesNear takes nothing returns boolean
 endfunction
 
 function Trig_Verci_Phases_IsFullLife takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_Vercingetorix, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_Vercingetorix)>=100.)
 endfunction
 

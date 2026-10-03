@@ -33,9 +33,7 @@ function Trig_MithrilGolem_Prepare_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'n015',Player(9),l_tempPoint,l_tempPoint2) // 'n015': unit "Mithril Golem"
     call RemoveLocation(l_tempPoint)
     call RemoveLocation(l_tempPoint2)
-    // (maximum health of GetLastCreatedUnit()) divided by (3).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 3))
-    // (BlzGetUnitArmor(GetLastCreatedUnit())) divided by (3).
     call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())/ 3.))
     set udg_GolemUnit[4]=GetLastCreatedUnit()
     call UnitAddAbilityBJ('Abun',udg_GolemUnit[4]) // 'Abun': object name not found in map data

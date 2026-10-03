@@ -225,67 +225,51 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
         set udg_StatCalcValue=(udg_StatCalcValue+(GetPlayerTechCountSimple('R004',GetOwningPlayer(udg_CurrentHero))*3)) // 'R004': upgrade "Staff"
     endif
     if(Trig_MagicDefense_Calc_Has_Nirvana())then
-        // Increase udg_StatCalcValue by 68.
         set udg_StatCalcValue=(udg_StatCalcValue+68)
     endif
     if(Trig_MagicDefense_Calc_Has_GravityStaff())then
-        // Increase udg_StatCalcValue by 70.
         set udg_StatCalcValue=(udg_StatCalcValue+70)
     endif
     if(Trig_MagicDefense_Calc_Has_LifeStaff())then
-        // Increase udg_StatCalcValue by 50.
         set udg_StatCalcValue=(udg_StatCalcValue+50)
     endif
     if(Trig_MagicDefense_Calc_Has_SiphoningStaff())then
-        // Increase udg_StatCalcValue by 45.
         set udg_StatCalcValue=(udg_StatCalcValue+45)
     endif
     if(Trig_MagicDefense_Calc_Has_DarkStaff())then
-        // Increase udg_StatCalcValue by 40.
         set udg_StatCalcValue=(udg_StatCalcValue+40)
     endif
     if(Trig_MagicDefense_Calc_Has_StaffOfLight())then
-        // Increase udg_StatCalcValue by 30.
         set udg_StatCalcValue=(udg_StatCalcValue+30)
     endif
     if(Trig_MagicDefense_Calc_Has_MagusRod())then
-        // Decrease udg_StatCalcValue by 45.
         set udg_StatCalcValue=(udg_StatCalcValue-45)
     endif
     if(Trig_MagicDefense_Calc_Has_AegisShield())then
-        // Increase udg_StatCalcValue by 20.
         set udg_StatCalcValue=(udg_StatCalcValue+20)
     else
         if(Trig_MagicDefense_Calc_Has_UnholyShield())then
-            // Increase udg_StatCalcValue by 40.
             set udg_StatCalcValue=(udg_StatCalcValue+40)
         else
             if(Trig_MagicDefense_Calc_Has_ReflectShield())then
-                // Increase udg_StatCalcValue by 80.
                 set udg_StatCalcValue=(udg_StatCalcValue+80)
             else
                 if(Trig_MagicDefense_Calc_Has_ShimmeringShield())then
-                    // Increase udg_StatCalcValue by 50.
                     set udg_StatCalcValue=(udg_StatCalcValue+50)
                 else
                     if(Trig_MagicDefense_Calc_Has_EnchantedShield())then
-                        // Increase udg_StatCalcValue by 70.
                         set udg_StatCalcValue=(udg_StatCalcValue+70)
                     else
                         if(Trig_MagicDefense_Calc_Has_FrostShield())then
-                            // Increase udg_StatCalcValue by 60.
                             set udg_StatCalcValue=(udg_StatCalcValue+60)
                         else
                             if(Trig_MagicDefense_Calc_Has_Absorber())then
-                                // Increase udg_StatCalcValue by 100.
                                 set udg_StatCalcValue=(udg_StatCalcValue+'d')
                             else
                                 if(Trig_MagicDefense_Calc_Has_PaladinShield())then
-                                    // Increase udg_StatCalcValue by 65.
                                     set udg_StatCalcValue=(udg_StatCalcValue+65)
                                 else
                                     if(Trig_MagicDefense_Calc_Has_InvertShield())then
-                                        // Increase udg_StatCalcValue by 75.
                                         set udg_StatCalcValue=(udg_StatCalcValue+75)
                                     endif
                                 endif
@@ -297,43 +281,33 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_MagicDefense_Calc_Has_IronHelmet())then
-        // Increase udg_StatCalcValue by 5.
         set udg_StatCalcValue=(udg_StatCalcValue+5)
     else
         if(Trig_MagicDefense_Calc_Has_MithrilHelmet())then
-            // Increase udg_StatCalcValue by 12.
             set udg_StatCalcValue=(udg_StatCalcValue+$C) // $C = 12
         else
             if(Trig_MagicDefense_Calc_Has_PlatinumHelmet())then
-                // Increase udg_StatCalcValue by 20.
                 set udg_StatCalcValue=(udg_StatCalcValue+20)
             else
                 if(Trig_MagicDefense_Calc_Has_ShimmeringHelmet())then
-                    // Increase udg_StatCalcValue by 30.
                     set udg_StatCalcValue=(udg_StatCalcValue+30)
                 else
                     if(Trig_MagicDefense_Calc_Has_BarbarianHelmet())then
-                        // Increase udg_StatCalcValue by 40.
                         set udg_StatCalcValue=(udg_StatCalcValue+40)
                     else
                         if(Trig_MagicDefense_Calc_Has_GrandHelmet())then
-                            // Increase udg_StatCalcValue by 45.
                             set udg_StatCalcValue=(udg_StatCalcValue+45)
                         else
                             if(Trig_MagicDefense_Calc_Has_SerpentHelmet())then
-                                // Increase udg_StatCalcValue by 45.
                                 set udg_StatCalcValue=(udg_StatCalcValue+45)
                             else
                                 if(Trig_MagicDefense_Calc_Has_GenjiMask())then
-                                    // Increase udg_StatCalcValue by 50.
                                     set udg_StatCalcValue=(udg_StatCalcValue+50)
                                 else
                                     if(Trig_MagicDefense_Calc_Has_ZodiacHelmet())then
-                                        // Increase udg_StatCalcValue by 25.
                                         set udg_StatCalcValue=(udg_StatCalcValue+25)
                                     else
                                         if(Trig_MagicDefense_Calc_Has_HelmOfDivineJudgement())then
-                                            // Increase udg_StatCalcValue by 30.
                                             set udg_StatCalcValue=(udg_StatCalcValue+30)
                                         endif
                                     endif
@@ -346,43 +320,33 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_MagicDefense_Calc_Has_HeadgearOfTheDamned())then
-        // Increase udg_StatCalcValue by 20.
         set udg_StatCalcValue=(udg_StatCalcValue+20)
     else
         if(Trig_MagicDefense_Calc_Has_HelmOfTheMagi())then
-            // Increase udg_StatCalcValue by 25.
             set udg_StatCalcValue=(udg_StatCalcValue+25)
         else
             if(Trig_MagicDefense_Calc_Has_EnchantedHelmet())then
-                // Increase udg_StatCalcValue by 30.
                 set udg_StatCalcValue=(udg_StatCalcValue+30)
             else
                 if(Trig_MagicDefense_Calc_Has_EarthHat())then
-                    // Increase udg_StatCalcValue by 50.
                     set udg_StatCalcValue=(udg_StatCalcValue+50)
                 else
                     if(Trig_MagicDefense_Calc_Has_GlimmeringHat())then
-                        // Increase udg_StatCalcValue by 45.
                         set udg_StatCalcValue=(udg_StatCalcValue+45)
                     else
                         if(Trig_MagicDefense_Calc_Has_GreenHat())then
-                            // Increase udg_StatCalcValue by 55.
                             set udg_StatCalcValue=(udg_StatCalcValue+55)
                         else
                             if(Trig_MagicDefense_Calc_Has_IceHat())then
-                                // Increase udg_StatCalcValue by 60.
                                 set udg_StatCalcValue=(udg_StatCalcValue+60)
                             else
                                 if(Trig_MagicDefense_Calc_Has_HelmOfTheNecromancer())then
-                                    // Increase udg_StatCalcValue by 70.
                                     set udg_StatCalcValue=(udg_StatCalcValue+70)
                                 else
                                     if(Trig_MagicDefense_Calc_Has_DiamondHelmet())then
-                                        // Increase udg_StatCalcValue by 70.
                                         set udg_StatCalcValue=(udg_StatCalcValue+70)
                                     else
                                         if(Trig_MagicDefense_Calc_Has_Circlet())then
-                                            // Increase udg_StatCalcValue by 65.
                                             set udg_StatCalcValue=(udg_StatCalcValue+65)
                                         endif
                                     endif
@@ -395,41 +359,32 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_MagicDefense_Calc_Has_TouphRing())then
-        // Increase udg_StatCalcValue by 50.
         set udg_StatCalcValue=(udg_StatCalcValue+50)
     else
         if(Trig_MagicDefense_Calc_Has_Griever())then
-            // Increase udg_StatCalcValue by 20.
             set udg_StatCalcValue=(udg_StatCalcValue+20)
         else
             if(Trig_MagicDefense_Calc_Has_IronDuke())then
-                // Increase udg_StatCalcValue by 32.
                 set udg_StatCalcValue=(udg_StatCalcValue+32)
             endif
         endif
     endif
     if(Trig_MagicDefense_Calc_Has_RakugayaAura())then
-        // Increase udg_StatCalcValue by 20.
         set udg_StatCalcValue=(udg_StatCalcValue+20)
     endif
     if(Trig_MagicDefense_Calc_Has_ArmsExpertTitle())then
-        // Increase udg_StatCalcValue by 25.
         set udg_StatCalcValue=(udg_StatCalcValue+25)
     else
         if(Trig_MagicDefense_Calc_Has_ArmsConnoisseurTitle())then
-            // Increase udg_StatCalcValue by 20.
             set udg_StatCalcValue=(udg_StatCalcValue+20)
         else
             if(Trig_MagicDefense_Calc_Has_ArmsHoarderTitle())then
-                // Increase udg_StatCalcValue by 15.
                 set udg_StatCalcValue=(udg_StatCalcValue+$F) // $F = 15
             else
                 if(Trig_MagicDefense_Calc_Has_ArmsCollectorTitle())then
-                    // Increase udg_StatCalcValue by 10.
                     set udg_StatCalcValue=(udg_StatCalcValue+$A) // $A = 10
                 else
                     if(Trig_MagicDefense_Calc_Has_ArmsBeginnerTitle())then
-                        // Increase udg_StatCalcValue by 5.
                         set udg_StatCalcValue=(udg_StatCalcValue+5)
                     endif
                 endif
@@ -437,14 +392,11 @@ function Trig_MagicDefense_Calc_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_MagicDefense_Calc_Has_GeomancyBonus())then
-        // (udg_StatCalcValue) plus ((GetUnitAbilityLevelSwapped('A0EM', udg_CurrentHero)) times (5)).
         set udg_StatCalcValue=(udg_StatCalcValue+(GetUnitAbilityLevelSwapped('A0EM',udg_CurrentHero)*5)) // 'A0EM': ability "Defense Bonus"
         if(Trig_MagicDefense_Calc_Has_GeomancyLevel22())then
-            // Increase udg_StatCalcValue by 10.
             set udg_StatCalcValue=(udg_StatCalcValue+$A) // $A = 10
         else
             if(Trig_MagicDefense_Calc_Has_GeomancyLevel11())then
-                // Increase udg_StatCalcValue by 5.
                 set udg_StatCalcValue=(udg_StatCalcValue+5)
             endif
         endif

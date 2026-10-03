@@ -74,7 +74,6 @@ function Trig_Zodiark_Encounter_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$C // $C = 12
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (30).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,90.,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -133,7 +132,6 @@ function Trig_Zodiark_Encounter_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$C // $C = 12
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (30).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,90.,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -168,7 +166,6 @@ function Trig_Zodiark_BanishRay_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,90.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -176,7 +173,6 @@ function Trig_Zodiark_BanishRay_Actions takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call RemoveLocation(l_tempPoint)
-    // ((maximum health of the spell target) times (a random decimal number between 0.05 and 0.15)) plus (15000).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit())*GetRandomReal(.05,.15))+15000.),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     set l_tempPoint=null
 endfunction
@@ -211,12 +207,10 @@ endfunction
 
 function Trig_Zodiark_Darkja_DamageTarget takes nothing returns nothing
     local real l_tempReal
-    // (maximum health of the unit being visited) times (a random decimal number between 0.5 and 0.6).
     set l_tempReal=(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetEnumUnit())*GetRandomReal(.5,.6))
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    // (l_tempReal) plus (1000).
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),l_tempReal+1000.,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
     if(Trig_Zodiark_Darkja_TargetCursable())then
         set udg_TempPoint=GetUnitLoc(GetEnumUnit())
@@ -236,14 +230,12 @@ function Trig_Zodiark_Darkja_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecialArt.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (30)) minus (15).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,600.,((I2R(GetForLoopIndexA())*30.)-15.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())

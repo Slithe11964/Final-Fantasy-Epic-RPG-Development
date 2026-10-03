@@ -240,17 +240,14 @@ function Trig_Quest_LostMemories_ShadowLie_Actions takes nothing returns nothing
         call Text_Say(udg_MementoRingHero,"Whoa... glad it didn't come to that!",false)
         call Text_Say(udg_ShadowUnit,"I'll need some time to think. Here I'll give you some of my gold as thanks. Should we meet again, I won't charge you anymore.",false)
         call Text_Say(udg_MementoRingHero,"That's great! Well then, until next time.",false)
-        // ((udg_ShadowLoyalty) times (100)) plus (1000).
         call Reward_Give(((udg_ShadowLoyalty*'d')+$3E8),5000,udg_ShadowUnit) // $3E8 = 1000
         call Cine_ExitAction()
     else
-        // ((udg_ShadowLoyalty) times (100)) plus (1000).
         call Reward_Give(((udg_ShadowLoyalty*'d')+$3E8),5000,udg_ShadowUnit) // $3E8 = 1000
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Lost Memories|r")
     call QuestSetCompletedBJ(udg_SideQuest[44],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    // Increase udg_ShadowLoyalty by 128.
     set udg_ShadowLoyalty=(udg_ShadowLoyalty+$80) // $80 = 128
     call SaveIntegerBJ(1,2,$A3,udg_GameStateHash) // $A3 = 163
     call Music_SetTrack(32)

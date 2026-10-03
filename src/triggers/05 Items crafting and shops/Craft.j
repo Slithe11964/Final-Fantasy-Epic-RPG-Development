@@ -17,9 +17,7 @@ function Trig_Craft_Recipe_RemoveChar takes string l_str,string l_chr returns st
     local integer i=1
     loop
         exitwhen i>StringLength(l_str)
-        // (i) minus (1).
         if SubString(l_str,i-1,i)==l_chr then
-            // (i) minus (1).
             return SubString(l_str,0,i-1)+SubString(l_str,i,StringLength(l_str))
         endif
         set i=i+1
@@ -59,7 +57,6 @@ function Trig_Craft_Recipe_ConsumeIngredients takes unit l_buyer,integer l_recip
             set l_si=1
             loop
                 exitwhen l_si>StringLength(l_slots)
-                // (l_si) minus (1).
                 set l_slot=S2I(SubString(l_slots,l_si-1,l_si))
                 set ti=UnitItemInSlot(l_buyer,l_slot)
                 if l_reqItem[i]==GetItemTypeId(ti)and l_reqCharges[i]<=GetItemCharges(ti)then
@@ -88,7 +85,6 @@ function Trig_Craft_Recipe_ConsumeIngredients takes unit l_buyer,integer l_recip
         exitwhen i>6
         if l_matched[i]!=null then
             if GetItemCharges(l_matched[i])>l_reqCharges[i]then
-                // (item charges of l_matched at position i) minus (l_reqCharges at position i).
                 call SetItemCharges(l_matched[i],GetItemCharges(l_matched[i])-l_reqCharges[i])
             else
                 call RemoveItem(l_matched[i])

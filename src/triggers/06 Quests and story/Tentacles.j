@@ -70,7 +70,6 @@ function Trig_Tentacles_Ambush_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (45) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(45.*I2R(GetForLoopIndexA())))
         call CreateNUnitsAtLocFacingLocBJ(1,'n0C9',Player($B),udg_TempPoint2,l_tempPoint) // 'n0C9': object name not found in map data; $B = 11
         call PauseUnitBJ(true,GetLastCreatedUnit())

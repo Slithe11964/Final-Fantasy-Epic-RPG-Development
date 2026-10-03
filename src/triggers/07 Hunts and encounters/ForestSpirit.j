@@ -32,7 +32,6 @@ function Trig_ForestSpirit_Spawn_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ForestSpirit_Wander_SpiritAtTarget takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_SpiritPoint at position loop counter A.
     return(DistanceBetweenPoints(udg_TempPoint,udg_SpiritPoint[GetForLoopIndexA()])<=512.)
 endfunction
 
@@ -48,7 +47,6 @@ function Trig_ForestSpirit_Wander_Actions takes nothing returns nothing
         set udg_SpiritCalm[GetForLoopIndexA()]=true
         set udg_TempPoint=GetUnitLoc(udg_SpiritUnit[GetForLoopIndexA()])
         if(Trig_ForestSpirit_Wander_SpiritAtTarget())then
-            // Increase udg_SpiritWanderTick at position loop counter A by 2.
             set udg_SpiritWanderTick[GetForLoopIndexA()]=(udg_SpiritWanderTick[GetForLoopIndexA()]+2)
         else
             set udg_SpiritWanderTick[GetForLoopIndexA()]=(udg_SpiritWanderTick[GetForLoopIndexA()]+1)

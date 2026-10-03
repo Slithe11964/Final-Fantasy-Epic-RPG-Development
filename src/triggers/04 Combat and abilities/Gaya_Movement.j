@@ -7,8 +7,6 @@ endglobals
 
 // ---- Gaya ----
 function Trig_Gaya_Follow_MoveGayaToHero takes nothing returns nothing
-    // Starting value for i:
-    // (GetPlayerId(the player being visited)) plus (1).
     local integer i=GetPlayerId(GetEnumPlayer())+1
     local real hx
     local real hy
@@ -29,20 +27,14 @@ function Trig_Gaya_Follow_MoveGayaToHero takes nothing returns nothing
     set hy=GetUnitY(l_hero)
     set gx=GetUnitX(l_gaya)
     set gy=GetUnitY(l_gaya)
-    // (gx) minus (hx).
     if gx-hx>=0 then
-        // (gx) minus (hx).
         set l_adx=gx-hx
     else
-        // (hx) minus (gx).
         set l_adx=hx-gx
     endif
-    // (gy) minus (hy).
     if gy-hy>=0 then
-        // (gy) minus (hy).
         set l_ady=gy-hy
     else
-        // (hy) minus (gy).
         set l_ady=hy-gy
     endif
     if l_adx>=384 or l_ady>=384 then
@@ -65,9 +57,7 @@ endfunction
 function Trig_Gaya_HousePortal_Actions takes nothing returns nothing
     local integer l_tempInteger
     set l_tempInteger=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
-    // (l_tempInteger) minus (1).
     call SetUnitX(udg_SpiritOfGaya[l_tempInteger],GetUnitX(Player_GetHero(Player(l_tempInteger-1))))
-    // (l_tempInteger) minus (1).
     call SetUnitY(udg_SpiritOfGaya[l_tempInteger],GetUnitY(Player_GetHero(Player(l_tempInteger-1))))
     call IssueImmediateOrderBJ(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"holdposition")
 endfunction

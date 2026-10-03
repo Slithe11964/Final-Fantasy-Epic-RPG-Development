@@ -43,28 +43,21 @@ function Trig_Rave_Kick_Actions takes nothing returns nothing
     call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (4).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Rave_Kick_IsHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (10)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*$A)) // $A = 10
     endif
     set udg_TempBoolean=Unit_HasNoEquipment(GetTriggerUnit())
     if(Trig_Rave_Kick_IsCritical())then
         if(Trig_Rave_Kick_TargetNotDisabled())then
-            // (l_tempInteger) times (2).
             set l_tempInteger=(l_tempInteger*2)
         else
-            // (l_tempInteger) times (3).
             set l_tempInteger=(l_tempInteger*3)
         endif
     endif
     if(Trig_Rave_Kick_HasHighProficiency())then
-        // ((l_tempInteger) times (5)) divided by (3); drop the remainder.
         set l_tempInteger=((l_tempInteger*5)/ 3)
     endif
-    // Udg_TempInteger treated as a decimal-capable number.
     call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)

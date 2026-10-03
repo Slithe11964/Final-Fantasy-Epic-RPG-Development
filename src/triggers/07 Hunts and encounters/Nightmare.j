@@ -20,7 +20,6 @@ function Trig_Nightmare_Spawn_Cond_FirstNightReroll takes nothing returns boolea
 endfunction
 
 function Trig_Nightmare_Spawn_Cond_PlayerTooClose takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<500.)
 endfunction
 
@@ -39,8 +38,6 @@ function Trig_Nightmare_Spawn_Cond_NightmareHardMode takes nothing returns boole
 endfunction
 
 function Trig_Nightmare_Spawn_Cond_NightmareUntouched takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_SummonedBoss, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_SummonedBoss)>=100.)
 endfunction
 
@@ -52,7 +49,6 @@ function Trig_Nightmare_Spawn_Actions takes nothing returns nothing
     // A random whole number from 1 through 8.
     set udg_TempInteger=GetRandomInt(1,8)
     if(Trig_Nightmare_Spawn_Cond_ZoneIndexTaken())then
-        // (udg_TempInteger) plus (1).
         set udg_NightmareZone=(udg_TempInteger+1)
     else
         set udg_NightmareZone=udg_TempInteger
@@ -144,8 +140,6 @@ function Trig_Nightmare_Death_Charge_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Nightmare_Roam_Conditions takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_SummonedBoss, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(udg_SummonedBoss!=null)and(GetUnitLifePercent(udg_SummonedBoss)>=100.)
 endfunction
 

@@ -20,11 +20,7 @@ function Trig_Ninja_Ambush_Actions takes nothing returns nothing
     local real l_targetY=GetUnitY(targetUnit)
     local real l_landX
     local real l_landY
-    // Starting value for l_dx:
-    // (l_targetX) minus (l_casterX).
     local real l_dx=l_targetX-l_casterX
-    // Starting value for l_dy:
-    // (l_targetY) minus (l_casterY).
     local real l_dy=l_targetY-l_casterY
     // Starting value for distance:
     // The square root of ((the square of (l_dx)) plus (the square of (l_dy))).
@@ -32,15 +28,12 @@ function Trig_Ninja_Ambush_Actions takes nothing returns nothing
     local real angle
     local real l_facing
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(caster,GetSpellAbilityId()))
-    // Starting value for l_agiBonus:
-    // (Agility of caster) times (3).
     local integer l_agiBonus=GetHeroAgi(caster,true)*3
     local integer l_mult
     local real damageAmount
     if distance>420. then
         // The angle in radians from the y gap (l_dy) and x gap (l_dx).
         set angle=Atan2(l_dy,l_dx)
-        // (angle) times (bj_RADTODEG).
         set l_facing=angle*bj_RADTODEG
         set l_dummy=CreateUnit(GetOwningPlayer(caster),'h02S',l_targetX,l_targetY,.0) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnit(l_dummy,false)
@@ -51,14 +44,11 @@ function Trig_Ninja_Ambush_Actions takes nothing returns nothing
         set l_mult=1
     else
         set l_facing=GetUnitFacing(targetUnit)
-        // (l_facing) times (bj_DEGTORAD).
         set angle=l_facing*bj_DEGTORAD
         set l_mult=3
     endif
     call SetUnitFacing(caster,l_facing)
-    // (l_targetX) minus ((90) times (the horizontal direction share for angle (angle) in radians)).
     set l_landX=l_targetX-90*Cos(angle)
-    // (l_targetY) minus ((90) times (the vertical direction share for angle (angle) in radians)).
     set l_landY=l_targetY-90*Sin(angle)
     call SetUnitX(caster,l_landX)
     call SetUnitY(caster,l_landY)

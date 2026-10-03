@@ -35,14 +35,10 @@ function Trig_Dps_Tick_AverageDpsEnum takes nothing returns nothing
     set udg_TempReal=.0
     set l_tempInteger=0
     loop
-        // (LoadIntegerBJ(2, 0, udg_DpsHash)) minus (1).
         exitwhen l_tempInteger>(LoadIntegerBJ(2,0,udg_DpsHash)-1)
-        // (udg_TempReal) plus (LoadRealBJ(l_tempInteger, GetConvertedPlayerId(the player being visited),
-        // udg_DpsHash)).
         set udg_TempReal=(udg_TempReal+LoadRealBJ(l_tempInteger,GetConvertedPlayerId(GetEnumPlayer()),udg_DpsHash))
         set l_tempInteger=l_tempInteger+1
     endloop
-    // (udg_TempReal) divided by (LoadIntegerBJ(2, 0, udg_DpsHash) treated as a decimal-capable number).
     set udg_TempReal=(udg_TempReal/ I2R(LoadIntegerBJ(2,0,udg_DpsHash)))
     if(Trig_Dps_Tick_IsNinjaAward())then
         call ForceAddPlayerSimple(GetEnumPlayer(),udg_JobMasterForce[8])
@@ -81,7 +77,6 @@ function Trig_Dps_Tick_Actions takes nothing returns nothing
     set udg_DpsRefresh=false
     call ForForce(udg_PlayingPlayers,function Trig_Dps_Tick_AverageDpsEnum)
     if(Trig_Dps_Tick_MeterIdle())then
-        // (LoadIntegerBJ(1, 0, udg_DpsHash)) plus (1).
         call SaveIntegerBJ((LoadIntegerBJ(1,0,udg_DpsHash)+1),1,0,udg_DpsHash)
         if(Trig_Dps_Tick_IdleBelowWindow())then
             set udg_DpsActive=true
@@ -91,14 +86,12 @@ function Trig_Dps_Tick_Actions takes nothing returns nothing
     endif
     if(Trig_Dps_Tick_MeterActive())then
         call StartTimerBJ(udg_DpsTimer,false,1.)
-        // (LoadIntegerBJ(0, 0, udg_DpsHash)) plus (1).
         call SaveIntegerBJ((LoadIntegerBJ(0,0,udg_DpsHash)+1),0,0,udg_DpsHash)
         if(Trig_Dps_Tick_SlotAtWindowEnd())then
             call SaveIntegerBJ(0,0,0,udg_DpsHash)
         endif
         call ForForce(udg_PlayingPlayers,function Trig_Dps_Tick_ClearSlotEnum)
         if(Trig_Dps_Tick_SlotPastSamples())then
-            // (LoadIntegerBJ(0, 0, udg_DpsHash)) plus (1).
             call SaveIntegerBJ((LoadIntegerBJ(0,0,udg_DpsHash)+1),2,0,udg_DpsHash)
         endif
     else

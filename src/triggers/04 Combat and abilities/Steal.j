@@ -14,8 +14,6 @@ function Trig_Steal_Cast_RollSteal takes nothing returns nothing
     local unit victim=GetSpellTargetUnit()
     local integer l_victimType=GetUnitTypeId(victim)
     local integer abilityLevel=GetUnitAbilityLevel(thief,GetSpellAbilityId())
-    // Starting value for l_victimLevel:
-    // (unit level of victim) plus (1).
     local integer l_victimLevel=GetUnitLevel(victim)+1
     // Start with half of (thief level + 1), dropping fractions, plus 5 per Steal ability level.
     local integer successChance=((GetUnitLevel(thief)+1)/ 2)+(abilityLevel*5)
@@ -35,7 +33,6 @@ function Trig_Steal_Cast_RollSteal takes nothing returns nothing
         return
     endif
     if(abilityLevel>$A)then // $A = 10
-        // Increase chance by 10.
         set successChance=successChance+$A // $A = 10
     endif
     if(successChance<=l_victimLevel)then

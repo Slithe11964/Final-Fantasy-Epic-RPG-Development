@@ -19,7 +19,6 @@ function Trig_Arena_BuyPrize_HasNoItemLevel takes nothing returns boolean
 endfunction
 
 function Trig_Arena_BuyPrize_CannotAfford takes nothing returns boolean
-    // (GetItemLifeBJ(GetSoldItem())) with its decimal part removed.
     return(udg_BattlePoints[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))]<R2I(GetItemLifeBJ(GetSoldItem())))
 endfunction
 
@@ -30,9 +29,6 @@ function Trig_Arena_BuyPrize_Actions takes nothing returns nothing
         call RemoveItem(GetSoldItem())
         call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You do not have enough BP to purchase this prize!")
     else
-        // Result 1: (GetItemLifeBJ(GetSoldItem())) with its decimal part removed.
-        // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))) minus
-        // (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))]=(udg_BattlePoints[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))]-R2I(GetItemLifeBJ(GetSoldItem())))
         call DestroyTextTagBJ(udg_ArenaBpTag[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))])
         set udg_ArenaBpTag[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
@@ -102,7 +98,6 @@ function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
                         call AdjustPlayerStateBJ(1,GetOwningPlayer(GetSoldUnit()),PLAYER_STATE_RESOURCE_LUMBER)
                         call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You gain 1 Crystal Shard.")
                     else
-                        // (udg_BattlePoints at position udg_TempInteger) divided by (5000); drop the remainder.
                         call AdjustPlayerStateBJ((udg_BattlePoints[udg_TempInteger]/ 5000),GetOwningPlayer(GetSoldUnit()),PLAYER_STATE_RESOURCE_LUMBER)
                         // (udg_BattlePoints at position udg_TempInteger) divided by (5000); drop the remainder.
                         call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S((udg_BattlePoints[udg_TempInteger]/ 5000)))+" Crystal Shards."))
@@ -118,9 +113,6 @@ function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 else
                     if(Trig_Arena_ExchangeBP_IsExchangeExp())then
-                        // Result 1: udg_BattlePoints at position udg_TempInteger treated as a decimal-capable number.
-                        // Result 2: (result 1) times (udg_SecondaryXPRate).
-                        // Result 3: (result 2) with its decimal part removed.
                         call AddHeroXPSwapped(R2I((I2R(udg_BattlePoints[udg_TempInteger])*udg_SecondaryXPRate)),udg_SpiritOfGaya[udg_TempInteger],true)
                         call AddHeroXPSwapped(udg_BattlePoints[udg_TempInteger],Player_GetHero(GetOwningPlayer(GetSoldUnit())),true)
                         call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S(udg_BattlePoints[udg_TempInteger]))+" EXP."))

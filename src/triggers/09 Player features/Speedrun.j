@@ -151,10 +151,6 @@ function Trig_Speedrun_Record_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Speedrun_Record_NeedsRankUp takes nothing returns boolean
-    // Calculation 1:
-    // (loop counter A) minus (1).
-    // Calculation 2:
-    // (udg_SpeedrunTitleBase) plus (loop counter A).
     return(udg_SpeedrunLevel[GetConvertedPlayerId(GetEnumPlayer())]==(GetForLoopIndexA()-1))and(IsPlayerInForce(GetEnumPlayer(),udg_TitleForce[(udg_SpeedrunTitleBase+GetForLoopIndexA())])==false)
 endfunction
 
@@ -162,7 +158,6 @@ function Trig_Speedrun_Record_AwardRank takes nothing returns nothing
     if(Trig_Speedrun_Record_NeedsRankUp())then
         set udg_SpeedrunLevel[GetConvertedPlayerId(GetEnumPlayer())]=GetForLoopIndexA()
         set udg_TempPlayer=GetEnumPlayer()
-        // (udg_SpeedrunTitleBase) plus (loop counter A).
         set udg_TempInteger=(udg_SpeedrunTitleBase+GetForLoopIndexA())
         call ConditionalTriggerExecute(gg_trg_Title_Grant)
     endif

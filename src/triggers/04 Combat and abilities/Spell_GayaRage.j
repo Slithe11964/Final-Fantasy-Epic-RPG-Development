@@ -35,17 +35,11 @@ endfunction
 
 function Trig_Spell_GayaRage_Ring_Actions takes nothing returns nothing
     call StartTimerBJ(udg_GayaRageTimer,false,.1)
-    // (udg_GayaRageRadius) times (1.36).
     set udg_GayaRageRadius=(udg_GayaRageRadius*1.36)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Calculation 1:
-        // (udg_GayaRageRadius) times (2).
-        // Calculation 2:
-        // ((loop counter A treated as a decimal-capable number) times (60)) plus ((udg_GayaRageRadius) divided by
-        // (2)).
         set udg_TempPoint=Loc_PolarOffset(udg_GayaRageLoc,(udg_GayaRageRadius*2.),((I2R(GetForLoopIndexA())*60.)+(udg_GayaRageRadius/ 2.)))
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -105,12 +99,10 @@ endfunction
 function Trig_Spell_GayaRage_Damage_DamageTarget takes nothing returns nothing
     local real l_tempReal
     call UnitRemoveBuffBJ('B063',GetEnumUnit()) // 'B063': buff "Cover"
-    // (a random decimal number between 15 and 16) divided by (16).
     set l_tempReal=(GetRandomReal(15.,16.)/ 16.)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    // (99999.9) times (l_tempReal).
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*l_tempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
 endfunction
 
@@ -123,19 +115,16 @@ function Trig_Spell_GayaRage_Damage_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,650.,((I2R(GetForLoopIndexA())*60.)-30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,975.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)

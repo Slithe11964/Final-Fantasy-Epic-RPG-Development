@@ -58,31 +58,22 @@ function Trig_Famfrit_TidalWave_Actions takes nothing returns nothing
     local location l_tempPoint
     local location l_tempPoint2
     local real l_tempReal
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (15).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*$F) // $F = 15
     if(Trig_Famfrit_TidalWave_CasterIsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (3)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
     endif
     set l_tempReal=Prof_RodPower(GetTriggerUnit())
     set l_tempPoint2=GetUnitLoc(GetTriggerUnit())
-    // (facing in degrees of the triggering unit) plus (180).
     set l_tempPoint=Loc_PolarOffset(l_tempPoint2,80.,(GetUnitFacing(GetTriggerUnit())+180.))
     call RemoveLocation(l_tempPoint2)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=5
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Calculation 1:
-        // (150) times ((loop counter A) minus (3) treated as a decimal-capable number).
-        // Calculation 2:
-        // (facing in degrees of the triggering unit) plus (90).
         set l_tempPoint2=Loc_PolarOffset(l_tempPoint,(150.*I2R((GetForLoopIndexA()-3))),(GetUnitFacing(GetTriggerUnit())+90.))
         call CreateNUnitsAtLoc(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,GetUnitFacing(GetTriggerUnit())) // 'h01B': unit "Proxy Dummy"
         set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-        // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
         call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
         call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
         call SaveGroupHandleBJ(l_hitGroup,6,udg_TempHandleId,udg_ProxyDamageHash)

@@ -13,9 +13,6 @@ function Trig_SkeletalDefense_Spawn_RandomSubGroup takes integer l_want,group l_
     if(bj_randomSubGroupWant<=0 or bj_randomSubGroupTotal<=0)then
         return bj_randomSubGroupGroup
     endif
-    // Result 1: bj_randomSubGroupWant treated as a decimal-capable number.
-    // Result 2: bj_randomSubGroupTotal treated as a decimal-capable number.
-    // Result 3: (result 1) divided by (result 2).
     set bj_randomSubGroupChance=I2R(bj_randomSubGroupWant)/ I2R(bj_randomSubGroupTotal)
     call ForGroup(l_source,function GetRandomSubGroupEnum)
     return bj_randomSubGroupGroup
@@ -57,7 +54,6 @@ function Trig_SkeletalDefense_Spawn_SpawnSkeleton takes nothing returns nothing
     call UnitApplyTimedLifeBJ(30.,'Brai',GetLastCreatedUnit()) // 'Brai': buff tooltip "Raised"
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),50.)
-    // (maximum health of GetLastCreatedUnit()) divided by (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 2))
     call UnitAddAbilityBJ('A0ZU',GetLastCreatedUnit()) // 'A0ZU': ability "Double Vulnerable"
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")

@@ -6,21 +6,15 @@ endglobals
 
 function Trig_Wave_Fist_KnockbackStart takes unit c,unit t,real s,real duration,string fx,boolean sf,real damageAmount returns integer
     local integer d=Knock_Create(t,fx)
-    // Starting value for a:
-    // Result 1: (udg_KnockY at position d) minus (y position of c).
-    // Result 2: (udg_KnockX at position d) minus (x position of c).
-    // Result 3: the angle in radians from the y gap (result 1) and x gap (result 2).
     local real a=Atan2(udg_KnockY[d]-GetUnitY(c),udg_KnockX[d]-GetUnitX(c))
     set udg_KnockSpeed[d]=s
     if sf then
         // (udg_KnockSpeed at position d) times ((GetUnitDefaultMoveSpeed(t)) minus ((Agility of t) times (0.4))).
         set udg_KnockSpeed[d]=udg_KnockSpeed[d]*(GetUnitDefaultMoveSpeed(t)-GetHeroAgi(t,true)*.4)
         if(GetUnitAbilityLevel(t,'A0KV')>0)then // 'A0KV': ability "Ailment Defense"
-            // (udg_KnockSpeed at position d) times (0.2).
             set udg_KnockSpeed[d]=udg_KnockSpeed[d]*.2
         endif
     endif
-    // ((udg_KnockSpeed at position d) divided by (duration)) times (0.03).
     set udg_KnockDecay[d]=udg_KnockSpeed[d]/ duration*.03
     // The horizontal direction share for angle (a) in radians.
     set udg_KnockCosA[d]=Cos(a)
@@ -66,28 +60,21 @@ function Trig_Wave_Fist_Actions takes nothing returns nothing
     local integer l_tempInteger
     call AddSpecialEffectTargetUnitBJ("chest",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\SpellSteal\\SpellStealTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Wave_Fist_IsHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (8)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*8))
     endif
     set udg_TempBoolean=Unit_HasNoEquipment(GetTriggerUnit())
     if(Trig_Wave_Fist_IsCritical())then
         if(Trig_Wave_Fist_TargetNotDisabled())then
-            // (l_tempInteger) times (2).
             set l_tempInteger=(l_tempInteger*2)
         else
-            // (l_tempInteger) times (3).
             set l_tempInteger=(l_tempInteger*3)
         endif
     endif
     if(Trig_Wave_Fist_HasHighProficiency())then
-        // ((l_tempInteger) times (5)) divided by (3); drop the remainder.
         set l_tempInteger=((l_tempInteger*5)/ 3)
     endif
-    // Udg_TempInteger treated as a decimal-capable number.
     call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetSpellTargetUnit(),.1,.5,null,true,I2R(l_tempInteger))
     set udg_IsPhysicalAttack=true
     call UnitDamageTarget(GetTriggerUnit(),GetSpellTargetUnit(),l_tempInteger,true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)

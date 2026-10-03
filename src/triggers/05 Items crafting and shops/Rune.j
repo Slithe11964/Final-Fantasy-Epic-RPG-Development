@@ -81,17 +81,12 @@ function Trig_Rune_Pickup_HasLifeGain takes nothing returns boolean
 endfunction
 
 function Trig_Rune_Pickup_HealEnum takes nothing returns nothing
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
-    // Result 2: (result 1) divided by (20).
-    // Result 3: (maximum health of the unit being visited) times (result 2).
     set udg_TempReal=(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetEnumUnit())*(I2R(udg_TempInteger)/ 20.))
     if(Trig_Rune_Pickup_HasLifeGain())then
-        // (current health of the unit being visited) plus (udg_TempReal).
         call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_TempReal))
         call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Undead\\VampiricAura\\VampiricAuraTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-        // ((udg_TempReal) plus (0.5)) with its decimal part removed.
         call CreateTextTagLocBJ(I2S(R2I((udg_TempReal+.5))),udg_TempPoint,0,12.,.0,'d',.0,.0)
         call RemoveLocation(udg_TempPoint)
         call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)
@@ -114,19 +109,14 @@ function Trig_Rune_Pickup_HasManaGain takes nothing returns boolean
 endfunction
 
 function Trig_Rune_Pickup_ManaEnum takes nothing returns nothing
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
-    // Result 2: (result 1) divided by (20).
-    // Result 3: (maximum mana of the unit being visited) times (result 2).
     set udg_TempReal=(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetEnumUnit())*(I2R(udg_TempInteger)/ 20.))
     if(Trig_Rune_Pickup_HasManaGain())then
-        // (current mana of the unit being visited) plus (udg_TempReal).
         call SetUnitManaBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_MANA,GetEnumUnit())+udg_TempReal))
         call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set udg_TempPoint=GetUnitLoc(GetEnumUnit())
         set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-64.)
         call RemoveLocation(udg_TempPoint)
-        // ((udg_TempReal) plus (0.5)) with its decimal part removed.
         call CreateTextTagLocBJ((I2S(R2I((udg_TempReal+.5)))+" MP"),udg_TempPoint2,0,12.,.0,'d',.0,.0)
         call RemoveLocation(udg_TempPoint2)
         call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)

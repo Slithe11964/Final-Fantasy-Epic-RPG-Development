@@ -40,7 +40,6 @@ function Trig_Chakra_Cast_Actions takes nothing returns nothing
             if(Trig_Chakra_Cast_IsMaxLevel())then
                 set udg_TempInteger=$F // $F = 15
             else
-                // (GetUnitAbilityLevelSwapped('A01M', the triggering unit)) plus (2).
                 set udg_TempInteger=(GetUnitAbilityLevelSwapped('A01M',GetTriggerUnit())+2) // 'A01M': ability "Chakra"
             endif
         endif
@@ -49,14 +48,11 @@ function Trig_Chakra_Cast_Actions takes nothing returns nothing
         // Result 3: (result 2) plus (300).
         // Result 4: (result 3) times (udg_TempInteger).
         set udg_TempInteger=((IMaxBJ((GetUnitLevel(targetUnit)*3),GetHeroStatBJ(bj_HEROSTAT_STR,targetUnit,true))+300)*udg_TempInteger)
-        // (udg_TempInteger) divided by (2); drop the remainder.
         set udg_TempInteger=(udg_TempInteger/ 2)
         set udg_IsPureDamage=true
         set udg_DmgFlagManaDamage=true
-        // (udg_TempInteger treated as a decimal-capable number) times (0.25).
         call UnitDamageTargetBJ(GetTriggerUnit(),targetUnit,(I2R(udg_TempInteger)*.25),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
         set udg_IsPureDamage=true
-        // Udg_TempInteger treated as a decimal-capable number.
         call UnitDamageTargetBJ(GetTriggerUnit(),targetUnit,I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     endif
 endfunction

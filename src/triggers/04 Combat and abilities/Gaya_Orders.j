@@ -17,7 +17,6 @@ function Trig_Gaya_OrderImmediate_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gaya_OrderImmediate_Actions takes nothing returns nothing
-    // (GetIssuedOrderId()) minus (852008).
     call Item_UseFromOtherUnit(GetTriggerUnit(),(GetIssuedOrderId()-$D0028),0) // $D0028 = 852008
 endfunction
 
@@ -32,7 +31,6 @@ function Trig_Gaya_OrderPoint_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gaya_OrderPoint_Actions takes nothing returns nothing
-    // (GetIssuedOrderId()) minus (852008).
     call Item_UseFromOtherUnit(GetTriggerUnit(),(GetIssuedOrderId()-$D0028),1) // $D0028 = 852008
 endfunction
 
@@ -47,7 +45,6 @@ function Trig_Gaya_OrderTarget_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gaya_OrderTarget_Actions takes nothing returns nothing
-    // (GetIssuedOrderId()) minus (852008).
     call Item_UseFromOtherUnit(GetTriggerUnit(),(GetIssuedOrderId()-$D0028),2) // $D0028 = 852008
 endfunction
 

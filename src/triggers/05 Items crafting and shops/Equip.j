@@ -145,8 +145,6 @@ function Trig_Equip_Restrictions_JobGatedItem takes nothing returns boolean
 endfunction
 
 function Trig_Equip_Restrictions_GaiaLevelTooLow takes nothing returns boolean
-    // Result 1: hero level of udg_SpiritOfGaya at position GetConvertedPlayerId(GetOwningPlayer(the triggering
-    // unit)) treated as a decimal-capable number.
     return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetItemLifeBJ(GetManipulatedItem())>I2R(GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])))
 endfunction
 

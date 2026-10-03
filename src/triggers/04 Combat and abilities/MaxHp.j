@@ -6,8 +6,6 @@ endglobals
 
 function Trig_MaxHp_DrainTick_DrainMaxHp takes unit u returns nothing
     local integer maximumHealth=BlzGetUnitMaxHP(u)
-    // Starting value for currentHealth:
-    // (current health of u) with its decimal part removed.
     local integer currentHealth=R2I(GetWidgetLife(u))
     // Missing health is maximum health minus current health, with current health converted to a whole number.
     local integer l_missing=(maximumHealth-currentHealth)
@@ -24,10 +22,8 @@ function Trig_MaxHp_DrainTick_DrainMaxHp takes unit u returns nothing
     endif
     // Limit the amount removed so maximum health cannot fall below 1.
     if(l_missing>maximumHealth-1)then
-        // (maximum health) minus (1).
         set l_missing=maximumHealth-1
     endif
-    // (l_drained) plus (missing health).
     call SaveReal(udg_MaxHpBuffHash,GetHandleId(u),1,l_drained+l_missing)
     // Lower maximum health by the missing amount. Example: max 500 and current 350 gives a new max of 350.
     call BlzSetUnitMaxHP(u,maximumHealth-l_missing)

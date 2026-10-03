@@ -209,7 +209,6 @@ function Trig_Shadow_Intro_IsShadowCinematicAllowed takes nothing returns boolea
 endfunction
 
 function Trig_Shadow_Intro_AddPlayerBestLevel takes nothing returns nothing
-    // (udg_TempInteger) plus (udg_HighestJobLevel at position GetConvertedPlayerId(the player being visited)).
     set udg_TempInteger=(udg_TempInteger+udg_HighestJobLevel[GetConvertedPlayerId(GetEnumPlayer())])
 endfunction
 
@@ -232,11 +231,8 @@ function Trig_Shadow_Intro_Actions takes nothing returns nothing
     // Result 3: (result 2) divided by (10); drop the remainder.
     set udg_ShadowOfferTier=(((udg_TempInteger/ CountPlayersInForceBJ(udg_PlayingPlayers))-1)/ $A) // $A = 10
     call AddUnitToStockBJ(udg_ShadowHireOffer[udg_ShadowOfferTier],udg_ShadowUnit,1,1)
-    // (udg_ShadowOfferTier) plus (1).
     call AddUnitToStockBJ(udg_ShadowHireOffer[(udg_ShadowOfferTier+1)],udg_ShadowUnit,2,2)
-    // (udg_ShadowOfferTier) plus (2).
     call AddUnitToStockBJ(udg_ShadowHireOffer[(udg_ShadowOfferTier+2)],udg_ShadowUnit,3,3)
-    // (remaining seconds of udg_ShadowTimer) plus (30).
     call StartTimerBJ(udg_ShadowTimer,false,(TimerGetRemaining(udg_ShadowTimer)+30.))
     call EnableTrigger(gg_trg_Shadow_Hire)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -273,8 +269,6 @@ function Trig_Shadow_Respawn_HasForcedSpawn takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_Respawn_AddHeroLevel takes nothing returns nothing
-    // (udg_TempInteger) plus (hero level of udg_SpiritOfGaya at position GetConvertedPlayerId(the player being
-    // visited)).
     set udg_TempInteger=(udg_TempInteger+GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())]))
 endfunction
 
@@ -294,19 +288,16 @@ function Trig_Shadow_Respawn_Actions takes nothing returns nothing
     else
         set udg_TempInteger=1
         call ForForce(udg_PlayingPlayers,function Trig_Shadow_Respawn_TakeHighestPlayerLevel)
-        // (udg_TempInteger) plus (udg_QuestsCompleted).
         set udg_TempInteger=(udg_TempInteger+udg_QuestsCompleted)
         set bj_forLoopAIndex=1
         set bj_forLoopAIndexEnd=19
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             if(Trig_Shadow_Respawn_IsMainQuestDone())then
-                // Increase udg_TempInteger by 2.
                 set udg_TempInteger=(udg_TempInteger+2)
             endif
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        // (a random whole number from 1 through udg_TempInteger) divided by (4); drop the remainder.
         set udg_TempInteger=(GetRandomInt(1,udg_TempInteger)/ 4)
         if(Trig_Shadow_Respawn_IsSpawnIndexTooHigh())then
             set udg_TempInteger=49
@@ -322,9 +313,7 @@ function Trig_Shadow_Respawn_Actions takes nothing returns nothing
         // Result 3: (result 2) divided by (10); drop the remainder.
         set udg_ShadowOfferTier=(((udg_TempInteger/ CountPlayersInForceBJ(udg_PlayingPlayers))-1)/ $A) // $A = 10
         call AddUnitToStockBJ(udg_ShadowHireOffer[udg_ShadowOfferTier],udg_ShadowUnit,1,1)
-        // (udg_ShadowOfferTier) plus (1).
         call AddUnitToStockBJ(udg_ShadowHireOffer[(udg_ShadowOfferTier+1)],udg_ShadowUnit,2,2)
-        // (udg_ShadowOfferTier) plus (2).
         call AddUnitToStockBJ(udg_ShadowHireOffer[(udg_ShadowOfferTier+2)],udg_ShadowUnit,3,3)
     else
         call AddUnitToStockBJ('n085',udg_ShadowUnit,1,1) // 'n085': unit "Hiring Shadow For Free"
@@ -357,7 +346,6 @@ endfunction
 
 function Trig_Shadow_NearbyDelay_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    // (remaining seconds of udg_ShadowTimer) plus (60).
     call StartTimerBJ(udg_ShadowTimer,false,(TimerGetRemaining(udg_ShadowTimer)+60.))
 endfunction
 
@@ -400,15 +388,12 @@ function Trig_Shadow_Death_Actions takes nothing returns nothing
     call RemoveUnit(udg_ShadowUnit)
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"Shadow leaves the party.")
     if(Trig_Shadow_Death_IsVeryFewKills())then
-        // Decrease udg_ShadowLoyalty by 8.
         set udg_ShadowLoyalty=(udg_ShadowLoyalty-8)
     else
         if(Trig_Shadow_Death_IsManyKills())then
-            // Increase udg_ShadowLoyalty by 4.
             set udg_ShadowLoyalty=(udg_ShadowLoyalty+4)
         else
             if(Trig_Shadow_Death_IsFewKills())then
-                // Decrease udg_ShadowLoyalty by 4.
                 set udg_ShadowLoyalty=(udg_ShadowLoyalty-4)
             endif
         endif

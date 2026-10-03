@@ -365,10 +365,8 @@ function Trig_Boss_Echele_SpawnForm_Actions takes nothing returns nothing
         call ModifyHeroStat(bj_HEROSTAT_STR,udg_EcheleBoss,bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
         call ModifyHeroStat(bj_HEROSTAT_AGI,udg_EcheleBoss,bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
         call ModifyHeroStat(bj_HEROSTAT_INT,udg_EcheleBoss,bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
-        // (udg_TempReal) plus (40).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(udg_TempReal+40.))
         call ConditionalTriggerExecute(gg_trg_TrueIceAge_SpawnBrave)
-        // (udg_TempReal) plus (320).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(udg_TempReal+320.))
         call ConditionalTriggerExecute(gg_trg_TrueIceAge_SpawnBrave)
     endif
@@ -380,13 +378,9 @@ function Trig_Boss_Echele_SpawnForm_Actions takes nothing returns nothing
         if(Trig_Boss_Echele_SpawnForm_Cond_HardMode_Items())then
             call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
             call UnitAddItemByIdSwapped('I0E5',GetLastCreatedUnit()) // 'I0E5': item "Maximillian"
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) plus (1500).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+$5DC),0) // $5DC = 1500
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) plus (1500).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+$5DC),1) // $5DC = 1500
-            // (BlzGetUnitArmor(GetLastCreatedUnit())) plus (60).
             call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())+60.))
-            // (maximum health of GetLastCreatedUnit()) plus (20000).
             call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+$4E20)) // $4E20 = 20000
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
             call UnitAddAbilityBJ('A12D',udg_EcheleBoss) // 'A12D': ability "Dewall"
@@ -415,7 +409,6 @@ function Trig_Boss_Echele_SpawnForm_Actions takes nothing returns nothing
             if(Trig_Boss_Echele_SpawnForm_Cond_FinalFormSpawn())then
                 set udg_SpeedrunBoss[5]=udg_EcheleBoss
             endif
-            // (98) minus ((udg_EcheleFormsKilled) times (4)).
             call SetHeroLevelBJ(udg_EcheleBoss,(98-(udg_EcheleFormsKilled*4)),false)
             call ModifyHeroStat(bj_HEROSTAT_STR,udg_EcheleBoss,bj_MODIFYMETHOD_SUB,$96) // $96 = 150
             call ModifyHeroStat(bj_HEROSTAT_AGI,udg_EcheleBoss,bj_MODIFYMETHOD_SUB,$96) // $96 = 150

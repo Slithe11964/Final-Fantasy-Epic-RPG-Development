@@ -60,7 +60,6 @@ endfunction
 
 function Trig_Hunt_PhantomDancer_Setup_Actions takes nothing returns nothing
     if(Trig_Hunt_PhantomDancer_Setup_IsFreeCastMode())then
-        // (1) minus (1).
         call BlzSetUnitAbilityManaCost(GetLastCreatedUnit(),'A0R3',(1-1),0) // 'A0R3': ability "Evade & Counter"
     else
         call BlzSetUnitAbilityManaCost(GetLastCreatedUnit(),'A0R3',1,0) // 'A0R3': ability "Evade & Counter"
@@ -102,7 +101,6 @@ function Trig_Hunt_Melaiduma_Setup_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossGroup)
     call TriggerRegisterUnitEvent(gg_trg_Melaiduma_Death,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
     if(Trig_Hunt_Melaiduma_Setup_FreeCastEnabled())then
-        // (1) minus (1).
         call BlzSetUnitAbilityManaCost(GetLastCreatedUnit(),'A0ZQ',(1-1),0) // 'A0ZQ': ability "!Thunder Rush"
     else
         call BlzSetUnitAbilityManaCost(GetLastCreatedUnit(),'A0ZQ',1,0) // 'A0ZQ': ability "!Thunder Rush"

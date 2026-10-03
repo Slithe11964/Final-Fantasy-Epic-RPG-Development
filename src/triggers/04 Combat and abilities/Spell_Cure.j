@@ -13,7 +13,6 @@ function Trig_Spell_Cure_MissileLaunchHeal takes unit c,string l_missileFx,strin
     set udg_MissileFalloff[d]=false
     set udg_MissileHoming[d]=true
     if(GetUnitTypeId(c)=='H005' and GetUnitAbilityLevel(c,'A02F')==3 and not IsPlayerInForce(GetOwningPlayer(c),udg_JobMasterForce[$C]))then // 'H005': unit "Priest"; 'A02F': ability "Mastery"; $C = 12
-        // (GetPlayerId(GetOwningPlayer(c))) plus (1).
         set udg_MissileHealCredit[d]=GetPlayerId(GetOwningPlayer(c))+1
         set udg_HealingTotal[GetPlayerId(GetOwningPlayer(c))]=.0
     endif
@@ -28,7 +27,6 @@ function Trig_Spell_Cure_Actions takes nothing returns nothing
     local unit spellTarget=GetSpellTargetUnit()
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(triggeringUnit,GetSpellAbilityId()))
     local real r=Trig_Spell_Cure_HealFormula(manaCost,GetHeroInt(triggeringUnit,true),Prof_StaffPower(triggeringUnit))
-    // (r) times (0.25).
     call Trig_Spell_Cure_MissileLaunchHeal(triggeringUnit,"Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl","Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl",spellTarget,.0,20.,128.,r*.25,r,true)
     set triggeringUnit=null
     set spellTarget=null

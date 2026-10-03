@@ -26,16 +26,11 @@ function Trig_Arrowwave_Cast_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (4).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Arrowwave_Cast_IsHero())then
-        // (l_tempInteger) plus ((Agility of the triggering unit) times (2)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true)*2))
     endif
-    // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R002'))).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R002')) // $A = 10; 'R002': upgrade "Bow"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,3,l_tempHandleId,udg_ProxyDamageHash)

@@ -11,9 +11,6 @@ endfunction
 function Trig_EveryonesGrudge_Cast_Actions takes nothing returns nothing
     set udg_DmgFlagPure=true
     set udg_DmgFlagUnavoidable=-1
-    // Result 1: udg_PlayerKillCount at position GetConvertedPlayerId(GetOwningPlayer(the spell target)) treated as
-    // a decimal-capable number.
-    // Result 2: (10) times (result 1).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(10.*I2R(udg_PlayerKillCount[GetConvertedPlayerId(GetOwningPlayer(GetSpellTargetUnit()))])),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
 endfunction
 

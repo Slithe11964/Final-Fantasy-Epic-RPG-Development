@@ -1,6 +1,5 @@
 library TDifficulty
 function Difficulty_AddHandicap takes nothing returns nothing
-    // (udg_EnemyHandicap) plus (udg_EnemyHpPerPlayer).
     set udg_EnemyHandicap=udg_EnemyHandicap+udg_EnemyHpPerPlayer
 endfunction
 

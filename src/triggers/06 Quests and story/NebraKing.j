@@ -54,7 +54,6 @@ function Trig_NebraKing_Summon_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
     endif
-    // (facing in degrees of the triggering unit) plus (180).
     set l_tempReal=(GetUnitFacing(GetTriggerUnit())+180.)
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
     set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256,l_tempReal)
@@ -65,7 +64,6 @@ function Trig_NebraKing_Summon_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint2)
     if(Trig_NebraKing_Summon_Cond_HasStoredLife())then
         if(Trig_NebraKing_Summon_Cond_MaxLifeTooLow())then
-            // (udg_NebraKingLife) with its decimal part removed.
             call BlzSetUnitMaxHP(gg_unit_H02W_0246,R2I(udg_NebraKingLife))
         endif
         call SetUnitLifeBJ(gg_unit_H02W_0246,udg_NebraKingLife)
@@ -103,7 +101,6 @@ function Trig_NebraKing_Escape_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$A // $A = 10
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (36).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())

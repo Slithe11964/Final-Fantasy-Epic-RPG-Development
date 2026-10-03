@@ -30,7 +30,6 @@ function Trig_Naisha_Prepare_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Naisha_Recruit)
     if(Trig_Naisha_Prepare_Cond_BoostEnabled())then
         call UnitAddAbilityBJ('A1CG',udg_NaishaUnit) // 'A1CG': ability "Attack Speed +40%"
-        // (1) minus (1).
         call BlzSetUnitBaseDamage(udg_NaishaUnit,505,(1-1))
         call BlzSetUnitBaseDamage(udg_NaishaUnit,505,1)
         call BlzSetUnitMaxHP(udg_NaishaUnit,$4E20) // $4E20 = 20000
@@ -126,12 +125,10 @@ function Trig_Naisha_Heal_Actions takes nothing returns nothing
     set udg_NaishaUnit=GetLastCreatedUnit()
     if(Trig_Naisha_Heal_Cond_BoostActive())then
         call UnitAddAbilityBJ('A1CG',udg_NaishaUnit) // 'A1CG': ability "Attack Speed +40%"
-        // (1) minus (1).
         call BlzSetUnitBaseDamage(udg_NaishaUnit,505,(1-1))
         call BlzSetUnitBaseDamage(udg_NaishaUnit,505,1)
         call BlzSetUnitMaxHP(udg_NaishaUnit,$4E20) // $4E20 = 20000
     else
-        // (maximum health of udg_NaishaUnit) plus ((udg_StoryProgress) times (100)).
         call BlzSetUnitMaxHP(udg_NaishaUnit,(BlzGetUnitMaxHP(udg_NaishaUnit)+(udg_StoryProgress*'d')))
     endif
     call SetUnitLifePercentBJ(udg_NaishaUnit,11.11)

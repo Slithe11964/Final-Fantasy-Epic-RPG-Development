@@ -56,7 +56,6 @@ function Trig_Valigarmanda_Wave_Cleared_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Valigarmanda_Wave_Cleared_AllWavesDone takes nothing returns boolean
-    // (udg_Difficulty) plus (1).
     return(udg_ValigarmandaWaveIndex>=(udg_Difficulty+1))
 endfunction
 
@@ -102,12 +101,10 @@ function Trig_Valigarmanda_Wave_Cleared_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Valigarmanda_Wave_Spawn_BossFarFromArena takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>=1200.)
 endfunction
 
 function Trig_Valigarmanda_Wave_Spawn_BossOutOfArena takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>=650.)
 endfunction
 

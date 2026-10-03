@@ -92,7 +92,6 @@ function Trig_Vote_TextSpeed_Click_Actions takes nothing returns nothing
             if(Trig_Vote_TextSpeed_Click_IsMultiplayer())then
                 call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+(" voted for |cffffcc00"+(udg_VoteOptionText[GetForLoopIndexA()]+"|r text speed."))))
             endif
-            // (udg_VoteSum) plus (loop counter A treated as a decimal-capable number).
             set udg_VoteSum=(udg_VoteSum+I2R(GetForLoopIndexA()))
             set udg_VoteCount[GetForLoopIndexA()]=(udg_VoteCount[GetForLoopIndexA()]+1)
         endif
@@ -102,7 +101,6 @@ function Trig_Vote_TextSpeed_Click_Actions takes nothing returns nothing
         if(Trig_Vote_TextSpeed_Click_IsMultiplayer3())then
             call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+" voted for |cffffcc00skipping cinematic text|r."))
         endif
-        // Increase udg_VoteSum by 5.
         set udg_VoteSum=(udg_VoteSum+5.)
         set udg_VoteCount[5]=(udg_VoteCount[5]+1)
     else
@@ -110,13 +108,11 @@ function Trig_Vote_TextSpeed_Click_Actions takes nothing returns nothing
             if(Trig_Vote_TextSpeed_Click_IsMultiplayer2())then
                 call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+" voted for |cffffcc00skipping cinematics|r."))
             endif
-            // Increase udg_VoteSum by 6.
             set udg_VoteSum=(udg_VoteSum+6.)
             set udg_VoteCount[6]=(udg_VoteCount[6]+1)
         endif
     endif
     if(Trig_Vote_TextSpeed_Click_VotesPending())then
-        // (CountPlayersInForceBJ(udg_PlayingPlayers)) minus (udg_VotesCast).
         call DisplayTimedTextToForce(udg_PlayingPlayers,8.,("Players to vote: "+I2S((CountPlayersInForceBJ(udg_PlayingPlayers)-udg_VotesCast))))
     else
         call TriggerExecute(gg_trg_Vote_TextSpeed_Result)
@@ -177,20 +173,16 @@ function Trig_Vote_TextSpeed_Result_Actions takes nothing returns nothing
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
         if(Trig_Vote_TextSpeed_Result_HasWinner())then
-            // Udg_WinningOption treated as a decimal-capable number.
             set udg_VoteSum=I2R(udg_WinningOption)
         else
-            // (udg_VoteSum) divided by ((udg_VotesCast treated as a decimal-capable number) plus (0.5)).
             set udg_VoteSum=(udg_VoteSum/(I2R(udg_VotesCast)+.5))
         endif
     endif
-    // (udg_VoteSum) with its decimal part removed.
     call DisplayTimedTextToForce(GetPlayersAll(),15.,("Cinematic Speed: |cffffcc00"+(udg_VoteOptionText[R2I(udg_VoteSum)]+"|r")))
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"You can change cinematic speed at any time during the game using the \"-text\" command.")
     if(Trig_Vote_TextSpeed_Result_IsSkipText())then
         set udg_TextSpeed=.0
     else
-        // (100) plus ((100) times ((udg_VoteSum) with its decimal part removed treated as a decimal-capable number)).
         set udg_TextSpeed=(100.+(100.*I2R(R2I(udg_VoteSum))))
     endif
     if(Trig_Vote_TextSpeed_Result_IsSkipScenes())then
@@ -224,7 +216,6 @@ function Trig_Vote_Difficulty_Show_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=5
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A) plus (7).
         set udg_VoteButton[GetForLoopIndexA()]=DialogAddButtonBJ(udg_VoteDialog,udg_VoteOptionText[(GetForLoopIndexA()+7)])
         set udg_VoteCount[GetForLoopIndexA()]=0
         set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -264,14 +255,12 @@ function Trig_Vote_Difficulty_Click_Actions takes nothing returns nothing
                 // (loop counter A) plus (7).
                 call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+(" voted for "+(udg_VoteOptionText[(GetForLoopIndexA()+7)]+" difficulty."))))
             endif
-            // (udg_VoteSum) plus (loop counter A treated as a decimal-capable number).
             set udg_VoteSum=(udg_VoteSum+I2R(GetForLoopIndexA()))
             set udg_VoteCount[GetForLoopIndexA()]=(udg_VoteCount[GetForLoopIndexA()]+1)
         endif
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     if(Trig_Vote_Difficulty_Click_VotesPending())then
-        // (CountPlayersInForceBJ(udg_PlayingPlayers)) minus (udg_VotesCast).
         call DisplayTimedTextToForce(udg_PlayingPlayers,8.,("Players to vote: "+I2S((CountPlayersInForceBJ(udg_PlayingPlayers)-udg_VotesCast))))
     else
         call TriggerExecute(gg_trg_Vote_Difficulty_Result)
@@ -377,19 +366,14 @@ function Trig_Vote_Difficulty_Result_Actions takes nothing returns nothing
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
         if(Trig_Vote_Difficulty_Result_HasWinner())then
-            // (udg_WinningOption) plus (1).
             set udg_Difficulty=(udg_WinningOption+1)
         else
-            // (udg_VoteSum) divided by (udg_VotesCast treated as a decimal-capable number).
             set udg_VoteSum=(udg_VoteSum/ I2R(udg_VotesCast))
             if(Trig_Vote_Difficulty_Result_IsUpperHalf())then
-                // Increase udg_VoteSum by 0.49.
                 set udg_VoteSum=(udg_VoteSum+.49)
             else
-                // Increase udg_VoteSum by 0.51.
                 set udg_VoteSum=(udg_VoteSum+.51)
             endif
-            // ((udg_VoteSum) with its decimal part removed) plus (1).
             set udg_Difficulty=(R2I(udg_VoteSum)+1)
         endif
     endif
@@ -425,7 +409,6 @@ function Trig_Vote_Difficulty_Result_Actions takes nothing returns nothing
     endif
     if(Trig_Vote_Difficulty_Result_IsHard())then
         call DisplayTimedTextToForce(GetPlayersAll(),15.,"|cffcc2222Hard|r: Enemies have increased damage, defense and attack speed.")
-        // (2) divided by (3).
         set udg_DifficultyScale=(2./ 3.)
         set udg_EnemyHpPerPlayer=150.
         set udg_ExpRate=1.3
@@ -452,7 +435,6 @@ function Trig_Vote_Difficulty_Result_Actions takes nothing returns nothing
             call DisplayTimedTextToForce(GetPlayersAll(),15.," ")
             call DisplayTimedTextToForce(GetPlayersAll(),15.,"Can load any codes. Does not change their difficulty association.")
         endif
-        // (1) divided by (3).
         set udg_DifficultyScale=(1/ 3.)
         set udg_EnemyHpPerPlayer=250.
         set udg_ExpRate=1.5
@@ -466,7 +448,6 @@ function Trig_Vote_Difficulty_Result_Actions takes nothing returns nothing
     call SetPlayerTechResearchedSwap('R01R',udg_Difficulty,Player($B)) // 'R01R': upgrade "Dark Dragon Marsh"; $B = 11
     call Difficulty_SumHandicap(udg_PlayingPlayers)
     call SetPlayerHandicapBJ(Player($B),udg_EnemyHandicap) // $B = 11
-    // (udg_Difficulty) plus (6).
     set udg_DifficultyName=udg_VoteOptionText[(udg_Difficulty+6)]
     call QuestSetTitleBJ(udg_DifficultyQuest,udg_DifficultyName)
     if(Trig_Vote_Difficulty_Result_IsSpeedrunMode())then
@@ -500,7 +481,6 @@ function Trig_Vote_GameMode_Show_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=3
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A) plus (13).
         set udg_VoteButton[GetForLoopIndexA()]=DialogAddButtonBJ(udg_VoteDialog,udg_VoteOptionText[(GetForLoopIndexA()+$D)]) // $D = 13
         set udg_VoteCount[GetForLoopIndexA()]=0
         set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -540,14 +520,12 @@ function Trig_Vote_GameMode_Click_Actions takes nothing returns nothing
                 // (loop counter A) plus (13).
                 call DisplayTimedTextToForce(GetPlayersAll(),15.,(udg_PlayerName[GetConvertedPlayerId(GetTriggerPlayer())]+(" voted for "+(udg_VoteOptionText[(GetForLoopIndexA()+$D)]+" game mode.")))) // $D = 13
             endif
-            // (udg_VoteSum) plus (loop counter A treated as a decimal-capable number).
             set udg_VoteSum=(udg_VoteSum+I2R(GetForLoopIndexA()))
             set udg_VoteCount[GetForLoopIndexA()]=(udg_VoteCount[GetForLoopIndexA()]+1)
         endif
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     if(Trig_Vote_GameMode_Click_VotesPending())then
-        // (CountPlayersInForceBJ(udg_PlayingPlayers)) minus (udg_VotesCast).
         call DisplayTimedTextToForce(udg_PlayingPlayers,8.,("Players to vote: "+I2S((CountPlayersInForceBJ(udg_PlayingPlayers)-udg_VotesCast))))
     else
         call TriggerExecute(gg_trg_GameMode_Apply)

@@ -35,9 +35,7 @@ function Trig_Cam_Command_Actions takes nothing returns nothing
         else
             set udg_TempInteger2=S2I(SubStringBJ(GetEventPlayerChatString(),6,9))
             if(Trig_Cam_Command_Cond_DistanceInRange())then
-                // Udg_TempInteger2 treated as a decimal-capable number.
                 call SetCameraFieldForPlayer(GetTriggerPlayer(),CAMERA_FIELD_TARGET_DISTANCE,I2R(udg_TempInteger2),.5)
-                // Udg_TempInteger2 treated as a decimal-capable number.
                 set udg_CameraDistance[GetConvertedPlayerId(GetTriggerPlayer())]=I2R(udg_TempInteger2)
             endif
         endif

@@ -38,8 +38,6 @@ function Trig_HolyPower_Mastery_Track_Actions takes nothing returns nothing
     else
         call Spell_StoreManaCost()
         if(Trig_HolyPower_Mastery_Track_HasHealDone())then
-            // Result 1: (udg_EnduranceDamageCount at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-            // plus (udg_SpellManaCost).
             set udg_EnduranceDamageCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_EnduranceDamageCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+udg_SpellManaCost)
             if(Trig_HolyPower_Mastery_Track_MasteryGoalReached())then
                 call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[9])

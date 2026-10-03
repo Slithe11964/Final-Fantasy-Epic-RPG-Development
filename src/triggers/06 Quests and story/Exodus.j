@@ -158,7 +158,6 @@ function Trig_Exodus_Cometeorite_Actions takes nothing returns nothing
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (15000) times (l_tempReal).
     call SaveRealBJ((15000.*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

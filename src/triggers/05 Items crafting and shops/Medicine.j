@@ -13,14 +13,11 @@ function Medicine_ApplyTimed takes unit t,boolean ph returns nothing
         call UnitAddAbility(t,'A0FM') // 'A0FM': ability "Hero Drink Powerup"
         set l_level=1
     endif
-    // (l_level) plus (amount).
     set l_level=l_level+l_amount
     if(l_level>$C)then // $C = 12
-        // Decrease l_level by 12.
         set l_level=l_level-$C // $C = 12
         set l_bigLevel=GetUnitAbilityLevel(t,'A17Q') // 'A17Q': ability "Hero Drink Powerup"
         if(l_bigLevel>0)then
-            // (l_bigLevel) plus (1).
             call SetUnitAbilityLevel(t,'A17Q',l_bigLevel+1) // 'A17Q': ability "Hero Drink Powerup"
         else
             call UnitAddAbility(t,'A17Q') // 'A17Q': ability "Hero Drink Powerup"
@@ -30,17 +27,14 @@ function Medicine_ApplyTimed takes unit t,boolean ph returns nothing
     call Wait_Polled(60.)
     set l_level=GetUnitAbilityLevel(t,'A0FM') // 'A0FM': ability "Hero Drink Powerup"
     set l_bigLevel=GetUnitAbilityLevel(t,'A17Q') // 'A17Q': ability "Hero Drink Powerup"
-    // (l_level) minus (amount).
     set l_level=l_level-l_amount
     if(l_level>1)then
         call SetUnitAbilityLevel(t,'A0FM',l_level) // 'A0FM': ability "Hero Drink Powerup"
     elseif(l_level<1)then
         if(l_bigLevel>0)then
-            // Increase l_level by 12.
             set l_level=l_level+$C // $C = 12
             call SetUnitAbilityLevel(t,'A0FM',l_level) // 'A0FM': ability "Hero Drink Powerup"
             if(l_bigLevel>1)then
-                // (l_bigLevel) minus (1).
                 call SetUnitAbilityLevel(t,'A17Q',l_bigLevel-1) // 'A17Q': ability "Hero Drink Powerup"
             else
                 call UnitRemoveAbility(t,'A17Q') // 'A17Q': ability "Hero Drink Powerup"

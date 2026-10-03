@@ -34,35 +34,23 @@ endfunction
 function Trig_Spell_Demi_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (2).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 2)
     if(Trig_Spell_Demi_IsCasterHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) divided by (4); drop the remainder).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 4))
     endif
     if(Trig_Spell_Demi_IsTargetHero())then
-        // (udg_TempInteger) minus ((Intelligence of the spell target) divided by (8); drop the remainder).
         set udg_TempInteger=(udg_TempInteger-(GetHeroStatBJ(bj_HEROSTAT_INT,GetSpellTargetUnit(),true)/ 8))
     else
-        // (udg_TempInteger) minus (unit level of the spell target).
         set udg_TempInteger=(udg_TempInteger-GetUnitLevel(GetSpellTargetUnit()))
     endif
-    // Result 1: (maximum mana of the spell target) times (0.1).
-    // Result 2: the square root of (result 1).
-    // Result 3: (result 2) with its decimal part removed.
-    // Result 4: (udg_TempInteger) minus (result 3).
     set udg_TempInteger=(udg_TempInteger-R2I(SquareRoot((GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetSpellTargetUnit())*.1))))
     if(Trig_Spell_Demi_IsDamagePositive())then
         set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
-        // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
         set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
         if(Trig_Spell_Demi_HasOversoul())then
-            // (udg_TempInteger) divided by (2); drop the remainder.
             set udg_TempInteger=(udg_TempInteger/ 2)
         else
             if(Trig_Spell_Demi_IsTargetPlainUnit())then
-                // (udg_TempInteger) times (2).
                 set udg_TempInteger=(udg_TempInteger*2)
             endif
         endif

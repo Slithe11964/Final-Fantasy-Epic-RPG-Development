@@ -40,13 +40,11 @@ function Trig_Bahamut_MegaFlare_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=16
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (22.5) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,160.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // (22.5) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,320.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
@@ -57,23 +55,17 @@ function Trig_Bahamut_MegaFlare_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (4).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Bahamut_MegaFlare_CasterIsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (5)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*5))
     else
         if(Trig_Bahamut_MegaFlare_UsesFirstWeapon())then
-            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) times (4)).
             set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)*4))
         else
-            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) times (4)).
             set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)*4))
         endif
     endif
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())

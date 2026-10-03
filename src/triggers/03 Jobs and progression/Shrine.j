@@ -128,9 +128,7 @@ function Trig_Shrine_AbilitySwap_HasBorrowedPair takes nothing returns boolean
 endfunction
 
 function Trig_Shrine_AbilitySwap_IsSummonSkill takes nothing returns boolean
-    // Calculation 1:
     // The remainder after dividing (udg_MainSkillSlot at position udg_TempInteger) by (5).
-    // Calculation 2:
     // The remainder after dividing (udg_SubSkillSlot at position udg_TempInteger) by (5).
     return(ModuloInteger(udg_MainSkillSlot[udg_TempInteger],5)==2)or(ModuloInteger(udg_SubSkillSlot[udg_TempInteger],5)==2)
 endfunction
@@ -140,9 +138,7 @@ function Trig_Shrine_AbilitySwap_NeedsSummonCleanup takes nothing returns boolea
 endfunction
 
 function Trig_Shrine_AbilitySwap_IsPetSkill takes nothing returns boolean
-    // Calculation 1:
     // The remainder after dividing (udg_MainSkillSlot at position udg_TempInteger) by (5).
-    // Calculation 2:
     // The remainder after dividing (udg_SubSkillSlot at position udg_TempInteger) by (5).
     return(ModuloInteger(udg_MainSkillSlot[udg_TempInteger],5)==3)or(ModuloInteger(udg_SubSkillSlot[udg_TempInteger],5)==3)
 endfunction
@@ -232,7 +228,6 @@ function Trig_Shrine_AbilitySwap_IsFreelancer takes nothing returns boolean
 endfunction
 
 function Trig_Shrine_AbilitySwap_HasJobLevel50 takes nothing returns boolean
-    // ((GetUnitPointValue(GetSoldUnit())) minus (1)) divided by (5).
     return(Job_GetSavedLevel(GetOwningPlayer(GetSoldUnit()),udg_JobUnitType[((GetUnitPointValue(GetSoldUnit())-1)/ 5)])>=50)
 endfunction
 
@@ -354,7 +349,6 @@ function Trig_Shrine_AbilitySwap_Actions takes nothing returns nothing
                             call SelectUnitForPlayerSingle(udg_ShrineMenuUnit[GetUnitPointValue(GetSoldUnit())],GetOwningPlayer(GetSoldUnit()))
                         else
                             if(Trig_Shrine_AbilitySwap_IsSecondMainMenu())then
-                                // (GetUnitPointValue(GetSoldUnit())) plus (9).
                                 call SelectUnitForPlayerSingle(udg_ShrineMenuUnit[(GetUnitPointValue(GetSoldUnit())+9)],GetOwningPlayer(GetSoldUnit()))
                             else
                                 if(Trig_Shrine_AbilitySwap_IsShrineBuyerValid())then
@@ -437,9 +431,6 @@ function Trig_Shrine_AbilitySwap_Actions takes nothing returns nothing
                                                 call UnitApplyTimedLifeBJ(.01,'BTLF',udg_PetUnit[udg_TempInteger]) // 'BTLF': object name not found in map data
                                             endif
                                             set udg_SubSkillSlot[udg_TempInteger]=Job_GetIndex(udg_CurrentHero)
-                                            // Result 1: (udg_SubSkillSlot at position udg_TempInteger) times (5).
-                                            // Result 2: the remainder after dividing (udg_MainSkillSlot at position udg_TempInteger) by (5).
-                                            // Result 3: (result 1) plus (result 2).
                                             set udg_SubSkillSlot[udg_TempInteger]=((udg_SubSkillSlot[udg_TempInteger]*5)+ModuloInteger(udg_MainSkillSlot[udg_TempInteger],5))
                                             if(Trig_Shrine_AbilitySwap_MainDiffersFromSub())then
                                                 if(Trig_Shrine_AbilitySwap_SubWasEnchant())then

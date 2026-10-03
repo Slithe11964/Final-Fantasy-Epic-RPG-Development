@@ -361,16 +361,8 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
             call DisplayTimedTextToForce(l_tempForce,30,("|cffffcc00"+(GetUnitName(GetSpellTargetUnit())+"|r")))
         endif
     endif
-    // Calculation 1:
-    // (current health of the spell target) with its decimal part removed.
-    // Calculation 2:
-    // (maximum health of the spell target) with its decimal part removed.
     call DisplayTimedTextToForce(l_tempForce,30,(("HP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_LIFE,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit()))))))
     if(Trig_Gaya_Scan_Cond_TargetHasMana())then
-        // Calculation 1:
-        // (current mana of the spell target) with its decimal part removed.
-        // Calculation 2:
-        // (maximum mana of the spell target) with its decimal part removed.
         call DisplayTimedTextToForce(l_tempForce,30,(("MP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetSpellTargetUnit()))))))
     endif
     set udg_TempInteger=GetUnitTypeId(GetSpellTargetUnit())
@@ -381,10 +373,6 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     if(Trig_Gaya_Scan_Cond_HasNullEvasion())then
         call DisplayTimedTextToForce(l_tempForce,30,"Negates block and dodge chances.")
     else
-        // Calculation 1:
-        // (Trig_Damage_Engine_GetAccuracy(the spell target)) with its decimal part removed.
-        // Calculation 2:
-        // (Trig_Damage_Engine_GetEvasion(the spell target)) with its decimal part removed.
         set udg_TempString="Accuracy: "+I2S(R2I(Trig_Damage_Engine_GetAccuracy(GetSpellTargetUnit())))+" / Evasion: "+I2S(R2I(Trig_Damage_Engine_GetEvasion(GetSpellTargetUnit())))
         call DisplayTimedTextToForce(l_tempForce,30,udg_TempString)
         if(Trig_Gaya_Scan_Cond_HasTruecast())then

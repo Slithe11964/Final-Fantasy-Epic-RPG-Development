@@ -25,12 +25,9 @@ function Trig_JobLevels_Update_SumPlayerJobLevels takes nothing returns nothing
     if(Trig_JobLevels_Update_IsTrackedPlayer())then
         set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=0
         set bj_forLoopAIndex=0
-        // (udg_JobCount) minus (1).
         set bj_forLoopAIndexEnd=(udg_JobCount-1)
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // Result 1: (udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited)) plus
-            // (Job_GetSavedLevel(the player being visited, udg_JobUnitType at position loop counter A)).
             set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+Job_GetSavedLevel(GetEnumPlayer(),udg_JobUnitType[GetForLoopIndexA()]))
             if(Trig_JobLevels_Update_IsHighestJob())then
                 set udg_HighestJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=Job_GetSavedLevel(GetEnumPlayer(),udg_JobUnitType[GetForLoopIndexA()])
@@ -38,11 +35,8 @@ function Trig_JobLevels_Update_SumPlayerJobLevels takes nothing returns nothing
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
         if(Trig_JobLevels_Update_IsMasteryMax())then
-            // Increase udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited) by 100.
             set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+'d')
         else
-            // Result 1: (udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited)) plus (hero level of
-            // udg_FreelancerHero at position GetConvertedPlayerId(the player being visited)).
             set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+GetHeroLevel(udg_FreelancerHero[GetConvertedPlayerId(GetEnumPlayer())]))
         endif
         if(Trig_JobLevels_Update_IsHeroLevelHighest())then
@@ -74,12 +68,9 @@ endfunction
 function Trig_JobLevels_Init_ComputeJobTotals takes nothing returns nothing
     set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=0
     set bj_forLoopAIndex=0
-    // (udg_JobCount) minus (1).
     set bj_forLoopAIndexEnd=(udg_JobCount-1)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // Result 1: (udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited)) plus
-        // (Job_GetSavedLevel(the player being visited, udg_JobUnitType at position loop counter A)).
         set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+Job_GetSavedLevel(GetEnumPlayer(),udg_JobUnitType[GetForLoopIndexA()]))
         if(Trig_JobLevels_Init_IsTopJobLevel())then
             set udg_HighestJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=Job_GetSavedLevel(GetEnumPlayer(),udg_JobUnitType[GetForLoopIndexA()])
@@ -87,11 +78,8 @@ function Trig_JobLevels_Init_ComputeJobTotals takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     if(Trig_JobLevels_Init_HasMaxMastery())then
-        // Increase udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited) by 100.
         set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+'d')
     else
-        // Result 1: (udg_TotalJobLevel at position GetConvertedPlayerId(the player being visited)) plus (hero level of
-        // udg_FreelancerHero at position GetConvertedPlayerId(the player being visited)).
         set udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]=(udg_TotalJobLevel[GetConvertedPlayerId(GetEnumPlayer())]+GetHeroLevel(udg_FreelancerHero[GetConvertedPlayerId(GetEnumPlayer())]))
     endif
     if(Trig_JobLevels_Init_IsTopHeroLevel())then

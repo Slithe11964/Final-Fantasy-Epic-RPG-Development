@@ -132,7 +132,6 @@ function Trig_ScorchedEarth_Barrier_Actions takes nothing returns nothing
     if(Trig_ScorchedEarth_Barrier_Cond_HasHellFlame())then
         call DisableTrigger(GetTriggeringTrigger())
         if(Trig_ScorchedEarth_Barrier_Cond_FlameHasCharges())then
-            // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0BY')) minus (1).
             call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY'))-1)) // 'I0BY': item "Hell Gate's Flame"
         else
             call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"

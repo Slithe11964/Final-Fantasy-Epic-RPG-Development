@@ -89,7 +89,6 @@ endfunction
 function Trig_Spell_Tatsumaki_Actions takes nothing returns nothing
     local integer d=Trig_Spell_Tatsumaki_Start(GetTriggerUnit())
     local real damageAmount=Trig_Spell_Tatsumaki_DamageFormula(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(udg_TatsumakiCaster[d],GetSpellAbilityId())),GetHeroStr(udg_TatsumakiCaster[d],true),GetHeroAgi(udg_TatsumakiCaster[d],true),Prof_GetLevel(udg_TatsumakiCaster[d],'R00A')) // 'R00A': upgrade "Katana"
-    // (damage) times (0.1).
     set udg_TatsumakiTickDamage[d]=damageAmount*.1
     set udg_TatsumakiStompDamage[d]=damageAmount
 endfunction

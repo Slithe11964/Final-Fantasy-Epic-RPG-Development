@@ -25,11 +25,9 @@ function Trig_Regen_Cast_Actions takes nothing returns nothing
         // Add 1 point for each complete group of 3 Intelligence; leftover points do not count.
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 3))
     else
-        // (l_tempInteger) plus (unit level of the triggering unit).
         set l_tempInteger=(l_tempInteger+GetUnitLevel(GetTriggerUnit()))
     endif
     set l_tempReal=Prof_StaffPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_HealOverTimeHash)
     call GroupAddUnitSimple(GetSpellTargetUnit(),udg_RegenGroup)
 endfunction
@@ -91,7 +89,6 @@ function Trig_Regen_Periodic_RegenUnit takes nothing returns nothing
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 call UnitRemoveBuffBJ('B006',GetEnumUnit()) // 'B006': buff "Regen"
             else
-                // (udg_TempReal) plus (LoadRealBJ(1, GetHandleIdBJ(the unit being visited), udg_HealOverTimeHash)).
                 set udg_TempReal=(udg_TempReal+LoadRealBJ(1,GetHandleIdBJ(GetEnumUnit()),udg_HealOverTimeHash))
                 if(Trig_Regen_Periodic_IsEnumHero())then
                     // Heroes add one quarter of their Strength to this regeneration amount.
@@ -108,22 +105,17 @@ function Trig_Regen_Periodic_RegenUnit takes nothing returns nothing
         endif
         if(Trig_Regen_Periodic_LacksNegateHeals())then
             if(Trig_Regen_Periodic_HasStoredRegen())then
-                // ((udg_TempReal) plus (1)) plus (LoadRealBJ(2, GetHandleIdBJ(the unit being visited), udg_HealOverTimeHash)).
                 set udg_TempReal=((udg_TempReal+1)+LoadRealBJ(2,GetHandleIdBJ(GetEnumUnit()),udg_HealOverTimeHash))
                 if(Trig_Regen_Periodic_LacksClarityBuff())then
                     set udg_DmgFlagManaDamage=true
                     set udg_IsPureDamage=true
                     set udg_DmgFlagPure=true
-                    // Result 1: a random decimal number between 15 and 16.
-                    // Result 2: (result 1) divided by (64).
-                    // Result 3: (LoadRealBJ(2, GetHandleIdBJ(the unit being visited), udg_HealOverTimeHash)) times (result 2).
                     call UnitDamageTargetBJ(GetEnumUnit(),GetEnumUnit(),(LoadRealBJ(2,GetHandleIdBJ(GetEnumUnit()),udg_HealOverTimeHash)*(GetRandomReal(15.,16.)/ 64.)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 endif
             endif
             if(Trig_Regen_Periodic_HasRegenAmount())then
                 set udg_IsPureDamage=true
                 set udg_DmgFlagPure=true
-                // (udg_TempReal) times ((a random decimal number between 15 and 16) divided by (16)).
                 call UnitDamageTargetBJ(GetEnumUnit(),GetEnumUnit(),(udg_TempReal*(GetRandomReal(15.,16.)/ 16.)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
             else
                 call GroupAddUnitSimple(GetEnumUnit(),udg_PendingEffectGroup)
@@ -136,7 +128,6 @@ function Trig_Regen_Periodic_RegenUnit takes nothing returns nothing
             set udg_DmgFlagPure=true
             set udg_DmgFlagManaDamage=true
             if(Trig_Regen_Periodic_IsAlreadyQueued())then
-                // (maximum mana of the unit being visited) times (0.1).
                 call UnitDamageTargetBJ(GetEnumUnit(),GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetEnumUnit())*.1),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 call GroupRemoveUnitSimple(GetEnumUnit(),udg_PendingEffectGroup)
             else

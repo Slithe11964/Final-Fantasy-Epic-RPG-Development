@@ -41,18 +41,15 @@ function Trig_Counter_Attack_Strike_Actions takes nothing returns nothing
     local location l_tempPoint2
     set l_tempPoint=GetUnitLoc(udg_DodgeUnit)
     set l_tempPoint2=GetUnitLoc(udg_DodgeAttacker)
-    // (AngleBetweenPoints(l_tempPoint, l_tempPoint2)) minus (facing in degrees of udg_DodgeUnit).
     set udg_TempReal=(AngleBetweenPoints(l_tempPoint,l_tempPoint2)-GetUnitFacing(udg_DodgeUnit))
     call RemoveLocation(l_tempPoint)
     call RemoveLocation(l_tempPoint2)
     // The remainder after dividing (udg_TempReal) by (360).
     set udg_TempReal=ModuloReal(udg_TempReal,360.)
     if(Trig_Counter_Attack_Strike_AngleNegative())then
-        // (-1) times (udg_TempReal).
         set udg_TempReal=(-1.*udg_TempReal)
     endif
     if(Trig_Counter_Attack_Strike_AngleOverHalf())then
-        // (360) minus (udg_TempReal).
         set udg_TempReal=(360.-udg_TempReal)
     endif
     if(Trig_Counter_Attack_Strike_FacingTarget())then
@@ -68,10 +65,8 @@ function Trig_Counter_Attack_Strike_Actions takes nothing returns nothing
                 call AdjustPlayerStateBJ(-20,GetOwningPlayer(udg_DodgeAttacker),PLAYER_STATE_RESOURCE_GOLD)
             else
                 if(Trig_Counter_Attack_Strike_ThiefIsPlayerNormal())then
-                    // (2) times (GetUnitAbilityLevelSwapped('A0KY', udg_DodgeUnit)).
                     call AdjustPlayerStateBJ((2*GetUnitAbilityLevelSwapped('A0KY',udg_DodgeUnit)),GetOwningPlayer(udg_DodgeUnit),PLAYER_STATE_RESOURCE_GOLD) // 'A0KY': ability "Thievery"
                 endif
-                // (-2) times (GetUnitAbilityLevelSwapped('A0KY', udg_DodgeUnit)).
                 call AdjustPlayerStateBJ((-2*GetUnitAbilityLevelSwapped('A0KY',udg_DodgeUnit)),GetOwningPlayer(udg_DodgeAttacker),PLAYER_STATE_RESOURCE_GOLD) // 'A0KY': ability "Thievery"
             endif
         endif

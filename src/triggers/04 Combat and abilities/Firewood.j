@@ -35,7 +35,6 @@ function Trig_Firewood_Light_Fireplace_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     if(Trig_Firewood_Light_Fireplace_NoFireplaceNearby())then
         call DestroyGroup(udg_TempGroup)
-        // (item charges of the item being used or moved) plus (1).
         call SetItemCharges(GetManipulatedItem(),(GetItemCharges(GetManipulatedItem())+1))
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"There is no lightable fireplace nearby.")

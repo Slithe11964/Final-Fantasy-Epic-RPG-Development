@@ -103,59 +103,47 @@ function Trig_Research_Requirements_Actions takes nothing returns nothing
     set udg_ResearchReqLevel=((((GetPlayerTechCountSimple(GetResearched(),GetOwningPlayer(GetTriggerUnit()))+1)*GetPlayerTechCountSimple(GetResearched(),GetOwningPlayer(GetTriggerUnit())))/ 2)+5)
     set udg_TempInteger=udg_ResearchReqLevel
     if(Trig_Research_Requirements_IsTools())then
-        // ((udg_ResearchReqLevel treated as a decimal-capable number) times (1.5)) with its decimal part removed.
         set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*1.5))
         set udg_TempInteger=udg_ResearchReqLevel
         set udg_JobRequirementText="Tools"
         set udg_TempString="s (Squire, Chemist) must have a combined"
-        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H000')).
         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H000')) // 'H000': unit "Squire"
-        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H002')).
         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H002')) // 'H002': unit "Chemist"
     else
         if(Trig_Research_Requirements_IsSword())then
             set udg_JobRequirementText="Sword"
             set udg_TempString=" (Knight) must have a"
-            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H003')).
             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H003')) // 'H003': unit "Knight"
         else
             if(Trig_Research_Requirements_IsBow())then
                 set udg_JobRequirementText="Bow"
                 set udg_TempString=" (Archer) must have a"
-                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H001')).
                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H001')) // 'H001': unit "Archer"
             else
                 if(Trig_Research_Requirements_IsDagger())then
-                    // ((udg_ResearchReqLevel treated as a decimal-capable number) times (1.5)) with its decimal part removed.
                     set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*1.5))
                     set udg_TempInteger=udg_ResearchReqLevel
                     set udg_JobRequirementText="Dagger"
                     set udg_TempString="s (Thief, Ninja) must have a combined"
-                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00B')).
                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00B')) // 'H00B': unit "Thief"
-                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00F')).
                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00F')) // 'H00F': unit "Ninja"
                 else
                     if(Trig_Research_Requirements_IsSpear())then
                         set udg_JobRequirementText="Spear"
                         set udg_TempString=" (Lancer) must have a"
-                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00C')).
                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00C')) // 'H00C': unit "Lancer"
                     else
                         if(Trig_Research_Requirements_IsAxe())then
                             set udg_JobRequirementText="Axe"
                             set udg_TempString=" (Geomancer) must have a"
-                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00D')).
                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00D')) // 'H00D': unit "Geomancer"
                         else
                             if(Trig_Research_Requirements_IsKatana())then
                                 set udg_JobRequirementText="Katana"
                                 set udg_TempString=" (Samurai) must have a"
-                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00E')).
                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00E')) // 'H00E': unit "Samurai"
                             else
                                 if(Trig_Research_Requirements_IsGreatsword())then
-                                    // ((udg_ResearchReqLevel treated as a decimal-capable number) times (1.5)) with its decimal part removed.
                                     set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*1.5))
                                     set udg_TempInteger=udg_ResearchReqLevel
                                     set udg_JobRequirementText="Greatsword"
@@ -164,34 +152,23 @@ function Trig_Research_Requirements_Actions takes nothing returns nothing
                                     else
                                         set udg_TempString=" (Holy Swordsman) must have a"
                                     endif
-                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00M')).
                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00M')) // 'H00M': unit "Holy Swordsman"
-                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H02X')).
                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H02X')) // 'H02X': unit "Dark Knight"
                                 else
                                     if(Trig_Research_Requirements_IsLeatherArmor())then
-                                        // (udg_ResearchReqLevel) times (4).
                                         set udg_ResearchReqLevel=(udg_ResearchReqLevel*4)
                                         set udg_TempInteger=udg_ResearchReqLevel
                                         set udg_JobRequirementText="Leather Armor"
                                         set udg_TempString="s (Chemist, Archer, Monk, Thief, Geomancer, Mediator, Ninja) must have a combined"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H002')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H002')) // 'H002': unit "Chemist"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H001')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H001')) // 'H001': unit "Archer"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00A')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00A')) // 'H00A': unit "Monk"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00B')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00B')) // 'H00B': unit "Thief"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00D')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00D')) // 'H00D': unit "Geomancer"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00G')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00G')) // 'H00G': unit "Mediator"
-                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00F')).
                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00F')) // 'H00F': unit "Ninja"
                                     else
                                         if(Trig_Research_Requirements_IsPlateArmor())then
-                                            // ((udg_ResearchReqLevel treated as a decimal-capable number) times (3.5)) with its decimal part removed.
                                             set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*3.5))
                                             set udg_TempInteger=udg_ResearchReqLevel
                                             set udg_JobRequirementText="Plate Armor"
@@ -201,32 +178,22 @@ function Trig_Research_Requirements_Actions takes nothing returns nothing
                                             else
                                                 set udg_TempString="s (Squire, Knight, Lancer, Samurai, Holy Swordsman) must have a combined"
                                             endif
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H000')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H000')) // 'H000': unit "Squire"
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H003')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H003')) // 'H003': unit "Knight"
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00C')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00C')) // 'H00C': unit "Lancer"
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00E')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00E')) // 'H00E': unit "Samurai"
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00M')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00M')) // 'H00M': unit "Holy Swordsman"
-                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H02X')).
                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H02X')) // 'H02X': unit "Dark Knight"
                                         else
                                             if(Trig_Research_Requirements_IsRod())then
-                                                // ((udg_ResearchReqLevel treated as a decimal-capable number) times (1.5)) with its decimal part removed.
                                                 set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*1.5))
                                                 set udg_TempInteger=udg_ResearchReqLevel
                                                 set udg_JobRequirementText="Rod"
                                                 set udg_TempString="s (Wizard, Calculator) must have a combined"
-                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H004')).
                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H004')) // 'H004': unit "Wizard"
-                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00H')).
                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00H')) // 'H00H': unit "Calculator"
                                             else
                                                 if(Trig_Research_Requirements_IsStaff())then
-                                                    // ((udg_ResearchReqLevel treated as a decimal-capable number) times (2.5)) with its decimal part removed.
                                                     set udg_ResearchReqLevel=R2I((I2R(udg_ResearchReqLevel)*2.5))
                                                     set udg_TempInteger=udg_ResearchReqLevel
                                                     set udg_JobRequirementText="Staff"
@@ -235,36 +202,26 @@ function Trig_Research_Requirements_Actions takes nothing returns nothing
                                                     else
                                                         set udg_TempString="s (Priest, Time Mage, Prophet) must have a combined"
                                                     endif
-                                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H005')).
                                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H005')) // 'H005': unit "Priest"
-                                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H008')).
                                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H008')) // 'H008': unit "Time Mage"
-                                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00J')).
                                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00J')) // 'H00J': unit "Prophet"
-                                                    // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H02Y')).
                                                     set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H02Y')) // 'H02Y': unit "Necromancer"
                                                 else
                                                     if(Trig_Research_Requirements_IsGun())then
                                                         set udg_JobRequirementText="Gun"
                                                         set udg_TempString=" (Mediator) must have a"
-                                                        // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00G')).
                                                         set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00G')) // 'H00G': unit "Mediator"
                                                     else
                                                         if(Trig_Research_Requirements_IsInnerMana())then
-                                                            // (udg_ResearchReqLevel) times (2).
                                                             set udg_ResearchReqLevel=(udg_ResearchReqLevel*2)
                                                             set udg_TempInteger=udg_ResearchReqLevel
                                                             set udg_JobRequirementText="Inner Mana"
                                                             set udg_TempString="s (Summoner, Oracle, Sorcerer) must have a combined"
-                                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H009')).
                                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H009')) // 'H009': unit "Summoner"
-                                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00I')).
                                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00I')) // 'H00I': unit "Oracle"
-                                                            // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00L')).
                                                             set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00L')) // 'H00L': unit "Sorcerer"
                                                         else
                                                             if(Trig_Research_Requirements_IsMysticArmor())then
-                                                                // (udg_ResearchReqLevel) times (5).
                                                                 set udg_ResearchReqLevel=(udg_ResearchReqLevel*5)
                                                                 set udg_TempInteger=udg_ResearchReqLevel
                                                                 set udg_JobRequirementText="Mystic Armor"
@@ -273,23 +230,14 @@ function Trig_Research_Requirements_Actions takes nothing returns nothing
                                                                 else
                                                                     set udg_TempString="s (Wizard, Priest, Summoner, Time Mage, Oracle, Calculator, Prophet, Sorcerer) must have a combined"
                                                                 endif
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H004')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H004')) // 'H004': unit "Wizard"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H005')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H005')) // 'H005': unit "Priest"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H009')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H009')) // 'H009': unit "Summoner"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H008')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H008')) // 'H008': unit "Time Mage"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00I')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00I')) // 'H00I': unit "Oracle"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00H')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00H')) // 'H00H': unit "Calculator"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00J')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00J')) // 'H00J': unit "Prophet"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H00L')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H00L')) // 'H00L': unit "Sorcerer"
-                                                                // (udg_TempInteger) minus (Job_GetSavedLevel(GetOwningPlayer(the triggering unit), 'H02Y')).
                                                                 set udg_TempInteger=(udg_TempInteger-Job_GetSavedLevel(GetOwningPlayer(GetTriggerUnit()),'H02Y')) // 'H02Y': unit "Necromancer"
                                                             else
                                                                 set udg_TempInteger=0

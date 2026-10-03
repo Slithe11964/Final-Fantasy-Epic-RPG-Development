@@ -105,8 +105,6 @@ function Trig_Prophet_Pray_Heal_QueueHealEnum takes nothing returns nothing
     if(Trig_Prophet_Pray_Heal_EnumAcceptsHeal())then
         call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Undead\\VampiricAura\\VampiricAuraTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        // Result 1: udg_TempInteger treated as a decimal-capable number.
-        // Result 2: (LoadRealBJ(2, GetHandleIdBJ(the unit being visited), udg_HealOverTimeHash)) plus (result 1).
         set udg_TempReal=(LoadRealBJ(2,GetHandleIdBJ(GetEnumUnit()),udg_HealOverTimeHash)+I2R(udg_TempInteger))
         call SaveRealBJ(udg_TempReal,2,GetHandleIdBJ(GetEnumUnit()),udg_HealOverTimeHash)
         call GroupAddUnitSimple(GetEnumUnit(),udg_RegenGroup)
@@ -216,11 +214,9 @@ function Trig_Prophet_BlessingOfLight_HealEnum takes nothing returns nothing
         if(Trig_Prophet_BlessingOfLight_EnumNotCaster())then
             set udg_IsPureDamage=true
             set udg_DmgFlagManaDamage=true
-            // (udg_TempInteger treated as a decimal-capable number) times (0.25).
             call UnitDamageTargetBJ(GetTriggerUnit(),GetEnumUnit(),(I2R(udg_TempInteger)*.25),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
         endif
         set udg_IsPureDamage=true
-        // Udg_TempInteger treated as a decimal-capable number.
         call UnitDamageTargetBJ(GetTriggerUnit(),GetEnumUnit(),I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     endif
 endfunction
@@ -232,20 +228,15 @@ function Trig_Prophet_BlessingOfLight_Actions takes nothing returns nothing
     set l_tempPoint=GetUnitLoc(GetSpellAbilityUnit())
     set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Prophet_BlessingOfLight_FilterTarget))
     call RemoveLocation(l_tempPoint)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Prophet_BlessingOfLight_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (3)).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
     endif
     set l_tempReal=Prof_StaffPower(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
     set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
     call ForGroupBJ(l_tempGroup,function Trig_Prophet_BlessingOfLight_HealEnum)
     call DestroyGroup(l_tempGroup)
     set udg_IsPureDamage=true
-    // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     set l_tempGroup=null
     set l_tempPoint=null
@@ -279,7 +270,6 @@ function Trig_Prophet_DivineShield_Actions takes nothing returns nothing
     if(abilityLevel==$B)then // $B = 11
         set l_share=5.
     else
-        // ((abilityLevel) times (0.25)) plus (1.75).
         set l_share=(abilityLevel*.25)+1.75
     endif
     if(l_hasLink)then

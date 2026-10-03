@@ -346,7 +346,6 @@ function Trig_MysteriousCurse_AttackLink_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_Npc_Talk_LinkGuard)
     call DestroyEffectBJ(udg_QuestMarkerEffect[20])
     call RemoveItemFromStockBJ('I04W',gg_unit_n02Y_0052) // 'I04W': item "Information: Cursed Link"
-    // (3) plus (udg_CurseLiar).
     set udg_CurseStage=(3+udg_CurseLiar)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -371,7 +370,6 @@ function Trig_MysteriousCurse_AttackAdria_Actions takes nothing returns nothing
     endif
     call DisableTrigger(gg_trg_Npc_Talk_LinkGuard)
     call DestroyEffectBJ(udg_QuestMarkerEffect[20])
-    // (6) minus (udg_CurseLiar).
     set udg_CurseStage=(6-udg_CurseLiar)
     call RemoveItemFromStockBJ('I04W',gg_unit_n02Y_0052) // 'I04W': item "Information: Cursed Link"
     call DestroyTrigger(GetTriggeringTrigger())

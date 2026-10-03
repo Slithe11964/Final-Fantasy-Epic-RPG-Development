@@ -9,7 +9,6 @@ function Trig_Miracle_Piece_Use_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Miracle_Piece_Use_Actions takes nothing returns nothing
-    // (item charges of GetSpellTargetItem()) minus (1).
     call SetItemCharges(GetSpellTargetItem(),(GetItemCharges(GetSpellTargetItem())-1))
 endfunction
 

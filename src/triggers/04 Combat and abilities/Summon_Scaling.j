@@ -64,26 +64,20 @@ function Trig_Summon_Powerup_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A122',udg_TempUnit2) // 'A122': ability "Summoned Powerup"
     set udg_StatCalcValue=$A // $A = 10
     if(Trig_Summon_Powerup_Has_ExtremeChallenger())then
-        // Increase udg_StatCalcValue by 15.
         set udg_StatCalcValue=(udg_StatCalcValue+$F) // $F = 15
     else
         if(Trig_Summon_Powerup_Has_FinalArbiter())then
-            // Increase udg_StatCalcValue by 12.
             set udg_StatCalcValue=(udg_StatCalcValue+$C) // $C = 12
         else
             if(Trig_Summon_Powerup_Has_FullExorcist())then
-                // Increase udg_StatCalcValue by 10.
                 set udg_StatCalcValue=(udg_StatCalcValue+$A) // $A = 10
             else
                 if(Trig_Summon_Powerup_Has_ApprenticeSummoner())then
-                    // Increase udg_StatCalcValue by 3.
                     set udg_StatCalcValue=(udg_StatCalcValue+3)
                     if(Trig_Summon_Powerup_Has_HighSummoner())then
-                        // Increase udg_StatCalcValue by 2.
                         set udg_StatCalcValue=(udg_StatCalcValue+2)
                     endif
                     if(Trig_Summon_Powerup_Has_BlueExorcist())then
-                        // Increase udg_StatCalcValue by 3.
                         set udg_StatCalcValue=(udg_StatCalcValue+3)
                     endif
                 endif
@@ -91,15 +85,12 @@ function Trig_Summon_Powerup_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_Summon_Powerup_Has_MagicGod())then
-        // Increase udg_StatCalcValue by 5.
         set udg_StatCalcValue=(udg_StatCalcValue+5)
     endif
     if(Trig_Summon_Powerup_Has_MonsterHunter())then
-        // Increase udg_StatCalcValue by 2.
         set udg_StatCalcValue=(udg_StatCalcValue+2)
     endif
     if(Trig_Summon_Powerup_Has_NotHornless())then
-        // Increase udg_StatCalcValue by 8.
         set udg_StatCalcValue=(udg_StatCalcValue+8)
     endif
     if(Trig_Summon_Powerup_Powerup_AboveBase())then
@@ -112,9 +103,7 @@ function Trig_Summon_Powerup_Actions takes nothing returns nothing
             // ((BlzGetUnitBaseDamage(udg_TempUnit2, 1)) times ((udg_StatCalcValue) plus (3))) divided by (10).
             call BlzSetUnitBaseDamage(udg_TempUnit2,((BlzGetUnitBaseDamage(udg_TempUnit2,1)*(udg_StatCalcValue+3))/ $A),1) // $A = 10
         else
-            // ((BlzGetUnitBaseDamage(udg_TempUnit2, 0)) times (udg_StatCalcValue)) divided by (10).
             call BlzSetUnitBaseDamage(udg_TempUnit2,((BlzGetUnitBaseDamage(udg_TempUnit2,0)*udg_StatCalcValue)/ $A),0) // $A = 10
-            // ((BlzGetUnitBaseDamage(udg_TempUnit2, 1)) times (udg_StatCalcValue)) divided by (10).
             call BlzSetUnitBaseDamage(udg_TempUnit2,((BlzGetUnitBaseDamage(udg_TempUnit2,1)*udg_StatCalcValue)/ $A),1) // $A = 10
         endif
         if(Trig_Summon_Powerup_Aura_Sukugaya())then
@@ -128,11 +117,8 @@ function Trig_Summon_Powerup_Actions takes nothing returns nothing
             call BlzSetUnitArmor(udg_TempUnit2,((BlzGetUnitArmor(udg_TempUnit2)+20.)*(I2R(udg_StatCalcValue)*.1)))
             call UnitAddAbilityBJ('A1DL',udg_TempUnit2) // 'A1DL': ability "Rakugaya Bonus"
         else
-            // (BlzGetUnitArmor(udg_TempUnit2)) times ((udg_StatCalcValue treated as a decimal-capable number) times
-            // (0.1)).
             call BlzSetUnitArmor(udg_TempUnit2,(BlzGetUnitArmor(udg_TempUnit2)*(I2R(udg_StatCalcValue)*.1)))
         endif
-        // ((maximum health of udg_TempUnit2) times (udg_StatCalcValue)) divided by (10).
         call BlzSetUnitMaxHP(udg_TempUnit2,((BlzGetUnitMaxHP(udg_TempUnit2)*udg_StatCalcValue)/ $A)) // $A = 10
         call SetUnitLifePercentBJ(udg_TempUnit2,'d')
     endif

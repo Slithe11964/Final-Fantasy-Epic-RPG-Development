@@ -40,7 +40,6 @@ function Trig_Quest_Cooking_Start_Actions takes nothing returns nothing
     set udg_SideQuest[69]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Cooking Choices"),"You decided to try your hand at cooking a meal at a fireplace in the Northern Mountains. Make a delicious meal!","ReplaceableTextures\\CommandButtons\\BTNFdWildBowl.blp")
     set l_tempPoint=GetUnitLoc(gg_unit_n0KG_0263)
     call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\RandomObject\\RandomObject.mdl")
-    // (BlzGetLocalSpecialEffectZ(GetLastCreatedEffectBJ())) plus (64).
     call BlzSetSpecialEffectZ(GetLastCreatedEffectBJ(),(BlzGetLocalSpecialEffectZ(GetLastCreatedEffectBJ())+64.))
     set udg_SpecialEffect[92]=GetLastCreatedEffectBJ()
     call RemoveLocation(l_tempPoint)

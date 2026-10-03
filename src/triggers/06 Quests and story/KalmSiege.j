@@ -43,8 +43,6 @@ function Trig_KalmSiege_AITick_StopMovingUnit takes nothing returns nothing
 endfunction
 
 function Trig_KalmSiege_AITick_ShouldRejuvLeader takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_RangerHero, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_RangerHero)>=70.)and(UnitHasBuffBJ(udg_RangerHero,'B006')==false) // 'B006': buff "Regen"
 endfunction
 
@@ -57,38 +55,26 @@ function Trig_KalmSiege_AITick_LeaderLacksProtect takes nothing returns boolean
 endfunction
 
 function Trig_KalmSiege_AITick_LeaderHurt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_RangerHero, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_RangerHero)<99.)
 endfunction
 
 function Trig_KalmSiege_AITick_ShouldRejuvHealer takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ClericAlly, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ClericAlly)>=70.)and(UnitHasBuffBJ(udg_ClericAlly,'B006')==false) // 'B006': buff "Regen"
 endfunction
 
 function Trig_KalmSiege_AITick_HealerHurt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ClericAlly, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ClericAlly)<99.)
 endfunction
 
 function Trig_KalmSiege_AITick_ShouldRejuvLeaderAlt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_RangerHero, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_RangerHero)>=70.)and(UnitHasBuffBJ(udg_RangerHero,'B006')==false) // 'B006': buff "Regen"
 endfunction
 
 function Trig_KalmSiege_AITick_ShouldRejuvHealerAlt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ClericAlly, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ClericAlly)>=70.)and(UnitHasBuffBJ(udg_ClericAlly,'B006')==false) // 'B006': buff "Regen"
 endfunction
 
 function Trig_KalmSiege_AITick_HealerHurtAlt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_ClericAlly, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_ClericAlly)<99.)
 endfunction
 
@@ -101,8 +87,6 @@ function Trig_KalmSiege_AITick_LeaderLacksProtectAlt takes nothing returns boole
 endfunction
 
 function Trig_KalmSiege_AITick_LeaderHurtAlt takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_RangerHero, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(udg_RangerHero)<99.)
 endfunction
 
@@ -217,14 +201,12 @@ function Trig_KalmSiege_LeaderRetreat_IsLeaderAttacked takes nothing returns boo
 endfunction
 
 function Trig_KalmSiege_LeaderRetreat_IsGuardTooFar takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(GetUnitCurrentOrder(GetEnumUnit())!=$D0012)and(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>udg_TempReal) // $D0012 = 851986
 endfunction
 
 function Trig_KalmSiege_LeaderRetreat_PullGuardTowardLeader takes nothing returns nothing
     set udg_TempPoint2=GetUnitLoc(GetEnumUnit())
     if(Trig_KalmSiege_LeaderRetreat_IsGuardTooFar())then
-        // (the straight-line distance between udg_TempPoint and udg_TempPoint2) divided by (2).
         set udg_RetreatPoint=Loc_PolarOffset(udg_TempPoint,(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)/ 2.),AngleBetweenPoints(udg_TempPoint,udg_TempPoint2))
         call RemoveLocation(udg_TempPoint2)
         call IssuePointOrderLocBJ(GetEnumUnit(),"move",udg_RetreatPoint)
@@ -287,14 +269,8 @@ function Trig_KalmSiege_FailRespawn_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),Player($B),udg_TempPoint,l_tempPoint2) // $B = 11
     call RemoveLocation(udg_TempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
-    // Calculation 1:
-    // ((BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) times (udg_RaidPowerLevel)) divided by (4).
-    // Calculation 2:
-    // (1) minus (1).
     call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*udg_RaidPowerLevel)/ 4),(1-1))
-    // ((BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) times (udg_RaidPowerLevel)) divided by (4).
     call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*udg_RaidPowerLevel)/ 4),1)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_RaidPowerLevel)) divided by (4).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())*udg_RaidPowerLevel)/ 4))
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
     call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)

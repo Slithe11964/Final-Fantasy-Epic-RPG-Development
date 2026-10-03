@@ -61,9 +61,6 @@ endfunction
 function Trig_Numerus_ChargeCommand_Actions takes nothing returns nothing
     local group l_tempGroup
     local location l_tempPoint
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
-    // Result 2: (result 1) plus (5).
     call SetUnitLifePercentBJ(GetTriggerUnit(),(GetUnitLifePercent(GetTriggerUnit())+5.))
     call SetUnitManaPercentBJ(GetTriggerUnit(),'d')
     call Wait_Polled(.5)

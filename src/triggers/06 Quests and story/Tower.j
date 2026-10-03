@@ -42,7 +42,6 @@ endfunction
 function Trig_Tower_Buy_RestoreMP_Actions takes nothing returns nothing
     call ShowUnitHide(GetSoldUnit())
     call UnitApplyTimedLifeBJ(.3,'BTLF',GetSoldUnit()) // 'BTLF': object name not found in map data
-    // (current mana of the triggering unit) plus (1000).
     call SetUnitManaBJ(GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MANA,GetTriggerUnit())+1000.))
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())

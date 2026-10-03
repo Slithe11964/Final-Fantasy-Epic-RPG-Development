@@ -23,14 +23,10 @@ function Trig_GameLoad_RestoreTitles_RestoreChronicleLevels takes nothing return
     loop
         exitwhen udg_TempInteger>60
         if(Trig_GameLoad_RestoreTitles_HasTitle_Enum())then
-            // Result 1: (GetUnitAbilityLevelSwapped(udg_ChronicleAbility at position udg_TitleChronicleIndex at position
-            // udg_TempInteger, udg_SpiritOfGaya at position GetConvertedPlayerId(the player being visited))) plus
-            // (udg_TitleChroniclePoints at position udg_TempInteger).
             call SetUnitAbilityLevelSwapped(udg_ChronicleAbility[udg_TitleChronicleIndex[udg_TempInteger]],udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],(GetUnitAbilityLevelSwapped(udg_ChronicleAbility[udg_TitleChronicleIndex[udg_TempInteger]],udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())])+udg_TitleChroniclePoints[udg_TempInteger]))
         endif
         set udg_TempInteger=udg_TempInteger+1
     endloop
-    // (udg_SpeedrunLevel at position GetConvertedPlayerId(the player being visited)) plus (1).
     call SetUnitAbilityLevelSwapped(udg_ChronicleAbility[$B],udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],(udg_SpeedrunLevel[GetConvertedPlayerId(GetEnumPlayer())]+1)) // $B = 11
 endfunction
 

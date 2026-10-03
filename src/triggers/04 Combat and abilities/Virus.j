@@ -42,8 +42,6 @@ endfunction
 
 function Trig_Virus_Cast_Actions takes nothing returns nothing
     local real l_tempReal
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (0.1).
     set l_tempReal=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*.1)
     call Trig_Virus_Cast_Apply(GetSpellTargetUnit(),l_tempReal)
 endfunction

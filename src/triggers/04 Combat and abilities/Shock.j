@@ -29,8 +29,6 @@ function Trig_Shock_Cast_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (facing in degrees of the triggering unit) plus ((loop counter A treated as a decimal-capable number) times
-        // (60)).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,220.,(GetUnitFacing(GetTriggerUnit())+(I2R(GetForLoopIndexA())*60.)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -40,18 +38,14 @@ function Trig_Shock_Cast_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
-    // (3).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Shock_Cast_IsHero())then
-        // (l_tempInteger) plus ((Strength of the triggering unit) times (4)).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*4))
     endif
     // Result 1: (10) plus (Prof_GetLevel(the triggering unit, 'R001')).
     // Result 2: (result 1) plus (Prof_GetLevel(the triggering unit, 'R00I')).
     // Result 3: (0.1) times (result 2).
     set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R001')+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R001': upgrade "Sword"; 'R00I': upgrade "Heavens Forged Axe"
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(1,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
@@ -59,8 +53,6 @@ function Trig_Shock_Cast_Actions takes nothing returns nothing
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M3',GetLastCreatedUnit()) // 'A0M3': ability "Thunder-elemental Damage"
     call UnitAddAbilityBJ('A13J',GetLastCreatedUnit()) // 'A13J': ability "Shock"
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (20).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 20)
     call SetUnitAbilityLevelSwapped('A13J',GetLastCreatedUnit(),l_tempInteger) // 'A13J': ability "Shock"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"thunderclap")

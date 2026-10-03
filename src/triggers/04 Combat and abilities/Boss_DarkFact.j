@@ -203,14 +203,10 @@ function Trig_Boss_DarkFact_PingPong_NoTargets takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DarkFact_PingPong_Below50Percent takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<50.)
 endfunction
 
 function Trig_Boss_DarkFact_PingPong_Below75Percent takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<75.)
 endfunction
 
@@ -309,7 +305,6 @@ function Trig_Boss_DarkFact_Orb_Bounce_Actions takes nothing returns nothing
     else
         call IssueTargetOrderBJ(GetTriggerUnit(),"attack",GroupPickRandomUnit(udg_TempGroup))
         call UnitRemoveBuffsExBJ(bj_BUFF_POLARITY_EITHER,bj_BUFF_RESIST_EITHER,GetTriggerUnit(),false,true)
-        // (GetUnitMoveSpeed(the triggering unit)) plus (40).
         call SetUnitMoveSpeed(GetTriggerUnit(),(GetUnitMoveSpeed(GetTriggerUnit())+40.))
         call SetUnitAbilityLevelSwapped('A10M',GetTriggerUnit(),1) // 'A10M': ability "Galbalan Orb"
         call SetUnitInvulnerable(GetTriggerUnit(),true)
@@ -383,7 +378,6 @@ function Trig_Boss_DarkFact_Orb_Attack_Actions takes nothing returns nothing
             else
                 call SetUnitOwner(GetAttacker(),Player($B),false) // $B = 11
                 call UnitRemoveBuffsExBJ(bj_BUFF_POLARITY_EITHER,bj_BUFF_RESIST_EITHER,GetAttacker(),false,true)
-                // (GetUnitMoveSpeed(GetAttacker())) plus (40).
                 call SetUnitMoveSpeed(GetAttacker(),(GetUnitMoveSpeed(GetAttacker())+40.))
                 call SetUnitInvulnerable(GetAttacker(),false)
                 call IssueTargetOrderBJ(GetAttacker(),"attack",GroupPickRandomUnit(udg_TempGroup))
@@ -393,7 +387,6 @@ function Trig_Boss_DarkFact_Orb_Attack_Actions takes nothing returns nothing
             endif
         else
             call GroupRemoveUnitSimple(GetAttacker(),udg_BossGroup)
-            // ((maximum health of GetAttacker()) divided by (udg_DifficultyScale)) with its decimal part removed.
             call BlzSetUnitMaxHP(GetAttacker(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetAttacker())/ udg_DifficultyScale)))
             call UnitRemoveAbilityBJ('A0ZR',GetAttacker()) // 'A0ZR': ability "Immortal"
             call KillUnit(GetAttacker())

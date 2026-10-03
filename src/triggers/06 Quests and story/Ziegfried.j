@@ -178,14 +178,12 @@ function Trig_Ziegfried_Meltdown_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\Disenchant\\DisenchantSpecialArt.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (30)) minus (15).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,600.,((I2R(GetForLoopIndexA())*30.)-15.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -193,7 +191,6 @@ function Trig_Ziegfried_Meltdown_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         if(Trig_Ziegfried_Meltdown_Wave1_RingIsCreep())then
-            // (loop counter A treated as a decimal-capable number) times (30).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,900.,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -217,7 +214,6 @@ function Trig_Ziegfried_Meltdown_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\NightElf\\Wisp\\WispExplode.mdl")
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),$FF,0,0) // $FF = 255
@@ -227,7 +223,6 @@ function Trig_Ziegfried_Meltdown_Actions takes nothing returns nothing
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (30)) minus (15).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,600.,((I2R(GetForLoopIndexA())*30.)-15.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\NightElf\\Wisp\\WispExplode.mdl")
         call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),$FF,0,0) // $FF = 255
@@ -238,7 +233,6 @@ function Trig_Ziegfried_Meltdown_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         if(Trig_Ziegfried_Meltdown_Wave2_RingIsCreep())then
-            // (loop counter A treated as a decimal-capable number) times (30).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,900.,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Units\\NightElf\\Wisp\\WispExplode.mdl")
             call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),$FF,0,0) // $FF = 255

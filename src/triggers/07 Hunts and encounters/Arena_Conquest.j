@@ -141,7 +141,6 @@ function Trig_Arena_Conquest_Actions takes nothing returns nothing
         endif
         set udg_ArenaOwnerStreak=0
         call AddUnitToStockBJ('n0CX',udg_ArenaOrganizer[4],1,1) // 'n0CX': unit "Arena: No Mercy for the Judged Battle"
-        // (215) plus (LoadIntegerBJ(2, 0, udg_GameStateHash)).
         call SaveIntegerBJ(50,$C,($D7+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash) // $C = 12; $D7 = 215
         set udg_ArenaUnitsUnlocked=(udg_ArenaUnitsUnlocked+1)
         call ConditionalTriggerExecute(gg_trg_AlmightyShinra_Arm)

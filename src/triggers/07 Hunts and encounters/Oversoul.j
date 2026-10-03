@@ -103,18 +103,11 @@ function Trig_Oversoul_OnMonsterDeath_Actions takes nothing returns nothing
     set udg_DropTempInt=GetUnitTypeId(GetTriggerUnit())
     if(Trig_Oversoul_OnMonsterDeath_Cond_HasSpecies())then
         if(Trig_Oversoul_OnMonsterDeath_Cond_VictimOversouled())then
-            // Result 1: (udg_SpeciesKillCount at position LoadIntegerBJ(1, udg_DropTempInt, udg_MonsterDataHash)) divided
-            // by (2); drop the remainder.
             set udg_SpeciesKillCount[LoadIntegerBJ(1,udg_DropTempInt,udg_MonsterDataHash)]=(udg_SpeciesKillCount[LoadIntegerBJ(1,udg_DropTempInt,udg_MonsterDataHash)]/ 2)
             set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
             if(Trig_Oversoul_OnMonsterDeath_Cond_CoinFlip())then
                 call CreateItemLoc('I01Z',udg_TempPoint3) // 'I01Z': item "Crystal Shard"
             else
-                // Result 1: (unit level of the triggering unit) divided by (2).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: the square root of (result 2).
-                // Result 4: (result 3) with its decimal part removed.
-                // Result 5: (result 4) plus (5).
                 call CreateItemLoc(udg_LevelItemIdTable[(R2I(SquareRoot(I2R((GetUnitLevel(GetTriggerUnit())/ 2))))+5)],udg_TempPoint3)
             endif
             call RemoveLocation(udg_TempPoint3)
@@ -153,17 +146,9 @@ function Trig_Oversoul_Activate_Actions takes nothing returns nothing
         call UnitAddAbilityBJ('A0WP',GetTriggerUnit()) // 'A0WP': ability "Magical Hardness"
         call UnitAddAbilityBJ('ACev',GetTriggerUnit()) // 'ACev': ability "Swiftness"
         call UnitAddAbilityBJ('A0SF',GetTriggerUnit()) // 'A0SF': ability "Command AI"
-        // Result 1: BlzGetUnitBaseDamage(the triggering unit, 0) treated as a decimal-capable number.
-        // Result 2: (result 1) times (2.2).
-        // Result 3: (result 2) with its decimal part removed.
         call BlzSetUnitBaseDamage(GetTriggerUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetTriggerUnit(),0))*2.2)),0)
-        // Result 1: BlzGetUnitBaseDamage(the triggering unit, 1) treated as a decimal-capable number.
-        // Result 2: (result 1) times (2.2).
-        // Result 3: (result 2) with its decimal part removed.
         call BlzSetUnitBaseDamage(GetTriggerUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetTriggerUnit(),1))*2.2)),1)
-        // (BlzGetUnitArmor(the triggering unit)) plus (40).
         call BlzSetUnitArmor(GetTriggerUnit(),(BlzGetUnitArmor(GetTriggerUnit())+40.))
-        // ((maximum health of the triggering unit) times (2.5)) with its decimal part removed.
         call BlzSetUnitMaxHP(GetTriggerUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetTriggerUnit())*2.5)))
         call SetUnitLifePercentBJ(GetTriggerUnit(),'d')
         call SetUnitManaPercentBJ(GetTriggerUnit(),'d')

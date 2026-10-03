@@ -55,7 +55,6 @@ endfunction
 function Trig_DeathSeeker_TurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_DeathSeeker_TurnIn_Cond_ItemHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I067')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067'))-1)) // 'I067': item "Death Seeker"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067')) // 'I067': item "Death Seeker"

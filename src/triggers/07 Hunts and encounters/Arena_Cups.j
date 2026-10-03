@@ -84,14 +84,10 @@ function Trig_Arena_Cup_Won_GiveCupReward takes nothing returns nothing
     set udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())]+1)
     set l_tempForce=Force_OfPlayer(GetEnumPlayer())
     if(Trig_Arena_Cup_Won_HasDoubleBpReward())then
-        // Result 1: (udg_BattlePoints at position 0) times (2).
-        // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+(udg_BattlePoints[0]*2))
         // (udg_BattlePoints at position 0) times (2).
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points for winning the cup.|r"))
     else
-        // (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (udg_BattlePoints at
-        // position 0).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+udg_BattlePoints[0])
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00You get "+I2S(udg_BattlePoints[0]))+" Battle Points for winning the cup.|r"))
     endif
@@ -118,7 +114,6 @@ function Trig_Arena_Cup_Won_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (30) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint=Loc_PolarOffset(l_tempPoint2,256,(30.*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -161,14 +156,11 @@ function Trig_Arena_Cup_Won_Actions takes nothing returns nothing
         call PlayThematicMusicBJ("FF8TheWinnerShort.mp3")
     endif
     if(Trig_Arena_Cup_Won_IsSurvivalReward())then
-        // (udg_ArenaCupId) times (750).
         set udg_BattlePoints[0]=(udg_ArenaCupId*750)
     else
-        // (udg_ArenaCupId) times (500).
         set udg_BattlePoints[0]=(udg_ArenaCupId*500)
     endif
     if(Trig_Arena_Cup_Won_HasBonusBP())then
-        // Increase udg_BattlePoints at position 0 by 5000.
         set udg_BattlePoints[0]=(udg_BattlePoints[0]+5000)
     endif
     call ForForce(udg_CupArenaPlayers,function Trig_Arena_Cup_Won_GiveCupReward)
@@ -192,7 +184,6 @@ function Trig_Arena_UnlockCups_IsChapter1Or2 takes nothing returns boolean
 endfunction
 
 function Trig_Arena_UnlockCups_CanUnlockMountains takes nothing returns boolean
-    // (udg_CupWins at position 1) plus (udg_CupWins at position 2).
     return(Trig_Arena_UnlockCups_IsChapter1Or2())and((udg_CupWins[1]+udg_CupWins[2])==3)
 endfunction
 

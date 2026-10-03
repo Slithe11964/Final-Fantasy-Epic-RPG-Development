@@ -94,15 +94,12 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
                 call Text_Say(gg_unit_n0CE_0020,"Here, have this. There will be more where that came from the more complete your map becomes.",false)
                 set udg_TempInteger=0
                 set bj_forLoopAIndex=udg_MapRewardStage
-                // (((udg_MapExploredPct) with its decimal part removed) divided by (15)) minus (1).
                 set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (udg_TempInteger) plus (udg_MapRewardTier at position loop counter A).
                     set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
                     set bj_forLoopAIndex=bj_forLoopAIndex+1
                 endloop
-                // ((udg_MapExploredPct) with its decimal part removed) divided by (15).
                 set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
                 call Reward_Give(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
             else
@@ -127,15 +124,12 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
             if(Trig_Cartographer_Start_HasMapProgress_Quiet())then
                 set udg_TempInteger=0
                 set bj_forLoopAIndex=udg_MapRewardStage
-                // (((udg_MapExploredPct) with its decimal part removed) divided by (15)) minus (1).
                 set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    // (udg_TempInteger) plus (udg_MapRewardTier at position loop counter A).
                     set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
                     set bj_forLoopAIndex=bj_forLoopAIndex+1
                 endloop
-                // ((udg_MapExploredPct) with its decimal part removed) divided by (15).
                 set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
                 call Reward_Give(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
             endif
@@ -183,7 +177,6 @@ function Trig_Cartographer_Update_IsMapQuestActive takes nothing returns boolean
 endfunction
 
 function Trig_Cartographer_Update_HasNewRewardTier takes nothing returns boolean
-    // ((udg_MapExploredPct) with its decimal part removed) divided by (15).
     return((R2I(udg_MapExploredPct)/ $F)>udg_MapRewardStage)and(udg_MontblancHasNews==false) // $F = 15
 endfunction
 
@@ -234,7 +227,6 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
         endloop
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    // (l_tempInteger treated as a decimal-capable number) times (0.04).
     set udg_MapExploredPct=(I2R(l_tempInteger)*.04)
     if(Trig_Cartographer_Update_IsMapQuestActive())then
         call QuestItemSetDescriptionBJ(udg_QuestReq[6],("Explored: "+(R2SW(udg_MapExploredPct,3,2)+"%")))
@@ -274,15 +266,12 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
         call Text_Say(gg_unit_n0CE_0020,"Hmm yes, you've done well. As promised, here's a reward.",false)
         set udg_TempInteger=0
         set bj_forLoopAIndex=udg_MapRewardStage
-        // (((udg_MapExploredPct) with its decimal part removed) divided by (15)) minus (1).
         set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (udg_TempInteger) plus (udg_MapRewardTier at position loop counter A).
             set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        // ((udg_MapExploredPct) with its decimal part removed) divided by (15).
         set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
         call Reward_GiveAll(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
         if(Trig_Cartographer_Report_IsMapDone_Talk())then
@@ -312,15 +301,12 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
         set udg_MontblancHasNews=false
         set udg_TempInteger=0
         set bj_forLoopAIndex=udg_MapRewardStage
-        // (((udg_MapExploredPct) with its decimal part removed) divided by (15)) minus (1).
         set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (udg_TempInteger) plus (udg_MapRewardTier at position loop counter A).
             set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        // ((udg_MapExploredPct) with its decimal part removed) divided by (15).
         set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
         call Reward_GiveAll(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
         if(Trig_Cartographer_Report_IsMapDone_Quiet())then

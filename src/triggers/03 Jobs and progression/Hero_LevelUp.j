@@ -280,42 +280,12 @@ function Trig_Hero_LevelUp_Actions takes nothing returns nothing
             call ModifyHeroStat(bj_HEROSTAT_INT,GetTriggerUnit(),bj_MODIFYMETHOD_SET,5)
         else
             if(Trig_Hero_LevelUp_NeedsEndlessUpdate())then
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_STR,GetTriggerUnit(),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_AGI,GetTriggerUnit(),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_INT,GetTriggerUnit(),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
                 call SetUnitAbilityLevelSwapped('A10E',GetTriggerUnit(),GetHeroLevel(GetTriggerUnit())) // 'A10E': ability "Endless"
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_STR,GetTriggerUnit(),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_AGI,GetTriggerUnit(),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
-                // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit)))
-                // times (GetUnitAbilityLevelSwapped('A10E', the triggering unit)).
-                // Result 2: result 1 treated as a decimal-capable number.
-                // Result 3: (result 2) times (0.1).
-                // Result 4: (result 3) with its decimal part removed.
                 call ModifyHeroStat(bj_HEROSTAT_INT,GetTriggerUnit(),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]*GetUnitAbilityLevelSwapped('A10E',GetTriggerUnit())))*.1))) // 'A10E': ability "Endless"
             endif
         endif

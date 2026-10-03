@@ -828,7 +828,6 @@ function Trig_Armory_Select_IsCancel takes nothing returns boolean
 endfunction
 
 function Trig_Armory_Select_HeroNearby takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
     return(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)<=500.)
 endfunction
 
@@ -878,7 +877,6 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
                     endif
                     set bj_forLoopAIndex=bj_forLoopAIndex+1
                 endloop
-                // (BlzGetUnitMaxMana(GetSoldUnit())) plus (1).
                 call SetUnitAbilityLevelSwapped('A0MX',GetTriggerUnit(),(BlzGetUnitMaxMana(GetSoldUnit())+1)) // 'A0MX': ability "Cancel"
             else
                 if(Trig_Armory_Select_CanWithdraw())then
@@ -948,7 +946,6 @@ function Trig_Armory_Back_Actions takes nothing returns nothing
         call ShowUnitHide(GetTriggerUnit())
         call KillUnit(GetTriggerUnit())
     else
-        // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
         set udg_TempInteger=udg_ArmoryParentCategory[(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)]
         set bj_forLoopAIndex=1
         set bj_forLoopAIndexEnd=udg_ArmoryStockMax
@@ -966,7 +963,6 @@ function Trig_Armory_Back_Actions takes nothing returns nothing
             endif
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        // (udg_TempInteger) plus (1).
         call SetUnitAbilityLevelSwapped('A0MX',GetTriggerUnit(),(udg_TempInteger+1)) // 'A0MX': ability "Cancel"
     endif
 endfunction

@@ -24,9 +24,7 @@ function Trig_Goliath_Tonic_Apply takes unit u,real duration returns nothing
     call SaveBoolean(udg_MaxHpBuffHash,GetHandleId(u),4,true)
     set hp=GetWidgetLife(u)
     set maximumHealth=BlzGetUnitMaxHP(u)
-    // (maximum health) times (2).
     call BlzSetUnitMaxHP(u,maximumHealth*2)
-    // (hp) times (2).
     call SetUnitState(u,UNIT_STATE_LIFE,hp*2)
     call SaveInteger(udg_MaxHpBuffHash,GetHandleId(u),5,maximumHealth)
     call SaveTimerHandle(udg_MaxHpBuffHash,GetHandleId(u),6,effectTimer)
@@ -41,9 +39,6 @@ endfunction
 
 function Trig_Goliath_Tonic_Actions takes nothing returns nothing
     local real l_tempReal
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (15).
-    // Result 2: result 1 treated as a decimal-capable number.
     set l_tempReal=I2R(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $F) // $F = 15
     call Trig_Goliath_Tonic_Apply(GetSpellTargetUnit(),l_tempReal)
 endfunction

@@ -132,57 +132,45 @@ function Trig_Cooldown_Scaling_Actions takes nothing returns nothing
     endif
     if(Trig_Cooldown_Scaling_IsPharmacology())then
         if(Trig_Cooldown_Scaling_IsPotion())then
-            // (l_tempReal) times (BlzGetAbilityCooldown('A14X', udg_AbilityLevelIndex)).
             set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A14X',udg_AbilityLevelIndex)) // 'A14X': ability "Toss Potion"
         else
             if(Trig_Cooldown_Scaling_IsHiPotion())then
-                // (l_tempReal) times (BlzGetAbilityCooldown('A14W', udg_AbilityLevelIndex)).
                 set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A14W',udg_AbilityLevelIndex)) // 'A14W': ability "Toss Hi-Potion"
             else
                 if(Trig_Cooldown_Scaling_IsMegaPotion())then
-                    // (l_tempReal) times (BlzGetAbilityCooldown('A14V', udg_AbilityLevelIndex)).
                     set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A14V',udg_AbilityLevelIndex)) // 'A14V': ability "Toss Mega Potion"
                 else
                     if(Trig_Cooldown_Scaling_IsXPotion())then
-                        // (l_tempReal) times (BlzGetAbilityCooldown('A14U', udg_AbilityLevelIndex)).
                         set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A14U',udg_AbilityLevelIndex)) // 'A14U': ability "Toss X-Potion"
                     endif
                 endif
             endif
         endif
         if(Trig_Cooldown_Scaling_IsEther())then
-            // (l_tempReal) times (BlzGetAbilityCooldown('A0G5', udg_AbilityLevelIndex)).
             set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0G5',udg_AbilityLevelIndex)) // 'A0G5': ability "Toss Ether"
         else
             if(Trig_Cooldown_Scaling_IsHiEther())then
-                // (l_tempReal) times (BlzGetAbilityCooldown('A0G3', udg_AbilityLevelIndex)).
                 set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0G3',udg_AbilityLevelIndex)) // 'A0G3': ability "Toss Hi-Ether"
             else
                 if(Trig_Cooldown_Scaling_IsMegaEther())then
-                    // (l_tempReal) times (BlzGetAbilityCooldown('A0G1', udg_AbilityLevelIndex)).
                     set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0G1',udg_AbilityLevelIndex)) // 'A0G1': ability "Toss Mega Ether"
                 else
                     if(Trig_Cooldown_Scaling_IsTurboEther())then
-                        // (l_tempReal) times (BlzGetAbilityCooldown('A0FY', udg_AbilityLevelIndex)).
                         set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0FY',udg_AbilityLevelIndex)) // 'A0FY': ability "Toss Turbo Ether"
                     endif
                 endif
             endif
         endif
         if(Trig_Cooldown_Scaling_IsHeroDrink())then
-            // (l_tempReal) times (BlzGetAbilityCooldown('A0FZ', udg_AbilityLevelIndex)).
             set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0FZ',udg_AbilityLevelIndex)) // 'A0FZ': ability "Toss Hero Drink"
         else
             if(Trig_Cooldown_Scaling_IsNectar())then
-                // (l_tempReal) times (BlzGetAbilityCooldown('A0KZ', udg_AbilityLevelIndex)).
                 set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0KZ',udg_AbilityLevelIndex)) // 'A0KZ': ability "Toss Nectar"
             else
                 if(Trig_Cooldown_Scaling_IsGreaterNectar())then
-                    // (l_tempReal) times (BlzGetAbilityCooldown('A0L0', udg_AbilityLevelIndex)).
                     set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0L0',udg_AbilityLevelIndex)) // 'A0L0': ability "Toss Greater Nectar"
                 else
                     if(Trig_Cooldown_Scaling_IsElixir())then
-                        // (l_tempReal) times (BlzGetAbilityCooldown('A0FN', udg_AbilityLevelIndex)).
                         set l_tempReal=(l_tempReal*BlzGetAbilityCooldown('A0FN',udg_AbilityLevelIndex)) // 'A0FN': ability "Toss Elixir"
                     endif
                 endif
@@ -191,14 +179,6 @@ function Trig_Cooldown_Scaling_Actions takes nothing returns nothing
     endif
     if(Trig_Cooldown_Scaling_IsPlayerHero())then
         if(Trig_Cooldown_Scaling_UseLowerLevelHero())then
-            // Calculation 1:
-            // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
-            // Calculation 2:
-            // Result 1: (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
-            // Result 2: Agility of the triggering unit treated as a decimal-capable number.
-            // Result 3: (result 2) plus (1000).
-            // Result 4: (l_tempReal) divided by (result 3).
-            // Result 5: (BlzGetAbilityCooldown(GetSpellAbilityId(), result 1)) times (result 4).
             call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(BlzGetAbilityCooldown(GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/(I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))+1000.))))
         else
             // Result 1: Agility of the triggering unit treated as a decimal-capable number.
@@ -210,17 +190,8 @@ function Trig_Cooldown_Scaling_Actions takes nothing returns nothing
         endif
     else
         if(Trig_Cooldown_Scaling_UseLowerLevel())then
-            // Calculation 1:
-            // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
-            // Calculation 2:
-            // Result 1: (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
-            // Result 2: (l_tempReal) divided by (1000).
-            // Result 3: (BlzGetAbilityCooldown(GetSpellAbilityId(), result 1)) times (result 2).
             call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(BlzGetAbilityCooldown(GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/ 1000.)))
         else
-            // Result 1: (l_tempReal) divided by (1000).
-            // Result 2: (BlzGetAbilityCooldown(GetSpellAbilityId(), GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the
-            // triggering unit))) times (result 1).
             call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(BlzGetAbilityCooldown(GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))*(l_tempReal/ 1000.)))
         endif
     endif

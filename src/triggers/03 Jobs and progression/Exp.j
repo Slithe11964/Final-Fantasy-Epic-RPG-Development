@@ -34,7 +34,6 @@ function Trig_Exp_Distribution_HasExpBonusAura takes nothing returns boolean
 endfunction
 
 function Trig_Exp_Distribution_NearTempUnit takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint3 and udg_TempPoint4.
     return(DistanceBetweenPoints(udg_TempPoint3,udg_TempPoint4)<=udg_ExpShareRange)
 endfunction
 
@@ -115,7 +114,6 @@ function Trig_Exp_Distribution_CanGainExp takes nothing returns boolean
 endfunction
 
 function Trig_Exp_Distribution_HeroInExpRange takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint3 and udg_TempPoint4.
     return(DistanceBetweenPoints(udg_TempPoint3,udg_TempPoint4)<=udg_ExpShareRange)
 endfunction
 
@@ -144,17 +142,14 @@ function Trig_Exp_Distribution_Actions takes nothing returns nothing
     if(Trig_Exp_Distribution_TempUnitIsNeutral())then
         set udg_TempPoint4=GetUnitLoc(udg_ShadowUnit)
         if(Trig_Exp_Distribution_NearTempUnit())then
-            // (udg_ExpBase) times (0.5).
             set udg_ExpBase=(udg_ExpBase*.5)
         endif
         call RemoveLocation(udg_TempPoint4)
     endif
     if(Trig_Exp_Distribution_IsTechFinishKill())then
         if(Trig_Exp_Distribution_HasComboBonus())then
-            // (udg_ExpBase) times (2).
             set udg_ExpBase=(udg_ExpBase*2.)
         else
-            // (udg_ExpBase) times (1.4).
             set udg_ExpBase=(udg_ExpBase*1.4)
         endif
         call CreateTextTagLocBJ("Tech Finish!",udg_TempPoint3,0,12.,.0,'d',100.,.0)
@@ -204,20 +199,16 @@ function Trig_Exp_Distribution_Actions takes nothing returns nothing
                     set udg_ExpAmount=(udg_ExpAmount*(1+(I2R(GetHeroStatBJ(bj_HEROSTAT_INT,Player_GetHero(ConvertedPlayer(udg_PlayerIndex)),true))/ 1000.)))
                 endif
                 if(Trig_Exp_Distribution_IsKillerHero())then
-                    // (udg_ExpAmount) times (1.5).
                     set udg_ExpAmount=(udg_ExpAmount*1.5)
                 else
                     if(Trig_Exp_Distribution_IsKillerPlayer())then
-                        // (udg_ExpAmount) times (1.35).
                         set udg_ExpAmount=(udg_ExpAmount*1.35)
                     endif
                 endif
                 if(Trig_Exp_Distribution_HeroHasRoar())then
-                    // (udg_ExpAmount) times (1.3).
                     set udg_ExpAmount=(udg_ExpAmount*1.3)
                 endif
                 if(Trig_Exp_Distribution_HasGrowth())then
-                    // (udg_ExpAmount) times (1.5).
                     set udg_ExpAmount=(udg_ExpAmount*1.5)
                 endif
                 // Convert the player XP percentage to a multiplier: 100% becomes 1; 50% becomes 0.5.
@@ -228,17 +219,13 @@ function Trig_Exp_Distribution_Actions takes nothing returns nothing
                         // R2I drops the decimal part rather than rounding to the nearest whole number.
                         call AddHeroXPSwapped(R2I((udg_ExpAmount*1.2)),Player_GetHero(ConvertedPlayer(udg_PlayerIndex)),true)
                     else
-                        // ((udg_ExpAmount) times (udg_SecondaryXPRate)) with its decimal part removed.
                         call AddHeroXPSwapped(R2I((udg_ExpAmount*udg_SecondaryXPRate)),udg_SpiritOfGaya[udg_PlayerIndex],true)
-                        // (udg_ExpAmount) with its decimal part removed.
                         call AddHeroXPSwapped(R2I(udg_ExpAmount),Player_GetHero(ConvertedPlayer(udg_PlayerIndex)),true)
                     endif
                 else
                     if(Trig_Exp_Distribution_HeroAtMaxLevelBank())then
-                        // (udg_BankedXP at position udg_PlayerIndex) plus ((udg_ExpAmount) times (1.2)).
                         set udg_BankedXP[udg_PlayerIndex]=(udg_BankedXP[udg_PlayerIndex]+(udg_ExpAmount*1.2))
                     else
-                        // (udg_BankedXP at position udg_PlayerIndex) plus (udg_ExpAmount).
                         set udg_BankedXP[udg_PlayerIndex]=(udg_BankedXP[udg_PlayerIndex]+udg_ExpAmount)
                     endif
                     if(Trig_Exp_Distribution_ExpBankFull())then

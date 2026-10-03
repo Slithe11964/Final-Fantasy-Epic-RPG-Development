@@ -73,7 +73,6 @@ function Trig_Book_TransformGem_Actions takes nothing returns nothing
         call DestroyForce(udg_TempForce)
     else
         if(Trig_Book_TransformGem_Cond_GemHasSpareCharge())then
-            // (item charges of GetSpellTargetItem()) minus (1).
             call SetItemCharges(GetSpellTargetItem(),(GetItemCharges(GetSpellTargetItem())-1))
         else
             call RemoveItem(GetSpellTargetItem())

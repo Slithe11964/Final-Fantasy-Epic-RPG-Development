@@ -42,7 +42,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     set udg_BossCleanupTrigger=gg_trg_Boss_Judges_Cleanup
     call Cine_Enter()
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
-    // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
     set l_tempPoint=GetRectCenter(gg_rct_639)
     call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
@@ -51,7 +50,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     set udg_JudgeGabranth=GetLastCreatedUnit()
     call Cam_PanToUnit(GetLastCreatedUnit(),0)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -68,7 +66,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'N03P',Player($B),l_tempPoint2,180.) // 'N03P': unit "Judge Magister"; $B = 11
     set udg_JudgeBergan=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -85,7 +82,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'N03Q',Player($B),l_tempPoint,180.) // 'N03Q': unit "Judge Magister"; $B = 11
     set udg_JudgeZargabaath=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -104,7 +100,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'N03N',Player($B),l_tempPoint2,180.) // 'N03N': unit "Judge Magister"; $B = 11
     set udg_JudgeGhis=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -121,7 +116,6 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'N03O',Player($B),l_tempPoint,180.) // 'N03O': unit "Judge Magister"; $B = 11
     set udg_JudgeDrace=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
-    // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -182,31 +176,26 @@ function Trig_Boss_Judges_Ultimates_Actions takes nothing returns nothing
     call Wait_Polled(15.)
     if(Trig_Boss_Judges_Ultimates_GhisAlive())then
         call UnitAddAbilityBJ('A0WZ',udg_JudgeGhis) // 'A0WZ': ability "!Chain Magick"
-        // (6) minus (CountUnitsInGroup(udg_JudgeGroup)).
         call SetUnitAbilityLevelSwapped('A0WZ',udg_JudgeGhis,(6-CountUnitsInGroup(udg_JudgeGroup))) // 'A0WZ': ability "!Chain Magick"
         call Wait_Polled(30.)
     endif
     if(Trig_Boss_Judges_Ultimates_DraceAlive())then
         call UnitAddAbilityBJ('A0X0',udg_JudgeDrace) // 'A0X0': ability "!Salvation"
-        // (6) minus (CountUnitsInGroup(udg_JudgeGroup)).
         call SetUnitAbilityLevelSwapped('A0X0',udg_JudgeDrace,(6-CountUnitsInGroup(udg_JudgeGroup))) // 'A0X0': ability "!Salvation"
         call Wait_Polled(30.)
     endif
     if(Trig_Boss_Judges_Ultimates_BerganAlive())then
         call UnitAddAbilityBJ('A0WW',udg_JudgeBergan) // 'A0WW': ability "!Imperial Rage"
-        // (6) minus (CountUnitsInGroup(udg_JudgeGroup)).
         call SetUnitAbilityLevelSwapped('A0WW',udg_JudgeBergan,(6-CountUnitsInGroup(udg_JudgeGroup))) // 'A0WW': ability "!Imperial Rage"
         call Wait_Polled(30.)
     endif
     if(Trig_Boss_Judges_Ultimates_ZargabaathAlive())then
         call UnitAddAbilityBJ('A0X1',udg_JudgeZargabaath) // 'A0X1': ability "!Intimidation"
-        // (6) minus (CountUnitsInGroup(udg_JudgeGroup)).
         call SetUnitAbilityLevelSwapped('A0X1',udg_JudgeZargabaath,(6-CountUnitsInGroup(udg_JudgeGroup))) // 'A0X1': ability "!Intimidation"
         call Wait_Polled(30.)
     endif
     if(Trig_Boss_Judges_Ultimates_GabranthAlive())then
         call UnitAddAbilityBJ('A0WX',udg_JudgeGabranth) // 'A0WX': ability "!Sentence"
-        // (6) minus (CountUnitsInGroup(udg_JudgeGroup)).
         call SetUnitAbilityLevelSwapped('A0WX',udg_JudgeGabranth,(6-CountUnitsInGroup(udg_JudgeGroup))) // 'A0WX': ability "!Sentence"
     endif
 endfunction
@@ -220,8 +209,6 @@ function Trig_Boss_Judges_Ghis_AI_WasLowLastTick takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Judges_Ghis_AI_GhisWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeGhis, times 100 (or 0 if the unit is missing
-    // or its maximum is 0).
     return(GetUnitLifePercent(udg_JudgeGhis)<50.)
 endfunction
 
@@ -248,8 +235,6 @@ function Trig_Boss_Judges_Gabranth_AI_ZargWasLowLastTick takes nothing returns b
 endfunction
 
 function Trig_Boss_Judges_Gabranth_AI_ZargabaathWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeZargabaath, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeZargabaath,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeZargabaath)<50.)
 endfunction
 
@@ -258,8 +243,6 @@ function Trig_Boss_Judges_Gabranth_AI_DraceWasLowLastTick takes nothing returns 
 endfunction
 
 function Trig_Boss_Judges_Gabranth_AI_DraceWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeDrace, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeDrace,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeDrace)<50.)
 endfunction
 
@@ -296,8 +279,6 @@ function Trig_Boss_Judges_Zargabaath_AI_GabranthWasLowLastTick takes nothing ret
 endfunction
 
 function Trig_Boss_Judges_Zargabaath_AI_GabranthWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeGabranth, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeGabranth,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeGabranth)<50.)
 endfunction
 
@@ -306,8 +287,6 @@ function Trig_Boss_Judges_Zargabaath_AI_DraceWasLowLastTick takes nothing return
 endfunction
 
 function Trig_Boss_Judges_Zargabaath_AI_DraceWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeDrace, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeDrace,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeDrace)<50.)
 endfunction
 
@@ -356,8 +335,6 @@ function Trig_Boss_Judges_Drace_AI_ZargWasLowLastTick takes nothing returns bool
 endfunction
 
 function Trig_Boss_Judges_Drace_AI_ZargabaathWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeZargabaath, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeZargabaath,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeZargabaath)<50.)
 endfunction
 
@@ -366,8 +343,6 @@ function Trig_Boss_Judges_Drace_AI_GabranthWasLowLastTick takes nothing returns 
 endfunction
 
 function Trig_Boss_Judges_Drace_AI_GabranthWounded takes nothing returns boolean
-    // Result 1: current health divided by maximum health for udg_JudgeGabranth, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(IsUnitInGroup(udg_JudgeGabranth,udg_JudgeGroup))and(GetUnitLifePercent(udg_JudgeGabranth)<50.)
 endfunction
 
@@ -477,7 +452,6 @@ function Trig_Boss_Judges_Death_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=5
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (72) times (loop counter A treated as a decimal-capable number).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,(72.*I2R(GetForLoopIndexA())))
             call CreateItemLoc('I0D4',udg_TempPoint2) // 'I0D4': item "Helm of Divine Judgement"
             call RemoveLocation(udg_TempPoint2)
@@ -566,7 +540,6 @@ function Trig_Boss_Judge_ChainMagick_Actions takes nothing returns nothing
     set udg_IsPureDamage=true
     set udg_DmgFlagPure=true
     set udg_DmgFlagManaDamage=true
-    // (maximum mana of the triggering unit) divided by (10).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetTriggerUnit())/ 10.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     call Wait_Polled(5.)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
@@ -580,7 +553,6 @@ function Trig_Boss_Judge_ChainMagick_Actions takes nothing returns nothing
     set udg_IsPureDamage=true
     set udg_DmgFlagPure=true
     set udg_DmgFlagManaDamage=true
-    // (maximum mana of the triggering unit) divided by (10).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetTriggerUnit())/ 10.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     call Wait_Polled(5.)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
@@ -594,7 +566,6 @@ function Trig_Boss_Judge_ChainMagick_Actions takes nothing returns nothing
     set udg_IsPureDamage=true
     set udg_DmgFlagPure=true
     set udg_DmgFlagManaDamage=true
-    // (maximum mana of the triggering unit) divided by (10).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetTriggerUnit())/ 10.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     call Wait_Polled(5.)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIma\\AImaTarget.mdl")
@@ -608,7 +579,6 @@ function Trig_Boss_Judge_ChainMagick_Actions takes nothing returns nothing
     set udg_IsPureDamage=true
     set udg_DmgFlagPure=true
     set udg_DmgFlagManaDamage=true
-    // (maximum mana of the triggering unit) divided by (10).
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetTriggerUnit())/ 10.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
 endfunction
 

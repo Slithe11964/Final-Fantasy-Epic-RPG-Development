@@ -31,13 +31,7 @@ endfunction
 function Trig_Summon_Transfusion_Consume_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0I3',GetTriggerUnit()) // 'A0I3': ability "Transfusion Powerup"
     call BlzSetUnitMaxMana(GetTriggerUnit(),0)
-    // Result 1: BlzGetUnitBaseDamage(the triggering unit, 0) treated as a decimal-capable number.
-    // Result 2: (result 1) divided by (1.5).
-    // Result 3: (result 2) with its decimal part removed.
     call BlzSetUnitBaseDamage(GetTriggerUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetTriggerUnit(),0))/ 1.5)),0)
-    // Result 1: BlzGetUnitBaseDamage(the triggering unit, 1) treated as a decimal-capable number.
-    // Result 2: (result 1) divided by (1.5).
-    // Result 3: (result 2) with its decimal part removed.
     call BlzSetUnitBaseDamage(GetTriggerUnit(),R2I((I2R(BlzGetUnitBaseDamage(GetTriggerUnit(),1))/ 1.5)),1)
     if(Trig_Summon_Transfusion_Consume_CasterIsSummon1())then
         call BlzSetUnitArmor(GetTriggerUnit(),udg_GolemBaseArmor)
@@ -51,7 +45,6 @@ function Trig_Summon_Transfusion_Consume_Actions takes nothing returns nothing
                 if(Trig_Summon_Transfusion_Consume_CasterIsSummon4())then
                     call BlzSetUnitArmor(GetTriggerUnit(),udg_CyclopsBaseArmor)
                 else
-                    // (BlzGetUnitArmor(the triggering unit)) divided by (1.5).
                     call BlzSetUnitArmor(GetTriggerUnit(),(BlzGetUnitArmor(GetTriggerUnit())/ 1.5))
                 endif
             endif

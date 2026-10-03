@@ -101,10 +101,8 @@ function Trig_Damage_Engine_ProficiencyMult takes unit u returns real
     if(GetUnitAbilityLevel(u,'A16Y')>0)then // 'A16Y': ability "Varied Proficiency"
         set l_varied=0
         if(GetUnitAbilityLevel(u,'A135')>0)then // 'A135': ability "Joker Proficiency"
-            // Increase l_varied by 12.
             set l_varied=l_varied+$C // $C = 12
         else
-            // Increase l_varied by 5.
             set l_varied=l_varied+5
         endif
         set i=0
@@ -140,7 +138,6 @@ function Trig_Damage_Engine_ProficiencyMult takes unit u returns real
         if(l_weapon=='R00I')then // 'R00I': upgrade "Heavens Forged Axe"
             set l_rate=.02
         endif
-        // ((l_prof treated as a decimal-capable number) times (l_rate)) plus (1).
         return I2R(l_prof)*l_rate+1
     else
         return 1.
@@ -194,36 +191,28 @@ endfunction
 function Trig_Damage_Engine_GetElementBonus takes unit u,integer l_element,boolean l_physical returns real
     local real l_bonus=.0
     if(GetUnitAbilityLevel(u,'A0PN')>0 or GetUnitAbilityLevel(u,'B08Z')>0)then // 'A0PN': ability "Gaya Strength"; 'B08Z': buff tooltip "Gaya Strength"
-        // Increase l_bonus by 0.33333.
         set l_bonus=l_bonus+.33333
     endif
     if(l_physical and GetUnitAbilityLevel(u,udg_ElementAttackAbil[l_element])>0)then
-        // Increase l_bonus by 0.1.
         set l_bonus=l_bonus+.1
     endif
     if(GetUnitAbilityLevel(u,udg_ElementKnowledgeAbil[l_element])>0)then
-        // Increase l_bonus by 0.5.
         set l_bonus=l_bonus+.5
     endif
     if(GetUnitAbilityLevel(u,udg_ElementBoostAbil[l_element])>0)then
-        // Increase l_bonus by 0.3.
         set l_bonus=l_bonus+.3
     endif
     if(not l_physical and GetUnitAbilityLevel(u,udg_ElementSpellAmpAbil[l_element])>0)then
-        // Increase l_bonus by 0.8.
         set l_bonus=l_bonus+.8
     endif
     if(GetUnitAbilityLevel(u,udg_ElementOrbAmpAbil[l_element])>0)then
-        // Increase l_bonus by 0.6.
         set l_bonus=l_bonus+.6
     endif
     if(l_element==6 and GetUnitAbilityLevel(u,'A1FF')>0)then // 'A1FF': ability "Yatagarasu Power"
-        // Increase l_bonus by 1.2.
         set l_bonus=l_bonus+1.2
     endif
     if(l_element==1 and GetUnitAbilityLevel(u,'A0YW')>0)then // 'A0YW': ability "Gathering Heat"
         if(GetUnitAbilityLevel(u,'A0Z1')>0)then // 'A0Z1': ability "Full Heat"
-            // Increase l_bonus by 2.
             set l_bonus=l_bonus+2.
         else
             // (l_bonus) plus ((2) times ((1) minus ((current health of u) divided by (maximum health of u)))).
@@ -231,7 +220,6 @@ function Trig_Damage_Engine_GetElementBonus takes unit u,integer l_element,boole
         endif
     endif
     if(l_element==7)then
-        // (l_bonus) times (0.5).
         set l_bonus=l_bonus*.5
     endif
     if(GetUnitAbilityLevel(u,udg_ElementEnchantBuff[l_element])>0)then
@@ -249,9 +237,7 @@ function Trig_Damage_Engine_ReapplyStunEnum takes nothing returns nothing
     local unit enumeratedUnit=GetEnumUnit()
     local unit l_dummy
     local integer l_stunLevel=0
-    // (l_stunLevel) plus (GetUnitAbilityLevel(enumeratedUnit, 'BPSE')).
     set l_stunLevel=l_stunLevel+GetUnitAbilityLevel(enumeratedUnit,'BPSE') // 'BPSE': buff tooltip "Stunned"
-    // (l_stunLevel) plus ((GetUnitAbilityLevel(enumeratedUnit, 'B08I')) times (2)).
     set l_stunLevel=l_stunLevel+GetUnitAbilityLevel(enumeratedUnit,'B08I')*2 // 'B08I': buff tooltip "Stunned"
     if(l_stunLevel>0)then
         call UnitRemoveAbility(enumeratedUnit,'BPSE') // 'BPSE': buff tooltip "Stunned"
@@ -296,19 +282,15 @@ function Trig_Damage_Engine_GetComboHits takes unit u returns integer
         set successChance=successChance+1
     endif
     if(GetUnitAbilityLevel(u,'A0TW')>0)then // 'A0TW': ability "Cursed Combo Potential"
-        // Increase chance by 2.
         set successChance=successChance+2
     endif
     if(GetUnitAbilityLevel(u,'A182')>0)then // 'A182': ability "Kazuma Effect"
-        // Increase chance by 2.
         set successChance=successChance+2
     endif
     if(GetUnitAbilityLevel(u,'A0HS')>0)then // 'A0HS': ability "Wyrmhero Effect"
-        // Increase chance by 6.
         set successChance=successChance+6
     endif
     if(GetUnitAbilityLevel(u,'A0OQ')>0)then // 'A0OQ': ability "Combo Triple Chance"
-        // (chance) times (3).
         set successChance=successChance*3
     endif
     // A random whole number from 1 through 20.
@@ -316,56 +298,44 @@ function Trig_Damage_Engine_GetComboHits takes unit u returns integer
         // A random decimal number between 3 and 5.6.
         set l_hits=GetRandomReal(3.,5.6)
         if(GetUnitAbilityLevel(u,'B07L')>0)then // 'B07L': buff tooltip "Renzokuken"
-            // (l_hits) plus (GetUnitAbilityLevel(u, 'A0IY') treated as a decimal-capable number).
             set l_hits=l_hits+I2R(GetUnitAbilityLevel(u,'A0IY')) // 'A0IY': ability "Renzokuken"
         else
             call UnitRemoveAbility(u,'B00O') // 'B00O': buff tooltip "Rendan"
         endif
         if(GetUnitAbilityLevel(u,'A0HS')>0)then // 'A0HS': ability "Wyrmhero Effect"
-            // Increase l_hits by 11.
             set l_hits=l_hits+11.
         endif
         if(GetUnitAbilityLevel(u,'A13G')>0)then // 'A13G': ability "Combo Extend"
-            // Increase l_hits by 8.
             set l_hits=l_hits+8.
         endif
         if(GetUnitAbilityLevel(u,'A1DG')>0)then // 'A1DG': ability "Combo Dragon"
-            // Increase l_hits by 7.
             set l_hits=l_hits+7.
         endif
         if(GetUnitAbilityLevel(u,'A182')>0)then // 'A182': ability "Kazuma Effect"
-            // (l_hits) plus (a random decimal number between -1.1 and 1.5).
             set l_hits=l_hits+GetRandomReal(-1.1,1.5)
         endif
         if(GetUnitAbilityLevel(u,'A13F')>0)then // 'A13F': ability "Combo Extend"
-            // Increase l_hits by 6.
             set l_hits=l_hits+6.
         endif
         if(GetUnitAbilityLevel(u,'A13E')>0)then // 'A13E': ability "Combo Extend"
-            // Increase l_hits by 5.
             set l_hits=l_hits+5.
         endif
         if(GetUnitAbilityLevel(u,'A13D')>0)then // 'A13D': ability "Combo Extend"
-            // Increase l_hits by 4.
             set l_hits=l_hits+4.
         endif
         if(GetUnitAbilityLevel(u,'A13C')>0)then // 'A13C': ability "Combo Extend"
-            // Increase l_hits by 3.
             set l_hits=l_hits+3.
         endif
         if(GetUnitAbilityLevel(u,'A13H')>0)then // 'A13H': ability "Mid Combo Potential"
-            // Increase l_hits by 3.
             set l_hits=l_hits+3.
         endif
         if(GetUnitAbilityLevel(u,'A13B')>0)then // 'A13B': ability "Combo Extend"
-            // Increase l_hits by 2.
             set l_hits=l_hits+2.
         endif
         if(GetUnitAbilityLevel(u,'A13A')>0)then // 'A13A': ability "Combo Extend"
             set l_hits=l_hits+1.
         endif
         set u=null
-        // (l_hits) with its decimal part removed.
         return R2I(l_hits)
     else
         set u=null
@@ -408,7 +378,6 @@ function Trig_Damage_Engine_ComboStart takes unit u,unit t returns nothing
     call SaveInteger(udg_ComboHash,GetHandleId(u),5,2)
     set l_tag=CreateTextTag()
     call SaveTextTagHandle(udg_ComboHash,GetHandleId(u),6,l_tag)
-    // (y position of u) plus (32).
     call SetTextTagPos(l_tag,GetUnitX(u),GetUnitY(u)+32.,0)
     call SetTextTagVelocity(l_tag,0,.036)
     call SetTextTagPermanent(l_tag,false)
@@ -426,10 +395,7 @@ function Trig_Damage_Engine_RollBlock takes unit u,boolean l_physical,boolean l_
         return true
     endif
     if l_physical then
-        // Calculation 1:
         // A random whole number from 1 through 100.
-        // Calculation 2:
-        // (2) times (LoadInteger(udg_RunicHash, GetHandleId(u), 6)).
         if(GetUnitAbilityLevel(u,'B07R')>0 and GetRandomInt(1,'d')<=(2*LoadInteger(udg_RunicHash,GetHandleId(u),6)))then // 'B07R': buff "Runic Shield"
             return true
         endif
@@ -589,22 +555,18 @@ function Trig_Damage_Engine_GetCritMult takes unit u returns real
         set mp=GetUnitState(u,UNIT_STATE_MANA)
         if(l_bonus>=6)then
             if(mp>150.)then
-                // (mp) minus (150).
                 call SetUnitState(u,UNIT_STATE_MANA,mp-150.)
                 return 2.5
             endif
-        // (20) plus ((20) times (l_bonus treated as a decimal-capable number)).
         elseif(mp>(20.+(20.*I2R(l_bonus))))then
             // (mp) minus ((30) plus ((10) times (l_bonus treated as a decimal-capable number))).
             call SetUnitState(u,UNIT_STATE_MANA,mp-(30.+(10.*I2R(l_bonus))))
-            // (1.2) plus ((0.2) times (l_bonus treated as a decimal-capable number)).
             return 1.2+(.2*I2R(l_bonus))
         endif
     endif
     set l_bonus=Prof_GetLevel(u,'R00M') // 'R00M': upgrade "Gun"
     if(l_bonus>0 and Player_GetHero(GetOwningPlayer(u))==u)then
         set mp=TimerGetElapsed(udg_LastCritTimer[GetPlayerId(GetOwningPlayer(u))])
-        // (((l_bonus) times (mp)) times (0.3)) with its decimal part removed.
         set l_bonus=R2I(l_bonus*mp*.3)
     else
         set l_bonus=0
@@ -612,192 +574,111 @@ function Trig_Damage_Engine_GetCritMult takes unit u returns real
     if(GetUnitAbilityLevel(u,'A0EC')>0)then // 'A0EC': editor label "Critical Strike"
         return .2
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0H6')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0H6': editor label "Critical Strike"
         return 4.3
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0NK')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0NK': editor label "Critical Strike"
         return 4.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (35) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0AJ')>0 and GetRandomInt(1,'d')<=35+l_bonus)then // 'A0AJ': editor label "Critical Strike"
         return 4.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (9) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0CL')>0 and GetRandomInt(1,'d')<=9+l_bonus)then // 'A0CL': editor label "Critical Strike"
         return 4.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0KU')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A0KU': editor label "Critical Strike"; $F = 15
         return 4.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (10) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0H4')>0 and GetRandomInt(1,'d')<=$A+l_bonus)then // 'A0H4': editor label "Critical Strike"; $A = 10
         return 3.8
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (35) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0VA')>0 and GetRandomInt(1,'d')<=35+l_bonus)then // 'A0VA': editor label "Critical Strike"
         return 3.5
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (35) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0E2')>0 and GetRandomInt(1,'d')<=35+l_bonus)then // 'A0E2': editor label "Critical Strike"
         return 3.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (10) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0HQ')>0 and GetRandomInt(1,'d')<=$A+l_bonus)then // 'A0HQ': editor label "Critical Strike"; $A = 10
         return 3.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0I6')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0I6': editor label "Critical Strike"
         return 3.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (25) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A07G')>0 and GetRandomInt(1,'d')<=25+l_bonus)then // 'A07G': editor label "Critical Strike"
         return 3.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (25) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0BF')>0 and GetRandomInt(1,'d')<=25+l_bonus)then // 'A0BF': editor label "Critical Strike"
         return 3.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0H5')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A0H5': editor label "Critical Strike"; $F = 15
         return 2.8
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (35) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0V9')>0 and GetRandomInt(1,'d')<=35+l_bonus)then // 'A0V9': editor label "Critical Strike"
         return 2.5
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A119')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A119': editor label "Critical Strike"; $F = 15
         return 2.4
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0R6')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0R6': ability "Dexterity"
         return udg_DexterityCritMult
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if((GetUnitAbilityLevel(u,'AIcs')>0 or GetUnitAbilityLevel(u,'ACct')>0)and GetRandomInt(1,'d')<=20+l_bonus)then // 'AIcs': editor label "Critical Strike"; 'ACct': editor label "Critical Strike"
         return 2.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0BD')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0BD': editor label "Critical Strike"
         return 2.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (25) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0AF')>0 and GetRandomInt(1,'d')<=25+l_bonus)then // 'A0AF': editor label "Critical Strike"
         return 2.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (35) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A08N')>0 and GetRandomInt(1,'d')<=35+l_bonus)then // 'A08N': editor label "Critical Strike"
         return 2.
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0NP')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0NP': editor label "Critical Strike"
         return 1.8
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A118')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A118': editor label "Critical Strike"; $F = 15
         return 1.8
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A116')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A116': editor label "Critical Strike"; $F = 15
         return 1.6
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (30) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0BE')>0 and GetRandomInt(1,'d')<=30+l_bonus)then // 'A0BE': editor label "Critical Strike"
         return 1.5
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A0NN')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'A0NN': editor label "Critical Strike"
         return 1.5
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (20) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'B058')>0 and GetRandomInt(1,'d')<=20+l_bonus)then // 'B058': buff tooltip "Sharpshooter"
         return 1.5
     endif
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (15) plus (l_bonus).
     if(GetUnitAbilityLevel(u,'A115')>0 and GetRandomInt(1,'d')<=$F+l_bonus)then // 'A115': editor label "Critical Strike"; $F = 15
         return 1.4
     endif
@@ -807,119 +688,89 @@ endfunction
 function Trig_Damage_Engine_GetSpeedBonus takes unit u returns real
     local real l_bonus=.0
     if udg_EternityMode and not IsUnitType(u,UNIT_TYPE_HERO)and GetOwningPlayer(u)==Player($B)then // $B = 11
-        // Increase l_bonus by 20.
         set l_bonus=l_bonus+20.
     endif
     if(GetUnitAbilityLevel(u,'A0R6')>0)then // 'A0R6': ability "Dexterity"
-        // (l_bonus) plus (udg_DexterityBonus).
         set l_bonus=l_bonus+udg_DexterityBonus
     endif
     if(GetUnitAbilityLevel(u,'A0HX')>0)then // 'A0HX': ability "Swiftness"
-        // Increase l_bonus by 150.
         set l_bonus=l_bonus+150.
     endif
     if(GetUnitAbilityLevel(u,'A0AU')>0)then // 'A0AU': ability "Swiftness"
-        // Increase l_bonus by 120.
         set l_bonus=l_bonus+120.
     endif
     if(GetUnitAbilityLevel(u,'A0DB')>0)then // 'A0DB': ability "Chocobo Swiftness"
-        // Increase l_bonus by 100.
         set l_bonus=l_bonus+100.
     endif
     if(GetUnitAbilityLevel(u,'A0GY')>0)then // 'A0GY': ability "Swiftness"
-        // Increase l_bonus by 80.
         set l_bonus=l_bonus+80.
     endif
     if(GetUnitAbilityLevel(u,'A0JL')>0)then // 'A0JL': ability "Swiftness"
-        // Increase l_bonus by 50.
         set l_bonus=l_bonus+50.
     endif
     if(GetUnitAbilityLevel(u,'ACev')>0)then // 'ACev': ability "Swiftness"
-        // Increase l_bonus by 30.
         set l_bonus=l_bonus+30.
     endif
     return l_bonus
 endfunction
 
 function Trig_Damage_Engine_GetAccuracy takes unit u returns real
-    // Starting value for l_acc:
-    // (Trig_Damage_Engine_GetSpeedBonus(u)) times (0.8).
     local real l_acc=Trig_Damage_Engine_GetSpeedBonus(u)*.8
-    // Starting value for ms:
-    // (GetUnitDefaultMoveSpeed(u)) minus ((Agility of u) times (0.4)).
     local real ms=GetUnitDefaultMoveSpeed(u)-(GetHeroAgi(u,true)*.4)
     if(ms<=80)then
-        // Increase l_acc by 150.
         set l_acc=l_acc+$96 // $96 = 150
     else
         // (l_acc) plus (((ms) minus (80)) times (0.75)).
         set l_acc=l_acc+(ms-80)*.75
     endif
     if IsUnitType(u,UNIT_TYPE_HERO)then
-        // (l_acc) plus ((Agility of u treated as a decimal-capable number) times (0.1)).
         set l_acc=l_acc+(I2R(GetHeroAgi(u,true))*.1)
     else
-        // (l_acc) plus ((unit level of u treated as a decimal-capable number) times (0.4)).
         set l_acc=l_acc+(I2R(GetUnitLevel(u))*.4)
     endif
     if(GetUnitAbilityLevel(u,'A1DI')>0 or GetUnitAbilityLevel(u,'A1DJ')>0)then // 'A1DI': ability "Sukugaya Unit Attack Speed +20%"; 'A1DJ': ability "Sukugaya Hero Bonus"
-        // Increase l_acc by 30.
         set l_acc=l_acc+30.
     endif
     if(GetUnitAbilityLevel(u,'A16L')>0)then // 'A16L': ability "Accuracy"
-        // Increase l_acc by 70.
         set l_acc=l_acc+70.
     endif
     if(GetUnitAbilityLevel(u,'A16R')>0)then // 'A16R': ability "Accuracy"
-        // Increase l_acc by 200.
         set l_acc=l_acc+200.
     endif
     if(GetUnitAbilityLevel(u,'A19E')>0)then // 'A19E': ability "Spear Accuracy"
-        // Increase l_acc by 9.
         set l_acc=l_acc+9.
     endif
     if(GetUnitAbilityLevel(u,'A19G')>0)then // 'A19G': ability "Spear Accuracy"
-        // Increase l_acc by 20.
         set l_acc=l_acc+20.
     endif
     if(GetUnitAbilityLevel(u,'A19F')>0)then // 'A19F': ability "Spear Accuracy"
-        // Increase l_acc by 30.
         set l_acc=l_acc+30.
     endif
     if(GetUnitAbilityLevel(u,'A19H')>0)then // 'A19H': ability "Spear Accuracy"
-        // Increase l_acc by 35.
         set l_acc=l_acc+35.
     endif
     if(GetUnitAbilityLevel(u,'A1A1')>0)then // 'A1A1': ability "Spear Hybrid"
-        // Increase l_acc by 35.
         set l_acc=l_acc+35.
     endif
     if(GetUnitAbilityLevel(u,'A19J')>0)then // 'A19J': ability "Spear Accuracy"
-        // Increase l_acc by 40.
         set l_acc=l_acc+40.
     endif
     if(GetUnitAbilityLevel(u,'A19I')>0)then // 'A19I': ability "Spear Accuracy"
-        // Increase l_acc by 50.
         set l_acc=l_acc+50.
     endif
     if(GetUnitAbilityLevel(u,'A19D')>0)then // 'A19D': ability "Spear Accuracy"
-        // Increase l_acc by 60.
         set l_acc=l_acc+60.
     endif
     if(GetUnitAbilityLevel(u,'A19K')>0)then // 'A19K': ability "Spear Accuracy"
-        // Increase l_acc by 75.
         set l_acc=l_acc+75.
     endif
     if(GetUnitAbilityLevel(u,'A18O')>0)then // 'A18O': ability "Strange Vision Accuracy"
-        // Increase l_acc by 255.
         set l_acc=l_acc+255.
     endif
     if(GetUnitAbilityLevel(u,'A068')>0)then // 'A068': ability "Glasses Accuracy"
-        // Increase l_acc by 40.
         set l_acc=l_acc+40.
     endif
     if(GetUnitAbilityLevel(u,'A02D')>0)then // 'A02D': ability "Rabite's Foot"
-        // Increase l_acc by 120.
         set l_acc=l_acc+120.
     endif
     return l_acc
@@ -927,8 +778,6 @@ endfunction
 
 function Trig_Damage_Engine_GetEvasion takes unit u returns real
     local real l_eva=Trig_Damage_Engine_GetSpeedBonus(u)
-    // Starting value for ms:
-    // (GetUnitDefaultMoveSpeed(u)) minus ((Agility of u) times (0.4)).
     local real ms=GetUnitDefaultMoveSpeed(u)-(GetHeroAgi(u,true)*.4)
     if(GetUnitAbilityLevel(u,'A0EI')>0)then // 'A0EI': ability "Adamant Armor"
         return .0
@@ -946,39 +795,30 @@ function Trig_Damage_Engine_GetEvasion takes unit u returns real
         // Result 6: (l_eva) plus (result 5).
         set l_eva=l_eva+(I2R(GetHeroAgi(u,true))*.005*I2R(Prof_GetLevel(u,'R006')+20)) // 'R006': upgrade "Leather Armor"
     else
-        // (l_eva) plus ((unit level of u treated as a decimal-capable number) times (0.5)).
         set l_eva=l_eva+(I2R(GetUnitLevel(u))*.5)
     endif
     if(GetUnitAbilityLevel(u,'A1DI')>0 or GetUnitAbilityLevel(u,'A1DJ')>0)then // 'A1DI': ability "Sukugaya Unit Attack Speed +20%"; 'A1DJ': ability "Sukugaya Hero Bonus"
-        // Increase l_eva by 15.
         set l_eva=l_eva+15.
     endif
     if(GetUnitAbilityLevel(u,'A1DB')>0)then // 'A1DB': ability "Evasion"
-        // Decrease l_eva by 80.
         set l_eva=l_eva-80.
     endif
     if(GetUnitAbilityLevel(u,'A16S')>0)then // 'A16S': ability "Evasion"
-        // Increase l_eva by 60.
         set l_eva=l_eva+60.
     endif
     if(GetUnitAbilityLevel(u,'A182')>0)then // 'A182': ability "Kazuma Effect"
-        // Increase l_eva by 30.
         set l_eva=l_eva+30.
     endif
     if(GetUnitAbilityLevel(u,'AIev')>0)then // 'AIev': ability "Jade Collar Evasion"
-        // Increase l_eva by 30.
         set l_eva=l_eva+30.
     endif
     if(GetUnitAbilityLevel(u,'A0QB')>0)then // 'A0QB': ability "Main Gauche Evasion"
-        // Increase l_eva by 50.
         set l_eva=l_eva+50.
     endif
     if(GetUnitAbilityLevel(u,'A1B6')>0)then // 'A1B6': ability "Slither Shield Evasion"
-        // Increase l_eva by 50.
         set l_eva=l_eva+50.
     endif
     if(GetUnitAbilityLevel(u,'A02D')>0)then // 'A02D': ability "Rabite's Foot"
-        // Increase l_eva by 80.
         set l_eva=l_eva+80.
     endif
     if(l_eva<0)then
@@ -989,8 +829,6 @@ endfunction
 
 function Trig_Damage_Engine_RollMiss takes unit l_attacker,unit targetUnit,boolean l_magical returns boolean
     local real successChance
-    // Starting value for l_pid:
-    // (GetPlayerId(GetOwningPlayer(targetUnit))) plus (1).
     local integer l_pid=GetPlayerId(GetOwningPlayer(targetUnit))+1
     if(GetUnitAbilityLevel(targetUnit,'B05M')>0 or GetUnitAbilityLevel(targetUnit,'B05N')>0)then // 'B05M': buff tooltip "Immobilize"; 'B05N': buff tooltip "Immobilize"
         return false
@@ -1005,22 +843,17 @@ function Trig_Damage_Engine_RollMiss takes unit l_attacker,unit targetUnit,boole
     if(successChance<=0)then
         return false
     endif
-    // (Trig_Damage_Engine_GetAccuracy(l_attacker)) minus (chance).
     set successChance=Trig_Damage_Engine_GetAccuracy(l_attacker)-successChance
     if(GetUnitAbilityLevel(l_attacker,'B00X')>0)then // 'B00X': buff tooltip "Blessing of Might"
-        // Increase chance by 25.
         set successChance=successChance+25.
     endif
     if(GetUnitAbilityLevel(targetUnit,'B00X')>0)then // 'B00X': buff tooltip "Blessing of Might"
-        // Decrease chance by 25.
         set successChance=successChance-25.
     endif
     if(GetUnitAbilityLevel(l_attacker,'B003')>0)then // 'B003': buff tooltip "Oil"
-        // Decrease chance by 40.
         set successChance=successChance-40.
     endif
     if(not l_magical and GetUnitAbilityLevel(targetUnit,'B06W')>0)then // 'B06W': buff tooltip "Mirage"
-        // Decrease chance by 40.
         set successChance=successChance-40.
     endif
     if(GetUnitAbilityLevel(targetUnit,'A1B8')>0)then // 'A1B8': ability "Mirage Vest Evasion"
@@ -1029,28 +862,22 @@ function Trig_Damage_Engine_RollMiss takes unit l_attacker,unit targetUnit,boole
         set successChance=successChance-('d'*(1.-(GetUnitState(targetUnit,UNIT_STATE_LIFE)/ GetUnitState(targetUnit,UNIT_STATE_MAX_LIFE))))
     endif
     if(GetUnitAbilityLevel(l_attacker,'B01F')>0)then // 'B01F': buff tooltip "Aim"
-        // Increase chance by 40.
         set successChance=successChance+40.
     endif
     if l_magical then
-        // Increase chance by 30.
         set successChance=successChance+30.
     endif
     if(successChance<75)then
-        // ((chance) plus (75)) times (0.5).
         set successChance=(successChance+75)*.5
     endif
     if(successChance<50)then
-        // ((chance) plus (50)) times (0.5).
         set successChance=(successChance+50)*.5
     endif
     if(successChance>=2)then
         if(GetUnitAbilityLevel(l_attacker,'B00P')>0)then // 'B00P': buff tooltip "Blind"
-            // (chance) times (0.5).
             set successChance=successChance*.5
         endif
         if(not l_magical and GetUnitAbilityLevel(targetUnit,'B06W')>0)then // 'B06W': buff tooltip "Mirage"
-            // (chance) times (0.8).
             set successChance=successChance*.8
         endif
     endif
@@ -1060,13 +887,11 @@ function Trig_Damage_Engine_RollMiss takes unit l_attacker,unit targetUnit,boole
     if(GetUnitAbilityLevel(targetUnit,'B050')>0)then // 'B050': buff tooltip "Evade and Counter"
         return true
     endif
-    // (0.5) plus ((chance) times (0.01)).
     if(not l_magical and IsPlayerInForce(GetOwningPlayer(targetUnit),udg_ActivePlayers)and targetUnit==Player_GetHero(GetOwningPlayer(targetUnit))and TimerGetRemaining(udg_DodgeSaveTimer[l_pid])>(.5+(successChance*.01)))then
         call TimerStart(udg_DodgeSaveTimer[l_pid],.01,false,null)
         return true
     endif
     if(successChance<25 and IsPlayerInForce(GetOwningPlayer(targetUnit),udg_ActivePlayers))then
-        // ((chance) plus (25)) times (0.5).
         set successChance=(successChance+25)*.5
     endif
     if(successChance<2)then
@@ -1096,7 +921,6 @@ function Trig_Damage_Engine_RengekiStack takes unit u returns nothing
     local timer t
     local integer l_stacks
     if(IsUnitInGroup(u,udg_RengekiGroup))then
-        // (LoadInteger(udg_RunicHash, GetHandleId(u), 3)) plus (1).
         set l_stacks=LoadInteger(udg_RunicHash,GetHandleId(u),3)+1
         if(l_stacks<=30)then
             call SaveInteger(udg_RunicHash,GetHandleId(u),3,l_stacks)
@@ -1105,7 +929,6 @@ function Trig_Damage_Engine_RengekiStack takes unit u returns nothing
                 call UnitRemoveAbility(u,'A14C') // 'A14C': ability "Rengeki Bonus"
                 call UnitRemoveAbility(u,'B074') // 'B074': buff "Rengeki"
                 call UnitAddAbility(u,'A14C') // 'A14C': ability "Rengeki Bonus"
-                // (l_stacks) divided by (10); drop the remainder.
                 call SetUnitAbilityLevel(u,'A14C',l_stacks/ $A) // 'A14C': ability "Rengeki Bonus"; $A = 10
             endif
             if(l_stacks==$A)then // $A = 10
@@ -1127,26 +950,18 @@ function Trig_Damage_Engine_RengekiStack takes unit u returns nothing
 endfunction
 
 function Trig_Damage_Engine_IsBehind takes real ux,real uy,real tx,real ty,real l_facing returns boolean
-    // Starting value for dx:
-    // (tx) minus (ux).
     local real dx=tx-ux
-    // Starting value for dy:
-    // (ty) minus (uy).
     local real dy=ty-uy
     // Starting value for l_distSq:
     // (the square of (dx)) plus (the square of (dy)).
     local real l_distSq=dx*dx+dy*dy
-    // Starting value for angle:
-    // (the angle in radians from the y gap (dy) and x gap (dx)) times (bj_RADTODEG).
     local real angle=Atan2(dy,dx)*bj_RADTODEG
-    // Starting value for l_diff:
     // The remainder after dividing ((l_facing) minus (angle)) by (360).
     local real l_diff=ModuloReal(l_facing-angle,360.)
     if(l_distSq>65336.)then
         return false
     endif
     if(l_diff>$B4)then // $B4 = 180
-        // (360) minus (l_diff).
         set l_diff=360-l_diff
     endif
     return(l_diff<20)
@@ -1191,7 +1006,6 @@ function Trig_Damage_Engine_AwardSorcerer takes nothing returns nothing
     endif
     set p=Player(i)
     set u=Player_GetHero(p)
-    // (i) plus (1).
     if(GetWidgetLife(udg_SleepTarget[i+1])<=.405 and GetUnitTypeId(u)=='H00L' and GetUnitAbilityLevel(u,'A02F')==3 and not IsPlayerInForce(p,udg_JobMasterForce[19]))then // 'H00L': unit "Sorcerer"; 'A02F': ability "Mastery"
         call ForceAddPlayer(udg_JobMasterForce[19],p)
         call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",u,"origin"))
@@ -1246,7 +1060,6 @@ function Trig_Damage_Engine_ProxyDamageApply takes integer dh,unit t,real l_amou
             else
                 set l_amount=l_stored
                 if LoadBoolean(udg_ProxyDamageHash,dh,4)then
-                    // (amount) times (0.8).
                     call SaveReal(udg_ProxyDamageHash,dh,1,l_amount*.8)
                 endif
             endif
@@ -1294,8 +1107,6 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
     local real tx=GetUnitX(triggeringUnit)
     local real ty=GetUnitY(triggeringUnit)
     local player tp=GetOwningPlayer(triggeringUnit)
-    // Starting value for l_pid:
-    // (GetPlayerId(tp)) plus (1).
     local integer l_pid=GetPlayerId(tp)+1
     local real l_amount=GetEventDamage()
     local texttag tt
@@ -1346,7 +1157,6 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
     if(IsUnitInGroup(triggeringUnit,udg_BerserkGroup)or IsUnitInGroup(triggeringUnit,udg_VirusImmuneGroup))then
         call TimerStart(udg_MaxHpDrainTimer,.0,false,null)
     endif
-    // (amount) plus (1).
     if(l_amount+1>=GetWidgetLife(triggeringUnit))then
         if(GetUnitAbilityLevel(triggeringUnit,'A0ZR')>0 or GetUnitAbilityLevel(triggeringUnit,'B06L')>0 or GetUnitAbilityLevel(triggeringUnit,'A0X2')>0)then // 'A0ZR': ability "Immortal"; 'B06L': buff tooltip "Trance"; 'A0X2': ability "Perma Cover"
             set udg_ImmortalLife=GetWidgetLife(triggeringUnit)
@@ -1425,13 +1235,11 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
                 call BattleLog_ShowUnit("revives through |cffffcc00Auto-Life|r.",triggeringUnit)
                 call BlzSetEventDamage(.0)
                 call Berserk_Remove(triggeringUnit)
-                // (maximum health of triggeringUnit) times (0.5).
                 call SetUnitState(triggeringUnit,UNIT_STATE_LIFE,GetUnitState(triggeringUnit,UNIT_STATE_MAX_LIFE)*.5)
                 call UnitRemoveAbility(triggeringUnit,'B02X') // 'B02X': buff tooltip "Auto-Life"
                 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",triggeringUnit,"origin"))
                 set tt=CreateTextTag()
                 call SetTextTagText(tt,"|cffffcc00AUTO-LIFE",.028)
-                // (ty) plus (64).
                 call SetTextTagPos(tt,tx,ty+64,.0)
                 call SetTextTagColor(tt,$FF,$FF,$FF,$FF) // $FF = 255
                 call SetTextTagVelocity(tt,.0,.044375)
@@ -1446,14 +1254,12 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
                 call BattleLog_ShowUnit("endures death through |cffffcc00Undying|r.",triggeringUnit)
                 call BlzSetEventDamage(.0)
                 call Berserk_Remove(triggeringUnit)
-                // (maximum health of triggeringUnit) times (0.25).
                 call SetUnitState(triggeringUnit,UNIT_STATE_LIFE,GetUnitState(triggeringUnit,UNIT_STATE_MAX_LIFE)*.25)
                 call BlzUnitDisableAbility(triggeringUnit,'A14T',true,false) // 'A14T': ability "Undying"
                 call GroupAddUnit(udg_UndyingGroup,triggeringUnit)
                 call DestroyEffect(AddSpecialEffectTarget("Objects\\Spawnmodels\\Undead\\UndeadDissipate\\UndeadDissipate.mdl",triggeringUnit,"origin"))
                 set tt=CreateTextTag()
                 call SetTextTagText(tt,"|cffffcc00UNDYING",.028)
-                // (ty) plus (64).
                 call SetTextTagPos(tt,tx,ty+64,.0)
                 call SetTextTagColor(tt,$FF,$FF,$FF,$FF) // $FF = 255
                 call SetTextTagVelocity(tt,.0,.044375)
@@ -1487,7 +1293,6 @@ function Trig_Damage_Engine_FreeContext takes integer c returns nothing
 endfunction
 
 // Step 1 - Setup: negative amounts become 0; the target's armor becomes a multiplier
-// (1 + 0.02 per armor point) that later steps use to apply or undo armor.
 function Trig_Damage_Engine_Step01_Setup takes integer c returns nothing
     local real l_amount=DmgCtx_Amount[c]
     local boolean l_unavoidable=DmgCtx_Unavoidable[c]
@@ -1497,7 +1302,6 @@ function Trig_Damage_Engine_Step01_Setup takes integer c returns nothing
         set l_amount=.0
     endif
     if(l_armorMult>.0)then
-        // ((l_armorMult) times (0.02)) plus (1).
         set l_armorMult=(l_armorMult*.02)+1.
     else
         set l_armorMult=1.
@@ -1552,21 +1356,16 @@ function Trig_Damage_Engine_Step03_FullProtection takes integer c returns nothin
         if(GetUnitAbilityLevel(t,'B052')>0 or GetUnitAbilityLevel(t,'A0PD')>0)then // 'B052': buff "Infinity"; 'A0PD': ability "Invulnerability"
             set l_tmp=GetUnitAbilityLevel(t,'A0KF') // 'A0KF': ability "Infinity"
             if(l_tmp>0)then
-                // (l_tmp) minus (1).
                 set l_dummy=Player_GetHero(Player(l_tmp-1))
-                // (l_tmp) minus (1).
                 if(IsPlayerInForce(Player(l_tmp-1),udg_JobMasterForce[18])or GetUnitAbilityLevel(l_dummy,'A02F')!=3)then // 'A02F': ability "Mastery"
                     call UnitRemoveAbility(t,'A0KF') // 'A0KF': ability "Infinity"
                 else
                     if l_physical then
-                        // (udg_InfinityAbsorbed at position l_tmp) plus ((amount) times (l_armorMult)).
                         set udg_InfinityAbsorbed[l_tmp]=udg_InfinityAbsorbed[l_tmp]+(l_amount*l_armorMult)
                     else
-                        // (udg_InfinityAbsorbed at position l_tmp) plus (amount).
                         set udg_InfinityAbsorbed[l_tmp]=udg_InfinityAbsorbed[l_tmp]+l_amount
                     endif
                     if(udg_InfinityAbsorbed[l_tmp]>=500000.)then
-                        // (l_tmp) minus (1).
                         call ForceAddPlayer(udg_JobMasterForce[18],Player(l_tmp-1))
                         call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",l_dummy,"origin"))
                     endif
@@ -1629,9 +1428,7 @@ function Trig_Damage_Engine_Step04_Cover takes integer c returns boolean
             call UnitRemoveAbility(t,'B063') // 'B063': buff "Cover"
             set l_dummy=null
         else
-            // (tx) minus (x position of l_dummy).
             set l_val=tx-GetUnitX(l_dummy)
-            // (ty) minus (y position of l_dummy).
             set l_val2=ty-GetUnitY(l_dummy)
             // The square root of ((the square of (l_val)) plus (the square of (l_val2))).
             set l_val=SquareRoot(l_val*l_val+l_val2*l_val2)
@@ -1647,12 +1444,10 @@ function Trig_Damage_Engine_Step04_Cover takes integer c returns boolean
                 elseif l_physical then
                     set udg_IsPhysicalAttack=true
                     set udg_DmgFlagMelee=l_melee
-                    // (amount) times (l_armorMult).
                     call UnitDamageTarget(u,l_dummy,(l_amount*l_armorMult),true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_NORMAL,null)
                 elseif(not IsPlayerInForce(tp,udg_PlayingPlayers)or t!=Player_GetHero(tp))then
                     set udg_DmgArmorProbe=true
                     call UnitDamageTarget(u,t,100.,false,true,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,null)
-                    // (amount) times ((100) divided by (udg_DmgArmorProbeResult)).
                     call UnitDamageTarget(u,l_dummy,(l_amount*(100./ udg_DmgArmorProbeResult)),false,true,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,null)
                 else
                     call UnitDamageTarget(u,l_dummy,l_amount,false,true,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,null)
@@ -1718,12 +1513,10 @@ function Trig_Damage_Engine_Step06_Defense takes integer c returns nothing
     if(l_amount>.0 and not l_pure and(l_heal or l_akashic or l_holy or GetUnitAbilityLevel(u,'B05Q')>0 or GetUnitAbilityLevel(t,'B015')>0 or GetUnitAbilityLevel(t,'B05R')>0))then // 'B05Q': buff tooltip "Pierce"; 'B015': buff tooltip "Frog"; 'B05R': buff tooltip "Vitality Zero"
         if(l_physical or not IsPlayerInForce(tp,udg_PlayingPlayers)or t!=Player_GetHero(tp))then
             if l_physical then
-                // (amount) times (l_armorMult).
                 set l_amount=l_amount*l_armorMult
             else
                 set udg_DmgArmorProbe=true
                 call UnitDamageTarget(u,t,100.,false,true,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,null)
-                // (amount) times ((100) divided by (udg_DmgArmorProbeResult)).
                 set l_amount=l_amount*(100./ udg_DmgArmorProbeResult)
             endif
         endif
@@ -1732,7 +1525,6 @@ function Trig_Damage_Engine_Step06_Defense takes integer c returns nothing
             set l_physical=true
             set l_ranged=true
             if not(l_holy or GetUnitAbilityLevel(u,'B05Q')>0 or GetUnitAbilityLevel(t,'B015')>0 or GetUnitAbilityLevel(t,'B05R')>0)then // 'B05Q': buff tooltip "Pierce"; 'B015': buff tooltip "Frog"; 'B05R': buff tooltip "Vitality Zero"
-                // (amount) divided by (l_armorMult).
                 set l_amount=l_amount/ l_armorMult
             else
                 set l_armorMult=1.
@@ -1749,12 +1541,10 @@ function Trig_Damage_Engine_Step06_Defense takes integer c returns nothing
         // Result 3: result 2 treated as a decimal-capable number.
         // Result 4: (50) divided by (result 3).
         set l_defScale=50./ I2R(udg_MagicDefense[GetPlayerId(tp)+1]+50)
-        // (amount) times (l_defScale).
         set l_amount=l_amount*l_defScale
     endif
     // A player hero's ranged shot restarts RangedShotTimer.
     if(l_ranged and IsPlayerInForce(up,udg_PlayingPlayers)and u==Player_GetHero(up))then
-        // (GetPlayerId(up)) plus (1).
         call TimerStart(udg_RangedShotTimer[GetPlayerId(up)+1],.01,false,null)
     endif
     set DmgCtx_Amount[c]=l_amount
@@ -1791,7 +1581,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
     if l_melee and l_amount>.0 then
         set l_val=Trig_Damage_Engine_ProficiencyMult(u)
         if l_val>1. then
-            // (amount) times (l_val).
             set l_amount=l_amount*l_val
         endif
         if(IsPlayerInForce(up,udg_PlayingPlayers)and u==Player_GetHero(up))then
@@ -1817,17 +1606,11 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             set l_amount=l_amount*1.5
         endif
         if(GetUnitState(u,UNIT_STATE_MANA)<GetUnitState(u,UNIT_STATE_MAX_MANA)and not IsUnitType(t,UNIT_TYPE_STRUCTURE)and IsUnitEnemy(t,up))then
-            // (Prof_GetLevel(u, 'R007')) times (2).
             set l_tmp=Prof_GetLevel(u,'R007')*2 // 'R007': upgrade "Mystic Armor"
             if(GetUnitAbilityLevel(u,'B018')>0 or GetUnitAbilityLevel(u,'B082')>0)then // 'B018': buff tooltip "Holy Power"; 'B082': buff tooltip "Dark Power"
                 if(GetUnitAbilityLevel(u,'A05W')>=6 or GetUnitAbilityLevel(u,'A1AA')>=6)then // 'A05W': ability "!Holy Power"; 'A1AA': ability "!Dark Power"
-                    // Increase l_tmp by 100.
                     set l_tmp=l_tmp+'d'
                     if(IsUnitInGroup(u,udg_EnduranceAwardGroup))then
-                        // Calculation 1:
-                        // (GetPlayerId(up)) plus (1).
-                        // Calculation 2:
-                        // (GetPlayerId(up)) plus (1).
                         if(udg_EnduranceManaCount[GetPlayerId(up)+1]>=$F3C and udg_EnduranceDamageCount[GetPlayerId(up)+1]>=$FA0)then // $F3C = 3900; $FA0 = 4000
                             call ForceAddPlayer(udg_JobMasterForce[9],up)
                             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",u,"origin"))
@@ -1836,7 +1619,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
                                 call DisableTrigger(gg_trg_HolyPower_Mastery_Track)
                             endif
                         else
-                            // Increase udg_EnduranceManaCount at position (GetPlayerId(up)) plus (1) by 100.
                             set udg_EnduranceManaCount[GetPlayerId(up)+1]=udg_EnduranceManaCount[GetPlayerId(up)+1]+'d'
                         endif
                     endif
@@ -1847,7 +1629,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
                 endif
             endif
             if(l_tmp>0)then
-                // (current mana of u) plus (l_tmp).
                 call SetUnitState(u,UNIT_STATE_MANA,GetUnitState(u,UNIT_STATE_MANA)+l_tmp)
             endif
         endif
@@ -1857,7 +1638,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             else
                 set l_tag=LoadTextTagHandle(udg_ComboHash,uh,6)
                 call SetTextTagAge(l_tag,.0)
-                // (uy) plus (32).
                 call SetTextTagPos(l_tag,ux,uy+32.,0)
                 set l_tmp=LoadInteger(udg_ComboHash,uh,5)
                 // Result 1: Prof_GetLevel(u, 'R00A') treated as a decimal-capable number.
@@ -1871,9 +1651,7 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
                 if(l_tmp<=1)then
                     call Trig_Damage_Engine_ComboEnd(u)
                 else
-                    // (LoadInteger(udg_ComboHash, uh, 5)) plus (1).
                     call SaveInteger(udg_ComboHash,uh,5,LoadInteger(udg_ComboHash,uh,5)+1)
-                    // (l_tmp) minus (1).
                     call SaveInteger(udg_ComboHash,uh,2,l_tmp-1)
                     call TimerStart(LoadTimerHandle(udg_ComboHash,GetHandleId(u),3),.5,false,function Trig_Damage_Engine_ComboExpire)
                 endif
@@ -1890,31 +1668,24 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             endif
         endif
         if(GetUnitAbilityLevel(u,'A11T')>0)then // 'A11T': ability "Dragon Eye"
-            // (tx) minus (ux).
             set l_val=tx-ux
-            // (ty) minus (uy).
             set l_val2=ty-uy
             // The square root of ((the square of (l_val)) plus (the square of (l_val2))).
             set l_val=SquareRoot(l_val*l_val+l_val2*l_val2)
             if(l_val>800.)then
                 set l_val=800.
             endif
-            // (0.2) plus ((l_val) divided by (500)).
             set l_val=.2+(l_val/ 500.)
-            // (amount) times (l_val).
             set l_amount=l_amount*l_val
         endif
         if(GetUnitAbilityLevel(u,'A0Y4')>0)then // 'A0Y4': ability "Explosive Strike"
-            // Increase amount by 500.
             set l_amount=l_amount+500.
         endif
         if(GetUnitAbilityLevel(u,'A0YX')>0)then // 'A0YX': ability "Minor Demistrike"
-            // (amount) plus ((current health of t) divided by (8)).
             set l_amount=l_amount+(GetUnitState(t,UNIT_STATE_LIFE)/ 8.)
         endif
         set l_tmp=Prof_GetLevel(u,'R00M') // 'R00M': upgrade "Gun"
         if(l_tmp>0)then
-            // Increase l_tmp by 10.
             set l_tmp=l_tmp+$A // $A = 10
             if(GetUnitAbilityLevel(u,'A0YA')>0)then // 'A0YA': ability "Onion Shot"
                 // (amount) plus (((l_tmp treated as a decimal-capable number) times (35)) divided by (l_armorMult)).
@@ -1929,11 +1700,9 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
                 set l_amount=l_amount+((I2R(l_tmp)*10.)/ l_armorMult)
             endif
             if(GetUnitAbilityLevel(u,'A0YB')>0)then // 'A0YB': ability "Piercing Shot"
-                // (amount) plus ((l_tmp treated as a decimal-capable number) times (15)).
                 set l_amount=l_amount+(I2R(l_tmp)*15.)
             endif
             if(GetUnitAbilityLevel(u,'A1AM')>0)then // 'A1AM': ability "Pulsar Shot"
-                // (amount) plus ((l_tmp treated as a decimal-capable number) times (30)).
                 set l_amount=l_amount+(I2R(l_tmp)*30.)
             endif
             if(GetUnitAbilityLevel(u,'A144')>0)then // 'A144': ability "Molotov Shot"
@@ -1944,7 +1713,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
                     call UnitApplyTimedLife(l_dummy,'BTLF',1.) // 'BTLF': object name not found in map data
                     call UnitAddAbility(l_dummy,'A143') // 'A143': ability "Molotov Shot"
                     call IssueTargetOrder(l_dummy,"drunkenhaze",t)
-                    // ((60) plus (Intelligence of u)) times (Prof_GetSpellPower(u, 'R00M', 0.5)).
                     set l_val=(60+GetHeroInt(u,true))*Prof_GetSpellPower(u,'R00M',.5) // 'R00M': upgrade "Gun"
                     call SaveUnitHandle(udg_MolotovHash,GetHandleId(t),0,u)
                     call SaveReal(udg_MolotovHash,GetHandleId(t),1,l_val)
@@ -1965,9 +1733,7 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             if(IsUnitType(u,UNIT_TYPE_MELEE_ATTACKER))then
                 // The angle in radians from the y gap ((ty) minus (uy)) and x gap ((tx) minus (ux)).
                 set l_val2=Atan2(ty-uy,tx-ux)
-                // (tx) plus ((the horizontal direction share for angle (l_val2) in radians) times (250)).
                 set l_val=tx+Cos(l_val2)*250.
-                // (ty) plus ((the vertical direction share for angle (l_val2) in radians) times (250)).
                 set l_val2=ty+Sin(l_val2)*250.
             else
                 set l_val=tx
@@ -1978,7 +1744,6 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             call GroupEnumUnitsInRange(udg_SplashGroup,l_val,l_val2,I2R(l_tmp),Condition(function Trig_Damage_Engine_FilterAlive))
             call GroupRemoveUnit(udg_SplashGroup,t)
             set udg_SplashSource=u
-            // ((amount) times (l_armorMult)) times (0.5).
             set udg_SplashDamage=l_amount*l_armorMult*.5
             call TimerStart(udg_SplashTimer,.0,false,null)
             if(GetUnitAbilityLevel(u,'B05J')>0 and GetUnitTypeId(u)=='H00D' and GetUnitAbilityLevel(u,'A02F')==3 and not IsPlayerInForce(up,udg_JobMasterForce[5]))then // 'B05J': buff "Blitz"; 'H00D': unit "Geomancer"; 'A02F': ability "Mastery"
@@ -1994,22 +1759,17 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
             // Result 5: (result 4) plus (0.5).
             // Result 6: (result 5) with its decimal part removed.
             set l_tmp=R2I(SquareRoot(I2R((GetUnitLevel(t)+2)*3))+.5)
-            // (GetUnitAbilityLevel(u, 'A0KY')) times (2).
             if(GetUnitAbilityLevel(u,'A0KY')<=5 and l_tmp>(GetUnitAbilityLevel(u,'A0KY')*2))then // 'A0KY': ability "Thievery"
-                // (GetUnitAbilityLevel(u, 'A0KY')) times (2).
                 set l_tmp=GetUnitAbilityLevel(u,'A0KY')*2 // 'A0KY': ability "Thievery"
             endif
             call DestroyEffect(AddSpecialEffectTarget("UI\\Feedback\\GoldCredit\\GoldCredit.mdl",t,"overhead"))
             if(up!=Player($B))then // $B = 11
                 call AdjustPlayerStateBJ(l_tmp,up,PLAYER_STATE_RESOURCE_GOLD)
             endif
-            // (l_tmp) times (-1).
             call AdjustPlayerStateBJ((l_tmp*-1),tp,PLAYER_STATE_RESOURCE_GOLD)
         endif
-        // (GetPlayerId(up)) plus (1).
         if(GetUnitAbilityLevel(u,'B07V')>0 and udg_MomentumCharges[GetPlayerId(up)+1]>0 and tp==Player($B)and IsUnitType(t,UNIT_TYPE_ATTACKS_GROUND))then // 'B07V': buff tooltip "Momentum"; $B = 11
             set udg_MomentumCharges[GetPlayerId(up)+1]=udg_MomentumCharges[GetPlayerId(up)+1]-1
-            // (GetPlayerId(up)) plus (1).
             if(udg_MomentumCharges[GetPlayerId(up)+1]==0)then
                 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\SpellSteal\\SpellStealMissile.mdl",u,"overhead"))
             endif
@@ -2020,40 +1780,28 @@ function Trig_Damage_Engine_Step07_MeleeBonuses takes integer c returns nothing
     set l_tmp=GetUnitAbilityLevel(u,'A0SF') // 'A0SF': ability "Command AI"
     if(l_tmp>1 and l_melee)then
         set l_tmp=l_tmp-1
-        // (tx) minus (ux).
         set l_val=tx-ux
-        // (ty) minus (uy).
         set l_val2=ty-uy
         // The square root of ((the square of (l_val)) plus (the square of (l_val2))).
         set l_val=SquareRoot(l_val*l_val+l_val2*l_val2)
         if(l_val<=1200.)then
-            // Calculation 1:
             // The remainder after dividing (l_tmp) by (2).
-            // Calculation 2:
             // A random whole number from 1 through 5.
             if(ModuloInteger(l_tmp,2)==1 and GetRandomInt(1,5)==1)then
                 call IssueTargetOrder(u,"thunderbolt",t)
-            // Calculation 1:
             // The remainder after dividing ((l_tmp) divided by (2); drop the remainder) by (2).
-            // Calculation 2:
             // A random whole number from 1 through 5.
             elseif(ModuloInteger(l_tmp/ 2,2)==1 and GetRandomInt(1,5)==1)then
                 call IssuePointOrder(u,"flamestrike",tx,ty)
-            // Calculation 1:
             // The remainder after dividing ((l_tmp) divided by (4); drop the remainder) by (2).
-            // Calculation 2:
             // A random whole number from 1 through 5.
             elseif(ModuloInteger(l_tmp/ 4,2)==1 and GetRandomInt(1,5)==1)then
                 call IssueTargetOrder(u,"frostnova",t)
-            // Calculation 1:
             // The remainder after dividing ((l_tmp) divided by (8); drop the remainder) by (2).
-            // Calculation 2:
             // A random whole number from 1 through 5.
             elseif(ModuloInteger(l_tmp/ 8,2)==1 and GetRandomInt(1,5)==1)then
                 call IssuePointOrder(u,"shockwave",tx,ty)
-            // Calculation 1:
             // The remainder after dividing ((l_tmp) divided by (16); drop the remainder) by (2).
-            // Calculation 2:
             // A random whole number from 1 through 5.
             elseif(ModuloInteger(l_tmp/ 16,2)==1 and GetRandomInt(1,5)<=2)then
                 // A random whole number from 1 through 2.
@@ -2163,7 +1911,6 @@ function Trig_Damage_Engine_Step08_Elements takes integer c returns nothing
     // Special unit n08D_0001: its hit equals its own armor, then it expires.
     if(u==gg_unit_n08D_0001 and u!=null)then
         if l_amount>.0 then
-            // (BlzGetUnitArmor(u)) divided by (l_armorMult).
             set l_amount=BlzGetUnitArmor(u)/ l_armorMult
         endif
         call UnitApplyTimedLife(gg_unit_n08D_0001,'BTLF',.5) // 'BTLF': object name not found in map data
@@ -2247,9 +1994,7 @@ function Trig_Damage_Engine_Step10_EvasionAndBlocking takes integer c returns no
         if(l_blockCode>0)then
             if(l_blockCode==1)then
                 if(GetUnitAbilityLevel(t,'B050')>0)then // 'B050': buff tooltip "Evade and Counter"
-                    // (tx) minus (ux).
                     set l_val=tx-ux
-                    // (ty) minus (uy).
                     set l_val2=ty-uy
                     // The square root of ((the square of (l_val)) plus (the square of (l_val2))).
                     set l_val=SquareRoot(l_val*l_val+l_val2*l_val2)
@@ -2282,21 +2027,15 @@ function Trig_Damage_Engine_Step10_EvasionAndBlocking takes integer c returns no
                 if(GetUnitAbilityLevel(t,'B07R')>0 and GetUnitAbilityLevel(t,'B07S')>0 and l_amount>=10.)then // 'B07R': buff "Runic Shield"; 'B07S': buff "Runic Revenge"
                     set l_val=LoadReal(udg_RunicHash,GetHandleId(t),5)
                     if(l_val<9999.)then
-                        // (l_val) plus ((amount) times (0.2)).
                         set l_val=l_val+(l_amount*.2)
                         if(l_val>9999.)then
                             set l_val=9999.
                         endif
                         call SaveReal(udg_RunicHash,GetHandleId(t),5,l_val)
-                        // (l_val) with its decimal part removed.
                         set l_tmp=R2I(l_val)
-                        // (l_tmp) plus (1).
                         call SetUnitAbilityLevel(t,'A1AV',l_tmp+1) // 'A1AV': ability "Runic Damage Bonus"
-                        // (the remainder after dividing ((l_tmp) divided by (10); drop the remainder) by (10)) plus (1).
                         call SetUnitAbilityLevel(t,'A1AW',ModuloInteger(l_tmp/ $A,$A)+1) // 'A1AW': ability "Runic Damage Bonus"; $A = 10
-                        // (the remainder after dividing ((l_tmp) divided by (100); drop the remainder) by (10)) plus (1).
                         call SetUnitAbilityLevel(t,'A1AX',ModuloInteger(l_tmp/ 'd',$A)+1) // 'A1AX': ability "Runic Damage Bonus"; $A = 10
-                        // (the remainder after dividing ((l_tmp) divided by (1000); drop the remainder) by (10)) plus (1).
                         call SetUnitAbilityLevel(t,'A1AY',ModuloInteger(l_tmp/ $3E8,$A)+1) // 'A1AY': ability "Runic Damage Bonus"; $3E8 = 1000; $A = 10
                     endif
                 endif
@@ -2311,7 +2050,6 @@ function Trig_Damage_Engine_Step10_EvasionAndBlocking takes integer c returns no
                     set l_dummy=CreateUnit(tp,'h01B',tx,ty,.0) // 'h01B': unit "Proxy Dummy"
                     set l_tmp=GetHandleId(l_dummy)
                     call SaveUnitHandle(udg_ProxyDamageHash,l_tmp,0,t)
-                    // ((amount) divided by (l_defScale)) plus (10).
                     call SaveReal(udg_ProxyDamageHash,l_tmp,1,(l_amount/ l_defScale)+10.)
                     call SaveInteger(udg_ProxyDamageHash,l_tmp,2,3)
                     call ShowUnit(l_dummy,false)
@@ -2350,15 +2088,11 @@ function Trig_Damage_Engine_Step11_ElementBonus takes integer c returns nothing
         if(GetUnitAbilityLevel(u,'A0PO')<=0)then // 'A0PO': ability "Latest Used Element"
             call UnitAddAbility(u,'A0PO') // 'A0PO': ability "Latest Used Element"
         endif
-        // (l_element) plus (1).
         call SetUnitAbilityLevel(u,'A0PO',l_element+1) // 'A0PO': ability "Latest Used Element"
-        // Result 1: (1) plus (Trig_Damage_Engine_GetElementBonus(u, l_element, l_physical)).
-        // Result 2: (result 1) plus (Trig_Damage_Engine_GetElementBonus(u, 7, l_physical)).
         set l_val=1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)
         if(GetUnitAbilityLevel(u,'A1A4')>0)then // 'A1A4': ability "Non-elemental Damage"
             set l_element=0
         elseif(GetUnitAbilityLevel(t,udg_ElementAilmentBuff[l_element])>0 or GetUnitAbilityLevel(t,udg_ElementAilmentBuff2[l_element])>0)then
-            // Increase l_val by 1.2.
             set l_val=l_val+1.2
             if(l_fxCode==1)then
                 set l_fxCode=4
@@ -2375,7 +2109,6 @@ function Trig_Damage_Engine_Step11_ElementBonus takes integer c returns nothing
             endif
         endif
         if(l_val>1.)then
-            // (amount) times (l_val).
             set l_amount=l_amount*l_val
         endif
         if(IsPlayerInForce(up,udg_PlayingPlayers))then
@@ -2434,7 +2167,6 @@ function Trig_Damage_Engine_Step12_PhysicalSkills takes integer c returns nothin
         endif
         set l_tmp=Prof_GetLevel(u,'R002') // 'R002': upgrade "Bow"
         if(l_tmp>0)then
-            // Increase l_tmp by 10.
             set l_tmp=l_tmp+$A // $A = 10
             if(GetUnitAbilityLevel(u,'A04H')>0)then // 'A04H': ability "Little Arrows"
                 // ((amount) times (1.15)) plus (((l_tmp treated as a decimal-capable number) times (10)) divided by
@@ -2474,7 +2206,6 @@ function Trig_Damage_Engine_Step12_PhysicalSkills takes integer c returns nothin
                 set l_amount=l_amount*1.25
                 if(GetUnitAbilityLevel(u,'B01F')>0 and GetUnitAbilityLevel(u,'A14B')>=$B and GetUnitAbilityLevel(u,'A02F')==3 and not IsPlayerInForce(up,udg_JobMasterForce[2]))then // 'B01F': buff tooltip "Aim"; 'A14B': ability "Aim"; $B = 11; 'A02F': ability "Mastery"
                     set udg_BlindSpotCount[GetPlayerId(up)+1]=udg_BlindSpotCount[GetPlayerId(up)+1]+1
-                    // (GetPlayerId(up)) plus (1).
                     if(udg_BlindSpotCount[GetPlayerId(up)+1]>=60)then
                         call ForceAddPlayer(udg_JobMasterForce[2],up)
                         call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",u,"origin"))
@@ -2514,7 +2245,6 @@ function Trig_Damage_Engine_Step12_PhysicalSkills takes integer c returns nothin
                 call UnitAddAbility(l_dummy,'A12R') // 'A12R': ability "Poison Acid"
             else
                 call UnitAddAbility(l_dummy,'A0PG') // 'A0PG': ability "Poison Attack"
-                // ((unit level of u) times (3)) plus (5).
                 call SaveReal(udg_ProxyDamageHash,l_tmp,1,(GetUnitLevel(u)*3)+5.)
             endif
             call IssueTargetOrder(l_dummy,"acidbomb",t)
@@ -2543,7 +2273,6 @@ function Trig_Damage_Engine_Step13_MarkedForDeath takes integer c returns nothin
         endif
     endif
     if(l_amount>.0 and not l_heal and GetUnitAbilityLevel(u,'A1FC')>0)then // 'A1FC': ability "Undead Touch"
-        // Increase amount by 30.
         set l_amount=l_amount+30
     endif
     set DmgCtx_Amount[c]=l_amount
@@ -2566,10 +2295,8 @@ function Trig_Damage_Engine_Step14_Difficulty takes integer c returns nothing
     local real l_defScale=DmgCtx_DefenseScale[c]
     if(not l_pure and udg_Difficulty!=3)then
         if(up==Player($B)and IsPlayerInForce(tp,udg_ActivePlayers))then // $B = 11
-            // (amount) divided by (udg_DifficultyScale).
             set l_amount=l_amount/ udg_DifficultyScale
         elseif(tp==Player($B))then // $B = 11
-            // (amount) times (udg_DifficultyScale).
             set l_amount=l_amount*udg_DifficultyScale
         endif
     endif
@@ -2603,10 +2330,8 @@ function Trig_Damage_Engine_Step15_RandomSpread takes integer c returns nothing
     local boolean l_ignoreDef=DmgCtx_IgnoreDefense[c]
     if(not l_pure and l_amount>.0)then
         if(GetUnitAbilityLevel(u,'A05L')>0)then // 'A05L': ability "Gambler Spirit"
-            // (amount) times (a random decimal number between 0.2 and 2).
             set l_amount=l_amount*GetRandomReal(.2,2.)
         else
-            // (amount) times ((a random decimal number between 15 and 16) divided by (16)).
             set l_amount=l_amount*(GetRandomReal(15.,16.)/ 16.)
         endif
         if(GetUnitAbilityLevel(u,'B07V')>0)then // 'B07V': buff tooltip "Momentum"
@@ -2620,7 +2345,6 @@ function Trig_Damage_Engine_Step15_RandomSpread takes integer c returns nothing
                 // Multiply the current amount by 2: 100 becomes 200, before any later adjustments.
                 set l_amount=l_amount*2.
             endif
-            // (current health of t) divided by (maximum health of t).
             if(GetUnitAbilityLevel(t,'A0T9')>0 and not l_ignoreDef and(GetUnitState(t,UNIT_STATE_LIFE)/ GetUnitState(t,UNIT_STATE_MAX_LIFE))<=.3)then // 'A0T9': ability "Last Stand"
                 // Keep 50% of the current amount, reducing it by 50%.
                 set l_amount=l_amount*.5
@@ -2705,7 +2429,6 @@ function Trig_Damage_Engine_Step16_PhysicalHit takes integer c returns nothing
                 if(GetUnitAbilityLevel(u,'A18L')>0)then // 'A18L': ability "High Critical Shot"
                     set l_val=l_val+1.
                 endif
-                // (amount) times (l_val).
                 set l_amount=l_amount*l_val
                 call TimerStart(udg_LastCritTimer[GetPlayerId(up)],5.,false,null)
             endif
@@ -2716,7 +2439,6 @@ function Trig_Damage_Engine_Step16_PhysicalHit takes integer c returns nothing
             call UnitRemoveAbility(t,'Aspt') // 'Aspt': object name not found in map data
             call UnitRemoveAbility(t,'A018') // 'A018': ability "Spawn Brood Mothers"
             call UnitRemoveAbility(t,'Aspd') // 'Aspd': object name not found in map data
-            // (amount) plus (current health of t).
             set l_amount=l_amount+GetUnitState(t,UNIT_STATE_LIFE)
         endif
         if(GetUnitAbilityLevel(u,'B061')>0)then // 'B061': buff tooltip "Imperial Rage"
@@ -2756,27 +2478,22 @@ function Trig_Damage_Engine_Step16_PhysicalHit takes integer c returns nothing
                 set l_amount=l_amount*1.5
             endif
         endif
-        // (current health of u) divided by (maximum health of u).
         if(GetUnitAbilityLevel(u,'A0P9')>0 and(GetUnitState(u,UNIT_STATE_LIFE)/ GetUnitState(u,UNIT_STATE_MAX_LIFE))>=.99)then // 'A0P9': ability "Focus"
             // Multiply the current amount by 1.5: 100 becomes 150, before any later adjustments.
             set l_amount=l_amount*1.5
             if(GetUnitAbilityLevel(u,'B063')>0 and GetUnitAbilityLevel(u,'A0O4')>0)then // 'B063': buff "Cover"; 'A0O4': ability "Cover"
                 set l_tmp=GetUnitAbilityLevel(u,'A0O4') // 'A0O4': ability "Cover"
-                // (l_tmp) minus (1).
                 set l_dummy=Player_GetHero(Player(l_tmp-1))
-                // (l_tmp) minus (1).
                 if(IsPlayerInForce(Player(l_tmp-1),udg_JobMasterForce[0])or GetUnitAbilityLevel(l_dummy,'A02F')!=3 or GetUnitTypeId(l_dummy)!='H000')then // 'A02F': ability "Mastery"; 'H000': unit "Squire"
                     call UnitRemoveAbility(u,'A0O4') // 'A0O4': ability "Cover"
                 else
                     set udg_CoverAwardCount[l_tmp]=udg_CoverAwardCount[l_tmp]+1
                     if(udg_CoverAwardCount[l_tmp]>=30)then
-                        // (l_tmp) minus (1).
                         call ForceAddPlayer(udg_JobMasterForce[0],Player(l_tmp-1))
                         call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",l_dummy,"origin"))
                     endif
                 endif
             endif
-        // (current health of u) divided by (maximum health of u).
         elseif(GetUnitAbilityLevel(u,'A0PA')>0 and(GetUnitState(u,UNIT_STATE_LIFE)/ GetUnitState(u,UNIT_STATE_MAX_LIFE))<=.3)then // 'A0PA': ability "Adrenaline"
             // Multiply the current amount by 2: 100 becomes 200, before any later adjustments.
             set l_amount=l_amount*2.
@@ -2852,27 +2569,22 @@ function Trig_Damage_Engine_Step17_Magic takes integer c returns nothing
                 set l_amount=l_amount*1.5
             endif
         endif
-        // (current health of u) divided by (maximum health of u).
         if(GetUnitAbilityLevel(u,'A0RF')>0 and(GetUnitState(u,UNIT_STATE_LIFE)/ GetUnitState(u,UNIT_STATE_MAX_LIFE))>=.99)then // 'A0RF': ability "Serenity"
             // Multiply the current amount by 1.5: 100 becomes 150, before any later adjustments.
             set l_amount=l_amount*1.5
             if(GetUnitAbilityLevel(u,'B063')>0 and GetUnitAbilityLevel(u,'A0O4')>0)then // 'B063': buff "Cover"; 'A0O4': ability "Cover"
                 set l_tmp=GetUnitAbilityLevel(u,'A0O4') // 'A0O4': ability "Cover"
-                // (l_tmp) minus (1).
                 set l_dummy=Player_GetHero(Player(l_tmp-1))
-                // (l_tmp) minus (1).
                 if(IsPlayerInForce(Player(l_tmp-1),udg_JobMasterForce[0])or GetUnitAbilityLevel(l_dummy,'A02F')!=3 or GetUnitTypeId(l_dummy)!='H000')then // 'A02F': ability "Mastery"; 'H000': unit "Squire"
                     call UnitRemoveAbility(u,'A0O4') // 'A0O4': ability "Cover"
                 else
                     set udg_CoverAwardCount[l_tmp]=udg_CoverAwardCount[l_tmp]+1
                     if(udg_CoverAwardCount[l_tmp]>=30)then
-                        // (l_tmp) minus (1).
                         call ForceAddPlayer(udg_JobMasterForce[0],Player(l_tmp-1))
                         call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",l_dummy,"origin"))
                     endif
                 endif
             endif
-        // (current health of u) divided by (maximum health of u).
         elseif(GetUnitAbilityLevel(u,'A0RG')>0 and(GetUnitState(u,UNIT_STATE_LIFE)/ GetUnitState(u,UNIT_STATE_MAX_LIFE))<=.3)then // 'A0RG': ability "Spellbreaker"
             // Multiply the current amount by 2: 100 becomes 200, before any later adjustments.
             set l_amount=l_amount*2.
@@ -2926,14 +2638,12 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
                 if l_amount<=26. then
                     set l_amount=1.
                 else
-                    // Decrease amount by 25.
                     set l_amount=l_amount-25.
                 endif
             elseif(GetUnitAbilityLevel(t,'A0RU')>0)then // 'A0RU': ability "Hardened Skin"
                 if l_amount<=11. then
                     set l_amount=1.
                 else
-                    // Decrease amount by 10.
                     set l_amount=l_amount-10.
                 endif
             endif
@@ -2944,7 +2654,6 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
             if l_amount<='e' then
                 set l_amount=1.
             else
-                // Decrease amount by 100.
                 set l_amount=l_amount-'d'
             endif
         endif
@@ -2977,7 +2686,6 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
             call UnitRemoveAbility(t,'B03A') // 'B03A': buff tooltip "Sleep"
             call UnitRemoveAbility(t,'B03B') // 'B03B': buff "Sleep (Pause)"
             call UnitRemoveAbility(t,'B03C') // 'B03C': buff "Sleep (Stunned)"
-            // (GetPlayerId(up)) plus (1).
             if(t==udg_SleepTarget[GetPlayerId(up)+1])then
                 call TimerStart(udg_SleepWakeTimer[GetPlayerId(up)],.5,false,function Trig_Damage_Engine_AwardSorcerer)
             endif
@@ -3001,33 +2709,27 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
             endif
         endif
         if(GetUnitAbilityLevel(u,'A0R9')>0)then // 'A0R9': ability "Demistrike"
-            // (amount) plus ((current health of t) times (0.25)).
             set l_amount=l_amount+(GetUnitState(t,UNIT_STATE_LIFE)*.25)
         endif
         if(not l_heal and GetUnitAbilityLevel(t,'A1BF')>0)then // 'A1BF': ability "Adaptive Barrier"
             if l_physical then
                 // Adaptive Barrier keeps a fraction of physical damage equal to ability level / 15.
                 set l_amount=(l_amount*GetUnitAbilityLevel(t,'A1BF'))/ $F // 'A1BF': ability "Adaptive Barrier"; $F = 15
-                // (udg_AdaptPhysTotal) plus (amount).
                 set udg_AdaptPhysTotal=udg_AdaptPhysTotal+l_amount
             elseif l_magical then
                 // Magic uses the opposite fraction: (16 - ability level) / 15.
                 set l_amount=(l_amount*(16-GetUnitAbilityLevel(t,'A1BF')))/ $F // 'A1BF': ability "Adaptive Barrier"; $F = 15
-                // (udg_AdaptMagicTotal) plus (amount).
                 set udg_AdaptMagicTotal=udg_AdaptMagicTotal+l_amount
             else
                 // Keep 50% of the current amount, reducing it by 50%.
                 set l_amount=l_amount*.5
             endif
-            // (udg_AdaptElementTotal at position l_element) plus (amount).
             set udg_AdaptElementTotal[l_element]=udg_AdaptElementTotal[l_element]+l_amount
-            // (udg_AdaptElementTotal at position 7) plus (amount).
             set udg_AdaptElementTotal[7]=udg_AdaptElementTotal[7]+l_amount
             if(l_element<7)then
                 // Count damage from other elements, divide by all tracked elemental damage plus 1, then add 0.2.
                 // Repeating the same element lowers this multiplier; the +1 prevents division by zero.
                 set l_val=((udg_AdaptElementTotal[7]-udg_AdaptElementTotal[l_element])/(udg_AdaptElementTotal[7]+1.))+.2
-                // (amount) times (l_val).
                 set l_amount=l_amount*l_val
             endif
             // Choose the next barrier level from the share of tracked damage that was magical.
@@ -3049,13 +2751,11 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
                 call UnitRemoveAbility(t,'B07B') // 'B07B': buff "Auto-Shell"
             endif
         endif
-        // (Prof_GetLevel(t, 'R005')) plus (1).
         set l_tmp=Prof_GetLevel(t,'R005')+1 // 'R005': upgrade "Plate Armor"
         if(l_amount>1. and not l_heal and not l_pure and l_tmp>1)then
             if l_amount<=l_tmp then
                 set l_amount=1.
             else
-                // (amount) minus (l_tmp).
                 set l_amount=l_amount-l_tmp
             endif
         endif
@@ -3077,7 +2777,6 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
             if(GetUnitAbilityLevel(l_dummy,'Avul')>0)then // 'Avul': standard ability reference "Invulnerable"
                 call UnitRemoveAbility(t,'B051') // 'B051': buff "Divine Shield"
             else
-                // (amount) divided by ((LoadReal(udg_DivineShieldHash, th, 5)) times (2)).
                 set l_val=(l_amount/(LoadReal(udg_DivineShieldHash,th,5)*2.))
                 set l_val2=GetUnitState(l_dummy,UNIT_STATE_MANA)
                 if(l_val>l_val2)then
@@ -3085,9 +2784,7 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
                     call UnitRemoveAbility(t,'B051') // 'B051': buff "Divine Shield"
                 endif
                 if(l_val>=1)then
-                    // (amount) minus ((l_val) times (LoadReal(udg_DivineShieldHash, th, 5))).
                     set l_amount=l_amount-(l_val*LoadReal(udg_DivineShieldHash,th,5))
-                    // (l_val2) minus (l_val).
                     call SetUnitState(l_dummy,UNIT_STATE_MANA,l_val2-l_val)
                     call Text_FloatingDamage(l_dummy,false,0,l_val,true,0)
                 endif
@@ -3096,13 +2793,10 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
         if(GetUnitAbilityLevel(u,'B04B')<=0 and(GetUnitAbilityLevel(u,'A0V3')>0 or(GetUnitAbilityLevel(u,'BUav')>0 and l_physical))and not l_heal and l_amount>=2.)then // 'B04B': buff tooltip "Drain Attack"; 'A0V3': ability "Vampiric Power"; 'BUav': buff tooltip "Vampiric Strike"
             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\VampiricAura\\VampiricAuraTarget.mdl",u,"origin"))
             if(up==Player($B))then // $B = 11
-                // (amount) times (0.5).
                 set l_val=l_amount*.5
             else
-                // (amount) times (0.2).
                 set l_val=l_amount*.2
             endif
-            // (current health of u) plus (l_val).
             call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+l_val)
             call Text_FloatingDamage(u,true,0,l_val,false,0)
         elseif(l_physical and GetUnitAbilityLevel(u,'B04B')>0 and GetUnitAbilityLevel(u,'A0R2')>0 and not l_heal and l_amount>=2.)then // 'B04B': buff tooltip "Drain Attack"; 'A0R2': ability "Drain Attack"
@@ -3115,12 +2809,10 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
                 // (0.02))).
                 set l_amount=l_amount*(.58+(I2R(GetUnitAbilityLevel(u,'A0R2'))*.02)) // 'A0R2': ability "Drain Attack"
             endif
-            // (amount) times (0.5).
             set l_val=l_amount*.5
             if(l_val>GetUnitState(t,UNIT_STATE_LIFE))then
                 set l_val=GetUnitState(t,UNIT_STATE_LIFE)
             endif
-            // (current health of u) plus (l_val).
             call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+l_val)
             call Text_FloatingDamage(u,true,0,l_val,false,0)
             if(l_val>=30000. and GetUnitAbilityLevel(u,'A0R2')>=$B and GetUnitAbilityLevel(u,'A02F')==3 and not IsPlayerInForce(up,udg_JobMasterForce[20]))then // 'A0R2': ability "Drain Attack"; $B = 11; 'A02F': ability "Mastery"
@@ -3158,10 +2850,8 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
     if(l_amount>.0)then
         if l_manaDamage then
             if l_heal then
-                // (current mana of t) plus (amount).
                 call SetUnitState(t,UNIT_STATE_MANA,GetUnitState(t,UNIT_STATE_MANA)+l_amount)
             else
-                // (current mana of t) minus (amount).
                 call SetUnitState(t,UNIT_STATE_MANA,GetUnitState(t,UNIT_STATE_MANA)-l_amount)
             endif
             if l_amount<500000. then
@@ -3174,12 +2864,9 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
             else
                 call Text_FloatingDamage(t,true,4,.0,false,0)
             endif
-            // (current health of t) plus (amount).
             call SetUnitState(t,UNIT_STATE_LIFE,GetUnitState(t,UNIT_STATE_LIFE)+l_amount)
             if(udg_HealCreditPlayer>0)then
-                // (GetPlayerId(up)) plus (1).
                 if(udg_HealCreditPlayer==GetPlayerId(up)+1)then
-                    // (udg_HealingTotal at position GetPlayerId(up)) plus (amount).
                     set udg_HealingTotal[GetPlayerId(up)]=udg_HealingTotal[GetPlayerId(up)]+l_amount
                     if(udg_HealingTotal[GetPlayerId(up)]>=50000. and GetUnitAbilityLevel(u,'A02F')==3 and not IsPlayerInForce(up,udg_JobMasterForce[$C]))then // 'A02F': ability "Mastery"; $C = 12
                         call ForceAddPlayer(udg_JobMasterForce[$C],up) // $C = 12
@@ -3201,7 +2888,6 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
     endif
     // Absorb shields store the damage instead of taking it.
     if(l_amount>.0 and IsUnitInGroup(t,udg_AbsorbShieldGroup))then
-        // (LoadReal(udg_AbsorbShieldHash, th, 0)) plus (amount).
         call SaveReal(udg_AbsorbShieldHash,th,0,LoadReal(udg_AbsorbShieldHash,th,0)+l_amount)
         set l_amount=.0
         call DestroyEffect(AddSpecialEffectTarget(Trig_Damage_Engine_BlockEffectPath(l_physical),t,"origin"))
@@ -3210,17 +2896,11 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
     // DPS meter for players.
     if(IsPlayerInForce(up,udg_PlayingPlayers)and l_amount>.0 and l_amount<1000000.)then
         call ConditionalTriggerExecute(gg_trg_Dps_Start)
-        // Calculation 1:
-        // (GetPlayerId(up)) plus (1).
-        // Calculation 2:
-        // (LoadReal(udg_DpsHash, (GetPlayerId(up)) plus (1), LoadInteger(udg_DpsHash, 0, 0))) plus (amount).
         call SaveReal(udg_DpsHash,GetPlayerId(up)+1,LoadInteger(udg_DpsHash,0,0),LoadReal(udg_DpsHash,GetPlayerId(up)+1,LoadInteger(udg_DpsHash,0,0))+l_amount)
         if(udg_SplashTally>=.0)then
-            // (udg_SplashTally) plus (amount).
             set udg_SplashTally=udg_SplashTally+l_amount
         endif
         if(udg_DamageTally[GetPlayerId(up)]>=1. and u==Player_GetHero(up))then
-            // (udg_DamageTally at position GetPlayerId(up)) plus (amount).
             set udg_DamageTally[GetPlayerId(up)]=udg_DamageTally[GetPlayerId(up)]+l_amount
         endif
         if(l_melee and l_amount>=10000. and GetUnitAbilityLevel(u,'A087')>0 and GetUnitTypeId(Player_GetHero(up))=='H009' and GetUnitAbilityLevel(Player_GetHero(up),'A02F')==3 and not IsPlayerInForce(up,udg_JobMasterForce[$D]))then // 'A087': ability "Solid Skin"; 'H009': unit "Summoner"; 'A02F': ability "Mastery"; $D = 13
@@ -3268,7 +2948,6 @@ endfunction
 // ==========================================================================================
 // Trig_Damage_Engine_CalcDamage - the combat formula used by the damage engine for attacks,
 // spells and heals. It runs the steps below in order; each step is a function above
-// (Trig_Damage_Engine_StepNN_*) that changes the hit's values (amount, block code, ...).
 //   l_amount     base damage or healing           u / t : source / target unit
 //   l_dmgKind    1 melee, 2 ranged, 4 pure (skips most modifiers), anything else = magic
 //   l_element    element id (0 = use the attacker's element)

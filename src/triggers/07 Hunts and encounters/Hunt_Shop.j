@@ -30,7 +30,6 @@ function Trig_Hunt_Shop_Unlock_Actions takes nothing returns nothing
     if(Trig_Hunt_Shop_Unlock_AllStockUnlocked())then
         call DisableTrigger(GetTriggeringTrigger())
         if(Trig_Hunt_Shop_Unlock_StockNotFull())then
-            // (udg_HuntShopStock) plus (1).
             set bj_forLoopAIndex=(udg_HuntShopStock+1)
             set bj_forLoopAIndexEnd=$B // $B = 11
             loop
@@ -45,7 +44,6 @@ function Trig_Hunt_Shop_Unlock_Actions takes nothing returns nothing
         call DestroyTrigger(GetTriggeringTrigger())
     else
         if(Trig_Hunt_Shop_Unlock_HasNewStock())then
-            // (udg_HuntShopStock) plus (1).
             set bj_forLoopAIndex=(udg_HuntShopStock+1)
             set bj_forLoopAIndexEnd=udg_TempInteger
             loop

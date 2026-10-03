@@ -75,7 +75,6 @@ endfunction
 function Trig_DefiledFountain_Hoof_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_DefiledFountain_Hoof_Cond_HasSpareHoof())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0DX')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX'))-1)) // 'I0DX': item "Satyr's Hoof"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX')) // 'I0DX': item "Satyr's Hoof"

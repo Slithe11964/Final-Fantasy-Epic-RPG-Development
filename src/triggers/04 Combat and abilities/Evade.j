@@ -18,7 +18,6 @@ function Trig_Evade_Counter_Cost_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Evade_Counter_Cost_Actions takes nothing returns nothing
-    // (BlzGetUnitAbilityManaCost(the triggering unit, 'A0R3', udg_AbilityLevelIndex)) plus (5).
     call BlzSetUnitAbilityManaCost(GetTriggerUnit(),'A0R3',udg_AbilityLevelIndex,(BlzGetUnitAbilityManaCost(GetTriggerUnit(),'A0R3',udg_AbilityLevelIndex)+5)) // 'A0R3': ability "Evade & Counter"
     call StartTimerBJ(udg_DodgeFaceTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,3.)
 endfunction
@@ -40,24 +39,17 @@ function Trig_Evade_Counter_Decay_UseLevelZero takes nothing returns boolean
 endfunction
 
 function Trig_Evade_Counter_Decay_Actions takes nothing returns nothing
-    // (udg_TempInteger) minus (1).
     set udg_DodgeStreak[(udg_TempInteger-1)]=0
     if(Trig_Evade_Counter_Decay_UseLevelZero())then
         if(Trig_Evade_Counter_Decay_CostAboveMin0())then
             call StartTimerBJ(udg_DodgeFaceTimer[udg_TempInteger],false,1.)
-            // Calculation 1:
-            // (1) minus (1).
-            // Calculation 2:
-            // (BlzGetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 'A0R3', 0)) minus (20).
             call BlzSetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',(1-1),(BlzGetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',0)-20)) // 'A0R3': ability "Evade & Counter"
         else
-            // (1) minus (1).
             call BlzSetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',(1-1),5) // 'A0R3': ability "Evade & Counter"
         endif
     else
         if(Trig_Evade_Counter_Decay_CostAboveMin1())then
             call StartTimerBJ(udg_DodgeFaceTimer[udg_TempInteger],false,1.)
-            // (BlzGetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)), 'A0R3', 1)) minus (20).
             call BlzSetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',1,(BlzGetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',1)-20)) // 'A0R3': ability "Evade & Counter"
         else
             call BlzSetUnitAbilityManaCost(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'A0R3',1,5) // 'A0R3': ability "Evade & Counter"

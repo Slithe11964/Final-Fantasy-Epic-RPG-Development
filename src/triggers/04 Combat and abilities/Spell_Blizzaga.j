@@ -68,15 +68,8 @@ function Trig_Spell_Blizzaga_Loop takes nothing returns nothing
     loop
         exitwhen i>=udg_BlizzagaActiveCount
         set d=udg_BlizzagaList[i]
-        // Increase udg_BlizzagaDist at position d by 200.
         set udg_BlizzagaDist[d]=udg_BlizzagaDist[d]+200.
-        // Result 1: the horizontal direction share for angle (udg_BlizzagaAngle at position d) in radians.
-        // Result 2: (udg_BlizzagaDist at position d) times (result 1).
-        // Result 3: (udg_BlizzagaX at position d) plus (result 2).
         set x=udg_BlizzagaX[d]+udg_BlizzagaDist[d]*Cos(udg_BlizzagaAngle[d])
-        // Result 1: the vertical direction share for angle (udg_BlizzagaAngle at position d) in radians.
-        // Result 2: (udg_BlizzagaDist at position d) times (result 1).
-        // Result 3: (udg_BlizzagaY at position d) plus (result 2).
         set y=udg_BlizzagaY[d]+udg_BlizzagaDist[d]*Sin(udg_BlizzagaAngle[d])
         if Path_IsWalkable(x,y,10.)and udg_BlizzagaDist[d]<1200. then
             call DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl",x,y))
@@ -133,17 +126,12 @@ function Trig_Spell_Blizzaga_Actions takes nothing returns nothing
     local real a
     local unit triggeringUnit=GetTriggerUnit()
     local integer l_waves=3
-    // Starting value for r:
-    // (67.5) divided by (l_waves).
     local real r=67.5/ l_waves
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(triggeringUnit,GetSpellAbilityId()))
     local real heroIntelligence=GetHeroInt(triggeringUnit,true)
     loop
         exitwhen i>l_waves
         set d=Trig_Spell_Blizzaga_Start(triggeringUnit)
-        // Result 1: (67.5) divided by (2).
-        // Result 2: (AngleBetweenPoints(Location(udg_BlizzagaX at position d, udg_BlizzagaY at position d),
-        // GetSpellTargetLoc())) minus (result 1).
         set a=AngleBetweenPoints(Location(udg_BlizzagaX[d],udg_BlizzagaY[d]),GetSpellTargetLoc())-(67.5/ 2.)
         // ((a) plus ((r) times (i))) times (bj_DEGTORAD).
         set udg_BlizzagaAngle[d]=(a+r*i)*bj_DEGTORAD

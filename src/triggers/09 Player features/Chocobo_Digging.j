@@ -23,12 +23,10 @@ function Trig_Chocobo_DeadPepper_Dig_IsInvalidTarget takes nothing returns boole
 endfunction
 
 function Trig_Chocobo_DeadPepper_Dig_IsWithin1024OfSpot takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot)<1024.)
 endfunction
 
 function Trig_Chocobo_DeadPepper_Dig_IsWithin512OfSpot takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot)<512.)
 endfunction
 
@@ -37,10 +35,6 @@ function Trig_Chocobo_DeadPepper_Dig_ItemTakesChargeBonus takes nothing returns 
 endfunction
 
 function Trig_Chocobo_DeadPepper_Dig_IsMimettCycle takes nothing returns boolean
-    // Calculation 1:
-    // (the remainder after dividing (udg_ChocoboDigCount) by (15)) divided by (3); drop the remainder.
-    // Calculation 2:
-    // (the remainder after dividing (udg_ChocoboDigCount) by (15)) divided by (3); drop the remainder.
     return((ModuloInteger(udg_ChocoboDigCount,$F)/ 3)==2)or((ModuloInteger(udg_ChocoboDigCount,$F)/ 3)==3) // $F = 15
 endfunction
 
@@ -103,7 +97,6 @@ function Trig_Chocobo_DeadPepper_Dig_HasChocoboAbility takes nothing returns boo
 endfunction
 
 function Trig_Chocobo_DeadPepper_Dig_IsOnDigSpot takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot)<256.)
 endfunction
 
@@ -206,23 +199,14 @@ function Trig_Chocobo_DeadPepper_Dig_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Chocobo_DigSpot_Nearest_IsNearMapCenter takes nothing returns boolean
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot)<2048.)
 endfunction
 
 function Trig_Chocobo_DigSpot_Nearest_IsSpotCloser takes nothing returns boolean
-    // Calculation 1:
-    // The straight-line distance between udg_TempPoint and udg_ChocoboDigSpot at position loop counter A.
-    // Calculation 2:
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboDigSpot[GetForLoopIndexA()])<DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot))
 endfunction
 
 function Trig_Chocobo_DigSpot_Nearest_IsSecretSpotCloser takes nothing returns boolean
-    // Calculation 1:
-    // The straight-line distance between udg_TempPoint and udg_ChocoboDigSpot at position 99.
-    // Calculation 2:
-    // The straight-line distance between udg_TempPoint and udg_ChocoboNearestDigSpot.
     return(DistanceBetweenPoints(udg_TempPoint,udg_ChocoboDigSpot[99])<DistanceBetweenPoints(udg_TempPoint,udg_ChocoboNearestDigSpot))
 endfunction
 

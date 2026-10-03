@@ -78,6 +78,15 @@ def main():
     w = read_wct(m.read('war3map.wct'))
     header = text_of(w['header'])
     texts = [text_of(e) for e in w['entries'] if text_of(e)]
+    # triggers switched off in World Editor (unticked "Enabled") are left out of the map by JassHelper
+    try:
+        from wtg import read_wtg
+        off = {it['name'] for it in read_wtg(m.read('war3map.wtg'))['items'] if it.get('kind') == 8 and not it.get('enabled', 1)}
+    except Exception:
+        off = set()
+    if off:
+        texts = [t for t in texts if not any(re.search(r'^\s*library\s+T%s\b' % re.escape(n), t, re.M) for n in off)]
+        print('note: %d disabled trigger(s) left out of the source checks: %s' % (len(off), ', '.join(sorted(off))))
     results = {}
 
     ok, err = pjass(pj, common, blizzard, runtime, 'runtime')

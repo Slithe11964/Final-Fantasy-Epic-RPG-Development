@@ -58,24 +58,15 @@ endfunction
 
 function Unit_ScaleToLevel takes unit u,integer l_targetLevel returns nothing
     local integer l_level=GetUnitLevel(u)
-    // Starting value for l_scaledLevel:
-    // ((l_targetLevel) times (1.334)) with its decimal part removed.
     local integer l_scaledLevel=R2I(l_targetLevel*1.334)
     local real l_factor
     local integer l_newMaxHp
     if l_level>=l_scaledLevel then
         return
     endif
-    // (l_level) plus (4).
     if(l_level+4>l_scaledLevel)then
-        // (l_scaledLevel treated as a decimal-capable number) divided by (l_level treated as a decimal-capable
-        // number).
         set l_factor=I2R(l_scaledLevel)/ I2R(l_level)
     else
-        // Result 1: l_scaledLevel treated as a decimal-capable number.
-        // Result 2: (l_level) plus (4).
-        // Result 3: result 2 treated as a decimal-capable number.
-        // Result 4: (result 1) divided by (result 3).
         set l_factor=I2R(l_scaledLevel)/ I2R(l_level+4)
     endif
     // Result 1: (maximum health of u) plus (400).
@@ -100,7 +91,6 @@ function Unit_ScaleToLevel takes unit u,integer l_targetLevel returns nothing
     // Result 4: (1) times (l_targetLevel).
     // Result 5: (result 3) plus (result 4).
     call BlzSetUnitBaseDamage(u,R2I((BlzGetUnitBaseDamage(u,1)+8)*l_factor)+(1*l_targetLevel),1)
-    // (BlzGetUnitArmor(u)) plus ((0.5) times (l_targetLevel)).
     call BlzSetUnitArmor(u,BlzGetUnitArmor(u)+(.5*l_targetLevel))
     call UnitAddAbility(u,'A1BC') // 'A1BC': ability "Stats Adjusted"
     if(IsUnitType(u,UNIT_TYPE_HERO)and l_level<l_targetLevel)then
@@ -290,10 +280,8 @@ function Trig_Unit_ApplyUpgradeBonuses_Actions takes nothing returns nothing
     if(Trig_Unit_ApplyUpgradeBonuses_Needs_TarugayaBonus())then
         call UnitAddAbilityBJ('A1DK',udg_CurrentHero) // 'A1DK': ability "Tarugaya Hero Bonus"
         if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Tarugaya())then
-            // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus (200).
             call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+$C8),0) // $C8 = 200
         else
-            // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus (200).
             call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+$C8),1) // $C8 = 200
         endif
     endif
@@ -301,272 +289,176 @@ function Trig_Unit_ApplyUpgradeBonuses_Actions takes nothing returns nothing
         call UnitAddAbilityBJ('A1DJ',udg_CurrentHero) // 'A1DJ': ability "Sukugaya Hero Bonus"
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Needs_RakugayaBonus())then
-        // (BlzGetUnitArmor(udg_CurrentHero)) plus (20).
         call BlzSetUnitArmor(udg_CurrentHero,(BlzGetUnitArmor(udg_CurrentHero)+20.))
         call UnitAddAbilityBJ('A1DL',udg_CurrentHero) // 'A1DL': ability "Rakugaya Bonus"
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_ToolsDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R000', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0X6', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R000',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0X6',udg_CurrentHero)) // 'R000': upgrade "Tools"; 'A0X6': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Tools_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Tools())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*8)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*2)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*8)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*2)),1)
             endif
-            // (GetPlayerTechCountSimple('R000', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0X6',udg_CurrentHero,(GetPlayerTechCountSimple('R000',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0X6': ability "Upgrade Damage Bonus Dummy"; 'R000': upgrade "Tools"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_SwordDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R001', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0X7', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R001',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0X7',udg_CurrentHero)) // 'R001': upgrade "Sword"; 'A0X7': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Sword_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Sword())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (19)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*19)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*4)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (19)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*19)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*4)),1)
             endif
-            // (GetPlayerTechCountSimple('R001', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0X7',udg_CurrentHero,(GetPlayerTechCountSimple('R001',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0X7': ability "Upgrade Damage Bonus Dummy"; 'R001': upgrade "Sword"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_BowDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R002', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0X8', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R002',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0X8',udg_CurrentHero)) // 'R002': upgrade "Bow"; 'A0X8': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Bow_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Bow())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (14)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*$E)),0) // $E = 14
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*2)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (14)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*$E)),1) // $E = 14
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*2)),1)
             endif
-            // (GetPlayerTechCountSimple('R002', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0X8',udg_CurrentHero,(GetPlayerTechCountSimple('R002',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0X8': ability "Upgrade Damage Bonus Dummy"; 'R002': upgrade "Bow"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_DaggerDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R00B', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0X9', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R00B',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0X9',udg_CurrentHero)) // 'R00B': upgrade "Dagger"; 'A0X9': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Dagger_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Dagger())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (12)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*$C)),0) // $C = 12
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*2)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (12)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*$C)),1) // $C = 12
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*2)),1)
             endif
-            // (GetPlayerTechCountSimple('R00B', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0X9',udg_CurrentHero,(GetPlayerTechCountSimple('R00B',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0X9': ability "Upgrade Damage Bonus Dummy"; 'R00B': upgrade "Dagger"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_SpearDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R009', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XA', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R009',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XA',udg_CurrentHero)) // 'R009': upgrade "Spear"; 'A0XA': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Spear_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Spear())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*8)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (7)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*7)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*8)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (7)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*7)),1)
             endif
-            // (GetPlayerTechCountSimple('R009', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XA',udg_CurrentHero,(GetPlayerTechCountSimple('R009',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XA': ability "Upgrade Damage Bonus Dummy"; 'R009': upgrade "Spear"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_AxeDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R008', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XB', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R008',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XB',udg_CurrentHero)) // 'R008': upgrade "Axe"; 'A0XB': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Axe_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Axe())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus (udg_StatCalcValue).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*8)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (1)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*1)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (8)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*8)),1)
             endif
-            // (GetPlayerTechCountSimple('R008', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XB',udg_CurrentHero,(GetPlayerTechCountSimple('R008',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XB': ability "Upgrade Damage Bonus Dummy"; 'R008': upgrade "Axe"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_KatanaDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R00A', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XC', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R00A',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XC',udg_CurrentHero)) // 'R00A': upgrade "Katana"; 'A0XC': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Katana_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Katana())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (17)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*17)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*4)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (17)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*17)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*4)),1)
             endif
-            // (GetPlayerTechCountSimple('R00A', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XC',udg_CurrentHero,(GetPlayerTechCountSimple('R00A',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XC': ability "Upgrade Damage Bonus Dummy"; 'R00A': upgrade "Katana"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_GreatswordDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R00N', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XD', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R00N',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XD',udg_CurrentHero)) // 'R00N': upgrade "Greatsword"; 'A0XD': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Greatsword_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Greatsword())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*5)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*5)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*5)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*5)),1)
             endif
-            // (GetPlayerTechCountSimple('R00N', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XD',udg_CurrentHero,(GetPlayerTechCountSimple('R00N',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XD': ability "Upgrade Damage Bonus Dummy"; 'R00N': upgrade "Greatsword"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_RodDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R003', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XE', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R003',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XE',udg_CurrentHero)) // 'R003': upgrade "Rod"; 'A0XE': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Rod_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Rod())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*4)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus (udg_StatCalcValue).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (4)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*4)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (1)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*1)),1)
             endif
-            // (GetPlayerTechCountSimple('R003', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XE',udg_CurrentHero,(GetPlayerTechCountSimple('R003',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XE': ability "Upgrade Damage Bonus Dummy"; 'R003': upgrade "Rod"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_GunDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R00M', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XH', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R00M',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XH',udg_CurrentHero)) // 'R00M': upgrade "Gun"; 'A0XH': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_Gun_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_Gun())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (7)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*7)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue*5)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (7)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*7)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (5)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*5)),1)
             endif
-            // (GetPlayerTechCountSimple('R00M', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XH',udg_CurrentHero,(GetPlayerTechCountSimple('R00M',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XH': ability "Upgrade Damage Bonus Dummy"; 'R00M': upgrade "Gun"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_InnerManaDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R00L', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0XG', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R00L',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0XG',udg_CurrentHero)) // 'R00L': upgrade "Inner Mana"; 'A0XG': ability "Upgrade Damage Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_InnerMana_LevelsPending())then
             if(Trig_Unit_ApplyUpgradeBonuses_UsesAttack1_InnerMana())then
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 0)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,0)+(udg_StatCalcValue*2)),0)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 0)) plus (udg_StatCalcValue).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,0)+(udg_StatCalcValue)),0)
             else
-                // (BlzGetUnitBaseDamage(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (2)).
                 call BlzSetUnitBaseDamage(udg_CurrentHero,(BlzGetUnitBaseDamage(udg_CurrentHero,1)+(udg_StatCalcValue*2)),1)
-                // (BlzGetUnitDiceNumber(udg_CurrentHero, 1)) plus ((udg_StatCalcValue) times (1)).
                 call BlzSetUnitDiceNumber(udg_CurrentHero,(BlzGetUnitDiceNumber(udg_CurrentHero,1)+(udg_StatCalcValue*1)),1)
             endif
-            // (GetPlayerTechCountSimple('R00L', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0XG',udg_CurrentHero,(GetPlayerTechCountSimple('R00L',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0XG': ability "Upgrade Damage Bonus Dummy"; 'R00L': upgrade "Inner Mana"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_LeatherArmorDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R006', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0KL', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R006',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0KL',udg_CurrentHero)) // 'R006': upgrade "Leather Armor"; 'A0KL': ability "Upgrade Life Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_LeatherArmor_LevelsPending())then
-            // Result 1: current health divided by maximum health for udg_CurrentHero, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
             set udg_TempReal=GetUnitLifePercent(udg_CurrentHero)
-            // (maximum health of udg_CurrentHero) plus ((udg_StatCalcValue) times (300)).
             call BlzSetUnitMaxHP(udg_CurrentHero,(BlzGetUnitMaxHP(udg_CurrentHero)+(udg_StatCalcValue*300)))
             call SetUnitLifePercentBJ(udg_CurrentHero,udg_TempReal)
-            // (GetPlayerTechCountSimple('R006', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0KL',udg_CurrentHero,(GetPlayerTechCountSimple('R006',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0KL': ability "Upgrade Life Bonus Dummy"; 'R006': upgrade "Leather Armor"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_PlateArmorDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R005', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0KM', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R005',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0KM',udg_CurrentHero)) // 'R005': upgrade "Plate Armor"; 'A0KM': ability "Upgrade Life Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_PlateArmor_LevelsPending())then
-            // Result 1: current health divided by maximum health for udg_CurrentHero, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
             set udg_TempReal=GetUnitLifePercent(udg_CurrentHero)
-            // (maximum health of udg_CurrentHero) plus ((udg_StatCalcValue) times (150)).
             call BlzSetUnitMaxHP(udg_CurrentHero,(BlzGetUnitMaxHP(udg_CurrentHero)+(udg_StatCalcValue*$96))) // $96 = 150
             call SetUnitLifePercentBJ(udg_CurrentHero,udg_TempReal)
-            // (GetPlayerTechCountSimple('R005', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0KM',udg_CurrentHero,(GetPlayerTechCountSimple('R005',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0KM': ability "Upgrade Life Bonus Dummy"; 'R005': upgrade "Plate Armor"
         endif
     endif
     if(Trig_Unit_ApplyUpgradeBonuses_Has_MysticArmorDummy())then
-        // Result 1: (GetPlayerTechCountSimple('R007', GetOwningPlayer(udg_CurrentHero))) plus (1).
-        // Result 2: (result 1) minus (GetUnitAbilityLevelSwapped('A0KN', udg_CurrentHero)).
         set udg_StatCalcValue=((GetPlayerTechCountSimple('R007',GetOwningPlayer(udg_CurrentHero))+1)-GetUnitAbilityLevelSwapped('A0KN',udg_CurrentHero)) // 'R007': upgrade "Mystic Armor"; 'A0KN': ability "Upgrade Life Bonus Dummy"
         if(Trig_Unit_ApplyUpgradeBonuses_MysticArmor_LevelsPending())then
-            // Result 1: current health divided by maximum health for udg_CurrentHero, times 100 (or 0 if the unit is
-            // missing or its maximum is 0).
             set udg_TempReal=GetUnitLifePercent(udg_CurrentHero)
-            // (maximum health of udg_CurrentHero) plus ((udg_StatCalcValue) times (100)).
             call BlzSetUnitMaxHP(udg_CurrentHero,(BlzGetUnitMaxHP(udg_CurrentHero)+(udg_StatCalcValue*'d')))
             call SetUnitLifePercentBJ(udg_CurrentHero,udg_TempReal)
-            // (GetPlayerTechCountSimple('R007', GetOwningPlayer(udg_CurrentHero))) plus (1).
             call SetUnitAbilityLevelSwapped('A0KN',udg_CurrentHero,(GetPlayerTechCountSimple('R007',GetOwningPlayer(udg_CurrentHero))+1)) // 'A0KN': ability "Upgrade Life Bonus Dummy"; 'R007': upgrade "Mystic Armor"
         endif
     endif

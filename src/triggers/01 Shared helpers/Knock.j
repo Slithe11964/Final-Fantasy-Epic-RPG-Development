@@ -55,26 +55,15 @@ function Knock_Update takes nothing returns nothing
         set udg_KnockX[d]=udg_KnockX[d]+udg_KnockSpeed[d]*udg_KnockCosA[d]
         // Move vertically by the same travel distance times the direction's vertical share.
         set udg_KnockY[d]=udg_KnockY[d]+udg_KnockSpeed[d]*udg_KnockSinA[d]
-        // (x position of udg_KnockUnit at position d) minus (udg_KnockX at position d).
         set x=GetUnitX(udg_KnockUnit[d])-udg_KnockX[d]
-        // (y position of udg_KnockUnit at position d) minus (udg_KnockY at position d).
         set y=GetUnitY(udg_KnockUnit[d])-udg_KnockY[d]
         // Square the horizontal and vertical gaps and add them. This is distance squared, so no square root is needed here.
         set l_distSq=(x*x)+(y*y)
-        // (udg_KnockSpeed at position d) minus (udg_KnockDecay at position d).
         set udg_KnockSpeed[d]=udg_KnockSpeed[d]-udg_KnockDecay[d]
         if l_distSq<10000. and Path_IsWalkable(udg_KnockX[d],udg_KnockY[d],10.)then
             call SetUnitX(udg_KnockUnit[d],udg_KnockX[d])
             call SetUnitY(udg_KnockUnit[d],udg_KnockY[d])
             call DestroyEffect(AddSpecialEffect(udg_KnockEffect[d],udg_KnockX[d],udg_KnockY[d]))
-            // Calculation 1:
-            // (udg_KnockX at position d) minus (udg_KnockTreeRadius at position d).
-            // Calculation 2:
-            // (udg_KnockY at position d) minus (udg_KnockTreeRadius at position d).
-            // Calculation 3:
-            // (udg_KnockX at position d) plus (udg_KnockTreeRadius at position d).
-            // Calculation 4:
-            // (udg_KnockY at position d) plus (udg_KnockTreeRadius at position d).
             call SetRect(udg_KnockTreeRect,udg_KnockX[d]-udg_KnockTreeRadius[d],udg_KnockY[d]-udg_KnockTreeRadius[d],udg_KnockX[d]+udg_KnockTreeRadius[d],udg_KnockY[d]+udg_KnockTreeRadius[d])
             call EnumDestructablesInRect(udg_KnockTreeRect,udg_KillTreeFilter,null)
         else
@@ -126,10 +115,6 @@ endfunction
 
 function Knock_Launch takes unit c,unit t,real s,string fx,boolean sf,real damageAmount returns integer
     local integer d=Knock_Create(t,fx)
-    // Starting value for a:
-    // Result 1: (udg_KnockY at position d) minus (y position of c).
-    // Result 2: (udg_KnockX at position d) minus (x position of c).
-    // Result 3: the angle in radians from the y gap (result 1) and x gap (result 2).
     local real a=Atan2(udg_KnockY[d]-GetUnitY(c),udg_KnockX[d]-GetUnitX(c))
     set udg_KnockSpeed[d]=s
     if sf then

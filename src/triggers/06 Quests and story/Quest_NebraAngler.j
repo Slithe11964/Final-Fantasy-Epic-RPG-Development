@@ -59,7 +59,6 @@ endfunction
 function Trig_Quest_NebraAngler_Reward_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_NebraAngler_Reward_Cond_FishHasCharges())then
-        // (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I0GT')) minus (1).
         call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0GT'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0GT'))-1)) // 'I0GT': item "Nebra Fish"
     else
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0GT')) // 'I0GT': item "Nebra Fish"

@@ -9,7 +9,6 @@ function Trig_Shadow_HeroDrink_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_HeroDrink_Actions takes nothing returns nothing
-    // Increase udg_ShadowLoyalty by 3.
     set udg_ShadowLoyalty=(udg_ShadowLoyalty+3)
 endfunction
 

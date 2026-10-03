@@ -14,7 +14,6 @@ function GoliathTonic_Remove takes unit u returns nothing
     call PauseTimer(t)
     call DestroyTimer(t)
     call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\AbsorbMana\\AbsorbManaBirthMissile.mdl",u,"head"))
-    // (maximum health) minus (l_bonus).
     call BlzSetUnitMaxHP(u,maximumHealth-l_bonus)
     call SaveInteger(udg_MaxHpBuffHash,GetHandleId(u),5,0)
     call SaveBoolean(udg_MaxHpBuffHash,GetHandleId(u),4,false)

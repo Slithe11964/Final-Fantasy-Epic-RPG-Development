@@ -18,20 +18,14 @@ function Trig_ThunderRush_Cast_IsCasterHeroRight takes nothing returns boolean
 endfunction
 
 function Trig_ThunderRush_Cast_IsCritical takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<25.)or(UnitHasBuffBJ(GetTriggerUnit(),'B05V')) // 'B05V': buff tooltip "Disease"
 endfunction
 
 function Trig_ThunderRush_Cast_IsBelow75 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<75.)
 endfunction
 
 function Trig_ThunderRush_Cast_IsBelow50 takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<50.)
 endfunction
 
@@ -44,8 +38,6 @@ function Trig_ThunderRush_Cast_FreeCastOn takes nothing returns boolean
 endfunction
 
 function Trig_ThunderRush_Cast_IsEnraged takes nothing returns boolean
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
     return(GetUnitLifePercent(GetTriggerUnit())<50.)or(UnitHasBuffBJ(GetTriggerUnit(),'B05V')) // 'B05V': buff tooltip "Disease"
 endfunction
 
@@ -98,7 +90,6 @@ function Trig_ThunderRush_Cast_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_ThunderRush_Cast_FreeCastOn())then
-        // (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
         call BlzSetUnitAbilityManaCost(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),0)
     else
         call BlzSetUnitAbilityManaCost(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),0)

@@ -14,23 +14,8 @@ endfunction
 function Trig_Hero_EndlessGrowth_Actions takes nothing returns nothing
     if(Trig_Hero_EndlessGrowth_Endless_NeedsUpdate())then
         if(Trig_Hero_EndlessGrowth_Has_EndlessAbility())then
-            // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-            // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-            // Result 2: result 1 treated as a decimal-capable number.
-            // Result 3: (result 2) times (0.1).
-            // Result 4: (result 3) with its decimal part removed.
             call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-            // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-            // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-            // Result 2: result 1 treated as a decimal-capable number.
-            // Result 3: (result 2) times (0.1).
-            // Result 4: (result 3) with its decimal part removed.
             call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-            // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-            // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-            // Result 2: result 1 treated as a decimal-capable number.
-            // Result 3: (result 2) times (0.1).
-            // Result 4: (result 3) with its decimal part removed.
             call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
         else
             call UnitAddAbilityBJ('A10E',Player_GetHero(udg_TempPlayer)) // 'A10E': ability "Endless"
@@ -39,23 +24,8 @@ function Trig_Hero_EndlessGrowth_Actions takes nothing returns nothing
             call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,1)
         endif
         call SetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer),GetHeroLevel(Player_GetHero(udg_TempPlayer))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
-        // Result 1: (udg_NewGamePlusLevel at position GetConvertedPlayerId(udg_TempPlayer)) times
-        // (GetUnitAbilityLevelSwapped('A10E', Player_GetHero(udg_TempPlayer))).
-        // Result 2: result 1 treated as a decimal-capable number.
-        // Result 3: (result 2) times (0.1).
-        // Result 4: (result 3) with its decimal part removed.
         call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,R2I((I2R((udg_NewGamePlusLevel[GetConvertedPlayerId(udg_TempPlayer)]*GetUnitAbilityLevelSwapped('A10E',Player_GetHero(udg_TempPlayer))))*.1))) // 'A10E': ability "Endless"
     endif
     set udg_TempInteger=1

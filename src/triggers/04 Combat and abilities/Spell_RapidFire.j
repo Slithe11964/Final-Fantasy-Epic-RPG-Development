@@ -43,13 +43,8 @@ endfunction
 
 function Trig_Spell_RapidFire_DamageFormula takes unit tu returns real
     local integer manaCost=BlzGetAbilityManaCost('A0AE',Abil_GetLevel(tu,'A0AE')) // 'A0AE': ability "Rapid Fire"
-    // Starting value for l_agiBonus:
-    // (Agility of tu) times (2).
     local real l_agiBonus=GetHeroAgi(tu,true)*2
-    // Starting value for l_mult:
-    // (0.1) times ((10) plus (Prof_GetLevel(tu, 'R002'))).
     local real l_mult=.1*($A+Prof_GetLevel(tu,'R002')) // $A = 10; 'R002': upgrade "Bow"
-    // ((mana cost) plus (l_agiBonus)) times (l_mult).
     return(manaCost+l_agiBonus)*l_mult
 endfunction
 
@@ -72,14 +67,7 @@ function Trig_Spell_RapidFire_Loop takes nothing returns nothing
             else
                 set a=-1.
             endif
-            // Result 1: a random decimal number between 0 and 18.
-            // Result 2: (a) times (result 1).
-            // Result 3: (facing in degrees of udg_RapidFireShooter at position d) plus (result 2).
             set a=GetUnitFacing(udg_RapidFireShooter[d])+a*GetRandomReal(0,18.)
-            // Calculation 1:
-            // (900) plus (a random decimal number between -200 and 200).
-            // Calculation 2:
-            // ((udg_RapidFireDmg at position d) times (a random decimal number between 15 and 16)) divided by (16).
             call Missile_Launch(udg_RapidFireShooter[d],udg_RapidFireMissileFx[d],udg_RapidFireImpactFx[d],null,a,80.,30.,900.+GetRandomReal(-$C8,$C8),.0,.0,200.,udg_RapidFireDmg[d]*GetRandomReal(15.,16.)/ 16.,udg_RapidFireElement[d],ATTACK_TYPE_PIERCE,false) // $C8 = 200
         else
             call Trig_Spell_RapidFire_Free(d)

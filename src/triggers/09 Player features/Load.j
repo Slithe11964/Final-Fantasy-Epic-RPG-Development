@@ -37,19 +37,15 @@ function Load_TypeCodeWithUIKeys takes string l_code,player p returns nothing
             set l_len=StringLength(l_code)
             loop
                 exitwhen i>=l_len
-                // (i) plus (1).
                 set l_ch=SubString(l_code,i,i+1)
                 if(l_ch=="(" or l_ch==")")then
                     call ForceUIKey("J")
                 else
                     set l_charIdx=Trig_Cmd_Load_Code_CharToValue(l_ch)
-                    // (l_charIdx) divided by (8); drop the remainder.
                     set l_hi=l_charIdx/ 8
                     // (l_charIdx) minus (((l_charIdx) divided by (8); drop the remainder) times (8)).
                     set l_lo=l_charIdx-(l_charIdx/ 8)*8
-                    // (l_hi) plus (1).
                     call ForceUIKey(SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_hi,l_hi+1))
-                    // (l_lo) plus (1).
                     call ForceUIKey(SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",l_lo,l_lo+1))
                 endif
                 set i=i+1
@@ -76,9 +72,7 @@ function Load_OnCodeAbility takes nothing returns nothing
             set udg_LoadCharValue=S2I(SubString(GetObjectName(GetSpellAbilityId()),6,7))
             set udg_LoadHasHighBits=true
         else
-            // ((udg_LoadCharValue) times (8)) plus (S2I(SubString(GetObjectName(GetSpellAbilityId()), 6, 7))).
             set udg_LoadCharValue=(udg_LoadCharValue*8)+S2I(SubString(GetObjectName(GetSpellAbilityId()),6,7))
-            // (udg_LoadCharValue) plus (1).
             set udg_LoadCodeBuffer=udg_LoadCodeBuffer+SubString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#",udg_LoadCharValue,udg_LoadCharValue+1)
             set udg_LoadHasHighBits=false
         endif

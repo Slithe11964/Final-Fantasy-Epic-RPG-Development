@@ -53,16 +53,13 @@ function Trig_Spell_Shuriken_Loop takes nothing returns nothing
     loop
         exitwhen i>=udg_ShurikenActiveCount
         set d=udg_ShurikenList[i]
-        // (udg_ShurikenAngle at position d) plus ((12) times (bj_DEGTORAD)).
         set udg_ShurikenAngle[d]=udg_ShurikenAngle[d]+(12.*bj_DEGTORAD)
         if udg_ShurikenRadius[d]<=80. then
             call Trig_Spell_Shuriken_Free(d)
         else
             if udg_ShurikenReturning[d]then
-                // Decrease udg_ShurikenRadius at position d by 10.
                 set udg_ShurikenRadius[d]=udg_ShurikenRadius[d]-10.
             else
-                // Increase udg_ShurikenRadius at position d by 10.
                 set udg_ShurikenRadius[d]=udg_ShurikenRadius[d]+10.
                 if(udg_ShurikenRadius[d]>=540.)then
                     set udg_ShurikenReturning[d]=true
@@ -77,11 +74,7 @@ function Trig_Spell_Shuriken_Loop takes nothing returns nothing
                 call GroupClear(udg_ShurikenHitGroupB[d])
                 set udg_ShurikenSide[d]=1
             endif
-            // (x position of udg_ShurikenCaster at position d) plus ((udg_ShurikenRadius at position d) times (l_cosAng)).
             set udg_ShurikenX[d]=GetUnitX(udg_ShurikenCaster[d])+udg_ShurikenRadius[d]*l_cosAng
-            // Result 1: the vertical direction share for angle (udg_ShurikenAngle at position d) in radians.
-            // Result 2: (udg_ShurikenRadius at position d) times (result 1).
-            // Result 3: (y position of udg_ShurikenCaster at position d) plus (result 2).
             set udg_ShurikenY[d]=GetUnitY(udg_ShurikenCaster[d])+udg_ShurikenRadius[d]*Sin(udg_ShurikenAngle[d])
             call SetUnitX(gg_unit_h020_0271[d],udg_ShurikenX[d])
             call SetUnitY(gg_unit_h020_0271[d],udg_ShurikenY[d])
@@ -117,7 +110,6 @@ function Trig_Spell_Shuriken_Actions takes nothing returns nothing
     local integer abilityLevel=GetUnitAbilityLevel(udg_ShurikenCaster[d],'A0AD') // 'A0AD': ability "Yuffie's Shuriken"
     local real l_facing=GetUnitFacing(udg_ShurikenCaster[d])
     set udg_ShurikenDamage[d]=Trig_Spell_Shuriken_DamageFormula(BlzGetAbilityManaCost('A0AD',Abil_GetLevel(udg_ShurikenCaster[d],'A0AD')),GetHeroAgi(udg_ShurikenCaster[d],true),Prof_GetLevel(udg_ShurikenCaster[d],'R00B')) // 'A0AD': ability "Yuffie's Shuriken"; 'R00B': upgrade "Dagger"
-    // ((l_facing) plus (270)) times (bj_DEGTORAD).
     set udg_ShurikenAngle[d]=(l_facing+270.)*bj_DEGTORAD
     // The horizontal direction share for angle (udg_ShurikenAngle at position d) in radians.
     if Cos(udg_ShurikenAngle[d])>0 then
@@ -126,13 +118,7 @@ function Trig_Spell_Shuriken_Actions takes nothing returns nothing
         set udg_ShurikenSide[d]=2
     endif
     set udg_ShurikenRadius[d]=90.
-    // Result 1: the horizontal direction share for angle (udg_ShurikenAngle at position d) in radians.
-    // Result 2: (udg_ShurikenRadius at position d) times (result 1).
-    // Result 3: (x position of udg_ShurikenCaster at position d) plus (result 2).
     set udg_ShurikenX[d]=GetUnitX(udg_ShurikenCaster[d])+udg_ShurikenRadius[d]*Cos(udg_ShurikenAngle[d])
-    // Result 1: the vertical direction share for angle (udg_ShurikenAngle at position d) in radians.
-    // Result 2: (udg_ShurikenRadius at position d) times (result 1).
-    // Result 3: (y position of udg_ShurikenCaster at position d) plus (result 2).
     set udg_ShurikenY[d]=GetUnitY(udg_ShurikenCaster[d])+udg_ShurikenRadius[d]*Sin(udg_ShurikenAngle[d])
     set gg_unit_h020_0271[d]=CreateUnit(udg_ShurikenOwner[d],'h020',udg_ShurikenX[d],udg_ShurikenY[d],l_facing) // 'h020': unit "Dummy Missile"
     set udg_ShurikenEffect[d]=AddSpecialEffectTarget("Abilities\\Weapons\\ShadowHunterMissile\\ShadowHunterMissile.mdl",gg_unit_h020_0271[d],"chest")

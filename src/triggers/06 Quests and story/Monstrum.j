@@ -48,7 +48,6 @@ function Trig_Monstrum_Tentacle_Ambush_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (45) times (loop counter A treated as a decimal-capable number).
         set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(45.*I2R(GetForLoopIndexA())))
         call CreateNUnitsAtLocFacingLocBJ(1,'n0MP',Player($B),udg_TempPoint2,l_tempPoint) // 'n0MP': object name not found in map data; $B = 11
         call PauseUnitBJ(true,GetLastCreatedUnit())
@@ -108,7 +107,6 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
             set udg_MonstrumPhase=0
         else
             call SetUnitPositionLocFacingBJ(udg_NebraMonstrum,l_tempPoint,bj_UNIT_FACING)
-            // ((4) minus (udg_MonstrumPhase) treated as a decimal-capable number) times (25).
             call SetUnitLifePercentBJ(udg_NebraMonstrum,(I2R((4-udg_MonstrumPhase))*25.))
             call ShowUnitShow(udg_NebraMonstrum)
             call SetUnitInvulnerable(udg_NebraMonstrum,false)
@@ -159,20 +157,10 @@ function Trig_Monstrum_Phase_Check_KillTentacleAfterDive takes nothing returns n
 endfunction
 
 function Trig_Monstrum_Phase_Check_LifeAbovePhaseCap takes nothing returns boolean
-    // Calculation 1:
-    // Result 1: current health divided by maximum health for udg_NebraMonstrum, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
-    // Calculation 2:
-    // ((4) minus (udg_MonstrumPhase) treated as a decimal-capable number) times (25).
     return(udg_MonstrumPhase>0)and(GetUnitLifePercent(udg_NebraMonstrum)>(I2R((4-udg_MonstrumPhase))*25.))and(UnitHasBuffBJ(udg_NebraMonstrum,'B05V')==false) // 'B05V': buff tooltip "Disease"
 endfunction
 
 function Trig_Monstrum_Phase_Check_LifeBelowPhaseCut takes nothing returns boolean
-    // Calculation 1:
-    // Result 1: current health divided by maximum health for udg_NebraMonstrum, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
-    // Calculation 2:
-    // ((3) minus (udg_MonstrumPhase) treated as a decimal-capable number) times (25).
     return(GetUnitStateSwap(UNIT_STATE_LIFE,udg_NebraMonstrum)<udg_MonstrumPhaseLife)or(GetUnitLifePercent(udg_NebraMonstrum)<(I2R((3-udg_MonstrumPhase))*25.))
 endfunction
 
@@ -197,7 +185,6 @@ function Trig_Monstrum_Phase_Check_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$A // $A = 10
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (36).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*36.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -219,7 +206,6 @@ function Trig_Monstrum_Phase_Check_Actions takes nothing returns nothing
     else
         if(Trig_Monstrum_Phase_Check_LifeAbovePhaseCap())then
             call UnitRemoveBuffBJ('B04O',udg_NebraMonstrum) // 'B04O': buff tooltip "Recovering"
-            // ((4) minus (udg_MonstrumPhase) treated as a decimal-capable number) times (25).
             call SetUnitLifePercentBJ(udg_NebraMonstrum,(I2R((4-udg_MonstrumPhase))*25.))
         endif
     endif
@@ -244,7 +230,6 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
     loop
         exitwhen udg_TempInteger>3
         if(Trig_Monstrum_DepthCharge_SlotFree())then
-            // (udg_TempInteger treated as a decimal-capable number) times (90).
             set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(udg_TempInteger)*90.))
             call CreateNUnitsAtLoc(1,'n0MP',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0MP': object name not found in map data
             call RemoveLocation(udg_TempPoint2)
@@ -266,7 +251,6 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
     call SetUnitAnimation(GetLastCreatedUnit(),"birth")
     call QueueUnitAnimationBJ(GetLastCreatedUnit(),"stand")
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TentacleGroup)
-    // (20) plus ((5) times (udg_Difficulty treated as a decimal-capable number)).
     call UnitApplyTimedLifeBJ((20.+(5.*I2R(udg_Difficulty))),'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempPoint2=OffsetLocation(l_tempPoint,256.,0)
     call CreateNUnitsAtLoc(1,'n0MP',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0MP': object name not found in map data
@@ -276,7 +260,6 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
     call SetUnitAnimation(GetLastCreatedUnit(),"birth")
     call QueueUnitAnimationBJ(GetLastCreatedUnit(),"stand")
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TentacleGroup)
-    // (20) plus ((5) times (udg_Difficulty treated as a decimal-capable number)).
     call UnitApplyTimedLifeBJ((20.+(5.*I2R(udg_Difficulty))),'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)

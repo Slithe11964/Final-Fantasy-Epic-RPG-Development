@@ -83,7 +83,6 @@ function Trig_Kesha_Return_Stones_Actions takes nothing returns nothing
     if(Trig_Kesha_Return_Stones_Cond_StoneNoCharges())then
         set udg_ExoticStonesReturned=(udg_ExoticStonesReturned+1)
     else
-        // (udg_ExoticStonesReturned) plus (item charges of GetItemOfTypeFromUnitBJ(the triggering unit, 'I03Y')).
         set udg_ExoticStonesReturned=(udg_ExoticStonesReturned+GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03Y'))) // 'I03Y': item "Exotic Stone"
     endif
     call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03Y')) // 'I03Y': item "Exotic Stone"

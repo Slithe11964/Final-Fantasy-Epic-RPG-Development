@@ -258,7 +258,6 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -274,7 +273,6 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,192.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -290,7 +288,6 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (45).
         set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -332,7 +329,6 @@ function Trig_AlmightyShinra_Spiral_Actions takes nothing returns nothing
     // The remainder after dividing ((udg_SpiralAngle) plus (45)) by (360).
     set udg_SpiralAngle=ModuloInteger((udg_SpiralAngle+45),360)
     set l_tempPoint=GetUnitLoc(gg_unit_n034_0109)
-    // Udg_SpiralAngle treated as a decimal-capable number.
     set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,I2R(udg_SpiralAngle))
     call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -427,11 +423,8 @@ function Trig_AlmightyShinra_Defeat_Actions takes nothing returns nothing
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call ConditionalTriggerExecute(gg_trg_Arena_Cup_Won)
     call AddUnitToStockBJ('n0AS',udg_ArenaOrganizer[5],1,1) // 'n0AS': unit "Arena: Almighty Shinra Battle"
-    // (9) plus (LoadIntegerBJ(2, 0, udg_GameStateHash)).
     call SaveIntegerBJ(1,$A,(9+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash) // $A = 10
-    // (9) plus (LoadIntegerBJ(2, 0, udg_GameStateHash)).
     call SaveIntegerBJ($9D,$B,(9+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash) // $9D = 157; $B = 11
-    // (9) plus (LoadIntegerBJ(2, 0, udg_GameStateHash)).
     call SaveIntegerBJ(50,$C,(9+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash) // $C = 12
     set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
     set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=7

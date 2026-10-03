@@ -46,9 +46,6 @@ function Trig_Odin_Leash_Arena_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call Berserk_Remove(GetTriggerUnit())
-    // Result 1: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
-    // missing or its maximum is 0).
-    // Result 2: (result 1) plus (5).
     call SetUnitLifePercentBJ(GetTriggerUnit(),(GetUnitLifePercent(GetTriggerUnit())+5.))
     set l_tempPoint=null
 endfunction

@@ -11,17 +11,11 @@ function Trig_Arena_FoeDeath_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_FoeDeath_RollDrop takes nothing returns boolean
-    // Calculation 1:
     // A random whole number from 1 through 100.
-    // Calculation 2:
-    // (10) plus ((2) times (loop counter A)).
-    // Calculation 3:
-    // (GetUnitUserData(the triggering unit)) minus (10).
     return(GetRandomInt(1,'d')<=LoadIntegerBJ(($A+(2*GetForLoopIndexA())),(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)) // $A = 10
 endfunction
 
 function Trig_Arena_FoeDeath_HasLootTable takes nothing returns boolean
-    // (GetUnitUserData(the triggering unit)) minus (10).
     return(IsUnitDeadBJ(GetTriggerUnit()))and(GetUnitUserData(GetTriggerUnit())>=$A)and(LoadIntegerBJ($A,(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)>=1) // $A = 10
 endfunction
 
@@ -165,14 +159,10 @@ function Trig_Arena_FoeDeath_AwardBattlePoints takes nothing returns nothing
     local force l_tempForce
     set l_tempForce=Force_OfPlayer(GetEnumPlayer())
     if(Trig_Arena_FoeDeath_HasDoubleBP())then
-        // Result 1: (udg_BattlePoints at position 0) times (2).
-        // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+(udg_BattlePoints[0]*2))
         // (udg_BattlePoints at position 0) times (2).
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points.|r"))
     else
-        // (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (udg_BattlePoints at
-        // position 0).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+udg_BattlePoints[0])
         call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S(udg_BattlePoints[0]))+" Battle Points.|r"))
     endif
@@ -195,15 +185,10 @@ function Trig_Arena_FoeDeath_Actions takes nothing returns nothing
     if(Trig_Arena_FoeDeath_HasLootTable())then
         set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
         set bj_forLoopAIndex=1
-        // (GetUnitUserData(the triggering unit)) minus (10).
         set bj_forLoopAIndexEnd=LoadIntegerBJ($A,(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash) // $A = 10
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             if(Trig_Arena_FoeDeath_RollDrop())then
-                // Calculation 1:
-                // (9) plus ((2) times (loop counter A)).
-                // Calculation 2:
-                // (GetUnitUserData(the triggering unit)) minus (10).
                 call CreateItemLoc(udg_ItemIdTable[LoadIntegerBJ((9+(2*GetForLoopIndexA())),(GetUnitUserData(GetTriggerUnit())-$A),udg_GameStateHash)],udg_TempPoint) // $A = 10
             endif
             set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -267,10 +252,8 @@ function Trig_Arena_FoeDeath_Actions takes nothing returns nothing
     call GroupClear(udg_CupArenaUnits)
     call ForGroupBJ(udg_ArenaSummonGroup,function Trig_Arena_FoeDeath_RemoveBossFoe)
     call GroupClear(udg_ArenaSummonGroup)
-    // (LoadIntegerBJ(5, udg_ArenaBracketSlot at position 2, udg_GameStateHash)) plus (2).
     set udg_BattlePoints[0]=(LoadIntegerBJ(5,udg_ArenaBracketSlot[2],udg_GameStateHash)+2)
     if(Trig_Arena_FoeDeath_IsBonusBPActive())then
-        // Increase udg_BattlePoints at position 0 by 60.
         set udg_BattlePoints[0]=(udg_BattlePoints[0]+60)
     endif
     // Multiply base battle points by 10 x (elapsed seconds + 30) / (2 x elapsed seconds + 30), then drop decimals.

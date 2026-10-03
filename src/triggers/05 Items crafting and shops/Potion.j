@@ -139,14 +139,12 @@ function Trig_Potion_Use_Actions takes nothing returns nothing
                     set udg_DmgFlagUnavoidable=-1
                     set udg_IsPureDamage=true
                     set udg_DmgFlagManaDamage=true
-                    // (udg_TempInteger) divided by (2); drop the remainder treated as a decimal-capable number.
                     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),I2R((udg_TempInteger/ 2)),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 endif
                 if(Trig_Potion_Use_Cond_LifePotion())then
                     set udg_DmgFlagPure=true
                     set udg_DmgFlagUnavoidable=-1
                     set udg_IsPureDamage=true
-                    // Udg_TempInteger treated as a decimal-capable number.
                     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),I2R(udg_TempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
                 endif
             endif

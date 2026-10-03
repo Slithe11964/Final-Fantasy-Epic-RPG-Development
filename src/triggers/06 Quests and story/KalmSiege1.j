@@ -185,14 +185,8 @@ function Trig_KalmSiege1_Begin_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SpecialUnits)
         if(Trig_KalmSiege1_Begin_ScalingOff())then
-            // Calculation 1:
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) times (4).
-            // Calculation 2:
-            // (1) minus (1).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*4),(1-1))
-            // (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) times (4).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*4),1)
-            // (maximum health of GetLastCreatedUnit()) times (4).
             call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())*4))
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         else
@@ -490,14 +484,8 @@ function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
             call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),l_tempPoint,l_tempPoint2) // $A = 10; $B = 11
             call RemoveLocation(l_tempPoint)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
-            // Calculation 1:
-            // ((BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) times (udg_RaidPowerLevel)) divided by (4).
-            // Calculation 2:
-            // (1) minus (1).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*udg_RaidPowerLevel)/ 4),(1-1))
-            // ((BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) times (udg_RaidPowerLevel)) divided by (4).
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*udg_RaidPowerLevel)/ 4),1)
-            // ((maximum health of GetLastCreatedUnit()) times (udg_RaidPowerLevel)) divided by (4).
             call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())*udg_RaidPowerLevel)/ 4))
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
             call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)

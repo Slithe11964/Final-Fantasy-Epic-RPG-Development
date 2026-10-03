@@ -36,18 +36,13 @@ function Trig_Ultima_Cast_Actions takes nothing returns nothing
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
     call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
-    // GetSpellAbilityId()))) divided by (10).
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A) // $A = 10
     if(Trig_Ultima_Cast_IsHero())then
-        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
         set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     else
-        // (l_tempInteger) plus ((unit level of the triggering unit) times (3)).
         set l_tempInteger=(l_tempInteger+(GetUnitLevel(GetTriggerUnit())*3))
     endif
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
@@ -123,7 +118,6 @@ function Trig_Ultima_Possession_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$F // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (24).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,96.,(I2R(GetForLoopIndexA())*24.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -172,7 +166,6 @@ function Trig_Ultima_Possession_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$F // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (24).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,96.,(I2R(GetForLoopIndexA())*24.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -188,7 +181,6 @@ function Trig_Ultima_Possession_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$F // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (24).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,96.,(I2R(GetForLoopIndexA())*24.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -216,7 +208,6 @@ function Trig_Ultima_Possession_Actions takes nothing returns nothing
         set bj_forLoopAIndexEnd=$F // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            // (loop counter A treated as a decimal-capable number) times (24).
             set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,96.,(I2R(GetForLoopIndexA())*24.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -270,7 +261,6 @@ function Trig_Ultima_Holyja_DamageTarget takes nothing returns nothing
     local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Other\\Monsoon\\MonsoonBoltTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    // (maximum health of the unit being visited) times (0.3).
     set l_tempReal=(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetEnumUnit())*.3)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
@@ -305,14 +295,12 @@ function Trig_Ultima_Holyja_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        // (loop counter A treated as a decimal-capable number) times (30).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(I2R(GetForLoopIndexA())*30.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
-        // ((loop counter A treated as a decimal-capable number) times (30)) minus (15).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,600.,((I2R(GetForLoopIndexA())*30.)-15.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
