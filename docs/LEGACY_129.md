@@ -123,3 +123,21 @@ freeze their caster (seen with Fan of Knives). Always build the 1.29.2 map with
 
 Objects added after r7 have no older copy to fill from: if one misbehaves in 1.29.2 only, set its
 per-level values explicitly for every level in the Object Editor.
+
+## Give every build its own in-game name
+
+The game lists maps by the name inside the file, not the file name. Two builds with the same
+name (e.g. the Reforged and 1.29.2 build of one stage) look identical in the list, which caused a
+false "freeze" report in stage K. Always pass `downgrade.py --name "... (1.29.2)"` and give the
+Reforged build its own name too (stage K: "... r16 stageK (Reforged)" / "... r16 stageK (1.29.2)").
+
+## One map for both games?
+
+1.29.2 can't read Reforged-format maps, but Reforged can play 1.29-format maps. So the plan is:
+
+1. Keep developing in the Reforged editor.
+2. Build the 1.29.2 file with `downgrade.py`.
+3. Publish only that file.
+
+Before switching, play-test the 1.29.2 build in Reforged. It loses Reforged-only extras (unit skins,
+HD water, some camera fields).
