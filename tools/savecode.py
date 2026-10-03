@@ -7,7 +7,7 @@
 
 checkname says whether CODE belongs to the player NAME. rename gives the same code for a new
 account name (a player who changed their Battle.net name keeps their progress): only the 20-bit
-name hash and the checksum change; everything else, the armory part included, stays. With --old,
+name hash and the checksum change (plus the armory part's link to them); everything else stays. With --old,
 the code is only rewritten if it really belongs to OLDNAME. Names are used like the game does:
 anything from "#" on (the BattleTag number) is ignored, and case doesn't matter.
 
@@ -303,6 +303,10 @@ def encode(d, charged=lambda i: False, armory=''):
     body = w.out
     cs = checksum(body)
     cs_chars = ''.join(ALPHABET[(cs >> s) & 63] for s in (12, 6, 0))
+    if armory:      # armory bits as code characters: header = own checksum + copy of the main checksum
+        rest = cs_chars + armory
+        acs = checksum(rest)
+        armory = ''.join(ALPHABET[(acs >> s) & 63] for s in (12, 6, 0)) + rest
     return ALPHABET[version] + cs_chars + body + (('(' + armory + ')') if armory else '')
 
 # ---------------------------------------------------------------- names
@@ -339,9 +343,28 @@ def code_name_hash(code):
         raise CodeError('checksum mismatch: the code is mistyped or incomplete')
     return version, Reader(version, code[4:]).bits_(20)
 
+def rename_armory(old_cs3, armory, new_cs3):
+    """The armory part (between the brackets) starts with its own 3-character checksum, then a copy of
+    the main code's checksum (that is how -loada knows the two parts belong together), then the armory
+    bits. When the main checksum changes, the copy and the armory checksum must change too
+    (Save_EncodeUnitFlags / Trig_Cmd_Load_Code_LoadArmory)."""
+    if len(armory) < 7:
+        raise CodeError('the armory part (in brackets) is too short')
+    stored = 0
+    for ch in armory[:3]:
+        stored = stored * 64 + value_of(ch)
+    if stored != checksum(armory[3:]):
+        raise CodeError('the armory part (in brackets) has a checksum error: it was changed or cut off')
+    if armory[3:6] != old_cs3:
+        raise CodeError('the armory part (in brackets) does not belong to this code')
+    rest = new_cs3 + armory[6:]
+    acs = checksum(rest)
+    return ''.join(ALPHABET[(acs >> sh) & 63] for sh in (12, 6, 0)) + rest
+
 def rename(code, new_name):
     """The same code for another player name. The name hash is the first field (bits 0-19 of the body,
-    key 13*version), so only body characters 0-3 and the checksum change."""
+    key 13*version), so only body characters 0-3 and the checksum change - and with them the armory
+    part's header (its checksum and its copy of the main checksum)."""
     code = clean(code)
     version, _ = code_name_hash(code)
     if version not in (6, 7):
@@ -353,9 +376,13 @@ def rename(code, new_name):
     low4 = first & 0xF
     w = Writer(version); w.bits_(name_hash(new_name), 20)
     first = (ALPHABET.index(w.out[0]) << 18 | ALPHABET.index(w.out[1]) << 12 | ALPHABET.index(w.out[2]) << 6) | (w.buf << 4) | low4
-    new_body = ''.join(ALPHABET[(first >> sh) & 63] for sh in (18, 12, 6, 0)) + body[4:]
-    cs = checksum(new_body)
-    out = code[0] + ''.join(ALPHABET[(cs >> sh) & 63] for sh in (12, 6, 0)) + new_body
+    main, sep, armory = body.partition('(')
+    new_main = ''.join(ALPHABET[(first >> sh) & 63] for sh in (18, 12, 6, 0)) + main[4:]
+    cs = checksum(new_main)
+    cs3 = ''.join(ALPHABET[(cs >> sh) & 63] for sh in (12, 6, 0))
+    if sep:
+        armory = rename_armory(code[1:4], armory, cs3)
+    out = code[0] + cs3 + new_main + sep + armory
     if code_name_hash(out)[1] != name_hash(new_name):
         raise CodeError('internal error: rewritten code does not check out')
     return out
@@ -438,7 +465,7 @@ def selftest(rounds=2000):
         for inv in ('hero_items', 'gaya_items', 'house_items'):
             d[inv] = [(i, rnd.randrange(100) if charged(i) else None, charged(i)) for i, _, _ in d[inv]]
         # ladders in the format can only hold consistent sets: keep only representable titles
-        code = encode(d, charged, armory='ABC' if k % 3 == 0 else '')
+        code = encode(d, charged, armory='ABCxyz019$#' if k % 3 == 0 else '')
         back, _ = decode(code, charged)
         for key in ('name_hash', 'difficulty', 'gold_plus_1500_per_shard', 'jobs', 'freelancer', 'hero_items', 'gaya_items',
                     'house_items', 'upgrades', 'speedrun_level', 'miracle_stage', 'meta_fragments', 'legendary_guardian'):
@@ -451,7 +478,7 @@ def selftest(rounds=2000):
         moved = rename(code, nm)
         b2, _ = decode(moved, charged)
         if b2['name_hash'] != name_hash(nm) or {k: v for k, v in b2.items() if k != 'name_hash'} != {k: v for k, v in back.items() if k != 'name_hash'} \
-                or moved.partition('(')[2] != code.partition('(')[2]:
+                or moved.partition('(')[2][6:] != code.partition('(')[2][6:] or (('(' in moved) and moved.partition('(')[2][3:6] != moved[1:4]):
             raise SystemExit('selftest FAILED: rename changed more than the name')
         try:
             decode(code[:10] + ('A' if code[10] != 'A' else 'B') + code[11:], charged)

@@ -112,6 +112,7 @@ code { font-family: var(--mono); font-size: .88em }
     <div class="row">
       <button class="primary" id="copyCode" type="button" disabled>Copy code</button>
       <button id="copyLoad" type="button" disabled>Copy as -load command</button>
+      <button id="copyArmory" type="button" disabled hidden>Copy armory part as -loada</button>
       <span class="hint" id="copyNote"></span>
     </div>
   </section>
@@ -120,7 +121,9 @@ code { font-family: var(--mono); font-size: .88em }
     <summary>How it works</summary>
     <ul>
       <li>The first field of every code is a 20-bit hash of the account name: <code>abs(StringHash(name)) mod 2^20</code>. The game compares it with the loading player's name.</li>
-      <li>This page rewrites only that field and the 3-character checksum, which is characters 2 to 8 of the code. Nothing else changes.</li>
+      <li>This page rewrites only that field and the 3-character checksum, which is characters 2 to 8 of the code.</li>
+      <li>The armory part (in brackets) starts with its own checksum and a copy of the main checksum, which is how the game checks that the two parts belong together. Those 6 characters are rewritten too; the armory itself is unchanged.</li>
+      <li>Long codes don't fit in one chat line. Type <code>-load</code> with the code first, then <code>-loada (…)</code> with the bracket part.</li>
       <li>Same method as <code>tools/savecode.py rename</code> in the FFERPG repository, and checked against real codes.</li>
       <li>Works for current codes (they start with G or H). Everything runs in your browser; nothing is sent anywhere.</li>
     </ul>
@@ -205,6 +208,19 @@ function readCode(raw) {
   return { code, version, letter: code[0], hash: h, armory: body.includes('(') };
 }
 
+const chars3 = v => [12, 6, 0].map(s => ALPHABET[(v >> s) & 63]).join('');
+const value3 = t => valueOf(t[0]) * 4096 + valueOf(t[1]) * 64 + valueOf(t[2]);
+
+// The armory part (in brackets) starts with its own checksum, then a copy of the main code's checksum,
+// which is how the game checks that the two parts belong together. Both must follow the new main checksum.
+function renameArmory(oldCs3, armory, newCs3) {
+  if (armory.length < 7) throw new Error('The armory part (in brackets) is too short. Paste the whole code.');
+  if (value3(armory) !== checksum(armory.slice(3))) throw new Error('The armory part (in brackets) has a checksum error, so it was changed or cut off.');
+  if (armory.slice(3, 6) !== oldCs3) throw new Error('The armory part (in brackets) does not belong to this code.');
+  const rest = newCs3 + armory.slice(6);
+  return chars3(checksum(rest)) + rest;
+}
+
 function renameCode(raw, newName) {
   const r = readCode(raw);
   if (r.version !== 6 && r.version !== 7) throw new Error('Only current codes (starting with G or H) can be moved. This one starts with ' + r.letter + '.');
@@ -213,9 +229,13 @@ function renameCode(raw, newName) {
   for (const ch of body.slice(0, 4)) first = first * 64 + valueOf(ch);
   const m = ((13 * r.version) + nameHash(newName)) % P20;
   first = (m * 16) + (first & 15);
-  const newBody = [18, 12, 6, 0].map(s => ALPHABET[Math.floor(first / Math.pow(2, s)) & 63]).join('') + body.slice(4);
-  const cs = checksum(newBody);
-  const out = r.code[0] + [12, 6, 0].map(s => ALPHABET[(cs >> s) & 63]).join('') + newBody;
+  const cut = body.indexOf('(');
+  const main = cut < 0 ? body : body.slice(0, cut);
+  const newMain = [18, 12, 6, 0].map(s => ALPHABET[Math.floor(first / Math.pow(2, s)) & 63]).join('') + main.slice(4);
+  const cs3 = chars3(checksum(newMain));
+  let armory = '';
+  if (cut >= 0) armory = '(' + renameArmory(r.code.slice(1, 4), body.slice(cut + 1), cs3);
+  const out = r.code[0] + cs3 + newMain + armory;
   if (readCode(out).hash !== nameHash(newName)) throw new Error('Internal check failed; the new code was not produced.');
   return out;
 }
@@ -230,7 +250,7 @@ function chip(text, cls) { const s = document.createElement('span'); s.className
 function update() {
   const st = $('codeStatus'), err = $('codeError'), os = $('oldStatus'), out = $('out'), outS = $('outStatus');
   st.replaceChildren(); os.replaceChildren(); outS.replaceChildren(); err.hidden = true; current = '';
-  $('copyCode').disabled = $('copyLoad').disabled = true; $('copyNote').textContent = '';
+  $('copyCode').disabled = $('copyLoad').disabled = $('copyArmory').disabled = true; $('copyArmory').hidden = true; $('copyNote').textContent = '';
   const showOut = t => { out.textContent = t; out.className = 'out empty'; };
   const raw = $('code').value.trim();
   const nw = $('new').value, old = $('old').value;
@@ -252,8 +272,10 @@ function update() {
     current = renameCode(info.code, nw);
     out.textContent = current; out.className = 'out';
     outS.append(chip('Loads for ' + gameName(nw), 'ok'), chip('Name hash ' + nameHash(nw)));
+    if (info.armory) outS.append(chip('Armory part updated to match', 'ok'));
     if (current === info.code) outS.append(chip('Same name hash as before: the code is unchanged', 'warn'));
     $('copyCode').disabled = $('copyLoad').disabled = false;
+    $('copyArmory').hidden = !info.armory; $('copyArmory').disabled = !info.armory;
   } catch (e) { showOut(e.message); }
 }
 
@@ -277,6 +299,7 @@ $('file').addEventListener('change', e => {
 $('clearBtn').addEventListener('click', () => { $('code').value = $('old').value = $('new').value = ''; $('override').checked = false; markEdited(); update(); $('code').focus(); });
 $('copyCode').addEventListener('click', () => copy(current));
 $('copyLoad').addEventListener('click', () => copy('-load ' + current));
+$('copyArmory').addEventListener('click', () => copy('-loada (' + current.slice(current.indexOf('(') + 1)));
 
 $('code').value = EXAMPLE.code; $('old').value = EXAMPLE.old; $('new').value = EXAMPLE.nw;
 update();

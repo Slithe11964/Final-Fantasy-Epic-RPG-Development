@@ -129,8 +129,10 @@ see `Trig_Cmd_Load_Code_PlayerNameHash`. A player who renames their Battle.net a
 The same tool as a web page: `tools/web/name-swap.html` (open it in any browser; it works offline).
 It accepts the code, a `-load` line or the whole save `.txt`.
 
-Only the name hash and the 3-character checksum change (code characters 2-8); jobs, items,
-titles and the armory part stay exactly as they were. `--old` refuses to rewrite a code that does not
+Only the name hash and the 3-character checksum change (code characters 2-8). The armory part (in
+brackets) starts with its own 3-character checksum and a copy of the main checksum: that copy is how
+`-loada` checks "Armory subcode does not belong with this code!". `rename` rewrites those 6 characters
+to match. Jobs, items, titles and the armory contents stay exactly as they were. `--old` refuses to rewrite a code that does not
 belong to OldName, so ask the player for the old name and check it. The hash was checked against a
 real code (saved by "Slithe": hash 268296).
 
