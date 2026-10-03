@@ -20,3 +20,4 @@ tools, so the newest map listed above it is still current.
 | D | Object reference: `tools/objects.py` + `tools/objdata.py` (reads/writes object data, byte-exact round trip) → `docs/OBJECTS.md`, `docs/objects/*.md/csv`, `src/items-guess.json` | see git log | (docs/tools only) | Done |
 | E | 1.29.2 converter `MapToolkit/tools/downgrade.py` (terrain, doodads, units, objects, map info, script). First 1.29.2 map built from stage C | see git log | `FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x` (1.29.2 only) | Conversions checked against r7. **Needs:** play test in 1.29.2 (see LEGACY_129.md) |
 | F | Quest map: `tools/quest_map.py` → `docs/QUESTS.md` (quest-log entries and links per quest/boss module) + `docs/quest-graph.mmd` | see git log | (docs only) | Done |
+| G | System guides: `CHOCOBOS.md`, `GAYA.md`, `SUMMONS_AND_SHADOWS.md`, `CRAFTING.md`, `HUNTS.md` | see git log | (docs only) | Done |
