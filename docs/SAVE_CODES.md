@@ -109,7 +109,18 @@ charged. The in-game developer command `-dumpitems` writes `itemtable.txt` (see
 `DEBUG_COMMANDS.md`). A copy from 0.9.7.3-r16 is in `src/itemtable.txt` (351 items, 63 charged) and is
 used by default. Run `-dumpitems` again and replace it whenever an item table changes. `--items FILE`
 uses another table. Checked on a real level-923 code: every field decodes and nothing is left over.
-A charged item can show `x0`: that is the value the game saved (`GetItemCharges`).
+A charged item can show `x0`: that is the value the game saved (`GetItemCharges`), e.g. after using a
+Miracle piece on it.
+
+**Titles:** only some titles are stored in the code (summoner, adventurer, arena, boss and other
+achievement titles). Others are worked out again on every load (`Trig_Titles_CheckAll_Actions`):
+
+- Warlord/Magus lines, Gaya titles and Master/Ultimate Master come from job and Gaya levels;
+  `decode` lists these separately.
+- Grandmaster/Grindmaster/High Guardian depend on mastered heroes in game.
+- The Arms titles come from the armory part.
+
+The game shows the highest title of each line.
 
 **Testing:** `selftest` writes 2,000 random codes with a Python copy of `Save_WriteCode` and reads
 them back. That proves reader and writer agree with each other. **It still needs checking against

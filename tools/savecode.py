@@ -320,12 +320,49 @@ def load_items(path):
             table[int(m.group(1))] = dict(id=m.group(2), charged=m.group(3) == '1', name=name)
     return table
 
+WARRIOR_T1 = ['Squire', 'Knight', 'Archer', 'Monk', 'Thief', 'Lancer', 'Geomancer', 'Samurai', 'Ninja']
+WARRIOR_ALL = WARRIOR_T1 + ['Holy Swordsman', 'Dark Knight']
+MAGE_T1 = ['Chemist', 'Wizard', 'Priest', 'Summoner', 'Time Mage', 'Mediator', 'Oracle', 'Calculator', 'Prophet']
+MAGE_ALL = MAGE_T1 + ['Sorcerer', 'Necromancer']
+JOB_LEVEL_TIER1 = 15      # udg_JobLevelTier1 (MapBootstrap)
+
+def derived_titles(d):
+    """Titles Trig_Titles_CheckAll_Actions grants from job and Gaya levels after a load (not stored in the code)."""
+    lv = lambda names, n: all(d['jobs'].get(j, 1) >= n for j in names)
+    out = []
+    if lv(WARRIOR_T1, JOB_LEVEL_TIER1):
+        out.append(1)
+        if lv(WARRIOR_ALL, 50):
+            out.append(2)
+            if lv(WARRIOR_ALL, 99):
+                out.append(3)
+    if lv(MAGE_T1, JOB_LEVEL_TIER1):
+        out.append(4)
+        if lv(MAGE_ALL, 50):
+            out.append(5)
+            if lv(MAGE_ALL, 99):
+                out.append(6)
+    g = d['gaya']
+    if g.get('mastered'):
+        out += [7, 8, 9, 52]
+    else:
+        for need, t in ((20, 7), (50, 8), (99, 9)):
+            if g.get('level', 1) >= need:
+                out.append(t)
+    top = max(d['jobs'].values())
+    if top >= 50:
+        out.append(10)
+        if top >= 99:
+            out.append(11)
+    return out
+
 def titles():
     names = {}
     for root, _, files in os.walk(os.path.join(ROOT, 'src', 'triggers')):
         for f in files:
-            for m in re.finditer(r'set udg_TitleName\[(\d+)\]="([^"]*)"', open(os.path.join(root, f), encoding='utf-8').read()):
-                names[int(m.group(1))] = m.group(2)
+            for m in re.finditer(r'set udg_TitleName\[(\$[0-9A-Fa-f]+|\d+)\]="([^"]*)"', open(os.path.join(root, f), encoding='utf-8').read()):
+                k = m.group(1)
+                names[int(k[1:], 16) if k.startswith('$') else int(k)] = m.group(2)
     return names
 
 def clean(code):
@@ -436,7 +473,11 @@ def main():
     for inv in ('hero_items', 'gaya_items', 'house_items'):
         print('%s: %s' % (inv.replace('_', ' '), ', '.join('%s%s' % (items.get(i, {}).get('name') or '#%d' % i, ' x%d' % c if c is not None else '') for i, c, _ in d[inv]) or '-'))
     print('Upgrades: ' + ', '.join('%s %d' % kv for kv in d['upgrades'].items() if kv[1]))
-    print('Titles: ' + ', '.join(tn.get(n, '#%d' % n) for n in d['titles']))
+    print('Titles stored in the code: ' + ', '.join(tn.get(n, '#%d' % n) for n in d['titles']))
+    derived = derived_titles(d)
+    print('Titles the game works out when the code loads: ' + (', '.join(tn.get(n, '#%d' % n) for n in derived) or '-'))
+    print('  (plus Grandmaster/Grindmaster/High Guardian, which depend on mastered heroes in game, and the Arms titles,'
+          ' which come from the armory part)')
     if a.name is not None:
         ok = d['name_hash'] == name_hash(a.name)
         print('Belongs to "%s": %s' % (game_name(a.name), 'yes' if ok else 'NO (that name gives %d)' % name_hash(a.name)))
