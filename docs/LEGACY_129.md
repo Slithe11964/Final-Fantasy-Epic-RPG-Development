@@ -2,7 +2,7 @@
 
 ## Status (stage E, 2026-10-02): first 1.29.2 test map built
 
-`release/FFERPG_0.9.7.3-r16-stageI-1.29.2.w3x` was made from the stage C map by
+`release/FFERPG_0.9.7.3-r16-stageJ-1.29.2.w3x` was made from the stage C map by
 `MapToolkit/tools/downgrade.py`. Each converted file was checked against the old r7 map:
 
 - **Terrain:** byte-identical to r7.
@@ -18,7 +18,7 @@
 1. Put the map in `Documents\\Warcraft III\\Maps\\Download` (1.29.2 lists this folder under Custom Game → Download, the same folder Reforged uses).
    The map file must start with the 512-byte `HM3W` header, or the map list skips it silently. `downgrade.py` adds it; for other maps use
    `python ../MapToolkit/tools/add_header.py IN.w3x OUT.w3x --from FFERPG_0.9.7.3-r7.w3x --name "..."`.
-   1.29.2 also crashes when the map is selected if `war3map.wts` is huge (Reforged keeps all object text there). `downgrade.py` moves that text back into the object files; current map: `FFERPG_0.9.7.3-r16-stageI-1.29.2.w3x`.
+   1.29.2 also crashes when the map is selected if `war3map.wts` is huge (Reforged keeps all object text there). `downgrade.py` moves that text back into the object files; current map: `FFERPG_0.9.7.3-r16-stageJ-1.29.2.w3x`.
 2. Start 1.29.2 → Single Player → Custom Game, and pick it.
 3. Check, and note anything wrong:
    - the map shows in the list with the right name and loading screen;
@@ -111,3 +111,15 @@ against them. Limits:
 
 - It catches natives that don't exist yet. It does not catch natives whose *behaviour* changed.
 - It is only as accurate as jassdoc's patch tags.
+
+## Object fields Reforged leaves out (stage J)
+
+Reforged's World Editor doesn't save object fields it considers defaults, for example an ability's values for
+levels above the base ability's own level count. 1.29 fills those differently, so spells built on Channel can
+freeze their caster (seen with Fan of Knives). Always build the 1.29.2 map with
+`--fill-from FFERPG_0.9.7.3-r7.w3x` (the last map saved in the classic object format):
+
+    python tools/downgrade.py <Reforged map> <out> --w3i-template FFERPG_0.9.7.3-r7.w3x --fill-from FFERPG_0.9.7.3-r7.w3x
+
+Objects added after r7 have no older copy to fill from: if one misbehaves in 1.29.2 only, set its
+per-level values explicitly for every level in the Object Editor.
