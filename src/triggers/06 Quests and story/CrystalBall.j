@@ -7,17 +7,19 @@ globals
 endglobals
 
 function Trig_CrystalBall_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[20]=CreateItemLoc('I02B',udg_TempPoint) // 'I02B': item "Crystal Ball"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[20]=CreateItemLoc('I02B',l_tempPoint) // 'I02B': item "Crystal Ball"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call CreateItemLoc('I02S',udg_TempPoint) // 'I02S': item "Cursed Wand"
-    call CreateItemLoc('I0EV',udg_TempPoint) // 'I0EV': item "Spirit Scroll"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I02S',l_tempPoint) // 'I02S': item "Cursed Wand"
+    call CreateItemLoc('I0EV',l_tempPoint) // 'I0EV': item "Spirit Scroll"
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_CrystalBall_Ping)
     call EnableTrigger(gg_trg_CrystalBall_Pickup)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_CrystalBall_Ping_Conditions takes nothing returns boolean
@@ -43,13 +45,15 @@ function Trig_CrystalBall_Pickup_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_CrystalBall_Pickup_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Crystal Ball to Undomiel.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Crystal Ball to Undomiel.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[21],"Bring the Crystal Ball to Undomiel.")
     call EnableTrigger(gg_trg_Nimphrodel_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_CrystalBall automatically; it is intentionally empty. This module's

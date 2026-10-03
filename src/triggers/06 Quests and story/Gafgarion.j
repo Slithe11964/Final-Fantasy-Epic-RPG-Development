@@ -85,9 +85,11 @@ function Trig_Gafgarion_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gafgarion_Leash_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_574)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,225.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_574)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,225.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Gafgarion_Death_Timer_Conditions takes nothing returns boolean
@@ -107,12 +109,14 @@ function Trig_Gafgarion_Death_Timer_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Gafgarion_Revive_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"Gafgarion has revived.")
-    set udg_TempPoint=GetRectCenter(gg_rct_574)
-    call ReviveHeroLoc(udg_StoryBoss,udg_TempPoint,true)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_574)
+    call ReviveHeroLoc(udg_StoryBoss,l_tempPoint,true)
+    call RemoveLocation(l_tempPoint)
     call SetUnitManaPercentBJ(udg_StoryBoss,'d')
     call SetUnitFacingTimed(udg_StoryBoss,270.,.01)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Gafgarion_Block_Portal_Scroll_Conditions takes nothing returns boolean

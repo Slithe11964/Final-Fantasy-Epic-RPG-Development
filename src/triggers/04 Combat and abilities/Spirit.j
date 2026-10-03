@@ -5,10 +5,12 @@ globals
 endglobals
 
 function Trig_Spirit_Create_CreateSpirit takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetEnumPlayer())])
-    call CreateNUnitsAtLoc(1,'H01D',GetEnumPlayer(),udg_TempPoint,bj_UNIT_FACING) // 'H01D': unit "Spirit of Gaya"
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetEnumPlayer())])
+    call CreateNUnitsAtLoc(1,'H01D',GetEnumPlayer(),l_tempPoint,bj_UNIT_FACING) // 'H01D': unit "Spirit of Gaya"
     set udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())]=GetLastCreatedUnit()
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Spirit_Create_Actions takes nothing returns nothing

@@ -376,12 +376,14 @@ function Trig_Arena_StartBattle_OrderFoeAttack takes nothing returns nothing
 endfunction
 
 function Trig_Arena_StartBattle_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call ShowUnitHide(GetSoldUnit())
     call UnitApplyTimedLifeBJ(.21,'BTLF',GetSoldUnit()) // 'BTLF': object name not found in map data
     if(Trig_Arena_StartBattle_IsIntermission())then
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetSoldUnit()))
         call DisplayTimedTextToForce(udg_TempForce,5.,"|cff00ff00Arena:|r DEBUG! Tried starting battle during Arena Intermission. Should not be possible. Please report to the dev how this happened.")
         call DestroyForce(udg_TempForce)
+        set l_tempPoint2=null
         return
     endif
     call ForceClear(udg_CupArenaPlayers)
@@ -390,6 +392,7 @@ function Trig_Arena_StartBattle_Actions takes nothing returns nothing
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetSoldUnit()))
         call DisplayTimedTextToForce(udg_TempForce,5.,"|cff00ff00Arena:|r There must be a player inside the arena to start a battle!")
         call DestroyForce(udg_TempForce)
+        set l_tempPoint2=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -424,19 +427,19 @@ function Trig_Arena_StartBattle_Actions takes nothing returns nothing
     endif
     call DestroyTextTagBJ(udg_ArenaTextTag[2])
     set udg_TempPoint=GetRectCenter(gg_rct_047)
-    set udg_TempPoint2=GetRectCenter(gg_rct_048)
-    set udg_ArenaLightning[1]=AddLightningLoc("FORK",udg_TempPoint,udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=GetRectCenter(gg_rct_049)
-    set udg_ArenaLightning[2]=AddLightningLoc("FORK",udg_TempPoint,udg_TempPoint2)
+    set l_tempPoint2=GetRectCenter(gg_rct_048)
+    set udg_ArenaLightning[1]=AddLightningLoc("FORK",udg_TempPoint,l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=GetRectCenter(gg_rct_049)
+    set udg_ArenaLightning[2]=AddLightningLoc("FORK",udg_TempPoint,l_tempPoint2)
     call RemoveLocation(udg_TempPoint)
     set udg_TempPoint=GetRectCenter(gg_rct_050)
-    set udg_ArenaLightning[3]=AddLightningLoc("FORK",udg_TempPoint,udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=GetRectCenter(gg_rct_048)
-    set udg_ArenaLightning[4]=AddLightningLoc("FORK",udg_TempPoint,udg_TempPoint2)
+    set udg_ArenaLightning[3]=AddLightningLoc("FORK",udg_TempPoint,l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=GetRectCenter(gg_rct_048)
+    set udg_ArenaLightning[4]=AddLightningLoc("FORK",udg_TempPoint,l_tempPoint2)
     call RemoveLocation(udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     set udg_TempPoint=GetRectCenter(gg_rct_046)
     call CreateTextTagLocBJ("Ready?",udg_TempPoint,0,$A,'d',90.,10.,0) // $A = 10
     call RemoveLocation(udg_TempPoint)
@@ -474,6 +477,7 @@ function Trig_Arena_StartBattle_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Arena_FoeDeath)
     call EnableTrigger(gg_trg_Arena_OutOfBounds)
     call ConditionalTriggerExecute(gg_trg_Arena_BattleLost)
+    set l_tempPoint2=null
 endfunction
 
 function InitTrig_Arena_BattleSetup takes nothing returns nothing

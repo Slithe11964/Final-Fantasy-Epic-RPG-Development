@@ -216,6 +216,7 @@ function Trig_TrueIceAge_Summon_StageBelow5 takes nothing returns boolean
 endfunction
 
 function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call UnitRemoveAbilityBJ('A11Z',gg_unit_ndmg_0124) // 'A11Z': ability "Activate Demon Gate"
     call UnitRemoveAbilityBJ('Ane2',gg_unit_ndmg_0124) // 'Ane2': object name not found in map data
@@ -231,9 +232,9 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_ndmg_0124,.0)
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_TrueIceAge_Summon_IsPlayerHero))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_TrueIceAge_Summon_IsPlayerHero))
+    call RemoveLocation(l_tempPoint)
     if(Trig_TrueIceAge_Summon_AnyHeroNearby())then
         set udg_TempPlayer=GetOwningPlayer(GroupPickRandomUnit(udg_TempGroup))
     else
@@ -245,14 +246,14 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call ForForce(udg_PlayingPlayers,function Trig_TrueIceAge_Summon_ShakeCameraSummon)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,2.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,100.,0)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetRectCenter(gg_rct_578)
-    call CreateNUnitsAtLoc(1,'N08G',Player(8),udg_TempPoint,225.) // 'N08G': unit "Ice Demon"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_578)
+    call CreateNUnitsAtLoc(1,'N08G',Player(8),l_tempPoint,225.) // 'N08G': unit "Ice Demon"
+    call RemoveLocation(l_tempPoint)
     set udg_CinematicActor=GetLastCreatedUnit()
     call SetUnitPathing(udg_CinematicActor,false)
-    set udg_TempPoint=GetRectCenter(gg_rct_579)
-    call IssuePointOrderLocBJ(udg_CinematicActor,"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_579)
+    call IssuePointOrderLocBJ(udg_CinematicActor,"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitVertexColorBJ(udg_CinematicActor,'d','d','d',60.)
     call Wait_Polled(.5)
     call SetUnitVertexColorBJ(udg_CinematicActor,'d','d','d',40.)
@@ -272,9 +273,9 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call Text_Say(udg_CinematicActor,"Yes, I feel the will of the rulers of this world. All is to be returned to ice.",true)
     call Text_Say(udg_CinematicActor,"Human, it was you who summoned me here? Curious indeed, I expected it to be the Zodiac Brave.",true)
     call Text_Say(udg_CinematicActor,"It matters not. With the powers of all Braves combined this world will be frozen over.",true)
-    set udg_TempPoint=GetRectCenter(gg_rct_645)
-    call IssuePointOrderLocBJ(udg_CinematicActor,"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_645)
+    call IssuePointOrderLocBJ(udg_CinematicActor,"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,100.,0)
     call Wait_Polled(1.5)
     call KillUnit(udg_CinematicActor)
@@ -380,9 +381,9 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
                     call DisableTrigger(gg_trg_Dana_Death)
                     call UnitAddAbilityBJ('Apiv',gg_unit_n0BN_0171) // 'Apiv': object name not found in map data
                     call SetUnitInvulnerable(gg_unit_n0BN_0171,true)
-                    set udg_TempPoint=GetUnitLoc(gg_unit_n0BN_0171)
-                    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-64.,0)
-                    call RemoveLocation(udg_TempPoint)
+                    set l_tempPoint=GetUnitLoc(gg_unit_n0BN_0171)
+                    set udg_TempPoint2=OffsetLocation(l_tempPoint,-64.,0)
+                    call RemoveLocation(l_tempPoint)
                     call CreateItemLoc('I0HS',udg_TempPoint2) // 'I0HS': item "Maiden's Eye"
                     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
                     call RemoveLocation(udg_TempPoint2)
@@ -520,6 +521,7 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     set udg_NewsText[1]="|cffffcc00Child falls ill|r"
     set udg_NewsText[4]="The son of the Tribal family has fallen terribly ill. It seems to be an unprecedented illness that our local priests cannot take care of. A heartfelt wish to please get better soon goes to little Danny!"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_TrueIceAge_SpawnBrave_CinematicActiveSpawn takes nothing returns boolean
@@ -656,15 +658,19 @@ function Trig_TrueIceAge_FreezeTimeout_IsLivePlayerUnitAlt takes nothing returns
 endfunction
 
 function Trig_TrueIceAge_FreezeTimeout_MoveToRespawnArea takes nothing returns nothing
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_659)
-    call SetUnitPositionLocFacingBJ(GetEnumUnit(),udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRandomLocInRect(gg_rct_659)
+    call SetUnitPositionLocFacingBJ(GetEnumUnit(),l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_TrueIceAge_FreezeTimeout_Actions takes nothing returns nothing
+    local group l_tempGroup
     call SetUnitInvulnerable(udg_EcheleBoss,true)
     if(Trig_TrueIceAge_FreezeTimeout_CinematicActiveFreeze())then
         call StartTimerBJ(udg_WorldFreezeTimer,false,.49)
+        set l_tempGroup=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -696,17 +702,19 @@ function Trig_TrueIceAge_FreezeTimeout_Actions takes nothing returns nothing
     call Text_Say(null,"As the spell reached completion, the world was turned to ice.\r\n\r\nAll life frozen for eternity, never to move again.",true)
     if(Trig_TrueIceAge_FreezeTimeout_HardcoreModeFreeze())then
         call ConditionalTriggerExecute(gg_trg_Ending_FrozenWorld)
+        set l_tempGroup=null
         return
     endif
     call Text_Say(null,"|cffffcc00You may retry the battle against Echele from scratch.\r\n\r\nIf you do not feel strong enough, consider looking for additional gear or allies!|r",true)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,100.,0)
     call Cine_ExitAction()
-    set udg_TempGroup=Group_UnitsInRect(gg_rct_658,Condition(function Trig_TrueIceAge_FreezeTimeout_IsLivePlayerUnitAlt))
-    call ForGroupBJ(udg_TempGroup,function Trig_TrueIceAge_FreezeTimeout_MoveToRespawnArea)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsInRect(gg_rct_658,Condition(function Trig_TrueIceAge_FreezeTimeout_IsLivePlayerUnitAlt))
+    call ForGroupBJ(l_tempGroup,function Trig_TrueIceAge_FreezeTimeout_MoveToRespawnArea)
+    call DestroyGroup(l_tempGroup)
     set udg_ShadowForcedSpawn=48
     call EnableTrigger(gg_trg_TrueIceAge_BossIntro)
     call Music_ClearTrack(18)
+    set l_tempGroup=null
 endfunction
 
 function Trig_TrueIceAge_Victory_Conditions takes nothing returns boolean
@@ -773,6 +781,8 @@ function Trig_TrueIceAge_Victory_DanaIsAvailable takes nothing returns boolean
 endfunction
 
 function Trig_TrueIceAge_Victory_Actions takes nothing returns nothing
+    local location l_tempPoint2
+    local real l_tempReal
     call DisableTrigger(GetTriggeringTrigger())
     call PauseTimerBJ(true,udg_WorldFreezeTimer)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_QuestUnits)
@@ -790,70 +800,70 @@ function Trig_TrueIceAge_Victory_Actions takes nothing returns nothing
     call Cam_PanToUnit(GetTriggerUnit(),0)
     call Wait_Polled(1.)
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempReal=GetUnitFacing(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_E002_0075,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_Uwar_0192,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U000_0248,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00O_0191,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00J_0209,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00F_0221,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00I_0210,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call CreateNUnitsAtLocFacingLocBJ(1,'uabc',Player($B),udg_TempPoint2,udg_TempPoint) // 'uabc': unit "Tainted Cúchulainn"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempReal=GetUnitFacing(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_E002_0075,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_Uwar_0192,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U000_0248,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00O_0191,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00J_0209,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00F_0221,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00I_0210,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call CreateNUnitsAtLocFacingLocBJ(1,'uabc',Player($B),l_tempPoint2,udg_TempPoint) // 'uabc': unit "Tainted Cúchulainn"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call ShowUnitHide(GetLastCreatedUnit())
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call UnitRemoveAbilityBJ('Aap1',GetLastCreatedUnit()) // 'Aap1': ability "Plague"
     set udg_Cuchulainn=GetLastCreatedUnit()
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00N_0205,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00K_0208,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // The remainder after dividing ((udg_TempReal) plus (30)) by (360).
-    set udg_TempReal=ModuloReal((udg_TempReal+30.),360.)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,udg_TempReal)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00E_0222,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00N_0205,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00K_0208,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // The remainder after dividing ((l_tempReal) plus (30)) by (360).
+    set l_tempReal=ModuloReal((l_tempReal+30.),360.)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,400.,l_tempReal)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00E_0222,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_TempPoint)
     call Wait_Polled(1.)
     if(Trig_TrueIceAge_Victory_KilledByPlayerHero())then
@@ -1041,6 +1051,7 @@ function Trig_TrueIceAge_Victory_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Billy_ShowTalkIcon)
     call TriggerExecute(gg_trg_HolyAnkh_Waygate)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_TrueIceAge automatically; it is intentionally empty. This module's

@@ -49,15 +49,17 @@ function Trig_Quest_Beastslayer_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_Beastslayer_ArrowDropped_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[17]=CreateItemLoc('I00T',udg_TempPoint) // 'I00T': item "Beastslayer"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[17]=CreateItemLoc('I00T',l_tempPoint) // 'I00T': item "Beastslayer"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Quest_Beastslayer_Ping)
     call EnableTrigger(gg_trg_Quest_Beastslayer_ArrowTaken)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Beastslayer_Ping_Conditions takes nothing returns boolean
@@ -83,13 +85,15 @@ function Trig_Quest_Beastslayer_ArrowTaken_Conditions takes nothing returns bool
 endfunction
 
 function Trig_Quest_Beastslayer_ArrowTaken_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Beastslayer to Jessie.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Beastslayer to Jessie.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[$B],"Bring the Beastslayer to Jessie.") // $B = 11
     call EnableTrigger(gg_trg_Quest_Beastslayer_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 function Trig_Quest_Beastslayer_Complete_Conditions takes nothing returns boolean

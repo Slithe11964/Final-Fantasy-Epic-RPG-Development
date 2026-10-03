@@ -13,6 +13,7 @@ function Trig_Quest_PhantomDiary_ShowAlberich_Cond_CinematicsEnabled takes nothi
 endfunction
 
 function Trig_Quest_PhantomDiary_ShowAlberich_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call RemoveItem(udg_QuestItem[31])
     call RemoveItem(udg_QuestItem[32])
@@ -29,14 +30,15 @@ function Trig_Quest_PhantomDiary_ShowAlberich_Actions takes nothing returns noth
         call Text_Say(gg_unit_h037_0257,"Fine. If you want to know more, let's talk. But not here. Meet me in a more secluded place. This doesn't concern the others.",false)
         call Cine_ExitAction()
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_711)
-    call SetUnitPositionLocFacingBJ(gg_unit_h037_0257,udg_TempPoint,200.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_711)
+    call SetUnitPositionLocFacingBJ(gg_unit_h037_0257,l_tempPoint,200.)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_E01O_0268)
     call GroupAddUnitSimple(gg_unit_h037_0257,udg_BossUnits)
     set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h037_0257,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_NorthernGod_Judgment)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_PhantomDiary takes nothing returns nothing

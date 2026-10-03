@@ -5,19 +5,21 @@ globals
 endglobals
 
 function Trig_Teleporters_Command_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_394),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_395),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_396),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_397),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_398),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_399),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_400),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_401),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_402),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_403),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call PingMinimapLocForForceEx(udg_TempForce,GetRectCenter(gg_rct_456),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_394),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_395),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_396),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_397),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_398),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_399),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_400),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_401),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_402),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_403),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call PingMinimapLocForForceEx(l_tempForce,GetRectCenter(gg_rct_456),3.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',60.,20.)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Teleporters automatically; it is intentionally empty. This module's

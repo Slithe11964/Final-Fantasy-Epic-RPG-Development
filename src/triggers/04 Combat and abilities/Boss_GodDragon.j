@@ -41,6 +41,7 @@ function Trig_Boss_GodDragon_Death_Enum_CreditPlayer takes nothing returns nothi
 endfunction
 
 function Trig_Boss_GodDragon_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_GodDragon_Death_Cond_TrackKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -72,24 +73,24 @@ function Trig_Boss_GodDragon_Death_Actions takes nothing returns nothing
     else
         call Reward_Give($4E20,$4E20,gg_unit_U00H_0211) // $4E20 = 20000
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I08B',udg_TempPoint) // 'I08B': item "Serpent Gem"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I05I',udg_TempPoint) // 'I05I': item "Spirit Potion"
-    call CreateItemLoc('I05H',udg_TempPoint) // 'I05H': item "Blood Ether"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I08B',l_tempPoint) // 'I08B': item "Serpent Gem"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I05I',l_tempPoint) // 'I05I': item "Spirit Potion"
+    call CreateItemLoc('I05H',l_tempPoint) // 'I05H': item "Blood Ether"
     if(Trig_Boss_GodDragon_Death_Cond_Quest20Completed())then
-        call CreateItemLoc('I0D5',udg_TempPoint) // 'I0D5': item "Judge's Helm"
+        call CreateItemLoc('I0D5',l_tempPoint) // 'I0D5': item "Judge's Helm"
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
         set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
         set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=$AC // $AC = 172
     else
-        call CreateItemLoc('I01L',udg_TempPoint) // 'I01L': item "Grand Helmet"
+        call CreateItemLoc('I01L',l_tempPoint) // 'I01L': item "Grand Helmet"
         if(Trig_Boss_GodDragon_Death_Cond_Quest16Completed())then
             set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
             set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=$AC // $AC = 172
         endif
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00God Dragon|r")
     call QuestSetCompletedBJ(udg_MainQuest[17],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
@@ -98,6 +99,7 @@ function Trig_Boss_GodDragon_Death_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     call ForForce(udg_PlayingPlayers,function Trig_Boss_GodDragon_Death_Enum_CreditPlayer)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_GodDragon takes nothing returns nothing

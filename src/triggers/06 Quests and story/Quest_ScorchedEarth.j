@@ -62,12 +62,13 @@ function Trig_Quest_ScorchedEarth_End_Cond_HuntCountLow takes nothing returns bo
 endfunction
 
 function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(gg_unit_U00Q_0023,udg_BossGroup)
     call GroupRemoveUnitSimple(gg_unit_U00Q_0023,udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_U00Q_0023,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_U00Q_0023,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call DisableTrigger(gg_trg_McBurn_Arena_Return)
     call DestroyTrigger(gg_trg_McBurn_Arena_Return)
     call Cine_Enter()
@@ -90,12 +91,12 @@ function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
     call Reward_Give(66666,0,null)
     call ForForce(udg_PlayingPlayers,function Trig_Quest_ScorchedEarth_End_GiveCrystalShards)
     call Text_Say(gg_unit_U00Q_0023,"See ya.",true)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),7.)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateItemLoc('I0HU',udg_TempPoint) // 'I0HU': item "Angbar"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I0HU',l_tempPoint) // 'I0HU': item "Angbar"
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(gg_unit_U00Q_0023)
     call Wait_Polled(2.)
     call ConditionalTriggerExecute(gg_trg_IcyRealm_Restore)
@@ -133,6 +134,7 @@ function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
         endif
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_ScorchedEarth takes nothing returns nothing

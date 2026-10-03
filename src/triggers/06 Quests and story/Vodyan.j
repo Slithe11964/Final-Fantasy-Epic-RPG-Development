@@ -5,15 +5,17 @@ globals
 endglobals
 
 function Trig_Vodyan_Death_DropTiara_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[22]=CreateItemLoc('I038',udg_TempPoint) // 'I038': item "Tiara of the Deep"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[22]=CreateItemLoc('I038',l_tempPoint) // 'I038': item "Tiara of the Deep"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Tiara_Ping)
     call EnableTrigger(gg_trg_Quest_SpiritOfWater_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Vodyan automatically; it is intentionally empty. This module's

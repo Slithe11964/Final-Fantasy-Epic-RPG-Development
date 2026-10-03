@@ -17,9 +17,11 @@ function Trig_KalmSiege_AITick_AttackMoveSouth takes nothing returns nothing
 endfunction
 
 function Trig_KalmSiege_AITick_AttackRandomTownUnit takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TownTargetGroup))
-    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TownTargetGroup))
+    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_KalmSiege_AITick_TownWiped takes nothing returns boolean
@@ -270,6 +272,7 @@ function Trig_KalmSiege_FailRespawn_UseAltSpawnRegion takes nothing returns bool
 endfunction
 
 function Trig_KalmSiege_FailRespawn_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_EscortUnits)
     call Wait_Polled(1.)
     set udg_RaidPowerLevel=(udg_RaidPowerLevel+1)
@@ -280,8 +283,8 @@ function Trig_KalmSiege_FailRespawn_Actions takes nothing returns nothing
         // The remainder after dividing (udg_RaidPowerLevel) by (LoadIntegerBJ(4, 2, udg_SpawnDataHashRef)).
         set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(ModuloInteger(udg_RaidPowerLevel,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
     endif
-    set udg_TempPoint2=GetRectCenter(gg_rct_588)
-    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),Player($B),udg_TempPoint,udg_TempPoint2) // $B = 11
+    set l_tempPoint2=GetRectCenter(gg_rct_588)
+    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),Player($B),udg_TempPoint,l_tempPoint2) // $B = 11
     call RemoveLocation(udg_TempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
     // Calculation 1:
@@ -296,23 +299,25 @@ function Trig_KalmSiege_FailRespawn_Actions takes nothing returns nothing
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
     call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)
     call SetUnitMoveSpeed(GetLastCreatedUnit(),420.)
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",l_tempPoint2)
     call UnitAddAbilityBJ('ACrk',GetLastCreatedUnit()) // 'ACrk': object name not found in map data
     call UnitAddAbilityBJ('A12U',GetLastCreatedUnit()) // 'A12U': ability "Attack Speed +80%"
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_KalmSiege_DemonRecover_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_298)
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_413)
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_298)
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_413)
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // The smaller of (999) and ((Strength of the triggering unit) plus (100)).
     call ModifyHeroStat(bj_HEROSTAT_STR,GetTriggerUnit(),bj_MODIFYMETHOD_SET,IMinBJ(999,(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),false)+'d')))
     // The smaller of (999) and ((Agility of the triggering unit) plus (100)).
@@ -321,6 +326,7 @@ function Trig_KalmSiege_DemonRecover_Actions takes nothing returns nothing
     call ModifyHeroStat(bj_HEROSTAT_INT,GetTriggerUnit(),bj_MODIFYMETHOD_SET,IMinBJ(999,(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),false)+'d')))
     call SetUnitLifePercentBJ(GetTriggerUnit(),'d')
     call SetUnitManaPercentBJ(GetTriggerUnit(),'d')
+    set l_tempPoint=null
 endfunction
 
 function Trig_KalmSiege_Init_Actions takes nothing returns nothing

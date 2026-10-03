@@ -63,15 +63,17 @@ function Trig_Quest_KillElmdor_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_KillElmdor_Slain_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I00N',udg_TempPoint) // 'I00N': item "Kotetsu"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I00N',l_tempPoint) // 'I00N': item "Kotetsu"
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to Biggs for reward.")
     call QuestSetDescriptionBJ(udg_SideQuest[6],"Come back to Biggs for reward.")
     call EnableTrigger(gg_trg_Quest_KillElmdor_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_KillElmdor_Complete_Conditions takes nothing returns boolean

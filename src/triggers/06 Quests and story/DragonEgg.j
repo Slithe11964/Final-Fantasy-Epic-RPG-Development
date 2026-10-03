@@ -17,6 +17,7 @@ function Trig_DragonEgg_Start_IsDialogueOn takes nothing returns boolean
 endfunction
 
 function Trig_DragonEgg_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[79])
     if(Trig_DragonEgg_Start_IsDialogueOn())then
@@ -45,13 +46,14 @@ function Trig_DragonEgg_Start_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Dragon Egg|r")
     set udg_SideQuest[59]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Dragon Egg"),"Kiemarl from the Phantom Village has asked you to bring him a Dragon Egg from the very dangerous Dark Dragon Marsh.","ReplaceableTextures\\CommandButtons\\BTNThunderLizardEgg.blp")
     set udg_SpecialEffect[79]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e016_0019,"Objects\\RandomObject\\RandomObject.mdl")
-    set udg_TempPoint=GetRectCenter(gg_rct_686)
-    set udg_QuestItem[$C]=CreateItemLoc('I0I0',udg_TempPoint) // $C = 12; 'I0I0': item "Dragon Egg"
+    set l_tempPoint=GetRectCenter(gg_rct_686)
+    set udg_QuestItem[$C]=CreateItemLoc('I0I0',l_tempPoint) // $C = 12; 'I0I0': item "Dragon Egg"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_DragonEgg_Ping)
     call EnableTrigger(gg_trg_DragonEgg_PickUp)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_DragonEgg_Ping_Conditions takes nothing returns boolean
@@ -77,13 +79,15 @@ function Trig_DragonEgg_PickUp_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_DragonEgg_PickUp_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Dragon Egg to Kiemarl.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Dragon Egg to Kiemarl.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[59],"Bring the Dragon Egg to Kiemarl.")
     call EnableTrigger(gg_trg_DragonEgg_Reward)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 function Trig_DragonEgg_Fail_Actions takes nothing returns nothing

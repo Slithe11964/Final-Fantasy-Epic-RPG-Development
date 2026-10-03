@@ -25,6 +25,7 @@ function Trig_Spell_Bolt_Actions takes nothing returns nothing
     local real l_by
     local integer l_bolts=udg_BoltRingCount
     local real l_splitRatio=.3
+    local integer l_tempHandleId
     // Starting value for a:
     // (360) divided by (l_bolts); drop the remainder.
     local real a=360/ l_bolts
@@ -36,9 +37,9 @@ function Trig_Spell_Bolt_Actions takes nothing returns nothing
         set manaCost=manaCost/ 2
     endif
     set r=Trig_Spell_Bolt_DamageFormula(manaCost,GetHeroInt(triggeringUnit,true),Prof_RodPower(triggeringUnit))
-    set udg_TempHandleId=GetHandleIdBJ(u)
-    call SaveUnitHandleBJ(triggeringUnit,0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(u)
+    call SaveUnitHandleBJ(triggeringUnit,0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(u)
     call UnitApplyTimedLife(u,'BTLF',3.) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M3',u) // 'A0M3': ability "Thunder-elemental Damage"

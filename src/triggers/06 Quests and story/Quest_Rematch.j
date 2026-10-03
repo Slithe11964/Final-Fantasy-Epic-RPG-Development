@@ -15,6 +15,7 @@ function Trig_Quest_Rematch_Start_Cond_CinematicsEnabled takes nothing returns b
 endfunction
 
 function Trig_Quest_Rematch_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[53])
     if(Trig_Quest_Rematch_Start_Cond_CinematicsEnabled())then
@@ -35,18 +36,19 @@ function Trig_Quest_Rematch_Start_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(gg_unit_Ocbh_0148,udg_RecruitedAllies)
     call GroupAddUnitSimple(gg_unit_Ocb2_0147,udg_BossUnits)
     call GroupAddUnitSimple(gg_unit_Ocbh_0148,udg_BossUnits)
-    set udg_TempPoint=GetRectCenter(gg_rct_236)
-    call SetUnitPositionLocFacingBJ(gg_unit_Ocb2_0147,udg_TempPoint,bj_UNIT_FACING)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_377)
-    call SetUnitPositionLocFacingBJ(gg_unit_Ocbh_0148,udg_TempPoint,bj_UNIT_FACING)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_236)
+    call SetUnitPositionLocFacingBJ(gg_unit_Ocb2_0147,l_tempPoint,bj_UNIT_FACING)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_377)
+    call SetUnitPositionLocFacingBJ(gg_unit_Ocbh_0148,l_tempPoint,bj_UNIT_FACING)
+    call RemoveLocation(l_tempPoint)
     call SetUnitOwner(gg_unit_Ocb2_0147,Player(8),false)
     call SetUnitOwner(gg_unit_Ocbh_0148,Player(8),false)
     call Wait_Polled(1.)
     set udg_SpecialEffect[53]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ocb2_0147,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Rematch_Begin)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Rematch_Begin_Conditions takes nothing returns boolean
@@ -85,11 +87,15 @@ function Trig_Quest_Rematch_Complete_Cond_NotNeutral takes nothing returns boole
 endfunction
 
 function Trig_Quest_Rematch_Complete_Enum_PushUnitAside takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-386.)
-    call RemoveLocation(udg_TempPoint)
-    call SetUnitPositionLoc(GetEnumUnit(),udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,-386.)
+    call RemoveLocation(l_tempPoint)
+    call SetUnitPositionLoc(GetEnumUnit(),l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Quest_Rematch_Complete_Cond_TowerOwned_Text takes nothing returns boolean
@@ -125,22 +131,23 @@ function Trig_Quest_Rematch_Complete_Cond_BothBrothersDefeated takes nothing ret
 endfunction
 
 function Trig_Quest_Rematch_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(GetDyingUnit(),udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(GetDyingUnit(),l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(GetTriggerUnit(),true)
     call SetUnitOwner(GetDyingUnit(),Player(8),false)
     if(Trig_Quest_Rematch_Complete_Cond_BothBrothersDefeated())then
         call DisableTrigger(GetTriggeringTrigger())
         if(Trig_Quest_Rematch_Complete_Cond_CinematicsEnabled())then
-            set udg_TempPoint=GetRectCenter(gg_rct_236)
-            call SetUnitPositionLocFacingBJ(gg_unit_Ocb2_0147,udg_TempPoint,bj_UNIT_FACING)
-            call RemoveLocation(udg_TempPoint)
-            set udg_TempPoint=GetRectCenter(gg_rct_377)
-            call SetUnitPositionLocFacingBJ(gg_unit_Ocbh_0148,udg_TempPoint,bj_UNIT_FACING)
-            set udg_TempGroup=Group_UnitsInRangeOfLoc(512,udg_TempPoint,Condition(function Trig_Quest_Rematch_Complete_Cond_NotNeutral))
-            call RemoveLocation(udg_TempPoint)
+            set l_tempPoint=GetRectCenter(gg_rct_236)
+            call SetUnitPositionLocFacingBJ(gg_unit_Ocb2_0147,l_tempPoint,bj_UNIT_FACING)
+            call RemoveLocation(l_tempPoint)
+            set l_tempPoint=GetRectCenter(gg_rct_377)
+            call SetUnitPositionLocFacingBJ(gg_unit_Ocbh_0148,l_tempPoint,bj_UNIT_FACING)
+            set udg_TempGroup=Group_UnitsInRangeOfLoc(512,l_tempPoint,Condition(function Trig_Quest_Rematch_Complete_Cond_NotNeutral))
+            call RemoveLocation(l_tempPoint)
             call ForGroupBJ(udg_TempGroup,function Trig_Quest_Rematch_Complete_Enum_PushUnitAside)
             call DestroyGroup(udg_TempGroup)
             call Cine_Enter()
@@ -175,12 +182,12 @@ function Trig_Quest_Rematch_Complete_Actions takes nothing returns nothing
         call SaveIntegerBJ(0,2,'n',udg_GameStateHash)
         call SaveIntegerBJ(1,2,'o',udg_GameStateHash)
         call UnitAddAbilityBJ('A09M',gg_unit_h00Z_0130) // 'A09M': ability "Brothers"
-        set udg_TempPoint=GetRectCenter(gg_rct_235)
-        call SetUnitPositionLoc(gg_unit_Ocb2_0147,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
-        set udg_TempPoint=GetRectCenter(gg_rct_376)
-        call SetUnitPositionLoc(gg_unit_Ocbh_0148,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_235)
+        call SetUnitPositionLoc(gg_unit_Ocb2_0147,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_376)
+        call SetUnitPositionLoc(gg_unit_Ocbh_0148,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitFacingTimed(gg_unit_Ocb2_0147,GetUnitFacing(gg_unit_hhes_0087),0)
         call SetUnitFacingTimed(gg_unit_Ocbh_0148,GetUnitFacing(gg_unit_hhes_0087),0)
         call SetUnitOwner(gg_unit_Ocb2_0147,Player(9),true)
@@ -189,6 +196,7 @@ function Trig_Quest_Rematch_Complete_Actions takes nothing returns nothing
         call GroupAddUnitSimple(gg_unit_Ocbh_0148,udg_RecruitedAllies)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_Rematch takes nothing returns nothing

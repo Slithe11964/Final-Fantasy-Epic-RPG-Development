@@ -226,9 +226,12 @@ function Trig_Prophet_BlessingOfLight_HealEnum takes nothing returns nothing
 endfunction
 
 function Trig_Prophet_BlessingOfLight_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellAbilityUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Prophet_BlessingOfLight_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetSpellAbilityUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Prophet_BlessingOfLight_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (3).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
@@ -236,14 +239,16 @@ function Trig_Prophet_BlessingOfLight_Actions takes nothing returns nothing
         // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (3)).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
     endif
-    set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
-    call ForGroupBJ(udg_TempGroup,function Trig_Prophet_BlessingOfLight_HealEnum)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempReal=Prof_StaffPower(GetTriggerUnit())
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
+    call ForGroupBJ(l_tempGroup,function Trig_Prophet_BlessingOfLight_HealEnum)
+    call DestroyGroup(l_tempGroup)
     set udg_IsPureDamage=true
     // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTargetBJ(GetTriggerUnit(),GetTriggerUnit(),I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Prophet_DivineShield_Conditions takes nothing returns boolean
@@ -374,35 +379,41 @@ function Trig_Prophet_Infinity_MasteryActive takes nothing returns boolean
 endfunction
 
 function Trig_Prophet_Infinity_ApplyToEnum takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Prophet_Infinity_MasteryActive())then
         call UnitAddAbilityBJ('A0KF',GetEnumUnit()) // 'A0KF': ability "Infinity"
         call SetUnitAbilityLevelSwapped('A0KF',GetEnumUnit(),GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))) // 'A0KF': ability "Infinity"
     else
         call UnitRemoveAbilityBJ('A0KF',GetEnumUnit()) // 'A0KF': ability "Infinity"
     endif
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0L2',GetLastCreatedUnit()) // 'A0L2': ability "Infinity"
     call SetUnitAbilityLevelSwapped('A0L2',GetLastCreatedUnit(),udg_TempInteger) // 'A0L2': ability "Infinity"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"curse",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Prophet_Infinity_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
     if(Trig_Prophet_Infinity_MasteryPending())then
         set udg_TempBoolean=true
         set udg_InfinityAbsorbed[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=.0
     else
         set udg_TempBoolean=false
     endif
-    set udg_TempPoint=GetUnitLoc(GetSpellAbilityUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(1000.,udg_TempPoint,Condition(function Trig_Prophet_Infinity_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetSpellAbilityUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(1000.,l_tempPoint,Condition(function Trig_Prophet_Infinity_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     set udg_TempInteger=GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())
-    call ForGroupBJ(udg_TempGroup,function Trig_Prophet_Infinity_ApplyToEnum)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Prophet_Infinity_ApplyToEnum)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Prophet automatically; it is intentionally empty. This module's

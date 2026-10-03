@@ -5,9 +5,10 @@ globals
 endglobals
 
 function Trig_MagDef_Command_Actions takes nothing returns nothing
+    local force l_tempForce
     set udg_CurrentHero=Player_GetHero(GetTriggerPlayer())
     call ConditionalTriggerExecute(gg_trg_MagicDefense_Calc)
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     // Result 1: udg_MagicDefense at position GetConvertedPlayerId(the triggering player) treated as a
     // decimal-capable number.
     // Result 2: udg_MagicDefense at position GetConvertedPlayerId(the triggering player) treated as a
@@ -16,8 +17,9 @@ function Trig_MagDef_Command_Actions takes nothing returns nothing
     // Result 4: (result 1) divided by (result 3).
     // Result 5: (result 4) times (100).
     // Result 6: (result 5) with its decimal part removed.
-    call DisplayTextToForce(udg_TempForce,(("Your magic defense is "+I2S(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())]))+(" ("+(I2S(R2I(((I2R(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())])/(I2R(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())])+50.))*100.)))+"% reduction)"))))
-    call DestroyForce(udg_TempForce)
+    call DisplayTextToForce(l_tempForce,(("Your magic defense is "+I2S(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())]))+(" ("+(I2S(R2I(((I2R(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())])/(I2R(udg_MagicDefense[GetConvertedPlayerId(GetTriggerPlayer())])+50.))*100.)))+"% reduction)"))))
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_MagDef automatically; it is intentionally empty. This module's

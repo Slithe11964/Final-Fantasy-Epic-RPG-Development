@@ -55,6 +55,7 @@ function Trig_Quest_ImperviousBeast_Complete_PlayVictoryScene takes nothing retu
 endfunction
 
 function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Ziegfried_Attack_Fafnir)
     call DestroyEffectBJ(udg_SpecialEffect[90])
@@ -62,9 +63,9 @@ function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothi
         set udg_BossUnit=GetTriggerUnit()
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0BX',udg_TempPoint) // 'I0BX': item "Grand Armor"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0BX',l_tempPoint) // 'I0BX': item "Grand Armor"
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Impervious Beast|r")
     call QuestSetCompletedBJ(udg_SideQuest[65],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
@@ -92,10 +93,10 @@ function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothi
     else
         call Reward_Give($FA0,$2EE0,gg_unit_H036_0254) // $FA0 = 4000; $2EE0 = 12000
     endif
-    set udg_TempPoint=GetUnitLoc(gg_unit_H036_0254)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H036_0254)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitAbilityLevelSwapped('A0SF',gg_unit_H036_0254,1) // 'A0SF': ability "Command AI"
     call UnitRemoveBuffBJ('B063',gg_unit_H036_0254) // 'B063': buff "Cover"
     call UnitRemoveBuffBJ('B051',gg_unit_H036_0254) // 'B051': buff "Divine Shield"
@@ -106,6 +107,7 @@ function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothi
     call EnableTrigger(gg_trg_Siegfried_Appear)
     call StartTimerBJ(udg_SharedDelayTimer5,false,180.)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_ImperviousBeast takes nothing returns nothing

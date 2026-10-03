@@ -37,6 +37,7 @@ function Trig_MysticalGlyph_Drop_Cond_InfoStocked takes nothing returns boolean
 endfunction
 
 function Trig_MysticalGlyph_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     // Result 1: unit level of the triggering unit treated as a decimal-capable number.
     // Result 2: the square root of (result 1).
     // Result 3: (result 2) with its decimal part removed.
@@ -45,17 +46,19 @@ function Trig_MysticalGlyph_Drop_Actions takes nothing returns nothing
     // (udg_GlyphDropCounter) minus (GetUnitUserData(the triggering unit)).
     set udg_GlyphDropCounter=(udg_GlyphDropCounter-GetUnitUserData(GetTriggerUnit()))
     if(Trig_MysticalGlyph_Drop_Cond_CounterRemaining())then
+        set l_tempPoint=null
         return
     endif
     if(Trig_MysticalGlyph_Drop_Cond_KillerNotHero())then
         set udg_GlyphDropCounter=0
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[30]=CreateItemLoc('gopr',udg_TempPoint) // 'gopr': item "Mystical Glyph"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[30]=CreateItemLoc('gopr',l_tempPoint) // 'gopr': item "Mystical Glyph"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_MysticalGlyph_Pickup)
     call EnableTrigger(gg_trg_MysticalGlyph_Ping)
     if(Trig_MysticalGlyph_Drop_Cond_InfoStocked())then
@@ -66,6 +69,7 @@ function Trig_MysticalGlyph_Drop_Actions takes nothing returns nothing
         set udg_QuestFlag[3]=true
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_MysticalGlyph_Pickup_Conditions takes nothing returns boolean
@@ -87,9 +91,11 @@ function Trig_MysticalGlyph_Ping_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_MysticalGlyph_Ping_Actions takes nothing returns nothing
-    set udg_TempPoint=GetItemLoc(udg_QuestItem[30])
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetItemLoc(udg_QuestItem[30])
+    call PingMinimapLocForForce(GetPlayersAll(),l_tempPoint,2.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_MysticalGlyph_Deliver_Conditions takes nothing returns boolean

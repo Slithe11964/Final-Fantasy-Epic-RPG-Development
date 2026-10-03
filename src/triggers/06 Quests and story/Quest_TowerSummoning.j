@@ -85,13 +85,14 @@ function Trig_Quest_TowerSummoning_Complete_Enum_GrantTowerCredit takes nothing 
 endfunction
 
 function Trig_Quest_TowerSummoning_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[48])
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_ShockAuraUnitGroup)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01F',udg_TempPoint) // 'I01F': item "Thunder Wand"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01F',l_tempPoint) // 'I01F': item "Thunder Wand"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Quest_TowerSummoning_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_n020_0129,0)
@@ -120,6 +121,7 @@ function Trig_Quest_TowerSummoning_Complete_Actions takes nothing returns nothin
     call ForceAddPlayerSimple(Player($A),udg_TitleForce[30]) // $A = 10
     call ForForce(udg_PlayingPlayers,function Trig_Quest_TowerSummoning_Complete_Enum_GrantTowerCredit)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_TowerSummoning takes nothing returns nothing

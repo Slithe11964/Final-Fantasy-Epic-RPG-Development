@@ -23,6 +23,7 @@ function Trig_KalmSiege1_Start_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_KalmSiege1_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[30])
     call GroupRemoveUnitSimple(gg_unit_Hpb1_0013,udg_QuestUnits)
@@ -43,9 +44,9 @@ function Trig_KalmSiege1_Start_Actions takes nothing returns nothing
     set udg_StoryProgress=(udg_StoryProgress+1)
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call GroupAddUnitSimple(gg_unit_Hvwd_0098,udg_QuestUnits)
-    set udg_TempPoint=GetRectCenter(gg_rct_585)
-    call SetUnitPositionLocFacingBJ(gg_unit_Hvwd_0098,udg_TempPoint,315.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_585)
+    call SetUnitPositionLocFacingBJ(gg_unit_Hvwd_0098,l_tempPoint,315.)
+    call RemoveLocation(l_tempPoint)
     call IssueImmediateOrderBJ(gg_unit_Hvwd_0098,"holdposition")
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_KalmSiege1_Briefing)
@@ -53,6 +54,7 @@ function Trig_KalmSiege1_Start_Actions takes nothing returns nothing
     set udg_SpecialEffect[89]=AddSpecialEffectTargetUnitBJ("overhead",udg_Mid,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Mid_Letter_Give)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_KalmSiege1_Briefing_Conditions takes nothing returns boolean
@@ -112,26 +114,36 @@ function Trig_KalmSiege1_Begin_IsGhoulMasterSlot takes nothing returns boolean
 endfunction
 
 function Trig_KalmSiege1_Begin_SendGuardPatrol takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,1024.,GetUnitFacing(GetEnumUnit()))
-    call RemoveLocation(udg_TempPoint)
-    call IssuePointOrderLocBJ(GetEnumUnit(),"patrol",udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,1024.,GetUnitFacing(GetEnumUnit()))
+    call RemoveLocation(l_tempPoint)
+    call IssuePointOrderLocBJ(GetEnumUnit(),"patrol",l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call PauseUnitBJ(false,GetEnumUnit())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_KalmSiege1_Begin_SendGuardForward takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,GetUnitFacing(GetEnumUnit()))
-    call RemoveLocation(udg_TempPoint)
-    call IssuePointOrderLocBJ(GetEnumUnit(),"move",udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,GetUnitFacing(GetEnumUnit()))
+    call RemoveLocation(l_tempPoint)
+    call IssuePointOrderLocBJ(GetEnumUnit(),"move",l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call PauseUnitBJ(false,GetEnumUnit())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_KalmSiege1_Begin_Actions takes nothing returns nothing
+    local location l_tempPoint2
     if(Trig_KalmSiege1_Begin_CinematicBusy())then
         call StartTimerBJ(udg_SiegeTimer,false,.49)
+        set l_tempPoint2=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -162,14 +174,14 @@ function Trig_KalmSiege1_Begin_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_KalmSiege1_TrackDeaths)
     call EnableTrigger(gg_trg_KalmSiege_AITick)
     call EnableTrigger(gg_trg_KalmSiege_LeaderRetreat)
-    set udg_TempPoint2=GetRectCenter(gg_rct_584)
+    set l_tempPoint2=GetRectCenter(gg_rct_584)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),4,udg_SpawnRectHashRef))
         // The remainder after dividing (loop counter A) by (10).
-        call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),udg_TempPoint,udg_TempPoint2) // $A = 10; $B = 11
+        call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),udg_TempPoint,l_tempPoint2) // $A = 10; $B = 11
         call RemoveLocation(udg_TempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SpecialUnits)
         if(Trig_KalmSiege1_Begin_ScalingOff())then
@@ -187,7 +199,7 @@ function Trig_KalmSiege1_Begin_Actions takes nothing returns nothing
             call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         endif
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),600.)
-        call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
+        call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",l_tempPoint2)
         if(Trig_KalmSiege1_Begin_IsShieldSlot())then
             call UnitAddAbilityBJ('A0YK',GetLastCreatedUnit()) // 'A0YK': ability "Permanent Lightning Shield"
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShockAuraUnitGroup)
@@ -198,11 +210,12 @@ function Trig_KalmSiege1_Begin_Actions takes nothing returns nothing
         endif
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call Wait_Polled(.2)
     call ForGroupBJ(udg_AllyBrothersGroup,function Trig_KalmSiege1_Begin_SendGuardPatrol)
     call Wait_Polled(.2)
     call ForGroupBJ(udg_AllyRangerGroup,function Trig_KalmSiege1_Begin_SendGuardForward)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_KalmSiege1_Defeat_Conditions takes nothing returns boolean
@@ -436,25 +449,27 @@ function Trig_KalmSiege1_Fail_IsThirdSlot takes nothing returns boolean
 endfunction
 
 function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call Music_ClearTrack(39)
     call Music_SetZoneTrack(9)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Kalm Siege|r")
     call QuestSetFailedBJ(udg_MainQuest[9],true)
     call DestroyGroup(udg_TownTargetGroup)
-    set udg_TempPoint=GetUnitLoc(gg_unit_Hpb1_0013)
-    set udg_TownTargetGroup=Group_UnitsInRangeOfLoc(8192.,udg_TempPoint,Condition(function Trig_KalmSiege1_Fail_IsTownUnit))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_Hpb1_0013)
+    set udg_TownTargetGroup=Group_UnitsInRangeOfLoc(8192.,l_tempPoint,Condition(function Trig_KalmSiege1_Fail_IsTownUnit))
+    call RemoveLocation(l_tempPoint)
     call ForGroupBJ(udg_TownTargetGroup,function Trig_KalmSiege1_Fail_MakeVulnerable)
     call EnableTrigger(gg_trg_KalmSiege_FailRespawn)
     call EnableTrigger(gg_trg_KalmSiege_DemonRecover)
     call ForGroupBJ(udg_RecruitedAllies,function Trig_KalmSiege1_Fail_PurgeOrShow)
-    set udg_TempPoint=GetRectCenter(gg_rct_298)
-    call SetUnitPositionLoc(gg_unit_U00E_0222,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_413)
-    call IssuePointOrderLocBJ(gg_unit_U00E_0222,"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_298)
+    call SetUnitPositionLoc(gg_unit_U00E_0222,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_413)
+    call IssuePointOrderLocBJ(gg_unit_U00E_0222,"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_U00E_0222)
     call PauseUnitBJ(false,gg_unit_U00E_0222)
     call SetUnitInvulnerable(gg_unit_U00E_0222,false)
@@ -464,16 +479,16 @@ function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A0LL',gg_unit_U00E_0222) // 'A0LL': ability "Thunder Spell Amplification"
     call SetUnitMoveSpeed(gg_unit_U00E_0222,500.)
     set udg_RaidPowerLevel=30
-    set udg_TempPoint2=GetRectCenter(gg_rct_588)
+    set l_tempPoint2=GetRectCenter(gg_rct_588)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         if(Trig_KalmSiege1_Fail_IsThirdSlot())then
-            set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),4,udg_SpawnRectHashRef))
+            set l_tempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),4,udg_SpawnRectHashRef))
             // The remainder after dividing (loop counter A) by (10).
-            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),udg_TempPoint,udg_TempPoint2) // $A = 10; $B = 11
-            call RemoveLocation(udg_TempPoint)
+            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),l_tempPoint,l_tempPoint2) // $A = 10; $B = 11
+            call RemoveLocation(l_tempPoint)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
             // Calculation 1:
             // ((BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) times (udg_RaidPowerLevel)) divided by (4).
@@ -486,12 +501,14 @@ function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
             call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())*udg_RaidPowerLevel)/ 4))
             call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
             call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)
-            call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
+            call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",l_tempPoint2)
         endif
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_KalmSiege1 automatically; it is intentionally empty. This module's

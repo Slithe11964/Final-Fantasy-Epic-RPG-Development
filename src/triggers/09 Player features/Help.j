@@ -19,11 +19,13 @@ function Trig_Help_Unit_Death_Drop_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Help_Unit_Death_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I004',udg_TempPoint) // 'I004': item "100 Gold Coins"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I004',l_tempPoint) // 'I004': item "100 Gold Coins"
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Help automatically; it is intentionally empty. This module's

@@ -83,6 +83,7 @@ function Trig_Quest_OreSupplies_Deliver_ReforgeUnlocked takes nothing returns bo
 endfunction
 
 function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
+    local location l_tempPoint
     // Result 1: the smaller of (udg_OreSuppliesRemaining) and (item charges of GetItemOfTypeFromUnitBJ(the
     // triggering unit, 'I074')).
     set udg_TempInteger=IMinBJ(udg_OreSuppliesRemaining,GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))) // 'I074': item "Mine Mineral"
@@ -99,6 +100,7 @@ function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
     // (5) minus (udg_OreSuppliesRemaining).
     call QuestItemSetDescriptionBJ(udg_QuestReq[8],("Minerals brought to Loki: "+(I2S((5-udg_OreSuppliesRemaining))+"/5")))
     if(Trig_Quest_OreSupplies_Deliver_MineralsMissing())then
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -131,9 +133,9 @@ function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
     call QuestSetCompletedBJ(udg_SideQuest[67],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call SetUnitAnimation(gg_unit_hbla_0158,"work")
-    set udg_TempPoint=GetUnitLoc(gg_unit_H00P_0260)
-    set udg_LokiForgeSpot=OffsetLocation(udg_TempPoint,-10.,-75.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_H00P_0260)
+    set udg_LokiForgeSpot=OffsetLocation(l_tempPoint,-10.,-75.)
+    call RemoveLocation(l_tempPoint)
     call CreateItemLoc('I0K0',udg_LokiForgeSpot) // 'I0K0': item "Quality Mithril"
     if(Trig_Quest_OreSupplies_Deliver_ReforgeUnlocked())then
         call EnableTrigger(gg_trg_Loki_Reforge_Offer)
@@ -141,6 +143,7 @@ function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
         set udg_LokiForgeText=CreateTextTagUnitBJ(" ",gg_unit_H00P_0260,0,12.,'d','d','d',0)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_OreSupplies takes nothing returns nothing

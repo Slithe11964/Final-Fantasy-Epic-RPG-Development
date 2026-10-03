@@ -9,14 +9,16 @@ function Trig_Sentinel_Cast_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Sentinel_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A1BJ',GetLastCreatedUnit()) // 'A1BJ': ability "Sentinel"
     call SetUnitAbilityLevelSwapped('A1BJ',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A1BJ': ability "Sentinel"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetTriggerUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Sentinel automatically; it is intentionally empty. This module's

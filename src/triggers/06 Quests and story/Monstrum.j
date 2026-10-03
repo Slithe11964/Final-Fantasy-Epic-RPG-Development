@@ -41,15 +41,16 @@ function Trig_Monstrum_Tentacle_Ambush_UnpauseTentacle takes nothing returns not
 endfunction
 
 function Trig_Monstrum_Tentacle_Ambush_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
+    set l_tempPoint=GetUnitLoc(GetAttacker())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (45) times (loop counter A treated as a decimal-capable number).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(45.*I2R(GetForLoopIndexA())))
-        call CreateNUnitsAtLocFacingLocBJ(1,'n0MP',Player($B),udg_TempPoint2,udg_TempPoint) // 'n0MP': object name not found in map data; $B = 11
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(45.*I2R(GetForLoopIndexA())))
+        call CreateNUnitsAtLocFacingLocBJ(1,'n0MP',Player($B),udg_TempPoint2,l_tempPoint) // 'n0MP': object name not found in map data; $B = 11
         call PauseUnitBJ(true,GetLastCreatedUnit())
         call SetUnitAnimation(GetLastCreatedUnit(),"birth")
         call QueueUnitAnimationBJ(GetLastCreatedUnit(),"stand")
@@ -57,11 +58,12 @@ function Trig_Monstrum_Tentacle_Ambush_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Monstrum_Summon)
     call Wait_Polled(.5)
     call ForGroupBJ(udg_TentacleGroup,function Trig_Monstrum_Tentacle_Ambush_UnpauseTentacle)
     call StartTimerBJ(udg_TentacleTimer,false,20.)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Monstrum_Summon_Conditions takes nothing returns boolean
@@ -85,16 +87,17 @@ function Trig_Monstrum_Summon_AmbushAllowed takes nothing returns boolean
 endfunction
 
 function Trig_Monstrum_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     call ForGroupBJ(udg_TentacleGroup,function Trig_Monstrum_Summon_KillTentacle)
     call GroupClear(udg_TentacleGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_Monstrum_Summon_AmbushAllowed())then
         call DisableTrigger(GetTriggeringTrigger())
         call PauseTimerBJ(true,udg_TentacleTimer)
         call Wait_Polled(.5)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
         if(Trig_Monstrum_Summon_MonstrumNotSpawned())then
-            call CreateNUnitsAtLoc(1,'E01M',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'E01M': unit "Nebra Monstrum"; $B = 11
+            call CreateNUnitsAtLoc(1,'E01M',Player($B),l_tempPoint,bj_UNIT_FACING) // 'E01M': unit "Nebra Monstrum"; $B = 11
             call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_PURPLE)
             call SetHeroLevelBJ(GetLastCreatedUnit(),65,false)
             set udg_NebraMonstrum=GetLastCreatedUnit()
@@ -104,7 +107,7 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
             set udg_SideQuest[71]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Monstrum of the Sea"),"A monstrum from the abyss of the sea ambushed you. Kill it!","ReplaceableTextures\\CommandButtons\\BTNForgottenOne.blp")
             set udg_MonstrumPhase=0
         else
-            call SetUnitPositionLocFacingBJ(udg_NebraMonstrum,udg_TempPoint,bj_UNIT_FACING)
+            call SetUnitPositionLocFacingBJ(udg_NebraMonstrum,l_tempPoint,bj_UNIT_FACING)
             // ((4) minus (udg_MonstrumPhase) treated as a decimal-capable number) times (25).
             call SetUnitLifePercentBJ(udg_NebraMonstrum,(I2R((4-udg_MonstrumPhase))*25.))
             call ShowUnitShow(udg_NebraMonstrum)
@@ -113,7 +116,7 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
             call QuestSetDescriptionBJ(udg_SideQuest[71],"The Nebra Monstrum has reappeared! Kill it!")
             call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra Monstrum.")
         endif
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitManaPercentBJ(udg_NebraMonstrum,'d')
         // Result 1: (maximum health of udg_NebraMonstrum) times (0.25).
         // Result 2: (3) minus (udg_MonstrumPhase).
@@ -126,6 +129,7 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
         call EnableTrigger(gg_trg_Monstrum_Phase_Check)
         call EnableTrigger(gg_trg_Monstrum_Tentacle_Cleanup)
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Monstrum_Ambush_Rearm_KillLeftoverTentacle takes nothing returns nothing
@@ -234,13 +238,14 @@ function Trig_Monstrum_DepthCharge_UnpauseSpawnedTentacle takes nothing returns 
 endfunction
 
 function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set udg_TempInteger=0
     loop
         exitwhen udg_TempInteger>3
         if(Trig_Monstrum_DepthCharge_SlotFree())then
             // (udg_TempInteger treated as a decimal-capable number) times (90).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(udg_TempInteger)*90.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(udg_TempInteger)*90.))
             call CreateNUnitsAtLoc(1,'n0MP',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0MP': object name not found in map data
             call RemoveLocation(udg_TempPoint2)
             set udg_MonstrumTentacle[udg_TempInteger]=GetLastCreatedUnit()
@@ -251,9 +256,9 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
         endif
         set udg_TempInteger=udg_TempInteger+1
     endloop
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    set udg_TempPoint2=OffsetLocation(l_tempPoint,-256.,0)
     call CreateNUnitsAtLoc(1,'n0MP',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0MP': object name not found in map data
     call RemoveLocation(udg_TempPoint2)
     set udg_MonstrumTentacle[udg_TempInteger]=GetLastCreatedUnit()
@@ -263,7 +268,7 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TentacleGroup)
     // (20) plus ((5) times (udg_Difficulty treated as a decimal-capable number)).
     call UnitApplyTimedLifeBJ((20.+(5.*I2R(udg_Difficulty))),'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,256.,0)
+    set udg_TempPoint2=OffsetLocation(l_tempPoint,256.,0)
     call CreateNUnitsAtLoc(1,'n0MP',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0MP': object name not found in map data
     call RemoveLocation(udg_TempPoint2)
     set udg_MonstrumTentacle[udg_TempInteger]=GetLastCreatedUnit()
@@ -273,9 +278,10 @@ function Trig_Monstrum_DepthCharge_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TentacleGroup)
     // (20) plus ((5) times (udg_Difficulty treated as a decimal-capable number)).
     call UnitApplyTimedLifeBJ((20.+(5.*I2R(udg_Difficulty))),'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
     call ForGroupBJ(udg_TentacleGroup,function Trig_Monstrum_DepthCharge_UnpauseSpawnedTentacle)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Monstrum_Tentacle_Cleanup_Conditions takes nothing returns boolean

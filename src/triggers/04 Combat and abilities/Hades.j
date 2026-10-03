@@ -45,13 +45,15 @@ function Trig_Hades_BlackCauldron_Filter_SleepTarget takes nothing returns boole
 endfunction
 
 function Trig_Hades_BlackCauldron_Enum_CastSleep takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0U4',GetLastCreatedUnit()) // 'A0U4': ability "Sleep"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"sleep",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Hades_BlackCauldron_Filter_IsEnemy2 takes nothing returns boolean
@@ -87,19 +89,20 @@ function Trig_Hades_BlackCauldron_Cond_AnySleeping takes nothing returns boolean
 endfunction
 
 function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Hades_BlackCauldron_Filter_SleepTarget))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Hades_BlackCauldron_Filter_SleepTarget))
+    call RemoveLocation(l_tempPoint)
     call ForGroupBJ(udg_TempGroup,function Trig_Hades_BlackCauldron_Enum_CastSleep)
     call DestroyGroup(udg_TempGroup)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Hades_BlackCauldron_Filter_FlareTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Hades_BlackCauldron_Filter_FlareTarget))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Hades_BlackCauldron_Cond_AnySleeping())then
-        set udg_TempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TempGroup))
-        call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+        set l_tempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TempGroup))
+        call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+        call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -107,19 +110,19 @@ function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (22.5) times (loop counter A treated as a decimal-capable number).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(22.5*I2R(GetForLoopIndexA())))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,(22.5*I2R(GetForLoopIndexA())))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call RemoveLocation(udg_TempPoint2)
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             // (22.5) times (loop counter A treated as a decimal-capable number).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call RemoveLocation(udg_TempPoint2)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
         set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
@@ -132,6 +135,7 @@ function Trig_Hades_BlackCauldron_Actions takes nothing returns nothing
         call IssueImmediateOrderBJ(GetLastCreatedUnit(),"stomp")
     endif
     call DestroyGroup(udg_TempGroup)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Hades automatically; it is intentionally empty. This module's

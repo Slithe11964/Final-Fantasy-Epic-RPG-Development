@@ -60,20 +60,22 @@ function Trig_Quest_LadyNashj_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_LadyNashj_Slain_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     set udg_NashjDead=true
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
     call SaveIntegerBJ(1,2,'i',udg_GameStateHash)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I00I',udg_TempPoint) // 'I00I': item "Germinas Boots"
-    call CreateItemLoc('I0HS',udg_TempPoint) // 'I0HS': item "Maiden's Eye"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I00I',l_tempPoint) // 'I00I': item "Germinas Boots"
+    call CreateItemLoc('I0HS',l_tempPoint) // 'I0HS': item "Maiden's Eye"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to Lenna for reward.")
     call QuestSetDescriptionBJ(udg_SideQuest[$C],"Come back to Lenna for reward.") // $C = 12
     call EnableTrigger(gg_trg_Quest_LadyNashj_Complete)
     call ConditionalTriggerExecute(gg_trg_Dana_Prepare)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_LadyNashj_Complete_Conditions takes nothing returns boolean

@@ -47,17 +47,19 @@ function Trig_Kalm_News_Read_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Kalm_News_Read_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[1])
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[4])
-    call DisplayTimedTextToForce(udg_TempForce,30," ")
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[2])
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[5])
-    call DisplayTimedTextToForce(udg_TempForce,30," ")
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[3])
-    call DisplayTimedTextToForce(udg_TempForce,30,udg_NewsText[6])
-    call DisplayTimedTextToForce(udg_TempForce,30," ")
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[1])
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[4])
+    call DisplayTimedTextToForce(l_tempForce,30," ")
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[2])
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[5])
+    call DisplayTimedTextToForce(l_tempForce,30," ")
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[3])
+    call DisplayTimedTextToForce(l_tempForce,30,udg_NewsText[6])
+    call DisplayTimedTextToForce(l_tempForce,30," ")
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Kalm_Init_IsTownUnit takes nothing returns boolean
@@ -89,6 +91,7 @@ function Trig_Kalm_Init_IsKalmGuard takes nothing returns boolean
 endfunction
 
 function Trig_Kalm_Init_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_SpecialEffect[19]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call SetDestructableInvulnerableBJ(gg_dest_LOcg_0010,true)
     call ShowUnitHide(gg_unit_h02G_0160)
@@ -100,10 +103,11 @@ function Trig_Kalm_Init_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A0MV',gg_unit_nbld_0014) // 'A0MV': ability "Plentiful"
     call UnitAddAbilityBJ('A0MV',gg_unit_nass_0015) // 'A0MV': ability "Plentiful"
     set udg_CidQuestStage=0
-    set udg_TempPoint=GetUnitLoc(gg_unit_Hpb1_0013)
-    set udg_KalmGuards=Group_UnitsInRangeOfLoc(8192.,udg_TempPoint,Condition(function Trig_Kalm_Init_IsKalmGuard))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_Hpb1_0013)
+    set udg_KalmGuards=Group_UnitsInRangeOfLoc(8192.,l_tempPoint,Condition(function Trig_Kalm_Init_IsKalmGuard))
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Kalm automatically; it is intentionally empty. This module's

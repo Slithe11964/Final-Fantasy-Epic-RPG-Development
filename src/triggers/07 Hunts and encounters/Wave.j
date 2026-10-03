@@ -63,33 +63,34 @@ function Trig_Wave_Fist_HasHighProficiency takes nothing returns boolean
 endfunction
 
 function Trig_Wave_Fist_Actions takes nothing returns nothing
+    local integer l_tempInteger
     call AddSpecialEffectTargetUnitBJ("chest",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\SpellSteal\\SpellStealTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (3).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Wave_Fist_IsHero())then
-        // (udg_TempInteger) plus ((Strength of the triggering unit) times (8)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*8))
+        // (l_tempInteger) plus ((Strength of the triggering unit) times (8)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*8))
     endif
     set udg_TempBoolean=Unit_HasNoEquipment(GetTriggerUnit())
     if(Trig_Wave_Fist_IsCritical())then
         if(Trig_Wave_Fist_TargetNotDisabled())then
-            // (udg_TempInteger) times (2).
-            set udg_TempInteger=(udg_TempInteger*2)
+            // (l_tempInteger) times (2).
+            set l_tempInteger=(l_tempInteger*2)
         else
-            // (udg_TempInteger) times (3).
-            set udg_TempInteger=(udg_TempInteger*3)
+            // (l_tempInteger) times (3).
+            set l_tempInteger=(l_tempInteger*3)
         endif
     endif
     if(Trig_Wave_Fist_HasHighProficiency())then
-        // ((udg_TempInteger) times (5)) divided by (3); drop the remainder.
-        set udg_TempInteger=((udg_TempInteger*5)/ 3)
+        // ((l_tempInteger) times (5)) divided by (3); drop the remainder.
+        set l_tempInteger=((l_tempInteger*5)/ 3)
     endif
     // Udg_TempInteger treated as a decimal-capable number.
-    call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetSpellTargetUnit(),.1,.5,null,true,I2R(udg_TempInteger))
+    call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetSpellTargetUnit(),.1,.5,null,true,I2R(l_tempInteger))
     set udg_IsPhysicalAttack=true
-    call UnitDamageTarget(GetTriggerUnit(),GetSpellTargetUnit(),udg_TempInteger,true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)
+    call UnitDamageTarget(GetTriggerUnit(),GetSpellTargetUnit(),l_tempInteger,true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)
 endfunction
 
 // World Editor calls InitTrig_Wave automatically; it is intentionally empty. This module's

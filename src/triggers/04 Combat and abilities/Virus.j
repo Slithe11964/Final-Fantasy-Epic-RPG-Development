@@ -41,10 +41,11 @@ function Trig_Virus_Cast_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Virus_Cast_Actions takes nothing returns nothing
+    local real l_tempReal
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (0.1).
-    set udg_TempReal=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*.1)
-    call Trig_Virus_Cast_Apply(GetSpellTargetUnit(),udg_TempReal)
+    set l_tempReal=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*.1)
+    call Trig_Virus_Cast_Apply(GetSpellTargetUnit(),l_tempReal)
 endfunction
 
 // World Editor calls InitTrig_Virus automatically; it is intentionally empty. This module's

@@ -16,21 +16,23 @@ function Trig_Demon_Drop_Magatama_KillsBelowFive takes nothing returns boolean
 endfunction
 
 function Trig_Demon_Drop_Magatama_Actions takes nothing returns nothing
+    local location l_tempPoint
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_Demon_Drop_Magatama_KillsBelowFive())then
         set udg_DemonKillCount=(udg_DemonKillCount+1)
         if(Trig_Demon_Drop_Magatama_IsEvenKill())then
-            call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
+            call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
         endif
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
     else
         call DisableTrigger(GetTriggeringTrigger())
-        call CreateItemLoc('I0F0',udg_TempPoint) // 'I0F0': item "Magatama"
+        call CreateItemLoc('I0F0',l_tempPoint) // 'I0F0': item "Magatama"
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Demon automatically; it is intentionally empty. This module's

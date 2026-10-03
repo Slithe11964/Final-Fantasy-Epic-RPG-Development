@@ -5,14 +5,16 @@ globals
 endglobals
 
 function Trig_AnnoyingMonster_DropBelongings_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[23]=CreateItemLoc('ktrm',udg_TempPoint) // 'ktrm': item "A Lady's Belongings"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[23]=CreateItemLoc('ktrm',l_tempPoint) // 'ktrm': item "A Lady's Belongings"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Belongings_Ping)
     call EnableTrigger(gg_trg_Belongings_PickedUp)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_AnnoyingMonster automatically; it is intentionally empty. This module's

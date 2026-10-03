@@ -13,6 +13,7 @@ function Trig_Quest_LightOfJudgment_Start_CinematicsEnabled takes nothing return
 endfunction
 
 function Trig_Quest_LightOfJudgment_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(gg_unit_Eill_0119,udg_BossUnits)
     call DestroyEffectBJ(udg_SpecialEffect[50])
@@ -30,9 +31,9 @@ function Trig_Quest_LightOfJudgment_Start_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Light of Judgment|r")
     set udg_MainQuest[16]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Light of Judgment"),"Alma has gone missing! Find her!","ReplaceableTextures\\CommandButtons\\BTNJaina.blp")
     call ShowUnitHide(gg_unit_Eill_0119)
-    set udg_TempPoint=GetUnitLoc(gg_unit_U00F_0221)
-    call CreateNUnitsAtLoc(1,'Hjai',Player(8),udg_TempPoint,GetUnitFacing(gg_unit_U00F_0221)) // 'Hjai': unit "Cleric"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_U00F_0221)
+    call CreateNUnitsAtLoc(1,'Hjai',Player(8),l_tempPoint,GetUnitFacing(gg_unit_U00F_0221)) // 'Hjai': unit "Cleric"
+    call RemoveLocation(l_tempPoint)
     set udg_AlmaUnit=GetLastCreatedUnit()
     call SetUnitColor(udg_AlmaUnit,PLAYER_COLOR_LIGHT_BLUE)
     call SetHeroLevelBJ(udg_AlmaUnit,$F,false) // $F = 15
@@ -41,6 +42,7 @@ function Trig_Quest_LightOfJudgment_Start_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Ultima_Possession)
     call PauseUnitBJ(true,gg_unit_Eill_0119)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_LightOfJudgment takes nothing returns nothing

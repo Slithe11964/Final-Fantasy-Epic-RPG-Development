@@ -13,36 +13,37 @@ function Trig_Boss_BlackDevil_Summon_FirstEncounter takes nothing returns boolea
 endfunction
 
 function Trig_Boss_BlackDevil_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_BossCleanupTrigger=gg_trg_Boss_BlackDevil_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(1.5)
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call CreateNUnitsAtLoc(1,'E00X',Player($B),udg_TempPoint,270.) // 'E00X': unit "Black Devil"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call CreateNUnitsAtLoc(1,'E00X',Player($B),l_tempPoint,270.) // 'E00X': unit "Black Devil"; $B = 11
+    call RemoveLocation(l_tempPoint)
     set udg_BlackDevilUnit=GetLastCreatedUnit()
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
@@ -65,6 +66,7 @@ function Trig_Boss_BlackDevil_Summon_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Boss_BlackDevil_Death,udg_BlackDevilUnit,EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_Boss_BlackDevil_Death)
     call Cine_Exit()
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_BlackDevil_Death_Conditions takes nothing returns boolean
@@ -84,6 +86,7 @@ function Trig_Boss_BlackDevil_Death_IsWaygateOpen takes nothing returns boolean
 endfunction
 
 function Trig_Boss_BlackDevil_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_BlackDevil_Death_ShouldRecordKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -94,9 +97,9 @@ function Trig_Boss_BlackDevil_Death_Actions takes nothing returns nothing
     if(Trig_Boss_BlackDevil_Death_TwoKillsDone())then
         call SaveIntegerBJ(1,2,'e',udg_GameStateHash)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0BM',udg_TempPoint) // 'I0BM': item "Gravity Staff"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0BM',l_tempPoint) // 'I0BM': item "Gravity Staff"
+    call RemoveLocation(l_tempPoint)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
@@ -109,6 +112,7 @@ function Trig_Boss_BlackDevil_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0JH',gg_unit_n03T_0008) // 'A0JH': ability "Black Hole Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_BlackDevil_Cleanup_Actions takes nothing returns nothing

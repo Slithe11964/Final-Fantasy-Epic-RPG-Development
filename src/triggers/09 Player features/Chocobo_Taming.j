@@ -167,9 +167,10 @@ function Trig_Chocobo_Tame_Breed_IsBoco takes nothing returns boolean
 endfunction
 
 function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Chocobo_Tame_Breed_IsBoco())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"You cannot tame Boco! He has already been tamed by Ao Madoushi.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"You cannot tame Boco! He has already been tamed by Ao Madoushi.")
     else
         if(Trig_Chocobo_Tame_Breed_IsTameableChocobo())then
             if(Trig_Chocobo_Tame_Breed_IsTargetWild())then
@@ -189,7 +190,7 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                 endif
                 if(Trig_Chocobo_Tame_Breed_TameSucceeded())then
                     call Music_SetTrack(46)
-                    call DisplayTimedTextToForce(udg_TempForce,10.,"Successfully tamed the Chocobo!")
+                    call DisplayTimedTextToForce(l_tempForce,10.,"Successfully tamed the Chocobo!")
                     call GroupRemoveUnitSimple(GetSpellTargetUnit(),udg_TownNpcUnits)
                     call SetUnitOwner(GetSpellTargetUnit(),GetOwningPlayer(GetTriggerUnit()),true)
                     call UnitRemoveAbilityBJ('Awan',GetSpellTargetUnit()) // 'Awan': object name not found in map data
@@ -213,9 +214,9 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                     endif
                 else
                     if(Trig_Chocobo_Tame_Breed_IsChocoboTooHighLevel())then
-                        call DisplayTimedTextToForce(udg_TempForce,10.,"The chocobo eats the nut, but does not appear to be impressed with the type of nut you fed it.")
+                        call DisplayTimedTextToForce(l_tempForce,10.,"The chocobo eats the nut, but does not appear to be impressed with the type of nut you fed it.")
                     else
-                        call DisplayTimedTextToForce(udg_TempForce,10.,"The chocobo eats the nut with pleasure, but does not react otherwise.")
+                        call DisplayTimedTextToForce(l_tempForce,10.,"The chocobo eats the nut with pleasure, but does not react otherwise.")
                     endif
                 endif
             else
@@ -226,7 +227,8 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                         if(Trig_Chocobo_Tame_Breed_NoPartnerFound())then
                             call RemoveLocation(udg_TempPoint)
                             call DestroyGroup(udg_TempGroup)
-                            call DisplayTimedTextToForce(udg_TempForce,10.,"There is no partner within 512m range of the chocobo! But the chocobo still eats the nut with pleasure.")
+                            call DisplayTimedTextToForce(l_tempForce,10.,"There is no partner within 512m range of the chocobo! But the chocobo still eats the nut with pleasure.")
+                            set l_tempForce=null
                             return
                         endif
                         set udg_BreedPartnerChocobo=GroupPickRandomUnit(udg_TempGroup)
@@ -282,22 +284,23 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                         call UnitAddAbilityBJ('S005',GetLastCreatedUnit()) // 'S005': ability "Chocobo Ride"
                         call UnitAddAbilityBJ('S006',GetLastCreatedUnit()) // 'S006': ability "Start Chocobo Riding"
                         call UnitAddAbilityBJ('S007',GetLastCreatedUnit()) // 'S007': ability "Stop Chocobo Ride"
-                        call DisplayTimedTextToForce(udg_TempForce,15.,"The chocobos have bred and a |cffffcc00new chocobo|r is born!")
-                        call DisplayTimedTextToForce(udg_TempForce,15.,("The new chocobo has gained special ability: |cffffcc00"+(GetAbilityName(udg_ChocoboAbility[udg_ChocoboAbilityIndex])+"|r!")))
+                        call DisplayTimedTextToForce(l_tempForce,15.,"The chocobos have bred and a |cffffcc00new chocobo|r is born!")
+                        call DisplayTimedTextToForce(l_tempForce,15.,("The new chocobo has gained special ability: |cffffcc00"+(GetAbilityName(udg_ChocoboAbility[udg_ChocoboAbilityIndex])+"|r!")))
                     else
-                        call DisplayTimedTextToForce(udg_TempForce,10.,"This chocobo cannot be tamed.")
+                        call DisplayTimedTextToForce(l_tempForce,10.,"This chocobo cannot be tamed.")
                     endif
                 else
-                    call DisplayTimedTextToForce(udg_TempForce,10.,"This chocobo cannot be tamed.")
+                    call DisplayTimedTextToForce(l_tempForce,10.,"This chocobo cannot be tamed.")
                 endif
             endif
         else
             if(Trig_Chocobo_Tame_Breed_HasSpellTarget())then
-                call DisplayTimedTextToForce(udg_TempForce,10.,"The target is not a tameable chocobo!")
+                call DisplayTimedTextToForce(l_tempForce,10.,"The target is not a tameable chocobo!")
             endif
         endif
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function InitTrig_Chocobo_Taming takes nothing returns nothing

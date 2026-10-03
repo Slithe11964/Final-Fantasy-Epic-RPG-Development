@@ -69,11 +69,13 @@ function Trig_BadBreath_Cast_ApplyDebuffs takes nothing returns nothing
 endfunction
 
 function Trig_BadBreath_Cast_Actions takes nothing returns nothing
+    local group l_tempGroup
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(1024.,udg_TempPoint,Condition(function Trig_BadBreath_Cast_Filter_EnemyTarget))
-    call ForGroupBJ(udg_TempGroup,function Trig_BadBreath_Cast_ApplyDebuffs)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(1024.,udg_TempPoint,Condition(function Trig_BadBreath_Cast_Filter_EnemyTarget))
+    call ForGroupBJ(l_tempGroup,function Trig_BadBreath_Cast_ApplyDebuffs)
     call RemoveLocation(udg_TempPoint)
-    call DestroyGroup(udg_TempGroup)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_BadBreath automatically; it is intentionally empty. This module's

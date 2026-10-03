@@ -19,10 +19,12 @@ function Trig_Zone4_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone4_Leash_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Zone4_Leash_North_IsChocobo_Z4b takes nothing returns boolean
@@ -38,10 +40,12 @@ function Trig_Zone4_Leash_North_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone4_Leash_North_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 37 through 42.
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(37,42),4,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(37,42),4,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Zone4_Leash_Mid_Conditions takes nothing returns boolean
@@ -49,10 +53,12 @@ function Trig_Zone4_Leash_Mid_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone4_Leash_Mid_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 13 through 25.
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt($D,25),4,udg_SpawnRectHashRef)) // $D = 13
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt($D,25),4,udg_SpawnRectHashRef)) // $D = 13
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Zone4 automatically; it is intentionally empty. This module's

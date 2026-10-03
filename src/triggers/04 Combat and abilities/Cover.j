@@ -17,6 +17,7 @@ function Trig_Cover_Cast_IsSquireMaster takes nothing returns boolean
 endfunction
 
 function Trig_Cover_Cast_Actions takes nothing returns nothing
+    local integer l_tempInteger
     if(Trig_Cover_Cast_IsSquireMaster())then
         set udg_CoverAwardCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=0
         call UnitAddAbilityBJ('A0O4',GetSpellTargetUnit()) // 'A0O4': ability "Cover"
@@ -27,9 +28,9 @@ function Trig_Cover_Cast_Actions takes nothing returns nothing
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) times (5).
     // Result 2: (result 1) plus (250).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)+$FA // $FA = 250
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)+$FA // $FA = 250
     // Udg_TempInteger treated as a decimal-capable number.
-    call Link_SaveCaster(GetTriggerUnit(),GetSpellTargetUnit(),I2R(udg_TempInteger))
+    call Link_SaveCaster(GetTriggerUnit(),GetSpellTargetUnit(),I2R(l_tempInteger))
 endfunction
 
 // World Editor calls InitTrig_Cover automatically; it is intentionally empty. This module's

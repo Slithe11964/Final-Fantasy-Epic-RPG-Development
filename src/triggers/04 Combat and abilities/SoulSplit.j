@@ -9,12 +9,14 @@ function Trig_SoulSplit_Clone_Death_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_SoulSplit_Clone_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_MirrorCloneGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageDeathCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageDeathCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(GetTriggerUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_SoulSplit automatically; it is intentionally empty. This module's

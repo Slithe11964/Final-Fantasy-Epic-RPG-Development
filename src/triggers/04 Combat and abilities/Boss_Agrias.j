@@ -45,11 +45,13 @@ function Trig_Boss_Agrias_Death_Lilith_Cond_LilithAlive takes nothing returns bo
 endfunction
 
 function Trig_Boss_Agrias_Death_Lilith_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_Ewrd_0120,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_Ewrd_0120,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Boss_Agrias_Death_Lilith_Cond_CinematicRunning())then
         call SetUnitLifeBJ(GetTriggerUnit(),1.)
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -61,22 +63,22 @@ function Trig_Boss_Agrias_Death_Lilith_Actions takes nothing returns nothing
         call Cam_PanToUnit(GetTriggerUnit(),0)
         call Wait_Polled(2.)
         call Text_Say(gg_unit_Ewrd_0120,"Virgo! Give me your power!",false)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call SetUnitPositionLoc(gg_unit_e009_0118,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        call SetUnitPositionLoc(gg_unit_e009_0118,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
         call ShowUnitShow(gg_unit_e009_0118)
         call RemoveUnit(GetTriggerUnit())
         call Wait_Polled(2.)
         call Text_Transmission(gg_unit_e009_0118,"Lilith","Embrace the end!","(null)",gg_snd_DarkRangerYesAttack,0,false)
         call Cine_ExitAction()
     else
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call SetUnitPositionLoc(gg_unit_e009_0118,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        call SetUnitPositionLoc(gg_unit_e009_0118,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
         call RemoveUnit(GetTriggerUnit())
         call ShowUnitShow(gg_unit_e009_0118)
     endif
@@ -92,11 +94,12 @@ function Trig_Boss_Agrias_Death_Lilith_Actions takes nothing returns nothing
         call SetUnitInvulnerable(gg_unit_Eill_0119,false)
         call UnitAddAbilityBJ('A0ZR',gg_unit_Eill_0119) // 'A0ZR': ability "Immortal"
         call SetUnitOwner(gg_unit_Eill_0119,Player(9),true)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call SetUnitPositionLocFacingBJ(gg_unit_Eill_0119,udg_TempPoint,bj_UNIT_FACING)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call SetUnitPositionLocFacingBJ(gg_unit_Eill_0119,l_tempPoint,bj_UNIT_FACING)
+        call RemoveLocation(l_tempPoint)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_Agrias takes nothing returns nothing

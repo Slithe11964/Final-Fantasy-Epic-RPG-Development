@@ -76,11 +76,13 @@ function Trig_ArenaExpansion_ShadowStoneSpawn_Conditions takes nothing returns b
 endfunction
 
 function Trig_ArenaExpansion_ShadowStoneSpawn_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetRectCenter(gg_rct_565)
-    call CreateItemLoc('I05Q',udg_TempPoint) // 'I05Q': item "Shadow Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_565)
+    call CreateItemLoc('I05Q',l_tempPoint) // 'I05Q': item "Shadow Stone"
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_ArenaExpansion_ShadowStoneTurnIn_Conditions takes nothing returns boolean

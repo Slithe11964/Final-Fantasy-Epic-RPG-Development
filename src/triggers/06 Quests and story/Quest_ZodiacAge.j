@@ -338,6 +338,7 @@ function Trig_Quest_ZodiacAge_ShowPendant_Cond_HashmalumNotMet takes nothing ret
 endfunction
 
 function Trig_Quest_ZodiacAge_ShowPendant_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[43])
     if(Trig_Quest_ZodiacAge_ShowPendant_Cond_CinematicsEnabled())then
@@ -355,14 +356,15 @@ function Trig_Quest_ZodiacAge_ShowPendant_Actions takes nothing returns nothing
         call QuestSetDescriptionBJ(udg_MainQuest[18],"Speak with Talon at the northern gate to the Icy Realm.")
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Speak with Talon at the northern gate to the Icy Realm.")
-    set udg_TempPoint=GetRectCenter(gg_rct_636)
-    call SetUnitPositionLocFacingBJ(gg_unit_e015_0238,udg_TempPoint,.0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_636)
+    call SetUnitPositionLocFacingBJ(gg_unit_e015_0238,l_tempPoint,.0)
+    call RemoveLocation(l_tempPoint)
     set udg_ZodiacQuestStage=6
     call Wait_Polled(1.)
     set udg_SpecialEffect[43]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e015_0238,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_ZodiacAge_TalonOpensGate)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_ZodiacAge_TalonOpensGate_Conditions takes nothing returns boolean

@@ -18,17 +18,19 @@ function Trig_Regen_Cast_IsHero takes nothing returns boolean
 endfunction
 
 function Trig_Regen_Cast_Actions takes nothing returns nothing
-    set udg_TempInteger=25
+    local integer l_tempInteger
+    local real l_tempReal
+    set l_tempInteger=25
     if(Trig_Regen_Cast_IsHero())then
         // Add 1 point for each complete group of 3 Intelligence; leftover points do not count.
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 3))
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 3))
     else
-        // (udg_TempInteger) plus (unit level of the triggering unit).
-        set udg_TempInteger=(udg_TempInteger+GetUnitLevel(GetTriggerUnit()))
+        // (l_tempInteger) plus (unit level of the triggering unit).
+        set l_tempInteger=(l_tempInteger+GetUnitLevel(GetTriggerUnit()))
     endif
-    set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_HealOverTimeHash)
+    set l_tempReal=Prof_StaffPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_HealOverTimeHash)
     call GroupAddUnitSimple(GetSpellTargetUnit(),udg_RegenGroup)
 endfunction
 

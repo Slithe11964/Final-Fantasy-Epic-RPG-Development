@@ -68,6 +68,7 @@ function Trig_Hero_Death_Revive_HasNoDeathPenalty takes nothing returns boolean
 endfunction
 
 function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
+    local location l_tempPoint3
     call DialogDisplay(GetOwningPlayer(GetTriggerUnit()),udg_WarpDialog,false)
     if(Trig_Hero_Death_Revive_MessagesAllowed())then
         if(Trig_Hero_Death_Revive_HasKiller())then
@@ -94,14 +95,15 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
         call KillUnit(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
         call ForGroupBJ(Group_AllUnitsOfPlayer(GetOwningPlayer(GetTriggerUnit())),function Trig_Hero_Death_Revive_RemoveEnumUnit)
         call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_EliminatedPlayers)
+        set l_tempPoint3=null
         return
     endif
     set udg_SpeedrunFlag[1]=true
     call SetDestructableAnimationBJ(gg_dest_BTrx_0011,"Stand Work")
-    set udg_TempPoint3=GetRectCenter(gg_rct_571)
-    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetTriggerUnit()),udg_TempPoint3,.0)
-    call ReviveHeroLoc(GetTriggerUnit(),udg_TempPoint3,true)
-    call RemoveLocation(udg_TempPoint3)
+    set l_tempPoint3=GetRectCenter(gg_rct_571)
+    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetTriggerUnit()),l_tempPoint3,.0)
+    call ReviveHeroLoc(GetTriggerUnit(),l_tempPoint3,true)
+    call RemoveLocation(l_tempPoint3)
     call SelectUnitForPlayerSingle(GetTriggerUnit(),GetOwningPlayer(GetTriggerUnit()))
     call StartTimerBJ(udg_PostReviveTimer,false,.01)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Orc\\Reincarnation\\ReincarnationTarget.mdl")
@@ -173,6 +175,7 @@ function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
     endif
     call Wait_Polled(2)
     call SetDestructableAnimationBJ(gg_dest_BTrx_0011,"Stand Alternate")
+    set l_tempPoint3=null
 endfunction
 
 function InitTrig_Hero_Death takes nothing returns nothing

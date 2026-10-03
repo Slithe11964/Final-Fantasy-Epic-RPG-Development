@@ -112,16 +112,17 @@ function Trig_Naisha_Heal_Cond_BoostActive takes nothing returns boolean
 endfunction
 
 function Trig_Naisha_Heal_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(gg_trg_Naisha_Death)
-    set udg_TempPoint=GetUnitLoc(udg_NaishaUnit)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(udg_NaishaUnit)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call KillUnit(udg_NaishaUnit)
     call RemoveUnit(udg_NaishaUnit)
-    set udg_TempPoint=GetDestructableLoc(gg_dest_BTrx_0011)
-    call CreateNUnitsAtLoc(1,'ensh',Player(9),udg_TempPoint,bj_UNIT_FACING) // 'ensh': editor label "Naisha"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetDestructableLoc(gg_dest_BTrx_0011)
+    call CreateNUnitsAtLoc(1,'ensh',Player(9),l_tempPoint,bj_UNIT_FACING) // 'ensh': editor label "Naisha"
+    call RemoveLocation(l_tempPoint)
     set udg_NaishaUnit=GetLastCreatedUnit()
     if(Trig_Naisha_Heal_Cond_BoostActive())then
         call UnitAddAbilityBJ('A1CG',udg_NaishaUnit) // 'A1CG': ability "Attack Speed +40%"
@@ -136,10 +137,10 @@ function Trig_Naisha_Heal_Actions takes nothing returns nothing
     call SetUnitLifePercentBJ(udg_NaishaUnit,11.11)
     call PauseUnitBJ(true,udg_NaishaUnit)
     call SetUnitInvulnerable(udg_NaishaUnit,true)
-    set udg_TempPoint=GetUnitLoc(udg_NaishaUnit)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(udg_NaishaUnit)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveGuardPosition(udg_NaishaUnit)
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"Naisha has been severly injured and is healing her wounds now. She will join you again in two minutes.")
     call Wait_Polled(15.)
@@ -169,6 +170,7 @@ function Trig_Naisha_Heal_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Naisha_Wounded)
     call EnableTrigger(gg_trg_Naisha_AttackedRetreat)
     call EnableTrigger(gg_trg_Naisha_Death)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Naisha_Death_Conditions takes nothing returns boolean
@@ -273,18 +275,21 @@ function Trig_Naisha_Whirl_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Naisha_Whirl_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveRealBJ(15000.,1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,3,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(15000.,1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(5.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A159',GetLastCreatedUnit()) // 'A159': ability "Whirl"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"fanofknives")
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Naisha automatically; it is intentionally empty. This module's

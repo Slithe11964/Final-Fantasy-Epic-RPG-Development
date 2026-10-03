@@ -15,6 +15,7 @@ function Trig_Quest_SeekDestroy_Start_Cond_CinematicsEnabled takes nothing retur
 endfunction
 
 function Trig_Quest_SeekDestroy_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[83])
     if(Trig_Quest_SeekDestroy_Start_Cond_CinematicsEnabled())then
@@ -41,41 +42,42 @@ function Trig_Quest_SeekDestroy_Start_Actions takes nothing returns nothing
     set udg_QuestReq[7]=CreateQuestItemBJ(GetLastCreatedQuestBJ(),"Seekers killed: 0/3")
     set udg_SpecialEffect[83]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_nemi_0078,"Objects\\RandomObject\\RandomObject.mdl")
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n0CJ',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0CJ': unit "Kelk"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n0CJ',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0CJ': unit "Kelk"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n0CA',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0CA': unit "Kinoc"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n0CA',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0CA': unit "Kinoc"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n0CI',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0CI': unit "Mika"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n0CI',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0CI': unit "Mika"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Seekers_TrackEngaged)
     call EnableTrigger(gg_trg_Quest_SeekDestroy_Count)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_SeekDestroy_Count_Conditions takes nothing returns boolean

@@ -37,15 +37,17 @@ function Trig_Boss_Judges_Summon_ActivateJudge takes nothing returns nothing
 endfunction
 
 function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     set udg_BossCleanupTrigger=gg_trg_Boss_Judges_Cleanup
     call Cine_Enter()
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_639)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_639)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03R',Player($B),udg_TempPoint,180.) // 'N03R': unit "Judge Magister"; $B = 11
+    call CreateNUnitsAtLoc(1,'N03R',Player($B),l_tempPoint,180.) // 'N03R': unit "Judge Magister"; $B = 11
     set udg_JudgeGabranth=GetLastCreatedUnit()
     call Cam_PanToUnit(GetLastCreatedUnit(),0)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
@@ -59,11 +61,11 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
     call UnitAddItemByIdSwapped('I0BX',GetLastCreatedUnit()) // 'I0BX': item "Grand Armor"
     call UnitAddItemByIdSwapped('I08R',GetLastCreatedUnit()) // 'I08R': item "Pocket of Chemist's Elixirs"
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,100.,100.)
-    call RemoveLocation(udg_TempPoint)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint2=OffsetLocation(l_tempPoint,100.,100.)
+    call RemoveLocation(l_tempPoint)
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03P',Player($B),udg_TempPoint2,180.) // 'N03P': unit "Judge Magister"; $B = 11
+    call CreateNUnitsAtLoc(1,'N03P',Player($B),l_tempPoint2,180.) // 'N03P': unit "Judge Magister"; $B = 11
     set udg_JudgeBergan=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
@@ -76,11 +78,11 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
     call UnitAddItemByIdSwapped('I0BX',GetLastCreatedUnit()) // 'I0BX': item "Grand Armor"
     call UnitAddItemByIdSwapped('I0DR',GetLastCreatedUnit()) // 'I0DR': item "Cameo Belt"
-    set udg_TempPoint=OffsetLocation(udg_TempPoint2,100.,100.)
-    call RemoveLocation(udg_TempPoint2)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=OffsetLocation(l_tempPoint2,100.,100.)
+    call RemoveLocation(l_tempPoint2)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03Q',Player($B),udg_TempPoint,180.) // 'N03Q': unit "Judge Magister"; $B = 11
+    call CreateNUnitsAtLoc(1,'N03Q',Player($B),l_tempPoint,180.) // 'N03Q': unit "Judge Magister"; $B = 11
     set udg_JudgeZargabaath=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
@@ -93,13 +95,13 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
     call UnitAddItemByIdSwapped('I0BX',GetLastCreatedUnit()) // 'I0BX': item "Grand Armor"
     call UnitAddItemByIdSwapped('I08R',GetLastCreatedUnit()) // 'I08R': item "Pocket of Chemist's Elixirs"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_639)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,100.,-100.)
-    call RemoveLocation(udg_TempPoint)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_639)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,100.,-100.)
+    call RemoveLocation(l_tempPoint)
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03N',Player($B),udg_TempPoint2,180.) // 'N03N': unit "Judge Magister"; $B = 11
+    call CreateNUnitsAtLoc(1,'N03N',Player($B),l_tempPoint2,180.) // 'N03N': unit "Judge Magister"; $B = 11
     set udg_JudgeGhis=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
@@ -112,11 +114,11 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
     call UnitAddItemByIdSwapped('I0BX',GetLastCreatedUnit()) // 'I0BX': item "Grand Armor"
     call UnitAddItemByIdSwapped('I0EP',GetLastCreatedUnit()) // 'I0EP': item "Pocket of Elixirs"
-    set udg_TempPoint=OffsetLocation(udg_TempPoint2,100.,-100.)
-    call RemoveLocation(udg_TempPoint2)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=OffsetLocation(l_tempPoint2,100.,-100.)
+    call RemoveLocation(l_tempPoint2)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03O',Player($B),udg_TempPoint,180.) // 'N03O': unit "Judge Magister"; $B = 11
+    call CreateNUnitsAtLoc(1,'N03O',Player($B),l_tempPoint,180.) // 'N03O': unit "Judge Magister"; $B = 11
     set udg_JudgeDrace=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_JudgeGroup)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
@@ -129,7 +131,7 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I0D4',GetLastCreatedUnit()) // 'I0D4': item "Helm of Divine Judgement"
     call UnitAddItemByIdSwapped('I0BX',GetLastCreatedUnit()) // 'I0BX': item "Grand Armor"
     call UnitAddItemByIdSwapped('I08R',GetLastCreatedUnit()) // 'I08R': item "Pocket of Chemist's Elixirs"
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(2.)
     if(Trig_Boss_Judges_Summon_FirstEncounter())then
         set udg_RingHintUsed[3]=true
@@ -152,6 +154,8 @@ function Trig_Boss_Judges_Summon_Actions takes nothing returns nothing
     call StartTimerBJ(udg_JudgeTimer[4],false,12.5)
     call ConditionalTriggerExecute(gg_trg_Boss_Judges_Ultimates)
     call Cine_Exit()
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Boss_Judges_Ultimates_GhisAlive takes nothing returns boolean
@@ -437,9 +441,10 @@ function Trig_Boss_Judges_Death_JudgesRemain takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Judges_Death_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I03P',udg_TempPoint) // 'I03P': item "Megalixir"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I03P',l_tempPoint) // 'I03P': item "Megalixir"
+    call RemoveLocation(l_tempPoint)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_JudgeGroup)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
@@ -467,18 +472,18 @@ function Trig_Boss_Judges_Death_Actions takes nothing returns nothing
             set udg_TempString="|cffff4040Judge Magisters|r defeated in "
             call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
         endif
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
         set bj_forLoopAIndex=1
         set bj_forLoopAIndexEnd=5
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (72) times (loop counter A treated as a decimal-capable number).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(72.*I2R(GetForLoopIndexA())))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,(72.*I2R(GetForLoopIndexA())))
             call CreateItemLoc('I0D4',udg_TempPoint2) // 'I0D4': item "Helm of Divine Judgement"
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call Music_ClearTrack(26)
         call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
         if(Trig_Boss_Judges_Death_SummonerIsPlayer())then
@@ -499,6 +504,7 @@ function Trig_Boss_Judges_Death_Actions takes nothing returns nothing
         call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Judges_UseMegalixir_Conditions takes nothing returns boolean
@@ -526,19 +532,22 @@ function Trig_Boss_Judge_Sentence_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Judge_Sentence_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveRealBJ(40000.,1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,3,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveBooleanBJ(true,5,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(40000.,1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveBooleanBJ(true,5,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(5.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0WY',GetLastCreatedUnit()) // 'A0WY': ability "Sentence"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"fanofknives")
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Judge_ChainMagick_Conditions takes nothing returns boolean

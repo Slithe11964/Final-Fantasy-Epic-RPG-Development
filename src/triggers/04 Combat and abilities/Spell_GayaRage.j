@@ -103,14 +103,15 @@ function Trig_Spell_GayaRage_Damage_CasterInArena takes nothing returns boolean
 endfunction
 
 function Trig_Spell_GayaRage_Damage_DamageTarget takes nothing returns nothing
+    local real l_tempReal
     call UnitRemoveBuffBJ('B063',GetEnumUnit()) // 'B063': buff "Cover"
     // (a random decimal number between 15 and 16) divided by (16).
-    set udg_TempReal=(GetRandomReal(15.,16.)/ 16.)
+    set l_tempReal=(GetRandomReal(15.,16.)/ 16.)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    // (99999.9) times (udg_TempReal).
-    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*udg_TempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
+    // (99999.9) times (l_tempReal).
+    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*l_tempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
 endfunction
 
 function Trig_Spell_GayaRage_Damage_Actions takes nothing returns nothing

@@ -1287,7 +1287,8 @@ function Trig_Cmd_Music_IsPathCmd takes nothing returns boolean
 endfunction
 
 function Trig_Cmd_Music_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     if(Trig_Cmd_Music_IsPathCmd())then
         call Trig_Cmd_Music_SetMusicPath(GetTriggerPlayer(),SubString(GetEventPlayerChatString(),$C,StringLength(GetEventPlayerChatString()))) // $C = 12
     else
@@ -1297,15 +1298,15 @@ function Trig_Cmd_Music_Actions takes nothing returns nothing
         if(Trig_Cmd_Music_IsAutoplayCmd())then
             if(Trig_Cmd_Music_IsAutoplayOn())then
                 set udg_MusicEnabled[GetPlayerId(GetTriggerPlayer())]=true
-                call DisplayTimedTextToForce(udg_TempForce,20.,"Music will now be played automatically.")
+                call DisplayTimedTextToForce(l_tempForce,20.,"Music will now be played automatically.")
             else
                 if(Trig_Cmd_Music_IsAutoplayOff())then
                     set udg_MusicEnabled[GetPlayerId(GetTriggerPlayer())]=false
-                    call DisplayTimedTextToForce(udg_TempForce,20.,"Music will no longer be played automatically.")
+                    call DisplayTimedTextToForce(l_tempForce,20.,"Music will no longer be played automatically.")
                 else
                     if(Trig_Cmd_Music_IsAutoplayToggle())then
                         set udg_MusicEnabled[GetPlayerId(GetTriggerPlayer())]=not udg_MusicEnabled[GetPlayerId(GetTriggerPlayer())]
-                        call DisplayTimedTextToForce(udg_TempForce,20.,"Toggled music autoplaying.")
+                        call DisplayTimedTextToForce(l_tempForce,20.,"Toggled music autoplaying.")
                     endif
                 endif
             endif
@@ -1313,15 +1314,15 @@ function Trig_Cmd_Music_Actions takes nothing returns nothing
             if(Trig_Cmd_Music_IsTracknamesCmd())then
                 if(Trig_Cmd_Music_IsTracknamesOn())then
                     set udg_MusicAnnounce[GetPlayerId(GetTriggerPlayer())]=true
-                    call DisplayTimedTextToForce(udg_TempForce,20.,"Filenames of custom music tracks will now be displayed when played.")
+                    call DisplayTimedTextToForce(l_tempForce,20.,"Filenames of custom music tracks will now be displayed when played.")
                 else
                     if(Trig_Cmd_Music_IsTracknamesOff())then
                         set udg_MusicAnnounce[GetPlayerId(GetTriggerPlayer())]=false
-                        call DisplayTimedTextToForce(udg_TempForce,20.,"Filenames of custom music tracks will no longer be displayed when played.")
+                        call DisplayTimedTextToForce(l_tempForce,20.,"Filenames of custom music tracks will no longer be displayed when played.")
                     else
                         if(Trig_Cmd_Music_IsTracknamesToggle())then
                             set udg_MusicAnnounce[GetPlayerId(GetTriggerPlayer())]=not udg_MusicAnnounce[GetPlayerId(GetTriggerPlayer())]
-                            call DisplayTimedTextToForce(udg_TempForce,20.,"Toggled displaying of custom music filenames.")
+                            call DisplayTimedTextToForce(l_tempForce,20.,"Toggled displaying of custom music filenames.")
                         endif
                     endif
                 endif
@@ -1339,7 +1340,7 @@ function Trig_Cmd_Music_Actions takes nothing returns nothing
             else
                 if(Trig_Cmd_Music_IsNative())then
                     call Trig_Cmd_Music_ResetMusicPath(GetTriggerPlayer())
-                    call DisplayTimedTextToForce(udg_TempForce,20.,"Now using native Warcraft III music.")
+                    call DisplayTimedTextToForce(l_tempForce,20.,"Now using native Warcraft III music.")
                 else
                     if(Trig_Cmd_Music_IsReset())then
                         call Trig_Cmd_Music_PlayCurrentTrack(GetTriggerPlayer())
@@ -1348,7 +1349,8 @@ function Trig_Cmd_Music_Actions takes nothing returns nothing
             endif
         endif
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Cmd_Load_Code_Actions takes nothing returns nothing

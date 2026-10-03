@@ -35,13 +35,14 @@ function Trig_Boss_Zalera_Intro_IsGafgarionGuarding takes nothing returns boolea
 endfunction
 
 function Trig_Boss_Zalera_Intro_Actions takes nothing returns nothing
+    local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_Zalera_Intro_IsGafgarionDead())then
         set udg_ZaleraStage=4
     endif
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player(8),'u00D') // 'u00D': unit "Death Ghost"
-    call ForGroupBJ(udg_TempGroup,function Trig_Boss_Zalera_Intro_KillGhost)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player(8),'u00D') // 'u00D': unit "Death Ghost"
+    call ForGroupBJ(l_tempGroup,function Trig_Boss_Zalera_Intro_KillGhost)
+    call DestroyGroup(l_tempGroup)
     call GroupRemoveUnitSimple(gg_unit_U000_0248,udg_QuestUnits)
     call DisableTrigger(gg_trg_Ghost_Despawn)
     call DestroyTrigger(gg_trg_Ghost_Despawn)
@@ -107,6 +108,7 @@ function Trig_Boss_Zalera_Intro_Actions takes nothing returns nothing
     call QuestSetDescriptionBJ(udg_MainQuest[7],"Destroy Zalera, the Zodiac Brave of Death.")
     call Music_SetTrack($D) // $D = 13
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 function Trig_Boss_Zalera_Death_IsKillLogEnabled takes nothing returns boolean

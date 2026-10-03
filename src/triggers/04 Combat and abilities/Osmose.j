@@ -14,12 +14,14 @@ function Trig_Osmose_Cancel_NoMP_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Osmose_Cancel_NoMP_Actions takes nothing returns nothing
+    local force l_tempForce
     call PauseUnitBJ(true,GetTriggerUnit())
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stop")
     call PauseUnitBJ(false,GetTriggerUnit())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000The target unit has no MP!|r")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000The target unit has no MP!|r")
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Osmose_Cast_IsOsmoseAbility takes nothing returns boolean
@@ -47,6 +49,7 @@ function Trig_Osmose_Cast_NothingToDrain takes nothing returns boolean
 endfunction
 
 function Trig_Osmose_Cast_Actions takes nothing returns nothing
+    local integer l_tempInteger
     set udg_TempReal=GetUnitStateSwap(UNIT_STATE_MANA,GetSpellTargetUnit())
     if(Trig_Osmose_Cast_TargetHasNoMana())then
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
@@ -55,18 +58,18 @@ function Trig_Osmose_Cast_Actions takes nothing returns nothing
         return
     endif
     // ((GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) plus (4)) times (40).
-    set udg_TempInteger=((GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+4)*40)
+    set l_tempInteger=((GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())+4)*40)
     if(Trig_Osmose_Cast_IsCasterHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (2)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (2)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
+    // Result 1: l_tempInteger treated as a decimal-capable number.
     // Result 2: (result 1) times (Prof_StaffPower(the triggering unit)).
     // Result 3: (result 2) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*Prof_StaffPower(GetTriggerUnit())))
+    set l_tempInteger=R2I((I2R(l_tempInteger)*Prof_StaffPower(GetTriggerUnit())))
     set udg_DmgFlagManaDamage=true
     // Udg_TempInteger treated as a decimal-capable number.
-    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),I2R(udg_TempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
+    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),I2R(l_tempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     if(Trig_Osmose_Cast_DrainExceedsTargetMana())then
         set udg_LastDamageDealt=udg_TempReal
     endif

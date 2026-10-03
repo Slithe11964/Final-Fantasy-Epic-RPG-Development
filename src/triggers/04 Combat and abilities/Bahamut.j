@@ -25,6 +25,9 @@ function Trig_Bahamut_MegaFlare_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Bahamut_MegaFlare_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     if(Trig_Bahamut_MegaFlare_HasNoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
@@ -52,27 +55,27 @@ function Trig_Bahamut_MegaFlare_Actions takes nothing returns nothing
     endloop
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
     call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Bahamut_MegaFlare_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (5)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*5))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (5)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*5))
     else
         if(Trig_Bahamut_MegaFlare_UsesFirstWeapon())then
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) times (4)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)*4))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) times (4)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)*4))
         else
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) times (4)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)*4))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) times (4)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)*4))
         endif
     endif
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A13N',GetLastCreatedUnit()) // 'A13N': ability "Bahamut Flare"

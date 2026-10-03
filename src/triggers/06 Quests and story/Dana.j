@@ -166,6 +166,7 @@ function Trig_Dana_Death_StopShake takes nothing returns nothing
 endfunction
 
 function Trig_Dana_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[70])
     if(Trig_Dana_Death_Quest14NotDone())then
@@ -196,14 +197,14 @@ function Trig_Dana_Death_Actions takes nothing returns nothing
     endif
     call ShowUnitShow(gg_unit_U00N_0205)
     call PauseUnitBJ(false,gg_unit_U00N_0205)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call IssuePointOrderLocBJ(gg_unit_U00N_0205,"attack",udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call IssuePointOrderLocBJ(gg_unit_U00N_0205,"attack",l_tempPoint)
     call GroupAddUnitSimple(gg_unit_U00N_0205,udg_BossUnits)
     if(Trig_Dana_Death_StageFive())then
-        set udg_QuestItem[$E]=CreateItemLoc('I0I9',udg_TempPoint) // $E = 14; 'I0I9': item "Shimmering Pendant"
+        set udg_QuestItem[$E]=CreateItemLoc('I0I9',l_tempPoint) // $E = 14; 'I0I9': item "Shimmering Pendant"
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Famfrit_Encounter)
     call ForForce(GetPlayersAll(),function Trig_Dana_Death_ShakeCamera)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN,2.,"ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp",.0,.0,100.,0)
@@ -213,6 +214,7 @@ function Trig_Dana_Death_Actions takes nothing returns nothing
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN,2.,"ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp",.0,.0,100.,0)
     call ForForce(GetPlayersAll(),function Trig_Dana_Death_StopShake)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Dana automatically; it is intentionally empty. This module's

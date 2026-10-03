@@ -89,10 +89,11 @@ function Trig_Ninja_Trance_LacksImmortal takes nothing returns boolean
 endfunction
 
 function Trig_Ninja_Trance_Actions takes nothing returns nothing
+    local location l_tempPoint
     call StartTimerBJ(udg_NinjaImmortalTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,8.)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A14O',GetLastCreatedUnit()) // 'A14O': ability "Trance"
@@ -102,6 +103,7 @@ function Trig_Ninja_Trance_Actions takes nothing returns nothing
         call Wait_Polled(1.)
         call UnitRemoveAbilityBJ('A0ZR',GetTriggerUnit()) // 'A0ZR': ability "Immortal"
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Ninja automatically; it is intentionally empty. This module's

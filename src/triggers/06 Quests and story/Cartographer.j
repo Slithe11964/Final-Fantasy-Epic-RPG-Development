@@ -188,6 +188,7 @@ function Trig_Cartographer_Update_HasNewRewardTier takes nothing returns boolean
 endfunction
 
 function Trig_Cartographer_Update_Actions takes nothing returns nothing
+    local integer l_tempInteger
     if(Trig_Cartographer_Update_IsFogCheat())then
         set udg_FogDisabled=true
     endif
@@ -205,7 +206,7 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
         return
     endif
     set udg_TempPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
-    set udg_TempInteger=0
+    set l_tempInteger=0
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=50
     loop
@@ -226,15 +227,15 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
             // Result 4: (GetRectMinY(GetPlayableMapRect())) plus (result 3).
             set udg_TempPoint=Location((GetRectMinX(GetPlayableMapRect())+(I2R(GetForLoopIndexA())*(GetRectWidthBJ(GetPlayableMapRect())*.02))),(GetRectMinY(GetPlayableMapRect())+(I2R(GetForLoopIndexB())*(GetRectHeightBJ(GetPlayableMapRect())*.02))))
             if(Trig_Cartographer_Update_IsPointExplored())then
-                set udg_TempInteger=(udg_TempInteger+1)
+                set l_tempInteger=(l_tempInteger+1)
             endif
             call RemoveLocation(udg_TempPoint)
             set bj_forLoopBIndex=bj_forLoopBIndex+1
         endloop
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    // (udg_TempInteger treated as a decimal-capable number) times (0.04).
-    set udg_MapExploredPct=(I2R(udg_TempInteger)*.04)
+    // (l_tempInteger treated as a decimal-capable number) times (0.04).
+    set udg_MapExploredPct=(I2R(l_tempInteger)*.04)
     if(Trig_Cartographer_Update_IsMapQuestActive())then
         call QuestItemSetDescriptionBJ(udg_QuestReq[6],("Explored: "+(R2SW(udg_MapExploredPct,3,2)+"%")))
     endif

@@ -30,6 +30,8 @@ function Trig_ArenaResources_Start_Cond_ShowDialogue takes nothing returns boole
 endfunction
 
 function Trig_ArenaResources_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[59])
     if(Trig_ArenaResources_Start_Cond_ShowDialogue())then
@@ -51,14 +53,14 @@ function Trig_ArenaResources_Start_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Arena Resources|r")
     set udg_SideQuest[37]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Arena Resources"),"Limma, ranger from Lothlorien, has asked you to help her escort a ship of supplies to the arena. Meet her in the eastern part of the Naga Islands.","ReplaceableTextures\\CommandButtons\\BTNNightElfTransport.blp")
     call SetUnitOwner(gg_unit_e008_0132,Player(8),false)
-    set udg_TempPoint=GetRectCenter(gg_rct_232)
-    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,udg_TempPoint,180.)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_232)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,384.,0)
-    call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLoc(1,'e00E',Player(9),udg_TempPoint2,180.) // 'e00E': unit "Night Elf Supply Ship"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetRectCenter(gg_rct_232)
+    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,l_tempPoint,180.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_232)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,384.,0)
+    call RemoveLocation(l_tempPoint)
+    call CreateNUnitsAtLoc(1,'e00E',Player(9),l_tempPoint2,180.) // 'e00E': unit "Night Elf Supply Ship"
+    call RemoveLocation(l_tempPoint2)
     set udg_SupplyShip=GetLastCreatedUnit()
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call TriggerRegisterUnitEvent(gg_trg_ArenaResources_ShipLost,udg_SupplyShip,EVENT_UNIT_DEATH)
@@ -68,6 +70,8 @@ function Trig_ArenaResources_Start_Actions takes nothing returns nothing
     set udg_SpecialEffect[59]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e008_0132,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_ArenaResources_Escort)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_ArenaResources_Escort_Conditions takes nothing returns boolean
@@ -79,6 +83,7 @@ function Trig_ArenaResources_Escort_Cond_ShowDialogue takes nothing returns bool
 endfunction
 
 function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[59])
     call GroupRemoveUnitSimple(gg_unit_e008_0132,udg_BossUnits)
@@ -94,12 +99,12 @@ function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
     call SetUnitInvulnerable(udg_SupplyShip,false)
     call PauseUnitBJ(false,udg_SupplyShip)
     call UnitAddAbilityBJ('A11M',udg_SupplyShip) // 'A11M': ability "Aggressor"
-    set udg_TempPoint=GetRectCenter(gg_rct_393)
-    call IssuePointOrderLocBJ(udg_SupplyShip,"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_342)
-    call IssuePointOrderLocBJ(gg_unit_e008_0132,"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_393)
+    call IssuePointOrderLocBJ(udg_SupplyShip,"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_342)
+    call IssuePointOrderLocBJ(gg_unit_e008_0132,"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitOwner(gg_unit_e008_0132,Player(9),false)
     call SetUnitAcquireRangeBJ(gg_unit_e008_0132,600.)
     call GroupAddUnitSimple(udg_SupplyShip,udg_BossUnits)
@@ -109,6 +114,7 @@ function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
     set udg_ShipUndamaged=true
     call Wait_Polled(5.)
     call EnableTrigger(gg_trg_ArenaResources_ShipMove)
+    set l_tempPoint=null
 endfunction
 
 function Trig_ArenaResources_ShipMove_Cond_LimmaTooFar takes nothing returns boolean
@@ -155,6 +161,8 @@ function Trig_ArenaResources_ShipLost_Cond_CanReduceReward takes nothing returns
 endfunction
 
 function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_ArenaResources_ShipMove)
     call DisableTrigger(gg_trg_ArenaResources_Complete)
@@ -173,14 +181,14 @@ function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
         // Decrease udg_ArenaEscortReward by 1000.
         set udg_ArenaEscortReward=(udg_ArenaEscortReward-$3E8) // $3E8 = 1000
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_232)
-    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,udg_TempPoint,180.)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_232)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,384.,0)
-    call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLoc(1,'e00E',Player(9),udg_TempPoint2,180.) // 'e00E': unit "Night Elf Supply Ship"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetRectCenter(gg_rct_232)
+    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,l_tempPoint,180.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_232)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,384.,0)
+    call RemoveLocation(l_tempPoint)
+    call CreateNUnitsAtLoc(1,'e00E',Player(9),l_tempPoint2,180.) // 'e00E': unit "Night Elf Supply Ship"
+    call RemoveLocation(l_tempPoint2)
     set udg_SupplyShip=GetLastCreatedUnit()
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call TriggerRegisterUnitEvent(gg_trg_ArenaResources_ShipLost,udg_SupplyShip,EVENT_UNIT_DEATH)
@@ -188,6 +196,8 @@ function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
     set udg_SpecialEffect[59]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e008_0132,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_ArenaResources_Escort)
     call GroupAddUnitSimple(gg_unit_e008_0132,udg_BossUnits)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_ArenaResources_Complete_Conditions takes nothing returns boolean
@@ -211,6 +221,7 @@ function Trig_ArenaResources_Complete_Cond_GateStillClosed takes nothing returns
 endfunction
 
 function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_ArenaResources_ShipMove)
     call DisableTrigger(gg_trg_ArenaResources_ShipDamaged)
@@ -249,13 +260,14 @@ function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
         call DisableTrigger(gg_trg_Arena_GateOpen)
         call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ZTsg_0025)
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_233)
-    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_233)
+    call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
     call UnitRemoveAbilityBJ('A03N',gg_unit_e008_0132) // 'A03N': ability "Night Might"
     call EnableTrigger(gg_trg_ArenaExpansion_Prepare)
     call StartTimerBJ(udg_SharedDelayTimer2,false,180.)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_ArenaResources automatically; it is intentionally empty. This module's

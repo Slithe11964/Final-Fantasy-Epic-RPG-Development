@@ -123,11 +123,13 @@ function Trig_DefiledFountain_BulbPickup_Conditions takes nothing returns boolea
 endfunction
 
 function Trig_DefiledFountain_BulbPickup_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Thunderbloom Bulb to Feanor.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Thunderbloom Bulb to Feanor.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[23],"Bring the Thunderbloom Bulb to Feanor.")
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_DefiledFountain automatically; it is intentionally empty. This module's

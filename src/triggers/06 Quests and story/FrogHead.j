@@ -13,6 +13,7 @@ function Trig_FrogHead_TurnIn_Cond_ShowDialogue takes nothing returns boolean
 endfunction
 
 function Trig_FrogHead_TurnIn_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I07I')) // 'I07I': item "Qu's Frog Head"
     call DestroyEffectBJ(udg_SpecialEffect[62])
@@ -27,14 +28,15 @@ function Trig_FrogHead_TurnIn_Actions takes nothing returns nothing
     endif
     call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Meet Shinra in the Northern Mountains.")
     call QuestSetDescriptionBJ(udg_SideQuest[40],"Shinra, an Al Bhed child from Spira, now finally has all the artifacts required to make a portal. Meet him in the Northern Mountains.")
-    set udg_TempPoint=GetRectCenter(gg_rct_420)
-    call SetUnitPositionLocFacingBJ(gg_unit_n034_0109,udg_TempPoint,160.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_420)
+    call SetUnitPositionLocFacingBJ(gg_unit_n034_0109,l_tempPoint,160.)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(gg_unit_n034_0109,udg_BossUnits)
     call Wait_Polled(1.)
     set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_DimensionalBoundary_OpenPortal)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_FrogHead automatically; it is intentionally empty. This module's

@@ -35,20 +35,22 @@ function Trig_GrandVampire_Death_Cond_VampireDropRoll takes nothing returns bool
 endfunction
 
 function Trig_GrandVampire_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Ghoul_Master_Decay)
     call DestroyTrigger(gg_trg_Ghoul_Master_Decay)
     set udg_GhoulMasterDisabled=true
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_GrandVampire_Death_Cond_VampireDropRoll())then
-        call CreateItemLoc('I02P',udg_TempPoint) // 'I02P': item "Dark Claw"
+        call CreateItemLoc('I02P',l_tempPoint) // 'I02P': item "Dark Claw"
     else
-        call CreateItemLoc('I02Q',udg_TempPoint) // 'I02Q': item "Unholy Claw"
+        call CreateItemLoc('I02Q',l_tempPoint) // 'I02Q': item "Unholy Claw"
     endif
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call RemoveLocation(l_tempPoint)
     call SaveIntegerBJ(1,2,89,udg_GameStateHash)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_GrandVampire automatically; it is intentionally empty. This module's

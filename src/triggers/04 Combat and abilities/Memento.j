@@ -57,12 +57,13 @@ function Trig_Memento_Ring_Compass_Cond_NoShadowUnit takes nothing returns boole
 endfunction
 
 function Trig_Memento_Ring_Compass_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Memento_Ring_Compass_Cond_NoShadowUnit())then
         if(Trig_Memento_Ring_Compass_Cond_RingLinkLost())then
-            call DisplayTimedTextToForce(udg_TempForce,10.,"You can't make out any information from the ring anymore...")
+            call DisplayTimedTextToForce(l_tempForce,10.,"You can't make out any information from the ring anymore...")
         else
-            call DisplayTimedTextToForce(udg_TempForce,10.,"The ring doesn't appear to pull you in any particular direction.")
+            call DisplayTimedTextToForce(l_tempForce,10.,"The ring doesn't appear to pull you in any particular direction.")
         endif
     else
         set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
@@ -105,12 +106,13 @@ function Trig_Memento_Ring_Compass_Actions takes nothing returns nothing
             endif
         endif
         if(Trig_Memento_Ring_Compass_Cond_IsGlowingRing())then
-            call DisplayTimedTextToForce(udg_TempForce,10.,("The ring's glow points you towards the |cffffcc00"+(udg_TempString+"|r.")))
+            call DisplayTimedTextToForce(l_tempForce,10.,("The ring's glow points you towards the |cffffcc00"+(udg_TempString+"|r.")))
         else
-            call DisplayTimedTextToForce(udg_TempForce,10.,("A memory of the ring's faint glow makes you look towards the |cffffcc00"+(udg_TempString+"|r.")))
+            call DisplayTimedTextToForce(l_tempForce,10.,("A memory of the ring's faint glow makes you look towards the |cffffcc00"+(udg_TempString+"|r.")))
         endif
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Memento automatically; it is intentionally empty. This module's

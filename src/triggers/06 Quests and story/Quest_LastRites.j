@@ -18,6 +18,7 @@ function Trig_Quest_LastRites_Start_RemoveCorpse takes nothing returns nothing
 endfunction
 
 function Trig_Quest_LastRites_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     set udg_ExodusQuestStage=5
     call DestroyEffectBJ(udg_SpecialEffect[28])
@@ -42,13 +43,14 @@ function Trig_Quest_LastRites_Start_Actions takes nothing returns nothing
     call ForGroupBJ(udg_FarmCorpses,function Trig_Quest_LastRites_Start_RemoveCorpse)
     call GroupClear(udg_FarmCorpses)
     call SetDoodadAnimationRectBJ("hide",'NOft',gg_rct_580) // 'NOft': object name not found in map data
-    set udg_TempPoint=GetRectCenter(gg_rct_649)
-    call SetUnitPositionLoc(gg_unit_n0D3_0117,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_649)
+    call SetUnitPositionLoc(gg_unit_n0D3_0117,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_n0D3_0117)
     set udg_SpecialEffect[28]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0D3_0117,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Exodus_Reveal)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_LastRites takes nothing returns nothing

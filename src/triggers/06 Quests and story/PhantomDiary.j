@@ -9,32 +9,36 @@ function Trig_PhantomDiary_Open_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_PhantomDiary_Open_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-48.,48.)
-    call CreateItemLoc('I07R',udg_TempPoint2) // 'I07R': item "Phantom Diary Page 1"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-48.,48.)
+    call CreateItemLoc('I07R',l_tempPoint2) // 'I07R': item "Phantom Diary Page 1"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_QuestItem[31]=GetLastCreatedItem()
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,48.,48.)
-    call CreateItemLoc('I040',udg_TempPoint2) // 'I040': item "Phantom Diary Page 2"
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,48.,48.)
+    call CreateItemLoc('I040',l_tempPoint2) // 'I040': item "Phantom Diary Page 2"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_QuestItem[32]=GetLastCreatedItem()
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-48.,-48.)
-    call CreateItemLoc('I0BR',udg_TempPoint2) // 'I0BR': item "Phantom Diary Page 3"
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-48.,-48.)
+    call CreateItemLoc('I0BR',l_tempPoint2) // 'I0BR': item "Phantom Diary Page 3"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_QuestItem[33]=GetLastCreatedItem()
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,48.,-48.)
-    call CreateItemLoc('I0BS',udg_TempPoint2) // 'I0BS': item "Phantom Diary Page 4"
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,48.,-48.)
+    call CreateItemLoc('I0BS',l_tempPoint2) // 'I0BS': item "Phantom Diary Page 4"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_QuestItem[34]=GetLastCreatedItem()
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call KillUnit(GetTriggerUnit())
     call EnableTrigger(gg_trg_Quest_PhantomDiary_ShowAlberich)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_PhantomDiary automatically; it is intentionally empty. This module's

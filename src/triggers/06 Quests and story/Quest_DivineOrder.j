@@ -17,6 +17,7 @@ function Trig_Quest_DivineOrder_Start_PlayEnvoyScene takes nothing returns boole
 endfunction
 
 function Trig_Quest_DivineOrder_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[90])
     if(Trig_Quest_DivineOrder_Start_PlayEnvoyScene())then
@@ -48,13 +49,14 @@ function Trig_Quest_DivineOrder_Start_Actions takes nothing returns nothing
     call BlzSetUnitMaxHP(gg_unit_H036_0254,(BlzGetUnitMaxHP(gg_unit_H036_0254)*2))
     call SetUnitLifePercentBJ(gg_unit_H036_0254,'d')
     call SetUnitManaPercentBJ(gg_unit_H036_0254,'d')
-    set udg_TempPoint=GetRectCenter(gg_rct_677)
-    call SetUnitPositionLocFacingBJ(gg_unit_H036_0254,udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_677)
+    call SetUnitPositionLocFacingBJ(gg_unit_H036_0254,l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H036_0254)
     call GroupAddUnitSimple(gg_unit_H036_0254,udg_BossUnits)
     call EnableTrigger(gg_trg_Ziegfried_Confront)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_DivineOrder_Complete_DeathLogEnabled takes nothing returns boolean

@@ -31,12 +31,18 @@ function Trig_ScorchedEarth_Omen_ClearCameraShake takes nothing returns nothing
 endfunction
 
 function Trig_ScorchedEarth_Omen_Actions takes nothing returns nothing
+    local player l_tempPlayer
+    local location l_tempPoint
     if(Trig_ScorchedEarth_Omen_Cond_IcyRealmUnbeaten())then
         call StartTimerBJ(udg_ScorchedEarthTimer,false,120.)
+        set l_tempPlayer=null
+        set l_tempPoint=null
         return
     endif
     if(Trig_ScorchedEarth_Omen_Cond_ShouldWait())then
         call StartTimerBJ(udg_ScorchedEarthTimer,false,10.)
+        set l_tempPlayer=null
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -51,16 +57,18 @@ function Trig_ScorchedEarth_Omen_Actions takes nothing returns nothing
     call Wait_Polled(2)
     call ForForce(GetPlayersAll(),function Trig_ScorchedEarth_Omen_ClearCameraShake)
     call ConditionalTriggerExecute(gg_trg_Quest_52_Scorching)
-    set udg_TempPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
-    call Text_Say(Player_GetHero(udg_TempPlayer),"What the hell was that sensation...!? It feels like it came from the northeast. Maybe I should go check on the Icy Realm.",true)
+    set l_tempPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
+    call Text_Say(Player_GetHero(l_tempPlayer),"What the hell was that sensation...!? It feels like it came from the northeast. Maybe I should go check on the Icy Realm.",true)
     call Cine_ExitAction()
-    set udg_TempPoint=GetRectCenter(gg_rct_646)
-    set gg_dest_Dofv_0001=CreateDestructableLoc('Dofv',udg_TempPoint,.0,1,0) // 'Dofv': object name not found in map data
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_646)
+    set gg_dest_Dofv_0001=CreateDestructableLoc('Dofv',l_tempPoint,.0,1,0) // 'Dofv': object name not found in map data
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_ScorchedEarth_EnterRegion)
     call EnableTrigger(gg_trg_ScorchedEarth_TowerAttack)
     call GroupAddUnitSimple(gg_unit_U00Q_0023,udg_BossUnits)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPlayer=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_ScorchedEarth_EnterRegion_Conditions takes nothing returns boolean

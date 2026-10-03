@@ -17,26 +17,29 @@ function Trig_Spell_HeatWave_Cast_NoTargetUnit takes nothing returns boolean
 endfunction
 
 function Trig_Spell_HeatWave_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Spell_HeatWave_Cast_NoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // ((Strength of the triggering unit) times (5)) plus (4000) treated as a decimal-capable number.
-    call SaveRealBJ(I2R(((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+$FA0)),1,udg_TempHandleId,udg_ProxyDamageHash) // $FA0 = 4000
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(4,3,udg_TempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(I2R(((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+$FA0)),1,l_tempHandleId,udg_ProxyDamageHash) // $FA0 = 4000
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0FA',GetLastCreatedUnit()) // 'A0FA': ability "Heat Wave"
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Spell_HeatWave takes nothing returns nothing

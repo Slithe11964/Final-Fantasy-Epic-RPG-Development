@@ -13,18 +13,21 @@ function Trig_Shadow_FumaShuriken_IsGroundTarget takes nothing returns boolean
 endfunction
 
 function Trig_Shadow_FumaShuriken_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Shadow_FumaShuriken_IsGroundTarget())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Result 1: (unit level of the triggering unit) plus (1).
     // Result 2: (result 1) times (100).
     // Result 3: the square of (udg_ShadowLoyalty).
@@ -32,15 +35,16 @@ function Trig_Shadow_FumaShuriken_Actions takes nothing returns nothing
     // Result 5: (result 2) plus (result 4).
     // Result 6: (CountPlayersInForceBJ(udg_PlayingPlayers)) plus (1).
     // Result 7: (result 5) divided by (result 6).
-    set udg_TempInteger=((((GetUnitLevel(GetTriggerUnit())+1)*'d')+((udg_ShadowLoyalty*udg_ShadowLoyalty)/ 2))/(CountPlayersInForceBJ(udg_PlayingPlayers)+1))
+    set l_tempInteger=((((GetUnitLevel(GetTriggerUnit())+1)*'d')+((udg_ShadowLoyalty*udg_ShadowLoyalty)/ 2))/(CountPlayersInForceBJ(udg_PlayingPlayers)+1))
     // Udg_TempInteger treated as a decimal-capable number.
-    call SaveRealBJ(I2R(udg_TempInteger),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,3,udg_TempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0WT',GetLastCreatedUnit()) // 'A0WT': ability "Fuma Shuriken"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"creepthunderbolt",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Shadow_Combat takes nothing returns nothing

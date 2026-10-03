@@ -53,11 +53,13 @@ function Trig_Quest_WorldLiberation_Count_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_WorldLiberation_Reward_GiveCelestium takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(Player_GetHero(GetEnumPlayer()))
-    call CreateItemLoc('I0LL',udg_TempPoint) // 'I0LL': item "Celestium"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(Player_GetHero(GetEnumPlayer()))
+    call CreateItemLoc('I0LL',l_tempPoint) // 'I0LL': item "Celestium"
+    call RemoveLocation(l_tempPoint)
     call SetItemUserData(GetLastCreatedItem(),GetConvertedPlayerId(GetEnumPlayer()))
     call UnitAddItemSwapped(GetLastCreatedItem(),Player_GetHero(GetEnumPlayer()))
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_WorldLiberation_Reward_NeedsAchievement takes nothing returns boolean

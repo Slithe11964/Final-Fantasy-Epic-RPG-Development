@@ -14,6 +14,7 @@ function Trig_Boco_Feed_Greens_Cond_BocoCineOn takes nothing returns boolean
 endfunction
 
 function Trig_Boco_Feed_Greens_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boco_Feed_Greens_Cond_BocoCineOn())then
         call Cine_Enter()
@@ -33,16 +34,17 @@ function Trig_Boco_Feed_Greens_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00You can now dig up more powerful Greens.|r")
     endif
     set udg_ChocoboGreensStage=1
-    set udg_TempPoint=GetUnitLoc(gg_unit_n00E_0138)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_n00E_0138)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitOwner(gg_unit_n00E_0138,Player(8),false)
-    set udg_TempPoint=GetRectCenter(gg_rct_708)
-    call SetUnitPositionLocFacingBJ(gg_unit_n00E_0138,udg_TempPoint,bj_UNIT_FACING)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_708)
+    call SetUnitPositionLocFacingBJ(gg_unit_n00E_0138,l_tempPoint,bj_UNIT_FACING)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Boco_Meet_Again)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boco_Meet_Again_Conditions takes nothing returns boolean

@@ -37,12 +37,14 @@ function Trig_Counter_Attack_Strike_FacingTarget takes nothing returns boolean
 endfunction
 
 function Trig_Counter_Attack_Strike_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(udg_DodgeUnit)
-    set udg_TempPoint2=GetUnitLoc(udg_DodgeAttacker)
-    // (AngleBetweenPoints(udg_TempPoint, udg_TempPoint2)) minus (facing in degrees of udg_DodgeUnit).
-    set udg_TempReal=(AngleBetweenPoints(udg_TempPoint,udg_TempPoint2)-GetUnitFacing(udg_DodgeUnit))
-    call RemoveLocation(udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(udg_DodgeUnit)
+    set l_tempPoint2=GetUnitLoc(udg_DodgeAttacker)
+    // (AngleBetweenPoints(l_tempPoint, l_tempPoint2)) minus (facing in degrees of udg_DodgeUnit).
+    set udg_TempReal=(AngleBetweenPoints(l_tempPoint,l_tempPoint2)-GetUnitFacing(udg_DodgeUnit))
+    call RemoveLocation(l_tempPoint)
+    call RemoveLocation(l_tempPoint2)
     // The remainder after dividing (udg_TempReal) by (360).
     set udg_TempReal=ModuloReal(udg_TempReal,360.)
     if(Trig_Counter_Attack_Strike_AngleNegative())then
@@ -85,6 +87,8 @@ function Trig_Counter_Attack_Strike_Actions takes nothing returns nothing
         set udg_IsPhysicalAttack=true
         call UnitDamageTarget(udg_DodgeUnit,udg_DodgeAttacker,udg_TempReal,true,false,ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL,WEAPON_TYPE_METAL_MEDIUM_CHOP)
     endif
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Counter automatically; it is intentionally empty. This module's

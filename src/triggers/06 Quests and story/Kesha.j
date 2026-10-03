@@ -14,28 +14,29 @@ function Trig_Kesha_Stones_Spawn_Cond_SubscriptionDisabled takes nothing returns
 endfunction
 
 function Trig_Kesha_Stones_Spawn_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_KeshaShop=ReplaceUnitBJ(gg_unit_n01C_0193,'n02W',bj_UNIT_STATE_METHOD_RELATIVE) // 'n02W': unit "Kesha's Place"
     call DisableTrigger(gg_trg_Npc_Talk_Kesha)
     call DestroyEffectBJ(udg_QuestMarkerEffect[$D]) // $D = 13
-    set udg_TempPoint=GetRectCenter(gg_rct_559)
-    call CreateItemLoc('I03Y',udg_TempPoint) // 'I03Y': item "Exotic Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_559)
+    call CreateItemLoc('I03Y',l_tempPoint) // 'I03Y': item "Exotic Stone"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    set udg_TempPoint=GetRectCenter(gg_rct_560)
-    call CreateItemLoc('I03Y',udg_TempPoint) // 'I03Y': item "Exotic Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_560)
+    call CreateItemLoc('I03Y',l_tempPoint) // 'I03Y': item "Exotic Stone"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    set udg_TempPoint=GetRectCenter(gg_rct_561)
-    call CreateItemLoc('I03Y',udg_TempPoint) // 'I03Y': item "Exotic Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_561)
+    call CreateItemLoc('I03Y',l_tempPoint) // 'I03Y': item "Exotic Stone"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    set udg_TempPoint=GetRectCenter(gg_rct_562)
-    call CreateItemLoc('I03Y',udg_TempPoint) // 'I03Y': item "Exotic Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_562)
+    call CreateItemLoc('I03Y',l_tempPoint) // 'I03Y': item "Exotic Stone"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    set udg_TempPoint=GetRectCenter(gg_rct_563)
-    call CreateItemLoc('I03Y',udg_TempPoint) // 'I03Y': item "Exotic Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_563)
+    call CreateItemLoc('I03Y',l_tempPoint) // 'I03Y': item "Exotic Stone"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call EnableTrigger(gg_trg_Kesha_Return_Stones)
     if(Trig_Kesha_Stones_Spawn_Cond_SubscriptionDisabled())then
@@ -43,6 +44,7 @@ function Trig_Kesha_Stones_Spawn_Actions takes nothing returns nothing
         call DestroyTrigger(gg_trg_Kesha_Subscription_Toggle)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Kesha_Return_Stones_Conditions takes nothing returns boolean
@@ -142,19 +144,21 @@ function Trig_Kesha_Subscription_Toggle_Cond_NotArmsCompletionist takes nothing 
 endfunction
 
 function Trig_Kesha_Subscription_Toggle_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Kesha_Subscription_Toggle_Cond_NotArmsCompletionist())then
         if(Trig_Kesha_Subscription_Toggle_Cond_IsSubscribed())then
             set udg_AutoBrewEnabled[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=false
-            call DisplayTimedTextToForce(udg_TempForce,8.,"Your subscription to Kesha has been cancelled.")
+            call DisplayTimedTextToForce(l_tempForce,8.,"Your subscription to Kesha has been cancelled.")
         else
             set udg_AutoBrewEnabled[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=true
-            call DisplayTimedTextToForce(udg_TempForce,8.,"You are now subscribed to Kesha. Upon death you will automatically buy a Kesha's Special Brew.")
+            call DisplayTimedTextToForce(l_tempForce,8.,"You are now subscribed to Kesha. Upon death you will automatically buy a Kesha's Special Brew.")
         endif
     else
-        call DisplayTimedTextToForce(udg_TempForce,8.,"You cannot subscribe to Kesha as an Arms Completionist.")
+        call DisplayTimedTextToForce(l_tempForce,8.,"You cannot subscribe to Kesha as an Arms Completionist.")
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Kesha automatically; it is intentionally empty. This module's

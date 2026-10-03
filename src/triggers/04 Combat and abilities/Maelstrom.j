@@ -17,15 +17,16 @@ function Trig_Maelstrom_Cast_Cond_PointCast takes nothing returns boolean
 endfunction
 
 function Trig_Maelstrom_Cast_Actions takes nothing returns nothing
+    local integer l_tempHandleId
     if(Trig_Maelstrom_Cast_Cond_PointCast())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(20.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0JI',GetLastCreatedUnit()) // 'A0JI': ability "Maelstrom"

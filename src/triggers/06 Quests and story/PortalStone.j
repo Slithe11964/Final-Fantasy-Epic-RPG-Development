@@ -28,13 +28,15 @@ function Trig_PortalStone_PickedUp_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_PortalStone_PickedUp_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Portal Stone to Melaniya.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Portal Stone to Melaniya.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[27],"Bring the Portal Stone to Melaniya.")
     call EnableTrigger(gg_trg_Quest_GreedIsGood_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_PortalStone automatically; it is intentionally empty. This module's

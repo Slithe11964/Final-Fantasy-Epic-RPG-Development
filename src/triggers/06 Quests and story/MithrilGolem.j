@@ -14,8 +14,12 @@ function Trig_MithrilGolem_Prepare_Cond_PrereqQuestNotDone takes nothing returns
 endfunction
 
 function Trig_MithrilGolem_Prepare_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     if(Trig_MithrilGolem_Prepare_Cond_PrereqQuestNotDone())then
         call StartTimerBJ(udg_SharedDelayTimer1,false,30)
+        set l_tempPoint=null
+        set l_tempPoint2=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -24,11 +28,11 @@ function Trig_MithrilGolem_Prepare_Actions takes nothing returns nothing
     call PlaySoundBJ(gg_snd_JainaWhat)
     set udg_SpecialEffect[22]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hjai_0093,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_MithrilGolem_Start)
-    set udg_TempPoint=GetRectCenter(gg_rct_237)
-    set udg_TempPoint2=GetUnitLoc(gg_unit_Hjai_0093)
-    call CreateNUnitsAtLocFacingLocBJ(1,'n015',Player(9),udg_TempPoint,udg_TempPoint2) // 'n015': unit "Mithril Golem"
-    call RemoveLocation(udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetRectCenter(gg_rct_237)
+    set l_tempPoint2=GetUnitLoc(gg_unit_Hjai_0093)
+    call CreateNUnitsAtLocFacingLocBJ(1,'n015',Player(9),l_tempPoint,l_tempPoint2) // 'n015': unit "Mithril Golem"
+    call RemoveLocation(l_tempPoint)
+    call RemoveLocation(l_tempPoint2)
     // (maximum health of GetLastCreatedUnit()) divided by (3).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 3))
     // (BlzGetUnitArmor(GetLastCreatedUnit())) divided by (3).
@@ -38,6 +42,8 @@ function Trig_MithrilGolem_Prepare_Actions takes nothing returns nothing
     call SetUnitTimeScalePercent(udg_GolemUnit[4],.0)
     call SetUnitInvulnerable(udg_GolemUnit[4],true)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_MithrilGolem_Start_Conditions takes nothing returns boolean
@@ -83,18 +89,20 @@ function Trig_MithrilGolem_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_MithrilGolem_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[2]=CreateItemLoc('I022',udg_TempPoint) // 'I022': item "Mithril Golem's Heart"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[2]=CreateItemLoc('I022',l_tempPoint) // 'I022': item "Mithril Golem's Heart"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call PlayThematicMusicBJ("FF7-Victory Fanfare.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetUnitName(GetDyingUnit()))+"|r was defeated !!!"))
     call EnableTrigger(gg_trg_GolemHeart_Ping)
     call EnableTrigger(gg_trg_GolemHeart_Pickup)
     call SaveIntegerBJ(1,2,'h',udg_GameStateHash)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_MithrilGolem_Activate_Conditions takes nothing returns boolean

@@ -61,6 +61,7 @@ function Trig_Quest_StrongestEidolon_Complete_Cond_DarkEdenPending takes nothing
 endfunction
 
 function Trig_Quest_StrongestEidolon_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_StrongestEidolon_Complete_Cond_TrackKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -68,9 +69,9 @@ function Trig_Quest_StrongestEidolon_Complete_Actions takes nothing returns noth
     endif
     call DestroyEffectBJ(udg_SpecialEffect[51])
     call GroupRemoveUnitSimple(gg_unit_N02I_0074,udg_BossGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0L0',udg_TempPoint) // 'I0L0': item "Aeon Scepter"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0L0',l_tempPoint) // 'I0L0': item "Aeon Scepter"
+    call RemoveLocation(l_tempPoint)
     call UnitRemoveAbilityBJ('A0IK',gg_unit_u007_0128) // 'A0IK': ability "Summon Eden"
     call UnitRemoveAbilityBJ('Ane2',gg_unit_u007_0128) // 'Ane2': object name not found in map data
     call DisableTrigger(gg_trg_Eden_Despawn)
@@ -105,6 +106,7 @@ function Trig_Quest_StrongestEidolon_Complete_Actions takes nothing returns noth
         call AddItemToStockBJ('I07U',gg_unit_n02Y_0052,1,1) // 'I07U': item "Information: Dark Eden"
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_StrongestEidolon takes nothing returns nothing

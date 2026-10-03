@@ -8,7 +8,8 @@ function Trig_Spell_IncandescentHellfire_Cond_IsHero takes nothing returns boole
 endfunction
 
 function Trig_Spell_IncandescentHellfire_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=3
     loop
@@ -17,7 +18,7 @@ function Trig_Spell_IncandescentHellfire_Actions takes nothing returns nothing
         // Result 2: (result 1) times (90).
         // Result 3: (facing in degrees of the triggering unit) plus (result 2).
         // Result 4: the remainder after dividing (result 3) by (360).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,ModuloReal((GetUnitFacing(GetTriggerUnit())+(I2R(GetForLoopIndexA())*90.)),360.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,384.,ModuloReal((GetUnitFacing(GetTriggerUnit())+(I2R(GetForLoopIndexA())*90.)),360.))
         call CreateNUnitsAtLoc(1,'u012',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'u012': unit "Incandescent Hellfire"
         call RemoveLocation(udg_TempPoint2)
         if(Trig_Spell_IncandescentHellfire_Cond_IsHero())then
@@ -33,7 +34,8 @@ function Trig_Spell_IncandescentHellfire_Actions takes nothing returns nothing
         call SetUnitMoveSpeed(GetLastCreatedUnit(),(220.-GetUnitLifePercent(GetTriggerUnit())))
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Spell_IncandescentHellfire takes nothing returns nothing

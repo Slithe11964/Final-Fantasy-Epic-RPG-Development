@@ -17,31 +17,32 @@ function Trig_Portal_Reveal_NotMetGuardian takes nothing returns boolean
 endfunction
 
 function Trig_Portal_Reveal_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Portal_Reveal_IsPortalMarked())then
         call GroupRemoveUnitSimple(gg_unit_nwgt_0142,udg_QuestUnits)
         call GroupAddUnitSimple(gg_unit_Emns_0156,udg_QuestUnits)
     endif
-    set udg_TempPoint=GetUnitLoc(gg_unit_nwgt_0142)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Andt\\Andt.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_nwgt_0142)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Andt\\Andt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\Tranquility\\Tranquility.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\Tranquility\\Tranquility.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Unsummon\\UnsummonTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Unsummon\\UnsummonTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(gg_unit_nwgt_0141)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Andt\\Andt.mdl")
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_nwgt_0141)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Andt\\Andt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\Tranquility\\Tranquility.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\Tranquility\\Tranquility.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Unsummon\\UnsummonTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Unsummon\\UnsummonTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Portal_Reveal_NotMetGuardian())then
         call DisableTrigger(gg_trg_Talk_PortalGuardian)
         call DestroyTrigger(gg_trg_Talk_PortalGuardian)
@@ -55,6 +56,7 @@ function Trig_Portal_Reveal_Actions takes nothing returns nothing
     call WaygateSetDestinationLocBJ(gg_unit_nwgt_0142,GetRectCenter(gg_rct_375))
     call WaygateSetDestinationLocBJ(gg_unit_nwgt_0141,GetRectCenter(gg_rct_374))
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Portal automatically; it is intentionally empty. This module's

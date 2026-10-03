@@ -13,6 +13,7 @@ function Trig_Quest_AnnoyingMonster_Start_Cond_CinematicsEnabled takes nothing r
 endfunction
 
 function Trig_Quest_AnnoyingMonster_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[54])
     if(Trig_Quest_AnnoyingMonster_Start_Cond_CinematicsEnabled())then
@@ -33,12 +34,12 @@ function Trig_Quest_AnnoyingMonster_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_h01P_0017,"I met it around the western side of the Northern Mountains. It's a very slippery and nimble monster so catching it can be hard. But thank you for your help !",false)
         call Cine_ExitAction()
     endif
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_150)
-    call CreateNUnitsAtLoc(1,'n02V',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n02V': unit "Annoying Monster"; $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_269)
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_150)
+    call CreateNUnitsAtLoc(1,'n02V',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n02V': unit "Annoying Monster"; $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_269)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call TriggerRegisterUnitEvent(gg_trg_AnnoyingMonster_DropBelongings,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Annoying Monster|r")
@@ -46,6 +47,7 @@ function Trig_Quest_AnnoyingMonster_Start_Actions takes nothing returns nothing
     set udg_SpecialEffect[54]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h01P_0017,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_AnnoyingMonster_DropBelongings)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_AnnoyingMonster takes nothing returns nothing

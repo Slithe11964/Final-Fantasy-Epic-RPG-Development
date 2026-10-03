@@ -13,19 +13,21 @@ function Trig_Animal_Companion_HasCompanion takes nothing returns boolean
 endfunction
 
 function Trig_Animal_Companion_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Animal_Companion_HasCompanion())then
         call UnitApplyTimedLifeBJ(40.,'BTLF',udg_PetUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]) // 'BTLF': object name not found in map data
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,udg_AnimalCompanionUnit[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,GetUnitFacing(GetTriggerUnit()))
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,udg_AnimalCompanionUnit[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),l_tempPoint,GetUnitFacing(GetTriggerUnit()))
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_PetUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
     call UnitAddAbilityBJ('A14I',GetLastCreatedUnit()) // 'A14I': ability "Summon Poof Death"
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Animal automatically; it is intentionally empty. This module's

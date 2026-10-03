@@ -34,23 +34,25 @@ function Trig_Mimic_Death_Loot_RollPotionDrop takes nothing returns boolean
 endfunction
 
 function Trig_Mimic_Death_Loot_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0BJ',udg_TempPoint) // 'I0BJ': item "Miner's Pickaxe"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I0JS',udg_TempPoint) // 'I0JS': item "5000 Gold Coins"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0BJ',l_tempPoint) // 'I0BJ': item "Miner's Pickaxe"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I0JS',l_tempPoint) // 'I0JS': item "5000 Gold Coins"
     if(Trig_Mimic_Death_Loot_RollBookDrop())then
-        call CreateItemLoc('rdis',udg_TempPoint) // 'rdis': item "Bravega"
+        call CreateItemLoc('rdis',l_tempPoint) // 'rdis': item "Bravega"
     else
-        call CreateItemLoc('rsps',udg_TempPoint) // 'rsps': item "Faithga"
+        call CreateItemLoc('rsps',l_tempPoint) // 'rsps': item "Faithga"
     endif
     if(Trig_Mimic_Death_Loot_RollPotionDrop())then
-        call CreateItemLoc('I05I',udg_TempPoint) // 'I05I': item "Spirit Potion"
+        call CreateItemLoc('I05I',l_tempPoint) // 'I05I': item "Spirit Potion"
     else
-        call CreateItemLoc('I05H',udg_TempPoint) // 'I05H': item "Blood Ether"
+        call CreateItemLoc('I05H',l_tempPoint) // 'I05H': item "Blood Ether"
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Mimic automatically; it is intentionally empty. This module's

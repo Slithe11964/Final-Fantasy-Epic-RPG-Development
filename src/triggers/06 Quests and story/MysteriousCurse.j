@@ -418,10 +418,11 @@ function Trig_MysteriousCurse_AdriaWitchDead_Cond_ShowRegretTalk takes nothing r
 endfunction
 
 function Trig_MysteriousCurse_AdriaWitchDead_Actions takes nothing returns nothing
+    local location l_tempPoint3
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01G',udg_TempPoint3) // 'I01G': item "Ice Wand"
-    call RemoveLocation(udg_TempPoint3)
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01G',l_tempPoint3) // 'I01G': item "Ice Wand"
+    call RemoveLocation(l_tempPoint3)
     if(Trig_MysteriousCurse_AdriaWitchDead_Cond_ShowRegretTalk())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -440,6 +441,7 @@ function Trig_MysteriousCurse_AdriaWitchDead_Actions takes nothing returns nothi
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     set udg_CurseStage=6
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint3=null
 endfunction
 
 function Trig_MysteriousCurse_BabaYagaAppears_Conditions takes nothing returns boolean
@@ -478,10 +480,11 @@ function Trig_MysteriousCurse_AdriaRestored_Cond_ShowLiftedTalk takes nothing re
 endfunction
 
 function Trig_MysteriousCurse_AdriaRestored_Actions takes nothing returns nothing
+    local location l_tempPoint3
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01G',udg_TempPoint3) // 'I01G': item "Ice Wand"
-    call RemoveLocation(udg_TempPoint3)
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01G',l_tempPoint3) // 'I01G': item "Ice Wand"
+    call RemoveLocation(l_tempPoint3)
     if(Trig_MysteriousCurse_AdriaRestored_Cond_ShowLiftedTalk())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -498,6 +501,7 @@ function Trig_MysteriousCurse_AdriaRestored_Actions takes nothing returns nothin
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     set udg_CurseStage=7
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint3=null
 endfunction
 
 function Trig_MysteriousCurse_AdriaReturn_Conditions takes nothing returns boolean
@@ -577,10 +581,11 @@ function Trig_MysteriousCurse_LinkRestored_Cond_ShowVictoryTalk takes nothing re
 endfunction
 
 function Trig_MysteriousCurse_LinkRestored_Actions takes nothing returns nothing
+    local location l_tempPoint3
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01G',udg_TempPoint3) // 'I01G': item "Ice Wand"
-    call RemoveLocation(udg_TempPoint3)
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01G',l_tempPoint3) // 'I01G': item "Ice Wand"
+    call RemoveLocation(l_tempPoint3)
     if(Trig_MysteriousCurse_LinkRestored_Cond_ShowVictoryTalk())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -597,6 +602,7 @@ function Trig_MysteriousCurse_LinkRestored_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     set udg_CurseStage=7
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint3=null
 endfunction
 
 function Trig_MysteriousCurse_LinkReturn_Conditions takes nothing returns boolean
@@ -715,13 +721,14 @@ function Trig_MysteriousCurse_BabaYagaDead_Cond_ShowRemorseTalk takes nothing re
 endfunction
 
 function Trig_MysteriousCurse_BabaYagaDead_Actions takes nothing returns nothing
+    local location l_tempPoint3
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_MysteriousCurse_BabaYagaDead_Cond_LinkStillAlive())then
         call KillUnit(udg_CurseUnit[7])
     endif
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01G',udg_TempPoint3) // 'I01G': item "Ice Wand"
-    call RemoveLocation(udg_TempPoint3)
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01G',l_tempPoint3) // 'I01G': item "Ice Wand"
+    call RemoveLocation(l_tempPoint3)
     if(Trig_MysteriousCurse_BabaYagaDead_Cond_ShowRemorseTalk())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -740,6 +747,7 @@ function Trig_MysteriousCurse_BabaYagaDead_Actions takes nothing returns nothing
     set udg_HuntStock[4]=(udg_HuntStock[4]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint3=null
 endfunction
 
 // World Editor calls InitTrig_MysteriousCurse automatically; it is intentionally empty. This module's

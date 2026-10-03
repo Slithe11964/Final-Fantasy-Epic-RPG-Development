@@ -145,13 +145,15 @@ function Trig_Rune_Pickup_Cond_ManaRune takes nothing returns boolean
 endfunction
 
 function Trig_Rune_Pickup_CastFaith takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0N0',GetLastCreatedUnit()) // 'A0N0': ability "Faith"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"unholyfrenzy",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Rune_Pickup_IsFaithRune takes nothing returns boolean
@@ -159,13 +161,15 @@ function Trig_Rune_Pickup_IsFaithRune takes nothing returns boolean
 endfunction
 
 function Trig_Rune_Pickup_CastBravery takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0MZ',GetLastCreatedUnit()) // 'A0MZ': ability "Bravery"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"innerfire",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Rune_Pickup_IsBraveryRune takes nothing returns boolean
@@ -173,14 +177,15 @@ function Trig_Rune_Pickup_IsBraveryRune takes nothing returns boolean
 endfunction
 
 function Trig_Rune_Pickup_Actions takes nothing returns nothing
+    local group l_tempGroup
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Rune_Pickup_ValidRuneTarget))
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Rune_Pickup_ValidRuneTarget))
     call RemoveLocation(udg_TempPoint)
     if(Trig_Rune_Pickup_IsBraveryRune())then
-        call ForGroupBJ(udg_TempGroup,function Trig_Rune_Pickup_CastBravery)
+        call ForGroupBJ(l_tempGroup,function Trig_Rune_Pickup_CastBravery)
     else
         if(Trig_Rune_Pickup_IsFaithRune())then
-            call ForGroupBJ(udg_TempGroup,function Trig_Rune_Pickup_CastFaith)
+            call ForGroupBJ(l_tempGroup,function Trig_Rune_Pickup_CastFaith)
         else
             set udg_TempInteger=0
             if(Trig_Rune_Pickup_Cond_Tier1Rune())then
@@ -195,16 +200,17 @@ function Trig_Rune_Pickup_Actions takes nothing returns nothing
                 endif
             endif
             if(Trig_Rune_Pickup_Cond_LifeRune())then
-                call ForGroupBJ(udg_TempGroup,function Trig_Rune_Pickup_HealEnum)
+                call ForGroupBJ(l_tempGroup,function Trig_Rune_Pickup_HealEnum)
             endif
             if(Trig_Rune_Pickup_Cond_ManaRune())then
-                call ForGroupBJ(udg_TempGroup,function Trig_Rune_Pickup_ManaEnum)
+                call ForGroupBJ(l_tempGroup,function Trig_Rune_Pickup_ManaEnum)
             endif
         endif
     endif
-    call DestroyGroup(udg_TempGroup)
+    call DestroyGroup(l_tempGroup)
     call Wait_Polled(1.)
     call RemoveItem(GetManipulatedItem())
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_Rune automatically; it is intentionally empty. This module's

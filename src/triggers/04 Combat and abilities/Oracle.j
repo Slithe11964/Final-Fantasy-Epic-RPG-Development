@@ -56,46 +56,48 @@ function Trig_Oracle_Jinx_HasShell takes nothing returns boolean
 endfunction
 
 function Trig_Oracle_Jinx_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_JinxTarget=GetSpellTargetUnit()
-    set udg_TempPoint=GetUnitLoc(udg_JinxTarget)
+    set l_tempPoint=GetUnitLoc(udg_JinxTarget)
     if(Trig_Oracle_Jinx_HasHaste())then
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1FK',GetLastCreatedUnit()) // 'A1FK': ability "Slow"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",udg_JinxTarget)
     endif
     if(Trig_Oracle_Jinx_HasBravery())then
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1FL',GetLastCreatedUnit()) // 'A1FL': ability "Pain"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"curse",udg_JinxTarget)
     endif
     if(Trig_Oracle_Jinx_HasFaith())then
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1FM',GetLastCreatedUnit()) // 'A1FM': ability "Fog"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"curse",udg_JinxTarget)
     endif
     if(Trig_Oracle_Jinx_HasProtect())then
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1FN',GetLastCreatedUnit()) // 'A1FN': ability "Deprotect"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"faeriefire",udg_JinxTarget)
     endif
     if(Trig_Oracle_Jinx_HasShell())then
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1FO',GetLastCreatedUnit()) // 'A1FO': ability "Deshell"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"faeriefire",udg_JinxTarget)
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_DispelTarget=udg_JinxTarget
     call ConditionalTriggerExecute(gg_trg_Remove_Buffs)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Oracle_Blind_IsBlindSpell takes nothing returns boolean
@@ -162,9 +164,10 @@ function Trig_Oracle_PredictStrength_MasteryCountsThisCast takes nothing returns
 endfunction
 
 function Trig_Oracle_PredictStrength_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempBoolean=IsUnitEnemy(GetSpellTargetUnit(),GetOwningPlayer(GetTriggerUnit()))
@@ -201,6 +204,7 @@ function Trig_Oracle_PredictStrength_Actions takes nothing returns nothing
             set udg_OracleMasteryCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_OracleMasteryCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]-1)
         endif
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Oracle_PredictMagic_Conditions takes nothing returns boolean
@@ -228,9 +232,10 @@ function Trig_Oracle_PredictMagic_MasteryCountsThisCast takes nothing returns bo
 endfunction
 
 function Trig_Oracle_PredictMagic_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempBoolean=IsUnitEnemy(GetSpellTargetUnit(),GetOwningPlayer(GetTriggerUnit()))
@@ -267,6 +272,7 @@ function Trig_Oracle_PredictMagic_Actions takes nothing returns nothing
             set udg_OracleMasteryCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_OracleMasteryCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]-1)
         endif
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Oracle_Scourge_IsScourgeSpell takes nothing returns boolean
@@ -282,26 +288,31 @@ function Trig_Oracle_Scourge_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Oracle_Scourge_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (3).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
     if(Trig_Oracle_Scourge_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     endif
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0VK',GetLastCreatedUnit()) // 'A0VK': ability "Scourge"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"acidbomb",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Oracle_NeoBahamut_Conditions takes nothing returns boolean
@@ -313,14 +324,16 @@ function Trig_Oracle_NeoBahamut_HasNeoBahamut takes nothing returns boolean
 endfunction
 
 function Trig_Oracle_NeoBahamut_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local real l_tempReal
     if(Trig_Oracle_NeoBahamut_HasNeoBahamut())then
         call KillUnit(udg_NeoBahamutSummon)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'n00G',GetOwningPlayer(GetSpellAbilityUnit()),udg_TempPoint,bj_UNIT_FACING) // 'n00G': unit "Neo Bahamut"
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,'n00G',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n00G': unit "Neo Bahamut"
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_NeoBahamutSummon=GetLastCreatedUnit()
     call UnitAddAbilityBJ('A14I',GetLastCreatedUnit()) // 'A14I': ability "Summon Poof Death"
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
@@ -329,28 +342,29 @@ function Trig_Oracle_NeoBahamut_Actions takes nothing returns nothing
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00L'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.6).
+    // Result 2: (l_tempReal) times (0.6).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.6)))),0)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.6)))),0)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.6).
+    // Result 2: (l_tempReal) times (0.6).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.6)))),1)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.6)))),1)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (9) times (udg_TempReal).
+    // Result 2: (9) times (l_tempReal).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (maximum health of GetLastCreatedUnit()) plus (result 4).
-    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(9.*udg_TempReal)))))
+    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(9.*l_tempReal)))))
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
     call Abil_CopyPassives(GetTriggerUnit(),bj_lastCreatedUnit)
     set udg_NeoBahamutBaseArmor=BlzGetUnitArmor(GetLastCreatedUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Oracle automatically; it is intentionally empty. This module's

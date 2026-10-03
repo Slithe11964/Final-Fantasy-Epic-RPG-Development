@@ -8,42 +8,45 @@ function Trig_Summon_Shiva_HasShiva takes nothing returns boolean
 endfunction
 
 function Trig_Summon_Shiva_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local real l_tempReal
     if(Trig_Summon_Shiva_HasShiva())then
         call KillUnit(udg_Eidolon1)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,udg_ShivaUnitType[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,GetUnitFacing(GetTriggerUnit()))
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,udg_ShivaUnitType[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),l_tempPoint,GetUnitFacing(GetTriggerUnit()))
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_Eidolon1=GetLastCreatedUnit()
     call UnitAddAbilityBJ('A14I',GetLastCreatedUnit()) // 'A14I': ability "Summon Poof Death"
     call UnitApplyTimedLifeBJ(90.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00L'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.5).
+    // Result 2: (l_tempReal) times (0.5).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.5)))),0)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.5)))),0)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.5).
+    // Result 2: (l_tempReal) times (0.5).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.5)))),1)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.5)))),1)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (5) times (udg_TempReal).
+    // Result 2: (5) times (l_tempReal).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (maximum health of GetLastCreatedUnit()) plus (result 4).
-    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(5.*udg_TempReal)))))
+    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(5.*l_tempReal)))))
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
     call Abil_CopyPassives(GetTriggerUnit(),bj_lastCreatedUnit)
     set udg_ShivaBaseArmor=BlzGetUnitArmor(GetLastCreatedUnit())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Summon_Shiva takes nothing returns nothing

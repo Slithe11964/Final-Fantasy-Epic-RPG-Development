@@ -50,12 +50,13 @@ function Trig_Firefly_Redeem_Cond_RedeemConfirmed takes nothing returns boolean
 endfunction
 
 function Trig_Firefly_Redeem_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Firefly_Redeem_Cond_RedeemConfirmed())then
         // (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) with its decimal part
         // removed.
-        call DisplayTimedTextToForce(udg_TempForce,10.,("|cffffcc00You get "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp.|r")))
-        call DestroyForce(udg_TempForce)
+        call DisplayTimedTextToForce(l_tempForce,10.,("|cffffcc00You get "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp.|r")))
+        call DestroyForce(l_tempForce)
         // Result 1: (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) times
         // (udg_SecondaryXPRate).
         // Result 2: (result 1) with its decimal part removed.
@@ -69,13 +70,14 @@ function Trig_Firefly_Redeem_Actions takes nothing returns nothing
         if(Trig_Firefly_Redeem_Cond_HasStoredExp())then
             // (udg_BankedXP at position GetConvertedPlayerId(GetOwningPlayer(the triggering unit))) with its decimal part
             // removed.
-            call DisplayTimedTextToForce(udg_TempForce,5.,("You can redeem "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp from the Firefly onto your current hero. Use it again to proceed.")))
+            call DisplayTimedTextToForce(l_tempForce,5.,("You can redeem "+(I2S(R2I(udg_BankedXP[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))+" exp from the Firefly onto your current hero. Use it again to proceed.")))
             call StartTimerBJ(udg_ExpBankTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,6.)
         else
-            call DisplayTimedTextToForce(udg_TempForce,5.,"The Firefly currently holds no exp to redeem.")
+            call DisplayTimedTextToForce(l_tempForce,5.,"The Firefly currently holds no exp to redeem.")
         endif
-        call DestroyForce(udg_TempForce)
+        call DestroyForce(l_tempForce)
     endif
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Firefly automatically; it is intentionally empty. This module's

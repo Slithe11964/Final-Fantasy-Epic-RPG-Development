@@ -9,15 +9,19 @@ function Trig_Spartacus_Summon_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Spartacus_Summon_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,GetUnitFacing(GetTriggerUnit()))
-    call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLoc(1,'u01V',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,GetUnitFacing(GetTriggerUnit())) // 'u01V': unit "Spartacus"
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,GetUnitFacing(GetTriggerUnit()))
+    call RemoveLocation(l_tempPoint)
+    call CreateNUnitsAtLoc(1,'u01V',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,GetUnitFacing(GetTriggerUnit())) // 'u01V': unit "Spartacus"
+    call RemoveLocation(l_tempPoint2)
     call UnitApplyTimedLifeBJ(30.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"drunkenhaze",GetTriggerUnit())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Spartacus automatically; it is intentionally empty. This module's

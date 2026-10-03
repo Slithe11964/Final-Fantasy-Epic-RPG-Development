@@ -17,13 +17,15 @@ globals
 endglobals
 
 function Trig_Hunt_Thextera_Escort_Actions takes nothing returns nothing
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,64.)
-    call CreateNUnitsAtLoc(1,'nwld',Player($B),udg_TempPoint2,180.) // 'nwld': object name not found in map data; $B = 11
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,-64.)
-    call CreateNUnitsAtLoc(1,'nwld',Player($B),udg_TempPoint2,180.) // 'nwld': object name not found in map data; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint2
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,-256.,64.)
+    call CreateNUnitsAtLoc(1,'nwld',Player($B),l_tempPoint2,180.) // 'nwld': object name not found in map data; $B = 11
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,-256.,-64.)
+    call CreateNUnitsAtLoc(1,'nwld',Player($B),l_tempPoint2,180.) // 'nwld': object name not found in map data; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Hunt_Tonberry_Setup_Actions takes nothing returns nothing
@@ -39,15 +41,17 @@ function Trig_Hunt_Demon_Setup_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Hunt_Parvati_Setup_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call UnitAddAbilityBJ('A12T',GetLastCreatedUnit()) // 'A12T': ability "Summon Bandersnatch"
     call ConditionalTriggerExecute(gg_trg_Hunt_Demon_Setup)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,64.)
-    call CreateNUnitsAtLoc(1,'n0CG',Player($B),udg_TempPoint2,180.) // 'n0CG': unit "Bandersnatch"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,-64.)
-    call CreateNUnitsAtLoc(1,'n0CG',Player($B),udg_TempPoint2,180.) // 'n0CG': unit "Bandersnatch"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,-256.,64.)
+    call CreateNUnitsAtLoc(1,'n0CG',Player($B),l_tempPoint2,180.) // 'n0CG': unit "Bandersnatch"; $B = 11
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,-256.,-64.)
+    call CreateNUnitsAtLoc(1,'n0CG',Player($B),l_tempPoint2,180.) // 'n0CG': unit "Bandersnatch"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Hunt_PhantomDancer_Setup_IsFreeCastMode takes nothing returns boolean

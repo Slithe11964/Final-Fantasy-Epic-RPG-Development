@@ -26,43 +26,48 @@ function Trig_Lancer_DragonBreath_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Lancer_DragonBreath_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Lancer_DragonBreath_HasNoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Lancer_DragonBreath_CasterIsHero())then
-        // (udg_TempInteger) plus (Strength of the triggering unit).
-        set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true))
-        // (udg_TempInteger) plus (Agility of the triggering unit).
-        set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))
-        // (udg_TempInteger) plus (Intelligence of the triggering unit).
-        set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
+        // (l_tempInteger) plus (Strength of the triggering unit).
+        set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true))
+        // (l_tempInteger) plus (Agility of the triggering unit).
+        set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))
+        // (l_tempInteger) plus (Intelligence of the triggering unit).
+        set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     endif
-    // (udg_TempInteger) divided by (4); drop the remainder.
-    set udg_TempInteger=(udg_TempInteger/ 4)
+    // (l_tempInteger) divided by (4); drop the remainder.
+    set l_tempInteger=(l_tempInteger/ 4)
     // (0.2) times ((5) plus (Prof_GetLevel(the triggering unit, 'R009'))).
-    set udg_TempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(1,3,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveBooleanBJ(true,5,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(1,3,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveBooleanBJ(true,5,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(8.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M1',GetLastCreatedUnit()) // 'A0M1': ability "Fire-elemental Damage"
     call UnitAddAbilityBJ('A0RJ',GetLastCreatedUnit()) // 'A0RJ': ability "Dragon Breath"
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Lancer_DragonSlam_Conditions takes nothing returns boolean
@@ -94,24 +99,32 @@ function Trig_Lancer_DragonSlam_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Lancer_DragonSlam_KnockbackAndDamage takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetUnitLoc(GetEnumUnit())
-    // The straight-line distance between udg_TempPoint and udg_TempPoint2.
-    set udg_TempReal=DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    // (0.14) minus ((udg_TempReal) divided by (3820)).
-    call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetEnumUnit(),.14-(udg_TempReal/ 3820.),.5,null,true,.0)
+    local location l_tempPoint
+    local location l_tempPoint2
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=GetUnitLoc(GetEnumUnit())
+    // The straight-line distance between l_tempPoint and l_tempPoint2.
+    set l_tempReal=DistanceBetweenPoints(l_tempPoint,l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
+    call RemoveLocation(l_tempPoint2)
+    // (0.14) minus ((l_tempReal) divided by (3820)).
+    call Trig_Wave_Fist_Knockback(GetTriggerUnit(),GetEnumUnit(),.14-(l_tempReal/ 3820.),.5,null,true,.0)
     set udg_IsPhysicalAttack=true
     set udg_DamageElement=5
     // Udg_TempInteger treated as a decimal-capable number.
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),I2R(udg_TempInteger),true,true,ATTACK_TYPE_SIEGE,DAMAGE_TYPE_NORMAL,null)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Lancer_DragonSlam_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(382.,udg_TempPoint,Condition(function Trig_Lancer_DragonSlam_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(382.,l_tempPoint,Condition(function Trig_Lancer_DragonSlam_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (3).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
@@ -124,11 +137,13 @@ function Trig_Lancer_DragonSlam_Actions takes nothing returns nothing
         set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     endif
     // (0.2) times ((5) plus (Prof_GetLevel(the triggering unit, 'R009'))).
-    set udg_TempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
-    call ForGroupBJ(udg_TempGroup,function Trig_Lancer_DragonSlam_KnockbackAndDamage)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempReal=.2*(5+Prof_GetLevel(GetTriggerUnit(),'R009')) // 'R009': upgrade "Spear"
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
+    call ForGroupBJ(l_tempGroup,function Trig_Lancer_DragonSlam_KnockbackAndDamage)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Lancer_DragonAlly_Conditions takes nothing returns boolean
@@ -140,19 +155,21 @@ function Trig_Lancer_DragonAlly_HasActiveDragon takes nothing returns boolean
 endfunction
 
 function Trig_Lancer_DragonAlly_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Lancer_DragonAlly_HasActiveDragon())then
         call UnitApplyTimedLifeBJ(30.,'BTLF',udg_PetUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]) // 'BTLF': object name not found in map data
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,udg_DragonSummonUnit[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,GetUnitFacing(GetTriggerUnit()))
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,udg_DragonSummonUnit[GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())],GetOwningPlayer(GetTriggerUnit()),l_tempPoint,GetUnitFacing(GetTriggerUnit()))
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_PetUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
     call UnitAddAbilityBJ('A14I',GetLastCreatedUnit()) // 'A14I': ability "Summon Poof Death"
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
+    set l_tempPoint=null
 endfunction
 
 function Trig_Lancer_Jump_RangeCheck_Conditions takes nothing returns boolean

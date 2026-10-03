@@ -79,9 +79,10 @@ function Trig_Vote_TextSpeed_Click_VotesPending takes nothing returns boolean
 endfunction
 
 function Trig_Vote_TextSpeed_Click_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call SetUserControlForceOff(udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call SetUserControlForceOff(l_tempForce)
+    call DestroyForce(l_tempForce)
     set udg_VotesCast=(udg_VotesCast+1)
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=4
@@ -120,6 +121,7 @@ function Trig_Vote_TextSpeed_Click_Actions takes nothing returns nothing
     else
         call TriggerExecute(gg_trg_Vote_TextSpeed_Result)
     endif
+    set l_tempForce=null
 endfunction
 
 function Trig_Vote_TextSpeed_Result_HideDialogForPlayer takes nothing returns nothing
@@ -248,9 +250,10 @@ function Trig_Vote_Difficulty_Click_VotesPending takes nothing returns boolean
 endfunction
 
 function Trig_Vote_Difficulty_Click_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call SetUserControlForceOff(udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call SetUserControlForceOff(l_tempForce)
+    call DestroyForce(l_tempForce)
     set udg_VotesCast=(udg_VotesCast+1)
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=5
@@ -273,6 +276,7 @@ function Trig_Vote_Difficulty_Click_Actions takes nothing returns nothing
     else
         call TriggerExecute(gg_trg_Vote_Difficulty_Result)
     endif
+    set l_tempForce=null
 endfunction
 
 function Trig_Vote_Difficulty_Result_HideDialogForPlayer takes nothing returns nothing
@@ -522,9 +526,10 @@ function Trig_Vote_GameMode_Click_VotesPending takes nothing returns boolean
 endfunction
 
 function Trig_Vote_GameMode_Click_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call SetUserControlForceOff(udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call SetUserControlForceOff(l_tempForce)
+    call DestroyForce(l_tempForce)
     set udg_VotesCast=(udg_VotesCast+1)
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=4
@@ -547,6 +552,7 @@ function Trig_Vote_GameMode_Click_Actions takes nothing returns nothing
     else
         call TriggerExecute(gg_trg_GameMode_Apply)
     endif
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Vote automatically; it is intentionally empty. This module's

@@ -11,15 +11,17 @@ function Trig_Vortex_Warning_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Vortex_Warning_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateTextTagLocBJ("|cffffcc00VORTEX",udg_TempPoint,0,13.,'d','d','d',0)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateTextTagLocBJ("|cffffcc00VORTEX",l_tempPoint,0,13.,'d','d','d',0)
+    call RemoveLocation(l_tempPoint)
     call SetTextTagVelocityBJ(GetLastCreatedTextTag(),80.,90)
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),1.5)
     call SetTextTagFadepointBJ(GetLastCreatedTextTag(),1.)
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
     call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_AbilityTextForce)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Vortex_Suck_Conditions takes nothing returns boolean
@@ -47,14 +49,16 @@ function Trig_Vortex_Suck_IsVortexTarget takes nothing returns boolean
 endfunction
 
 function Trig_Vortex_Suck_PullIntoVortex takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl")
     call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),0,0,0)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetEnumUnit())
     call PauseUnitBJ(true,GetEnumUnit())
     call GroupAddUnitSimple(GetEnumUnit(),udg_VortexVictims)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Vortex_Suck_IsEnragedPhase takes nothing returns boolean
@@ -68,19 +72,21 @@ function Trig_Vortex_Suck_UseVortexLevel2 takes nothing returns boolean
 endfunction
 
 function Trig_Vortex_Suck_Actions takes nothing returns nothing
-    set udg_TempPoint=GetSpellTargetLoc()
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetSpellTargetLoc()
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdl")
     call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),0,0,0)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"units\\nightelf\\Wisp\\Wisp.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"units\\nightelf\\Wisp\\Wisp.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
     call BlzSetSpecialEffectColor(GetLastCreatedEffectBJ(),0,0,0)
     call BlzSetSpecialEffectColorByPlayer(GetLastCreatedEffectBJ(),Player(PLAYER_NEUTRAL_PASSIVE))
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(250.,udg_TempPoint,Condition(function Trig_Vortex_Suck_IsVortexTarget))
-    call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Vortex_Suck_PullIntoVortex)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(250.,l_tempPoint,Condition(function Trig_Vortex_Suck_IsVortexTarget))
+    call RemoveLocation(l_tempPoint)
+    call ForGroupBJ(l_tempGroup,function Trig_Vortex_Suck_PullIntoVortex)
+    call DestroyGroup(l_tempGroup)
     call StartTimerBJ(udg_VortexTimer,false,1.)
     call Wait_Polled(1.)
     if(Trig_Vortex_Suck_UseVortexLevel2())then
@@ -88,6 +94,8 @@ function Trig_Vortex_Suck_Actions takes nothing returns nothing
     else
         call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
     endif
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Vortex_Drain_IsNearlyDead takes nothing returns boolean
@@ -118,13 +126,15 @@ function Trig_Vortex_Drain_HasVictimsLeft takes nothing returns boolean
 endfunction
 
 function Trig_Vortex_Drain_Actions takes nothing returns nothing
-    set udg_TempGroup=CreateGroup()
-    call GroupAddGroup(udg_VortexVictims,udg_TempGroup)
-    call ForGroupBJ(udg_TempGroup,function Trig_Vortex_Drain_DrainVictim)
-    call DestroyGroup(udg_TempGroup)
+    local group l_tempGroup
+    set l_tempGroup=CreateGroup()
+    call GroupAddGroup(udg_VortexVictims,l_tempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Vortex_Drain_DrainVictim)
+    call DestroyGroup(l_tempGroup)
     if(Trig_Vortex_Drain_HasVictimsLeft())then
         call StartTimerBJ(udg_VortexTimer,false,1.)
     endif
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_Vortex automatically; it is intentionally empty. This module's

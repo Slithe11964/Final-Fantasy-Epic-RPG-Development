@@ -46,12 +46,14 @@ function Trig_SkeletalDefense_Spawn_Cond_TrackInGroup takes nothing returns bool
 endfunction
 
 function Trig_SkeletalDefense_Spawn_SpawnSkeleton takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
     // A random decimal number between 64 and 96.
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(64.,96.),GetRandomDirectionDeg())
-    call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint2,udg_TempPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,GetRandomReal(64.,96.),GetRandomDirectionDeg())
+    call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),l_tempPoint2,l_tempPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call UnitApplyTimedLifeBJ(30.,'Brai',GetLastCreatedUnit()) // 'Brai': buff tooltip "Raised"
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),50.)
@@ -63,6 +65,8 @@ function Trig_SkeletalDefense_Spawn_SpawnSkeleton takes nothing returns nothing
     if(Trig_SkeletalDefense_Spawn_Cond_TrackInGroup())then
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossSummons)
     endif
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_SkeletalDefense_Spawn_Cond_UnderSkeletonCap takes nothing returns boolean

@@ -15,6 +15,7 @@ function Trig_Boss_Ozma_Spawn_IsFirstSummon takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
+    local integer l_tempInteger
     set udg_BossCleanupTrigger=gg_trg_Boss_Ozma_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
@@ -251,11 +252,11 @@ function Trig_Boss_Ozma_Spawn_Actions takes nothing returns nothing
     call SetUnitAbilityLevelSwapped('A1BF',udg_OzmaBoss,8) // 'A1BF': ability "Adaptive Barrier"
     set udg_AdaptMagicTotal=2000.
     set udg_AdaptPhysTotal=2000.
-    set udg_TempInteger=0
+    set l_tempInteger=0
     loop
-        exitwhen udg_TempInteger>6
-        set udg_AdaptElementTotal[udg_TempInteger]=.0
-        set udg_TempInteger=udg_TempInteger+1
+        exitwhen l_tempInteger>6
+        set udg_AdaptElementTotal[l_tempInteger]=.0
+        set l_tempInteger=l_tempInteger+1
     endloop
     set udg_AdaptElementTotal[7]=5000.
     call SetUnitInvulnerable(udg_OzmaBoss,true)
@@ -354,6 +355,7 @@ function Trig_Boss_Ozma_Death_IsWaygateUnlocked takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Ozma_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_Ozma_Death_IsKillTrackerOn())then
         set udg_BossUnit=GetTriggerUnit()
@@ -362,9 +364,9 @@ function Trig_Boss_Ozma_Death_Actions takes nothing returns nothing
     call Music_ClearTrack(54)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call DisableTrigger(gg_trg_Boss_Ozma_Barrier)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0G6',udg_TempPoint) // 'I0G6': item "Force of Nature"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0G6',l_tempPoint) // 'I0G6': item "Force of Nature"
+    call RemoveLocation(l_tempPoint)
     call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
     if(Trig_Boss_Ozma_Death_IsWaygateUnlocked())then
@@ -376,6 +378,7 @@ function Trig_Boss_Ozma_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A1BG',gg_unit_n03T_0008) // 'A1BG': ability "Madain Sari Horn Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Ozma_Cleanup_Actions takes nothing returns nothing

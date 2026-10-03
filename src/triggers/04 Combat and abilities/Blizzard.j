@@ -21,24 +21,27 @@ function Trig_Blizzard_Cast_IsCasterHero takes nothing returns boolean
 endfunction
 
 function Trig_Blizzard_Cast_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     if(Trig_Blizzard_Cast_NoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Start the base amount at 2 times the spell's mana cost.
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
     if(Trig_Blizzard_Cast_IsCasterHero())then
         // For a hero, add 2 times Intelligence to that base.
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    set udg_TempReal=Prof_RodPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_RodPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(10.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M2',GetLastCreatedUnit()) // 'A0M2': ability "Ice-elemental Damage"

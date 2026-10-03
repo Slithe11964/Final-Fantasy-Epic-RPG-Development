@@ -17,34 +17,39 @@ function Trig_Knot_Of_Rust_NoTargetUnit takes nothing returns boolean
 endfunction
 
 function Trig_Knot_Of_Rust_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Knot_Of_Rust_NoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
-    // (udg_TempInteger) plus (((current health of the triggering unit) times (0.2)) with its decimal part
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
+    // (l_tempInteger) plus (((current health of the triggering unit) times (0.2)) with its decimal part
     // removed).
-    set udg_TempInteger=(udg_TempInteger+R2I((GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit())*.2)))
+    set l_tempInteger=(l_tempInteger+R2I((GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit())*.2)))
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R000'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R000')) // $A = 10; 'R000': upgrade "Tools"
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(4,3,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R000')) // $A = 10; 'R000': upgrade "Tools"
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0SO',GetLastCreatedUnit()) // 'A0SO': ability "Knot of Rust"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Knot automatically; it is intentionally empty. This module's

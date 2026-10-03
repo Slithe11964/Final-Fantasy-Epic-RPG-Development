@@ -340,6 +340,7 @@ function Trig_Gaya_Scan_Cond_SurgeTextFilled takes nothing returns boolean
 endfunction
 
 function Trig_Gaya_Scan_Actions takes nothing returns nothing
+    local force l_tempForce
     if(Trig_Gaya_Scan_Cond_TargetIsItem())then
         if(Trig_Gaya_Scan_Cond_ItemClaimable())then
             set udg_TempPoint=GetRandomLocInRect(udg_PlayerStartRect[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
@@ -347,70 +348,71 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
             call RemoveLocation(udg_TempPoint)
             call UnitAddItemSwapped(GetSpellTargetItem(),udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
         endif
+        set l_tempForce=null
         return
     endif
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Gaya_Scan_Cond_TargetIsHero())then
-        call DisplayTimedTextToForce(udg_TempForce,30,(("|cffffcc00"+(GetHeroProperName(GetSpellTargetUnit())+" ("))+(GetUnitName(GetSpellTargetUnit())+")|r")))
+        call DisplayTimedTextToForce(l_tempForce,30,(("|cffffcc00"+(GetHeroProperName(GetSpellTargetUnit())+" ("))+(GetUnitName(GetSpellTargetUnit())+")|r")))
     else
         if(Trig_Gaya_Scan_Cond_TargetIsOversoul())then
-            call DisplayTimedTextToForce(udg_TempForce,30,("|cffffcc00Oversoul "+(GetUnitName(GetSpellTargetUnit())+"|r")))
+            call DisplayTimedTextToForce(l_tempForce,30,("|cffffcc00Oversoul "+(GetUnitName(GetSpellTargetUnit())+"|r")))
         else
-            call DisplayTimedTextToForce(udg_TempForce,30,("|cffffcc00"+(GetUnitName(GetSpellTargetUnit())+"|r")))
+            call DisplayTimedTextToForce(l_tempForce,30,("|cffffcc00"+(GetUnitName(GetSpellTargetUnit())+"|r")))
         endif
     endif
     // Calculation 1:
     // (current health of the spell target) with its decimal part removed.
     // Calculation 2:
     // (maximum health of the spell target) with its decimal part removed.
-    call DisplayTimedTextToForce(udg_TempForce,30,(("HP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_LIFE,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit()))))))
+    call DisplayTimedTextToForce(l_tempForce,30,(("HP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_LIFE,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit()))))))
     if(Trig_Gaya_Scan_Cond_TargetHasMana())then
         // Calculation 1:
         // (current mana of the spell target) with its decimal part removed.
         // Calculation 2:
         // (maximum mana of the spell target) with its decimal part removed.
-        call DisplayTimedTextToForce(udg_TempForce,30,(("MP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetSpellTargetUnit()))))))
+        call DisplayTimedTextToForce(l_tempForce,30,(("MP: "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetSpellTargetUnit()))))+(" / "+I2S(R2I(GetUnitStateSwap(UNIT_STATE_MAX_MANA,GetSpellTargetUnit()))))))
     endif
     set udg_TempInteger=GetUnitTypeId(GetSpellTargetUnit())
     set udg_TempInteger=LoadIntegerBJ(1,udg_TempInteger,udg_MonsterDataHash)
     if(Trig_Gaya_Scan_Cond_SpeciesKnown())then
-        call DisplayTimedTextToForce(udg_TempForce,30,("Species: "+udg_SpeciesName[udg_TempInteger]))
+        call DisplayTimedTextToForce(l_tempForce,30,("Species: "+udg_SpeciesName[udg_TempInteger]))
     endif
     if(Trig_Gaya_Scan_Cond_HasNullEvasion())then
-        call DisplayTimedTextToForce(udg_TempForce,30,"Negates block and dodge chances.")
+        call DisplayTimedTextToForce(l_tempForce,30,"Negates block and dodge chances.")
     else
         // Calculation 1:
         // (Trig_Damage_Engine_GetAccuracy(the spell target)) with its decimal part removed.
         // Calculation 2:
         // (Trig_Damage_Engine_GetEvasion(the spell target)) with its decimal part removed.
         set udg_TempString="Accuracy: "+I2S(R2I(Trig_Damage_Engine_GetAccuracy(GetSpellTargetUnit())))+" / Evasion: "+I2S(R2I(Trig_Damage_Engine_GetEvasion(GetSpellTargetUnit())))
-        call DisplayTimedTextToForce(udg_TempForce,30,udg_TempString)
+        call DisplayTimedTextToForce(l_tempForce,30,udg_TempString)
         if(Trig_Gaya_Scan_Cond_HasTruecast())then
-            call DisplayTimedTextToForce(udg_TempForce,30,"Spells cannot be blocked or dodged.")
+            call DisplayTimedTextToForce(l_tempForce,30,"Spells cannot be blocked or dodged.")
         endif
     endif
     call Element_SetFromUnit(GetSpellTargetUnit(),true)
     if(Trig_Gaya_Scan_Cond_HasStrikeElement())then
         if(Trig_Gaya_Scan_Cond_StrikesFire())then
-            call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Fire.")
+            call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Fire.")
         else
             if(Trig_Gaya_Scan_Cond_StrikesIce())then
-                call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Ice.")
+                call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Ice.")
             else
                 if(Trig_Gaya_Scan_Cond_StrikesThunder())then
-                    call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Thunder.")
+                    call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Thunder.")
                 else
                     if(Trig_Gaya_Scan_Cond_StrikesWater())then
-                        call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Water.")
+                        call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Water.")
                     else
                         if(Trig_Gaya_Scan_Cond_StrikesEarth())then
-                            call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Earth.")
+                            call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Earth.")
                         else
                             if(Trig_Gaya_Scan_Cond_StrikesWind())then
-                                call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with Wind.")
+                                call DisplayTimedTextToForce(l_tempForce,30,"Strikes with Wind.")
                             else
                                 if(Trig_Gaya_Scan_Cond_StrikesAll())then
-                                    call DisplayTimedTextToForce(udg_TempForce,30,"Strikes with all elements.")
+                                    call DisplayTimedTextToForce(l_tempForce,30,"Strikes with all elements.")
                                 endif
                             endif
                         endif
@@ -473,7 +475,7 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     endif
     if(Trig_Gaya_Scan_Cond_WeakListFilled())then
         // (StringLength(udg_TempString)) minus (2).
-        call DisplayTimedTextToForce(udg_TempForce,30,(("Weak to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
+        call DisplayTimedTextToForce(l_tempForce,30,(("Weak to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
     endif
     set udg_TempString=" "
     if(Trig_Gaya_Scan_Cond_ResistNonElemental())then
@@ -503,7 +505,7 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     endif
     if(Trig_Gaya_Scan_Cond_ResistListFilled())then
         // (StringLength(udg_TempString)) minus (2).
-        call DisplayTimedTextToForce(udg_TempForce,30,(("Resistant to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
+        call DisplayTimedTextToForce(l_tempForce,30,(("Resistant to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
     endif
     set udg_TempString=" "
     if(Trig_Gaya_Scan_Cond_ImmunePhysical())then
@@ -557,7 +559,7 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     endif
     if(Trig_Gaya_Scan_Cond_ImmuneListFilled())then
         // (StringLength(udg_TempString)) minus (2).
-        call DisplayTimedTextToForce(udg_TempForce,30,(("Immune to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
+        call DisplayTimedTextToForce(l_tempForce,30,(("Immune to"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
     endif
     set udg_TempString=" "
     if(Trig_Gaya_Scan_Cond_AbsorbOmni())then
@@ -584,7 +586,7 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     endif
     if(Trig_Gaya_Scan_Cond_AbsorbListFilled())then
         // (StringLength(udg_TempString)) minus (2).
-        call DisplayTimedTextToForce(udg_TempForce,30,(("Absorbs"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
+        call DisplayTimedTextToForce(l_tempForce,30,(("Absorbs"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
     endif
     set udg_TempString=" "
     if(Trig_Gaya_Scan_Cond_ImmuneBlind())then
@@ -616,7 +618,7 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
     endif
     if(Trig_Gaya_Scan_Cond_StatusListFilled())then
         // (StringLength(udg_TempString)) minus (2).
-        call DisplayTimedTextToForce(udg_TempForce,30,(("Unaffected by"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
+        call DisplayTimedTextToForce(l_tempForce,30,(("Unaffected by"+SubStringBJ(udg_TempString,1,(StringLength(udg_TempString)-2)))+"."))
     endif
     set udg_TempString=" "
     if(Trig_Gaya_Scan_Cond_HasAdrenaline())then
@@ -641,9 +643,10 @@ function Trig_Gaya_Scan_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_Gaya_Scan_Cond_SurgeTextFilled())then
-        call DisplayTimedTextToForce(udg_TempForce,30,(udg_TempString+"surges when near death."))
+        call DisplayTimedTextToForce(l_tempForce,30,(udg_TempString+"surges when near death."))
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function InitTrig_Gaya_Scan takes nothing returns nothing

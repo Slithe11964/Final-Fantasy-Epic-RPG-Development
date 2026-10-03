@@ -20,20 +20,22 @@ function Trig_MagicVault_Death_Cond_SeitengratAvailable takes nothing returns bo
 endfunction
 
 function Trig_MagicVault_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call ReplaceUnitBJ(GetTriggerUnit(),'nmgv',bj_UNIT_STATE_METHOD_RELATIVE) // 'nmgv': editor label "Magic Vault"
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_MagicVault_Death_Cond_SeitengratAvailable())then
-        call CreateItemLoc('I0IO',udg_TempPoint) // 'I0IO': item "Seitengrat"
+        call CreateItemLoc('I0IO',l_tempPoint) // 'I0IO': item "Seitengrat"
     else
         if(Trig_MagicVault_Death_Cond_CoinFlip())then
-            call CreateItemLoc('I004',udg_TempPoint) // 'I004': item "100 Gold Coins"
+            call CreateItemLoc('I004',l_tempPoint) // 'I004': item "100 Gold Coins"
         else
-            call CreateItemLoc('phea',udg_TempPoint) // 'phea': item "Potion"
+            call CreateItemLoc('phea',l_tempPoint) // 'phea': item "Potion"
         endif
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_MagicVault automatically; it is intentionally empty. This module's

@@ -13,15 +13,16 @@ function Trig_DarkBrothers_Appear_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkBrothers_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(gg_unit_O00B_0032)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_O00B_0032)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(gg_unit_O00A_0033)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_O00A_0033)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_DarkBrothers_Appear_CinematicsOn())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_O00B_0032,0)
@@ -45,6 +46,7 @@ function Trig_DarkBrothers_Appear_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_O00B_0032,udg_BossUnits)
     call GroupAddUnitSimple(gg_unit_O00A_0033,udg_BossUnits)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkBrothers automatically; it is intentionally empty. This module's

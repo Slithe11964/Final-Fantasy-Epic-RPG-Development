@@ -35,16 +35,18 @@ function Trig_IcyRealm_GateOpened_Setup_Enum_ClearRubble_B takes nothing returns
 endfunction
 
 function Trig_IcyRealm_GateOpened_Setup_Actions takes nothing returns nothing
+    local location l_tempPoint
     call EnumDestructablesInRectAll(gg_rct_493,function Trig_IcyRealm_GateOpened_Setup_Enum_ClearRubble_A)
     call EnumDestructablesInRectAll(gg_rct_665,function Trig_IcyRealm_GateOpened_Setup_Enum_ClearRubble_B)
     set udg_ZodiacQuestStage=7
     // A random whole number from 1 through LoadIntegerBJ(8, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(8,2,udg_SpawnDataHashRef)),8,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n02U',Player(8),udg_TempPoint,GetRandomDirectionDeg()) // 'n02U': unit "Chocobo"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(8,2,udg_SpawnDataHashRef)),8,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n02U',Player(8),l_tempPoint,GetRandomDirectionDeg()) // 'n02U': unit "Chocobo"
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TownNpcUnits)
     call ConditionalTriggerExecute(gg_trg_Ward_ShowTalkIcon)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_IcyRealm_Restore_IsFilterAlive takes nothing returns boolean
@@ -73,6 +75,8 @@ function Trig_IcyRealm_Restore_KillAndRemoveEnumUnit takes nothing returns nothi
 endfunction
 
 function Trig_IcyRealm_Restore_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
     set udg_HellSpawnsActive=false
     call SetBlightRectBJ(false,Player($B),gg_rct_592) // $B = 11
     call SetBlightRectBJ(false,Player($B),gg_rct_593) // $B = 11
@@ -80,27 +84,27 @@ function Trig_IcyRealm_Restore_Actions takes nothing returns nothing
     call SetBlightRectBJ(false,Player($B),gg_rct_595) // $B = 11
     call SetBlightRectBJ(false,Player($B),gg_rct_596) // $B = 11
     call SetBlightRectBJ(false,Player($B),gg_rct_597) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_598)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_599)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_600)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_601)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_602)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_603)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_604)
-    call SetBlightRadiusLocBJ(false,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_598)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_599)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_600)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_601)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_602)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_603)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_604)
+    call SetBlightRadiusLocBJ(false,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=5
     loop
@@ -132,9 +136,9 @@ function Trig_IcyRealm_Restore_Actions takes nothing returns nothing
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_597) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_622) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_623) // 'YOtf': object name not found in map data
-    set udg_TempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_IcyRealm_Restore_IsAliveInZone)) // $B = 11
-    call ForGroupBJ(udg_TempGroup,function Trig_IcyRealm_Restore_KillEnumUnit)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_IcyRealm_Restore_IsAliveInZone)) // $B = 11
+    call ForGroupBJ(l_tempGroup,function Trig_IcyRealm_Restore_KillEnumUnit)
+    call DestroyGroup(l_tempGroup)
     set udg_ZoneEssenceItem[8]='I06X' // 'I06X': item "Unique Ice Shard"
     set udg_ElementRecord[1]=8
     set udg_AreaSpawnUnitA[8]='n08H' // 'n08H': unit "Ice Elemental"
@@ -143,12 +147,14 @@ function Trig_IcyRealm_Restore_Actions takes nothing returns nothing
     if(Trig_IcyRealm_Restore_IsZoneUnitInGroup())then
         call KillUnit(udg_ZoneBoss[8])
     endif
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
-    call ForGroupBJ(udg_TempGroup,function Trig_IcyRealm_Restore_KillAndRemoveEnumUnit)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
+    call ForGroupBJ(l_tempGroup,function Trig_IcyRealm_Restore_KillAndRemoveEnumUnit)
+    call DestroyGroup(l_tempGroup)
     call Trig_Quest_52_Scorching_TravelDialog_Disable()
     set udg_TravelName[udg_TravelPointIndex]="|cFFFFFFFFI|rcy Realm"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_IcyRealm automatically; it is intentionally empty. This module's

@@ -21,31 +21,34 @@ function Trig_Meteor_Cast_IsHero takes nothing returns boolean
 endfunction
 
 function Trig_Meteor_Cast_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     if(Trig_Meteor_Cast_NoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    set udg_TempInteger=$FA // $FA = 250
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    set l_tempInteger=$FA // $FA = 250
     if(Trig_Meteor_Cast_IsHero())then
         // Add half the caster's Intelligence, dropping any fraction.
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     endif
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     // Divide the spell's mana cost by 50 and drop the remainder to get this count.
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 50)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 50)
     // The remainder after dividing ((udg_MeteorDummyIndex) plus (1)) by (4).
     set udg_MeteorDummyIndex=ModuloInteger((udg_MeteorDummyIndex+1),4)
     call UnitAddAbilityBJ(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit())
-    call SetUnitAbilityLevelSwapped(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit(),udg_TempInteger)
+    call SetUnitAbilityLevelSwapped(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit(),l_tempInteger)
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
     call RemoveLocation(udg_TempPoint)
 endfunction

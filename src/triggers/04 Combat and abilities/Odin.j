@@ -35,13 +35,14 @@ function Trig_Odin_Leash_Arena_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Odin_Leash_Arena_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_677)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_677)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call Berserk_Remove(GetTriggerUnit())
@@ -49,6 +50,7 @@ function Trig_Odin_Leash_Arena_Actions takes nothing returns nothing
     // missing or its maximum is 0).
     // Result 2: (result 1) plus (5).
     call SetUnitLifePercentBJ(GetTriggerUnit(),(GetUnitLifePercent(GetTriggerUnit())+5.))
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Odin automatically; it is intentionally empty. This module's

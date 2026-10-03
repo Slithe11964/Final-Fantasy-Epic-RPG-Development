@@ -19,11 +19,12 @@ function Trig_BlazingDemon_Appear_Cond_ShowDialog takes nothing returns boolean
 endfunction
 
 function Trig_BlazingDemon_Appear_Actions takes nothing returns nothing
-    set udg_TempPoint2=GetUnitLoc(udg_CinematicActor)
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,udg_TempPoint,udg_TempPoint2)
+    local location l_tempPoint2
+    set l_tempPoint2=GetUnitLoc(udg_CinematicActor)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,udg_TempPoint,l_tempPoint2)
     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_TempPoint)
     if(Trig_BlazingDemon_Appear_Cond_ShowDialog())then
         call Cine_Enter()
@@ -43,6 +44,7 @@ function Trig_BlazingDemon_Appear_Actions takes nothing returns nothing
         call Wait_Polled(1.)
     endif
     call ConditionalTriggerExecute(gg_trg_Quest_BlazingDemon_Start)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_BlazingDemon_FullHeat_Cond_ShowDialog takes nothing returns boolean
@@ -54,10 +56,11 @@ function Trig_BlazingDemon_FullHeat_Cond_LowDifficulty takes nothing returns boo
 endfunction
 
 function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_U00G_0220,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_U00G_0220,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call UnitAddAbilityBJ('A0Z1',gg_unit_U00G_0220) // 'A0Z1': ability "Full Heat"
     call SetUnitInvulnerable(gg_unit_U00G_0220,true)
     call SetUnitVertexColorBJ(gg_unit_U00G_0220,'d',30.,30.,0)
@@ -66,8 +69,8 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         call Cam_PanToUnit(gg_unit_U00G_0220,.0)
         call Text_Say(gg_unit_U00G_0220,"Hahaha! This is great! You really pack a punch!",false)
         call Text_Say(gg_unit_U00G_0220,"Let's turn up the heat even more!",false)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -75,18 +78,18 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (loop counter A treated as a decimal-capable number) times (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitVertexColorBJ(gg_unit_U00G_0220,'d',20.,20.,0)
         call Wait_Polled(1.)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -94,18 +97,18 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (loop counter A treated as a decimal-capable number) times (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitVertexColorBJ(gg_unit_U00G_0220,'d',10.,10.,0)
         call Wait_Polled(1.)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -113,22 +116,22 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (loop counter A treated as a decimal-capable number) times (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitVertexColorBJ(gg_unit_U00G_0220,'d',.0,.0,0)
         call Wait_Polled(2)
         call Text_Say(gg_unit_U00G_0220,"I'll turn you all to ash!",false)
         call Cine_ExitAction()
     else
         call PauseUnitBJ(true,gg_unit_U00G_0220)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -136,18 +139,18 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (loop counter A treated as a decimal-capable number) times (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call Wait_Polled(1.)
         call PauseUnitBJ(false,gg_unit_U00G_0220)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=1
@@ -155,14 +158,14 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // (loop counter A treated as a decimal-capable number) times (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitVertexColorBJ(gg_unit_U00G_0220,'d',.0,.0,0)
     endif
     call SetHeroLevelBJ(gg_unit_U00G_0220,93,false)
@@ -175,6 +178,7 @@ function Trig_BlazingDemon_FullHeat_Actions takes nothing returns nothing
         call DestroyTrigger(gg_trg_Quest_BlazingDemon_End)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_BlazingDemon automatically; it is intentionally empty. This module's

@@ -37,15 +37,16 @@ function Trig_CowPortal_Spawn_Cows_Cond_MoreCowsLeft takes nothing returns boole
 endfunction
 
 function Trig_CowPortal_Spawn_Cows_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(udg_CowPortal)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(udg_CowPortal)
     if(Trig_CowPortal_Spawn_Cows_Cond_MoreCowsLeft())then
         // Calculation 1:
         // (udg_CowSpawnCount treated as a decimal-capable number) times (45).
         // Calculation 2:
         // A random decimal number between 200 and 340.
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,(I2R(udg_CowSpawnCount)*45.),GetRandomReal(200.,340.))
-        call CreateNUnitsAtLocFacingLocBJ(1,'n0AE',Player($B),udg_TempPoint,udg_TempPoint2) // 'n0AE': unit "Hell Bovine"; $B = 11
-        call RemoveLocation(udg_TempPoint)
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,(I2R(udg_CowSpawnCount)*45.),GetRandomReal(200.,340.))
+        call CreateNUnitsAtLocFacingLocBJ(1,'n0AE',Player($B),l_tempPoint,udg_TempPoint2) // 'n0AE': unit "Hell Bovine"; $B = 11
+        call RemoveLocation(l_tempPoint)
         call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_CowGroup)
@@ -55,8 +56,8 @@ function Trig_CowPortal_Spawn_Cows_Actions takes nothing returns nothing
         call StartTimerBJ(udg_CowSpawnTimer,false,.6)
     else
         call DisableTrigger(GetTriggeringTrigger())
-        call SetUnitPositionLoc(gg_unit_O00I_0239,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        call SetUnitPositionLoc(gg_unit_O00I_0239,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
         call ShowUnitShow(gg_unit_O00I_0239)
         call PauseUnitBJ(false,gg_unit_O00I_0239)
         call SetUnitInvulnerable(gg_unit_O00I_0239,false)
@@ -67,6 +68,7 @@ function Trig_CowPortal_Spawn_Cows_Actions takes nothing returns nothing
         call ForGroupBJ(udg_CowGroup,function Trig_CowPortal_Spawn_Cows_Enum_AddGhostVision)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_CowPortal automatically; it is intentionally empty. This module's

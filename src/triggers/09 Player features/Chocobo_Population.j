@@ -7,6 +7,7 @@ globals
 endglobals
 
 function Trig_Chocobo_Init_Actions takes nothing returns nothing
+    local location l_tempPoint
     call SetPlayerTechResearchedSwap('R00J',1,Player($B)) // 'R00J': upgrade "Enemy Chocobo"; $B = 11
     call SetPlayerTechResearchedSwap('R00Q',1,Player($B)) // 'R00Q': upgrade "Enemy Chocobo"; $B = 11
     call SetPlayerTechResearchedSwap('R00R',1,Player($B)) // 'R00R': upgrade "Enemy Chocobo"; $B = 11
@@ -120,21 +121,22 @@ function Trig_Chocobo_Init_Actions takes nothing returns nothing
     set udg_ChocoboDigItem[34]='I0D1' // 'I0D1': item "Storm Lance"
     set udg_ChocoboDigItem[99]='I0FP' // 'I0FP': item "Wirt's Leg"
     // A random whole number from 1 through LoadIntegerBJ(1, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(1,2,udg_SpawnDataHashRef)),1,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n02J',Player(8),udg_TempPoint,GetRandomDirectionDeg()) // 'n02J': unit "Chocobo"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(1,2,udg_SpawnDataHashRef)),1,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n02J',Player(8),l_tempPoint,GetRandomDirectionDeg()) // 'n02J': unit "Chocobo"
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TownNpcUnits)
     // A random whole number from 1 through LoadIntegerBJ(3, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(3,2,udg_SpawnDataHashRef)),3,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n02S',Player(8),udg_TempPoint,GetRandomDirectionDeg()) // 'n02S': unit "Chocobo"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(3,2,udg_SpawnDataHashRef)),3,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n02S',Player(8),l_tempPoint,GetRandomDirectionDeg()) // 'n02S': unit "Chocobo"
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TownNpcUnits)
     // A random whole number from 1 through LoadIntegerBJ(7, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(7,2,udg_SpawnDataHashRef)),7,udg_SpawnRectHashRef))
-    call CreateNUnitsAtLoc(1,'n02T',Player(8),udg_TempPoint,GetRandomDirectionDeg()) // 'n02T': unit "Chocobo"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(7,2,udg_SpawnDataHashRef)),7,udg_SpawnRectHashRef))
+    call CreateNUnitsAtLoc(1,'n02T',Player(8),l_tempPoint,GetRandomDirectionDeg()) // 'n02T': unit "Chocobo"
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TownNpcUnits)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Chocobo_Spawn_Periodic_Conditions takes nothing returns boolean
@@ -188,13 +190,15 @@ function Trig_Chocobo_Respawn_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Chocobo_Respawn_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetRectCenter(gg_rct_208)
-    call CreateNUnitsAtLoc(1,'n04J',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n04J': unit "Chocobo"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_208)
+    call CreateNUnitsAtLoc(1,'n04J',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n04J': unit "Chocobo"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call TriggerRegisterUnitEvent(gg_trg_Chocobo_Drop_Nut,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_Chocobo_Drop_Nut)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // Registration ownership; called at the original bootstrap positions.

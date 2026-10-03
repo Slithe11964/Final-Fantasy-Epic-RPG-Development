@@ -61,28 +61,33 @@ function Trig_Shell_AI_Cast_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Shell_AI_Cast_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local location l_tempPoint
+    local location l_tempPoint2
     call UnitRemoveBuffBJ('B005',GetSpellTargetUnit()) // 'B005': buff "Shell"
     call UnitRemoveBuffBJ('B08S',GetSpellTargetUnit()) // 'B08S': buff "Shellra"
     call UnitRemoveBuffBJ('B07H',GetSpellTargetUnit()) // 'B07H': buff "Shell"
     call UnitRemoveBuffBJ('B06K',GetSpellTargetUnit()) // 'B06K': buff tooltip "Deshell"
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId())))
-    // Result 1: (udg_TempInteger) minus (80).
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId())))
+    // Result 1: (l_tempInteger) minus (80).
     // Result 2: (result 1) divided by (20); drop the remainder.
     // Result 3: (GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the triggering unit)) minus (1).
     // Result 4: (result 2) plus (result 3).
     // Result 5: the larger of (1) and (result 4).
     // Result 6: the smaller of (10) and (result 5).
-    set udg_TempInteger=IMinBJ($A,IMaxBJ(1,(((udg_TempInteger-80)/ 20)+(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)))) // $A = 10
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetUnitLoc(GetSpellTargetUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=IMinBJ($A,IMaxBJ(1,(((l_tempInteger-80)/ 20)+(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)))) // $A = 10
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=GetUnitLoc(GetSpellTargetUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint2) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A179',GetLastCreatedUnit()) // 'A179': ability "Shell"
-    call SetUnitAbilityLevelSwapped('A179',GetLastCreatedUnit(),udg_TempInteger) // 'A179': ability "Shell"
+    call SetUnitAbilityLevelSwapped('A179',GetLastCreatedUnit(),l_tempInteger) // 'A179': ability "Shell"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"drunkenhaze",GetSpellTargetUnit())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Shell automatically; it is intentionally empty. This module's

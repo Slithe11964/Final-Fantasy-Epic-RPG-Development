@@ -151,11 +151,12 @@ function Trig_Zeromus_Encounter_Cond_PullDone takes nothing returns boolean
 endfunction
 
 function Trig_Zeromus_Encounter_Actions takes nothing returns nothing
+    local group l_tempGroup
     set udg_TempPoint=GetRectCenter(gg_rct_458)
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(1024.,udg_TempPoint,Condition(function Trig_Zeromus_Encounter_Filter_PulledUnit))
+    set l_tempGroup=Group_UnitsInRangeOfLoc(1024.,udg_TempPoint,Condition(function Trig_Zeromus_Encounter_Filter_PulledUnit))
     call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Zeromus_Encounter_PullUnitToCenter)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Zeromus_Encounter_PullUnitToCenter)
+    call DestroyGroup(l_tempGroup)
     if(Trig_Zeromus_Encounter_Cond_PullDone())then
         if(Trig_Zeromus_Encounter_Cond_ShowDialogue())then
             call Cine_Enter()
@@ -204,6 +205,7 @@ function Trig_Zeromus_Encounter_Actions takes nothing returns nothing
         call Music_SetTrack($D) // $D = 13
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempGroup=null
 endfunction
 
 function Trig_Zeromus_Death_Cond_TrackKills takes nothing returns boolean
@@ -236,6 +238,7 @@ function Trig_Zeromus_Death_Cond_SideQuestDone takes nothing returns boolean
 endfunction
 
 function Trig_Zeromus_Death_Actions takes nothing returns nothing
+    local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Zeromus_Death_Cond_TrackKills())then
         set udg_BossUnit=GetTriggerUnit()
@@ -251,9 +254,9 @@ function Trig_Zeromus_Death_Actions takes nothing returns nothing
         call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetUnitName(GetDyingUnit()))+"|r was defeated !!!"))
     endif
     call GroupClear(udg_ArenaBoundUnits)
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player($B),'u00P') // $B = 11; 'u00P': unit "Skeleton Champion"
-    call ForGroupBJ(udg_TempGroup,function Trig_Zeromus_Death_KillSkeleton)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player($B),'u00P') // $B = 11; 'u00P': unit "Skeleton Champion"
+    call ForGroupBJ(l_tempGroup,function Trig_Zeromus_Death_KillSkeleton)
+    call DestroyGroup(l_tempGroup)
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
     call CreateItemLoc('I0BZ',udg_TempPoint) // 'I0BZ': item "Holy Ankh"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
@@ -307,6 +310,7 @@ function Trig_Zeromus_Death_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_ShinrasPlan_Prepare)
     call ConditionalTriggerExecute(gg_trg_Frakir_NextMarker)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_Zeromus automatically; it is intentionally empty. This module's

@@ -33,6 +33,7 @@ function Trig_Quest_OmegaWeapon_Slain_Reward_EachPlayer takes nothing returns no
 endfunction
 
 function Trig_Quest_OmegaWeapon_Slain_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_OmegaWeapon_Slain_Cond_TrackBossKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -40,9 +41,9 @@ function Trig_Quest_OmegaWeapon_Slain_Actions takes nothing returns nothing
     endif
     call Music_ClearTrack(47)
     call GroupRemoveUnitSimple(gg_unit_N022_0125,udg_BossGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0ES',udg_TempPoint) // 'I0ES': item "Curse: Ultimate Weapon"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0ES',l_tempPoint) // 'I0ES': item "Curse: Ultimate Weapon"
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Omega Weapon|r")
     call QuestSetCompletedBJ(udg_SideQuest[47],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
@@ -53,6 +54,7 @@ function Trig_Quest_OmegaWeapon_Slain_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     call ForForce(udg_PlayingPlayers,function Trig_Quest_OmegaWeapon_Slain_Reward_EachPlayer)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_OmegaWeapon takes nothing returns nothing

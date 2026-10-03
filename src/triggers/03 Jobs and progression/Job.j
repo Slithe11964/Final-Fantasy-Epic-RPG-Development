@@ -451,6 +451,7 @@ function Trig_Job_Change_KillEnumSummon takes nothing returns nothing
 endfunction
 
 function Trig_Job_Change_Actions takes nothing returns nothing
+    local group l_tempGroup
     set udg_SelectedJobId=GetUnitTypeId(GetSoldUnit())
     set udg_TempPlayer=GetOwningPlayer(GetSoldUnit())
     call RemoveUnit(GetSoldUnit())
@@ -458,6 +459,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
         set udg_TempForce=Force_OfPlayer(udg_TempPlayer)
         call DisplayTextToForce(udg_TempForce,"You are already using this job.")
         call DestroyForce(udg_TempForce)
+        set l_tempGroup=null
         return
     endif
     if(Trig_Job_Change_IsValidBuyer())then
@@ -465,6 +467,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
         set udg_TempForce=Force_OfPlayer(udg_TempPlayer)
         call DisplayTextToForce(udg_TempForce,"The unit interacting with the shrine is not your hero.")
         call DestroyForce(udg_TempForce)
+        set l_tempGroup=null
         return
     endif
     if(Trig_Job_Change_HasJobLevel())then
@@ -619,6 +622,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
         call DisplayTextToForce(udg_TempForce,"You can't use this job yet.")
         call DisplayTextToForce(udg_TempForce,("You must meet following requirements: "+udg_JobRequirementText))
         call DestroyForce(udg_TempForce)
+        set l_tempGroup=null
         return
     endif
     set udg_SpeedrunFlag[3]=true
@@ -812,15 +816,16 @@ function Trig_Job_Change_Actions takes nothing returns nothing
     if(Trig_Job_Change_HasSummonUnit())then
         call UnitApplyTimedLifeBJ(.01,'BTLF',udg_SummonUnit[GetConvertedPlayerId(udg_TempPlayer)]) // 'BTLF': object name not found in map data
     endif
-    set udg_TempGroup=Group_UnitsOfPlayer(udg_TempPlayer,Condition(function Trig_Job_Change_FilterSummoned))
-    call ForGroupBJ(udg_TempGroup,function Trig_Job_Change_KillEnumSummon)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayer(udg_TempPlayer,Condition(function Trig_Job_Change_FilterSummoned))
+    call ForGroupBJ(l_tempGroup,function Trig_Job_Change_KillEnumSummon)
+    call DestroyGroup(l_tempGroup)
     call SelectUnitForPlayerSingle(Player_GetHero(udg_TempPlayer),udg_TempPlayer)
     call PanCameraToTimedLocForPlayer(udg_TempPlayer,udg_HeroLoc,0)
     call RemoveLocation(udg_HeroLoc)
     call StartTimerBJ(udg_JobLevelTimer,false,.01)
     call StartTimerBJ(udg_UnitUpdateTimer,false,.1)
     call TriggerExecute(gg_trg_Multiboard_Refresh)
+    set l_tempGroup=null
 endfunction
 
 function Trig_Job_XP_Handicap_ApplyJobXPRate takes nothing returns nothing

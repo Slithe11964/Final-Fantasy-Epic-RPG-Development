@@ -35,16 +35,20 @@ function Trig_Ultros_SummonTentacle_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ultros_SummonTentacle_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     set udg_TentacleCount=(udg_TentacleCount-1)
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,GetRandomDirectionDeg())
-    call CreateNUnitsAtLocFacingLocBJ(1,'n0C9',Player($B),udg_TempPoint2,udg_TempPoint) // 'n0C9': object name not found in map data; $B = 11
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetAttacker())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,300.,GetRandomDirectionDeg())
+    call CreateNUnitsAtLocFacingLocBJ(1,'n0C9',Player($B),l_tempPoint2,l_tempPoint) // 'n0C9': object name not found in map data; $B = 11
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call SetUnitAnimation(GetLastCreatedUnit(),"birth")
     call QueueUnitAnimationBJ(GetLastCreatedUnit(),"stand")
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_TentacleGroup)
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Ultros_TentacleDeath_Conditions takes nothing returns boolean
@@ -69,6 +73,7 @@ function Trig_Ultros_Death_IsQuestActive takes nothing returns boolean
 endfunction
 
 function Trig_Ultros_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Ultros_Death_IsDropBonusOn())then
         set udg_BossUnit=GetTriggerUnit()
@@ -79,10 +84,10 @@ function Trig_Ultros_Death_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_Ultros_TentacleDeath)
     call DestroyTrigger(gg_trg_Ultros_TentacleDeath)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0HT',udg_TempPoint) // 'I0HT': item "Prominent Cloak"
-    call CreateTextTagLocBJ("ARGH! YOU... DAMN...",udg_TempPoint,0,12.,'d',50.,'d',0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0HT',l_tempPoint) // 'I0HT': item "Prominent Cloak"
+    call CreateTextTagLocBJ("ARGH! YOU... DAMN...",l_tempPoint,0,12.,'d',50.,'d',0)
+    call RemoveLocation(l_tempPoint)
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),5)
     call ForGroupBJ(udg_TentacleGroup,function Trig_Ultros_Death_KillEnumUnit)
@@ -96,6 +101,7 @@ function Trig_Ultros_Death_Actions takes nothing returns nothing
         call EnableTrigger(gg_trg_Tentacles_Reward)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Ultros automatically; it is intentionally empty. This module's

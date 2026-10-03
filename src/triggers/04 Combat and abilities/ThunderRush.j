@@ -54,11 +54,13 @@ function Trig_ThunderRush_Cast_ShouldResetSurge takes nothing returns boolean
 endfunction
 
 function Trig_ThunderRush_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     // The remainder after dividing ((facing in degrees of the triggering unit) plus (90)) by (360).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,100.,ModuloReal((GetUnitFacing(GetTriggerUnit())+90.),360.))
-    call CreateNUnitsAtLoc(1,'u013',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'u013': unit "Thunder Rush"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,100.,ModuloReal((GetUnitFacing(GetTriggerUnit())+90.),360.))
+    call CreateNUnitsAtLoc(1,'u013',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,bj_UNIT_FACING) // 'u013': unit "Thunder Rush"
+    call RemoveLocation(l_tempPoint2)
     if(Trig_ThunderRush_Cast_IsCasterHeroLeft())then
         call BlzSetUnitName(GetLastCreatedUnit(),GetHeroProperName(GetTriggerUnit()))
     else
@@ -69,9 +71,9 @@ function Trig_ThunderRush_Cast_Actions takes nothing returns nothing
     call UnitApplyTimedLifeBJ(8.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_YELLOW)
     // The remainder after dividing ((facing in degrees of the triggering unit) plus (270)) by (360).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,100.,ModuloReal((GetUnitFacing(GetTriggerUnit())+270.),360.))
-    call CreateNUnitsAtLoc(1,'u013',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'u013': unit "Thunder Rush"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,100.,ModuloReal((GetUnitFacing(GetTriggerUnit())+270.),360.))
+    call CreateNUnitsAtLoc(1,'u013',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,bj_UNIT_FACING) // 'u013': unit "Thunder Rush"
+    call RemoveLocation(l_tempPoint2)
     if(Trig_ThunderRush_Cast_IsCasterHeroRight())then
         call BlzSetUnitName(GetLastCreatedUnit(),GetHeroProperName(GetTriggerUnit()))
     else
@@ -81,7 +83,7 @@ function Trig_ThunderRush_Cast_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShockAuraUnitGroup)
     call UnitApplyTimedLifeBJ(8.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_YELLOW)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_ThunderRush_Cast_UseMaxLevel())then
         call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),4)
     else
@@ -106,6 +108,8 @@ function Trig_ThunderRush_Cast_Actions takes nothing returns nothing
         call BlzEndUnitAbilityCooldown(GetTriggerUnit(),'A0Z0') // 'A0Z0': ability "Surge"
     endif
     call IssueImmediateOrderBJ(GetTriggerUnit(),"berserk")
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_ThunderRush_Cleanup_Conditions takes nothing returns boolean

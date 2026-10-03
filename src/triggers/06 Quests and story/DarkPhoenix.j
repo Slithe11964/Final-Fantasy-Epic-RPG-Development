@@ -30,11 +30,12 @@ function Trig_DarkPhoenix_Appear_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(gg_unit_H021_0034)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H021_0034)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_DarkPhoenix_Death)
     if(Trig_DarkPhoenix_Appear_CinematicsOn())then
         call Cine_Enter()
@@ -44,20 +45,20 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
         call Text_Say(null,"|cffff0000Dark Phoenix has appeared!|r",true)
         if(Trig_DarkPhoenix_Appear_SummonIfrit_Cine())then
             set udg_DarkFireStage=6
-            set udg_TempPoint=GetRectCenter(gg_rct_605)
+            set l_tempPoint=GetRectCenter(gg_rct_605)
             set udg_TempPoint2=GetUnitLoc(gg_unit_H021_0034)
-            call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,udg_TempPoint,udg_TempPoint2)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+            call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,l_tempPoint,udg_TempPoint2)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
-            call RemoveLocation(udg_TempPoint)
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
             call ShowUnitShow(gg_unit_U00G_0220)
             call Wait_Polled(1.)
             call SetUnitAnimation(gg_unit_U00G_0220,"spell slam")
             call Wait_Polled(1.)
-            set udg_TempPoint=GetUnitLoc(gg_unit_H021_0034)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+            set l_tempPoint=GetUnitLoc(gg_unit_H021_0034)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),5.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             set bj_forLoopAIndex=1
@@ -65,17 +66,17 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
                 // (loop counter A treated as a decimal-capable number) times (36).
-                set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*36.))
+                set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 call RemoveLocation(udg_TempPoint2)
                 set bj_forLoopAIndex=bj_forLoopAIndex+1
             endloop
-            call TerrainDeformationRippleBJ(1.,false,udg_TempPoint,$400,$400,64,.5,512) // $400 = 1024
-            call RemoveLocation(udg_TempPoint)
+            call TerrainDeformationRippleBJ(1.,false,l_tempPoint,$400,$400,64,.5,512) // $400 = 1024
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
-            set udg_TempPoint=GetUnitLoc(gg_unit_H021_0034)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+            set l_tempPoint=GetUnitLoc(gg_unit_H021_0034)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             set bj_forLoopAIndex=1
@@ -83,14 +84,14 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
                 // (loop counter A treated as a decimal-capable number) times (30).
-                set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+                set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
                 call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 call RemoveLocation(udg_TempPoint2)
                 set bj_forLoopAIndex=bj_forLoopAIndex+1
             endloop
-            call RemoveLocation(udg_TempPoint)
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
             call KillUnit(gg_unit_H021_0034)
             set udg_TempPlayer=GetOwningPlayer(GetTriggerUnit())
@@ -118,20 +119,20 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffff0000Dark Phoenix has appeared!|r")
         if(Trig_DarkPhoenix_Appear_SummonIfrit_NoCine())then
             set udg_DarkFireStage=6
-            set udg_TempPoint=GetRectCenter(gg_rct_605)
+            set l_tempPoint=GetRectCenter(gg_rct_605)
             set udg_TempPoint2=GetUnitLoc(gg_unit_H021_0034)
-            call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,udg_TempPoint,udg_TempPoint2)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+            call SetUnitPositionLocFacingLocBJ(gg_unit_U00G_0220,l_tempPoint,udg_TempPoint2)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
-            call RemoveLocation(udg_TempPoint)
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
             call ShowUnitShow(gg_unit_U00G_0220)
             call Wait_Polled(1.)
             call SetUnitAnimation(gg_unit_U00G_0220,"spell slam")
             call Wait_Polled(1.)
-            set udg_TempPoint=GetUnitLoc(gg_unit_H021_0034)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+            set l_tempPoint=GetUnitLoc(gg_unit_H021_0034)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),5.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             set bj_forLoopAIndex=1
@@ -139,17 +140,17 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
                 // (loop counter A treated as a decimal-capable number) times (36).
-                set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*36.))
+                set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 call RemoveLocation(udg_TempPoint2)
                 set bj_forLoopAIndex=bj_forLoopAIndex+1
             endloop
-            call TerrainDeformationRippleBJ(1.,false,udg_TempPoint,$400,$400,64,.5,512) // $400 = 1024
-            call RemoveLocation(udg_TempPoint)
+            call TerrainDeformationRippleBJ(1.,false,l_tempPoint,$400,$400,64,.5,512) // $400 = 1024
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
-            set udg_TempPoint=GetUnitLoc(gg_unit_H021_0034)
-            call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+            set l_tempPoint=GetUnitLoc(gg_unit_H021_0034)
+            call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
             call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             set bj_forLoopAIndex=1
@@ -157,14 +158,14 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             loop
                 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
                 // (loop counter A treated as a decimal-capable number) times (30).
-                set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*30.))
+                set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*30.))
                 call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
                 call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
                 call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 call RemoveLocation(udg_TempPoint2)
                 set bj_forLoopAIndex=bj_forLoopAIndex+1
             endloop
-            call RemoveLocation(udg_TempPoint)
+            call RemoveLocation(l_tempPoint)
             call Wait_Polled(.5)
             call KillUnit(gg_unit_H021_0034)
             call ResetUnitAnimation(gg_unit_U00G_0220)
@@ -177,6 +178,7 @@ function Trig_DarkPhoenix_Appear_Actions takes nothing returns nothing
             call GroupAddUnitSimple(gg_unit_H021_0034,udg_BossUnits)
         endif
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkPhoenix_Death_DarkQuezacotlDead takes nothing returns boolean

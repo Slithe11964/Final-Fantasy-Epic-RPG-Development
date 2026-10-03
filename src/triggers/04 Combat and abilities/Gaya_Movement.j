@@ -63,11 +63,12 @@ function Trig_Gaya_HousePortal_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gaya_HousePortal_Actions takes nothing returns nothing
-    set udg_TempInteger=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
-    // (udg_TempInteger) minus (1).
-    call SetUnitX(udg_SpiritOfGaya[udg_TempInteger],GetUnitX(Player_GetHero(Player(udg_TempInteger-1))))
-    // (udg_TempInteger) minus (1).
-    call SetUnitY(udg_SpiritOfGaya[udg_TempInteger],GetUnitY(Player_GetHero(Player(udg_TempInteger-1))))
+    local integer l_tempInteger
+    set l_tempInteger=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
+    // (l_tempInteger) minus (1).
+    call SetUnitX(udg_SpiritOfGaya[l_tempInteger],GetUnitX(Player_GetHero(Player(l_tempInteger-1))))
+    // (l_tempInteger) minus (1).
+    call SetUnitY(udg_SpiritOfGaya[l_tempInteger],GetUnitY(Player_GetHero(Player(l_tempInteger-1))))
     call IssueImmediateOrderBJ(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"holdposition")
 endfunction
 

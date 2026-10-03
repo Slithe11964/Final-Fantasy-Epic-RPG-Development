@@ -9,10 +9,12 @@ function Trig_Transport_HeroLoaded_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Transport_HeroLoaded_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_PlayerTransport[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetTransportUnitBJ()
-    set udg_TempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Transport automatically; it is intentionally empty. This module's

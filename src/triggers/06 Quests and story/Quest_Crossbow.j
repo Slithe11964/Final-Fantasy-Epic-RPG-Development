@@ -34,9 +34,10 @@ function Trig_Quest_Crossbow_NeedEnemies_Cond_NoEnemiesNear takes nothing return
 endfunction
 
 function Trig_Quest_Crossbow_NeedEnemies_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Quest_Crossbow_NeedEnemies_Filter_ValidTarget))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Quest_Crossbow_NeedEnemies_Filter_ValidTarget))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Quest_Crossbow_NeedEnemies_Cond_NoEnemiesNear())then
         call DestroyGroup(udg_TempGroup)
         call PauseUnitBJ(true,GetTriggerUnit())
@@ -48,6 +49,7 @@ function Trig_Quest_Crossbow_NeedEnemies_Actions takes nothing returns nothing
     else
         call DestroyGroup(udg_TempGroup)
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Crossbow_Tested_Conditions takes nothing returns boolean

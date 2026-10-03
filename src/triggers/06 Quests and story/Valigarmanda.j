@@ -400,11 +400,13 @@ function Trig_Valigarmanda_Death_OreQuestDiscovered takes nothing returns boolea
 endfunction
 
 function Trig_Valigarmanda_Death_RemoveFreedDwarf takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Valigarmanda_Death_PlayRescueScene takes nothing returns boolean
@@ -416,6 +418,7 @@ function Trig_Valigarmanda_Death_PriorQuestDone takes nothing returns boolean
 endfunction
 
 function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Valigarmanda_Death_KillLogEnabled())then
         set udg_BossUnit=GetTriggerUnit()
@@ -428,12 +431,12 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
         call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetUnitName(GetDyingUnit()))+"|r was defeated !!!"))
     endif
     call GroupRemoveUnitSimple(gg_unit_n0MC_0265,udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I00Y',udg_TempPoint) // 'I00Y': item "1000 Gold Coins"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I05I',udg_TempPoint) // 'I05I': item "Spirit Potion"
-    call CreateItemLoc('I05H',udg_TempPoint) // 'I05H': item "Blood Ether"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I00Y',l_tempPoint) // 'I00Y': item "1000 Gold Coins"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I05I',l_tempPoint) // 'I05I': item "Spirit Potion"
+    call CreateItemLoc('I05H',l_tempPoint) // 'I05H': item "Blood Ether"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_h00R_0256)
     call ShowUnitShow(gg_unit_Hmbr_0140)
     call ShowUnitShow(gg_unit_H00P_0260)
@@ -450,9 +453,9 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
         call Text_Say(udg_CinematicActor,"Finally he's dead. Let's go free the dwarves.",false)
         call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
         call Wait_Polled(1.5)
-        set udg_TempPoint=GetRectCenter(gg_rct_705)
-        call SetUnitPositionLocFacingBJ(udg_CinematicActor,udg_TempPoint,45.)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_705)
+        call SetUnitPositionLocFacingBJ(udg_CinematicActor,l_tempPoint,45.)
+        call RemoveLocation(l_tempPoint)
         call Cam_PanToUnit(udg_CinematicActor,0)
         call KillDestructable(gg_dest_LOcg_0070)
         call KillDestructable(gg_dest_LOcg_0071)
@@ -461,29 +464,29 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
         call KillDestructable(gg_dest_LOcg_0069)
         call KillDestructable(gg_dest_LOcg_0032)
         call KillDestructable(gg_dest_LOcg_0029)
-        set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0070)
-        call CreateNUnitsAtLoc(1,'h00R',Player(8),udg_TempPoint,270.) // 'h00R': unit "Giott"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0070)
+        call CreateNUnitsAtLoc(1,'h00R',Player(8),l_tempPoint,270.) // 'h00R': unit "Giott"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
-        set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0071)
-        call CreateNUnitsAtLoc(1,'Hmbr',Player(8),udg_TempPoint,270.) // 'Hmbr': unit "Smith"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0071)
+        call CreateNUnitsAtLoc(1,'Hmbr',Player(8),l_tempPoint,270.) // 'Hmbr': unit "Smith"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
-        set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0042)
-        call CreateNUnitsAtLoc(1,'H00P',Player(8),udg_TempPoint,270.) // 'H00P': unit "Forgefire"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0042)
+        call CreateNUnitsAtLoc(1,'H00P',Player(8),l_tempPoint,270.) // 'H00P': unit "Forgefire"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
-        set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0031)
-        call CreateNUnitsAtLoc(1,'h037',Player(8),udg_TempPoint,270.) // 'h037': unit "Alberich"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0031)
+        call CreateNUnitsAtLoc(1,'h037',Player(8),l_tempPoint,270.) // 'h037': unit "Alberich"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
-        set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0069)
-        call CreateNUnitsAtLoc(1,'n02F',Player(8),udg_TempPoint,180.) // 'n02F': unit "Oaka IV"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0069)
+        call CreateNUnitsAtLoc(1,'n02F',Player(8),l_tempPoint,180.) // 'n02F': unit "Oaka IV"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
-        set udg_TempPoint=GetRectCenter(gg_rct_704)
-        call CreateNUnitsAtLoc(1,'h00Q',Player(8),udg_TempPoint,180.) // 'h00Q': unit "Zone and Watts"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_704)
+        call CreateNUnitsAtLoc(1,'h00Q',Player(8),l_tempPoint,180.) // 'h00Q': unit "Zone and Watts"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ValigarmandaMinions)
         call Wait_Polled(.5)
         call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
@@ -527,6 +530,7 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
         call ConditionalTriggerExecute(gg_trg_Ziegfried_Mine_Arrive)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Valigarmanda automatically; it is intentionally empty. This module's

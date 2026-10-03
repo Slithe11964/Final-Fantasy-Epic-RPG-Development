@@ -112,9 +112,11 @@ function Trig_Quest_SaveTimmy_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_SaveTimmy_Ping_Actions takes nothing returns nothing
-    set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0024)
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0024)
+    call PingMinimapLocForForce(GetPlayersAll(),l_tempPoint,2.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_SaveTimmy_GateRefused_Conditions takes nothing returns boolean
@@ -175,12 +177,14 @@ function Trig_Quest_SaveTimmy_GateAsk_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_SaveTimmy_GateOpen_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_FarmGateOpen=true
     call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_DTg6_0052)
-    set udg_TempPoint=GetRectCenter(gg_rct_573)
-    call SetUnitPositionLoc(gg_unit_hcth_0231,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_573)
+    call SetUnitPositionLoc(gg_unit_hcth_0231,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_SaveTimmy_CampFlank_Conditions takes nothing returns boolean
@@ -264,8 +268,10 @@ function Trig_Quest_SaveTimmy_TimmyReturns_Cond_GateStillClosed takes nothing re
 endfunction
 
 function Trig_Quest_SaveTimmy_TimmyReturns_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Quest_SaveTimmy_TimmyReturns_Cond_CinematicRunning())then
         call StartTimerBJ(udg_TimmyQuestTimer,false,1.)
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -277,13 +283,13 @@ function Trig_Quest_SaveTimmy_TimmyReturns_Actions takes nothing returns nothing
         call Text_Say(udg_TimmyUnit,"Thank you so much for saving me! I'll rush home right away.",false)
         call Cine_ExitAction()
     endif
-    set udg_TempPoint=GetUnitLoc(udg_TimmyUnit)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(udg_TimmyUnit)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n00I_0011)
-    call SetUnitPositionLocFacingLocBJ(udg_TimmyUnit,udg_TempPoint,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_n00I_0011)
+    call SetUnitPositionLocFacingLocBJ(udg_TimmyUnit,l_tempPoint,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call DisableTrigger(gg_trg_Npc_Talk_Peasant)
     call DestroyTrigger(gg_trg_Npc_Talk_Peasant)
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_TimmyReturns_Enum_HideUnit)
@@ -299,6 +305,7 @@ function Trig_Quest_SaveTimmy_TimmyReturns_Actions takes nothing returns nothing
         call ConditionalTriggerExecute(gg_trg_Quest_SaveTimmy_GateOpen)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_SaveTimmy_RescueFirst_Cond_CinematicRunning takes nothing returns boolean
@@ -318,8 +325,10 @@ function Trig_Quest_SaveTimmy_RescueFirst_Enum_ShowUnit takes nothing returns no
 endfunction
 
 function Trig_Quest_SaveTimmy_RescueFirst_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Quest_SaveTimmy_RescueFirst_Cond_CinematicRunning())then
         call StartTimerBJ(udg_TimmyQuestTimer,false,1.)
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -333,13 +342,13 @@ function Trig_Quest_SaveTimmy_RescueFirst_Actions takes nothing returns nothing
         call Text_Say(udg_TimmyUnit,"Thank you so much for saving me! I'll rush home right away.",false)
         call Cine_ExitAction()
     endif
-    set udg_TempPoint=GetUnitLoc(udg_TimmyUnit)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(udg_TimmyUnit)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n00I_0011)
-    call SetUnitPositionLocFacingLocBJ(udg_TimmyUnit,udg_TempPoint,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_n00I_0011)
+    call SetUnitPositionLocFacingLocBJ(udg_TimmyUnit,l_tempPoint,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call DisableTrigger(gg_trg_Npc_Talk_Peasant)
     call DestroyTrigger(gg_trg_Npc_Talk_Peasant)
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_RescueFirst_Enum_HideUnit)
@@ -357,6 +366,7 @@ function Trig_Quest_SaveTimmy_RescueFirst_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[67])
     call ConditionalTriggerExecute(gg_trg_Quest_SaveTimmy_GateOpen)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_SaveTimmy_Complete_Conditions takes nothing returns boolean

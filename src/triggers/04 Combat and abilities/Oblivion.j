@@ -16,28 +16,31 @@ function Trig_Oblivion_Cast_NoTargetUnit takes nothing returns boolean
 endfunction
 
 function Trig_Oblivion_Cast_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     if(Trig_Oblivion_Cast_NoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (3).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
-    // (udg_TempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
-    set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
-    set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((I2R(udg_TempInteger)*udg_TempReal)))
-    // (udg_TempInteger) times (3).
-    set udg_TempInteger=(udg_TempInteger*3)
-    set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 3)
+    // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
+    set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
+    set l_tempReal=Prof_StaffPower(GetTriggerUnit())
+    // ((l_tempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((I2R(l_tempInteger)*l_tempReal)))
+    // (l_tempInteger) times (3).
+    set l_tempInteger=(l_tempInteger*3)
+    set l_tempReal=Prof_StaffPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(8.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_OblivionDummyGroup)

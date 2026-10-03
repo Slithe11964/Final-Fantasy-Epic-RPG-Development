@@ -62,9 +62,13 @@ function Trig_Valfodr_Gagnrath_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Valfodr_Gagnrath_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
     call GroupAddUnitSimple(GetTriggerUnit(),udg_GagnrathCasters)
     call StartTimerBJ(udg_GagnrathTimer,false,1.)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     set bj_forLoopAIndex=1
@@ -72,29 +76,30 @@ function Trig_Valfodr_Gagnrath_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,275.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,275.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // ((Strength of the triggering unit) times (5)) plus (5000).
-    set udg_TempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+5000)
+    set l_tempInteger=((GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*5)+5000)
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(1,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(4,3,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(1,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M5',GetLastCreatedUnit()) // 'A0M5': ability "Earth-elemental Damage"
     call UnitAddAbilityBJ('A123',GetLastCreatedUnit()) // 'A123': ability "Gagnrath"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"stomp")
+    set l_tempPoint=null
 endfunction
 
 function Trig_Valfodr_GagnrathEnd_Conditions takes nothing returns boolean
@@ -181,36 +186,41 @@ function Trig_Valfodr_Bolverk_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Valfodr_Bolverk_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Objects\\Spawnmodels\\NightElf\\NEDeathMedium\\NEDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ManaFlare\\ManaFlareBoltImpact.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    set udg_TempInteger=9999
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    set l_tempInteger=9999
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(1,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(4,3,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(1,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M3',GetLastCreatedUnit()) // 'A0M3': ability "Thunder-elemental Damage"
     call UnitAddAbilityBJ('A128',GetLastCreatedUnit()) // 'A128': ability "Bolverk"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"thunderclap")
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Valfodr automatically; it is intentionally empty. This module's

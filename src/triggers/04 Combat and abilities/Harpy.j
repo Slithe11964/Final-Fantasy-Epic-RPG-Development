@@ -14,14 +14,16 @@ function Trig_Harpy_Matriarch_CallAid_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Harpy_Matriarch_CallAid_SummonHarpyAid takes nothing returns nothing
+    local location l_tempPoint2
     call IssuePointOrderLocBJ(GetEnumUnit(),"attack",udg_TempPoint)
-    set udg_TempPoint2=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
     call ShowUnitHide(GetLastCreatedUnit())
     call PauseUnitBJ(true,GetLastCreatedUnit())
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Harpy_Matriarch_CallAid_RevealHarpyAid takes nothing returns nothing

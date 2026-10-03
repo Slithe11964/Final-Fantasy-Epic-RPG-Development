@@ -37,14 +37,15 @@ function Trig_DarkEidolon_Death_AllEidolonsDead takes nothing returns boolean
 endfunction
 
 function Trig_DarkEidolon_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_DarkEidolonGroup)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc(udg_DropItemIdTable[GetUnitPointValue(GetTriggerUnit())],udg_TempPoint)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc(udg_DropItemIdTable[GetUnitPointValue(GetTriggerUnit())],l_tempPoint)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
     call ForForce(udg_PlayingPlayers,function Trig_DarkEidolon_Death_AwardPlayer_51)
@@ -54,6 +55,7 @@ function Trig_DarkEidolon_Death_Actions takes nothing returns nothing
         call ForForce(udg_PlayingPlayers,function Trig_DarkEidolon_Death_AwardPlayer_32)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkEidolon automatically; it is intentionally empty. This module's

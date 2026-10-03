@@ -115,3 +115,24 @@ a real code from the game.**
 
 **When you change the save format,** change `savecode.py` the same way (`decode` and `encode`)
 and run `selftest`.
+
+## A player changed their account name: `savecode.py rename`
+
+A code only loads for the player it was saved by: its first field is a 20-bit hash of the account
+name (everything before the `#` of the BattleTag, case ignored): `abs(StringHash(name)) mod 2^20`,
+see `Trig_Cmd_Load_Code_PlayerNameHash`. A player who renames their Battle.net account gets
+"This code belongs to a different player!". To give them their progress back:
+
+    python tools/savecode.py checkname CODE OldName                      # is this really their code?
+    python tools/savecode.py rename CODE NewName --old OldName           # prints the new code
+
+Only the name hash and the 3-character checksum change (code characters 2-8); jobs, items,
+titles and the armory part stay exactly as they were. `--old` refuses to rewrite a code that does not
+belong to OldName, so ask the player for the old name and check it. The hash was checked against a
+real code (saved by "Slithe": hash 268296).
+
+Names with letters outside plain English (accents, Cyrillic, Chinese ...) may hash differently
+between 1.29 and Reforged; check the result with `checkname` and in game.
+
+Note for maintainers: `rename` lets anyone move any code to any name. Keep the old-name check, and
+only do this for players who can show the old account was theirs.

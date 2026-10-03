@@ -13,6 +13,7 @@ function Trig_DarkGolem_Appear_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkGolem_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_DarkGolem_Appear_CinematicsOn())then
         call Cine_Enter()
@@ -39,13 +40,14 @@ function Trig_DarkGolem_Appear_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_U00B_0042,udg_BossGroup)
     call GroupAddUnitSimple(gg_unit_H01U_0040,udg_BossGroup)
     call GroupAddUnitSimple(gg_unit_H01V_0041,udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01V_0041)
-    call IssuePointOrderLocBJ(gg_unit_H01U_0040,"attack",udg_TempPoint)
-    call IssuePointOrderLocBJ(gg_unit_U00B_0042,"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_H01V_0041)
+    call IssuePointOrderLocBJ(gg_unit_H01U_0040,"attack",l_tempPoint)
+    call IssuePointOrderLocBJ(gg_unit_U00B_0042,"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_DarkCyclops_Appear)
     call EnableTrigger(gg_trg_DarkTitan_Appear)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkGolem automatically; it is intentionally empty. This module's

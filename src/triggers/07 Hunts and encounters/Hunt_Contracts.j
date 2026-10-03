@@ -105,17 +105,18 @@ function Trig_Hunt_Complete_IsFirstHuntDone takes nothing returns boolean
 endfunction
 
 function Trig_Hunt_Complete_Actions takes nothing returns nothing
+    local player l_tempPlayer
     call PlayThematicMusicBJ("war3mapImported\\FF9-Victory.mp3")
     set udg_RareHuntsDone=(udg_RareHuntsDone+1)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_HuntMonsters)
-    set udg_TempPlayer=ConvertedPlayer(LoadIntegerBJ(8,GetUnitPointValue(GetTriggerUnit()),udg_HuntData))
-    call LeaderboardRemovePlayerItemBJ(udg_TempPlayer,udg_HuntLeaderboard)
+    set l_tempPlayer=ConvertedPlayer(LoadIntegerBJ(8,GetUnitPointValue(GetTriggerUnit()),udg_HuntData))
+    call LeaderboardRemovePlayerItemBJ(l_tempPlayer,udg_HuntLeaderboard)
     call SaveIntegerBJ(0,8,GetUnitPointValue(GetTriggerUnit()),udg_HuntData)
     set udg_HuntCounter[0]=(udg_HuntCounter[0]-1)
     if(Trig_Hunt_Complete_NoHuntsActive())then
         call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
     endif
-    call ForceAddPlayerSimple(udg_TempPlayer,udg_HuntSlots)
+    call ForceAddPlayerSimple(l_tempPlayer,udg_HuntSlots)
     call DisplayTimedTextToForce(GetPlayersAll(),10.,("|cffffcc00"+(GetUnitName(GetTriggerUnit())+"|r vanquished!")))
     call Reward_Give(LoadIntegerBJ(5,GetUnitPointValue(GetTriggerUnit()),udg_HuntData),LoadIntegerBJ(6,GetUnitPointValue(GetTriggerUnit()),udg_HuntData),udg_NarratorUnit)
     if(Trig_Hunt_Complete_HasReward())then
@@ -135,6 +136,7 @@ function Trig_Hunt_Complete_Actions takes nothing returns nothing
         set udg_HuntStock[1]=(udg_HuntStock[1]+1)
         call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     endif
+    set l_tempPlayer=null
 endfunction
 
 function InitTrig_Hunt_Contracts takes nothing returns nothing

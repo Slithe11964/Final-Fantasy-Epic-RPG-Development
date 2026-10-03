@@ -45,20 +45,22 @@ function Trig_EarthSmash_Cast_DamageEnemy takes nothing returns nothing
 endfunction
 
 function Trig_EarthSmash_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(682.,udg_TempPoint,Condition(function Trig_EarthSmash_Cast_Filter_ValidTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(682.,l_tempPoint,Condition(function Trig_EarthSmash_Cast_Filter_ValidTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (5).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)
@@ -66,8 +68,10 @@ function Trig_EarthSmash_Cast_Actions takes nothing returns nothing
         // (udg_TempInteger) plus ((Strength of the triggering unit) times (6)).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*6))
     endif
-    call ForGroupBJ(udg_TempGroup,function Trig_EarthSmash_Cast_DamageEnemy)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_EarthSmash_Cast_DamageEnemy)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_EarthSmash automatically; it is intentionally empty. This module's

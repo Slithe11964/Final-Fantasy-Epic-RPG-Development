@@ -19,6 +19,7 @@ function Trig_Chocobo_Wild_Retaliate_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Chocobo_Wild_Retaliate_Actions takes nothing returns nothing
+    local location l_tempPoint
     call SetUnitOwner(GetTriggerUnit(),Player($B),true) // $B = 11
     call Unit_ScaleToLevel60(GetTriggerUnit())
     call UnitRemoveAbilityBJ('Awan',GetTriggerUnit()) // 'Awan': object name not found in map data
@@ -26,13 +27,14 @@ function Trig_Chocobo_Wild_Retaliate_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0A4',GetTriggerUnit()) // 'A0A4': ability "Chocobo Sprint"
     call UnitAddAbilityBJ('A0AC',GetTriggerUnit()) // 'A0AC': ability "Choco-Meteo"
     call UnitAddAbilityBJ('A0MV',GetTriggerUnit()) // 'A0MV': ability "Plentiful"
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"rainoffire",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetAttacker())
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"rainoffire",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call CreateTextTagUnitBJ("WARK!!!",GetTriggerUnit(),0,11.,'d',.0,.0,0)
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),5)
     call SetTextTagFadepointBJ(GetLastCreatedTextTag(),3.5)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Chocobo_Wild_AI_Filter_IsHostileOwned takes nothing returns boolean

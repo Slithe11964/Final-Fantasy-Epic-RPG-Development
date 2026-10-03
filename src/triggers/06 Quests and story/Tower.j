@@ -55,15 +55,16 @@ function Trig_Tower_Summon_Brothers_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Tower_Summon_Brothers_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'o009',GetOwningPlayer(GetSpellAbilityUnit()),udg_TempPoint,bj_UNIT_FACING) // 'o009': unit "Minotaur"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,'o009',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'o009': unit "Minotaur"
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call UnitApplyTimedLifeBJ(180.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'o008',GetOwningPlayer(GetSpellAbilityUnit()),udg_TempPoint,bj_UNIT_FACING) // 'o008': unit "Sacred"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,'o008',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'o008': unit "Sacred"
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call UnitApplyTimedLifeBJ(180.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
@@ -72,6 +73,7 @@ function Trig_Tower_Summon_Brothers_Actions takes nothing returns nothing
     call Wait_Polled(180.)
     call ShowUnitShow(gg_unit_Ocbh_0148)
     call ShowUnitShow(gg_unit_Ocb2_0147)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Tower_Summon_Eden_Conditions takes nothing returns boolean
@@ -79,13 +81,15 @@ function Trig_Tower_Summon_Eden_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Tower_Summon_Eden_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'h022',GetOwningPlayer(GetSpellAbilityUnit()),udg_TempPoint,bj_UNIT_FACING) // 'h022': unit "Eden"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,'h022',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'h022': unit "Eden"
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call UnitApplyTimedLifeBJ(180.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call SetUnitVertexColorBJ(GetLastCreatedUnit(),'d',50.,'d',15.)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Tower_Eden_Expire_Conditions takes nothing returns boolean

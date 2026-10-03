@@ -118,14 +118,17 @@ function Trig_Geomancer_GayaRage_DamageEnum takes nothing returns nothing
 endfunction
 
 function Trig_Geomancer_GayaRage_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
     call Element_SetFromUnit(GetTriggerUnit(),true)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         if(Trig_Geomancer_GayaRage_HasElementIndex())then
             call AddSpecialEffectLocBJ(udg_TempPoint2,udg_EffectModelPath[udg_DamageElement])
         else
@@ -135,8 +138,8 @@ function Trig_Geomancer_GayaRage_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(682.,udg_TempPoint,Condition(function Trig_Geomancer_GayaRage_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(682.,l_tempPoint,Condition(function Trig_Geomancer_GayaRage_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (6).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*6)
@@ -145,12 +148,14 @@ function Trig_Geomancer_GayaRage_Actions takes nothing returns nothing
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*6))
     endif
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00I'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00I')) // $A = 10; 'R00I': upgrade "Heavens Forged Axe"
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
     set udg_DamageElement=0
-    call ForGroupBJ(udg_TempGroup,function Trig_Geomancer_GayaRage_DamageEnum)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Geomancer_GayaRage_DamageEnum)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Geomancer automatically; it is intentionally empty. This module's

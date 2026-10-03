@@ -12,15 +12,16 @@ function Trig_Ambush_Skeletons_1_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ambush_Skeletons_1_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     set udg_RetreatPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetRectCenter(gg_rct_681)
+    set l_tempPoint2=GetRectCenter(gg_rct_681)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
+        set udg_TempPoint=OffsetLocation(l_tempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
@@ -28,8 +29,9 @@ function Trig_Ambush_Skeletons_1_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_RetreatPoint)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Ambush_Skeletons_2_Conditions takes nothing returns boolean
@@ -37,15 +39,16 @@ function Trig_Ambush_Skeletons_2_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ambush_Skeletons_2_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     set udg_RetreatPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetRectCenter(gg_rct_683)
+    set l_tempPoint2=GetRectCenter(gg_rct_683)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
+        set udg_TempPoint=OffsetLocation(l_tempPoint2,(I2R((GetForLoopIndexA()-4))*108.),.0)
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
@@ -53,8 +56,9 @@ function Trig_Ambush_Skeletons_2_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_RetreatPoint)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Ambush_Skeletons_3_Conditions takes nothing returns boolean
@@ -62,15 +66,16 @@ function Trig_Ambush_Skeletons_3_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ambush_Skeletons_3_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     set udg_RetreatPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetRectCenter(gg_rct_680)
+    set l_tempPoint2=GetRectCenter(gg_rct_680)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
+        set udg_TempPoint=OffsetLocation(l_tempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
@@ -78,8 +83,9 @@ function Trig_Ambush_Skeletons_3_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_RetreatPoint)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Ambush_Skeletons_4_Conditions takes nothing returns boolean
@@ -87,15 +93,16 @@ function Trig_Ambush_Skeletons_4_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ambush_Skeletons_4_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     set udg_RetreatPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=GetRectCenter(gg_rct_682)
+    set l_tempPoint2=GetRectCenter(gg_rct_682)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=7
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // ((loop counter A) minus (4) treated as a decimal-capable number) times (108).
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
+        set udg_TempPoint=OffsetLocation(l_tempPoint2,0,(I2R((GetForLoopIndexA()-4))*108.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00P',Player($B),udg_TempPoint,udg_RetreatPoint) // 'u00P': unit "Skeleton Champion"; $B = 11
         call Unit_ScaleToLevel60(bj_lastCreatedUnit)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
@@ -103,8 +110,9 @@ function Trig_Ambush_Skeletons_4_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_RetreatPoint)
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Ambush automatically; it is intentionally empty. This module's

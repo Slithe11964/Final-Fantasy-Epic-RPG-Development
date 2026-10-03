@@ -80,6 +80,7 @@ function Trig_Cid_Talk_FindMid_ShouldWeaken_Area2 takes nothing returns boolean
 endfunction
 
 function Trig_Cid_Talk_FindMid_Actions takes nothing returns nothing
+    local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[19])
     call SetUnitFacingTimed(gg_unit_Hpb1_0013,bj_UNIT_FACING,0)
@@ -100,20 +101,20 @@ function Trig_Cid_Talk_FindMid_Actions takes nothing returns nothing
     set udg_SpecialEffect[19]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_Mid_Cage_Ping)
     set udg_CidQuestStage=1
-    set udg_TempGroup=Group_UnitsInRectOfPlayer(gg_rct_662,Player($B)) // $B = 11
+    set l_tempGroup=Group_UnitsInRectOfPlayer(gg_rct_662,Player($B)) // $B = 11
     if(Trig_Cid_Talk_FindMid_ShouldWeaken_Area1())then
-        call ForGroupBJ(udg_TempGroup,function Trig_Cid_Talk_FindMid_WeakenUnit_Area1)
+        call ForGroupBJ(l_tempGroup,function Trig_Cid_Talk_FindMid_WeakenUnit_Area1)
     else
-        call ForGroupBJ(udg_TempGroup,function Trig_Cid_Talk_FindMid_FadeUnit_Area1)
+        call ForGroupBJ(l_tempGroup,function Trig_Cid_Talk_FindMid_FadeUnit_Area1)
     endif
-    call DestroyGroup(udg_TempGroup)
-    set udg_TempGroup=Group_UnitsInRectOfPlayer(gg_rct_183,Player($B)) // $B = 11
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=Group_UnitsInRectOfPlayer(gg_rct_183,Player($B)) // $B = 11
     if(Trig_Cid_Talk_FindMid_ShouldWeaken_Area2())then
-        call ForGroupBJ(udg_TempGroup,function Trig_Cid_Talk_FindMid_WeakenUnit_Area2)
+        call ForGroupBJ(l_tempGroup,function Trig_Cid_Talk_FindMid_WeakenUnit_Area2)
     else
-        call ForGroupBJ(udg_TempGroup,function Trig_Cid_Talk_FindMid_FadeUnit_Area2)
+        call ForGroupBJ(l_tempGroup,function Trig_Cid_Talk_FindMid_FadeUnit_Area2)
     endif
-    call DestroyGroup(udg_TempGroup)
+    call DestroyGroup(l_tempGroup)
     call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_LTg4_0005)
     call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_LTe2_0020)
     call ConditionalTriggerExecute(gg_trg_MysticalGlyph_Prepare)
@@ -127,6 +128,7 @@ function Trig_Cid_Talk_FindMid_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call Music_SetZoneTrack(1)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 function Trig_Cid_Talk_MidReturned_Conditions takes nothing returns boolean
@@ -243,15 +245,17 @@ function Trig_Cid_Berserk_Start_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_Cid_Berserk_Start_SpawnBerserkGuard takes nothing returns nothing
+    local location l_tempPoint
     call ShowUnitHide(GetEnumUnit())
     call PauseUnitBJ(true,GetEnumUnit())
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(9),udg_TempPoint,GetUnitFacing(GetEnumUnit()))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(9),l_tempPoint,GetUnitFacing(GetEnumUnit()))
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BerserkGuards)
     call Unit_ScaleToLevel60(GetEnumUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),false)
     call TriggerRegisterUnitEvent(gg_trg_BerserkGuard_Decay,GetLastCreatedUnit(),EVENT_UNIT_DECAY)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Cid_Berserk_Start_Actions takes nothing returns nothing
@@ -413,11 +417,13 @@ function Trig_Cid_Berserk_End_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Cid_Berserk_Revive_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_Hpb1_0013,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_Hpb1_0013,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call TriggerExecute(gg_trg_Cid_Berserk_End)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Cid_Berserk_Aftermath_ApplyCamera takes nothing returns nothing
@@ -591,6 +597,7 @@ function Trig_Cid_Talk_AoMadoushi_HashmalumKnown_Quest takes nothing returns boo
 endfunction
 
 function Trig_Cid_Talk_AoMadoushi_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[20])
     call GroupRemoveUnitSimple(gg_unit_Hpb1_0013,udg_QuestUnits)
@@ -638,25 +645,25 @@ function Trig_Cid_Talk_AoMadoushi_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_n012_0163,udg_QuestUnits)
     call GroupAddUnitSimple(gg_unit_n013_0164,udg_QuestUnits)
     call EnableTrigger(gg_trg_Turks_Give_Flute)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n0B5',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n0B5': unit "Angry Wolf"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n0B5',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n0B5': unit "Angry Wolf"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n0B5',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n0B5': unit "Angry Wolf"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n0B5',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n0B5': unit "Angry Wolf"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n0B4',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n0B4',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n0B4',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n0B4',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n0B4',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n0B4',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n0B4': unit "Big Wolf"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call ConditionalTriggerExecute(gg_trg_Quest_KillSetag_Offer)
     call ConditionalTriggerExecute(gg_trg_Quest_Caravan_SamAvailable)
@@ -668,6 +675,7 @@ function Trig_Cid_Talk_AoMadoushi_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call Music_SetZoneTrack(5)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Cid automatically; it is intentionally empty. This module's

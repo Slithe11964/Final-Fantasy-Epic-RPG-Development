@@ -49,12 +49,13 @@ function Trig_Boss_Belias_Rescue_Mateus_Enum_ClearRubble_E takes nothing returns
 endfunction
 
 function Trig_Boss_Belias_Rescue_Mateus_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Boss_Mateus_Intro)
     call DisableTrigger(gg_trg_Boss_Mateus_Death)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_Uwar_0192,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_Uwar_0192,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(gg_unit_E002_0075,true)
     call SetUnitInvulnerable(gg_unit_Uwar_0192,true)
     call SetUnitInvulnerable(gg_unit_U00L_0207,true)
@@ -77,19 +78,19 @@ function Trig_Boss_Belias_Rescue_Mateus_Actions takes nothing returns nothing
         endif
         call Text_Say(Player_GetHero(udg_TempPlayer),"Who's there!?",false)
         set udg_TempPoint2=GetUnitLoc(GetTriggerUnit())
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,200.,-100.)
-        call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,udg_TempPoint,udg_TempPoint2)
+        set l_tempPoint=OffsetLocation(udg_TempPoint2,200.,-100.)
+        call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,l_tempPoint,udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
-        set udg_TempPoint2=OffsetLocation(udg_TempPoint,50.,200.)
+        set udg_TempPoint2=OffsetLocation(l_tempPoint,50.,200.)
         if(Trig_Boss_Belias_Rescue_Mateus_Cond_DemesneDead())then
-            call ReviveHeroLoc(gg_unit_U00M_0206,udg_TempPoint,false)
+            call ReviveHeroLoc(gg_unit_U00M_0206,l_tempPoint,false)
             call SetUnitInvulnerable(gg_unit_U00M_0206,true)
             call PauseUnitBJ(true,gg_unit_U00M_0206)
         else
-            call SetUnitPositionLocFacingLocBJ(gg_unit_U00M_0206,udg_TempPoint2,udg_TempPoint)
+            call SetUnitPositionLocFacingLocBJ(gg_unit_U00M_0206,udg_TempPoint2,l_tempPoint)
             call ShowUnitShow(gg_unit_U00M_0206)
         endif
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call RemoveLocation(udg_TempPoint2)
         call AddSpecialEffectTargetUnitBJ("origin",gg_unit_U00L_0207,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -111,19 +112,19 @@ function Trig_Boss_Belias_Rescue_Mateus_Actions takes nothing returns nothing
         call PauseUnitBJ(true,gg_unit_E002_0075)
         call PauseUnitBJ(true,gg_unit_U00L_0207)
         set udg_TempPoint2=GetUnitLoc(GetTriggerUnit())
-        set udg_TempPoint=OffsetLocation(udg_TempPoint2,400.,-100.)
-        call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,udg_TempPoint,udg_TempPoint2)
+        set l_tempPoint=OffsetLocation(udg_TempPoint2,400.,-100.)
+        call SetUnitPositionLocFacingLocBJ(gg_unit_U00L_0207,l_tempPoint,udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
-        set udg_TempPoint2=OffsetLocation(udg_TempPoint,50.,200.)
+        set udg_TempPoint2=OffsetLocation(l_tempPoint,50.,200.)
         if(Trig_Boss_Belias_Rescue_Mateus_Cond_DemesneDead_Silent())then
-            call ReviveHeroLoc(gg_unit_U00M_0206,udg_TempPoint,false)
+            call ReviveHeroLoc(gg_unit_U00M_0206,l_tempPoint,false)
             call SetUnitInvulnerable(gg_unit_U00M_0206,true)
             call PauseUnitBJ(true,gg_unit_U00M_0206)
         else
-            call SetUnitPositionLocFacingLocBJ(gg_unit_U00M_0206,udg_TempPoint2,udg_TempPoint)
+            call SetUnitPositionLocFacingLocBJ(gg_unit_U00M_0206,udg_TempPoint2,l_tempPoint)
             call ShowUnitShow(gg_unit_U00M_0206)
         endif
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call RemoveLocation(udg_TempPoint2)
         call SetUnitLifePercentBJ(gg_unit_E002_0075,'d')
         call Wait_Polled(1.)
@@ -154,6 +155,7 @@ function Trig_Boss_Belias_Rescue_Mateus_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_Gate_WinterKey_Unlock)
     call DestroyTrigger(gg_trg_Gate_WinterKey_Unlock)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Belias_Revive_Loop_Conditions takes nothing returns boolean
@@ -161,10 +163,11 @@ function Trig_Boss_Belias_Revive_Loop_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Belias_Revive_Loop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_Uwar_0192,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_Uwar_0192,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitLifeBJ(GetTriggerUnit(),1.)
     call PauseUnitBJ(true,gg_unit_Uwar_0192)
     call PauseUnitBJ(true,gg_unit_E002_0075)
@@ -189,6 +192,7 @@ function Trig_Boss_Belias_Revive_Loop_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_E002_0075,false)
     call SetUnitInvulnerable(gg_unit_Uwar_0192,false)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Belias_Rescue_Gafgarion_Conditions takes nothing returns boolean

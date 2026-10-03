@@ -21,16 +21,17 @@ function Trig_Boss_DarkFact_Summon_FirstEncounterDialog takes nothing returns bo
 endfunction
 
 function Trig_Boss_DarkFact_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_BossCleanupTrigger=gg_trg_Boss_DarkFact_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call CreateNUnitsAtLoc(1,'u017',Player(8),udg_TempPoint,bj_UNIT_FACING) // 'u017': unit "Haunted Spirit"
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call CreateNUnitsAtLoc(1,'u017',Player(8),l_tempPoint,bj_UNIT_FACING) // 'u017': unit "Haunted Spirit"
     set udg_CinematicActor=GetLastCreatedUnit()
     call ShowUnitHide(udg_CinematicActor)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
     call ShowUnitShow(udg_CinematicActor)
     call Wait_Polled(1.5)
@@ -53,13 +54,13 @@ function Trig_Boss_DarkFact_Summon_Actions takes nothing returns nothing
         call Wait_Polled(.5)
     endif
     call KillUnit(udg_CinematicActor)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\ManaFlare\\ManaFlareBoltImpact.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\ManaFlare\\ManaFlareBoltImpact.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'U015',Player($B),udg_TempPoint,270.) // 'U015': unit "Mage of Malice"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    call CreateNUnitsAtLoc(1,'U015',Player($B),l_tempPoint,270.) // 'U015': unit "Mage of Malice"; $B = 11
+    call RemoveLocation(l_tempPoint)
     set udg_DarkFactUnit=GetLastCreatedUnit()
     call SetHeroLevelBJ(udg_DarkFactUnit,88,false)
     call UnitAddItemByIdSwapped('I0GA',udg_DarkFactUnit) // 'I0GA': item "Final Wand"
@@ -87,6 +88,7 @@ function Trig_Boss_DarkFact_Summon_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Boss_DarkFact_Death)
     call EnableTrigger(gg_trg_Boss_DarkFact_FactStrike)
     call Cine_Exit()
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DarkFact_Death_Conditions takes nothing returns boolean
@@ -98,8 +100,9 @@ function Trig_Boss_DarkFact_Death_ShouldRecordKill takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DarkFact_Death_KillMinion takes nothing returns nothing
-    set udg_TempHandleId=GetHandleIdBJ(GetEnumUnit())
-    call SaveRealBJ(.01,1,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    set l_tempHandleId=GetHandleIdBJ(GetEnumUnit())
+    call SaveRealBJ(.01,1,l_tempHandleId,udg_ProxyDamageHash)
     call KillUnit(GetEnumUnit())
 endfunction
 
@@ -108,15 +111,16 @@ function Trig_Boss_DarkFact_Death_IsWaygateOpen takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DarkFact_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_DarkFact_Death_ShouldRecordKill())then
         set udg_BossUnit=GetTriggerUnit()
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
     call DisableTrigger(gg_trg_Boss_DarkFact_FactStrike)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0GA',udg_TempPoint) // 'I0GA': item "Final Wand"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0GA',l_tempPoint) // 'I0GA': item "Final Wand"
+    call RemoveLocation(l_tempPoint)
     call Music_ClearTrack(29)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call ForGroupBJ(udg_DarkFactMinions,function Trig_Boss_DarkFact_Death_KillMinion)
@@ -136,6 +140,7 @@ function Trig_Boss_DarkFact_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A10W',gg_unit_n03T_0008) // 'A10W': ability "Spirit Pendant Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DarkFact_FactStrike_Conditions takes nothing returns boolean
@@ -143,19 +148,22 @@ function Trig_Boss_DarkFact_FactStrike_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DarkFact_FactStrike_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',Player($B),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"; $B = 11
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(udg_DarkFactUnit,0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveRealBJ(14000.,1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',Player($B),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"; $B = 11
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(udg_DarkFactUnit,0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(14000.,1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_DarkFactMinions)
     call UnitApplyTimedLifeBJ(100.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M5',GetLastCreatedUnit()) // 'A0M5': ability "Earth-elemental Damage"
     call UnitAddAbilityBJ('A10Q',GetLastCreatedUnit()) // 'A10Q': ability "Fact Strike"
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DarkFact_PingPong_Conditions takes nothing returns boolean
@@ -207,11 +215,13 @@ function Trig_Boss_DarkFact_PingPong_Below75Percent takes nothing returns boolea
 endfunction
 
 function Trig_Boss_DarkFact_PingPong_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(1920.,udg_TempPoint,Condition(function Trig_Boss_DarkFact_PingPong_FilterTarget))
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(1920.,l_tempPoint,Condition(function Trig_Boss_DarkFact_PingPong_FilterTarget))
     if(Trig_Boss_DarkFact_PingPong_NoTargets())then
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call DestroyGroup(udg_TempGroup)
+        set l_tempPoint=null
         return
     endif
     if(Trig_Boss_DarkFact_PingPong_Below75Percent())then
@@ -232,7 +242,7 @@ function Trig_Boss_DarkFact_PingPong_Actions takes nothing returns nothing
         set udg_TempUnit2=GroupPickRandomUnit(udg_TempGroup)
         call GroupRemoveUnitSimple(udg_TempUnit2,udg_TempGroup)
         set udg_TempPoint2=GetUnitLoc(udg_TempUnit2)
-        call CreateNUnitsAtLocFacingLocBJ(1,'u014',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2) // 'u014': unit "Galbalan Orb"
+        call CreateNUnitsAtLocFacingLocBJ(1,'u014',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,udg_TempPoint2) // 'u014': unit "Galbalan Orb"
         call RemoveLocation(udg_TempPoint2)
         call UnitApplyTimedLifeBJ(30.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_CYAN)
@@ -242,8 +252,9 @@ function Trig_Boss_DarkFact_PingPong_Actions takes nothing returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Boss_DarkFact_Orb_Bounce,GetLastCreatedUnit(),EVENT_UNIT_DAMAGED)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyGroup(udg_TempGroup)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DarkFact_Orb_Bounce_Conditions takes nothing returns boolean
@@ -283,11 +294,12 @@ function Trig_Boss_DarkFact_Orb_Bounce_NoTargets takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DarkFact_Orb_Bounce_Actions takes nothing returns nothing
+    local location l_tempPoint
     call BlzSetEventDamage(.0)
     call SetUnitOwner(GetTriggerUnit(),Player(9),false)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(2000.,udg_TempPoint,Condition(function Trig_Boss_DarkFact_Orb_Bounce_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(2000.,l_tempPoint,Condition(function Trig_Boss_DarkFact_Orb_Bounce_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Boss_DarkFact_Orb_Bounce_NoTargets())then
         call DestroyGroup(udg_TempGroup)
         call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
@@ -305,6 +317,7 @@ function Trig_Boss_DarkFact_Orb_Bounce_Actions takes nothing returns nothing
         call AddSpecialEffectTargetUnitBJ("chest",GetTriggerUnit(),"Abilities\\Spells\\Human\\Defend\\DefendCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DarkFact_Orb_Attack_Conditions takes nothing returns boolean
@@ -400,8 +413,9 @@ function Trig_Boss_DarkFact_Orb_Attack_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Boss_DarkFact_Cleanup_KillMinion takes nothing returns nothing
-    set udg_TempHandleId=GetHandleIdBJ(GetEnumUnit())
-    call SaveRealBJ(.01,1,udg_TempHandleId,udg_ProxyDamageHash)
+    local integer l_tempHandleId
+    set l_tempHandleId=GetHandleIdBJ(GetEnumUnit())
+    call SaveRealBJ(.01,1,l_tempHandleId,udg_ProxyDamageHash)
     call KillUnit(GetEnumUnit())
 endfunction
 

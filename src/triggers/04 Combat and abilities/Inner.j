@@ -13,9 +13,10 @@ function Trig_Inner_Fire_IsSelfCast takes nothing returns boolean
 endfunction
 
 function Trig_Inner_Fire_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     if(Trig_Inner_Fire_IsSelfCast())then
@@ -26,15 +27,16 @@ function Trig_Inner_Fire_Actions takes nothing returns nothing
         call UnitAddAbilityBJ('A1B5',GetLastCreatedUnit()) // 'A1B5': ability "Inner Fire"
         call SetUnitAbilityLevelSwapped('A1B5',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A1B5': ability "Inner Fire"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetTriggerUnit())
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+        call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+        call RemoveLocation(l_tempPoint)
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A1B5',GetLastCreatedUnit()) // 'A1B5': ability "Inner Fire"
         call SetUnitAbilityLevelSwapped('A1B5',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A1B5': ability "Inner Fire"
         call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetSpellTargetUnit())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Inner automatically; it is intentionally empty. This module's

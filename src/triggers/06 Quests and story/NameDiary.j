@@ -237,28 +237,33 @@ function Trig_NameDiary_Chronicle_IsDiaryComplete takes nothing returns boolean
 endfunction
 
 function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_NameDiary_Chronicle_IsDiaryFull())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"The Name Diary is already full!")
-        call DestroyForce(udg_TempForce)
+        call DisplayTimedTextToForce(l_tempForce,10.,"The Name Diary is already full!")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     if(Trig_NameDiary_Chronicle_IsTargetPlayerUnit())then
         set udg_TempString=udg_PlayerName[GetConvertedPlayerId(GetOwningPlayer(GetSpellTargetUnit()))]
     else
         if(Trig_NameDiary_Chronicle_IsInvalidTarget())then
-            call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000This unit is not a valid target!|r")
-            call DestroyForce(udg_TempForce)
+            call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000This unit is not a valid target!|r")
+            call DestroyForce(l_tempForce)
+            set l_tempForce=null
             return
         else
             if(Trig_NameDiary_Chronicle_IsUnnamedTarget())then
-                call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
-                call DestroyForce(udg_TempForce)
+                call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
+                call DestroyForce(l_tempForce)
+                set l_tempForce=null
                 return
             else
                 if(Trig_NameDiary_Chronicle_IsBannedTarget())then
-                    call DisplayTimedTextToForce(udg_TempForce,10.,"Katya and Timmy's names cannot be put in the diary!")
-                    call DestroyForce(udg_TempForce)
+                    call DisplayTimedTextToForce(l_tempForce,10.,"Katya and Timmy's names cannot be put in the diary!")
+                    call DestroyForce(l_tempForce)
+                    set l_tempForce=null
                     return
                 else
                     if(Trig_NameDiary_Chronicle_IsTargetHero())then
@@ -271,8 +276,9 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_NameDiary_Chronicle_IsNameTooShort())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
-        call DestroyForce(udg_TempForce)
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     if(Trig_NameDiary_Chronicle_IsGeneralLeo())then
@@ -285,7 +291,7 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
         endif
         if(Trig_NameDiary_Chronicle_IsNameClyde())then
             if(Trig_NameDiary_Chronicle_HasShadowEntry())then
-                call DisplayTimedTextToForce(udg_TempForce,10.,"Struck the name 'Shadow' from the diary.")
+                call DisplayTimedTextToForce(l_tempForce,10.,"Struck the name 'Shadow' from the diary.")
                 set udg_DiaryEntry[19]="S"
                 set udg_DiaryNameCount=(udg_DiaryNameCount-1)
             endif
@@ -302,19 +308,21 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     if(Trig_NameDiary_Chronicle_HasNoLetterSlot())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
-        call DestroyForce(udg_TempForce)
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000This unit's name cannot be chronicled!|r")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     if(Trig_NameDiary_Chronicle_IsLetterTaken())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,("The Name Diary already has an entry for the letter '"+(SubStringBJ(udg_TempString,1,1)+"'!")))
-        call DestroyForce(udg_TempForce)
+        call DisplayTimedTextToForce(l_tempForce,10.,("The Name Diary already has an entry for the letter '"+(SubStringBJ(udg_TempString,1,1)+"'!")))
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     set udg_DiaryEntry[udg_TempInteger]=udg_TempString
     set udg_DiaryNameCount=(udg_DiaryNameCount+1)
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,("Wrote the name '"+(udg_TempString+"' into the diary!")))
-    call DestroyForce(udg_TempForce)
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,("Wrote the name '"+(udg_TempString+"' into the diary!")))
+    call DestroyForce(l_tempForce)
     call QuestItemSetDescriptionBJ(udg_QuestReq[5],("Names chronicled: "+(I2S(udg_DiaryNameCount)+"/26")))
     set udg_TempString="Timmy wants you to chronicle names from people all over the world in his diary. Get at least one for each letter of the alphabet!|n"
     set bj_forLoopAIndex=1
@@ -330,6 +338,7 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return the Name Diary to Timmy.")
         call EnableTrigger(gg_trg_NameDiary_Reward)
     endif
+    set l_tempForce=null
 endfunction
 
 function Trig_NameDiary_Reward_Conditions takes nothing returns boolean

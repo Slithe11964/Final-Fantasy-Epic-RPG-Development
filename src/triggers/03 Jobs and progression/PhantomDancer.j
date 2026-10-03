@@ -6,21 +6,25 @@ globals
 endglobals
 
 function Trig_PhantomDancer_Blink_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(GetAttacker())
     // The remainder after dividing ((facing in degrees of GetAttacker()) plus (180)) by (360).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,ModuloReal((GetUnitFacing(GetAttacker())+180.),360.))
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,ModuloReal((GetUnitFacing(GetAttacker())+180.),360.))
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLocFacingLocBJ(GetTriggerUnit(),udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLocFacingLocBJ(GetTriggerUnit(),l_tempPoint2,l_tempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(4.)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_PhantomDancer_Berserk_Actions takes nothing returns nothing

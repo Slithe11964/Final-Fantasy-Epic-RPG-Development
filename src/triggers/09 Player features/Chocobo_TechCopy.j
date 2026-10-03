@@ -64,10 +64,12 @@ function Trig_Chocobo_TechCopy_IsStage3Chocobo takes nothing returns boolean
 endfunction
 
 function Trig_Chocobo_TechCopy_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Chocobo_TechCopy_IsInvalidTarget())then
-        call DisplayTextToForce(udg_TempForce,"Invalid target for Tech Copy!")
-        call DestroyForce(udg_TempForce)
+        call DisplayTextToForce(l_tempForce,"Invalid target for Tech Copy!")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     set udg_ChocoboAbilityIndex=0
@@ -77,8 +79,9 @@ function Trig_Chocobo_TechCopy_Actions takes nothing returns nothing
         exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
         if(Trig_Chocobo_TechCopy_TargetHasAbilityAtIndex())then
             if(Trig_Chocobo_TechCopy_CasterHasAbilityAtIndex())then
-                call DisplayTextToForce(udg_TempForce,"The target chocobo has the same ability as the casting chocobo!")
-                call DestroyForce(udg_TempForce)
+                call DisplayTextToForce(l_tempForce,"The target chocobo has the same ability as the casting chocobo!")
+                call DestroyForce(l_tempForce)
+                set l_tempForce=null
                 return
             else
                 set udg_ChocoboAbilityIndex=GetForLoopIndexB()
@@ -87,13 +90,15 @@ function Trig_Chocobo_TechCopy_Actions takes nothing returns nothing
         set bj_forLoopBIndex=bj_forLoopBIndex+1
     endloop
     if(Trig_Chocobo_TechCopy_NoAbilityToCopy())then
-        call DisplayTextToForce(udg_TempForce,"The target chocobo has no ability to copy!")
-        call DestroyForce(udg_TempForce)
+        call DisplayTextToForce(l_tempForce,"The target chocobo has no ability to copy!")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     if(Trig_Chocobo_TechCopy_CannotCopyWhileRidden())then
-        call DisplayTextToForce(udg_TempForce,"This action cannot be executed while your hero is riding the chocobo!")
-        call DestroyForce(udg_TempForce)
+        call DisplayTextToForce(l_tempForce,"This action cannot be executed while your hero is riding the chocobo!")
+        call DestroyForce(l_tempForce)
+        set l_tempForce=null
         return
     endif
     set bj_forLoopBIndex=3
@@ -119,8 +124,8 @@ function Trig_Chocobo_TechCopy_Actions takes nothing returns nothing
         set bj_forLoopBIndex=bj_forLoopBIndex+1
     endloop
     call UnitAddAbilityBJ(udg_ChocoboAbility[udg_ChocoboAbilityIndex],GetTriggerUnit())
-    call DisplayTimedTextToForce(udg_TempForce,15.,("The chocobo has successfully copied the ability |cffffcc00"+(GetAbilityName(udg_ChocoboAbility[udg_ChocoboAbilityIndex])+"|r!")))
-    call DestroyForce(udg_TempForce)
+    call DisplayTimedTextToForce(l_tempForce,15.,("The chocobo has successfully copied the ability |cffffcc00"+(GetAbilityName(udg_ChocoboAbility[udg_ChocoboAbilityIndex])+"|r!")))
+    call DestroyForce(l_tempForce)
     if(Trig_Chocobo_TechCopy_CopiedIsQuickJoin())then
         call UnitRemoveAbilityBJ('A04F',GetTriggerUnit()) // 'A04F': ability "Join Fast"
     else
@@ -135,6 +140,7 @@ function Trig_Chocobo_TechCopy_Actions takes nothing returns nothing
     if(Trig_Chocobo_TechCopy_IsStage3Chocobo())then
         call SetUnitAbilityLevelSwapped(udg_ChocoboAbility[udg_ChocoboAbilityIndex],GetTriggerUnit(),$B) // $B = 11
     endif
+    set l_tempForce=null
 endfunction
 
 function InitTrig_Chocobo_TechCopy takes nothing returns nothing

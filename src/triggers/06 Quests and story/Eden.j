@@ -19,14 +19,15 @@ function Trig_Eden_Summon_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Eden_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call EnableTrigger(gg_trg_Eden_Despawn)
     call GroupAddUnitSimple(gg_unit_N02I_0074,udg_BossGroup)
     call EnableTrigger(gg_trg_Quest_StrongestEidolon_Complete)
     call UnitRemoveAbilityBJ('A0CE',gg_unit_h00Z_0130) // 'A0CE': ability "Eden"
-    set udg_TempPoint=GetRectCenter(gg_rct_182)
-    call SetUnitFacingToFaceLocTimed(gg_unit_u007_0128,udg_TempPoint,.2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_182)
+    call SetUnitFacingToFaceLocTimed(gg_unit_u007_0128,l_tempPoint,.2)
+    call RemoveLocation(l_tempPoint)
     call ConditionalTriggerExecute(gg_trg_Npc_Priscilla_SummonEden)
     call StartTimerBJ(udg_EdenTimer,false,300.)
     set udg_EdenTimerDialog=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Eden disappears in")
@@ -35,14 +36,15 @@ function Trig_Eden_Summon_Actions takes nothing returns nothing
     call Wait_Polled(.5)
     call AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u007_0128,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint=GetRectCenter(gg_rct_182)
-    call SetUnitPositionLocFacingBJ(gg_unit_N02I_0074,udg_TempPoint,315.)
+    set l_tempPoint=GetRectCenter(gg_rct_182)
+    call SetUnitPositionLocFacingBJ(gg_unit_N02I_0074,l_tempPoint,315.)
     call SetUnitLifePercentBJ(gg_unit_N02I_0074,'d')
     call PauseUnitBJ(false,gg_unit_N02I_0074)
     call SetUnitInvulnerable(gg_unit_N02I_0074,false)
     call ShowUnitShow(gg_unit_N02I_0074)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call StartTimerBJ(udg_ShiftElementsTimer,false,.01)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Eden_Despawn_Actions takes nothing returns nothing

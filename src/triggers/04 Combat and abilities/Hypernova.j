@@ -37,17 +37,18 @@ function Trig_Hypernova_Cast_IsHypernovaTarget takes nothing returns boolean
 endfunction
 
 function Trig_Hypernova_Cast_BlastTarget takes nothing returns nothing
+    local location l_tempPoint
     call SaveUnitHandleBJ(GetTriggerUnit(),0,GetHandleIdBJ(GetEnumUnit()),udg_MolotovHash)
     call SaveRealBJ(3000.,1,GetHandleIdBJ(GetEnumUnit()),udg_MolotovHash)
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.5)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.5)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A1FJ',GetLastCreatedUnit()) // 'A1FJ': ability "Hypernova"
@@ -55,11 +56,14 @@ function Trig_Hypernova_Cast_BlastTarget takes nothing returns nothing
     set udg_IsPhysicalAttack=true
     set udg_DamageElement=1
     call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),15000.,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_NORMAL,null)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Hypernova_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),4.)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     set bj_forLoopAIndex=1
@@ -67,29 +71,31 @@ function Trig_Hypernova_Cast_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (22.5) times (loop counter A treated as a decimal-capable number).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         // (22.5) times ((loop counter A treated as a decimal-capable number) minus (0.5)).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,(22.5*(I2R(GetForLoopIndexA())-.5)))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(22.5*(I2R(GetForLoopIndexA())-.5)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),2.)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         // (22.5) times (loop counter A treated as a decimal-capable number).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,768.,(22.5*I2R(GetForLoopIndexA())))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,768.,(22.5*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call RemoveLocation(udg_TempPoint2)
         call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),1.5)
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Hypernova_Cast_IsHypernovaTarget))
-    call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Hypernova_Cast_BlastTarget)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Hypernova_Cast_IsHypernovaTarget))
+    call RemoveLocation(l_tempPoint)
+    call ForGroupBJ(l_tempGroup,function Trig_Hypernova_Cast_BlastTarget)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Hypernova automatically; it is intentionally empty. This module's

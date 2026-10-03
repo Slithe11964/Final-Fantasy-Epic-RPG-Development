@@ -17,9 +17,10 @@ function Trig_Immobilize_Cast_HasDrunkenHaze takes nothing returns boolean
 endfunction
 
 function Trig_Immobilize_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitRemoveBuffBJ('B05M',GetSpellTargetUnit()) // 'B05M': buff tooltip "Immobilize"
@@ -34,6 +35,7 @@ function Trig_Immobilize_Cast_Actions takes nothing returns nothing
         endif
     endif
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"ensnare",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Immobilize automatically; it is intentionally empty. This module's

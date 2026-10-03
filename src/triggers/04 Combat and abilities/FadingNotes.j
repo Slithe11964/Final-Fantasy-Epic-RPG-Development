@@ -58,21 +58,23 @@ function Trig_FadingNotes_DropCultist_DiffersFromWizardNote takes nothing return
 endfunction
 
 function Trig_FadingNotes_DropCultist_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_FadingNotes_DropCultist_IsLastNote())then
         set udg_FadingNoteIndex=1
     else
         set udg_FadingNoteIndex=(udg_FadingNoteIndex+1)
     endif
-    set udg_NoteFromCultist=CreateItemLoc(udg_RewardItem[udg_FadingNoteIndex],udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set udg_NoteFromCultist=CreateItemLoc(udg_RewardItem[udg_FadingNoteIndex],l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_FadingNotes_DropCultist_DiffersFromWizardNote())then
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
         call Wait_Polled(45.)
     endif
     call RemoveItem(udg_NoteFromCultist)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_FadingNotes_DropWizard_IsWizard takes nothing returns boolean
@@ -93,21 +95,23 @@ function Trig_FadingNotes_DropWizard_DiffersFromCultistNote takes nothing return
 endfunction
 
 function Trig_FadingNotes_DropWizard_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_FadingNotes_DropWizard_IsLastNoteIndex())then
         set udg_FadingNoteIndex=1
     else
         set udg_FadingNoteIndex=(udg_FadingNoteIndex+1)
     endif
-    set udg_NoteFromWizard=CreateItemLoc(udg_RewardItem[udg_FadingNoteIndex],udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set udg_NoteFromWizard=CreateItemLoc(udg_RewardItem[udg_FadingNoteIndex],l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_FadingNotes_DropWizard_DiffersFromCultistNote())then
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
         call Wait_Polled(45.)
     endif
     call RemoveItem(udg_NoteFromWizard)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_FadingNotes automatically; it is intentionally empty. This module's

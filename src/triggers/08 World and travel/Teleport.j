@@ -30,16 +30,18 @@ function Trig_Teleport_ToKalm_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Teleport_ToKalm_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint=GetRectCenter(gg_rct_483)
-    call SetUnitPositionLocFacingBJ(GetSpellTargetUnit(),udg_TempPoint,180.)
-    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetSpellTargetUnit()),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_483)
+    call SetUnitPositionLocFacingBJ(GetSpellTargetUnit(),l_tempPoint,180.)
+    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetSpellTargetUnit()),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Teleport_ToArena_Conditions takes nothing returns boolean
@@ -47,16 +49,18 @@ function Trig_Teleport_ToArena_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Teleport_ToArena_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint=GetRectCenter(gg_rct_484)
-    call SetUnitPositionLocFacingBJ(GetSpellTargetUnit(),udg_TempPoint,315.)
-    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetSpellTargetUnit()),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_484)
+    call SetUnitPositionLocFacingBJ(GetSpellTargetUnit(),l_tempPoint,315.)
+    call PanCameraToTimedLocForPlayer(GetOwningPlayer(GetSpellTargetUnit()),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Teleport automatically; it is intentionally empty. This module's

@@ -40,6 +40,7 @@ function Trig_Quest_UltimaWeapon_Slain_Reward_EachPlayer takes nothing returns n
 endfunction
 
 function Trig_Quest_UltimaWeapon_Slain_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_UltimaWeapon_Slain_Cond_TrackBossKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -47,9 +48,9 @@ function Trig_Quest_UltimaWeapon_Slain_Actions takes nothing returns nothing
     endif
     call GroupRemoveUnitSimple(gg_unit_Nman_0151,udg_BossGroup)
     call Music_ClearTrack(23)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I00S',udg_TempPoint) // 'I00S': item "Ultimate Weapon"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I00S',l_tempPoint) // 'I00S': item "Ultimate Weapon"
+    call RemoveLocation(l_tempPoint)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ultima Weapon|r")
     call QuestSetCompletedBJ(udg_SideQuest[46],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
@@ -66,6 +67,7 @@ function Trig_Quest_UltimaWeapon_Slain_Actions takes nothing returns nothing
     call SaveIntegerBJ(1,2,2,udg_GameStateHash)
     call ForForce(udg_PlayingPlayers,function Trig_Quest_UltimaWeapon_Slain_Reward_EachPlayer)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_UltimaWeapon takes nothing returns nothing

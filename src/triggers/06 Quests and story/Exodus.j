@@ -82,13 +82,15 @@ function Trig_Exodus_Stomp_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Exodus_Stomp_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetRectCenter(gg_rct_649)
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_649)
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(10.)
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stomp")
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Exodus_SummonTrees_Conditions takes nothing returns boolean
@@ -104,10 +106,12 @@ function Trig_Exodus_SummonTrees_TrackedCaster_Second takes nothing returns bool
 endfunction
 
 function Trig_Exodus_SummonTrees_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,256.,0)
-    call CreateNUnitsAtLoc(1,'n0D5',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0D5': unit "Tree of Ages"
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=OffsetLocation(l_tempPoint,256.,0)
+    call CreateNUnitsAtLoc(1,'n0D5',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,bj_UNIT_FACING) // 'n0D5': unit "Tree of Ages"
+    call RemoveLocation(l_tempPoint2)
     call UnitApplyTimedLifeBJ(45.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Objects\\Spawnmodels\\NightElf\\EntBirthTarget\\EntBirthTarget.mdl")
@@ -115,9 +119,9 @@ function Trig_Exodus_SummonTrees_Actions takes nothing returns nothing
     if(Trig_Exodus_SummonTrees_TrackedCaster_First())then
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossSummons)
     endif
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-256.,0)
-    call CreateNUnitsAtLoc(1,'n0D5',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,bj_UNIT_FACING) // 'n0D5': unit "Tree of Ages"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-256.,0)
+    call CreateNUnitsAtLoc(1,'n0D5',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,bj_UNIT_FACING) // 'n0D5': unit "Tree of Ages"
+    call RemoveLocation(l_tempPoint2)
     call UnitApplyTimedLifeBJ(45.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Objects\\Spawnmodels\\NightElf\\EntBirthTarget\\EntBirthTarget.mdl")
@@ -125,7 +129,9 @@ function Trig_Exodus_SummonTrees_Actions takes nothing returns nothing
     if(Trig_Exodus_SummonTrees_TrackedCaster_Second())then
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossSummons)
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Exodus_Cometeorite_Conditions takes nothing returns boolean
@@ -141,18 +147,20 @@ function Trig_Exodus_Cometeorite_ShowRock takes nothing returns nothing
 endfunction
 
 function Trig_Exodus_Cometeorite_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local real l_tempReal
     if(Trig_Exodus_Cometeorite_NoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (15000) times (udg_TempReal).
-    call SaveRealBJ((15000.*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (15000) times (l_tempReal).
+    call SaveRealBJ((15000.*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(4.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0YO',GetLastCreatedUnit()) // 'A0YO': ability "Cometeorite"

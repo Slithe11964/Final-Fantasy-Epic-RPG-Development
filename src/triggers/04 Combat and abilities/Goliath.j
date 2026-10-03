@@ -40,11 +40,12 @@ function Trig_Goliath_Tonic_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Goliath_Tonic_Actions takes nothing returns nothing
+    local real l_tempReal
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (15).
     // Result 2: result 1 treated as a decimal-capable number.
-    set udg_TempReal=I2R(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $F) // $F = 15
-    call Trig_Goliath_Tonic_Apply(GetSpellTargetUnit(),udg_TempReal)
+    set l_tempReal=I2R(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $F) // $F = 15
+    call Trig_Goliath_Tonic_Apply(GetSpellTargetUnit(),l_tempReal)
 endfunction
 
 // World Editor calls InitTrig_Goliath automatically; it is intentionally empty. This module's

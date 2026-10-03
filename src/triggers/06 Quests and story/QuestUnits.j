@@ -17,12 +17,14 @@ function Trig_QuestUnits_Ping_IsAllyUnit_Primary takes nothing returns boolean
 endfunction
 
 function Trig_QuestUnits_Ping_Ping_Primary takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call PingMinimapLocForForceEx(GetPlayersAll(),udg_TempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',.0,.0)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call PingMinimapLocForForceEx(GetPlayersAll(),l_tempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',.0,.0)
+    call RemoveLocation(l_tempPoint)
     if(Trig_QuestUnits_Ping_IsAllyUnit_Primary())then
         call DisplayTextToForce(GetPlayersAll(),"DEBUG: A player/ally unit is being pinged! Please report this and at what point this is occurring.")
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_QuestUnits_Ping_IsAllyUnit_Quest takes nothing returns boolean
@@ -30,12 +32,14 @@ function Trig_QuestUnits_Ping_IsAllyUnit_Quest takes nothing returns boolean
 endfunction
 
 function Trig_QuestUnits_Ping_Ping_Quest takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call PingMinimapLocForForceEx(GetPlayersAll(),udg_TempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',80.,.0)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call PingMinimapLocForForceEx(GetPlayersAll(),l_tempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',80.,.0)
+    call RemoveLocation(l_tempPoint)
     if(Trig_QuestUnits_Ping_IsAllyUnit_Quest())then
         call DisplayTextToForce(GetPlayersAll(),"DEBUG: A player/ally unit is being pinged! Please report this and at what point this is occurring.")
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_QuestUnits_Ping_IsAllyUnit_Boss takes nothing returns boolean
@@ -43,12 +47,14 @@ function Trig_QuestUnits_Ping_IsAllyUnit_Boss takes nothing returns boolean
 endfunction
 
 function Trig_QuestUnits_Ping_Ping_Boss takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call PingMinimapLocForForce(GetPlayersAll(),l_tempPoint,2.)
+    call RemoveLocation(l_tempPoint)
     if(Trig_QuestUnits_Ping_IsAllyUnit_Boss())then
         call DisplayTextToForce(GetPlayersAll(),"DEBUG: A player/ally unit is being pinged! Please report this and at what point this is occurring.")
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_QuestUnits_Ping_IsAllyUnit_Extra takes nothing returns boolean
@@ -56,12 +62,14 @@ function Trig_QuestUnits_Ping_IsAllyUnit_Extra takes nothing returns boolean
 endfunction
 
 function Trig_QuestUnits_Ping_Ping_Extra takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call PingMinimapLocForForceEx(GetPlayersAll(),udg_TempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,30.,50.,100.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call PingMinimapLocForForceEx(GetPlayersAll(),l_tempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,30.,50.,100.)
+    call RemoveLocation(l_tempPoint)
     if(Trig_QuestUnits_Ping_IsAllyUnit_Extra())then
         call DisplayTextToForce(GetPlayersAll(),"DEBUG: A player/ally unit is being pinged! Please report this and at what point this is occurring.")
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_QuestUnits_Ping_Actions takes nothing returns nothing

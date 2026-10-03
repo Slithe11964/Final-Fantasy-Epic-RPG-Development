@@ -148,6 +148,8 @@ function Trig_Quest_52_Scorching_ShowTower takes nothing returns nothing
 endfunction
 
 function Trig_Quest_52_Scorching_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
     set udg_HellSpawnsActive=true
     call SetBlightRectBJ(true,Player($B),gg_rct_592) // $B = 11
     call SetBlightRectBJ(true,Player($B),gg_rct_593) // $B = 11
@@ -155,27 +157,27 @@ function Trig_Quest_52_Scorching_Actions takes nothing returns nothing
     call SetBlightRectBJ(true,Player($B),gg_rct_595) // $B = 11
     call SetBlightRectBJ(true,Player($B),gg_rct_596) // $B = 11
     call SetBlightRectBJ(true,Player($B),gg_rct_597) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_598)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_599)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_600)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_601)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_602)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_603)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_604)
-    call SetBlightRadiusLocBJ(true,Player($B),udg_TempPoint,512) // $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_598)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_599)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_600)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_601)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_602)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_603)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_604)
+    call SetBlightRadiusLocBJ(true,Player($B),l_tempPoint,512) // $B = 11
+    call RemoveLocation(l_tempPoint)
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=5
     loop
@@ -205,9 +207,9 @@ function Trig_Quest_52_Scorching_Actions takes nothing returns nothing
     call SetDoodadAnimationRectBJ("show",'YOtf',gg_rct_597) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("show",'YOtf',gg_rct_622) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("show",'YOtf',gg_rct_623) // 'YOtf': object name not found in map data
-    set udg_TempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_Quest_52_Scorching_Filter_IcyRealmUnit)) // $B = 11
-    call ForGroupBJ(udg_TempGroup,function Trig_Quest_52_Scorching_KillEnumUnit)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_Quest_52_Scorching_Filter_IcyRealmUnit)) // $B = 11
+    call ForGroupBJ(l_tempGroup,function Trig_Quest_52_Scorching_KillEnumUnit)
+    call DestroyGroup(l_tempGroup)
     set udg_ZoneEssenceItem[8]='I0BY' // 'I0BY': item "Hell Gate's Flame"
     set udg_ElementRecord[1]=0
     set udg_AreaSpawnUnitA[8]='n0CL' // 'n0CL': unit "Puroboros"
@@ -216,12 +218,14 @@ function Trig_Quest_52_Scorching_Actions takes nothing returns nothing
     if(Trig_Quest_52_Scorching_Cond_ZoneBossSpawned())then
         call KillUnit(udg_ZoneBoss[8])
     endif
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
-    call ForGroupBJ(udg_TempGroup,function Trig_Quest_52_Scorching_ShowTower)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
+    call ForGroupBJ(l_tempGroup,function Trig_Quest_52_Scorching_ShowTower)
+    call DestroyGroup(l_tempGroup)
     call Trig_Quest_52_Scorching_TravelDialog_Disable()
     set udg_TravelName[udg_TravelPointIndex]="|cFFFFFFFFI|rnfernal Mountain"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_ScorchingTravel takes nothing returns nothing

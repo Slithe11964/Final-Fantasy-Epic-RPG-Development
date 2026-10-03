@@ -109,12 +109,14 @@ function Trig_Wanderer_Request_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Wanderer_Request_Actions takes nothing returns nothing
+    local location l_tempPoint
     call Music_SetTrack(38)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc(udg_WandererWantedItem[GetUnitPointValue(GetTriggerUnit())],udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc(udg_WandererWantedItem[GetUnitPointValue(GetTriggerUnit())],l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call DisplayTextToForce(Force_OfPlayer(GetTriggerPlayer()),(GetUnitName(GetTriggerUnit())+(": Give me |cffffcc00"+(GetItemName(GetLastCreatedItem())+"|r, please!"))))
     call RemoveItem(GetLastCreatedItem())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Wanderer_Give_Item_Conditions takes nothing returns boolean

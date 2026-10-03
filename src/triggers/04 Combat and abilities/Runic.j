@@ -65,11 +65,12 @@ function Trig_Runic_Shield_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Runic_Shield_Actions takes nothing returns nothing
+    local integer l_tempInteger
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (10).
     // Result 2: (result 1) plus (10).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A)+$A // $A = 10
-    call Trig_Runic_Shield_Apply(GetSpellTargetUnit(),udg_TempInteger)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A)+$A // $A = 10
+    call Trig_Runic_Shield_Apply(GetSpellTargetUnit(),l_tempInteger)
 endfunction
 
 // World Editor calls InitTrig_Runic automatically; it is intentionally empty. This module's

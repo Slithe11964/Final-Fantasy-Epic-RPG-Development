@@ -24,10 +24,11 @@ function Trig_Arena_BuyPrize_CannotAfford takes nothing returns boolean
 endfunction
 
 function Trig_Arena_BuyPrize_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetBuyingUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetBuyingUnit()))
     if(Trig_Arena_BuyPrize_CannotAfford())then
         call RemoveItem(GetSoldItem())
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cff00ff00Arena:|r You do not have enough BP to purchase this prize!")
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You do not have enough BP to purchase this prize!")
     else
         // Result 1: (GetItemLifeBJ(GetSoldItem())) with its decimal part removed.
         // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))) minus
@@ -36,7 +37,7 @@ function Trig_Arena_BuyPrize_Actions takes nothing returns nothing
         call DestroyTextTagBJ(udg_ArenaBpTag[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))])
         set udg_ArenaBpTag[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[GetConvertedPlayerId(GetOwningPlayer(GetBuyingUnit()))])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
         call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
-        call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_TempForce)
+        call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),l_tempForce)
         set udg_BattlePoints[0]=GetItemLevel(GetSoldItem())
         call RemoveItem(GetSoldItem())
         if(Trig_Arena_BuyPrize_HasNoItemLevel())then
@@ -45,7 +46,8 @@ function Trig_Arena_BuyPrize_Actions takes nothing returns nothing
             call UnitAddItemByIdSwapped(udg_ItemIdTable[udg_BattlePoints[0]],GetBuyingUnit())
         endif
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_ExchangeBP_Conditions takes nothing returns boolean
@@ -81,28 +83,29 @@ function Trig_Arena_ExchangeBP_IsShowBP takes nothing returns boolean
 endfunction
 
 function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
+    local force l_tempForce
     call ShowUnitHide(GetSoldUnit())
     call UnitApplyTimedLifeBJ(.21,'BTLF',GetSoldUnit()) // 'BTLF': object name not found in map data
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetSoldUnit()))
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetSoldUnit()))
     set udg_TempInteger=GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))
     if(Trig_Arena_ExchangeBP_IsShowBP())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00Arena:|r You currently have "+I2S(udg_BattlePoints[udg_TempInteger]))+" Battle Points."))
+        call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You currently have "+I2S(udg_BattlePoints[udg_TempInteger]))+" Battle Points."))
     else
         if(Trig_Arena_ExchangeBP_HasNoBP())then
-            call DisplayTimedTextToForce(udg_TempForce,10.,"|cff00ff00Arena:|r You do not have enough BP!")
+            call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You do not have enough BP!")
         else
             if(Trig_Arena_ExchangeBP_IsExchangeShards())then
                 if(Trig_Arena_ExchangeBP_BelowOneShard())then
-                    call DisplayTimedTextToForce(udg_TempForce,10.,"|cff00ff00Arena:|r You do not have enough BP!")
+                    call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You do not have enough BP!")
                 else
                     if(Trig_Arena_ExchangeBP_BelowTwoShards())then
                         call AdjustPlayerStateBJ(1,GetOwningPlayer(GetSoldUnit()),PLAYER_STATE_RESOURCE_LUMBER)
-                        call DisplayTimedTextToForce(udg_TempForce,10.,"|cff00ff00Arena:|r You gain 1 Crystal Shard.")
+                        call DisplayTimedTextToForce(l_tempForce,10.,"|cff00ff00Arena:|r You gain 1 Crystal Shard.")
                     else
                         // (udg_BattlePoints at position udg_TempInteger) divided by (5000); drop the remainder.
                         call AdjustPlayerStateBJ((udg_BattlePoints[udg_TempInteger]/ 5000),GetOwningPlayer(GetSoldUnit()),PLAYER_STATE_RESOURCE_LUMBER)
                         // (udg_BattlePoints at position udg_TempInteger) divided by (5000); drop the remainder.
-                        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S((udg_BattlePoints[udg_TempInteger]/ 5000)))+" Crystal Shards."))
+                        call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S((udg_BattlePoints[udg_TempInteger]/ 5000)))+" Crystal Shards."))
                     endif
                     // The remainder after dividing (udg_BattlePoints at position udg_TempInteger) by (5000).
                     set udg_BattlePoints[udg_TempInteger]=ModuloInteger(udg_BattlePoints[udg_TempInteger],5000)
@@ -110,7 +113,7 @@ function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
             else
                 if(Trig_Arena_ExchangeBP_IsExchangeGold())then
                     call AdjustPlayerStateBJ(udg_BattlePoints[udg_TempInteger],GetOwningPlayer(GetSoldUnit()),PLAYER_STATE_RESOURCE_GOLD)
-                    call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S(udg_BattlePoints[udg_TempInteger]))+" Gold."))
+                    call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S(udg_BattlePoints[udg_TempInteger]))+" Gold."))
                     call AddSpecialEffectTargetUnitBJ("origin",Player_GetHero(GetOwningPlayer(GetSoldUnit())),"Abilities\\Spells\\Other\\Transmute\\PileofGold.mdl")
                     call DestroyEffectBJ(GetLastCreatedEffectBJ())
                 else
@@ -120,7 +123,7 @@ function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
                         // Result 3: (result 2) with its decimal part removed.
                         call AddHeroXPSwapped(R2I((I2R(udg_BattlePoints[udg_TempInteger])*udg_SecondaryXPRate)),udg_SpiritOfGaya[udg_TempInteger],true)
                         call AddHeroXPSwapped(udg_BattlePoints[udg_TempInteger],Player_GetHero(GetOwningPlayer(GetSoldUnit())),true)
-                        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S(udg_BattlePoints[udg_TempInteger]))+" EXP."))
+                        call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00Arena:|r You gain "+I2S(udg_BattlePoints[udg_TempInteger]))+" EXP."))
                     endif
                 endif
                 set udg_BattlePoints[udg_TempInteger]=0
@@ -129,18 +132,21 @@ function Trig_Arena_ExchangeBP_Actions takes nothing returns nothing
         call DestroyTextTagBJ(udg_ArenaBpTag[udg_TempInteger])
         set udg_ArenaBpTag[udg_TempInteger]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[udg_TempInteger])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
         call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
-        call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_TempForce)
+        call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),l_tempForce)
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_RefreshBPTags_ShowBPTag takes nothing returns nothing
+    local force l_tempForce
     call DestroyTextTagBJ(udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())])
     set udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
-    set udg_TempForce=Force_OfPlayer(GetEnumPlayer())
-    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetEnumPlayer())
+    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),l_tempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_RefreshBPTags_Actions takes nothing returns nothing

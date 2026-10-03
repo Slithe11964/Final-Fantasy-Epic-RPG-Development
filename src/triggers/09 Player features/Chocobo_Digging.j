@@ -255,12 +255,14 @@ function Trig_Chocobo_DigSpot_Nearest_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Chocobo_Drop_Nut_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I07H',udg_TempPoint) // 'I07H': item "Zeio Nut"
-    call CreateItemLoc('I0KE',udg_TempPoint) // 'I0KE': item "Silkis Greens"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I07H',l_tempPoint) // 'I07H': item "Zeio Nut"
+    call CreateItemLoc('I0KE',l_tempPoint) // 'I0KE': item "Silkis Greens"
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Chocobo_Digging takes nothing returns nothing

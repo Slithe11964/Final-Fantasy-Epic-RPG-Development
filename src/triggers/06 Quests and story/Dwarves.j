@@ -17,6 +17,7 @@ function Trig_Dwarves_Disappear_SmithItemBHeld takes nothing returns boolean
 endfunction
 
 function Trig_Dwarves_Disappear_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Dwarves_Disappear_ReforgeItemHeld())then
         call SetItemDroppableBJ(udg_LokiReforgeItem,true)
         call UnitRemoveItemSwapped(udg_LokiReforgeItem,gg_unit_H00P_0260)
@@ -36,13 +37,14 @@ function Trig_Dwarves_Disappear_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H036_0254)
     call ShowUnitHide(gg_unit_h00Q_0255)
     call ShowUnitHide(gg_unit_h037_0257)
-    set udg_TempPoint=GetRectCenter(gg_rct_698)
-    call SetUnitPositionLocFacingBJ(gg_unit_n012_0163,udg_TempPoint,bj_UNIT_FACING)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_698)
+    call SetUnitPositionLocFacingBJ(gg_unit_n012_0163,l_tempPoint,bj_UNIT_FACING)
+    call RemoveLocation(l_tempPoint)
     set udg_QuestMarkerEffect[2]=AddSpecialEffectTargetUnitBJ("head",gg_unit_n012_0163,"Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl")
     call EnableTrigger(gg_trg_Npc_Talk_Reno)
     call EnableTrigger(gg_trg_Quest_DwarfDisappearance_Start)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Dwarves automatically; it is intentionally empty. This module's

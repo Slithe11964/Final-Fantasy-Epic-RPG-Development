@@ -55,9 +55,11 @@ function Trig_HauntedTree_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_HauntedTree_GhostRoam_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_366)
-    call IssuePointOrderLocBJ(gg_unit_u017_0107,"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRandomLocInRect(gg_rct_366)
+    call IssuePointOrderLocBJ(gg_unit_u017_0107,"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_HauntedTree_CaptureSpirit_Conditions takes nothing returns boolean

@@ -14,9 +14,11 @@ function Trig_Arena_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Leash_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_458)
-    call SetUnitPositionLoc(GetEnteringUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_458)
+    call SetUnitPositionLoc(GetEnteringUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Arena_OutOfBounds_Conditions takes nothing returns boolean

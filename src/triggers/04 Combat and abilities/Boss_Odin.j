@@ -123,6 +123,7 @@ function Trig_Boss_Odin_Death_Enum_GiveCrystalShards takes nothing returns nothi
 endfunction
 
 function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Boss_Odin_Escort_AI)
     call DisableTrigger(gg_trg_Odin_Escort_Teleport)
@@ -144,9 +145,9 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
     if(Trig_Boss_Odin_Death_Cond_KilledByPlayer())then
         set udg_JudgePlayer=GetOwningPlayer(GetKillingUnitBJ())
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_H01M_0071,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_H01M_0071,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call Cine_Enter()
     call SetUnitAnimation(gg_unit_H01M_0071,"death")
     call Cam_PanToUnit(gg_unit_H01M_0071,0)
@@ -157,18 +158,18 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
     call SetUnitAnimation(gg_unit_H01M_0071,"stand")
     call Text_Say(gg_unit_H01M_0071,"|cffff0000In deference to your power, I will stay away from this world. But I cannot allow Arcanium in the hands of mortals again. It could so easily be stolen, and you have shown that you do not need it either.|r",true)
     call Text_Say(gg_unit_H01M_0071,"|cffff0000I shall leave you with a parting gift in honor of our battle. I bid you adieu, and good luck on your journeys.|r",true)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
     call Cine_ExitAction()
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     call RemoveUnit(GetTriggerUnit())
-    call CreateItemLoc('I03P',udg_TempPoint) // 'I03P': item "Megalixir"
+    call CreateItemLoc('I03P',l_tempPoint) // 'I03P': item "Megalixir"
     call SetItemCharges(GetLastCreatedItem(),20)
     if(Trig_Boss_Odin_Death_Cond_SinglePlayer())then
-        call CreateItemLoc('I04A',udg_TempPoint) // 'I04A': item "Sleipnir"
+        call CreateItemLoc('I04A',l_tempPoint) // 'I04A': item "Sleipnir"
     else
         set bj_forLoopAIndex=1
         set bj_forLoopAIndexEnd=CountPlayersInForceBJ(udg_PlayingPlayers)
@@ -178,13 +179,13 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
             // Result 2: (360) times (result 1).
             // Result 3: CountPlayersInForceBJ(udg_PlayingPlayers) treated as a decimal-capable number.
             // Result 4: (result 2) divided by (result 3).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
             call CreateItemLoc('I04A',udg_TempPoint2) // 'I04A': item "Sleipnir"
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Reward_Give(80000,0,null)
     call ForForce(udg_PlayingPlayers,function Trig_Boss_Odin_Death_Enum_GiveCrystalShards)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00The Northern God|r")
@@ -194,6 +195,7 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
     set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
     set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]='y'
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_Odin takes nothing returns nothing

@@ -14,18 +14,20 @@ function Trig_IceCache_Open_Cond_SpearStillAvailable takes nothing returns boole
 endfunction
 
 function Trig_IceCache_Open_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call SetDestructableInvulnerableBJ(gg_dest_LTbx_0038,false)
-    set udg_TempPoint=GetDestructableLoc(gg_dest_LTbx_0038)
-    call CreateItemLoc('I06X',udg_TempPoint) // 'I06X': item "Unique Ice Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I021',udg_TempPoint) // 'I021': item "1500 Gold Coins"
+    set l_tempPoint=GetDestructableLoc(gg_dest_LTbx_0038)
+    call CreateItemLoc('I06X',l_tempPoint) // 'I06X': item "Unique Ice Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I021',l_tempPoint) // 'I021': item "1500 Gold Coins"
     if(Trig_IceCache_Open_Cond_SpearStillAvailable())then
-        call CreateItemLoc('I07Z',udg_TempPoint) // 'I07Z': item "Zodiac Spear"
+        call CreateItemLoc('I07Z',l_tempPoint) // 'I07Z': item "Zodiac Spear"
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call KillDestructable(gg_dest_LTbx_0038)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_IceCache_SpearClaimed_Actions takes nothing returns nothing

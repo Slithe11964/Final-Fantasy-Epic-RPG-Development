@@ -18,10 +18,12 @@ function Trig_Zone6_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone6_Leash_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 1 through LoadIntegerBJ(6, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(6,2,udg_SpawnDataHashRef)),6,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(6,2,udg_SpawnDataHashRef)),6,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Zone6_Leash_West_Conditions takes nothing returns boolean
@@ -29,10 +31,12 @@ function Trig_Zone6_Leash_West_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone6_Leash_West_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 12 through 17.
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt($C,17),6,udg_SpawnRectHashRef)) // $C = 12
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt($C,17),6,udg_SpawnRectHashRef)) // $C = 12
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Zone6 automatically; it is intentionally empty. This module's

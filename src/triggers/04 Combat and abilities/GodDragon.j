@@ -6,6 +6,7 @@ globals
 endglobals
 
 function Trig_GodDragon_Transfusion_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
     call UnitAddAbilityBJ('A0I3',udg_GodDragonUnit) // 'A0I3': ability "Transfusion Powerup"
@@ -27,9 +28,9 @@ function Trig_GodDragon_Transfusion_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A0MG',udg_GodDragonUnit) // 'A0MG': ability "Omni Spell Amplification"
     call UnitAddAbilityBJ('A0ME',udg_GodDragonUnit) // 'A0ME': ability "Omni Ward"
     call BlzSetUnitName(udg_GodDragonUnit,"Neo Shinryu")
-    set udg_TempPoint=GetUnitLoc(gg_unit_U00H_0211)
-    call CreateTextTagLocBJ("|cffffcc00TRANSFUSION",udg_TempPoint,0,13.,'d','d','d',0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_U00H_0211)
+    call CreateTextTagLocBJ("|cffffcc00TRANSFUSION",l_tempPoint,0,13.,'d','d','d',0)
+    call RemoveLocation(l_tempPoint)
     call SetTextTagVelocityBJ(GetLastCreatedTextTag(),80.,90)
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),1.5)
@@ -37,6 +38,7 @@ function Trig_GodDragon_Transfusion_Actions takes nothing returns nothing
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
     call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_AbilityTextForce)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_GodDragon_Death_DyingIsHero takes nothing returns boolean
@@ -44,6 +46,7 @@ function Trig_GodDragon_Death_DyingIsHero takes nothing returns boolean
 endfunction
 
 function Trig_GodDragon_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call PlayThematicMusicBJ("FF7-Victory Fanfare.mp3")
     if(Trig_GodDragon_Death_DyingIsHero())then
@@ -51,11 +54,11 @@ function Trig_GodDragon_Death_Actions takes nothing returns nothing
     else
         call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetUnitName(GetDyingUnit()))+"|r was defeated !!!"))
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I0L5',udg_TempPoint) // 'I0L5': item "Dragon Remains"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I0L5',l_tempPoint) // 'I0L5': item "Dragon Remains"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call UnitRemoveAbilityBJ('A0X2',gg_unit_U00H_0211) // 'A0X2': ability "Perma Cover"
     call UnitRemoveBuffBJ('B064',gg_unit_U00H_0211) // 'B064': buff "Perma Cover"
     call UnitAddAbilityBJ('A0YQ',gg_unit_U00H_0211) // 'A0YQ': ability "!Darkja"
@@ -63,6 +66,7 @@ function Trig_GodDragon_Death_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_U00H_0211,udg_BossUnits)
     call EnableTrigger(gg_trg_Boss_GodDragon_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_GodDragon automatically; it is intentionally empty. This module's

@@ -207,6 +207,7 @@ function Trig_Quest_Caravan_Deliver_Enum_ScoreHorse takes nothing returns nothin
 endfunction
 
 function Trig_Quest_Caravan_Deliver_Actions takes nothing returns nothing
+    local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[$D]) // $D = 13
     call GroupRemoveUnitSimple(gg_unit_n00B_0054,udg_BossUnits)
@@ -219,9 +220,9 @@ function Trig_Quest_Caravan_Deliver_Actions takes nothing returns nothing
     endif
     set udg_CaravanReward=$3E8 // $3E8 = 1000
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player($A),'hrdh') // $A = 10; 'hrdh': object name not found in map data
-    call ForGroupBJ(udg_TempGroup,function Trig_Quest_Caravan_Deliver_Enum_ScoreHorse)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player($A),'hrdh') // $A = 10; 'hrdh': object name not found in map data
+    call ForGroupBJ(l_tempGroup,function Trig_Quest_Caravan_Deliver_Enum_ScoreHorse)
+    call DestroyGroup(l_tempGroup)
     call RemoveLocation(udg_TempPoint)
     call QuestItemSetCompletedBJ(udg_QuestReq[1],true)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the paper to Dio.")
@@ -238,6 +239,7 @@ function Trig_Quest_Caravan_Deliver_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Quest_Caravan_Ping)
     call EnableTrigger(gg_trg_Quest_Caravan_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 function Trig_Quest_Caravan_Failed_Conditions takes nothing returns boolean

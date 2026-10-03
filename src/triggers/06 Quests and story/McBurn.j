@@ -52,10 +52,12 @@ function Trig_McBurn_Heat_Color_TintByLife takes nothing returns nothing
 endfunction
 
 function Trig_McBurn_Heat_Color_Actions takes nothing returns nothing
-    set udg_TempGroup=Group_UnitsInRect(GetPlayableMapRect(),Condition(function Trig_McBurn_Heat_Color_Filter_HeatingUnit))
-    call ForGroupBJ(udg_TempGroup,function Trig_McBurn_Heat_Color_TintByLife)
-    call DestroyGroup(udg_TempGroup)
+    local group l_tempGroup
+    set l_tempGroup=Group_UnitsInRect(GetPlayableMapRect(),Condition(function Trig_McBurn_Heat_Color_Filter_HeatingUnit))
+    call ForGroupBJ(l_tempGroup,function Trig_McBurn_Heat_Color_TintByLife)
+    call DestroyGroup(l_tempGroup)
     call StartTimerBJ(udg_PostReviveTimer,false,1.)
+    set l_tempGroup=null
 endfunction
 
 function Trig_McBurn_TrueForm_Reveal_Conditions takes nothing returns boolean
@@ -111,15 +113,17 @@ function Trig_McBurn_Arena_Return_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_McBurn_Arena_Return_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_645)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,90.)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_645)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,90.)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    set l_tempPoint=null
 endfunction
 
 function Trig_McBurn_Volcano_Conditions takes nothing returns boolean
@@ -141,25 +145,28 @@ function Trig_McBurn_Volcano_Cond_NotEnraged takes nothing returns boolean
 endfunction
 
 function Trig_McBurn_Volcano_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     // Calculation 1:
     // A random decimal number between 256 and 512.
     // Calculation 2:
     // (facing in degrees of the triggering unit) plus (a random decimal number between 270 and 450).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(256.,512.),(GetUnitFacing(GetTriggerUnit())+GetRandomReal(270.,450.)))
-    call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveRealBJ(6666.,1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,GetRandomReal(256.,512.),(GetUnitFacing(GetTriggerUnit())+GetRandomReal(270.,450.)))
+    call RemoveLocation(l_tempPoint)
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,l_tempPoint2) // 'h01B': unit "Proxy Dummy"
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(6666.,1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M1',GetLastCreatedUnit()) // 'A0M1': ability "Fire-elemental Damage"
     call UnitAddAbilityBJ('A114',GetLastCreatedUnit()) // 'A114': ability "Volcano"
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"volcano",udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"volcano",l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call ForForce(udg_PlayingPlayers,function Trig_McBurn_Volcano_ShakeCamera)
     call Wait_Polled(2.)
     call ForForce(udg_PlayingPlayers,function Trig_McBurn_Volcano_ClearCameraShake)
@@ -167,6 +174,8 @@ function Trig_McBurn_Volcano_Actions takes nothing returns nothing
         call Wait_Polled(8.)
     endif
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_McBurn automatically; it is intentionally empty. This module's

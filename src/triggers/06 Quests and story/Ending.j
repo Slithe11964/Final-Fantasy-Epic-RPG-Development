@@ -93,6 +93,7 @@ function Trig_Ending_FrozenWorld_GiveToNeutral takes nothing returns nothing
 endfunction
 
 function Trig_Ending_FrozenWorld_FreezePlayerHeroes takes nothing returns nothing
+    local group l_tempGroup
     call BlzUnitDisableAbility(Player_GetHero(GetEnumPlayer()),'A0Z2',true,false) // 'A0Z2': ability "Raise Dead"
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
@@ -115,9 +116,10 @@ function Trig_Ending_FrozenWorld_FreezePlayerHeroes takes nothing returns nothin
     set udg_DispelTarget=Player_GetHero(GetEnumPlayer())
     call ConditionalTriggerExecute(gg_trg_Remove_Debuffs)
     call ConditionalTriggerExecute(gg_trg_Remove_Buffs)
-    set udg_TempGroup=Group_UnitsOfPlayer(GetEnumPlayer(),Condition(function Trig_Ending_FrozenWorld_IsNotHero))
-    call ForGroupBJ(udg_TempGroup,function Trig_Ending_FrozenWorld_GiveToNeutral)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayer(GetEnumPlayer(),Condition(function Trig_Ending_FrozenWorld_IsNotHero))
+    call ForGroupBJ(l_tempGroup,function Trig_Ending_FrozenWorld_GiveToNeutral)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
 endfunction
 
 function Trig_Ending_FrozenWorld_WipeItems3 takes nothing returns nothing
@@ -145,14 +147,16 @@ function Trig_Ending_FrozenWorld_IsHero takes nothing returns boolean
 endfunction
 
 function Trig_Ending_FrozenWorld_CloneAsFrozen takes nothing returns nothing
+    local location l_tempPoint
     call ShowUnitHide(GetEnumUnit())
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(8),udg_TempPoint,GetUnitFacing(GetEnumUnit()))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(8),l_tempPoint,GetUnitFacing(GetEnumUnit()))
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_FrozenUnits)
     if(Trig_Ending_FrozenWorld_IsHero())then
         call SetHeroLevelBJ(GetLastCreatedUnit(),GetHeroLevel(GetEnumUnit()),false)
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Ending_FrozenWorld_FreezeUnit takes nothing returns nothing
@@ -248,8 +252,13 @@ function Trig_Ending_FrozenWorld_RevealSpot takes nothing returns nothing
 endfunction
 
 function Trig_Ending_FrozenWorld_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local location l_tempPoint2
+    local group l_tempGroup
     call ForForce(udg_EliminatedPlayers,function Trig_Ending_FrozenWorld_EndGameForPlayer)
     if(Trig_Ending_FrozenWorld_NoPlayersLeft())then
+        set l_tempPoint2=null
+        set l_tempGroup=null
         return
     endif
     set udg_SpawnsPaused=true
@@ -326,16 +335,16 @@ function Trig_Ending_FrozenWorld_Actions takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call SetBlightRectBJ(false,Player($B),GetEntireMapRect()) // $B = 11
-    set udg_TempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_Ending_FrozenWorld_HasUserData)) // $B = 11
-    call ForGroupBJ(udg_TempGroup,function Trig_Ending_FrozenWorld_FadeOutUnit)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayer(Player($B),Condition(function Trig_Ending_FrozenWorld_HasUserData)) // $B = 11
+    call ForGroupBJ(l_tempGroup,function Trig_Ending_FrozenWorld_FadeOutUnit)
+    call DestroyGroup(l_tempGroup)
     call EnumItemsInRectBJ(GetPlayableMapRect(),function Trig_Ending_FrozenWorld_WipeItems2)
     call Wait_Polled(1.)
-    set udg_TempInteger=1
+    set l_tempInteger=1
     loop
-        exitwhen udg_TempInteger>8
-        call Trig_Ending_FrozenWorld_SpawnRegionUnits(udg_TempInteger)
-        set udg_TempInteger=udg_TempInteger+1
+        exitwhen l_tempInteger>8
+        call Trig_Ending_FrozenWorld_SpawnRegionUnits(l_tempInteger)
+        set l_tempInteger=l_tempInteger+1
     endloop
     call ForForce(udg_PlayingPlayers,function Trig_Ending_FrozenWorld_FreezePlayerHeroes)
     call EnumItemsInRectBJ(GetPlayableMapRect(),function Trig_Ending_FrozenWorld_WipeItems3)
@@ -371,11 +380,11 @@ function Trig_Ending_FrozenWorld_Actions takes nothing returns nothing
     set udg_CinematicActor=Player_GetHero(ForcePickRandomPlayer(udg_PlayingPlayers))
     call Cam_PanToUnit(udg_CinematicActor,0)
     set udg_TempPoint=GetUnitLoc(udg_CinematicActor)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,GetUnitFacing(udg_CinematicActor))
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256,GetUnitFacing(udg_CinematicActor))
     call RemoveLocation(udg_TempPoint)
     // (facing in degrees of udg_CinematicActor) plus (180).
-    call CreateNUnitsAtLoc(1,'U00H',Player(8),udg_TempPoint2,(GetUnitFacing(udg_CinematicActor)+180.)) // 'U00H': unit "Zodiac Brave of Darkness"
-    call RemoveLocation(udg_TempPoint2)
+    call CreateNUnitsAtLoc(1,'U00H',Player(8),l_tempPoint2,(GetUnitFacing(udg_CinematicActor)+180.)) // 'U00H': unit "Zodiac Brave of Darkness"
+    call RemoveLocation(l_tempPoint2)
     set udg_ZodiacStone=GetLastCreatedUnit()
     call SetHeroLevelBJ(GetLastCreatedUnit(),99,false)
     call ModifyHeroStat(bj_HEROSTAT_STR,GetLastCreatedUnit(),bj_MODIFYMETHOD_SET,999)
@@ -421,6 +430,8 @@ function Trig_Ending_FrozenWorld_Actions takes nothing returns nothing
     call SetUnitColor(udg_BlueGirl,PLAYER_COLOR_BLUE)
     call EnableTrigger(gg_trg_Bernkastel_Final_Talk)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
+    set l_tempGroup=null
 endfunction
 
 function Trig_Ending_Wasteland_Conditions takes nothing returns boolean
@@ -614,6 +625,8 @@ function Trig_Ending_ReturnToStart_RemoveEnumUnitFinal takes nothing returns not
 endfunction
 
 function Trig_Ending_ReturnToStart_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[43])
     call Cine_Enter()
@@ -635,13 +648,13 @@ function Trig_Ending_ReturnToStart_Actions takes nothing returns nothing
     call Text_Say(Player_GetHero(GetTriggerPlayer()),"That's...",true)
     call Text_Say(udg_ZodiacStone,"Save your breath and look around yourself. This is no illusion, this is the future of your victory. All you can do now is accept it, or deny it.",true)
     call Text_Say(null,"So that's what you've been up to.",true)
-    set udg_TempPoint2=GetUnitLoc(udg_ZodiacStone)
-    set udg_TempPoint=OffsetLocation(udg_TempPoint2,0,-600.)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=GetUnitLoc(Player_GetHero(GetTriggerPlayer()))
-    call CreateNUnitsAtLocFacingLocBJ(1,'H00V',Player(8),udg_TempPoint,udg_TempPoint2) // 'H00V': unit "LTM"
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint2=GetUnitLoc(udg_ZodiacStone)
+    set l_tempPoint=OffsetLocation(l_tempPoint2,0,-600.)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=GetUnitLoc(Player_GetHero(GetTriggerPlayer()))
+    call CreateNUnitsAtLocFacingLocBJ(1,'H00V',Player(8),l_tempPoint,l_tempPoint2) // 'H00V': unit "LTM"
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     set udg_CinematicActor=GetLastCreatedUnit()
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -659,6 +672,8 @@ function Trig_Ending_ReturnToStart_Actions takes nothing returns nothing
     call ForForce(GetPlayersAll(),function Trig_Ending_ReturnToStart_EndGameForPlayerFinal)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,.0,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call ForGroupBJ(Trig_Ending_ReturnToStart_EnumUnitsInRect(GetPlayableMapRect()),function Trig_Ending_ReturnToStart_RemoveEnumUnitFinal)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Ending automatically; it is intentionally empty. This module's

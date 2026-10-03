@@ -98,8 +98,10 @@ function Trig_AlmightyShinra_Cinematic_Cam_Reset takes nothing returns nothing
 endfunction
 
 function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
+    local location l_tempPoint2
     if(Trig_AlmightyShinra_Cinematic_Cond_PostponeScene())then
         call StartTimerBJ(GetExpiredTimer(),false,10.)
+        set l_tempPoint2=null
         return
     endif
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,2,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
@@ -243,10 +245,10 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     call Text_Say(udg_CinematicActor,"The new almighty fiend king... is me.",true)
     call ForForce(udg_PlayingPlayers,function Trig_AlmightyShinra_Cinematic_Cam_ClearShake)
     set udg_TempPoint=GetUnitLoc(udg_CinematicActor)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-400.)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,0,-400.)
     call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLoc(1,'h02H',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'h02H': unit "Target"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    call CreateNUnitsAtLoc(1,'h02H',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'h02H': unit "Target"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     set udg_ShinraSpellTarget=GetLastCreatedUnit()
     call IssueTargetOrderBJ(udg_CinematicActor,"thunderbolt",udg_ShinraSpellTarget)
     call Wait_Polled(1.)
@@ -257,12 +259,12 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(I2R(GetForLoopIndexA())*45.))
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
+        set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,128.,(I2R(GetForLoopIndexA())*45.))
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint2)
+        call RemoveLocation(l_tempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call RemoveLocation(udg_TempPoint)
@@ -273,12 +275,12 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,192.,(I2R(GetForLoopIndexA())*45.))
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
+        set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,192.,(I2R(GetForLoopIndexA())*45.))
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint2)
+        call RemoveLocation(l_tempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call RemoveLocation(udg_TempPoint)
@@ -289,12 +291,12 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,(I2R(GetForLoopIndexA())*45.))
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
+        set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256.,(I2R(GetForLoopIndexA())*45.))
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
+        call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint2)
+        call RemoveLocation(l_tempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call RemoveLocation(udg_TempPoint)
@@ -321,20 +323,25 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Almighty Shinra|r")
     set udg_SideQuest[43]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"Almighty Shinra"),"Shinra, an Al Bhed child from Spira, has absorbed Omega Weapon's power and become the King of Fiends. To prove his worth, he has entered the Dimension Cup in the Battle Arena, ready to take on and crush any opponent. Defeat him!","ReplaceableTextures\\CommandButtons\\BTNEvilIllidan.blp")
     call Cine_ExitAction()
+    set l_tempPoint2=null
 endfunction
 
 function Trig_AlmightyShinra_Spiral_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     // The remainder after dividing ((udg_SpiralAngle) plus (45)) by (360).
     set udg_SpiralAngle=ModuloInteger((udg_SpiralAngle+45),360)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n034_0109)
+    set l_tempPoint=GetUnitLoc(gg_unit_n034_0109)
     // Udg_SpiralAngle treated as a decimal-capable number.
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,I2R(udg_SpiralAngle))
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,I2R(udg_SpiralAngle))
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_AlmightyShinra_Defeat_Cond_TrackKills takes nothing returns boolean

@@ -5,12 +5,13 @@ globals
 endglobals
 
 function Trig_Boss_DarkRanger_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I036',udg_TempPoint) // 'I036': item "Dark Bow"
-    call CreateItemLoc('I0EV',udg_TempPoint) // 'I0EV': item "Spirit Scroll"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I036',l_tempPoint) // 'I036': item "Dark Bow"
+    call CreateItemLoc('I0EV',l_tempPoint) // 'I0EV': item "Spirit Scroll"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to Liniel for reward.")
     call QuestSetDescriptionBJ(udg_SideQuest[28],"Come back to Liniel for reward.")
@@ -20,6 +21,7 @@ function Trig_Boss_DarkRanger_Death_Actions takes nothing returns nothing
     call Wait_Polled(5.)
     call RemoveUnit(GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_DarkRanger takes nothing returns nothing

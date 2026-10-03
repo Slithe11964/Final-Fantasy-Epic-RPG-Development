@@ -79,39 +79,41 @@ function Trig_OmegaWeapon_SpellRotation_Cond_CanCastFlameStrike takes nothing re
 endfunction
 
 function Trig_OmegaWeapon_SpellRotation_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(gg_unit_N022_0125)
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,udg_TempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget1))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(gg_unit_N022_0125)
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,l_tempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget1))
+    call RemoveLocation(l_tempPoint)
     if(Trig_OmegaWeapon_SpellRotation_Cond_CanCastLightning())then
         call IssueTargetOrderBJ(gg_unit_N022_0125,"forkedlightning",GroupPickRandomUnit(udg_TempGroup))
     endif
     call DestroyGroup(udg_TempGroup)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(gg_unit_N022_0125)
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,udg_TempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget2))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_N022_0125)
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,l_tempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget2))
+    call RemoveLocation(l_tempPoint)
     if(Trig_OmegaWeapon_SpellRotation_Cond_CanCastThunderbolt())then
         call IssueTargetOrderBJ(gg_unit_N022_0125,"thunderbolt",GroupPickRandomUnit(udg_TempGroup))
     endif
     call DestroyGroup(udg_TempGroup)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(gg_unit_N022_0125)
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,udg_TempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget3))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_N022_0125)
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,l_tempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget3))
+    call RemoveLocation(l_tempPoint)
     if(Trig_OmegaWeapon_SpellRotation_Cond_CanCastFrostNova())then
         call IssueTargetOrderBJ(gg_unit_N022_0125,"frostnova",GroupPickRandomUnit(udg_TempGroup))
     endif
     call DestroyGroup(udg_TempGroup)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(gg_unit_N022_0125)
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,udg_TempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget4))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_N022_0125)
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(750.,l_tempPoint,Condition(function Trig_OmegaWeapon_SpellRotation_Filter_ValidTarget4))
+    call RemoveLocation(l_tempPoint)
     if(Trig_OmegaWeapon_SpellRotation_Cond_CanCastFlameStrike())then
-        set udg_TempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TempGroup))
-        call IssuePointOrderLocBJ(gg_unit_N022_0125,"flamestrike",udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(GroupPickRandomUnit(udg_TempGroup))
+        call IssuePointOrderLocBJ(gg_unit_N022_0125,"flamestrike",l_tempPoint)
+        call RemoveLocation(l_tempPoint)
     endif
     call DestroyGroup(udg_TempGroup)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_OmegaWeapon automatically; it is intentionally empty. This module's

@@ -30,9 +30,11 @@ function Trig_Player_Init_CoinFlip takes nothing returns boolean
 endfunction
 
 function Trig_Player_Init_SetupPlayer takes nothing returns nothing
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(GetEnumPlayer(),'h006') // 'h006': unit "House"
-    set udg_PlayerHouse[GetConvertedPlayerId(GetEnumPlayer())]=GroupPickRandomUnit(udg_TempGroup)
-    call DestroyGroup(udg_TempGroup)
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempGroup=Group_UnitsOfPlayerAndType(GetEnumPlayer(),'h006') // 'h006': unit "House"
+    set udg_PlayerHouse[GetConvertedPlayerId(GetEnumPlayer())]=GroupPickRandomUnit(l_tempGroup)
+    call DestroyGroup(l_tempGroup)
     // (GetPlayerId(the player being visited)) plus (1).
     set udg_PlayerName[GetPlayerId(GetEnumPlayer())+1]=Trig_Player_Init_StripTag(GetPlayerName(GetEnumPlayer()))
     if(Trig_Player_Init_CoinFlip())then
@@ -44,11 +46,13 @@ function Trig_Player_Init_SetupPlayer takes nothing returns nothing
     endif
     call SetUnitInvulnerable(Player_GetHero(GetEnumPlayer()),true)
     call SetUnitPathing(Player_GetHero(GetEnumPlayer()),true)
-    set udg_TempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetEnumPlayer())])
-    call SetUnitPositionLoc(Player_GetHero(GetEnumPlayer()),udg_TempPoint)
-    call PanCameraToTimedLocForPlayer(GetEnumPlayer(),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(udg_PlayerStartRect[GetConvertedPlayerId(GetEnumPlayer())])
+    call SetUnitPositionLoc(Player_GetHero(GetEnumPlayer()),l_tempPoint)
+    call PanCameraToTimedLocForPlayer(GetEnumPlayer(),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
     call UnitShareVisionBJ(true,Player_GetHero(GetEnumPlayer()),Player(9))
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Player_Init_ShareHouseVision takes nothing returns nothing

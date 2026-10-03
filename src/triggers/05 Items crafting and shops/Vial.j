@@ -13,13 +13,15 @@ function Trig_Vial_EmptyOnUse_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Vial_EmptyOnUse_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('bzbe',udg_TempPoint) // 'bzbe': editor label "Empty Vial"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('bzbe',l_tempPoint) // 'bzbe': editor label "Empty Vial"
+    call RemoveLocation(l_tempPoint)
     set udg_QuestItem[18]=GetLastCreatedItem()
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call RemoveItem(GetManipulatedItem())
     call UnitAddItemSwapped(udg_QuestItem[18],GetTriggerUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Vial automatically; it is intentionally empty. This module's

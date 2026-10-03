@@ -5,14 +5,16 @@ globals
 endglobals
 
 function Trig_GreedIsGood_DropStone_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[21]=CreateItemLoc('I034',udg_TempPoint) // 'I034': item "Portal Stone"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[21]=CreateItemLoc('I034',l_tempPoint) // 'I034': item "Portal Stone"
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_PortalStone_Ping)
     call EnableTrigger(gg_trg_PortalStone_PickedUp)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_GreedIsGood automatically; it is intentionally empty. This module's

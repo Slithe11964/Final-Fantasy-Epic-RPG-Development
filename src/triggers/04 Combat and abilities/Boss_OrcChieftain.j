@@ -5,15 +5,17 @@ globals
 endglobals
 
 function Trig_Boss_OrcChieftain_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_RecruitedAllies)
     call PlayThematicMusicBJ("FF7-Victory Fanfare.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
     call SaveIntegerBJ(1,2,'k',udg_GameStateHash)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I00B',udg_TempPoint) // 'I00B': item "Touph Ring"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I00B',l_tempPoint) // 'I00B': item "Touph Ring"
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_OrcChieftain takes nothing returns nothing

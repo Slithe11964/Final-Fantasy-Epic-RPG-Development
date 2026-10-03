@@ -15,6 +15,7 @@ function Trig_Quest_FieryWings_Start_PlayHarpyScene takes nothing returns boolea
 endfunction
 
 function Trig_Quest_FieryWings_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[91])
     if(Trig_Quest_FieryWings_Start_PlayHarpyScene())then
@@ -35,42 +36,43 @@ function Trig_Quest_FieryWings_Start_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Fiery Wings|r")
     set udg_SideQuest[68]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Fiery Wings"),"Zone and Watts, a duo of dwarves in the Barrens, tasked you with taking down the Harpy Matriarch in the center of the Barrens that united the harpy clans.","ReplaceableTextures\\CommandButtons\\BTNHarpy.blp")
     set udg_SpecialEffect[91]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h00Q_0255,"Objects\\RandomObject\\RandomObject.mdl")
-    set udg_TempPoint=GetRectCenter(gg_rct_569)
-    call CreateNUnitsAtLoc(1,'n0KZ',Player($B),udg_TempPoint,255.) // 'n0KZ': unit "Harpy Matriarch"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_569)
+    call CreateNUnitsAtLoc(1,'n0KZ',Player($B),l_tempPoint,255.) // 'n0KZ': unit "Harpy Matriarch"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_HarpyMatriarch=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossUnits)
     call TriggerRegisterUnitEvent(gg_trg_Quest_FieryWings_Matriarch_Dead,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_Quest_FieryWings_Matriarch_Dead)
     call EnableTrigger(gg_trg_Harpy_Matriarch_CallAid)
     call EnableTrigger(gg_trg_Harpy_Trickster_Cleanup)
-    set udg_TempPoint=GetRectCenter(gg_rct_111)
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_111)
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
-    set udg_TempPoint=GetRectCenter(gg_rct_087)
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_087)
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
-    set udg_TempPoint=GetRectCenter(gg_rct_108)
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_108)
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
-    set udg_TempPoint=GetRectCenter(gg_rct_096)
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_096)
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
-    set udg_TempPoint=GetRectCenter(gg_rct_062)
-    call CreateNUnitsAtLoc(1,'n0L0',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_062)
+    call CreateNUnitsAtLoc(1,'n0L0',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n0L0': unit "Harpy Trickster"; $B = 11
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_HarpyTricksters)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_FieryWings_Matriarch_Dead_Conditions takes nothing returns boolean

@@ -146,11 +146,13 @@ function Trig_Shemhazai_Appears_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(gg_unit_U00I_0210)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(gg_unit_U00I_0210)
     // (facing in degrees of gg_unit_U00I_0210) plus (330).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+330.))
-    call CreateNUnitsAtLoc(1,'H003',Player($B),udg_TempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H003': unit "Knight"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+330.))
+    call CreateNUnitsAtLoc(1,'H003',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H003': unit "Knight"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShemhazaiSoulClones)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -179,9 +181,9 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     // ((maximum health of GetLastCreatedUnit()) plus (750)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+750)*2))
     // (facing in degrees of gg_unit_U00I_0210) plus (30).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+30.))
-    call CreateNUnitsAtLoc(1,'H001',Player($B),udg_TempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H001': unit "Archer"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+30.))
+    call CreateNUnitsAtLoc(1,'H001',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H001': unit "Archer"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShemhazaiSoulClones)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -210,9 +212,9 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     // ((maximum health of GetLastCreatedUnit()) plus (1500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+$5DC)*2)) // $5DC = 1500
     // (facing in degrees of gg_unit_U00I_0210) plus (270).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+270.))
-    call CreateNUnitsAtLoc(1,'H004',Player($B),udg_TempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H004': unit "Wizard"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+270.))
+    call CreateNUnitsAtLoc(1,'H004',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H004': unit "Wizard"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShemhazaiSoulClones)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -241,9 +243,9 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     // ((maximum health of GetLastCreatedUnit()) plus (500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+500)*2))
     // (facing in degrees of gg_unit_U00I_0210) plus (90).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+90.))
-    call CreateNUnitsAtLoc(1,'H005',Player($B),udg_TempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H005': unit "Priest"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,(GetUnitFacing(gg_unit_U00I_0210)+90.))
+    call CreateNUnitsAtLoc(1,'H005',Player($B),l_tempPoint2,GetUnitFacing(gg_unit_U00I_0210)) // 'H005': unit "Priest"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShemhazaiSoulClones)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -267,7 +269,9 @@ function Trig_Shemhazai_Spawn_SoulClones_Actions takes nothing returns nothing
     call ModifyHeroStat(bj_HEROSTAT_INT,GetLastCreatedUnit(),bj_MODIFYMETHOD_ADD,$C8) // $C8 = 200
     // ((maximum health of GetLastCreatedUnit()) plus (500)) times (2).
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),((BlzGetUnitMaxHP(GetLastCreatedUnit())+500)*2))
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Shemhazai_SurpriseMechanic_Conditions takes nothing returns boolean
@@ -279,26 +283,29 @@ function Trig_Shemhazai_SurpriseMechanic_NoTargetUnit takes nothing returns bool
 endfunction
 
 function Trig_Shemhazai_SurpriseMechanic_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Shemhazai_SurpriseMechanic_NoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // A random decimal number between 999 and 9999.
-    call SaveRealBJ(GetRandomReal(999.,9999.),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(4,3,udg_TempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(GetRandomReal(999.,9999.),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(4,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A111',GetLastCreatedUnit()) // 'A111': ability "Surprise Mechanic"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"creepthunderbolt",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Shemhazai_Phase2_Cuchulainn_Conditions takes nothing returns boolean
@@ -403,18 +410,19 @@ function Trig_Shemhazai_SoulSplit_IsRealSlot takes nothing returns boolean
 endfunction
 
 function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Shemhazai_SoulSplit_NoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateTextTagLocBJ("|cffffcc00SOUL SPLIT",udg_TempPoint,0,13.,'d','d','d',0)
+    call CreateTextTagLocBJ("|cffffcc00SOUL SPLIT",l_tempPoint,0,13.,'d','d','d',0)
     call SetTextTagVelocityBJ(GetLastCreatedTextTag(),80.,90)
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),1.5)
@@ -428,13 +436,13 @@ function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A) times (90) treated as a decimal-capable number.
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,220.,I2R((GetForLoopIndexA()*90)))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,220.,I2R((GetForLoopIndexA()*90)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         if(Trig_Shemhazai_SoulSplit_IsRealSlot())then
-            call SetUnitPositionLocFacingLocBJ(GetTriggerUnit(),udg_TempPoint2,udg_TempPoint)
+            call SetUnitPositionLocFacingLocBJ(GetTriggerUnit(),udg_TempPoint2,l_tempPoint)
         else
-            call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,udg_TempPoint)
+            call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,l_tempPoint)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_MirrorCloneGroup)
             if(Trig_Shemhazai_SoulSplit_TrackedCaster())then
                 call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossSummons)
@@ -466,10 +474,11 @@ function Trig_Shemhazai_SoulSplit_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call UnitRemoveAbilityBJ('A12F',GetTriggerUnit()) // 'A12F': ability "Soul Split"
     call Wait_Polled(45.)
     call UnitAddAbilityBJ('A12F',GetTriggerUnit()) // 'A12F': ability "Soul Split"
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Shemhazai automatically; it is intentionally empty. This module's

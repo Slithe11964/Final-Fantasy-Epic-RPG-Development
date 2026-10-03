@@ -86,9 +86,10 @@ function Trig_Fishing_Cast_IsFifthCatch takes nothing returns boolean
 endfunction
 
 function Trig_Fishing_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(256.,udg_TempPoint,Condition(function Trig_Fishing_Cast_IsFishingSpot))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(256.,l_tempPoint,Condition(function Trig_Fishing_Cast_IsFishingSpot))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Fishing_Cast_HasSpotNear())then
         set udg_TempInteger=1
         loop
@@ -101,12 +102,13 @@ function Trig_Fishing_Cast_Actions takes nothing returns nothing
     endif
     if(Trig_Fishing_Cast_NoSpotNear())then
         call DestroyGroup(udg_TempGroup)
+        set l_tempPoint=null
         return
     endif
     set udg_PlayerFishSpot[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GroupPickRandomUnit(udg_TempGroup)
     call DestroyGroup(udg_TempGroup)
     set udg_GatherState[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=1
-    set udg_TempPoint=GetUnitLoc(udg_PlayerFishSpot[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
+    set l_tempPoint=GetUnitLoc(udg_PlayerFishSpot[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
     set udg_FishCatchCount=(udg_FishCatchCount+1)
     if(Trig_Fishing_Cast_IsFifthCatch())then
         if(Trig_Fishing_Cast_IsTenthCatch())then
@@ -159,18 +161,19 @@ function Trig_Fishing_Cast_Actions takes nothing returns nothing
             set udg_TempInteger=50
         endif
     endif
-    set udg_GatherItem[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=CreateItemLoc(udg_FishLoot[udg_TempInteger],udg_TempPoint)
+    set udg_GatherItem[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=CreateItemLoc(udg_FishLoot[udg_TempInteger],l_tempPoint)
     // Result 1: (udg_TempInteger) divided by (20); drop the remainder.
     // Result 2: (udg_TempReal) with its decimal part removed.
     // Result 3: (result 2) divided by (2).
     // Result 4: (result 1) plus (result 3).
     call SetItemCharges(GetLastCreatedItem(),((udg_TempInteger/ 20)+(R2I(udg_TempReal)/ 2)))
     call SetItemVisibleBJ(false,GetLastCreatedItem())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call UnitAddAbilityBJ('A0VJ',GetTriggerUnit()) // 'A0VJ': ability "Unaffected by Cinematics"
     call PauseUnitBJ(true,GetTriggerUnit())
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stop")
     call StartTimerBJ(udg_FishingTimer[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],false,5.)
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Fishing_Casting takes nothing returns nothing

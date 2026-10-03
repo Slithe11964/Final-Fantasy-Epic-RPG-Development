@@ -60,6 +60,7 @@ function Trig_Boss_Gafgarion_Death_ShouldReviveGafgarion takes nothing returns b
 endfunction
 
 function Trig_Boss_Gafgarion_Death_Actions takes nothing returns nothing
+    local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Boss_Gafgarion_Intro)
     if(Trig_Boss_Gafgarion_Death_IsFightStage())then
@@ -119,11 +120,11 @@ function Trig_Boss_Gafgarion_Death_Actions takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call Wait_Polled(1.)
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player(8),'u00D') // 'u00D': unit "Death Ghost"
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player(8),'u00D') // 'u00D': unit "Death Ghost"
     set udg_TempPoint=GetRectCenter(gg_rct_582)
-    call ForGroupBJ(udg_TempGroup,function Trig_Boss_Gafgarion_Death_OrderGhostsMove)
+    call ForGroupBJ(l_tempGroup,function Trig_Boss_Gafgarion_Death_OrderGhostsMove)
     call RemoveLocation(udg_TempPoint)
-    call DestroyGroup(udg_TempGroup)
+    call DestroyGroup(l_tempGroup)
     call Wait_Polled(1.)
     if(Trig_Boss_Gafgarion_Death_ShouldReviveGafgarion())then
         set udg_TempPoint=GetRectCenter(gg_rct_550)
@@ -135,6 +136,7 @@ function Trig_Boss_Gafgarion_Death_Actions takes nothing returns nothing
     call ShowUnitShow(gg_unit_U000_0248)
     call EnableTrigger(gg_trg_Boss_Zalera_Intro)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 function Trig_Boss_Gafgarion_Guard_Death_IsHeroVictim takes nothing returns boolean

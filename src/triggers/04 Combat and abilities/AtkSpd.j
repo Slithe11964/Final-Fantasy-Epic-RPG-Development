@@ -117,6 +117,7 @@ function Trig_AtkSpd_Command_Cond_HasDualWield takes nothing returns boolean
 endfunction
 
 function Trig_AtkSpd_Command_Actions takes nothing returns nothing
+    local force l_tempForce
     set udg_CurrentHero=Player_GetHero(GetTriggerPlayer())
     call ConditionalTriggerExecute(gg_trg_AttackSpeed_Update)
     // Increase udg_StatCalcValue by 100.
@@ -227,13 +228,14 @@ function Trig_AtkSpd_Command_Actions takes nothing returns nothing
     endif
     // ((udg_StatCalcValue treated as a decimal-capable number) times (0.01)) divided by (udg_TempReal).
     set udg_TempReal=((I2R(udg_StatCalcValue)*.01)/ udg_TempReal)
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(udg_CurrentHero))
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(udg_CurrentHero))
     if(Trig_AtkSpd_Command_Cond_HasDualWield())then
-        call DisplayTextToForce(udg_TempForce,(("Your attack speed is "+I2S(udg_StatCalcValue))+("% ("+(R2SW(udg_TempReal,1,1)+" attacks per second), may not include identical attack speed bonuses from both weapons."))))
+        call DisplayTextToForce(l_tempForce,(("Your attack speed is "+I2S(udg_StatCalcValue))+("% ("+(R2SW(udg_TempReal,1,1)+" attacks per second), may not include identical attack speed bonuses from both weapons."))))
     else
-        call DisplayTextToForce(udg_TempForce,(("Your attack speed is "+I2S(udg_StatCalcValue))+("% ("+(R2SW(udg_TempReal,1,1)+" attacks per second)"))))
+        call DisplayTextToForce(l_tempForce,(("Your attack speed is "+I2S(udg_StatCalcValue))+("% ("+(R2SW(udg_TempReal,1,1)+" attacks per second)"))))
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_AtkSpd automatically; it is intentionally empty. This module's

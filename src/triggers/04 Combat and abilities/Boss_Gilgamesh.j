@@ -15,18 +15,19 @@ function Trig_Boss_Gilgamesh_Summon_FirstEncounter takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Gilgamesh_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_BossCleanupTrigger=gg_trg_Boss_Gilgamesh_Cleanup
     set udg_GilgameshDefeated=false
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetRectCenter(gg_rct_473)
-    call CreateNUnitsAtLoc(1,'N0LU',Player($B),udg_TempPoint,270.) // 'N0LU': unit "Mighty Swordsman"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_473)
+    call CreateNUnitsAtLoc(1,'N0LU',Player($B),l_tempPoint,270.) // 'N0LU': unit "Mighty Swordsman"; $B = 11
+    call RemoveLocation(l_tempPoint)
     set udg_GilgameshUnit=GetLastCreatedUnit()
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
@@ -58,20 +59,21 @@ function Trig_Boss_Gilgamesh_Summon_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Boss_Gilgamesh_NextSword,udg_GilgameshUnit,EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_Boss_Gilgamesh_NextSword)
     call GroupAddUnitSimple(udg_GilgameshUnit,udg_BossGroup)
-    set udg_TempPoint=GetUnitLoc(udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    set l_tempPoint=GetUnitLoc(udg_GilgameshUnit)
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"frostarmor",udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"antimagicshell",udg_GilgameshUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Gilgamesh_NextSword_Conditions takes nothing returns boolean
@@ -95,9 +97,11 @@ function Trig_Boss_Gilgamesh_NextSword_HasMoreSwords takes nothing returns boole
 endfunction
 
 function Trig_Boss_Gilgamesh_NextSword_Actions takes nothing returns nothing
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(udg_GilgameshUnit,udg_TempPoint3,false)
-    call RemoveLocation(udg_TempPoint3)
+    local location l_tempPoint
+    local location l_tempPoint3
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(udg_GilgameshUnit,l_tempPoint3,false)
+    call RemoveLocation(l_tempPoint3)
     call SetUnitInvulnerable(udg_GilgameshUnit,true)
     call Cine_Enter()
     call Cam_PanToUnit(udg_GilgameshUnit,0)
@@ -128,20 +132,20 @@ function Trig_Boss_Gilgamesh_NextSword_Actions takes nothing returns nothing
     set udg_GilgameshSwordStage=(udg_GilgameshSwordStage+1)
     call Cine_ExitAction()
     call SetUnitInvulnerable(udg_GilgameshUnit,false)
-    set udg_TempPoint=GetUnitLoc(udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    set l_tempPoint=GetUnitLoc(udg_GilgameshUnit)
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"frostarmor",udg_GilgameshUnit)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"antimagicshell",udg_GilgameshUnit)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitLifePercentBJ(udg_GilgameshUnit,100.)
     call SetUnitManaPercentBJ(udg_GilgameshUnit,'d')
     if(Trig_Boss_Gilgamesh_NextSword_HasMoreSwords())then
@@ -150,6 +154,8 @@ function Trig_Boss_Gilgamesh_NextSword_Actions takes nothing returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Boss_Gilgamesh_Death,udg_GilgameshUnit,EVENT_UNIT_DEATH)
         call EnableTrigger(gg_trg_Boss_Gilgamesh_Death)
     endif
+    set l_tempPoint=null
+    set l_tempPoint3=null
 endfunction
 
 function Trig_Boss_Gilgamesh_Death_Conditions takes nothing returns boolean
@@ -187,6 +193,7 @@ function Trig_Boss_Gilgamesh_Death_IsWaygateOpen takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Gilgamesh_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_Gilgamesh_Death_ShouldRecordKill())then
         set udg_BossUnit=null
@@ -194,9 +201,9 @@ function Trig_Boss_Gilgamesh_Death_Actions takes nothing returns nothing
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
     call Cine_Enter()
-    set udg_TempPoint=GetUnitLoc(udg_GilgameshUnit)
-    call ReviveHeroLoc(udg_GilgameshUnit,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(udg_GilgameshUnit)
+    call ReviveHeroLoc(udg_GilgameshUnit,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(udg_GilgameshUnit,true)
     call PauseUnitBJ(true,udg_GilgameshUnit)
     call GroupRemoveUnitSimple(udg_GilgameshUnit,udg_BossGroup)
@@ -208,28 +215,28 @@ function Trig_Boss_Gilgamesh_Death_Actions takes nothing returns nothing
     set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
     set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]='m'
     call ForForce(udg_PlayingPlayers,function Trig_Boss_Gilgamesh_Death_FlagPlayerCleared)
-    set udg_TempPoint=GetUnitLoc(udg_GilgameshUnit)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(udg_GilgameshUnit)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(udg_GilgameshUnit)
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I07B',udg_TempPoint) // 'I07B': item "Samurai's Amulet"
-    call CreateItemLoc('I0DT',udg_TempPoint) // 'I0DT': item "Curse: Masamune"
-    call CreateItemLoc('I0B0',udg_TempPoint) // 'I0B0': item "Genji Gloves"
+    set l_tempPoint=GetUnitLoc(udg_GilgameshUnit)
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I07B',l_tempPoint) // 'I07B': item "Samurai's Amulet"
+    call CreateItemLoc('I0DT',l_tempPoint) // 'I0DT': item "Curse: Masamune"
+    call CreateItemLoc('I0B0',l_tempPoint) // 'I0B0': item "Genji Gloves"
     if(Trig_Boss_Gilgamesh_Death_TwoThirdsChance())then
-        call CreateItemLoc('I01Y',udg_TempPoint) // 'I01Y': item "Genji Armor"
+        call CreateItemLoc('I01Y',l_tempPoint) // 'I01Y': item "Genji Armor"
         if(Trig_Boss_Gilgamesh_Death_CoinFlip())then
-            call CreateItemLoc('I0BU',udg_TempPoint) // 'I0BU': item "Genji Shield"
+            call CreateItemLoc('I0BU',l_tempPoint) // 'I0BU': item "Genji Shield"
         else
-            call CreateItemLoc('I0AA',udg_TempPoint) // 'I0AA': item "Genji Mask"
+            call CreateItemLoc('I0AA',l_tempPoint) // 'I0AA': item "Genji Mask"
         endif
     else
-        call CreateItemLoc('I0BU',udg_TempPoint) // 'I0BU': item "Genji Shield"
-        call CreateItemLoc('I0AA',udg_TempPoint) // 'I0AA': item "Genji Mask"
+        call CreateItemLoc('I0BU',l_tempPoint) // 'I0BU': item "Genji Shield"
+        call CreateItemLoc('I0AA',l_tempPoint) // 'I0AA': item "Genji Mask"
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveItem(udg_SummonItem)
     call Music_ClearTrack(25)
     call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
@@ -251,6 +258,7 @@ function Trig_Boss_Gilgamesh_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0HJ',gg_unit_n03T_0008) // 'A0HJ': ability "Excalipoor Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call Cine_ExitAction()
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Gilgamesh_Cleanup_Actions takes nothing returns nothing

@@ -37,8 +37,9 @@ function Trig_Elysium_Prepare_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Elysium_AssignLegends_IndexLegendByJob takes nothing returns nothing
-    set udg_TempInteger=Job_GetIndex(GetEnumUnit())
-    set udg_NpcUnit[udg_TempInteger]=GetEnumUnit()
+    local integer l_tempInteger
+    set l_tempInteger=Job_GetIndex(GetEnumUnit())
+    set udg_NpcUnit[l_tempInteger]=GetEnumUnit()
 endfunction
 
 function Trig_Elysium_AssignLegends_Actions takes nothing returns nothing

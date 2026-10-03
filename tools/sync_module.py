@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from mpq import MPQ, replace_files, compact
 from vjass_lite import GLOBALS_RE, resolve_static_ifs
-from jtok import functions
+from jtok import functions, strip_comments
 import build_map
 
 ROOT = os.path.dirname(HERE)
@@ -58,7 +58,7 @@ def main(base_map, out_map, names):
         for g in new_globals:
             n = re.match(r'(?:constant\s+)?\w+\s+(?:array\s+)?(\w+)', g).group(1)
             if n in declared:
-                if re.sub(r'\s', '', declared[n]) != re.sub(r'\s', '', g):
+                if re.sub(r'\s', '', strip_comments(declared[n])) != re.sub(r'\s', '', strip_comments(g)):
                     sys.exit('variable %s changed (%s -> %s); do that with a World Editor save' % (n, declared[n], g))
             else:
                 add.append(g)

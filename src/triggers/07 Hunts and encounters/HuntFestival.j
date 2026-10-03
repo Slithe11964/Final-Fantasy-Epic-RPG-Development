@@ -113,17 +113,25 @@ function Trig_HuntFestival_Begin_AddPlayerToBoard takes nothing returns nothing
 endfunction
 
 function Trig_HuntFestival_Begin_OrderHunterToHunt takes nothing returns nothing
+    local integer l_tempInteger
+    local location l_tempPoint
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_HuntFestival_Begin_Actions takes nothing returns nothing
+    local location l_tempPoint2
+    local integer l_tempInteger
+    local location l_tempPoint
     if(Trig_HuntFestival_Begin_IsCinematicBusy())then
         call StartTimerBJ(udg_FestivalTimer,false,.49)
+        set l_tempPoint2=null
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -134,36 +142,36 @@ function Trig_HuntFestival_Begin_Actions takes nothing returns nothing
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(1.5)
     call Cam_PanToUnit(gg_unit_n0CE_0020,0)
-    set udg_TempPoint=GetRectCenter(gg_rct_650)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,128.)
-    call CreateNUnitsAtLoc(1,'h034',Player(9),udg_TempPoint2,225.) // 'h034': unit "Bansat"
+    set l_tempPoint=GetRectCenter(gg_rct_650)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,128.)
+    call CreateNUnitsAtLoc(1,'h034',Player(9),l_tempPoint2,225.) // 'h034': unit "Bansat"
     set udg_FestivalBansat=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_FestivalHunters)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-128.)
-    call CreateNUnitsAtLoc(1,'h033',Player(9),udg_TempPoint2,225.) // 'h033': unit "Ward"
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,-128.)
+    call CreateNUnitsAtLoc(1,'h033',Player(9),l_tempPoint2,225.) // 'h033': unit "Ward"
     set udg_FestivalWard=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_FestivalHunters)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,128.,.0)
-    call CreateNUnitsAtLoc(1,'n0D4',Player(9),udg_TempPoint2,225.) // 'n0D4': unit "Monica"
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,128.,.0)
+    call CreateNUnitsAtLoc(1,'n0D4',Player(9),l_tempPoint2,225.) // 'n0D4': unit "Monica"
     set udg_FestivalMonica=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_FestivalHunters)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-128.,.0)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-128.,.0)
     if(Trig_HuntFestival_Begin_IsGuestClyde())then
-        call CreateNUnitsAtLoc(1,'h035',Player(9),udg_TempPoint2,225.) // 'h035': unit "Clyde"
+        call CreateNUnitsAtLoc(1,'h035',Player(9),l_tempPoint2,225.) // 'h035': unit "Clyde"
     else
         if(Trig_HuntFestival_Begin_IsGuestNaisha())then
-            call CreateNUnitsAtLoc(1,'e01I',Player(9),udg_TempPoint2,225.) // 'e01I': unit "Naisha"
+            call CreateNUnitsAtLoc(1,'e01I',Player(9),l_tempPoint2,225.) // 'e01I': unit "Naisha"
         else
-            call CreateNUnitsAtLoc(1,'e01E',Player(9),udg_TempPoint2,225.) // 'e01E': unit "Krjn"
+            call CreateNUnitsAtLoc(1,'e01E',Player(9),l_tempPoint2,225.) // 'e01E': unit "Krjn"
         endif
     endif
     set udg_FestivalGuest=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_FestivalHunters)
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(gg_unit_n0BW_0094)
     call ShowUnitHide(gg_unit_h030_0243)
     call ShowUnitHide(gg_unit_h02Z_0230)
@@ -184,23 +192,23 @@ function Trig_HuntFestival_Begin_Actions takes nothing returns nothing
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(1.5)
     // A random whole number from 1 through LoadIntegerBJ(2, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(2,2,udg_SpawnDataHashRef)),2,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(udg_FestivalMonica,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(2,2,udg_SpawnDataHashRef)),2,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(udg_FestivalMonica,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through LoadIntegerBJ(3, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(3,2,udg_SpawnDataHashRef)),3,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(udg_FestivalBansat,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(3,2,udg_SpawnDataHashRef)),3,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(udg_FestivalBansat,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(udg_FestivalWard,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(udg_FestivalWard,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 5 through 7.
-    set udg_TempInteger=GetRandomInt(5,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(udg_FestivalGuest,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(5,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(udg_FestivalGuest,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Cine_ExitAction()
     set udg_HuntFestivalBoard=CreateLeaderboardBJ(GetPlayersAll(),"Festival of the Hunt")
@@ -234,6 +242,8 @@ function Trig_HuntFestival_Begin_Actions takes nothing returns nothing
     call Wait_Polled(2)
     call ForGroupBJ(udg_FestivalHunters,function Trig_HuntFestival_Begin_OrderHunterToHunt)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_HuntFestival_Teleport_IsStrongAttacker takes nothing returns boolean
@@ -245,25 +255,28 @@ function Trig_HuntFestival_Teleport_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_HuntFestival_Teleport_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local integer l_tempInteger
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call Wait_Polled(2)
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_HuntFestival_KeepAway_Conditions takes nothing returns boolean
@@ -271,34 +284,40 @@ function Trig_HuntFestival_KeepAway_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_HuntFestival_KeepAway_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local integer l_tempInteger
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call Wait_Polled(2)
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_HuntFestival_Reorder_OrderHunterToHunt takes nothing returns nothing
+    local integer l_tempInteger
+    local location l_tempPoint
     // A random whole number from 1 through 7.
-    set udg_TempInteger=GetRandomInt(1,7)
-    // A random whole number from 1 through LoadIntegerBJ(udg_TempInteger, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_TempInteger,2,udg_SpawnDataHashRef)),udg_TempInteger,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempInteger=GetRandomInt(1,7)
+    // A random whole number from 1 through LoadIntegerBJ(l_tempInteger, 2, udg_SpawnDataHashRef).
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(l_tempInteger,2,udg_SpawnDataHashRef)),l_tempInteger,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(GetEnumUnit(),"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_HuntFestival_Reorder_Actions takes nothing returns nothing
@@ -459,8 +478,12 @@ function Trig_HuntFestival_End_HasActiveCounters takes nothing returns boolean
 endfunction
 
 function Trig_HuntFestival_End_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     if(Trig_HuntFestival_End_IsCinematicBusy())then
         call StartTimerBJ(udg_FestivalTimer,false,.49)
+        set l_tempPoint=null
+        set l_tempPoint2=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -476,20 +499,20 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(1.5)
     call Cam_PanToUnit(gg_unit_n0CE_0020,0)
-    set udg_TempPoint=GetRectCenter(gg_rct_650)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,128.)
-    call SetUnitPositionLocFacingBJ(udg_FestivalBansat,udg_TempPoint2,45.)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-128.)
-    call SetUnitPositionLocFacingBJ(udg_FestivalWard,udg_TempPoint2,45.)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,128.,.0)
-    call SetUnitPositionLocFacingBJ(udg_FestivalMonica,udg_TempPoint2,45.)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-128.,.0)
-    call SetUnitPositionLocFacingBJ(udg_FestivalGuest,udg_TempPoint2,45.)
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_650)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,128.)
+    call SetUnitPositionLocFacingBJ(udg_FestivalBansat,l_tempPoint2,45.)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,-128.)
+    call SetUnitPositionLocFacingBJ(udg_FestivalWard,l_tempPoint2,45.)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,128.,.0)
+    call SetUnitPositionLocFacingBJ(udg_FestivalMonica,l_tempPoint2,45.)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-128.,.0)
+    call SetUnitPositionLocFacingBJ(udg_FestivalGuest,l_tempPoint2,45.)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(1.5)
@@ -607,6 +630,8 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
         call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_HuntFestival automatically; it is intentionally empty. This module's

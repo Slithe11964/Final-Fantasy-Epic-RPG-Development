@@ -15,6 +15,7 @@ function Trig_Quest_Arcanium_Start_Cond_CinematicsEnabled takes nothing returns 
 endfunction
 
 function Trig_Quest_Arcanium_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[32])
     if(Trig_Quest_Arcanium_Start_Cond_CinematicsEnabled())then
@@ -38,13 +39,14 @@ function Trig_Quest_Arcanium_Start_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Arcanium|r")
     set udg_SideQuest[$D]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffArcanium","Bali, one of the dwarves managing the Forge in the Barrens, has told you of Arcanium, a very rare material lost in the collapsed mine of the Northern Mountains, entrance guarded by a massive fearsome beast. Sneak in and retrieve a nugget of Arcanium for him!","ReplaceableTextures\\CommandButtons\\BTNPhilosophersStone.blp") // $D = 13
     set udg_SpecialEffect[32]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hmbr_0140,"Objects\\RandomObject\\RandomObject.mdl")
-    set udg_TempPoint=GetRectCenter(gg_rct_564)
-    call CreateItemLoc('mgtk',udg_TempPoint) // 'mgtk': item "Arcanium"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_564)
+    call CreateItemLoc('mgtk',l_tempPoint) // 'mgtk': item "Arcanium"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call EnableTrigger(gg_trg_Quest_Arcanium_Taken)
     call AddItemToStockBJ('I04U',gg_unit_n02Y_0052,1,1) // 'I04U': item "Information: Arcanium"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Arcanium_Taken_Conditions takes nothing returns boolean
@@ -52,13 +54,15 @@ function Trig_Quest_Arcanium_Taken_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Quest_Arcanium_Taken_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Arcanium to Bali Forgefire.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Arcanium to Bali Forgefire.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[$D],"Bring the Arcanium to Bali Forgefire.") // $D = 13
     call EnableTrigger(gg_trg_Quest_Arcanium_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 function Trig_Quest_Arcanium_Complete_Conditions takes nothing returns boolean

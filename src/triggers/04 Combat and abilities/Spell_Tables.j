@@ -7,11 +7,12 @@ globals
 endglobals
 
 function Trig_Spell_Tables_Init_DisableBrews takes nothing returns nothing
-    set udg_TempInteger=1
+    local integer l_tempInteger
+    set l_tempInteger=1
     loop
-        exitwhen udg_TempInteger>$A // $A = 10
-        call SetPlayerAbilityAvailableBJ(false,udg_BrewAbility[udg_TempInteger],GetEnumPlayer())
-        set udg_TempInteger=udg_TempInteger+1
+        exitwhen l_tempInteger>$A // $A = 10
+        call SetPlayerAbilityAvailableBJ(false,udg_BrewAbility[l_tempInteger],GetEnumPlayer())
+        set l_tempInteger=l_tempInteger+1
     endloop
 endfunction
 

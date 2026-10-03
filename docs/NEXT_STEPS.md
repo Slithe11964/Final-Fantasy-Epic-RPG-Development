@@ -2,8 +2,8 @@
 
 Current maps:
 
-- Reforged: `release/FFERPG_0.9.7.3-r16-stageC.w3x` (r15 plus developer test commands).
-- 1.29.2: `release/FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x`.
+- Reforged: `release/FFERPG_0.9.7.3-r16-stageK.w3x` (r15 + developer commands + phase 16 tidy-up).
+- 1.29.2: `release/FFERPG_0.9.7.3-r16-stageK-1.29.2.w3x` (build with `downgrade.py --fill-from`, see LEGACY_129.md).
 - Baseline: your r14 editor save.
 
 **What each stage changed, and what still needs testing: `docs/STAGES.md`.** Read `README.md` first.
@@ -36,9 +36,10 @@ Current maps:
 13. **Next:**
     - play-test results for stages B/C/E;
     - confirm or fix the items in `BUGS.md`;
-    - phase 16 code tidy-up: remove shared `udg_Temp*` hand-offs and leaks, module by module, with the
-      same function-equality checks;
-    - check a real save code with `savecode.py`.
+    - ~~phase 16 code tidy-up~~ first pass done (stage K, `docs/PHASE16.md`): 509 functions use locals now;
+      the 1,452 real hand-offs left are listed in `docs/phase16-handoffs.csv` for module-by-module work;
+    - check a real save code with `savecode.py` (needs `itemtable.txt` from `-dumpitems` for items);
+    - `savecode.py rename` moves a code to a new account name (done, stage K).
 14. **Reusable toolkit.** `../MapToolkit` runs deprotect → split → document on other protected JASS maps (tested on one). Ideas: carry module variables into the modules automatically, and support Reforged-format output.
 
 ## How to resume with Claude or ChatGPT

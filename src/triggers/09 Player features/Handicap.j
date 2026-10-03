@@ -5,9 +5,11 @@ globals
 endglobals
 
 function Trig_Handicap_Command_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call DisplayTimedTextToForce(udg_TempForce,10.,("Enemy base HP: |cffffcc00 "+(R2S(GetPlayerHandicapBJ(Player($B)))+"%|r"))) // $B = 11
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call DisplayTimedTextToForce(l_tempForce,10.,("Enemy base HP: |cffffcc00 "+(R2S(GetPlayerHandicapBJ(Player($B)))+"%|r"))) // $B = 11
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Handicap automatically; it is intentionally empty. This module's

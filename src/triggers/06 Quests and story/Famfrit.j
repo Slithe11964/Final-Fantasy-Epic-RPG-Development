@@ -54,18 +54,22 @@ endfunction
 
 function Trig_Famfrit_TidalWave_Actions takes nothing returns nothing
     local group l_hitGroup=CreateGroup()
+    local integer l_tempInteger
+    local location l_tempPoint
+    local location l_tempPoint2
+    local real l_tempReal
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (15).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*$F) // $F = 15
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*$F) // $F = 15
     if(Trig_Famfrit_TidalWave_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (3)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (3)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
     endif
-    set udg_TempReal=Prof_RodPower(GetTriggerUnit())
-    set udg_TempPoint2=GetUnitLoc(GetTriggerUnit())
+    set l_tempReal=Prof_RodPower(GetTriggerUnit())
+    set l_tempPoint2=GetUnitLoc(GetTriggerUnit())
     // (facing in degrees of the triggering unit) plus (180).
-    set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,80.,(GetUnitFacing(GetTriggerUnit())+180.))
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=Loc_PolarOffset(l_tempPoint2,80.,(GetUnitFacing(GetTriggerUnit())+180.))
+    call RemoveLocation(l_tempPoint2)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=5
     loop
@@ -74,27 +78,29 @@ function Trig_Famfrit_TidalWave_Actions takes nothing returns nothing
         // (150) times ((loop counter A) minus (3) treated as a decimal-capable number).
         // Calculation 2:
         // (facing in degrees of the triggering unit) plus (90).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,(150.*I2R((GetForLoopIndexA()-3))),(GetUnitFacing(GetTriggerUnit())+90.))
-        call CreateNUnitsAtLoc(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,GetUnitFacing(GetTriggerUnit())) // 'h01B': unit "Proxy Dummy"
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,(150.*I2R((GetForLoopIndexA()-3))),(GetUnitFacing(GetTriggerUnit())+90.))
+        call CreateNUnitsAtLoc(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint2,GetUnitFacing(GetTriggerUnit())) // 'h01B': unit "Proxy Dummy"
         set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
         call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
-        // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-        call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
+        // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+        call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
         call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
         call SaveGroupHandleBJ(l_hitGroup,6,udg_TempHandleId,udg_ProxyDamageHash)
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A0M4',GetLastCreatedUnit()) // 'A0M4': ability "Water-elemental Damage"
         call UnitAddAbilityBJ('A0PZ',GetLastCreatedUnit()) // 'A0PZ': ability "Water"
-        set udg_RetreatPoint=Loc_PolarOffset(udg_TempPoint2,100.,GetUnitFacing(GetTriggerUnit()))
+        set udg_RetreatPoint=Loc_PolarOffset(l_tempPoint2,100.,GetUnitFacing(GetTriggerUnit()))
         call IssuePointOrderLocBJ(GetLastCreatedUnit(),"carrionswarm",udg_RetreatPoint)
         call RemoveLocation(udg_RetreatPoint)
-        call RemoveLocation(udg_TempPoint2)
+        call RemoveLocation(l_tempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(2)
     call DestroyGroup(l_hitGroup)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Famfrit automatically; it is intentionally empty. This module's

@@ -41,21 +41,27 @@ function Trig_Provoke_Cast_IsProvokeTarget takes nothing returns boolean
 endfunction
 
 function Trig_Provoke_Cast_TauntTarget takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A15V',GetLastCreatedUnit()) // 'A15V': ability "Provoke"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Provoke_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Provoke_Cast_IsProvokeTarget))
-    call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Provoke_Cast_TauntTarget)
-    call DestroyGroup(udg_TempGroup)
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Provoke_Cast_IsProvokeTarget))
+    call RemoveLocation(l_tempPoint)
+    call ForGroupBJ(l_tempGroup,function Trig_Provoke_Cast_TauntTarget)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Provoke automatically; it is intentionally empty. This module's

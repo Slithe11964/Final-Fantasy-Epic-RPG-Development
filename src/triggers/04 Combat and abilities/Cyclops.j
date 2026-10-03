@@ -49,20 +49,22 @@ function Trig_Cyclops_FinalSmash_DamageEnum takes nothing returns nothing
 endfunction
 
 function Trig_Cyclops_FinalSmash_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(682.,udg_TempPoint,Condition(function Trig_Cyclops_FinalSmash_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(682.,l_tempPoint,Condition(function Trig_Cyclops_FinalSmash_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (5).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)
@@ -78,8 +80,10 @@ function Trig_Cyclops_FinalSmash_Actions takes nothing returns nothing
             set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)*5))
         endif
     endif
-    call ForGroupBJ(udg_TempGroup,function Trig_Cyclops_FinalSmash_DamageEnum)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Cyclops_FinalSmash_DamageEnum)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Cyclops automatically; it is intentionally empty. This module's

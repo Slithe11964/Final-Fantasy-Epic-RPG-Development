@@ -17,20 +17,21 @@ function Trig_Manablow_Cast_IsCasterHero takes nothing returns boolean
 endfunction
 
 function Trig_Manablow_Cast_Actions takes nothing returns nothing
+    local integer l_tempInteger
     call Spell_StoreManaCost()
     // ((udg_SpellManaCost) times (2)) plus (200).
-    set udg_TempInteger=((udg_SpellManaCost*2)+$C8) // $C8 = 200
+    set l_tempInteger=((udg_SpellManaCost*2)+$C8) // $C8 = 200
     if(Trig_Manablow_Cast_IsCasterHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (2)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (2)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
+    // Result 1: l_tempInteger treated as a decimal-capable number.
     // Result 2: (result 1) times (Prof_StaffPower(the triggering unit)).
     // Result 3: (result 2) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*Prof_StaffPower(GetTriggerUnit())))
+    set l_tempInteger=R2I((I2R(l_tempInteger)*Prof_StaffPower(GetTriggerUnit())))
     set udg_DmgFlagManaDamage=true
     // Udg_TempInteger treated as a decimal-capable number.
-    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),I2R(udg_TempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
+    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),I2R(l_tempInteger),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL)
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\ManaFlare\\ManaFlareBoltImpact.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endfunction

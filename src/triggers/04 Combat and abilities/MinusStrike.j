@@ -37,6 +37,8 @@ function Trig_MinusStrike_Cast_IsCasterHero takes nothing returns boolean
 endfunction
 
 function Trig_MinusStrike_Cast_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\NightElf\\ManaBurn\\ManaBurnTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualCaster.mdl")
@@ -61,24 +63,24 @@ function Trig_MinusStrike_Cast_Actions takes nothing returns nothing
     endif
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (30).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*30)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*30)
     if(Trig_MinusStrike_Cast_IsCasterHero())then
-        // (udg_TempInteger) plus ((Strength of the triggering unit) times (25)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*25))
+        // (l_tempInteger) plus ((Strength of the triggering unit) times (25)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*25))
     endif
     // (0.1) times ((10) plus (Prof_GetHybridLevel(the triggering unit))).
-    set udg_TempReal=.1*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
+    set l_tempReal=.1*($A+Prof_GetHybridLevel(GetTriggerUnit())) // $A = 10
     set udg_IsPhysicalAttack=true
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
+    // Result 1: l_tempInteger treated as a decimal-capable number.
     // Result 2: current health divided by maximum health for the triggering unit, times 100 (or 0 if the unit is
     // missing or its maximum is 0).
     // Result 3: (result 2) times (0.25).
     // Result 4: the square root of (result 3).
     // Result 5: the larger of (1) and (result 4).
-    // Result 6: (udg_TempReal) divided by (result 5).
+    // Result 6: (l_tempReal) divided by (result 5).
     // Result 7: (result 1) times (result 6).
     // Result 8: (result 7) plus (500).
-    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),((I2R(udg_TempInteger)*(udg_TempReal/ RMaxBJ(1.,SquareRoot((GetUnitLifePercent(GetTriggerUnit())*.25)))))+500.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_NORMAL)
+    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),((I2R(l_tempInteger)*(l_tempReal/ RMaxBJ(1.,SquareRoot((GetUnitLifePercent(GetTriggerUnit())*.25)))))+500.),ATTACK_TYPE_CHAOS,DAMAGE_TYPE_NORMAL)
 endfunction
 
 // World Editor calls InitTrig_MinusStrike automatically; it is intentionally empty. This module's

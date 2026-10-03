@@ -29,9 +29,10 @@ function Trig_FillVial_Cast_Cond_ValidFountain takes nothing returns boolean
 endfunction
 
 function Trig_FillVial_Cast_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_FillVial_Cast_Cond_ValidFountain())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,("You filled the vial with the waters of the "+GetUnitName(GetSpellTargetUnit())))
+        call DisplayTimedTextToForce(l_tempForce,10.,("You filled the vial with the waters of the "+GetUnitName(GetSpellTargetUnit())))
         call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Items\\AIil\\AIilTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
@@ -46,7 +47,8 @@ function Trig_FillVial_Cast_Actions takes nothing returns nothing
                 else
                     call RemoveLocation(udg_TempPoint)
                     call DisplayTimedTextToForce(GetPlayersAll(),10.,"DEBUG: Invalid Fill Vial target!? Please report if you get this message.")
-                    call DestroyForce(udg_TempForce)
+                    call DestroyForce(l_tempForce)
+                    set l_tempForce=null
                     return
                 endif
             endif
@@ -57,9 +59,10 @@ function Trig_FillVial_Cast_Actions takes nothing returns nothing
         call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'bzbe')) // 'bzbe': editor label "Empty Vial"
         call UnitAddItemSwapped(udg_QuestItem[18],GetTriggerUnit())
     else
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000You must target a fountain with this item!|r")
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000You must target a fountain with this item!|r")
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_FillVial automatically; it is intentionally empty. This module's

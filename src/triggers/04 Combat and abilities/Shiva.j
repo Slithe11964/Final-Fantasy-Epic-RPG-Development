@@ -25,44 +25,48 @@ function Trig_Shiva_DiamondDust_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Shiva_DiamondDust_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Shiva_DiamondDust_HasNoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
+        set l_tempPoint=GetSpellTargetLoc()
     else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
-    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),udg_TempPoint,0)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    call SetUnitFacingToFaceLocTimed(GetLastCreatedUnit(),l_tempPoint,0)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
-    // (udg_TempInteger) plus ((unit level of the triggering unit) divided by (4)).
-    set udg_TempInteger=(udg_TempInteger+(GetUnitLevel(GetTriggerUnit())/ 4))
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
+    // (l_tempInteger) plus ((unit level of the triggering unit) divided by (4)).
+    set l_tempInteger=(l_tempInteger+(GetUnitLevel(GetTriggerUnit())/ 4))
     if(Trig_Shiva_DiamondDust_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (3)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (3)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*3))
     else
         if(Trig_Shiva_DiamondDust_UsesFirstWeapon())then
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) divided by (2)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)/ 2))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) divided by (2)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)/ 2))
         else
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) divided by (2)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)/ 2))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) divided by (2)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)/ 2))
         endif
     endif
     // Udg_TempInteger treated as a decimal-capable number.
-    call SaveRealBJ(I2R(udg_TempInteger),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(2,2,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(1,3,udg_TempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(1,3,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M2',GetLastCreatedUnit()) // 'A0M2': ability "Ice-elemental Damage"
     call UnitAddAbilityBJ('A0RL',GetLastCreatedUnit()) // 'A0RL': ability "Diamond Dust"
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"breathoffrost",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Shiva automatically; it is intentionally empty. This module's

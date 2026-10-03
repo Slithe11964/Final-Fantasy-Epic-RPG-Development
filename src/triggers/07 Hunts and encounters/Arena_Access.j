@@ -75,9 +75,11 @@ function Trig_Arena_GateWrongSide_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_GateWrongSide_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,5.,"This gate cannot be opened from this side.")
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call DisplayTimedTextToForce(l_tempForce,5.,"This gate cannot be opened from this side.")
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_GateOpen_IsPlayerHero takes nothing returns boolean
@@ -121,15 +123,17 @@ function Trig_Arena_Enter_Eject_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Enter_Eject_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_634)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,90.)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_634)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,90.)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Arena_Leave_Player_Conditions takes nothing returns boolean

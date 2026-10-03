@@ -43,20 +43,23 @@ function Trig_Tremor_Cast_DamageEnemy takes nothing returns nothing
 endfunction
 
 function Trig_Tremor_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (60).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,(I2R(GetForLoopIndexA())*60.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,(I2R(GetForLoopIndexA())*60.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(682.,udg_TempPoint,Condition(function Trig_Tremor_Cast_Filter_ValidTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(682.,l_tempPoint,Condition(function Trig_Tremor_Cast_Filter_ValidTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
@@ -64,11 +67,13 @@ function Trig_Tremor_Cast_Actions takes nothing returns nothing
         // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (4)).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*4))
     endif
-    set udg_TempReal=Prof_RodPower(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
-    call ForGroupBJ(udg_TempGroup,function Trig_Tremor_Cast_DamageEnemy)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempReal=Prof_RodPower(GetTriggerUnit())
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
+    call ForGroupBJ(l_tempGroup,function Trig_Tremor_Cast_DamageEnemy)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Tremor automatically; it is intentionally empty. This module's

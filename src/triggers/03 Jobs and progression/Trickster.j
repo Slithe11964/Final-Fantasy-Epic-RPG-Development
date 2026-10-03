@@ -30,11 +30,13 @@ function Trig_Trickster_Reveal_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Trickster_Reveal_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call IssueImmediateOrderBJ(udg_TricksterDecoy,"stop")
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(udg_TricksterDecoy)
-    call SetUnitPositionLocFacingBJ(udg_TricksterReal,udg_TempPoint,GetUnitFacing(udg_TricksterDecoy))
+    set l_tempPoint=GetUnitLoc(udg_TricksterDecoy)
+    call SetUnitPositionLocFacingBJ(udg_TricksterReal,l_tempPoint,GetUnitFacing(udg_TricksterDecoy))
+    call RemoveLocation(l_tempPoint) // phase 16: was never removed (leak)
     call RemoveUnit(udg_TricksterDecoy)
     call ShowUnitShow(udg_TricksterReal)
     call PauseUnitBJ(false,udg_TricksterReal)
@@ -42,6 +44,7 @@ function Trig_Trickster_Reveal_Actions takes nothing returns nothing
     call GroupAddUnitSimple(udg_TricksterReal,udg_HuntMonsters)
     call SetUnitVertexColorBJ(udg_TricksterReal,'d','d','d',75.)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Trickster automatically; it is intentionally empty. This module's

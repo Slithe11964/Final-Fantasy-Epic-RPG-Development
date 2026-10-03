@@ -9,10 +9,12 @@ function Trig_Info_Item_Show_Lore_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Info_Item_Show_Lore_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetBuyingUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,30.,(("|cffffcc00"+GetItemName(GetSoldItem()))+"|r"))
-    call DisplayTimedTextToForce(udg_TempForce,30.,udg_LoreText[GetItemLevel(GetSoldItem())])
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetBuyingUnit()))
+    call DisplayTimedTextToForce(l_tempForce,30.,(("|cffffcc00"+GetItemName(GetSoldItem()))+"|r"))
+    call DisplayTimedTextToForce(l_tempForce,30.,udg_LoreText[GetItemLevel(GetSoldItem())])
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Info automatically; it is intentionally empty. This module's

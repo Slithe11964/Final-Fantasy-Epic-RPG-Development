@@ -10,9 +10,11 @@ function Trig_Okuu_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Okuu_Leash_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_714)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_714)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Okuu_Death_Actions takes nothing returns nothing

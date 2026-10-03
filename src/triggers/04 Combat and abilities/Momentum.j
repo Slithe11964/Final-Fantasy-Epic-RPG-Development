@@ -15,9 +15,10 @@ function Trig_Momentum_Cast_NoMomentumStacks takes nothing returns boolean
 endfunction
 
 function Trig_Momentum_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0H0',GetLastCreatedUnit()) // 'A0H0': ability "Momentum"
@@ -28,6 +29,7 @@ function Trig_Momentum_Cast_Actions takes nothing returns nothing
         call SetUnitAbilityLevelSwapped('A0H0',GetLastCreatedUnit(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)) // 'A0H0': ability "Momentum"
     endif
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetTriggerUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Momentum_Apply_Conditions takes nothing returns boolean

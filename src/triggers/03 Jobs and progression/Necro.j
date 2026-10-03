@@ -52,6 +52,7 @@ function Trig_Necro_Release_Filter_HealTarget takes nothing returns boolean
 endfunction
 
 function Trig_Necro_Release_HealAlly takes nothing returns nothing
+    local real l_tempReal
     // Result 1: udg_TempInteger treated as a decimal-capable number.
     // Result 2: (maximum health of the unit being visited) minus (current health of the unit being visited).
     // Result 3: the smaller of (result 1) and (result 2).
@@ -61,10 +62,10 @@ function Trig_Necro_Release_HealAlly takes nothing returns nothing
     // Result 2: a random decimal number between 15 and 16.
     // Result 3: (result 2) divided by (16).
     // Result 4: (result 1) times (result 3).
-    set udg_TempReal=(I2R(udg_TempInteger)*(GetRandomReal(15.,16.)/ 16.))
-    // (current health of the unit being visited) plus (udg_TempReal).
-    call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_TempReal))
-    call Text_FloatingDamage(GetEnumUnit(),true,0,udg_TempReal,false,0)
+    set l_tempReal=(I2R(udg_TempInteger)*(GetRandomReal(15.,16.)/ 16.))
+    // (current health of the unit being visited) plus (l_tempReal).
+    call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+l_tempReal))
+    call Text_FloatingDamage(GetEnumUnit(),true,0,l_tempReal,false,0)
 endfunction
 
 function Trig_Necro_Release_EarnedMasteryAward takes nothing returns boolean
@@ -72,24 +73,28 @@ function Trig_Necro_Release_EarnedMasteryAward takes nothing returns boolean
 endfunction
 
 function Trig_Necro_Release_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
     call UnitAddAbilityBJ('A0FQ',GetTriggerUnit()) // 'A0FQ': ability "Explode Upon Death"
     call UnitApplyTimedLifeBJ(.01,'Brai',GetTriggerUnit()) // 'Brai': buff tooltip "Raised"
     // (current health of the triggering unit) with its decimal part removed.
     call BlzSetUnitMaxHP(GetTriggerUnit(),R2I(GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit())))
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(250.,udg_TempPoint,Condition(function Trig_Necro_Release_Filter_HealTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(250.,l_tempPoint,Condition(function Trig_Necro_Release_Filter_HealTarget))
+    call RemoveLocation(l_tempPoint)
     // (current health of the triggering unit) with its decimal part removed.
     set udg_TempInteger=R2I(GetUnitStateSwap(UNIT_STATE_LIFE,GetTriggerUnit()))
-    call ForGroupBJ(udg_TempGroup,function Trig_Necro_Release_HealAlly)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Necro_Release_HealAlly)
+    call DestroyGroup(l_tempGroup)
     if(Trig_Necro_Release_EarnedMasteryAward())then
         call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[21])
         call AddSpecialEffectTargetUnitBJ("origin",Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
     endif
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Necro_DeathScreech_Conditions takes nothing returns boolean
@@ -109,6 +114,7 @@ function Trig_Necro_DeathScreech_UseTightCorpseSpread takes nothing returns bool
 endfunction
 
 function Trig_Necro_DeathScreech_Actions takes nothing returns nothing
+    local real l_tempReal
     call ForGroupBJ(udg_NecroCorpseGroup[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],function Trig_Necro_DeathScreech_RemoveCorpse)
     call GroupClear(udg_NecroCorpseGroup[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
@@ -118,7 +124,7 @@ function Trig_Necro_DeathScreech_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A12X',GetLastCreatedUnit()) // 'A12X': ability "Death Screech"
     call SetUnitAbilityLevelSwapped('A12X',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A12X': ability "Death Screech"
     call IssueImmediateOrderBJ(GetLastCreatedUnit(),"howlofterror")
-    set udg_TempReal=GetRandomDirectionDeg()
+    set l_tempReal=GetRandomDirectionDeg()
     if(Trig_Necro_DeathScreech_UseTightCorpseSpread())then
         set bj_forLoopAIndex=0
         set bj_forLoopAIndexEnd=2
@@ -127,8 +133,8 @@ function Trig_Necro_DeathScreech_Actions takes nothing returns nothing
             // Calculation 1:
             // A random decimal number between 8 and 32.
             // Calculation 2:
-            // (udg_TempReal) plus ((loop counter A treated as a decimal-capable number) times (120)).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(8.,32.),(udg_TempReal+(I2R(GetForLoopIndexA())*120.)))
+            // (l_tempReal) plus ((loop counter A treated as a decimal-capable number) times (120)).
+            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(8.,32.),(l_tempReal+(I2R(GetForLoopIndexA())*120.)))
             call CreatePermanentCorpseLocBJ(bj_CORPSETYPE_FLESH,'u016',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,GetRandomDirectionDeg()) // 'u016': unit "Corpse"
             call RemoveLocation(udg_TempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_NecroCorpseGroup[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
@@ -142,8 +148,8 @@ function Trig_Necro_DeathScreech_Actions takes nothing returns nothing
             // Calculation 1:
             // A random decimal number between 64 and 300.
             // Calculation 2:
-            // (udg_TempReal) plus ((loop counter A treated as a decimal-capable number) times (120)).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(64.,300.),(udg_TempReal+(I2R(GetForLoopIndexA())*120.)))
+            // (l_tempReal) plus ((loop counter A treated as a decimal-capable number) times (120)).
+            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(64.,300.),(l_tempReal+(I2R(GetForLoopIndexA())*120.)))
             call CreatePermanentCorpseLocBJ(bj_CORPSETYPE_FLESH,'u016',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,GetRandomDirectionDeg()) // 'u016': unit "Corpse"
             call RemoveLocation(udg_TempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_NecroCorpseGroup[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
@@ -166,20 +172,21 @@ function Trig_Necro_Drain_Start_IsCasterHero takes nothing returns boolean
 endfunction
 
 function Trig_Necro_Drain_Start_Actions takes nothing returns nothing
+    local integer l_tempInteger
     call GroupAddUnitSimple(GetTriggerUnit(),udg_DrainChannelGroup)
     call SaveUnitHandleBJ(GetSpellTargetUnit(),1,GetHandleIdBJ(GetTriggerUnit()),udg_ChannelDrainHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (2).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
     if(Trig_Necro_Drain_Start_IsCasterHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (1)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*1))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (1)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*1))
     endif
-    // Result 1: udg_TempInteger treated as a decimal-capable number.
+    // Result 1: l_tempInteger treated as a decimal-capable number.
     // Result 2: (result 1) times (Prof_StaffPower(the triggering unit)).
     // Result 3: (result 2) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*Prof_StaffPower(GetTriggerUnit())))
-    call SaveIntegerBJ(udg_TempInteger,2,GetHandleIdBJ(GetTriggerUnit()),udg_ChannelDrainHash)
+    set l_tempInteger=R2I((I2R(l_tempInteger)*Prof_StaffPower(GetTriggerUnit())))
+    call SaveIntegerBJ(l_tempInteger,2,GetHandleIdBJ(GetTriggerUnit()),udg_ChannelDrainHash)
 endfunction
 
 function Trig_Necro_Drain_End_IsDrainAbility takes nothing returns boolean
@@ -200,9 +207,10 @@ function Trig_Necro_Drain_Tick_HasHealAmount takes nothing returns boolean
 endfunction
 
 function Trig_Necro_Drain_Tick_DrainTickUnit takes nothing returns nothing
-    set udg_TempInteger=LoadIntegerBJ(2,GetHandleIdBJ(GetEnumUnit()),udg_ChannelDrainHash)
+    local integer l_tempInteger
+    set l_tempInteger=LoadIntegerBJ(2,GetHandleIdBJ(GetEnumUnit()),udg_ChannelDrainHash)
     // Udg_TempInteger treated as a decimal-capable number.
-    call UnitDamageTargetBJ(GetEnumUnit(),LoadUnitHandleBJ(1,GetHandleIdBJ(GetEnumUnit()),udg_ChannelDrainHash),I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+    call UnitDamageTargetBJ(GetEnumUnit(),LoadUnitHandleBJ(1,GetHandleIdBJ(GetEnumUnit()),udg_ChannelDrainHash),I2R(l_tempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     if(Trig_Necro_Drain_Tick_HasHealAmount())then
         // (current health of the unit being visited) plus (udg_LastDamageDealt).
         call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_LastDamageDealt))

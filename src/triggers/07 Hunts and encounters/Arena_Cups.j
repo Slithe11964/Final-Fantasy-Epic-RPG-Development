@@ -80,19 +80,20 @@ function Trig_Arena_Cup_Won_IsBpOverLimit takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Cup_Won_GiveCupReward takes nothing returns nothing
+    local force l_tempForce
     set udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BeltStacks[GetConvertedPlayerId(GetEnumPlayer())]+1)
-    set udg_TempForce=Force_OfPlayer(GetEnumPlayer())
+    set l_tempForce=Force_OfPlayer(GetEnumPlayer())
     if(Trig_Arena_Cup_Won_HasDoubleBpReward())then
         // Result 1: (udg_BattlePoints at position 0) times (2).
         // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+(udg_BattlePoints[0]*2))
         // (udg_BattlePoints at position 0) times (2).
-        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points for winning the cup.|r"))
+        call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points for winning the cup.|r"))
     else
         // (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (udg_BattlePoints at
         // position 0).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+udg_BattlePoints[0])
-        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cff00ff00You get "+I2S(udg_BattlePoints[0]))+" Battle Points for winning the cup.|r"))
+        call DisplayTimedTextToForce(l_tempForce,10.,(("|cff00ff00You get "+I2S(udg_BattlePoints[0]))+" Battle Points for winning the cup.|r"))
     endif
     if(Trig_Arena_Cup_Won_IsBpOverLimit())then
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=$F423F // $F423F = 999999
@@ -100,28 +101,31 @@ function Trig_Arena_Cup_Won_GiveCupReward takes nothing returns nothing
     call DestroyTextTagBJ(udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())])
     set udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
-    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),l_tempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_Cup_Won_Actions takes nothing returns nothing
+    local location l_tempPoint2
     if(Trig_Arena_Cup_Won_IsDimensionCupEnd())then
         call ConditionalTriggerExecute(gg_trg_AlmightyShinra_Defeat)
+        set l_tempPoint2=null
         return
     endif
-    set udg_TempPoint2=GetRectCenter(gg_rct_046)
+    set l_tempPoint2=GetRectCenter(gg_rct_046)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=$C // $C = 12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (30) times (loop counter A treated as a decimal-capable number).
-        set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,(30.*I2R(GetForLoopIndexA())))
+        set udg_TempPoint=Loc_PolarOffset(l_tempPoint2,256,(30.*I2R(GetForLoopIndexA())))
         call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call DisplayTimedTextToForce(GetPlayersAll(),10.,"|cff00ff00Arena:|r Congratulations! You are the winner!")
     set bj_forLoopAIndex=0
     set bj_forLoopAIndexEnd=udg_ArenaOrganizerLast
@@ -172,6 +176,7 @@ function Trig_Arena_Cup_Won_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Arena_UnlockCups)
     call ConditionalTriggerExecute(gg_trg_Arena_SyncTeams)
     set udg_ArenaCupId=0
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Arena_UnlockCups_Conditions takes nothing returns boolean
@@ -325,6 +330,7 @@ function Trig_Arena_Omega_Absorbs_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Omega_Absorbs_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(gg_trg_Arena_Shinryu_Absorbs)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call TriggerRegisterUnitEvent(gg_trg_Arena_Duel_Victory,udg_WarmechUnit,EVENT_UNIT_DEATH)
@@ -336,9 +342,10 @@ function Trig_Arena_Omega_Absorbs_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",udg_WarmechUnit,"Abilities\\Spells\\Other\\Doom\\DoomTarget.mdl")
     call DisableTrigger(gg_trg_Arena_Duel_AI)
     call PauseTimerBJ(true,udg_DragonBattleTimer)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call IssuePointOrderLocBJ(udg_WarmechUnit,"shockwave",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call IssuePointOrderLocBJ(udg_WarmechUnit,"shockwave",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Arena_Shinryu_Absorbs_Conditions takes nothing returns boolean
@@ -346,6 +353,7 @@ function Trig_Arena_Shinryu_Absorbs_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Shinryu_Absorbs_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(gg_trg_Arena_Omega_Absorbs)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call TriggerRegisterUnitEvent(gg_trg_Arena_Duel_Victory,udg_ShinryuUnit,EVENT_UNIT_DEATH)
@@ -357,9 +365,10 @@ function Trig_Arena_Shinryu_Absorbs_Actions takes nothing returns nothing
     call AddSpecialEffectTargetUnitBJ("origin",udg_ShinryuUnit,"Abilities\\Spells\\Other\\Doom\\DoomTarget.mdl")
     call DisableTrigger(gg_trg_Arena_Duel_AI)
     call PauseTimerBJ(true,udg_DragonBattleTimer)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call IssuePointOrderLocBJ(udg_ShinryuUnit,"shockwave",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call IssuePointOrderLocBJ(udg_ShinryuUnit,"shockwave",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Arena_Cups takes nothing returns nothing

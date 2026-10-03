@@ -24,6 +24,9 @@ function Trig_Ultima_Cast_IsHero takes nothing returns boolean
 endfunction
 
 function Trig_Ultima_Cast_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN,3.,"ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp",0,100.,0,50.)
     if(Trig_Ultima_Cast_NoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
@@ -31,22 +34,22 @@ function Trig_Ultima_Cast_Actions takes nothing returns nothing
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (10).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A) // $A = 10
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ $A) // $A = 10
     if(Trig_Ultima_Cast_IsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (2); drop the remainder).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
     else
-        // (udg_TempInteger) plus ((unit level of the triggering unit) times (3)).
-        set udg_TempInteger=(udg_TempInteger+(GetUnitLevel(GetTriggerUnit())*3))
+        // (l_tempInteger) plus ((unit level of the triggering unit) times (3)).
+        set l_tempInteger=(l_tempInteger+(GetUnitLevel(GetTriggerUnit())*3))
     endif
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(20.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0FD',GetLastCreatedUnit()) // 'A0FD': ability "Ultima"
@@ -264,14 +267,15 @@ function Trig_Ultima_Holyja_TargetAlive takes nothing returns boolean
 endfunction
 
 function Trig_Ultima_Holyja_DamageTarget takes nothing returns nothing
+    local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Other\\Monsoon\\MonsoonBoltTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     // (maximum health of the unit being visited) times (0.3).
-    set udg_TempReal=(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetEnumUnit())*.3)
+    set l_tempReal=(GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetEnumUnit())*.3)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),udg_TempReal,true,true,ATTACK_TYPE_HERO,DAMAGE_TYPE_UNIVERSAL,null)
+    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),l_tempReal,true,true,ATTACK_TYPE_HERO,DAMAGE_TYPE_UNIVERSAL,null)
     if(Trig_Ultima_Holyja_TargetAlive())then
         if(Trig_Ultima_Holyja_NoBerserkBuff())then
             set udg_TempPoint=GetUnitLoc(GetEnumUnit())
@@ -295,6 +299,7 @@ function Trig_Ultima_Holyja_DamageTarget takes nothing returns nothing
 endfunction
 
 function Trig_Ultima_Holyja_Actions takes nothing returns nothing
+    local group l_tempGroup
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=$C // $C = 12
@@ -316,10 +321,11 @@ function Trig_Ultima_Holyja_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(728.,udg_TempPoint,Condition(function Trig_Ultima_Holyja_FilterTarget))
+    set l_tempGroup=Group_UnitsInRangeOfLoc(728.,udg_TempPoint,Condition(function Trig_Ultima_Holyja_FilterTarget))
     call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Ultima_Holyja_DamageTarget)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Ultima_Holyja_DamageTarget)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_Ultima automatically; it is intentionally empty. This module's

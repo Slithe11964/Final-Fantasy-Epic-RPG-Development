@@ -67,13 +67,14 @@ function Trig_Eidolon_Leviathan_Ambush_Cond_LeviathanEngaged takes nothing retur
 endfunction
 
 function Trig_Eidolon_Leviathan_Ambush_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisplayTextToForce(GetPlayersAll(),"You've found |cffffcc00Leviathan|r!")
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLocFacingLocBJ(gg_unit_H01L_0067,udg_TempPoint,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_H01L_0067,l_tempPoint,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01L_0067)
     call GroupAddUnitSimple(gg_unit_H01L_0067,udg_BossUnits)
     call PauseUnitBJ(false,gg_unit_H01L_0067)
@@ -86,11 +87,12 @@ function Trig_Eidolon_Leviathan_Ambush_Actions takes nothing returns nothing
     endif
     call Wait_Polled(5.)
     if(Trig_Eidolon_Leviathan_Ambush_Cond_LeviathanEngaged())then
-        set udg_TempPoint=GetRectCenter(gg_rct_229)
-        call IssuePointOrderLocBJ(gg_unit_H01L_0067,"attack",udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_229)
+        call IssuePointOrderLocBJ(gg_unit_H01L_0067,"attack",l_tempPoint)
+        call RemoveLocation(l_tempPoint)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Eidolon automatically; it is intentionally empty. This module's

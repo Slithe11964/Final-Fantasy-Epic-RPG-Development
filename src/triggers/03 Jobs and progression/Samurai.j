@@ -19,6 +19,8 @@ function Trig_Samurai_Mineuchi_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Samurai_Mineuchi_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local real l_tempReal
     call UnitRemoveBuffBJ('B00F',GetSpellTargetUnit()) // 'B00F': buff "Haste"
     call UnitRemoveBuffBJ('B07F',GetSpellTargetUnit()) // 'B07F': buff "Haste"
     call UnitRemoveBuffBJ('B08T',GetSpellTargetUnit()) // 'B08T': buff "Hastera"
@@ -30,18 +32,18 @@ function Trig_Samurai_Mineuchi_Actions takes nothing returns nothing
     call UnitRemoveBuffBJ('B08S',GetSpellTargetUnit()) // 'B08S': buff "Shellra"
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (3).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
     if(Trig_Samurai_Mineuchi_CasterIsHero())then
-        // (udg_TempInteger) plus ((Strength of the triggering unit) times (2)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*2))
-        // (udg_TempInteger) plus ((Agility of the triggering unit) times (2)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true)*2))
+        // (l_tempInteger) plus ((Strength of the triggering unit) times (2)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_STR,GetTriggerUnit(),true)*2))
+        // (l_tempInteger) plus ((Agility of the triggering unit) times (2)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true)*2))
     endif
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00A'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00A')) // $A = 10; 'R00A': upgrade "Katana"
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00A')) // $A = 10; 'R00A': upgrade "Katana"
     set udg_IsPhysicalAttack=true
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(udg_TempInteger)*udg_TempReal),ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL)
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(l_tempInteger)*l_tempReal),ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL)
 endfunction
 
 function Trig_Samurai_Renzokuken_Conditions takes nothing returns boolean

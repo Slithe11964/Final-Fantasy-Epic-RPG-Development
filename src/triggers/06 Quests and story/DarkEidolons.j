@@ -77,9 +77,10 @@ function Trig_DarkEidolons_Init_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DarkEidolons_SpawnGhosts_CreateGhostCopy takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(8),udg_TempPoint,GetUnitFacing(GetEnumUnit()))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLoc(1,GetUnitTypeId(GetEnumUnit()),Player(8),l_tempPoint,GetUnitFacing(GetEnumUnit()))
+    call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_DarkEidolonIllusions)
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call SetHeroLevelBJ(GetLastCreatedUnit(),GetHeroLevel(GetEnumUnit()),false)
@@ -88,6 +89,7 @@ function Trig_DarkEidolons_SpawnGhosts_CreateGhostCopy takes nothing returns not
     call SetUnitPathing(GetLastCreatedUnit(),false)
     call UnitRemoveAbilityBJ('AInv',GetLastCreatedUnit()) // 'AInv': standard ability reference "Inventory"
     call UnitRemoveAbilityBJ('A11N',GetLastCreatedUnit()) // 'A11N': ability "Shifting Elements"
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkEidolons_SpawnGhosts_Actions takes nothing returns nothing
@@ -109,6 +111,7 @@ function Trig_DarkEidolons_Unlock_IsDarkEdenQuestDone takes nothing returns bool
 endfunction
 
 function Trig_DarkEidolons_Unlock_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Wait_Polled(60.)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,.25,"ReplaceableTextures\\CameraMasks\\White_mask.blp",100.,0,0,0)
@@ -124,10 +127,10 @@ function Trig_DarkEidolons_Unlock_Actions takes nothing returns nothing
     endif
     call EnableTrigger(gg_trg_DarkShiva_Appear)
     call EnableTrigger(gg_trg_DarkIfrit_Appear)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01V_0041)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01V_0041)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01V_0041)
     call UnitAddAbilityBJ('A0VJ',gg_unit_H01V_0041) // 'A0VJ': ability "Unaffected by Cinematics"
     call EnableTrigger(gg_trg_DarkGolem_Appear)
@@ -141,6 +144,7 @@ function Trig_DarkEidolons_Unlock_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Boss_Penance_Summon)
     call EnableTrigger(gg_trg_DarkEidolon_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkEidolons automatically; it is intentionally empty. This module's

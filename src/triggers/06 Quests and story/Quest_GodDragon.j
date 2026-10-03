@@ -17,6 +17,7 @@ function Trig_Quest_GodDragon_Start_HuntStillOpen takes nothing returns boolean
 endfunction
 
 function Trig_Quest_GodDragon_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[82])
     if(Trig_Quest_GodDragon_Start_CinematicsEnabled())then
@@ -42,9 +43,9 @@ function Trig_Quest_GodDragon_Start_Actions takes nothing returns nothing
         set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")
     endif
     call UnitRemoveAbilityBJ('A0YQ',gg_unit_U00H_0211) // 'A0YQ': ability "!Darkja"
-    set udg_TempPoint=GetRectCenter(gg_rct_647)
-    call CreateNUnitsAtLoc(1,'n0CC',Player($B),udg_TempPoint,GetUnitFacing(gg_unit_U00H_0211)) // 'n0CC': unit "Shinryu"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_647)
+    call CreateNUnitsAtLoc(1,'n0CC',Player($B),l_tempPoint,GetUnitFacing(gg_unit_U00H_0211)) // 'n0CC': unit "Shinryu"; $B = 11
+    call RemoveLocation(l_tempPoint)
     set udg_GodDragonUnit=GetLastCreatedUnit()
     call PauseUnitBJ(true,udg_GodDragonUnit)
     call SetUnitInvulnerable(udg_GodDragonUnit,true)
@@ -59,6 +60,7 @@ function Trig_Quest_GodDragon_Start_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_GodDragon_Death,udg_GodDragonUnit,EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_GodDragon_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_GodDragon takes nothing returns nothing

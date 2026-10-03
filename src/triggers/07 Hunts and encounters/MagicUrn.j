@@ -18,13 +18,15 @@ function Trig_MagicUrn_Setup_Actions takes nothing returns nothing
 endfunction
 
 function Trig_MagicUrn_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0A1',udg_TempPoint) // 'I0A1': item "Magic Urn"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0A1',l_tempPoint) // 'I0A1': item "Magic Urn"
+    call RemoveLocation(l_tempPoint)
     call AddItemToStockBJ('I0A2',gg_unit_n02Y_0052,1,1) // 'I0A2': item "Information: Magic Urn"
     call EnableTrigger(gg_trg_MagicUrn_Open)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_MagicUrn_Open_Conditions takes nothing returns boolean
@@ -40,11 +42,13 @@ function Trig_MagicUrn_Open_Cond_InDarkAreaWrap takes nothing returns boolean
 endfunction
 
 function Trig_MagicUrn_Open_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_MagicUrn_Open_Cond_InDarkAreaWrap())then
     else
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"The Magic Urn won't open here!")
         call DestroyForce(udg_TempForce)
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -53,16 +57,17 @@ function Trig_MagicUrn_Open_Actions takes nothing returns nothing
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call PlaySoundBJ(gg_snd_SargerasLaugh)
     call Music_SetTrack(36)
-    set udg_TempPoint=GetUnitLoc(Player_GetHero(GetOwningPlayer(GetTriggerUnit())))
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(Player_GetHero(GetOwningPlayer(GetTriggerUnit())))
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLocFacingLocBJ(gg_unit_U00C_0024,udg_TempPoint,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_U00C_0024,l_tempPoint,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_U00C_0024)
     call SetUnitInvulnerable(gg_unit_U00C_0024,false)
     call PauseUnitBJ(false,gg_unit_U00C_0024)
     call EnableTrigger(gg_trg_MagicUrn_Boss_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_MagicUrn_Boss_Death_Cond_TrackBossKills takes nothing returns boolean
@@ -74,6 +79,7 @@ function Trig_MagicUrn_Boss_Death_Cond_SecondUrnKill takes nothing returns boole
 endfunction
 
 function Trig_MagicUrn_Boss_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_MagicUrn_Boss_Death_Cond_TrackBossKills())then
         set udg_BossUnit=GetTriggerUnit()
@@ -84,13 +90,14 @@ function Trig_MagicUrn_Boss_Death_Actions takes nothing returns nothing
     if(Trig_MagicUrn_Boss_Death_Cond_SecondUrnKill())then
         call SaveIntegerBJ(1,2,'e',udg_GameStateHash)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0GE',udg_TempPoint) // 'I0GE': item "Curse: Death Skull"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0GE',l_tempPoint) // 'I0GE': item "Curse: Death Skull"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_MagicUrn automatically; it is intentionally empty. This module's

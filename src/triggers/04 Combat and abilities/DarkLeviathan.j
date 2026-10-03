@@ -13,11 +13,12 @@ function Trig_DarkLeviathan_Appear_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkLeviathan_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Z_0036)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Z_0036)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01Z_0036)
     if(Trig_DarkLeviathan_Appear_CinematicsOn())then
         call Cine_Enter()
@@ -32,6 +33,7 @@ function Trig_DarkLeviathan_Appear_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_H01Z_0036,udg_BossGroup)
     call GroupAddUnitSimple(gg_unit_H01Z_0036,udg_BossUnits)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkLeviathan automatically; it is intentionally empty. This module's

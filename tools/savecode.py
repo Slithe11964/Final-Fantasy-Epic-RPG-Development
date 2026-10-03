@@ -1,7 +1,15 @@
 """Read (and write) FF Epic RPG -save codes outside the game.
 
     python tools/savecode.py decode CODE [--items itemtable.txt] [--name PLAYERNAME]
+    python tools/savecode.py checkname CODE NAME
+    python tools/savecode.py rename CODE NEWNAME [--old OLDNAME]
     python tools/savecode.py selftest
+
+checkname says whether CODE belongs to the player NAME. rename gives the same code for a new
+account name (a player who changed their Battle.net name keeps their progress): only the 20-bit
+name hash and the checksum change; everything else, the armory part included, stays. With --old,
+the code is only rewritten if it really belongs to OLDNAME. Names are used like the game does:
+anything from "#" on (the BattleTag number) is ignored, and case doesn't matter.
 
 decode prints what a code holds: difficulty, gold, every job level, Freelancer/Gaya, the three
 inventories, weapon/armor upgrades, titles and the other flags. It mirrors the game's reader
@@ -26,6 +34,51 @@ JOBS = ['Squire', 'Knight', 'Archer', 'Monk', 'Thief', 'Geomancer', 'Samurai', '
 UPGRADES = ['Tools', 'Sword', 'Bow', 'Rod', 'Staff', 'Plate Armor', 'Leather Armor', 'Mystic Armor', 'Axe', 'Spear',
             'Katana', 'Dagger', 'Gun', 'Greatsword', 'Inner Mana']
 DIFFICULTY = {0: 'blank (new game+ code)', 1: 'Simple / Very Easy', 2: 'Normal', 3: 'Hard or above'}
+
+# ---------------------------------------------------------------- player names
+def _mix(a, b, c):
+    M = 0xFFFFFFFF
+    a = (a - b - c) & M; a ^= c >> 13
+    b = (b - c - a) & M; b ^= (a << 8) & M
+    c = (c - a - b) & M; c ^= b >> 13
+    a = (a - b - c) & M; a ^= c >> 12
+    b = (b - c - a) & M; b ^= (a << 16) & M
+    c = (c - a - b) & M; c ^= b >> 5
+    a = (a - b - c) & M; a ^= c >> 3
+    b = (b - c - a) & M; b ^= (a << 10) & M
+    c = (c - a - b) & M; c ^= b >> 15
+    return a, b, c
+
+def string_hash(text):
+    """The game's StringHash (Storm's SStrHash2: Bob Jenkins' 1997 hash of the text with a-z upper-cased and
+    / turned into \\). Exact for plain ASCII names; for other letters 1.29 and Reforged may differ."""
+    k = bytes(ch - 32 if 97 <= ch <= 122 else (92 if ch == 47 else ch) for ch in text.encode('utf-8'))
+    a = b = 0x9E3779B9; c = 0
+    n, i = len(k), 0
+    while n - i >= 12:
+        a = (a + int.from_bytes(k[i:i + 4], 'little')) & 0xFFFFFFFF
+        b = (b + int.from_bytes(k[i + 4:i + 8], 'little')) & 0xFFFFFFFF
+        c = (c + int.from_bytes(k[i + 8:i + 12], 'little')) & 0xFFFFFFFF
+        a, b, c = _mix(a, b, c); i += 12
+    c = (c + n) & 0xFFFFFFFF
+    rest = k[i:]
+    for j, byte in enumerate(rest):
+        if j < 4:
+            a = (a + (byte << (8 * j))) & 0xFFFFFFFF
+        elif j < 8:
+            b = (b + (byte << (8 * (j - 4)))) & 0xFFFFFFFF
+        else:
+            c = (c + (byte << (8 * (j - 7)))) & 0xFFFFFFFF
+    _, _, c = _mix(a, b, c)
+    return c - (1 << 32) if c >= 1 << 31 else c
+
+def game_name(name):
+    """udg_PlayerName: the account name up to the first '#' (Trig_Player_Init_StripTag)."""
+    return name.split('#', 1)[0]
+
+def name_hash(name):
+    """What -save writes: abs(StringHash(name)) mod 2^20 (Trig_Cmd_Load_Code_PlayerNameHash)."""
+    return abs(string_hash(game_name(name))) % (1 << 20)
 
 class CodeError(Exception):
     pass
@@ -270,13 +323,66 @@ def titles():
                 names[int(m.group(1))] = m.group(2)
     return names
 
+def clean(code):
+    return re.sub(r'\|c[0-9A-Fa-f]{8}|\|r|\s', '', code)
+
+def code_name_hash(code):
+    """Check the code's checksum and return (version, stored name hash)."""
+    code = clean(code)
+    if len(code) < 8:
+        raise CodeError('too short')
+    version = value_of(code[0])
+    stored = 0
+    for ch in code[1:4]:
+        stored = stored * 64 + value_of(ch)
+    if stored != checksum(code[4:]):
+        raise CodeError('checksum mismatch: the code is mistyped or incomplete')
+    return version, Reader(version, code[4:]).bits_(20)
+
+def rename(code, new_name):
+    """The same code for another player name. The name hash is the first field (bits 0-19 of the body,
+    key 13*version), so only body characters 0-3 and the checksum change."""
+    code = clean(code)
+    version, _ = code_name_hash(code)
+    if version not in (6, 7):
+        raise CodeError('version %s: only G and H codes are supported' % code[0])
+    body = code[4:]
+    first = 0
+    for ch in body[:4]:
+        first = first * 64 + value_of(ch)            # 24 bits: name hash (20) + 4 bits of the next field
+    low4 = first & 0xF
+    w = Writer(version); w.bits_(name_hash(new_name), 20)
+    first = (ALPHABET.index(w.out[0]) << 18 | ALPHABET.index(w.out[1]) << 12 | ALPHABET.index(w.out[2]) << 6) | (w.buf << 4) | low4
+    new_body = ''.join(ALPHABET[(first >> sh) & 63] for sh in (18, 12, 6, 0)) + body[4:]
+    cs = checksum(new_body)
+    out = code[0] + ''.join(ALPHABET[(cs >> sh) & 63] for sh in (12, 6, 0)) + new_body
+    if code_name_hash(out)[1] != name_hash(new_name):
+        raise CodeError('internal error: rewritten code does not check out')
+    return out
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     if sys.argv[1] == 'selftest':
         return selftest()
+    if sys.argv[1] in ('checkname', 'rename'):
+        import argparse
+        ap = argparse.ArgumentParser(); ap.add_argument('cmd'); ap.add_argument('code'); ap.add_argument('name'); ap.add_argument('--old')
+        a = ap.parse_args()
+        try:
+            _, h = code_name_hash(a.code)
+            if a.cmd == 'checkname':
+                ok = h == name_hash(a.name)
+                print('%s: this code %s to "%s" (code hash %d, name hash %d)' % ('YES' if ok else 'NO', 'belongs' if ok else 'does not belong', game_name(a.name), h, name_hash(a.name)))
+                sys.exit(0 if ok else 1)
+            if a.old is not None and h != name_hash(a.old):
+                sys.exit('refused: this code does not belong to "%s" (code hash %d, that name gives %d)' % (game_name(a.old), h, name_hash(a.old)))
+            print(rename(a.code, a.name))
+        except CodeError as e:
+            sys.exit('cannot read this code: %s' % e)
+        return
     import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument('cmd'); ap.add_argument('code'); ap.add_argument('--items'); ap.add_argument('--log', action='store_true')
+    ap = argparse.ArgumentParser(); ap.add_argument('cmd'); ap.add_argument('code'); ap.add_argument('--items'); ap.add_argument('--log', action='store_true'); ap.add_argument('--name')
     a = ap.parse_args()
     items, note = {}, ''
     if a.items:
@@ -302,6 +408,9 @@ def main():
         print('%s: %s' % (inv.replace('_', ' '), ', '.join('%s%s' % (items.get(i, {}).get('name') or '#%d' % i, ' x%d' % c if c is not None else '') for i, c, _ in d[inv]) or '-'))
     print('Upgrades: ' + ', '.join('%s %d' % kv for kv in d['upgrades'].items() if kv[1]))
     print('Titles: ' + ', '.join(tn.get(n, '#%d' % n) for n in d['titles']))
+    if a.name is not None:
+        ok = d['name_hash'] == name_hash(a.name)
+        print('Belongs to "%s": %s' % (game_name(a.name), 'yes' if ok else 'NO (that name gives %d)' % name_hash(a.name)))
     if note:
         print(note)
     if a.log:
@@ -338,12 +447,18 @@ def selftest(rounds=2000):
                 want = {j: (l if l > 1 else 1) for j, l in want.items()}
             if back[key] != want:
                 raise SystemExit('selftest FAILED on %s: wrote %r read %r' % (key, want, back[key]))
+        nm = ''.join(rnd.choice('abcXYZ019_ ') for _ in range(rnd.randrange(1, 16)))
+        moved = rename(code, nm)
+        b2, _ = decode(moved, charged)
+        if b2['name_hash'] != name_hash(nm) or {k: v for k, v in b2.items() if k != 'name_hash'} != {k: v for k, v in back.items() if k != 'name_hash'} \
+                or moved.partition('(')[2] != code.partition('(')[2]:
+            raise SystemExit('selftest FAILED: rename changed more than the name')
         try:
             decode(code[:10] + ('A' if code[10] != 'A' else 'B') + code[11:], charged)
             raise SystemExit('selftest FAILED: a changed character was not detected')
         except CodeError:
             pass
-    print('selftest passed: %d random codes written and read back identically; changed characters are rejected' % rounds)
+    print('selftest passed: %d random codes written and read back identically; renamed codes keep everything but the name; changed characters are rejected' % rounds)
 
 if __name__ == '__main__':
     main()

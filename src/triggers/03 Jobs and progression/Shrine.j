@@ -10,50 +10,51 @@ globals
 endglobals
 
 function Trig_Shrine_Create_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(gg_unit_n04U_0204)
-    call CreateNUnitsAtLoc(1,'n07J',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07J': unit "Shrine of Individuality"
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(gg_unit_n04U_0204)
+    call CreateNUnitsAtLoc(1,'n07J',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07J': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[0]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07K',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07K': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07K',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07K': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[1]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07L',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07L': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07L',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07L': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[2]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07M',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07M': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07M',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07M': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[3]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07N',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07N': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07N',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07N': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[4]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07O',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07O': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07O',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07O': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[5]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07P',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07P': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07P',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07P': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[6]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07Q',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07Q': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07Q',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07Q': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[7]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07R',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07R': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07R',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07R': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[8]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n0KM',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n0KM': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n0KM',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n0KM': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[18]=GetLastCreatedUnit()
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n04U_0189)
-    call CreateNUnitsAtLoc(1,'n07J',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07J': unit "Shrine of Individuality"
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_n04U_0189)
+    call CreateNUnitsAtLoc(1,'n07J',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07J': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[9]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07K',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07K': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07K',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07K': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$A]=GetLastCreatedUnit() // $A = 10
-    call CreateNUnitsAtLoc(1,'n07L',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07L': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07L',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07L': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$B]=GetLastCreatedUnit() // $B = 11
-    call CreateNUnitsAtLoc(1,'n07M',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07M': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07M',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07M': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$C]=GetLastCreatedUnit() // $C = 12
-    call CreateNUnitsAtLoc(1,'n07N',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07N': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07N',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07N': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$D]=GetLastCreatedUnit() // $D = 13
-    call CreateNUnitsAtLoc(1,'n07O',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07O': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07O',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07O': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$E]=GetLastCreatedUnit() // $E = 14
-    call CreateNUnitsAtLoc(1,'n07P',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07P': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07P',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07P': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[$F]=GetLastCreatedUnit() // $F = 15
-    call CreateNUnitsAtLoc(1,'n07Q',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07Q': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07Q',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07Q': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[16]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n07R',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n07R': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n07R',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n07R': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[17]=GetLastCreatedUnit()
-    call CreateNUnitsAtLoc(1,'n0KM',Player(PLAYER_NEUTRAL_PASSIVE),udg_TempPoint,bj_UNIT_FACING) // 'n0KM': unit "Shrine of Individuality"
+    call CreateNUnitsAtLoc(1,'n0KM',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n0KM': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[19]=GetLastCreatedUnit()
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(gg_unit_n04U_0204)
     set bj_forLoopAIndex=9
     set bj_forLoopAIndexEnd=17
@@ -75,6 +76,7 @@ function Trig_Shrine_Create_Actions takes nothing returns nothing
     set udg_MasteryBonusAbility[8]='A0RF' // 'A0RF': ability "Serenity"
     set udg_MasteryBonusAbility[9]='A0RG' // 'A0RG': ability "Spellbreaker"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Shrine_AbilitySwap_NotShrineSeller takes nothing returns boolean

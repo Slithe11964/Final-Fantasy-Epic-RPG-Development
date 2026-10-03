@@ -578,9 +578,11 @@ function Trig_Spawn_KalmDefenders_SetupRearUnit takes nothing returns nothing
 endfunction
 
 function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call ForGroupBJ(udg_RecruitedAllies,function Trig_Spawn_KalmDefenders_HideOldAlly)
-    set udg_TempPoint=GetRectCenter(gg_rct_584)
-    call CreateNUnitsAtLoc(1,'Hvwd',Player(9),udg_TempPoint,135.) // 'Hvwd': unit "First Ranger"
+    set l_tempPoint=GetRectCenter(gg_rct_584)
+    call CreateNUnitsAtLoc(1,'Hvwd',Player(9),l_tempPoint,135.) // 'Hvwd': unit "First Ranger"
     set udg_RangerHero=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
     call SetHeroLevelBJ(GetLastCreatedUnit(),25,false)
@@ -591,28 +593,28 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I00Q',GetLastCreatedUnit()) // 'I00Q': item "Steel Gorget"
     call UnitAddItemByIdSwapped('pghe',GetLastCreatedUnit()) // 'pghe': item "Hi-Potion"
     call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionRanger)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,45.)
-    call CreateNUnitsAtLoc(1,'nhea',Player(9),udg_TempPoint2,135.) // 'nhea': object name not found in map data
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,45.)
+    call CreateNUnitsAtLoc(1,'nhea',Player(9),l_tempPoint2,135.) // 'nhea': object name not found in map data
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,225.)
-    call CreateNUnitsAtLoc(1,'nhea',Player(9),udg_TempPoint2,135.) // 'nhea': object name not found in map data
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,225.)
+    call CreateNUnitsAtLoc(1,'nhea',Player(9),l_tempPoint2,135.) // 'nhea': object name not found in map data
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
     if(Trig_Spawn_KalmDefenders_HasBomberSupport())then
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,192.,.0)
-        call CreateNUnitsAtLoc(1,'hmtm',Player(9),udg_TempPoint2,135.) // 'hmtm': unit "Bomber"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,192.,.0)
+        call CreateNUnitsAtLoc(1,'hmtm',Player(9),l_tempPoint2,135.) // 'hmtm': unit "Bomber"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,192.,270.)
-        call CreateNUnitsAtLoc(1,'hmtm',Player(9),udg_TempPoint2,135.) // 'hmtm': unit "Bomber"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,192.,270.)
+        call CreateNUnitsAtLoc(1,'hmtm',Player(9),l_tempPoint2,135.) // 'hmtm': unit "Bomber"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Spawn_KalmDefenders_HasCleric())then
-        set udg_TempPoint=GetRectCenter(gg_rct_586)
-        call CreateNUnitsAtLoc(1,'Hjai',Player(9),udg_TempPoint,150.) // 'Hjai': unit "Cleric"
+        set l_tempPoint=GetRectCenter(gg_rct_586)
+        call CreateNUnitsAtLoc(1,'Hjai',Player(9),l_tempPoint,150.) // 'Hjai': unit "Cleric"
         set udg_ClericAlly=GetLastCreatedUnit()
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call SetHeroLevelBJ(GetLastCreatedUnit(),$F,false) // $F = 15
@@ -624,10 +626,10 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
         call UnitAddItemByIdSwapped('pgma',GetLastCreatedUnit()) // 'pgma': item "Hi-Ether"
         call SelectHeroSkill(GetLastCreatedUnit(),'A00M') // 'A00M': ability "Cure"
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionCleric)
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_587)
-    call CreateNUnitsAtLoc(1,'H00T',Player(9),udg_TempPoint,180.) // 'H00T': unit "High Priest"
+    set l_tempPoint=GetRectCenter(gg_rct_587)
+    call CreateNUnitsAtLoc(1,'H00T',Player(9),l_tempPoint,180.) // 'H00T': unit "High Priest"
     set udg_HighPriestAlly=GetLastCreatedUnit()
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
     call SetHeroLevelBJ(GetLastCreatedUnit(),20,false)
@@ -639,45 +641,45 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('sman',GetLastCreatedUnit()) // 'sman': item "Mega Ether"
     call SelectHeroSkill(GetLastCreatedUnit(),'A00M') // 'A00M': ability "Cure"
     call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionPriest)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,128.)
-    call CreateNUnitsAtLoc(1,'nhea',Player(9),udg_TempPoint2,180.) // 'nhea': object name not found in map data
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,128.)
+    call CreateNUnitsAtLoc(1,'nhea',Player(9),l_tempPoint2,180.) // 'nhea': object name not found in map data
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-128.)
-    call CreateNUnitsAtLoc(1,'nhea',Player(9),udg_TempPoint2,180.) // 'nhea': object name not found in map data
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,-128.)
+    call CreateNUnitsAtLoc(1,'nhea',Player(9),l_tempPoint2,180.) // 'nhea': object name not found in map data
+    call RemoveLocation(l_tempPoint2)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_585)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_585)
     if(Trig_Spawn_KalmDefenders_HasGolemQuest())then
-        call CreateNUnitsAtLoc(1,'n015',Player(9),udg_TempPoint,135.) // 'n015': unit "Mithril Golem"
+        call CreateNUnitsAtLoc(1,'n015',Player(9),l_tempPoint,135.) // 'n015': unit "Mithril Golem"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
         // (maximum health of GetLastCreatedUnit()) divided by (3).
         call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 3))
         // (BlzGetUnitArmor(GetLastCreatedUnit())) divided by (3).
         call BlzSetUnitArmor(GetLastCreatedUnit(),(BlzGetUnitArmor(GetLastCreatedUnit())/ 3.))
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionGolem)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,135.)
-        call RemoveLocation(udg_TempPoint)
-        set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,128.,45.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint,135.) // 'hhes': unit "Knight"
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,135.)
+        call RemoveLocation(l_tempPoint)
+        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,128.,45.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint,135.) // 'hhes': unit "Knight"
+        call RemoveLocation(l_tempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,128.,225.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint,135.) // 'hhes': unit "Knight"
+        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,128.,225.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint,135.) // 'hhes': unit "Knight"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        call CreateNUnitsAtLoc(1,'Hdgo',Player(9),udg_TempPoint2,135.) // 'Hdgo': unit "Blade Knight"
+        call CreateNUnitsAtLoc(1,'Hdgo',Player(9),l_tempPoint2,135.) // 'Hdgo': unit "Blade Knight"
         set udg_BladeKnightAlly=GetLastCreatedUnit()
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
     else
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,45.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint2,135.) // 'hhes': unit "Knight"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,45.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint2,135.) // 'hhes': unit "Knight"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,225.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint2,135.) // 'hhes': unit "Knight"
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,225.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint2,135.) // 'hhes': unit "Knight"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
-        call CreateNUnitsAtLoc(1,'Hdgo',Player(9),udg_TempPoint,135.) // 'Hdgo': unit "Blade Knight"
+        call CreateNUnitsAtLoc(1,'Hdgo',Player(9),l_tempPoint,135.) // 'Hdgo': unit "Blade Knight"
         set udg_BladeKnightAlly=GetLastCreatedUnit()
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyRangerGroup)
     endif
@@ -689,33 +691,33 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I00G',GetLastCreatedUnit()) // 'I00G': item "Armguard"
     call UnitAddItemByIdSwapped('I001',GetLastCreatedUnit()) // 'I001': item "Mega Potion"
     call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionBladeKnight)
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_588)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_588)
     if(Trig_Spawn_KalmDefenders_BrothersMissing())then
-        call CreateNUnitsAtLoc(1,'h007',Player(9),udg_TempPoint,135.) // 'h007': unit "Biggs"
+        call CreateNUnitsAtLoc(1,'h007',Player(9),l_tempPoint,135.) // 'h007': unit "Biggs"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call Cam_PanToUnit(GetLastCreatedUnit(),.0)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionBiggsAlt)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,45.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint2,135.) // 'hfoo': object name not found in map data
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,45.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint2,135.) // 'hfoo': object name not found in map data
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,225.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint2,135.) // 'hfoo': object name not found in map data
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,225.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint2,135.) // 'hfoo': object name not found in map data
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        call RemoveLocation(udg_TempPoint2)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,165.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint2,135.) // 'hfoo': object name not found in map data
+        call RemoveLocation(l_tempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,165.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint2,135.) // 'hfoo': object name not found in map data
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        call RemoveLocation(udg_TempPoint2)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,105.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint2,135.) // 'hfoo': object name not found in map data
+        call RemoveLocation(l_tempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,105.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint2,135.) // 'hfoo': object name not found in map data
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
     else
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,45.)
-        call CreateNUnitsAtLoc(1,'Ocbh',Player(9),udg_TempPoint2,135.) // 'Ocbh': unit "Brother"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,45.)
+        call CreateNUnitsAtLoc(1,'Ocbh',Player(9),l_tempPoint2,135.) // 'Ocbh': unit "Brother"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call UnitRemoveAbilityBJ('A0TT',GetLastCreatedUnit()) // 'A0TT': ability "Gaya Lifestream"
         if(Trig_Spawn_KalmDefenders_IsLateStoryDone())then
@@ -734,8 +736,8 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
         call UnitAddItemByIdSwapped('I00Q',GetLastCreatedUnit()) // 'I00Q': item "Steel Gorget"
         call UnitAddItemByIdSwapped('pghe',GetLastCreatedUnit()) // 'pghe': item "Hi-Potion"
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionBrother)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,225.)
-        call CreateNUnitsAtLoc(1,'Ocb2',Player(9),udg_TempPoint2,135.) // 'Ocb2': unit "Brother"
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,225.)
+        call CreateNUnitsAtLoc(1,'Ocb2',Player(9),l_tempPoint2,135.) // 'Ocb2': unit "Brother"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call UnitRemoveAbilityBJ('A0TT',GetLastCreatedUnit()) // 'A0TT': ability "Gaya Lifestream"
         if(Trig_Spawn_KalmDefenders_LateStoryCleared())then
@@ -754,66 +756,66 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
         call UnitAddItemByIdSwapped('I00C',GetLastCreatedUnit()) // 'I00C': item "Blazer Gloves"
         call UnitAddItemByIdSwapped('I02V',GetLastCreatedUnit()) // 'I02V': item "Nectar"
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionBrother2)
-        call RemoveLocation(udg_TempPoint2)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,135.)
-        call CreateNUnitsAtLoc(1,'h007',Player(9),udg_TempPoint2,135.) // 'h007': unit "Biggs"
+        call RemoveLocation(l_tempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,135.)
+        call CreateNUnitsAtLoc(1,'h007',Player(9),l_tempPoint2,135.) // 'h007': unit "Biggs"
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call Cam_PanToUnit(GetLastCreatedUnit(),.0)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionBiggs)
-        call RemoveLocation(udg_TempPoint)
-        set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256.,45.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint,135.) // 'hfoo': object name not found in map data
+        call RemoveLocation(l_tempPoint)
+        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256.,45.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint,135.) // 'hfoo': object name not found in map data
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
-        call RemoveLocation(udg_TempPoint)
-        set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256.,225.)
-        call CreateNUnitsAtLoc(1,'hfoo',Player(9),udg_TempPoint,135.) // 'hfoo': object name not found in map data
+        call RemoveLocation(l_tempPoint)
+        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256.,225.)
+        call CreateNUnitsAtLoc(1,'hfoo',Player(9),l_tempPoint,135.) // 'hfoo': object name not found in map data
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
     endif
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Spawn_KalmDefenders_HasFriend1())then
-        set udg_TempPoint=GetRectCenter(gg_rct_588)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,75.)
-        call RemoveLocation(udg_TempPoint)
-        call CreateNUnitsAtLoc(1,'H01I',Player(9),udg_TempPoint2,105.) // 'H01I': unit "Friend of Brothers"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint=GetRectCenter(gg_rct_588)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,512.,75.)
+        call RemoveLocation(l_tempPoint)
+        call CreateNUnitsAtLoc(1,'H01I',Player(9),l_tempPoint2,105.) // 'H01I': unit "Friend of Brothers"
+        call RemoveLocation(l_tempPoint2)
         call SetHeroLevelBJ(GetLastCreatedUnit(),25,false)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionFriend1)
     endif
     if(Trig_Spawn_KalmDefenders_HasFriend2())then
-        set udg_TempPoint=GetRectCenter(gg_rct_588)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,45.)
-        call RemoveLocation(udg_TempPoint)
-        call CreateNUnitsAtLoc(1,'H01J',Player(9),udg_TempPoint2,105.) // 'H01J': unit "Friend of Brothers"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint=GetRectCenter(gg_rct_588)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,512.,45.)
+        call RemoveLocation(l_tempPoint)
+        call CreateNUnitsAtLoc(1,'H01J',Player(9),l_tempPoint2,105.) // 'H01J': unit "Friend of Brothers"
+        call RemoveLocation(l_tempPoint2)
         call SetHeroLevelBJ(GetLastCreatedUnit(),35,false)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionFriend2)
     endif
     if(Trig_Spawn_KalmDefenders_HasFriend3())then
-        set udg_TempPoint=GetRectCenter(gg_rct_588)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,215.)
-        call RemoveLocation(udg_TempPoint)
-        call CreateNUnitsAtLoc(1,'H01K',Player(9),udg_TempPoint2,165.) // 'H01K': unit "Friend of Brothers"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint=GetRectCenter(gg_rct_588)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,512.,215.)
+        call RemoveLocation(l_tempPoint)
+        call CreateNUnitsAtLoc(1,'H01K',Player(9),l_tempPoint2,165.) // 'H01K': unit "Friend of Brothers"
+        call RemoveLocation(l_tempPoint2)
         call SetHeroLevelBJ(GetLastCreatedUnit(),25,false)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionFriend3)
     endif
     if(Trig_Spawn_KalmDefenders_HasFriend4())then
-        set udg_TempPoint=GetRectCenter(gg_rct_588)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,185.)
-        call RemoveLocation(udg_TempPoint)
-        call CreateNUnitsAtLoc(1,'H01L',Player(9),udg_TempPoint2,165.) // 'H01L': unit "Friend of Brothers"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint=GetRectCenter(gg_rct_588)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,512.,185.)
+        call RemoveLocation(l_tempPoint)
+        call CreateNUnitsAtLoc(1,'H01L',Player(9),l_tempPoint2,165.) // 'H01L': unit "Friend of Brothers"
+        call RemoveLocation(l_tempPoint2)
         call SetHeroLevelBJ(GetLastCreatedUnit(),40,false)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyBrothersGroup)
         call ForForce(udg_PlayingPlayers,function Trig_Spawn_KalmDefenders_ShareVisionFriend4)
     endif
     if(Trig_Spawn_KalmDefenders_MidStoryReached())then
-        set udg_TempPoint=GetRectCenter(gg_rct_635)
-        call CreateNUnitsAtLoc(1,'Hpb1',Player(9),udg_TempPoint,225.) // 'Hpb1': unit "Engineer"
+        set l_tempPoint=GetRectCenter(gg_rct_635)
+        call CreateNUnitsAtLoc(1,'Hpb1',Player(9),l_tempPoint,225.) // 'Hpb1': unit "Engineer"
         set udg_EngineerHero=GetLastCreatedUnit()
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
         call SetHeroLevelBJ(GetLastCreatedUnit(),30,false)
@@ -823,41 +825,41 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
         call UnitAddItemByIdSwapped('I01R',GetLastCreatedUnit()) // 'I01R': item "Mithril Mail"
         call UnitAddItemByIdSwapped('I00Q',GetLastCreatedUnit()) // 'I00Q': item "Steel Gorget"
         call UnitAddItemByIdSwapped('pghe',GetLastCreatedUnit()) // 'pghe': item "Hi-Potion"
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,135.)
-        call CreateNUnitsAtLoc(1,'h00K',Player(9),udg_TempPoint2,225.) // 'h00K': unit "Wedge"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,135.)
+        call CreateNUnitsAtLoc(1,'h00K',Player(9),l_tempPoint2,225.) // 'h00K': unit "Wedge"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,315.)
-        call CreateNUnitsAtLoc(1,'n00D',Player(9),udg_TempPoint2,225.) // 'n00D': unit "Jessie"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,315.)
+        call CreateNUnitsAtLoc(1,'n00D',Player(9),l_tempPoint2,225.) // 'n00D': unit "Jessie"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,195.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint2,225.) // 'hhes': unit "Knight"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,195.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint2,225.) // 'hhes': unit "Knight"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,255.)
-        call CreateNUnitsAtLoc(1,'hhes',Player(9),udg_TempPoint2,225.) // 'hhes': unit "Knight"
-        call RemoveLocation(udg_TempPoint2)
+        set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,255.)
+        call CreateNUnitsAtLoc(1,'hhes',Player(9),l_tempPoint2,225.) // 'hhes': unit "Knight"
+        call RemoveLocation(l_tempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
         if(Trig_Spawn_KalmDefenders_HasGunnerSupport())then
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,30.)
-            call CreateNUnitsAtLoc(1,'hmtm',Player(9),udg_TempPoint2,225.) // 'hmtm': unit "Bomber"
-            call RemoveLocation(udg_TempPoint2)
+            set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,30.)
+            call CreateNUnitsAtLoc(1,'hmtm',Player(9),l_tempPoint2,225.) // 'hmtm': unit "Bomber"
+            call RemoveLocation(l_tempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,384.,60.)
-            call CreateNUnitsAtLoc(1,'hmtm',Player(9),udg_TempPoint2,225.) // 'hmtm': unit "Bomber"
-            call RemoveLocation(udg_TempPoint2)
+            set l_tempPoint2=Loc_PolarOffset(l_tempPoint,384.,60.)
+            call CreateNUnitsAtLoc(1,'hmtm',Player(9),l_tempPoint2,225.) // 'hmtm': unit "Bomber"
+            call RemoveLocation(l_tempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,90.)
-            call CreateNUnitsAtLoc(1,'hrif',Player(9),udg_TempPoint2,225.) // 'hrif': unit "Gunner"
-            call RemoveLocation(udg_TempPoint2)
+            set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,90.)
+            call CreateNUnitsAtLoc(1,'hrif',Player(9),l_tempPoint2,225.) // 'hrif': unit "Gunner"
+            call RemoveLocation(l_tempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256.,.0)
-            call CreateNUnitsAtLoc(1,'hrif',Player(9),udg_TempPoint2,225.) // 'hrif': unit "Gunner"
-            call RemoveLocation(udg_TempPoint2)
+            set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256.,.0)
+            call CreateNUnitsAtLoc(1,'hrif',Player(9),l_tempPoint2,225.) // 'hrif': unit "Gunner"
+            call RemoveLocation(l_tempPoint2)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AllyEngineerGroup)
         endif
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call ForGroupBJ(udg_AllyEngineerGroup,function Trig_Spawn_KalmDefenders_SetupEngineerUnit)
         if(Trig_Spawn_KalmDefenders_LateStoryPending())then
             call ForGroupBJ(udg_AllyEngineerGroup,function Trig_Spawn_KalmDefenders_HideEngineerGroup)
@@ -867,6 +869,8 @@ function Trig_Spawn_KalmDefenders_Actions takes nothing returns nothing
     endif
     call ForGroupBJ(udg_AllyBrothersGroup,function Trig_Spawn_KalmDefenders_SetupFrontUnit)
     call ForGroupBJ(udg_AllyRangerGroup,function Trig_Spawn_KalmDefenders_SetupRearUnit)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Spawn automatically; it is intentionally empty. This module's

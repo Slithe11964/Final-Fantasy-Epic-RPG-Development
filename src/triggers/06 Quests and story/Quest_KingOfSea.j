@@ -10,6 +10,7 @@ function Trig_Quest_KingOfSea_Slain_Cond_TrackBossKill takes nothing returns boo
 endfunction
 
 function Trig_Quest_KingOfSea_Slain_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_KingOfSea_Slain_Cond_TrackBossKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -19,19 +20,20 @@ function Trig_Quest_KingOfSea_Slain_Actions takes nothing returns nothing
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossUnits)
     call PauseTimerBJ(true,udg_NebraKingTimer)
     set udg_FishLoot[90]='I0GW' // 'I0GW': item "Gold Fish"
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0GR',udg_TempPoint) // 'I0GR': item "Nebra King Head"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0GR',l_tempPoint) // 'I0GR': item "Nebra King Head"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call RemoveLocation(l_tempPoint)
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     call QuestSetDescriptionBJ(udg_SideQuest[48],"You've taken down the Nebra King! Now show your achievement to someone who may be interested.")
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Show proof of your achievement to an interested party.")
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_KingOfSea_Reward_Conditions takes nothing returns boolean

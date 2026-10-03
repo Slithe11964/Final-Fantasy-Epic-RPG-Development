@@ -15,11 +15,12 @@ function Trig_DarkShiva_Appear_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkShiva_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(gg_unit_E00C_0046)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_E00C_0046)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_DarkShiva_Appear_CinematicsOn())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_E00C_0046,0)
@@ -39,6 +40,7 @@ function Trig_DarkShiva_Appear_Actions takes nothing returns nothing
     call UnitAddAbilityBJ('A0ZR',gg_unit_E00C_0046) // 'A0ZR': ability "Immortal"
     call EnableTrigger(gg_trg_DarkShiva_Phase2)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkShiva_Phase2_CinematicsOn takes nothing returns boolean
@@ -46,22 +48,24 @@ function Trig_DarkShiva_Phase2_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkShiva_Phase2_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
-    set udg_TempPoint=GetUnitLoc(gg_unit_E00C_0046)
+    set l_tempPoint=GetUnitLoc(gg_unit_E00C_0046)
     // The remainder after dividing ((facing in degrees of gg_unit_E00C_0046) plus (90)) by (360).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,ModuloReal((GetUnitFacing(gg_unit_E00C_0046)+90.),360.))
-    call SetUnitPositionLocFacingBJ(gg_unit_H01S_0045,udg_TempPoint2,GetUnitFacing(gg_unit_E00C_0046))
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,ModuloReal((GetUnitFacing(gg_unit_E00C_0046)+90.),360.))
+    call SetUnitPositionLocFacingBJ(gg_unit_H01S_0045,l_tempPoint2,GetUnitFacing(gg_unit_E00C_0046))
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     // The remainder after dividing ((facing in degrees of gg_unit_E00C_0046) plus (270)) by (360).
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,ModuloReal((GetUnitFacing(gg_unit_E00C_0046)+270.),360.))
-    call SetUnitPositionLocFacingBJ(gg_unit_H01T_0044,udg_TempPoint2,GetUnitFacing(gg_unit_E00C_0046))
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,ModuloReal((GetUnitFacing(gg_unit_E00C_0046)+270.),360.))
+    call SetUnitPositionLocFacingBJ(gg_unit_H01T_0044,l_tempPoint2,GetUnitFacing(gg_unit_E00C_0046))
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(gg_unit_E00C_0046,true)
     if(Trig_DarkShiva_Phase2_CinematicsOn())then
         call Cine_Enter()
@@ -72,10 +76,10 @@ function Trig_DarkShiva_Phase2_Actions takes nothing returns nothing
         call ShowUnitShow(gg_unit_H01T_0044)
         call SetUnitFacingToFaceUnitTimed(gg_unit_E00C_0046,gg_unit_H01S_0045,.2)
         call Text_Say(gg_unit_H01S_0045,"|cff555555We will help you, Shiva!|r",true)
-        set udg_TempPoint=GetUnitLoc(gg_unit_E00C_0046)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
+        set l_tempPoint=GetUnitLoc(gg_unit_E00C_0046)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitFacingToFaceUnitTimed(gg_unit_E00C_0046,gg_unit_H01T_0044,.2)
         call Text_Say(gg_unit_H01T_0044,"|cff555555Yes... we will.|r",true)
         call SetUnitFacingTimed(gg_unit_E00C_0046,GetUnitFacing(gg_unit_H01S_0045),.2)
@@ -83,10 +87,10 @@ function Trig_DarkShiva_Phase2_Actions takes nothing returns nothing
         call Cine_ExitAction()
     else
         call PauseUnitBJ(true,gg_unit_E00C_0046)
-        set udg_TempPoint=GetUnitLoc(gg_unit_E00C_0046)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
+        set l_tempPoint=GetUnitLoc(gg_unit_E00C_0046)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call Wait_Polled(.5)
         call SetUnitLifePercentBJ(gg_unit_E00C_0046,'d')
         call ShowUnitShow(gg_unit_H01S_0045)
@@ -107,6 +111,8 @@ function Trig_DarkShiva_Phase2_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0ZR',gg_unit_E00C_0046) // 'A0ZR': ability "Immortal"
     call EnableTrigger(gg_trg_DarkShiva_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_DarkShiva_Death_DarkIfritDead takes nothing returns boolean

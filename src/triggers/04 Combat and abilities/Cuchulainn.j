@@ -10,22 +10,24 @@ function Trig_Cuchulainn_Soul_Death_CoinFlip takes nothing returns boolean
 endfunction
 
 function Trig_Cuchulainn_Soul_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0JV',udg_TempPoint) // 'I0JV': item "Curse: Poison Wand"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0JV',l_tempPoint) // 'I0JV': item "Curse: Poison Wand"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
     if(Trig_Cuchulainn_Soul_Death_CoinFlip())then
-        call CreateItemLoc('I05I',udg_TempPoint) // 'I05I': item "Spirit Potion"
+        call CreateItemLoc('I05I',l_tempPoint) // 'I05I': item "Spirit Potion"
     else
-        call CreateItemLoc('I05H',udg_TempPoint) // 'I05H': item "Blood Ether"
+        call CreateItemLoc('I05H',l_tempPoint) // 'I05H': item "Blood Ether"
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_ShemhazaiPhase=4
     call SetUnitInvulnerable(gg_unit_U00I_0210,false)
     call UnitRemoveAbilityBJ('Abun',gg_unit_U00I_0210) // 'Abun': object name not found in map data
     call UnitAddAbilityBJ('A12F',gg_unit_U00I_0210) // 'A12F': ability "Soul Split"
     call EnableTrigger(gg_trg_Boss_Shemhazai_Death)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Cuchulainn automatically; it is intentionally empty. This module's

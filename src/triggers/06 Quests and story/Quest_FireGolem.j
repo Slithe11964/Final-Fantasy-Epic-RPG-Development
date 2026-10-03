@@ -75,16 +75,18 @@ function Trig_Quest_FireGolem_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_FireGolem_HeartDropped_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[2]=CreateItemLoc('jpnt',udg_TempPoint) // 'jpnt': item "Fire Golem's Heart"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[2]=CreateItemLoc('jpnt',l_tempPoint) // 'jpnt': item "Fire Golem's Heart"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call CreateItemLoc('I01E',udg_TempPoint) // 'I01E': item "Fire Wand"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I01E',l_tempPoint) // 'I01E': item "Fire Wand"
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Quest_FireGolem_Ping)
     call EnableTrigger(gg_trg_Quest_FireGolem_HeartTaken)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_FireGolem_Ping_Conditions takes nothing returns boolean

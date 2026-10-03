@@ -21,6 +21,7 @@ function Trig_Boss_Lilith_Death_Cond_RamzaDead takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_Lilith_Death_Cond_TrackKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -28,9 +29,9 @@ function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
     endif
     call GroupRemoveUnitSimple(gg_unit_e009_0118,udg_BossUnits)
     call ForGroupBJ(Group_UnitsOfPlayerAndType(Player($B),'e00A'),function Trig_Boss_Lilith_Death_Enum_RemoveShadowMaiden) // $B = 11; 'e00A': unit "Shadow Maiden"
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0KW',udg_TempPoint) // 'I0KW': item "Siphoning Staff"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0KW',l_tempPoint) // 'I0KW': item "Siphoning Staff"
+    call RemoveLocation(l_tempPoint)
     if(Trig_Boss_Lilith_Death_Cond_CinematicsEnabled())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -40,16 +41,16 @@ function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
     else
         call Reward_Give(5000,5000,gg_unit_Eill_0119)
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_641)
+    set l_tempPoint=GetRectCenter(gg_rct_641)
     if(Trig_Boss_Lilith_Death_Cond_RamzaDead())then
-        call ReviveHeroLoc(gg_unit_Eill_0119,udg_TempPoint,false)
+        call ReviveHeroLoc(gg_unit_Eill_0119,l_tempPoint,false)
         call SetUnitFacingTimed(gg_unit_Eill_0119,bj_UNIT_FACING,0)
     else
-        call SetUnitPositionLocFacingBJ(gg_unit_Eill_0119,udg_TempPoint,bj_UNIT_FACING)
+        call SetUnitPositionLocFacingBJ(gg_unit_Eill_0119,l_tempPoint,bj_UNIT_FACING)
         call SetUnitLifePercentBJ(gg_unit_Eill_0119,'d')
         call UnitRemoveBuffsBJ(bj_REMOVEBUFFS_ALL,gg_unit_Eill_0119)
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call SetUnitOwner(gg_unit_Eill_0119,Player(8),true)
     call SetUnitInvulnerable(gg_unit_Eill_0119,true)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Holy Knight|r")
@@ -59,6 +60,7 @@ function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
     call StartTimerBJ(udg_AlmaDisappearTimer,false,300.)
     call EnableTrigger(gg_trg_Alma_Disappear)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_Lilith takes nothing returns nothing

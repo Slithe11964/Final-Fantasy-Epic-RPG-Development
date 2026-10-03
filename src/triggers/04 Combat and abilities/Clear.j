@@ -5,9 +5,11 @@ globals
 endglobals
 
 function Trig_Clear_Command_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
-    call ClearTextMessagesBJ(udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
+    call ClearTextMessagesBJ(l_tempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Clear automatically; it is intentionally empty. This module's

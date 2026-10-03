@@ -27,19 +27,20 @@ function Trig_Dps_Tick_IsNinjaAward takes nothing returns boolean
 endfunction
 
 function Trig_Dps_Tick_AverageDpsEnum takes nothing returns nothing
+    local integer l_tempInteger
     if(Trig_Dps_Tick_SlotHasDamage())then
         set udg_DpsActive=true
         set udg_DpsRefresh=true
     endif
     set udg_TempReal=.0
-    set udg_TempInteger=0
+    set l_tempInteger=0
     loop
         // (LoadIntegerBJ(2, 0, udg_DpsHash)) minus (1).
-        exitwhen udg_TempInteger>(LoadIntegerBJ(2,0,udg_DpsHash)-1)
-        // (udg_TempReal) plus (LoadRealBJ(udg_TempInteger, GetConvertedPlayerId(the player being visited),
+        exitwhen l_tempInteger>(LoadIntegerBJ(2,0,udg_DpsHash)-1)
+        // (udg_TempReal) plus (LoadRealBJ(l_tempInteger, GetConvertedPlayerId(the player being visited),
         // udg_DpsHash)).
-        set udg_TempReal=(udg_TempReal+LoadRealBJ(udg_TempInteger,GetConvertedPlayerId(GetEnumPlayer()),udg_DpsHash))
-        set udg_TempInteger=udg_TempInteger+1
+        set udg_TempReal=(udg_TempReal+LoadRealBJ(l_tempInteger,GetConvertedPlayerId(GetEnumPlayer()),udg_DpsHash))
+        set l_tempInteger=l_tempInteger+1
     endloop
     // (udg_TempReal) divided by (LoadIntegerBJ(2, 0, udg_DpsHash) treated as a decimal-capable number).
     set udg_TempReal=(udg_TempReal/ I2R(LoadIntegerBJ(2,0,udg_DpsHash)))

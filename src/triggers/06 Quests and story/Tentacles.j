@@ -63,15 +63,16 @@ function Trig_Tentacles_Ambush_IsLureTarget takes nothing returns boolean
 endfunction
 
 function Trig_Tentacles_Ambush_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
+    set l_tempPoint=GetUnitLoc(GetAttacker())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (45) times (loop counter A treated as a decimal-capable number).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,300.,(45.*I2R(GetForLoopIndexA())))
-        call CreateNUnitsAtLocFacingLocBJ(1,'n0C9',Player($B),udg_TempPoint2,udg_TempPoint) // 'n0C9': object name not found in map data; $B = 11
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,300.,(45.*I2R(GetForLoopIndexA())))
+        call CreateNUnitsAtLocFacingLocBJ(1,'n0C9',Player($B),udg_TempPoint2,l_tempPoint) // 'n0C9': object name not found in map data; $B = 11
         call PauseUnitBJ(true,GetLastCreatedUnit())
         call SetUnitAnimation(GetLastCreatedUnit(),"birth")
         call QueueUnitAnimationBJ(GetLastCreatedUnit(),"stand")
@@ -79,7 +80,7 @@ function Trig_Tentacles_Ambush_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Tentacles_Ambush_IsLureTarget())then
         call EnableTrigger(gg_trg_Tentacles_Yelp)
         call Wait_Polled(.5)
@@ -88,6 +89,7 @@ function Trig_Tentacles_Ambush_Actions takes nothing returns nothing
     else
         call StartTimerBJ(udg_TentacleTimer,false,.5)
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Tentacles_Yelp_Conditions takes nothing returns boolean

@@ -50,12 +50,15 @@ function Trig_IceAge_FreezeTimeout_IsLivePlayerUnit takes nothing returns boolea
 endfunction
 
 function Trig_IceAge_FreezeTimeout_MoveToRespawn takes nothing returns nothing
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_659)
-    call SetUnitPositionLocFacingBJ(GetEnumUnit(),udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRandomLocInRect(gg_rct_659)
+    call SetUnitPositionLocFacingBJ(GetEnumUnit(),l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_IceAge_FreezeTimeout_Actions takes nothing returns nothing
+    local group l_tempGroup
     call SetUnitInvulnerable(udg_EcheleBoss,true)
     if(Trig_IceAge_FreezeTimeout_KnightDead())then
         call PauseTimerBJ(true,udg_GafgarionReviveTimer)
@@ -64,6 +67,7 @@ function Trig_IceAge_FreezeTimeout_Actions takes nothing returns nothing
     endif
     if(Trig_IceAge_FreezeTimeout_CinematicActive())then
         call StartTimerBJ(udg_WorldFreezeTimer,false,.49)
+        set l_tempGroup=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -95,6 +99,7 @@ function Trig_IceAge_FreezeTimeout_Actions takes nothing returns nothing
     call Text_Say(null,"As the spell reached completion, the world was turned to ice.\r\n\r\nAll life frozen for eternity, never to move again.",true)
     if(Trig_IceAge_FreezeTimeout_HardcoreMode())then
         call ConditionalTriggerExecute(gg_trg_Ending_FrozenWorld)
+        set l_tempGroup=null
         return
     endif
     call Text_Say(null,"|cffffcc00You may retry the battle against Echele from scratch.\r\n\r\nIf you do not feel strong enough, consider looking for additional gear or allies!|r",true)
@@ -119,13 +124,14 @@ function Trig_IceAge_FreezeTimeout_Actions takes nothing returns nothing
     call SetUnitOwner(udg_StoryBoss,Player(8),false)
     call GroupAddUnitSimple(udg_StoryBoss,udg_QuestUnits)
     call PauseUnitBJ(true,udg_StoryBoss)
-    set udg_TempGroup=Group_UnitsInRect(gg_rct_658,Condition(function Trig_IceAge_FreezeTimeout_IsLivePlayerUnit))
-    call ForGroupBJ(udg_TempGroup,function Trig_IceAge_FreezeTimeout_MoveToRespawn)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsInRect(gg_rct_658,Condition(function Trig_IceAge_FreezeTimeout_IsLivePlayerUnit))
+    call ForGroupBJ(l_tempGroup,function Trig_IceAge_FreezeTimeout_MoveToRespawn)
+    call DestroyGroup(l_tempGroup)
     set udg_ShadowForcedSpawn=48
     call EnableTrigger(gg_trg_Gafgarion_Join_Summit)
     call EnableTrigger(gg_trg_Boss_Echele_Start)
     call Music_ClearTrack(17)
+    set l_tempGroup=null
 endfunction
 
 function Trig_IceAge_Victory_Conditions takes nothing returns boolean

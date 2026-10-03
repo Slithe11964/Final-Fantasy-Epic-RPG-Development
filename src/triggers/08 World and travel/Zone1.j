@@ -17,10 +17,12 @@ function Trig_Zone1_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Zone1_Leash_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 1 through LoadIntegerBJ(1, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(1,2,udg_SpawnDataHashRef)),1,udg_SpawnRectHashRef))
-    call SetUnitPositionLoc(GetTriggerUnit(),udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(1,2,udg_SpawnDataHashRef)),1,udg_SpawnRectHashRef))
+    call SetUnitPositionLoc(GetTriggerUnit(),l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Zone1 automatically; it is intentionally empty. This module's

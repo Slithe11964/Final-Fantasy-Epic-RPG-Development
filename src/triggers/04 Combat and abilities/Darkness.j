@@ -15,12 +15,14 @@ function Trig_Darkness_LowHP_Cancel_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Darkness_LowHP_Cancel_Actions takes nothing returns nothing
+    local force l_tempForce
     call PauseUnitBJ(true,GetTriggerUnit())
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stop")
     call PauseUnitBJ(false,GetTriggerUnit())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000Your HP is too low to use this ability!|r")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000Your HP is too low to use this ability!|r")
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Darkness_Cast_IsDarknessAbility takes nothing returns boolean

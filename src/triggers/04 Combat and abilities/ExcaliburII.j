@@ -19,11 +19,13 @@ function Trig_ExcaliburII_ShowRock_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ExcaliburII_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetDestructableLoc(GetDyingDestructable())
-    call CreateItemLoc('I07M',udg_TempPoint) // 'I07M': item "Excalibur II"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetDestructableLoc(GetDyingDestructable())
+    call CreateItemLoc('I07M',l_tempPoint) // 'I07M': item "Excalibur II"
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_ExcaliburII automatically; it is intentionally empty. This module's

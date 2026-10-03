@@ -16,6 +16,7 @@ globals
 endglobals
 
 function Trig_TargetPractice_Init_Actions takes nothing returns nothing
+    local integer l_tempInteger
     set udg_SpecialEffect[81]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e017_0018,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_TargetPractice_Start)
     set udg_TargetRecordHolder=Player(9)
@@ -31,13 +32,13 @@ function Trig_TargetPractice_Init_Actions takes nothing returns nothing
     set udg_TargetRecordTime[5]=120.
     set udg_TargetPracticeAreaId=6
     // A random whole number from 1 through 3.
-    set udg_TempInteger=GetRandomInt(1,3)
+    set l_tempInteger=GetRandomInt(1,3)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=LoadIntegerBJ(6,2,udg_SpawnDataHashRef)
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         set bj_forLoopBIndex=1
-        set bj_forLoopBIndexEnd=udg_TempInteger
+        set bj_forLoopBIndexEnd=l_tempInteger
         loop
             exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
             set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetForLoopIndexA(),6,udg_SpawnRectHashRef))
@@ -49,8 +50,8 @@ function Trig_TargetPractice_Init_Actions takes nothing returns nothing
             call TriggerRegisterUnitEvent(gg_trg_TargetPractice_TargetHit,GetLastCreatedUnit(),EVENT_UNIT_DAMAGED)
             set bj_forLoopBIndex=bj_forLoopBIndex+1
         endloop
-        // (the remainder after dividing (udg_TempInteger) by (3)) plus (1).
-        set udg_TempInteger=(ModuloInteger(udg_TempInteger,3)+1)
+        // (the remainder after dividing (l_tempInteger) by (3)) plus (1).
+        set l_tempInteger=(ModuloInteger(l_tempInteger,3)+1)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call DestroyTrigger(GetTriggeringTrigger())
@@ -103,9 +104,11 @@ function Trig_TargetPractice_PingTargets_Cond_ManyTargetsInArea takes nothing re
 endfunction
 
 function Trig_TargetPractice_PingTargets_Enum_PingTarget takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call PingMinimapLocForForce(udg_TempForce,udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call PingMinimapLocForForce(udg_TempForce,l_tempPoint,2.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_TargetPractice_PingTargets_Actions takes nothing returns nothing

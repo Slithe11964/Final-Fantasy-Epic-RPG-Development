@@ -29,9 +29,10 @@ function Trig_Firewood_Light_Fireplace_FirewoodSpent takes nothing returns boole
 endfunction
 
 function Trig_Firewood_Light_Fireplace_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(400.,udg_TempPoint,Condition(function Trig_Firewood_Light_Fireplace_FilterUnlitFireplace))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(400.,l_tempPoint,Condition(function Trig_Firewood_Light_Fireplace_FilterUnlitFireplace))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Firewood_Light_Fireplace_NoFireplaceNearby())then
         call DestroyGroup(udg_TempGroup)
         // (item charges of the item being used or moved) plus (1).
@@ -39,6 +40,7 @@ function Trig_Firewood_Light_Fireplace_Actions takes nothing returns nothing
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"There is no lightable fireplace nearby.")
         call DestroyForce(udg_TempForce)
+        set l_tempPoint=null
         return
     endif
     call ReplaceUnitBJ(GroupPickRandomUnit(udg_TempGroup),'n0KG',bj_UNIT_STATE_METHOD_MAXIMUM) // 'n0KG': unit "Fireplace"
@@ -61,6 +63,7 @@ function Trig_Firewood_Light_Fireplace_Actions takes nothing returns nothing
         call RemoveItem(GetManipulatedItem())
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Firewood automatically; it is intentionally empty. This module's

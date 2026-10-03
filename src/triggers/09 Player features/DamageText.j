@@ -25,6 +25,7 @@ function Trig_DamageText_Command_Cond_DamageTextNowOn takes nothing returns bool
 endfunction
 
 function Trig_DamageText_Command_Actions takes nothing returns nothing
+    local force l_tempForce
     if(Trig_DamageText_Command_Cond_DamageTextOnArg())then
         call ForceAddPlayerSimple(GetTriggerPlayer(),udg_TrackedPlayers)
     else
@@ -38,17 +39,19 @@ function Trig_DamageText_Command_Actions takes nothing returns nothing
                     call ForceAddPlayerSimple(GetTriggerPlayer(),udg_TrackedPlayers)
                 endif
             else
+                set l_tempForce=null
                 return
             endif
         endif
     endif
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     if(Trig_DamageText_Command_Cond_DamageTextNowOn())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"Damage Floating Text is now turned on.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"Damage Floating Text is now turned on.")
     else
-        call DisplayTimedTextToForce(udg_TempForce,10.,"Damage Floating Text is now turned off.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"Damage Floating Text is now turned off.")
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_DamageText automatically; it is intentionally empty. This module's

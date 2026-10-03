@@ -65,9 +65,10 @@ function Trig_Levels_Command_Cond_LegendaryModeOn takes nothing returns boolean
 endfunction
 
 function Trig_Levels_Command_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     if(Trig_Levels_Command_Cond_HasNewGamePlus())then
-        call DisplayTimedTextToForce(udg_TempForce,20.,("|cffffdd22New Game Plus "+I2S(udg_NewGamePlusLevel[GetConvertedPlayerId(GetTriggerPlayer())])))
+        call DisplayTimedTextToForce(l_tempForce,20.,("|cffffdd22New Game Plus "+I2S(udg_NewGamePlusLevel[GetConvertedPlayerId(GetTriggerPlayer())])))
     endif
     set udg_TempString=""
     set bj_forLoopAIndex=0
@@ -93,7 +94,7 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
             set udg_TempString=(((udg_TempString+"|cff00ffff")+"Freelancer")+(":|r |cffffcc00"+(I2S(GetHeroLevel(udg_FreelancerHero[GetConvertedPlayerId(GetTriggerPlayer())]))+"|r ")))
         endif
     endif
-    call DisplayTimedTextToForce(udg_TempForce,20.,udg_TempString)
+    call DisplayTimedTextToForce(l_tempForce,20.,udg_TempString)
     set udg_TempString="Jobs mastered: |cff00ffff"
     set bj_forLoopAIndex=0
     // (udg_JobCount) minus (1).
@@ -112,7 +113,7 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
         set udg_TempString=(udg_TempString+"Freelancer")
     endif
     if(Trig_Levels_Command_Cond_MasteredListFilled())then
-        call DisplayTimedTextToForce(udg_TempForce,20.,(udg_TempString+"|r"))
+        call DisplayTimedTextToForce(l_tempForce,20.,(udg_TempString+"|r"))
     endif
     set udg_TempString="Jobs ultimately mastered: |cff00ffff"
     set bj_forLoopAIndex=0
@@ -129,7 +130,7 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
         set udg_TempString=(udg_TempString+"Freelancer")
     endif
     if(Trig_Levels_Command_Cond_UltimateListFilled())then
-        call DisplayTimedTextToForce(udg_TempForce,20.,(udg_TempString+"|r"))
+        call DisplayTimedTextToForce(l_tempForce,20.,(udg_TempString+"|r"))
     endif
     if(Trig_Levels_Command_Cond_LegendaryModeOn())then
         set udg_TempString="Jobs legendarily mastered: |cff00ffff"
@@ -147,11 +148,12 @@ function Trig_Levels_Command_Actions takes nothing returns nothing
             set udg_TempString=(udg_TempString+"Freelancer")
         endif
         if(Trig_Levels_Command_Cond_LegendaryListFilled())then
-            call DisplayTimedTextToForce(udg_TempForce,20.,(udg_TempString+"|r"))
+            call DisplayTimedTextToForce(l_tempForce,20.,(udg_TempString+"|r"))
         endif
     endif
     set udg_TempString=""
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Levels automatically; it is intentionally empty. This module's

@@ -105,6 +105,7 @@ function Trig_Nimphrodel_Undomiel_Cond_ShowUndomielTalk takes nothing returns bo
 endfunction
 
 function Trig_Nimphrodel_Undomiel_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
     call DestroyEffectBJ(udg_SpecialEffect[39])
@@ -138,14 +139,15 @@ function Trig_Nimphrodel_Undomiel_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Satyr carrying Crystal Ball and bring it to Undomiel.")
     call QuestSetDescriptionBJ(udg_SideQuest[21],"Defeat Satyr carrying Crystal Ball and bring it to Undomiel.")
     set udg_SpecialEffect[39]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_E004_0190,"Objects\\RandomObject\\RandomObject.mdl")
-    set udg_TempPoint=GetRectCenter(gg_rct_010)
-    call CreateNUnitsAtLoc(1,'n019',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n019': unit "Satyr Farseer"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_010)
+    call CreateNUnitsAtLoc(1,'n019',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n019': unit "Satyr Farseer"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossUnits)
     call TriggerRegisterUnitEvent(gg_trg_CrystalBall_Drop,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_CrystalBall_Drop)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Nimphrodel_Complete_Conditions takes nothing returns boolean

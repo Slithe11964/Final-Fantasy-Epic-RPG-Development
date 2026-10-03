@@ -10,9 +10,11 @@ function Trig_Talon_Leash_Gate_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Talon_Leash_Gate_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_636)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,.0)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_636)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,.0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Talon_Death_Conditions takes nothing returns boolean

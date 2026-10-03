@@ -24,6 +24,9 @@ function Trig_Sorcerer_Flare_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Sorcerer_Flare_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
+    local real l_tempReal
     if(Trig_Sorcerer_Flare_HasNoTargetUnit())then
         set udg_TempPoint=GetSpellTargetLoc()
     else
@@ -51,19 +54,19 @@ function Trig_Sorcerer_Flare_Actions takes nothing returns nothing
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
     call RemoveLocation(udg_TempPoint)
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (4).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*4)
     if(Trig_Sorcerer_Flare_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (4)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*4))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (4)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*4))
     endif
-    set udg_TempReal=Prof_InnerManaPower(GetTriggerUnit())
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0TA',GetLastCreatedUnit()) // 'A0TA': ability "Flare"
@@ -146,6 +149,9 @@ function Trig_Sorcerer_Holy_CasterNegatesHeal takes nothing returns boolean
 endfunction
 
 function Trig_Sorcerer_Holy_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (2).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
@@ -153,14 +159,14 @@ function Trig_Sorcerer_Holy_Actions takes nothing returns nothing
         // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (2)).
         set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
     endif
-    set udg_TempReal=Prof_StaffPowerAlt(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Sorcerer_Holy_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
-    call ForGroupBJ(udg_TempGroup,function Trig_Sorcerer_Holy_ApplyToEnum)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempReal=Prof_StaffPowerAlt(GetTriggerUnit())
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Sorcerer_Holy_FilterTarget))
+    call RemoveLocation(l_tempPoint)
+    call ForGroupBJ(l_tempGroup,function Trig_Sorcerer_Holy_ApplyToEnum)
+    call DestroyGroup(l_tempGroup)
     if(Trig_Sorcerer_Holy_CasterNegatesHeal())then
         call AddSpecialEffectTargetUnitBJ("overhead",GetTriggerUnit(),"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -171,6 +177,8 @@ function Trig_Sorcerer_Holy_Actions takes nothing returns nothing
         // Udg_TempInteger treated as a decimal-capable number.
         call UnitDamageTargetBJ(GetSpellAbilityUnit(),GetTriggerUnit(),I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     endif
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Sorcerer_MassCripple_IsCrippleSpell takes nothing returns boolean
@@ -210,25 +218,31 @@ function Trig_Sorcerer_MassCripple_FilterTarget takes nothing returns boolean
 endfunction
 
 function Trig_Sorcerer_MassCripple_CrippleEnum takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A15O',GetLastCreatedUnit()) // 'A15O': ability "Mass Cripple"
     call SetUnitAbilityLevelSwapped('A15O',GetLastCreatedUnit(),udg_TempInteger) // 'A15O': ability "Mass Cripple"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"cripple",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Sorcerer_MassCripple_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Sorcerer_MassCripple_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Sorcerer_MassCripple_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (40).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId())))/ 40
-    call ForGroupBJ(udg_TempGroup,function Trig_Sorcerer_MassCripple_CrippleEnum)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Sorcerer_MassCripple_CrippleEnum)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Sorcerer_BahamutZero_Conditions takes nothing returns boolean
@@ -240,14 +254,16 @@ function Trig_Sorcerer_BahamutZero_HasBahamutZero takes nothing returns boolean
 endfunction
 
 function Trig_Sorcerer_BahamutZero_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local real l_tempReal
     if(Trig_Sorcerer_BahamutZero_HasBahamutZero())then
         call KillUnit(udg_BahamutZeroSummon)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'n00Q',GetOwningPlayer(GetSpellAbilityUnit()),udg_TempPoint,bj_UNIT_FACING) // 'n00Q': unit "Bahamut Zero"
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,'n00Q',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n00Q': unit "Bahamut Zero"
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_BahamutZeroSummon=GetLastCreatedUnit()
     call UnitAddAbilityBJ('A14I',GetLastCreatedUnit()) // 'A14I': ability "Summon Poof Death"
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
@@ -256,28 +272,29 @@ function Trig_Sorcerer_BahamutZero_Actions takes nothing returns nothing
     set udg_TempUnit2=GetLastCreatedUnit()
     call ConditionalTriggerExecute(gg_trg_Summon_Powerup)
     // (0.1) times ((10) plus (Prof_GetLevel(the triggering unit, 'R00L'))).
-    set udg_TempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
+    set l_tempReal=.1*($A+Prof_GetLevel(GetTriggerUnit(),'R00L')) // $A = 10; 'R00L': upgrade "Inner Mana"
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.65).
+    // Result 2: (l_tempReal) times (0.65).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 0)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.65)))),0)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.65)))),0)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (udg_TempReal) times (0.65).
+    // Result 2: (l_tempReal) times (0.65).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (BlzGetUnitBaseDamage(GetLastCreatedUnit(), 1)) plus (result 4).
-    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(udg_TempReal*.65)))),1)
+    call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(l_tempReal*.65)))),1)
     // Result 1: Intelligence of the triggering unit treated as a decimal-capable number.
-    // Result 2: (10) times (udg_TempReal).
+    // Result 2: (10) times (l_tempReal).
     // Result 3: (result 1) times (result 2).
     // Result 4: (result 3) with its decimal part removed.
     // Result 5: (maximum health of GetLastCreatedUnit()) plus (result 4).
-    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(10.*udg_TempReal)))))
+    call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())+R2I((I2R(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))*(10.*l_tempReal)))))
     call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
     call Abil_CopyPassives(GetTriggerUnit(),bj_lastCreatedUnit)
     set udg_BahamutZeroBaseArmor=BlzGetUnitArmor(GetLastCreatedUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Sorcerer automatically; it is intentionally empty. This module's

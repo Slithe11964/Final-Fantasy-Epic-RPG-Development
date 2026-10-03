@@ -102,20 +102,22 @@ function Trig_Nightmare_Despawn_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Nightmare_Despawn_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(gg_trg_Nightmare_Death)
     call DisableTrigger(gg_trg_Nightmare_Roam)
-    set udg_TempPoint=GetUnitLoc(udg_SummonedBoss)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
+    set l_tempPoint=GetUnitLoc(udg_SummonedBoss)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\Sleep\\SleepSpecialArt.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call BlzSetSpecialEffectScale(GetLastCreatedEffectBJ(),3.)
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupRemoveUnitSimple(udg_SummonedBoss,udg_BossGroup)
     call ShowUnitHide(udg_SummonedBoss)
     call UnitApplyTimedLifeBJ(1.,'BTLF',udg_SummonedBoss) // 'BTLF': object name not found in map data
     set udg_SummonedBoss=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Nightmare_Death_Charge_Conditions takes nothing returns boolean
@@ -148,10 +150,12 @@ function Trig_Nightmare_Roam_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Nightmare_Roam_Actions takes nothing returns nothing
+    local location l_tempPoint
     // A random whole number from 1 through LoadIntegerBJ(udg_NightmareZone, 2, udg_SpawnDataHashRef).
-    set udg_TempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_NightmareZone,2,udg_SpawnDataHashRef)),udg_NightmareZone,udg_SpawnRectHashRef))
-    call IssuePointOrderLocBJ(udg_SummonedBoss,"attack",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(udg_NightmareZone,2,udg_SpawnDataHashRef)),udg_NightmareZone,udg_SpawnRectHashRef))
+    call IssuePointOrderLocBJ(udg_SummonedBoss,"attack",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Nightmare_Death_Conditions takes nothing returns boolean
@@ -167,27 +171,29 @@ function Trig_Nightmare_Death_Cond_NightmareDropHard takes nothing returns boole
 endfunction
 
 function Trig_Nightmare_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Nightmare_Roam)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
     call PlayThematicMusicBJ("FF7-Victory Fanfare.mp3")
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_Nightmare_Death_Cond_NightmareDropHard())then
-        call CreateItemLoc('I0BP',udg_TempPoint) // 'I0BP': item "Executioner Sword"
+        call CreateItemLoc('I0BP',l_tempPoint) // 'I0BP': item "Executioner Sword"
     else
         if(Trig_Nightmare_Death_Cond_FirstNightmareKill())then
             set udg_DeathbringerDropped=true
-            call CreateItemLoc('I0EQ',udg_TempPoint) // 'I0EQ': item "Deathbringer"
+            call CreateItemLoc('I0EQ',l_tempPoint) // 'I0EQ': item "Deathbringer"
             call SaveIntegerBJ(1,2,$BB,udg_GameStateHash) // $BB = 187
         endif
     endif
-    call CreateItemLoc('I072',udg_TempPoint) // 'I072': item "Book of Death"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
+    call CreateItemLoc('I072',l_tempPoint) // 'I072': item "Book of Death"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_SummonedBoss=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Nightmare automatically; it is intentionally empty. This module's

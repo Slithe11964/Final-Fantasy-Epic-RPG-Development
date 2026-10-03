@@ -77,6 +77,7 @@ function Trig_OakaIV_ReachSouthTree_Actions takes nothing returns nothing
 endfunction
 
 function Trig_OakaIV_NorthTreeFelled_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call KillDestructable(gg_dest_ITtw_0037)
     call KillDestructable(gg_dest_ITtw_0043)
@@ -84,35 +85,38 @@ function Trig_OakaIV_NorthTreeFelled_Actions takes nothing returns nothing
     call KillDestructable(gg_dest_ITtw_0035)
     call KillDestructable(gg_dest_ITtw_0036)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n02F_0108)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_n02F_0108)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_482)
-    call SetUnitPositionLocFacingBJ(gg_unit_n02F_0108,udg_TempPoint,.0)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_482)
+    call SetUnitPositionLocFacingBJ(gg_unit_n02F_0108,l_tempPoint,.0)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_OakaIV_SouthTreeFelled_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call KillDestructable(gg_dest_ITtw_0039)
     call KillDestructable(gg_dest_ITtw_0041)
     call KillDestructable(gg_dest_ITtw_0018)
     call KillDestructable(gg_dest_ITtw_0059)
     call Wait_Polled(2)
-    set udg_TempPoint=GetUnitLoc(gg_unit_n02F_0108)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_n02F_0108)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_482)
-    call SetUnitPositionLocFacingBJ(gg_unit_n02F_0108,udg_TempPoint,.0)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_482)
+    call SetUnitPositionLocFacingBJ(gg_unit_n02F_0108,l_tempPoint,.0)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_OakaIV automatically; it is intentionally empty. This module's

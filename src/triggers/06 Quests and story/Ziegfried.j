@@ -14,15 +14,16 @@ function Trig_Ziegfried_Mine_Arrive_NewsWindowOpen takes nothing returns boolean
 endfunction
 
 function Trig_Ziegfried_Mine_Arrive_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call RemoveItemFromStockBJ('I04U',gg_unit_n02Y_0052) // 'I04U': item "Information: Arcanium"
     call SetHeroLevelBJ(gg_unit_H036_0254,65,false)
-    set udg_TempPoint=GetRectCenter(gg_rct_684)
-    call SetUnitPositionLocFacingBJ(gg_unit_H036_0254,udg_TempPoint,110.)
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_685)
-    call CreateNUnitsAtLoc(1,'e01K',Player(8),udg_TempPoint,140.) // 'e01K': unit "Viking Boat"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_684)
+    call SetUnitPositionLocFacingBJ(gg_unit_H036_0254,l_tempPoint,110.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_685)
+    call CreateNUnitsAtLoc(1,'e01K',Player(8),l_tempPoint,140.) // 'e01K': unit "Viking Boat"
+    call RemoveLocation(l_tempPoint)
     set udg_VikingBoat=GetLastCreatedUnit()
     set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H036_0254,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call PauseUnitBJ(false,gg_unit_H036_0254)
@@ -37,6 +38,7 @@ function Trig_Ziegfried_Mine_Arrive_Actions takes nothing returns nothing
         set udg_NewsText[4]="Bali Forgefire, professional smith, has agreed to do an interview with Kalm News. When asked how he had managed to recreate the legendary Masamune blade, he answered: \"It's not too bad. You just need some Scarletite, Nethril and Dark Gems.\""
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Ziegfried_Advance_Order_Actions takes nothing returns nothing
@@ -304,15 +306,17 @@ function Trig_Ziegfried_Arena_Leash_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Ziegfried_Arena_Leash_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_677)
-    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),udg_TempPoint,270.)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_677)
+    call SetUnitPositionLocFacingBJ(GetTriggerUnit(),l_tempPoint,270.)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetTriggerUnit(),"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Ziegfried automatically; it is intentionally empty. This module's

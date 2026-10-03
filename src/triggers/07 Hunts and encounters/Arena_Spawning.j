@@ -933,10 +933,11 @@ function Trig_Arena_Spawn_Team_NeedsExtraSpawns takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
+    local location l_tempPoint
     // Result 1: (LoadIntegerBJ(6, udg_ArenaSpawnTeam, udg_GameStateHash)) minus (1).
     // Result 2: result 1 treated as a decimal-capable number.
     // Result 3: (-128) times (result 2).
-    set udg_TempPoint=OffsetLocation(udg_ArenaSpawnLoc,(-128.*I2R((LoadIntegerBJ(6,udg_ArenaSpawnTeam,udg_GameStateHash)-1))),0)
+    set l_tempPoint=OffsetLocation(udg_ArenaSpawnLoc,(-128.*I2R((LoadIntegerBJ(6,udg_ArenaSpawnTeam,udg_GameStateHash)-1))),0)
     call RemoveLocation(udg_ArenaSpawnLoc)
     call Difficulty_SumHandicap(udg_CupArenaPlayers)
     // Divide the desired enemy health handicap by the enemy player's current handicap to get the adjustment factor.
@@ -946,7 +947,7 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
         // Place each next unit 256 map units farther along the row; the first has no offset.
-        set udg_TempPoint2=OffsetLocation(udg_TempPoint,(256.*I2R((GetForLoopIndexB()-1))),0)
+        set udg_TempPoint2=OffsetLocation(l_tempPoint,(256.*I2R((GetForLoopIndexB()-1))),0)
         // (6) plus (loop counter B).
         call CreateNUnitsAtLoc(1,udg_ArenaMonsterType[LoadIntegerBJ(1,LoadIntegerBJ((6+GetForLoopIndexB()),udg_ArenaSpawnTeam,udg_GameStateHash),udg_GameStateHash)],Player($B),udg_TempPoint2,udg_ArenaSpawnFacing) // $B = 11
         call RemoveLocation(udg_TempPoint2)
@@ -1020,7 +1021,7 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
     endloop
     if(Trig_Arena_Spawn_Team_NeedsExtraSpawns())then
         // (udg_ArenaSpawnFacing) minus (75).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,360.,(udg_ArenaSpawnFacing-75.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,360.,(udg_ArenaSpawnFacing-75.))
         call CreateNUnitsAtLoc(1,'n0D7',Player($B),udg_TempPoint2,udg_ArenaSpawnFacing) // 'n0D7': unit "Unum"; $B = 11
         call RemoveLocation(udg_TempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ArenaSpawnGroup)
@@ -1028,7 +1029,7 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
         call SetUnitInvulnerable(GetLastCreatedUnit(),true)
         call UnitAddAbilityBJ('Abun',GetLastCreatedUnit()) // 'Abun': object name not found in map data
         // (udg_ArenaSpawnFacing) minus (25).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,360.,(udg_ArenaSpawnFacing-25.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,360.,(udg_ArenaSpawnFacing-25.))
         call CreateNUnitsAtLoc(1,'n0K8',Player($B),udg_TempPoint2,udg_ArenaSpawnFacing) // 'n0K8': unit "Duo"; $B = 11
         call RemoveLocation(udg_TempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ArenaSpawnGroup)
@@ -1036,7 +1037,7 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
         call SetUnitInvulnerable(GetLastCreatedUnit(),true)
         call UnitAddAbilityBJ('Abun',GetLastCreatedUnit()) // 'Abun': object name not found in map data
         // (udg_ArenaSpawnFacing) plus (25).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,360.,(udg_ArenaSpawnFacing+25.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,360.,(udg_ArenaSpawnFacing+25.))
         call CreateNUnitsAtLoc(1,'n0K9',Player($B),udg_TempPoint2,udg_ArenaSpawnFacing) // 'n0K9': unit "Tria"; $B = 11
         call RemoveLocation(udg_TempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ArenaSpawnGroup)
@@ -1044,7 +1045,7 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
         call SetUnitInvulnerable(GetLastCreatedUnit(),true)
         call UnitAddAbilityBJ('Abun',GetLastCreatedUnit()) // 'Abun': object name not found in map data
         // (udg_ArenaSpawnFacing) plus (75).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,360.,(udg_ArenaSpawnFacing+75.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,360.,(udg_ArenaSpawnFacing+75.))
         call CreateNUnitsAtLoc(1,'n0KA',Player($B),udg_TempPoint2,udg_ArenaSpawnFacing) // 'n0KA': unit "Quattour"; $B = 11
         call RemoveLocation(udg_TempPoint2)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ArenaSpawnGroup)
@@ -1052,7 +1053,8 @@ function Trig_Arena_Spawn_Team_Actions takes nothing returns nothing
         call SetUnitInvulnerable(GetLastCreatedUnit(),true)
         call UnitAddAbilityBJ('Abun',GetLastCreatedUnit()) // 'Abun': object name not found in map data
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Arena_Spawning takes nothing returns nothing

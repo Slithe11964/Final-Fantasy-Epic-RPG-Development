@@ -71,16 +71,19 @@ function Trig_Gilgamesh_Gift_LuShangOwed takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Gift_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
+    local real l_tempReal
     call DisableTrigger(GetTriggeringTrigger())
     // (facing in degrees of the triggering unit) plus (180).
-    set udg_TempReal=(GetUnitFacing(GetTriggerUnit())+180.)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,udg_TempReal)
-    call RemoveLocation(udg_TempPoint)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+    set l_tempReal=(GetUnitFacing(GetTriggerUnit())+180.)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,l_tempReal)
+    call RemoveLocation(l_tempPoint)
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'N03D',Player(8),udg_TempPoint2,udg_TempReal) // 'N03D': unit "Mighty Swordsman"
-    call RemoveLocation(udg_TempPoint2)
+    call CreateNUnitsAtLoc(1,'N03D',Player(8),l_tempPoint2,l_tempReal) // 'N03D': unit "Mighty Swordsman"
+    call RemoveLocation(l_tempPoint2)
     set udg_FishedGilgamesh=GetLastCreatedUnit()
     call SetHeroLevelBJ(GetLastCreatedUnit(),91,false)
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
@@ -134,14 +137,16 @@ function Trig_Gilgamesh_Gift_Actions takes nothing returns nothing
     call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
     call SetTextTagLifespanBJ(GetLastCreatedTextTag(),5)
     call Wait_Polled(5.)
-    set udg_TempPoint=GetUnitLoc(udg_FishedGilgamesh)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+    set l_tempPoint=GetUnitLoc(udg_FishedGilgamesh)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateItemLoc(udg_GilgameshGift,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc(udg_GilgameshGift,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(udg_FishedGilgamesh)
     set udg_FishedGilgamesh=null
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Gilgamesh_Init_Actions takes nothing returns nothing
@@ -160,17 +165,18 @@ function Trig_Gilgamesh_Appear_Cond_ShowDialogue takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Appear_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call SetUnitPositionLocFacingLocBJ(gg_unit_N03D_0165,udg_TempPoint,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call SetUnitPositionLocFacingLocBJ(gg_unit_N03D_0165,l_tempPoint,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Gilgamesh_Appear_Cond_ShowDialogue())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_N03D_0165,0)
-        set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+        set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call Wait_Polled(.5)
         call ShowUnitShow(gg_unit_N03D_0165)
         call Text_Say(gg_unit_N03D_0165,"Your weapons are forfeit to me!",false)
@@ -188,6 +194,7 @@ function Trig_Gilgamesh_Appear_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Gilgamesh_Phase2)
     call Music_SetTrack(30)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Gilgamesh_Phase2_Cond_ShowDialogue takes nothing returns boolean
@@ -195,9 +202,11 @@ function Trig_Gilgamesh_Phase2_Cond_ShowDialogue takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Phase2_Actions takes nothing returns nothing
-    set udg_TempPoint3=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_N03D_0165,udg_TempPoint3,false)
-    call RemoveLocation(udg_TempPoint3)
+    local location l_tempPoint
+    local location l_tempPoint3
+    set l_tempPoint3=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_N03D_0165,l_tempPoint3,false)
+    call RemoveLocation(l_tempPoint3)
     call SetUnitInvulnerable(gg_unit_N03D_0165,true)
     if(Trig_Gilgamesh_Phase2_Cond_ShowDialogue())then
         call Cine_Enter()
@@ -219,29 +228,31 @@ function Trig_Gilgamesh_Phase2_Actions takes nothing returns nothing
     call UnitAddItemByIdSwapped('I011',gg_unit_N03D_0165) // 'I011': item "Excalibur"
     call SetHeroLevelBJ(gg_unit_N03D_0165,60,false)
     call SetUnitInvulnerable(gg_unit_N03D_0165,false)
-    set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",gg_unit_N03D_0165)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"frostarmor",gg_unit_N03D_0165)
-    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h027': unit "Gilgamesh Dummy"
+    call CreateNUnitsAtLocFacingLocBJ(1,'h027',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h027': unit "Gilgamesh Dummy"
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(2.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"antimagicshell",gg_unit_N03D_0165)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call PlaySoundBJ(gg_snd_002)
     call DisplayTimedTextToForce(udg_PlayingPlayers,30,"|cff0000a0Gilgamesh|r is now Master |cff0000ffMighty Swordsman|r")
     call SetUnitLifePercentBJ(gg_unit_N03D_0165,100.)
     call EnableTrigger(gg_trg_Gilgamesh_Defeat)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint3=null
 endfunction
 
 function Trig_Gilgamesh_Defeat_Cond_TrackKills takes nothing returns boolean
@@ -282,15 +293,16 @@ function Trig_Gilgamesh_Defeat_Cond_GenjiGlovesRoll takes nothing returns boolea
 endfunction
 
 function Trig_Gilgamesh_Defeat_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Gilgamesh_Defeat_Cond_TrackKills())then
         set udg_BossUnit=GetTriggerUnit()
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
-    call ReviveHeroLoc(gg_unit_N03D_0165,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
+    call ReviveHeroLoc(gg_unit_N03D_0165,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(gg_unit_N03D_0165,true)
     if(Trig_Gilgamesh_Defeat_Cond_ShowDialogue())then
         call Cine_Enter()
@@ -298,50 +310,50 @@ function Trig_Gilgamesh_Defeat_Actions takes nothing returns nothing
         call Text_Say(gg_unit_N03D_0165,"...",false)
         call Text_Say(gg_unit_N03D_0165,"... I just remembered I have something important to do!",false)
         call Text_Say(gg_unit_N03D_0165,"Later!",false)
-        set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+        set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call Wait_Polled(.5)
         call Cine_ExitAction()
-        set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
+        set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
     else
-        set udg_TempPoint=GetUnitLoc(gg_unit_N03D_0165)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
+        set l_tempPoint=GetUnitLoc(gg_unit_N03D_0165)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
     endif
-    call CreateItemLoc('I0A3',udg_TempPoint) // 'I0A3': item "Excalipoor"
+    call CreateItemLoc('I0A3',l_tempPoint) // 'I0A3': item "Excalipoor"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I07B',udg_TempPoint) // 'I07B': item "Samurai's Amulet"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I07B',l_tempPoint) // 'I07B': item "Samurai's Amulet"
     if(Trig_Gilgamesh_Defeat_Cond_LargeParty())then
         if(Trig_Gilgamesh_Defeat_Cond_TwoGenjiRoll())then
-            call CreateItemLoc('I0BU',udg_TempPoint) // 'I0BU': item "Genji Shield"
-            call CreateItemLoc('I0AA',udg_TempPoint) // 'I0AA': item "Genji Mask"
+            call CreateItemLoc('I0BU',l_tempPoint) // 'I0BU': item "Genji Shield"
+            call CreateItemLoc('I0AA',l_tempPoint) // 'I0AA': item "Genji Mask"
         else
             if(Trig_Gilgamesh_Defeat_Cond_GenjiPickA())then
-                call CreateItemLoc('I0AA',udg_TempPoint) // 'I0AA': item "Genji Mask"
-                call CreateItemLoc('I01Y',udg_TempPoint) // 'I01Y': item "Genji Armor"
+                call CreateItemLoc('I0AA',l_tempPoint) // 'I0AA': item "Genji Mask"
+                call CreateItemLoc('I01Y',l_tempPoint) // 'I01Y': item "Genji Armor"
             else
-                call CreateItemLoc('I0BU',udg_TempPoint) // 'I0BU': item "Genji Shield"
-                call CreateItemLoc('I01Y',udg_TempPoint) // 'I01Y': item "Genji Armor"
+                call CreateItemLoc('I0BU',l_tempPoint) // 'I0BU': item "Genji Shield"
+                call CreateItemLoc('I01Y',l_tempPoint) // 'I01Y': item "Genji Armor"
             endif
         endif
     else
         if(Trig_Gilgamesh_Defeat_Cond_SingleGenjiRoll())then
-            call CreateItemLoc('I0BU',udg_TempPoint) // 'I0BU': item "Genji Shield"
+            call CreateItemLoc('I0BU',l_tempPoint) // 'I0BU': item "Genji Shield"
         else
             if(Trig_Gilgamesh_Defeat_Cond_GenjiPickB())then
-                call CreateItemLoc('I0AA',udg_TempPoint) // 'I0AA': item "Genji Mask"
+                call CreateItemLoc('I0AA',l_tempPoint) // 'I0AA': item "Genji Mask"
             else
-                call CreateItemLoc('I01Y',udg_TempPoint) // 'I01Y': item "Genji Armor"
+                call CreateItemLoc('I01Y',l_tempPoint) // 'I01Y': item "Genji Armor"
             endif
         endif
     endif
     if(Trig_Gilgamesh_Defeat_Cond_GenjiGlovesRoll())then
-        call CreateItemLoc('I0B0',udg_TempPoint) // 'I0B0': item "Genji Gloves"
+        call CreateItemLoc('I0B0',l_tempPoint) // 'I0B0': item "Genji Gloves"
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(gg_unit_N03D_0165)
     call PauseUnitBJ(true,gg_unit_N03D_0165)
     call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Mae'chen.")
@@ -351,6 +363,7 @@ function Trig_Gilgamesh_Defeat_Actions takes nothing returns nothing
     set udg_GilgameshDefeated=true
     call SaveIntegerBJ(1,2,'l',udg_GameStateHash)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Gilgamesh automatically; it is intentionally empty. This module's

@@ -17,18 +17,20 @@ function Trig_Heal_Spell_Apply_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Heal_Spell_Apply_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("origin",GetSpellTargetUnit(),"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     // Start the healing calculation with 10 points per point of the spell's mana cost.
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*$A) // $A = 10
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*$A) // $A = 10
     if(Trig_Heal_Spell_Apply_CasterIsHero())then
         // A hero adds 5 more points per Intelligence. A non-hero skips this bonus.
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*5))
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*5))
     endif
-    set udg_TempReal=Prof_StaffPower(GetTriggerUnit())
+    set l_tempReal=Prof_StaffPower(GetTriggerUnit())
     set udg_IsPureDamage=true
     // Multiply that total by Staff power before handing it to the damage/healing system.
-    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(udg_TempInteger)*udg_TempReal),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+    call UnitDamageTargetBJ(GetTriggerUnit(),GetSpellTargetUnit(),(I2R(l_tempInteger)*l_tempReal),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
 endfunction
 
 // World Editor calls InitTrig_Heal automatically; it is intentionally empty. This module's

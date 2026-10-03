@@ -21,6 +21,7 @@ function Trig_Boss_Penance_Summon_UnpauseArm takes nothing returns nothing
 endfunction
 
 function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint2
     set udg_BossCleanupTrigger=gg_trg_Boss_Penance_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
@@ -74,21 +75,21 @@ function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,256.,128.)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,256.,128.)
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'n08E',Player($B),udg_TempPoint2,.0) // 'n08E': unit "Penance's Left Arm"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    call CreateNUnitsAtLoc(1,'n08E',Player($B),l_tempPoint2,.0) // 'n08E': unit "Penance's Left Arm"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_PenanceArms)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossGroup)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,256.,-128.)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,256.,-128.)
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateNUnitsAtLoc(1,'n08B',Player($B),udg_TempPoint2,.0) // 'n08B': unit "Penance's Right Arm"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    call CreateNUnitsAtLoc(1,'n08B',Player($B),l_tempPoint2,.0) // 'n08B': unit "Penance's Right Arm"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_PenanceArms)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossGroup)
@@ -105,6 +106,7 @@ function Trig_Boss_Penance_Summon_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Boss_Penance_Death,udg_PenanceUnit,EVENT_UNIT_DEATH)
     call EnableTrigger(gg_trg_Boss_Penance_Death)
     call Cine_Exit()
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Boss_Penance_Judgment_Loop_Conditions takes nothing returns boolean
@@ -132,9 +134,10 @@ function Trig_Boss_Penance_Judgment_Loop_BothArmsAlive takes nothing returns boo
 endfunction
 
 function Trig_Boss_Penance_Judgment_Loop_CheckArmsAndChannel takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(2500.,udg_TempPoint,Condition(function Trig_Boss_Penance_Judgment_Loop_FilterAnyArm))
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(2500.,l_tempPoint,Condition(function Trig_Boss_Penance_Judgment_Loop_FilterAnyArm))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Boss_Penance_Judgment_Loop_BothArmsAlive())then
         call DestroyGroup(udg_TempGroup)
         call IssueImmediateOrderBJ(GetEnumUnit(),"channel")
@@ -146,6 +149,7 @@ function Trig_Boss_Penance_Judgment_Loop_CheckArmsAndChannel takes nothing retur
             call UnitAddAbilityBJ('A11W',GetTriggerUnit()) // 'A11W': ability "Judgment Day"
         endif
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Penance_Judgment_Loop_Actions takes nothing returns nothing
@@ -173,17 +177,18 @@ function Trig_Boss_Penance_JudgmentDay_Cast_ArmsMissing takes nothing returns bo
 endfunction
 
 function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(2500.,udg_TempPoint,Condition(function Trig_Boss_Penance_JudgmentDay_Cast_FilterAnyArm))
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(2500.,l_tempPoint,Condition(function Trig_Boss_Penance_JudgmentDay_Cast_FilterAnyArm))
     if(Trig_Boss_Penance_JudgmentDay_Cast_ArmsMissing())then
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
         call DestroyGroup(udg_TempGroup)
         call UnitRemoveAbilityBJ('A11W',GetTriggerUnit()) // 'A11W': ability "Judgment Day"
         call Wait_Polled(10.)
         call UnitAddAbilityBJ('A11W',GetTriggerUnit()) // 'A11W': ability "Judgment Day"
     else
         call DestroyGroup(udg_TempGroup)
-        call CreateTextTagLocBJ("|cffffcc00JUDGMENT DAY",udg_TempPoint,0,13.,'d','d','d',0)
+        call CreateTextTagLocBJ("|cffffcc00JUDGMENT DAY",l_tempPoint,0,13.,'d','d','d',0)
         call SetTextTagVelocityBJ(GetLastCreatedTextTag(),80.,90)
         call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
         call SetTextTagLifespanBJ(GetLastCreatedTextTag(),1.5)
@@ -195,7 +200,7 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
             // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,325.,((I2R(GetForLoopIndexA())*60.)-30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,325.,((I2R(GetForLoopIndexA())*60.)-30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
@@ -203,7 +208,7 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             // (loop counter A treated as a decimal-capable number) times (60).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,650.,(I2R(GetForLoopIndexA())*60.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,650.,(I2R(GetForLoopIndexA())*60.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
@@ -211,7 +216,7 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call RemoveLocation(udg_TempPoint2)
             // ((loop counter A treated as a decimal-capable number) times (60)) minus (30).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,975.,((I2R(GetForLoopIndexA())*60.)-30.))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,975.,((I2R(GetForLoopIndexA())*60.)-30.))
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
             call DestroyEffectBJ(GetLastCreatedEffectBJ())
             call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl")
@@ -220,8 +225,9 @@ function Trig_Boss_Penance_JudgmentDay_Cast_Actions takes nothing returns nothin
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
-        call RemoveLocation(udg_TempPoint)
+        call RemoveLocation(l_tempPoint)
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Penance_JudgmentDay_Damage_Conditions takes nothing returns boolean
@@ -273,14 +279,15 @@ function Trig_Boss_Penance_JudgmentDay_Damage_CasterInArena takes nothing return
 endfunction
 
 function Trig_Boss_Penance_JudgmentDay_Damage_DamageTarget takes nothing returns nothing
+    local real l_tempReal
     call UnitRemoveBuffBJ('B063',GetEnumUnit()) // 'B063': buff "Cover"
     // (a random decimal number between 15 and 16) divided by (16).
-    set udg_TempReal=(GetRandomReal(15.,16.)/ 16.)
+    set l_tempReal=(GetRandomReal(15.,16.)/ 16.)
     set udg_DmgFlagPure=true
     set udg_IgnoresReduction=true
     set udg_DmgFlagUnavoidable=-1
-    // (99999.9) times (udg_TempReal).
-    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*udg_TempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
+    // (99999.9) times (l_tempReal).
+    call UnitDamageTarget(GetTriggerUnit(),GetEnumUnit(),99999.9*l_tempReal,true,true,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,null)
 endfunction
 
 function Trig_Boss_Penance_JudgmentDay_Damage_Actions takes nothing returns nothing
@@ -350,13 +357,15 @@ function Trig_Boss_Penance_Death_ShouldRecordKill takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Penance_Death_KillArm takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Undead\\UDeathMedium\\UDeath.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Undead\\UDeathMedium\\UDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call GroupRemoveUnitSimple(GetEnumUnit(),udg_BossGroup)
     call UnitRemoveAbilityBJ('A0ZR',GetEnumUnit()) // 'A0ZR': ability "Immortal"
     call KillUnit(GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Penance_Death_CanMasterJob takes nothing returns boolean
@@ -400,6 +409,7 @@ function Trig_Boss_Penance_Death_IsWaygateOpen takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Penance_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_Penance_Death_ShouldRecordKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -407,15 +417,15 @@ function Trig_Boss_Penance_Death_Actions takes nothing returns nothing
     endif
     call Music_ClearTrack(24)
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossGroup)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Undead\\UDeathMedium\\UDeath.mdl")
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Undead\\UDeathMedium\\UDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Undead\\UndeadDissipate\\UndeadDissipate.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Undead\\UndeadDissipate\\UndeadDissipate.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call CreateItemLoc('I0E5',udg_TempPoint) // 'I0E5': item "Maximillian"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I0E5',l_tempPoint) // 'I0E5': item "Maximillian"
+    call RemoveLocation(l_tempPoint)
     call ForGroupBJ(udg_PenanceArms,function Trig_Boss_Penance_Death_KillArm)
     call DestroyGroup(udg_PenanceArms)
     call PlayThematicMusicBJ("war3mapImported\\FFX-Victory.mp3")
@@ -445,6 +455,7 @@ function Trig_Boss_Penance_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0HI',gg_unit_n03T_0008) // 'A0HI': ability "Perfect MoD Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Penance_Cleanup_RemoveArm takes nothing returns nothing

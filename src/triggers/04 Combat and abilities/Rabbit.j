@@ -9,11 +9,13 @@ function Trig_Rabbit_Wander_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Rabbit_Wander_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_475)
-    call IssuePointOrderLocBJ(GetTriggerUnit(),"move",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_475)
+    call IssuePointOrderLocBJ(GetTriggerUnit(),"move",l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(4.)
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stop")
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Rabbit automatically; it is intentionally empty. This module's

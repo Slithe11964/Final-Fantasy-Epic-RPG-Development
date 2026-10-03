@@ -24,13 +24,15 @@ function Trig_Chemist_TakeItem_Cond_IsChemistItem takes nothing returns boolean
 endfunction
 
 function Trig_Chemist_TakeItem_Actions takes nothing returns nothing
-    set udg_TempItemId='tkno' // 'tkno': object name not found in map data
-    set udg_TempInteger=1
+    local integer l_tempInteger
+    local integer l_tempItemId
+    set l_tempItemId='tkno' // 'tkno': object name not found in map data
+    set l_tempInteger=1
     loop
-        exitwhen udg_TempInteger>6
-        set udg_ChemistItem=UnitItemInSlotBJ(udg_CurrentHero,udg_TempInteger)
+        exitwhen l_tempInteger>6
+        set udg_ChemistItem=UnitItemInSlotBJ(udg_CurrentHero,l_tempInteger)
         if(Trig_Chemist_TakeItem_Cond_IsChemistItem())then
-            set udg_TempItemId=GetItemTypeId(udg_ChemistItem)
+            set l_tempItemId=GetItemTypeId(udg_ChemistItem)
             if(Trig_Chemist_TakeItem_Cond_HasSpareCharges())then
                 // (item charges of udg_ChemistItem) minus (1).
                 call SetItemCharges(udg_ChemistItem,(GetItemCharges(udg_ChemistItem)-1))
@@ -41,7 +43,7 @@ function Trig_Chemist_TakeItem_Actions takes nothing returns nothing
             endif
             return
         endif
-        set udg_TempInteger=udg_TempInteger+1
+        set l_tempInteger=l_tempInteger+1
     endloop
 endfunction
 
@@ -348,6 +350,7 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
     local real x=GetSpellTargetX()
     local real y=GetSpellTargetY()
     local integer l_dummyId
+    local integer l_tempItemId
     // Starting value for manaCost:
     // (BlzGetAbilityManaCost(l_abilId, Abil_GetLevel(triggeringUnit, l_abilId))) divided by (10).
     local integer manaCost=BlzGetAbilityManaCost(l_abilId,Abil_GetLevel(triggeringUnit,l_abilId))/ $A // $A = 10
@@ -360,30 +363,30 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
     local unit l_dummy
     local effect l_fx
     set udg_CurrentHero=triggeringUnit
-    set udg_TempItemId='tkno' // 'tkno': object name not found in map data
+    set l_tempItemId='tkno' // 'tkno': object name not found in map data
     call ConditionalTriggerExecute(gg_trg_Chemist_TakeItem)
-    if(udg_TempItemId=='tkno')then // 'tkno': object name not found in map data
+    if(l_tempItemId=='tkno')then // 'tkno': object name not found in map data
         call DisplayTimedTextToPlayer(owningPlayer,0,0,10.,"|cffff0000You have no Chemist's item to toss!|r")
         set triggeringUnit=null
         set owningPlayer=null
         return
     endif
-    if(udg_TempItemId=='I02L' or udg_TempItemId=='I02J' or udg_TempItemId=='I02M' or udg_TempItemId=='I02O')then // 'I02L': item "Chemist's Potion"; 'I02J': item "Chemist's Hi-Potion"; 'I02M': item "Chemist's Mega Potion"; 'I02O': item "Chemist's X-Potion"
+    if(l_tempItemId=='I02L' or l_tempItemId=='I02J' or l_tempItemId=='I02M' or l_tempItemId=='I02O')then // 'I02L': item "Chemist's Potion"; 'I02J': item "Chemist's Hi-Potion"; 'I02M': item "Chemist's Mega Potion"; 'I02O': item "Chemist's X-Potion"
         set l_cloudKind=2
-    elseif(udg_TempItemId=='I02E' or udg_TempItemId=='I02I' or udg_TempItemId=='I02K' or udg_TempItemId=='I02N' or udg_TempItemId=='I02D')then // 'I02E': item "Chemist's Ether"; 'I02I': item "Chemist's Hi-Ether"; 'I02K': item "Chemist's Mega Ether"; 'I02N': item "Chemist's Turbo Ether"; 'I02D': item "Chemist's Elixir"
+    elseif(l_tempItemId=='I02E' or l_tempItemId=='I02I' or l_tempItemId=='I02K' or l_tempItemId=='I02N' or l_tempItemId=='I02D')then // 'I02E': item "Chemist's Ether"; 'I02I': item "Chemist's Hi-Ether"; 'I02K': item "Chemist's Mega Ether"; 'I02N': item "Chemist's Turbo Ether"; 'I02D': item "Chemist's Elixir"
         set l_cloudKind=3
-    elseif(udg_TempItemId=='I0ET' or udg_TempItemId=='I0EU' or udg_TempItemId=='I02H')then // 'I0ET': item "Chemist's Nectar"; 'I0EU': item "Chemist's Greater Nectar"; 'I02H': item "Chemist's Hero Drink"
+    elseif(l_tempItemId=='I0ET' or l_tempItemId=='I0EU' or l_tempItemId=='I02H')then // 'I0ET': item "Chemist's Nectar"; 'I0EU': item "Chemist's Greater Nectar"; 'I02H': item "Chemist's Hero Drink"
         set l_cloudKind=4
     endif
-    if(udg_TempItemId=='I02L' or udg_TempItemId=='I02E' or udg_TempItemId=='I0ET')then // 'I02L': item "Chemist's Potion"; 'I02E': item "Chemist's Ether"; 'I0ET': item "Chemist's Nectar"
+    if(l_tempItemId=='I02L' or l_tempItemId=='I02E' or l_tempItemId=='I0ET')then // 'I02L': item "Chemist's Potion"; 'I02E': item "Chemist's Ether"; 'I0ET': item "Chemist's Nectar"
         set l_potency=80
-    elseif(udg_TempItemId=='I02J' or udg_TempItemId=='I02I' or udg_TempItemId=='I0EU')then // 'I02J': item "Chemist's Hi-Potion"; 'I02I': item "Chemist's Hi-Ether"; 'I0EU': item "Chemist's Greater Nectar"
+    elseif(l_tempItemId=='I02J' or l_tempItemId=='I02I' or l_tempItemId=='I0EU')then // 'I02J': item "Chemist's Hi-Potion"; 'I02I': item "Chemist's Hi-Ether"; 'I0EU': item "Chemist's Greater Nectar"
         set l_potency='}'
-    elseif(udg_TempItemId=='I02M' or udg_TempItemId=='I02K' or udg_TempItemId=='I02H')then // 'I02M': item "Chemist's Mega Potion"; 'I02K': item "Chemist's Mega Ether"; 'I02H': item "Chemist's Hero Drink"
+    elseif(l_tempItemId=='I02M' or l_tempItemId=='I02K' or l_tempItemId=='I02H')then // 'I02M': item "Chemist's Mega Potion"; 'I02K': item "Chemist's Mega Ether"; 'I02H': item "Chemist's Hero Drink"
         set l_potency=$C8 // $C8 = 200
-    elseif(udg_TempItemId=='I02O' or udg_TempItemId=='I02N')then // 'I02O': item "Chemist's X-Potion"; 'I02N': item "Chemist's Turbo Ether"
+    elseif(l_tempItemId=='I02O' or l_tempItemId=='I02N')then // 'I02O': item "Chemist's X-Potion"; 'I02N': item "Chemist's Turbo Ether"
         set l_potency=300
-    elseif(udg_TempItemId=='I02D')then // 'I02D': item "Chemist's Elixir"
+    elseif(l_tempItemId=='I02D')then // 'I02D': item "Chemist's Elixir"
         set l_potency=500
     endif
     if(l_cloudKind==3)then
@@ -436,26 +439,30 @@ function Trig_Chemist_Molotov_Cond_CasterIsHero takes nothing returns boolean
 endfunction
 
 function Trig_Chemist_Molotov_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local location l_tempPoint
+    local real l_tempReal
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (5).
     // Result 2: (result 1) plus (2).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 5)+2
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 5)+2
     if(Trig_Chemist_Molotov_Cond_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) times (1)).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*1))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) times (1)).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*1))
     endif
-    set udg_TempReal=Prof_GetSpellPower(GetTriggerUnit(),'R000',.5) // 'R000': upgrade "Tools"
+    set l_tempReal=Prof_GetSpellPower(GetTriggerUnit(),'R000',.5) // 'R000': upgrade "Tools"
     call SaveUnitHandleBJ(GetTriggerUnit(),0,GetHandleIdBJ(GetSpellTargetUnit()),udg_MolotovHash)
-    // (udg_TempInteger treated as a decimal-capable number) times (udg_TempReal).
-    call SaveRealBJ((I2R(udg_TempInteger)*udg_TempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_MolotovHash)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    // (l_tempInteger treated as a decimal-capable number) times (l_tempReal).
+    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,GetHandleIdBJ(GetSpellTargetUnit()),udg_MolotovHash)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(5.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0ZY',GetLastCreatedUnit()) // 'A0ZY': ability "Molotov Cocktail"
     call SetUnitAbilityLevelSwapped('A0ZY',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A0ZY': ability "Molotov Cocktail"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"acidbomb",GetSpellTargetUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Chemist automatically; it is intentionally empty. This module's

@@ -22,11 +22,13 @@ function Trig_BattleWard_Death_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_BattleWard_Death_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageDeathCaster.mdl")
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageDeathCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(GetTriggerUnit())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_BattleWard automatically; it is intentionally empty. This module's

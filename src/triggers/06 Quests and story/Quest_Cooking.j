@@ -26,6 +26,7 @@ function Trig_Quest_Cooking_Start_CookingRank1 takes nothing returns boolean
 endfunction
 
 function Trig_Quest_Cooking_Start_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_Cooking_Start_PlayCookingScene())then
         call Cine_Enter()
@@ -37,12 +38,12 @@ function Trig_Quest_Cooking_Start_Actions takes nothing returns nothing
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Cooking Choices|r")
     set udg_SideQuest[69]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Cooking Choices"),"You decided to try your hand at cooking a meal at a fireplace in the Northern Mountains. Make a delicious meal!","ReplaceableTextures\\CommandButtons\\BTNFdWildBowl.blp")
-    set udg_TempPoint=GetUnitLoc(gg_unit_n0KG_0263)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\RandomObject\\RandomObject.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_n0KG_0263)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\RandomObject\\RandomObject.mdl")
     // (BlzGetLocalSpecialEffectZ(GetLastCreatedEffectBJ())) plus (64).
     call BlzSetSpecialEffectZ(GetLastCreatedEffectBJ(),(BlzGetLocalSpecialEffectZ(GetLastCreatedEffectBJ())+64.))
     set udg_SpecialEffect[92]=GetLastCreatedEffectBJ()
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call UnitAddAbilityBJ('Aneu',gg_unit_n0KG_0263) // 'Aneu': standard ability reference "Neutral Building"
     call AddItemToStockBJ('I0B9',gg_unit_n0KG_0263,1,1) // 'I0B9': item "Recipe: Wild Bowl"
     if(Trig_Quest_Cooking_Start_CookingRank1())then
@@ -62,6 +63,7 @@ function Trig_Quest_Cooking_Start_Actions takes nothing returns nothing
     endif
     call EnableTrigger(gg_trg_Quest_Cooking_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Cooking_Complete_SceneBusy takes nothing returns boolean
@@ -77,8 +79,10 @@ function Trig_Quest_Cooking_Complete_CookingRankZero takes nothing returns boole
 endfunction
 
 function Trig_Quest_Cooking_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Quest_Cooking_Complete_SceneBusy())then
         call StartTimerBJ(udg_ShortDelayTimer,false,1.)
+        set l_tempPoint=null
         return
     endif
     call DisableTrigger(GetTriggeringTrigger())
@@ -102,15 +106,16 @@ function Trig_Quest_Cooking_Complete_Actions takes nothing returns nothing
         call AddItemToStockBJ('I0CD',gg_unit_n0KG_0263,1,1) // 'I0CD': item "Recipe: Energy Brew"
         call AddItemToStockBJ('I0CE',gg_unit_n0KG_0263,1,1) // 'I0CE': item "Recipe: Swift Drink"
     endif
-    set udg_TempPoint=GetRectCenter(gg_rct_694)
-    call CreateItemLoc('I0BE',udg_TempPoint) // 'I0BE': item "Firewood"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_694)
+    call CreateItemLoc('I0BE',l_tempPoint) // 'I0BE': item "Firewood"
+    call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call EnableTrigger(gg_trg_Firewood_Light_Fireplace)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Cooking Choices|r")
     call QuestSetCompletedBJ(udg_SideQuest[69],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_Cooking takes nothing returns nothing

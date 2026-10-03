@@ -53,25 +53,31 @@ function Trig_Assault_Cast_FilterTarget takes nothing returns boolean
 endfunction
 
 function Trig_Assault_Cast_BuffTarget takes nothing returns nothing
+    local location l_tempPoint
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h02S': unit "Simple Casting Dummy"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    call CreateNUnitsAtLocFacingLocBJ(1,'h02S',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h02S': unit "Simple Casting Dummy"
+    call RemoveLocation(l_tempPoint)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(1.5,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A14K',GetLastCreatedUnit()) // 'A14K': ability "Assault"
     call SetUnitAbilityLevelSwapped('A14K',GetLastCreatedUnit(),udg_TempInteger) // 'A14K': ability "Assault"
     call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetEnumUnit())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Assault_Cast_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(1000.,udg_TempPoint,Condition(function Trig_Assault_Cast_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    local group l_tempGroup
+    local location l_tempPoint
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempGroup=Group_UnitsInRangeOfLoc(1000.,l_tempPoint,Condition(function Trig_Assault_Cast_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     set udg_TempInteger=GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())
-    call ForGroupBJ(udg_TempGroup,function Trig_Assault_Cast_BuffTarget)
-    call DestroyGroup(udg_TempGroup)
+    call ForGroupBJ(l_tempGroup,function Trig_Assault_Cast_BuffTarget)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Assault automatically; it is intentionally empty. This module's

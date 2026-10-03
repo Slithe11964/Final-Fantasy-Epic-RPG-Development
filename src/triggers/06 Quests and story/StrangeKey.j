@@ -15,14 +15,16 @@ function Trig_StrangeKey_Drop_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_StrangeKey_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[2]=CreateItemLoc('kygh',udg_TempPoint) // 'kygh': item "Strange Key"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[2]=CreateItemLoc('kygh',l_tempPoint) // 'kygh': item "Strange Key"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_StrangeCage_Unlock)
     call EnableTrigger(gg_trg_StrangeKey_Ping)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_StrangeKey_Ping_Conditions takes nothing returns boolean
@@ -30,9 +32,11 @@ function Trig_StrangeKey_Ping_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_StrangeKey_Ping_Actions takes nothing returns nothing
-    set udg_TempPoint=GetItemLoc(udg_QuestItem[2])
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetItemLoc(udg_QuestItem[2])
+    call PingMinimapLocForForce(GetPlayersAll(),l_tempPoint,2.)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_StrangeKey automatically; it is intentionally empty. This module's

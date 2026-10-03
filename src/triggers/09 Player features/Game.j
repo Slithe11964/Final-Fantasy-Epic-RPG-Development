@@ -5,11 +5,13 @@ globals
 endglobals
 
 function Trig_Game_Start_StartPlayerHero takes nothing returns nothing
+    local location l_tempPoint
     call SelectUnitForPlayerSingle(Player_GetHero(GetEnumPlayer()),GetEnumPlayer())
     call SetUnitInvulnerable(Player_GetHero(GetEnumPlayer()),false)
-    set udg_TempPoint=GetUnitLoc(Player_GetHero(GetEnumPlayer()))
-    call PanCameraToTimedLocForPlayer(GetEnumPlayer(),udg_TempPoint,0)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(Player_GetHero(GetEnumPlayer()))
+    call PanCameraToTimedLocForPlayer(GetEnumPlayer(),l_tempPoint,0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Game_Start_AddPlayerToForces takes nothing returns nothing

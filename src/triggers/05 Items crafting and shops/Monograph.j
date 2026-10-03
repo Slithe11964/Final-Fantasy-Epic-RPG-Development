@@ -51,37 +51,38 @@ function Trig_Monograph_Drop_AllChestsDone takes nothing returns boolean
 endfunction
 
 function Trig_Monograph_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_MonographCount=(udg_MonographCount+1)
-    set udg_TempPoint=GetDestructableLoc(GetDyingDestructable())
+    set l_tempPoint=GetDestructableLoc(GetDyingDestructable())
     if(Trig_Monograph_Drop_IsScholarChest())then
-        call CreateItemLoc('I0EK',udg_TempPoint) // 'I0EK': item "Scholar's Monograph"
+        call CreateItemLoc('I0EK',l_tempPoint) // 'I0EK': item "Scholar's Monograph"
     else
         if(Trig_Monograph_Drop_IsSentinelChest())then
-            call CreateItemLoc('I0EJ',udg_TempPoint) // 'I0EJ': item "Sentinel's Monograph"
+            call CreateItemLoc('I0EJ',l_tempPoint) // 'I0EJ': item "Sentinel's Monograph"
         else
             if(Trig_Monograph_Drop_IsSageChest())then
-                call CreateItemLoc('I0EL',udg_TempPoint) // 'I0EL': item "Sage's Monograph"
+                call CreateItemLoc('I0EL',l_tempPoint) // 'I0EL': item "Sage's Monograph"
             else
                 if(Trig_Monograph_Drop_IsHunterChest())then
-                    call CreateItemLoc('I0EF',udg_TempPoint) // 'I0EF': item "Hunter's Monograph"
+                    call CreateItemLoc('I0EF',l_tempPoint) // 'I0EF': item "Hunter's Monograph"
                 else
                     if(Trig_Monograph_Drop_IsTravellerChest())then
-                        call CreateItemLoc('I0EG',udg_TempPoint) // 'I0EG': item "Traveller's Monograph"
+                        call CreateItemLoc('I0EG',l_tempPoint) // 'I0EG': item "Traveller's Monograph"
                     else
                         if(Trig_Monograph_Drop_IsWarmageChest())then
-                            call CreateItemLoc('I0EH',udg_TempPoint) // 'I0EH': item "Warmage's Monograph"
+                            call CreateItemLoc('I0EH',l_tempPoint) // 'I0EH': item "Warmage's Monograph"
                         else
                             if(Trig_Monograph_Drop_IsBerserkerChest())then
-                                call CreateItemLoc('I0EM',udg_TempPoint) // 'I0EM': item "Berserker's Monograph"
+                                call CreateItemLoc('I0EM',l_tempPoint) // 'I0EM': item "Berserker's Monograph"
                             else
                                 if(Trig_Monograph_Drop_IsDragoonChest())then
-                                    call CreateItemLoc('I0EN',udg_TempPoint) // 'I0EN': item "Dragoon's Monograph"
+                                    call CreateItemLoc('I0EN',l_tempPoint) // 'I0EN': item "Dragoon's Monograph"
                                 else
                                     if(Trig_Monograph_Drop_IsElderChest())then
-                                        call CreateItemLoc('I0EO',udg_TempPoint) // 'I0EO': item "Elder's Monograph"
+                                        call CreateItemLoc('I0EO',l_tempPoint) // 'I0EO': item "Elder's Monograph"
                                     else
                                         if(Trig_Monograph_Drop_IsKnightChest())then
-                                            call CreateItemLoc('I0EI',udg_TempPoint) // 'I0EI': item "Knight's Monograph"
+                                            call CreateItemLoc('I0EI',l_tempPoint) // 'I0EI': item "Knight's Monograph"
                                         endif
                                     endif
                                 endif
@@ -92,14 +93,15 @@ function Trig_Monograph_Drop_Actions takes nothing returns nothing
             endif
         endif
     endif
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\Reincarnation\\ReincarnationTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\Reincarnation\\ReincarnationTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     set udg_MonographDropped=true
     if(Trig_Monograph_Drop_AllChestsDone())then
         call DisableTrigger(GetTriggeringTrigger())
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Monograph automatically; it is intentionally empty. This module's

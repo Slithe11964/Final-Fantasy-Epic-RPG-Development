@@ -17,6 +17,7 @@ function Trig_Quest_Monstrum_Complete_CharmQuestDone takes nothing returns boole
 endfunction
 
 function Trig_Quest_Monstrum_Complete_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Monstrum_Phase_Check)
     call DestroyTrigger(gg_trg_Monstrum_Phase_Check)
@@ -27,9 +28,9 @@ function Trig_Quest_Monstrum_Complete_Actions takes nothing returns nothing
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0BF',udg_TempPoint) // 'I0BF': item "Slither Shield"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0BF',l_tempPoint) // 'I0BF': item "Slither Shield"
+    call RemoveLocation(l_tempPoint)
     call ForGroupBJ(udg_TentacleGroup,function Trig_Quest_Monstrum_Complete_KillRemainingTentacle)
     call GroupClear(udg_TentacleGroup)
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Monstrum of the Sea|r")
@@ -44,6 +45,7 @@ function Trig_Quest_Monstrum_Complete_Actions takes nothing returns nothing
         set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=$BA // $BA = 186
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Quest_Monstrum takes nothing returns nothing

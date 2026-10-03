@@ -37,6 +37,8 @@ function Trig_NebraKing_Summon_Cond_HasStoredLife takes nothing returns boolean
 endfunction
 
 function Trig_NebraKing_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint2
+    local real l_tempReal
     set udg_NebraKingSpot=udg_PlayerFishSpot[udg_TempInteger]
     if(Trig_NebraKing_Summon_Cond_QuestNotStarted())then
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00King of the Sea|r")
@@ -53,14 +55,14 @@ function Trig_NebraKing_Summon_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
     endif
     // (facing in degrees of the triggering unit) plus (180).
-    set udg_TempReal=(GetUnitFacing(GetTriggerUnit())+180.)
+    set l_tempReal=(GetUnitFacing(GetTriggerUnit())+180.)
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,udg_TempReal)
+    set l_tempPoint2=Loc_PolarOffset(udg_TempPoint,256,l_tempReal)
     call RemoveLocation(udg_TempPoint)
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLocFacingLocBJ(gg_unit_H02W_0246,udg_TempPoint2,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    call SetUnitPositionLocFacingLocBJ(gg_unit_H02W_0246,l_tempPoint2,udg_TempPoint)
+    call RemoveLocation(l_tempPoint2)
     if(Trig_NebraKing_Summon_Cond_HasStoredLife())then
         if(Trig_NebraKing_Summon_Cond_MaxLifeTooLow())then
             // (udg_NebraKingLife) with its decimal part removed.
@@ -79,6 +81,7 @@ function Trig_NebraKing_Summon_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_H02W_0246,udg_BossUnits)
     call StartTimerBJ(udg_NebraKingTimer,false,120.)
     call EnableTrigger(gg_trg_NebraKing_Escape)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_NebraKing_Escape_Cond_LifeDropped takes nothing returns boolean
@@ -86,27 +89,28 @@ function Trig_NebraKing_Escape_Cond_LifeDropped takes nothing returns boolean
 endfunction
 
 function Trig_NebraKing_Escape_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call SetUnitInvulnerable(gg_unit_H02W_0246,true)
     call PauseUnitBJ(true,gg_unit_H02W_0246)
     if(Trig_NebraKing_Escape_Cond_LifeDropped())then
         set udg_NebraKingLife=GetUnitStateSwap(UNIT_STATE_LIFE,gg_unit_H02W_0246)
     endif
-    set udg_TempPoint=GetUnitLoc(gg_unit_H02W_0246)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H02W_0246)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=$A // $A = 10
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (36).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*36.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*36.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
     call ShowUnitHide(gg_unit_H02W_0246)
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossGroup)
@@ -116,6 +120,7 @@ function Trig_NebraKing_Escape_Actions takes nothing returns nothing
     set udg_DispelTarget=gg_unit_H02W_0246
     call ConditionalTriggerExecute(gg_trg_Remove_Debuffs)
     call ConditionalTriggerExecute(gg_trg_Remove_Buffs)
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_NebraKing automatically; it is intentionally empty. This module's

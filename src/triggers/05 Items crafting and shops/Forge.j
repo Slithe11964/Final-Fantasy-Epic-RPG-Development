@@ -17,11 +17,12 @@ globals
 endglobals
 
 function Trig_Forge_Bali_Init_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_SpecialEffect[32]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hmbr_0140,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_Arcanium_Start)
-    set udg_TempPoint=GetUnitLoc(gg_unit_Hmbr_0140)
-    set udg_ForgeDropPoint=OffsetLocation(udg_TempPoint,-10.,-75.)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(gg_unit_Hmbr_0140)
+    set udg_ForgeDropPoint=OffsetLocation(l_tempPoint,-10.,-75.)
+    call RemoveLocation(l_tempPoint)
     set udg_ForgeRecipeCount=33
     set udg_ForgeRecipeBase[1]='I0L7' // 'I0L7': item "Shimmering Sword"
     set udg_ForgeRecipeMaterial[1]='I0FR' // 'I0FR': item "Ice Gem"
@@ -133,6 +134,7 @@ function Trig_Forge_Bali_Init_Actions takes nothing returns nothing
     set udg_CelestialWeapon[8]='I0LF' // 'I0LF': item "Ragnarok"
     set udg_CelestialWeapon[$B]='I0LH' // $B = 11; 'I0LH': item "Exeter"
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Forge_Bali_ItemGiven_Conditions takes nothing returns boolean

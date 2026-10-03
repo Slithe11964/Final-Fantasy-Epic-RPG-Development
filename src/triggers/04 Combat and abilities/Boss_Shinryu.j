@@ -18,6 +18,7 @@ function Trig_Boss_Shinryu_Warmech_Summon_CoinFlip takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
+    local location l_tempPoint
     set udg_BossCleanupTrigger=gg_trg_Arena_Duel_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
@@ -25,10 +26,10 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_633)
-    call CreateNUnitsAtLoc(1,'U01N',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'U01N': unit "Zombie Dragon"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_633)
+    call CreateNUnitsAtLoc(1,'U01N',Player($B),l_tempPoint,bj_UNIT_FACING) // 'U01N': unit "Zombie Dragon"; $B = 11
     set udg_ShinryuUnit=GetLastCreatedUnit()
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call AddSpecialEffectTargetUnitBJ("origin",udg_ShinryuUnit,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
@@ -48,10 +49,10 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_639)
-    call CreateNUnitsAtLoc(1,'E01J',Player($B),udg_TempPoint,270.) // 'E01J': unit "Warmech"; $B = 11
+    set l_tempPoint=GetRectCenter(gg_rct_639)
+    call CreateNUnitsAtLoc(1,'E01J',Player($B),l_tempPoint,270.) // 'E01J': unit "Warmech"; $B = 11
     set udg_WarmechUnit=GetLastCreatedUnit()
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
     call AddSpecialEffectTargetUnitBJ("origin",udg_WarmechUnit,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
@@ -99,6 +100,7 @@ function Trig_Boss_Shinryu_Warmech_Summon_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Arena_Omega_Absorbs)
     call EnableTrigger(gg_trg_Arena_Shinryu_Absorbs)
     call Cine_Exit()
+    set l_tempPoint=null
 endfunction
 
 function InitTrig_Boss_Shinryu takes nothing returns nothing

@@ -6,10 +6,12 @@ globals
 endglobals
 
 function Trig_Shimmerweed_Spawn_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_568)
-    set udg_ShimmerweedItem=CreateItemLoc('I0FM',udg_TempPoint) // 'I0FM': item "Shimmerweed"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_568)
+    set udg_ShimmerweedItem=CreateItemLoc('I0FM',l_tempPoint) // 'I0FM': item "Shimmerweed"
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Shimmerweed_Pickup)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Shimmerweed_Pickup_Conditions takes nothing returns boolean

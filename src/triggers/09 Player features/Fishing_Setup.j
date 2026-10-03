@@ -151,10 +151,11 @@ function Trig_Fishing_Pole_Found_RukselHintPending takes nothing returns boolean
 endfunction
 
 function Trig_Fishing_Pole_Found_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetDestructableLoc(gg_dest_LTcr_0058)
-    call CreateItemLoc('I0EY',udg_TempPoint) // 'I0EY': item "Fishing Pole"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetDestructableLoc(gg_dest_LTcr_0058)
+    call CreateItemLoc('I0EY',l_tempPoint) // 'I0EY': item "Fishing Pole"
+    call RemoveLocation(l_tempPoint)
     call KillDestructable(gg_dest_LTcr_0058)
     if(Trig_Fishing_Pole_Found_RukselHintPending())then
         call DestroyEffectBJ(udg_QuestMarkerEffect[23])
@@ -164,6 +165,7 @@ function Trig_Fishing_Pole_Found_Actions takes nothing returns nothing
     set udg_SpecialEffect[92]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AW_0223,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_FishyDeals_Start)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Fishing_Unlock_IsFishingRod takes nothing returns boolean

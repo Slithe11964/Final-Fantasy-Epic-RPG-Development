@@ -73,11 +73,15 @@ function Trig_Quest_Brothers_Defeated_Cond_NotNeutralPassive takes nothing retur
 endfunction
 
 function Trig_Quest_Brothers_Defeated_Enum_MoveAside takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetEnumUnit())
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-386.)
-    call RemoveLocation(udg_TempPoint)
-    call SetUnitPositionLoc(GetEnumUnit(),udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(GetEnumUnit())
+    set l_tempPoint2=OffsetLocation(l_tempPoint,0,-386.)
+    call RemoveLocation(l_tempPoint)
+    call SetUnitPositionLoc(GetEnumUnit(),l_tempPoint2)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Quest_Brothers_Defeated_Enum_ApplyCamera takes nothing returns nothing
@@ -121,25 +125,26 @@ function Trig_Quest_Brothers_Defeated_Cond_BothBrothersDefeated takes nothing re
 endfunction
 
 function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
+    local location l_tempPoint
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(GetDyingUnit(),udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(GetDyingUnit(),l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(GetTriggerUnit(),true)
     call SetUnitOwner(GetDyingUnit(),Player(8),false)
     if(Trig_Quest_Brothers_Defeated_Cond_BothBrothersDefeated())then
         call DisableTrigger(GetTriggeringTrigger())
         if(Trig_Quest_Brothers_Defeated_Cond_CinematicsEnabled())then
             set udg_TempPlayer=GetOwningPlayer(GetKillingUnitBJ())
-            set udg_TempPoint=GetRectCenter(gg_rct_236)
-            call SetUnitPositionLoc(gg_unit_Ocb2_0147,udg_TempPoint)
-            call RemoveLocation(udg_TempPoint)
-            set udg_TempPoint=GetRectCenter(gg_rct_377)
-            call SetUnitPositionLoc(gg_unit_Ocbh_0148,udg_TempPoint)
+            set l_tempPoint=GetRectCenter(gg_rct_236)
+            call SetUnitPositionLoc(gg_unit_Ocb2_0147,l_tempPoint)
+            call RemoveLocation(l_tempPoint)
+            set l_tempPoint=GetRectCenter(gg_rct_377)
+            call SetUnitPositionLoc(gg_unit_Ocbh_0148,l_tempPoint)
             call SetUnitFacingTimed(gg_unit_Ocb2_0147,bj_UNIT_FACING,0)
             call SetUnitFacingTimed(gg_unit_Ocbh_0148,bj_UNIT_FACING,0)
-            set udg_TempGroup=Group_UnitsInRangeOfLoc(512,udg_TempPoint,Condition(function Trig_Quest_Brothers_Defeated_Cond_NotNeutralPassive))
-            call RemoveLocation(udg_TempPoint)
+            set udg_TempGroup=Group_UnitsInRangeOfLoc(512,l_tempPoint,Condition(function Trig_Quest_Brothers_Defeated_Cond_NotNeutralPassive))
+            call RemoveLocation(l_tempPoint)
             call ForGroupBJ(udg_TempGroup,function Trig_Quest_Brothers_Defeated_Enum_MoveAside)
             call DestroyGroup(udg_TempGroup)
             call Cine_Enter()
@@ -165,12 +170,12 @@ function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return to Izlude.")
         call QuestSetDescriptionBJ(udg_SideQuest[8],"Return to Izlude, Divine Knight from Kalm.")
         call GroupAddUnitSimple(gg_unit_Hdgo_0097,udg_BossUnits)
-        set udg_TempPoint=GetRectCenter(gg_rct_235)
-        call SetUnitPositionLoc(gg_unit_Ocb2_0147,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
-        set udg_TempPoint=GetRectCenter(gg_rct_376)
-        call SetUnitPositionLoc(gg_unit_Ocbh_0148,udg_TempPoint)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_235)
+        call SetUnitPositionLoc(gg_unit_Ocb2_0147,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
+        set l_tempPoint=GetRectCenter(gg_rct_376)
+        call SetUnitPositionLoc(gg_unit_Ocbh_0148,l_tempPoint)
+        call RemoveLocation(l_tempPoint)
         call SetUnitFacingTimed(gg_unit_Ocb2_0147,GetUnitFacing(gg_unit_hhes_0087),0)
         call SetUnitFacingTimed(gg_unit_Ocbh_0148,GetUnitFacing(gg_unit_hhes_0087),0)
         call SetUnitOwner(gg_unit_Ocb2_0147,Player(9),true)
@@ -212,6 +217,7 @@ function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
         call StartTimerBJ(udg_SharedDelayTimer4,false,30.)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_Brothers_Complete_Conditions takes nothing returns boolean

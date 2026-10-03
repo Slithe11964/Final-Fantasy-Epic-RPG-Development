@@ -164,6 +164,7 @@ function Trig_DarkBahamut_DragonDeath_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DarkBahamut_Phase2_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
     call Cine_Enter()
@@ -175,21 +176,21 @@ function Trig_DarkBahamut_Phase2_Actions takes nothing returns nothing
     call PauseUnitBJ(true,gg_unit_H01X_0038)
     call Cam_PanToUnit(GetTriggerUnit(),0)
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01W_0039)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01W_0039)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(1.)
     call ShowUnitHide(gg_unit_H01W_0039)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01W_0039)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01W_0039)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLoc(gg_unit_H01X_0038,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLoc(gg_unit_H01X_0038,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01X_0038)
     call Wait_Polled(2.)
     call Cine_ExitAction()
@@ -201,9 +202,11 @@ function Trig_DarkBahamut_Phase2_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_DarkBahamut_Phase3)
     call PauseUnitBJ(true,gg_unit_H01W_0039)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkBahamut_Phase3_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
     call Cine_Enter()
@@ -215,35 +218,35 @@ function Trig_DarkBahamut_Phase3_Actions takes nothing returns nothing
     call PauseUnitBJ(true,gg_unit_H01Y_0037)
     call Cam_PanToUnit(GetTriggerUnit(),0)
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01X_0038)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01X_0038)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01X_0038)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01X_0038)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Charm\\CharmTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Charm\\CharmTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01X_0038)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01X_0038)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(1.)
     call ShowUnitHide(gg_unit_H01X_0038)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01X_0038)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01X_0038)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call SetUnitPositionLoc(gg_unit_H01Y_0037,udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLoc(gg_unit_H01Y_0037,l_tempPoint)
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01Y_0037)
     call Wait_Polled(2)
     call Cine_ExitAction()
@@ -255,9 +258,11 @@ function Trig_DarkBahamut_Phase3_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_DarkBahamut_Phase4)
     call PauseUnitBJ(true,gg_unit_H01X_0038)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
     call Cine_Enter()
@@ -271,93 +276,93 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     call PauseUnitBJ(true,gg_unit_H01X_0038)
     call Cam_PanToUnit(GetTriggerUnit(),0)
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Other\\Charm\\CharmTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Other\\Charm\\CharmTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(1.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*45.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,(I2R(GetForLoopIndexA())*45.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,(I2R(GetForLoopIndexA())*45.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,256,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(.5)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=8
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (loop counter A treated as a decimal-capable number) times (45).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,512.,(I2R(GetForLoopIndexA())*45.))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,512.,(I2R(GetForLoopIndexA())*45.))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\MirrorImage\\MirrorImageCaster.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(2.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_H01Y_0037)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
+    set l_tempPoint=GetUnitLoc(gg_unit_H01Y_0037)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     // The remainder after dividing ((facing in degrees of gg_unit_H01Y_0037) plus (90)) by (360).
-    call SetUnitPositionLoc(gg_unit_H01W_0039,Loc_PolarOffset(udg_TempPoint,256.,ModuloReal((GetUnitFacing(gg_unit_H01Y_0037)+90.),360.)))
+    call SetUnitPositionLoc(gg_unit_H01W_0039,Loc_PolarOffset(l_tempPoint,256.,ModuloReal((GetUnitFacing(gg_unit_H01Y_0037)+90.),360.)))
     // The remainder after dividing ((facing in degrees of gg_unit_H01Y_0037) plus (270)) by (360).
-    call SetUnitPositionLoc(gg_unit_H01X_0038,Loc_PolarOffset(udg_TempPoint,256.,ModuloReal((GetUnitFacing(gg_unit_H01Y_0037)+270.),360.)))
-    call RemoveLocation(udg_TempPoint)
+    call SetUnitPositionLoc(gg_unit_H01X_0038,Loc_PolarOffset(l_tempPoint,256.,ModuloReal((GetUnitFacing(gg_unit_H01Y_0037)+270.),360.)))
+    call RemoveLocation(l_tempPoint)
     call ShowUnitShow(gg_unit_H01W_0039)
     call ShowUnitShow(gg_unit_H01X_0038)
     call Wait_Polled(2)
@@ -379,6 +384,7 @@ function Trig_DarkBahamut_Phase4_Actions takes nothing returns nothing
     call Wait_Polled(10.)
     call Music_ClearTrack(23)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_DarkBahamut automatically; it is intentionally empty. This module's

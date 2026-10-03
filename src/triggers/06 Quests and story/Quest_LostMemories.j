@@ -267,6 +267,7 @@ function Trig_Quest_LostMemories_ShadowTruth_Cond_ShowDialog takes nothing retur
 endfunction
 
 function Trig_Quest_LostMemories_ShadowTruth_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call UnitPauseTimedLifeBJ(true,udg_ShadowUnit)
     call DestroyEffectBJ(udg_SpecialEffect[66])
@@ -375,9 +376,9 @@ function Trig_Quest_LostMemories_ShadowTruth_Actions takes nothing returns nothi
     call DisableTrigger(gg_trg_Quest_LostMemories_RingFade)
     set udg_ShadowLoyalty=0
     call TriggerExecute(gg_trg_Shadow_Death)
-    set udg_TempPoint=GetRectCenter(gg_rct_551)
-    call CreateNUnitsAtLoc(1,'n04K',Player(9),udg_TempPoint,180.) // 'n04K': unit "Shadow"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_551)
+    call CreateNUnitsAtLoc(1,'n04K',Player(9),l_tempPoint,180.) // 'n04K': unit "Shadow"
+    call RemoveLocation(l_tempPoint)
     call UnitRemoveAbilityBJ('Ane2',GetLastCreatedUnit()) // 'Ane2': object name not found in map data
     set udg_ShadowUnit=GetLastCreatedUnit()
     set udg_SpecialEffect[66]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e00V_0009,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
@@ -386,6 +387,7 @@ function Trig_Quest_LostMemories_ShadowTruth_Actions takes nothing returns nothi
     call QuestSetDescriptionBJ(udg_SideQuest[44],"Talk to Relm.")
     call EnableTrigger(gg_trg_Quest_LostMemories_Reunion)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_LostMemories_Reunion_Conditions takes nothing returns boolean

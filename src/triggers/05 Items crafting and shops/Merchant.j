@@ -74,6 +74,7 @@ function Trig_Merchant_Spawn_Night_Cond_KoboldKills_Under16 takes nothing return
 endfunction
 
 function Trig_Merchant_Spawn_Night_Actions takes nothing returns nothing
+    local integer l_tempInteger
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Merchant_Spawn_Night_Cond_PickRectPair())then
         if(Trig_Merchant_Spawn_Night_Cond_PickRect1())then
@@ -93,14 +94,14 @@ function Trig_Merchant_Spawn_Night_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
     call SetUnitVertexColorBJ(udg_KoboldMerchant,75.,90.,'d',90.)
     // The remainder after dividing (udg_GameDay) by (5).
-    set udg_TempInteger=ModuloInteger(udg_GameDay,5)
-    call AddItemToStockBJ(udg_MerchantPotion[udg_TempInteger],udg_KoboldMerchant,$A,$A) // $A = 10
+    set l_tempInteger=ModuloInteger(udg_GameDay,5)
+    call AddItemToStockBJ(udg_MerchantPotion[l_tempInteger],udg_KoboldMerchant,$A,$A) // $A = 10
     if(Trig_Merchant_Spawn_Night_Cond_KoboldKills_Under16())then
-        call AddItemToStockBJ(udg_MerchantAccessory[udg_TempInteger],udg_KoboldMerchant,1,1)
+        call AddItemToStockBJ(udg_MerchantAccessory[l_tempInteger],udg_KoboldMerchant,1,1)
         if(Trig_Merchant_Spawn_Night_Cond_KoboldKills_Under6())then
-            call AddItemToStockBJ(udg_MerchantRod[udg_TempInteger],udg_KoboldMerchant,1,1)
+            call AddItemToStockBJ(udg_MerchantRod[l_tempInteger],udg_KoboldMerchant,1,1)
             if(Trig_Merchant_Spawn_Night_Cond_KoboldKills_None())then
-                call AddItemToStockBJ(udg_MerchantRareGear[udg_TempInteger],udg_KoboldMerchant,1,1)
+                call AddItemToStockBJ(udg_MerchantRareGear[l_tempInteger],udg_KoboldMerchant,1,1)
             endif
         endif
     endif
@@ -147,17 +148,19 @@ function Trig_Merchant_Leave_OnSale_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Merchant_Leave_OnSale_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Merchant_Leave_Dawn)
     call DisableTrigger(gg_trg_Merchant_Reveal)
-    set udg_TempPoint=GetUnitLoc(udg_KoboldMerchant)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(udg_KoboldMerchant)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call RemoveUnit(udg_KoboldMerchant)
     set udg_KoboldMerchant=null
     call EnableTrigger(gg_trg_Merchant_Spawn_Night)
     set udg_KoboldKillCount=0
+    set l_tempPoint=null
 endfunction
 
 function Trig_Merchant_Stock_Shrink_Conditions takes nothing returns boolean

@@ -25,21 +25,23 @@ function Trig_Ifrit_Hellfire_HasNoTargetUnit takes nothing returns boolean
 endfunction
 
 function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
+    local integer l_tempHandleId
+    local integer l_tempInteger
     // Result 1: (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit,
     // GetSpellAbilityId()))) divided by (2).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 2)
-    // (udg_TempInteger) plus ((unit level of the triggering unit) divided by (3)).
-    set udg_TempInteger=(udg_TempInteger+(GetUnitLevel(GetTriggerUnit())/ 3))
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 2)
+    // (l_tempInteger) plus ((unit level of the triggering unit) divided by (3)).
+    set l_tempInteger=(l_tempInteger+(GetUnitLevel(GetTriggerUnit())/ 3))
     if(Trig_Ifrit_Hellfire_CasterIsHero())then
-        // (udg_TempInteger) plus (Intelligence of the triggering unit).
-        set udg_TempInteger=(udg_TempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
+        // (l_tempInteger) plus (Intelligence of the triggering unit).
+        set l_tempInteger=(l_tempInteger+GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true))
     else
         if(Trig_Ifrit_Hellfire_UsesFirstWeapon())then
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) divided by (3)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)/ 3))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 0)) divided by (3)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),0)/ 3))
         else
-            // (udg_TempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) divided by (3)).
-            set udg_TempInteger=(udg_TempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)/ 3))
+            // (l_tempInteger) plus ((BlzGetUnitBaseDamage(the triggering unit, 1)) divided by (3)).
+            set l_tempInteger=(l_tempInteger+(BlzGetUnitBaseDamage(GetTriggerUnit(),1)/ 3))
         endif
     endif
     if(Trig_Ifrit_Hellfire_HasNoTargetUnit())then
@@ -48,11 +50,11 @@ function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
         set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
     endif
     call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
     // Udg_TempInteger treated as a decimal-capable number.
-    call SaveRealBJ(I2R(udg_TempInteger),1,udg_TempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+    call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
+    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
     call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M1',GetLastCreatedUnit()) // 'A0M1': ability "Fire-elemental Damage"
@@ -65,11 +67,11 @@ function Trig_Ifrit_Hellfire_Actions takes nothing returns nothing
         // (loop counter A treated as a decimal-capable number) times (60).
         set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,400.,(I2R(GetForLoopIndexA())*60.))
         call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2) // 'h01B': unit "Proxy Dummy"
-        set udg_TempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-        call SaveUnitHandleBJ(GetTriggerUnit(),0,udg_TempHandleId,udg_ProxyDamageHash)
+        set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
+        call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
         // Udg_TempInteger treated as a decimal-capable number.
-        call SaveRealBJ(I2R(udg_TempInteger),1,udg_TempHandleId,udg_ProxyDamageHash)
-        call SaveIntegerBJ(3,2,udg_TempHandleId,udg_ProxyDamageHash)
+        call SaveRealBJ(I2R(l_tempInteger),1,l_tempHandleId,udg_ProxyDamageHash)
+        call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
         call ShowUnitHide(GetLastCreatedUnit())
         call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
         call UnitAddAbilityBJ('A0M1',GetLastCreatedUnit()) // 'A0M1': ability "Fire-elemental Damage"

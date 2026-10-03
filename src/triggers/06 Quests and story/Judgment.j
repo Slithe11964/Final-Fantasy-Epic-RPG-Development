@@ -18,6 +18,7 @@ function Trig_Judgment_Attack_Alberich_Cond_CinematicsEnabled takes nothing retu
 endfunction
 
 function Trig_Judgment_Attack_Alberich_Actions takes nothing returns nothing
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Judgment_Spare_Alberich)
     call DestroyTrigger(gg_trg_Judgment_Spare_Alberich)
@@ -65,12 +66,12 @@ function Trig_Judgment_Attack_Alberich_Actions takes nothing returns nothing
     set udg_SideQuest[35]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"The Northern God"),"Face off against the Northern God at the old Arcanium mine.","ReplaceableTextures\\CommandButtons\\BTNChaosWarlord.blp")
     set udg_TempPoint=GetRectCenter(gg_rct_677)
     call SetUnitPositionLocFacingBJ(gg_unit_H01M_0071,udg_TempPoint,270.)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-300.,0)
-    call SetUnitPositionLocFacingBJ(gg_unit_N0N0_0267,udg_TempPoint2,270.)
-    call RemoveLocation(udg_TempPoint2)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,300.,0)
-    call SetUnitPositionLocFacingBJ(gg_unit_E01O_0268,udg_TempPoint2,270.)
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,-300.,0)
+    call SetUnitPositionLocFacingBJ(gg_unit_N0N0_0267,l_tempPoint2,270.)
+    call RemoveLocation(l_tempPoint2)
+    set l_tempPoint2=OffsetLocation(udg_TempPoint,300.,0)
+    call SetUnitPositionLocFacingBJ(gg_unit_E01O_0268,l_tempPoint2,270.)
+    call RemoveLocation(l_tempPoint2)
     call RemoveLocation(udg_TempPoint)
     call ShowUnitShow(gg_unit_H01M_0071)
     call ShowUnitShow(gg_unit_N0N0_0267)
@@ -78,6 +79,7 @@ function Trig_Judgment_Attack_Alberich_Actions takes nothing returns nothing
     set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H01M_0071,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Boss_Odin_Intro)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Judgment_Spare_Alberich_Cond_CinematicRunning takes nothing returns boolean

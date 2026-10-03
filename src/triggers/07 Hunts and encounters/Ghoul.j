@@ -39,13 +39,15 @@ function Trig_Ghoul_Master_Spawn_Cond_InFirstArenaGroup takes nothing returns bo
 endfunction
 
 function Trig_Ghoul_Master_Spawn_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call IncUnitAbilityLevelSwapped('A0RB',GetTriggerUnit()) // 'A0RB': ability "Ghoul Master"
-    set udg_TempPoint=GetUnitLoc(GetAttacker())
+    set l_tempPoint=GetUnitLoc(GetAttacker())
     // A random decimal number between 64 and 96.
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,GetRandomReal(64.,96.),GetRandomDirectionDeg())
-    call CreateNUnitsAtLocFacingLocBJ(1,'ugho',Player($B),udg_TempPoint2,udg_TempPoint) // 'ugho': object name not found in map data; $B = 11
-    call RemoveLocation(udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,GetRandomReal(64.,96.),GetRandomDirectionDeg())
+    call CreateNUnitsAtLocFacingLocBJ(1,'ugho',Player($B),l_tempPoint2,l_tempPoint) // 'ugho': object name not found in map data; $B = 11
+    call RemoveLocation(l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call UnitAddTypeBJ(UNIT_TYPE_SUMMONED,GetLastCreatedUnit())
     if(Trig_Ghoul_Master_Spawn_Cond_IsGrandVampire())then
@@ -60,6 +62,8 @@ function Trig_Ghoul_Master_Spawn_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_Ghoul automatically; it is intentionally empty. This module's

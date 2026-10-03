@@ -16,10 +16,12 @@ function Trig_Chaos_Init_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(gg_unit_U00O_0191)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,0)
-    call CreateNUnitsAtLoc(1,'n0CT',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CT': unit "Earth Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    local location l_tempPoint
+    local location l_tempPoint2
+    set l_tempPoint=GetUnitLoc(gg_unit_U00O_0191)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,0)
+    call CreateNUnitsAtLoc(1,'n0CT',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CT': unit "Earth Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_ORANGE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -27,9 +29,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,60.)
-    call CreateNUnitsAtLoc(1,'n0CO',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CO': unit "Fire Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,60.)
+    call CreateNUnitsAtLoc(1,'n0CO',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CO': unit "Fire Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_RED)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -37,9 +39,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,240.)
-    call CreateNUnitsAtLoc(1,'n0CP',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CP': unit "Ice Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,240.)
+    call CreateNUnitsAtLoc(1,'n0CP',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CP': unit "Ice Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_LIGHT_BLUE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -47,9 +49,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,120.)
-    call CreateNUnitsAtLoc(1,'n0CQ',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CQ': unit "Thunder Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,120.)
+    call CreateNUnitsAtLoc(1,'n0CQ',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CQ': unit "Thunder Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_YELLOW)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -57,9 +59,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,300.)
-    call CreateNUnitsAtLoc(1,'n0CR',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CR': unit "Water Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,300.)
+    call CreateNUnitsAtLoc(1,'n0CR',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CR': unit "Water Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_BLUE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -67,9 +69,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,180.)
-    call CreateNUnitsAtLoc(1,'n0CS',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CS': unit "Wind Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,180.)
+    call CreateNUnitsAtLoc(1,'n0CS',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CS': unit "Wind Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_GREEN)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -77,7 +79,9 @@ function Trig_Chaos_Spawn_Chaosjets_Actions takes nothing returns nothing
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Chaos_Revive_Chaosjets_Conditions takes nothing returns boolean
@@ -109,12 +113,14 @@ function Trig_Chaos_Revive_Chaosjets_TrackedCaster_Wind takes nothing returns bo
 endfunction
 
 function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(gg_trg_Chaos_Recall_Chaosjets)
     set udg_ChaosBoss=GetTriggerUnit()
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,0)
-    call CreateNUnitsAtLoc(1,'n0CT',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CT': unit "Earth Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,0)
+    call CreateNUnitsAtLoc(1,'n0CT',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CT': unit "Earth Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_ORANGE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -123,9 +129,9 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,60.)
-    call CreateNUnitsAtLoc(1,'n0CO',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CO': unit "Fire Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,60.)
+    call CreateNUnitsAtLoc(1,'n0CO',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CO': unit "Fire Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_RED)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -134,9 +140,9 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,240.)
-    call CreateNUnitsAtLoc(1,'n0CP',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CP': unit "Ice Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,240.)
+    call CreateNUnitsAtLoc(1,'n0CP',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CP': unit "Ice Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_LIGHT_BLUE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -145,9 +151,9 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,120.)
-    call CreateNUnitsAtLoc(1,'n0CQ',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CQ': unit "Thunder Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,120.)
+    call CreateNUnitsAtLoc(1,'n0CQ',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CQ': unit "Thunder Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_YELLOW)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -156,9 +162,9 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,300.)
-    call CreateNUnitsAtLoc(1,'n0CR',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CR': unit "Water Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,300.)
+    call CreateNUnitsAtLoc(1,'n0CR',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CR': unit "Water Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_BLUE)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -167,9 +173,9 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,180.)
-    call CreateNUnitsAtLoc(1,'n0CS',Player($B),udg_TempPoint2,bj_UNIT_FACING) // 'n0CS': unit "Wind Chaosjet"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,180.)
+    call CreateNUnitsAtLoc(1,'n0CS',Player($B),l_tempPoint2,bj_UNIT_FACING) // 'n0CS': unit "Wind Chaosjet"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_GREEN)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ChaosElementalGroup)
@@ -178,10 +184,12 @@ function Trig_Chaos_Revive_Chaosjets_Actions takes nothing returns nothing
     endif
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Items\\TomeOfRetraining\\TomeOfRetrainingCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call Wait_Polled(2)
     call UnitRemoveAbilityBJ('A11C',GetTriggerUnit()) // 'A11C': ability "!Revive Chaosjets"
     call EnableTrigger(gg_trg_Chaos_Recall_Chaosjets)
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Chaos_Recall_Chaosjets_Conditions takes nothing returns boolean
@@ -189,13 +197,15 @@ function Trig_Chaos_Recall_Chaosjets_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Chaos_Recall_Chaosjets_BlinkJetToChaos takes nothing returns nothing
-    set udg_TempPoint2=GetUnitLoc(GetEnumUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    local location l_tempPoint2
+    set l_tempPoint2=GetUnitLoc(GetEnumUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint2,"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint2)
+    call RemoveLocation(l_tempPoint2)
     call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call SetUnitPositionLoc(GetEnumUnit(),udg_TempPoint)
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Chaos_Recall_Chaosjets_Actions takes nothing returns nothing

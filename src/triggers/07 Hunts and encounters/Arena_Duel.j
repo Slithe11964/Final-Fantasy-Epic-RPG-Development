@@ -226,25 +226,26 @@ function Trig_Arena_Duel_Victory_IsWaygateUnlocked takes nothing returns boolean
 endfunction
 
 function Trig_Arena_Duel_Victory_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Arena_Duel_Victory_IsKillTrackerOn())then
         set udg_BossUnit=GetTriggerUnit()
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_Arena_Duel_Victory_IsOmega())then
-        call CreateItemLoc('I0C6',udg_TempPoint) // 'I0C6': item "Edgar's Drill"
+        call CreateItemLoc('I0C6',l_tempPoint) // 'I0C6': item "Edgar's Drill"
     else
         if(Trig_Arena_Duel_Victory_IsShinryu())then
-            call CreateItemLoc('I0C7',udg_TempPoint) // 'I0C7': item "Ryuujin no Ken"
+            call CreateItemLoc('I0C7',l_tempPoint) // 'I0C7': item "Ryuujin no Ken"
         endif
     endif
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
-    call RemoveLocation(udg_TempPoint)
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
+    call RemoveLocation(l_tempPoint)
     call AddUnitToStockBJ('n0LV',udg_ArenaOrganizer[5],1,1) // 'n0LV': unit "Arena: Phantasm Dragon Battle"
     call AddUnitToStockBJ('n0LW',udg_ArenaOrganizer[5],1,1) // 'n0LW': unit "Arena: Phantasm Mech Battle"
     call Music_ClearTrack(55)
@@ -268,6 +269,7 @@ function Trig_Arena_Duel_Victory_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A01G',gg_unit_n03T_0008) // 'A01G': ability "Dragon Soul Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Arena_Duel_Cleanup_Actions takes nothing returns nothing

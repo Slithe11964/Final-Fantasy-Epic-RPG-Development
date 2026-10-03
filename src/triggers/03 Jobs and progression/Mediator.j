@@ -24,16 +24,18 @@ function Trig_Mediator_Clone_Reject_TargetIsClone takes nothing returns boolean
 endfunction
 
 function Trig_Mediator_Clone_Reject_Actions takes nothing returns nothing
+    local force l_tempForce
     call PauseUnitBJ(true,GetTriggerUnit())
     call IssueImmediateOrderBJ(GetTriggerUnit(),"stop")
     call PauseUnitBJ(false,GetTriggerUnit())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Mediator_Clone_Reject_TargetIsClone())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000You cannot clone a clone!|r")
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000You cannot clone a clone!|r")
     else
-        call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000This target cannot be cloned!|r")
+        call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000This target cannot be cloned!|r")
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Mediator_Clone_Conditions takes nothing returns boolean
@@ -49,16 +51,18 @@ function Trig_Mediator_Clone_SourceCanJoin takes nothing returns boolean
 endfunction
 
 function Trig_Mediator_Clone_Actions takes nothing returns nothing
+    local location l_tempPoint
     if(Trig_Mediator_Clone_TargetIsClone())then
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"|cffff0000You cannot clone a clone!|r")
         call DestroyForce(udg_TempForce)
+        set l_tempPoint=null
         return
     endif
     set udg_SpellTargetUnit=GetSpellTargetUnit()
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,GetUnitTypeId(udg_SpellTargetUnit),GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,GetUnitFacing(GetTriggerUnit()))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateNUnitsAtLoc(1,GetUnitTypeId(udg_SpellTargetUnit),GetOwningPlayer(GetTriggerUnit()),l_tempPoint,GetUnitFacing(GetTriggerUnit()))
+    call RemoveLocation(l_tempPoint)
     call UnitApplyTimedLifeBJ(30.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A1DH',GetLastCreatedUnit()) // 'A1DH': ability "Cloned"
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
@@ -73,6 +77,7 @@ function Trig_Mediator_Clone_Actions takes nothing returns nothing
     if(Trig_Mediator_Clone_SourceCanJoin())then
         call UnitAddAbilityBJ('A04F',GetLastCreatedUnit()) // 'A04F': ability "Join Fast"
     endif
+    set l_tempPoint=null
 endfunction
 
 function Trig_Mediator_SpellShot_Conditions takes nothing returns boolean
@@ -152,18 +157,20 @@ function Trig_Mediator_SpellShot_TargetIsEnemy takes nothing returns boolean
 endfunction
 
 function Trig_Mediator_SpellShot_Actions takes nothing returns nothing
+    local integer l_tempInteger
+    local real l_tempReal
     call AddSpecialEffectTargetUnitBJ("overhead",GetSpellTargetUnit(),"Abilities\\Weapons\\FlyingMachine\\FlyingMachineImpact.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (2).
-    set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
+    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*2)
     if(Trig_Mediator_SpellShot_CasterIsHero())then
-        // (udg_TempInteger) plus ((Intelligence of the triggering unit) divided by (4); drop the remainder).
-        set udg_TempInteger=(udg_TempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 4))
+        // (l_tempInteger) plus ((Intelligence of the triggering unit) divided by (4); drop the remainder).
+        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 4))
     endif
-    set udg_TempReal=Prof_GetSpellPower(GetTriggerUnit(),'R00M',.5) // 'R00M': upgrade "Gun"
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
+    set l_tempReal=Prof_GetSpellPower(GetTriggerUnit(),'R00M',.5) // 'R00M': upgrade "Gun"
+    // ((l_tempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set l_tempInteger=R2I((I2R(l_tempInteger)*l_tempReal))
     set udg_SpellTargetUnit=GetSpellTargetUnit()
     if(Trig_Mediator_SpellShot_TargetIsEnemy())then
         call AddSpecialEffectTargetUnitBJ("origin",udg_SpellTargetUnit,"Abilities\\Spells\\Other\\TinkerRocket\\TinkerRocketMissile.mdl")
@@ -173,12 +180,12 @@ function Trig_Mediator_SpellShot_Actions takes nothing returns nothing
         set udg_DmgFlagManaDamage=true
         set udg_DmgFlagUnavoidable=-1
         // Udg_TempInteger treated as a decimal-capable number.
-        call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
-        // (udg_TempInteger) times (4).
-        set udg_TempInteger=(udg_TempInteger*4)
+        call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(l_tempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+        // (l_tempInteger) times (4).
+        set l_tempInteger=(l_tempInteger*4)
         set udg_DmgFlagUnavoidable=-1
         // Udg_TempInteger treated as a decimal-capable number.
-        call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+        call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(l_tempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
     else
         set udg_TempInteger2=0
         set udg_TempPoint=GetUnitLoc(udg_SpellTargetUnit)
@@ -274,13 +281,13 @@ function Trig_Mediator_SpellShot_Actions takes nothing returns nothing
             set udg_DmgFlagManaDamage=true
             set udg_DmgFlagUnavoidable=-1
             // Udg_TempInteger treated as a decimal-capable number.
-            call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
-            // (udg_TempInteger) times (4).
-            set udg_TempInteger=(udg_TempInteger*4)
+            call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(l_tempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+            // (l_tempInteger) times (4).
+            set l_tempInteger=(l_tempInteger*4)
             set udg_IsPureDamage=true
             set udg_DmgFlagUnavoidable=-1
             // Udg_TempInteger treated as a decimal-capable number.
-            call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(udg_TempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
+            call UnitDamageTargetBJ(GetTriggerUnit(),udg_SpellTargetUnit,I2R(l_tempInteger),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
         endif
     endif
 endfunction
@@ -401,8 +408,11 @@ function Trig_Mediator_Balance_DamageEnum takes nothing returns nothing
 endfunction
 
 function Trig_Mediator_Balance_Actions takes nothing returns nothing
-    set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\Flare\\FlareCaster.mdl")
+    local group l_tempGroup
+    local location l_tempPoint
+    local real l_tempReal
+    set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\Flare\\FlareCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=6
@@ -410,7 +420,7 @@ function Trig_Mediator_Balance_Actions takes nothing returns nothing
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         // (facing in degrees of the triggering unit) plus ((loop counter A treated as a decimal-capable number) times
         // (60)).
-        set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,250.,(GetUnitFacing(GetTriggerUnit())+(I2R(GetForLoopIndexA())*60.)))
+        set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,250.,(GetUnitFacing(GetTriggerUnit())+(I2R(GetForLoopIndexA())*60.)))
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Orc\\SpiritLink\\SpiritLinkZapTarget.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call AddSpecialEffectLocBJ(udg_TempPoint2,"Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl")
@@ -420,8 +430,8 @@ function Trig_Mediator_Balance_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint2)
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(480.,udg_TempPoint,Condition(function Trig_Mediator_Balance_FilterTarget))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempGroup=Group_UnitsInRangeOfLoc(480.,l_tempPoint,Condition(function Trig_Mediator_Balance_FilterTarget))
+    call RemoveLocation(l_tempPoint)
     // (BlzGetAbilityManaCost(GetSpellAbilityId(), Abil_GetLevel(the triggering unit, GetSpellAbilityId()))) times
     // (3).
     set udg_TempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*3)
@@ -434,11 +444,13 @@ function Trig_Mediator_Balance_Actions takes nothing returns nothing
     // Result 3: (result 2) times (1).
     // Result 4: (udg_TempInteger) plus (result 3).
     set udg_TempInteger=(udg_TempInteger+(R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetSpellTargetUnit())-GetUnitStateSwap(UNIT_STATE_LIFE,GetSpellTargetUnit())))*1))
-    set udg_TempReal=Prof_StaffPowerAlt(GetTriggerUnit())
-    // ((udg_TempInteger treated as a decimal-capable number) times (udg_TempReal)) with its decimal part removed.
-    set udg_TempInteger=R2I((I2R(udg_TempInteger)*udg_TempReal))
-    call ForGroupBJ(udg_TempGroup,function Trig_Mediator_Balance_DamageEnum)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempReal=Prof_StaffPowerAlt(GetTriggerUnit())
+    // ((udg_TempInteger treated as a decimal-capable number) times (l_tempReal)) with its decimal part removed.
+    set udg_TempInteger=R2I((I2R(udg_TempInteger)*l_tempReal))
+    call ForGroupBJ(l_tempGroup,function Trig_Mediator_Balance_DamageEnum)
+    call DestroyGroup(l_tempGroup)
+    set l_tempGroup=null
+    set l_tempPoint=null
 endfunction
 
 function Trig_Mediator_MarkForDeath_Conditions takes nothing returns boolean

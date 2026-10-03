@@ -90,25 +90,26 @@ function Trig_DarkEden_Death_CinematicsOn takes nothing returns boolean
 endfunction
 
 function Trig_DarkEden_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateItemLoc('I0G7',udg_TempPoint) // 'I0G7': item "Omni Gem"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call CreateItemLoc('I0G7',l_tempPoint) // 'I0G7': item "Omni Gem"
+    call RemoveLocation(l_tempPoint)
     call RemoveItemFromStockBJ('I07U',gg_unit_n02Y_0052) // 'I07U': item "Information: Dark Eden"
     if(Trig_DarkEden_Death_CinematicsOn())then
         call Cine_Enter()
         call ForForce(udg_PlayingPlayers,function Trig_DarkEden_Death_PanCameraToArea)
-        set udg_TempPoint=GetUnitLoc(gg_unit_u007_0128)
-        call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(gg_unit_u007_0128)
+        call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+        call RemoveLocation(l_tempPoint)
         call Wait_Polled(.5)
         call ShowUnitShow(gg_unit_u007_0128)
         call Text_Say(gg_unit_u007_0128,"Incredible, you have defeated him! It was Dark Eden... wait a second, allow me...",false)
         call Wait_Polled(1.)
-        set udg_TempPoint=GetUnitLoc(gg_unit_u007_0128)
+        set l_tempPoint=GetUnitLoc(gg_unit_u007_0128)
         set udg_TempPoint2=GetUnitLoc(GetTriggerUnit())
-        set udg_AbsorbLightning=AddLightningLoc("DRAB",udg_TempPoint,udg_TempPoint2)
-        call RemoveLocation(udg_TempPoint)
+        set udg_AbsorbLightning=AddLightningLoc("DRAB",l_tempPoint,udg_TempPoint2)
+        call RemoveLocation(l_tempPoint)
         call RemoveLocation(udg_TempPoint2)
         call EnableTrigger(gg_trg_DarkEden_LightningColor)
         call ConditionalTriggerExecute(gg_trg_DarkEden_LightningColor)
@@ -132,6 +133,7 @@ function Trig_DarkEden_Death_Actions takes nothing returns nothing
     call DestroyTrigger(gg_trg_DarkEden_LightningColor)
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_DarkEden_LightningColor_Actions takes nothing returns nothing

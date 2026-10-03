@@ -162,18 +162,19 @@ function Trig_Arena_FoeDeath_IsBPOverCap takes nothing returns boolean
 endfunction
 
 function Trig_Arena_FoeDeath_AwardBattlePoints takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetEnumPlayer())
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetEnumPlayer())
     if(Trig_Arena_FoeDeath_HasDoubleBP())then
         // Result 1: (udg_BattlePoints at position 0) times (2).
         // Result 2: (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (result 1).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+(udg_BattlePoints[0]*2))
         // (udg_BattlePoints at position 0) times (2).
-        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cffffcc00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points.|r"))
+        call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S((udg_BattlePoints[0]*2)))+" Battle Points.|r"))
     else
         // (udg_BattlePoints at position GetConvertedPlayerId(the player being visited)) plus (udg_BattlePoints at
         // position 0).
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]+udg_BattlePoints[0])
-        call DisplayTimedTextToForce(udg_TempForce,10.,(("|cffffcc00You get "+I2S(udg_BattlePoints[0]))+" Battle Points.|r"))
+        call DisplayTimedTextToForce(l_tempForce,10.,(("|cffffcc00You get "+I2S(udg_BattlePoints[0]))+" Battle Points.|r"))
     endif
     if(Trig_Arena_FoeDeath_IsBPOverCap())then
         set udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())]=$F423F // $F423F = 999999
@@ -181,8 +182,9 @@ function Trig_Arena_FoeDeath_AwardBattlePoints takes nothing returns nothing
     call DestroyTextTagBJ(udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())])
     set udg_ArenaBpTag[GetConvertedPlayerId(GetEnumPlayer())]=CreateTextTagUnitBJ(("Current BP: |cffffcc00"+(I2S(udg_BattlePoints[GetConvertedPlayerId(GetEnumPlayer())])+"|r")),gg_unit_h02I_0167,0,$A,'d','d','d',0) // $A = 10
     call ShowTextTagForceBJ(false,GetLastCreatedTextTag(),GetPlayersAll())
-    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),udg_TempForce)
-    call DestroyForce(udg_TempForce)
+    call ShowTextTagForceBJ(true,GetLastCreatedTextTag(),l_tempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 function Trig_Arena_FoeDeath_GateWasOpened takes nothing returns boolean

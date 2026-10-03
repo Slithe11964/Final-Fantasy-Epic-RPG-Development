@@ -35,12 +35,16 @@ function Trig_Boss_DemiFiend_Summon_FirstEncounterDialog takes nothing returns b
 endfunction
 
 function Trig_Boss_DemiFiend_Summon_Actions takes nothing returns nothing
+    local group l_tempGroup
+    local location l_tempPoint
+    local location l_tempPoint2
     set udg_BossCleanupTrigger=gg_trg_Boss_DemiFiend_Cleanup
     call Cine_Enter()
     call Cam_PanToUnit(gg_unit_n03T_0008,0)
     call Wait_Polled(1.)
-    set udg_TempGroup=Group_UnitsInRect(gg_rct_496,Condition(function Trig_Boss_DemiFiend_Summon_FilterPlayerUnit))
-    call ForGroupBJ(udg_TempGroup,function Trig_Boss_DemiFiend_Summon_AddSleepEffect)
+    set l_tempGroup=Group_UnitsInRect(gg_rct_496,Condition(function Trig_Boss_DemiFiend_Summon_FilterPlayerUnit))
+    call ForGroupBJ(l_tempGroup,function Trig_Boss_DemiFiend_Summon_AddSleepEffect)
+    call DestroyGroup(l_tempGroup) // phase 16: was never destroyed (leak)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(2)
     if(Trig_Boss_DemiFiend_Summon_FirstEncounter())then
@@ -49,9 +53,9 @@ function Trig_Boss_DemiFiend_Summon_Actions takes nothing returns nothing
     call Difficulty_SumHandicap(udg_DuelArenaPlayers)
     // (udg_EnemyHandicap) divided by (GetPlayerHandicapBJ(Player(11))).
     set udg_EnemyHandicap=(udg_EnemyHandicap/ GetPlayerHandicapBJ(Player($B))) // $B = 11
-    set udg_TempPoint=GetRectCenter(gg_rct_632)
-    call CreateNUnitsAtLoc(1,'E00Z',Player($B),udg_TempPoint,270.) // 'E00Z': unit "Demi Fiend"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_632)
+    call CreateNUnitsAtLoc(1,'E00Z',Player($B),l_tempPoint,270.) // 'E00Z': unit "Demi Fiend"; $B = 11
+    call RemoveLocation(l_tempPoint)
     set udg_DemiFiendUnit=GetLastCreatedUnit()
     // ((maximum health of GetLastCreatedUnit()) times (udg_EnemyHandicap)) with its decimal part removed.
     call BlzSetUnitMaxHP(GetLastCreatedUnit(),R2I((GetUnitStateSwap(UNIT_STATE_MAX_LIFE,GetLastCreatedUnit())*udg_EnemyHandicap)))
@@ -72,18 +76,18 @@ function Trig_Boss_DemiFiend_Summon_Actions takes nothing returns nothing
         call Wait_Polled(1.5)
     endif
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,.0,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
-    set udg_TempPoint=GetUnitLoc(udg_DemiFiendUnit)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,196.,-32.)
-    call CreateNUnitsAtLoc(1,'n0A5',Player($B),udg_TempPoint2,90.) // 'n0A5': unit "Cu Chulainn"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetUnitLoc(udg_DemiFiendUnit)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,196.,-32.)
+    call CreateNUnitsAtLoc(1,'n0A5',Player($B),l_tempPoint2,90.) // 'n0A5': unit "Cu Chulainn"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     set udg_DemiFiendDemon1=GetLastCreatedUnit()
     call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),5120.)
-    set udg_TempPoint2=OffsetLocation(udg_TempPoint,-196.,-32.)
-    call CreateNUnitsAtLoc(1,'n0A4',Player($B),udg_TempPoint2,90.) // 'n0A4': unit "Girimehkala"; $B = 11
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint2=OffsetLocation(l_tempPoint,-196.,-32.)
+    call CreateNUnitsAtLoc(1,'n0A4',Player($B),l_tempPoint2,90.) // 'n0A4': unit "Girimehkala"; $B = 11
+    call RemoveLocation(l_tempPoint2)
     set udg_DemiFiendDemon2=GetLastCreatedUnit()
     call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),5120.)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",udg_DemiFiendDemon1,"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call AddSpecialEffectTargetUnitBJ("origin",udg_DemiFiendDemon1,"Abilities\\Spells\\Other\\Monsoon\\MonsoonBoltTarget.mdl")
@@ -115,6 +119,9 @@ function Trig_Boss_DemiFiend_Summon_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Boss_DemiFiend_Mediarahan)
     call EnableTrigger(gg_trg_Boss_DemiFiend_Death)
     call Cine_Exit()
+    set l_tempGroup=null
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Boss_DemiFiend_Demon1_Death_Conditions takes nothing returns boolean
@@ -377,6 +384,7 @@ function Trig_Boss_DemiFiend_Death_IsWaygateOpen takes nothing returns boolean
 endfunction
 
 function Trig_Boss_DemiFiend_Death_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Boss_DemiFiend_Death_ShouldRecordKill())then
         set udg_BossUnit=GetTriggerUnit()
@@ -404,9 +412,9 @@ function Trig_Boss_DemiFiend_Death_Actions takes nothing returns nothing
         endif
     endif
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     if(Trig_Boss_DemiFiend_Death_SoloGame())then
-        call CreateItemLoc('I0G5',udg_TempPoint) // 'I0G5': item "Masakados"
+        call CreateItemLoc('I0G5',l_tempPoint) // 'I0G5': item "Masakados"
     else
         set bj_forLoopAIndex=1
         set bj_forLoopAIndexEnd=CountPlayersInForceBJ(udg_PlayingPlayers)
@@ -416,13 +424,13 @@ function Trig_Boss_DemiFiend_Death_Actions takes nothing returns nothing
             // Result 2: (360) times (result 1).
             // Result 3: CountPlayersInForceBJ(udg_PlayingPlayers) treated as a decimal-capable number.
             // Result 4: (result 2) divided by (result 3).
-            set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
+            set udg_TempPoint2=Loc_PolarOffset(l_tempPoint,128.,((360.*I2R(GetForLoopIndexA()))/ I2R(CountPlayersInForceBJ(udg_PlayingPlayers))))
             call CreateItemLoc('I0G5',udg_TempPoint2) // 'I0G5': item "Masakados"
             call RemoveLocation(udg_TempPoint2)
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
     endif
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call ForForce(udg_PlayingPlayers,function Trig_Boss_DemiFiend_Death_GrantQuest20)
     if(Trig_Boss_DemiFiend_Death_IsWaygateOpen())then
         call WaygateActivateBJ(true,gg_unit_n0AP_0240)
@@ -433,6 +441,7 @@ function Trig_Boss_DemiFiend_Death_Actions takes nothing returns nothing
     call UnitRemoveAbilityBJ('A0U9',gg_unit_n03T_0008) // 'A0U9': ability "Magatama Hint"
     call UnitAddAbilityBJ('Ane2',gg_unit_n03T_0008) // 'Ane2': object name not found in map data
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_DemiFiend_Cleanup_Actions takes nothing returns nothing

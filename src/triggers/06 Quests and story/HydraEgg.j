@@ -61,14 +61,16 @@ function Trig_HydraEgg_Drop_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_HydraEgg_Drop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[19]=CreateItemLoc('thle',udg_TempPoint) // 'thle': item "Hydra Egg"
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_QuestItem[19]=CreateItemLoc('thle',l_tempPoint) // 'thle': item "Hydra Egg"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_HydraEgg_Ping)
     call EnableTrigger(gg_trg_HydraEgg_Pickup)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_HydraEgg_Pickup_Conditions takes nothing returns boolean
@@ -76,13 +78,15 @@ function Trig_HydraEgg_Pickup_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_HydraEgg_Pickup_Actions takes nothing returns nothing
+    local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Hydra Egg to Captain Jack.")
-    call DestroyForce(udg_TempForce)
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Hydra Egg to Captain Jack.")
+    call DestroyForce(l_tempForce)
     call QuestSetDescriptionBJ(udg_SideQuest[18],"Bring the Hydra Egg to Captain Jack.")
     call EnableTrigger(gg_trg_HydraEgg_Deliver)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempForce=null
 endfunction
 
 function Trig_HydraEgg_Ping_Conditions takes nothing returns boolean
@@ -116,6 +120,8 @@ function Trig_HydraEgg_Deliver_GiveWaterMateria takes nothing returns nothing
 endfunction
 
 function Trig_HydraEgg_Deliver_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_HydraEgg_Ping)
     call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'thle')) // 'thle': item "Hydra Egg"
@@ -137,14 +143,16 @@ function Trig_HydraEgg_Deliver_Actions takes nothing returns nothing
     call QuestSetCompletedBJ(udg_SideQuest[18],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call Wait_Polled(600.)
-    set udg_TempPoint=GetUnitLoc(gg_unit_Hapm_0179)
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,128.,260.)
-    call RemoveLocation(udg_TempPoint)
-    call CreateNUnitsAtLoc(1,'n02X',Player(9),udg_TempPoint2,208.) // 'n02X': unit "Jack's Little Hydra"
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetUnitLoc(gg_unit_Hapm_0179)
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,128.,260.)
+    call RemoveLocation(l_tempPoint)
+    call CreateNUnitsAtLoc(1,'n02X',Player(9),l_tempPoint2,208.) // 'n02X': unit "Jack's Little Hydra"
+    call RemoveLocation(l_tempPoint2)
     set udg_QuestMarkerEffect[21]=AddSpecialEffectTargetUnitBJ("head",gg_unit_Hapm_0179,"Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl")
     call EnableTrigger(gg_trg_Npc_Talk_Jack)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 // World Editor calls InitTrig_HydraEgg automatically; it is intentionally empty. This module's

@@ -10,6 +10,7 @@ function Trig_InfernalMountain_Hide_HideTower takes nothing returns nothing
 endfunction
 
 function Trig_InfernalMountain_Hide_Actions takes nothing returns nothing
+    local group l_tempGroup
     call ShowUnitHide(gg_unit_U00Q_0023)
     call SetUnitInvulnerable(gg_unit_U00Q_0023,true)
     call PauseUnitBJ(true,gg_unit_U00Q_0023)
@@ -22,10 +23,11 @@ function Trig_InfernalMountain_Hide_Actions takes nothing returns nothing
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_597) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_622) // 'YOtf': object name not found in map data
     call SetDoodadAnimationRectBJ("hide",'YOtf',gg_rct_623) // 'YOtf': object name not found in map data
-    set udg_TempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
-    call ForGroupBJ(udg_TempGroup,function Trig_InfernalMountain_Hide_HideTower)
-    call DestroyGroup(udg_TempGroup)
+    set l_tempGroup=Group_UnitsOfPlayerAndType(Player($B),'u009') // $B = 11; 'u009': unit "Infernal Tower"
+    call ForGroupBJ(l_tempGroup,function Trig_InfernalMountain_Hide_HideTower)
+    call DestroyGroup(l_tempGroup)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempGroup=null
 endfunction
 
 // World Editor calls InitTrig_InfernalMountain automatically; it is intentionally empty. This module's

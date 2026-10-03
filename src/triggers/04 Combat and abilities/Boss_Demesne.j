@@ -57,15 +57,17 @@ function Trig_Boss_Demesne_Revived_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Boss_Demesne_Revived_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call BattleLog_ShowUnit("is revived.",gg_unit_U00M_0206)
     call ShowUnitShow(gg_unit_U00M_0206)
     call SetUnitInvulnerable(gg_unit_U00M_0206,false)
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,GetUnitFacing(GetTriggerUnit()))
-    call RemoveLocation(udg_TempPoint)
-    call SetUnitPositionLocFacingBJ(gg_unit_U00M_0206,udg_TempPoint2,GetUnitFacing(GetTriggerUnit()))
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,GetUnitFacing(GetTriggerUnit()))
+    call RemoveLocation(l_tempPoint)
+    call SetUnitPositionLocFacingBJ(gg_unit_U00M_0206,l_tempPoint2,GetUnitFacing(GetTriggerUnit()))
+    call RemoveLocation(l_tempPoint2)
     call SetUnitLifePercentBJ(gg_unit_U00M_0206,25.)
     call SetUnitManaPercentBJ(gg_unit_U00M_0206,.0)
     call AddSpecialEffectTargetUnitBJ("origin",gg_unit_U00M_0206,"Abilities\\Spells\\Other\\Awaken\\Awaken.mdl")
@@ -75,6 +77,8 @@ function Trig_Boss_Demesne_Revived_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Boss_Demesne_Death_Revive)
     call Wait_Polled(1.)
     call UnitRemoveAbilityBJ('A12C',gg_unit_U00L_0207) // 'A12C': ability "!Raise"
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function InitTrig_Boss_Demesne takes nothing returns nothing

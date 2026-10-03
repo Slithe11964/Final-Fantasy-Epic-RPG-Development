@@ -19,6 +19,8 @@ function Trig_Mephorash_Split_ActivateClone takes nothing returns nothing
 endfunction
 
 function Trig_Mephorash_Split_Actions takes nothing returns nothing
+    local location l_tempPoint
+    local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call Berserk_Remove(GetTriggerUnit())
     call SetUnitInvulnerable(GetTriggerUnit(),true)
@@ -29,23 +31,23 @@ function Trig_Mephorash_Split_Actions takes nothing returns nothing
     call GroupAddUnitSimple(GetTriggerUnit(),udg_MephorashClones)
     call SetUnitLifePercentBJ(GetTriggerUnit(),'d')
     call UnitRemoveAbilityBJ('A0ZR',GetTriggerUnit()) // 'A0ZR': ability "Immortal"
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempPoint2=Loc_PolarOffset(udg_TempPoint,256,GetUnitFacing(GetTriggerUnit()))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint2=Loc_PolarOffset(l_tempPoint,256,GetUnitFacing(GetTriggerUnit()))
+    call RemoveLocation(l_tempPoint)
     // The remainder after dividing ((facing in degrees of the triggering unit) plus (120)) by (360).
-    set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,ModuloReal((GetUnitFacing(GetTriggerUnit())+120.),360.))
-    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256,ModuloReal((GetUnitFacing(GetTriggerUnit())+120.),360.))
+    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Human\\ReviveHuman\\ReviveHuman.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_MephorashClones)
     call SetUnitInvulnerable(GetLastCreatedUnit(),true)
     call PauseUnitBJ(true,GetLastCreatedUnit())
     // The remainder after dividing ((facing in degrees of the triggering unit) plus (240)) by (360).
-    set udg_TempPoint=Loc_PolarOffset(udg_TempPoint2,256,ModuloReal((GetUnitFacing(GetTriggerUnit())+240.),360.))
-    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint2)
-    call RemoveLocation(udg_TempPoint)
-    call RemoveLocation(udg_TempPoint2)
+    set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256,ModuloReal((GetUnitFacing(GetTriggerUnit())+240.),360.))
+    call CreateNUnitsAtLocFacingLocBJ(1,GetUnitTypeId(GetTriggerUnit()),GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint2)
+    call RemoveLocation(l_tempPoint)
+    call RemoveLocation(l_tempPoint2)
     call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Human\\ReviveHuman\\ReviveHuman.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_MephorashClones)
@@ -55,6 +57,8 @@ function Trig_Mephorash_Split_Actions takes nothing returns nothing
     call Wait_Polled(1.)
     call ForGroupBJ(udg_MephorashClones,function Trig_Mephorash_Split_ActivateClone)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
+    set l_tempPoint2=null
 endfunction
 
 function Trig_Mephorash_Clone_Death_Conditions takes nothing returns boolean

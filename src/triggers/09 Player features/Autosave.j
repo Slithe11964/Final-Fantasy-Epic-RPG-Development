@@ -25,6 +25,7 @@ function Trig_Autosave_Command_Cond_AutosaveNowOn takes nothing returns boolean
 endfunction
 
 function Trig_Autosave_Command_Actions takes nothing returns nothing
+    local force l_tempForce
     if(Trig_Autosave_Command_Cond_AutosaveOnArg())then
         call ForceAddPlayerSimple(GetTriggerPlayer(),udg_AutosaveForce)
     else
@@ -38,17 +39,19 @@ function Trig_Autosave_Command_Actions takes nothing returns nothing
                     call ForceAddPlayerSimple(GetTriggerPlayer(),udg_AutosaveForce)
                 endif
             else
+                set l_tempForce=null
                 return
             endif
         endif
     endif
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     if(Trig_Autosave_Command_Cond_AutosaveNowOn())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"Your game will now save automatically.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"Your game will now save automatically.")
     else
-        call DisplayTimedTextToForce(udg_TempForce,10.,"Your game will no longer save automatically.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"Your game will no longer save automatically.")
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_Autosave automatically; it is intentionally empty. This module's

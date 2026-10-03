@@ -9,9 +9,11 @@ globals
 endglobals
 
 function Trig_Mid_Cage_Ping_Actions takes nothing returns nothing
-    set udg_TempPoint=GetDestructableLoc(gg_dest_LOcg_0010)
-    call PingMinimapLocForForceEx(GetPlayersAll(),udg_TempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',80.,.0)
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetDestructableLoc(gg_dest_LOcg_0010)
+    call PingMinimapLocForForceEx(GetPlayersAll(),l_tempPoint,2.,bj_MINIMAPPINGSTYLE_SIMPLE,'d',80.,.0)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Mid_Freed_IsHeroUnit takes nothing returns boolean
@@ -35,10 +37,11 @@ function Trig_Mid_Freed_FindMidDiscovered takes nothing returns boolean
 endfunction
 
 function Trig_Mid_Freed_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetDestructableLoc(GetDyingDestructable())
-    call CreateNUnitsAtLoc(1,'Hart',Player(9),udg_TempPoint,bj_UNIT_FACING) // 'Hart': unit "Engineer"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetDestructableLoc(GetDyingDestructable())
+    call CreateNUnitsAtLoc(1,'Hart',Player(9),l_tempPoint,bj_UNIT_FACING) // 'Hart': unit "Engineer"
+    call RemoveLocation(l_tempPoint)
     set udg_Mid=GetLastCreatedUnit()
     call UnitAddItemByIdSwapped('I01A',udg_Mid) // 'I01A': item "Battle Axe"
     call UnitAddItemByIdSwapped('I013',udg_Mid) // 'I013': item "Iron Shield"
@@ -51,25 +54,25 @@ function Trig_Mid_Freed_Actions takes nothing returns nothing
     if(Trig_Mid_Freed_CinematicsOn())then
         call Cine_Enter()
         call Cam_PanToUnit(udg_Mid,0)
-        set udg_TempPoint=GetUnitLoc(udg_Mid)
-        set udg_TempGroup=Group_UnitsInRangeOfLoc(700.,udg_TempPoint,Condition(function Trig_Mid_Freed_IsPlayerHero))
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(udg_Mid)
+        set udg_TempGroup=Group_UnitsInRangeOfLoc(700.,l_tempPoint,Condition(function Trig_Mid_Freed_IsPlayerHero))
+        call RemoveLocation(l_tempPoint)
         call SetUnitFacingToFaceUnitTimed(udg_Mid,GroupPickRandomUnit(udg_TempGroup),.0)
         call DestroyGroup(udg_TempGroup)
         call Text_Say(udg_Mid,"Thank you for saving me. Those ruffians attacked me and there were too many of them for me to fight. They captured me, placed me in this cage, and talked about sacrificing me to some Goblin Chieftain, which is weird, since Bandits never get along with Goblins.",false)
         call Text_Say(udg_Mid,"But now I am free, and I have to thank you for it! Come visit us in Kalm to claim your reward for saving me.  Cya!",false)
         call Cine_ExitAction()
     endif
-    set udg_TempPoint=GetUnitLoc(udg_Mid)
-    call AddSpecialEffectLocBJ(udg_TempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
+    set l_tempPoint=GetUnitLoc(udg_Mid)
+    call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Human\\MassTeleport\\MassTeleportCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_116)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_116)
     call SetUnitPositionLoc(gg_unit_Hpb1_0013,GetRectCenter(gg_rct_116))
-    call RemoveLocation(udg_TempPoint)
-    set udg_TempPoint=GetRectCenter(gg_rct_234)
+    call RemoveLocation(l_tempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_234)
     call SetUnitPositionLoc(udg_Mid,GetRectCenter(gg_rct_234))
-    call RemoveLocation(udg_TempPoint)
+    call RemoveLocation(l_tempPoint)
     if(Trig_Mid_Freed_FindMidDiscovered())then
         call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Cid")
         call QuestSetDescriptionBJ(udg_MainQuest[1],"Return to Cid in Kalm.")
@@ -105,6 +108,7 @@ function Trig_Mid_Freed_Actions takes nothing returns nothing
     set udg_NewsText[1]="|cffffcc00Mid Has Returned|r"
     set udg_NewsText[4]="Mid, nephew of Cid, the head of our community, has returned. He had been captured by bandits in Guardia Forest."
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Mid_Letter_Give_Conditions takes nothing returns boolean

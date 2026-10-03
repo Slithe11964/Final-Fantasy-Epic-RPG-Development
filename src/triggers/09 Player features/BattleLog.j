@@ -110,6 +110,7 @@ function Trig_Battlelog_Command_Cond_BattlelogNowOn takes nothing returns boolea
 endfunction
 
 function Trig_Battlelog_Command_Actions takes nothing returns nothing
+    local force l_tempForce
     if(Trig_Battlelog_Command_Cond_BattlelogOnArg())then
         call ForceAddPlayerSimple(GetTriggerPlayer(),udg_BattleLogForce)
     else
@@ -123,21 +124,23 @@ function Trig_Battlelog_Command_Actions takes nothing returns nothing
                     call ForceAddPlayerSimple(GetTriggerPlayer(),udg_BattleLogForce)
                 endif
             else
+                set l_tempForce=null
                 return
             endif
         endif
     endif
-    set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
+    set l_tempForce=Force_OfPlayer(GetTriggerPlayer())
     if(Trig_Battlelog_Command_Cond_BattlelogNowOn())then
-        call DisplayTimedTextToForce(udg_TempForce,10.,"You will now get a detailed battle log.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"You will now get a detailed battle log.")
         call EnableTrigger(udg_BattleLogTrigger)
     else
-        call DisplayTimedTextToForce(udg_TempForce,10.,"You will no longer get a detailed battle log.")
+        call DisplayTimedTextToForce(l_tempForce,10.,"You will no longer get a detailed battle log.")
         if(Trig_Battlelog_Command_Cond_BattlelogForceEmpty())then
             call DisableTrigger(udg_BattleLogTrigger)
         endif
     endif
-    call DestroyForce(udg_TempForce)
+    call DestroyForce(l_tempForce)
+    set l_tempForce=null
 endfunction
 
 // World Editor calls InitTrig_BattleLog automatically; it is intentionally empty. This module's

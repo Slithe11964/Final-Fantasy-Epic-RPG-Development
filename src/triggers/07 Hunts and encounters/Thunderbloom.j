@@ -6,10 +6,12 @@ globals
 endglobals
 
 function Trig_Thunderbloom_Spawn_Actions takes nothing returns nothing
-    set udg_TempPoint=GetRectCenter(gg_rct_569)
-    set udg_ThunderbloomItem=CreateItemLoc('I0FN',udg_TempPoint) // 'I0FN': item "Thunderbloom Bulb"
-    call RemoveLocation(udg_TempPoint)
+    local location l_tempPoint
+    set l_tempPoint=GetRectCenter(gg_rct_569)
+    set udg_ThunderbloomItem=CreateItemLoc('I0FN',l_tempPoint) // 'I0FN': item "Thunderbloom Bulb"
+    call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Thunderbloom_Pickup)
+    set l_tempPoint=null
 endfunction
 
 function Trig_Thunderbloom_Pickup_Conditions takes nothing returns boolean

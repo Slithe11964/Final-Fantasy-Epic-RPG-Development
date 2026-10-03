@@ -67,10 +67,11 @@ function Trig_Boss_Hashmalum_Revive_Belias_Cond_MateusAlive takes nothing return
 endfunction
 
 function Trig_Boss_Hashmalum_Revive_Belias_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_E002_0075,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_E002_0075,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitInvulnerable(gg_unit_E002_0075,true)
     if(Trig_Boss_Hashmalum_Revive_Belias_Cond_CinematicsEnabled())then
         call Cine_Enter()
@@ -78,9 +79,9 @@ function Trig_Boss_Hashmalum_Revive_Belias_Actions takes nothing returns nothing
         call Text_Say(gg_unit_E002_0075,"Your power is vast, mortal, but your struggles are meaningless. This is but a fraction of what the Zodiac Braves are capable of.",false)
         call SetUnitAnimation(gg_unit_E002_0075,"stand ready alternate")
         call Text_Say(gg_unit_E002_0075,"Come to my aid, Belias!",false)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        set udg_TempPoint2=OffsetLocation(udg_TempPoint,-200.,0)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        set udg_TempPoint2=OffsetLocation(l_tempPoint,-200.,0)
+        call RemoveLocation(l_tempPoint)
         call SetUnitPositionLoc(gg_unit_Uwar_0192,udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
         call SetUnitFacingToFaceUnitTimed(gg_unit_Uwar_0192,gg_unit_E002_0075,.0)
@@ -108,9 +109,9 @@ function Trig_Boss_Hashmalum_Revive_Belias_Actions takes nothing returns nothing
     else
         call PauseUnitBJ(true,gg_unit_E002_0075)
         call SetUnitLifeBJ(GetTriggerUnit(),1.)
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-        set udg_TempPoint2=OffsetLocation(udg_TempPoint,-200.,0)
-        call RemoveLocation(udg_TempPoint)
+        set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+        set udg_TempPoint2=OffsetLocation(l_tempPoint,-200.,0)
+        call RemoveLocation(l_tempPoint)
         call SetUnitPositionLoc(gg_unit_Uwar_0192,udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
         call SetUnitFacingToFaceUnitTimed(gg_unit_Uwar_0192,gg_unit_E002_0075,.0)
@@ -136,13 +137,15 @@ function Trig_Boss_Hashmalum_Revive_Belias_Actions takes nothing returns nothing
         call EnableTrigger(gg_trg_Boss_Belias_Rescue_Mateus)
     endif
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Hashmalum_Revive_Loop_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    call ReviveHeroLoc(gg_unit_E002_0075,udg_TempPoint,false)
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    call ReviveHeroLoc(gg_unit_E002_0075,l_tempPoint,false)
+    call RemoveLocation(l_tempPoint)
     call SetUnitLifeBJ(GetTriggerUnit(),1.)
     call PauseUnitBJ(true,gg_unit_Uwar_0192)
     call PauseUnitBJ(true,gg_unit_E002_0075)
@@ -163,6 +166,7 @@ function Trig_Boss_Hashmalum_Revive_Loop_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_E002_0075,false)
     call SetUnitInvulnerable(gg_unit_Uwar_0192,false)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Boss_Hashmalum_Death_Final_Cond_TrackKill takes nothing returns boolean

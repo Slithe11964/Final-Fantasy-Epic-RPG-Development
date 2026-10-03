@@ -2452,10 +2452,12 @@ function Trig_Loot_BlockLeaverItems_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Loot_BlockLeaverItems_Actions takes nothing returns nothing
-    set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call DisplayTimedTextToForce(udg_TempForce,10.,"You may not pick up items that belong to players that have already left!")
-    call DestroyForce(udg_TempForce)
+    local force l_tempForce
+    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
+    call DisplayTimedTextToForce(l_tempForce,10.,"You may not pick up items that belong to players that have already left!")
+    call DestroyForce(l_tempForce)
     call RemoveItem(GetManipulatedItem())
+    set l_tempForce=null
 endfunction
 
 function Trig_Loot_Cuchulainn_EyeDrop_Conditions takes nothing returns boolean

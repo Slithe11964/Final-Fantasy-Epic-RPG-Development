@@ -10,31 +10,33 @@ function Trig_Quest_EyeOfJenova_PickUp_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Quest_EyeOfJenova_PickUp_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Eye of Jenova to Ao Madoushi.")
     call QuestSetDescriptionBJ(udg_MainQuest[5],"Bring the Eye of Jenova to Ao Madoushi.")
     call EnableTrigger(gg_trg_Quest_EyeOfJenova_Deliver)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n01A',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n01A',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n01A',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n01A',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n01A',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n01A',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n01A',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n01A',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
-    call CreateNUnitsAtLoc(1,'n01B',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n01B': unit "Infernal Templar"; $B = 11
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRandomLocInRect(gg_rct_189)
+    call CreateNUnitsAtLoc(1,'n01B',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01B': unit "Infernal Templar"; $B = 11
+    call RemoveLocation(l_tempPoint)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
     call DestroyTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 function Trig_Quest_EyeOfJenova_Deliver_Conditions takes nothing returns boolean

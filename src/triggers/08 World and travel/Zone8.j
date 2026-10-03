@@ -35,16 +35,18 @@ function Trig_Zone8_Heal_Assist_FoundHealer takes nothing returns boolean
 endfunction
 
 function Trig_Zone8_Heal_Assist_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,udg_TempPoint,Condition(function Trig_Zone8_Heal_Assist_IsDevourHealer))
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_Zone8_Heal_Assist_IsDevourHealer))
+    call RemoveLocation(l_tempPoint)
     if(Trig_Zone8_Heal_Assist_FoundHealer())then
         call IssueTargetOrderBJ(GroupPickRandomUnit(udg_TempGroup),"holybolt",GetTriggerUnit())
     endif
     call DestroyGroup(udg_TempGroup)
     call Wait_Polled(5.)
     call EnableTrigger(GetTriggeringTrigger())
+    set l_tempPoint=null
 endfunction
 
 // World Editor calls InitTrig_Zone8 automatically; it is intentionally empty. This module's

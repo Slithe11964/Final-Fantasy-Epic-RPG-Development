@@ -118,6 +118,7 @@ function Trig_Bernkastel_Second_Talk_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Bernkastel_Second_Talk_Actions takes nothing returns nothing
+    local location l_tempPoint
     call DisableTrigger(gg_trg_Bernkastel_Despawn)
     call DestroyTrigger(gg_trg_Bernkastel_Despawn)
     call PauseTimerBJ(true,udg_BlueGirlTimer)
@@ -136,11 +137,12 @@ function Trig_Bernkastel_Second_Talk_Actions takes nothing returns nothing
     call Text_Say(udg_BlueGirl,"Well this seems rather unfortunate. I'm going to do you a favor and give you a gift since you went ahead and showed me you're there.",false)
     call Text_Say(udg_BlueGirl,"Since I know you're there now, maybe I'll come check up on you some other time. For now, have this.",false)
     call RemoveUnit(udg_BlueGirl)
-    set udg_TempPoint=GetRectCenter(gg_rct_572)
-    call CreateItemLoc('I0G4',udg_TempPoint) // 'I0G4': item "Miracle Piece"
-    call RemoveLocation(udg_TempPoint)
+    set l_tempPoint=GetRectCenter(gg_rct_572)
+    call CreateItemLoc('I0G4',l_tempPoint) // 'I0G4': item "Miracle Piece"
+    call RemoveLocation(l_tempPoint)
     set udg_MiracleStage[0]=3
     call Cine_ExitAction()
+    set l_tempPoint=null
 endfunction
 
 function Trig_Bernkastel_Hint_Talk_Conditions takes nothing returns boolean
