@@ -1,12 +1,13 @@
-library TValera
+library TValera requires optional TQuestWolfFangs
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Valera_ShowMarker=null
 endglobals
 
 function Trig_Valera_ShowMarker_Actions takes nothing returns nothing
-    set udg_SpecialEffect[44]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n01R_0081,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_WolfFangs_Start)
+    static if LIBRARY_TQuestWolfFangs then
+        call ExecuteFunc("QuestWolfFangs_Available") // the "!" over Valera; the Wolf Fangs quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

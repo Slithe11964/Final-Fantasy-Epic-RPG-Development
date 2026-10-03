@@ -159,9 +159,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     static if LIBRARY_TQuestKillElmdor then
         call Register_Quest_KillElmdor_Init() // run by MapBootstrap
         call Register_Quest_KillElmdor_Available() // starts off; run by Cid, Epilogue
-        call Register_Quest_KillElmdor_Start() // starts off; enabled by Quest_KillElmdor
-        call Register_Quest_KillElmdor_Slain() // starts off; enabled by Quest_KillElmdor
-        call Register_Quest_KillElmdor_Complete() // starts off; enabled by Quest_KillElmdor
     endif
     static if LIBRARY_TQuestFireGolem then
         call Register_Quest_FireGolem_Init() // run by MapBootstrap
@@ -247,10 +244,6 @@ function RegisterTriggers_Quest_Part10 takes nothing returns nothing
         call Register_Quest_SeekDestroy_Start() // starts off; enabled by Clemydar
         call Register_Quest_SeekDestroy_Count() // starts off; enabled by Quest_SeekDestroy
         call Register_Quest_SeekDestroy_Complete() // starts off; enabled by Quest_SeekDestroy
-    endif
-    static if LIBRARY_TQuestWolfFangs then
-        call Register_Quest_WolfFangs_Start() // starts off; enabled by Valera
-        call Register_Quest_WolfFangs_TurnIn() // starts off; enabled by Quest_WolfFangs
     endif
     static if LIBRARY_TQuestGreedIsGood then
         call Register_Quest_GreedIsGood_Start()

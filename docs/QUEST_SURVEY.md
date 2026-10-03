@@ -9,16 +9,19 @@ touches the quest-log entry.
 
 | Group | Quests | Meaning |
 |---|---|---|
-| fits | 25 | Only standard steps and rewards: can be written entirely as data. |
+| engine | 2 | Already written for the quest engine (docs/QUEST_ENGINE.md). |
+| fits | 23 | Only standard steps and rewards: can be written entirely as data. |
 | hooks | 21 | Standard steps plus some custom actions (spawning units, gates, moving NPCs) or a boss fight; those stay as small functions or boss modules the quest points to. |
-| custom | 45 | Timers, spells, failing, several endings, or no clear finish: keep hand-written. |
+| custom | 45 | Timers, spells, failing, several endings, or no clear finish: these use custom steps whose special code stays in the module. |
 
 ## What this means for a quest engine
 
-- **46 of 91 quests (51%) can move to a quest table**: 25 fully as data, 21 with small custom hooks (spawning
+- **Already on the quest engine: 2.** Of the rest, 44 of 91 quests (48%) can move to the quest engine with
+  standard steps only: 23 fully as data, 21 with small custom hooks (spawning
   a boss, opening a gate, moving an NPC) or a boss fight that stays in its boss module.
-- **45 stay hand-written**: the main story chapters, the Kalm sieges, the Tower of Summoning and Eidolon
-  quests, the hunt festival, quests with timers or that can fail. The engine doesn't need to handle these.
+- **45 need custom steps** (`Quest_Custom` + `Quest_StepDone`): the main story chapters, the Kalm sieges, the
+  Tower of Summoning and Eidolon quests, the hunt festival, quests with timers or that can fail. Their special
+  code stays in their modules; the engine runs the quest log, markers, step order and rewards around it.
 - **Quests are shared by the whole party**: one quest-log entry for everyone, announced to all players.
   The engine can keep that: per-player progress is not needed.
 - **Quest progress is not in the save code**, so changing how quests work cannot break player codes.
@@ -36,9 +39,9 @@ Step types across all quests (a quest can have several):
 
 | Step waits for | Quests |
 |---|---|
-| talk | 81 |
-| in range | 65 |
-| kill unit | 44 |
+| talk | 79 |
+| in range | 63 |
+| kill unit | 43 |
 | run by another step | 38 |
 | kill any | 24 |
 | get item | 19 |
@@ -55,11 +58,11 @@ What the steps do:
 
 | Feature | Quests |
 |---|---|
-| dialogue | 90 |
-| cinematic | 90 |
-| gives XP | 90 |
-| effects | 90 |
-| gives item | 64 |
+| dialogue | 88 |
+| cinematic | 88 |
+| gives XP | 88 |
+| effects | 88 |
+| gives item | 63 |
 | waits | 57 |
 | moves units | 44 |
 | spawns units | 39 |
@@ -69,12 +72,18 @@ What the steps do:
 | can fail | 12 |
 | gives gold | 1 |
 
-## fits (25)
+## engine (2)
+
+| Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules | Why |
+|---|---|---|---|---|---|---|---|
+| SideQuest[26] | Wolf Fangs | quest engine | 2 |  | 11 | Quest_WolfFangs |  |
+| SideQuest[6] | Kill Elmdor | quest engine | 3 |  | 7 | Quest_KillElmdor |  |
+
+## fits (23)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules |
 |---|---|---|---|---|---|---|
 | SideQuest[19] | Elixir | talk | 2 | talk, in range | 1 | Elixir |
-| SideQuest[26] | Wolf Fangs | talk | 2 | talk, in range | 11 | Quest_WolfFangs |
 | SideQuest[49] | Nebra Angler | talk | 2 | talk, in range | 44 | Quest_NebraAngler |
 | SideQuest[72] | Young Engineer | talk | 2 | talk, run by another step | 15 | Quest_YoungEngineer |
 | SideQuest[74] | Fishy Deals | talk | 2 | talk, in range | 14 | Quest_FishyDeals |
@@ -90,7 +99,6 @@ What the steps do:
 | SideQuest[54] | Gnoll Hunt | talk | 3 | talk, kill any, in range | 13 | GnollHunt |
 | SideQuest[56] | Ancient Hunt | talk | 3 | talk, kill any, in range | 18 | AncientHunt |
 | SideQuest[65] | Impervious Beast | talk | 3 | talk, attacked, run by another step | 15 | Quest_ImperviousBeast, Fafnir |
-| SideQuest[6] | Kill Elmdor | talk | 3 | talk, kill unit, in range | 7 | Quest_KillElmdor |
 | SideQuest[73] | Spirit Hunt | talk | 3 | talk, kill any, in range | 11 | Quest_SpiritHunt |
 | SideQuest[1] | Find Shimmerweed | talk | 4 | talk, in range, get item, run by another step | 5 | Quest_Shimmerweed, News |
 | SideQuest[27] | Greed is Good | talk | 4 | talk, kill unit, get item, in range | 18 | Quest_GreedIsGood, GreedIsGood, PortalStone |

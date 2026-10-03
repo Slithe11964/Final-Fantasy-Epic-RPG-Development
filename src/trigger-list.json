@@ -4423,5 +4423,11 @@
   "name": "DevCommands",
   "folder": "11 Developer tools",
   "library": "TDevCommands"
+ },
+ {
+  "index": 737,
+  "name": "QuestEngine",
+  "folder": "06 Quests and story",
+  "library": "TQuestEngine"
  }
 ]

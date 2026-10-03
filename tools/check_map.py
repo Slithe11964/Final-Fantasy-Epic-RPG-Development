@@ -66,6 +66,7 @@ def declared(globals_text):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('map'); ap.add_argument('--baseline')
+    ap.add_argument('--allow-removed', help='regex of trigger variables removed on purpose since the baseline (check 6 lists them instead of failing)')
     ap.add_argument('--allow-new', help='regex of trigger variables added on purpose since the baseline (check 6 lists them instead of failing)')
     ap.add_argument('--pjass'); ap.add_argument('--common'); ap.add_argument('--blizzard')
     ap.add_argument('--runtime', help='check this war3map.j instead of the one inside the map')
@@ -209,10 +210,11 @@ def main():
     results['5 native save/load text safety'] = (not msgs, msgs)
 
     if a.baseline:
-        r = startup_audit.audit(startup_audit.load_script(a.baseline), runtime, a.allow_new)
+        r = startup_audit.audit(startup_audit.load_script(a.baseline), runtime, a.allow_new, a.allow_removed)
         results['6 startup sequence matches baseline'] = (r.get('passed', False),
             r['failures'][:20] or ['%d triggers checked, %d independent trigger pairs reordered' % (r.get('triggers_checked', 0), r.get('reordered_independent_pairs', 0))]
-            + (['added on purpose: ' + ', '.join(r['added'])] if r.get('added') else []))
+            + (['added on purpose: ' + ', '.join(r['added'])] if r.get('added') else [])
+            + (['removed on purpose: ' + ', '.join(r['removed'])] if r.get('removed') else []))
 
     all_ok = True
     for k, (ok, details) in results.items():

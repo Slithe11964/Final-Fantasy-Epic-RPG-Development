@@ -123,6 +123,14 @@ def main():
             quests.setdefault(key, dict(key=key, kind='main' if m.group(1) == 'MainQuest' else 'side',
                                         title=title, start=t, starts=[]))['starts'].append(t)
     rows = []
+    # quests already written for the quest engine (QuestEngine module)
+    for n, text in mods.items():
+        for m in re.finditer(r'Quest_Define\(\s*"([^"]*)"\s*,\s*QUEST_(SIDE|MAIN)\s*,\s*(\$?\w+)', text):
+            key = '%sQuest[%d]' % ('Side' if m.group(2) == 'SIDE' else 'Main', num(m.group(3)))
+            steps = len(re.findall(r'\bcall\s+Quest_(?:Talk|Return|Kill|Deliver|Custom)\s*\(', text))
+            rows.append(dict(key=key, kind=m.group(2).lower(), title=m.group(1), start='', start_event='quest engine',
+                             steps=steps, step_kinds='', dialogue_lines=len(re.findall(r'\bcall\s+Quest_Say\s*\(', text)),
+                             features='', modules=n, finished_by='quest engine', group='engine', why=''))
     for key, q in quests.items():
         kind, idx = key[:-1].split('[')
         var = r'udg_%s\[\s*(?:%d|\$%X|\$%x)\s*\]' % (kind, int(idx), int(idx), int(idx))
@@ -194,11 +202,13 @@ def FINDINGS(g, rows):
     total = len(rows)
     fit = sorted((r for r in rows if r['group'] == 'fits'), key=lambda r: (r['steps'], r['dialogue_lines']))
     return [
-        '- **%d of %d quests (%d%%) can move to a quest table**: %d fully as data, %d with small custom hooks (spawning'
-        % (g['fits'] + g['hooks'], total, round(100 * (g['fits'] + g['hooks']) / total), g['fits'], g['hooks']),
+        '- **Already on the quest engine: %d.** Of the rest, %d of %d quests (%d%%) can move to the quest engine with'
+        % (g['engine'], g['fits'] + g['hooks'], total, round(100 * (g['fits'] + g['hooks']) / total)),
+        '  standard steps only: %d fully as data, %d with small custom hooks (spawning' % (g['fits'], g['hooks']),
         '  a boss, opening a gate, moving an NPC) or a boss fight that stays in its boss module.',
-        '- **%d stay hand-written**: the main story chapters, the Kalm sieges, the Tower of Summoning and Eidolon' % g['custom'],
-        '  quests, the hunt festival, quests with timers or that can fail. The engine doesn\'t need to handle these.',
+        '- **%d need custom steps** (`Quest_Custom` + `Quest_StepDone`): the main story chapters, the Kalm sieges, the' % g['custom'],
+        '  Tower of Summoning and Eidolon quests, the hunt festival, quests with timers or that can fail. Their special',
+        '  code stays in their modules; the engine runs the quest log, markers, step order and rewards around it.',
         '- **Quests are shared by the whole party**: one quest-log entry for everyone, announced to all players.',
         '  The engine can keep that: per-player progress is not needed.',
         '- **Quest progress is not in the save code**, so changing how quests work cannot break player codes.',
@@ -229,15 +239,16 @@ def write(rows):
          'touches the quest-log entry.', '',
          '## Summary', '',
          '| Group | Quests | Meaning |', '|---|---|---|',
+         '| engine | %d | Already written for the quest engine (docs/QUEST_ENGINE.md). |' % g['engine'],
          '| fits | %d | Only standard steps and rewards: can be written entirely as data. |' % g['fits'],
          '| hooks | %d | Standard steps plus some custom actions (spawning units, gates, moving NPCs) or a boss fight; those stay as small functions or boss modules the quest points to. |' % g['hooks'],
-         '| custom | %d | Timers, spells, failing, several endings, or no clear finish: keep hand-written. |' % g['custom'],
+         '| custom | %d | Timers, spells, failing, several endings, or no clear finish: these use custom steps whose special code stays in the module. |' % g['custom'],
          '', '## What this means for a quest engine', '', *FINDINGS(g, rows), '', 'Step types across all quests (a quest can have several):', '',
          '| Step waits for | Quests |', '|---|---|']
     L += ['| %s | %d |' % kv for kv in kinds.most_common()]
     L += ['', 'What the steps do:', '', '| Feature | Quests |', '|---|---|']
     L += ['| %s | %d |' % kv for kv in feats.most_common()]
-    for grp in ('fits', 'hooks', 'custom'):
+    for grp in ('engine', 'fits', 'hooks', 'custom'):
         sel = [r for r in rows if r['group'] == grp]
         L += ['', '## %s (%d)' % (grp, len(sel)), '',
               '| Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules |' + (' Why |' if grp != 'fits' else ''),
@@ -246,7 +257,7 @@ def write(rows):
             L.append('| %s | %s | %s | %d | %s | %d | %s |%s' % (r['key'], r['title'], r['start_event'], r['steps'], r['step_kinds'],
                      r['dialogue_lines'], r['modules'], (' %s |' % r['why']) if grp != 'fits' else ''))
     open(os.path.join(out, 'QUEST_SURVEY.md'), 'w', encoding='utf-8').write('\n'.join(L) + '\n')
-    print('quests: %d  fits: %d  hooks: %d  custom: %d' % (len(rows), g['fits'], g['hooks'], g['custom']))
+    print('quests: %d  engine: %d  fits: %d  hooks: %d  custom: %d' % (len(rows), g['engine'], g['fits'], g['hooks'], g['custom']))
 
 if __name__ == '__main__':
     main()

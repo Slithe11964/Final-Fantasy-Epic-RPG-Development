@@ -32,7 +32,7 @@ def main(base_map, out_map, names):
     rt = lf(raw.decode('utf-8'))
     before = functions(rt)
     libs = set(re.findall(r'^constant boolean LIBRARY_(\w+)=true$', rt, re.M))
-    touched = set()
+    touched, replaced, old_blocks = set(), set(), []
     for name in names:
         e = entries[name]
         lib = e['library']
@@ -46,6 +46,8 @@ def main(base_map, out_map, names):
         m = re.search(r'^// ?library %s:\n.*?^// ?library %s ends\n' % (lib, lib), rt, re.M | re.S)
         if not m:
             sys.exit('no compiled block for %s in the playable script' % lib)
+        replaced |= set(functions(m.group(0)))      # functions the module had before (it may drop some)
+        old_blocks.append(m.group(0))
         rt = rt[:m.start()] + '//library %s:\n%s//library %s ends\n' % (lib, code.strip('\n') + '\n', lib) + rt[m.end():]
         # globals
         gblock = re.search(r'^globals\n(.*?)^endglobals', rt, re.M | re.S)
@@ -66,8 +68,24 @@ def main(base_map, out_map, names):
             k = rt.index('constant boolean LIBRARY_%s=true\n' % lib) + len('constant boolean LIBRARY_%s=true\n' % lib)
             rt = rt[:k] + '\n'.join(add) + '\n' + rt[k:]
         touched |= set(functions(code))
+    # variables a synced module no longer declares or uses: drop their declarations if nothing else uses them
+    gblock = re.search(r'^globals\n(.*?)^endglobals', rt, re.M | re.S)
+    keep, dropped = [], []
+    import collections
+    srcs = set(re.findall(r'\w+', '\n'.join(lf(open(os.path.join(src, 'triggers', entries[n]['folder'], n + '.j'), encoding='utf-8').read()) for n in names)))
+    uses = collections.Counter(re.findall(r'\w+', rt))
+    olds = set(re.findall(r'\w+', ''.join(old_blocks)))
+    for line in gblock.group(1).split('\n'):
+        mm = re.match(r'\s*(?:constant\s+)?\w+\s+(?:array\s+)?(\w+)', line)
+        if mm and uses[mm.group(1)] == 1 and mm.group(1) not in srcs and mm.group(1) in olds:
+            dropped.append(mm.group(1))
+            continue
+        keep.append(line)
+    if dropped:
+        rt = rt[:gblock.start(1)] + '\n'.join(keep) + rt[gblock.end(1):]
+        print('dropped unused variables of the synced modules:', ', '.join(dropped))
     after = functions(rt)
-    changed_elsewhere = [n for n in before if n not in touched and before[n] != after.get(n)]
+    changed_elsewhere = [n for n in before if n not in touched and n not in replaced and before[n] != after.get(n)]
     if changed_elsewhere:
         sys.exit('refusing: functions outside the modules changed: %s' % changed_elsewhere[:5])
     wct = build_map.build_wct(base.read('war3map.wct'), src)
