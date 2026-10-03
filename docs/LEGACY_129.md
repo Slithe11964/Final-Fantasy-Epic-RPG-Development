@@ -15,7 +15,9 @@
 **Not proven until you play it in 1.29.2.**
 
 ### How to test
-1. Copy the map into the Maps folder that 1.29.2 uses (`Documents\\Warcraft III\\Maps`, or the game folder's `Maps`).
+1. Put the map in `Documents\\Warcraft III\\Maps\\Download` (1.29.2 lists this folder under Custom Game → Download, the same folder Reforged uses).
+   The map file must start with the 512-byte `HM3W` header, or the map list skips it silently. `downgrade.py` adds it; for other maps use
+   `python ../MapToolkit/tools/add_header.py IN.w3x OUT.w3x --from FFERPG_0.9.7.3-r7.w3x --name "..."`.
 2. Start 1.29.2 → Single Player → Custom Game, and pick it.
 3. Check, and note anything wrong:
    - the map shows in the list with the right name and loading screen;
