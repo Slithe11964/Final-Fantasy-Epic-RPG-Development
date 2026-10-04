@@ -1,4 +1,4 @@
-library TQuestLostMemories requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestLostMemories requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_LostMemories_Start=null
@@ -10,7 +10,44 @@ globals
     trigger gg_trg_Quest_LostMemories_Reunion=null
     // Variables only this module uses.
     unit udg_MementoRingHero=null
+    // The quest's number in the quest engine (0 until it is defined). Which one runs is decided when Relm
+    // is first talked to: with the faded Memento Ring the Shadow tells the truth (and Relm is talked to
+    // again), without it he lies and the quest ends there. Both use the quest log entry udg_SideQuest[44].
+    integer QUEST_LOST_MEMORIES=0
+    integer QUEST_LOST_MEMORIES_LIE=0
 endglobals
+
+// Side quest "Lost Memories", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md). Its talks
+// are module triggers (dialogue that depends on the ring and the Shadow); they move the quest on. Relm's
+// own markers (udg_SpecialEffect[66]) are kept. Does not count toward the story.
+function QuestLostMemories_Define takes nothing returns nothing
+    local integer q=Quest_Define("Lost Memories",QUEST_SIDE,44,"ReplaceableTextures\\CommandButtons\\BTNRingVioletSpider.blp")
+    set QUEST_LOST_MEMORIES=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Relm (gg_trg_Quest_LostMemories_Start)
+    call Quest_Custom(q,"Relm, a young archer from Lothlorien, is looking for her father whom she hasn't met in years. Find her father and reunite the long separated family!")
+    // 2. The Shadow takes the ring and tells the truth (gg_trg_Quest_LostMemories_ShadowTruth)
+    call Quest_Custom(q,"Talk to Relm.")
+    // 3. Talk to Relm again (gg_trg_Quest_LostMemories_Reunion)
+    call Quest_Custom(q,"")
+    set q=Quest_Define("Lost Memories",QUEST_SIDE,44,"ReplaceableTextures\\CommandButtons\\BTNRingVioletSpider.blp")
+    set QUEST_LOST_MEMORIES_LIE=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Relm (gg_trg_Quest_LostMemories_Start)
+    call Quest_Custom(q,"Relm, a young archer from Lothlorien, is looking for her father whom she hasn't met in years. Find her father and reunite the long separated family!")
+    // 2. The Shadow takes the ring and lies (gg_trg_Quest_LostMemories_ShadowLie)
+    call Quest_Custom(q,"")
+endfunction
+
+// The variant of the quest that was started.
+function QuestLostMemories_Current takes nothing returns integer
+    if Quest_IsActive(QUEST_LOST_MEMORIES_LIE) then
+        return QUEST_LOST_MEMORIES_LIE
+    endif
+    return QUEST_LOST_MEMORIES
+endfunction
 
 function Trig_Quest_LostMemories_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e00V_0009,true,true,true))
@@ -102,8 +139,15 @@ function Trig_Quest_LostMemories_Start_Actions takes nothing returns nothing
             call EnableTrigger(gg_trg_Quest_LostMemories_ShadowLie)
         endif
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Lost Memories|r")
-    set udg_SideQuest[44]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Lost Memories"),"Relm, a young archer from Lothlorien, is looking for her father whom she hasn't met in years. Find her father and reunite the long separated family!","ReplaceableTextures\\CommandButtons\\BTNRingVioletSpider.blp")
+    if QUEST_LOST_MEMORIES==0 then
+        call QuestLostMemories_Define()
+    endif
+    // the variant matches the Shadow trigger chosen above
+    if IsTriggerEnabled(gg_trg_Quest_LostMemories_ShadowTruth) then
+        call Quest_Start(QUEST_LOST_MEMORIES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
+    else
+        call Quest_Start(QUEST_LOST_MEMORIES_LIE,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
+    endif
     set udg_SpecialEffect[66]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e00V_0009,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_MementoRingHero=Player_GetHero(GetTriggerPlayer())
     call EnableTrigger(gg_trg_Quest_LostMemories_Pickup)
@@ -158,9 +202,8 @@ function Trig_Quest_LostMemories_Fail_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"I understand.",false)
         call Cine_ExitAction()
     endif
-    call QuestSetDescriptionBJ(udg_SideQuest[44],"The Memento Ring has lost its glow, indicating that Relm's father is no longer in this world.")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Lost Memories|r")
-    call QuestSetFailedBJ(udg_SideQuest[44],true)
+    call Quest_SetLog(QuestLostMemories_Current(),"The Memento Ring has lost its glow, indicating that Relm's father is no longer in this world.",false)
+    call Quest_Fail(QuestLostMemories_Current())
     set udg_QuestsTotal=(udg_QuestsTotal-1)
     call UnitAddItemByIdSwapped('I0DS',GetTriggerUnit()) // 'I0DS': item "Memento Ring"
     call DestroyTrigger(GetTriggeringTrigger())
@@ -245,9 +288,7 @@ function Trig_Quest_LostMemories_ShadowLie_Actions takes nothing returns nothing
     else
         call Reward_Give(((udg_ShadowLoyalty*'d')+$3E8),5000,udg_ShadowUnit) // $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Lost Memories|r")
-    call QuestSetCompletedBJ(udg_SideQuest[44],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_LOST_MEMORIES_LIE,null,udg_ShadowUnit)
     set udg_ShadowLoyalty=(udg_ShadowLoyalty+$80) // $80 = 128
     call SaveIntegerBJ(1,2,$A3,udg_GameStateHash) // $A3 = 163
     call Music_SetTrack(32)
@@ -380,8 +421,7 @@ function Trig_Quest_LostMemories_ShadowTruth_Actions takes nothing returns nothi
     set udg_ShadowUnit=GetLastCreatedUnit()
     set udg_SpecialEffect[66]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e00V_0009,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call Music_SetTrack(32)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Relm.")
-    call QuestSetDescriptionBJ(udg_SideQuest[44],"Talk to Relm.")
+    call Quest_StepDone(QUEST_LOST_MEMORIES,null,udg_ShadowUnit)
     call EnableTrigger(gg_trg_Quest_LostMemories_Reunion)
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
@@ -417,9 +457,7 @@ function Trig_Quest_LostMemories_Reunion_Actions takes nothing returns nothing
         call Reward_Give($2710,$2710,gg_unit_e00V_0009) // $2710 = 10000
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00A new artifact is available for buying at the Ancient of Wonders.|r")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Lost Memories|r")
-    call QuestSetCompletedBJ(udg_SideQuest[44],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_LOST_MEMORIES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call AddItemToStockBJ('I0E3',gg_unit_n00L_0153,1,1) // 'I0E3': item "Interceptor Guard"
     call SaveIntegerBJ(1,2,$A4,udg_GameStateHash) // $A4 = 164
     set udg_NaishaTownUnit=udg_ShadowUnit

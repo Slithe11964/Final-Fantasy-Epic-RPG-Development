@@ -1,4 +1,4 @@
-library TZiegfried requires TCam, TCine, TGroup, TLoc, TPlayerHero, TText, TWait
+library TZiegfried requires TQuestEngine, TCam, TCine, TGroup, TLoc, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Ziegfried_Mine_Arrive=null
@@ -25,10 +25,9 @@ function Trig_Ziegfried_Mine_Arrive_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'e01K',Player(8),l_tempPoint,140.) // 'e01K': unit "Viking Boat"
     call RemoveLocation(l_tempPoint)
     set udg_VikingBoat=GetLastCreatedUnit()
-    set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H036_0254,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
+    call ExecuteFunc("QuestImperviousBeast_Available") // the "!" over Ziegfried; the Impervious Beast quest can start
     call PauseUnitBJ(false,gg_unit_H036_0254)
     call UnitRemoveAbilityBJ('A0VJ',gg_unit_H036_0254) // 'A0VJ': ability "Unaffected by Cinematics"
-    call EnableTrigger(gg_trg_Quest_ImperviousBeast_Start)
     if(Trig_Ziegfried_Mine_Arrive_NewsWindowOpen())then
         set udg_NewsText[3]=udg_NewsText[2]
         set udg_NewsText[2]=udg_NewsText[1]
@@ -263,6 +262,7 @@ function Trig_Ziegfried_Confront_PlayConfrontDialogue takes nothing returns bool
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// A hero comes near Ziegfried (quest "Divine Order", step 2): he refuses to help the dwarves and fights.
 function Trig_Ziegfried_Confront_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[90])
@@ -283,8 +283,7 @@ function Trig_Ziegfried_Confront_Actions takes nothing returns nothing
         call Text_Say(gg_unit_H036_0254,"Drawing your weapon are you? So that's how the Northern God is playing this. Well if you think you can penetrate my armor you are welcome to try. This'll make for a fine warmup exercise.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Strike down Ziegfried.")
-    call QuestSetDescriptionBJ(udg_SideQuest[70],"Strike down Ziegfried.")
+    call Quest_StepDone(QUEST_DIVINE_ORDER,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call SetUnitOwner(gg_unit_H036_0254,Player($B),true) // $B = 11
     call PauseUnitBJ(false,gg_unit_H036_0254)
     call SetUnitInvulnerable(gg_unit_H036_0254,false)

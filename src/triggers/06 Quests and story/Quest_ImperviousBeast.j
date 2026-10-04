@@ -1,33 +1,18 @@
-library TQuestImperviousBeast requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestImperviousBeast requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText
+// Side quest "Impervious Beast", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Ziegfried, clad in his new Arcanium gear, sets out to slay the great beast Fafnir; the party helps him.
+// Made available by Ziegfried (QuestImperviousBeast_Available) when he arrives at the mine. Step 2 stays
+// in this module's trigger gg_trg_Quest_ImperviousBeast_Complete (Fafnir registers its death event): its
+// dialogue is spoken by whoever killed Fafnir. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
-    trigger gg_trg_Quest_ImperviousBeast_Start=null
     trigger gg_trg_Quest_ImperviousBeast_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_IMPERVIOUS_BEAST=0
 endglobals
 
-function Trig_Quest_ImperviousBeast_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_H036_0254,true,true,true))
-endfunction
-
-function Trig_Quest_ImperviousBeast_Start_PlayIntroScene takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_ImperviousBeast_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[90])
-    if(Trig_Quest_ImperviousBeast_Start_PlayIntroScene())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_H036_0254,"Hello, I recall you were adventurers.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Hello... wait, aren't you the champion of those dwarves? What are you doing here?",false)
-        call Text_Say(gg_unit_H036_0254,"I do guard those dwarves, but I am meant for far greater things.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Greater things...?",false)
-        call Cine_ExitAction()
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Impervious Beast|r")
-    set udg_SideQuest[65]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Impervious Beast"),"Ziegfried, the Thunder Striker and champion of the dwarves, has set out to defeat the great beast Fafnir in the abandoned mine of the Northern Mountains. Help him in his battle!","ReplaceableTextures\\CommandButtons\\BTNMagnataur.blp")
-    set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H036_0254,"Objects\\RandomObject\\RandomObject.mdl")
+// Step 1 done (the party talked to Ziegfried): he fights on the party's side and marches on Fafnir.
+function QuestImperviousBeast_Started takes nothing returns nothing
     call UnitRemoveTypeBJ(UNIT_TYPE_PEON,gg_unit_H036_0254)
     call SetUnitAbilityLevelSwapped('A0SF',gg_unit_H036_0254,2) // 'A0SF': ability "Command AI"
     call UnitAddAbilityBJ('A0ZR',gg_unit_H036_0254) // 'A0ZR': ability "Immortal"
@@ -35,7 +20,29 @@ function Trig_Quest_ImperviousBeast_Start_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_H036_0254,false)
     call EnableTrigger(gg_trg_Ziegfried_Advance_Order)
     call EnableTrigger(gg_trg_Fafnir_Battle_Begin)
-    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+function QuestImperviousBeast_Define takes nothing returns nothing
+    local integer q=Quest_Define("Impervious Beast",QUEST_SIDE,65,"ReplaceableTextures\\CommandButtons\\BTNMagnataur.blp")
+    set QUEST_IMPERVIOUS_BEAST=q
+    call Quest_NotStory(q)
+    // 1. Talk to Ziegfried
+    call Quest_Talk(q,gg_unit_H036_0254,"Ziegfried, the Thunder Striker and champion of the dwarves, has set out to defeat the great beast Fafnir in the abandoned mine of the Northern Mountains. Help him in his battle!")
+    call Quest_Say(q,gg_unit_H036_0254,"Hello, I recall you were adventurers.")
+    call Quest_Say(q,null,"Hello... wait, aren't you the champion of those dwarves? What are you doing here?")
+    call Quest_Say(q,gg_unit_H036_0254,"I do guard those dwarves, but I am meant for far greater things.")
+    call Quest_Say(q,null,"Greater things...?")
+    call Quest_OnDone(q,"QuestImperviousBeast_Started")
+    // 2. Fafnir dies once Ziegfried fights it (gg_trg_Quest_ImperviousBeast_Complete)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by Ziegfried when he arrives at the mine.
+function QuestImperviousBeast_Available takes nothing returns nothing
+    if QUEST_IMPERVIOUS_BEAST==0 then
+        call QuestImperviousBeast_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_IMPERVIOUS_BEAST)
 endfunction
 
 function Trig_Quest_ImperviousBeast_Complete_Conditions takes nothing returns boolean
@@ -54,11 +61,12 @@ function Trig_Quest_ImperviousBeast_Complete_PlayVictoryScene takes nothing retu
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2: Fafnir died. It drops the Grand Armor; Ziegfried rewards the party and leaves (Siegfried, envoy of
+// the Northern God, appears 3 minutes later).
 function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Ziegfried_Attack_Fafnir)
-    call DestroyEffectBJ(udg_SpecialEffect[90])
     if(Trig_Quest_ImperviousBeast_Complete_BossLogEnabled())then
         set udg_BossUnit=GetTriggerUnit()
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
@@ -66,9 +74,7 @@ function Trig_Quest_ImperviousBeast_Complete_Actions takes nothing returns nothi
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     call CreateItemLoc('I0BX',l_tempPoint) // 'I0BX': item "Grand Armor"
     call RemoveLocation(l_tempPoint)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Impervious Beast|r")
-    call QuestSetCompletedBJ(udg_SideQuest[65],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_IMPERVIOUS_BEAST,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     if(Trig_Quest_ImperviousBeast_Complete_PlayVictoryScene())then
         if(Trig_Quest_ImperviousBeast_Complete_KillerNotInForce())then
             set udg_CinematicActor=Player_GetHero(ForcePickRandomPlayer(udg_PlayingPlayers))
@@ -116,21 +122,6 @@ endfunction
 // ---- Trigger registration ----
 // These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part17 (module Quest),
 // which keeps the original registration order.
-
-function Register_Quest_ImperviousBeast_Start takes nothing returns nothing
-    set gg_trg_Quest_ImperviousBeast_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_ImperviousBeast_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_ImperviousBeast_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_ImperviousBeast_Start,Condition(function Trig_Quest_ImperviousBeast_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_ImperviousBeast_Start,function Trig_Quest_ImperviousBeast_Start_Actions)
-endfunction
 
 function Register_Quest_ImperviousBeast_Complete takes nothing returns nothing
     set gg_trg_Quest_ImperviousBeast_Complete=CreateTrigger()

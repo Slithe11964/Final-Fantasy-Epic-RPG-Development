@@ -1,5 +1,13 @@
-library TMysteriousCurse requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TMysteriousCurse requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Mysterious Curse", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Link (a cursed skeleton) and Adria each claim the other is the liar; which one lies is chosen at
+// random (udg_CurseLiar). Link (talk to Link) calls Quest_Start. The quest log then follows the party's
+// choices (MysteriousCurse_SetLog), and it ends in one of four ways, each calling Quest_StepDone:
+// AdriaWitchDead, BabaYagaDead (the wrong one was killed), AdriaReturn or LinkReturn (the right one).
+// The "!" and "?" markers are this module's own effects. It does not count toward the story progress.
 globals
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_MYSTERIOUS_CURSE=0
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_MysteriousCurse_Init=null
     trigger gg_trg_MysteriousCurse_Link=null
@@ -22,6 +30,23 @@ globals
     unit array udg_CurseUnit
     integer udg_CurseStage=0
 endglobals
+
+function MysteriousCurse_Define takes nothing returns nothing
+    local integer q=Quest_Define("Mysterious Curse",QUEST_SIDE,22,"ReplaceableTextures\\CommandButtons\\BTNSkeletonWarrior.blp")
+    set QUEST_MYSTERIOUS_CURSE=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Talk to Link (gg_trg_MysteriousCurse_Link calls Quest_Start)
+    call Quest_Custom(q,"Link, skeleton from Mountains region, says that in truth he is the Elf cursed by a witch. He begs you to help him by finding the witch and killing her.")
+    // 2. Kill the liar and come back (one of the four endings calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
+
+// A quest-log update whose announcement (l_message) is shorter than the new log text (l_text).
+function MysteriousCurse_SetLog takes string l_message,string l_text returns nothing
+    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_message)
+    call Quest_SetLog(QUEST_MYSTERIOUS_CURSE,l_text,false)
+endfunction
 
 function Trig_MysteriousCurse_Init_Cond_LinkIsHonest takes nothing returns boolean
     return(udg_CurseLiar==1)
@@ -94,8 +119,10 @@ function Trig_MysteriousCurse_Link_Actions takes nothing returns nothing
     endif
     call ShowUnitShow(gg_unit_u002_0196)
     call GroupAddUnitSimple(gg_unit_u002_0196,udg_BossUnits)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Mysterious Curse|r")
-    set udg_SideQuest[22]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Mysterious Curse"),"Link, skeleton from Mountains region, says that in truth he is the Elf cursed by a witch. He begs you to help him by finding the witch and killing her.","ReplaceableTextures\\CommandButtons\\BTNSkeletonWarrior.blp")
+    if QUEST_MYSTERIOUS_CURSE==0 then
+        call MysteriousCurse_Define()
+    endif
+    call Quest_Start(QUEST_MYSTERIOUS_CURSE,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[40]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u001_0195,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_SpecialEffect[41]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u002_0196,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_MysteriousCurse_Adria)
@@ -177,16 +204,13 @@ function Trig_MysteriousCurse_Adria_Actions takes nothing returns nothing
     set udg_SpecialEffect[40]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u001_0195,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     if(Trig_MysteriousCurse_Adria_Cond_HintObtained())then
         if(Trig_MysteriousCurse_Adria_Cond_AdriaIsHonest())then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Link.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Confront Link about his lies.")
+            call MysteriousCurse_SetLog("Talk to Link.","Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Confront Link about his lies.")
         else
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Visit Link to find out who speaks truth.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Talk to Link.")
+            call MysteriousCurse_SetLog("Visit Link to find out who speaks truth.","Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Talk to Link.")
         endif
     else
         set udg_CurseStage=2
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Visit Link to find out who speaks truth.")
-        call QuestSetDescriptionBJ(udg_SideQuest[22],"Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Talk to Link.")
+        call MysteriousCurse_SetLog("Visit Link to find out who speaks truth.","Adria insists that she is a victim of curse and has her youth stolen by witch named Baba Yaga. She also states that Link is a faithful servant of Baba Yaga and that she cursed him to avenge herself. Talk to Link.")
     endif
     call GroupAddUnitSimple(gg_unit_u001_0195,udg_BossUnits)
     call EnableTrigger(gg_trg_MysteriousCurse_Confront)
@@ -256,18 +280,15 @@ function Trig_MysteriousCurse_Confront_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     if(Trig_MysteriousCurse_Confront_Cond_KillAdriaPath())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill Adria.")
-        call QuestSetDescriptionBJ(udg_SideQuest[22],"Kill Adria, the witch, who speaks nothing but lies.")
+        call MysteriousCurse_SetLog("Kill Adria.","Kill Adria, the witch, who speaks nothing but lies.")
         call TriggerExecute(gg_trg_MysteriousCurse_AttackAdria)
     else
         if(Trig_MysteriousCurse_Confront_Cond_KillLinkPath())then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill Link.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Kill Link and release Adria from her curse.")
+            call MysteriousCurse_SetLog("Kill Link.","Kill Link and release Adria from her curse.")
             call SetUnitInvulnerable(gg_unit_u001_0195,false)
             call TriggerExecute(gg_trg_MysteriousCurse_AttackLink)
         else
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Decide who is lying: Adria or Link. Then kill the liar.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Both Link and Adria seem to tell truth. But one of them is lying.\r\nKILL the one you think is a liar.")
+            call MysteriousCurse_SetLog("Decide who is lying: Adria or Link. Then kill the liar.","Both Link and Adria seem to tell truth. But one of them is lying.\r\nKILL the one you think is a liar.")
             set udg_CurseStage=3
             call SetUnitInvulnerable(gg_unit_u002_0196,false)
             call SetUnitInvulnerable(gg_unit_u001_0195,false)
@@ -320,12 +341,10 @@ function Trig_MysteriousCurse_Witness_Actions takes nothing returns nothing
     endif
     if(Trig_MysteriousCurse_Witness_Cond_ChoicePending())then
         if(Trig_MysteriousCurse_Witness_Cond_TargetIsAdria())then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill Adria.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Kill Adria, the witch, who speaks nothing but lies.")
+            call MysteriousCurse_SetLog("Kill Adria.","Kill Adria, the witch, who speaks nothing but lies.")
             call SetUnitInvulnerable(gg_unit_u001_0195,true)
         else
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill Link.")
-            call QuestSetDescriptionBJ(udg_SideQuest[22],"Kill Link and release Adria from her curse.")
+            call MysteriousCurse_SetLog("Kill Link.","Kill Link and release Adria from her curse.")
             call SetUnitInvulnerable(gg_unit_u002_0196,true)
         endif
     endif
@@ -431,9 +450,7 @@ function Trig_MysteriousCurse_AdriaWitchDead_Actions takes nothing returns nothi
     else
         call Reward_Give($3E8,$5DC,GetTriggerUnit()) // $3E8 = 1000; $5DC = 1500
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Mysterious Curse|r")
-    call QuestSetCompletedBJ(udg_SideQuest[22],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_MYSTERIOUS_CURSE,null,null)
     call AddUnitToStockBJ('n0C7',gg_unit_n0BW_0094,1,1) // 'n0C7': unit "Hunt: Titania"
     set udg_HuntStock[4]=(udg_HuntStock[4]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
@@ -489,8 +506,7 @@ function Trig_MysteriousCurse_AdriaRestored_Actions takes nothing returns nothin
         call Text_Say(Player_GetHero(GetOwningPlayer(GetKillingUnitBJ())),"Now that Baba Yaga is dead Adria's curse should be lifted and she will once again look normal. I must visit her.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Adria.")
-    call QuestSetDescriptionBJ(udg_SideQuest[22],"Talk to Adria.")
+    call Quest_SetLog(QUEST_MYSTERIOUS_CURSE,"Talk to Adria.",true)
     set udg_CurseUnit[3]=ReplaceUnitBJ(gg_unit_u002_0196,'u004',bj_UNIT_STATE_METHOD_RELATIVE) // 'u004': unit "Adria"
     set udg_SpecialEffect[41]=AddSpecialEffectTargetUnitBJ("overhead",udg_CurseUnit[3],"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_MysteriousCurse_AdriaReturn)
@@ -557,9 +573,7 @@ function Trig_MysteriousCurse_AdriaReturn_Actions takes nothing returns nothing
         call ShowUnitHide(GetTriggerUnit())
     endif
     call SetUnitOwner(GetTriggerUnit(),Player(9),true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Mysterious Curse|r")
-    call QuestSetCompletedBJ(udg_SideQuest[22],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_MYSTERIOUS_CURSE,null,null)
     set udg_CurseStage=8
     set udg_NewsText[3]=udg_NewsText[2]
     set udg_NewsText[2]=udg_NewsText[1]
@@ -590,8 +604,7 @@ function Trig_MysteriousCurse_LinkRestored_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetOwningPlayer(GetKillingUnitBJ())),"Now that this witch that was trying to deceive me is dead Link should look normal again.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Link.")
-    call QuestSetDescriptionBJ(udg_SideQuest[22],"Talk to Link.")
+    call Quest_SetLog(QUEST_MYSTERIOUS_CURSE,"Talk to Link.",true)
     set udg_CurseUnit[5]=ReplaceUnitBJ(gg_unit_u001_0195,'h00U',bj_UNIT_STATE_METHOD_RELATIVE) // 'h00U': unit "Link"
     set udg_SpecialEffect[41]=AddSpecialEffectTargetUnitBJ("overhead",udg_CurseUnit[5],"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_MysteriousCurse_LinkReturn)
@@ -658,9 +671,7 @@ function Trig_MysteriousCurse_LinkReturn_Actions takes nothing returns nothing
         call ShowUnitHide(GetTriggerUnit())
     endif
     call SetUnitOwner(GetTriggerUnit(),Player(9),true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Mysterious Curse|r")
-    call QuestSetCompletedBJ(udg_SideQuest[22],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_MYSTERIOUS_CURSE,null,null)
     set udg_CurseStage=8
     set udg_NewsText[3]=udg_NewsText[2]
     set udg_NewsText[2]=udg_NewsText[1]
@@ -737,9 +748,7 @@ function Trig_MysteriousCurse_BabaYagaDead_Actions takes nothing returns nothing
     else
         call Reward_Give($3E8,$5DC,GetTriggerUnit()) // $3E8 = 1000; $5DC = 1500
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Mysterious Curse|r")
-    call QuestSetCompletedBJ(udg_SideQuest[22],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_MYSTERIOUS_CURSE,null,null)
     set udg_CurseStage=6
     call AddUnitToStockBJ('n0C7',gg_unit_n0BW_0094,1,1) // 'n0C7': unit "Hunt: Titania"
     set udg_HuntStock[4]=(udg_HuntStock[4]+1)

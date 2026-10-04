@@ -91,9 +91,7 @@ function Trig_Boss_GodDragon_Death_Actions takes nothing returns nothing
         endif
     endif
     call RemoveLocation(l_tempPoint)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00God Dragon|r")
-    call QuestSetCompletedBJ(udg_MainQuest[17],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestGodDragon_ZodiarkSlain") // completes the God Dragon quest
     // (udg_BravesDefeated) plus (1).
     call QuestItemSetDescriptionBJ(udg_QuestReq[4],("Zodiac Braves defeated: "+(I2S((udg_BravesDefeated+1))+"/13")))
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)

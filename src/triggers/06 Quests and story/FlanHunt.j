@@ -1,28 +1,58 @@
-library TFlanHunt requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TFlanHunt requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+// Side quest "Flan Hunt", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Olga, Lady Dana's first ranger in the Phantom Village, wants 20 flans killed.
+// The talks stay module triggers: Olga is paused during them and the hand-in needs her to be visible
+// (only with the Maiden's Eye). The quest fails if Dana dies (FlanHunt_Fail, run by Dana).
+// Does not count toward the story; Olga's own "!" / "?" markers (udg_SpecialEffect[74]) are kept.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_FlanHunt_Start=null
-    trigger gg_trg_FlanHunt_Count=null
     trigger gg_trg_FlanHunt_Fail=null
     trigger gg_trg_FlanHunt_Reward=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_FLAN_HUNT=0
 endglobals
+
+// Step 1 done (the party talked to Olga): the "?" over her.
+function FlanHunt_Started takes nothing returns nothing
+    set udg_SpecialEffect[74]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e014_0149,"Objects\\RandomObject\\RandomObject.mdl")
+endfunction
+
+// Step 2 done (20 flans killed): Olga is pinged and waits for the party.
+function FlanHunt_Hunted takes nothing returns nothing
+    call GroupAddUnitSimple(gg_unit_e014_0149,udg_BossUnits)
+    call EnableTrigger(gg_trg_FlanHunt_Reward)
+endfunction
+
+function FlanHunt_Define takes nothing returns nothing
+    local integer q=Quest_Define("Flan Hunt",QUEST_SIDE,55,"ReplaceableTextures\\CommandButtons\\BTNSludgeCreature.blp")
+    set QUEST_FLAN_HUNT=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Olga (gg_trg_FlanHunt_Start)
+    call Quest_Custom(q,"Olga from the Phantom Village has asked you to clean 20 flans off the face of Gaya.")
+    call Quest_OnDone(q,"FlanHunt_Started")
+    // 2. Kill 20 flans (hunt leaderboard row 6)
+    call Quest_Hunt(q,6,20,"Flans to kill","Return to Olga for a reward.")
+    call Quest_Message(q,"You have killed enough flans. Return to Olga for a reward.")
+    call Quest_HuntTarget(q,'n01P') // 'n01P': unit "Lesser Flan"
+    call Quest_HuntTarget(q,'n01O') // 'n01O': unit "Flan"
+    call Quest_HuntTarget(q,'n01Q') // 'n01Q': unit "Aqua Flan"
+    call Quest_HuntTarget(q,'n01N') // 'n01N': unit "Greater Flan"
+    call Quest_HuntTarget(q,'n042') // 'n042': unit "Dark Flan"
+    call Quest_OnDone(q,"FlanHunt_Hunted")
+    // 3. Report back to Olga (gg_trg_FlanHunt_Reward)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_FlanHunt_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e014_0149,true,true,true))
 endfunction
 
-function Trig_FlanHunt_Start_IsDialogueOn takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_FlanHunt_Start_IsFirstBoardEntry takes nothing returns boolean
-    return(udg_HuntCounter[0]==1)
-endfunction
-
 function Trig_FlanHunt_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[74])
-    if(Trig_FlanHunt_Start_IsDialogueOn())then
+    if udg_CinematicsDisabled==false then
         call PauseUnitBJ(true,gg_unit_e014_0149)
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
@@ -41,79 +71,25 @@ function Trig_FlanHunt_Start_Actions takes nothing returns nothing
         call Cine_ExitAction()
         call PauseUnitBJ(false,gg_unit_e014_0149)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Flan Hunt|r")
-    set udg_SideQuest[55]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Flan Hunt"),"Olga from the Phantom Village has asked you to clean 20 flans off the face of Gaya.","ReplaceableTextures\\CommandButtons\\BTNSludgeCreature.blp")
-    set udg_SpecialEffect[74]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e014_0149,"Objects\\RandomObject\\RandomObject.mdl")
-    set udg_HuntCounter[0]=(udg_HuntCounter[0]+1)
-    if(Trig_FlanHunt_Start_IsFirstBoardEntry())then
-        call LeaderboardDisplayBJ(true,udg_HuntLeaderboard)
+    if QUEST_FLAN_HUNT==0 then
+        call FlanHunt_Define()
     endif
-    set udg_HuntCounter[6]=20
-    set udg_HuntBoardLabel[6]="Flans to kill"
-    call LeaderboardAddItemBJ(Player(5),udg_HuntLeaderboard,udg_HuntBoardLabel[6],udg_HuntCounter[6])
-    call LeaderboardSetPlayerItemLabelColorBJ(Player(5),udg_HuntLeaderboard,65.,75.,40.,0)
-    call LeaderboardSetPlayerItemValueColorBJ(Player(5),udg_HuntLeaderboard,80.,20.,20,0)
-    call LeaderboardSortItemsBJ(udg_HuntLeaderboard,bj_SORTTYPE_SORTBYVALUE,false)
-    call EnableTrigger(gg_trg_FlanHunt_Count)
+    // log entry, "New Quest Received", Olga's "?" and the flan count on the hunt board
+    call Quest_Start(QUEST_FLAN_HUNT,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-function Trig_FlanHunt_Count_IsFlanUnit takes nothing returns boolean
-    return(GetUnitTypeId(GetTriggerUnit())=='n01P')or(GetUnitTypeId(GetTriggerUnit())=='n01O')or(GetUnitTypeId(GetTriggerUnit())=='n01Q')or(GetUnitTypeId(GetTriggerUnit())=='n01N')or(GetUnitTypeId(GetTriggerUnit())=='n042') // 'n01P': unit "Lesser Flan"; 'n01O': unit "Flan"; 'n01Q': unit "Aqua Flan"; 'n01N': unit "Greater Flan"; 'n042': unit "Dark Flan"
-endfunction
-
-function Trig_FlanHunt_Count_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetKillingUnitBJ()),udg_ActivePlayers))and(Trig_FlanHunt_Count_IsFlanUnit())
-endfunction
-
-function Trig_FlanHunt_Count_NoQuestsLeft takes nothing returns boolean
-    return(udg_HuntCounter[0]<=0)
-endfunction
-
-function Trig_FlanHunt_Count_IsCountDone takes nothing returns boolean
-    return(udg_HuntCounter[6]<=0)
-endfunction
-
-function Trig_FlanHunt_Count_Actions takes nothing returns nothing
-    set udg_HuntCounter[6]=(udg_HuntCounter[6]-1)
-    call LeaderboardSetPlayerItemValueBJ(Player(5),udg_HuntLeaderboard,udg_HuntCounter[6])
-    call LeaderboardSortItemsBJ(udg_HuntLeaderboard,bj_SORTTYPE_SORTBYVALUE,false)
-    if(Trig_FlanHunt_Count_IsCountDone())then
-        call DisableTrigger(GetTriggeringTrigger())
-        call LeaderboardRemovePlayerItemBJ(Player(5),udg_HuntLeaderboard)
-        set udg_HuntCounter[0]=(udg_HuntCounter[0]-1)
-        if(Trig_FlanHunt_Count_NoQuestsLeft())then
-            call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
-        endif
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"You have killed enough flans. Return to Olga for a reward.")
-        call QuestSetDescriptionBJ(udg_SideQuest[55],"Return to Olga for a reward.")
-        call GroupAddUnitSimple(gg_unit_e014_0149,udg_BossUnits)
-        call EnableTrigger(gg_trg_FlanHunt_Reward)
-        call DestroyTrigger(GetTriggeringTrigger())
-    endif
-endfunction
-
-function Trig_FlanHunt_Fail_NoQuestsLeft takes nothing returns boolean
-    return(udg_HuntCounter[0]<=0)
-endfunction
-
-function Trig_FlanHunt_Fail_IsCountPending takes nothing returns boolean
-    return(udg_HuntCounter[6]>0)
-endfunction
-
+// Run by Dana when she dies before the quest is done: the quest fails and its hunt count leaves the board.
 function Trig_FlanHunt_Fail_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[74])
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Flan Hunt|r")
-    call QuestSetFailedBJ(udg_SideQuest[55],true)
-    if(Trig_FlanHunt_Fail_IsCountPending())then
-        call DisableTrigger(gg_trg_FlanHunt_Count)
+    call Quest_Fail(QUEST_FLAN_HUNT)
+    if udg_HuntCounter[6]>0 then
         set udg_HuntCounter[6]=0
         call LeaderboardRemovePlayerItemBJ(Player(5),udg_HuntLeaderboard)
-        set udg_HuntCounter[0]=(udg_HuntCounter[0]-1)
-        if(Trig_FlanHunt_Fail_NoQuestsLeft())then
+        set udg_HuntCounter[0]=udg_HuntCounter[0]-1
+        if udg_HuntCounter[0]<=0 then
             call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
         endif
-        call DestroyTrigger(gg_trg_FlanHunt_Count)
     else
         call GroupRemoveUnitSimple(gg_unit_e014_0149,udg_BossUnits)
     endif
@@ -125,35 +101,30 @@ function Trig_FlanHunt_Reward_Conditions takes nothing returns boolean
     return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false)and(IsUnitVisible(gg_unit_e014_0149,GetOwningPlayer(GetTriggerUnit()))))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
 
-function Trig_FlanHunt_Reward_IsDialogueOn takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
 function Trig_FlanHunt_Reward_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[74])
     call GroupRemoveUnitSimple(gg_unit_e014_0149,udg_BossUnits)
-    if(Trig_FlanHunt_Reward_IsDialogueOn())then
+    if udg_CinematicsDisabled==false then
         call PauseUnitBJ(true,gg_unit_e014_0149)
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_e014_0149,0)
         call Text_Say(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"We've killed 20 flans, as you asked.",false)
         call Text_Say(gg_unit_e014_0149,"You have my gratitude. This should help keep the world in further balance.",false)
-        call Reward_Give($FA0,$DAC,gg_unit_e014_0149) // $FA0 = 4000; $DAC = 3500
+        call Reward_Give(4000,3500,gg_unit_e014_0149)
         call Text_Say(gg_unit_e014_0149,"I'm also afraid that some fiends from our side have crossed over to your world of late. If I could ask you to help us out some more in exterminating these dangers, come speak to me some more.",false)
         call Cine_ExitAction()
         call PauseUnitBJ(false,gg_unit_e014_0149)
     else
-        call Reward_Give($FA0,$DAC,gg_unit_e014_0149) // $FA0 = 4000; $DAC = 3500
+        call Reward_Give(4000,3500,gg_unit_e014_0149)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Flan Hunt|r")
-    call QuestSetCompletedBJ(udg_SideQuest[55],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_PhantomVillagersMet=(udg_PhantomVillagersMet+1)
-    set udg_CommonHuntsDone=(udg_CommonHuntsDone+1)
-    call UnitAddAbilityBJ('Ane2',gg_unit_e014_0149) // 'Ane2': object name not found in map data
+    call Quest_StepDone(QUEST_FLAN_HUNT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
+    // Olga offers the Arahabaki hunt
+    set udg_PhantomVillagersMet=udg_PhantomVillagersMet+1
+    set udg_CommonHuntsDone=udg_CommonHuntsDone+1
+    call UnitAddAbilityBJ('Ane2',gg_unit_e014_0149) // 'Ane2': standard ability
     call AddUnitToStockBJ('n0C4',gg_unit_e014_0149,1,1) // 'n0C4': unit "Hunt: Arahabaki"
-    set udg_HuntStock[6]=(udg_HuntStock[6]+1)
+    set udg_HuntStock[6]=udg_HuntStock[6]+1
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
     call DestroyTrigger(gg_trg_FlanHunt_Fail)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -180,14 +151,6 @@ function Register_FlanHunt_Start takes nothing returns nothing
     call TriggerAddAction(gg_trg_FlanHunt_Start,function Trig_FlanHunt_Start_Actions)
 endfunction
 
-function Register_FlanHunt_Count takes nothing returns nothing
-    set gg_trg_FlanHunt_Count=CreateTrigger()
-    call DisableTrigger(gg_trg_FlanHunt_Count)
-    call TriggerRegisterAnyUnitEventBJ(gg_trg_FlanHunt_Count,EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(gg_trg_FlanHunt_Count,Condition(function Trig_FlanHunt_Count_Conditions))
-    call TriggerAddAction(gg_trg_FlanHunt_Count,function Trig_FlanHunt_Count_Actions)
-endfunction
-
 function Register_FlanHunt_Fail takes nothing returns nothing
     set gg_trg_FlanHunt_Fail=CreateTrigger()
     call DisableTrigger(gg_trg_FlanHunt_Fail)
@@ -206,7 +169,6 @@ endfunction
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_FlanHunt takes nothing returns nothing
     call Register_FlanHunt_Start() // starts off; enabled by Olga
-    call Register_FlanHunt_Count() // starts off; enabled by FlanHunt; disabled by FlanHunt; destroyed by FlanHunt
     call Register_FlanHunt_Fail() // starts off; run by Dana; destroyed by FlanHunt
     call Register_FlanHunt_Reward() // starts off; enabled by FlanHunt; destroyed by FlanHunt
 endfunction

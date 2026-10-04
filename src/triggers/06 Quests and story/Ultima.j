@@ -217,8 +217,7 @@ function Trig_Ultima_Possession_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
     endif
     call GroupAddUnitSimple(gg_unit_U00F_0221,udg_BossUnits)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Ultima, the Zodiac Brave of Holy.")
-    call QuestSetDescriptionBJ(udg_MainQuest[16],"Defeat Ultima, the Zodiac Brave of Holy, to avenge Ramza, and to get Alma her body back!")
+    call ExecuteFunc("QuestLightOfJudgment_UltimaAppears") // quest log: "Defeat Ultima ..."
     call PauseUnitBJ(false,gg_unit_U00F_0221)
     call SetUnitInvulnerable(gg_unit_U00F_0221,false)
     call Music_SetTrack($D) // $D = 13

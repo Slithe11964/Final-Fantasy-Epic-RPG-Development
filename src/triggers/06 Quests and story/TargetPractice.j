@@ -1,4 +1,4 @@
-library TTargetPractice requires TCam, TCine, TForce, TGroup, TPlayerHero, TReward, TText
+library TTargetPractice requires TQuestEngine, TCam, TCine, TForce, TGroup, TPlayerHero, TReward, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TargetPractice_Init=null
@@ -333,8 +333,8 @@ function Trig_TargetPractice_TargetHit_Actions takes nothing returns nothing
                 call EnableTrigger(gg_trg_TargetPractice_Begin)
             else
                 if(Trig_TargetPractice_TargetHit_Cond_QuestNotFailed())then
-                    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return to Aisha for a reward.")
-                    call QuestSetDescriptionBJ(udg_SideQuest[$E],"Return to Aisha for a reward.") // $E = 14
+                    // Target Practice quest: "Return to Aisha for a reward."
+                    call Quest_StepDone(QUEST_TARGET_PRACTICE,udg_TargetPracticePlayer,Player_GetHero(udg_TargetPracticePlayer))
                     call EnableTrigger(gg_trg_TargetPractice_Reward)
                 endif
             endif
@@ -377,8 +377,7 @@ endfunction
 
 function Trig_TargetPractice_Fail_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[81])
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Target Practice|r")
-    call QuestSetFailedBJ(udg_SideQuest[$E],true) // $E = 14
+    call Quest_Fail(QUEST_TARGET_PRACTICE)
     if(Trig_TargetPractice_Fail_Cond_TargetsStillOut())then
         call StartTimerBJ(udg_TargetPracticeTimer,false,.0)
     endif
@@ -419,9 +418,7 @@ function Trig_TargetPractice_Reward_Actions takes nothing returns nothing
     call PauseUnitBJ(false,gg_unit_e017_0018)
     call UnitAddAbilityBJ('Aneu',gg_unit_e017_0018) // 'Aneu': standard ability reference "Neutral Building"
     call EnableTrigger(gg_trg_TargetPractice_Begin)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Target Practice|r")
-    call QuestSetCompletedBJ(udg_SideQuest[$E],true) // $E = 14
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_TARGET_PRACTICE,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_PhantomVillagersMet=(udg_PhantomVillagersMet+1)
     call DestroyTrigger(gg_trg_TargetPractice_Fail)
     call DestroyTrigger(GetTriggeringTrigger())

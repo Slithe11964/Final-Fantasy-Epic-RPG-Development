@@ -354,10 +354,8 @@ function Trig_Gilgamesh_Defeat_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call ShowUnitHide(gg_unit_N03D_0165)
     call PauseUnitBJ(true,gg_unit_N03D_0165)
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Mae'chen.")
-    call QuestSetDescriptionBJ(udg_SideQuest[41],"You have found and defeated Gilgamesh, but he escaped. Return to Mae'chen.")
+    call ExecuteFunc("BridgeBattle_GilgameshDefeated") // the quest log: "Return to Mae'chen."
     call Music_ClearTrack(30)
-    call EnableTrigger(gg_trg_BridgeBattle_Complete)
     set udg_GilgameshDefeated=true
     call SaveIntegerBJ(1,2,'l',udg_GameStateHash)
     call DestroyTrigger(GetTriggeringTrigger())

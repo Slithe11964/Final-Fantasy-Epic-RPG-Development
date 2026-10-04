@@ -1,12 +1,33 @@
-library TQuestDivineOrder requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestDivineOrder requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Divine Order", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Siegfried, envoy of the Northern God, sends the party to strike down Ziegfried, who slew the Godbeast
+// Fafnir with Arcanium gear. All steps are custom: this module's triggers and Ziegfried's confront scene
+// (Ziegfried module) finish them, and this module keeps its own "!" / "?" markers (the "?" over Siegfried
+// goes when the party confronts Ziegfried). Siegfried enables gg_trg_Quest_DivineOrder_Start.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_DivineOrder_Start=null
     trigger gg_trg_Quest_DivineOrder_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_DIVINE_ORDER=0
     // Variables only this module uses (MapBootstrap sets some starting values).
     lightning udg_ExecutionLightning=null
     sound gg_snd_004=null
 endglobals
+
+function QuestDivineOrder_Define takes nothing returns nothing
+    local integer q=Quest_Define("Divine Order",QUEST_SIDE,70,"ReplaceableTextures\\CommandButtons\\BTNSpell_Holy_RetributionAura.blp")
+    set QUEST_DIVINE_ORDER=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Siegfried (gg_trg_Quest_DivineOrder_Start)
+    call Quest_Custom(q,"Siegfried, envoy of the Northern God, has tasked you with taking down the heretic who killed the Godbeast. Confront him!")
+    // 2. Confront Ziegfried (Ziegfried module, gg_trg_Ziegfried_Confront)
+    call Quest_Custom(q,"Strike down Ziegfried.")
+    // 3. Ziegfried falls (gg_trg_Quest_DivineOrder_Complete)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_DivineOrder_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_N0N0_0267,true,true,true))
@@ -16,6 +37,7 @@ function Trig_Quest_DivineOrder_Start_PlayEnvoyScene takes nothing returns boole
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Siegfried. Ziegfried grows much stronger and waits in Fafnir's lair.
 function Trig_Quest_DivineOrder_Start_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -38,8 +60,10 @@ function Trig_Quest_DivineOrder_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Hmm...",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Divine Order|r")
-    set udg_SideQuest[70]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Divine Order"),"Siegfried, envoy of the Northern God, has tasked you with taking down the heretic who killed the Godbeast. Confront him!","ReplaceableTextures\\CommandButtons\\BTNSpell_Holy_RetributionAura.blp")
+    if QUEST_DIVINE_ORDER==0 then
+        call QuestDivineOrder_Define()
+    endif
+    call Quest_Start(QUEST_DIVINE_ORDER,GetTriggerPlayer(),GetTriggerUnit())
     set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_N0N0_0267,"Objects\\RandomObject\\RandomObject.mdl")
     call SetHeroLevelBJ(gg_unit_H036_0254,85,false)
     call ModifyHeroStat(bj_HEROSTAT_STR,gg_unit_H036_0254,bj_MODIFYMETHOD_ADD,$96) // $96 = 150
@@ -74,6 +98,7 @@ function Trig_Quest_DivineOrder_Complete_PlayExecutionScene takes nothing return
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 3: Ziegfried falls. The Northern God executes him; Siegfried explains why and leaves.
 function Trig_Quest_DivineOrder_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Ziegfried_Arena_Leash)
@@ -183,9 +208,7 @@ function Trig_Quest_DivineOrder_Complete_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call Reward_Give($4E20,$4E20,gg_unit_N0N0_0267) // $4E20 = 20000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Divine Order|r")
-    call QuestSetCompletedBJ(udg_SideQuest[70],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_DIVINE_ORDER,null,null)
     set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
     call CreateNUnitsAtLoc(1,'n0N7',Player(8),udg_TempPoint,bj_UNIT_FACING) // 'n0N7': unit "Phantom Diary"
     call RemoveLocation(udg_TempPoint)

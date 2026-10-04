@@ -1,4 +1,4 @@
-library TGuideBook requires TCam, TCine, TPlayerHero, TText
+library TGuideBook requires TQuestEngine, TCam, TCine, TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_GuideBook_Search1=null
@@ -33,7 +33,8 @@ function Trig_GuideBook_Search1_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -66,7 +67,8 @@ function Trig_GuideBook_Search2_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -99,7 +101,8 @@ function Trig_GuideBook_Search3_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -132,7 +135,8 @@ function Trig_GuideBook_Search4_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -165,7 +169,8 @@ function Trig_GuideBook_Search5_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -198,7 +203,8 @@ function Trig_GuideBook_Search6_Actions takes nothing returns nothing
             call CreateTextTagLocBJ("Found the |cffffcc00Guide Book|r!",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
             call UnitAddItemByIdSwapped('I06B',GetTriggerUnit()) // 'I06B': item "Guide Book"
             call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Guide Book to Shinra.")
+            // Dimensional Boundary quest: "Bring the Guide Book to Shinra."
+            call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         else
             call CreateTextTagLocBJ("The Guide Book is not here...",udg_TempPoint,0,$A,'d','d','d',0) // $A = 10
         endif
@@ -233,8 +239,7 @@ function Trig_GuideBook_TurnIn_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring some Tropical Essence to Shinra.")
-    call QuestSetDescriptionBJ(udg_SideQuest[40],"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nNow Shinra wants you to find some |cffffcc00Tropical Essence|r.")
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_TropicalEssence_TurnIn)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

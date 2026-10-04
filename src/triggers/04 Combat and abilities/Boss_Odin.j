@@ -1,4 +1,4 @@
-library TBossOdin requires TCam, TCine, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TBossOdin requires TCam, TCine, TLoc, TMusic, TPlayerHero, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Boss_Odin_Intro=null
@@ -31,8 +31,7 @@ function Trig_Boss_Odin_Intro_Actions takes nothing returns nothing
     call Text_Say(gg_unit_H01M_0071,"|cffff0000If you truly manage to down us, then I accept it. That it is not our place to judge those of this world. But if you fall here, then you will be just another would-be hero consumed by hubris, like so many before you.|r",true)
     call Text_Say(gg_unit_H01M_0071,"|cffff0000Now, let the battle commence!|r",true)
     call Cine_ExitAction()
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Odin.")
-    call QuestSetDescriptionBJ(udg_SideQuest[35],"Defeat Odin, the Northern God himself, in battle.")
+    call ExecuteFunc("Judgment_OdinChallenged") // the quest log: "Defeat Odin."
     call EnumDestructablesInRectAll(gg_rct_712,function Trig_Boss_Odin_Intro_Enum_ClearRocks)
     call SetUnitOwner(gg_unit_H01M_0071,Player($B),false) // $B = 11
     call SetUnitOwner(gg_unit_N0N0_0267,Player($B),false) // $B = 11
@@ -180,11 +179,8 @@ function Trig_Boss_Odin_Death_Actions takes nothing returns nothing
         endloop
     endif
     call RemoveLocation(l_tempPoint)
-    call Reward_Give(80000,0,null)
     call ForForce(udg_PlayingPlayers,function Trig_Boss_Odin_Death_Enum_GiveCrystalShards)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00The Northern God|r")
-    call QuestSetCompletedBJ(udg_SideQuest[35],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("Judgment_OdinDefeated") // 80000 gold; the quest "The Northern God" is completed
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
     set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]='y'

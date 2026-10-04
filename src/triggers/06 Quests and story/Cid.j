@@ -1,4 +1,15 @@
-library TCid requires TBerserk, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TCid requires TQuestEngine, TBerserk, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+// Cid and Mid in Kalm, and the first three main quests, written for the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md):
+//   "Find Mid"       (udg_MainQuest[1]) Cid asks the party to find his nephew Mid (or the party frees Mid
+//                    first, see the Mid module); Cid thanks them when they come back.
+//   "Find Artifact"  (udg_MainQuest[2]) Mid asks for the artifact the Goblin Chieftain holds; done when the
+//                    artifact is brought to Cid, or (once Hashmalum has broken free) when the party talks to Cid.
+//   "Stop Cid"       (udg_MainQuest[3]) the artifact drives Cid berserk; done when he is beaten.
+// All steps are custom: the talks are cinematics with branches, so they stay in this module's triggers,
+// which call Quest_Start / Quest_StepDone. This module keeps its own markers (udg_SpecialEffect[19]).
+// "Find Mid" counts toward the story twice, as before: once when it starts (here or in Mid) and once when
+// it is done (the engine).
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cid_Talk_FindMid=null
@@ -11,7 +22,56 @@ globals
     trigger gg_trg_Cid_Berserk_Aftermath=null
     trigger gg_trg_Cid_Research_Done=null
     trigger gg_trg_Cid_Talk_AoMadoushi=null
+    // The quests' numbers in the quest engine (0 until they are defined).
+    integer QUEST_FIND_MID=0
+    integer QUEST_FIND_ARTIFACT=0
+    integer QUEST_STOP_CID=0
 endglobals
+
+// "Find Mid". Also called by Mid (through ExecuteFunc) when Mid is freed before anyone talked to Cid.
+function Cid_FindMid_Define takes nothing returns nothing
+    local integer q=Quest_Define("Find Mid",QUEST_MAIN,1,"ReplaceableTextures\\CommandButtons\\BTNArthas.blp")
+    set QUEST_FIND_MID=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NoMarker(q)
+    // 1. Talk to Cid (gg_trg_Cid_Talk_FindMid), or free Mid first (Mid_Freed starts the quest with other
+    //    text). Freeing Mid after talking to Cid only changes the text, it is not a step.
+    call Quest_Custom(q,"Cid asked you to look for his nephew Mid who went to Guardia Forest and did not come back.")
+    // 2. Come back to Cid (gg_trg_Cid_Talk_MidReturned)
+    call Quest_Custom(q,"")
+    call Quest_OnDone(q,"Cid_FindMid_Done")
+endfunction
+
+// "Find Mid" is done: the Battle Arena opens (before the story count, as before).
+function Cid_FindMid_Done takes nothing returns nothing
+    call ConditionalTriggerExecute(gg_trg_Arena_Unlock)
+endfunction
+
+// "Find Artifact".
+function Cid_FindArtifact_Define takes nothing returns nothing
+    local integer q=Quest_Define("Find Artifact",QUEST_MAIN,2,"ReplaceableTextures\\CommandButtons\\BTNHeartOfSearinox.blp")
+    set QUEST_FIND_ARTIFACT=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NoMarker(q)
+    // 1. Cid and Mid ask for the artifact (gg_trg_Cid_Talk_MidReturned). Picking it up only changes the
+    //    text (Artifact module).
+    call Quest_Custom(q,"Cid asked you to look for the mysterious artifact in the forest.")
+    // 2. Bring the artifact to Cid (gg_trg_Cid_Berserk_Start), or talk to Cid after Hashmalum broke free
+    //    (gg_trg_Cid_Talk_Hashmalum)
+    call Quest_Custom(q,"")
+endfunction
+
+// "Stop Cid".
+function Cid_StopCid_Define takes nothing returns nothing
+    local integer q=Quest_Define("Stop Cid",QUEST_MAIN,3,"ReplaceableTextures\\CommandButtons\\BTNHeroPaladin.blp")
+    set QUEST_STOP_CID=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NoMarker(q)
+    // 1. Cid goes berserk (gg_trg_Cid_Berserk_Start)
+    call Quest_Custom(q,"Cid went berserk. Stop him.")
+    // 2. Beat him (gg_trg_Cid_Berserk_Aftermath)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Cid_Talk_FindMid_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
@@ -82,8 +142,10 @@ function Trig_Cid_Talk_FindMid_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Hpb1_0013,"If you decide to look, good luck and be careful, as the creatures in the forest have become very aggressive of late!",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Find Mid|r")
-    set udg_MainQuest[1]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Find Mid","Cid asked you to look for his nephew Mid who went to Guardia Forest and did not come back.","ReplaceableTextures\\CommandButtons\\BTNArthas.blp")
+    if QUEST_FIND_MID==0 then
+        call Cid_FindMid_Define()
+    endif
+    call Quest_Start(QUEST_FIND_MID,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[19]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_Mid_Cage_Ping)
     set udg_CidQuestStage=1
@@ -110,6 +172,7 @@ function Trig_Cid_Talk_FindMid_Actions takes nothing returns nothing
     call ConditionalTriggerExecute(gg_trg_Quest_Arachnophobia_Offer)
     call ConditionalTriggerExecute(gg_trg_Naisha_Prepare)
     call ConditionalTriggerExecute(gg_trg_Valera_ShowMarker)
+    // starting "Find Mid" counts toward the story too (the engine counts it again when it is done)
     set udg_StoryProgress=(udg_StoryProgress+1)
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call Music_SetZoneTrack(1)
@@ -184,12 +247,8 @@ function Trig_Cid_Talk_MidReturned_Actions takes nothing returns nothing
     else
         call Reward_Give(0,$3E8,gg_unit_Hpb1_0013) // $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Find Mid|r")
-    call QuestSetCompletedBJ(udg_MainQuest[1],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    call ConditionalTriggerExecute(gg_trg_Arena_Unlock)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    // "Find Mid" is done (Cid_FindMid_Done opens the Battle Arena)
+    call Quest_StepDone(QUEST_FIND_MID,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_CidQuestStage=3
     if(Trig_Cid_Talk_MidReturned_Quest20NotDiscovered())then
         call Music_SetZoneTrack(2)
@@ -202,14 +261,16 @@ function Trig_Cid_Talk_MidReturned_Actions takes nothing returns nothing
             call SaveIntegerBJ(1,2,97,udg_GameStateHash)
         else
             set udg_SpecialEffect[19]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Objects\\RandomObject\\RandomObject.mdl")
-            set udg_MainQuest[2]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Find Artifact","Cid asked you to look for the mysterious artifact in the forest.","ReplaceableTextures\\CommandButtons\\BTNHeartOfSearinox.blp")
+            // "Find Artifact" starts (the engine announces it now; it used to be announced 4 seconds later)
+            if QUEST_FIND_ARTIFACT==0 then
+                call Cid_FindArtifact_Define()
+            endif
+            call Quest_Start(QUEST_FIND_ARTIFACT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
             call CreateNUnitsAtLoc(1,'ndtw',Player($B),GetRectCenter(gg_rct_198),.0) // 'ndtw': unit "Dark Goblin Chieftain"; $B = 11
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_QuestUnits)
             call TriggerRegisterUnitEvent(gg_trg_GoblinChief_Death,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
             call EnableTrigger(gg_trg_GoblinChief_Death)
             call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-            call Wait_Polled(4.)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Find Artifact|r")
         endif
     else
         set udg_CidQuestOnHold=true
@@ -287,17 +348,17 @@ function Trig_Cid_Berserk_Start_Actions takes nothing returns nothing
     else
         call SetUnitAnimation(udg_Mid,"death")
     endif
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Find Artifact|r")
-    call QuestSetCompletedBJ(udg_MainQuest[2],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    // "Find Artifact" is done: the artifact was brought to Cid
+    call Quest_StepDone(QUEST_FIND_ARTIFACT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call PauseUnitBJ(true,udg_Mid)
     call DestroyTrigger(gg_trg_Cid_Talk_Hashmalum)
     call Wait_Polled(1.)
     set udg_CidQuestStage=6
-    set udg_MainQuest[3]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Stop Cid","Cid went berserk. Stop him.","ReplaceableTextures\\CommandButtons\\BTNHeroPaladin.blp")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Stop Cid|r")
+    // "Stop Cid" starts
+    if QUEST_STOP_CID==0 then
+        call Cid_StopCid_Define()
+    endif
+    call Quest_Start(QUEST_STOP_CID,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call SetUnitInvulnerable(gg_unit_Hpb1_0013,false)
     call SetUnitOwner(gg_unit_Hpb1_0013,Player($B),false) // $B = 11
     call Music_SetZoneTrack(3)
@@ -338,11 +399,8 @@ function Trig_Cid_Talk_Hashmalum_Actions takes nothing returns nothing
         call Text_Say(udg_Mid,"Right you are, uncle.",false)
         call Cine_ExitAction()
     endif
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Find Artifact|r")
-    call QuestSetCompletedBJ(udg_MainQuest[2],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    // "Find Artifact" is done: Hashmalum broke free before the artifact reached Cid
+    call Quest_StepDone(QUEST_FIND_ARTIFACT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call StartTimerBJ(udg_CidResearchTimer,false,120.)
     call EnableTrigger(gg_trg_Cid_Research_Done)
     call SetUnitAnimation(gg_unit_Hpb1_0013,"channel")
@@ -523,12 +581,18 @@ function Trig_Cid_Berserk_Aftermath_Actions takes nothing returns nothing
     set udg_NewsText[5]=udg_NewsText[4]
     set udg_NewsText[1]="|cffffcc00Cid Went Berserk And Regained Sanity|r"
     set udg_NewsText[4]="Cid went berserk and attacked his nephew - and the adventurers. Thanks to them, however, he regained sanity. What was that? Cid and Mid are now researching."
-    call QuestSetCompletedBJ(udg_MainQuest[3],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     if(Trig_Cid_Berserk_Aftermath_Quest20NotDiscovered())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Stop Cid|r")
+        // "Stop Cid" is done
+        call Quest_StepDone(QUEST_STOP_CID,null,null)
+    else
+        // True Ice Age ended the fight: the quest is completed and counted without an announcement, as
+        // before, so this is done here rather than by the engine (which always announces)
+        call QuestSetCompletedBJ(udg_MainQuest[3],true)
+        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+        set udg_StoryProgress=(udg_StoryProgress+1)
+        call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    endif
+    if(Trig_Cid_Berserk_Aftermath_Quest20NotDiscovered())then
         call StartTimerBJ(udg_CidResearchTimer,false,60.)
         call EnableTrigger(gg_trg_Cid_Research_Done)
         call SetUnitAnimation(gg_unit_Hpb1_0013,"channel")

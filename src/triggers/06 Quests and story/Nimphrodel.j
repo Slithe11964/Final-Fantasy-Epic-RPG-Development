@@ -1,11 +1,39 @@
-library TNimphrodel requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TNimphrodel requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+// Side quest "Save Nimphrodel", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Kenarius believes his daughter Nimphrodel was kidnapped by centaurs. All steps are this module's
+// cinematics: Start (talk to Kenarius) calls Quest_Start; Meet (Nimphrodel) and Undomiel (her sister)
+// call Quest_StepDone; picking up the Crystal Ball updates the log (CrystalBall -> Nimphrodel_BallTaken);
+// Complete (bring the ball to Undomiel) calls Quest_StepDone. The "!" and "?" over the three elves are
+// this module's own effects. It does not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Nimphrodel_Start=null
     trigger gg_trg_Nimphrodel_Meet=null
     trigger gg_trg_Nimphrodel_Undomiel=null
     trigger gg_trg_Nimphrodel_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_NIMPHRODEL=0
 endglobals
+
+function Nimphrodel_Define takes nothing returns nothing
+    local integer q=Quest_Define("Save Nimphrodel",QUEST_SIDE,21,"ReplaceableTextures\\CommandButtons\\BTNDryad.blp")
+    set QUEST_NIMPHRODEL=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Talk to Kenarius (gg_trg_Nimphrodel_Start calls Quest_Start)
+    call Quest_Custom(q,"Kenarius, Glade Warden residing at the eastern part of the Ancient Forest, needs your help in finding his daughter Nimphrodel who was kidnapped by centaurs.")
+    // 2. Find Nimphrodel (gg_trg_Nimphrodel_Meet calls Quest_StepDone)
+    call Quest_Custom(q,"Meet Nimphrodel's sister Undomiel in Lothlorien.")
+    // 3. Talk to Undomiel (gg_trg_Nimphrodel_Undomiel calls Quest_StepDone)
+    call Quest_Custom(q,"Defeat Satyr carrying Crystal Ball and bring it to Undomiel.")
+    // 4. Bring the Crystal Ball to Undomiel (gg_trg_Nimphrodel_Complete calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by CrystalBall (through ExecuteFunc) when the Crystal Ball is picked up for the first time.
+function Nimphrodel_BallTaken takes nothing returns nothing
+    call Quest_SetLog(QUEST_NIMPHRODEL,"Bring the Crystal Ball to Undomiel.",false)
+endfunction
 
 function Trig_Nimphrodel_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ecen_0180,true,true,true))
@@ -41,8 +69,10 @@ function Trig_Nimphrodel_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Alright, we will look for your daughter.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Save Nimphrodel|r")
-    set udg_SideQuest[21]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Save Nimphrodel"),"Kenarius, Glade Warden residing at the eastern part of the Ancient Forest, needs your help in finding his daughter Nimphrodel who was kidnapped by centaurs.","ReplaceableTextures\\CommandButtons\\BTNDryad.blp")
+    if QUEST_NIMPHRODEL==0 then
+        call Nimphrodel_Define()
+    endif
+    call Quest_Start(QUEST_NIMPHRODEL,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[37]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ecen_0180,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_SpecialEffect[38]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_E003_0182,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Nimphrodel_Meet)
@@ -87,8 +117,7 @@ function Trig_Nimphrodel_Meet_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"That's too bad. Well then, take care.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Meet Nimphrodel's sister Undomiel in Lothlorien.")
-    call QuestSetDescriptionBJ(udg_SideQuest[21],"Meet Nimphrodel's sister Undomiel in Lothlorien.")
+    call Quest_StepDone(QUEST_NIMPHRODEL,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call GroupAddUnitSimple(gg_unit_E004_0190,udg_BossUnits)
     set udg_SpecialEffect[38]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_E003_0182,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_SpecialEffect[39]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_E004_0190,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
@@ -136,8 +165,7 @@ function Trig_Nimphrodel_Undomiel_Actions takes nothing returns nothing
         call Text_Say(gg_unit_E004_0190,"Deal.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Satyr carrying Crystal Ball and bring it to Undomiel.")
-    call QuestSetDescriptionBJ(udg_SideQuest[21],"Defeat Satyr carrying Crystal Ball and bring it to Undomiel.")
+    call Quest_StepDone(QUEST_NIMPHRODEL,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[39]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_E004_0190,"Objects\\RandomObject\\RandomObject.mdl")
     set l_tempPoint=GetRectCenter(gg_rct_010)
     call CreateNUnitsAtLoc(1,'n019',Player($B),l_tempPoint,bj_UNIT_FACING) // 'n019': unit "Satyr Farseer"; $B = 11
@@ -183,9 +211,7 @@ function Trig_Nimphrodel_Complete_Actions takes nothing returns nothing
         call Reward_Give(5000,$FA0,gg_unit_E004_0190) // $FA0 = 4000
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00A new artifact is available for buying at the Ancient of Wonders.|r")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Save Nimphrodel|r")
-    call QuestSetCompletedBJ(udg_SideQuest[21],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_NIMPHRODEL,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call AddUnitToStockBJ('n0C2',gg_unit_e012_0227,1,1) // 'n0C2': unit "Hunt: Pixie"
     set udg_HuntStock[7]=(udg_HuntStock[7]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)

@@ -1,12 +1,13 @@
-library TClemydar
+library TClemydar requires optional TQuestSeekDestroy
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Clemydar_ShowMarker=null
 endglobals
 
 function Trig_Clemydar_ShowMarker_Actions takes nothing returns nothing
-    set udg_SpecialEffect[83]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_nemi_0078,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_SeekDestroy_Start)
+    static if LIBRARY_TQuestSeekDestroy then
+        call ExecuteFunc("QuestSeekDestroy_Available") // the "!" over Clemydar; Seek and Destroy can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

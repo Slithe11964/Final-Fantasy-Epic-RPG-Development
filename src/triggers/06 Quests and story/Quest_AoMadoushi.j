@@ -105,12 +105,12 @@ function Trig_Quest_AoMadoushi_Talk_Actions takes nothing returns nothing
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ao Madoushi|r")
         call QuestSetCompletedBJ(udg_MainQuest[4],true)
         set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-        set udg_MainQuest[5]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Eye of Jenova","Ao Madoushi told you to find the Eye of Jenova - a powerful artifact held by a huge undead creature. This creature currently resides in Kalm's Battle Arena.","ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp")
+        // "Eye of Jenova" starts (the engine announces it now; it used to be announced 4 seconds later)
+        call ExecuteFunc("QuestEyeOfJenova_Start")
         call SaveIntegerBJ(2,2,$8B,udg_GameStateHash) // $8B = 139
         call EnableTrigger(gg_trg_Loot_Cuchulainn_EyeDrop)
         call EnableTrigger(gg_trg_Ping_ArenaTarget)
         call Wait_Polled(4.)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Eye of Jenova|r")
         call Music_SetZoneTrack(6)
     else
         call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring the Zodiac Stone to Ao Madoushi.")
@@ -178,13 +178,13 @@ function Trig_Quest_AoMadoushi_Report_Actions takes nothing returns nothing
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ao Madoushi|r")
     call QuestSetCompletedBJ(udg_MainQuest[4],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_MainQuest[5]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Eye of Jenova","Ao Madoushi told you to find the Eye of Jenova - a powerful artifact held by a huge undead creature. This creature currently resides in Kalm's Battle Arena.","ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp")
+    // "Eye of Jenova" starts (the engine announces it now; it used to be announced 4 seconds later)
+    call ExecuteFunc("QuestEyeOfJenova_Start")
     set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Othr_0106,"Objects\\RandomObject\\RandomObject.mdl")
     call SaveIntegerBJ(2,2,$8B,udg_GameStateHash) // $8B = 139
     call EnableTrigger(gg_trg_Loot_Cuchulainn_EyeDrop)
     call EnableTrigger(gg_trg_Ping_ArenaTarget)
     call Wait_Polled(4.)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Eye of Jenova|r")
     call Music_SetZoneTrack(6)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

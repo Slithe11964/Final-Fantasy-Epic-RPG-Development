@@ -1,4 +1,11 @@
-library TKalmSiege1 requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TKalmSiege1 requires TQuestEngine, TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+// Main quest "Kalm Siege" (udg_MainQuest[9]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). After Zalera falls, Cid asks the party to help Meliadoul defend Kalm. All steps are
+// custom and stay in this module's triggers: Start (talk to Cid) calls Quest_Start, Briefing (talk to
+// Meliadoul) starts the 30 second countdown, and Complete (the siege is won) finishes the quest. If
+// Meliadoul falls the party may retry (Defeat, Briefing again) or, in hardcore, the quest fails (Fail).
+// The "!" and "?" over Cid and Meliadoul are this module's own effects. Talking to Cid counts toward the
+// story once more, besides the engine's count when the quest is done.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_KalmSiege1_Start=null
@@ -8,7 +15,23 @@ globals
     trigger gg_trg_KalmSiege1_TrackDeaths=null
     trigger gg_trg_KalmSiege1_Complete=null
     trigger gg_trg_KalmSiege1_Fail=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_KALM_SIEGE=0
 endglobals
+
+function KalmSiege1_Define takes nothing returns nothing
+    local integer q=Quest_Define("Kalm Siege",QUEST_MAIN,9,"ReplaceableTextures\\CommandButtons\\BTNSylvanusWindrunner.blp")
+    set QUEST_KALM_SIEGE=q
+    call Quest_Color(q,udg_QuestNamePrefix)
+    call Quest_NoMarker(q)
+    // 1. Talk to Cid (gg_trg_KalmSiege1_Start)
+    call Quest_Custom(q,"Kalm is under attack! Cid asked you to speak to Meliadoul to help with the defenses.")
+    // 2. Talk to Meliadoul (gg_trg_KalmSiege1_Briefing); a retry after a defeat is not a step
+    call Quest_Custom(q,"Defend Kalm from the siege starting in 30 seconds!\r\n\r\nMeliadoul must survive!")
+    call Quest_Message(q,"Defend Kalm from the siege starting in 30 seconds!\r\n- Meliadoul must survive!")
+    // 3. Win the siege (gg_trg_KalmSiege1_Complete)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_KalmSiege1_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
@@ -22,6 +45,7 @@ function Trig_KalmSiege1_Start_CinematicsOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Cid. The quest starts and Meliadoul waits for the party.
 function Trig_KalmSiege1_Start_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -39,8 +63,11 @@ function Trig_KalmSiege1_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Hpb1_0013,"Please talk with our first ranger, Meliadoul, near the north gate. She's in charge of our defenses.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Kalm Siege|r")
-    set udg_MainQuest[9]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Kalm Siege"),"Kalm is under attack! Cid asked you to speak to Meliadoul to help with the defenses.","ReplaceableTextures\\CommandButtons\\BTNSylvanusWindrunner.blp")
+    if QUEST_KALM_SIEGE==0 then
+        call KalmSiege1_Define()
+    endif
+    call Quest_Start(QUEST_KALM_SIEGE,GetTriggerPlayer(),GetTriggerUnit())
+    // the talk with Cid counts toward the story on its own (the engine counts the quest when it is done)
     set udg_StoryProgress=(udg_StoryProgress+1)
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call GroupAddUnitSimple(gg_unit_Hvwd_0098,udg_QuestUnits)
@@ -65,6 +92,7 @@ function Trig_KalmSiege1_Briefing_CinematicsOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2: a hero talks to Meliadoul (again after a defeat): the siege starts in 30 seconds.
 function Trig_KalmSiege1_Briefing_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[30])
@@ -80,8 +108,13 @@ function Trig_KalmSiege1_Briefing_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Objects\\RandomObject\\RandomObject.mdl")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defend Kalm from the siege starting in 30 seconds!\r\n- Meliadoul must survive!")
-    call QuestSetDescriptionBJ(udg_MainQuest[9],"Defend Kalm from the siege starting in 30 seconds!\r\n\r\nMeliadoul must survive!")
+    if Quest_CurrentStep(QUEST_KALM_SIEGE)==2 then
+        call Quest_StepDone(QUEST_KALM_SIEGE,GetTriggerPlayer(),GetTriggerUnit())
+    else
+        // a retry after a defeat: the same update as the first time
+        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defend Kalm from the siege starting in 30 seconds!\r\n- Meliadoul must survive!")
+        call Quest_SetLog(QUEST_KALM_SIEGE,"Defend Kalm from the siege starting in 30 seconds!\r\n\r\nMeliadoul must survive!",false)
+    endif
     call StartTimerBJ(udg_SiegeTimer,false,30)
     set udg_SiegeTimerWindow=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Kalm Siege in ...")
     call EnableTrigger(gg_trg_KalmSiege1_Begin)
@@ -290,7 +323,7 @@ function Trig_KalmSiege1_Defeat_Actions takes nothing returns nothing
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_KalmSiege1_Briefing)
     call GroupAddUnitSimple(gg_unit_Hvwd_0098,udg_QuestUnits)
-    call QuestSetDescriptionBJ(udg_MainQuest[9],"Speak to Meliadoul to retry the Siege.")
+    call Quest_SetLog(QUEST_KALM_SIEGE,"Speak to Meliadoul to retry the Siege.",false)
     call Text_Say(null,"|cffffcc00Speak to Meliadoul to retry the Siege.\r\n\r\nYou may want to search for additional allies first!|r",true)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Cine_ExitAction()
@@ -365,6 +398,7 @@ function Trig_KalmSiege1_Complete_CompanionsPresent takes nothing returns boolea
     return(IsUnitInGroup(gg_unit_Ocbh_0148,udg_RecruitedAllies))
 endfunction
 
+// Step 3: the siege is won. Meliadoul rewards the party; the quest is done (and counted by the engine).
 function Trig_KalmSiege1_Complete_Actions takes nothing returns nothing
     if(Trig_KalmSiege1_Complete_CinematicBusy())then
         call StartTimerBJ(udg_SiegeTimer,false,1.)
@@ -401,11 +435,17 @@ function Trig_KalmSiege1_Complete_Actions takes nothing returns nothing
     call Wait_Polled(.25)
     call Music_ClearTrack(39)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Kalm Siege|r")
-    call QuestSetCompletedBJ(udg_MainQuest[9],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    if Quest_IsDone(QUEST_KALM_SIEGE) then
+        // This trigger is never turned off, so it runs again each time the siege timer expires; as in the
+        // original map, the quest is then announced and counted again.
+        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Kalm Siege|r")
+        call QuestSetCompletedBJ(Quest_LogEntry(QUEST_KALM_SIEGE),true)
+        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+        set udg_StoryProgress=(udg_StoryProgress+1)
+        call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    else
+        call Quest_StepDone(QUEST_KALM_SIEGE,null,null)
+    endif
     call ConditionalTriggerExecute(gg_trg_Priscilla_ShowMarker)
     call StartTimerBJ(udg_SiegeTimer,false,300.)
     call EnableTrigger(gg_trg_KalmSiege2_Call)
@@ -448,8 +488,7 @@ function Trig_KalmSiege1_Fail_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call Music_ClearTrack(39)
     call Music_SetZoneTrack(9)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Kalm Siege|r")
-    call QuestSetFailedBJ(udg_MainQuest[9],true)
+    call Quest_Fail(QUEST_KALM_SIEGE)
     call DestroyGroup(udg_TownTargetGroup)
     set l_tempPoint=GetUnitLoc(gg_unit_Hpb1_0013)
     set udg_TownTargetGroup=Group_UnitsInRangeOfLoc(8192.,l_tempPoint,Condition(function Trig_KalmSiege1_Fail_IsTownUnit))

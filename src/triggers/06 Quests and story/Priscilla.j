@@ -1,4 +1,4 @@
-library TPriscilla
+library TPriscilla requires optional TQuestStrongestEidolon
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Priscilla_Setup=null
@@ -21,8 +21,9 @@ function Trig_Priscilla_ShowMarker_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Priscilla_ShowMarker_Eden_Actions takes nothing returns nothing
-    set udg_SpecialEffect[51]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u007_0128,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_StrongestEidolon_Start)
+    static if LIBRARY_TQuestStrongestEidolon then
+        call ExecuteFunc("QuestStrongestEidolon_Available") // the "!" over Priscilla; The Strongest Eidolon can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

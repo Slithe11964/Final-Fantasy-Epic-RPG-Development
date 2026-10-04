@@ -74,9 +74,7 @@ function Trig_Boss_Famfrit_Death_Actions takes nothing returns nothing
     else
         call Reward_Give(6000,6000,gg_unit_U00N_0205)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Illusions to Illusions|r")
-    call QuestSetCompletedBJ(udg_MainQuest[$F],true) // $F = 15
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestIllusions_FamfritSlain") // completes the Illusions to Illusions quest
     call Music_SetZoneTrack(22)
     call SaveIntegerBJ(1,2,$B2,udg_GameStateHash) // $B2 = 178
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)

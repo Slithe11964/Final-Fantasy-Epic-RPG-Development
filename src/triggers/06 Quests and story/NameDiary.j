@@ -1,4 +1,4 @@
-library TNameDiary requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
+library TNameDiary requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_NameDiary_Prepare=null
@@ -8,7 +8,28 @@ globals
     trigger gg_trg_NameDiary_Reward=null
     // Variables only this module uses.
     integer udg_DiaryNameCount=0
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_NAME_DIARY=0
 endglobals
+
+// Side quest "Name Diary", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Timmy wants a name for each letter of the alphabet in his diary; names are written with the diary's
+// Name Chronicle spell. The talks and the chronicling stay module triggers; the quest-log text lists the
+// diary, so it is built when the quest starts (l_log). Timmy's own markers (udg_SpecialEffect[80]) are
+// kept. Does not count toward the story.
+function NameDiary_Define takes string l_log returns nothing
+    local integer q=Quest_Define("Name Diary",QUEST_SIDE,60,"ReplaceableTextures\\CommandButtons\\BTNBansheeMaster.blp")
+    set QUEST_NAME_DIARY=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Timmy (gg_trg_NameDiary_Start)
+    call Quest_Custom(q,l_log)
+    // 2. All 26 names written (gg_trg_NameDiary_Chronicle); the log keeps listing the diary
+    call Quest_Custom(q,"")
+    call Quest_Message(q,"Return the Name Diary to Timmy.")
+    // 3. Bring the diary back to Timmy (gg_trg_NameDiary_Reward)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_NameDiary_Prepare_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
@@ -113,7 +134,6 @@ function Trig_NameDiary_Start_Actions takes nothing returns nothing
         endif
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Name Diary|r")
     set udg_TempString="Timmy wants you to chronicle names from people all over the world in his diary. Get at least one for each letter of the alphabet!|n"
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=26
@@ -122,8 +142,11 @@ function Trig_NameDiary_Start_Actions takes nothing returns nothing
         set udg_TempString=(udg_TempString+("|n"+udg_DiaryEntry[GetForLoopIndexA()]))
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    set udg_SideQuest[60]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Name Diary"),udg_TempString,"ReplaceableTextures\\CommandButtons\\BTNBansheeMaster.blp")
-    set udg_QuestReq[5]=CreateQuestItemBJ(udg_SideQuest[60],("Names chronicled: "+(I2S(udg_DiaryNameCount)+"/26")))
+    if QUEST_NAME_DIARY==0 then
+        call NameDiary_Define(udg_TempString)
+    endif
+    call Quest_Start(QUEST_NAME_DIARY,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
+    set udg_QuestReq[5]=CreateQuestItemBJ(Quest_LogEntry(QUEST_NAME_DIARY),("Names chronicled: "+(I2S(udg_DiaryNameCount)+"/26")))
     call AddSpecialEffectTargetUnitBJ("overhead",udg_TimmyUnit,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_QuestItem[$D]=UnitAddItemByIdSwapped('I0IA',Player_GetHero(GetTriggerPlayer())) // $D = 13; 'I0IA': item "Name Diary"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
@@ -332,10 +355,10 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
         set udg_TempString=(udg_TempString+("|n"+udg_DiaryEntry[GetForLoopIndexA()]))
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
-    call QuestSetDescriptionBJ(udg_SideQuest[60],udg_TempString)
+    call Quest_SetLog(QUEST_NAME_DIARY,udg_TempString,false)
     if(Trig_NameDiary_Chronicle_IsDiaryComplete())then
         call QuestItemSetCompletedBJ(udg_QuestReq[5],true)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return the Name Diary to Timmy.")
+        call Quest_StepDone(QUEST_NAME_DIARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         call EnableTrigger(gg_trg_NameDiary_Reward)
     endif
     set l_tempForce=null
@@ -368,9 +391,7 @@ function Trig_NameDiary_Reward_Actions takes nothing returns nothing
     else
         call Reward_Give(6500,7500,gg_unit_n00I_0011)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Name Diary|r")
-    call QuestSetCompletedBJ(udg_SideQuest[60],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_NAME_DIARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

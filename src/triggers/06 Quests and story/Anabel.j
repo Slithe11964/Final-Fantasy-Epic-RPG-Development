@@ -1,4 +1,4 @@
-library TAnabel
+library TAnabel requires optional TQuestNebraAngler
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Anabel_Appear=null
@@ -8,8 +8,9 @@ function Trig_Anabel_Appear_Actions takes nothing returns nothing
     set udg_SeaKingQuestStarted=true
     call RemoveItemFromStockBJ('I0HB',gg_unit_n02Y_0052) // 'I0HB': item "Information: Fishing"
     call SetUnitFacingTimed(gg_unit_n0AV_0247,270.,.2)
-    set udg_SpecialEffect[68]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AV_0247,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_NebraAngler_Start)
+    static if LIBRARY_TQuestNebraAngler then
+        call ExecuteFunc("QuestNebraAngler_Available") // the "!" over Anabel; the Nebra Angler quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

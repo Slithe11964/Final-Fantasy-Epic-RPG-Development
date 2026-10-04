@@ -1,4 +1,10 @@
-library TTentacles requires TCam, TCine, TLoc, TPlayerHero, TReward, TText, TUnit, TWait
+library TTentacles requires TQuestEngine, TCam, TCine, TLoc, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Tentacles", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Sarai from the Phantom Village wants the squid Ultros punished: lure him out with a female hero,
+// beat him (Ultros module), and report back. The talks stay module triggers (Sarai is paused during them
+// and the hand-in needs her to be visible); Ultros moves the quest on through ExecuteFunc. The quest
+// fails if Dana dies (Tentacles_Fail, run by Dana). Does not count toward the story; Sarai's own markers
+// (udg_SpecialEffect[77]) are kept.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Tentacles_Start=null
@@ -7,7 +13,40 @@ globals
     trigger gg_trg_Tentacles_Despawn=null
     trigger gg_trg_Tentacles_Fail=null
     trigger gg_trg_Tentacles_Reward=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_TENTACLES=0
 endglobals
+
+function Tentacles_Define takes nothing returns nothing
+    local integer q=Quest_Define("Tentacles",QUEST_SIDE,58,"ReplaceableTextures\\CommandButtons\\BTNTentacle.blp")
+    set QUEST_TENTACLES=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Sarai (gg_trg_Tentacles_Start)
+    call Quest_Custom(q,"Sarai from the Phantom Village has asked you to punish the squid monster that is running wild harassing the girls around the village. It seems he is not fond of male strangers. Find a way to lure him out!")
+    // 2. Ultros shows up (Tentacles_UltrosAppears, from Ultros_Spawn)
+    call Quest_Custom(q,"Defeat Ultros.")
+    // 3. Ultros is beaten (Tentacles_UltrosSlain, from Ultros_Death)
+    call Quest_Custom(q,"Return to Sarai.")
+    // 4. Report back to Sarai (gg_trg_Tentacles_Reward)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by Ultros_Spawn (through ExecuteFunc) when Ultros appears.
+function Tentacles_UltrosAppears takes nothing returns nothing
+    if Quest_IsActive(QUEST_TENTACLES) then
+        call Quest_StepDone(QUEST_TENTACLES,null,null)
+    endif
+endfunction
+
+// Called by Ultros_Death (through ExecuteFunc): Sarai is pinged and waits for the party.
+function Tentacles_UltrosSlain takes nothing returns nothing
+    if Quest_IsActive(QUEST_TENTACLES) then
+        call Quest_StepDone(QUEST_TENTACLES,null,null)
+        call GroupAddUnitSimple(gg_unit_e013_0176,udg_BossUnits)
+        call EnableTrigger(gg_trg_Tentacles_Reward)
+    endif
+endfunction
 
 function Trig_Tentacles_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e013_0176,true,true,true))
@@ -36,8 +75,10 @@ function Trig_Tentacles_Start_Actions takes nothing returns nothing
         call Cine_ExitAction()
         call PauseUnitBJ(false,gg_unit_e013_0176)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Tentacles|r")
-    set udg_SideQuest[58]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Tentacles"),"Sarai from the Phantom Village has asked you to punish the squid monster that is running wild harassing the girls around the village. It seems he is not fond of male strangers. Find a way to lure him out!","ReplaceableTextures\\CommandButtons\\BTNTentacle.blp")
+    if QUEST_TENTACLES==0 then
+        call Tentacles_Define()
+    endif
+    call Quest_Start(QUEST_TENTACLES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[77]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e013_0176,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_TentacleCount=0
     call EnableTrigger(gg_trg_Tentacles_Ambush)
@@ -175,8 +216,7 @@ endfunction
 
 function Trig_Tentacles_Fail_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[77])
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Tentacles|r")
-    call QuestSetFailedBJ(udg_SideQuest[58],true)
+    call Quest_Fail(QUEST_TENTACLES)
     call GroupRemoveUnitSimple(gg_unit_e013_0176,udg_BossUnits)
     call DisableTrigger(gg_trg_Tentacles_Reward)
     call DestroyTrigger(gg_trg_Tentacles_Reward)
@@ -215,9 +255,7 @@ function Trig_Tentacles_Reward_Actions takes nothing returns nothing
     else
         call Reward_Give(4500,$FA0,gg_unit_e013_0176) // $FA0 = 4000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Tentacles|r")
-    call QuestSetCompletedBJ(udg_SideQuest[58],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_TENTACLES,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_PhantomVillagersMet=(udg_PhantomVillagersMet+1)
     call DestroyTrigger(gg_trg_Tentacles_Fail)
     call DestroyTrigger(GetTriggeringTrigger())

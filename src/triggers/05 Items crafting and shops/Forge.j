@@ -1,4 +1,4 @@
-library TForge requires TCam, TCine, TPlayerHero, TText
+library TForge requires TCam, TCine, TPlayerHero, TText, optional TQuestArcanium
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Forge_Bali_Init=null
@@ -18,8 +18,9 @@ endglobals
 
 function Trig_Forge_Bali_Init_Actions takes nothing returns nothing
     local location l_tempPoint
-    set udg_SpecialEffect[32]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hmbr_0140,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_Arcanium_Start)
+    static if LIBRARY_TQuestArcanium then
+        call ExecuteFunc("QuestArcanium_Available") // the "!" over Bali; the Arcanium quest can start
+    endif
     set l_tempPoint=GetUnitLoc(gg_unit_Hmbr_0140)
     set udg_ForgeDropPoint=OffsetLocation(l_tempPoint,-10.,-75.)
     call RemoveLocation(l_tempPoint)

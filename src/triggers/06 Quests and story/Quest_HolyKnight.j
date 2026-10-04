@@ -1,9 +1,43 @@
-library TQuestHolyKnight requires TCam, TCine, TPlayerHero, TText, TUnit
+library TQuestHolyKnight requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TUnit
+// Side quest "Holy Knight", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Agrias, Holy Knight of Virgo, claims Ramza betrayed her; Ramza tells the party she is possessed by the
+// demon Lilith, and they free her. All steps are custom: the greetings name the player, and the boss
+// modules Boss_Agrias and Boss_Lilith finish the fight steps (through QuestHolyKnight_AgriasSlain and
+// QuestHolyKnight_LilithSlain). This module keeps its own markers (the "!" moves on to Ramza).
+// Agrias enables gg_trg_Quest_HolyKnight_Start. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_HolyKnight_Start=null
     trigger gg_trg_Quest_HolyKnight_AskRamza=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_HOLY_KNIGHT=0
 endglobals
+
+function QuestHolyKnight_Define takes nothing returns nothing
+    local integer q=Quest_Define("Holy Knight",QUEST_SIDE,31,"ReplaceableTextures\\CommandButtons\\BTNHeroWarden.blp")
+    set QUEST_HOLY_KNIGHT=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Agrias (gg_trg_Quest_HolyKnight_Start)
+    call Quest_Custom(q,"Holy Knight Agrias claims Ramza betrayed her. Find him to find out his side of story.")
+    // 2. Talk to Ramza (gg_trg_Quest_HolyKnight_AskRamza)
+    call Quest_Custom(q,"Kill Agrias Oaks, Holy Knight of Virgo who has fallen to the demon's control.")
+    call Quest_Message(q,"Kill Agrias.")
+    // 3. Defeat Agrias (Boss_Agrias calls QuestHolyKnight_AgriasSlain)
+    call Quest_Custom(q,"Kill Shadow Queen Lilith")
+    // 4. Defeat Lilith (Boss_Lilith calls QuestHolyKnight_LilithSlain)
+    call Quest_Custom(q,"")
+endfunction
+
+// Agrias fell and Lilith shows herself (called by Boss_Agrias, which runs before the quest engine).
+function QuestHolyKnight_AgriasSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_HOLY_KNIGHT,null,null)
+endfunction
+
+// Lilith died: the quest is done (called by Boss_Lilith, which runs before the quest engine).
+function QuestHolyKnight_LilithSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_HOLY_KNIGHT,null,null)
+endfunction
 
 function Trig_Quest_HolyKnight_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ewrd_0120,true,true,true))
@@ -13,6 +47,7 @@ function Trig_Quest_HolyKnight_Start_Cond_CinematicsEnabled takes nothing return
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Agrias. The "!" moves on to Ramza.
 function Trig_Quest_HolyKnight_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[50])
@@ -30,8 +65,10 @@ function Trig_Quest_HolyKnight_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Ewrd_0120,"Do as you wish, just don't stand in my way.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Holy Knight|r")
-    set udg_SideQuest[31]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Holy Knight"),"Holy Knight Agrias claims Ramza betrayed her. Find him to find out his side of story.","ReplaceableTextures\\CommandButtons\\BTNHeroWarden.blp")
+    if QUEST_HOLY_KNIGHT==0 then
+        call QuestHolyKnight_Define()
+    endif
+    call Quest_Start(QUEST_HOLY_KNIGHT,GetTriggerPlayer(),GetTriggerUnit())
     call GroupAddUnitSimple(gg_unit_Eill_0119,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_HolyKnight_AskRamza)
     set udg_SpecialEffect[50]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Eill_0119,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
@@ -46,6 +83,7 @@ function Trig_Quest_HolyKnight_AskRamza_Cond_CinematicsEnabled takes nothing ret
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2: a hero talks to Ramza. Agrias turns hostile and waits for the party.
 function Trig_Quest_HolyKnight_AskRamza_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(gg_unit_Eill_0119,udg_BossUnits)
@@ -69,8 +107,7 @@ function Trig_Quest_HolyKnight_AskRamza_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Stay here Ramza, we shall take care of her. We'll make that foul demon leave Agrias' body even if it means her death.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Kill Agrias.")
-    call QuestSetDescriptionBJ(udg_SideQuest[31],"Kill Agrias Oaks, Holy Knight of Virgo who has fallen to the demon's control.")
+    call Quest_StepDone(QUEST_HOLY_KNIGHT,GetTriggerPlayer(),GetTriggerUnit())
     call EnableTrigger(gg_trg_Boss_Agrias_Intro)
     call GroupAddUnitSimple(gg_unit_Ewrd_0120,udg_BossUnits)
     call SetUnitOwner(gg_unit_Ewrd_0120,Player($B),true) // $B = 11

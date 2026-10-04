@@ -148,8 +148,7 @@ function Trig_Zodiark_Encounter_Actions takes nothing returns nothing
     call Link_SaveCaster(udg_GodDragonUnit,gg_unit_U00H_0211,.0)
     call UnitAddAbilityBJ('A0X2',gg_unit_U00H_0211) // 'A0X2': ability "Perma Cover"
     call Music_SetTrack($D) // $D = 13
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Zodiark, the Zodiac Brave of Darkness.")
-    call QuestSetDescriptionBJ(udg_MainQuest[17],"Defeat Zodiark, the Zodiac Brave of Darkness.")
+    call ExecuteFunc("QuestGodDragon_ZodiarkAppears") // quest log: "Defeat Zodiark ..."
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

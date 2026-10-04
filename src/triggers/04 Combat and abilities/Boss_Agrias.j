@@ -82,8 +82,7 @@ function Trig_Boss_Agrias_Death_Lilith_Actions takes nothing returns nothing
         call RemoveUnit(GetTriggerUnit())
         call ShowUnitShow(gg_unit_e009_0118)
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Kill Shadow Queen Lilith")
-    call QuestSetDescriptionBJ(udg_SideQuest[31],"Kill Shadow Queen Lilith")
+    call ExecuteFunc("QuestHolyKnight_AgriasSlain") // quest "Holy Knight": "Kill Shadow Queen Lilith"
     call SetUnitInvulnerable(gg_unit_e009_0118,false)
     call PauseUnitBJ(false,gg_unit_e009_0118)
     call IssueImmediateOrderBJ(gg_unit_e009_0118,"spiritwolf")

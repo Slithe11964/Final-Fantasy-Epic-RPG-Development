@@ -1,4 +1,11 @@
-library TMithrilGolem requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TMithrilGolem requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Mithril Golem's Heart", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Alma needs the heart of the last Mithril Golem to animate the golem she built. Five minutes after Fire
+// Golem's Heart, Prepare calls for the party. Start (talk to Alma) calls Quest_Start; a Strange Key drops
+// from golems (StrangeKey), opens the Strange Cage (StrangeCage), the Mithril Golem inside drops its heart
+// (Death), picking the heart up updates the log (GolemHeart -> MithrilGolem_HeartTaken), and Activate
+// (bring it to Alma) plays the activation cinematic and calls Quest_StepDone. The "!" and "?" over Alma
+// are this module's own effects.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_MithrilGolem_Prepare=null
@@ -7,7 +14,34 @@ globals
     trigger gg_trg_MithrilGolem_Activate=null
     // Variables only this module uses.
     real udg_AlmaSavedFacing=0
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_MITHRIL_GOLEM=0
 endglobals
+
+// Quest done: the activated golem joins the town's defenders, and the Adamantoise hunt is offered.
+function MithrilGolem_Done takes nothing returns nothing
+    call SaveIntegerBJ(1,2,'|',udg_GameStateHash)
+    call GroupAddUnitSimple(udg_GolemUnit[4],udg_RecruitedAllies)
+    call AddUnitToStockBJ('n0BB',gg_unit_h02Z_0230,1,1) // 'n0BB': unit "Hunt: Adamantoise"
+    set udg_HuntStock[3]=(udg_HuntStock[3]+1)
+    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
+endfunction
+
+function MithrilGolem_Define takes nothing returns nothing
+    local integer q=Quest_Define("Mithril Golem's Heart",QUEST_SIDE,16,"ReplaceableTextures\\CommandButtons\\BTNHeartOfAszune.blp")
+    set QUEST_MITHRIL_GOLEM=q
+    call Quest_NoMarker(q)
+    // 1. Talk to Alma (gg_trg_MithrilGolem_Start calls Quest_Start)
+    call Quest_Custom(q,"Alma, Cleric from Kalm, asked you to find Mithril Golem, destroy it, take Golem's heart and bring it to her. She has promised to give you her rarest treasure as a reward.\r\nShe has given you a strange hint: \"One of those who are neither alive nor undead carry the key to the prison of the mightiest of them that is on the land surrounded by water in the center of the world.\"")
+    // 2. Bring the Mithril Golem's heart to Alma (gg_trg_MithrilGolem_Activate calls Quest_StepDone)
+    call Quest_Custom(q,"")
+    call Quest_OnDone(q,"MithrilGolem_Done")
+endfunction
+
+// Called by GolemHeart (through ExecuteFunc) when the heart is picked up for the first time.
+function MithrilGolem_HeartTaken takes nothing returns nothing
+    call Quest_SetLog(QUEST_MITHRIL_GOLEM,"Bring the Mithril Golem's heart to Alma.",false)
+endfunction
 
 function Trig_MithrilGolem_Prepare_Cond_PrereqQuestNotDone takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[9])==false)
@@ -78,8 +112,10 @@ function Trig_MithrilGolem_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Hjai_0093,"And I hope you survive this encounter. Good luck to you!",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Mithril Golem's Heart|r")
-    set udg_SideQuest[16]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Mithril Golem's Heart"),"Alma, Cleric from Kalm, asked you to find Mithril Golem, destroy it, take Golem's heart and bring it to her. She has promised to give you her rarest treasure as a reward.\r\nShe has given you a strange hint: \"One of those who are neither alive nor undead carry the key to the prison of the mightiest of them that is on the land surrounded by water in the center of the world.\"","ReplaceableTextures\\CommandButtons\\BTNHeartOfAszune.blp")
+    if QUEST_MITHRIL_GOLEM==0 then
+        call MithrilGolem_Define()
+    endif
+    call Quest_Start(QUEST_MITHRIL_GOLEM,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[24]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hjai_0093,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_StrangeKey_Drop)
     call AddItemToStockBJ('I05C',gg_unit_n02Y_0052,1,1) // 'I05C': item "Information: Mithril Golem"
@@ -189,16 +225,8 @@ function Trig_MithrilGolem_Activate_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00All players get a piece of Aero Materia.|r")
     endif
     call ForForce(udg_PlayingPlayers,function Trig_MithrilGolem_Activate_GiveAeroMateria)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Mithril Golem's Heart|r")
-    call QuestSetCompletedBJ(udg_SideQuest[16],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    call SaveIntegerBJ(1,2,'|',udg_GameStateHash)
-    call GroupAddUnitSimple(udg_GolemUnit[4],udg_RecruitedAllies)
-    call AddUnitToStockBJ('n0BB',gg_unit_h02Z_0230,1,1) // 'n0BB': unit "Hunt: Adamantoise"
-    set udg_HuntStock[3]=(udg_HuntStock[3]+1)
-    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    // the quest is completed and counted; MithrilGolem_Done runs
+    call Quest_StepDone(QUEST_MITHRIL_GOLEM,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

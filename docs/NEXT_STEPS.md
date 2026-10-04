@@ -21,7 +21,7 @@ Current maps:
 8. ~~**Rename `Hero_Part01` and `Player_Part01`.**~~ Done: now `Hero_Skills` and `Player_Hero` (`tools/rename_module.py`).
 
 ## Large (optional projects)
-9. **Data-driven quest framework.** Quests are currently chains of triggers turning each other on. Survey done (`docs/QUEST_SURVEY.md`): 46 of 91 quests fit a quest table (25 fully, 21 with hooks). Engine built (`docs/QUEST_ENGINE.md`, stage M) with Kill Elmdor and Wolf Fangs converted (play-tested, working). Stage N: hunt / deliver / pickup steps added and 8 more quests converted (10 of 91). Next: play-test stage N, then the next batch (survey "fits" group first).
+9. **Data-driven quest framework.** Quests are currently chains of triggers turning each other on. Survey done (`docs/QUEST_SURVEY.md`): 46 of 91 quests fit a quest table (25 fully, 21 with hooks). Engine built (`docs/QUEST_ENGINE.md`, stage M) with Kill Elmdor and Wolf Fangs converted (play-tested, working). Stages O and P: all quests but Cartographer, True Ice Age and Ao Madoushi are on the engine. Next: play-test `docs/QUEST_TESTS.md`, decide on the Kalm Siege replay bug, then the three remaining quests.
 10. **Legacy 1.29 version.** Study done: `docs/LEGACY_129.md`. The code already works with 1.29.2. The world and object files need a converter (a `downgrade.py` in MapToolkit), which can only be built and proven with a 1.29.2 install to test in.
 11. **Split giant functions.** `Trig_Damage_Engine_CalcDamage` is done: 19 step functions with a per-hit context stack (`DmgCtx_*`), so nested hits stay safe. Left: `MonsterData_Init_*` and `Bazaar` (data tables; splitting them gains little).
 

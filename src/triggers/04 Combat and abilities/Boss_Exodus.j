@@ -83,9 +83,7 @@ function Trig_Boss_Exodus_Death_Actions takes nothing returns nothing
     else
         call Reward_Give(6000,6000,gg_unit_U00K_0208)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Last Rites|r")
-    call QuestSetCompletedBJ(udg_MainQuest[$E],true) // $E = 14
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestLastRites_ExodusSlain") // completes the Last Rites quest
     if(Trig_Boss_Exodus_Death_Quest19Completed())then
         call SaveIntegerBJ(1,2,$AF,udg_GameStateHash) // $AF = 175
     endif

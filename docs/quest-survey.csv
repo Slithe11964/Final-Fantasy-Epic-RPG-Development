@@ -1,92 +1,97 @@
 key,kind,title,start,start_event,steps,step_kinds,dialogue_lines,features,modules,finished_by,group,why
+SideQuest[64],side,Chocobo Rider,,quest engine,7,,0,,ChocoboRider,quest engine,engine,
+SideQuest[64],side,Chocobo Rider,,quest engine,7,,0,,ChocoboRider,quest engine,engine,
 SideQuest[19],side,Elixir,,quest engine,2,,5,,Elixir,quest engine,engine,
+SideQuest[36],side,Annoying Monster,,quest engine,3,,21,,Quest_AnnoyingMonster,quest engine,engine,
 SideQuest[2],side,Arachnophobia,,quest engine,3,,10,,Quest_Arachnophobia,quest engine,engine,
+SideQuest[13],side,Arcanium,,quest engine,2,,13,,Quest_Arcanium,quest engine,engine,
+SideQuest[11],side,Find Beastslayer,,quest engine,3,,8,,Quest_Beastslayer,quest engine,engine,
+SideQuest[51],side,Blazing Demon,,quest engine,2,,0,,Quest_BlazingDemon,quest engine,engine,
+SideQuest[8],side,Brothers,,quest engine,3,,2,,Quest_Brothers,quest engine,engine,
+SideQuest[5],side,Caravan,,quest engine,3,,1,,Quest_Caravan,quest engine,engine,
+SideQuest[69],side,Cooking Choices,,quest engine,2,,0,,Quest_Cooking,quest engine,engine,
+MainQuest[13],main,Corrupted Orcs,,quest engine,4,,0,,Quest_CorruptedOrcs,quest engine,engine,
+MainQuest[7],main,Dark Knight,,quest engine,6,,0,,Quest_DarkKnight,quest engine,engine,
+MainQuest[7],main,Necrophobe,,quest engine,6,,0,,Quest_DarkKnight,quest engine,engine,
 SideQuest[10],side,Deliver Letter,,quest engine,3,,18,,Quest_DeliverLetter,quest engine,engine,
+SideQuest[70],side,Divine Order,,quest engine,3,,0,,Quest_DivineOrder,quest engine,engine,
+SideQuest[66],side,Dwarf Disappearance,,quest engine,3,,0,,Quest_DwarfDisappearance,quest engine,engine,
+SideQuest[32],side,Eidolon Challenge,,quest engine,3,,22,,Quest_EidolonChallenge,quest engine,engine,
+MainQuest[5],main,Eye of Jenova,,quest engine,2,,0,,Quest_EyeOfJenova,quest engine,engine,
+SideQuest[28],side,Fallen Ranger,,quest engine,3,,7,,Quest_FallenRanger,quest engine,engine,
+SideQuest[68],side,Fiery Wings,,quest engine,3,,12,,Quest_FieryWings,quest engine,engine,
+SideQuest[7],side,Fire Golem's Heart,,quest engine,3,,16,,Quest_FireGolem,quest engine,engine,
+SideQuest[74],side,Fishy Deals,,quest engine,2,,3,,Quest_FishyDeals,quest engine,engine,
+SideQuest[23],side,Defiled Fountain,,quest engine,4,,0,,Quest_Fountain,quest engine,engine,
+MainQuest[17],main,God Dragon,,quest engine,3,,0,,Quest_GodDragon,quest engine,engine,
 SideQuest[27],side,Greed is Good,,quest engine,3,,18,,Quest_GreedIsGood,quest engine,engine,
 SideQuest[45],side,Harpy Hunt,,quest engine,3,,11,,Quest_HarpyHunt,quest engine,engine,
+SideQuest[31],side,Holy Knight,,quest engine,4,,0,,Quest_HolyKnight,quest engine,engine,
+MainQuest[15],main,Illusions to Illusions,,quest engine,3,,0,,Quest_Illusions,quest engine,engine,
+SideQuest[65],side,Impervious Beast,,quest engine,2,,4,,Quest_ImperviousBeast,quest engine,engine,
 SideQuest[6],side,Kill Elmdor,,quest engine,3,,7,,Quest_KillElmdor,quest engine,engine,
+SideQuest[3],side,Kill Setag,,quest engine,2,,5,,Quest_KillSetag,quest engine,engine,
+SideQuest[48],side,King of the Sea,,quest engine,3,,0,,Quest_KingOfSea,quest engine,engine,
+SideQuest[12],side,Lady Nashj,,quest engine,3,,11,,Quest_LadyNashj,quest engine,engine,
+MainQuest[14],main,Last Rites,,quest engine,3,,0,,Quest_LastRites,quest engine,engine,
+MainQuest[16],main,Light of Judgment,,quest engine,3,,0,,Quest_LightOfJudgment,quest engine,engine,
+SideQuest[44],side,Lost Memories,,quest engine,5,,0,,Quest_LostMemories,quest engine,engine,
+SideQuest[44],side,Lost Memories,,quest engine,5,,0,,Quest_LostMemories,quest engine,engine,
+SideQuest[71],side,Monstrum of the Sea,,quest engine,2,,0,,Quest_Monstrum,quest engine,engine,
+SideQuest[49],side,Nebra Angler,,quest engine,2,,44,,Quest_NebraAngler,quest engine,engine,
+MainQuest[6],main,Night Elves,,quest engine,2,,0,,Quest_NightElves,quest engine,engine,
+SideQuest[24],side,Ogre Hunt,,quest engine,3,,6,,Quest_OgreHunt,quest engine,engine,
+SideQuest[47],side,Omega Weapon,,quest engine,2,,0,,Quest_OmegaWeapon,quest engine,engine,
+SideQuest[67],side,Ore Supplies,,quest engine,2,,0,,Quest_OreSupplies,quest engine,engine,
 SideQuest[4],side,Phoenix,,quest engine,2,,9,,Quest_Phoenix,quest engine,engine,
+SideQuest[34],side,Rematch,,quest engine,3,,0,,Quest_Rematch,quest engine,engine,
+SideQuest[9],side,Save Timmy,,quest engine,5,,0,,Quest_SaveTimmy,quest engine,engine,
+SideQuest[9],side,Save Timmy,,quest engine,5,,0,,Quest_SaveTimmy,quest engine,engine,
+SideQuest[52],side,Scorched Earth,,quest engine,4,,0,,Quest_ScorchedEarth,quest engine,engine,
+SideQuest[25],side,Seek and Destroy,,quest engine,3,,16,,Quest_SeekDestroy,quest engine,engine,
 SideQuest[1],side,Find Shimmerweed,,quest engine,2,,5,,Quest_Shimmerweed,quest engine,engine,
+SideQuest[73],side,Spirit Hunt,,quest engine,3,,11,,Quest_SpiritHunt,quest engine,engine,
+SideQuest[29],side,Spirit of Water,,quest engine,3,,0,,Quest_SpiritOfWater,quest engine,engine,
+SideQuest[33],side,The Strongest Eidolon,,quest engine,2,,14,,Quest_StrongestEidolon,quest engine,engine,
+SideQuest[14],side,Target Practice,,quest engine,3,,0,,Quest_TargetPractice,quest engine,engine,
+SideQuest[30],side,Tower of Summoning,,quest engine,2,,0,,Quest_TowerSummoning,quest engine,engine,
+SideQuest[50],side,Trial By Fire,,quest engine,3,,15,,Quest_TrialByFire,quest engine,engine,
+SideQuest[46],side,Ultima Weapon,,quest engine,2,,0,,Quest_UltimaWeapon,quest engine,engine,
 SideQuest[26],side,Wolf Fangs,,quest engine,2,,11,,Quest_WolfFangs,quest engine,engine,
+MainQuest[8],main,World Liberation,,quest engine,2,,0,,Quest_WorldLiberation,quest engine,engine,
+SideQuest[72],side,Young Engineer,,quest engine,2,,8,,Quest_YoungEngineer,quest engine,engine,
+MainQuest[18],main,End of Zodiac Age,,quest engine,2,,0,,Quest_ZodiacAge,quest engine,engine,
+MainQuest[1],main,Find Mid,,quest engine,6,,0,,Cid,quest engine,engine,
+MainQuest[2],main,Find Artifact,,quest engine,6,,0,,Cid,quest engine,engine,
+MainQuest[3],main,Stop Cid,,quest engine,6,,0,,Cid,quest engine,engine,
+MainQuest[9],main,Kalm Siege,,quest engine,3,,0,,KalmSiege1,quest engine,engine,
+MainQuest[10],main,Kalm Siege II,,quest engine,2,,0,,KalmSiege2,quest engine,engine,
+MainQuest[11],main,Kalm Siege III,,quest engine,2,,0,,KalmSiege3,quest engine,engine,
+MainQuest[19],main,Advent of Ice Age,,quest engine,2,,0,,IceAge,quest engine,engine,
+SideQuest[15],side,Healing Waters,,quest engine,2,,0,,HealingWaters,quest engine,engine,
+SideQuest[16],side,Mithril Golem's Heart,,quest engine,2,,0,,MithrilGolem,quest engine,engine,
+SideQuest[18],side,Hydra Egg,,quest engine,2,,14,,HydraEgg,quest engine,engine,
+SideQuest[20],side,Mystical Glyph,,quest engine,4,,8,,MysticalGlyph,quest engine,engine,
+SideQuest[21],side,Save Nimphrodel,,quest engine,4,,0,,Nimphrodel,quest engine,engine,
+SideQuest[22],side,Mysterious Curse,,quest engine,2,,0,,MysteriousCurse,quest engine,engine,
+SideQuest[35],side,The Northern God,,quest engine,3,,0,,Judgment,quest engine,engine,
+SideQuest[37],side,Arena Resources,,quest engine,3,,0,,ArenaResources,quest engine,engine,
+SideQuest[38],side,Arena Expansion,,quest engine,4,,31,,ArenaExpansion,quest engine,engine,
+SideQuest[39],side,Haunted Tree,,quest engine,3,,11,,HauntedTree,quest engine,engine,
+SideQuest[40],side,Dimensional Boundary,,quest engine,8,,0,,DimensionalBoundary,quest engine,engine,
+SideQuest[43],side,Almighty Shinra,,quest engine,2,,0,,AlmightyShinra,quest engine,engine,
+SideQuest[53],side,Adamant Hunt,,quest engine,3,,14,,AdamantHunt,quest engine,engine,
 SideQuest[54],side,Gnoll Hunt,,quest engine,3,,13,,GnollHunt,quest engine,engine,
-SideQuest[64],side,Chocobo Rider,ChocoboRider_Start,talk,7,"talk, in range, get item, kill unit, spell",43,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, loops/counters","ChocoboRider, Boss_Exodus, TrueIceAge",ChocoboRider_Reward,custom,spell
-MainQuest[18],main,End of Zodiac Age,Boss_Hashmalum_Intro,in range,18,"in range, kill unit, run by another step, periodic, talk, reach place, timer, chat",139,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, doors/gates, moves units, loops/counters","Boss_Hashmalum, Boss_Belias, Loop, Boss_Mateus, Quest_ZodiacAge, Cine, Gate",Boss_Hashmalum_Death_Final,custom,"chat, periodic, timer"
-MainQuest[19],main,Advent of Ice Age,Boss_Hashmalum_Death_Final,kill unit,13,"kill unit, talk, reach place, run by another step, spell, periodic, timer",124,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, doors/gates, moves units, loops/counters","Boss_Hashmalum, Gafgarion, Boss_Echele, IceAge, Boss_Chaos, Boss_Exodus, Zeromus, TrueIceAge, DarkEidolons, ScorchedEarth, Zodiark, Arena_TeamSelection",IceAge_Victory,custom,"periodic, spell, timer"
-MainQuest[8],main,World Liberation,Boss_Zalera_Death,kill unit,13,"kill unit, run by another step, spell, attacked, timer, talk, in range, kill any",114,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, doors/gates, moves units, loops/counters","Boss_Zalera, Quest_WorldLiberation, TrueIceAge, Cid, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_UltimaWeapon, ShinrasPlan",Quest_WorldLiberation_Count,custom,"spell, timer"
-SideQuest[36],side,Annoying Monster,Quest_AnnoyingMonster_Start,talk,4,"talk, run by another step, get item, in range",21,"dialogue, cinematic, spawns units, gives XP, gives item, effects, moves units","Quest_AnnoyingMonster, AnnoyingMonster, Belongings, LadyCurse",LadyCurse_ReturnBelongings,hooks,"moves units, spawns units"
-MainQuest[5],main,Eye of Jenova,Quest_AoMadoushi_Talk,talk,6,"talk, kill any, get item, in range",73,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units","Quest_AoMadoushi, Loot, Quest_EyeOfJenova, Shemhazai",Quest_EyeOfJenova_Deliver,hooks,"moves units, spawns units"
-SideQuest[13],side,Arcanium,Quest_Arcanium_Start,talk,4,"talk, get item, in range, kill unit",41,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units","Quest_Arcanium, Valigarmanda",Quest_Arcanium_Complete,hooks,"doors/gates, moves units, spawns units"
-SideQuest[11],side,Find Beastslayer,Quest_Beastslayer_Start,talk,4,"talk, run by another step, get item, in range",8,"dialogue, cinematic, spawns units, gives XP, gives item, effects",Quest_Beastslayer,Quest_Beastslayer_Complete,hooks,spawns units
-SideQuest[51],side,Blazing Demon,Quest_BlazingDemon_Start,run by another step,5,"run by another step, kill unit",16,"dialogue, cinematic, waits, gives XP, gives item, effects, loops/counters","Quest_BlazingDemon, BlazingDemon","Quest_BlazingDemon_EndWeak, Quest_BlazingDemon_End, Quest_BlazingDemon_Escape",custom,several finishing triggers
-SideQuest[8],side,Brothers,Quest_Brothers_Start,talk,3,"talk, kill unit, in range",25,"dialogue, cinematic, gives XP, effects, moves units",Quest_Brothers,Quest_Brothers_Complete,hooks,moves units
-SideQuest[5],side,Caravan,Quest_Caravan_Start,talk,5,"talk, in range, kill unit, run by another step",12,"dialogue, cinematic, gives XP, gives item, effects, can fail","Quest_Caravan, News",Quest_Caravan_Complete,custom,can fail
-SideQuest[69],side,Cooking Choices,Quest_Cooking_Start,in range,2,"in range, timer",6,"dialogue, cinematic, gives XP, gives item, effects",Quest_Cooking,Quest_Cooking_Complete,custom,timer
-MainQuest[13],main,Corrupted Orcs,Quest_CorruptedOrcs_Start,talk,7,"talk, kill unit, spell, timer, kill any",32,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, loops/counters","Quest_CorruptedOrcs, OrcBase, Boss_Shemhazai, Shemhazai, TrueIceAge, Meliadoul","Boss_Shemhazai_Death, Shemhazai_Appears, TrueIceAge_Summon",custom,"spell, timer several finishing triggers"
-MainQuest[7],main,Dark Knight,Quest_DarkKnight_Start,run by another step,7,"run by another step, in range, kill unit, timer",54,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units, loops/counters","Quest_DarkKnight, Boss_Gafgarion, Boss_Zalera, Cine, Boss_Belias, Boss_Chaos",Boss_Zalera_Death,custom,timer
-SideQuest[70],side,Divine Order,Quest_DivineOrder_Start,talk,4,"talk, in range, kill unit",65,"dialogue, cinematic, waits, spawns units, gives XP, effects, moves units","Quest_DivineOrder, Ziegfried, Legend_Knight",Quest_DivineOrder_Complete,hooks,"moves units, spawns units"
-SideQuest[66],side,Dwarf Disappearance,Quest_DwarfDisappearance_Start,reach place,5,"reach place, in range, kill any, kill unit",41,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units","Quest_DwarfDisappearance, Valigarmanda, Quest_Arcanium",Valigarmanda_Death,hooks,"doors/gates, moves units, spawns units"
-SideQuest[32],side,Eidolon Challenge,Quest_EidolonChallenge_Start,talk,3,"talk, kill unit",22,"dialogue, cinematic, gives XP, effects",Quest_EidolonChallenge,Quest_EidolonChallenge_Complete,fits,
-SideQuest[28],side,Fallen Ranger,Quest_FallenRanger_Start,talk,4,"talk, kill unit, in range",10,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units","Quest_FallenRanger, Boss_Yukale, Boss_DarkRanger",Quest_FallenRanger_Complete,hooks,"boss fight (Boss_DarkRanger, Boss_Yukale)"
-SideQuest[68],side,Fiery Wings,Quest_FieryWings_Start,talk,3,"talk, run by another step, in range",12,"dialogue, cinematic, spawns units, gives XP, effects",Quest_FieryWings,Quest_FieryWings_Complete,hooks,spawns units
-SideQuest[7],side,Fire Golem's Heart,Quest_FireGolem_Start,talk,6,"talk, kill unit, get item, in range, periodic",25,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects","Quest_FireGolem, DarkEidolons, Tower",Quest_FireGolem_Complete,custom,periodic
-SideQuest[74],side,Fishy Deals,Quest_FishyDeals_Start,talk,2,"talk, in range",14,"dialogue, cinematic, gives XP, effects",Quest_FishyDeals,Quest_FishyDeals_Complete,fits,
-MainQuest[17],main,God Dragon,Quest_GodDragon_Start,talk,7,"talk, run by another step, kill unit",70,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, moves units, loops/counters","Quest_GodDragon, GodDragon, Boss_GodDragon, Boss_Ultima, Ending, Quest_WorldLiberation, Zodiark",Boss_GodDragon_Death,hooks,"loops/counters, moves units, spawns units, boss fight (Boss_GodDragon, Boss_Ultima)"
-SideQuest[31],side,Holy Knight,Quest_HolyKnight_Start,talk,5,"talk, in range, kill unit",27,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units","Quest_HolyKnight, Boss_Agrias, Boss_Lilith",Boss_Lilith_Death,hooks,"boss fight (Boss_Agrias, Boss_Lilith)"
-MainQuest[15],main,Illusions to Illusions,Quest_Illusions_Start,talk,6,"talk, get item, kill unit, in range, spell",44,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, loops/counters","Quest_Illusions, Dana, Famfrit, Boss_Famfrit, TrueIceAge","Boss_Famfrit_Death, TrueIceAge_Summon",custom,spell several finishing triggers
-SideQuest[65],side,Impervious Beast,Quest_ImperviousBeast_Start,talk,3,"talk, attacked, run by another step",15,"dialogue, cinematic, gives XP, gives item, effects","Quest_ImperviousBeast, Fafnir",Quest_ImperviousBeast_Complete,fits,
-SideQuest[3],side,Kill Setag,Quest_KillSetag_Start,talk,3,"talk, kill unit",7,"dialogue, cinematic, waits, gives XP, gives item, effects, can fail",Quest_KillSetag,Quest_KillSetag_Complete,custom,can fail
-SideQuest[12],side,Lady Nashj,Quest_LadyNashj_Start,talk,3,"talk, kill unit, in range",11,"dialogue, cinematic, gives XP, gives item, effects",Quest_LadyNashj,Quest_LadyNashj_Complete,fits,
-MainQuest[14],main,Last Rites,Quest_LastRites_Start,talk,5,"talk, kill unit, spell, run by another step",55,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, doors/gates, moves units, loops/counters","Quest_LastRites, Exodus, Boss_Exodus, TrueIceAge, IceAge","Boss_Exodus_Death, TrueIceAge_Summon",custom,spell several finishing triggers
-MainQuest[16],main,Light of Judgment,Quest_LightOfJudgment_Start,talk,4,"talk, kill unit",37,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, moves units, loops/counters","Quest_LightOfJudgment, Ultima, Boss_Ultima, Boss_GodDragon",Boss_Ultima_Death,hooks,"loops/counters, moves units, spawns units, boss fight (Boss_GodDragon, Boss_Ultima)"
-SideQuest[44],side,Lost Memories,Quest_LostMemories_Start,talk,8,"talk, get item, in range, timer, periodic, attacked",212,"dialogue, cinematic, spawns units, gives XP, gives item, effects, can fail, loops/counters","Quest_LostMemories, Shadow_Lifecycle, Shadow_Loyalty","Quest_LostMemories_ShadowLie, Quest_LostMemories_Reunion",custom,"periodic, timer, can fail several finishing triggers"
-SideQuest[49],side,Nebra Angler,Quest_NebraAngler_Start,talk,2,"talk, in range",44,"dialogue, cinematic, gives XP, effects",Quest_NebraAngler,Quest_NebraAngler_Reward,fits,
-MainQuest[6],main,Night Elves,Quest_NightElves_Start,talk,5,"talk, in range",40,"dialogue, cinematic, waits, gives XP, effects, moves units","Quest_NightElves, Naisha, Portal","Quest_NightElves_Complete, Quest_NightElves_Report",custom,several finishing triggers
-SideQuest[24],side,Ogre Hunt,Quest_OgreHunt_Start,talk,4,"talk, kill any, in range, periodic",6,"dialogue, cinematic, gives XP, effects","Quest_OgreHunt, HuntFestival",Quest_OgreHunt_Complete,custom,periodic
-SideQuest[47],side,Omega Weapon,Quest_OmegaWeapon_Start,attacked,3,"attacked, kill unit, run by another step",0,"gives item, gives title","Quest_OmegaWeapon, AlmightyShinra",Quest_OmegaWeapon_Slain,fits,
-SideQuest[67],side,Ore Supplies,Quest_OreSupplies_Start,talk,4,"talk, in range, kill unit",52,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units","Quest_OreSupplies, Giott, Valigarmanda",Quest_OreSupplies_Deliver,hooks,"doors/gates, moves units, spawns units"
-SideQuest[34],side,Rematch,Quest_Rematch_Start,talk,5,"talk, kill unit, periodic",18,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects, moves units","Quest_Rematch, DarkEidolons, Tower",Quest_Rematch_Complete,custom,periodic
-SideQuest[9],side,Save Timmy,Quest_SaveTimmy_Start,talk,6,"talk, timer, in range",15,"dialogue, cinematic, gives XP, effects, moves units","Quest_SaveTimmy, ChocoboRider","Quest_SaveTimmy_Complete, Quest_SaveTimmy_CompleteAlt",custom,timer several finishing triggers
-SideQuest[52],side,Scorched Earth,Quest_ScorchedEarth_Start,run by another step,4,"run by another step, reach place, in range, kill unit",25,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects, doors/gates","Quest_ScorchedEarth, ScorchedEarth, McBurn",Quest_ScorchedEarth_End,hooks,doors/gates
-SideQuest[25],side,Seek and Destroy,Quest_SeekDestroy_Start,talk,3,"talk, kill any, in range",16,"dialogue, cinematic, spawns units, gives XP, gives item, effects, moves units",Quest_SeekDestroy,Quest_SeekDestroy_Complete,hooks,"moves units, spawns units"
-SideQuest[73],side,Spirit Hunt,Quest_SpiritHunt_Start,talk,3,"talk, kill any, in range",11,"dialogue, cinematic, gives XP, effects",Quest_SpiritHunt,Quest_SpiritHunt_Complete,fits,
-SideQuest[29],side,Spirit of Water,Quest_SpiritOfWater_Start,talk,5,"talk, in range, kill unit",24,"dialogue, cinematic, gives XP, gives item, gives title, effects","Quest_SpiritOfWater, Vodyan, Quest_UltimaWeapon",Quest_SpiritOfWater_Complete,fits,
-SideQuest[33],side,The Strongest Eidolon,Quest_StrongestEidolon_Start,talk,5,"talk, spell, kill unit, periodic",21,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects, moves units","Quest_StrongestEidolon, Eden, DarkEidolons, Tower",Quest_StrongestEidolon_Complete,custom,"periodic, spell"
-SideQuest[14],side,Target Practice,Quest_TargetPractice_Start,talk,8,"talk, buy, run by another step, in range, kill unit, timer",18,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units, can fail","Quest_TargetPractice, TargetPractice, Dana, Aisha",TargetPractice_Reward,custom,"timer, can fail"
-SideQuest[30],side,Tower of Summoning,Quest_TowerSummoning_Start,talk,4,"talk, kill unit, periodic",18,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects","Quest_TowerSummoning, DarkEidolons, Tower",Quest_TowerSummoning_Complete,custom,periodic
-SideQuest[50],side,Trial By Fire,Quest_TrialByFire_Start,talk,6,"talk, run by another step, buy, reach place, spell",33,"dialogue, cinematic, waits, spawns units, gives XP, effects, moves units, can fail, loops/counters","Quest_TrialByFire, DarkIfrit, DarkPhoenix",Quest_TrialByFire_Survive,custom,"spell, can fail"
-SideQuest[46],side,Ultima Weapon,Quest_UltimaWeapon_Start,attacked,4,"attacked, kill unit, in range, run by another step",6,"dialogue, cinematic, gives XP, gives item, gives title, effects","Quest_UltimaWeapon, Quest_SpiritOfWater, Quest_WorldLiberation",Quest_UltimaWeapon_Slain,fits,
-SideQuest[72],side,Young Engineer,Quest_YoungEngineer_Start,talk,2,"talk, run by another step",15,"dialogue, cinematic, waits, gives XP, gives item, effects",Quest_YoungEngineer,Quest_YoungEngineer_Complete,fits,
-MainQuest[1],main,Find Mid,Cid_Talk_FindMid,talk,6,"talk, run by another step, in range, periodic, spell",26,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, doors/gates, moves units, loops/counters","Cid, Mid, Cartographer, Arena_Conquest, News",Cid_Talk_MidReturned,custom,"periodic, spell"
-MainQuest[2],main,Find Artifact,Cid_Talk_MidReturned,in range,15,"in range, run by another step, get item, timer, talk, kill any, spell",96,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, loops/counters","Cid, GoblinChief, Artifact, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_WorldLiberation, Cine, TrueIceAge, News","Cid_Berserk_Start, Cid_Talk_Hashmalum, TrueIceAge_Summon",custom,"spell, timer several finishing triggers"
-MainQuest[3],main,Stop Cid,Cid_Berserk_Start,in range,4,"in range, attacked, run by another step, talk",73,"dialogue, cinematic, waits, spawns units, gives XP, effects, moves units","Cid, Quest_AoMadoushi",Cid_Berserk_Aftermath,hooks,"moves units, spawns units"
-MainQuest[9],main,Kalm Siege,KalmSiege1_Start,talk,14,"talk, timer, kill any, kill unit, periodic, spell, run by another step",38,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, can fail, loops/counters","KalmSiege1, Quest_Brothers, Makenroh, KalmSiege, TrueIceAge, MithrilGolem, Brothers, Spawn",KalmSiege1_Complete,custom,"periodic, spell, timer, can fail"
-MainQuest[10],main,Kalm Siege II,KalmSiege2_Start,talk,9,"talk, timer, kill any, kill unit, run by another step",33,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units, can fail, loops/counters","KalmSiege2, Quest_Brothers, Spawn",KalmSiege2_Complete,custom,"timer, can fail"
-MainQuest[11],main,Kalm Siege III,KalmSiege3_Start,talk,12,"talk, timer, kill unit, kill any, spell, periodic",51,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, can fail, loops/counters","KalmSiege3, Quest_Brothers, Mid, TrueIceAge, Brothers, HuntFestival",KalmSiege3_Complete,custom,"periodic, spell, timer, can fail"
-SideQuest[15],side,Healing Waters,HealingWaters_Start,talk,5,"talk, in range, run by another step",31,"dialogue, cinematic, waits, gives XP, gives item, effects","HealingWaters, DefiledFountain, News","HealingWaters_Cure, HealingWaters_CureBlood",custom,several finishing triggers
-SideQuest[16],side,Mithril Golem's Heart,MithrilGolem_Start,talk,7,"talk, kill any, in range, run by another step, get item",26,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects","MithrilGolem, StrangeKey, StrangeCage, GolemHeart, Spawn",MithrilGolem_Activate,hooks,spawns units
-SideQuest[18],side,Hydra Egg,HydraEgg_Start,talk,4,"talk, kill any, get item, in range",17,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects",HydraEgg,HydraEgg_Deliver,hooks,spawns units
-SideQuest[20],side,Mystical Glyph,MysticalGlyph_Pickup,get item,3,"get item, in range, talk",3,"dialogue, cinematic, waits, gives XP, effects",MysticalGlyph,MysticalGlyph_Result,fits,
-SideQuest[21],side,Save Nimphrodel,Nimphrodel_Start,talk,6,"talk, run by another step, get item, in range",63,"dialogue, cinematic, spawns units, gives XP, gives item, effects","Nimphrodel, CrystalBall",Nimphrodel_Complete,hooks,spawns units
-SideQuest[22],side,Mysterious Curse,MysteriousCurse_Link,talk,10,"talk, kill any",77,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units",MysteriousCurse,"MysteriousCurse_AdriaWitchDead, MysteriousCurse_AdriaReturn, MysteriousCurse_LinkReturn, MysteriousCurse_BabaYagaDead",custom,several finishing triggers
-SideQuest[23],side,Defiled Fountain,DefiledFountain_Start,talk,5,"talk, in range, get item",40,"dialogue, cinematic, waits, gives XP, effects","DefiledFountain, Quest_Fountain",Quest_Fountain_Complete,fits,
-SideQuest[35],side,The Northern God,Judgment_Attack_Alberich,attacked,4,"attacked, talk, kill unit, timer",40,"dialogue, cinematic, waits, gives XP, gives item, effects, doors/gates, moves units, loops/counters","Judgment, Boss_Odin",Boss_Odin_Death,custom,timer
-SideQuest[37],side,Arena Resources,ArenaResources_Start,talk,4,"talk, reach place, run by another step",17,"dialogue, cinematic, waits, spawns units, gives XP, effects, doors/gates, moves units",ArenaResources,ArenaResources_Complete,hooks,"doors/gates, moves units, spawns units"
-SideQuest[38],side,Arena Expansion,ArenaExpansion_Start,talk,5,"talk, in range, reach place, spell",39,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects, loops/counters","ArenaExpansion, Arena_Conquest",ArenaExpansion_Complete,custom,spell
-SideQuest[39],side,Haunted Tree,HauntedTree_Start,talk,3,"talk, reach place, in range",11,"dialogue, cinematic, gives XP, gives item, effects",HauntedTree,HauntedTree_Complete,fits,
-SideQuest[40],side,Dimensional Boundary,DimensionalBoundary_Start,talk,17,"talk, in range, kill unit, periodic, reach place, run by another step, timer, use item",96,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, moves units","DimensionalBoundary, GuideBook, TropicalEssence, DeathSeeker, QuFrog, FrogHead, Zeromus, IceAge, ArenaExpansion, Elemental, MagicGodToken, BridgeBattle, ShinrasPlan","Zeromus_Death, DimensionalBoundary_EmptyEnd",custom,"periodic, timer, use item several finishing triggers"
-SideQuest[43],side,Almighty Shinra,AlmightyShinra_Cinematic,timer,2,"timer, run by another step",11,"dialogue, cinematic, waits, spawns units, gives XP, gives item, gives title, effects, moves units, loops/counters",AlmightyShinra,AlmightyShinra_Defeat,custom,timer
-SideQuest[48],side,King of the Sea,NebraKing_Summon,get item,6,"get item, in range, kill unit, run by another step, timer",11,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units, loops/counters","NebraKing, Quest_KingOfSea, Quest_Monstrum, Fishing_ReelingAndCatch",Quest_KingOfSea_Reward,custom,timer
-SideQuest[53],side,Adamant Hunt,AdamantHunt_Start,talk,4,"talk, kill any, in range, periodic",14,"dialogue, cinematic, gives XP, effects","AdamantHunt, HuntFestival",AdamantHunt_Reward,custom,periodic
-SideQuest[55],side,Flan Hunt,FlanHunt_Start,talk,5,"talk, kill any, in range, kill unit, run by another step",15,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units, can fail","FlanHunt, Dana",FlanHunt_Reward,custom,can fail
-SideQuest[56],side,Ancient Hunt,AncientHunt_Start,talk,3,"talk, kill any, in range",18,"dialogue, cinematic, gives XP, effects",AncientHunt,AncientHunt_Reward,fits,
-SideQuest[58],side,Tentacles,Tentacles_Start,talk,8,"talk, attacked, kill any, run by another step, in range, kill unit",19,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units, can fail, loops/counters","Tentacles, Ultros, Dana",Tentacles_Reward,custom,can fail
-SideQuest[59],side,Dragon Egg,DragonEgg_Start,talk,5,"talk, get item, in range, kill unit, run by another step",18,"dialogue, cinematic, waits, gives XP, gives item, effects, moves units, can fail","DragonEgg, Dana",DragonEgg_Reward,custom,can fail
-SideQuest[60],side,Name Diary,NameDiary_Start,talk,3,"talk, spell, run by another step",20,"dialogue, cinematic, gives XP, gives item, effects, loops/counters",NameDiary,NameDiary_Reward,custom,spell
+SideQuest[55],side,Flan Hunt,,quest engine,3,,0,,FlanHunt,quest engine,engine,
+SideQuest[56],side,Ancient Hunt,,quest engine,3,,6,,AncientHunt,quest engine,engine,
+SideQuest[58],side,Tentacles,,quest engine,4,,0,,Tentacles,quest engine,engine,
+SideQuest[59],side,Dragon Egg,,quest engine,2,,0,,DragonEgg,quest engine,engine,
+SideQuest[60],side,Name Diary,,quest engine,3,,0,,NameDiary,quest engine,engine,
+SideQuest[63],side,Dragon Hunt,,quest engine,3,,9,,DragonHunt,quest engine,engine,
+SideQuest[41],side,The Bridge-Battle,,quest engine,3,,14,,BridgeBattle,quest engine,engine,
+SideQuest[42],side,Shinra's Plan,,quest engine,4,,0,,ShinrasPlan,quest engine,engine,
+MainQuest[12],main,Voice of the Forest,,quest engine,3,,0,,VoiceOfForest,quest engine,engine,
+SideQuest[57],side,Wendigo Hunt,,quest engine,3,,11,,WendigoHunt,quest engine,engine,
+SideQuest[62],side,Hunt Festival,,quest engine,2,,0,,HuntFestival,quest engine,engine,
+MainQuest[8],main,True Ice Age,TrueIceAge_Summon,spell,11,"spell, attacked, run by another step, timer, talk, in range, kill any",90,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, doors/gates, moves units, loops/counters","TrueIceAge, Cid, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_WorldLiberation, ShinrasPlan",Quest_WorldLiberation_Count,custom,"spell, timer"
 SideQuest[61],side,Cartographer,Cartographer_Start,talk,8,"talk, periodic",50,"dialogue, cinematic, spawns units, gives XP, effects, can fail, loops/counters","Cartographer, Quest_GodDragon, Montblanc, HuntFestival","Cartographer_Start, Cartographer_Report",custom,"periodic, can fail several finishing triggers"
-SideQuest[63],side,Dragon Hunt,DragonHunt_Start,talk,4,"talk, kill any, in range, periodic",9,"dialogue, cinematic, gives XP, effects","DragonHunt, Montblanc",DragonHunt_Reward,custom,periodic
-SideQuest[71],side,Monstrum of the Sea,Monstrum_Summon,kill any,4,"kill any, run by another step, in range, periodic",11,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units, loops/counters","Monstrum, Quest_Monstrum, Quest_KingOfSea",Quest_Monstrum_Complete,custom,periodic
-SideQuest[41],side,The Bridge-Battle,BridgeBattle_Start,talk,6,"talk, reach place, in range, kill unit",32,"dialogue, cinematic, waits, spawns units, gives XP, gives item, effects, moves units","BridgeBattle, Gilgamesh, PriestX",BridgeBattle_Complete,hooks,"moves units, spawns units"
-SideQuest[42],side,Shinra's Plan,ShinrasPlan_Start,talk,5,"talk, in range, run by another step",27,"dialogue, cinematic, waits, gives XP, effects","ShinrasPlan, AlmightyShinra",ShinrasPlan_Complete,fits,
-MainQuest[12],main,Voice of the Forest,VoiceOfForest_Start,talk,4,"talk, use item, kill unit, run by another step",51,"dialogue, cinematic, waits, gives XP, gives item, gives title, effects, loops/counters","VoiceOfForest, Boss_Chaos, IceAge",Boss_Chaos_Death,custom,use item
-SideQuest[57],side,Wendigo Hunt,WendigoHunt_Start,talk,4,"talk, kill any, in range, periodic",11,"dialogue, cinematic, gives XP, effects","WendigoHunt, HuntFestival",WendigoHunt_Reward,custom,periodic
-SideQuest[62],side,Hunt Festival,HuntFestival_Invite,talk,4,"talk, timer, periodic",29,"dialogue, cinematic, waits, spawns units, gives gold, gives XP, gives title, effects, moves units, loops/counters","HuntFestival, Montblanc",HuntFestival_End,custom,"periodic, timer"

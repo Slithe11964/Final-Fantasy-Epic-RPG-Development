@@ -45,8 +45,7 @@ function Trig_Boss_Hashmalum_Intro_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Boss_Hashmalum_Revive_Belias)
     call Music_ClearTrack(19)
     if(Trig_Boss_Hashmalum_Intro_Cond_QuestNotDiscovered())then
-        set udg_MainQuest[18]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"End of Zodiac Age"),"Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, is summoning a calamity. Take him down before the summoning finishes!","ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00End of Zodiac Age|r")
+        call ExecuteFunc("QuestZodiacAge_StartAtHashmalum") // quest "End of Zodiac Age" starts here
         call Music_SetTrack(16)
     else
         call Music_SetTrack($F) // $F = 15
@@ -346,13 +345,10 @@ function Trig_Boss_Hashmalum_Death_Final_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call Reward_Give(9999,9999,gg_unit_E002_0075)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00End of Zodiac Age|r")
-    call QuestSetCompletedBJ(udg_MainQuest[18],true)
+    call ExecuteFunc("QuestZodiacAge_HashmalumSlain") // completes the End of Zodiac Age quest
     call SaveIntegerBJ(1,2,1,udg_GameStateHash)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)
     call ForForce(udg_PlayingPlayers,function Trig_Boss_Hashmalum_Death_Final_Enum_CreditPlayer)
-    set udg_MainQuest[19]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"Advent of Ice Age"),"The demon lord Echele has been summoned. He has absorbed the power of all the Zodiac Braves and is intending on turning the world to ice. Face him atop the Snowy Mountain.","ReplaceableTextures\\CommandButtons\\BTNBlueMagnataur.blp")
     call ConditionalTriggerExecute(gg_trg_Dwarves_Disappear)
     call RemoveUnit(udg_StoryBoss)
     set udg_GafgarionRevived=true
@@ -369,7 +365,7 @@ function Trig_Boss_Hashmalum_Death_Final_Actions takes nothing returns nothing
     call Music_SetZoneTrack($B) // $B = 11
     call Wait_Polled(4.)
     call RemoveUnit(gg_unit_E002_0075)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Advent of Ice Age|r")
+    call ExecuteFunc("IceAge_Start") // quest "Advent of Ice Age" starts
     call CreateFogModifierRectBJ(true,Player($B),FOG_OF_WAR_VISIBLE,gg_rct_658) // $B = 11
     call Wait_Polled(300.)
     if(Trig_Boss_Hashmalum_Death_Final_Cond_ShopAvailable())then

@@ -1,4 +1,4 @@
-library TDragonEgg requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
+library TDragonEgg requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DragonEgg_Start=null
@@ -6,7 +6,25 @@ globals
     trigger gg_trg_DragonEgg_PickUp=null
     trigger gg_trg_DragonEgg_Fail=null
     trigger gg_trg_DragonEgg_Reward=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_DRAGON_EGG=0
 endglobals
+
+// Side quest "Dragon Egg", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Kiemarl from the Phantom Village wants an egg from the Dark Dragon Marsh. The talks stay module triggers
+// (Kiemarl is paused during them and the hand-in needs him to be visible); the egg's pickup note goes only
+// to the player who picked it up. The quest fails if Dana dies (DragonEgg_Fail, run by Dana).
+// Does not count toward the story; Kiemarl's own markers (udg_SpecialEffect[79]) are kept.
+function DragonEgg_Define takes nothing returns nothing
+    local integer q=Quest_Define("Dragon Egg",QUEST_SIDE,59,"ReplaceableTextures\\CommandButtons\\BTNThunderLizardEgg.blp")
+    set QUEST_DRAGON_EGG=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Kiemarl (gg_trg_DragonEgg_Start)
+    call Quest_Custom(q,"Kiemarl from the Phantom Village has asked you to bring him a Dragon Egg from the very dangerous Dark Dragon Marsh.")
+    // 2. Bring him the egg (gg_trg_DragonEgg_Reward)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_DragonEgg_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e016_0019,true,true,true))
@@ -43,8 +61,10 @@ function Trig_DragonEgg_Start_Actions takes nothing returns nothing
         call Cine_ExitAction()
         call PauseUnitBJ(false,gg_unit_e016_0019)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Dragon Egg|r")
-    set udg_SideQuest[59]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Dragon Egg"),"Kiemarl from the Phantom Village has asked you to bring him a Dragon Egg from the very dangerous Dark Dragon Marsh.","ReplaceableTextures\\CommandButtons\\BTNThunderLizardEgg.blp")
+    if QUEST_DRAGON_EGG==0 then
+        call DragonEgg_Define()
+    endif
+    call Quest_Start(QUEST_DRAGON_EGG,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[79]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e016_0019,"Objects\\RandomObject\\RandomObject.mdl")
     set l_tempPoint=GetRectCenter(gg_rct_686)
     set udg_QuestItem[$C]=CreateItemLoc('I0I0',l_tempPoint) // $C = 12; 'I0I0': item "Dragon Egg"
@@ -84,7 +104,7 @@ function Trig_DragonEgg_PickUp_Actions takes nothing returns nothing
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Dragon Egg to Kiemarl.")
     call DestroyForce(l_tempForce)
-    call QuestSetDescriptionBJ(udg_SideQuest[59],"Bring the Dragon Egg to Kiemarl.")
+    call Quest_SetLog(QUEST_DRAGON_EGG,"Bring the Dragon Egg to Kiemarl.",false)
     call EnableTrigger(gg_trg_DragonEgg_Reward)
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempForce=null
@@ -93,8 +113,7 @@ endfunction
 function Trig_DragonEgg_Fail_Actions takes nothing returns nothing
     call DestroyEffectBJ(udg_SpecialEffect[79])
     call RemoveItem(udg_QuestItem[$C]) // $C = 12
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Dragon Egg|r")
-    call QuestSetFailedBJ(udg_SideQuest[59],true)
+    call Quest_Fail(QUEST_DRAGON_EGG)
     call DisableTrigger(gg_trg_DragonEgg_Ping)
     call DestroyTrigger(gg_trg_DragonEgg_Ping)
     call DestroyTrigger(gg_trg_DragonEgg_Reward)
@@ -127,9 +146,7 @@ function Trig_DragonEgg_Reward_Actions takes nothing returns nothing
     else
         call Reward_Give($BB8,$BB8,gg_unit_e016_0019) // $BB8 = 3000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Dragon Egg|r")
-    call QuestSetCompletedBJ(udg_SideQuest[59],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_DRAGON_EGG,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_PhantomVillagersMet=(udg_PhantomVillagersMet+1)
     call DestroyTrigger(gg_trg_DragonEgg_Fail)
     call DestroyTrigger(GetTriggeringTrigger())

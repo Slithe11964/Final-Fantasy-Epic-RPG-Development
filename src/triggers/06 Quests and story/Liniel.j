@@ -1,12 +1,13 @@
-library TLiniel
+library TLiniel requires optional TQuestFallenRanger
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Liniel_ShowMarker=null
 endglobals
 
 function Trig_Liniel_ShowMarker_Actions takes nothing returns nothing
-    set udg_SpecialEffect[46]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n01Y_0131,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_FallenRanger_Start)
+    static if LIBRARY_TQuestFallenRanger then
+        call ExecuteFunc("QuestFallenRanger_Available") // the "!" over Liniel; the Fallen Ranger quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

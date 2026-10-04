@@ -1,5 +1,13 @@
-library TArenaResources requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TArenaResources requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Arena Resources", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Limma, ranger from Lothlorien, needs the party to escort a supply ship to the Battle Arena. All steps are
+// custom and stay in this module's triggers: if the ship sinks, the party talks to Limma again and escorts a
+// new ship (for a smaller reward), and an undamaged ship earns a bonus. This module keeps its own "!"
+// markers. Made available when gg_trg_ArenaResources_Prepare runs (Quest_NightElves, Epilogue).
+// Does not count toward the story.
 globals
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ARENA_RESOURCES=0
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ArenaResources_Prepare=null
     trigger gg_trg_ArenaResources_Start=null
@@ -14,7 +22,24 @@ globals
     boolean udg_ShipUndamaged=false
 endglobals
 
+function ArenaResources_Define takes nothing returns nothing
+    local integer q=Quest_Define("Arena Resources",QUEST_SIDE,37,"ReplaceableTextures\\CommandButtons\\BTNNightElfTransport.blp")
+    set QUEST_ARENA_RESOURCES=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Limma (gg_trg_ArenaResources_Start)
+    call Quest_Custom(q,"Limma, ranger from Lothlorien, has asked you to help her escort a ship of supplies to the arena. Meet her in the eastern part of the Naga Islands.")
+    // 2. Meet her at the ship (gg_trg_ArenaResources_Escort; again after each lost ship, with Quest_SetLog)
+    call Quest_Custom(q,"Safely escort the ship to the battle arena.")
+    // 3. The ship reaches the arena (gg_trg_ArenaResources_Complete)
+    call Quest_Custom(q,"")
+endfunction
+
+// Arena Resources becomes available: the "!" over Limma.
 function Trig_ArenaResources_Prepare_Actions takes nothing returns nothing
+    if QUEST_ARENA_RESOURCES==0 then
+        call ArenaResources_Define()
+    endif
     set udg_ArenaEscortReward=$DAC // $DAC = 3500
     set udg_SpecialEffect[59]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e008_0132,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_ArenaResources_Start)
@@ -29,6 +54,7 @@ function Trig_ArenaResources_Start_Cond_ShowDialogue takes nothing returns boole
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Limma. She waits with the ship on the eastern Naga Islands.
 function Trig_ArenaResources_Start_Actions takes nothing returns nothing
     local location l_tempPoint
     local location l_tempPoint2
@@ -50,8 +76,7 @@ function Trig_ArenaResources_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_e008_0132,"I will be waiting for you at the eastern part of the islands, with the ship. Meet me there and we can go.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Arena Resources|r")
-    set udg_SideQuest[37]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Arena Resources"),"Limma, ranger from Lothlorien, has asked you to help her escort a ship of supplies to the arena. Meet her in the eastern part of the Naga Islands.","ReplaceableTextures\\CommandButtons\\BTNNightElfTransport.blp")
+    call Quest_Start(QUEST_ARENA_RESOURCES,GetTriggerPlayer(),GetTriggerUnit())
     call SetUnitOwner(gg_unit_e008_0132,Player(8),false)
     set l_tempPoint=GetRectCenter(gg_rct_232)
     call SetUnitPositionLocFacingBJ(gg_unit_e008_0132,l_tempPoint,180.)
@@ -82,6 +107,7 @@ function Trig_ArenaResources_Escort_Cond_ShowDialogue takes nothing returns bool
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2 (or a retry after the ship sank): a hero talks to Limma at the ship and the escort begins.
 function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -94,8 +120,11 @@ function Trig_ArenaResources_Escort_Actions takes nothing returns nothing
         call Text_Say(gg_unit_e008_0132,"We will use this ship to transport the supplies. And don't let monsters steal them! Let's go.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Safely escort the ship to the battle arena.")
-    call QuestSetDescriptionBJ(udg_SideQuest[37],"Safely escort the ship to the battle arena.")
+    if Quest_CurrentStep(QUEST_ARENA_RESOURCES)==2 then
+        call Quest_StepDone(QUEST_ARENA_RESOURCES,GetTriggerPlayer(),GetTriggerUnit())
+    else
+        call Quest_SetLog(QUEST_ARENA_RESOURCES,"Safely escort the ship to the battle arena.",true)
+    endif
     call SetUnitInvulnerable(udg_SupplyShip,false)
     call PauseUnitBJ(false,udg_SupplyShip)
     call UnitAddAbilityBJ('A11M',udg_SupplyShip) // 'A11M': ability "Aggressor"
@@ -159,6 +188,7 @@ function Trig_ArenaResources_ShipLost_Cond_CanReduceReward takes nothing returns
     return(udg_ArenaEscortReward>500)
 endfunction
 
+// The ship sank: Limma goes back for another one, and the reward drops by 1000 (down to 500).
 function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
     local location l_tempPoint
     local location l_tempPoint2
@@ -172,8 +202,9 @@ function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
         call Text_Say(gg_unit_e008_0132,"Oh no, the ship has been destroyed! We have to go back and get another ship!",false)
         call Cine_ExitAction()
     endif
+    // the announcement and the new log text differ, so the announcement is shown here
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Limma to try again.")
-    call QuestSetDescriptionBJ(udg_SideQuest[37],"The ship has been destroyed! Talk to Limma once again.")
+    call Quest_SetLog(QUEST_ARENA_RESOURCES,"The ship has been destroyed! Talk to Limma once again.",false)
     call RemoveUnit(udg_SupplyShip)
     call SetUnitOwner(gg_unit_e008_0132,Player(8),false)
     if(Trig_ArenaResources_ShipLost_Cond_CanReduceReward())then
@@ -218,6 +249,7 @@ function Trig_ArenaResources_Complete_Cond_GateStillClosed takes nothing returns
     return(udg_ArenaGateOpened==false)
 endfunction
 
+// Step 3: the ship reached the arena. Limma rewards the party and opens the arena gate.
 function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -242,9 +274,7 @@ function Trig_ArenaResources_Complete_Actions takes nothing returns nothing
         endif
         call Reward_Give(udg_ArenaEscortReward,$DAC,gg_unit_e008_0132) // $DAC = 3500
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Arena Resources|r")
-    call QuestSetCompletedBJ(udg_SideQuest[37],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_ARENA_RESOURCES,null,null)
     call AddUnitToStockBJ('n0BA',gg_unit_e014_0149,1,1) // 'n0BA': unit "Hunt: Adamantaimai"
     set udg_HuntStock[6]=(udg_HuntStock[6]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)

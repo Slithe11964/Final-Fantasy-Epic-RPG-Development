@@ -1,4 +1,4 @@
-library TFrogHead requires TCam, TCine, TPlayerHero, TText, TWait
+library TFrogHead requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_FrogHead_TurnIn=null
@@ -26,8 +26,7 @@ function Trig_FrogHead_TurnIn_Actions takes nothing returns nothing
         call Text_Say(gg_unit_n034_0109,"Yes, meet me in the Northern Mountains region and I'll show you my newly created dimension portal! This should fix the dimension connection problems!",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Meet Shinra in the Northern Mountains.")
-    call QuestSetDescriptionBJ(udg_SideQuest[40],"Shinra, an Al Bhed child from Spira, now finally has all the artifacts required to make a portal. Meet him in the Northern Mountains.")
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set l_tempPoint=GetRectCenter(gg_rct_420)
     call SetUnitPositionLocFacingBJ(gg_unit_n034_0109,l_tempPoint,160.)
     call RemoveLocation(l_tempPoint)

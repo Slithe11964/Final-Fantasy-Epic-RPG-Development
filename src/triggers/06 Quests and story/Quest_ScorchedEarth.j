@@ -1,14 +1,39 @@
-library TQuestScorchedEarth requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
+library TQuestScorchedEarth requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
+// Side quest "Scorched Earth", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// McBurn has turned the Icy Realm into an infernal hell; the party climbs the mountain and defeats him.
+// All steps are custom and stay in cinematic triggers: ScorchedEarth runs gg_trg_Quest_ScorchedEarth_Start
+// and removes the barrier (step 2), McBurn reveals his true form (step 3), and gg_trg_Quest_ScorchedEarth_End
+// finishes the quest. Its name is red in the quest log. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_ScorchedEarth_Start=null
     trigger gg_trg_Quest_ScorchedEarth_End=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_SCORCHED_EARTH=0
 endglobals
+
+function QuestScorchedEarth_Define takes nothing returns nothing
+    local integer q=Quest_Define("Scorched Earth",QUEST_SIDE,52,"ReplaceableTextures\\CommandButtons\\BTNDoomGuard.blp")
+    set QUEST_SCORCHED_EARTH=q
+    call Quest_Color(q,udg_QuestTitleRed)
+    call Quest_NotStory(q)
+    // 1. A hero enters the burning Icy Realm (gg_trg_Quest_ScorchedEarth_Start)
+    call Quest_Custom(q,"The icy realm has turned into an infernal hell! Climb to the top of the (former) Snowy Mountain to see if you can find the cause.")
+    // 2. Erase the barrier with a Hell Gate's Flame (ScorchedEarth module, gg_trg_ScorchedEarth_Barrier)
+    call Quest_Custom(q,"Approach the Infernal Mountain's top to confront the entity who caused this inferno.")
+    call Quest_Message(q,"Approach the mountain's top.")
+    // 3. Reach the top: McBurn reveals his true form (McBurn module, gg_trg_McBurn_TrueForm_Reveal)
+    call Quest_Custom(q,"Defeat McBurn, the Otherworldly King.")
+    call Quest_Message(q,"Defeat McBurn.")
+    // 4. McBurn falls (gg_trg_Quest_ScorchedEarth_End)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_ScorchedEarth_Start_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)
 endfunction
 
+// Step 1: a hero entered the burning Icy Realm (run by ScorchedEarth).
 function Trig_Quest_ScorchedEarth_Start_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_ScorchedEarth_EnterRegion)
     call DisableTrigger(gg_trg_ScorchedEarth_TowerAttack)
@@ -18,8 +43,10 @@ function Trig_Quest_ScorchedEarth_Start_Actions takes nothing returns nothing
     call Cine_Enter()
     call Wait_Polled(1.)
     call Text_Say(udg_CinematicActor,"What the hell happened here!?",true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Scorched Earth|r")
-    set udg_SideQuest[52]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"Scorched Earth"),"The icy realm has turned into an infernal hell! Climb to the top of the (former) Snowy Mountain to see if you can find the cause.","ReplaceableTextures\\CommandButtons\\BTNDoomGuard.blp")
+    if QUEST_SCORCHED_EARTH==0 then
+        call QuestScorchedEarth_Define()
+    endif
+    call Quest_Start(QUEST_SCORCHED_EARTH,GetOwningPlayer(udg_CinematicActor),udg_CinematicActor)
     call EnableTrigger(gg_trg_ScorchedEarth_Barrier)
     call Music_SetZoneTrack(34)
     call Cine_ExitAction()
@@ -61,6 +88,7 @@ function Trig_Quest_ScorchedEarth_End_Cond_HuntCountLow takes nothing returns bo
     return(udg_OkuuStage<2)
 endfunction
 
+// Step 4: McBurn falls, admits defeat and leaves; the Icy Realm is restored.
 function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -106,9 +134,7 @@ function Trig_Quest_ScorchedEarth_End_Actions takes nothing returns nothing
     call Text_Say(Player_GetHero(udg_TempPlayer),"What a completely insane demon...",true)
     call Text_Say(Player_GetHero(udg_TempPlayer),"Hahaha... but what a fight that was.",true)
     call Cine_ExitAction()
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Scorched Earth|r")
-    call QuestSetCompletedBJ(udg_SideQuest[52],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_SCORCHED_EARTH,null,null)
     call Music_ClearTrack(35)
     call Music_SetZoneTrack($C) // $C = 12
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)

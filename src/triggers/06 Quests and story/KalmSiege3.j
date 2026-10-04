@@ -1,4 +1,11 @@
-library TKalmSiege3 requires TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TKalmSiege3 requires TQuestEngine, TCam, TCine, TGroup, TLink, TLoc, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+// Main quest "Kalm Siege III" (udg_MainQuest[11]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Five minutes after the second siege Cid calls for the party (Call, CidTalk), then
+// Meliadoul explains the final battle. Both steps are custom and stay in this module's triggers: Start (talk
+// to Meliadoul) calls Quest_Start, and Complete (Adrammelech, the golden demon, dies) finishes the quest. If
+// Meliadoul or Cid falls the party may retry (Defeat, Restart) or, in hardcore, the quest fails (Fail). The
+// "!" and "?" over Cid and Meliadoul are this module's own effects. The talks with Cid and Meliadoul count
+// toward the story; completing the quest does not.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_KalmSiege3_Call=null
@@ -15,7 +22,20 @@ globals
     trigger gg_trg_KalmSiege3_Fail=null
     // Variables only this module uses.
     unit udg_PossessedChieftain=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_KALM_SIEGE_3=0
 endglobals
+
+function KalmSiege3_Define takes nothing returns nothing
+    local integer q=Quest_Define("Kalm Siege III",QUEST_MAIN,11,"ReplaceableTextures\\CommandButtons\\BTNGargoyle.blp")
+    set QUEST_KALM_SIEGE_3=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Meliadoul (gg_trg_KalmSiege3_Start)
+    call Quest_Custom(q,"Kalm is facing its ultimate battle! Help defend the town from the golden demon and his forces!")
+    // 2. Defeat the golden demon (gg_trg_KalmSiege3_Complete); retries after a defeat only change the log
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_KalmSiege3_Call_IsCidVisible takes nothing returns boolean
     return(IsUnitHiddenBJ(gg_unit_Hpb1_0013)==false)
@@ -90,6 +110,7 @@ function Trig_KalmSiege3_Start_CinematicsOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Meliadoul. The quest starts and the siege begins in 30 seconds.
 function Trig_KalmSiege3_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[30])
@@ -113,8 +134,11 @@ function Trig_KalmSiege3_Start_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Objects\\RandomObject\\RandomObject.mdl")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Kalm Siege III|r")
-    set udg_MainQuest[$B]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Kalm Siege III"),"Kalm is facing its ultimate battle! Help defend the town from the golden demon and his forces!","ReplaceableTextures\\CommandButtons\\BTNGargoyle.blp") // $B = 11
+    if QUEST_KALM_SIEGE_3==0 then
+        call KalmSiege3_Define()
+    endif
+    call Quest_Start(QUEST_KALM_SIEGE_3,GetTriggerPlayer(),GetTriggerUnit())
+    // starting the quest counts toward the story (completing it does not)
     set udg_StoryProgress=(udg_StoryProgress+1)
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call StartTimerBJ(udg_SiegeTimer,false,30)
@@ -131,6 +155,7 @@ function Trig_KalmSiege3_Restart_CinematicsOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// After a defeat: a hero talks to Meliadoul again, and the siege restarts in 10 seconds.
 function Trig_KalmSiege3_Restart_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[30])
@@ -143,7 +168,7 @@ function Trig_KalmSiege3_Restart_Actions takes nothing returns nothing
     endif
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Objects\\RandomObject\\RandomObject.mdl")
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defend Kalm from the siege starting in 10 seconds!\r\n\r\n- Meliadoul must survive!\r\n- Cid must survive!")
-    call QuestSetDescriptionBJ(udg_MainQuest[$B],"Defend Kalm from the siege starting in 10 seconds!\r\n\r\nMeliadoul must survive!\r\nCid must survive!") // $B = 11
+    call Quest_SetLog(QUEST_KALM_SIEGE_3,"Defend Kalm from the siege starting in 10 seconds!\r\n\r\nMeliadoul must survive!\r\nCid must survive!",false)
     call StartTimerBJ(udg_SiegeTimer,false,10.)
     set udg_SiegeTimerWindow=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Kalm Siege in ...")
     call EnableTrigger(gg_trg_KalmSiege3_Begin)
@@ -600,7 +625,7 @@ function Trig_KalmSiege3_Defeat_Actions takes nothing returns nothing
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_KalmSiege3_Restart)
     call GroupAddUnitSimple(gg_unit_Hvwd_0098,udg_BossUnits)
-    call QuestSetDescriptionBJ(udg_MainQuest[$B],"Speak to Meliadoul to retry the Siege.") // $B = 11
+    call Quest_SetLog(QUEST_KALM_SIEGE_3,"Speak to Meliadoul to retry the Siege.",false)
     call Text_Say(null,"|cffffcc00Speak to Meliadoul to retry the Siege.\r\n\r\nYou may want to search for additional allies first!|r",true)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Cine_ExitAction()
@@ -660,6 +685,7 @@ function Trig_KalmSiege3_Complete_CompanionsPresent takes nothing returns boolea
     return(IsUnitInGroup(gg_unit_Ocbh_0148,udg_RecruitedAllies))
 endfunction
 
+// Step 2: the golden demon dies. The siege is won and the quest is done.
 function Trig_KalmSiege3_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_KalmSiege3_Complete_BossDropEnabled())then
@@ -736,9 +762,7 @@ function Trig_KalmSiege3_Complete_Actions takes nothing returns nothing
     call Wait_Polled(.25)
     call Cine_ExitAction()
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Kalm Siege III|r")
-    call QuestSetCompletedBJ(udg_MainQuest[$B],true) // $B = 11
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_KALM_SIEGE_3,null,null)
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)
     call StartTimerBJ(udg_SiegeTimer,false,120.)
     call EnableTrigger(gg_trg_Meliadoul_Hint_Timer)
@@ -796,8 +820,7 @@ function Trig_KalmSiege3_Fail_Actions takes nothing returns nothing
     call Music_ClearTrack(40)
     call Music_ClearTrack($D) // $D = 13
     call Music_SetZoneTrack(9)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Kalm Siege III|r")
-    call QuestSetFailedBJ(udg_MainQuest[$B],true) // $B = 11
+    call Quest_Fail(QUEST_KALM_SIEGE_3)
     call DisableTrigger(gg_trg_KalmSiege3_DemonArrive)
     call DestroyTrigger(gg_trg_KalmSiege3_DemonArrive)
     call DisableTrigger(gg_trg_KalmSiege3_DemonSummon)

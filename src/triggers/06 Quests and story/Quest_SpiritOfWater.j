@@ -1,10 +1,31 @@
-library TQuestSpiritOfWater requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestSpiritOfWater requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+// Side quest "Spirit of Water", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Priscilla the Summoner needs a Water Gem, then Tiara of the Deep from Vodyan the Sea Giant, to summon a
+// mighty Eidolon. All steps are custom and stay in this module's triggers (Priscilla says more to a
+// Summoner; her "?" is only redrawn when cinematics are on), so this module keeps its own markers.
+// Priscilla enables gg_trg_Quest_SpiritOfWater_Start; Vodyan enables gg_trg_Quest_SpiritOfWater_Complete.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_SpiritOfWater_Start=null
     trigger gg_trg_Quest_SpiritOfWater_WaterGem=null
     trigger gg_trg_Quest_SpiritOfWater_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_SPIRIT_OF_WATER=0
 endglobals
+
+function QuestSpiritOfWater_Define takes nothing returns nothing
+    local integer q=Quest_Define("Spirit of Water",QUEST_SIDE,29,"ReplaceableTextures\\CommandButtons\\BTNCrushingWave.blp")
+    set QUEST_SPIRIT_OF_WATER=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Priscilla (gg_trg_Quest_SpiritOfWater_Start)
+    call Quest_Custom(q,"Summoner Priscilla wants you to bring her a Water Gem.")
+    // 2. Bring her a Water Gem (gg_trg_Quest_SpiritOfWater_WaterGem)
+    call Quest_Custom(q,"Defeat Vodyan, take Tiara of the Deep and bring it to Priscilla.")
+    // 3. Bring her Tiara of the Deep, dropped by Vodyan (gg_trg_Quest_SpiritOfWater_Complete)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_SpiritOfWater_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_u007_0128,true,true,true))
@@ -18,6 +39,7 @@ function Trig_Quest_SpiritOfWater_Start_Cond_CinematicsEnabled takes nothing ret
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Priscilla.
 function Trig_Quest_SpiritOfWater_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[47])
@@ -43,8 +65,10 @@ function Trig_Quest_SpiritOfWater_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"All right, I'll try to find it.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Spirit of Water|r")
-    set udg_SideQuest[29]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Spirit of Water"),"Summoner Priscilla wants you to bring her a Water Gem.","ReplaceableTextures\\CommandButtons\\BTNCrushingWave.blp")
+    if QUEST_SPIRIT_OF_WATER==0 then
+        call QuestSpiritOfWater_Define()
+    endif
+    call Quest_Start(QUEST_SPIRIT_OF_WATER,GetTriggerPlayer(),GetTriggerUnit())
     set udg_SpecialEffect[47]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u007_0128,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_Quest_SpiritOfWater_WaterGem)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -62,6 +86,7 @@ function Trig_Quest_SpiritOfWater_WaterGem_Cond_CinematicsEnabled takes nothing 
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2: a hero brings a Water Gem. Vodyan appears on the southern islands.
 function Trig_Quest_SpiritOfWater_WaterGem_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_SpiritOfWater_WaterGem_Cond_ExtraCharges())then
@@ -79,8 +104,7 @@ function Trig_Quest_SpiritOfWater_WaterGem_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[47]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_u007_0128,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Defeat Vodyan, take Tiara of the Deep and bring it to Priscilla.")
-    call QuestSetDescriptionBJ(udg_SideQuest[29],"Defeat Vodyan, take Tiara of the Deep and bring it to Priscilla.")
+    call Quest_StepDone(QUEST_SPIRIT_OF_WATER,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call ShowUnitShow(gg_unit_n023_0121)
     call PauseUnitBJ(false,gg_unit_n023_0121)
     call SetUnitInvulnerable(gg_unit_n023_0121,false)
@@ -102,6 +126,7 @@ function Trig_Quest_SpiritOfWater_Complete_Cond_UltimaWeaponBeaten takes nothing
     return(IsQuestCompleted(udg_SideQuest[46]))
 endfunction
 
+// Step 3: a hero brings Tiara of the Deep. If Ultima Weapon is beaten, Priscilla offers her Eidolon fight.
 function Trig_Quest_SpiritOfWater_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Tiara_Ping)
@@ -121,9 +146,7 @@ function Trig_Quest_SpiritOfWater_Complete_Actions takes nothing returns nothing
     else
         call Reward_Give($2710,5000,gg_unit_u007_0128) // $2710 = 10000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Spirit of Water|r")
-    call QuestSetCompletedBJ(udg_SideQuest[29],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_SPIRIT_OF_WATER,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call RemoveItemFromStockBJ('I04V',gg_unit_n02Y_0052) // 'I04V': item "Information: Tiara of the Deep"
     if(Trig_Quest_SpiritOfWater_Complete_Cond_UltimaWeaponBeaten())then
         call ConditionalTriggerExecute(gg_trg_Priscilla_ShowMarker_Eden)

@@ -12,10 +12,7 @@ A quest is a list of steps. The quest's own module describes it once, as data. T
 The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the about 100 places that check
 `IsQuestCompleted(...)` keep working.
 
-**Converted so far (10):** Kill Elmdor (`Quest_KillElmdor`) and Wolf Fangs (`Quest_WolfFangs`) in stage M;
-Arachnophobia, Harpy Hunt, Gnoll Hunt (`GnollHunt`), Phoenix, Find Shimmerweed (`Quest_Shimmerweed`), Deliver Letter,
-Greed is Good and Elixir (`Elixir`) in stage N.
-`docs/QUEST_SURVEY.md` lists all quests and how each would convert.
+**Converted:** 90 of the map's quests (stages M, N, O, P). Not converted: Cartographer, True Ice Age and Ao Madoushi. The play-test list is `docs/QUEST_TESTS.md`.
 
 ## A quest, step by step
 
@@ -50,6 +47,7 @@ Then, when the quest becomes available (another module's story step), call `Ques
 | `Quest_Kill(q, unit, text)` | Step: the unit dies. |
 | `Quest_Hunt(q, row, n, label, text)` | Step: the party kills n units of the types added with `Quest_HuntTarget(q, 'type')` (the killer's owner must be in `udg_ActivePlayers`). The count shows on the hunt leaderboard in row `row` (`udg_HuntCounter[row]`, `udg_HuntBoardLabel[row]`, the row of `Player(row-1)`), which the hunt festival also restores. |
 | `Quest_Deliver(q, npc, itemType, n, label, text)` | Step: a hero (the Spirit of Gaya too) walks up to the NPC carrying the item; its charges are handed over until n are delivered. The quest log shows "label: x/n"; label `""` = a single hand-in with no counter. |
+| `Quest_Reach(q, gg_rct_x, text)` | Step: a hero (not the Spirit of Gaya) walks into the region. |
 | `Quest_Custom(q, text)` | Step: the quest's own code calls `Quest_StepDone(q, player, unit)` when it is done (a siege won, a timer ran out ...). |
 | `Quest_Say(q, speaker, line)` | A dialogue line for the step just added, said when the step is done. `null` speaker = the hero of the player who did the step. |
 | `Quest_SayAs(q, speaker, name, sound, line)` | A line shown under another name (e.g. "Fire" instead of the unit's name), with a sound or `null`. |
@@ -61,9 +59,15 @@ Then, when the quest becomes available (another module's story step), call `Ques
 | `Quest_OnPickup(q, note, "Function")` | Deliver step: the first time any unit picks up the item, its player sees `note`, the log text becomes `note`, and the function (or `""`) runs. |
 | `Quest_Reward(q, gold, xp)` | Reward for the step just added, given at this point of its dialogue (`Reward_Give`, so Eternity mode rules apply). |
 | `Quest_OnDone(q, "FunctionName")` | Custom code for the step just added, run when the step is done (spawn a boss, open a gate, update the news). It can read `QuestDonePlayer` / `QuestDoneUnit`. |
+| `Quest_Color(q, udg_QuestTitleColor)` | The colour code before the name in the quest log (default cyan for side quests, `udg_ColorGold` for main quests). |
+| `Quest_NoMarker(q)` | No "!" / "?" markers (the module shows its own, or none). |
 | `Quest_NotStory(q)` | Completing it does not count toward `udg_StoryProgress` and the quest-count milestones. |
 | `Quest_MakeAvailable(q)` | Show the "!" and start waiting for the first step. Ignored if the quest already started. |
-| `Quest_IsActive(q)`, `Quest_IsDone(q)` | The quest's state. |
+| `Quest_IsActive(q)`, `Quest_IsDone(q)`, `Quest_IsFailed(q)`, `Quest_CurrentStep(q)` | The quest's state; the step it waits for. |
+| `Quest_Start(q, player, unit)` | Start now, with no "!": for quests begun by an event. If step 1 is a custom step it is done at once (log entry created, hook run). |
+| `Quest_StepDone(q, player, unit)` | Finish the current custom step. |
+| `Quest_SetLog(q, text, announce)` | Change the quest-log text at any time; `announce` also shows it as a quest update. |
+| `Quest_Fail(q)` | Fail the quest: it stops waiting, markers go, "Quest Failed" and the log shows it failed. |
 
 **Step text** is the quest-log description after that step. The first step's text is the description the
 quest starts with. An empty text keeps the description (and announces nothing), which is usual for the last step.

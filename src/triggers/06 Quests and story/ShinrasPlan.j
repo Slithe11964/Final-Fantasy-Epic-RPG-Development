@@ -1,4 +1,10 @@
-library TShinrasPlan requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TShinrasPlan requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Shinra's Plan", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Shinra, an Al Bhed child, asks for Theurgic Water, a Unique Ice Shard and Aire Tam Enib Moc, then vanishes.
+// All steps are custom and stay in this module's triggers (hand-ins within 250 of Shinra, a line that
+// depends on Zeromus, Shinra vanishing mid-dialogue), so this module keeps its own markers.
+// Made available when gg_trg_ShinrasPlan_Prepare runs (Talk, Zeromus, Epilogue, ...).
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ShinrasPlan_Prepare=null
@@ -6,13 +12,36 @@ globals
     trigger gg_trg_ShinrasPlan_WaterTurnIn=null
     trigger gg_trg_ShinrasPlan_ShardTurnIn=null
     trigger gg_trg_ShinrasPlan_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_SHINRAS_PLAN=0
 endglobals
+
+function ShinrasPlan_Define takes nothing returns nothing
+    local integer q=Quest_Define("Shinra's Plan",QUEST_SIDE,42,"ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    set QUEST_SHINRAS_PLAN=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Shinra (gg_trg_ShinrasPlan_Start)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to find some |cffffcc00Theurgic Water|r. It is unknown what he needs it for.")
+    // 2. Bring him Theurgic Water (gg_trg_ShinrasPlan_WaterTurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to bring him a |cffffcc00Unique Ice Shard|r. It is unknown what he needs it for.")
+    call Quest_Message(q,"Bring a Unique Ice Shard to Shinra.")
+    // 3. Bring him a Unique Ice Shard (gg_trg_ShinrasPlan_ShardTurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to bring him |cffffcc00Aire Tam Enib Moc|r. It is unknown what he needs it for.")
+    call Quest_Message(q,"Bring an artifact called \"Aire Tam Enib Moc\" to Shinra.")
+    // 4. Bring him Aire Tam Enib Moc (gg_trg_ShinrasPlan_Complete)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_ShinrasPlan_Prepare_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[40]))and(IsQuestCompleted(udg_MainQuest[8]))
 endfunction
 
+// Shinra's Plan becomes available: the "!" over Shinra.
 function Trig_ShinrasPlan_Prepare_Actions takes nothing returns nothing
+    if QUEST_SHINRAS_PLAN==0 then
+        call ShinrasPlan_Define()
+    endif
     set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_ShinrasPlan_Start)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -30,6 +59,7 @@ function Trig_ShinrasPlan_Start_Cond_ShowDialogue takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Shinra.
 function Trig_ShinrasPlan_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[62])
@@ -53,8 +83,7 @@ function Trig_ShinrasPlan_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Deal.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Shinra's Plan|r")
-    set udg_SideQuest[42]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Shinra's Plan"),"Shinra, an Al Bhed child from Spira, has asked you to find some |cffffcc00Theurgic Water|r. It is unknown what he needs it for.","ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    call Quest_Start(QUEST_SHINRAS_PLAN,GetTriggerPlayer(),GetTriggerUnit())
     set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_ShinrasPlan_WaterTurnIn)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -72,6 +101,7 @@ function Trig_ShinrasPlan_WaterTurnIn_Cond_ShowDialogue takes nothing returns bo
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 2: a hero brings Theurgic Water.
 function Trig_ShinrasPlan_WaterTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_WaterTurnIn_Cond_ItemHasCharges())then
@@ -90,8 +120,7 @@ function Trig_ShinrasPlan_WaterTurnIn_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring a Unique Ice Shard to Shinra.")
-    call QuestSetDescriptionBJ(udg_SideQuest[42],"Shinra, an Al Bhed child from Spira, has asked you to bring him a |cffffcc00Unique Ice Shard|r. It is unknown what he needs it for.")
+    call Quest_StepDone(QUEST_SHINRAS_PLAN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_ShinrasPlan_ShardTurnIn)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -108,6 +137,7 @@ function Trig_ShinrasPlan_ShardTurnIn_Cond_ShowDialogue takes nothing returns bo
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 3: a hero brings a Unique Ice Shard.
 function Trig_ShinrasPlan_ShardTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_ShardTurnIn_Cond_ItemHasCharges())then
@@ -128,8 +158,7 @@ function Trig_ShinrasPlan_ShardTurnIn_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring an artifact called \"Aire Tam Enib Moc\" to Shinra.")
-    call QuestSetDescriptionBJ(udg_SideQuest[42],"Shinra, an Al Bhed child from Spira, has asked you to bring him |cffffcc00Aire Tam Enib Moc|r. It is unknown what he needs it for.")
+    call Quest_StepDone(QUEST_SHINRAS_PLAN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_ShinrasPlan_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -146,6 +175,7 @@ function Trig_ShinrasPlan_Complete_Cond_ShowDialogue takes nothing returns boole
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 4: a hero brings Aire Tam Enib Moc. Shinra rewards the party and teleports away.
 function Trig_ShinrasPlan_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_Complete_Cond_ItemHasCharges())then
@@ -178,9 +208,7 @@ function Trig_ShinrasPlan_Complete_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call ShowUnitHide(gg_unit_n034_0109)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Shinra's Plan|r")
-    call QuestSetCompletedBJ(udg_SideQuest[42],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_SHINRAS_PLAN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call ConditionalTriggerExecute(gg_trg_AlmightyShinra_Arm)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

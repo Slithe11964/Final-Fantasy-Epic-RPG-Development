@@ -53,9 +53,7 @@ function Trig_Boss_Lilith_Death_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call SetUnitOwner(gg_unit_Eill_0119,Player(8),true)
     call SetUnitInvulnerable(gg_unit_Eill_0119,true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Holy Knight|r")
-    call QuestSetCompletedBJ(udg_SideQuest[31],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestHolyKnight_LilithSlain") // quest "Holy Knight" done
     call SaveIntegerBJ(1,2,'g',udg_GameStateHash)
     call StartTimerBJ(udg_AlmaDisappearTimer,false,300.)
     call EnableTrigger(gg_trg_Alma_Disappear)

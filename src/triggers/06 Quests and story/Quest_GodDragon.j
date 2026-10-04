@@ -1,8 +1,39 @@
-library TQuestGodDragon requires TCam, TCine, TPlayerHero, TText, TUnit
+library TQuestGodDragon requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TUnit
+// Main quest "God Dragon" (udg_MainQuest[17]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Montblanc, leader of the Hunt Club, sends the party after the God Dragon, which
+// turns out to be ridden by Zodiark, the 13th Zodiac Brave. All steps are custom: Start (talk to Montblanc)
+// calls Quest_Start, Zodiark shows himself (Zodiark calls QuestGodDragon_ZodiarkAppears) and Zodiark dies
+// (Boss_GodDragon calls QuestGodDragon_ZodiarkSlain). The "!" and "?" over Montblanc are this module's
+// and Montblanc's own effects. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_GodDragon_Start=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_GOD_DRAGON=0
 endglobals
+
+function QuestGodDragon_Define takes nothing returns nothing
+    local integer q=Quest_Define("God Dragon",QUEST_MAIN,17,"ReplaceableTextures\\CommandButtons\\BTNAzureDragon.blp")
+    set QUEST_GOD_DRAGON=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Montblanc (gg_trg_Quest_GodDragon_Start)
+    call Quest_Custom(q,"Montblanc, leader of the Hunt Club, hired you to take down the god dragon, the primary target and founding reason of the entire club.")
+    // 2. Find the God Dragon: Zodiark shows himself (Zodiark)
+    call Quest_Custom(q,"Defeat Zodiark, the Zodiac Brave of Darkness.")
+    // 3. Defeat Zodiark (Boss_GodDragon)
+    call Quest_Custom(q,"")
+endfunction
+
+// Zodiark shows himself and the fight begins (called by Zodiark through ExecuteFunc).
+function QuestGodDragon_ZodiarkAppears takes nothing returns nothing
+    call Quest_StepDone(QUEST_GOD_DRAGON,null,null)
+endfunction
+
+// Zodiark is dead: the quest is done (called by Boss_GodDragon through ExecuteFunc).
+function QuestGodDragon_ZodiarkSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_GOD_DRAGON,null,null)
+endfunction
 
 function Trig_Quest_GodDragon_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0CE_0020,true,true,true))
@@ -16,6 +47,7 @@ function Trig_Quest_GodDragon_Start_HuntStillOpen takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[61])==false)and(IsQuestFailed(udg_SideQuest[61])==false)
 endfunction
 
+// Step 1: a hero talks to Montblanc. The God Dragon appears at the place he marked.
 function Trig_Quest_GodDragon_Start_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -36,8 +68,10 @@ function Trig_Quest_GodDragon_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_n0CE_0020,"I've marked on your map where you will most likely encounter it. Godspeed, mighty hunter.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00God Dragon|r")
-    set udg_MainQuest[17]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"God Dragon"),"Montblanc, leader of the Hunt Club, hired you to take down the god dragon, the primary target and founding reason of the entire club.","ReplaceableTextures\\CommandButtons\\BTNAzureDragon.blp")
+    if QUEST_GOD_DRAGON==0 then
+        call QuestGodDragon_Define()
+    endif
+    call Quest_Start(QUEST_GOD_DRAGON,GetTriggerPlayer(),GetTriggerUnit())
     set udg_MontblancHasNews=false
     if(Trig_Quest_GodDragon_Start_HuntStillOpen())then
         set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")

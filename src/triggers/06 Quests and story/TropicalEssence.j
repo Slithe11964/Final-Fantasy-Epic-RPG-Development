@@ -1,4 +1,4 @@
-library TTropicalEssence requires TCam, TCine, TPlayerHero, TText
+library TTropicalEssence requires TQuestEngine, TCam, TCine, TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TropicalEssence_TurnIn=null
@@ -34,8 +34,7 @@ function Trig_TropicalEssence_TurnIn_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring a Death Seeker to Shinra.")
-    call QuestSetDescriptionBJ(udg_SideQuest[40],"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nShinra now needs a |cffffcc00Death Seeker|r. The reason is unknown.")
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_DeathSeeker_TurnIn)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

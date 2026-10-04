@@ -1,26 +1,27 @@
-library TQuestKingOfSea requires TCam, TCine, TPlayerHero, TReward, TText
+library TQuestKingOfSea requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText
+// Side quest "King of the Sea", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Fishing up the Nebra King (NebraKing module) starts it; kill him and show his head to Anabel. The
+// hand-in stays a module trigger (enabled by Nebra Angler; its dialogue depends on how often he fled).
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
-    trigger gg_trg_Quest_KingOfSea_Slain=null
     trigger gg_trg_Quest_KingOfSea_Reward=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_KING_OF_SEA=0
 endglobals
 
-function Trig_Quest_KingOfSea_Slain_Cond_TrackBossKill takes nothing returns boolean
-    return(udg_SpeedrunMode)
-endfunction
-
-function Trig_Quest_KingOfSea_Slain_Actions takes nothing returns nothing
+// Step 2 done (the Nebra King is slain): his head and treasure drop.
+function QuestKingOfSea_Slain takes nothing returns nothing
     local location l_tempPoint
-    call DisableTrigger(GetTriggeringTrigger())
-    if(Trig_Quest_KingOfSea_Slain_Cond_TrackBossKill())then
-        set udg_BossUnit=GetTriggerUnit()
+    if udg_SpeedrunMode then
+        set udg_BossUnit=gg_unit_H02W_0246
         call ConditionalTriggerExecute(gg_trg_Speedrun_Accolade)
     endif
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossGroup)
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossUnits)
     call PauseTimerBJ(true,udg_NebraKingTimer)
     set udg_FishLoot[90]='I0GW' // 'I0GW': item "Gold Fish"
-    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+    set l_tempPoint=GetUnitLoc(gg_unit_H02W_0246)
     call CreateItemLoc('I0GR',l_tempPoint) // 'I0GR': item "Nebra King Head"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
@@ -30,10 +31,42 @@ function Trig_Quest_KingOfSea_Slain_Actions takes nothing returns nothing
     call CreateItemLoc('I01Z',l_tempPoint) // 'I01Z': item "Crystal Shard"
     call RemoveLocation(l_tempPoint)
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
-    call QuestSetDescriptionBJ(udg_SideQuest[48],"You've taken down the Nebra King! Now show your achievement to someone who may be interested.")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Show proof of your achievement to an interested party.")
-    call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
+endfunction
+
+function QuestKingOfSea_Define takes nothing returns nothing
+    local integer q=Quest_Define("King of the Sea",QUEST_SIDE,48,"ReplaceableTextures\\CommandButtons\\BTNMurlocFlesheater.blp")
+    set QUEST_KING_OF_SEA=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. The Nebra King is fished up for the first time (QuestKingOfSea_Summoned, from NebraKing_Summon)
+    call Quest_Custom(q,"Defeat the Nebra King!")
+    // 2. Kill the Nebra King
+    call Quest_Kill(q,gg_unit_H02W_0246,"You've taken down the Nebra King! Now show your achievement to someone who may be interested.")
+    call Quest_Message(q,"Show proof of your achievement to an interested party.")
+    call Quest_OnDone(q,"QuestKingOfSea_Slain")
+    // 3. Show his head to Anabel (gg_trg_Quest_KingOfSea_Reward)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by NebraKing_Summon (through ExecuteFunc) each time the Nebra King is fished up.
+function QuestKingOfSea_Summoned takes nothing returns nothing
+    if IsQuestDiscovered(udg_SideQuest[48])==false then
+        if QUEST_KING_OF_SEA==0 then
+            call QuestKingOfSea_Define()
+        endif
+        call Quest_Start(QUEST_KING_OF_SEA,null,null)
+    else
+        // the log text and the announcement differ, so the announcement is shown here
+        call Quest_SetLog(QUEST_KING_OF_SEA,"Kill the Nebra King!",false)
+        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra King.")
+    endif
+endfunction
+
+// Called by NebraKing_Escape (through ExecuteFunc) when the Nebra King dives away.
+function QuestKingOfSea_Escaped takes nothing returns nothing
+    call Quest_SetLog(QUEST_KING_OF_SEA,"The Nebra King has disappeared! Find him again!",false)
+    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra King again.")
 endfunction
 
 function Trig_Quest_KingOfSea_Reward_Conditions takes nothing returns boolean
@@ -91,9 +124,7 @@ function Trig_Quest_KingOfSea_Reward_Actions takes nothing returns nothing
         set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
         set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=$BA // $BA = 186
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00King of the Sea|r")
-    call QuestSetCompletedBJ(udg_SideQuest[48],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_KING_OF_SEA,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -103,13 +134,6 @@ endfunction
 // ---- Trigger registration ----
 // These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
 // which keeps the original registration order.
-
-function Register_Quest_KingOfSea_Slain takes nothing returns nothing
-    set gg_trg_Quest_KingOfSea_Slain=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_KingOfSea_Slain)
-    call TriggerRegisterUnitEvent(gg_trg_Quest_KingOfSea_Slain,gg_unit_H02W_0246,EVENT_UNIT_DEATH)
-    call TriggerAddAction(gg_trg_Quest_KingOfSea_Slain,function Trig_Quest_KingOfSea_Slain_Actions)
-endfunction
 
 function Register_Quest_KingOfSea_Reward takes nothing returns nothing
     set gg_trg_Quest_KingOfSea_Reward=CreateTrigger()

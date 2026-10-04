@@ -100,10 +100,8 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
             call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_PURPLE)
             call SetHeroLevelBJ(GetLastCreatedUnit(),65,false)
             set udg_NebraMonstrum=GetLastCreatedUnit()
-            call TriggerRegisterUnitEvent(gg_trg_Quest_Monstrum_Complete,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
-            call EnableTrigger(gg_trg_Quest_Monstrum_Complete)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Monstrum of the Sea|r")
-            set udg_SideQuest[71]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Monstrum of the Sea"),"A monstrum from the abyss of the sea ambushed you. Kill it!","ReplaceableTextures\\CommandButtons\\BTNForgottenOne.blp")
+            // Monstrum of the Sea quest starts; it is done when this Monstrum dies
+            call ExecuteFunc("QuestMonstrum_Start")
             set udg_MonstrumPhase=0
         else
             call SetUnitPositionLocFacingBJ(udg_NebraMonstrum,l_tempPoint,bj_UNIT_FACING)
@@ -111,8 +109,7 @@ function Trig_Monstrum_Summon_Actions takes nothing returns nothing
             call ShowUnitShow(udg_NebraMonstrum)
             call SetUnitInvulnerable(udg_NebraMonstrum,false)
             call PauseUnitBJ(false,udg_NebraMonstrum)
-            call QuestSetDescriptionBJ(udg_SideQuest[71],"The Nebra Monstrum has reappeared! Kill it!")
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra Monstrum.")
+            call ExecuteFunc("QuestMonstrum_Reappeared")
         endif
         call RemoveLocation(l_tempPoint)
         call SetUnitManaPercentBJ(udg_NebraMonstrum,'d')
@@ -197,8 +194,7 @@ function Trig_Monstrum_Phase_Check_Actions takes nothing returns nothing
         call GroupClear(udg_TentacleGroup)
         call ShowUnitHide(udg_NebraMonstrum)
         call GroupRemoveUnitSimple(udg_NebraMonstrum,udg_BossUnits)
-        call QuestSetDescriptionBJ(udg_SideQuest[71],"The Nebra Monstrum has dived down under! Find it again!")
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra Monstrum again.")
+        call ExecuteFunc("QuestMonstrum_Dived")
         call StartTimerBJ(udg_TentacleTimer,false,20.)
         set udg_DispelTarget=udg_NebraMonstrum
         call ConditionalTriggerExecute(gg_trg_Remove_Debuffs)

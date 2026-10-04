@@ -1,4 +1,4 @@
-library TDeathSeeker requires TCam, TCine, TPlayerHero, TText, TWait
+library TDeathSeeker requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DeathSeeker_Give=null
@@ -73,8 +73,7 @@ function Trig_DeathSeeker_TurnIn_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[62]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring a Qu's Frog Head to Shinra.")
-    call QuestSetDescriptionBJ(udg_SideQuest[40],"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nShinra now needs a |cffffcc00Qu's Frog Head|r. So you need to find Qu Frogs, Shinra said there could be some \"around here\".")
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_QuFrog_DrainTick)
     call EnableTrigger(gg_trg_QuFrog_Death)
     call ShowUnitShow(gg_unit_n03A_0136)

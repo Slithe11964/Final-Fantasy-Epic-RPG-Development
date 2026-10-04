@@ -1,4 +1,4 @@
-library TFishingSetup requires TGroup, TPlayerHero
+library TFishingSetup requires TGroup, TPlayerHero, optional TQuestFishyDeals
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Pole_Found=null
@@ -162,8 +162,9 @@ function Trig_Fishing_Pole_Found_Actions takes nothing returns nothing
         call DisableTrigger(gg_trg_Npc_Talk_Ruksel)
         call DestroyTrigger(gg_trg_Npc_Talk_Ruksel)
     endif
-    set udg_SpecialEffect[92]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AW_0223,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_FishyDeals_Start)
+    static if LIBRARY_TQuestFishyDeals then
+        call ExecuteFunc("QuestFishyDeals_Available") // the "!" over Ruksel; the Fishy Deals quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
 endfunction

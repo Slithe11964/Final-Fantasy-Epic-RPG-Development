@@ -1,4 +1,4 @@
-library TMakenroh requires TCam, TCine, TText, TUnit
+library TMakenroh requires TCam, TCine, TText, TUnit, optional TDragonHunt
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Makenroh_Greet=null
@@ -38,8 +38,9 @@ endfunction
 
 function Trig_Makenroh_ShowTalkIcon_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    set udg_SpecialEffect[84]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h032_0007,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_DragonHunt_Start)
+    static if LIBRARY_TDragonHunt then
+        call ExecuteFunc("DragonHunt_Available") // the "!" over Ma'kenroh; the Dragon Hunt quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

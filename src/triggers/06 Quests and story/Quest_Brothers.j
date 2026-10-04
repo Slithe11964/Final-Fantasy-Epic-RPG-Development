@@ -1,12 +1,46 @@
-library TQuestBrothers requires TCine, TGroup, TPlayerHero, TReward, TText, TUnit
+library TQuestBrothers requires TQuestEngine, TCine, TGroup, TPlayerHero, TText, TUnit
+// Side quest "Brothers", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Izlude asks the party to defeat two Eidolons in the mountains; beaten, they guard Kalm. Made available by
+// Kill Elmdor, which runs gg_trg_Quest_Brothers_Available.
+// Izlude's first line names the talking hero's unit type, and the fight ends with a cinematic, so the talk
+// and the fight stay triggers of this module (custom steps); the engine keeps the quest log and the reward.
+// The module shows its own "!" / "?" over Izlude.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Brothers_Init=null
     trigger gg_trg_Quest_Brothers_Available=null
     trigger gg_trg_Quest_Brothers_Start=null
     trigger gg_trg_Quest_Brothers_Defeated=null
-    trigger gg_trg_Quest_Brothers_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_BROTHERS=0
 endglobals
+
+// Quest done: the "?" over Izlude goes, and the Lacerta hunt is offered.
+function QuestBrothers_Done takes nothing returns nothing
+    call DestroyEffectBJ(udg_SpecialEffect[26])
+    call AddUnitToStockBJ('n0BC',gg_unit_n0BW_0094,1,1) // 'n0BC': unit "Hunt: Lacerta"
+    set udg_HuntStock[4]=(udg_HuntStock[4]+1)
+    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
+endfunction
+
+function QuestBrothers_Define takes nothing returns nothing
+    local integer q=Quest_Define("Brothers",QUEST_SIDE,8,"ReplaceableTextures\\CommandButtons\\BTNTauren.blp")
+    set QUEST_BROTHERS=q
+    call Quest_NoMarker(q)
+    // 1. Talk to Izlude (gg_trg_Quest_Brothers_Start)
+    call Quest_Custom(q,"Izlude, Blade Knight from Kalm, asked you to defeat two Eidolons in the mountains.")
+    // 2. Defeat both Eidolons (gg_trg_Quest_Brothers_Defeated)
+    call Quest_Custom(q,"Return to Izlude, Divine Knight from Kalm.")
+    call Quest_Message(q,"Return to Izlude.")
+    // 3. Report back to Izlude
+    call Quest_Return(q,gg_unit_Hdgo_0097,"")
+    call Quest_PingUnit(q)
+    call Quest_Camera(q,gg_cam_005)
+    call Quest_Say(q,gg_unit_Hdgo_0097,"Thank you very much. Our mighty defenders are already here and their presence here makes me hope that we'll be able to protect ourselves if monsters attack Kalm.")
+    call Quest_Say(q,gg_unit_Hdgo_0097,"Please, take this gold as a sign of our gratitude.")
+    call Quest_Reward(q,3000,2500)
+    call Quest_OnDone(q,"QuestBrothers_Done")
+endfunction
 
 function Trig_Quest_Brothers_Init_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_Ocb2_0147)
@@ -35,6 +69,7 @@ function Trig_Quest_Brothers_Start_Cond_CinematicsEnabled takes nothing returns 
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: the party talks to Izlude; the Eidolons appear in the mountains and the quest starts.
 function Trig_Quest_Brothers_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[25])
@@ -61,8 +96,10 @@ function Trig_Quest_Brothers_Start_Actions takes nothing returns nothing
     call ShowUnitShow(gg_unit_Ocbh_0148)
     call GroupAddUnitSimple(gg_unit_Ocb2_0147,udg_BossUnits)
     call GroupAddUnitSimple(gg_unit_Ocbh_0148,udg_BossUnits)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Brothers|r")
-    set udg_SideQuest[8]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffBrothers","Izlude, Blade Knight from Kalm, asked you to defeat two Eidolons in the mountains.","ReplaceableTextures\\CommandButtons\\BTNTauren.blp")
+    if QUEST_BROTHERS==0 then
+        call QuestBrothers_Define()
+    endif
+    call Quest_Start(QUEST_BROTHERS,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[26]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hdgo_0097,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_Quest_Brothers_Defeated)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -124,8 +161,10 @@ function Trig_Quest_Brothers_Defeated_Cond_BothBrothersDefeated takes nothing re
     return(GetBooleanAnd(Trig_Quest_Brothers_Defeated_Cond_Brother2Defeated(),Trig_Quest_Brothers_Defeated_Cond_Brother1Defeated()))
 endfunction
 
+// Step 2: a brother was beaten. Once both are, they swear allegiance and go to guard Kalm.
 function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
     local location l_tempPoint
+    local unit l_killer=GetKillingUnitBJ()
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
     call ReviveHeroLoc(GetDyingUnit(),l_tempPoint,false)
@@ -167,9 +206,8 @@ function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
             call Text_Say(gg_unit_Ocb2_0147,"We shall do as you command.",false)
             call Cine_ExitAction()
         endif
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return to Izlude.")
-        call QuestSetDescriptionBJ(udg_SideQuest[8],"Return to Izlude, Divine Knight from Kalm.")
-        call GroupAddUnitSimple(gg_unit_Hdgo_0097,udg_BossUnits)
+        // the log now says to return to Izlude, who is pinged on the minimap
+        call Quest_StepDone(QUEST_BROTHERS,GetOwningPlayer(l_killer),l_killer)
         set l_tempPoint=GetRectCenter(gg_rct_235)
         call SetUnitPositionLoc(gg_unit_Ocb2_0147,l_tempPoint)
         call RemoveLocation(l_tempPoint)
@@ -212,49 +250,12 @@ function Trig_Quest_Brothers_Defeated_Actions takes nothing returns nothing
             endif
         endif
         call SaveIntegerBJ(1,2,'n',udg_GameStateHash)
-        call EnableTrigger(gg_trg_Quest_Brothers_Complete)
         call EnableTrigger(gg_trg_Brothers_Alert_Eidolons)
         call StartTimerBJ(udg_SharedDelayTimer4,false,30.)
         call DestroyTrigger(GetTriggeringTrigger())
     endif
     set l_tempPoint=null
-endfunction
-
-function Trig_Quest_Brothers_Complete_Conditions takes nothing returns boolean
-    return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_Hdgo_0097)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
-endfunction
-
-function Trig_Quest_Brothers_Complete_Enum_ApplyCamera takes nothing returns nothing
-    call CameraSetupApplyForPlayer(true,gg_cam_005,GetEnumPlayer(),1.)
-endfunction
-
-function Trig_Quest_Brothers_Complete_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_Brothers_Complete_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[26])
-    call GroupRemoveUnitSimple(gg_unit_Hdgo_0097,udg_BossUnits)
-    if(Trig_Quest_Brothers_Complete_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call ForForce(udg_PlayingPlayers,function Trig_Quest_Brothers_Complete_Enum_ApplyCamera)
-        call Text_Say(gg_unit_Hdgo_0097,"Thank you very much. Our mighty defenders are already here and their presence here makes me hope that we'll be able to protect ourselves if monsters attack Kalm.",false)
-        call Text_Say(gg_unit_Hdgo_0097,"Please, take this gold as a sign of our gratitude.",false)
-        call Reward_Give($BB8,$9C4,gg_unit_Hdgo_0097) // $BB8 = 3000; $9C4 = 2500
-        call Cine_ExitAction()
-    else
-        call Reward_Give($BB8,$9C4,gg_unit_Hdgo_0097) // $BB8 = 3000; $9C4 = 2500
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Brothers|r")
-    call QuestSetCompletedBJ(udg_SideQuest[8],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    call AddUnitToStockBJ('n0BC',gg_unit_n0BW_0094,1,1) // 'n0BC': unit "Hunt: Lacerta"
-    set udg_HuntStock[4]=(udg_HuntStock[4]+1)
-    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
-    call DestroyTrigger(GetTriggeringTrigger())
+    set l_killer=null
 endfunction
 
 function InitTrig_Quest_Brothers takes nothing returns nothing
@@ -296,14 +297,6 @@ function Register_Quest_Brothers_Defeated takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Quest_Brothers_Defeated,gg_unit_Ocb2_0147,EVENT_UNIT_DEATH)
     call TriggerRegisterUnitEvent(gg_trg_Quest_Brothers_Defeated,gg_unit_Ocbh_0148,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Quest_Brothers_Defeated,function Trig_Quest_Brothers_Defeated_Actions)
-endfunction
-
-function Register_Quest_Brothers_Complete takes nothing returns nothing
-    set gg_trg_Quest_Brothers_Complete=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Brothers_Complete)
-    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Brothers_Complete,450.,gg_unit_Hdgo_0097)
-    call TriggerAddCondition(gg_trg_Quest_Brothers_Complete,Condition(function Trig_Quest_Brothers_Complete_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Brothers_Complete,function Trig_Quest_Brothers_Complete_Actions)
 endfunction
 
 endlibrary

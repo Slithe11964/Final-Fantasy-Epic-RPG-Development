@@ -1,9 +1,51 @@
-library TJudgment requires TCam, TCine, TPlayerHero, TText, TWait
+library TJudgment requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait
+// Alberich's judgment (after the talk in Quest_NorthernGod): attacking him or walking away both lead
+// to the side quest "The Northern God", which this module defines for the quest engine (QuestEngine
+// module, docs/QUEST_ENGINE.md). Steps: the judgment is made (Attack/Spare call Quest_Start), Odin is
+// challenged at the old mine (Boss_Odin's Intro calls Judgment_OdinChallenged), Odin is defeated
+// (Boss_Odin's Death calls Judgment_OdinDefeated). The "!" over Odin is Boss_Odin's own effect. It does
+// not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Judgment_Attack_Alberich=null
     trigger gg_trg_Judgment_Spare_Alberich=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_NORTHERN_GOD=0
 endglobals
+
+function Judgment_DefineNorthernGod takes nothing returns nothing
+    local integer q=Quest_Define("The Northern God",QUEST_SIDE,35,"ReplaceableTextures\\CommandButtons\\BTNChaosWarlord.blp")
+    set QUEST_NORTHERN_GOD=q
+    call Quest_Color(q,udg_QuestTitleRed)
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Judge Alberich (Attack/Spare call Judgment_StartNorthernGod)
+    call Quest_Custom(q,"Face off against the Northern God at the old Arcanium mine.")
+    // 2. Talk to Odin at the old mine (Boss_Odin calls Judgment_OdinChallenged)
+    call Quest_Custom(q,"Defeat Odin, the Northern God himself, in battle.")
+    call Quest_Message(q,"Defeat Odin.")
+    // 3. Defeat Odin (Boss_Odin calls Judgment_OdinDefeated); 80000 gold, no exp
+    call Quest_Custom(q,"")
+    call Quest_Reward(q,80000,0)
+endfunction
+
+// Alberich was judged (attacked or left alone): the quest starts.
+function Judgment_StartNorthernGod takes nothing returns nothing
+    if QUEST_NORTHERN_GOD==0 then
+        call Judgment_DefineNorthernGod()
+    endif
+    call Quest_Start(QUEST_NORTHERN_GOD,udg_JudgePlayer,null)
+endfunction
+
+// Called by Boss_Odin (through ExecuteFunc) when the party has talked to Odin and the battle begins.
+function Judgment_OdinChallenged takes nothing returns nothing
+    call Quest_StepDone(QUEST_NORTHERN_GOD,udg_JudgePlayer,null)
+endfunction
+
+// Called by Boss_Odin (through ExecuteFunc) when Odin is defeated: reward, quest completed.
+function Judgment_OdinDefeated takes nothing returns nothing
+    call Quest_StepDone(QUEST_NORTHERN_GOD,udg_JudgePlayer,null)
+endfunction
 
 function Trig_Judgment_Attack_Alberich_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_h037_0257)
@@ -62,8 +104,7 @@ function Trig_Judgment_Attack_Alberich_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
     endif
     call RemoveUnit(gg_unit_h037_0257)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00The Northern God|r")
-    set udg_SideQuest[35]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"The Northern God"),"Face off against the Northern God at the old Arcanium mine.","ReplaceableTextures\\CommandButtons\\BTNChaosWarlord.blp")
+    call Judgment_StartNorthernGod()
     set udg_TempPoint=GetRectCenter(gg_rct_677)
     call SetUnitPositionLocFacingBJ(gg_unit_H01M_0071,udg_TempPoint,270.)
     set l_tempPoint2=OffsetLocation(udg_TempPoint,-300.,0)
@@ -183,8 +224,7 @@ function Trig_Judgment_Spare_Alberich_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
     endif
     call RemoveUnit(gg_unit_h037_0257)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00The Northern God|r")
-    set udg_SideQuest[35]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"The Northern God"),"Face off against the Northern God at the old Arcanium mine.","ReplaceableTextures\\CommandButtons\\BTNChaosWarlord.blp")
+    call Judgment_StartNorthernGod()
     set udg_TempPoint=GetRectCenter(gg_rct_677)
     call SetUnitPositionLocFacingBJ(gg_unit_H01M_0071,udg_TempPoint,270.)
     set udg_TempPoint2=OffsetLocation(udg_TempPoint,-300.,0)

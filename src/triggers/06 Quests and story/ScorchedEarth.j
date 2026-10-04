@@ -1,4 +1,4 @@
-library TScorchedEarth requires TCam, TCine, TForce, TPlayerHero, TText, TWait
+library TScorchedEarth requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TText, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ScorchedEarth_Omen=null
@@ -128,6 +128,8 @@ function Trig_ScorchedEarth_Barrier_Cond_HasHellFlame takes nothing returns bool
     return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"
 endfunction
 
+// A hero walks into the barrier to the mountain's top: with a Hell Gate's Flame it is erased (quest
+// "Scorched Earth", step 2).
 function Trig_ScorchedEarth_Barrier_Actions takes nothing returns nothing
     if(Trig_ScorchedEarth_Barrier_Cond_HasHellFlame())then
         call DisableTrigger(GetTriggeringTrigger())
@@ -138,8 +140,7 @@ function Trig_ScorchedEarth_Barrier_Actions takes nothing returns nothing
         endif
         call KillDestructable(gg_dest_Dofv_0001)
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,(udg_PlayerName[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+" used a Hell Gate's Flame to erase the barrier to the top of the Infernal Mountain."))
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Approach the mountain's top.")
-        call QuestSetDescriptionBJ(udg_SideQuest[52],"Approach the Infernal Mountain's top to confront the entity who caused this inferno.")
+        call Quest_StepDone(QUEST_SCORCHED_EARTH,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
         call EnableTrigger(gg_trg_McBurn_TrueForm_Reveal)
         call AddUnitToStockBJ('n0NF',gg_unit_nsw2_0056,1,1) // 'n0NF': unit "Hunt: Okuu"
         set udg_HuntStock[$A]=(udg_HuntStock[$A]+1) // $A = 10

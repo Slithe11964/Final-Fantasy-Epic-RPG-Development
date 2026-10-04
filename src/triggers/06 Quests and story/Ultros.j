@@ -7,10 +7,6 @@ globals
     trigger gg_trg_Ultros_Death=null
 endglobals
 
-function Trig_Ultros_Spawn_IsQuestActive takes nothing returns boolean
-    return(IsQuestFailed(udg_SideQuest[58])==false)
-endfunction
-
 function Trig_Ultros_Spawn_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'n0C1',Player($B),udg_TempPoint,bj_UNIT_FACING) // 'n0C1': unit "Ultros"; $B = 11
     call SetUnitColor(GetLastCreatedUnit(),PLAYER_COLOR_PINK)
@@ -21,10 +17,8 @@ function Trig_Ultros_Spawn_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Ultros_SummonTentacle)
     call EnableTrigger(gg_trg_Ultros_Death)
     call EnableTrigger(gg_trg_Ultros_TentacleDeath)
-    if(Trig_Ultros_Spawn_IsQuestActive())then
-        call QuestSetDescriptionBJ(udg_SideQuest[58],"Defeat Ultros.")
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Ultros.")
-    endif
+    // the Tentacles quest moves on to "Defeat Ultros." (if it has not failed)
+    call ExecuteFunc("Tentacles_UltrosAppears")
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -67,10 +61,6 @@ function Trig_Ultros_Death_KillEnumUnit takes nothing returns nothing
     call KillUnit(GetEnumUnit())
 endfunction
 
-function Trig_Ultros_Death_IsQuestActive takes nothing returns boolean
-    return(IsQuestFailed(udg_SideQuest[58])==false)
-endfunction
-
 function Trig_Ultros_Death_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -93,12 +83,8 @@ function Trig_Ultros_Death_Actions takes nothing returns nothing
     call GroupClear(udg_TentacleGroup)
     set udg_TentacleCount=-2
     call EnableTrigger(gg_trg_Monstrum_Ambush_Arm)
-    if(Trig_Ultros_Death_IsQuestActive())then
-        call QuestSetDescriptionBJ(udg_SideQuest[58],"Return to Sarai.")
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return to Sarai.")
-        call GroupAddUnitSimple(gg_unit_e013_0176,udg_BossUnits)
-        call EnableTrigger(gg_trg_Tentacles_Reward)
-    endif
+    // the Tentacles quest moves on to "Return to Sarai." (if it has not failed)
+    call ExecuteFunc("Tentacles_UltrosSlain")
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
 endfunction

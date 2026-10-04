@@ -1,8 +1,28 @@
-library TQuestTargetPractice requires TCam, TCine, TPlayerHero, TText, TUnit
+library TQuestTargetPractice requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TUnit
+// Side quest "Target Practice", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Aisha from the Phantom Village challenges the party to her target practice gauntlet (TargetPractice
+// module). The talk stays a module trigger (Aisha is paused during it); TargetPractice moves the quest on
+// and hands out the reward. The quest fails if Dana dies (TargetPractice_Fail, run by Dana).
+// Does not count toward the story; Aisha's own markers (udg_SpecialEffect[81]) are kept.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_TargetPractice_Start=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_TARGET_PRACTICE=0
 endglobals
+
+function QuestTargetPractice_Define takes nothing returns nothing
+    local integer q=Quest_Define("Target Practice",QUEST_SIDE,14,"ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp")
+    set QUEST_TARGET_PRACTICE=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Aisha (gg_trg_Quest_TargetPractice_Start)
+    call Quest_Custom(q,"Aisha from the Phantom Village has asked you to show her your skills in a target practice session. Speak with her again to take her challenge!")
+    // 2. Hit every target in time (gg_trg_TargetPractice_TargetHit)
+    call Quest_Custom(q,"Return to Aisha for a reward.")
+    // 3. Report back to Aisha (gg_trg_TargetPractice_Reward)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_TargetPractice_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e017_0018,true,true,true))
@@ -30,8 +50,10 @@ function Trig_Quest_TargetPractice_Start_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     call PauseUnitBJ(false,gg_unit_e017_0018)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Target Practice|r")
-    set udg_SideQuest[$E]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Target Practice"),"Aisha from the Phantom Village has asked you to show her your skills in a target practice session. Speak with her again to take her challenge!","ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp") // $E = 14
+    if QUEST_TARGET_PRACTICE==0 then
+        call QuestTargetPractice_Define()
+    endif
+    call Quest_Start(QUEST_TARGET_PRACTICE,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[81]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e017_0018,"Objects\\RandomObject\\RandomObject.mdl")
     call UnitAddAbilityBJ('Aneu',gg_unit_e017_0018) // 'Aneu': standard ability reference "Neutral Building"
     call AddUnitToStockBJ('n0CF',gg_unit_e017_0018,1,1) // 'n0CF': unit "Target Practice Start"

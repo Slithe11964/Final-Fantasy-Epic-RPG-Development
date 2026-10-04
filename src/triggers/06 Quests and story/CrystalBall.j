@@ -50,7 +50,7 @@ function Trig_CrystalBall_Pickup_Actions takes nothing returns nothing
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Crystal Ball to Undomiel.")
     call DestroyForce(l_tempForce)
-    call QuestSetDescriptionBJ(udg_SideQuest[21],"Bring the Crystal Ball to Undomiel.")
+    call ExecuteFunc("Nimphrodel_BallTaken") // the quest log: "Bring the Crystal Ball to Undomiel."
     call EnableTrigger(gg_trg_Nimphrodel_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempForce=null

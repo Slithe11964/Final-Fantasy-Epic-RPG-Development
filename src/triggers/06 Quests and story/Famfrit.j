@@ -39,8 +39,7 @@ function Trig_Famfrit_Encounter_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_U00N_0205,false)
     call Music_SetTrack($D) // $D = 13
     call EnableTrigger(gg_trg_Boss_Famfrit_Death)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Famfrit, the Zodiac Brave of Water.")
-    call QuestSetDescriptionBJ(udg_MainQuest[$F],"Defeat Famfrit, the Zodiac Brave of Water.") // $F = 15
+    call ExecuteFunc("QuestIllusions_FamfritAppears") // quest log: "Defeat Famfrit ..."
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

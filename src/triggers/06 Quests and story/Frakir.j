@@ -1,4 +1,4 @@
-library TFrakir requires TCam, TCine, TText, TUnit
+library TFrakir requires TCam, TCine, TText, TUnit, optional TQuestSpiritHunt
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Frakir_ShowMarker=null
@@ -57,13 +57,15 @@ function Trig_Frakir_NextMarker_Cond_FrakirLoreHeard takes nothing returns boole
 endfunction
 
 function Trig_Frakir_NextMarker_Actions takes nothing returns nothing
-    if(Trig_Frakir_NextMarker_Cond_FrakirLoreHeard())then
-        set udg_SpecialEffect[9]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_nsw2_0056,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    else
+    if(Trig_Frakir_NextMarker_Cond_FrakirLoreHeard()==false)then
+        // the lore talk's "!" goes; the Spirit Hunt quest shows its own
+        call DestroyEffectBJ(udg_SpecialEffect[9])
         call DisableTrigger(gg_trg_Frakir_Lore_Talk)
         call DestroyTrigger(gg_trg_Frakir_Lore_Talk)
     endif
-    call EnableTrigger(gg_trg_Quest_SpiritHunt_Start)
+    static if LIBRARY_TQuestSpiritHunt then
+        call ExecuteFunc("QuestSpiritHunt_Available") // the "!" over Frakir; the Spirit Hunt quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

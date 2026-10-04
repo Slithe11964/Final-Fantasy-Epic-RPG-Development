@@ -1,4 +1,4 @@
-library TChocoboRider requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TChocoboRider requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ChocoboRider_Start=null
@@ -6,7 +6,49 @@ globals
     trigger gg_trg_ChocoboRider_Progress=null
     trigger gg_trg_ChocoboRider_FoundTreasure=null
     trigger gg_trg_ChocoboRider_Reward=null
+    // The quest's number in the quest engine (0 until it is defined). Talking to Billy first starts
+    // QUEST_CHOCOBO_RIDER (tame a chocobo, then dig up the treasure); bringing him a chocobo before that starts
+    // QUEST_CHOCOBO_RIDER_DIRECT (dig up the treasure straight away). Both use the log entry udg_SideQuest[64].
+    integer QUEST_CHOCOBO_RIDER=0
+    integer QUEST_CHOCOBO_RIDER_DIRECT=0
 endglobals
+
+// Side quest "Chocobo Rider", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md). Billy's
+// talks (dialogue depends on what the party has done) and the treasure stay module triggers; they move the
+// quest on. Billy's own markers (udg_SpecialEffect[86]) are kept. Does not count toward the story.
+function ChocoboRider_Define takes nothing returns nothing
+    local integer q=Quest_Define("Chocobo Rider",QUEST_SIDE,64,"ReplaceableTextures\\CommandButtons\\BTNCritterChicken.blp")
+    set QUEST_CHOCOBO_RIDER=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Billy (gg_trg_ChocoboRider_Start)
+    call Quest_Custom(q,"Billy, taking over his father Bill's work of taking care of chocobos, is teaching you how to handle chocobos. Tame a chocobo using a Nut and bring it back to him!")
+    // 2. Bring him a chocobo (gg_trg_ChocoboRider_Progress)
+    call Quest_Custom(q,"Dig up the treasure Billy hid somewhere on the Farm. Use Dead Pepper sold by Billy for this task.")
+    call Quest_Message(q,"Dig up the treasure Billy hid somewhere on the Farm.")
+    // 3. Dig up the treasure (gg_trg_ChocoboRider_FoundTreasure)
+    call Quest_Custom(q,"Return to Billy.")
+    // 4. Report back to Billy (gg_trg_ChocoboRider_Reward)
+    call Quest_Custom(q,"")
+    set q=Quest_Define("Chocobo Rider",QUEST_SIDE,64,"ReplaceableTextures\\CommandButtons\\BTNCritterChicken.blp")
+    set QUEST_CHOCOBO_RIDER_DIRECT=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Bring Billy a chocobo (gg_trg_ChocoboRider_StartWithChocobo)
+    call Quest_Custom(q,"Billy, taking over his father Bill's work of taking care of chocobos, has hidden a treasure somewhere on the Farm for you to dig up. Use the Dead Peppers he sells to find it!")
+    // 2. Dig up the treasure (gg_trg_ChocoboRider_FoundTreasure)
+    call Quest_Custom(q,"Return to Billy.")
+    // 3. Report back to Billy (gg_trg_ChocoboRider_Reward)
+    call Quest_Custom(q,"")
+endfunction
+
+// The variant of the quest that was started.
+function ChocoboRider_Current takes nothing returns integer
+    if Quest_IsActive(QUEST_CHOCOBO_RIDER_DIRECT) then
+        return QUEST_CHOCOBO_RIDER_DIRECT
+    endif
+    return QUEST_CHOCOBO_RIDER
+endfunction
 
 function Trig_ChocoboRider_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0KE_0072,true,true,true))
@@ -39,8 +81,10 @@ function Trig_ChocoboRider_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_n0KE_0072,"Once you've tamed a chocobo, bring it to me. We can continue then.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Chocobo Rider|r")
-    set udg_SideQuest[64]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Chocobo Rider"),"Billy, taking over his father Bill's work of taking care of chocobos, is teaching you how to handle chocobos. Tame a chocobo using a Nut and bring it back to him!","ReplaceableTextures\\CommandButtons\\BTNCritterChicken.blp")
+    if QUEST_CHOCOBO_RIDER==0 then
+        call ChocoboRider_Define()
+    endif
+    call Quest_Start(QUEST_CHOCOBO_RIDER,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[86]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0KE_0072,"Objects\\RandomObject\\RandomObject.mdl")
     call AddItemToStockBJ('I045',gg_unit_n0KE_0072,5,5) // 'I045': item "Pram Nut"
     call DisableTrigger(gg_trg_ChocoboRider_StartWithChocobo)
@@ -85,8 +129,10 @@ function Trig_ChocoboRider_StartWithChocobo_Actions takes nothing returns nothin
         call Text_Say(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"That sounds like a challenge. I'll find your treasure.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Chocobo Rider|r")
-    set udg_SideQuest[64]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Chocobo Rider"),"Billy, taking over his father Bill's work of taking care of chocobos, has hidden a treasure somewhere on the Farm for you to dig up. Use the Dead Peppers he sells to find it!","ReplaceableTextures\\CommandButtons\\BTNCritterChicken.blp")
+    if QUEST_CHOCOBO_RIDER==0 then
+        call ChocoboRider_Define()
+    endif
+    call Quest_Start(QUEST_CHOCOBO_RIDER_DIRECT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_SpecialEffect[86]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0KE_0072,"Objects\\RandomObject\\RandomObject.mdl")
     call AddItemToStockBJ('I045',gg_unit_n0KE_0072,5,5) // 'I045': item "Pram Nut"
     call AddItemToStockBJ('I07V',gg_unit_n0KE_0072,$A,$A) // 'I07V': item "Dead Pepper"; $A = 10
@@ -122,8 +168,7 @@ function Trig_ChocoboRider_Progress_Actions takes nothing returns nothing
     endif
     call AddItemToStockBJ('I07V',gg_unit_n0KE_0072,$A,$A) // 'I07V': item "Dead Pepper"; $A = 10
     call EnableTrigger(gg_trg_ChocoboRider_FoundTreasure)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Dig up the treasure Billy hid somewhere on the Farm.")
-    call QuestSetDescriptionBJ(udg_SideQuest[64],"Dig up the treasure Billy hid somewhere on the Farm. Use Dead Pepper sold by Billy for this task.")
+    call Quest_StepDone(QUEST_CHOCOBO_RIDER,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -133,8 +178,7 @@ endfunction
 
 function Trig_ChocoboRider_FoundTreasure_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Return to Billy.")
-    call QuestSetDescriptionBJ(udg_SideQuest[64],"Return to Billy.")
+    call Quest_StepDone(ChocoboRider_Current(),GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_ChocoboRider_Reward)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -172,9 +216,7 @@ function Trig_ChocoboRider_Reward_Actions takes nothing returns nothing
     else
         call Reward_Give(0,$BB8,gg_unit_n0KE_0072) // $BB8 = 3000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Chocobo Rider|r")
-    call QuestSetCompletedBJ(udg_SideQuest[64],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(ChocoboRider_Current(),GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call AddItemToStockBJ('I04O',gg_unit_n0KE_0072,1,1) // 'I04O': item "Chocobo Defending"
     if(Trig_ChocoboRider_Reward_IsSideQuestReady())then
         call StartTimerBJ(udg_StoryDelayTimer,false,180.)

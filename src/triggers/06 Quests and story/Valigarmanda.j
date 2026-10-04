@@ -1,4 +1,4 @@
-library TValigarmanda requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TValigarmanda requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Valigarmanda_Confront=null
@@ -18,6 +18,7 @@ function Trig_Valigarmanda_Confront_PlayConfrontScene takes nothing returns bool
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// A hero comes near Valigarmanda (quest "Dwarf Disappearance", step 2): he and his wave of minions attack.
 function Trig_Valigarmanda_Confront_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Valigarmanda_Confront_PlayConfrontScene())then
@@ -38,8 +39,7 @@ function Trig_Valigarmanda_Confront_Actions takes nothing returns nothing
         call ResetUnitAnimation(gg_unit_n0MC_0265)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Valigarmanda and free the dwarves.")
-    call QuestSetDescriptionBJ(udg_SideQuest[66],"Defeat Valigarmanda and free the dwarves.")
+    call Quest_StepDone(QUEST_DWARF_DISAPPEARANCE,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call PauseUnitBJ(false,gg_unit_n0MC_0265)
     call UnitRemoveAbilityBJ('A0VJ',gg_unit_n0MC_0265) // 'A0VJ': ability "Unaffected by Cinematics"
     call GroupAddUnitSimple(gg_unit_n0MC_0265,udg_BossUnits)
@@ -414,6 +414,7 @@ function Trig_Valigarmanda_Death_PriorQuestDone takes nothing returns boolean
     return(IsQuestCompleted(udg_SideQuest[$D])) // $D = 13
 endfunction
 
+// Valigarmanda died (quest "Dwarf Disappearance", step 3, the last): the dwarves are freed and go home.
 function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -515,9 +516,7 @@ function Trig_Valigarmanda_Death_Actions takes nothing returns nothing
         call KillDestructable(gg_dest_LOcg_0032)
         call KillDestructable(gg_dest_LOcg_0029)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Dwarf Disappearance|r")
-    call QuestSetCompletedBJ(udg_SideQuest[66],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_DWARF_DISAPPEARANCE,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call AddUnitToStockBJ('n0C3',gg_unit_h030_0243,1,1) // 'n0C3': unit "Hunt: Parvati"
     set udg_HuntStock[8]=(udg_HuntStock[8]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)

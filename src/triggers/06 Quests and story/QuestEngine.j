@@ -18,6 +18,7 @@ library TQuestEngine requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, o
 //     Quest_Kill     a unit dies
 //     Quest_Hunt     the party kills N units of the types added with Quest_HuntTarget (hunt leaderboard)
 //     Quest_Deliver  a hero walks up to the NPC carrying an item; hands over charges until N are delivered
+//     Quest_Reach    a hero walks into a region
 //     Quest_Custom   the quest's own code calls Quest_StepDone(q) when the step is done
 // Each step's text is the quest-log description after that step (the first step's text is the quest's
 // first description). When the last step is done the quest is completed, rewarded and counted.
@@ -33,11 +34,13 @@ globals
     constant integer QUEST_STEP_DELIVER=4
     constant integer QUEST_STEP_CUSTOM=5
     constant integer QUEST_STEP_HUNT=6
+    constant integer QUEST_STEP_REACH=7
     constant integer QUEST_MAX_STEPS=16           // steps per quest; step ids are quest*QUEST_MAX_STEPS+step
     constant integer QUEST_STATE_HIDDEN=0
     constant integer QUEST_STATE_AVAILABLE=1
     constant integer QUEST_STATE_ACTIVE=2
     constant integer QUEST_STATE_DONE=3
+    constant integer QUEST_STATE_FAILED=4
     constant real QUEST_RETURN_RANGE=450.
     constant real QUEST_PING_PERIOD=15.
     // quests
@@ -50,6 +53,8 @@ globals
     integer array QuestCurrent
     integer array QuestState
     boolean array QuestCountsStory
+    string array QuestColor                      // colour code before the name in the quest log; "" = default
+    boolean array QuestNoMarker                  // no "!" / "?" over NPCs
     effect array QuestAvailableMarker
     effect array QuestActiveMarker
     unit array QuestActiveMarkerUnit
@@ -64,6 +69,7 @@ globals
     integer array QuestStepDelivered
     string array QuestStepLabel
     integer array QuestStepBoard                 // hunt leaderboard row (udg_HuntCounter index)
+    rect array QuestStepRect                     // reach step: the region to walk into
     questitem array QuestStepRequirement
     integer array QuestStepFirstLine
     integer array QuestStepLines
@@ -85,8 +91,9 @@ globals
     sound array QuestLineSound
     integer array QuestLineIfSideQuest           // > 0: only said if udg_SideQuest[n] is completed
     // which step a step trigger belongs to; hunt target types per step
-    hashtable QuestTriggerStep=InitHashtable()
-    hashtable QuestHuntTargets=InitHashtable()
+    // created by the first Quest_Define, not here: see docs/BUGS.md #7
+    hashtable QuestTriggerStep=null
+    hashtable QuestHuntTargets=null
     // set while a step's custom code runs (Quest_OnDone functions read these)
     integer QuestDoneQuest=0
     player QuestDonePlayer=null
@@ -101,6 +108,10 @@ endglobals
 // ---- defining quests ----
 
 function Quest_Define takes string l_name,integer l_logKind,integer l_logIndex,string l_icon returns integer
+    if QuestTriggerStep==null then
+        set QuestTriggerStep=InitHashtable()
+        set QuestHuntTargets=InitHashtable()
+    endif
     set QuestCount=QuestCount+1
     set QuestName[QuestCount]=l_name
     set QuestLogKind[QuestCount]=l_logKind
@@ -110,6 +121,8 @@ function Quest_Define takes string l_name,integer l_logKind,integer l_logIndex,s
     set QuestCurrent[QuestCount]=0
     set QuestState[QuestCount]=QUEST_STATE_HIDDEN
     set QuestCountsStory[QuestCount]=true
+    set QuestColor[QuestCount]=""
+    set QuestNoMarker[QuestCount]=false
     return QuestCount
 endfunction
 
@@ -164,6 +177,12 @@ function Quest_Deliver takes integer q,unit l_npc,integer l_itemType,integer l_n
     set QuestStepNeeded[s]=l_needed
     set QuestStepDelivered[s]=0
     set QuestStepLabel[s]=l_label
+endfunction
+
+// Reach: a hero (not the Spirit of Gaya) walks into the region.
+function Quest_Reach takes integer q,rect l_region,string l_log returns nothing
+    local integer s=Quest_AddStep(q,QUEST_STEP_REACH,null,l_log)
+    set QuestStepRect[s]=l_region
 endfunction
 
 function Quest_Custom takes integer q,string l_log returns nothing
@@ -236,6 +255,17 @@ function Quest_OnPickup takes integer q,string l_note,string l_function returns 
     set QuestStepPickupHook[s]=l_function
 endfunction
 
+// The colour code put before the quest's name in the quest log (default: cyan for side quests, gold for
+// main quests). Some quests use udg_QuestTitleColor ("|cffff8040") or udg_QuestTitleRed.
+function Quest_Color takes integer q,string l_color returns nothing
+    set QuestColor[q]=l_color
+endfunction
+
+// No "!" / "?" markers for this quest (its module shows its own, or none).
+function Quest_NoMarker takes integer q returns nothing
+    set QuestNoMarker[q]=true
+endfunction
+
 // Completing this quest does not add to udg_StoryProgress / the quest-count milestones.
 function Quest_NotStory takes integer q returns nothing
     set QuestCountsStory[q]=false
@@ -249,6 +279,15 @@ endfunction
 
 function Quest_IsDone takes integer q returns boolean
     return QuestState[q]==QUEST_STATE_DONE
+endfunction
+
+function Quest_IsFailed takes integer q returns boolean
+    return QuestState[q]==QUEST_STATE_FAILED
+endfunction
+
+// The step the quest is waiting for (1 = first); 0 before it is available.
+function Quest_CurrentStep takes integer q returns integer
+    return QuestCurrent[q]
 endfunction
 
 function Quest_LogEntry takes integer q returns quest
@@ -282,6 +321,8 @@ function QuestEngine_StepCondition takes nothing returns boolean
     elseif l_type==QUEST_STEP_DELIVER then
         // the Spirit of Gaya may hand in items too
         return IsUnitHidden(QuestStepUnit[s])==false and QuestEngine_IsHero(GetTriggerUnit()) and UnitHasItemOfTypeBJ(GetTriggerUnit(),QuestStepItem[s])
+    elseif l_type==QUEST_STEP_REACH then
+        return QuestEngine_IsQuestHero(GetTriggerUnit())
     elseif l_type==QUEST_STEP_HUNT then
         return IsPlayerInForce(GetOwningPlayer(GetKillingUnit()),udg_ActivePlayers) and HaveSavedBoolean(QuestHuntTargets,s,GetUnitTypeId(GetTriggerUnit()))
     endif
@@ -334,7 +375,7 @@ endfunction
 
 // Put the "?" over unit u (nothing if it is already there).
 function QuestEngine_MoveMarker takes integer q,unit u returns nothing
-    if u==null or u==QuestActiveMarkerUnit[q] then
+    if u==null or u==QuestActiveMarkerUnit[q] or QuestNoMarker[q] then
         return
     endif
     if QuestActiveMarker[q]!=null then
@@ -373,10 +414,15 @@ function QuestEngine_Finish takes integer q,integer s,player p,unit u returns no
     if l_step==1 then
         set QuestState[q]=QUEST_STATE_ACTIVE
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00"+QuestName[q]+"|r")
+        if QuestColor[q]=="" and QuestLogKind[q]==QUEST_MAIN then
+            set QuestColor[q]=udg_ColorGold
+        elseif QuestColor[q]=="" then
+            set QuestColor[q]="|cff00ffff"
+        endif
         if QuestLogKind[q]==QUEST_MAIN then
-            set udg_MainQuest[QuestLogIndex[q]]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,udg_ColorGold+QuestName[q],QuestStepLog[s],QuestIcon[q])
+            set udg_MainQuest[QuestLogIndex[q]]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,QuestColor[q]+QuestName[q],QuestStepLog[s],QuestIcon[q])
         else
-            set udg_SideQuest[QuestLogIndex[q]]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffff"+QuestName[q],QuestStepLog[s],QuestIcon[q])
+            set udg_SideQuest[QuestLogIndex[q]]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,QuestColor[q]+QuestName[q],QuestStepLog[s],QuestIcon[q])
         endif
     elseif l_step<QuestSteps[q] then
         if QuestStepMessage[s]!="" then
@@ -576,6 +622,8 @@ function QuestEngine_BeginStep takes integer q returns nothing
         endloop
     elseif l_type==QUEST_STEP_KILL then
         call TriggerRegisterUnitEvent(t,QuestStepUnit[s],EVENT_UNIT_DEATH)
+    elseif l_type==QUEST_STEP_REACH then
+        call TriggerRegisterEnterRectSimple(t,QuestStepRect[s])
     elseif l_type==QUEST_STEP_HUNT then
         call TriggerRegisterAnyUnitEventBJ(t,EVENT_PLAYER_UNIT_DEATH)
         set b=QuestStepBoard[s]
@@ -630,7 +678,7 @@ function Quest_MakeAvailable takes integer q returns nothing
         return
     endif
     set QuestState[q]=QUEST_STATE_AVAILABLE
-    if QuestStepUnit[s]!=null then
+    if QuestStepUnit[s]!=null and not QuestNoMarker[q] then
         set QuestAvailableMarker[q]=AddSpecialEffectTarget("Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl",QuestStepUnit[s],"overhead")
     endif
     call QuestEngine_BeginStep(q)
@@ -643,6 +691,59 @@ function Quest_StepDone takes integer q,player p,unit u returns nothing
         return
     endif
     call QuestEngine_Finish(q,s,p,u)
+endfunction
+
+// Start the quest now, without a "!": for quests that begin with an event rather than a talk. If the
+// first step is a custom step it is done at once (the quest-log entry appears, its hook runs).
+function Quest_Start takes integer q,player p,unit u returns nothing
+    if q<=0 or QuestState[q]!=QUEST_STATE_HIDDEN then
+        return
+    endif
+    set QuestState[q]=QUEST_STATE_AVAILABLE
+    call QuestEngine_BeginStep(q)
+    if QuestStepType[q*QUEST_MAX_STEPS+1]==QUEST_STEP_CUSTOM then
+        call QuestEngine_Finish(q,q*QUEST_MAX_STEPS+1,p,u)
+    endif
+endfunction
+
+// Change the quest-log text now; l_announce also shows it as a quest update to all players.
+function Quest_SetLog takes integer q,string l_text,boolean l_announce returns nothing
+    if QuestState[q]!=QUEST_STATE_ACTIVE then
+        return
+    endif
+    if l_announce then
+        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_text)
+    endif
+    call QuestSetDescriptionBJ(Quest_LogEntry(q),l_text)
+endfunction
+
+// Fail the quest: it stops waiting, its markers go, and the log shows it as failed.
+function Quest_Fail takes integer q returns nothing
+    local integer s=q*QUEST_MAX_STEPS+QuestCurrent[q]
+    if QuestState[q]!=QUEST_STATE_ACTIVE then
+        return
+    endif
+    set QuestState[q]=QUEST_STATE_FAILED
+    if QuestStepTrigger[s]!=null then
+        call FlushChildHashtable(QuestTriggerStep,GetHandleId(QuestStepTrigger[s]))
+        call DestroyTrigger(QuestStepTrigger[s])
+        set QuestStepTrigger[s]=null
+    endif
+    if QuestStepPickupTrigger[s]!=null then
+        call FlushChildHashtable(QuestTriggerStep,GetHandleId(QuestStepPickupTrigger[s]))
+        call DestroyTrigger(QuestStepPickupTrigger[s])
+        set QuestStepPickupTrigger[s]=null
+    endif
+    if QuestStepPingUnit[s] then
+        call GroupRemoveUnit(udg_BossUnits,QuestStepUnit[s])
+    endif
+    if QuestActiveMarker[q]!=null then
+        call DestroyEffect(QuestActiveMarker[q])
+        set QuestActiveMarker[q]=null
+        set QuestActiveMarkerUnit[q]=null
+    endif
+    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00"+QuestName[q]+"|r")
+    call QuestSetFailedBJ(Quest_LogEntry(q),true)
 endfunction
 
 // World Editor calls InitTrig_QuestEngine automatically; the engine has no triggers of its own: each step

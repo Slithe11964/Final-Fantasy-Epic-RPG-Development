@@ -13,8 +13,7 @@ function Trig_Boss_DarkRanger_Death_Actions takes nothing returns nothing
     call CreateItemLoc('I0EV',l_tempPoint) // 'I0EV': item "Spirit Scroll"
     call RemoveLocation(l_tempPoint)
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to Liniel for reward.")
-    call QuestSetDescriptionBJ(udg_SideQuest[28],"Come back to Liniel for reward.")
+    call ExecuteFunc("QuestFallenRanger_DarkRangerSlain") // quest "Fallen Ranger": "Come back to Liniel for reward."
     call GroupAddUnitSimple(gg_unit_n01Y_0131,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_FallenRanger_Complete)
     call SaveIntegerBJ(1,2,'f',udg_GameStateHash)

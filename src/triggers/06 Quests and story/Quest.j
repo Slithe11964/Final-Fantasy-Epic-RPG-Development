@@ -123,7 +123,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     static if LIBRARY_TQuestKillSetag then
         call Register_Quest_KillSetag_Hide() // run by MapBootstrap
         call Register_Quest_KillSetag_Offer() // starts off; run by Cid, Epilogue
-        call Register_Quest_KillSetag_Start() // starts off; enabled by Quest_KillSetag
         call Register_Quest_KillSetag_Ambush() // starts off; enabled by Quest_KillSetag
         call Register_Quest_KillSetag_Failed() // starts off; enabled by Quest_KillSetag; destroyed by Quest_KillSetag
         call Register_Quest_KillSetag_Complete() // starts off; enabled by Quest_KillSetag; disabled by Quest_KillSetag; destroyed by Quest_KillSetag
@@ -140,8 +139,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
         call Register_Quest_Caravan_HorsesVulnerable() // starts off; enabled by Quest_Caravan
         call Register_Quest_Caravan_Deliver() // starts off; enabled by Quest_Caravan; disabled by Quest_Caravan
         call Register_Quest_Caravan_Failed() // starts off; enabled by Quest_Caravan
-        call Register_Quest_Caravan_Ping() // starts off; enabled by Quest_Caravan; disabled by Quest_Caravan
-        call Register_Quest_Caravan_Complete() // starts off; enabled by Quest_Caravan
     endif
     static if LIBRARY_TQuestKillElmdor then
         call Register_Quest_KillElmdor_Init() // run by MapBootstrap
@@ -150,8 +147,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     static if LIBRARY_TQuestFireGolem then
         call Register_Quest_FireGolem_Init() // run by MapBootstrap
         call Register_Quest_FireGolem_Alert() // starts off; enabled by Quest_Phoenix
-        call Register_Quest_FireGolem_Start() // starts off; enabled by Quest_FireGolem
-        call Register_Quest_FireGolem_HeartDropped() // starts off; enabled by Quest_FireGolem
         call Register_Quest_FireGolem_Ping() // starts off; enabled by Quest_FireGolem; disabled by Quest_FireGolem
         call Register_Quest_FireGolem_HeartTaken() // starts off; enabled by Quest_FireGolem
         call Register_Quest_FireGolem_Complete() // starts off; enabled by Quest_FireGolem
@@ -161,7 +156,6 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
         call Register_Quest_Brothers_Available() // starts off; run by Quest_KillElmdor
         call Register_Quest_Brothers_Start() // starts off; enabled by Quest_Brothers
         call Register_Quest_Brothers_Defeated() // starts off; enabled by Quest_Brothers
-        call Register_Quest_Brothers_Complete() // starts off; enabled by Quest_Brothers
     endif
     static if LIBRARY_TQuestSaveTimmy then
         call Register_Quest_SaveTimmy_Init() // run by MapBootstrap
@@ -185,21 +179,12 @@ function RegisterTriggers_Quest_Part9 takes nothing returns nothing
     endif
     static if LIBRARY_TQuestBeastslayer then
         call Register_Quest_Beastslayer_Available() // starts off; run by Cid, Epilogue
-        call Register_Quest_Beastslayer_Start() // starts off; enabled by Quest_Beastslayer
-        call Register_Quest_Beastslayer_ArrowDropped() // starts off; enabled by Quest_Beastslayer
-        call Register_Quest_Beastslayer_Ping() // starts off; enabled by Quest_Beastslayer; disabled by Quest_Beastslayer
-        call Register_Quest_Beastslayer_ArrowTaken() // starts off; enabled by Quest_Beastslayer
-        call Register_Quest_Beastslayer_Complete() // starts off; enabled by Quest_Beastslayer
     endif
     static if LIBRARY_TQuestLadyNashj then
         call Register_Quest_LadyNashj_Init() // run by MapBootstrap
         call Register_Quest_LadyNashj_Available() // starts off; run by Epilogue, Quest_NightElves, Talk
-        call Register_Quest_LadyNashj_Start() // starts off; enabled by Quest_LadyNashj
-        call Register_Quest_LadyNashj_Slain() // starts off; enabled by Quest_LadyNashj
-        call Register_Quest_LadyNashj_Complete() // starts off; enabled by Quest_LadyNashj
     endif
     static if LIBRARY_TQuestArcanium then
-        call Register_Quest_Arcanium_Start() // starts off; enabled by Forge
         call Register_Quest_Arcanium_Taken() // starts off; enabled by Quest_Arcanium
         call Register_Quest_Arcanium_Complete() // starts off; enabled by Quest_Arcanium
     endif
@@ -217,18 +202,10 @@ function RegisterTriggers_Quest_Part10 takes nothing returns nothing
         call Register_Quest_Fountain_Bulb() // starts off; enabled by DefiledFountain
         call Register_Quest_Fountain_Complete() // starts off; enabled by Quest_Fountain
     endif
-    static if LIBRARY_TQuestOgreHunt then
-        call Register_Quest_OgreHunt_Start() // starts off; enabled by Monica
-        call Register_Quest_OgreHunt_Count() // starts off; enabled by Quest_OgreHunt
-        call Register_Quest_OgreHunt_Complete() // starts off; enabled by Quest_OgreHunt
-    endif
     static if LIBRARY_TQuestSeekDestroy then
-        call Register_Quest_SeekDestroy_Start() // starts off; enabled by Clemydar
         call Register_Quest_SeekDestroy_Count() // starts off; enabled by Quest_SeekDestroy
-        call Register_Quest_SeekDestroy_Complete() // starts off; enabled by Quest_SeekDestroy
     endif
     static if LIBRARY_TQuestFallenRanger then
-        call Register_Quest_FallenRanger_Start() // starts off; enabled by Liniel
         call Register_Quest_FallenRanger_Complete() // starts off; enabled by Boss_DarkRanger
     endif
     static if LIBRARY_TQuestSpiritOfWater then
@@ -253,9 +230,6 @@ function RegisterTriggers_Quest_Part11 takes nothing returns nothing
         call Register_Quest_HolyKnight_Start() // starts off; enabled by Agrias
         call Register_Quest_HolyKnight_AskRamza() // starts off; enabled by Quest_HolyKnight
     endif
-    static if LIBRARY_TQuestEidolonChallenge then
-        call Register_Quest_EidolonChallenge_Start() // starts off; enabled by Brothers
-    endif
 endfunction
 
 // Startup registration, part 12 of 21: creates the triggers below, in this order. Called once from
@@ -265,10 +239,8 @@ endfunction
 function RegisterTriggers_Quest_Part12 takes nothing returns nothing
     static if LIBRARY_TQuestEidolonChallenge then
         call Register_Quest_EidolonChallenge_Count() // starts off; enabled by Quest_EidolonChallenge
-        call Register_Quest_EidolonChallenge_Complete() // starts off; enabled by Quest_EidolonChallenge
     endif
     static if LIBRARY_TQuestStrongestEidolon then
-        call Register_Quest_StrongestEidolon_Start() // starts off; enabled by Priscilla
         call Register_Quest_StrongestEidolon_Complete() // starts off; enabled by Eden; disabled by Eden
     endif
     static if LIBRARY_TQuestRematch then
@@ -296,9 +268,6 @@ endfunction
 // holds that trigger's code (search for its name).
 // Registered in parts so triggers sharing an event with other modules keep their firing order.
 function RegisterTriggers_Quest_Part14 takes nothing returns nothing
-    static if LIBRARY_TQuestAnnoyingMonster then
-        call Register_Quest_AnnoyingMonster_Start() // starts off; enabled by LadyCurse
-    endif
 endfunction
 
 // Startup registration, part 15 of 21: creates the triggers below, in this order. Called once from
@@ -317,22 +286,14 @@ function RegisterTriggers_Quest_Part15 takes nothing returns nothing
     endif
     static if LIBRARY_TQuestUltimaWeapon then
         call Register_Quest_UltimaWeapon_Start() // starts off; enabled by Tonberry
-        call Register_Quest_UltimaWeapon_Slain() // starts off; enabled by Quest_UltimaWeapon
     endif
     static if LIBRARY_TQuestOmegaWeapon then
         call Register_Quest_OmegaWeapon_Start() // starts off; enabled by Quest_UltimaWeapon
-        call Register_Quest_OmegaWeapon_Slain() // starts off; enabled by Quest_OmegaWeapon
     endif
     static if LIBRARY_TQuestKingOfSea then
-        call Register_Quest_KingOfSea_Slain() // starts off; enabled by NebraKing
         call Register_Quest_KingOfSea_Reward() // starts off; enabled by Quest_NebraAngler
     endif
-    static if LIBRARY_TQuestNebraAngler then
-        call Register_Quest_NebraAngler_Start() // starts off; enabled by Anabel
-        call Register_Quest_NebraAngler_Reward() // starts off; enabled by Quest_NebraAngler
-    endif
     static if LIBRARY_TQuestTrialByFire then
-        call Register_Quest_TrialByFire_Start() // starts off; enabled by McBurn
         call Register_Quest_TrialByFire_Begin() // starts off; enabled by Quest_TrialByFire
         call Register_Quest_TrialByFire_Countdown() // starts off; enabled by Arena_BattleSetup; disabled by Quest_TrialByFire; destroyed by Quest_TrialByFire
         call Register_Quest_TrialByFire_Fail() // starts off; run by Arena_BattleResults; destroyed by Quest_TrialByFire
@@ -368,7 +329,6 @@ endfunction
 // Registered in parts so triggers sharing an event with other modules keep their firing order.
 function RegisterTriggers_Quest_Part17 takes nothing returns nothing
     static if LIBRARY_TQuestImperviousBeast then
-        call Register_Quest_ImperviousBeast_Start() // starts off; enabled by Ziegfried
         call Register_Quest_ImperviousBeast_Complete() // starts off; enabled by Fafnir
     endif
     static if LIBRARY_TQuestDwarfDisappearance then
@@ -393,9 +353,7 @@ endfunction
 // Registered in parts so triggers sharing an event with other modules keep their firing order.
 function RegisterTriggers_Quest_Part19 takes nothing returns nothing
     static if LIBRARY_TQuestFieryWings then
-        call Register_Quest_FieryWings_Start() // starts off; enabled by Watts
         call Register_Quest_FieryWings_Matriarch_Dead() // starts off; enabled by Quest_FieryWings
-        call Register_Quest_FieryWings_Complete() // starts off; enabled by Quest_FieryWings
     endif
     static if LIBRARY_TQuestCooking then
         call Register_Quest_Cooking_Start()
@@ -414,11 +372,7 @@ function RegisterTriggers_Quest_Part20 takes nothing returns nothing
     static if LIBRARY_TQuestDivineOrder then
         call Register_Quest_DivineOrder_Complete() // starts off; enabled by Ziegfried
     endif
-    static if LIBRARY_TQuestMonstrum then
-        call Register_Quest_Monstrum_Complete() // starts off; enabled by Monstrum
-    endif
     static if LIBRARY_TQuestYoungEngineer then
-        call Register_Quest_YoungEngineer_Start() // starts off; enabled by Mid
         call Register_Quest_YoungEngineer_Ping() // starts off; enabled by Quest_YoungEngineer; disabled by Quest_YoungEngineer; destroyed by Quest_YoungEngineer
     endif
     static if LIBRARY_TQuestCrossbow then
@@ -438,13 +392,7 @@ endfunction
 // holds that trigger's code (search for its name).
 // Registered in parts so triggers sharing an event with other modules keep their firing order.
 function RegisterTriggers_Quest_Part21 takes nothing returns nothing
-    static if LIBRARY_TQuestSpiritHunt then
-        call Register_Quest_SpiritHunt_Start() // starts off; enabled by Frakir
-        call Register_Quest_SpiritHunt_Count() // starts off; enabled by Quest_SpiritHunt
-        call Register_Quest_SpiritHunt_Complete() // starts off; enabled by Quest_SpiritHunt
-    endif
     static if LIBRARY_TQuestFishyDeals then
-        call Register_Quest_FishyDeals_Start() // starts off; enabled by Fishing_Setup
         call Register_Quest_FishyDeals_Complete() // starts off; enabled by Quest_FishyDeals
     endif
 endfunction

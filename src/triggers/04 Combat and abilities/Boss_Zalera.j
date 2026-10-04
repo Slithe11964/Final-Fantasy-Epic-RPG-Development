@@ -104,8 +104,8 @@ function Trig_Boss_Zalera_Intro_Actions takes nothing returns nothing
     call PauseUnitBJ(false,gg_unit_U000_0248)
     call SetUnitInvulnerable(gg_unit_U000_0248,false)
     call UnitRemoveAbilityBJ('A0VJ',gg_unit_U000_0248) // 'A0VJ': ability "Unaffected by Cinematics"
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Zalera, the Zodiac Brave of Death.")
-    call QuestSetDescriptionBJ(udg_MainQuest[7],"Destroy Zalera, the Zodiac Brave of Death.")
+    // "Dark Knight" / "Necrophobe": destroy Zalera (Quest_DarkKnight module)
+    call ExecuteFunc("QuestDarkKnight_ZaleraAppears")
     call Music_SetTrack($D) // $D = 13
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempGroup=null
@@ -138,10 +138,6 @@ endfunction
 
 function Trig_Boss_Zalera_Death_ShowLothlorienScene takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Boss_Zalera_Death_WasDarkKnightQuest takes nothing returns boolean
-    return(udg_ZaleraStage<20)
 endfunction
 
 function Trig_Boss_Zalera_Death_IsHardMode takes nothing returns boolean
@@ -228,24 +224,17 @@ function Trig_Boss_Zalera_Death_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_DeathSeeker_Give)
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)
     call AddItemToStockBJ('I03I',gg_unit_n00L_0153,1,1) // 'I03I': item "Growth Egg"
-    if(Trig_Boss_Zalera_Death_WasDarkKnightQuest())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Dark Knight|r")
-    else
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Necrophobe|r")
-    endif
-    call QuestSetCompletedBJ(udg_MainQuest[7],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_MainQuest[8]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"World Liberation"),"The war against the 12 Zodiac Braves has begun! Return Gaya to the hands of humans and night elves and destroy the demonic usurpers.","ReplaceableTextures\\CommandButtons\\BTNArchimonde.blp")
-    set udg_QuestReq[4]=CreateQuestItemBJ(udg_MainQuest[8],("Zodiac Braves defeated: "+(I2S(udg_BravesDefeated)+"/12")))
+    // "Dark Knight" or "Necrophobe" is done (Quest_DarkKnight module)
+    call ExecuteFunc("QuestDarkKnight_ZaleraSlain")
+    // "World Liberation" starts (the engine announces it now; it used to be announced 4 seconds later)
+    call ExecuteFunc("QuestWorldLiberation_Start")
     if(Trig_Boss_Zalera_Death_IsHardMode())then
         call StartTimerBJ(udg_KalmSiegeTimer,false,90.)
     else
         call StartTimerBJ(udg_KalmSiegeTimer,false,480.)
     endif
     call EnableTrigger(gg_trg_Celeborn_Summon_Alert)
-    call Wait_Polled(4.)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00World Liberation|r")
-    call Wait_Polled(15.)
+    call Wait_Polled(19.)
     if(Trig_Boss_Zalera_Death_IsCidVisible())then
         call DisplayTextToForce(GetPlayersAll(),"|cffff0000Cid is sending out an emergency distress signal !!!|r")
         call PlaySoundBJ(gg_snd_HornOfCenariusSound)

@@ -1,10 +1,54 @@
-library TAncientHunt requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TAncientHunt requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TUnit
+// Side quest "Ancient Hunt", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Krjn of the Hunt Club in Lothlorien wants 20 corrupted Ancients killed. Made available by Krjn, which
+// shows the "!" and enables gg_trg_AncientHunt_Start. Does not count toward the story.
+// Krjn's talk depends on whether the party has done a hunt before, so it stays a trigger of this module
+// (custom step); the module shows its own "!" / "?" over Krjn.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_AncientHunt_Start=null
-    trigger gg_trg_AncientHunt_Count=null
-    trigger gg_trg_AncientHunt_Reward=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ANCIENT_HUNT=0
 endglobals
+
+// Quest done: the "?" over Krjn goes, and he offers the Exdeath hunt.
+function AncientHunt_Done takes nothing returns nothing
+    call DestroyEffectBJ(udg_SpecialEffect[75])
+    set udg_CommonHuntsDone=(udg_CommonHuntsDone+1)
+    call UnitAddAbilityBJ('Ane2',gg_unit_e012_0227) // 'Ane2': object name not found in map data
+    call AddUnitToStockBJ('n0CN',gg_unit_e012_0227,1,1) // 'n0CN': unit "Hunt: Exdeath"
+    set udg_HuntStock[7]=(udg_HuntStock[7]+1)
+    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
+endfunction
+
+function AncientHunt_Define takes nothing returns nothing
+    local integer q=Quest_Define("Ancient Hunt",QUEST_SIDE,56,"ReplaceableTextures\\CommandButtons\\BTNCorruptedTreeOfLife.blp")
+    set QUEST_ANCIENT_HUNT=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Krjn (gg_trg_AncientHunt_Start)
+    call Quest_Custom(q,"Krjn from Lothlorien has asked you to kill 20 Ancients to decelerate the corruption in the forest.")
+    // 2. Kill 20 Ancients (hunt leaderboard row 7)
+    call Quest_Hunt(q,7,20,"Ancients to kill","Return to Krjn for a reward.")
+    call Quest_Message(q,"You have killed enough ancients. Return to Krjn for a reward.")
+    call Quest_HuntTarget(q,'nenp') // 'nenp': editor label "Poison Treant"
+    call Quest_HuntTarget(q,'nepl') // 'nepl': editor label "Plague Treant"
+    call Quest_HuntTarget(q,'nenc') // 'nenc': editor label "Corrupted Treant"
+    call Quest_HuntTarget(q,'n00P') // 'n00P': unit "Corrupted Tree of Life"
+    call Quest_HuntTarget(q,'n00N') // 'n00N': unit "Corrupted Ancient of War"
+    call Quest_HuntTarget(q,'n00O') // 'n00O': unit "Corrupted Ancient Protector"
+    // 3. Report back to Krjn
+    call Quest_Return(q,gg_unit_e012_0227,"")
+    call Quest_PingUnit(q)
+    call Quest_Say(q,null,"We're back. We've slain the Ancients you asked us to.")
+    call Quest_Say(q,gg_unit_e012_0227,"Amazing! Thank you for your efforts. Here's your just reward.")
+    call Quest_Reward(q,3000,3000)
+    call Quest_Say(q,gg_unit_e012_0227,"By the way, you've surely noticed as you were fighting, the corruption of the forest has even taken over the spirits of the forest itself?")
+    call Quest_Say(q,gg_unit_e012_0227,"They float around and empower enemies and weaken you when you're nearby. And to make things worse they generally gather around any fights that break out.")
+    call Quest_Say(q,gg_unit_e012_0227,"Lady Dana was in tune with them when she was still around, which made them powerful allies. But now they are against us. There must be some way to cleanse these spirits and return them to our side...")
+    call Quest_Say(q,gg_unit_e012_0227,"Well apologies for rambling. Do speak to me if you wish to do some rare game hunts for the club.")
+    call Quest_OnDone(q,"AncientHunt_Done")
+endfunction
 
 function Trig_AncientHunt_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_e012_0227,true,true,true))
@@ -18,10 +62,7 @@ function Trig_AncientHunt_Start_IsDialogueOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
-function Trig_AncientHunt_Start_IsFirstBoardEntry takes nothing returns boolean
-    return(udg_HuntCounter[0]==1)
-endfunction
-
+// Step 1: the party talks to Krjn; the quest starts.
 function Trig_AncientHunt_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[75])
@@ -45,93 +86,13 @@ function Trig_AncientHunt_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Worry not. We will ease the forest's corruption.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Ancient Hunt|r")
-    set udg_SideQuest[56]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Ancient Hunt"),"Krjn from Lothlorien has asked you to kill 20 Ancients to decelerate the corruption in the forest.","ReplaceableTextures\\CommandButtons\\BTNCorruptedTreeOfLife.blp")
     set udg_SpecialEffect[75]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e012_0227,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_NaishaTownUnit=gg_unit_e012_0227
-    set udg_HuntCounter[0]=(udg_HuntCounter[0]+1)
-    if(Trig_AncientHunt_Start_IsFirstBoardEntry())then
-        call LeaderboardDisplayBJ(true,udg_HuntLeaderboard)
+    if QUEST_ANCIENT_HUNT==0 then
+        call AncientHunt_Define()
     endif
-    set udg_HuntCounter[7]=20
-    set udg_HuntBoardLabel[7]="Ancients to kill"
-    call LeaderboardAddItemBJ(Player(6),udg_HuntLeaderboard,udg_HuntBoardLabel[7],udg_HuntCounter[7])
-    call LeaderboardSetPlayerItemLabelColorBJ(Player(6),udg_HuntLeaderboard,65.,75.,40.,0)
-    call LeaderboardSetPlayerItemValueColorBJ(Player(6),udg_HuntLeaderboard,80.,20.,20,0)
-    call LeaderboardSortItemsBJ(udg_HuntLeaderboard,bj_SORTTYPE_SORTBYVALUE,false)
-    call EnableTrigger(gg_trg_AncientHunt_Count)
-    call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_AncientHunt_Count_IsAncientUnit takes nothing returns boolean
-    return(GetUnitTypeId(GetTriggerUnit())=='nenp')or(GetUnitTypeId(GetTriggerUnit())=='nepl')or(GetUnitTypeId(GetTriggerUnit())=='nenc')or(GetUnitTypeId(GetTriggerUnit())=='n00P')or(GetUnitTypeId(GetTriggerUnit())=='n00N')or(GetUnitTypeId(GetTriggerUnit())=='n00O') // 'nenp': editor label "Poison Treant"; 'nepl': editor label "Plague Treant"; 'nenc': editor label "Corrupted Treant"; 'n00P': unit "Corrupted Tree of Life"; 'n00N': unit "Corrupted Ancient of War"; 'n00O': unit "Corrupted Ancient Protector"
-endfunction
-
-function Trig_AncientHunt_Count_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetKillingUnitBJ()),udg_ActivePlayers))and(Trig_AncientHunt_Count_IsAncientUnit())
-endfunction
-
-function Trig_AncientHunt_Count_NoQuestsLeft takes nothing returns boolean
-    return(udg_HuntCounter[0]<=0)
-endfunction
-
-function Trig_AncientHunt_Count_IsCountDone takes nothing returns boolean
-    return(udg_HuntCounter[7]<=0)
-endfunction
-
-function Trig_AncientHunt_Count_Actions takes nothing returns nothing
-    set udg_HuntCounter[7]=(udg_HuntCounter[7]-1)
-    call LeaderboardSetPlayerItemValueBJ(Player(6),udg_HuntLeaderboard,udg_HuntCounter[7])
-    call LeaderboardSortItemsBJ(udg_HuntLeaderboard,bj_SORTTYPE_SORTBYVALUE,false)
-    if(Trig_AncientHunt_Count_IsCountDone())then
-        call DisableTrigger(GetTriggeringTrigger())
-        call LeaderboardRemovePlayerItemBJ(Player(6),udg_HuntLeaderboard)
-        set udg_HuntCounter[0]=(udg_HuntCounter[0]-1)
-        if(Trig_AncientHunt_Count_NoQuestsLeft())then
-            call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
-        endif
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"You have killed enough ancients. Return to Krjn for a reward.")
-        call QuestSetDescriptionBJ(udg_SideQuest[56],"Return to Krjn for a reward.")
-        call GroupAddUnitSimple(gg_unit_e012_0227,udg_BossUnits)
-        call EnableTrigger(gg_trg_AncientHunt_Reward)
-        call DestroyTrigger(GetTriggeringTrigger())
-    endif
-endfunction
-
-function Trig_AncientHunt_Reward_Conditions takes nothing returns boolean
-    return((IsUnitHiddenBJ(gg_unit_e012_0227)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
-endfunction
-
-function Trig_AncientHunt_Reward_IsDialogueOn takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_AncientHunt_Reward_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[75])
-    call GroupRemoveUnitSimple(gg_unit_e012_0227,udg_BossUnits)
-    if(Trig_AncientHunt_Reward_IsDialogueOn())then
-        call Cine_Enter()
-        call Cam_PanToUnit(gg_unit_e012_0227,0)
-        call Text_Say(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"We're back. We've slain the Ancients you asked us to.",false)
-        call Text_Say(gg_unit_e012_0227,"Amazing! Thank you for your efforts. Here's your just reward.",false)
-        call Reward_Give($BB8,$BB8,gg_unit_e012_0227) // $BB8 = 3000
-        call Text_Say(gg_unit_e012_0227,"By the way, you've surely noticed as you were fighting, the corruption of the forest has even taken over the spirits of the forest itself?",false)
-        call Text_Say(gg_unit_e012_0227,"They float around and empower enemies and weaken you when you're nearby. And to make things worse they generally gather around any fights that break out.",false)
-        call Text_Say(gg_unit_e012_0227,"Lady Dana was in tune with them when she was still around, which made them powerful allies. But now they are against us. There must be some way to cleanse these spirits and return them to our side...",false)
-        call Text_Say(gg_unit_e012_0227,"Well apologies for rambling. Do speak to me if you wish to do some rare game hunts for the club.",false)
-        call Cine_ExitAction()
-    else
-        call Reward_Give($BB8,$BB8,gg_unit_e012_0227) // $BB8 = 3000
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ancient Hunt|r")
-    call QuestSetCompletedBJ(udg_SideQuest[56],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_CommonHuntsDone=(udg_CommonHuntsDone+1)
-    call UnitAddAbilityBJ('Ane2',gg_unit_e012_0227) // 'Ane2': object name not found in map data
-    call AddUnitToStockBJ('n0CN',gg_unit_e012_0227,1,1) // 'n0CN': unit "Hunt: Exdeath"
-    set udg_HuntStock[7]=(udg_HuntStock[7]+1)
-    call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
+    // the quest log appears and the hunt leaderboard shows "Ancients to kill"
+    call Quest_Start(QUEST_ANCIENT_HUNT,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -156,27 +117,9 @@ function Register_AncientHunt_Start takes nothing returns nothing
     call TriggerAddAction(gg_trg_AncientHunt_Start,function Trig_AncientHunt_Start_Actions)
 endfunction
 
-function Register_AncientHunt_Count takes nothing returns nothing
-    set gg_trg_AncientHunt_Count=CreateTrigger()
-    call DisableTrigger(gg_trg_AncientHunt_Count)
-    call TriggerRegisterAnyUnitEventBJ(gg_trg_AncientHunt_Count,EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(gg_trg_AncientHunt_Count,Condition(function Trig_AncientHunt_Count_Conditions))
-    call TriggerAddAction(gg_trg_AncientHunt_Count,function Trig_AncientHunt_Count_Actions)
-endfunction
-
-function Register_AncientHunt_Reward takes nothing returns nothing
-    set gg_trg_AncientHunt_Reward=CreateTrigger()
-    call DisableTrigger(gg_trg_AncientHunt_Reward)
-    call TriggerRegisterUnitInRangeSimple(gg_trg_AncientHunt_Reward,450.,gg_unit_e012_0227)
-    call TriggerAddCondition(gg_trg_AncientHunt_Reward,Condition(function Trig_AncientHunt_Reward_Conditions))
-    call TriggerAddAction(gg_trg_AncientHunt_Reward,function Trig_AncientHunt_Reward_Actions)
-endfunction
-
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_AncientHunt takes nothing returns nothing
     call Register_AncientHunt_Start() // starts off; enabled by Krjn
-    call Register_AncientHunt_Count() // starts off; enabled by AncientHunt
-    call Register_AncientHunt_Reward() // starts off; enabled by AncientHunt
 endfunction
 
 endlibrary

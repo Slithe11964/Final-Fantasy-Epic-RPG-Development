@@ -1,9 +1,36 @@
-library TQuestEyeOfJenova requires TCine, TForce, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestEyeOfJenova requires TQuestEngine, TCine, TForce, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+// Main quest "Eye of Jenova" (udg_MainQuest[5]), written for the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Ao Madoushi asks for the Eye of Jenova, held by the undead creature in Kalm's
+// Battle Arena; the party brings it to him. Both steps are custom: Quest_AoMadoushi starts the quest
+// (through QuestEyeOfJenova_Start), and the hand-in is a cinematic kept in gg_trg_Quest_EyeOfJenova_Deliver.
+// This module keeps its own markers. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_EyeOfJenova_PickUp=null
     trigger gg_trg_Quest_EyeOfJenova_Deliver=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_EYE_OF_JENOVA=0
 endglobals
+
+function QuestEyeOfJenova_Define takes nothing returns nothing
+    local integer q=Quest_Define("Eye of Jenova",QUEST_MAIN,5,"ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp")
+    set QUEST_EYE_OF_JENOVA=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Ao Madoushi asks for the Eye (Quest_AoMadoushi). Picking it up only changes the text.
+    call Quest_Custom(q,"Ao Madoushi told you to find the Eye of Jenova - a powerful artifact held by a huge undead creature. This creature currently resides in Kalm's Battle Arena.")
+    // 2. Bring the Eye to Ao Madoushi (gg_trg_Quest_EyeOfJenova_Deliver)
+    call Quest_Custom(q,"")
+endfunction
+
+// The quest starts (called by Quest_AoMadoushi through ExecuteFunc, after Ao Madoushi's story).
+function QuestEyeOfJenova_Start takes nothing returns nothing
+    if QUEST_EYE_OF_JENOVA==0 then
+        call QuestEyeOfJenova_Define()
+    endif
+    call Quest_Start(QUEST_EYE_OF_JENOVA,null,null)
+endfunction
 
 function Trig_Quest_EyeOfJenova_PickUp_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='gmfr') // 'gmfr': item "Eye of Jenova"
@@ -13,7 +40,8 @@ function Trig_Quest_EyeOfJenova_PickUp_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Eye of Jenova to Ao Madoushi.")
-    call QuestSetDescriptionBJ(udg_MainQuest[5],"Bring the Eye of Jenova to Ao Madoushi.")
+    // the text changes for everyone (the announcement above is only for that player)
+    call Quest_SetLog(QUEST_EYE_OF_JENOVA,"Bring the Eye of Jenova to Ao Madoushi.",false)
     call EnableTrigger(gg_trg_Quest_EyeOfJenova_Deliver)
     set l_tempPoint=GetRandomLocInRect(gg_rct_189)
     call CreateNUnitsAtLoc(1,'n01A',Player($B),l_tempPoint,GetRandomDirectionDeg()) // 'n01A': unit "Infernal Knight"; $B = 11
@@ -81,9 +109,7 @@ function Trig_Quest_EyeOfJenova_Deliver_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Loop_MadoushiChanneling)
     set udg_SpecialEffect[55]=AddSpecialEffectTargetUnitBJ("origin",gg_unit_Othr_0106,"Abilities\\Spells\\Orc\\Voodoo\\VoodooAura.mdl")
     set udg_SpecialEffect[56]=AddSpecialEffectLocBJ(GetUnitLoc(gg_unit_Othr_0106),"Abilities\\Spells\\NightElf\\Tranquility\\Tranquility.mdl")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Eye of Jenova|r")
-    call QuestSetCompletedBJ(udg_MainQuest[5],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_EYE_OF_JENOVA,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call Music_SetZoneTrack(7)
     call Wait_Polled(4.)
     call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Cid.")

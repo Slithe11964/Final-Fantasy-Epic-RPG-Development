@@ -1,5 +1,12 @@
-library THealingWaters requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library THealingWaters requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Healing Waters", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Zalmo asks for a vial of water from the Fountain of Restoration to cure a sick boy. Start (talk to
+// Zalmo) calls Quest_Start; Cure (pure water) or CureBlood (the red water) plays the healing cinematic
+// and calls Quest_StepDone. Bringing the defiled water (DefiledVial) only gets the vial emptied. The "!"
+// over Zalmo and the "?" over the boy's father are this module's own effects.
 globals
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_HEALING_WATERS=0
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_HealingWaters_HideFamily=null
     trigger gg_trg_HealingWaters_Prepare=null
@@ -9,6 +16,16 @@ globals
     trigger gg_trg_HealingWaters_Cure=null
     trigger gg_trg_HealingWaters_CureBlood=null
 endglobals
+
+function HealingWaters_Define takes nothing returns nothing
+    local integer q=Quest_Define("Healing Waters",QUEST_SIDE,15,"ReplaceableTextures\\CommandButtons\\BTNFountainOfLife.blp")
+    set QUEST_HEALING_WATERS=q
+    call Quest_NoMarker(q)
+    // 1. Talk to Zalmo (gg_trg_HealingWaters_Start calls Quest_Start)
+    call Quest_Custom(q,"Zalmo, High Priest from Kalm, asked you to fill the vial with the waters of Fountain of Restoration and bring it back to him to cure the ill boy.")
+    // 2. Bring the filled vial to Zalmo (gg_trg_HealingWaters_Cure or _CureBlood calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_HealingWaters_HideFamily_Actions takes nothing returns nothing
     call SetUnitAnimation(gg_unit_nvlk_0184,"death")
@@ -52,8 +69,10 @@ function Trig_HealingWaters_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"I will do all I can though I can promise nothing.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Healing Waters|r")
-    set udg_SideQuest[$F]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Healing Waters"),"Zalmo, High Priest from Kalm, asked you to fill the vial with the waters of Fountain of Restoration and bring it back to him to cure the ill boy.","ReplaceableTextures\\CommandButtons\\BTNFountainOfLife.blp") // $F = 15
+    if QUEST_HEALING_WATERS==0 then
+        call HealingWaters_Define()
+    endif
+    call Quest_Start(QUEST_HEALING_WATERS,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_QuestItem[18]=UnitAddItemByIdSwapped('bzbe',Player_GetHero(GetTriggerPlayer())) // 'bzbe': editor label "Empty Vial"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_SpecialEffect[34]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_nvil_0186,"Objects\\RandomObject\\RandomObject.mdl")
@@ -189,11 +208,8 @@ function Trig_HealingWaters_Cure_Actions takes nothing returns nothing
         call SetUnitFacingToFaceUnitTimed(gg_unit_nvlk_0184,gg_unit_nvlw_0183,.5)
         call Reward_Give($FA0,500,gg_unit_H00T_0185) // $FA0 = 4000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Healing Waters|r")
-    call QuestSetCompletedBJ(udg_SideQuest[$F],true) // $F = 15
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    // the quest is completed and counted
+    call Quest_StepDone(QUEST_HEALING_WATERS,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -282,11 +298,8 @@ function Trig_HealingWaters_CureBlood_Actions takes nothing returns nothing
         call SetUnitFacingToFaceUnitTimed(gg_unit_nvlk_0184,gg_unit_nvlw_0183,.5)
         call Reward_Give(8000,$FA0,gg_unit_H00T_0185) // $FA0 = 4000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Healing Waters|r")
-    call QuestSetCompletedBJ(udg_SideQuest[$F],true) // $F = 15
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    // the quest is completed and counted
+    call Quest_StepDone(QUEST_HEALING_WATERS,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

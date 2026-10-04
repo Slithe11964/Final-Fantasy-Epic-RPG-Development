@@ -1,4 +1,14 @@
-library TQuestZodiacAge requires TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TWait
+library TQuestZodiacAge requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TWait
+// Main quest "End of Zodiac Age" (udg_MainQuest[18]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Celeborn and Galadriel tell the party that Hashmalum, leader of the Zodiac
+// Braves, hides beyond the Great Wall; the party must find a way into the Icy Realm (the gate, Celeborn,
+// Talon, Dana's Shimmering Pendant) and defeat him. If the party meets Hashmalum first, the quest starts
+// there instead (Boss_Hashmalum's Intro calls QuestZodiacAge_StartAtHashmalum). Both steps are custom:
+// the quest starts (Start or Boss_Hashmalum) and Hashmalum dies for good (Boss_Hashmalum's Death_Final
+// calls QuestZodiacAge_HashmalumSlain). The search on the way only changes the quest log: Quest_SetLog
+// here and in Boss_Mateus (QuestZodiacAge_MateusSlain); Boss_Mateus's intro and Gate write the log entry
+// directly. The "!" and "?" are this module's own effects.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_ZodiacAge_Start=null
@@ -8,7 +18,45 @@ globals
     trigger gg_trg_Quest_ZodiacAge_GetPendant=null
     trigger gg_trg_Quest_ZodiacAge_ShowPendant=null
     trigger gg_trg_Quest_ZodiacAge_TalonOpensGate=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ZODIAC_AGE=0
 endglobals
+
+// l_firstLog: the quest's first description, which depends on how far the party already got.
+function QuestZodiacAge_Define takes string l_firstLog returns nothing
+    local integer q=Quest_Define("End of Zodiac Age",QUEST_MAIN,18,"ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
+    set QUEST_ZODIAC_AGE=q
+    call Quest_Color(q,udg_QuestTitleColor)
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Celeborn (gg_trg_Quest_ZodiacAge_Start), or meet Hashmalum (Boss_Hashmalum)
+    call Quest_Custom(q,l_firstLog)
+    // 2. Defeat Hashmalum for good (Boss_Hashmalum)
+    call Quest_Custom(q,"")
+endfunction
+
+// The party met Hashmalum before Celeborn told them about him (called by Boss_Hashmalum's Intro).
+function QuestZodiacAge_StartAtHashmalum takes nothing returns nothing
+    if QUEST_ZODIAC_AGE==0 then
+        call QuestZodiacAge_Define("Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, is summoning a calamity. Take him down before the summoning finishes!")
+    endif
+    call Quest_Start(QUEST_ZODIAC_AGE,null,null)
+endfunction
+
+// Hashmalum is dead for good: the quest is done (called by Boss_Hashmalum's Death_Final).
+function QuestZodiacAge_HashmalumSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_ZODIAC_AGE,null,null)
+endfunction
+
+// Talon opened the way into the Icy Realm (TalonOpensGate).
+function QuestZodiacAge_GateOpened takes nothing returns nothing
+    call Quest_SetLog(QUEST_ZODIAC_AGE,"Venture forth into the Icy Realm.",true)
+endfunction
+
+// Mateus fell and dropped the Winter Key (called by Boss_Mateus through ExecuteFunc).
+function QuestZodiacAge_MateusSlain takes nothing returns nothing
+    call Quest_SetLog(QUEST_ZODIAC_AGE,"Use the Winter Key to continue your search for Hashmalum.",true)
+endfunction
 
 function Trig_Quest_ZodiacAge_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Emns_0156,true,true,true))
@@ -46,7 +94,10 @@ function Trig_Quest_ZodiacAge_Start_Cond_HashmalumNotMet takes nothing returns b
     return(udg_HashmalumEncountered==false)
 endfunction
 
+// Step 1: a hero talks to Celeborn. Unless the party has already met Hashmalum, the quest starts; its first
+// text depends on whether the gate to the Icy Realm is open or was already visited.
 function Trig_Quest_ZodiacAge_Start_Actions takes nothing returns nothing
+    local string l_firstLog
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[43])
     call GroupRemoveUnitSimple(gg_unit_Emns_0156,udg_QuestUnits)
@@ -96,21 +147,23 @@ function Trig_Quest_ZodiacAge_Start_Actions takes nothing returns nothing
     endif
     if(Trig_Quest_ZodiacAge_Start_Cond_HashmalumNotMet())then
         if(Trig_Quest_ZodiacAge_Start_Cond_GateOpen_Quest())then
-            call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"End of Zodiac Age"),"Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. Venture forth into the Icy Realm to find and defeat him!","ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
+            set l_firstLog="Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. Venture forth into the Icy Realm to find and defeat him!"
         else
             if(Trig_Quest_ZodiacAge_Start_Cond_GateVisited_Quest())then
                 call GroupAddUnitSimple(gg_unit_e015_0238,udg_QuestUnits)
                 call EnableTrigger(gg_trg_Quest_ZodiacAge_AskTalon)
                 set udg_SpecialEffect[43]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e015_0238,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
                 set udg_ZodiacQuestStage=3
-                call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"End of Zodiac Age"),"Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. However, the area is closed off. Speak with Talon, Wizard in Lothlorien, to get a clue on how to get inside!","ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
+                set l_firstLog="Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. However, the area is closed off. Speak with Talon, Wizard in Lothlorien, to get a clue on how to get inside!"
             else
                 set udg_ZodiacQuestStage=1
-                call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleColor+"End of Zodiac Age"),"Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. However, the area is closed off. Investigate the gates to find a potential clue!","ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
+                set l_firstLog="Hashmalum, the Zodiac Brave of Earth and leader of all Zodiac Braves, appears to be hiding beyond the Great Wall in the northeast of Gaya. However, the area is closed off. Investigate the gates to find a potential clue!"
             endif
         endif
-        set udg_MainQuest[18]=GetLastCreatedQuestBJ()
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00End of Zodiac Age|r")
+        if QUEST_ZODIAC_AGE==0 then
+            call QuestZodiacAge_Define(l_firstLog)
+        endif
+        call Quest_Start(QUEST_ZODIAC_AGE,GetTriggerPlayer(),GetTriggerUnit())
         call Music_SetZoneTrack($A) // $A = 10
         set udg_HashmalumStage=2
     endif
@@ -152,7 +205,7 @@ function Trig_Quest_ZodiacAge_GateBlocked_Actions takes nothing returns nothing
     endif
     if(Trig_Quest_ZodiacAge_GateBlocked_Cond_StageInvestigateGate())then
         if(Trig_Quest_ZodiacAge_GateBlocked_Cond_HashmalumNotMet())then
-            call QuestSetDescriptionBJ(udg_MainQuest[18],"Ask Celeborn about the gate.")
+            call Quest_SetLog(QUEST_ZODIAC_AGE,"Ask Celeborn about the gate.",false)
         endif
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Celeborn about the gate.")
         call GroupAddUnitSimple(gg_unit_Emns_0156,udg_QuestUnits)
@@ -203,7 +256,7 @@ function Trig_Quest_ZodiacAge_AskCeleborn_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     if(Trig_Quest_ZodiacAge_AskCeleborn_Cond_HashmalumNotMet())then
-        call QuestSetDescriptionBJ(udg_MainQuest[18],"Ask Talon if he knows about the queen. Talon is a Wizard in Lothlorien who seems to be closed off towards the rulers Celeborn and Galadriel.")
+        call Quest_SetLog(QUEST_ZODIAC_AGE,"Ask Talon if he knows about the queen. Talon is a Wizard in Lothlorien who seems to be closed off towards the rulers Celeborn and Galadriel.",false)
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Talon if he knows about the queen.")
     call GroupAddUnitSimple(gg_unit_e015_0238,udg_QuestUnits)
@@ -258,7 +311,7 @@ function Trig_Quest_ZodiacAge_AskTalon_Actions takes nothing returns nothing
     endif
     set udg_SpecialEffect[43]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e015_0238,"Objects\\RandomObject\\RandomObject.mdl")
     if(Trig_Quest_ZodiacAge_AskTalon_Cond_HashmalumNotMet())then
-        call QuestSetDescriptionBJ(udg_MainQuest[18],"Find something to make Talon talk.")
+        call Quest_SetLog(QUEST_ZODIAC_AGE,"Find something to make Talon talk.",false)
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find something to make Talon talk.")
     call EnableTrigger(gg_trg_Quest_ZodiacAge_ShowPendant)
@@ -353,7 +406,7 @@ function Trig_Quest_ZodiacAge_ShowPendant_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     if(Trig_Quest_ZodiacAge_ShowPendant_Cond_HashmalumNotMet())then
-        call QuestSetDescriptionBJ(udg_MainQuest[18],"Speak with Talon at the northern gate to the Icy Realm.")
+        call Quest_SetLog(QUEST_ZODIAC_AGE,"Speak with Talon at the northern gate to the Icy Realm.",false)
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Speak with Talon at the northern gate to the Icy Realm.")
     set l_tempPoint=GetRectCenter(gg_rct_636)
@@ -448,8 +501,7 @@ function Trig_Quest_ZodiacAge_TalonOpensGate_Actions takes nothing returns nothi
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
     endif
     if(Trig_Quest_ZodiacAge_TalonOpensGate_Cond_HashmalumNotMet())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Venture forth into the Icy Realm.")
-        call QuestSetDescriptionBJ(udg_MainQuest[18],"Venture forth into the Icy Realm.")
+        call QuestZodiacAge_GateOpened()
         set udg_HashmalumStage=3
     endif
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"Talon joins your party.")

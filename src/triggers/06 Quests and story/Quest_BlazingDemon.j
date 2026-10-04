@@ -1,11 +1,29 @@
-library TQuestBlazingDemon requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
+library TQuestBlazingDemon requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
+// Side quest "Blazing Demon", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// McBurn shows his true form after the last dark fire Eidolon falls (BlazingDemon, DarkIfrit and
+// DarkPhoenix run gg_trg_Quest_BlazingDemon_Start, which calls Quest_Start). The fight ends in one of
+// three ways, each calling Quest_StepDone: EndWeak (difficulty 3 or lower), End (difficulty 4) or
+// Escape (higher: McBurn flees and Scorched Earth follows). It does not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_BlazingDemon_Start=null
     trigger gg_trg_Quest_BlazingDemon_EndWeak=null
     trigger gg_trg_Quest_BlazingDemon_End=null
     trigger gg_trg_Quest_BlazingDemon_Escape=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_BLAZING_DEMON=0
 endglobals
+
+function QuestBlazingDemon_Define takes nothing returns nothing
+    local integer q=Quest_Define("Blazing Demon",QUEST_SIDE,51,"ReplaceableTextures\\CommandButtons\\BTNEredarWarlockPurple.blp")
+    set QUEST_BLAZING_DEMON=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. McBurn appears (gg_trg_Quest_BlazingDemon_Start calls Quest_Start)
+    call Quest_Custom(q,"The time has finally come to face McBurn, also known as the Almighty Conflagration or the Blazing Demon, himself.")
+    // 2. Defeat him (EndWeak, End or Escape calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_BlazingDemon_Start_Cond_LowDifficulty takes nothing returns boolean
     return(udg_Difficulty<=3)
@@ -13,8 +31,10 @@ endfunction
 
 function Trig_Quest_BlazingDemon_Start_Actions takes nothing returns nothing
     call PauseUnitBJ(false,gg_unit_U00G_0220)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Blazing Demon|r")
-    set udg_SideQuest[51]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Blazing Demon"),"The time has finally come to face McBurn, also known as the Almighty Conflagration or the Blazing Demon, himself.","ReplaceableTextures\\CommandButtons\\BTNEredarWarlockPurple.blp")
+    if QUEST_BLAZING_DEMON==0 then
+        call QuestBlazingDemon_Define()
+    endif
+    call Quest_Start(QUEST_BLAZING_DEMON,null,null)
     call GroupAddUnitSimple(gg_unit_U00G_0220,udg_BossGroup)
     call GroupAddUnitSimple(gg_unit_U00G_0220,udg_BossUnits)
     call SetUnitInvulnerable(gg_unit_U00G_0220,false)
@@ -80,9 +100,7 @@ function Trig_Quest_BlazingDemon_EndWeak_Actions takes nothing returns nothing
     call RemoveLocation(udg_TempPoint)
     call RemoveUnit(gg_unit_U00G_0220)
     call Music_ClearTrack(33)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Blazing Demon|r")
-    call QuestSetCompletedBJ(udg_SideQuest[51],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_BLAZING_DEMON,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -134,10 +152,8 @@ function Trig_Quest_BlazingDemon_End_Actions takes nothing returns nothing
     call CreateItemLoc('I01Z',udg_TempPoint) // 'I01Z': item "Crystal Shard"
     call RemoveLocation(udg_TempPoint)
     call RemoveUnit(gg_unit_U00G_0220)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Blazing Demon|r")
-    call QuestSetCompletedBJ(udg_SideQuest[51],true)
+    call Quest_StepDone(QUEST_BLAZING_DEMON,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call Music_ClearTrack(33)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -186,9 +202,7 @@ function Trig_Quest_BlazingDemon_Escape_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call RemoveUnit(gg_unit_U00G_0220)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Blazing Demon|r")
-    call QuestSetCompletedBJ(udg_SideQuest[51],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_BLAZING_DEMON,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call ConditionalTriggerExecute(gg_trg_Promotion_Award_Random)
     set udg_QuestsTotal=(udg_QuestsTotal+1)
     call Music_ClearTrack(33)

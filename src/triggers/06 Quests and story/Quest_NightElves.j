@@ -1,10 +1,31 @@
-library TQuestNightElves requires TCine, TMusic, TPlayerHero, TReward, TText, TUnit
+library TQuestNightElves requires TQuestEngine, TCine, TMusic, TPlayerHero, TReward, TText, TUnit
+// Main quest "Night Elves" (udg_MainQuest[6]), written for the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Cid sends the party to the Night Elves of Lothlorien to ask for their aid against
+// Hashmalum. Both steps are custom: the talks are cinematics with branches, kept in this module's triggers.
+// The quest is done by gg_trg_Quest_NightElves_Complete, or by gg_trg_Quest_NightElves_Report if the party
+// had already been to Lothlorien. This module keeps its own markers. Quest_EyeOfJenova enables
+// gg_trg_Quest_NightElves_Start. The quest counts toward the story when it starts, as before, not when it
+// is done (so the engine does not count it).
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_NightElves_Start=null
     trigger gg_trg_Quest_NightElves_Complete=null
     trigger gg_trg_Quest_NightElves_Report=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_NIGHT_ELVES=0
 endglobals
+
+function QuestNightElves_Define takes nothing returns nothing
+    local integer q=Quest_Define("Night Elves",QUEST_MAIN,6,"ReplaceableTextures\\CommandButtons\\BTNArcher.blp")
+    set QUEST_NIGHT_ELVES=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Cid (gg_trg_Quest_NightElves_Start)
+    call Quest_Custom(q,"Cid told you to seek the aid of Night Elves who are said to reside on a different continent to the south.")
+    // 2. Talk to the lord and lady of Lothlorien (gg_trg_Quest_NightElves_Complete or _Report)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_NightElves_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hpb1_0013,true,true,true))
@@ -52,8 +73,10 @@ function Trig_Quest_NightElves_Start_Actions takes nothing returns nothing
         endif
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Night Elves|r")
-    set udg_MainQuest[6]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Night Elves","Cid told you to seek the aid of Night Elves who are said to reside on a different continent to the south.","ReplaceableTextures\\CommandButtons\\BTNArcher.blp")
+    if QUEST_NIGHT_ELVES==0 then
+        call QuestNightElves_Define()
+    endif
+    call Quest_Start(QUEST_NIGHT_ELVES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     if(Trig_Quest_NightElves_Start_PortalStillHidden())then
         call GroupAddUnitSimple(gg_unit_nwgt_0142,udg_QuestUnits)
     else
@@ -79,6 +102,7 @@ function Trig_Quest_NightElves_Start_Actions takes nothing returns nothing
     set udg_NewsText[5]=udg_NewsText[4]
     set udg_NewsText[1]="|cffffcc00Child falls ill|r"
     set udg_NewsText[4]="The son of the Tribal family has fallen terribly ill. It seems to be an unprecedented illness that our local priests cannot take care of. A heartfelt wish to please get better soon goes to little Danny!"
+    // the quest counts toward the story when it starts (see the top of this module)
     set udg_StoryProgress=(udg_StoryProgress+1)
     call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -134,9 +158,7 @@ function Trig_Quest_NightElves_Complete_Actions takes nothing returns nothing
     else
         call Reward_Give(0,$3E8,gg_unit_Etyr_0155) // $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Night Elves|r")
-    call QuestSetCompletedBJ(udg_MainQuest[6],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_NIGHT_ELVES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_LothlorienOpen=true
     call UnitAddAbilityBJ('Aneu',gg_unit_eaom_0159) // 'Aneu': standard ability reference "Neutral Building"
     call UnitAddAbilityBJ('Aneu',gg_unit_n00L_0153) // 'Aneu': standard ability reference "Neutral Building"
@@ -222,9 +244,7 @@ function Trig_Quest_NightElves_Report_Actions takes nothing returns nothing
     else
         call Reward_Give(0,$3E8,gg_unit_Etyr_0155) // $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Night Elves|r")
-    call QuestSetCompletedBJ(udg_MainQuest[6],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_NIGHT_ELVES,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call ConditionalTriggerExecute(gg_trg_ArenaResources_Prepare)
     if(Trig_Quest_NightElves_Report_GuardianUnmet())then
         call UnitAddAbilityBJ('Ane2',gg_unit_Ecen_0180) // 'Ane2': object name not found in map data

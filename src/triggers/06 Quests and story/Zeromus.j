@@ -178,8 +178,7 @@ function Trig_Zeromus_Encounter_Actions takes nothing returns nothing
             call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
             call ShowUnitShow(gg_unit_U00J_0209)
         endif
-        call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Destroy Zeromus, the Zodiac Brave of Gravity.")
-        call QuestSetDescriptionBJ(udg_SideQuest[40],"Destroy Zeromus, the Zodiac Brave of Gravity.")
+        call ExecuteFunc("DimensionalBoundary_ZeromusAppears") // quest log: "Destroy Zeromus ..."
         call EnableTrigger(gg_trg_Zeromus_Death)
         call PauseUnitBJ(false,gg_unit_U00J_0209)
         call SetUnitInvulnerable(gg_unit_U00J_0209,false)
@@ -275,9 +274,7 @@ function Trig_Zeromus_Death_Actions takes nothing returns nothing
     else
         call Reward_Give(7500,7500,gg_unit_n034_0109)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Dimensional Boundary|r")
-    call QuestSetCompletedBJ(udg_SideQuest[40],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("DimensionalBoundary_ZeromusSlain") // completes the Dimensional Boundary quest
     if(Trig_Zeromus_Death_Cond_SideQuestDone())then
         call SaveIntegerBJ(1,2,$AE,udg_GameStateHash) // $AE = 174
     endif

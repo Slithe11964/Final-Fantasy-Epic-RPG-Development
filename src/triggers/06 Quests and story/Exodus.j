@@ -68,8 +68,7 @@ function Trig_Exodus_Reveal_Actions takes nothing returns nothing
         call ShowUnitShow(gg_unit_U00K_0208)
     endif
     call GroupAddUnitSimple(gg_unit_U00K_0208,udg_BossUnits)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat Exodus, the Zodiac Brave of Aether.")
-    call QuestSetDescriptionBJ(udg_MainQuest[$E],"Defeat Exodus, the Zodiac Brave of Aether.") // $E = 14
+    call ExecuteFunc("QuestLastRites_ExodusRevealed") // quest log: "Defeat Exodus ..."
     call PauseUnitBJ(false,gg_unit_U00K_0208)
     call SetUnitInvulnerable(gg_unit_U00K_0208,false)
     call Music_SetTrack($D) // $D = 13

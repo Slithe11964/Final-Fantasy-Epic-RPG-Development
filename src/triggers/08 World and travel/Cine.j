@@ -473,8 +473,7 @@ function Trig_Cine_ScryingVision_Actions takes nothing returns nothing
         else
             call ShowUnitShow(gg_unit_U000_0248)
         endif
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Necrophobe|r")
-        set udg_MainQuest[7]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Necrophobe","Galadriel told you to attack the demon who appeared before he's gathered back his full power. Destroy him quickly!","ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp")
+        call ExecuteFunc("QuestDarkKnight_StartNecrophobe") // "Necrophobe" starts (Quest_DarkKnight module)
         set udg_NecrophobeStarted=true
         set udg_ZaleraStage=20
         call Music_SetZoneTrack(9)

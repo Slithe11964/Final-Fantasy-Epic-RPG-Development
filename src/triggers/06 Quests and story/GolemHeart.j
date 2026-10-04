@@ -33,7 +33,7 @@ function Trig_GolemHeart_Pickup_Actions takes nothing returns nothing
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Mithril Golem's heart to Alma.")
     call DestroyForce(l_tempForce)
-    call QuestSetDescriptionBJ(udg_SideQuest[16],"Bring the Mithril Golem's heart to Alma.")
+    call ExecuteFunc("MithrilGolem_HeartTaken") // the quest log: "Bring the Mithril Golem's heart to Alma."
     call EnableTrigger(gg_trg_MithrilGolem_Activate)
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempForce=null

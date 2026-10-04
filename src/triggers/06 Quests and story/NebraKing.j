@@ -20,10 +20,6 @@ function Trig_NebraKing_Summon_Conditions takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0FH') // 'I0FH': item "The Nebra King"
 endfunction
 
-function Trig_NebraKing_Summon_Cond_QuestNotStarted takes nothing returns boolean
-    return(IsQuestDiscovered(udg_SideQuest[48])==false)
-endfunction
-
 function Trig_NebraKing_Summon_Cond_KingVisible takes nothing returns boolean
     return(IsUnitHiddenBJ(gg_unit_H02W_0246)==false)
 endfunction
@@ -40,14 +36,8 @@ function Trig_NebraKing_Summon_Actions takes nothing returns nothing
     local location l_tempPoint2
     local real l_tempReal
     set udg_NebraKingSpot=udg_PlayerFishSpot[udg_TempInteger]
-    if(Trig_NebraKing_Summon_Cond_QuestNotStarted())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00King of the Sea|r")
-        set udg_SideQuest[48]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"King of the Sea"),"Defeat the Nebra King!","ReplaceableTextures\\CommandButtons\\BTNMurlocFlesheater.blp")
-        call EnableTrigger(gg_trg_Quest_KingOfSea_Slain)
-    else
-        call QuestSetDescriptionBJ(udg_SideQuest[48],"Kill the Nebra King!")
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra King.")
-    endif
+    // King of the Sea quest: starts the first time, "Kill the Nebra King!" after that
+    call ExecuteFunc("QuestKingOfSea_Summoned")
     if(Trig_NebraKing_Summon_Cond_KingVisible())then
         set udg_TempPoint=GetUnitLoc(gg_unit_H02W_0246)
         call AddSpecialEffectLocBJ(udg_TempPoint,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
@@ -112,8 +102,8 @@ function Trig_NebraKing_Escape_Actions takes nothing returns nothing
     call ShowUnitHide(gg_unit_H02W_0246)
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossGroup)
     call GroupRemoveUnitSimple(gg_unit_H02W_0246,udg_BossUnits)
-    call QuestSetDescriptionBJ(udg_SideQuest[48],"The Nebra King has disappeared! Find him again!")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra King again.")
+    // King of the Sea quest: "The Nebra King has disappeared! Find him again!"
+    call ExecuteFunc("QuestKingOfSea_Escaped")
     set udg_DispelTarget=gg_unit_H02W_0246
     call ConditionalTriggerExecute(gg_trg_Remove_Debuffs)
     call ConditionalTriggerExecute(gg_trg_Remove_Buffs)

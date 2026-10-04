@@ -1,10 +1,36 @@
-library TVoiceOfForest requires TCam, TCine, TForce, TGroup, TMusic, TPlayerHero, TText, TUnit, TWait
+library TVoiceOfForest requires TQuestEngine, TCam, TCine, TForce, TGroup, TMusic, TPlayerHero, TText, TUnit, TWait
+// Main quest "Voice of the Forest" (udg_MainQuest[12]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Galadriel gives the party an Essence Crystal to summon Chaos, the Zodiac Brave of
+// Wind, at the soul fire. All steps are custom: Start (talk to Galadriel) calls Quest_Start, SummonChaos
+// (the crystal is used with the three Forest Spirits) moves it on, and Chaos dies (Boss_Chaos calls
+// VoiceOfForest_ChaosSlain). The "!" and "?" over Galadriel are this module's own effects.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_VoiceOfForest_Start=null
     trigger gg_trg_VoiceOfForest_PingCrystal=null
     trigger gg_trg_VoiceOfForest_SummonChaos=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_VOICE_OF_FOREST=0
 endglobals
+
+function VoiceOfForest_Define takes nothing returns nothing
+    local integer q=Quest_Define("Voice of the Forest",QUEST_MAIN,12,"ReplaceableTextures\\CommandButtons\\BTNEnt.blp")
+    set QUEST_VOICE_OF_FOREST=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Galadriel (gg_trg_VoiceOfForest_Start)
+    call Quest_Custom(q,"Galadriel, queen of Lothlorien, handed you an Essence Crystal with which you may be able to summon and confront the Zodiac Brave of Wind, Chaos. Gather the Forest Spirits in the ancient soul fire and activate the crystal!")
+    // 2. Use the crystal at the soul fire with the three Forest Spirits (gg_trg_VoiceOfForest_SummonChaos)
+    call Quest_Custom(q,"Destroy Chaos, the Zodiac Brave of Wind.")
+    // 3. Defeat Chaos (Boss_Chaos)
+    call Quest_Custom(q,"")
+endfunction
+
+// Chaos is dead: the quest is done (called by Boss_Chaos through ExecuteFunc).
+function VoiceOfForest_ChaosSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_VOICE_OF_FOREST,null,null)
+endfunction
 
 function Trig_VoiceOfForest_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Etyr_0155,true,true,true))
@@ -14,6 +40,7 @@ function Trig_VoiceOfForest_Start_CinematicsOn takes nothing returns boolean
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Galadriel and receives the Essence Crystal.
 function Trig_VoiceOfForest_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(gg_unit_Etyr_0155,udg_BossUnits)
@@ -41,8 +68,10 @@ function Trig_VoiceOfForest_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Worry not, Galadriel. We won't allow these demons to continue corrupting this world. We shall expunge them all.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Voice of the Forest|r")
-    set udg_MainQuest[$C]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Voice of the Forest"),"Galadriel, queen of Lothlorien, handed you an Essence Crystal with which you may be able to summon and confront the Zodiac Brave of Wind, Chaos. Gather the Forest Spirits in the ancient soul fire and activate the crystal!","ReplaceableTextures\\CommandButtons\\BTNEnt.blp") // $C = 12
+    if QUEST_VOICE_OF_FOREST==0 then
+        call VoiceOfForest_Define()
+    endif
+    call Quest_Start(QUEST_VOICE_OF_FOREST,GetTriggerPlayer(),GetTriggerUnit())
     set udg_QuestItem[$F]=UnitAddItemByIdSwapped('I0DJ',Player_GetHero(GetTriggerPlayer())) // $F = 15; 'I0DJ': item "Essence Crystal"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     set udg_SpecialEffect[85]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Etyr_0155,"Objects\\RandomObject\\RandomObject.mdl")
@@ -94,6 +123,7 @@ function Trig_VoiceOfForest_SummonChaos_ReleaseElemental takes nothing returns n
     call SetUnitInvulnerable(GetEnumUnit(),false)
 endfunction
 
+// Step 2: the Essence Crystal is used at the soul fire with the three Forest Spirits: Chaos appears.
 function Trig_VoiceOfForest_SummonChaos_Actions takes nothing returns nothing
     if(Trig_VoiceOfForest_SummonChaos_NotAtSoulFire())then
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
@@ -204,8 +234,7 @@ function Trig_VoiceOfForest_SummonChaos_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_U00O_0191,false)
     call GroupAddUnitSimple(gg_unit_U00O_0191,udg_BossUnits)
     call ForGroupBJ(udg_ChaosElementalGroup,function Trig_VoiceOfForest_SummonChaos_ReleaseElemental)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Chaos, the Zodiac Brave of Wind.")
-    call QuestSetDescriptionBJ(udg_MainQuest[$C],"Destroy Chaos, the Zodiac Brave of Wind.") // $C = 12
+    call Quest_StepDone(QUEST_VOICE_OF_FOREST,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call Music_SetTrack($D) // $D = 13
     call EnableTrigger(gg_trg_Boss_Chaos_Death)
     call DestroyTrigger(gg_trg_ForestSpirit_Flee)

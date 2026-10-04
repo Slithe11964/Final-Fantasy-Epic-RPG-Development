@@ -1,4 +1,4 @@
-library TQuestSaveTimmy requires TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit
+library TQuestSaveTimmy requires TQuestEngine, TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_SaveTimmy_Init=null
@@ -19,7 +19,41 @@ globals
     boolean udg_FarmGateOpen=false
     boolean udg_GateGuardTalked=false
     sound gg_snd_H01VillagerF42=null
+    // The quest's number in the quest engine (0 until it is defined): the usual way, asked by Katya first,
+    // and the other way, Timmy freed before Katya asked. Both use the quest log entry udg_SideQuest[9].
+    integer QUEST_SAVE_TIMMY=0
+    integer QUEST_SAVE_TIMMY_ALT=0
 endglobals
+
+// Side quest "Save Timmy", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md). The quest's
+// talks, the gnoll camp and Timmy's rescue stay module triggers; they move the quest on. Katya's own
+// markers (udg_SpecialEffect[27]) are kept. Does not count toward the story.
+
+// Katya asked first: talk to her, free Timmy, return to her.
+function QuestSaveTimmy_Define takes nothing returns nothing
+    local integer q=Quest_Define("Save Timmy",QUEST_SIDE,9,"ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    set QUEST_SAVE_TIMMY=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Katya (gg_trg_Quest_SaveTimmy_Start)
+    call Quest_Custom(q,"Katya, from the Farm, asked you to save her son Timmy who was apparently taken by vicious gnolls.")
+    // 2. Timmy is freed and goes home (gg_trg_Quest_SaveTimmy_TimmyReturns)
+    call Quest_Custom(q,"Return to Katya.")
+    // 3. Report back to Katya (gg_trg_Quest_SaveTimmy_Complete)
+    call Quest_Custom(q,"")
+endfunction
+
+// Timmy freed before Katya asked: the quest starts when he is home, then return to Katya.
+function QuestSaveTimmy_DefineAlt takes nothing returns nothing
+    local integer q=Quest_Define("Save Timmy",QUEST_SIDE,9,"ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    set QUEST_SAVE_TIMMY_ALT=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Timmy is freed and goes home (gg_trg_Quest_SaveTimmy_RescueFirst)
+    call Quest_Custom(q,"It seems you saved a child from the Farm. Talk to his mother at the Farm for a potential reward.")
+    // 2. Talk to Katya (gg_trg_Quest_SaveTimmy_CompleteAlt)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_SaveTimmy_Init_Enum_SetWorkAnim takes nothing returns nothing
     call SetUnitAnimation(GetEnumUnit(),"stand work")
@@ -90,8 +124,10 @@ function Trig_Quest_SaveTimmy_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"You can count on me.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Save Timmy|r")
-    set udg_SideQuest[9]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffSave Timmy","Katya, from the Farm, asked you to save her son Timmy who was apparently taken by vicious gnolls.","ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    if QUEST_SAVE_TIMMY==0 then
+        call QuestSaveTimmy_Define()
+    endif
+    call Quest_Start(QUEST_SAVE_TIMMY,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     set udg_SpecialEffect[27]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00I_0011,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_Quest_SaveTimmy_Ping)
     call EnableTrigger(gg_trg_Quest_SaveTimmy_GateAsk)
@@ -288,8 +324,7 @@ function Trig_Quest_SaveTimmy_TimmyReturns_Actions takes nothing returns nothing
     call DestroyTrigger(gg_trg_Npc_Talk_Peasant)
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_TimmyReturns_Enum_HideUnit)
     call ForGroupBJ(udg_FarmGatheredVillagers,function Trig_Quest_SaveTimmy_TimmyReturns_Enum_ShowUnit)
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Katya.")
-    call QuestSetDescriptionBJ(udg_SideQuest[9],"Return to Katya.")
+    call Quest_StepDone(QUEST_SAVE_TIMMY,null,udg_TimmyUnit)
     call GroupAddUnitSimple(gg_unit_n00I_0011,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_SaveTimmy_Complete)
     if(Trig_Quest_SaveTimmy_TimmyReturns_Cond_GateStillClosed())then
@@ -347,8 +382,10 @@ function Trig_Quest_SaveTimmy_RescueFirst_Actions takes nothing returns nothing
     call DestroyTrigger(gg_trg_Npc_Talk_Peasant)
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_RescueFirst_Enum_HideUnit)
     call ForGroupBJ(udg_FarmGatheredVillagers,function Trig_Quest_SaveTimmy_RescueFirst_Enum_ShowUnit)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Save Timmy|r")
-    set udg_SideQuest[9]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffSave Timmy","It seems you saved a child from the Farm. Talk to his mother at the Farm for a potential reward.","ReplaceableTextures\\CommandButtons\\BTNVillagerKid.blp")
+    if QUEST_SAVE_TIMMY_ALT==0 then
+        call QuestSaveTimmy_DefineAlt()
+    endif
+    call Quest_Start(QUEST_SAVE_TIMMY_ALT,null,udg_TimmyUnit)
     set udg_SpecialEffect[27]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00I_0011,"Objects\\RandomObject\\RandomObject.mdl")
     call GroupAddUnitSimple(gg_unit_n00I_0011,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_SaveTimmy_CompleteAlt)
@@ -399,9 +436,7 @@ function Trig_Quest_SaveTimmy_Complete_Actions takes nothing returns nothing
     else
         call Reward_Give($7D0,$3E8,gg_unit_n00I_0011) // $7D0 = 2000; $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Save Timmy|r")
-    call QuestSetCompletedBJ(udg_SideQuest[9],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_SAVE_TIMMY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_Complete_Enum_ShowCelebrate)
     call ForGroupBJ(udg_FarmGatheredVillagers,function Trig_Quest_SaveTimmy_Complete_Enum_RemoveUnit)
     call EnableTrigger(gg_trg_Npc_Talk_PeasantHarvest)
@@ -454,9 +489,7 @@ function Trig_Quest_SaveTimmy_CompleteAlt_Actions takes nothing returns nothing
         call Reward_Give($BB8,$7D0,gg_unit_n00I_0011) // $BB8 = 3000; $7D0 = 2000
         call Reward_Give($7D0,$3E8,gg_unit_n00I_0011) // $7D0 = 2000; $3E8 = 1000
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Save Timmy|r")
-    call QuestSetCompletedBJ(udg_SideQuest[9],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_SAVE_TIMMY_ALT,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call ForGroupBJ(udg_FarmWorkingVillagers,function Trig_Quest_SaveTimmy_CompleteAlt_Enum_ShowCelebrate)
     call ForGroupBJ(udg_FarmGatheredVillagers,function Trig_Quest_SaveTimmy_CompleteAlt_Enum_RemoveUnit)
     call EnableTrigger(gg_trg_Npc_Talk_PeasantHarvest)

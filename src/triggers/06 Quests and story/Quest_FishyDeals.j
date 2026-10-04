@@ -1,34 +1,42 @@
-library TQuestFishyDeals requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestFishyDeals requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText
+// Side quest "Fishy Deals", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Ruksel, former owner of the Fishing Pole, wants a fishy meal: a Fish Soup or, for more gold, a Nebra Bread.
+// Made available by Fishing_Setup (the Fishing Pole is found), which calls QuestFishyDeals_Available.
+// Does not count toward the story.
+// The hand-in has a different talk and reward for each meal, so it stays a trigger of this module; it
+// finishes the quest (custom step).
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
-    trigger gg_trg_Quest_FishyDeals_Start=null
     trigger gg_trg_Quest_FishyDeals_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_FISHY_DEALS=0
 endglobals
 
-function Trig_Quest_FishyDeals_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0AW_0223,true,true,true))
-endfunction
-
-function Trig_Quest_FishyDeals_Start_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_FishyDeals_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[92])
-    if(Trig_Quest_FishyDeals_Start_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_n0AW_0223,"Oh I see you've found my Fishing Pole. Well if you wish to keep it I don't mind. I don't get the opportunity to fish much these days.",false)
-        call Text_Say(gg_unit_n0AW_0223,"However, I have a favor to ask of you. I haven't been able to taste a good fish meal in a long time. If you can use the fishing pole to get some fish to then cook and bring me a fishy meal, I'll give you a handsome reward.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"We'll see if we can get you something.",false)
-        call Cine_ExitAction()
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Fishy Deals|r")
-    set udg_SideQuest[74]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Fishy Deals"),"Ruksel, angler from the Farm and former owner of the Fishing Pole you found, has asked you to make him a \"fishy meal\". Bring him something suitable!","ReplaceableTextures\\CommandButtons\\BTNINV_Misc_Fish_06.blp")
-    set udg_SpecialEffect[92]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AW_0223,"Objects\\RandomObject\\RandomObject.mdl")
+// Step 1 done (the party talked to Ruksel): he takes a fishy meal from now on.
+function QuestFishyDeals_Started takes nothing returns nothing
     call EnableTrigger(gg_trg_Quest_FishyDeals_Complete)
-    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+function QuestFishyDeals_Define takes nothing returns nothing
+    local integer q=Quest_Define("Fishy Deals",QUEST_SIDE,74,"ReplaceableTextures\\CommandButtons\\BTNINV_Misc_Fish_06.blp")
+    set QUEST_FISHY_DEALS=q
+    call Quest_NotStory(q)
+    // 1. Talk to Ruksel
+    call Quest_Talk(q,gg_unit_n0AW_0223,"Ruksel, angler from the Farm and former owner of the Fishing Pole you found, has asked you to make him a \"fishy meal\". Bring him something suitable!")
+    call Quest_Say(q,gg_unit_n0AW_0223,"Oh I see you've found my Fishing Pole. Well if you wish to keep it I don't mind. I don't get the opportunity to fish much these days.")
+    call Quest_Say(q,gg_unit_n0AW_0223,"However, I have a favor to ask of you. I haven't been able to taste a good fish meal in a long time. If you can use the fishing pole to get some fish to then cook and bring me a fishy meal, I'll give you a handsome reward.")
+    call Quest_Say(q,null,"We'll see if we can get you something.")
+    call Quest_OnDone(q,"QuestFishyDeals_Started")
+    // 2. Bring Ruksel a Fish Soup or a Nebra Bread (gg_trg_Quest_FishyDeals_Complete)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by Fishing_Setup when the Fishing Pole is found.
+function QuestFishyDeals_Available takes nothing returns nothing
+    if QUEST_FISHY_DEALS==0 then
+        call QuestFishyDeals_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_FISHY_DEALS)
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_HasFishMeal takes nothing returns boolean
@@ -59,9 +67,9 @@ function Trig_Quest_FishyDeals_Complete_Cond_HasNebraBread takes nothing returns
     return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
 endfunction
 
+// Step 2: a hero brought Ruksel a meal (the Nebra Bread first if he has both); one charge is handed in.
 function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[92])
     if(Trig_Quest_FishyDeals_Complete_Cond_HasNebraBread())then
         if(Trig_Quest_FishyDeals_Complete_Cond_BreadHasCharges())then
             call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'))-1)) // 'I0KM': item "Nebra Bread"
@@ -102,9 +110,7 @@ function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
             call Reward_Give(5000,$7D0,gg_unit_n0AW_0223) // $7D0 = 2000
         endif
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Fishy Deals|r")
-    call QuestSetCompletedBJ(udg_SideQuest[74],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_FISHY_DEALS,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -114,21 +120,6 @@ endfunction
 // ---- Trigger registration ----
 // These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part21 (module Quest),
 // which keeps the original registration order.
-
-function Register_Quest_FishyDeals_Start takes nothing returns nothing
-    set gg_trg_Quest_FishyDeals_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_FishyDeals_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FishyDeals_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_FishyDeals_Start,Condition(function Trig_Quest_FishyDeals_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_FishyDeals_Start,function Trig_Quest_FishyDeals_Start_Actions)
-endfunction
 
 function Register_Quest_FishyDeals_Complete takes nothing returns nothing
     set gg_trg_Quest_FishyDeals_Complete=CreateTrigger()

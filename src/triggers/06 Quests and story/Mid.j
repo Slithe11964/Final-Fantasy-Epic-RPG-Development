@@ -1,4 +1,4 @@
-library TMid requires TCam, TCine, TGroup, TPlayerHero, TText, TUnit, TWait
+library TMid requires TQuestEngine, TCam, TCine, TGroup, TPlayerHero, TText, TUnit, TWait, optional TQuestYoungEngineer
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Mid_Cage_Ping=null
@@ -74,13 +74,18 @@ function Trig_Mid_Freed_Actions takes nothing returns nothing
     call SetUnitPositionLoc(udg_Mid,GetRectCenter(gg_rct_234))
     call RemoveLocation(l_tempPoint)
     if(Trig_Mid_Freed_FindMidDiscovered())then
+        // "Find Mid" was given by Cid: only the text changes (the announcement differs from the text)
         call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Cid")
-        call QuestSetDescriptionBJ(udg_MainQuest[1],"Return to Cid in Kalm.")
+        call Quest_SetLog(QUEST_FIND_MID,"Return to Cid in Kalm.",false)
     else
         call DisableTrigger(gg_trg_Cid_Talk_FindMid)
         call DestroyTrigger(gg_trg_Cid_Talk_FindMid)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Find Mid|r")
-        set udg_MainQuest[1]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Find Mid","Talk to Cid to speak to him about Mid.","ReplaceableTextures\\CommandButtons\\BTNArthas.blp")
+        // "Find Mid" starts here, before anyone talked to Cid (defined in the Cid module)
+        if QUEST_FIND_MID==0 then
+            call ExecuteFunc("Cid_FindMid_Define")
+        endif
+        call Quest_Start(QUEST_FIND_MID,null,null)
+        call Quest_SetLog(QUEST_FIND_MID,"Talk to Cid to speak to him about Mid.",false)
         call DestroyEffectBJ(udg_SpecialEffect[19])
         set udg_SpecialEffect[19]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Objects\\RandomObject\\RandomObject.mdl")
         call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_LTg4_0005)
@@ -92,6 +97,7 @@ function Trig_Mid_Freed_Actions takes nothing returns nothing
         call ConditionalTriggerExecute(gg_trg_Quest_Arachnophobia_Offer)
         call ConditionalTriggerExecute(gg_trg_Naisha_Prepare)
         call ConditionalTriggerExecute(gg_trg_Valera_ShowMarker)
+        // starting "Find Mid" counts toward the story too (the engine counts it again when it is done)
         set udg_StoryProgress=(udg_StoryProgress+1)
         call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     endif
@@ -177,8 +183,9 @@ function Trig_Mid_Letter_Ping_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Mid_Crossbow_Talk_Enable_Actions takes nothing returns nothing
-    set udg_SpecialEffect[89]=AddSpecialEffectTargetUnitBJ("overhead",udg_Mid,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_YoungEngineer_Start)
+    static if LIBRARY_TQuestYoungEngineer then
+        call ExecuteFunc("QuestYoungEngineer_Available") // the "!" over Mid; the Young Engineer quest can start
+    endif
     set udg_CrossbowAdviceGiven=false
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

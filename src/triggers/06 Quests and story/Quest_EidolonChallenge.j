@@ -1,50 +1,20 @@
-library TQuestEidolonChallenge requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestEidolonChallenge requires TQuestEngine
+// Side quest "Eidolon Challenge", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// The Brothers (Minotaur and Sacred) want the party to beat their four Eidolon friends - Titan, Pandemona,
+// Typhon and Leviathan - so that they help defend Kalm. Made available by Brothers (Minotaur's alert after
+// the first Kalm Siege), which calls QuestEidolonChallenge_Available. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
-    trigger gg_trg_Quest_EidolonChallenge_Start=null
     trigger gg_trg_Quest_EidolonChallenge_Count=null
-    trigger gg_trg_Quest_EidolonChallenge_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_EIDOLON_CHALLENGE=0
     // Variables only this module uses.
     integer udg_EidolonsDefeated=0
 endglobals
 
-function Trig_Quest_EidolonChallenge_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ocb2_0147,true,true,true))
-endfunction
-
-function Trig_Quest_EidolonChallenge_Start_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_EidolonChallenge_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[52])
-    if(Trig_Quest_EidolonChallenge_Start_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_Ocb2_0147,"Hey, you. Been talkin' with bro.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"This town's been seeing some pretty hefty attacks lately. Can see why ya recruited us.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Yes, you've been a tremendous help.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"Well, we got an idea for you there.",false)
-        call Text_Say(gg_unit_Ocb2_0147,"Bro and I were thinking we could have our friends help defend the gates. Our Eidolon friends.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"More defenders? That sounds great. You can call them over right away!",false)
-        call Text_Say(gg_unit_Ocb2_0147,"Slow down there, mighty one.",false)
-        call Text_Say(gg_unit_Ocb2_0147,"We already contacted all of them. But us Eidolons have our pride you know.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"We know you're very powerful, mighty ones, but our friends need to be convinced of that themselves!",false)
-        call Text_Say(gg_unit_Ocb2_0147,"So if you want to have them help defend the gates, you'll have to beat them in battle like you did us. Should be simple right?",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Hmm, that sounds fair. Alright we'll beat them up and drag them over here then. Where can I find them?",false)
-        call Text_Say(gg_unit_Ocb2_0147,"They're scattered around the world. Maybe you'll be able to tell where to find them when you hear a bit more.",false)
-        call Text_Say(gg_unit_Ocb2_0147,"We've four friends we asked for this little idea: Titan, Leviathan, Pandemona and Typhon.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"Titan is a very old friend of ours. He's specialized on earth, just like we are. Even though he's an ogre, like Cyclops, his intelligence is quite something. Him and Cyclops aren't related to each other, by the way.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"Leviathan is an Eidolon we met by coincidence. Just when we were fighting some guy who wanted us as his servants, he appeared and blew that guy away. We complained at first, but we eventually became good friends. His element is Water, by the way.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"Pandemona and Typhon are the lords of wind. They're pretty famous in the world of the Eidolons, so it's nothing special we know them. They're great fighters and are good friends, so you'll likely find them together.",false)
-        call Text_Say(gg_unit_Ocb2_0147,"And that's all you need to know. Good Luck!",false)
-        call Cine_ExitAction()
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Eidolon Challenge|r")
-    set udg_SideQuest[32]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Eidolon Challenge"),"The Brothers, Sacred and Minotaur, have tasked you with beating up their friends, Titan, Leviathan, Pandemona and Typhon, to have them help defend Kalm. Find and defeat them all!","ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp")
-    set udg_QuestReq[3]=CreateQuestItemBJ(udg_SideQuest[32],"Eidolons defeated: 0/4")
-    set udg_SpecialEffect[52]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ocb2_0147,"Objects\\RandomObject\\RandomObject.mdl")
+// Step 1 done (the party talked to the Brothers): the Eidolons can be found and fought.
+function QuestEidolonChallenge_Started takes nothing returns nothing
+    set udg_QuestReq[3]=CreateQuestItemBJ(Quest_LogEntry(QUEST_EIDOLON_CHALLENGE),"Eidolons defeated: 0/4")
     call ShowUnitShow(gg_unit_H01I_0070)
     call PauseUnitBJ(false,gg_unit_H01I_0070)
     call SetUnitInvulnerable(gg_unit_H01I_0070,false)
@@ -57,7 +27,61 @@ function Trig_Quest_EidolonChallenge_Start_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_Eidolon_Found_Reveal)
     call EnableTrigger(gg_trg_Eidolon_Leviathan_Ambush)
     call EnableTrigger(gg_trg_Quest_EidolonChallenge_Count)
-    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+// Quest done: the Eidolons are saved as recruited, and a minute later Minotaur offers the rematch.
+function QuestEidolonChallenge_Done takes nothing returns nothing
+    call SaveIntegerBJ(1,2,93,udg_GameStateHash)
+    call SaveIntegerBJ(1,2,94,udg_GameStateHash)
+    call SaveIntegerBJ(1,2,95,udg_GameStateHash)
+    call SaveIntegerBJ(1,2,96,udg_GameStateHash)
+    call StartTimerBJ(udg_SharedDelayTimer4,false,60.)
+    call EnableTrigger(gg_trg_Brothers_Alert_Rematch)
+endfunction
+
+function QuestEidolonChallenge_Define takes nothing returns nothing
+    local integer q=Quest_Define("Eidolon Challenge",QUEST_SIDE,32,"ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp")
+    set QUEST_EIDOLON_CHALLENGE=q
+    call Quest_NotStory(q)
+    // 1. Talk to the Brothers
+    call Quest_Talk(q,gg_unit_Ocb2_0147,"The Brothers, Sacred and Minotaur, have tasked you with beating up their friends, Titan, Leviathan, Pandemona and Typhon, to have them help defend Kalm. Find and defeat them all!")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"Hey, you. Been talkin' with bro.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"This town's been seeing some pretty hefty attacks lately. Can see why ya recruited us.")
+    call Quest_Say(q,null,"Yes, you've been a tremendous help.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"Well, we got an idea for you there.")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"Bro and I were thinking we could have our friends help defend the gates. Our Eidolon friends.")
+    call Quest_Say(q,null,"More defenders? That sounds great. You can call them over right away!")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"Slow down there, mighty one.")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"We already contacted all of them. But us Eidolons have our pride you know.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"We know you're very powerful, mighty ones, but our friends need to be convinced of that themselves!")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"So if you want to have them help defend the gates, you'll have to beat them in battle like you did us. Should be simple right?")
+    call Quest_Say(q,null,"Hmm, that sounds fair. Alright we'll beat them up and drag them over here then. Where can I find them?")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"They're scattered around the world. Maybe you'll be able to tell where to find them when you hear a bit more.")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"We've four friends we asked for this little idea: Titan, Leviathan, Pandemona and Typhon.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"Titan is a very old friend of ours. He's specialized on earth, just like we are. Even though he's an ogre, like Cyclops, his intelligence is quite something. Him and Cyclops aren't related to each other, by the way.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"Leviathan is an Eidolon we met by coincidence. Just when we were fighting some guy who wanted us as his servants, he appeared and blew that guy away. We complained at first, but we eventually became good friends. His element is Water, by the way.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"Pandemona and Typhon are the lords of wind. They're pretty famous in the world of the Eidolons, so it's nothing special we know them. They're great fighters and are good friends, so you'll likely find them together.")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"And that's all you need to know. Good Luck!")
+    call Quest_OnDone(q,"QuestEidolonChallenge_Started")
+    // 2. Defeat the four Eidolons (counted by the Count trigger below)
+    call Quest_Custom(q,"Come back to the Brothers for a reward.")
+    // 3. Talk to the Brothers again
+    call Quest_Talk(q,gg_unit_Ocb2_0147,"")
+    call Quest_Say(q,null,"Good news, we succeded in defeating Titan, Typhon, Pandemona and Leviathan.")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"Yeah, we know, they're right here.")
+    call Quest_Say(q,null,"Oh, right.")
+    call Quest_Say(q,gg_unit_Ocbh_0148,"You really are strong, o mighty one!")
+    call Quest_Say(q,gg_unit_Ocb2_0147,"Defending this town will be much easier now. Also have this, a token of our respect.")
+    call Quest_Reward(q,4000,4000)
+    call Quest_OnDone(q,"QuestEidolonChallenge_Done")
+endfunction
+
+// Called by Brothers when Minotaur has something to tell the party.
+function QuestEidolonChallenge_Available takes nothing returns nothing
+    if QUEST_EIDOLON_CHALLENGE==0 then
+        call QuestEidolonChallenge_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_EIDOLON_CHALLENGE)
 endfunction
 
 function Trig_Quest_EidolonChallenge_Count_Cond_IsLeviathan takes nothing returns boolean
@@ -84,6 +108,7 @@ function Trig_Quest_EidolonChallenge_Count_Cond_AllEidolonsBeaten takes nothing 
     return(udg_EidolonsDefeated==4)
 endfunction
 
+// An Eidolon was beaten: it is revived at its post in Kalm as an ally. After the fourth, step 2 is done.
 function Trig_Quest_EidolonChallenge_Count_Actions takes nothing returns nothing
     call DisplayTextToForce(udg_PlayingPlayers,(("|cffaa0000"+GetHeroProperName(GetDyingUnit()))+"|r was defeated !!!"))
     call PlayThematicMusicBJ("FF7-Victory Fanfare.mp3")
@@ -122,73 +147,18 @@ function Trig_Quest_EidolonChallenge_Count_Actions takes nothing returns nothing
         call DisableTrigger(GetTriggeringTrigger())
         call DisableTrigger(gg_trg_Eidolon_Found_Reveal)
         call DestroyTrigger(gg_trg_Eidolon_Found_Reveal)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Come back to the Brothers for a reward.")
-        call QuestSetDescriptionBJ(udg_SideQuest[32],"Come back to the Brothers for a reward.")
         call QuestItemSetCompletedBJ(udg_QuestReq[3],true)
-        call DestroyEffectBJ(udg_SpecialEffect[52])
-        set udg_SpecialEffect[52]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ocb2_0147,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-        call EnableTrigger(gg_trg_Quest_EidolonChallenge_Complete)
+        call Quest_StepDone(QUEST_EIDOLON_CHALLENGE,GetOwningPlayer(GetKillingUnit()),GetKillingUnit())
         call DestroyTrigger(GetTriggeringTrigger())
     endif
-endfunction
-
-function Trig_Quest_EidolonChallenge_Complete_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ocb2_0147,true,true,true))
-endfunction
-
-function Trig_Quest_EidolonChallenge_Complete_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_EidolonChallenge_Complete_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[52])
-    if(Trig_Quest_EidolonChallenge_Complete_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Good news, we succeded in defeating Titan, Typhon, Pandemona and Leviathan.",false)
-        call Text_Say(gg_unit_Ocb2_0147,"Yeah, we know, they're right here.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Oh, right.",false)
-        call Text_Say(gg_unit_Ocbh_0148,"You really are strong, o mighty one!",false)
-        call Text_Say(gg_unit_Ocb2_0147,"Defending this town will be much easier now. Also have this, a token of our respect.",false)
-        call Reward_Give($FA0,$FA0,gg_unit_Ocb2_0147) // $FA0 = 4000
-        call Cine_ExitAction()
-    else
-        call Reward_Give($FA0,$FA0,gg_unit_Ocb2_0147) // $FA0 = 4000
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Eidolon Challenge|r")
-    call QuestSetCompletedBJ(udg_SideQuest[32],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    call SaveIntegerBJ(1,2,93,udg_GameStateHash)
-    call SaveIntegerBJ(1,2,94,udg_GameStateHash)
-    call SaveIntegerBJ(1,2,95,udg_GameStateHash)
-    call SaveIntegerBJ(1,2,96,udg_GameStateHash)
-    call StartTimerBJ(udg_SharedDelayTimer4,false,60.)
-    call EnableTrigger(gg_trg_Brothers_Alert_Rematch)
-    call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
 function InitTrig_Quest_EidolonChallenge takes nothing returns nothing
 endfunction
 
 // ---- Trigger registration ----
-// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part11, RegisterTriggers_Quest_Part12 (module Quest),
+// These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part12 (module Quest),
 // which keeps the original registration order.
-
-function Register_Quest_EidolonChallenge_Start takes nothing returns nothing
-    set gg_trg_Quest_EidolonChallenge_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_EidolonChallenge_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_EidolonChallenge_Start,Condition(function Trig_Quest_EidolonChallenge_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Start,function Trig_Quest_EidolonChallenge_Start_Actions)
-endfunction
 
 function Register_Quest_EidolonChallenge_Count takes nothing returns nothing
     set gg_trg_Quest_EidolonChallenge_Count=CreateTrigger()
@@ -198,21 +168,6 @@ function Register_Quest_EidolonChallenge_Count takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01K_0068,EVENT_UNIT_DEATH)
     call TriggerRegisterUnitEvent(gg_trg_Quest_EidolonChallenge_Count,gg_unit_H01L_0067,EVENT_UNIT_DEATH)
     call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Count,function Trig_Quest_EidolonChallenge_Count_Actions)
-endfunction
-
-function Register_Quest_EidolonChallenge_Complete takes nothing returns nothing
-    set gg_trg_Quest_EidolonChallenge_Complete=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_EidolonChallenge_Complete)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_EidolonChallenge_Complete,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_EidolonChallenge_Complete,Condition(function Trig_Quest_EidolonChallenge_Complete_Conditions))
-    call TriggerAddAction(gg_trg_Quest_EidolonChallenge_Complete,function Trig_Quest_EidolonChallenge_Complete_Actions)
 endfunction
 
 endlibrary

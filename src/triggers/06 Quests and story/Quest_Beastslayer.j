@@ -1,129 +1,44 @@
-library TQuestBeastslayer requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
+library TQuestBeastslayer requires TQuestEngine, TUnit
+// Side quest "Find Beastslayer", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Jessie, archer from Kalm, lost Meliadoul's magic arrow to a Tempest Lizard in the Barrens; the party kills
+// the lizard and brings the arrow back. Made available by Cid and Epilogue, which run
+// gg_trg_Quest_Beastslayer_Available.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Beastslayer_Available=null
-    trigger gg_trg_Quest_Beastslayer_Start=null
-    trigger gg_trg_Quest_Beastslayer_ArrowDropped=null
-    trigger gg_trg_Quest_Beastslayer_Ping=null
-    trigger gg_trg_Quest_Beastslayer_ArrowTaken=null
-    trigger gg_trg_Quest_Beastslayer_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_BEASTSLAYER=0
 endglobals
 
-function Trig_Quest_Beastslayer_Available_Actions takes nothing returns nothing
-    set udg_SpecialEffect[29]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00D_0091,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_Beastslayer_Start)
-    call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_Quest_Beastslayer_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n00D_0091,true,true,true))
-endfunction
-
-function Trig_Quest_Beastslayer_Start_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_Beastslayer_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[29])
-    if(Trig_Quest_Beastslayer_Start_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_n00D_0091,"Greetings to you. I am Jessie. I have a small problem, could you help me please?",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Sure, why not?",false)
-        call Text_Say(gg_unit_n00D_0091,"Recently I went hunting to Barrens and I took mistress Meliadoul's special arrow - the Beastslayer. It's a magical arrow that can kill any beast with one shot.",false)
-        call Text_Say(gg_unit_n00D_0091,"I shot this arrow at a huge Thunder Lizard, but, to my dismay, it not only didn't die but charged at me with full speed. I barely escaped. Now I can't go back to mistress Meliadoul because I lost the Beastslayer. Please, find this arrow and bring it to me. If you do, I will offer you a reward and on top of that give you something special for your own archery training.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"I'll see what can be done.",false)
-        call Cine_ExitAction()
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Find Beastslayer|r")
-    set udg_SideQuest[$B]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Find Beastslayer"),"Jessie, archer from Kalm, asked you to find magical arrow called Beastslayer in the Barrens.","ReplaceableTextures\\CommandButtons\\BTNImprovedStrengthOfTheMoon.blp") // $B = 11
-    set udg_SpecialEffect[29]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00D_0091,"Objects\\RandomObject\\RandomObject.mdl")
-    // A random whole number from 1 through LoadIntegerBJ(2, 2, udg_SpawnDataHashRef).
-    call CreateNUnitsAtLoc(1,'n011',Player($B),GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(2,2,udg_SpawnDataHashRef)),2,udg_SpawnRectHashRef)),bj_UNIT_FACING) // 'n011': unit "Tempest Lizard"; $B = 11
-    call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossUnits)
-    call TriggerRegisterUnitEvent(gg_trg_Quest_Beastslayer_ArrowDropped,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
-    call EnableTrigger(gg_trg_Quest_Beastslayer_ArrowDropped)
-    call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_Quest_Beastslayer_ArrowDropped_Actions takes nothing returns nothing
+// The Tempest Lizard died: it drops the Beastslayer, and the party has to bring it to Jessie.
+function QuestBeastslayer_ArrowDropped takes nothing returns nothing
     local location l_tempPoint
-    call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_QuestItem[17]=CreateItemLoc('I00T',l_tempPoint) // 'I00T': item "Beastslayer"
-    call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
+    call SetItemInvulnerable(CreateItemLoc('I00T',l_tempPoint),true) // 'I00T': item "Beastslayer"
     call RemoveLocation(l_tempPoint)
-    call EnableTrigger(gg_trg_Quest_Beastslayer_Ping)
-    call EnableTrigger(gg_trg_Quest_Beastslayer_ArrowTaken)
+    call Quest_StepDone(QUEST_BEASTSLAYER,GetOwningPlayer(GetKillingUnit()),GetKillingUnit())
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
 endfunction
 
-function Trig_Quest_Beastslayer_Ping_Conditions takes nothing returns boolean
-    return(udg_QuestItem[17]!=null)
+// Step 1 done (the party talked to Jessie): the Tempest Lizard appears somewhere in the Barrens.
+function QuestBeastslayer_Started takes nothing returns nothing
+    local trigger t=CreateTrigger()
+    // A random whole number from 1 through LoadIntegerBJ(2, 2, udg_SpawnDataHashRef).
+    call CreateNUnitsAtLoc(1,'n011',Player($B),GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(2,2,udg_SpawnDataHashRef)),2,udg_SpawnRectHashRef)),bj_UNIT_FACING) // 'n011': unit "Tempest Lizard"; $B = 11
+    call Unit_ScaleToLevel60(bj_lastCreatedUnit)
+    call GroupAddUnitSimple(GetLastCreatedUnit(),udg_BossUnits)
+    call TriggerRegisterUnitEvent(t,GetLastCreatedUnit(),EVENT_UNIT_DEATH)
+    call TriggerAddAction(t,function QuestBeastslayer_ArrowDropped)
+    set t=null
 endfunction
 
-function Trig_Quest_Beastslayer_Ping_Cond_ArrowCarried takes nothing returns boolean
-    return(IsItemOwned(udg_QuestItem[17]))
-endfunction
-
-function Trig_Quest_Beastslayer_Ping_Actions takes nothing returns nothing
-    if(Trig_Quest_Beastslayer_Ping_Cond_ArrowCarried())then
-        set udg_TempPoint=GetUnitLoc(gg_unit_n00D_0091)
-    else
-        set udg_TempPoint=GetItemLoc(udg_QuestItem[17])
-    endif
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
-endfunction
-
-function Trig_Quest_Beastslayer_ArrowTaken_Conditions takes nothing returns boolean
-    return(GetItemTypeId(GetManipulatedItem())=='I00T') // 'I00T': item "Beastslayer"
-endfunction
-
-function Trig_Quest_Beastslayer_ArrowTaken_Actions takes nothing returns nothing
-    local force l_tempForce
-    call DisableTrigger(GetTriggeringTrigger())
-    set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Beastslayer to Jessie.")
-    call DestroyForce(l_tempForce)
-    call QuestSetDescriptionBJ(udg_SideQuest[$B],"Bring the Beastslayer to Jessie.") // $B = 11
-    call EnableTrigger(gg_trg_Quest_Beastslayer_Complete)
-    call DestroyTrigger(GetTriggeringTrigger())
-    set l_tempForce=null
-endfunction
-
-function Trig_Quest_Beastslayer_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I00T'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I00T': item "Beastslayer"
-endfunction
-
-function Trig_Quest_Beastslayer_Complete_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_Beastslayer_Complete_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DisableTrigger(gg_trg_Quest_Beastslayer_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I00T')) // 'I00T': item "Beastslayer"
-    call DestroyEffectBJ(udg_SpecialEffect[29])
-    if(Trig_Quest_Beastslayer_Complete_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(gg_unit_n00D_0091,0)
-        call Text_Say(gg_unit_n00D_0091,"Oh, thank you! I'm saved !!",false)
-        call Reward_Give($5DC,$3E8,gg_unit_n00D_0091) // $5DC = 1500; $3E8 = 1000
-        call Text_Say(gg_unit_n00D_0091,"|n|cffffcc00Jessie now sells Archery gear.|r",true)
-        call Text_Say(gg_unit_n00D_0091,"By the way, when you use arrows with an elemental affinity, the Rapid Fire technique changes its elemental affinity with them! Try it out sometime.",false)
-        call Cine_ExitAction()
-    else
-        call Reward_Give($5DC,$3E8,gg_unit_n00D_0091) // $5DC = 1500; $3E8 = 1000
+// Quest done: the Tempest Wyrm hunt, and Jessie sells archery gear.
+function QuestBeastslayer_Done takes nothing returns nothing
+    if udg_CinematicsDisabled then
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00Jessie now sells Archery gear.|r")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Find Beastslayer|r")
-    call QuestSetCompletedBJ(udg_SideQuest[$B],true) // $B = 11
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call AddUnitToStockBJ('n0B7',gg_unit_n0B3_0049,1,1) // 'n0B7': unit "Hunt: Tempest Wyrm"
     set udg_HuntStock[2]=(udg_HuntStock[2]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)
@@ -131,8 +46,37 @@ function Trig_Quest_Beastslayer_Complete_Actions takes nothing returns nothing
     call AddItemToStockBJ('I0F4',gg_unit_n00D_0091,1,1) // 'I0F4': item "Longbow"
     call AddItemToStockBJ('I0HN',gg_unit_n00D_0091,1,1) // 'I0HN': item "Onion Arrows"
     call AddItemToStockBJ('I0HP',gg_unit_n00D_0091,1,1) // 'I0HP': item "Icecloud Arrows"
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+endfunction
+
+function QuestBeastslayer_Define takes nothing returns nothing
+    local integer q=Quest_Define("Find Beastslayer",QUEST_SIDE,11,"ReplaceableTextures\\CommandButtons\\BTNImprovedStrengthOfTheMoon.blp")
+    set QUEST_BEASTSLAYER=q
+    // 1. Talk to Jessie
+    call Quest_Talk(q,gg_unit_n00D_0091,"Jessie, archer from Kalm, asked you to find magical arrow called Beastslayer in the Barrens.")
+    call Quest_Say(q,gg_unit_n00D_0091,"Greetings to you. I am Jessie. I have a small problem, could you help me please?")
+    call Quest_Say(q,null,"Sure, why not?")
+    call Quest_Say(q,gg_unit_n00D_0091,"Recently I went hunting to Barrens and I took mistress Meliadoul's special arrow - the Beastslayer. It's a magical arrow that can kill any beast with one shot.")
+    call Quest_Say(q,gg_unit_n00D_0091,"I shot this arrow at a huge Thunder Lizard, but, to my dismay, it not only didn't die but charged at me with full speed. I barely escaped. Now I can't go back to mistress Meliadoul because I lost the Beastslayer. Please, find this arrow and bring it to me. If you do, I will offer you a reward and on top of that give you something special for your own archery training.")
+    call Quest_Say(q,null,"I'll see what can be done.")
+    call Quest_OnDone(q,"QuestBeastslayer_Started")
+    // 2. Kill the Tempest Lizard (created in step 1, so the step is finished by QuestBeastslayer_ArrowDropped)
+    call Quest_Custom(q,"")
+    // 3. Bring the Beastslayer to Jessie
+    call Quest_Deliver(q,gg_unit_n00D_0091,'I00T',1,"","") // 'I00T': item "Beastslayer"
+    call Quest_PingItem(q)
+    call Quest_OnPickup(q,"Bring the Beastslayer to Jessie.","")
+    call Quest_Say(q,gg_unit_n00D_0091,"Oh, thank you! I'm saved !!")
+    call Quest_Reward(q,1500,1000)
+    call Quest_Say(q,gg_unit_n00D_0091,"|n|cffffcc00Jessie now sells Archery gear.|r")
+    call Quest_Say(q,gg_unit_n00D_0091,"By the way, when you use arrows with an elemental affinity, the Rapid Fire technique changes its elemental affinity with them! Try it out sometime.")
+    call Quest_OnDone(q,"QuestBeastslayer_Done")
+endfunction
+
+function Trig_Quest_Beastslayer_Available_Actions takes nothing returns nothing
+    if QUEST_BEASTSLAYER==0 then
+        call QuestBeastslayer_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_BEASTSLAYER)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -147,51 +91,6 @@ function Register_Quest_Beastslayer_Available takes nothing returns nothing
     set gg_trg_Quest_Beastslayer_Available=CreateTrigger()
     call DisableTrigger(gg_trg_Quest_Beastslayer_Available)
     call TriggerAddAction(gg_trg_Quest_Beastslayer_Available,function Trig_Quest_Beastslayer_Available_Actions)
-endfunction
-
-function Register_Quest_Beastslayer_Start takes nothing returns nothing
-    set gg_trg_Quest_Beastslayer_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Beastslayer_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_Beastslayer_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Start,Condition(function Trig_Quest_Beastslayer_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Beastslayer_Start,function Trig_Quest_Beastslayer_Start_Actions)
-endfunction
-
-function Register_Quest_Beastslayer_ArrowDropped takes nothing returns nothing
-    set gg_trg_Quest_Beastslayer_ArrowDropped=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Beastslayer_ArrowDropped)
-    call TriggerAddAction(gg_trg_Quest_Beastslayer_ArrowDropped,function Trig_Quest_Beastslayer_ArrowDropped_Actions)
-endfunction
-
-function Register_Quest_Beastslayer_Ping takes nothing returns nothing
-    set gg_trg_Quest_Beastslayer_Ping=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Beastslayer_Ping)
-    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_Beastslayer_Ping,15.)
-    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Ping,Condition(function Trig_Quest_Beastslayer_Ping_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Beastslayer_Ping,function Trig_Quest_Beastslayer_Ping_Actions)
-endfunction
-
-function Register_Quest_Beastslayer_ArrowTaken takes nothing returns nothing
-    set gg_trg_Quest_Beastslayer_ArrowTaken=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Beastslayer_ArrowTaken)
-    call TriggerRegisterAnyUnitEventBJ(gg_trg_Quest_Beastslayer_ArrowTaken,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-    call TriggerAddCondition(gg_trg_Quest_Beastslayer_ArrowTaken,Condition(function Trig_Quest_Beastslayer_ArrowTaken_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Beastslayer_ArrowTaken,function Trig_Quest_Beastslayer_ArrowTaken_Actions)
-endfunction
-
-function Register_Quest_Beastslayer_Complete takes nothing returns nothing
-    set gg_trg_Quest_Beastslayer_Complete=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Beastslayer_Complete)
-    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Beastslayer_Complete,450.,gg_unit_n00D_0091)
-    call TriggerAddCondition(gg_trg_Quest_Beastslayer_Complete,Condition(function Trig_Quest_Beastslayer_Complete_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Beastslayer_Complete,function Trig_Quest_Beastslayer_Complete_Actions)
 endfunction
 
 endlibrary

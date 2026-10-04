@@ -1,5 +1,12 @@
-library TAlmightyShinra requires TCam, TCine, TGroup, TLoc, TReward, TText, TWait
+library TAlmightyShinra requires TQuestEngine, TCam, TCine, TGroup, TLoc, TReward, TText, TWait
+// Side quest "Almighty Shinra", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Once Shinra's Plan and Omega Weapon are done and the party is strong enough in the arena, Shinra absorbs
+// Omega Weapon's power and enters the Dimension Cup. Both steps are custom and stay in cinematic triggers:
+// gg_trg_AlmightyShinra_Cinematic starts the quest, gg_trg_AlmightyShinra_Defeat (run by Arena_Cups when
+// the Dimension Cup is won) finishes it. Its name is red in the quest log. Does not count toward the story.
 globals
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ALMIGHTY_SHINRA=0
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_AlmightyShinra_Arm=null
     trigger gg_trg_AlmightyShinra_Cinematic=null
@@ -10,6 +17,17 @@ globals
     unit udg_ShinraSpellTarget=null
     sound gg_snd_SargerasRoar=null
 endglobals
+
+function AlmightyShinra_Define takes nothing returns nothing
+    local integer q=Quest_Define("Almighty Shinra",QUEST_SIDE,43,"ReplaceableTextures\\CommandButtons\\BTNEvilIllidan.blp")
+    set QUEST_ALMIGHTY_SHINRA=q
+    call Quest_Color(q,udg_QuestTitleRed)
+    call Quest_NotStory(q)
+    // 1. Shinra becomes the fiend king (gg_trg_AlmightyShinra_Cinematic)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has absorbed Omega Weapon's power and become the King of Fiends. To prove his worth, he has entered the Dimension Cup in the Battle Arena, ready to take on and crush any opponent. Defeat him!")
+    // 2. Beat him in the Dimension Cup (gg_trg_AlmightyShinra_Defeat)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_AlmightyShinra_Arm_Conditions takes nothing returns boolean
     return(udg_ShinraFinaleArmed==false)and(IsQuestCompleted(udg_SideQuest[42]))and(IsQuestCompleted(udg_SideQuest[47]))and(udg_CupWins[$A]>=1)and(udg_ArenaRank>=3) // $A = 10
@@ -97,6 +115,8 @@ function Trig_AlmightyShinra_Cinematic_Cam_Reset takes nothing returns nothing
     call ResetToGameCameraForPlayer(GetEnumPlayer(),0)
 endfunction
 
+// Step 1 (5 minutes after the quest is armed, when no scene or arena fight is running): Shinra absorbs Omega
+// Weapon's power and enters the arena.
 function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     local location l_tempPoint2
     if(Trig_AlmightyShinra_Cinematic_Cond_PostponeScene())then
@@ -317,8 +337,10 @@ function Trig_AlmightyShinra_Cinematic_Actions takes nothing returns nothing
     set udg_NewsText[5]=udg_NewsText[4]
     set udg_NewsText[1]="|cffffcc00A new challenger has appeared!|r"
     set udg_NewsText[4]="A very strong contestant has entered the arena! They await any and all challengers in the Dimension Cup! Feel like trying your luck?"
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Almighty Shinra|r")
-    set udg_SideQuest[43]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"Almighty Shinra"),"Shinra, an Al Bhed child from Spira, has absorbed Omega Weapon's power and become the King of Fiends. To prove his worth, he has entered the Dimension Cup in the Battle Arena, ready to take on and crush any opponent. Defeat him!","ReplaceableTextures\\CommandButtons\\BTNEvilIllidan.blp")
+    if QUEST_ALMIGHTY_SHINRA==0 then
+        call AlmightyShinra_Define()
+    endif
+    call Quest_Start(QUEST_ALMIGHTY_SHINRA,null,null)
     call Cine_ExitAction()
     set l_tempPoint2=null
 endfunction
@@ -360,6 +382,7 @@ function Trig_AlmightyShinra_Defeat_GrantAchievement takes nothing returns nothi
     endif
 endfunction
 
+// Step 2: the party won the Dimension Cup against Almighty Shinra; he turns back into a kid and leaves.
 function Trig_AlmightyShinra_Defeat_Actions takes nothing returns nothing
     call SaveIntegerBJ(0,2,7,udg_GameStateHash)
     call Cine_Enter()
@@ -418,9 +441,7 @@ function Trig_AlmightyShinra_Defeat_Actions takes nothing returns nothing
     call Cine_ExitAction()
     call Reward_Give($7530,0,null) // $7530 = 30000
     call ForForce(udg_PlayingPlayers,function Trig_AlmightyShinra_Defeat_GiveShards)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Almighty Shinra|r")
-    call QuestSetCompletedBJ(udg_SideQuest[43],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_ALMIGHTY_SHINRA,null,null)
     call ConditionalTriggerExecute(gg_trg_Arena_Cup_Won)
     call AddUnitToStockBJ('n0AS',udg_ArenaOrganizer[5],1,1) // 'n0AS': unit "Arena: Almighty Shinra Battle"
     call SaveIntegerBJ(1,$A,(9+LoadIntegerBJ(2,0,udg_GameStateHash)),udg_GameStateHash) // $A = 10

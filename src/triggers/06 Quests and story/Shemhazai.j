@@ -73,9 +73,7 @@ function Trig_Shemhazai_Appears_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call GroupRemoveUnitSimple(gg_unit_nbfl_0170,udg_BossUnits)
     if(Trig_Shemhazai_Appears_Quest20Discovered())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Corrupted Orcs|r")
-        call QuestSetCompletedBJ(udg_MainQuest[$D],true) // $D = 13
-        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+        call ExecuteFunc("QuestCorruptedOrcs_DoneWithoutShemhazai") // completes the Corrupted Orcs quest
     else
         set udg_ShemhazaiPhase=1
         call Music_SetTrack(31)
@@ -136,8 +134,7 @@ function Trig_Shemhazai_Appears_Actions takes nothing returns nothing
             call PauseUnitBJ(false,gg_unit_U00I_0210)
             call ForGroupBJ(udg_ShemhazaiSoulClones,function Trig_Shemhazai_Appears_SetupSoulClone)
             call GroupAddUnitSimple(gg_unit_U00I_0210,udg_BossUnits)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Shemhazai, the Zodiac Brave of Soul.")
-            call QuestSetDescriptionBJ(udg_MainQuest[$D],"Destroy Shemhazai, the Zodiac Brave of Soul.") // $D = 13
+            call ExecuteFunc("QuestCorruptedOrcs_ShemhazaiAppears") // quest log: "Destroy Shemhazai ..."
             set udg_ShemhazaiPhase=2
             call EnableTrigger(gg_trg_Shemhazai_Phase2_Cuchulainn)
         endif

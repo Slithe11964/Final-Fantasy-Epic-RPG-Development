@@ -1,67 +1,81 @@
-library TQuestTrialByFire requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestTrialByFire requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TWait
+// Side quest "Trial By Fire", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// McBurn challenges the party to hold out against him in the arena for 30 seconds. Steps: talk to
+// McBurn (data), buy his arena battle (Begin), survive 30 seconds (Countdown -> Survive). Losing the
+// battle fails the quest (Fail, run by Arena_BattleResults). Made available by McBurn
+// (QuestTrialByFire_Available). It does not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
-    trigger gg_trg_Quest_TrialByFire_Start=null
     trigger gg_trg_Quest_TrialByFire_Begin=null
     trigger gg_trg_Quest_TrialByFire_Countdown=null
     trigger gg_trg_Quest_TrialByFire_Fail=null
     trigger gg_trg_Quest_TrialByFire_Survive=null
     // Variables only this module uses.
     integer udg_TrialByFireSeconds=0
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_TRIAL_BY_FIRE=0
 endglobals
 
-function Trig_Quest_TrialByFire_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0AX_0188,true,true,true))
-endfunction
-
-function Trig_Quest_TrialByFire_Start_Cond_ShowDialog takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_TrialByFire_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[69])
-    if(Trig_Quest_TrialByFire_Start_Cond_ShowDialog())then
-        call Cine_Enter()
-        call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_n0AX_0188,"Hey you there. The name's McBurn.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"McBurn is it? You've been watching us fight, haven't you?",false)
-        call Text_Say(gg_unit_n0AX_0188,"Yeah. You've been doing pretty good.",false)
-        call Text_Say(gg_unit_n0AX_0188,"Been looking for someone who can take some heat. I figured my best chances of finding someone like that are right here.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"That's surprising. You don't give off the vibe of needing the help of strong people.",false)
-        call Text_Say(gg_unit_n0AX_0188,"Help? Nah that's not what I'm looking for. I'm looking for a challenge, that's all.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"A challenge...?",false)
-        call Text_Say(gg_unit_n0AX_0188,"Can't say I feel like I've found my equal just yet, but you could at least help me get a bit more fired up.",false)
-        call Text_Say(gg_unit_n0AX_0188,"So I have a proposal for you: entertain me with a dance. If you can hold out, I'll give you a handsome reward.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"You want us to dance?",false)
-        call Text_Say(gg_unit_n0AX_0188,"I'll get to the point. Face me in this arena. I'm not asking you to beat me. Just to be entertaining for at least a little while.",false)
-        call Text_Say(gg_unit_n0AX_0188,"Not going to ask too much of you either. If I can heat up for just 30 seconds, I'm content.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Aren't you overconfident. What if we beat you?",false)
-        call Text_Say(gg_unit_n0AX_0188,"You won't.",false)
-        call Text_Say(gg_unit_n0AX_0188,"30 seconds is all I'm asking for. If you think you can do it, let's go.",false)
-        call Cine_ExitAction()
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Trial By Fire|r")
-    set udg_SideQuest[50]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Trial By Fire"),"McBurn, a demon who seems bored, asked you if you could withstand his flames for 30 seconds. Prove your worth to him!","ReplaceableTextures\\CommandButtons\\BTNWallOfFire.blp")
-    set udg_SpecialEffect[69]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AX_0188,"Objects\\RandomObject\\RandomObject.mdl")
+// Step 1 done (the party talked to McBurn): his battle is sold by the arena organizer.
+function QuestTrialByFire_Started takes nothing returns nothing
     call AddUnitToStockBJ('n0AY',udg_ArenaOrganizer[6],1,1) // 'n0AY': unit "Arena: Almighty Conflagration Battle"
     call GroupAddUnitSimple(gg_unit_n0AX_0188,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_TrialByFire_Begin)
-    call DestroyTrigger(GetTriggeringTrigger())
+endfunction
+
+function QuestTrialByFire_Define takes nothing returns nothing
+    local integer q=Quest_Define("Trial By Fire",QUEST_SIDE,50,"ReplaceableTextures\\CommandButtons\\BTNWallOfFire.blp")
+    set QUEST_TRIAL_BY_FIRE=q
+    call Quest_NotStory(q)
+    // 1. Talk to McBurn
+    call Quest_Talk(q,gg_unit_n0AX_0188,"McBurn, a demon who seems bored, asked you if you could withstand his flames for 30 seconds. Prove your worth to him!")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Hey you there. The name's McBurn.")
+    call Quest_Say(q,null,"McBurn is it? You've been watching us fight, haven't you?")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Yeah. You've been doing pretty good.")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Been looking for someone who can take some heat. I figured my best chances of finding someone like that are right here.")
+    call Quest_Say(q,null,"That's surprising. You don't give off the vibe of needing the help of strong people.")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Help? Nah that's not what I'm looking for. I'm looking for a challenge, that's all.")
+    call Quest_Say(q,null,"A challenge...?")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Can't say I feel like I've found my equal just yet, but you could at least help me get a bit more fired up.")
+    call Quest_Say(q,gg_unit_n0AX_0188,"So I have a proposal for you: entertain me with a dance. If you can hold out, I'll give you a handsome reward.")
+    call Quest_Say(q,null,"You want us to dance?")
+    call Quest_Say(q,gg_unit_n0AX_0188,"I'll get to the point. Face me in this arena. I'm not asking you to beat me. Just to be entertaining for at least a little while.")
+    call Quest_Say(q,gg_unit_n0AX_0188,"Not going to ask too much of you either. If I can heat up for just 30 seconds, I'm content.")
+    call Quest_Say(q,null,"Aren't you overconfident. What if we beat you?")
+    call Quest_Say(q,gg_unit_n0AX_0188,"You won't.")
+    call Quest_Say(q,gg_unit_n0AX_0188,"30 seconds is all I'm asking for. If you think you can do it, let's go.")
+    call Quest_OnDone(q,"QuestTrialByFire_Started")
+    // 2. Buy the arena battle: gg_trg_Quest_TrialByFire_Begin calls Quest_StepDone
+    call Quest_Custom(q,"Survive against McBurn for 30 seconds.")
+    // 3. Survive 30 seconds: gg_trg_Quest_TrialByFire_Survive calls Quest_StepDone (or Fail fails the quest)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by McBurn when the quest becomes available.
+function QuestTrialByFire_Available takes nothing returns nothing
+    if QUEST_TRIAL_BY_FIRE==0 then
+        call QuestTrialByFire_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_TRIAL_BY_FIRE)
 endfunction
 
 function Trig_Quest_TrialByFire_Begin_Conditions takes nothing returns boolean
     return(GetTriggerUnit()==gg_unit_n0AX_0188)
 endfunction
 
+// McBurn was bought as an arena battle: the 30-second fight starts.
 function Trig_Quest_TrialByFire_Begin_Actions takes nothing returns nothing
-    call DestroyEffectBJ(udg_SpecialEffect[69])
     call ShowUnitHide(gg_unit_n0AX_0188)
     call GroupRemoveUnitSimple(gg_unit_n0AX_0188,udg_BossUnits)
     set udg_TrialByFireSeconds=30
     call StartTimerBJ(udg_PostReviveTimer,false,1.)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Survive against McBurn for 30 seconds.")
-    call QuestSetDescriptionBJ(udg_SideQuest[50],"Survive against McBurn for 30 seconds.")
+    if Quest_IsActive(QUEST_TRIAL_BY_FIRE) and Quest_CurrentStep(QUEST_TRIAL_BY_FIRE)==2 then
+        call Quest_StepDone(QUEST_TRIAL_BY_FIRE,GetOwningPlayer(GetBuyingUnit()),GetBuyingUnit())
+    else
+        // bought again after the quest failed or was done: the old trigger showed the update anyway
+        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Survive against McBurn for 30 seconds.")
+        call QuestSetDescriptionBJ(Quest_LogEntry(QUEST_TRIAL_BY_FIRE),"Survive against McBurn for 30 seconds.")
+    endif
     call Music_SetTrack(33)
 endfunction
 
@@ -121,8 +135,7 @@ function Trig_Quest_TrialByFire_Fail_Actions takes nothing returns nothing
         call RemoveUnit(udg_CinematicActor)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Trial By Fire|r")
-    call QuestSetFailedBJ(udg_SideQuest[50],true)
+    call Quest_Fail(QUEST_TRIAL_BY_FIRE)
     set udg_QuestsTotal=(udg_QuestsTotal-1)
     call Music_ClearTrack(33)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -171,9 +184,7 @@ function Trig_Quest_TrialByFire_Survive_Actions takes nothing returns nothing
     call ShowUnitHide(udg_ScriptedBossUnit)
     set udg_ScriptedBossUnit=null
     call Music_ClearTrack(33)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Trial By Fire|r")
-    call QuestSetCompletedBJ(udg_SideQuest[50],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_TRIAL_BY_FIRE,null,null)
     if(Trig_Quest_TrialByFire_Survive_Cond_BonusEarned())then
         set udg_DarkFireStage=(udg_DarkFireStage+1)
         set udg_QuestsTotal=(udg_QuestsTotal+1)
@@ -187,21 +198,6 @@ endfunction
 // ---- Trigger registration ----
 // These create this module's triggers. They run at startup from RegisterTriggers_Quest_Part15 (module Quest),
 // which keeps the original registration order.
-
-function Register_Quest_TrialByFire_Start takes nothing returns nothing
-    set gg_trg_Quest_TrialByFire_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_TrialByFire_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_TrialByFire_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_TrialByFire_Start,Condition(function Trig_Quest_TrialByFire_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_TrialByFire_Start,function Trig_Quest_TrialByFire_Start_Actions)
-endfunction
 
 function Register_Quest_TrialByFire_Begin takes nothing returns nothing
     set gg_trg_Quest_TrialByFire_Begin=CreateTrigger()

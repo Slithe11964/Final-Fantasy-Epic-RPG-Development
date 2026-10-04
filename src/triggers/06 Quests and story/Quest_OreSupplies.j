@@ -1,11 +1,29 @@
-library TQuestOreSupplies requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestOreSupplies requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+// Side quest "Ore Supplies", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Loki, smith at the Forge in the Barrens, needs 5 Mine Minerals to keep the forge running.
+// Both steps stay in this module's own triggers, because what Loki says depends on how far the dwarves
+// trust the party (udg_KalmTechLevel). Loki enables gg_trg_Quest_OreSupplies_Start and shows the "!";
+// this module keeps its own "?" over Loki. Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_OreSupplies_Start=null
     trigger gg_trg_Quest_OreSupplies_Deliver=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ORE_SUPPLIES=0
     // Variables only this module uses.
     integer udg_OreSuppliesRemaining=0
 endglobals
+
+function QuestOreSupplies_Define takes nothing returns nothing
+    local integer q=Quest_Define("Ore Supplies",QUEST_SIDE,67,"ReplaceableTextures\\CommandButtons\\BTNGoldMine.blp")
+    set QUEST_ORE_SUPPLIES=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Loki (gg_trg_Quest_OreSupplies_Start)
+    call Quest_Custom(q,"Loki Smith, one of the dwarves managing the Forge in the Barrens, tasked you with bringing him 5 Mine Minerals from the Northern Mountains.")
+    // 2. Bring Loki 5 Mine Minerals (gg_trg_Quest_OreSupplies_Deliver)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_OreSupplies_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_H00P_0260,true,true,true))
@@ -19,6 +37,7 @@ function Trig_Quest_OreSupplies_Start_PlayLokiScene takes nothing returns boolea
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Loki.
 function Trig_Quest_OreSupplies_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[88])
@@ -45,11 +64,13 @@ function Trig_Quest_OreSupplies_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Alright, we can do that.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Ore Supplies|r")
-    set udg_SideQuest[67]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Ore Supplies"),"Loki Smith, one of the dwarves managing the Forge in the Barrens, tasked you with bringing him 5 Mine Minerals from the Northern Mountains.","ReplaceableTextures\\CommandButtons\\BTNGoldMine.blp")
+    if QUEST_ORE_SUPPLIES==0 then
+        call QuestOreSupplies_Define()
+    endif
+    call Quest_Start(QUEST_ORE_SUPPLIES,GetTriggerPlayer(),GetTriggerUnit())
     set udg_SpecialEffect[88]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_H00P_0260,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_OreSuppliesRemaining=5
-    set udg_QuestReq[8]=CreateQuestItemBJ(udg_SideQuest[67],"Minerals brought to Loki: 0/5")
+    set udg_QuestReq[8]=CreateQuestItemBJ(Quest_LogEntry(QUEST_ORE_SUPPLIES),"Minerals brought to Loki: 0/5")
     call EnableTrigger(gg_trg_Quest_OreSupplies_Deliver)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -82,6 +103,8 @@ function Trig_Quest_OreSupplies_Deliver_ReforgeUnlocked takes nothing returns bo
     return(udg_KalmTechLevel>=3)
 endfunction
 
+// Step 2: a hero brings Mine Minerals to Loki; at 5 Loki rewards the party and, if the dwarves trust it,
+// starts reforging gear.
 function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
     local location l_tempPoint
     set udg_TempInteger=IMinBJ(udg_OreSuppliesRemaining,GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))) // 'I074': item "Mine Mineral"
@@ -125,9 +148,7 @@ function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
         endif
     endif
     call QuestItemSetCompletedBJ(udg_QuestReq[8],true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ore Supplies|r")
-    call QuestSetCompletedBJ(udg_SideQuest[67],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_ORE_SUPPLIES,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call SetUnitAnimation(gg_unit_hbla_0158,"work")
     set l_tempPoint=GetUnitLoc(gg_unit_H00P_0260)
     set udg_LokiForgeSpot=OffsetLocation(l_tempPoint,-10.,-75.)

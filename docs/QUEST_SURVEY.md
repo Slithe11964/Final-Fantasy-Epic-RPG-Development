@@ -9,17 +9,17 @@ touches the quest-log entry.
 
 | Group | Quests | Meaning |
 |---|---|---|
-| engine | 10 | Already written for the quest engine (docs/QUEST_ENGINE.md). |
-| fits | 15 | Only standard steps and rewards: can be written entirely as data. |
-| hooks | 21 | Standard steps plus some custom actions (spawning units, gates, moving NPCs) or a boss fight; those stay as small functions or boss modules the quest points to. |
-| custom | 45 | Timers, spells, failing, several endings, or no clear finish: these use custom steps whose special code stays in the module. |
+| engine | 94 | Already written for the quest engine (docs/QUEST_ENGINE.md). |
+| fits | 0 | Only standard steps and rewards: can be written entirely as data. |
+| hooks | 0 | Standard steps plus some custom actions (spawning units, gates, moving NPCs) or a boss fight; those stay as small functions or boss modules the quest points to. |
+| custom | 2 | Timers, spells, failing, several endings, or no clear finish: these use custom steps whose special code stays in the module. |
 
 ## What this means for a quest engine
 
-- **Already on the quest engine: 10.** Of the rest, 36 of 91 quests (40%) can move to the quest engine with
-  standard steps only: 15 fully as data, 21 with small custom hooks (spawning
+- **Already on the quest engine: 94.** Of the rest, 0 of 96 quests (0%) can move to the quest engine with
+  standard steps only: 0 fully as data, 0 with small custom hooks (spawning
   a boss, opening a gate, moving an NPC) or a boss fight that stays in its boss module.
-- **45 need custom steps** (`Quest_Custom` + `Quest_StepDone`): the main story chapters, the Kalm sieges, the
+- **2 need custom steps** (`Quest_Custom` + `Quest_StepDone`): the main story chapters, the Kalm sieges, the
   Tower of Summoning and Eidolon quests, the hunt festival, quests with timers or that can fail. Their special
   code stays in their modules; the engine runs the quest log, markers, step order and rewards around it.
 - **Quests are shared by the whole party**: one quest-log entry for everyone, announced to all players.
@@ -38,146 +38,143 @@ Step types across all quests (a quest can have several):
 
 | Step waits for | Quests |
 |---|---|
-| talk | 71 |
-| in range | 55 |
-| kill unit | 42 |
-| run by another step | 37 |
-| kill any | 21 |
-| periodic | 18 |
-| timer | 18 |
-| get item | 16 |
-| spell | 14 |
-| reach place | 10 |
-| attacked | 8 |
-| buy | 2 |
-| use item | 2 |
-| chat | 1 |
+| talk | 2 |
+| spell | 1 |
+| attacked | 1 |
+| run by another step | 1 |
+| timer | 1 |
+| in range | 1 |
+| kill any | 1 |
+| periodic | 1 |
 
 What the steps do:
 
 | Feature | Quests |
 |---|---|
-| dialogue | 80 |
-| cinematic | 80 |
-| gives XP | 80 |
-| effects | 80 |
-| gives item | 59 |
-| waits | 54 |
-| moves units | 44 |
-| spawns units | 39 |
-| loops/counters | 28 |
-| gives title | 20 |
-| doors/gates | 17 |
-| can fail | 12 |
-| gives gold | 1 |
+| dialogue | 2 |
+| cinematic | 2 |
+| spawns units | 2 |
+| gives XP | 2 |
+| effects | 2 |
+| loops/counters | 2 |
+| waits | 1 |
+| gives item | 1 |
+| doors/gates | 1 |
+| moves units | 1 |
+| can fail | 1 |
 
-## engine (10)
+## engine (94)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules | Why |
 |---|---|---|---|---|---|---|---|
+| MainQuest[10] | Kalm Siege II | quest engine | 2 |  | 0 | KalmSiege2 |  |
+| MainQuest[11] | Kalm Siege III | quest engine | 2 |  | 0 | KalmSiege3 |  |
+| MainQuest[18] | End of Zodiac Age | quest engine | 2 |  | 0 | Quest_ZodiacAge |  |
+| MainQuest[19] | Advent of Ice Age | quest engine | 2 |  | 0 | IceAge |  |
+| MainQuest[5] | Eye of Jenova | quest engine | 2 |  | 0 | Quest_EyeOfJenova |  |
+| MainQuest[6] | Night Elves | quest engine | 2 |  | 0 | Quest_NightElves |  |
+| MainQuest[8] | World Liberation | quest engine | 2 |  | 0 | Quest_WorldLiberation |  |
+| SideQuest[13] | Arcanium | quest engine | 2 |  | 13 | Quest_Arcanium |  |
+| SideQuest[15] | Healing Waters | quest engine | 2 |  | 0 | HealingWaters |  |
+| SideQuest[16] | Mithril Golem's Heart | quest engine | 2 |  | 0 | MithrilGolem |  |
+| SideQuest[18] | Hydra Egg | quest engine | 2 |  | 14 | HydraEgg |  |
 | SideQuest[19] | Elixir | quest engine | 2 |  | 5 | Elixir |  |
 | SideQuest[1] | Find Shimmerweed | quest engine | 2 |  | 5 | Quest_Shimmerweed |  |
+| SideQuest[22] | Mysterious Curse | quest engine | 2 |  | 0 | MysteriousCurse |  |
 | SideQuest[26] | Wolf Fangs | quest engine | 2 |  | 11 | Quest_WolfFangs |  |
+| SideQuest[30] | Tower of Summoning | quest engine | 2 |  | 0 | Quest_TowerSummoning |  |
+| SideQuest[33] | The Strongest Eidolon | quest engine | 2 |  | 14 | Quest_StrongestEidolon |  |
+| SideQuest[3] | Kill Setag | quest engine | 2 |  | 5 | Quest_KillSetag |  |
+| SideQuest[43] | Almighty Shinra | quest engine | 2 |  | 0 | AlmightyShinra |  |
+| SideQuest[46] | Ultima Weapon | quest engine | 2 |  | 0 | Quest_UltimaWeapon |  |
+| SideQuest[47] | Omega Weapon | quest engine | 2 |  | 0 | Quest_OmegaWeapon |  |
+| SideQuest[49] | Nebra Angler | quest engine | 2 |  | 44 | Quest_NebraAngler |  |
 | SideQuest[4] | Phoenix | quest engine | 2 |  | 9 | Quest_Phoenix |  |
+| SideQuest[51] | Blazing Demon | quest engine | 2 |  | 0 | Quest_BlazingDemon |  |
+| SideQuest[59] | Dragon Egg | quest engine | 2 |  | 0 | DragonEgg |  |
+| SideQuest[62] | Hunt Festival | quest engine | 2 |  | 0 | HuntFestival |  |
+| SideQuest[65] | Impervious Beast | quest engine | 2 |  | 4 | Quest_ImperviousBeast |  |
+| SideQuest[67] | Ore Supplies | quest engine | 2 |  | 0 | Quest_OreSupplies |  |
+| SideQuest[69] | Cooking Choices | quest engine | 2 |  | 0 | Quest_Cooking |  |
+| SideQuest[71] | Monstrum of the Sea | quest engine | 2 |  | 0 | Quest_Monstrum |  |
+| SideQuest[72] | Young Engineer | quest engine | 2 |  | 8 | Quest_YoungEngineer |  |
+| SideQuest[74] | Fishy Deals | quest engine | 2 |  | 3 | Quest_FishyDeals |  |
+| MainQuest[12] | Voice of the Forest | quest engine | 3 |  | 0 | VoiceOfForest |  |
+| MainQuest[14] | Last Rites | quest engine | 3 |  | 0 | Quest_LastRites |  |
+| MainQuest[15] | Illusions to Illusions | quest engine | 3 |  | 0 | Quest_Illusions |  |
+| MainQuest[16] | Light of Judgment | quest engine | 3 |  | 0 | Quest_LightOfJudgment |  |
+| MainQuest[17] | God Dragon | quest engine | 3 |  | 0 | Quest_GodDragon |  |
+| MainQuest[9] | Kalm Siege | quest engine | 3 |  | 0 | KalmSiege1 |  |
 | SideQuest[10] | Deliver Letter | quest engine | 3 |  | 18 | Quest_DeliverLetter |  |
+| SideQuest[11] | Find Beastslayer | quest engine | 3 |  | 8 | Quest_Beastslayer |  |
+| SideQuest[12] | Lady Nashj | quest engine | 3 |  | 11 | Quest_LadyNashj |  |
+| SideQuest[14] | Target Practice | quest engine | 3 |  | 0 | Quest_TargetPractice |  |
+| SideQuest[24] | Ogre Hunt | quest engine | 3 |  | 6 | Quest_OgreHunt |  |
+| SideQuest[25] | Seek and Destroy | quest engine | 3 |  | 16 | Quest_SeekDestroy |  |
 | SideQuest[27] | Greed is Good | quest engine | 3 |  | 18 | Quest_GreedIsGood |  |
+| SideQuest[28] | Fallen Ranger | quest engine | 3 |  | 7 | Quest_FallenRanger |  |
+| SideQuest[29] | Spirit of Water | quest engine | 3 |  | 0 | Quest_SpiritOfWater |  |
 | SideQuest[2] | Arachnophobia | quest engine | 3 |  | 10 | Quest_Arachnophobia |  |
+| SideQuest[32] | Eidolon Challenge | quest engine | 3 |  | 22 | Quest_EidolonChallenge |  |
+| SideQuest[34] | Rematch | quest engine | 3 |  | 0 | Quest_Rematch |  |
+| SideQuest[35] | The Northern God | quest engine | 3 |  | 0 | Judgment |  |
+| SideQuest[36] | Annoying Monster | quest engine | 3 |  | 21 | Quest_AnnoyingMonster |  |
+| SideQuest[37] | Arena Resources | quest engine | 3 |  | 0 | ArenaResources |  |
+| SideQuest[39] | Haunted Tree | quest engine | 3 |  | 11 | HauntedTree |  |
+| SideQuest[41] | The Bridge-Battle | quest engine | 3 |  | 14 | BridgeBattle |  |
 | SideQuest[45] | Harpy Hunt | quest engine | 3 |  | 11 | Quest_HarpyHunt |  |
+| SideQuest[48] | King of the Sea | quest engine | 3 |  | 0 | Quest_KingOfSea |  |
+| SideQuest[50] | Trial By Fire | quest engine | 3 |  | 15 | Quest_TrialByFire |  |
+| SideQuest[53] | Adamant Hunt | quest engine | 3 |  | 14 | AdamantHunt |  |
 | SideQuest[54] | Gnoll Hunt | quest engine | 3 |  | 13 | GnollHunt |  |
+| SideQuest[55] | Flan Hunt | quest engine | 3 |  | 0 | FlanHunt |  |
+| SideQuest[56] | Ancient Hunt | quest engine | 3 |  | 6 | AncientHunt |  |
+| SideQuest[57] | Wendigo Hunt | quest engine | 3 |  | 11 | WendigoHunt |  |
+| SideQuest[5] | Caravan | quest engine | 3 |  | 1 | Quest_Caravan |  |
+| SideQuest[60] | Name Diary | quest engine | 3 |  | 0 | NameDiary |  |
+| SideQuest[63] | Dragon Hunt | quest engine | 3 |  | 9 | DragonHunt |  |
+| SideQuest[66] | Dwarf Disappearance | quest engine | 3 |  | 0 | Quest_DwarfDisappearance |  |
+| SideQuest[68] | Fiery Wings | quest engine | 3 |  | 12 | Quest_FieryWings |  |
 | SideQuest[6] | Kill Elmdor | quest engine | 3 |  | 7 | Quest_KillElmdor |  |
+| SideQuest[70] | Divine Order | quest engine | 3 |  | 0 | Quest_DivineOrder |  |
+| SideQuest[73] | Spirit Hunt | quest engine | 3 |  | 11 | Quest_SpiritHunt |  |
+| SideQuest[7] | Fire Golem's Heart | quest engine | 3 |  | 16 | Quest_FireGolem |  |
+| SideQuest[8] | Brothers | quest engine | 3 |  | 2 | Quest_Brothers |  |
+| MainQuest[13] | Corrupted Orcs | quest engine | 4 |  | 0 | Quest_CorruptedOrcs |  |
+| SideQuest[20] | Mystical Glyph | quest engine | 4 |  | 8 | MysticalGlyph |  |
+| SideQuest[21] | Save Nimphrodel | quest engine | 4 |  | 0 | Nimphrodel |  |
+| SideQuest[23] | Defiled Fountain | quest engine | 4 |  | 0 | Quest_Fountain |  |
+| SideQuest[31] | Holy Knight | quest engine | 4 |  | 0 | Quest_HolyKnight |  |
+| SideQuest[38] | Arena Expansion | quest engine | 4 |  | 31 | ArenaExpansion |  |
+| SideQuest[42] | Shinra's Plan | quest engine | 4 |  | 0 | ShinrasPlan |  |
+| SideQuest[52] | Scorched Earth | quest engine | 4 |  | 0 | Quest_ScorchedEarth |  |
+| SideQuest[58] | Tentacles | quest engine | 4 |  | 0 | Tentacles |  |
+| SideQuest[44] | Lost Memories | quest engine | 5 |  | 0 | Quest_LostMemories |  |
+| SideQuest[44] | Lost Memories | quest engine | 5 |  | 0 | Quest_LostMemories |  |
+| SideQuest[9] | Save Timmy | quest engine | 5 |  | 0 | Quest_SaveTimmy |  |
+| SideQuest[9] | Save Timmy | quest engine | 5 |  | 0 | Quest_SaveTimmy |  |
+| MainQuest[1] | Find Mid | quest engine | 6 |  | 0 | Cid |  |
+| MainQuest[2] | Find Artifact | quest engine | 6 |  | 0 | Cid |  |
+| MainQuest[3] | Stop Cid | quest engine | 6 |  | 0 | Cid |  |
+| MainQuest[7] | Dark Knight | quest engine | 6 |  | 0 | Quest_DarkKnight |  |
+| MainQuest[7] | Necrophobe | quest engine | 6 |  | 0 | Quest_DarkKnight |  |
+| SideQuest[64] | Chocobo Rider | quest engine | 7 |  | 0 | ChocoboRider |  |
+| SideQuest[64] | Chocobo Rider | quest engine | 7 |  | 0 | ChocoboRider |  |
+| SideQuest[40] | Dimensional Boundary | quest engine | 8 |  | 0 | DimensionalBoundary |  |
 
-## fits (15)
+## fits (0)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules |
 |---|---|---|---|---|---|---|
-| SideQuest[49] | Nebra Angler | talk | 2 | talk, in range | 44 | Quest_NebraAngler |
-| SideQuest[72] | Young Engineer | talk | 2 | talk, run by another step | 15 | Quest_YoungEngineer |
-| SideQuest[74] | Fishy Deals | talk | 2 | talk, in range | 14 | Quest_FishyDeals |
-| SideQuest[12] | Lady Nashj | talk | 3 | talk, kill unit, in range | 11 | Quest_LadyNashj |
-| SideQuest[20] | Mystical Glyph | get item | 3 | get item, in range, talk | 3 | MysticalGlyph |
-| SideQuest[32] | Eidolon Challenge | talk | 3 | talk, kill unit | 22 | Quest_EidolonChallenge |
-| SideQuest[39] | Haunted Tree | talk | 3 | talk, reach place, in range | 11 | HauntedTree |
-| SideQuest[47] | Omega Weapon | attacked | 3 | attacked, kill unit, run by another step | 0 | Quest_OmegaWeapon, AlmightyShinra |
-| SideQuest[56] | Ancient Hunt | talk | 3 | talk, kill any, in range | 18 | AncientHunt |
-| SideQuest[65] | Impervious Beast | talk | 3 | talk, attacked, run by another step | 15 | Quest_ImperviousBeast, Fafnir |
-| SideQuest[73] | Spirit Hunt | talk | 3 | talk, kill any, in range | 11 | Quest_SpiritHunt |
-| SideQuest[46] | Ultima Weapon | attacked | 4 | attacked, kill unit, in range, run by another step | 6 | Quest_UltimaWeapon, Quest_SpiritOfWater, Quest_WorldLiberation |
-| SideQuest[23] | Defiled Fountain | talk | 5 | talk, in range, get item | 40 | DefiledFountain, Quest_Fountain |
-| SideQuest[29] | Spirit of Water | talk | 5 | talk, in range, kill unit | 24 | Quest_SpiritOfWater, Vodyan, Quest_UltimaWeapon |
-| SideQuest[42] | Shinra's Plan | talk | 5 | talk, in range, run by another step | 27 | ShinrasPlan, AlmightyShinra |
 
-## hooks (21)
+## hooks (0)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules | Why |
 |---|---|---|---|---|---|---|---|
-| SideQuest[25] | Seek and Destroy | talk | 3 | talk, kill any, in range | 16 | Quest_SeekDestroy | moves units, spawns units |
-| SideQuest[68] | Fiery Wings | talk | 3 | talk, run by another step, in range | 12 | Quest_FieryWings | spawns units |
-| SideQuest[8] | Brothers | talk | 3 | talk, kill unit, in range | 25 | Quest_Brothers | moves units |
-| MainQuest[16] | Light of Judgment | talk | 4 | talk, kill unit | 37 | Quest_LightOfJudgment, Ultima, Boss_Ultima, Boss_GodDragon | loops/counters, moves units, spawns units, boss fight (Boss_GodDragon, Boss_Ultima) |
-| MainQuest[3] | Stop Cid | in range | 4 | in range, attacked, run by another step, talk | 73 | Cid, Quest_AoMadoushi | moves units, spawns units |
-| SideQuest[11] | Find Beastslayer | talk | 4 | talk, run by another step, get item, in range | 8 | Quest_Beastslayer | spawns units |
-| SideQuest[13] | Arcanium | talk | 4 | talk, get item, in range, kill unit | 41 | Quest_Arcanium, Valigarmanda | doors/gates, moves units, spawns units |
-| SideQuest[18] | Hydra Egg | talk | 4 | talk, kill any, get item, in range | 17 | HydraEgg | spawns units |
-| SideQuest[28] | Fallen Ranger | talk | 4 | talk, kill unit, in range | 10 | Quest_FallenRanger, Boss_Yukale, Boss_DarkRanger | boss fight (Boss_DarkRanger, Boss_Yukale) |
-| SideQuest[36] | Annoying Monster | talk | 4 | talk, run by another step, get item, in range | 21 | Quest_AnnoyingMonster, AnnoyingMonster, Belongings, LadyCurse | moves units, spawns units |
-| SideQuest[37] | Arena Resources | talk | 4 | talk, reach place, run by another step | 17 | ArenaResources | doors/gates, moves units, spawns units |
-| SideQuest[52] | Scorched Earth | run by another step | 4 | run by another step, reach place, in range, kill unit | 25 | Quest_ScorchedEarth, ScorchedEarth, McBurn | doors/gates |
-| SideQuest[67] | Ore Supplies | talk | 4 | talk, in range, kill unit | 52 | Quest_OreSupplies, Giott, Valigarmanda | doors/gates, moves units, spawns units |
-| SideQuest[70] | Divine Order | talk | 4 | talk, in range, kill unit | 65 | Quest_DivineOrder, Ziegfried, Legend_Knight | moves units, spawns units |
-| SideQuest[31] | Holy Knight | talk | 5 | talk, in range, kill unit | 27 | Quest_HolyKnight, Boss_Agrias, Boss_Lilith | boss fight (Boss_Agrias, Boss_Lilith) |
-| SideQuest[66] | Dwarf Disappearance | reach place | 5 | reach place, in range, kill any, kill unit | 41 | Quest_DwarfDisappearance, Valigarmanda, Quest_Arcanium | doors/gates, moves units, spawns units |
-| MainQuest[5] | Eye of Jenova | talk | 6 | talk, kill any, get item, in range | 73 | Quest_AoMadoushi, Loot, Quest_EyeOfJenova, Shemhazai | moves units, spawns units |
-| SideQuest[21] | Save Nimphrodel | talk | 6 | talk, run by another step, get item, in range | 63 | Nimphrodel, CrystalBall | spawns units |
-| SideQuest[41] | The Bridge-Battle | talk | 6 | talk, reach place, in range, kill unit | 32 | BridgeBattle, Gilgamesh, PriestX | moves units, spawns units |
-| MainQuest[17] | God Dragon | talk | 7 | talk, run by another step, kill unit | 70 | Quest_GodDragon, GodDragon, Boss_GodDragon, Boss_Ultima, Ending, Quest_WorldLiberation, Zodiark | loops/counters, moves units, spawns units, boss fight (Boss_GodDragon, Boss_Ultima) |
-| SideQuest[16] | Mithril Golem's Heart | talk | 7 | talk, kill any, in range, run by another step, get item | 26 | MithrilGolem, StrangeKey, StrangeCage, GolemHeart, Spawn | spawns units |
 
-## custom (45)
+## custom (2)
 
 | Quest | Title | Starts with | Steps | Waits for | Dialogue lines | Modules | Why |
 |---|---|---|---|---|---|---|---|
-| SideQuest[43] | Almighty Shinra | timer | 2 | timer, run by another step | 11 | AlmightyShinra | timer |
-| SideQuest[69] | Cooking Choices | in range | 2 | in range, timer | 6 | Quest_Cooking | timer |
-| SideQuest[3] | Kill Setag | talk | 3 | talk, kill unit | 7 | Quest_KillSetag | can fail |
-| SideQuest[60] | Name Diary | talk | 3 | talk, spell, run by another step | 20 | NameDiary | spell |
-| MainQuest[12] | Voice of the Forest | talk | 4 | talk, use item, kill unit, run by another step | 51 | VoiceOfForest, Boss_Chaos, IceAge | use item |
-| SideQuest[24] | Ogre Hunt | talk | 4 | talk, kill any, in range, periodic | 6 | Quest_OgreHunt, HuntFestival | periodic |
-| SideQuest[30] | Tower of Summoning | talk | 4 | talk, kill unit, periodic | 18 | Quest_TowerSummoning, DarkEidolons, Tower | periodic |
-| SideQuest[35] | The Northern God | attacked | 4 | attacked, talk, kill unit, timer | 40 | Judgment, Boss_Odin | timer |
-| SideQuest[53] | Adamant Hunt | talk | 4 | talk, kill any, in range, periodic | 14 | AdamantHunt, HuntFestival | periodic |
-| SideQuest[57] | Wendigo Hunt | talk | 4 | talk, kill any, in range, periodic | 11 | WendigoHunt, HuntFestival | periodic |
-| SideQuest[62] | Hunt Festival | talk | 4 | talk, timer, periodic | 29 | HuntFestival, Montblanc | periodic, timer |
-| SideQuest[63] | Dragon Hunt | talk | 4 | talk, kill any, in range, periodic | 9 | DragonHunt, Montblanc | periodic |
-| SideQuest[71] | Monstrum of the Sea | kill any | 4 | kill any, run by another step, in range, periodic | 11 | Monstrum, Quest_Monstrum, Quest_KingOfSea | periodic |
-| MainQuest[14] | Last Rites | talk | 5 | talk, kill unit, spell, run by another step | 55 | Quest_LastRites, Exodus, Boss_Exodus, TrueIceAge, IceAge | spell several finishing triggers |
-| MainQuest[6] | Night Elves | talk | 5 | talk, in range | 40 | Quest_NightElves, Naisha, Portal | several finishing triggers |
-| SideQuest[15] | Healing Waters | talk | 5 | talk, in range, run by another step | 31 | HealingWaters, DefiledFountain, News | several finishing triggers |
-| SideQuest[33] | The Strongest Eidolon | talk | 5 | talk, spell, kill unit, periodic | 21 | Quest_StrongestEidolon, Eden, DarkEidolons, Tower | periodic, spell |
-| SideQuest[34] | Rematch | talk | 5 | talk, kill unit, periodic | 18 | Quest_Rematch, DarkEidolons, Tower | periodic |
-| SideQuest[38] | Arena Expansion | talk | 5 | talk, in range, reach place, spell | 39 | ArenaExpansion, Arena_Conquest | spell |
-| SideQuest[51] | Blazing Demon | run by another step | 5 | run by another step, kill unit | 16 | Quest_BlazingDemon, BlazingDemon | several finishing triggers |
-| SideQuest[55] | Flan Hunt | talk | 5 | talk, kill any, in range, kill unit, run by another step | 15 | FlanHunt, Dana | can fail |
-| SideQuest[59] | Dragon Egg | talk | 5 | talk, get item, in range, kill unit, run by another step | 18 | DragonEgg, Dana | can fail |
-| SideQuest[5] | Caravan | talk | 5 | talk, in range, kill unit, run by another step | 12 | Quest_Caravan, News | can fail |
-| MainQuest[15] | Illusions to Illusions | talk | 6 | talk, get item, kill unit, in range, spell | 44 | Quest_Illusions, Dana, Famfrit, Boss_Famfrit, TrueIceAge | spell several finishing triggers |
-| MainQuest[1] | Find Mid | talk | 6 | talk, run by another step, in range, periodic, spell | 26 | Cid, Mid, Cartographer, Arena_Conquest, News | periodic, spell |
-| SideQuest[48] | King of the Sea | get item | 6 | get item, in range, kill unit, run by another step, timer | 11 | NebraKing, Quest_KingOfSea, Quest_Monstrum, Fishing_ReelingAndCatch | timer |
-| SideQuest[50] | Trial By Fire | talk | 6 | talk, run by another step, buy, reach place, spell | 33 | Quest_TrialByFire, DarkIfrit, DarkPhoenix | spell, can fail |
-| SideQuest[7] | Fire Golem's Heart | talk | 6 | talk, kill unit, get item, in range, periodic | 25 | Quest_FireGolem, DarkEidolons, Tower | periodic |
-| SideQuest[9] | Save Timmy | talk | 6 | talk, timer, in range | 15 | Quest_SaveTimmy, ChocoboRider | timer several finishing triggers |
-| MainQuest[13] | Corrupted Orcs | talk | 7 | talk, kill unit, spell, timer, kill any | 32 | Quest_CorruptedOrcs, OrcBase, Boss_Shemhazai, Shemhazai, TrueIceAge, Meliadoul | spell, timer several finishing triggers |
-| MainQuest[7] | Dark Knight | run by another step | 7 | run by another step, in range, kill unit, timer | 54 | Quest_DarkKnight, Boss_Gafgarion, Boss_Zalera, Cine, Boss_Belias, Boss_Chaos | timer |
-| SideQuest[64] | Chocobo Rider | talk | 7 | talk, in range, get item, kill unit, spell | 43 | ChocoboRider, Boss_Exodus, TrueIceAge | spell |
-| SideQuest[14] | Target Practice | talk | 8 | talk, buy, run by another step, in range, kill unit, timer | 18 | Quest_TargetPractice, TargetPractice, Dana, Aisha | timer, can fail |
-| SideQuest[44] | Lost Memories | talk | 8 | talk, get item, in range, timer, periodic, attacked | 212 | Quest_LostMemories, Shadow_Lifecycle, Shadow_Loyalty | periodic, timer, can fail several finishing triggers |
-| SideQuest[58] | Tentacles | talk | 8 | talk, attacked, kill any, run by another step, in range, kill unit | 19 | Tentacles, Ultros, Dana | can fail |
 | SideQuest[61] | Cartographer | talk | 8 | talk, periodic | 50 | Cartographer, Quest_GodDragon, Montblanc, HuntFestival | periodic, can fail several finishing triggers |
-| MainQuest[10] | Kalm Siege II | talk | 9 | talk, timer, kill any, kill unit, run by another step | 33 | KalmSiege2, Quest_Brothers, Spawn | timer, can fail |
-| SideQuest[22] | Mysterious Curse | talk | 10 | talk, kill any | 77 | MysteriousCurse | several finishing triggers |
-| MainQuest[11] | Kalm Siege III | talk | 12 | talk, timer, kill unit, kill any, spell, periodic | 51 | KalmSiege3, Quest_Brothers, Mid, TrueIceAge, Brothers, HuntFestival | periodic, spell, timer, can fail |
-| MainQuest[19] | Advent of Ice Age | kill unit | 13 | kill unit, talk, reach place, run by another step, spell, periodic, timer | 124 | Boss_Hashmalum, Gafgarion, Boss_Echele, IceAge, Boss_Chaos, Boss_Exodus, Zeromus, TrueIceAge, DarkEidolons, ScorchedEarth, Zodiark, Arena_TeamSelection | periodic, spell, timer |
-| MainQuest[8] | World Liberation | kill unit | 13 | kill unit, run by another step, spell, attacked, timer, talk, in range, kill any | 114 | Boss_Zalera, Quest_WorldLiberation, TrueIceAge, Cid, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_UltimaWeapon, ShinrasPlan | spell, timer |
-| MainQuest[9] | Kalm Siege | talk | 14 | talk, timer, kill any, kill unit, periodic, spell, run by another step | 38 | KalmSiege1, Quest_Brothers, Makenroh, KalmSiege, TrueIceAge, MithrilGolem, Brothers, Spawn | periodic, spell, timer, can fail |
-| MainQuest[2] | Find Artifact | in range | 15 | in range, run by another step, get item, timer, talk, kill any, spell | 96 | Cid, GoblinChief, Artifact, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_WorldLiberation, Cine, TrueIceAge, News | spell, timer several finishing triggers |
-| SideQuest[40] | Dimensional Boundary | talk | 17 | talk, in range, kill unit, periodic, reach place, run by another step, timer, use item | 96 | DimensionalBoundary, GuideBook, TropicalEssence, DeathSeeker, QuFrog, FrogHead, Zeromus, IceAge, ArenaExpansion, Elemental, MagicGodToken, BridgeBattle, ShinrasPlan | periodic, timer, use item several finishing triggers |
-| MainQuest[18] | End of Zodiac Age | in range | 18 | in range, kill unit, run by another step, periodic, talk, reach place, timer, chat | 139 | Boss_Hashmalum, Boss_Belias, Loop, Boss_Mateus, Quest_ZodiacAge, Cine, Gate | chat, periodic, timer |
+| MainQuest[8] | True Ice Age | spell | 11 | spell, attacked, run by another step, timer, talk, in range, kill any | 90 | TrueIceAge, Cid, Turks, AoMadoushi, Quest_AoMadoushi, Loot, Quest_WorldLiberation, ShinrasPlan | spell, timer |

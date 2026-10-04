@@ -1,12 +1,13 @@
-library TWatts
+library TWatts requires optional TQuestFieryWings
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Watts_Talk_Enable=null
 endglobals
 
 function Trig_Watts_Talk_Enable_Actions takes nothing returns nothing
-    set udg_SpecialEffect[91]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h00Q_0255,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_FieryWings_Start)
+    static if LIBRARY_TQuestFieryWings then
+        call ExecuteFunc("QuestFieryWings_Available") // the "!" over Watts; the Fiery Wings quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

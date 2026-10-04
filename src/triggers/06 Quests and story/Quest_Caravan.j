@@ -1,4 +1,12 @@
-library TQuestCaravan requires TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit
+library TQuestCaravan requires TQuestEngine, TCam, TCine, TGroup, TPlayerHero, TText, TUnit
+// Side quest "Caravan", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Sam in Kalm waits for a caravan from the Farm; once Timmy is saved, Dio asks the party to escort three pack
+// horses to Sam, and Dio pays for the paper Sam gives in return - more gold for each horse that arrives.
+// Sam's request and Dio's first refusal come before the quest (they are not in the quest log). Made available
+// by Cid and Epilogue (gg_trg_Quest_Caravan_SamAvailable) and by Save Timmy (gg_trg_Quest_Caravan_Enable).
+// Dio's talk has lines that depend on what was said before, the escort can fail, and the gold depends on the
+// horses, so the talk, the escort and the failure stay triggers of this module (custom steps); the engine
+// keeps the quest log and the paper hand-in.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Caravan_SamAvailable=null
@@ -9,11 +17,26 @@ globals
     trigger gg_trg_Quest_Caravan_HorsesVulnerable=null
     trigger gg_trg_Quest_Caravan_Deliver=null
     trigger gg_trg_Quest_Caravan_Failed=null
-    trigger gg_trg_Quest_Caravan_Ping=null
-    trigger gg_trg_Quest_Caravan_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_CARAVAN=0
     // Variables only this module uses.
     integer udg_CaravanReward=0
 endglobals
+
+function QuestCaravan_Define takes nothing returns nothing
+    local integer q=Quest_Define("Caravan",QUEST_SIDE,5,"ReplaceableTextures\\CommandButtons\\BTNRiderlessHorse.blp")
+    set QUEST_CARAVAN=q
+    // 1. Talk to Dio (gg_trg_Quest_Caravan_Start)
+    call Quest_Custom(q,"Dio, from the farm, asked you to bring caravan of pack horses to Sam in Kalm.")
+    // 2. A pack horse reaches Sam (gg_trg_Quest_Caravan_Deliver); fails if all horses die
+    call Quest_Custom(q,"Bring the paper to Dio to get reward.")
+    call Quest_Message(q,"Bring the paper to Dio.")
+    // 3. Bring Sam's paper to Dio. The gold is set again when the caravan arrives (Trig_Quest_Caravan_Deliver_Actions).
+    call Quest_Deliver(q,gg_unit_n00A_0101,'mort',1,"","") // 'mort': item "Delivery Confirmation"
+    call Quest_PingItem(q)
+    call Quest_Say(q,gg_unit_n00A_0101,"So, you say you delivered goods to Sam? Can I see the paper he gave you? Hmm... yes, everything seems OK. As promised, I will reward you with gold. And thank you again!")
+    call Quest_Reward(q,udg_CaravanReward,1000)
+endfunction
 
 function Trig_Quest_Caravan_SamAvailable_Cond_CaravanStage0 takes nothing returns boolean
     return(udg_CaravanStage==0)
@@ -125,6 +148,7 @@ function Trig_Quest_Caravan_Start_Cond_CinematicsEnabled takes nothing returns b
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: Dio asks the party to escort the pack horses; the quest starts.
 function Trig_Quest_Caravan_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[$C]) // $C = 12
@@ -153,9 +177,11 @@ function Trig_Quest_Caravan_Start_Actions takes nothing returns nothing
     call SetUnitOwner(gg_unit_hrdh_0103,Player($A),true) // $A = 10
     call SetUnitOwner(gg_unit_hrdh_0104,Player($A),true) // $A = 10
     call RemoveAllGuardPositions(Player($A)) // $A = 10
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Caravan|r")
-    set udg_SideQuest[5]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffCaravan","Dio, from the farm, asked you to bring caravan of pack horses to Sam in Kalm.","ReplaceableTextures\\CommandButtons\\BTNRiderlessHorse.blp")
-    set udg_QuestReq[1]=CreateQuestItemBJ(udg_SideQuest[5],"At least one pack horse must reach Kalm")
+    if QUEST_CARAVAN==0 then
+        call QuestCaravan_Define()
+    endif
+    call Quest_Start(QUEST_CARAVAN,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
+    set udg_QuestReq[1]=CreateQuestItemBJ(Quest_LogEntry(QUEST_CARAVAN),"At least one pack horse must reach Kalm")
     set udg_SpecialEffect[$D]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00B_0054,"Objects\\RandomObject\\RandomObject.mdl") // $D = 13
     call GroupAddUnitSimple(gg_unit_n00B_0054,udg_BossUnits)
     call EnableTrigger(gg_trg_Quest_Caravan_HorsesVulnerable)
@@ -203,6 +229,7 @@ function Trig_Quest_Caravan_Deliver_Enum_ScoreHorse takes nothing returns nothin
     call RemoveUnit(GetEnumUnit())
 endfunction
 
+// Step 2: a pack horse reached Sam. Every other horse close behind it adds 2000 gold to Dio's reward.
 function Trig_Quest_Caravan_Deliver_Actions takes nothing returns nothing
     local group l_tempGroup
     call DisableTrigger(GetTriggeringTrigger())
@@ -222,19 +249,15 @@ function Trig_Quest_Caravan_Deliver_Actions takes nothing returns nothing
     call DestroyGroup(l_tempGroup)
     call RemoveLocation(udg_TempPoint)
     call QuestItemSetCompletedBJ(udg_QuestReq[1],true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the paper to Dio.")
-    call QuestSetDescriptionBJ(udg_SideQuest[5],"Bring the paper to Dio to get reward.")
-    call DisableTrigger(gg_trg_Quest_Caravan_Ping)
-    set udg_SpecialEffect[$E]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n00A_0101,"Objects\\RandomObject\\RandomObject.mdl") // $E = 14
     set udg_TempPoint=GetUnitLoc(gg_unit_n00B_0054)
     set udg_TempPoint2=OffsetLocation(udg_TempPoint,0,-150.)
     call RemoveLocation(udg_TempPoint)
     call CreateItemLoc('mort',udg_TempPoint2) // 'mort': item "Delivery Confirmation"
     call RemoveLocation(udg_TempPoint2)
-    set udg_QuestItem[25]=GetLastCreatedItem()
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call EnableTrigger(gg_trg_Quest_Caravan_Ping)
-    call EnableTrigger(gg_trg_Quest_Caravan_Complete)
+    // the gold Dio pays (step 3, the last step defined) depends on the horses that arrived
+    call Quest_Reward(QUEST_CARAVAN,udg_CaravanReward,1000)
+    call Quest_StepDone(QUEST_CARAVAN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempGroup=null
 endfunction
@@ -243,64 +266,17 @@ function Trig_Quest_Caravan_Failed_Conditions takes nothing returns boolean
     return(IsUnitDeadBJ(gg_unit_hrdh_0102))and(IsUnitDeadBJ(gg_unit_hrdh_0103))and(IsUnitDeadBJ(gg_unit_hrdh_0104))
 endfunction
 
+// All three pack horses died: the quest fails.
 function Trig_Quest_Caravan_Failed_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisplayTextToForce(GetPlayersAll(),"All pack horses died !!!")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Caravan|r")
-    call QuestSetFailedBJ(udg_SideQuest[5],true)
+    call Quest_Fail(QUEST_CARAVAN)
+    // a failed caravan still counts as a finished quest
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call QuestItemSetCompletedBJ(udg_QuestReq[1],false)
     call DestroyEffectBJ(udg_SpecialEffect[$D]) // $D = 13
     call GroupRemoveUnitSimple(gg_unit_n00B_0054,udg_BossUnits)
     call DisableTrigger(gg_trg_Quest_Caravan_Deliver)
-    call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_Quest_Caravan_Ping_Conditions takes nothing returns boolean
-    return(udg_QuestItem[25]!=null)
-endfunction
-
-function Trig_Quest_Caravan_Ping_Cond_PaperCarried takes nothing returns boolean
-    return(IsItemOwned(udg_QuestItem[25]))
-endfunction
-
-function Trig_Quest_Caravan_Ping_Actions takes nothing returns nothing
-    if(Trig_Quest_Caravan_Ping_Cond_PaperCarried())then
-        set udg_TempPoint=GetUnitLoc(gg_unit_n00A_0101)
-    else
-        set udg_TempPoint=GetItemLoc(udg_QuestItem[25])
-    endif
-    call PingMinimapLocForForce(GetPlayersAll(),udg_TempPoint,2.)
-    call RemoveLocation(udg_TempPoint)
-endfunction
-
-function Trig_Quest_Caravan_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'mort'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'mort': item "Delivery Confirmation"
-endfunction
-
-function Trig_Quest_Caravan_Complete_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_Caravan_Complete_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DisableTrigger(gg_trg_Quest_Caravan_Ping)
-    call DestroyEffectBJ(udg_SpecialEffect[$E]) // $E = 14
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'mort')) // 'mort': item "Delivery Confirmation"
-    if(Trig_Quest_Caravan_Complete_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call Cam_PanToUnit(gg_unit_n00A_0101,0)
-        call Text_Say(gg_unit_n00A_0101,"So, you say you delivered goods to Sam? Can I see the paper he gave you? Hmm... yes, everything seems OK. As promised, I will reward you with gold. And thank you again!",false)
-        call Reward_Give(udg_CaravanReward,$3E8,gg_unit_n00A_0101) // $3E8 = 1000
-        call Cine_ExitAction()
-    else
-        call Reward_Give(udg_CaravanReward,$3E8,gg_unit_n00A_0101) // $3E8 = 1000
-    endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Caravan|r")
-    call QuestSetCompletedBJ(udg_SideQuest[5],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -392,22 +368,6 @@ function Register_Quest_Caravan_Failed takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Quest_Caravan_Failed,gg_unit_hrdh_0104,EVENT_UNIT_DEATH)
     call TriggerAddCondition(gg_trg_Quest_Caravan_Failed,Condition(function Trig_Quest_Caravan_Failed_Conditions))
     call TriggerAddAction(gg_trg_Quest_Caravan_Failed,function Trig_Quest_Caravan_Failed_Actions)
-endfunction
-
-function Register_Quest_Caravan_Ping takes nothing returns nothing
-    set gg_trg_Quest_Caravan_Ping=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Caravan_Ping)
-    call TriggerRegisterTimerEventPeriodic(gg_trg_Quest_Caravan_Ping,15.)
-    call TriggerAddCondition(gg_trg_Quest_Caravan_Ping,Condition(function Trig_Quest_Caravan_Ping_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Caravan_Ping,function Trig_Quest_Caravan_Ping_Actions)
-endfunction
-
-function Register_Quest_Caravan_Complete takes nothing returns nothing
-    set gg_trg_Quest_Caravan_Complete=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_Caravan_Complete)
-    call TriggerRegisterUnitInRangeSimple(gg_trg_Quest_Caravan_Complete,450.,gg_unit_n00A_0101)
-    call TriggerAddCondition(gg_trg_Quest_Caravan_Complete,Condition(function Trig_Quest_Caravan_Complete_Conditions))
-    call TriggerAddAction(gg_trg_Quest_Caravan_Complete,function Trig_Quest_Caravan_Complete_Actions)
 endfunction
 
 endlibrary

@@ -82,9 +82,7 @@ function Trig_Boss_Chaos_Death_Actions takes nothing returns nothing
         call Reward_Give(6000,6000,gg_unit_U00O_0191)
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00A new artifact is available for buying at the Ancient of Wonders.|r")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Voice of the Forest|r")
-    call QuestSetCompletedBJ(udg_MainQuest[$C],true) // $C = 12
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("VoiceOfForest_ChaosSlain") // completes the Voice of the Forest quest
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)
     call SaveIntegerBJ(1,2,$86,udg_GameStateHash) // $86 = 134
     if(Trig_Boss_Chaos_Death_Quest19Completed())then

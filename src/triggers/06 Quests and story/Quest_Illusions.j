@@ -1,8 +1,39 @@
-library TQuestIllusions requires TCam, TCine, TMusic, TPlayerHero, TText, TUnit
+library TQuestIllusions requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TText, TUnit
+// Main quest "Illusions to Illusions" (udg_MainQuest[15]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Dana asks the party to give her back her eye and strike her down, to draw out
+// Famfrit, the Zodiac Brave of Water. All steps are custom: Start (talk to Dana) calls Quest_Start, Famfrit
+// shows himself (Famfrit calls QuestIllusions_FamfritAppears) and Famfrit dies (Boss_Famfrit calls
+// QuestIllusions_FamfritSlain). The "!" and "?" over Dana are this module's and Dana's own effects.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Illusions_Start=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ILLUSIONS=0
 endglobals
+
+function QuestIllusions_Define takes nothing returns nothing
+    local integer q=Quest_Define("Illusions to Illusions",QUEST_MAIN,15,"ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
+    set QUEST_ILLUSIONS=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Dana (gg_trg_Quest_Illusions_Start)
+    call Quest_Custom(q,"In order to draw out Famfrit, the Zodiac Brave of Water, you must give Dana back her eye to manifest her in Gaya, and then strike her down.")
+    // 2. Famfrit appears after Dana's death (Famfrit)
+    call Quest_Custom(q,"Defeat Famfrit, the Zodiac Brave of Water.")
+    // 3. Defeat Famfrit (Boss_Famfrit)
+    call Quest_Custom(q,"")
+endfunction
+
+// The party meets Famfrit and the fight begins (called by Famfrit through ExecuteFunc).
+function QuestIllusions_FamfritAppears takes nothing returns nothing
+    call Quest_StepDone(QUEST_ILLUSIONS,null,null)
+endfunction
+
+// Famfrit is dead: the quest is done (called by Boss_Famfrit through ExecuteFunc).
+function QuestIllusions_FamfritSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_ILLUSIONS,null,null)
+endfunction
 
 function Trig_Quest_Illusions_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n0BN_0171,true,true,true))
@@ -16,6 +47,7 @@ function Trig_Quest_Illusions_Start_CinematicsEnabled takes nothing returns bool
     return(udg_CinematicsDisabled==false)
 endfunction
 
+// Step 1: a hero talks to Dana.
 function Trig_Quest_Illusions_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[70])
@@ -56,8 +88,10 @@ function Trig_Quest_Illusions_Start_Actions takes nothing returns nothing
     endif
     set udg_DanaQuestStage=(udg_DanaQuestStage+1)
     set udg_SpecialEffect[70]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0BN_0171,"Objects\\RandomObject\\RandomObject.mdl")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Illusions to Illusions|r")
-    set udg_MainQuest[$F]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Illusions to Illusions"),"In order to draw out Famfrit, the Zodiac Brave of Water, you must give Dana back her eye to manifest her in Gaya, and then strike her down.","ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp") // $F = 15
+    if QUEST_ILLUSIONS==0 then
+        call QuestIllusions_Define()
+    endif
+    call Quest_Start(QUEST_ILLUSIONS,GetTriggerPlayer(),GetTriggerUnit())
     call SetUnitOwner(gg_unit_n0BN_0171,Player(9),false)
     call UnitAddAbilityBJ('AInv',gg_unit_n0BN_0171) // 'AInv': standard ability reference "Inventory"
     call UnitAddAbilityBJ('Abun',gg_unit_n0BN_0171) // 'Abun': object name not found in map data

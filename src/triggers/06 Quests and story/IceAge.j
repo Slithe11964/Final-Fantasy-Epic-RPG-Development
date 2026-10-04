@@ -1,9 +1,37 @@
-library TIceAge requires TCam, TCine, TGroup, TJob, TMusic, TPlayerHero, TReward, TText, TWait
+library TIceAge requires TQuestEngine, TCam, TCine, TGroup, TJob, TMusic, TPlayerHero, TReward, TText, TWait
+// Main quest "Advent of Ice Age" (udg_MainQuest[19]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Hashmalum's death summons the demon lord Echele; the party (with Gafgarion) faces
+// him atop the Snowy Mountain before the world freezes. Both steps are custom: Boss_Hashmalum's
+// Death_Final calls IceAge_Start, and Victory (Echele is defeated) finishes the quest. No markers.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_IceAge_FreezeTimeout=null
     trigger gg_trg_IceAge_Victory=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_ICE_AGE=0
 endglobals
+
+function IceAge_Define takes nothing returns nothing
+    local integer q=Quest_Define("Advent of Ice Age",QUEST_MAIN,19,"ReplaceableTextures\\CommandButtons\\BTNBlueMagnataur.blp")
+    set QUEST_ICE_AGE=q
+    call Quest_Color(q,udg_QuestTitleColor)
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Echele is summoned (Boss_Hashmalum calls IceAge_Start)
+    call Quest_Custom(q,"The demon lord Echele has been summoned. He has absorbed the power of all the Zodiac Braves and is intending on turning the world to ice. Face him atop the Snowy Mountain.")
+    // 2. Defeat Echele (gg_trg_IceAge_Victory)
+    call Quest_Custom(q,"")
+endfunction
+
+// Echele has been summoned: the quest starts (called by Boss_Hashmalum through ExecuteFunc, a few seconds
+// after Hashmalum's death).
+function IceAge_Start takes nothing returns nothing
+    if QUEST_ICE_AGE==0 then
+        call IceAge_Define()
+    endif
+    call Quest_Start(QUEST_ICE_AGE,null,null)
+endfunction
 
 function Trig_IceAge_FreezeTimeout_KnightDead takes nothing returns boolean
     return(IsUnitAliveBJ(udg_StoryBoss)==false)
@@ -214,6 +242,7 @@ function Trig_IceAge_Victory_TalonInParty takes nothing returns boolean
     return(udg_TalonGone==false)
 endfunction
 
+// Step 2: Echele is defeated: the party is rewarded and the quest is done.
 function Trig_IceAge_Victory_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_IceAge_Victory_SpeedrunMode())then
@@ -328,9 +357,7 @@ function Trig_IceAge_Victory_Actions takes nothing returns nothing
     call CreateItemLoc('I05H',udg_TempPoint) // 'I05H': item "Blood Ether"
     call RemoveLocation(udg_TempPoint)
     call DestroyTimerDialogBJ(udg_WorldFreezeDialog)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Advent of Ice Age|r")
-    call QuestSetCompletedBJ(udg_MainQuest[19],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_ICE_AGE,null,null)
     call SaveIntegerBJ(1,2,91,udg_GameStateHash)
     if(Trig_IceAge_Victory_Quest40Completed())then
         call SaveIntegerBJ(1,2,$AD,udg_GameStateHash) // $AD = 173

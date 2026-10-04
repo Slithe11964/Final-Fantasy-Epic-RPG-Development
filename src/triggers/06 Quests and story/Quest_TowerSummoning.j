@@ -1,9 +1,27 @@
-library TQuestTowerSummoning requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestTowerSummoning requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Tower of Summoning", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// The old man on the island gives the party the Tower of Summoning if they defeat Quezacotl. Both steps
+// are this module's cinematics (Start calls Quest_Start, Complete calls Quest_StepDone); the "!" and "?"
+// over the old man are this module's own effects (the "!" is put up by Ramuh). It does not count toward
+// the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_TowerSummoning_Start=null
     trigger gg_trg_Quest_TowerSummoning_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_TOWER_SUMMONING=0
 endglobals
+
+function QuestTowerSummoning_Define takes nothing returns nothing
+    local integer q=Quest_Define("Tower of Summoning",QUEST_SIDE,30,"ReplaceableTextures\\CommandButtons\\BTNArcaneObservatory.blp")
+    set QUEST_TOWER_SUMMONING=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Talk to the old man (gg_trg_Quest_TowerSummoning_Start calls Quest_Start)
+    call Quest_Custom(q,"Defeat Quezacotl to gain control of the Tower of Summoning.")
+    // 2. Defeat Quezacotl (gg_trg_Quest_TowerSummoning_Complete calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_TowerSummoning_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n020_0129,true,true,true))
@@ -49,8 +67,10 @@ function Trig_Quest_TowerSummoning_Start_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         call ShowUnitShow(gg_unit_n01Z_0127)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Tower of Summoning|r")
-    set udg_SideQuest[30]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Tower of Summoning"),"Defeat Quezacotl to gain control of the Tower of Summoning.","ReplaceableTextures\\CommandButtons\\BTNArcaneObservatory.blp")
+    if QUEST_TOWER_SUMMONING==0 then
+        call QuestTowerSummoning_Define()
+    endif
+    call Quest_Start(QUEST_TOWER_SUMMONING,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call EnableTrigger(gg_trg_Quest_TowerSummoning_Complete)
     set udg_SpecialEffect[48]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n020_0129,"Objects\\RandomObject\\RandomObject.mdl")
     call SetUnitInvulnerable(gg_unit_n01Z_0127,false)
@@ -109,9 +129,7 @@ function Trig_Quest_TowerSummoning_Complete_Actions takes nothing returns nothin
         call Reward_Give($7D0,$7D0,gg_unit_n020_0129) // $7D0 = 2000
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Tower of Summoning|r")
-    call QuestSetCompletedBJ(udg_SideQuest[30],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_TOWER_SUMMONING,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call SaveIntegerBJ(1,2,$82,udg_GameStateHash) // $82 = 130
     call SetUnitOwner(gg_unit_h00Z_0130,Player($A),true) // $A = 10
     call ForForce(udg_PlayingPlayers,function Trig_Quest_TowerSummoning_Complete_Enum_ShareTowerVision)

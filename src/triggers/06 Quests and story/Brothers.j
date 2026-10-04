@@ -1,4 +1,4 @@
-library TBrothers requires TWait
+library TBrothers requires TWait, optional TQuestEidolonChallenge
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Brothers_Alert_Eidolons=null
@@ -20,8 +20,9 @@ function Trig_Brothers_Alert_Eidolons_Actions takes nothing returns nothing
     call Wait_Polled(90.)
     call DisplayTextToForce(GetPlayersAll(),"|cff00ffffMinotaur has something to tell you !!!|r")
     call PlaySoundBJ(gg_snd_HeroTaurenChieftainYesAttack)
-    set udg_SpecialEffect[52]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Ocb2_0147,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_EidolonChallenge_Start)
+    static if LIBRARY_TQuestEidolonChallenge then
+        call ExecuteFunc("QuestEidolonChallenge_Available") // the "!" over Minotaur; the Eidolon Challenge can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

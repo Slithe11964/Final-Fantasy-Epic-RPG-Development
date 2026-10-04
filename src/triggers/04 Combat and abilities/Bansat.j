@@ -1,11 +1,13 @@
-library TBansat
+library TBansat requires optional TAdamantHunt
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Bansat_ShowTalkIcon=null
 endglobals
 
 function Trig_Bansat_ShowTalkIcon_Actions takes nothing returns nothing
-    set udg_SpecialEffect[71]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h02Z_0230,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
+    static if LIBRARY_TAdamantHunt then
+        call ExecuteFunc("AdamantHunt_Available") // the "!" over Bansat; the Adamant Hunt quest can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

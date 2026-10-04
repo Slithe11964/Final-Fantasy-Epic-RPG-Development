@@ -1,4 +1,7 @@
 library TDefiledFountain requires TCam, TCine, TForce, TPlayerHero, TText, TUnit
+// The first half of the side quest "Defiled Fountain": Feanor's talk, the Satyr's Hoof and the
+// Thunderbloom Bulb. The quest itself is defined for the quest engine in module Quest_Fountain, which
+// comes after the engine in the script, so this module reaches it through ExecuteFunc.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DefiledFountain_Prepare=null
@@ -53,8 +56,7 @@ function Trig_DefiledFountain_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"OK.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Defiled Fountain|r")
-    set udg_SideQuest[23]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Defiled Fountain"),"Feanor, wizard from Lothlorien, asked you to bring him Satyr's Hoof that is required for the ritual that will cleanse the Defiled Fountain of Restoration.","ReplaceableTextures\\CommandButtons\\BTNFountainOfLifeDefiled.blp")
+    call ExecuteFunc("QuestFountain_Started") // the quest "Defiled Fountain" starts
     set udg_SpecialEffect[42]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e007_0154,"Objects\\RandomObject\\RandomObject.mdl")
     call EnableTrigger(gg_trg_DefiledFountain_Hoof)
     call DestroyTrigger(GetTriggeringTrigger())
@@ -91,8 +93,7 @@ function Trig_DefiledFountain_Hoof_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[42]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e007_0154,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Find Thunderbloom Bulb in Barrens and bring it to Feanor.")
-    call QuestSetDescriptionBJ(udg_SideQuest[23],"Find Thunderbloom Bulb in Barrens and bring it to Feanor.")
+    call ExecuteFunc("QuestFountain_HoofDone") // the quest log: "Find Thunderbloom Bulb in Barrens and bring it to Feanor."
     call EnableTrigger(gg_trg_DefiledFountain_PingBulb)
     call EnableTrigger(gg_trg_DefiledFountain_BulbPickup)
     call EnableTrigger(gg_trg_Quest_Fountain_Bulb)
@@ -127,7 +128,7 @@ function Trig_DefiledFountain_BulbPickup_Actions takes nothing returns nothing
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
     call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Thunderbloom Bulb to Feanor.")
     call DestroyForce(l_tempForce)
-    call QuestSetDescriptionBJ(udg_SideQuest[23],"Bring the Thunderbloom Bulb to Feanor.")
+    call ExecuteFunc("QuestFountain_BulbTaken") // the quest log: "Bring the Thunderbloom Bulb to Feanor."
     set l_tempForce=null
 endfunction
 

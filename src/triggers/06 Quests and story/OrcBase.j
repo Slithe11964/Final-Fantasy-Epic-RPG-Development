@@ -22,8 +22,7 @@ endfunction
 function Trig_OrcBase_GateGuard_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_OrcBase_GateGuard_Death_QuestNotDiscovered())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Corrupted Orcs|r")
-        set udg_MainQuest[$D]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Corrupted Orcs"),"You found a base full of corrupted orcs. Clear it all out!","ReplaceableTextures\\CommandButtons\\BTNChaosGrom.blp") // $D = 13
+        call ExecuteFunc("QuestCorruptedOrcs_StartAtBase") // quest "Corrupted Orcs" starts: "You found a base ..."
         call GroupAddUnitSimple(gg_unit_nbfl_0170,udg_BossUnits)
         if(Trig_OrcBase_GateGuard_Death_TalkTriggerActive())then
             call DisableTrigger(gg_trg_Quest_CorruptedOrcs_Start)
@@ -53,8 +52,7 @@ function Trig_OrcBase_Units_Cleared_Actions takes nothing returns nothing
         set udg_SiegeSouthUnitType[5]='n01A' // 'n01A': unit "Infernal Knight"
         set udg_SiegeSouthUnitType[7]='n01B' // 'n01B': unit "Infernal Templar"
         call SetUnitInvulnerable(gg_unit_nbfl_0170,false)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy the Fountain of Blood.")
-        call QuestSetDescriptionBJ(udg_MainQuest[$D],"Destroy the Fountain of Blood in the Corrupted Orcs base.") // $D = 13
+        call ExecuteFunc("QuestCorruptedOrcs_BaseCleared") // quest log: "Destroy the Fountain of Blood ..."
         call EnableTrigger(gg_trg_Shemhazai_Appears)
         call DestroyTrigger(GetTriggeringTrigger())
     endif

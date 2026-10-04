@@ -73,9 +73,7 @@ function Trig_Boss_Shemhazai_Death_Actions takes nothing returns nothing
     else
         call Reward_Give(6000,6000,gg_unit_U00I_0210)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Corrupted Orcs|r")
-    call QuestSetCompletedBJ(udg_MainQuest[$D],true) // $D = 13
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestCorruptedOrcs_ShemhazaiSlain") // completes the Corrupted Orcs quest
     call SaveIntegerBJ(1,2,$B0,udg_GameStateHash) // $B0 = 176
     call ConditionalTriggerExecute(gg_trg_Quest_WorldLiberation_Count)
 endfunction

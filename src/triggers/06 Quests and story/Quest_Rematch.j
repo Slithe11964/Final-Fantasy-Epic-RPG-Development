@@ -1,10 +1,30 @@
-library TQuestRematch requires TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestRematch requires TQuestEngine, TCam, TCine, TGroup, TPlayerHero, TReward, TText, TUnit, TWait
+// Side quest "Rematch", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// The Brothers (Minotaur and Sacred) challenge the party again. All steps are this module's cinematics:
+// Start (talk to Minotaur in town) calls Quest_Start, Begin (talk to him on the eastern peak) and
+// Complete (both brothers beaten) call Quest_StepDone. The "!" over Minotaur is this module's own effect
+// (Brothers puts up the first one and enables Start). It does not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Rematch_Start=null
     trigger gg_trg_Quest_Rematch_Begin=null
     trigger gg_trg_Quest_Rematch_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_REMATCH=0
 endglobals
+
+function QuestRematch_Define takes nothing returns nothing
+    local integer q=Quest_Define("Rematch",QUEST_SIDE,34,"ReplaceableTextures\\CommandButtons\\BTNHeroTaurenChieftain.blp")
+    set QUEST_REMATCH=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Talk to Minotaur in town (gg_trg_Quest_Rematch_Start calls Quest_Start)
+    call Quest_Custom(q,"The Brothers, Sacred and Minotaur, have challenged you one more time. Meet them on the eastern peak of the Northern Mountains to prove that you are still worthy of their loyalty!")
+    // 2. Talk to Minotaur on the peak (gg_trg_Quest_Rematch_Begin calls Quest_StepDone)
+    call Quest_Custom(q,"Defeat the Brothers.")
+    // 3. Defeat both brothers (gg_trg_Quest_Rematch_Complete calls Quest_StepDone)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_Quest_Rematch_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Ocb2_0147,true,true,true))
@@ -30,8 +50,10 @@ function Trig_Quest_Rematch_Start_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Ocbh_0148,"See you there, mighty one!",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Rematch|r")
-    set udg_SideQuest[34]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Rematch"),"The Brothers, Sacred and Minotaur, have challenged you one more time. Meet them on the eastern peak of the Northern Mountains to prove that you are still worthy of their loyalty!","ReplaceableTextures\\CommandButtons\\BTNHeroTaurenChieftain.blp")
+    if QUEST_REMATCH==0 then
+        call QuestRematch_Define()
+    endif
+    call Quest_Start(QUEST_REMATCH,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call GroupRemoveUnitSimple(gg_unit_Ocb2_0147,udg_RecruitedAllies)
     call GroupRemoveUnitSimple(gg_unit_Ocbh_0148,udg_RecruitedAllies)
     call GroupAddUnitSimple(gg_unit_Ocb2_0147,udg_BossUnits)
@@ -70,8 +92,7 @@ function Trig_Quest_Rematch_Begin_Actions takes nothing returns nothing
         call Text_Say(gg_unit_Ocbh_0148,"May the better creature win!",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat the Brothers.")
-    call QuestSetDescriptionBJ(udg_SideQuest[34],"Defeat the Brothers.")
+    call Quest_StepDone(QUEST_REMATCH,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call UnitAddAbilityBJ('A0N6',gg_unit_Ocb2_0147) // 'A0N6': ability "Magicdamage Reduction"
     call UnitAddAbilityBJ('A0N6',gg_unit_Ocbh_0148) // 'A0N6': ability "Magicdamage Reduction"
     call SetUnitOwner(gg_unit_Ocb2_0147,Player($B),true) // $B = 11
@@ -176,9 +197,7 @@ function Trig_Quest_Rematch_Complete_Actions takes nothing returns nothing
             endif
         endif
         call ForForce(udg_PlayingPlayers,function Trig_Quest_Rematch_Complete_Enum_GiveMateria)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Rematch|r")
-        call QuestSetCompletedBJ(udg_SideQuest[34],true)
-        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+        call Quest_StepDone(QUEST_REMATCH,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
         call SaveIntegerBJ(0,2,'n',udg_GameStateHash)
         call SaveIntegerBJ(1,2,'o',udg_GameStateHash)
         call UnitAddAbilityBJ('A09M',gg_unit_h00Z_0130) // 'A09M': ability "Brothers"

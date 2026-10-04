@@ -1,4 +1,4 @@
-library TMcBurn requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TText, TWait
+library TMcBurn requires TQuestEngine, TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TText, TWait, optional TQuestTrialByFire
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_McBurn_Arena_Hide=null
@@ -16,10 +16,11 @@ function Trig_McBurn_Arena_Hide_Actions takes nothing returns nothing
 endfunction
 
 function Trig_McBurn_Arena_Appear_Actions takes nothing returns nothing
-    set udg_SpecialEffect[69]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0AX_0188,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     set udg_ArenaOrganizerLast=6
     call UnitAddAbilityBJ('Ane2',gg_unit_n0AX_0188) // 'Ane2': object name not found in map data
-    call EnableTrigger(gg_trg_Quest_TrialByFire_Start)
+    static if LIBRARY_TQuestTrialByFire then
+        call ExecuteFunc("QuestTrialByFire_Available") // the "!" over McBurn; Trial By Fire can start
+    endif
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -58,6 +59,7 @@ function Trig_McBurn_TrueForm_Reveal_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(GetUnitTypeId(GetTriggerUnit())!='H01D')and(udg_InCinematicMode==false))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
 
+// A hero reaches the mountain's top: McBurn shows his true form (quest "Scorched Earth", step 3).
 function Trig_McBurn_TrueForm_Reveal_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_ScorchedEarth_HeatFade)
@@ -95,8 +97,7 @@ function Trig_McBurn_TrueForm_Reveal_Actions takes nothing returns nothing
     set udg_ScriptedBossUnit=gg_unit_U00Q_0023
     call EnableTrigger(gg_trg_McBurn_Arena_Return)
     call EnableTrigger(gg_trg_Quest_ScorchedEarth_End)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defeat McBurn.")
-    call QuestSetDescriptionBJ(udg_SideQuest[52],"Defeat McBurn, the Otherworldly King.")
+    call Quest_StepDone(QUEST_SCORCHED_EARTH,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call Wait_Polled(10.)
     call EnableTrigger(gg_trg_McBurn_Volcano)
     call DestroyTrigger(GetTriggeringTrigger())

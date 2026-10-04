@@ -98,9 +98,7 @@ function Trig_Boss_Ultima_Death_Actions takes nothing returns nothing
     call RemoveUnit(udg_AlmaUnit)
     call ShowUnitShow(gg_unit_Hjai_0093)
     call GroupAddUnitSimple(gg_unit_Hjai_0093,udg_RecruitedAllies)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Light of Judgment|r")
-    call QuestSetCompletedBJ(udg_MainQuest[16],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call ExecuteFunc("QuestLightOfJudgment_UltimaSlain") // completes the Light of Judgment quest
     if(Trig_Boss_Ultima_Death_Quest17Completed())then
         set udg_ArenaBonusBattle[0]=(udg_ArenaBonusBattle[0]+1)
         set udg_ArenaBonusBattle[udg_ArenaBonusBattle[0]]=$AC // $AC = 172

@@ -1,13 +1,19 @@
-library TQuestFireGolem requires TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestFireGolem requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TWait
+// Side quest "Fire Golem's Heart", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Alma wants the heart of the Fire Golem in the mountains north-west of Kalm to hatch the Phoenix Egg.
+// Steps: talk to Alma (data), kill the Fire Golem (data), bring the heart to Alma (this module's
+// triggers: the heart is pinged, picking it up updates the log, and handing it in plays the Phoenix
+// cinematic, which ends with Quest_StepDone). Made available by gg_trg_Quest_FireGolem_Alert, which
+// Quest_Phoenix enables when the Phoenix quest is done.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_FireGolem_Init=null
     trigger gg_trg_Quest_FireGolem_Alert=null
-    trigger gg_trg_Quest_FireGolem_Start=null
-    trigger gg_trg_Quest_FireGolem_HeartDropped=null
     trigger gg_trg_Quest_FireGolem_Ping=null
     trigger gg_trg_Quest_FireGolem_HeartTaken=null
     trigger gg_trg_Quest_FireGolem_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_FIRE_GOLEM=0
 endglobals
 
 function Trig_Quest_FireGolem_Init_Actions takes nothing returns nothing
@@ -17,76 +23,77 @@ function Trig_Quest_FireGolem_Init_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-function Trig_Quest_FireGolem_Alert_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DisplayTextToForce(GetPlayersAll(),"|cff00ffffAlma has something to tell you !!!|r")
-    call PlaySoundBJ(gg_snd_JainaWhat)
-    set udg_SpecialEffect[22]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hjai_0093,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
-    call EnableTrigger(gg_trg_Quest_FireGolem_Start)
-    call DestroyTrigger(GetTriggeringTrigger())
-endfunction
-
-function Trig_Quest_FireGolem_Start_Conditions takes nothing returns boolean
-    return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Hjai_0093,true,true,true))
-endfunction
-
-function Trig_Quest_FireGolem_Start_Enum_ApplyCamera takes nothing returns nothing
-    call CameraSetupApplyForPlayer(true,gg_cam_004,GetEnumPlayer(),1.)
-endfunction
-
-function Trig_Quest_FireGolem_Start_Cond_CinematicsEnabled takes nothing returns boolean
-    return(udg_CinematicsDisabled==false)
-endfunction
-
-function Trig_Quest_FireGolem_Start_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
-    call DestroyEffectBJ(udg_SpecialEffect[22])
-    if(Trig_Quest_FireGolem_Start_Cond_CinematicsEnabled())then
-        call Cine_Enter()
-        call ForForce(udg_PlayingPlayers,function Trig_Quest_FireGolem_Start_Enum_ApplyCamera)
-        call Text_Say(gg_unit_Hjai_0093,"Hello again. It seems I might need your help once again.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"I'll be glad to help you.",false)
-        call Text_Say(gg_unit_Hjai_0093,"There's no way to hatch the Phoenix Egg except by applying tremendous heat to it. We tried our most powerful Fire spells but egg only became a little warmer.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"And did you try casting Firaja? That's the most powerful fire-based spell out there.",false)
-        call Text_Say(gg_unit_Hjai_0093,"Yes, but, as I said, it was no effect.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"So is there any other way to get the \"tremendous heat\"? Maybe there's some volcano nearby?",false)
-        call Text_Say(gg_unit_Hjai_0093,"Not that I know of. But there is a way to solve this problem.",false)
-        call Text_Say(gg_unit_Hjai_0093,"In ancient times there were mighty Fire Golems created by powerful Wizards. Some years ago one of Golems awakened from its slumber and attacked this town. Many brave Elven warriors and wizards died fighting the Fire Golem but eventually they defeated it.",false)
-        call Text_Say(gg_unit_Hjai_0093,"When the Golem stopped functioning it crumbled to dust and only its \"heart\" remained. I think that this was the core that fueled the golem and gave it Fire powers. The \"heart\" was said to be incredibly hot.",false)
-        call Text_Say(gg_unit_Hjai_0093,"Some time ago Elven scouts noticed a giant burning construct walking the mountains near Kalm. I think this is one of those legendary Fire Golems.",false)
-        call Text_Say(gg_unit_Hjai_0093,"I think if we can get its heart then we might be able to apply its Fire power to the egg and hatch it.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"First we'll have to destroy the Golem. And where can it be found?",false)
-        call Text_Say(gg_unit_Hjai_0093,"It was seen in the north-west of Kalm.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"By the way if this heart is so incredibly hot, how will I bring it here? Won't I be scorched?",false)
-        call Text_Say(gg_unit_Hjai_0093,"Here's the device that will supress the heat of the heart for some time. Use it after you have destroyed the Fire Golem.\r\n|cffffcc00Alma gives you some weird device.|r",false)
-        call Text_Say(gg_unit_Hjai_0093,"Good luck !",false)
-        call Cine_ExitAction()
-    endif
+// Step 1 done (the party talked to Alma): the Fire Golem wakes up.
+function QuestFireGolem_Started takes nothing returns nothing
     call ShowUnitShow(gg_unit_n00F_0139)
     call PauseUnitBJ(false,gg_unit_n00F_0139)
     call SetUnitInvulnerable(gg_unit_n00F_0139,false)
     call GroupAddUnitSimple(gg_unit_n00F_0139,udg_ImmolationAuraGroup)
-    call GroupAddUnitSimple(gg_unit_n00F_0139,udg_BossUnits)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Fire Golem's Heart|r")
-    set udg_SideQuest[7]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Fire Golem's Heart"),"Alma, Cleric from Kalm, asked you to bring her Fire Golem's Heart.","ReplaceableTextures\\CommandButtons\\BTNInfernal.blp")
-    set udg_SpecialEffect[24]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hjai_0093,"Objects\\RandomObject\\RandomObject.mdl")
-    call EnableTrigger(gg_trg_Quest_FireGolem_HeartDropped)
-    call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
-function Trig_Quest_FireGolem_HeartDropped_Actions takes nothing returns nothing
-    local location l_tempPoint
-    call DisableTrigger(GetTriggeringTrigger())
-    call GroupRemoveUnitSimple(GetTriggerUnit(),udg_BossUnits)
-    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
+// Step 2 done (the Fire Golem died): its heart and a Fire Wand lie where it fell; the heart is pinged
+// and picking it up updates the quest.
+function QuestFireGolem_HeartDropped takes nothing returns nothing
+    local location l_tempPoint=GetUnitLoc(gg_unit_n00F_0139)
     set udg_QuestItem[2]=CreateItemLoc('jpnt',l_tempPoint) // 'jpnt': item "Fire Golem's Heart"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
     call CreateItemLoc('I01E',l_tempPoint) // 'I01E': item "Fire Wand"
     call RemoveLocation(l_tempPoint)
     call EnableTrigger(gg_trg_Quest_FireGolem_Ping)
     call EnableTrigger(gg_trg_Quest_FireGolem_HeartTaken)
-    call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
+endfunction
+
+// Quest done: Phoenix can be summoned at the Tower of Summoning; Alma calls again in 5 minutes (Mithril Golem's Heart).
+function QuestFireGolem_Done takes nothing returns nothing
+    call UnitAddAbilityBJ('A085',gg_unit_h00Z_0130) // 'A085': ability "Phoenix"
+    call EnableTrigger(gg_trg_MithrilGolem_Prepare)
+    call StartTimerBJ(udg_SharedDelayTimer1,false,300.)
+endfunction
+
+function QuestFireGolem_Define takes nothing returns nothing
+    local integer q=Quest_Define("Fire Golem's Heart",QUEST_SIDE,7,"ReplaceableTextures\\CommandButtons\\BTNInfernal.blp")
+    set QUEST_FIRE_GOLEM=q
+    // 1. Talk to Alma
+    call Quest_Talk(q,gg_unit_Hjai_0093,"Alma, Cleric from Kalm, asked you to bring her Fire Golem's Heart.")
+    call Quest_Camera(q,gg_cam_004)
+    call Quest_Say(q,gg_unit_Hjai_0093,"Hello again. It seems I might need your help once again.")
+    call Quest_Say(q,null,"I'll be glad to help you.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"There's no way to hatch the Phoenix Egg except by applying tremendous heat to it. We tried our most powerful Fire spells but egg only became a little warmer.")
+    call Quest_Say(q,null,"And did you try casting Firaja? That's the most powerful fire-based spell out there.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"Yes, but, as I said, it was no effect.")
+    call Quest_Say(q,null,"So is there any other way to get the \"tremendous heat\"? Maybe there's some volcano nearby?")
+    call Quest_Say(q,gg_unit_Hjai_0093,"Not that I know of. But there is a way to solve this problem.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"In ancient times there were mighty Fire Golems created by powerful Wizards. Some years ago one of Golems awakened from its slumber and attacked this town. Many brave Elven warriors and wizards died fighting the Fire Golem but eventually they defeated it.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"When the Golem stopped functioning it crumbled to dust and only its \"heart\" remained. I think that this was the core that fueled the golem and gave it Fire powers. The \"heart\" was said to be incredibly hot.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"Some time ago Elven scouts noticed a giant burning construct walking the mountains near Kalm. I think this is one of those legendary Fire Golems.")
+    call Quest_Say(q,gg_unit_Hjai_0093,"I think if we can get its heart then we might be able to apply its Fire power to the egg and hatch it.")
+    call Quest_Say(q,null,"First we'll have to destroy the Golem. And where can it be found?")
+    call Quest_Say(q,gg_unit_Hjai_0093,"It was seen in the north-west of Kalm.")
+    call Quest_Say(q,null,"By the way if this heart is so incredibly hot, how will I bring it here? Won't I be scorched?")
+    call Quest_Say(q,gg_unit_Hjai_0093,"Here's the device that will supress the heat of the heart for some time. Use it after you have destroyed the Fire Golem.\r\n|cffffcc00Alma gives you some weird device.|r")
+    call Quest_Say(q,gg_unit_Hjai_0093,"Good luck !")
+    call Quest_OnDone(q,"QuestFireGolem_Started")
+    // 2. Kill the Fire Golem (pinged on the minimap while it lives)
+    call Quest_Kill(q,gg_unit_n00F_0139,"")
+    call Quest_PingUnit(q)
+    call Quest_OnDone(q,"QuestFireGolem_HeartDropped")
+    // 3. Bring the heart to Alma: the Complete trigger plays the hatching cinematic, then calls Quest_StepDone
+    call Quest_Custom(q,"")
+    call Quest_OnDone(q,"QuestFireGolem_Done")
+endfunction
+
+// Phoenix was done a minute ago (Quest_Phoenix enables this trigger): Alma calls for the party and the
+// "!" appears over her.
+function Trig_Quest_FireGolem_Alert_Actions takes nothing returns nothing
+    call DisableTrigger(GetTriggeringTrigger())
+    call DisplayTextToForce(GetPlayersAll(),"|cff00ffffAlma has something to tell you !!!|r")
+    call PlaySoundBJ(gg_snd_JainaWhat)
+    if QUEST_FIRE_GOLEM==0 then
+        call QuestFireGolem_Define()
+    endif
+    call Quest_MakeAvailable(QUEST_FIRE_GOLEM)
+    call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
 function Trig_Quest_FireGolem_Ping_Conditions takes nothing returns boolean
@@ -114,7 +121,7 @@ endfunction
 function Trig_Quest_FireGolem_HeartTaken_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Fire Golem's heart to Alma.")
-    call QuestSetDescriptionBJ(udg_SideQuest[7],"Bring the Fire Golem's heart to Alma.")
+    call Quest_SetLog(QUEST_FIRE_GOLEM,"Bring the Fire Golem's heart to Alma.",false)
     call EnableTrigger(gg_trg_Quest_FireGolem_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -147,7 +154,6 @@ function Trig_Quest_FireGolem_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Quest_FireGolem_Ping)
     call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'jpnt')) // 'jpnt': item "Fire Golem's Heart"
-    call DestroyEffectBJ(udg_SpecialEffect[24])
     if(Trig_Quest_FireGolem_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()
         call ForForce(udg_PlayingPlayers,function Trig_Quest_FireGolem_Complete_Enum_ApplyCamera)
@@ -212,14 +218,8 @@ function Trig_Quest_FireGolem_Complete_Actions takes nothing returns nothing
             call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00Phoenix is now available at Tower of Summoning.|r")
         endif
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Fire Golem's Heart|r")
-    call QuestSetCompletedBJ(udg_SideQuest[7],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-    call UnitAddAbilityBJ('A085',gg_unit_h00Z_0130) // 'A085': ability "Phoenix"
-    call EnableTrigger(gg_trg_MithrilGolem_Prepare)
-    call StartTimerBJ(udg_SharedDelayTimer1,false,300.)
-    set udg_StoryProgress=(udg_StoryProgress+1)
-    call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
+    // the quest is completed and counted; QuestFireGolem_Done runs
+    call Quest_StepDone(QUEST_FIRE_GOLEM,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -240,28 +240,6 @@ function Register_Quest_FireGolem_Alert takes nothing returns nothing
     call DisableTrigger(gg_trg_Quest_FireGolem_Alert)
     call TriggerRegisterTimerExpireEventBJ(gg_trg_Quest_FireGolem_Alert,udg_SharedDelayTimer1)
     call TriggerAddAction(gg_trg_Quest_FireGolem_Alert,function Trig_Quest_FireGolem_Alert_Actions)
-endfunction
-
-function Register_Quest_FireGolem_Start takes nothing returns nothing
-    set gg_trg_Quest_FireGolem_Start=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_FireGolem_Start)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(0),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(1),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(2),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(3),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(4),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(5),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(6),true)
-    call TriggerRegisterPlayerSelectionEventBJ(gg_trg_Quest_FireGolem_Start,Player(7),true)
-    call TriggerAddCondition(gg_trg_Quest_FireGolem_Start,Condition(function Trig_Quest_FireGolem_Start_Conditions))
-    call TriggerAddAction(gg_trg_Quest_FireGolem_Start,function Trig_Quest_FireGolem_Start_Actions)
-endfunction
-
-function Register_Quest_FireGolem_HeartDropped takes nothing returns nothing
-    set gg_trg_Quest_FireGolem_HeartDropped=CreateTrigger()
-    call DisableTrigger(gg_trg_Quest_FireGolem_HeartDropped)
-    call TriggerRegisterUnitEvent(gg_trg_Quest_FireGolem_HeartDropped,gg_unit_n00F_0139,EVENT_UNIT_DEATH)
-    call TriggerAddAction(gg_trg_Quest_FireGolem_HeartDropped,function Trig_Quest_FireGolem_HeartDropped_Actions)
 endfunction
 
 function Register_Quest_FireGolem_Ping takes nothing returns nothing

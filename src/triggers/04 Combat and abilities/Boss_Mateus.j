@@ -76,6 +76,7 @@ function Trig_Boss_Mateus_Intro_Actions takes nothing returns nothing
     call SetUnitAcquireRangeBJ(gg_unit_U00M_0206,1100.)
     call UnitAddAbilityBJ('A0ZR',gg_unit_U00M_0206) // 'A0ZR': ability "Immortal"
     if(Trig_Boss_Mateus_Intro_Cond_QuestDiscovered())then
+        // written directly, as before: this also changed the entry when the quest was already done
         call QuestSetDescriptionBJ(udg_MainQuest[18],"Destroy Mateus and Demesne.")
     endif
     call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Mateus and Demesne.")
@@ -189,8 +190,7 @@ function Trig_Boss_Mateus_Death_Actions takes nothing returns nothing
         endif
     endif
     if(Trig_Boss_Mateus_Death_Cond_QuestActive())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Use the Winter Key to continue your search for Hashmalum.")
-        call QuestSetDescriptionBJ(udg_MainQuest[18],"Use the Winter Key to continue your search for Hashmalum.")
+        call ExecuteFunc("QuestZodiacAge_MateusSlain") // quest log: "Use the Winter Key ..."
     endif
     if(Trig_Boss_Mateus_Death_Cond_TalonInParty())then
         set udg_TalonGone=true

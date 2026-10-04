@@ -1,4 +1,4 @@
-library THuntFestival requires TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library THuntFestival requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_HuntFestival_Announce=null
@@ -17,7 +17,25 @@ globals
     unit udg_FestivalWard=null
     unit udg_FestivalGuest=null
     player udg_FestivalWinner=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_HUNT_FESTIVAL=0
 endglobals
+
+// Side quest "Hunt Festival", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Montblanc invites the party; two minutes later the festival runs for four minutes and the best hunter
+// wins. The invitation, the festival and its end are cinematics, so they stay module triggers. Montblanc's
+// markers (udg_SpecialEffect[82]) are shared with the Cartographer quest, so they stay module code too.
+// Does not count toward the story.
+function HuntFestival_Define takes nothing returns nothing
+    local integer q=Quest_Define("Hunt Festival",QUEST_SIDE,62,"ReplaceableTextures\\CommandButtons\\BTNPandarenBrewmaster.blp")
+    set QUEST_HUNT_FESTIVAL=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Montblanc's invitation (gg_trg_HuntFestival_Invite)
+    call Quest_Custom(q,"The annual Hunt Club's Hunt Festival is about to begin! Participate for potential prizes!")
+    // 2. The festival ends (gg_trg_HuntFestival_End)
+    call Quest_Custom(q,"")
+endfunction
 
 function Trig_HuntFestival_Announce_Conditions takes nothing returns boolean
     return(IsQuestCompleted(udg_MainQuest[$B]))and(IsQuestDiscovered(udg_SideQuest[24]))and(IsQuestDiscovered(udg_SideQuest[53]))and(IsQuestDiscovered(udg_SideQuest[57]))and(udg_CommonHuntsDone>=2)and(udg_RareHuntsDone>=3)and(udg_MontblancHasNews==false) // $B = 11
@@ -72,8 +90,10 @@ function Trig_HuntFestival_Invite_Actions takes nothing returns nothing
     if(Trig_HuntFestival_Invite_IsMapQuestOpen())then
         set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Hunt Festival|r")
-    set udg_SideQuest[62]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Hunt Festival"),"The annual Hunt Club's Hunt Festival is about to begin! Participate for potential prizes!","ReplaceableTextures\\CommandButtons\\BTNPandarenBrewmaster.blp")
+    if QUEST_HUNT_FESTIVAL==0 then
+        call HuntFestival_Define()
+    endif
+    call Quest_Start(QUEST_HUNT_FESTIVAL,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call EnableTrigger(gg_trg_HuntFestival_Begin)
     call StartTimerBJ(udg_FestivalTimer,false,120.)
     set udg_FestivalTimerDialog=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Hunt Festival")
@@ -235,7 +255,7 @@ function Trig_HuntFestival_Begin_Actions takes nothing returns nothing
     call EnableTrigger(gg_trg_HuntFestival_Teleport)
     call EnableTrigger(gg_trg_HuntFestival_KeepAway)
     call EnableTrigger(gg_trg_HuntFestival_Respawn)
-    call QuestSetDescriptionBJ(udg_SideQuest[62],"The annual Hunt Festival has begun! Give it your best shot to try and win!")
+    call Quest_SetLog(QUEST_HUNT_FESTIVAL,"The annual Hunt Festival has begun! Give it your best shot to try and win!",false)
     call Music_SetTrack(36)
     call Wait_Polled(2)
     call ForGroupBJ(udg_FestivalHunters,function Trig_HuntFestival_Begin_OrderHunterToHunt)
@@ -563,7 +583,7 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
     endif
     call Reward_Give(5000,5000,gg_unit_n0CE_0020)
     if(Trig_HuntFestival_End_IsWinnerPlayerPrize())then
-        call QuestSetDescriptionBJ(udg_SideQuest[62],"You won the festival! Congratulations!")
+        call Quest_SetLog(QUEST_HUNT_FESTIVAL,"You won the festival! Congratulations!",false)
         call AdjustPlayerStateBJ($4E20,udg_FestivalWinner,PLAYER_STATE_RESOURCE_GOLD) // $4E20 = 20000
         call AdjustPlayerStateBJ(4,udg_FestivalWinner,PLAYER_STATE_RESOURCE_LUMBER)
         call AddItemToStockBJ('I0I2',gg_unit_h032_0007,1,1) // 'I0I2': item "Tome of Strength"
@@ -573,7 +593,7 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
             call DisplayTimedTextToForce(udg_PlayingPlayers,10.,("|cffffcc00"+(udg_PlayerName[GetConvertedPlayerId(udg_FestivalWinner)]+" gains an extra prize of 20000 Gold and 4 Crystal Shards.|r")))
         endif
     else
-        call QuestSetDescriptionBJ(udg_SideQuest[62],"You didn't win the festival, but great work still!")
+        call Quest_SetLog(QUEST_HUNT_FESTIVAL,"You didn't win the festival, but great work still!",false)
     endif
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Wait_Polled(1.5)
@@ -585,9 +605,7 @@ function Trig_HuntFestival_End_Actions takes nothing returns nothing
     call Wait_Polled(.5)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
     call Cine_ExitAction()
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Hunt Festival|r")
-    call QuestSetCompletedBJ(udg_SideQuest[62],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_HUNT_FESTIVAL,udg_FestivalWinner,null)
     call ForForce(udg_PlayingPlayers,function Trig_HuntFestival_End_GrantScoreAchievement)
     call DestroyLeaderboardBJ(udg_HuntFestivalBoard)
     call Wait_Polled(1.)

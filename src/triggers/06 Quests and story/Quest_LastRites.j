@@ -1,8 +1,39 @@
-library TQuestLastRites requires TCam, TCine, TPlayerHero, TText, TUnit
+library TQuestLastRites requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TUnit
+// Main quest "Last Rites" (udg_MainQuest[14]), run by the quest engine (QuestEngine module,
+// docs/QUEST_ENGINE.md). Zack from the Farm wants the dead buried and asks the party to find Maester Exodus,
+// the mysterious priest "X". All steps are custom: Start (talk to Zack) calls Quest_Start, the priest
+// reveals himself (Exodus calls QuestLastRites_ExodusRevealed) and Exodus dies (Boss_Exodus calls
+// QuestLastRites_ExodusSlain). The "!" over Zack and the priest is this module's own effect.
+// Does not count toward the story.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_LastRites_Start=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_LAST_RITES=0
 endglobals
+
+function QuestLastRites_Define takes nothing returns nothing
+    local integer q=Quest_Define("Last Rites",QUEST_MAIN,14,"ReplaceableTextures\\CommandButtons\\BTNTranquility.blp")
+    set QUEST_LAST_RITES=q
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Zack (gg_trg_Quest_LastRites_Start)
+    call Quest_Custom(q,"Zack from the Farm has asked you to speak with Maester Exodus. It seems likely he is referring to the mysterious priest \"X\". Confront him over his identity!")
+    // 2. Talk to the priest, who reveals himself as Exodus (Exodus)
+    call Quest_Custom(q,"Defeat Exodus, the Zodiac Brave of Aether.")
+    // 3. Defeat Exodus (Boss_Exodus)
+    call Quest_Custom(q,"")
+endfunction
+
+// The priest shows his true form and the fight begins (called by Exodus through ExecuteFunc).
+function QuestLastRites_ExodusRevealed takes nothing returns nothing
+    call Quest_StepDone(QUEST_LAST_RITES,null,null)
+endfunction
+
+// Exodus is dead: the quest is done (called by Boss_Exodus through ExecuteFunc).
+function QuestLastRites_ExodusSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_LAST_RITES,null,null)
+endfunction
 
 function Trig_Quest_LastRites_Start_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_n00K_0150,true,true,true))
@@ -17,6 +48,7 @@ function Trig_Quest_LastRites_Start_RemoveCorpse takes nothing returns nothing
     call RemoveUnit(GetEnumUnit())
 endfunction
 
+// Step 1: a hero talks to Zack. The farm's dead are laid to rest and the priest appears.
 function Trig_Quest_LastRites_Start_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
@@ -38,8 +70,10 @@ function Trig_Quest_LastRites_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Sure, I'll find him. And make him explain.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Last Rites|r")
-    set udg_MainQuest[$E]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Last Rites"),"Zack from the Farm has asked you to speak with Maester Exodus. It seems likely he is referring to the mysterious priest \"X\". Confront him over his identity!","ReplaceableTextures\\CommandButtons\\BTNTranquility.blp") // $E = 14
+    if QUEST_LAST_RITES==0 then
+        call QuestLastRites_Define()
+    endif
+    call Quest_Start(QUEST_LAST_RITES,GetTriggerPlayer(),GetTriggerUnit())
     call ForGroupBJ(udg_FarmCorpses,function Trig_Quest_LastRites_Start_RemoveCorpse)
     call GroupClear(udg_FarmCorpses)
     call SetDoodadAnimationRectBJ("hide",'NOft',gg_rct_580) // 'NOft': object name not found in map data

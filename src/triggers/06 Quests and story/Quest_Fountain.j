@@ -1,9 +1,50 @@
-library TQuestFountain requires TCam, TCine, TPlayerHero, TReward, TText, TWait
+library TQuestFountain requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TWait
+// Side quest "Defiled Fountain", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Feanor needs reagents to cleanse the Fountain of Restoration. All steps are cinematics in modules
+// DefiledFountain and Quest_Fountain: Feanor's talk (DefiledFountain, QuestFountain_Started), the Satyr's
+// Hoof (DefiledFountain, QuestFountain_HoofDone), the Thunderbloom Bulb (Bulb) and the Scroll of
+// Rejuvenation (Complete). Picking up the bulb updates the log (QuestFountain_BulbTaken). The "!" and
+// "?" over Feanor are DefiledFountain's own effects. It does not count toward the story progress.
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Fountain_Bulb=null
     trigger gg_trg_Quest_Fountain_Complete=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_FOUNTAIN=0
 endglobals
+
+function QuestFountain_Define takes nothing returns nothing
+    local integer q=Quest_Define("Defiled Fountain",QUEST_SIDE,23,"ReplaceableTextures\\CommandButtons\\BTNFountainOfLifeDefiled.blp")
+    set QUEST_FOUNTAIN=q
+    call Quest_NoMarker(q)
+    call Quest_NotStory(q)
+    // 1. Talk to Feanor (DefiledFountain's Start calls QuestFountain_Started)
+    call Quest_Custom(q,"Feanor, wizard from Lothlorien, asked you to bring him Satyr's Hoof that is required for the ritual that will cleanse the Defiled Fountain of Restoration.")
+    // 2. Bring him a Satyr's Hoof (DefiledFountain's Hoof calls QuestFountain_HoofDone)
+    call Quest_Custom(q,"Find Thunderbloom Bulb in Barrens and bring it to Feanor.")
+    // 3. Bring him the Thunderbloom Bulb (gg_trg_Quest_Fountain_Bulb)
+    call Quest_Custom(q,"Find Scroll of Rejuvenation carried by evil wizard and bring it to Feanor. Evil wizards are said to reside in the Mountains region.")
+    // 4. Bring him the Scroll of Rejuvenation (gg_trg_Quest_Fountain_Complete)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by DefiledFountain (through ExecuteFunc) after Feanor's first talk.
+function QuestFountain_Started takes nothing returns nothing
+    if QUEST_FOUNTAIN==0 then
+        call QuestFountain_Define()
+    endif
+    call Quest_Start(QUEST_FOUNTAIN,null,null)
+endfunction
+
+// Called by DefiledFountain (through ExecuteFunc) when the Satyr's Hoof was handed in.
+function QuestFountain_HoofDone takes nothing returns nothing
+    call Quest_StepDone(QUEST_FOUNTAIN,null,null)
+endfunction
+
+// Called by DefiledFountain (through ExecuteFunc) when the Thunderbloom Bulb is picked up for the first time.
+function QuestFountain_BulbTaken takes nothing returns nothing
+    call Quest_SetLog(QUEST_FOUNTAIN,"Bring the Thunderbloom Bulb to Feanor.",false)
+endfunction
 
 function Trig_Quest_Fountain_Bulb_Conditions takes nothing returns boolean
     return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0FN'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FN': item "Thunderbloom Bulb"
@@ -56,8 +97,7 @@ function Trig_Quest_Fountain_Bulb_Actions takes nothing returns nothing
         call Cine_ExitAction()
         set udg_SpecialEffect[42]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e007_0154,"Objects\\RandomObject\\RandomObject.mdl")
     endif
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Find Scroll of Rejuvenation carried by evil wizard and bring it to Feanor. Evil wizards are said to reside in the Mountains region.")
-    call QuestSetDescriptionBJ(udg_SideQuest[23],"Find Scroll of Rejuvenation carried by evil wizard and bring it to Feanor. Evil wizards are said to reside in the Mountains region.")
+    call Quest_StepDone(QUEST_FOUNTAIN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call EnableTrigger(gg_trg_Quest_Fountain_Complete)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
@@ -119,9 +159,7 @@ function Trig_Quest_Fountain_Complete_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00A new artifact is available for buying at the Ancient of Wonders.|r")
     endif
     call AddItemToStockBJ('I02C',gg_unit_n00L_0153,1,1) // 'I02C': item "Dragon Wand"
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Defiled Fountain|r")
-    call QuestSetCompletedBJ(udg_SideQuest[23],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_FOUNTAIN,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call AddUnitToStockBJ('n0BI',gg_unit_e012_0227,1,1) // 'n0BI': unit "Hunt: Malboro"
     set udg_HuntStock[7]=(udg_HuntStock[7]+1)
     call ConditionalTriggerExecute(gg_trg_Hunt_Board_Markers)

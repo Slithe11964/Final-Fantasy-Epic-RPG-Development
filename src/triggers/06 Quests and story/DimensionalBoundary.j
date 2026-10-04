@@ -1,11 +1,60 @@
-library TDimensionalBoundary requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TZeromus
+library TDimensionalBoundary requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TZeromus
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DimensionalBoundary_Init=null
     trigger gg_trg_DimensionalBoundary_Start=null
     trigger gg_trg_DimensionalBoundary_OpenPortal=null
     trigger gg_trg_DimensionalBoundary_EmptyEnd=null
+    // The quest's number in the quest engine (0 until it is defined).
+    integer QUEST_DIMENSIONAL_BOUNDARY=0
 endglobals
+
+// Side quest "Dimensional Boundary", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
+// Shinra wants the world's boundary opened: find the Guide Book (GuideBook), then Tropical Essence
+// (TropicalEssence), a Death Seeker (DeathSeeker) and a Qu's Frog Head (FrogHead, QuFrog), then go through
+// his portal. Beyond it waits Zeromus (Zeromus module), or nothing if the Fortress has been found already.
+// Every step is a module trigger (cinematics, hand-ins at 250 range); they move the quest on. Shinra's
+// markers (udg_SpecialEffect[62]) are shared with Shinra's Plan, so they stay module code.
+// Does not count toward the story.
+function DimensionalBoundary_Define takes nothing returns nothing
+    local integer q=Quest_Define("Dimensional Boundary",QUEST_SIDE,40,"ReplaceableTextures\\CommandButtons\\BTNPortal.blp")
+    set QUEST_DIMENSIONAL_BOUNDARY=q
+    call Quest_Color(q,udg_ColorGold)
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    // 1. Talk to Shinra (gg_trg_DimensionalBoundary_Start)
+    call Quest_Custom(q,"Shinra, an Al Bhed child, has taken an interest in opening the world's boundaries. The first thing he needs for this purpose is the Guide Book. Search for it in sunken ships!")
+    // 2. Find the Guide Book in a sunken ship (GuideBook_Search1..6); the log text stays
+    call Quest_Custom(q,"")
+    call Quest_Message(q,"Bring the Guide Book to Shinra.")
+    // 3. Bring it to Shinra (GuideBook_TurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nNow Shinra wants you to find some |cffffcc00Tropical Essence|r.")
+    call Quest_Message(q,"Bring some Tropical Essence to Shinra.")
+    // 4. Bring him Tropical Essence (TropicalEssence_TurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nShinra now needs a |cffffcc00Death Seeker|r. The reason is unknown.")
+    call Quest_Message(q,"Bring a Death Seeker to Shinra.")
+    // 5. Bring him a Death Seeker (DeathSeeker_TurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, has asked you to find many artifacts so he can create a portal that can be used to warp through dimensions.\r\nShinra now needs a |cffffcc00Qu's Frog Head|r. So you need to find Qu Frogs, Shinra said there could be some \"around here\".")
+    call Quest_Message(q,"Bring a Qu's Frog Head to Shinra.")
+    // 6. Bring him a Qu's Frog Head (FrogHead_TurnIn)
+    call Quest_Custom(q,"Shinra, an Al Bhed child from Spira, now finally has all the artifacts required to make a portal. Meet him in the Northern Mountains.")
+    call Quest_Message(q,"Meet Shinra in the Northern Mountains.")
+    // 7. Shinra opens the portal (gg_trg_DimensionalBoundary_OpenPortal)
+    call Quest_Custom(q,"Venture forth through the portal to investigate.")
+    // 8. The border is empty (gg_trg_DimensionalBoundary_EmptyEnd) or Zeromus is beaten (Zeromus_Death);
+    //    when Zeromus appears the log says so (DimensionalBoundary_ZeromusAppears)
+    call Quest_Custom(q,"")
+endfunction
+
+// Called by Zeromus_Encounter (through ExecuteFunc) when Zeromus shows himself.
+function DimensionalBoundary_ZeromusAppears takes nothing returns nothing
+    call Quest_SetLog(QUEST_DIMENSIONAL_BOUNDARY,"Destroy Zeromus, the Zodiac Brave of Gravity.",true)
+endfunction
+
+// Called by Zeromus_Death (through ExecuteFunc) after Shinra's reward: the quest is done.
+function DimensionalBoundary_ZeromusSlain takes nothing returns nothing
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,null,null)
+endfunction
 
 function Trig_DimensionalBoundary_Init_Actions takes nothing returns nothing
     set udg_QuFrogLoc=GetUnitLoc(gg_unit_n03A_0136)
@@ -54,8 +103,10 @@ function Trig_DimensionalBoundary_Start_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),"Alright then. We'll dig up that guide book for you.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Dimensional Boundary|r")
-    set udg_SideQuest[40]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_ColorGold+"Dimensional Boundary"),"Shinra, an Al Bhed child, has taken an interest in opening the world's boundaries. The first thing he needs for this purpose is the Guide Book. Search for it in sunken ships!","ReplaceableTextures\\CommandButtons\\BTNPortal.blp")
+    if QUEST_DIMENSIONAL_BOUNDARY==0 then
+        call DimensionalBoundary_Define()
+    endif
+    call Quest_Start(QUEST_DIMENSIONAL_BOUNDARY,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     call AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n034_0109,"Objects\\RandomObject\\RandomObject.mdl")
     call RemoveItemFromStockBJ('I08Q',gg_unit_n02Y_0052) // 'I08Q': item "Information: Al Bhed Child"
     set udg_SpecialEffect[62]=GetLastCreatedEffectBJ()
@@ -109,8 +160,7 @@ function Trig_DimensionalBoundary_OpenPortal_Actions takes nothing returns nothi
     call WaygateActivateBJ(true,gg_unit_n02H_0116)
     call WaygateSetDestinationLocBJ(gg_unit_n021_0126,GetRectCenter(gg_rct_372))
     call WaygateSetDestinationLocBJ(gg_unit_n02H_0116,GetRectCenter(gg_rct_371))
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Venture forth through the portal to investigate.")
-    call QuestSetDescriptionBJ(udg_SideQuest[40],"Venture forth through the portal to investigate.")
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetTriggerPlayer(),Player_GetHero(GetTriggerPlayer()))
     if(Trig_DimensionalBoundary_OpenPortal_Cond_ZeromusAbsent())then
         call EnableTrigger(gg_trg_DimensionalBoundary_EmptyEnd)
     else
@@ -152,9 +202,7 @@ function Trig_DimensionalBoundary_EmptyEnd_Actions takes nothing returns nothing
     else
         call Reward_Give(7500,7500,gg_unit_n034_0109)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Dimensional Boundary|r")
-    call QuestSetCompletedBJ(udg_SideQuest[40],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_DIMENSIONAL_BOUNDARY,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     set udg_TempPoint=GetRectCenter(gg_rct_421)
     call SetUnitPositionLocFacingBJ(gg_unit_n034_0109,udg_TempPoint,90.)
     call RemoveLocation(udg_TempPoint)
