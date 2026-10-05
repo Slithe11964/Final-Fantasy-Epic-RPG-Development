@@ -53,8 +53,8 @@ function Trig_TrueIceAge_Summon_IsPlayerHero takes nothing returns boolean
     return GetBooleanAnd(Trig_TrueIceAge_Summon_IsPlayerUnit(),Trig_TrueIceAge_Summon_IsHeroUnit())
 endfunction
 
-function Trig_TrueIceAge_Summon_AnyHeroNearby takes nothing returns boolean
-    return(IsUnitGroupEmptyBJ(udg_TempGroup)==false)
+function Trig_TrueIceAge_Summon_AnyHeroNearby takes group l_heroes returns boolean
+    return(IsUnitGroupEmptyBJ(l_heroes)==false)
 endfunction
 
 function Trig_TrueIceAge_Summon_ShakeCameraSummon takes nothing returns nothing
@@ -229,6 +229,9 @@ function Trig_TrueIceAge_Summon_StageBelow5 takes nothing returns boolean
 endfunction
 
 function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
+    local group l_nearbyHeroes
+    local player l_summoner
+    local location l_dropPoint
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call UnitRemoveAbilityBJ('A11Z',gg_unit_ndmg_0124) // 'A11Z': ability "Activate Demon Gate"
@@ -247,16 +250,16 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call Cam_PanToUnit(gg_unit_ndmg_0124,.0)
     call Wait_Polled(1.)
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    set udg_TempGroup=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_TrueIceAge_Summon_IsPlayerHero))
+    set l_nearbyHeroes=Group_UnitsInRangeOfLoc(800.,l_tempPoint,Condition(function Trig_TrueIceAge_Summon_IsPlayerHero))
     call RemoveLocation(l_tempPoint)
-    if(Trig_TrueIceAge_Summon_AnyHeroNearby())then
-        set udg_TempPlayer=GetOwningPlayer(GroupPickRandomUnit(udg_TempGroup))
+    if(Trig_TrueIceAge_Summon_AnyHeroNearby(l_nearbyHeroes))then
+        set l_summoner=GetOwningPlayer(GroupPickRandomUnit(l_nearbyHeroes))
     else
-        set udg_TempPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
+        set l_summoner=ForcePickRandomPlayer(udg_PlayingPlayers)
     endif
-    call DestroyGroup(udg_TempGroup)
-    call Text_Say(Player_GetHero(udg_TempPlayer),"Alright... what's the worst that could happen anyways.",true)
-    call Text_Say(Player_GetHero(udg_TempPlayer),"I summon thee, demon lord!",true)
+    call DestroyGroup(l_nearbyHeroes)
+    call Text_Say(Player_GetHero(l_summoner),"Alright... what's the worst that could happen anyways.",true)
+    call Text_Say(Player_GetHero(l_summoner),"I summon thee, demon lord!",true)
     call ForForce(udg_PlayingPlayers,function Trig_TrueIceAge_Summon_ShakeCameraSummon)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,2.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,100.,0)
     call Wait_Polled(.5)
@@ -296,7 +299,7 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call RemoveUnit(udg_CinematicActor)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,100.,0)
     call Wait_Polled(1.5)
-    call Text_Say(Player_GetHero(udg_TempPlayer),"Suddenly I'm not sure this was such a good idea after all...",true)
+    call Text_Say(Player_GetHero(l_summoner),"Suddenly I'm not sure this was such a good idea after all...",true)
     call Cine_ExitAction()
     set udg_QuestsTotal=(udg_QuestsTotal-$D) // $D = 13
     call Quest_AnnounceStart(QUEST_TRUE_ICE_AGE)
@@ -395,11 +398,11 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
                     call UnitAddAbilityBJ('Apiv',gg_unit_n0BN_0171) // 'Apiv': object name not found in map data
                     call SetUnitInvulnerable(gg_unit_n0BN_0171,true)
                     set l_tempPoint=GetUnitLoc(gg_unit_n0BN_0171)
-                    set udg_TempPoint2=OffsetLocation(l_tempPoint,-64.,0)
+                    set l_dropPoint=OffsetLocation(l_tempPoint,-64.,0)
                     call RemoveLocation(l_tempPoint)
-                    call CreateItemLoc('I0HS',udg_TempPoint2) // 'I0HS': item "Maiden's Eye"
+                    call CreateItemLoc('I0HS',l_dropPoint) // 'I0HS': item "Maiden's Eye"
                     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-                    call RemoveLocation(udg_TempPoint2)
+                    call RemoveLocation(l_dropPoint)
                 else
                     call DisableTrigger(gg_trg_Dana_Receive_Eye)
                     call SetUnitOwner(gg_unit_n0BN_0171,Player(8),false)
@@ -534,6 +537,9 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     set udg_NewsText[4]="The son of the Tribal family has fallen terribly ill. It seems to be an unprecedented illness that our local priests cannot take care of. A heartfelt wish to please get better soon goes to little Danny!"
     call DestroyTrigger(GetTriggeringTrigger())
     set l_tempPoint=null
+    set l_nearbyHeroes=null
+    set l_summoner=null
+    set l_dropPoint=null
 endfunction
 
 function Trig_TrueIceAge_SpawnBrave_CinematicActiveSpawn takes nothing returns boolean

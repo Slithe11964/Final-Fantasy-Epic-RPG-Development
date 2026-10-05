@@ -65,3 +65,27 @@ play-test that system.
     python tools/refactor/phase16_temps.py apply [MODULE...]  # convert (all modules if none given)
     python tools/refactor/verify_phase16.py --src             # check the source change
     python tools/sync_module.py BASE.w3x OUT.w3x MODULE...    # put changed modules into a map
+
+## Stage V: focused manual handoffs (2026-10-05)
+
+The counts above describe stage K. phase16-handoffs.csv is now regenerated from stage V:
+1,431 retained function/temp pairs (588 read-before-set, 435 called-function sharing,
+375 first assignment in a branch/loop, 28 computed dispatch, 5 self-reading assignments).
+The conservative analyzer reports zero safe automatic conversions. These are review
+candidates, not a count of bugs or proof that each can become an independent local.
+
+V manually changes six functions in TrueIceAge/Cartographer. The summon action owns its
+speaker/group/location and passes its group to AnyHeroNearby; the Cartographer scan owns
+its player/location and passes them to IsPointExplored. Start/Report own their reward total.
+Every allocation, destroy/remove, random choice, dialogue, reward and branch is retained.
+Three new tests exercise all 2,500 scan points under shared-global clobbering, both summon
+speaker-selection branches under waits, and exact reversal of all changed source functions.
+The separate compiled-map reversal audit covers every gameplay function and unchanged assets.
+
+Do not globally replace Temp variables. SpawnBrave/Victory/title APIs and arena/job callbacks
+still intentionally exchange context; change both producer and consumer together after tracing
+all callers, or introduce owned per-event context. Prioritize waits, nested native events and
+frequent combat paths one system at a time. Use CONTENT_DEVELOPMENT.md for context ownership.
+
+Refresh this CSV with the report JSON from phase16_temps.py; keep rows whose ok is false,
+with columns module,function,temp,reason. Do not run apply across the repository blindly.

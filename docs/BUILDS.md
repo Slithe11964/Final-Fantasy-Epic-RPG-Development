@@ -3,7 +3,7 @@
 Run from the FFERPG repository in PowerShell:
 
 ```powershell
-.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x
+.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
 ```
 
 Use a stage that does not exist yet. The command selects changed enabled modules, syncs their code,
@@ -22,7 +22,7 @@ development, supply the newest reviewed map. No stage is selected or overwritten
 
 - Python 3.9+; the PowerShell wrapper finds this PC's bundled Python or python on PATH. An explicit
   `-PythonPath C:\path\python.exe` is supported. The portable entry point is
-  `python tools/build_stage.py V --base release/FFERPG_0.9.7.3-r16-stageU.w3x`.
+  `python tools/build_stage.py W --base release/FFERPG_0.9.7.3-r16-stageV.w3x`.
 - `tools/bin/pjass.exe`, `common.j`, `blizzard.j` (or the locations accepted by check_map.py).
 - Sibling `../MapToolkit/tools/add_header.py`. Its exact hash is recorded and header finalization
   must preserve the checked archive bytes. JassHelper is needed for World Editor saves; this command
@@ -45,7 +45,7 @@ tool location, with `used: false`. Header-only finalization is checked before pu
 | check_quests.py | Definitions, capacities, map references, dependencies and synchronous waits in hooks. |
 | check_content.py | Duplicate object IDs and typed literal item/unit/ability references. |
 | check_save_compat.py | Append-only item indexes <=500, item charge/base/class preservation, job order, armory mappings, serializers and fixed G/H vectors. |
-| tests/run_tests.py | 35 regression tests, including actual quest lifecycle/event source with mocked natives. |
+| tests/run_tests.py | 38 regression tests, including actual quest lifecycle/event source with mocked natives. |
 | savecode.py selftest | 2,000 randomized encode/decode/rename/checksum cases. |
 
 For intentionally new/removed triggers, pass `-AllowNew REGEX` / `-AllowRemoved REGEX` (Python:
@@ -93,3 +93,9 @@ An isolated source-copy smoke build also selected and synced a changed enabled Q
 then passed the full pipeline; release/smoke-r16-stageU.json records it. No real repository source
 was changed by that test. Reusing stage U was separately verified to refuse the existing release.
 The documented bugs were left unchanged at the user's request.
+
+Worked new-content examples: [CONTENT_DEVELOPMENT.md](CONTENT_DEVELOPMENT.md).
+
+Stage V is the current incremental base: six gameplay functions now own temporary context in
+TrueIceAge/Cartographer. All gates/38 tests pass; preservation-r16-stageV.txt verifies exact
+reversal and unchanged other archive files. Focused gameplay testing is in QUEST_TESTS.md.

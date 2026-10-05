@@ -2468,13 +2468,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Bazaar_UpdateStock` | timer udg_BazaarUpdateTimer expires | run by Quest_WolfFangs |
 | `Bazaar_Sell_Bundle` | an item is sold |  |
 
-### Belongings
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Belongings_Ping` | every 15.s | starts off; enabled by AnnoyingMonster; disabled by LadyCurse |
-| `Belongings_PickedUp` | a unit picks up an item | starts off; enabled by AnnoyingMonster |
-
 ### Book
 
 | Trigger | Fires when | Notes |
@@ -2486,8 +2479,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Elixir_Prepare` | (no event: run by other triggers) | starts off; run by QuestCount |
-| `Elixir_Start` | a player selects a unit | starts off; enabled by Elixir |
-| `Elixir_Deliver` | a unit comes within 450. of gg_unit_n001_0012 | starts off; enabled by Elixir |
 
 ### FillVial
 
@@ -2543,12 +2534,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Intro_WelcomeMessages` | (no event: run by other triggers) | starts off; run by Game |
 | `Intro_FadeToBlack` | once, .01s after start |  |
 
-### Quest_AnnoyingMonster
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_AnnoyingMonster_Start` | a player selects a unit | starts off; enabled by LadyCurse |
-
 ### Quest_AoMadoushi
 
 | Trigger | Fires when | Notes |
@@ -2561,15 +2546,11 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_Arachnophobia_Offer` | (no event: run by other triggers) | starts off; run by Cid, Mid |
-| `Quest_Arachnophobia_Start` | a player selects a unit | starts off; enabled by Quest_Arachnophobia |
-| `Quest_Arachnophobia_Count` | a unit dies | starts off; enabled by Quest_Arachnophobia |
-| `Quest_Arachnophobia_Reward` | a unit comes within 450. of gg_unit_n009_0051 | starts off; enabled by Quest_Arachnophobia |
 
 ### Quest_Arcanium
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_Arcanium_Start` | a player selects a unit | starts off; enabled by Forge |
 | `Quest_Arcanium_Taken` | a unit picks up an item | starts off; enabled by Quest_Arcanium |
 | `Quest_Arcanium_Complete` | a unit comes within 450. of gg_unit_Hmbr_0140 | starts off; enabled by Quest_Arcanium |
 
@@ -2578,11 +2559,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_Beastslayer_Available` | (no event: run by other triggers) | starts off; run by Cid, Epilogue |
-| `Quest_Beastslayer_Start` | a player selects a unit | starts off; enabled by Quest_Beastslayer |
-| `Quest_Beastslayer_ArrowDropped` | (no event: run by other triggers) | starts off; enabled by Quest_Beastslayer |
-| `Quest_Beastslayer_Ping` | every 15.s | starts off; enabled by Quest_Beastslayer; disabled by Quest_Beastslayer |
-| `Quest_Beastslayer_ArrowTaken` | a unit picks up an item | starts off; enabled by Quest_Beastslayer |
-| `Quest_Beastslayer_Complete` | a unit comes within 450. of gg_unit_n00D_0091 | starts off; enabled by Quest_Beastslayer |
 
 ### Quest_BlazingDemon
 
@@ -2601,7 +2577,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Quest_Brothers_Available` | (no event: run by other triggers) | starts off; run by Quest_KillElmdor |
 | `Quest_Brothers_Start` | a player selects a unit | starts off; enabled by Quest_Brothers |
 | `Quest_Brothers_Defeated` | a unit dies (gg_unit_Ocb2_0147); a unit dies (gg_unit_Ocbh_0148) | starts off; enabled by Quest_Brothers |
-| `Quest_Brothers_Complete` | a unit comes within 450. of gg_unit_Hdgo_0097 | starts off; enabled by Quest_Brothers |
 
 ### Quest_Caravan
 
@@ -2615,8 +2590,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Quest_Caravan_HorsesVulnerable` | a unit leaves gg_rct_498 | starts off; enabled by Quest_Caravan |
 | `Quest_Caravan_Deliver` | a unit comes within 450. of gg_unit_n00B_0054 | starts off; enabled by Quest_Caravan; disabled by Quest_Caravan |
 | `Quest_Caravan_Failed` | a unit dies (gg_unit_hrdh_0102); a unit dies (gg_unit_hrdh_0103); a unit dies (gg_unit_hrdh_0104) | starts off; enabled by Quest_Caravan |
-| `Quest_Caravan_Ping` | every 15.s | starts off; enabled by Quest_Caravan; disabled by Quest_Caravan |
-| `Quest_Caravan_Complete` | a unit comes within 450. of gg_unit_n00A_0101 | starts off; enabled by Quest_Caravan |
 
 ### Quest_Cooking
 
@@ -2650,11 +2623,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_DeliverLetter_Init` | (no event: run by other triggers) | run by MapBootstrap |
 | `Quest_DeliverLetter_Available` | (no event: run by other triggers) | starts off; run by Cid, Epilogue |
-| `Quest_DeliverLetter_Start` | a player selects a unit | starts off; enabled by Quest_DeliverLetter |
-| `Quest_DeliverLetter_PingZack` | every 15.s | starts off; enabled by Quest_DeliverLetter; disabled by Quest_DeliverLetter |
-| `Quest_DeliverLetter_PingWedge` | every 15.s | starts off; enabled by Quest_DeliverLetter; disabled by Quest_DeliverLetter |
-| `Quest_DeliverLetter_GiveZack` | a unit comes within 450. of gg_unit_n00K_0150 | starts off; enabled by Quest_DeliverLetter |
-| `Quest_DeliverLetter_Complete` | a unit comes within 450. of gg_unit_h00K_0137 | starts off; enabled by Quest_DeliverLetter |
 
 ### Quest_DivineOrder
 
@@ -2673,9 +2641,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_EidolonChallenge_Start` | a player selects a unit | starts off; enabled by Brothers |
 | `Quest_EidolonChallenge_Count` | a unit dies (gg_unit_H01I_0070); a unit dies (gg_unit_H01J_0069); a unit dies (gg_unit_H01K_0068); a unit dies (gg_unit_H01L_0067) | starts off; enabled by Quest_EidolonChallenge |
-| `Quest_EidolonChallenge_Complete` | a player selects a unit | starts off; enabled by Quest_EidolonChallenge |
 
 ### Quest_Engineer
 
@@ -2694,16 +2660,13 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_FallenRanger_Start` | a player selects a unit | starts off; enabled by Liniel |
 | `Quest_FallenRanger_Complete` | a unit comes within 450. of gg_unit_n01Y_0131 | starts off; enabled by Boss_DarkRanger |
 
 ### Quest_FieryWings
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_FieryWings_Start` | a player selects a unit | starts off; enabled by Watts |
 | `Quest_FieryWings_Matriarch_Dead` | (no event: run by other triggers) | starts off; enabled by Quest_FieryWings |
-| `Quest_FieryWings_Complete` | a unit comes within 450. of gg_unit_h00Q_0255 | starts off; enabled by Quest_FieryWings |
 
 ### Quest_FireGolem
 
@@ -2711,8 +2674,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_FireGolem_Init` | (no event: run by other triggers) | run by MapBootstrap |
 | `Quest_FireGolem_Alert` | timer udg_SharedDelayTimer1 expires | starts off; enabled by Quest_Phoenix |
-| `Quest_FireGolem_Start` | a player selects a unit | starts off; enabled by Quest_FireGolem |
-| `Quest_FireGolem_HeartDropped` | a unit dies (gg_unit_n00F_0139) | starts off; enabled by Quest_FireGolem |
 | `Quest_FireGolem_Ping` | every 15.s | starts off; enabled by Quest_FireGolem; disabled by Quest_FireGolem |
 | `Quest_FireGolem_HeartTaken` | a unit picks up an item | starts off; enabled by Quest_FireGolem |
 | `Quest_FireGolem_Complete` | a unit comes within 450. of gg_unit_Hjai_0093 | starts off; enabled by Quest_FireGolem |
@@ -2721,7 +2682,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_FishyDeals_Start` | a player selects a unit | starts off; enabled by Fishing_Setup |
 | `Quest_FishyDeals_Complete` | a unit comes within 200. of gg_unit_n0AW_0223; a unit comes within 450. of gg_unit_n0AW_0223 | starts off; enabled by Quest_FishyDeals |
 
 ### Quest_Fountain
@@ -2736,21 +2696,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_GodDragon_Start` | a player selects a unit | starts off; enabled by Montblanc |
-
-### Quest_GreedIsGood
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_GreedIsGood_Start` | a player selects a unit |  |
-| `Quest_GreedIsGood_Complete` | a unit comes within 450. of gg_unit_n01S_0082 | starts off; enabled by PortalStone |
-
-### Quest_HarpyHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_HarpyHunt_Start` | a player selects a unit | starts off; enabled by Quest_Arachnophobia |
-| `Quest_HarpyHunt_Count` | a unit dies | starts off; enabled by Quest_HarpyHunt |
-| `Quest_HarpyHunt_Reward` | a unit comes within 450. of gg_unit_n0B3_0049 | starts off; enabled by Quest_HarpyHunt |
 
 ### Quest_HolyKnight
 
@@ -2769,7 +2714,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_ImperviousBeast_Start` | a player selects a unit | starts off; enabled by Ziegfried |
 | `Quest_ImperviousBeast_Complete` | (no event: run by other triggers) | starts off; enabled by Fafnir |
 
 ### Quest_KillElmdor
@@ -2778,9 +2722,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_KillElmdor_Init` | (no event: run by other triggers) | run by MapBootstrap |
 | `Quest_KillElmdor_Available` | (no event: run by other triggers) | starts off; run by Cid, Epilogue |
-| `Quest_KillElmdor_Start` | a player selects a unit | starts off; enabled by Quest_KillElmdor |
-| `Quest_KillElmdor_Slain` | a unit dies (gg_unit_Nbbc_0006) | starts off; enabled by Quest_KillElmdor |
-| `Quest_KillElmdor_Complete` | a unit comes within 450. of gg_unit_h007_0089 | starts off; enabled by Quest_KillElmdor |
 
 ### Quest_KillSetag
 
@@ -2788,7 +2729,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_KillSetag_Hide` | (no event: run by other triggers) | run by MapBootstrap |
 | `Quest_KillSetag_Offer` | (no event: run by other triggers) | starts off; run by Cid, Epilogue |
-| `Quest_KillSetag_Start` | a player selects a unit | starts off; enabled by Quest_KillSetag |
 | `Quest_KillSetag_Ambush` | the unit takes damage (gg_unit_Hgam_0060); a unit is attacked (gg_unit_Hgam_0060); a unit is attacked (gg_unit_uabo_0061); a unit is attacked (gg_unit_uabo_0062); a unit is attacked (gg_unit_uabo_0002) | starts off; enabled by Quest_KillSetag |
 | `Quest_KillSetag_Failed` | a unit dies (gg_unit_Hant_0059) | starts off; enabled by Quest_KillSetag; destroyed by Quest_KillSetag |
 | `Quest_KillSetag_Complete` | a unit dies (gg_unit_Hgam_0060) | starts off; enabled by Quest_KillSetag; disabled by Quest_KillSetag; destroyed by Quest_KillSetag |
@@ -2797,7 +2737,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_KingOfSea_Slain` | a unit dies (gg_unit_H02W_0246) | starts off; enabled by NebraKing |
 | `Quest_KingOfSea_Reward` | a unit comes within 450. of gg_unit_n0AV_0247 | starts off; enabled by Quest_NebraAngler |
 
 ### Quest_LadyNashj
@@ -2806,9 +2745,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_LadyNashj_Init` | (no event: run by other triggers) | run by MapBootstrap |
 | `Quest_LadyNashj_Available` | (no event: run by other triggers) | starts off; run by Epilogue, Quest_NightElves, Talk |
-| `Quest_LadyNashj_Start` | a player selects a unit | starts off; enabled by Quest_LadyNashj |
-| `Quest_LadyNashj_Slain` | a unit dies (gg_unit_Hvsh_0145) | starts off; enabled by Quest_LadyNashj |
-| `Quest_LadyNashj_Complete` | a unit comes within 450. of gg_unit_eshd_0143 | starts off; enabled by Quest_LadyNashj |
 
 ### Quest_LastRites
 
@@ -2840,19 +2776,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Quest_LostMemories_ShadowTruth` | a unit picks up an item (player Player($A)) | starts off; enabled by Quest_LostMemories |
 | `Quest_LostMemories_Reunion` | a player selects a unit | starts off; enabled by Quest_LostMemories |
 
-### Quest_Monstrum
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_Monstrum_Complete` | (no event: run by other triggers) | starts off; enabled by Monstrum |
-
-### Quest_NebraAngler
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_NebraAngler_Start` | a player selects a unit | starts off; enabled by Anabel |
-| `Quest_NebraAngler_Reward` | a unit comes within 450. of gg_unit_n0AV_0247 | starts off; enabled by Quest_NebraAngler |
-
 ### Quest_NightElves
 
 | Trigger | Fires when | Notes |
@@ -2867,20 +2790,11 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Quest_NorthernGod_Judgment` | a player selects a unit | starts off; enabled by Quest_PhantomDiary |
 
-### Quest_OgreHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_OgreHunt_Start` | a player selects a unit | starts off; enabled by Monica |
-| `Quest_OgreHunt_Count` | a unit dies | starts off; enabled by Quest_OgreHunt |
-| `Quest_OgreHunt_Complete` | a unit comes within 450. of gg_unit_n0BW_0094 | starts off; enabled by Quest_OgreHunt |
-
 ### Quest_OmegaWeapon
 
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_OmegaWeapon_Start` | a unit is attacked (gg_unit_N022_0125); the unit takes damage (gg_unit_N022_0125) | starts off; enabled by Quest_UltimaWeapon |
-| `Quest_OmegaWeapon_Slain` | a unit dies (gg_unit_N022_0125) | starts off; enabled by Quest_OmegaWeapon |
 
 ### Quest_OreSupplies
 
@@ -2900,10 +2814,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_Phoenix_Available` | (no event: run by other triggers) | starts off; run by QuestCount |
-| `Quest_Phoenix_Start` | a player selects a unit | starts off; enabled by Quest_Phoenix |
-| `Quest_Phoenix_Ping` | every 15.s | starts off; enabled by Quest_Phoenix; disabled by Quest_Phoenix; destroyed by Quest_Phoenix |
-| `Quest_Phoenix_EggTaken` | a unit picks up an item | starts off; enabled by Quest_Phoenix |
-| `Quest_Phoenix_Complete` | a unit comes within 450. of gg_unit_Hjai_0093 | starts off; enabled by Quest_Phoenix |
 
 ### Quest_Rematch
 
@@ -2949,27 +2859,13 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_SeekDestroy_Start` | a player selects a unit | starts off; enabled by Clemydar |
 | `Quest_SeekDestroy_Count` | a unit dies (player Player($B)) | starts off; enabled by Quest_SeekDestroy |
-| `Quest_SeekDestroy_Complete` | a unit comes within 450. of gg_unit_nemi_0078 | starts off; enabled by Quest_SeekDestroy |
 
 ### Quest_Shimmerweed
 
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_Shimmerweed_Offer` | (no event: run by other triggers) | starts off; run by Cid, Mid |
-| `Quest_Shimmerweed_Start` | a player selects a unit | starts off; enabled by Quest_Shimmerweed |
-| `Quest_Shimmerweed_Ping` | every 15.s | starts off; enabled by Quest_Shimmerweed; disabled by Quest_Shimmerweed; destroyed by Quest_Shimmerweed |
-| `Quest_Shimmerweed_Pickup` | a unit picks up an item | starts off; enabled by Quest_Shimmerweed; disabled by Quest_Shimmerweed; destroyed by Quest_Shimmerweed |
-| `Quest_Shimmerweed_Deliver` | a unit comes within 450. of gg_unit_n008_0050 | starts off; enabled by Quest_Shimmerweed |
-
-### Quest_SpiritHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_SpiritHunt_Start` | a player selects a unit | starts off; enabled by Frakir |
-| `Quest_SpiritHunt_Count` | a unit dies | starts off; enabled by Quest_SpiritHunt |
-| `Quest_SpiritHunt_Complete` | a unit comes within 450. of gg_unit_nsw2_0056 | starts off; enabled by Quest_SpiritHunt |
 
 ### Quest_SpiritOfWater
 
@@ -2983,7 +2879,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_StrongestEidolon_Start` | a player selects a unit | starts off; enabled by Priscilla |
 | `Quest_StrongestEidolon_Complete` | a unit dies (gg_unit_N02I_0074) | starts off; enabled by Eden; disabled by Eden |
 
 ### Quest_TargetPractice
@@ -3003,7 +2898,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_TrialByFire_Start` | a player selects a unit | starts off; enabled by McBurn |
 | `Quest_TrialByFire_Begin` | a unit is sold/hired (player Player(8)) | starts off; enabled by Quest_TrialByFire |
 | `Quest_TrialByFire_Countdown` | every 1.s | starts off; enabled by Arena_BattleSetup; disabled by Quest_TrialByFire; destroyed by Quest_TrialByFire |
 | `Quest_TrialByFire_Fail` | (no event: run by other triggers) | starts off; run by Arena_BattleResults; destroyed by Quest_TrialByFire |
@@ -3014,14 +2908,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Quest_UltimaWeapon_Start` | the unit takes damage (gg_unit_Nman_0151); a unit is attacked (gg_unit_Nman_0151) | starts off; enabled by Tonberry |
-| `Quest_UltimaWeapon_Slain` | a unit dies (gg_unit_Nman_0151) | starts off; enabled by Quest_UltimaWeapon |
-
-### Quest_WolfFangs
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `Quest_WolfFangs_Start` | a player selects a unit | starts off; enabled by Valera |
-| `Quest_WolfFangs_TurnIn` | a unit comes within 450. of gg_unit_n01R_0081 | starts off; enabled by Quest_WolfFangs |
 
 ### Quest_WorldLiberation
 
@@ -3034,7 +2920,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `Quest_YoungEngineer_Start` | a player selects a unit | starts off; enabled by Mid |
 | `Quest_YoungEngineer_Ping` | every 15.s | starts off; enabled by Quest_YoungEngineer; disabled by Quest_YoungEngineer; destroyed by Quest_YoungEngineer |
 | `Quest_YoungEngineer_Complete` | (no event: run by other triggers) | starts off; enabled by Quest_YoungEngineer |
 
@@ -3388,7 +3273,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `HydraEgg_Prepare` | (no event: run by other triggers) | run by MapBootstrap |
-| `HydraEgg_Start` | a player selects a unit |  |
 | `HydraEgg_Drop` | a unit dies | starts off; enabled by HydraEgg |
 | `HydraEgg_Pickup` | a unit picks up an item | starts off; enabled by HydraEgg |
 | `HydraEgg_Ping` | every 15.s | starts off; enabled by HydraEgg; disabled by HydraEgg |
@@ -3401,9 +3285,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `MysticalGlyph_Prepare` | (no event: run by other triggers) | starts off; run by Cid, Mid |
 | `MysticalGlyph_Drop` | a unit dies (player Player($B)) | starts off; enabled by MysticalGlyph |
 | `MysticalGlyph_Pickup` | a unit picks up an item | starts off; enabled by MysticalGlyph |
-| `MysticalGlyph_Ping` | every 15.s | starts off; enabled by MysticalGlyph; disabled by MysticalGlyph |
-| `MysticalGlyph_Deliver` | a unit comes within 450. of gg_unit_n007_0105 | starts off; enabled by MysticalGlyph |
-| `MysticalGlyph_Result` | a player selects a unit | starts off; enabled by MysticalGlyph |
+| `MysticalGlyph_Ping` | every 15.s | starts off; enabled by MysticalGlyph; disabled by MysticalGlyph; destroyed by MysticalGlyph |
 
 ### Nimphrodel
 
@@ -3451,19 +3333,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `Monica_ShowMarker` | (no event: run by other triggers) | starts off; run by Cid, Epilogue |
 
-### GreedIsGood
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `GreedIsGood_DropStone` | a unit dies (gg_unit_nmgv_0115) | starts off; enabled by Quest_GreedIsGood |
-
-### PortalStone
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `PortalStone_Ping` | every 15.s | starts off; enabled by GreedIsGood; disabled by Quest_GreedIsGood |
-| `PortalStone_PickedUp` | a unit picks up an item | starts off; enabled by GreedIsGood |
-
 ### Liniel
 
 | Trigger | Fires when | Notes |
@@ -3496,7 +3365,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `LadyCurse_ShowMarker` | (no event: run by other triggers) | starts off; run by QuestCount |
-| `LadyCurse_ReturnBelongings` | a unit comes within 450. of gg_unit_h01P_0017 | starts off; enabled by Belongings |
 
 ### ArenaResources
 
@@ -3515,9 +3383,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `ArenaExpansion_Prepare` | timer udg_SharedDelayTimer2 expires | starts off; enabled by ArenaResources |
-| `ArenaExpansion_Start` | a player selects a unit | starts off; enabled by ArenaExpansion |
 | `ArenaExpansion_ShadowStoneSpawn` | a unit enters gg_rct_565 | starts off; enabled by ArenaExpansion |
-| `ArenaExpansion_ShadowStoneTurnIn` | a unit comes within 450. of gg_unit_e008_0132 | starts off; enabled by ArenaExpansion |
 | `ArenaExpansion_GatherDust` | a unit enters gg_rct_372 | starts off; enabled by ArenaExpansion |
 | `ArenaExpansion_PingDust` | every 15.s | starts off; enabled by ArenaExpansion; disabled by ArenaExpansion |
 | `ArenaExpansion_Complete` | a unit comes within 450. of gg_unit_e008_0132 | starts off; enabled by ArenaExpansion |
@@ -3528,10 +3394,8 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `HauntedTree_Init` | (no event: run by other triggers) | run by MapBootstrap |
 | `HauntedTree_Prepare` | (no event: run by other triggers) | starts off; run by Valigarmanda |
-| `HauntedTree_Start` | a player selects a unit | starts off; enabled by HauntedTree |
 | `HauntedTree_GhostRoam` | every 4.s | disabled by HauntedTree; destroyed by HauntedTree |
 | `HauntedTree_CaptureSpirit` | a unit enters gg_rct_366 | starts off; enabled by HauntedTree |
-| `HauntedTree_Complete` | a unit comes within 450. of gg_unit_n02F_0108 | starts off; enabled by HauntedTree |
 
 ### DimensionalBoundary
 
@@ -3594,28 +3458,11 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `McBurn_Arena_Return` | a unit enters gg_rct_575; a unit enters gg_rct_576 | starts off; enabled by McBurn; disabled by Quest_ScorchedEarth; destroyed by Quest_ScorchedEarth |
 | `McBurn_Volcano` | a unit begins casting | starts off; enabled by McBurn |
 
-### AdamantHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `AdamantHunt_Start` | a player selects a unit |  |
-| `AdamantHunt_Count` | a unit dies | starts off; enabled by AdamantHunt |
-| `AdamantHunt_Reward` | a unit comes within 450. of gg_unit_h02Z_0230 | starts off; enabled by AdamantHunt |
-
-### GnollHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `GnollHunt_Start` | a player selects a unit | starts off; enabled by Kiros |
-| `GnollHunt_Count` | a unit dies | starts off; enabled by GnollHunt |
-| `GnollHunt_Reward` | a unit comes within 450. of gg_unit_n0BV_0229 | starts off; enabled by GnollHunt |
-
 ### FlanHunt
 
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `FlanHunt_Start` | a player selects a unit | starts off; enabled by Olga |
-| `FlanHunt_Count` | a unit dies | starts off; enabled by FlanHunt; disabled by FlanHunt; destroyed by FlanHunt |
 | `FlanHunt_Fail` | (no event: run by other triggers) | starts off; run by Dana; destroyed by FlanHunt |
 | `FlanHunt_Reward` | a unit comes within 200. of gg_unit_e014_0149; a unit comes within 450. of gg_unit_e014_0149 | starts off; enabled by FlanHunt; destroyed by FlanHunt |
 
@@ -3624,8 +3471,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `AncientHunt_Start` | a player selects a unit | starts off; enabled by Krjn |
-| `AncientHunt_Count` | a unit dies | starts off; enabled by AncientHunt |
-| `AncientHunt_Reward` | a unit comes within 450. of gg_unit_e012_0227 | starts off; enabled by AncientHunt |
 
 ### Tentacles
 
@@ -3636,7 +3481,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Tentacles_Yelp` | a unit dies (player Player($B)) | starts off; enabled by Tentacles; disabled by Tentacles |
 | `Tentacles_Despawn` | timer udg_TentacleTimer expires | starts off; enabled by Tentacles; disabled by Tentacles; destroyed by Tentacles |
 | `Tentacles_Fail` | (no event: run by other triggers) | starts off; run by Dana; destroyed by Tentacles |
-| `Tentacles_Reward` | a unit comes within 200. of gg_unit_e013_0176; a unit comes within 450. of gg_unit_e013_0176 | starts off; enabled by Ultros; disabled by Tentacles; destroyed by Tentacles |
+| `Tentacles_Reward` | a unit comes within 200. of gg_unit_e013_0176; a unit comes within 450. of gg_unit_e013_0176 | starts off; enabled by Tentacles; disabled by Tentacles; destroyed by Tentacles |
 
 ### DragonEgg
 
@@ -3667,14 +3512,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | `Cartographer_Update` | every 5.s | starts off; enabled by Cartographer; disabled by Cartographer; run by Cartographer; destroyed by Cartographer |
 | `Cartographer_Report` | a player selects a unit | starts off; enabled by Cartographer; destroyed by Cartographer |
 | `Cartographer_Fail` | a player selects a unit | starts off; enabled by Cartographer; destroyed by Cartographer |
-
-### DragonHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `DragonHunt_Start` | a player selects a unit | starts off; enabled by Makenroh |
-| `DragonHunt_Count` | a unit dies | starts off; enabled by DragonHunt |
-| `DragonHunt_Reward` | a unit comes within 450. of gg_unit_h032_0007 | starts off; enabled by DragonHunt |
 
 ### Graves
 
@@ -3846,12 +3683,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 |---|---|---|
 | `MagicGodToken_Use` | a unit uses an item |  |
 
-### AnnoyingMonster
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `AnnoyingMonster_DropBelongings` | (no event: run by other triggers) | starts off; enabled by Quest_AnnoyingMonster |
-
 ### Agrias
 
 | Trigger | Fires when | Notes |
@@ -3898,8 +3729,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `BridgeBattle_Prepare` | every 15.s | starts off; enabled by Epilogue, Quest_NightElves, Talk |
-| `BridgeBattle_Start` | a player selects a unit | starts off; enabled by BridgeBattle |
-| `BridgeBattle_Complete` | a unit comes within 450. of gg_unit_n02Y_0052 | starts off; enabled by Gilgamesh |
 
 ### Brothers
 
@@ -4010,7 +3839,7 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 
 | Trigger | Fires when | Notes |
 |---|---|---|
-| `QuestCount_Milestones` | (no event: run by other triggers) | starts off; run by BridgeBattle, Cid, Cine, Elixir, Epilogue, HealingWaters +22 more |
+| `QuestCount_Milestones` | (no event: run by other triggers) | starts off; run by Cid, Cine, Epilogue, KalmSiege1, KalmSiege2, KalmSiege3 +4 more |
 
 ### QuestTotal
 
@@ -4173,14 +4002,6 @@ To find one in World Editor, open the module and search for `Register_<Trigger>`
 | Trigger | Fires when | Notes |
 |---|---|---|
 | `Watts_Talk_Enable` | (no event: run by other triggers) | starts off; run by Giott |
-
-### WendigoHunt
-
-| Trigger | Fires when | Notes |
-|---|---|---|
-| `WendigoHunt_Start` | a player selects a unit | starts off; enabled by Ward |
-| `WendigoHunt_Count` | a unit dies | starts off; enabled by WendigoHunt |
-| `WendigoHunt_Reward` | a unit comes within 450. of gg_unit_h030_0243 | starts off; enabled by WendigoHunt |
 
 ### Zodiark
 

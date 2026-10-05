@@ -1,0 +1,98 @@
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_quests.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x
+97 definition functions; 466 dialogue declarations (branch counts are conservative)
+Custom event progress and mutually exclusive/shared log slots remain module-owned; no live state is inferred.
+PASS quest definitions, references, dependencies and non-waiting hooks
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_save_compat.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x
+PASS save compatibility: 351 items, 22 jobs, preserved readers/writer/armory flags and fixed G/H fixtures
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_content.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x
+PASS object IDs and typed literal references: 1336 calls, 5 preserved unresolved locations
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_editor_sources.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x
+PASS all editor modules compile, including disabled developer tools
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\tests\run_tests.py
+PASS Cartographer: 35 functions identical after reversing only declared local/parameter changes
+PASS TrueIceAge: 93 functions identical after reversing only declared local/parameter changes
+test_existing_output_is_never_overwritten (test_development_gates.BuildSafetyTests.test_existing_output_is_never_overwritten) ... ok
+test_stage_cannot_escape_release_directory (test_development_gates.BuildSafetyTests.test_stage_cannot_escape_release_directory) ... ok
+test_buff_removal_is_a_valid_native_reference (test_development_gates.ContentChecksTests.test_buff_removal_is_a_valid_native_reference) ... ok
+test_new_missing_typed_reference_rejected_and_existing_stock_calls_preserved (test_development_gates.ContentChecksTests.test_new_missing_typed_reference_rejected_and_existing_stock_calls_preserved) ... ok
+test_object_kind_is_checked (test_development_gates.ContentChecksTests.test_object_kind_is_checked) ... ok
+test_async_timer_is_allowed_but_synchronous_callback_is_not (test_development_gates.QuestChecksTests.test_async_timer_is_allowed_but_synchronous_callback_is_not) ... ok
+test_invalid_hunt_row_and_count (test_development_gates.QuestChecksTests.test_invalid_hunt_row_and_count) ... ok
+test_missing_and_waiting_hook (test_development_gates.QuestChecksTests.test_missing_and_waiting_hook) ... ok
+test_required_library_and_cycle (test_development_gates.QuestChecksTests.test_required_library_and_cycle) ... ok
+test_silent_start_requires_custom_intro (test_development_gates.QuestChecksTests.test_silent_start_requires_custom_intro) ... ok
+test_step_capacity (test_development_gates.QuestChecksTests.test_step_capacity) ... ok
+test_synchronous_execute_and_trigger_callbacks_are_traced (test_development_gates.QuestChecksTests.test_synchronous_execute_and_trigger_callbacks_are_traced) ... ok
+test_target_and_index (test_development_gates.QuestChecksTests.test_target_and_index) ... ok
+test_valid_definition_and_inspection (test_development_gates.QuestChecksTests.test_valid_definition_and_inspection) ... ok
+test_waiting_calls_in_conditions_returns_and_nested_arguments_are_traced (test_development_gates.QuestChecksTests.test_waiting_calls_in_conditions_returns_and_nested_arguments_are_traced) ... ok
+test_wrong_argument_count_is_diagnostic (test_development_gates.QuestChecksTests.test_wrong_argument_count_is_diagnostic) ... ok
+test_append_item_allowed_with_classification (test_development_gates.SaveGuardsTests.test_append_item_allowed_with_classification) ... ok
+test_duplicate_gap_and_reserved_capacity (test_development_gates.SaveGuardsTests.test_duplicate_gap_and_reserved_capacity) ... ok
+test_existing_repeated_armory_assignments_are_preserved (test_development_gates.SaveGuardsTests.test_existing_repeated_armory_assignments_are_preserved) ... ok
+test_fixed_vectors_and_corrupted_checksum (test_development_gates.SaveGuardsTests.test_fixed_vectors_and_corrupted_checksum) ... ok
+test_reorder_item_charge_job_serializer_and_armory_are_blocked (test_development_gates.SaveGuardsTests.test_reorder_item_charge_job_serializer_and_armory_are_blocked) ... ok
+test_save_flag_count_tracks_appended_items (test_development_gates.SaveGuardsTests.test_save_flag_count_tracks_appended_items) ... ok
+test_tested_contract_passes (test_development_gates.SaveGuardsTests.test_tested_contract_passes) ... ok
+test_delivery_failure_destroys_step_pickup_trigger_marker_and_ping_once (test_quest_events.QuestEventTests.test_delivery_failure_destroys_step_pickup_trigger_marker_and_ping_once) ... ok
+test_delivery_rejects_hidden_npc_and_cinematic_hero (test_quest_events.QuestEventTests.test_delivery_rejects_hidden_npc_and_cinematic_hero) ... ok
+test_talk_kill_partial_delivery_then_complete_with_remaining_charges (test_quest_events.QuestEventTests.test_talk_kill_partial_delivery_then_complete_with_remaining_charges) ... ok
+test_active_and_specific_quest_state_without_mutation (test_quest_inspector.InspectorTests.test_active_and_specific_quest_state_without_mutation) ... ok
+test_engine_disabled_message (test_quest_inspector.InspectorTests.test_engine_disabled_message) ... ok
+test_actual_cartographer_reports_pay_unpaid_tiers_and_finish_at_90_percent (test_quest_lifecycle.LifecycleTests.test_actual_cartographer_reports_pay_unpaid_tiers_and_finish_at_90_percent) ... ok
+test_cartographer_completes_during_intro_without_new_message (test_quest_lifecycle.LifecycleTests.test_cartographer_completes_during_intro_without_new_message) ... ok
+test_cartographer_failure_once_without_completion_or_count (test_quest_lifecycle.LifecycleTests.test_cartographer_failure_once_without_completion_or_count) ... ok
+test_existing_normal_start_and_completion (test_quest_lifecycle.LifecycleTests.test_existing_normal_start_and_completion) ... ok
+test_silent_log_then_delayed_announcement_once (test_quest_lifecycle.LifecycleTests.test_silent_log_then_delayed_announcement_once) ... ok
+test_silent_start_does_not_change_other_quests (test_quest_lifecycle.LifecycleTests.test_silent_start_does_not_change_other_quests) ... ok
+test_true_ice_age_shared_log_and_retry_then_single_completion (test_quest_lifecycle.LifecycleTests.test_true_ice_age_shared_log_and_retry_then_single_completion) ... ok
+test_cartographer_grid_uses_its_selected_player_and_owns_every_location (test_shared_context.SharedContextTests.test_cartographer_grid_uses_its_selected_player_and_owns_every_location) ... ok
+test_every_changed_source_function_reverses_to_stage_u (test_shared_context.SharedContextTests.test_every_changed_source_function_reverses_to_stage_u) ... ok
+test_true_ice_age_selected_speaker_survives_waits_and_dialogue (test_shared_context.SharedContextTests.test_true_ice_age_selected_speaker_survives_waits_and_dialogue) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.847s
+
+OK
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\savecode.py selftest
+selftest passed: 2000 random codes written and read back identically; renamed codes keep everything but the name; changed characters are rejected
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\sync_module.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\synced.w3x TrueIceAge Cartographer
+synced TrueIceAge, Cartographer: 128 functions now in the module(s); 10843 functions elsewhere unchanged
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\order_libraries.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\synced.w3x C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x
+0 libraries changed place
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_map.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x --baseline C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x
+note: 1 disabled trigger(s) left out of the source checks: DevCommands
+PASS 1 playable script compiles (pjass)
+PASS 2 trigger-editor source compiles (vjass_lite + pjass)
+PASS 3 startup wiring
+PASS 4 source matches playable script (startup functions)
+PASS 4b globals match playable script
+PASS 5 native save/load text safety
+PASS 6 startup sequence matches baseline
+     1503 triggers checked, 0 independent trigger pairs reordered
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_sources.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x
+PASS complete source/runtime agreement: 10915 enabled library functions; 0 new differences
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_quests.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x
+97 definition functions; 466 dialogue declarations (branch counts are conservative)
+Custom event progress and mutually exclusive/shared log slots remain module-owned; no live state is inferred.
+PASS quest definitions, references, dependencies and non-waiting hooks
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_save_compat.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x
+PASS save compatibility: 351 items, 22 jobs, preserved readers/writer/armory flags and fixed G/H fixtures
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\FFERPG\tools\check_content.py --map C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x
+PASS object IDs and typed literal references: 1336 calls, 5 preserved unresolved locations
+
+$ C:\Users\jaked\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe C:\Users\jaked\WarcraftMapExtractor\MapToolkit\tools\add_header.py C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ordered.w3x C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ready.w3x --from C:\Users\jaked\WarcraftMapExtractor\FFERPG\release\FFERPG_0.9.7.3-r16-stageU.w3x --name "Final Fantasy Epic RPG 0.9.7.3-r16 stageV (Reforged)"
+C:\Users\jaked\WarcraftMapExtractor\FFERPG\build\stageV-ohrgt3i8\ready.w3x: "Final Fantasy Epic RPG 0.9.7.3-r16 stageV (Reforged)" flags=61032 players=8

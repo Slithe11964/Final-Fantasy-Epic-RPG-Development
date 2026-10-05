@@ -92,3 +92,9 @@ the quest enable it.
   boss should be fightable again.
 - **Map-wide flags:** some deaths set `udg_GameStateHash` flags (e.g. Chaos). Those last for the
   current game only; titles are what save codes keep.
+
+## New content on the quest engine
+
+See CONTENT_DEVELOPMENT.md for a worked once-only field boss tied to Talk/Kill/Return.
+Use engine completion for new quests; do not copy old quest-count/story flags or arena reward
+logic into an unrelated boss. Arena templates require separate summon/cleanup review.

@@ -1,6 +1,6 @@
 # FF Epic RPG: readying the map for new development
 
-Updated 2026-10-05, stage U. Current release: release/FFERPG_0.9.7.3-r16-stageU.w3x.
+Updated 2026-10-05, stage V. Current release: release/FFERPG_0.9.7.3-r16-stageV.w3x.
 The user reports stage S is working. All 93 quests are on QuestEngine. Priorities **2, 3 and 4 below
 are implemented** in stages T/U; BUILDS.md describes the new workflow and its limits. U's playable
 script is byte-identical to S. Read HANDOFF.md for the exact build and STAGES.md for history.
@@ -33,15 +33,17 @@ The user asked to ignore the documented bugs in the current map; bug work is def
    logic. BUGS.md records suspected issues; reproduce each before changing behavior. Investigate the
    1.29.2-format marker issue only if that release target is needed; the active build is Reforged.
 
-6. **Reduce shared temporary-variable handoffs where they are risky.** docs/PHASE16.md and
+6. **First pass done in V: reduce risky shared temporary-variable handoffs.** TrueIceAge summon
+   and Cartographer scan/report now own their scratch context; six functions changed and tested.
+   Larger arena/job/cross-module cases remain for incremental passes. docs/PHASE16.md and
    phase16-handoffs.csv identify remaining cases. Start with functions that wait, nested callbacks and
    frequently fired combat/arena paths. Use locals or explicit context where appropriate, one system
    at a time, with behavior comparison and focused tests. Splitting large data tables has lower value.
 
-7. **Write a small content-development guide.** Give one worked example each for a new quest, boss,
-   item and reward: source module, object IDs, prerequisites, registration, build and test. Explain when
-   custom quest steps are appropriate and why hooks must not wait. Refresh stale reference docs and
-   the module dependency index as content changes; keep HANDOFF.md/STAGES.md current.
+7. **Done in V: CONTENT_DEVELOPMENT.md.** Worked quest, boss, item and reward examples cover
+   source, objects, prerequisites, registration, custom steps, non-waiting hooks, builds and tests.
+   Source reference docs and the declared library dependency index are refreshed; regenerate as
+   content changes and keep HANDOFF.md/STAGES.md current.
 
 8. **Package the project for another developer.** Supply tested maps through release artifacts,
    retain source history/backups, and document where baseline/assets/tool versions come from. Publish
@@ -53,13 +55,14 @@ The user asked to ignore the documented bugs in the current map; bug work is def
 - build.ps1 / tools/build_stage.py: complete build/gate/header pipeline with manifests.
 - tools/check_sources.py, check_editor_sources.py, check_quests.py, check_content.py, check_save_compat.py:
   read-only development safeguards; limits in BUILDS.md.
-- tools/tests/run_tests.py: 35 regression tests (10 lifecycle/event tests execute actual quest source
+- tools/tests/run_tests.py: 38 regression tests (10 lifecycle/event tests execute actual quest source
   with mocked Warcraft natives, plus inspector and build/quest/content/save guard tests).
 - tools/tests/verify_stage_s.py: stage S conversion preservation audit against stage R commit 800ed48.
 - tools/disable_check.py: module dependency/disabling audit.
-- tools/gen_docs.py: regenerate source reference docs.
+- tools/gen_docs.py / tools/gen_dependencies.py: regenerate source references/declared library dependencies.
+- tools/tests/verify_stage_v.py: exact source/playable-script preservation audit for the V refactor.
 - tools/savecode.py and docs/SAVE_CODES.md: save-code inspection and compatibility details.
 - tools/objects.py, tools/objdata.py and docs/OBJECTS.md: object data/reference tools.
 
-Remaining work is mainly #7 (worked content examples) and #8 (developer packaging), with #6 as a
-separate optional cleanup effort. No gameplay or bug fixes were made in stages T/U.
+Remaining readiness work is #8 (developer packaging) and further subsystem passes for #6.
+Stage V needs its focused play test; its gameplay refactor preserves intended behavior. Bugs remain deferred.

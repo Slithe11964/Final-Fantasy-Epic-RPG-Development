@@ -16,7 +16,7 @@ The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the abo
 
 ## Development checks and inspection (stages T/U)
 
-Run `python tools/check_quests.py --map release/FFERPG_0.9.7.3-r16-stageU.w3x` for all definitions,
+Run `python tools/check_quests.py --map release/FFERPG_0.9.7.3-r16-stageV.w3x` for all definitions,
 or add `--quest Cartographer` / `--json` to inspect matching definitions and hooks. This shows declared
 steps rather than live game state. The 97 definition variants represent 93 logical quests; counts
 include mutually exclusive branches conservatively. Checks protect the 16-step stride, 510-definition
@@ -32,9 +32,9 @@ In a separate single-player developer copy, enable DevCommands in World Editor a
 it. `-queststate` lists active/available quests; `-queststate N` shows any specific **engine number**,
 including name, state, current/total steps and main/side log index. Existing direct story overrides can
 leave engine state active while its log is completed/failed; the inspector reports both, without changing
-either. N is the displayed engine number, not MainQuest[n]/SideQuest[n]. U keeps DevCommands disabled.
+either. N is the displayed engine number, not MainQuest[n]/SideQuest[n]. V keeps DevCommands disabled.
 
-`python tools/tests/run_tests.py` runs 35 regressions. The lifecycle harness executes selected actual
+`python tools/tests/run_tests.py` runs 38 regressions. The lifecycle harness executes selected actual
 engine functions with mocked Warcraft natives: ordinary talk/kill/deliver events, partial charges,
 hidden NPC/cinematic rejection, failure trigger/pickup/marker/ping cleanup, silent introductions,
 shared logs, repeated completion and Cartographer tier reports. It does not simulate Warcraft's full
@@ -172,7 +172,7 @@ sources and will need updating after future changes to these modules.
   `call DestroyTimer(GetExpiredTimer())` in X (Arachnophobia offering Harpy Hunt, Melaniya teleporting away,
   Fire selling Elixirs after 3 minutes).
 - Quests are shared by the party, as before: one log entry, every player sees it.
-- Step types still to add when a quest needs them: reach a place, attack a unit. `docs/QUEST_SURVEY.md` shows
+- Quest_Reach already handles reaching a place. An attack-unit step can be added when needed. `docs/QUEST_SURVEY.md` shows
   which quests need them.
 - An entry point another module enables directly becomes a function it calls through `ExecuteFunc`, guarded by
   `static if LIBRARY_T...` (Valera -> Wolf Fangs, Kiros -> Gnoll Hunt, Melaniya -> Greed is Good).
@@ -192,3 +192,6 @@ Play each with cinematics on, and at least one with cinematics off (reward still
 | Greed is Good | from the start (Melaniya) | Guards appear after the talk; the hideout boss is pinged; it drops the Portal Stone; pickup note; 2500 / 2500; Melaniya teleports away 3 s after the dialogue; Phantom Dancer hunt at Kiros |
 | Elixir | 4 story quests done (Fire) | Lines show "Fire" as the speaker; one Elixir charge taken; 4000 / 500; Fire buys rare potions; 3 minutes later "Fire's stock contains a new item for sale" and the news |
 | Kill Elmdor, Wolf Fangs | as in stage M | Still work; the Spirit of Gaya can now hand in fangs too |
+
+For worked new quest/boss/item/reward examples, read CONTENT_DEVELOPMENT.md.
+Stage V also tests Cartographer scan context and True Ice Age speaker ownership across waits.

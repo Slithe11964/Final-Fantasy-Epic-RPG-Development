@@ -69,6 +69,7 @@ function Trig_Cartographer_Start_IsDialogueOn takes nothing returns boolean
 endfunction
 
 function Trig_Cartographer_Start_Actions takes nothing returns nothing
+    local integer l_rewardTotal
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[82])
     call QuestCartographer_Define()
@@ -103,16 +104,16 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
             if(Trig_Cartographer_Start_HasMapProgress_Talk())then
                 call Text_Say(gg_unit_n0CE_0020,"It seems you've already mapped out a decent amount of our world.",false)
                 call Text_Say(gg_unit_n0CE_0020,"Here, have this. There will be more where that came from the more complete your map becomes.",false)
-                set udg_TempInteger=0
+                set l_rewardTotal=0
                 set bj_forLoopAIndex=udg_MapRewardStage
                 set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
+                    set l_rewardTotal=(l_rewardTotal+udg_MapRewardTier[GetForLoopIndexA()])
                     set bj_forLoopAIndex=bj_forLoopAIndex+1
                 endloop
                 set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
-                call Reward_Give(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
+                call Reward_Give(l_rewardTotal,l_rewardTotal,gg_unit_n0CE_0020)
             else
                 call Text_Say(gg_unit_n0CE_0020,"Come to me periodically when you've mapped out a significant part of our world. I will give you your rewards then.",false)
             endif
@@ -129,16 +130,16 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
             call DestroyTrigger(gg_trg_Cartographer_Report)
         else
             if(Trig_Cartographer_Start_HasMapProgress_Quiet())then
-                set udg_TempInteger=0
+                set l_rewardTotal=0
                 set bj_forLoopAIndex=udg_MapRewardStage
                 set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
                 loop
                     exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
+                    set l_rewardTotal=(l_rewardTotal+udg_MapRewardTier[GetForLoopIndexA()])
                     set bj_forLoopAIndex=bj_forLoopAIndex+1
                 endloop
                 set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
-                call Reward_Give(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
+                call Reward_Give(l_rewardTotal,l_rewardTotal,gg_unit_n0CE_0020)
             endif
             call Quest_AnnounceStart(QUEST_CARTOGRAPHER)
             set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")
@@ -175,8 +176,8 @@ function Trig_Cartographer_Update_IsFogCheatFlagged takes nothing returns boolea
     return(udg_FogDisabled)
 endfunction
 
-function Trig_Cartographer_Update_IsPointExplored takes nothing returns boolean
-    return(IsLocationMaskedToPlayer(udg_TempPoint,udg_TempPlayer)==false)
+function Trig_Cartographer_Update_IsPointExplored takes location l_point,player l_player returns boolean
+    return(IsLocationMaskedToPlayer(l_point,l_player)==false)
 endfunction
 
 function Trig_Cartographer_Update_IsMapQuestActive takes nothing returns boolean
@@ -188,6 +189,8 @@ function Trig_Cartographer_Update_HasNewRewardTier takes nothing returns boolean
 endfunction
 
 function Trig_Cartographer_Update_Actions takes nothing returns nothing
+    local player l_mapPlayer
+    local location l_scanPoint
     local integer l_tempInteger
     if(Trig_Cartographer_Update_IsFogCheat())then
         set udg_FogDisabled=true
@@ -203,9 +206,11 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
             call DestroyTrigger(gg_trg_Cartographer_Report)
             call DestroyTrigger(GetTriggeringTrigger())
         endif
+        set l_mapPlayer=null
+        set l_scanPoint=null
         return
     endif
-    set udg_TempPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
+    set l_mapPlayer=ForcePickRandomPlayer(udg_PlayingPlayers)
     set l_tempInteger=0
     set bj_forLoopAIndex=1
     set bj_forLoopAIndexEnd=50
@@ -225,11 +230,11 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
             // Result 2: (GetRectHeightBJ(GetPlayableMapRect())) times (0.02).
             // Result 3: (result 1) times (result 2).
             // Result 4: (GetRectMinY(GetPlayableMapRect())) plus (result 3).
-            set udg_TempPoint=Location((GetRectMinX(GetPlayableMapRect())+(I2R(GetForLoopIndexA())*(GetRectWidthBJ(GetPlayableMapRect())*.02))),(GetRectMinY(GetPlayableMapRect())+(I2R(GetForLoopIndexB())*(GetRectHeightBJ(GetPlayableMapRect())*.02))))
-            if(Trig_Cartographer_Update_IsPointExplored())then
+            set l_scanPoint=Location((GetRectMinX(GetPlayableMapRect())+(I2R(GetForLoopIndexA())*(GetRectWidthBJ(GetPlayableMapRect())*.02))),(GetRectMinY(GetPlayableMapRect())+(I2R(GetForLoopIndexB())*(GetRectHeightBJ(GetPlayableMapRect())*.02))))
+            if(Trig_Cartographer_Update_IsPointExplored(l_scanPoint,l_mapPlayer))then
                 set l_tempInteger=(l_tempInteger+1)
             endif
-            call RemoveLocation(udg_TempPoint)
+            call RemoveLocation(l_scanPoint)
             set bj_forLoopBIndex=bj_forLoopBIndex+1
         endloop
         set bj_forLoopAIndex=bj_forLoopAIndex+1
@@ -244,6 +249,8 @@ function Trig_Cartographer_Update_Actions takes nothing returns nothing
         set udg_MontblancHasNews=true
         call EnableTrigger(gg_trg_Cartographer_Report)
     endif
+    set l_mapPlayer=null
+    set l_scanPoint=null
 endfunction
 
 function Trig_Cartographer_Report_Conditions takes nothing returns boolean
@@ -263,6 +270,7 @@ function Trig_Cartographer_Report_IsDialogueOn takes nothing returns boolean
 endfunction
 
 function Trig_Cartographer_Report_Actions takes nothing returns nothing
+    local integer l_rewardTotal
     call DisableTrigger(GetTriggeringTrigger())
     call ConditionalTriggerExecute(gg_trg_Cartographer_Update)
     call DestroyEffectBJ(udg_SpecialEffect[82])
@@ -271,16 +279,16 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
         call Cam_PanToUnit(GetTriggerUnit(),0)
         call Text_Say(gg_unit_n0CE_0020,"Hello, have you come to report your progress? Let me see...",false)
         call Text_Say(gg_unit_n0CE_0020,"Hmm yes, you've done well. As promised, here's a reward.",false)
-        set udg_TempInteger=0
+        set l_rewardTotal=0
         set bj_forLoopAIndex=udg_MapRewardStage
         set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
+            set l_rewardTotal=(l_rewardTotal+udg_MapRewardTier[GetForLoopIndexA()])
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
         set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
-        call Reward_GiveAll(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
+        call Reward_GiveAll(l_rewardTotal,l_rewardTotal,gg_unit_n0CE_0020)
         if(Trig_Cartographer_Report_IsMapDone_Talk())then
             call DisableTrigger(gg_trg_Cartographer_Update)
             call Text_Say(gg_unit_n0CE_0020,"You've done well. This map is now detailed enough for our purposes.",false)
@@ -302,16 +310,16 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
         endif
     else
         set udg_MontblancHasNews=false
-        set udg_TempInteger=0
+        set l_rewardTotal=0
         set bj_forLoopAIndex=udg_MapRewardStage
         set bj_forLoopAIndexEnd=((R2I(udg_MapExploredPct)/ $F)-1) // $F = 15
         loop
             exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            set udg_TempInteger=(udg_TempInteger+udg_MapRewardTier[GetForLoopIndexA()])
+            set l_rewardTotal=(l_rewardTotal+udg_MapRewardTier[GetForLoopIndexA()])
             set bj_forLoopAIndex=bj_forLoopAIndex+1
         endloop
         set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
-        call Reward_GiveAll(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
+        call Reward_GiveAll(l_rewardTotal,l_rewardTotal,gg_unit_n0CE_0020)
         if(Trig_Cartographer_Report_IsMapDone_Quiet())then
             call DisableTrigger(gg_trg_Cartographer_Update)
             call Quest_StepDone(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())

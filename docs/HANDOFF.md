@@ -1,9 +1,9 @@
-# Handoff: where FF Epic RPG stands (2026-10-05, after Codex stage U)
+# Handoff: where FF Epic RPG stands (2026-10-05, after Codex stage V)
 
 Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.md.
 
 ## Current map
-- **Play / edit:** `release/FFERPG_0.9.7.3-r16-stageU.w3x` (Reforged format, with the HM3W header so it is
+- **Play / edit:** `release/FFERPG_0.9.7.3-r16-stageV.w3x` (Reforged format, with the HM3W header so it is
   listed in 1.29.2 too). This build is in release/; it has not been copied to Documents/Warcraft III/Maps/Download.
 - Stage P was play-tested by the user and works. Stage Q = P + the Kalm Siege fix (below).
 - Stage R = Q + Ao Madoushi on the quest engine; the user reports it works great.
@@ -19,7 +19,7 @@ Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.m
 ## How a change gets into the map (no World Editor needed)
 Preferred one-command workflow (details/limitations in **docs/BUILDS.md**):
 ```powershell
-.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x
+.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
 ```
 It selects changed enabled modules, runs sync/order/check/header plus quest/content/save/source gates,
 and saves a new map, report and hash/tool manifest. Existing outputs are refused. Default base without
@@ -33,7 +33,7 @@ python tools/order_libraries.py OUT1.w3x OUT2.w3x                   # libraries 
 python tools/check_map.py OUT2.w3x --baseline BASE.w3x [--allow-removed 'gg_trg_(X|Y)']   # all must PASS
 python ../MapToolkit/tools/add_header.py OUT2.w3x release/NAME.w3x --from release/FFERPG_0.9.7.3-r16-stageN.w3x --name "Final Fantasy Epic RPG 0.9.7.3-r16 stageX (Reforged)"
 ```
-- Base for the next incremental change: `release/FFERPG_0.9.7.3-r16-stageU.w3x` (the tools accept its header).
+- Base for the next incremental change: `release/FFERPG_0.9.7.3-r16-stageV.w3x` (the tools accept its header).
 - New module: `tools/add_module.py`; module that became empty: `tools/remove_module.py` (then `git rm` its
   source and remove its `RegisterTriggers_X` call in MapBootstrap.j).
 - World Editor Save As also works (JassHelper orders libraries itself); then re-export sources with
@@ -49,7 +49,7 @@ python ../MapToolkit/tools/add_header.py OUT2.w3x release/NAME.w3x --from releas
 - Hooks must not wait: use `TimerStart(CreateTimer(),secs,false,function X)`.
 - `tools/check_quests.py --map MAP --quest TEXT` inspects definitions; `--json` is machine-readable.
   DevCommands adds read-only `-queststate [engine number]` in a separately enabled single-player dev
-  copy. DevCommands stays disabled in U. See DEBUG_COMMANDS.md and QUEST_ENGINE.md.
+  copy. DevCommands stays disabled in V. See DEBUG_COMMANDS.md and QUEST_ENGINE.md.
 - **All 93 quests converted** (stages M, N, O, P, R, S). Play-test list: docs/QUEST_TESTS.md.
 - Recipe for converting one: build/CONVERSION_BRIEF.md (rules: same dialogue word for word, same rewards and
   order, only the owned files, report external edits) - this file is on Claude's side; its content is
@@ -125,7 +125,30 @@ siege timer runs out later.
   calculations only when non-trivial).
 
 ## Suggested next steps
-1. Write worked content examples for a new quest/boss/item/reward (NEXT_STEPS.md #7).
+1. Play-test stage V using QUEST_TESTS.md; use CONTENT_DEVELOPMENT.md for new content.
 2. Package the identified base map/assets/tools for another developer (NEXT_STEPS.md #8).
 3. Capture real player G/H codes and test World Editor/save-load/multiplayer when adding new content.
-4. Shared temporary-state cleanup can be done separately if wanted; documented bugs are deferred.
+4. Continue shared temporary-state cleanup one subsystem at a time; documented bugs are deferred.
+
+## Stage V: readiness priorities 6/7
+
+Focused shared-context cleanup in six functions, two modules: TrueIceAge owns its selected
+summoner, nearby-hero group and drop location across waits/callbacks; its group helper takes
+explicit context. Cartographer owns scan player/location and report reward accumulator;
+its exploration helper takes explicit parameters. Cleanup/native calls remain in the same
+order. No dialogue, reward, world/story effect, object data or trigger registration changed.
+Other cross-module handoffs (including SpawnBrave, arena, jobs and title/victory paths)
+remain for separate reviewed passes. The refreshed PHASE16 snapshot has 1,431 retained pairs;
+the conservative analyzer finds none suitable for automatic conversion.
+
+Built from U via build.ps1: sync TrueIceAge/Cartographer -> order -> all checks -> header.
+All gates, 38 tests and 2,000 codec cases pass; 1503 triggers, no startup reorder. An explicit
+reversal audit verifies all 10,971 playable functions match U after undoing only the declared
+local/parameter changes. All listed archive files except war3map.j/war3map.wct are unchanged.
+Proof: release/preservation-r16-stageV.txt; report/manifest: checks-r16-stageV.txt/build-r16-stageV.json.
+Map SHA256: a4b851237bf735a71dd3198bdb6f3bcc9c07ff5ecb528e0b6b7a73c2f4ac5b65.
+Stage V still needs the focused in-game test in QUEST_TESTS.md; S remains the user-tested baseline.
+
+CONTENT_DEVELOPMENT.md gives worked quest/boss/item/reward examples and integration/test steps;
+no example content was added. TRIGGER_INDEX/GLOBALS/DEAD_CODE and phase16-handoffs.csv are refreshed.
+LIBRARY_DEPENDENCIES.md lists 731 declared editor libraries, regenerated with gen_dependencies.py.

@@ -1,0 +1,4 @@
+PASS source/Cartographer: 35 functions identical after reversing only declared local/parameter changes
+PASS source/TrueIceAge: 93 functions identical after reversing only declared local/parameter changes
+PASS playable script: 10971 functions identical after reversing only declared local/parameter changes
+PASS all listed terrain/object/asset/trigger-tree files unchanged

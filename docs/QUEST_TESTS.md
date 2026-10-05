@@ -136,3 +136,17 @@ but game behavior, editor Save As, multiplayer and native save/load need confirm
 | [ ] | True Ice Age, hardcore timeout | Original frozen-world ending; no new quest failure announcement |
 | [ ] | True Ice Age, victory | Original cinematic, loot, 50000 gold/XP, 5 shards, awards and epilogue unlocks; one completion/count for the shared log; both original story increments occur at their original summon/victory points |
 | [ ] | Existing engine quests, multiplayer/save/load/editor Save As | At least one ordinary talk/reward quest and Ao Madoushi still work; no duplicate messages/rewards with multiple players; native save/load and editor-saved stage S compile and play |
+
+## Shared temporary-context cleanup (stage V)
+
+Use release/FFERPG_0.9.7.3-r16-stageV.w3x. Automated gates/38 tests/whole-script reversal pass.
+The intended dialogue, reward amounts, timings and world changes are unchanged. Check:
+
+- [ ] Cartographer: accept, explore more, report twice; progress changes normally and paid tiers never pay again.
+- [ ] Cartographer: reach 90% and finish once; check both first-talk and later-report completion if practical.
+- [ ] True Ice Age: summon with a hero near the summoning area; all hero lines keep the selected speaker through the cinematic.
+- [ ] True Ice Age: summon with nobody nearby so the fallback party choice is used; same speaker throughout, then normal encounter/retry/victory.
+- [ ] Repeat the affected flows with cinematics disabled and in a two-player game; speaker and rewards remain correct while other triggers run.
+- [ ] Quick old-code save/load smoke test. No objects, item tables, jobs or save format changed.
+
+DevCommands remains disabled; it is not necessary for normal testing. Use separate test copies if enabling it.

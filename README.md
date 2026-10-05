@@ -7,7 +7,7 @@ Stage S is user-confirmed working. Current stage U adds development safeguards w
 playable script unchanged. For source edits, build a new stage with one command:
 
 ```powershell
-.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x
+.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
 ```
 
 It selects changed modules, checks quests/content/save compatibility, runs compilation/regressions,
@@ -81,3 +81,5 @@ still needs the module. `docs/DISABLING.md` lists the answer for every module on
 
 `check_map.py` needs `pjass`, `common.j` and `blizzard.j`. It finds them in `tools/bin/` or in
 `../Builder24/tools/JassHelper/`; on Windows that's the bundled `pjass.exe`.
+
+Worked new-content examples: [CONTENT_DEVELOPMENT.md](docs/CONTENT_DEVELOPMENT.md).

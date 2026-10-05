@@ -16,7 +16,7 @@ A one-page guide for anyone changing the map. For where things are, read `docs/S
 ## The routine for every change
 
 For edits to existing source modules, use `build.ps1` instead of manually assembling a playable map:
-`.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x`. It runs the complete development
+`.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x`. It runs the complete development
 gates and records a new map/report/manifest without overwriting outputs. See docs/BUILDS.md for
 requirements and the handling of new modules, object data, header/global changes and historical drift.
 Keep .j sources in CRLF. After every build, add a STAGES.md row and update HANDOFF.md/RESUME_PROMPT.txt;
@@ -85,3 +85,5 @@ For World Editor changes:
 | `python tools/disable_check.py MAP Module` | Check whether a module can be switched off. |
 | `python tools/gen_docs.py` | Refresh `docs/TRIGGER_INDEX.md`, `GLOBALS.md` and `DEAD_CODE.md` after changes. |
 | `python tools/rename_module.py BASE OUT Old New` | Rename a module everywhere. |
+
+Worked new-content examples: [CONTENT_DEVELOPMENT.md](docs/CONTENT_DEVELOPMENT.md).
