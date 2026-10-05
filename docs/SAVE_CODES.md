@@ -3,6 +3,32 @@
 Modules: `Save` (09), `Load` (09), `Cmd` (09, the `Trig_Cmd_Load_Code_*` functions), `Code` (01),
 `Autosave` (09), `SaveDebug` (09).
 
+## Compatibility gates (stages T/U)
+
+`python tools/check_save_compat.py --map MAP.w3x` and `tools/check_content.py --map MAP.w3x` run
+automatically in build.ps1. The user-tested stage S establishes the reviewed contracts in
+tools/contracts/. Existing save item indexes, charge classification, object bases/classes, 22-job
+order, armory assignments and Save_/Code_/load-code function fingerprints must stay unchanged.
+Repeated historical armory assignments are preserved as ordered values at their index, not repaired.
+
+Append new items after index 351, with no gaps/duplicates, and update udg_SaveFlagCount to the new
+highest index. The ceiling is **500** because flags 501..540 are reserved. Refresh src/itemtable.txt
+using -dumpitems in a separately enabled developer copy; the table must match source indexes/rawcodes.
+The corresponding object must be present in the selected base map. The guard preserves both explicit
+item classes and inheritance bases so charged/noncharged save interpretation cannot silently change.
+
+Job additions/reordering and serializer changes require an explicit new-format/legacy-reader review.
+Do not regenerate the contract to bypass a failure. Guards are deliberately conservative: even an
+apparently harmless serializer edit requires review because the old format remains a compatibility
+promise. Computed mappings and all gameplay-dependent progression semantics still need manual review.
+
+tools/tests/fixtures/savecodes.json pins three **synthetic** G/H vectors from the existing codec,
+with independently stored expected decoded fields. Checks require exact encoded bytes, decoding,
+account hashes, renaming without payload changes, H armory checksum/link preservation and rejection
+of corrupted checksums. The H armory payload is opaque test data, not decoded real Warcraft armory
+flags. In addition, 2,000 randomized cases run on every build. Add actual player codes and in-game
+legacy load tests when extending saved content; these vectors do not prove Warcraft execution.
+
 ## What a player sees
 
 | Command | What it does |

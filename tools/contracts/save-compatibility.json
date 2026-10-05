@@ -1,0 +1,2456 @@
+{
+  "items": {
+    "1": "pman",
+    "2": "pdiv",
+    "3": "pgma",
+    "4": "pghe",
+    "5": "sman",
+    "6": "ankh",
+    "7": "phea",
+    "8": "stwp",
+    "9": "I001",
+    "10": "I002",
+    "11": "I000",
+    "68": "pres",
+    "74": "sror",
+    "78": "I02V",
+    "83": "I02X",
+    "96": "I03P",
+    "107": "I02E",
+    "108": "I02I",
+    "109": "I02K",
+    "110": "I02N",
+    "112": "I02L",
+    "113": "I02J",
+    "114": "I02M",
+    "115": "I02O",
+    "116": "I02H",
+    "117": "I02D",
+    "127": "I05I",
+    "128": "I05H",
+    "187": "I0DI",
+    "222": "I0ET",
+    "223": "I0EU",
+    "188": "I0KF",
+    "195": "I0KG",
+    "196": "I0KH",
+    "197": "I0KI",
+    "105": "I0KJ",
+    "106": "I0KK",
+    "147": "I0KL",
+    "153": "I0KM",
+    "210": "I0KN",
+    "169": "I0KO",
+    "69": "I023",
+    "70": "I024",
+    "71": "I025",
+    "98": "I03G",
+    "99": "I03H",
+    "100": "I03F",
+    "101": "I03L",
+    "102": "I03M",
+    "103": "I03N",
+    "148": "I07N",
+    "149": "I07O",
+    "150": "I07P",
+    "194": "I0DT",
+    "198": "I0E0",
+    "199": "I0E1",
+    "200": "I0E2",
+    "209": "I0E7",
+    "211": "I0ED",
+    "224": "I0GE",
+    "239": "I07W",
+    "238": "I0ES",
+    "269": "I0JV",
+    "335": "I0BA",
+    "12": "I00D",
+    "13": "I00H",
+    "14": "I00B",
+    "17": "I00E",
+    "18": "I00J",
+    "19": "I00G",
+    "20": "I00K",
+    "21": "I00I",
+    "22": "I00P",
+    "23": "I00F",
+    "24": "I00C",
+    "25": "I00Q",
+    "26": "I00L",
+    "27": "I00R",
+    "55": "I01X",
+    "79": "I02W",
+    "87": "I031",
+    "92": "I037",
+    "93": "I039",
+    "97": "I03I",
+    "118": "I04M",
+    "119": "I04L",
+    "126": "I04D",
+    "131": "I063",
+    "152": "I08F",
+    "157": "I0A7",
+    "166": "I0CN",
+    "167": "I0CO",
+    "168": "I0CP",
+    "180": "I0D0",
+    "186": "I0DL",
+    "193": "I0DR",
+    "205": "I0DS",
+    "225": "I0FD",
+    "95": "I0FW",
+    "158": "I0FX",
+    "159": "I0FY",
+    "160": "I0FZ",
+    "161": "I0G0",
+    "162": "I0G1",
+    "94": "I0G6",
+    "235": "I0GD",
+    "236": "I0GJ",
+    "252": "I0HT",
+    "182": "I0IB",
+    "104": "I0EC",
+    "271": "I0JX",
+    "273": "I0K1",
+    "275": "I0K2",
+    "276": "I0K3",
+    "277": "I0K4",
+    "280": "I0KA",
+    "281": "I0KC",
+    "282": "I0KB",
+    "283": "I0KD",
+    "322": "I0A9",
+    "334": "I04A",
+    "336": "I0B0",
+    "340": "I0C8",
+    "351": "I0GF",
+    "15": "I00N",
+    "16": "I00M",
+    "28": "I00S",
+    "29": "I00U",
+    "30": "I00V",
+    "31": "I00W",
+    "32": "I00Z",
+    "33": "I010",
+    "34": "I011",
+    "42": "I019",
+    "43": "I01A",
+    "44": "I01B",
+    "45": "I01C",
+    "46": "I01D",
+    "47": "I01E",
+    "48": "I01F",
+    "49": "I01G",
+    "73": "I02C",
+    "76": "I02P",
+    "77": "I02Q",
+    "80": "I02S",
+    "84": "I02Y",
+    "88": "I033",
+    "89": "I035",
+    "90": "I036",
+    "91": "I00O",
+    "120": "I04E",
+    "121": "I04F",
+    "122": "I04G",
+    "123": "I04H",
+    "124": "I04I",
+    "142": "I066",
+    "143": "I07M",
+    "144": "I07Z",
+    "145": "I080",
+    "146": "I081",
+    "151": "I08N",
+    "170": "I0CS",
+    "171": "I0CT",
+    "172": "I0CU",
+    "184": "I0DH",
+    "185": "I0DG",
+    "189": "I0DM",
+    "201": "I02F",
+    "202": "I0DY",
+    "203": "I0DZ",
+    "207": "I0E6",
+    "208": "I0E8",
+    "212": "I0F2",
+    "213": "I0F3",
+    "214": "I0F4",
+    "215": "I0F5",
+    "216": "I0F6",
+    "163": "I0FO",
+    "226": "I0FP",
+    "227": "I0EW",
+    "154": "I0F7",
+    "229": "I0GA",
+    "230": "I0F8",
+    "231": "I0EY",
+    "232": "I0EZ",
+    "233": "I0GB",
+    "234": "I0GC",
+    "240": "I0H1",
+    "253": "I0HU",
+    "256": "I0ER",
+    "266": "I0BW",
+    "134": "I0C0",
+    "135": "I0C1",
+    "136": "I0C2",
+    "137": "I0C3",
+    "181": "I0HW",
+    "111": "I0EQ",
+    "268": "I0JU",
+    "270": "I0JW",
+    "272": "I0JY",
+    "278": "I0K8",
+    "228": "I0G5",
+    "288": "I0KW",
+    "289": "I0L0",
+    "294": "I0L6",
+    "295": "I0L7",
+    "296": "I0L8",
+    "297": "I0L9",
+    "298": "I0KX",
+    "299": "I0KY",
+    "300": "I0KZ",
+    "316": "I0LQ",
+    "317": "I05S",
+    "318": "I05T",
+    "319": "I061",
+    "320": "I060",
+    "327": "I0BH",
+    "328": "I0BI",
+    "329": "I0BJ",
+    "333": "I0BM",
+    "337": "I0C5",
+    "338": "I0C6",
+    "339": "I0C7",
+    "341": "I0C9",
+    "342": "I0BP",
+    "343": "I0LP",
+    "344": "I03D",
+    "345": "I03O",
+    "347": "I0BT",
+    "348": "I0D1",
+    "302": "I0LL",
+    "321": "I0A8",
+    "303": "I0LJ",
+    "304": "I0LE",
+    "305": "I0LA",
+    "306": "I0LH",
+    "307": "I0LC",
+    "308": "I0LG",
+    "309": "I0LD",
+    "310": "I0LI",
+    "311": "I0LB",
+    "312": "I0LF",
+    "35": "I012",
+    "36": "I013",
+    "37": "I014",
+    "38": "I015",
+    "39": "I016",
+    "40": "I017",
+    "41": "I018",
+    "81": "I02T",
+    "125": "I04J",
+    "132": "I064",
+    "133": "I065",
+    "165": "I0BU",
+    "204": "I0E3",
+    "218": "I0FA",
+    "219": "I03A",
+    "241": "I0HN",
+    "242": "I0HP",
+    "243": "I0HQ",
+    "244": "I0HR",
+    "245": "I0HO",
+    "246": "I0HH",
+    "247": "I0HI",
+    "248": "I0HK",
+    "249": "I0HJ",
+    "250": "I0HL",
+    "251": "I0HM",
+    "254": "I0I8",
+    "255": "I0I5",
+    "257": "I0I2",
+    "258": "I0I6",
+    "259": "I0I1",
+    "260": "I0I4",
+    "261": "I0HX",
+    "262": "I0I7",
+    "263": "I0HZ",
+    "264": "I0I3",
+    "265": "I0HY",
+    "274": "I0H0",
+    "301": "I0LK",
+    "313": "I0LN",
+    "323": "I0B8",
+    "190": "I05U",
+    "191": "I05V",
+    "192": "I05W",
+    "324": "I05X",
+    "325": "I05Y",
+    "326": "I05Z",
+    "332": "I0BC",
+    "331": "I0BF",
+    "346": "I086",
+    "350": "I0FK",
+    "50": "I01H",
+    "51": "I01I",
+    "52": "I01J",
+    "53": "I01K",
+    "72": "I026",
+    "54": "I01L",
+    "75": "I02R",
+    "82": "I02U",
+    "85": "I02Z",
+    "129": "I04C",
+    "138": "I06A",
+    "139": "I069",
+    "164": "I0AA",
+    "183": "I0D4",
+    "220": "I0FB",
+    "221": "I0FC",
+    "290": "I0L4",
+    "291": "I0L1",
+    "292": "I0L2",
+    "293": "I0L3",
+    "315": "I0LO",
+    "56": "I01M",
+    "57": "I01N",
+    "58": "I01O",
+    "59": "I01P",
+    "60": "I01Q",
+    "61": "I01R",
+    "62": "I01S",
+    "63": "I01T",
+    "64": "I01U",
+    "65": "I01V",
+    "66": "I01W",
+    "67": "I01Y",
+    "86": "I030",
+    "130": "I05G",
+    "140": "I07X",
+    "155": "I0A6",
+    "206": "I0E5",
+    "217": "I0F9",
+    "237": "I0GZ",
+    "267": "I0BX",
+    "279": "I0K9",
+    "284": "I0KQ",
+    "285": "I0KS",
+    "286": "I0KR",
+    "287": "I0KT",
+    "314": "I0LM",
+    "330": "I0BG",
+    "349": "I0D2",
+    "141": "I062",
+    "156": "I084",
+    "173": "I0CX",
+    "174": "I08A",
+    "175": "I0B7",
+    "176": "I06P",
+    "177": "I08B",
+    "178": "I089",
+    "179": "I07C"
+  },
+  "jobs": {
+    "0": "H000",
+    "1": "H003",
+    "2": "H001",
+    "3": "H00A",
+    "4": "H00B",
+    "5": "H00D",
+    "6": "H00E",
+    "7": "H00C",
+    "8": "H00F",
+    "9": "H00M",
+    "10": "H002",
+    "11": "H004",
+    "12": "H005",
+    "13": "H009",
+    "14": "H008",
+    "15": "H00G",
+    "16": "H00I",
+    "17": "H00H",
+    "18": "H00J",
+    "19": "H00L",
+    "20": "H02X",
+    "21": "H02Y"
+  },
+  "armory_flags": {
+    "501": [
+      "n0JG"
+    ],
+    "502": [
+      "n0JH"
+    ],
+    "503": [
+      "n0JI"
+    ],
+    "504": [
+      "n0JJ"
+    ],
+    "505": [
+      "n0JK"
+    ],
+    "506": [
+      "n0JL"
+    ],
+    "507": [
+      "n0LB"
+    ],
+    "511": [
+      "n0J3"
+    ],
+    "512": [
+      "n0J4"
+    ],
+    "513": [
+      "n0J5"
+    ],
+    "514": [
+      "n0JC"
+    ],
+    "515": [
+      "n0J6"
+    ],
+    "516": [
+      "n0J7"
+    ],
+    "517": [
+      "n0J8"
+    ],
+    "518": [
+      "n0J9"
+    ],
+    "519": [
+      "n0JA"
+    ],
+    "520": [
+      "n0JB"
+    ],
+    "521": [
+      "n0JD"
+    ],
+    "522": [
+      "n0JE"
+    ],
+    "523": [
+      "n0JF"
+    ],
+    "524": [
+      "n0IZ"
+    ],
+    "525": [
+      "n0J0"
+    ],
+    "526": [
+      "n0J1"
+    ],
+    "527": [
+      "n0J2"
+    ],
+    "528": [
+      "n0IX"
+    ],
+    "529": [
+      "n0IY"
+    ],
+    "530": [
+      "n0IU"
+    ],
+    "531": [
+      "n0IV"
+    ],
+    "532": [
+      "n0IW"
+    ],
+    "533": [
+      "n0IP"
+    ],
+    "534": [
+      "n0IQ"
+    ],
+    "535": [
+      "n0IS"
+    ],
+    "536": [
+      "n0IR"
+    ],
+    "537": [
+      "n0IT"
+    ],
+    "538": [
+      "n0JN"
+    ],
+    "539": [
+      "n0JV"
+    ],
+    "540": [
+      "n0M5"
+    ],
+    "12": [
+      "n0D8"
+    ],
+    "13": [
+      "n0D9"
+    ],
+    "14": [
+      "n0DA"
+    ],
+    "17": [
+      "n0DB"
+    ],
+    "18": [
+      "n0DC"
+    ],
+    "19": [
+      "n0DD"
+    ],
+    "20": [
+      "n0DE"
+    ],
+    "21": [
+      "n0DF"
+    ],
+    "22": [
+      "n0DG"
+    ],
+    "23": [
+      "n0DH"
+    ],
+    "24": [
+      "n0DI"
+    ],
+    "25": [
+      "n0DJ"
+    ],
+    "26": [
+      "n0DK"
+    ],
+    "27": [
+      "n0DL"
+    ],
+    "55": [
+      "n0DM"
+    ],
+    "79": [
+      "n0DN"
+    ],
+    "87": [
+      "n0DO"
+    ],
+    "92": [
+      "n0DP"
+    ],
+    "93": [
+      "n0DQ"
+    ],
+    "97": [
+      "n0DR"
+    ],
+    "118": [
+      "n0DS"
+    ],
+    "119": [
+      "n0DT"
+    ],
+    "126": [
+      "n0DU"
+    ],
+    "131": [
+      "n0DV"
+    ],
+    "152": [
+      "n0DW"
+    ],
+    "157": [
+      "n0DX"
+    ],
+    "166": [
+      "n0DY"
+    ],
+    "167": [
+      "n0DZ"
+    ],
+    "168": [
+      "n0E0"
+    ],
+    "180": [
+      "n0E1"
+    ],
+    "186": [
+      "n0E2"
+    ],
+    "193": [
+      "n0E3"
+    ],
+    "205": [
+      "n0E4"
+    ],
+    "225": [
+      "n0E5"
+    ],
+    "95": [
+      "n0E6"
+    ],
+    "158": [
+      "n0E7"
+    ],
+    "159": [
+      "n0E8"
+    ],
+    "160": [
+      "n0E9"
+    ],
+    "161": [
+      "n0EA"
+    ],
+    "162": [
+      "n0EB"
+    ],
+    "94": [
+      "n0EC"
+    ],
+    "235": [
+      "n0EE"
+    ],
+    "236": [
+      "n0EF"
+    ],
+    "252": [
+      "n0EG"
+    ],
+    "182": [
+      "n0EH"
+    ],
+    "104": [
+      "n0EI"
+    ],
+    "271": [
+      "n0JQ"
+    ],
+    "273": [
+      "n0JT"
+    ],
+    "275": [
+      "n0JW"
+    ],
+    "276": [
+      "n0JX"
+    ],
+    "277": [
+      "n0JY"
+    ],
+    "280": [
+      "n0K4"
+    ],
+    "281": [
+      "n0K6"
+    ],
+    "282": [
+      "n0K5"
+    ],
+    "283": [
+      "n0KC"
+    ],
+    "322": [
+      "n0M0"
+    ],
+    "334": [
+      "n0MR"
+    ],
+    "336": [
+      "n0MS"
+    ],
+    "340": [
+      "n0MX"
+    ],
+    "351": [
+      "n0ND"
+    ],
+    "15": [
+      "n0GN"
+    ],
+    "16": [
+      "n0GO"
+    ],
+    "28": [
+      "n0GP"
+    ],
+    "29": [
+      "n0GQ"
+    ],
+    "30": [
+      "n0GR"
+    ],
+    "31": [
+      "n0GS"
+    ],
+    "32": [
+      "n0GT"
+    ],
+    "33": [
+      "n0GU"
+    ],
+    "34": [
+      "n0GV"
+    ],
+    "42": [
+      "n0GW"
+    ],
+    "43": [
+      "n0H0"
+    ],
+    "44": [
+      "n0H1"
+    ],
+    "45": [
+      "n0H2"
+    ],
+    "46": [
+      "n0H3"
+    ],
+    "47": [
+      "n0H4"
+    ],
+    "48": [
+      "n0H5"
+    ],
+    "49": [
+      "n0H6"
+    ],
+    "73": [
+      "n0H7"
+    ],
+    "76": [
+      "n0H8"
+    ],
+    "77": [
+      "n0H9"
+    ],
+    "80": [
+      "n0HA"
+    ],
+    "84": [
+      "n0HB"
+    ],
+    "88": [
+      "n0HC"
+    ],
+    "89": [
+      "n0HD"
+    ],
+    "90": [
+      "n0HE"
+    ],
+    "91": [
+      "n0HF"
+    ],
+    "120": [
+      "n0HG"
+    ],
+    "121": [
+      "n0HH"
+    ],
+    "122": [
+      "n0HI"
+    ],
+    "123": [
+      "n0HJ"
+    ],
+    "124": [
+      "n0HK"
+    ],
+    "142": [
+      "n0HL"
+    ],
+    "143": [
+      "n0GZ"
+    ],
+    "144": [
+      "n0HM"
+    ],
+    "145": [
+      "n0HN",
+      "n0JS"
+    ],
+    "146": [
+      "n0HO"
+    ],
+    "151": [
+      "n0HP"
+    ],
+    "170": [
+      "n0HQ"
+    ],
+    "171": [
+      "n0HR"
+    ],
+    "172": [
+      "n0HS"
+    ],
+    "184": [
+      "n0HU"
+    ],
+    "185": [
+      "n0HV"
+    ],
+    "189": [
+      "n0GX"
+    ],
+    "201": [
+      "n0HW"
+    ],
+    "202": [
+      "n0HX"
+    ],
+    "203": [
+      "n0HY"
+    ],
+    "207": [
+      "n0HZ"
+    ],
+    "208": [
+      "n0I0"
+    ],
+    "212": [
+      "n0I1"
+    ],
+    "213": [
+      "n0I2"
+    ],
+    "214": [
+      "n0I3"
+    ],
+    "215": [
+      "n0I4"
+    ],
+    "216": [
+      "n0I5"
+    ],
+    "163": [
+      "n0I6"
+    ],
+    "226": [
+      "n0I7"
+    ],
+    "227": [
+      "n0I8"
+    ],
+    "154": [
+      "n0GY"
+    ],
+    "229": [
+      "n0I9"
+    ],
+    "230": [
+      "n0IA"
+    ],
+    "231": [
+      "n0IB"
+    ],
+    "232": [
+      "n0IC"
+    ],
+    "233": [
+      "n0ID"
+    ],
+    "234": [
+      "n0IE"
+    ],
+    "240": [
+      "n0HT"
+    ],
+    "253": [
+      "n0IF"
+    ],
+    "256": [
+      "n0IG"
+    ],
+    "266": [
+      "n0IH"
+    ],
+    "134": [
+      "n0II"
+    ],
+    "135": [
+      "n0IJ"
+    ],
+    "136": [
+      "n0IK"
+    ],
+    "137": [
+      "n0IL"
+    ],
+    "181": [
+      "n0IM"
+    ],
+    "111": [
+      "n0IN"
+    ],
+    "268": [
+      "n0JO"
+    ],
+    "270": [
+      "n0JP"
+    ],
+    "272": [
+      "n0JR"
+    ],
+    "278": [
+      "n0K2"
+    ],
+    "228": [
+      "n0ED"
+    ],
+    "288": [
+      "n0KU"
+    ],
+    "289": [
+      "n0KT"
+    ],
+    "294": [
+      "n0L1"
+    ],
+    "295": [
+      "n0L2"
+    ],
+    "296": [
+      "n0L3"
+    ],
+    "297": [
+      "n0L4"
+    ],
+    "298": [
+      "n0L7"
+    ],
+    "299": [
+      "n0L8"
+    ],
+    "300": [
+      "n0L9"
+    ],
+    "316": [
+      "n0LP"
+    ],
+    "317": [
+      "n0LQ"
+    ],
+    "318": [
+      "n0LX"
+    ],
+    "319": [
+      "n0LY"
+    ],
+    "320": [
+      "n0LZ"
+    ],
+    "327": [
+      "n0MF"
+    ],
+    "328": [
+      "n0MG"
+    ],
+    "329": [
+      "n0MH"
+    ],
+    "333": [
+      "n0MM"
+    ],
+    "337": [
+      "n0MU"
+    ],
+    "338": [
+      "n0MV"
+    ],
+    "339": [
+      "n0MW"
+    ],
+    "341": [
+      "n0MY"
+    ],
+    "342": [
+      "n0N2"
+    ],
+    "343": [
+      "n0N4"
+    ],
+    "344": [
+      "n0N5"
+    ],
+    "345": [
+      "n0N6"
+    ],
+    "347": [
+      "n0N9"
+    ],
+    "348": [
+      "n0NA"
+    ],
+    "303": [
+      "n0LC"
+    ],
+    "304": [
+      "n0LD"
+    ],
+    "305": [
+      "n0LE"
+    ],
+    "306": [
+      "n0LF"
+    ],
+    "307": [
+      "n0LG"
+    ],
+    "308": [
+      "n0LH"
+    ],
+    "309": [
+      "n0LI"
+    ],
+    "310": [
+      "n0LJ"
+    ],
+    "311": [
+      "n0LK"
+    ],
+    "312": [
+      "n0LL"
+    ],
+    "35": [
+      "n0FL"
+    ],
+    "36": [
+      "n0FM"
+    ],
+    "37": [
+      "n0FN"
+    ],
+    "38": [
+      "n0FO"
+    ],
+    "39": [
+      "n0FP"
+    ],
+    "40": [
+      "n0FQ"
+    ],
+    "41": [
+      "n0FR"
+    ],
+    "81": [
+      "n0FS"
+    ],
+    "125": [
+      "n0FT"
+    ],
+    "132": [
+      "n0FU"
+    ],
+    "133": [
+      "n0FV"
+    ],
+    "165": [
+      "n0FW"
+    ],
+    "204": [
+      "n0FY"
+    ],
+    "218": [
+      "n0FZ"
+    ],
+    "219": [
+      "n0G0"
+    ],
+    "241": [
+      "n0G1"
+    ],
+    "242": [
+      "n0G2"
+    ],
+    "243": [
+      "n0G3"
+    ],
+    "244": [
+      "n0G4"
+    ],
+    "245": [
+      "n0G5"
+    ],
+    "246": [
+      "n0G6"
+    ],
+    "247": [
+      "n0G7"
+    ],
+    "248": [
+      "n0G8"
+    ],
+    "249": [
+      "n0G9"
+    ],
+    "250": [
+      "n0GA"
+    ],
+    "251": [
+      "n0GB"
+    ],
+    "254": [
+      "n0GC"
+    ],
+    "255": [
+      "n0GD"
+    ],
+    "257": [
+      "n0GE"
+    ],
+    "258": [
+      "n0GF"
+    ],
+    "259": [
+      "n0GG"
+    ],
+    "260": [
+      "n0GH"
+    ],
+    "261": [
+      "n0GI"
+    ],
+    "262": [
+      "n0GJ"
+    ],
+    "263": [
+      "n0GK"
+    ],
+    "264": [
+      "n0GL"
+    ],
+    "265": [
+      "n0GM"
+    ],
+    "274": [
+      "n0JU"
+    ],
+    "301": [
+      "n0LA"
+    ],
+    "313": [
+      "n0LO"
+    ],
+    "323": [
+      "n0M4"
+    ],
+    "190": [
+      "n0M6"
+    ],
+    "191": [
+      "n0FH"
+    ],
+    "192": [
+      "n0EX"
+    ],
+    "324": [
+      "n0FX"
+    ],
+    "325": [
+      "n0M7"
+    ],
+    "326": [
+      "n0M8"
+    ],
+    "332": [
+      "n0M9"
+    ],
+    "331": [
+      "n0MD"
+    ],
+    "346": [
+      "n0N8"
+    ],
+    "350": [
+      "n0NC"
+    ],
+    "50": [
+      "n0F4"
+    ],
+    "51": [
+      "n0F5"
+    ],
+    "52": [
+      "n0F6"
+    ],
+    "53": [
+      "n0F7"
+    ],
+    "72": [
+      "n0F8"
+    ],
+    "54": [
+      "n0F9"
+    ],
+    "75": [
+      "n0FA"
+    ],
+    "82": [
+      "n0FB"
+    ],
+    "85": [
+      "n0FC"
+    ],
+    "129": [
+      "n0FD"
+    ],
+    "138": [
+      "n0FE"
+    ],
+    "139": [
+      "n0FF"
+    ],
+    "164": [
+      "n0FG"
+    ],
+    "183": [
+      "n0FI"
+    ],
+    "220": [
+      "n0FJ"
+    ],
+    "221": [
+      "n0FK"
+    ],
+    "290": [
+      "n0KV"
+    ],
+    "291": [
+      "n0KW"
+    ],
+    "292": [
+      "n0KX"
+    ],
+    "293": [
+      "n0KY"
+    ],
+    "315": [
+      "n0LN"
+    ],
+    "56": [
+      "n0EK"
+    ],
+    "57": [
+      "n0EL"
+    ],
+    "58": [
+      "n0EM"
+    ],
+    "59": [
+      "n0EN"
+    ],
+    "60": [
+      "n0EP"
+    ],
+    "61": [
+      "n0EQ"
+    ],
+    "62": [
+      "n0ER"
+    ],
+    "63": [
+      "n0ES"
+    ],
+    "64": [
+      "n0ET"
+    ],
+    "65": [
+      "n0EU"
+    ],
+    "66": [
+      "n0EV"
+    ],
+    "67": [
+      "n0EW"
+    ],
+    "86": [
+      "n0EO"
+    ],
+    "130": [
+      "n0EY"
+    ],
+    "140": [
+      "n0EZ"
+    ],
+    "155": [
+      "n0EJ"
+    ],
+    "206": [
+      "n0F0"
+    ],
+    "217": [
+      "n0F1"
+    ],
+    "237": [
+      "n0F2"
+    ],
+    "267": [
+      "n0F3"
+    ],
+    "279": [
+      "n0K3"
+    ],
+    "284": [
+      "n0KH"
+    ],
+    "285": [
+      "n0KI"
+    ],
+    "286": [
+      "n0KJ"
+    ],
+    "287": [
+      "n0KK"
+    ],
+    "314": [
+      "n0LM"
+    ],
+    "330": [
+      "n0ME"
+    ],
+    "349": [
+      "n0NB"
+    ]
+  },
+  "serializers": {
+    "Save_AllocBuffer": "eab11e6daf1c57779a7661383987e3d824317b0399925ba4454bfa24b7090887",
+    "Save_Write": "7fd99fbd320263c7f23b198d08b5ff8ba87d14b555d89bcaea65c3006adc2c1b",
+    "Save_AllocSlot": "856daf6760c4156eac5ed3d06572b99b20b841cc1e657c6847f578c2f9339f2a",
+    "Save_Init": "40941030439aa740f82048bab953331432c4dae47d5f303955e84451560e2967",
+    "Save_WriteCodeFile": "2953a7ddb4dd4bbbf45b9ccffa6ecf05b0a45fbfa039575aa596fe4c1b58f63d",
+    "Save_WriteAllowLocalFilesBat": "facaf479a6f7b2da70dae0f6c96fc0100610fc3a1f67568da874576058f9bf64",
+    "Save_WriteAndVerifyFile": "26f84567d9b8ae486bb1b292a87e9e78d99a9ecb01f156398c2f51a4766d0ddb",
+    "Save_Begin": "bf7cb936c021fb0f5e669fe4f198924fdf344f98ff7b5a71ccbf8ed3beab51a3",
+    "Save_ColorChar": "5ec723b959992f5a43f104666e1effd367f511127b1ffbcd5693b84b94e72870",
+    "Save_WriteBits": "561310c53d75fa48fb215b63b8d0002604c70c4d1c983b3e6eb7626566981ee5",
+    "Save_PushLevel": "43dd386e14f15cbf113d6c8b7c3bf968eab0e9f0307c979f16984717eabd348c",
+    "Save_PushJobLevel": "016be6c92ecb9fee694bbd68eb7a64e8bd2a5595855edecf6c5b10a614a638b0",
+    "Save_PushUnitLevel": "c596240659708ffbe23206b6af49491dd721ab5e18cffbc0300beda7cecd22b3",
+    "Save_EncodeLevels": "796b880767b2ec424a24a4fbe4fba87cf0d420b5b6e76c8a0fcaa024e0405946",
+    "Save_EncodeInventory": "ea0a7e15d4426bccbff62a1ca8c877783a4e728c241c460285852a8afdf24041",
+    "Save_PushTechLevel": "8ca441fb29f55b339268c35cece83a24433128f1e804b68806f3c83e7e29c787",
+    "Save_EncodeTechs": "3a54e3bd80663bc7ffcbf3fbaf7e50dbaf1f5167f1c0e5132b16b494edf30e17",
+    "Save_PushForceFlag": "317308876499f96b2315957c777b50f39fe3999a2340fc4fa8f974dd72a995b9",
+    "Save_EncodeUnitFlags": "ec23241c511dfd4d1c12f7dccde2be5bfa7cb85e348395ddd9a4b2cb30b45fc0",
+    "Save_DisplayCode": "dd485d8992cc7536a1ee4889628ffef9fd324251a5a634fa1310791a68f5222a",
+    "Save_Finish": "31503c45491f9658452192631027da08365caea6bef7fe4bab5b61df91819b0f",
+    "Save_WriteCode": "cb74fa23fa3b46db35114e1843b0685eba596b9e01c628b0be8ba353a92eeaaf",
+    "Save_WriteNewGameCode": "9b6859c906fc79b6dabd14e091a86e453e08d8f16d7fc2b65dd63d7d30ba30a1",
+    "Save_OnSaveCommand": "bbc5f673314ef987bbedbf4d42d2310f9eb4a987f499cf3be37667c101864cf3",
+    "Save_OnNewGamePlus": "3346f55bf717fc79359479e40e73e2cf34d6a19f1299f5c24c388b339fa6e62b",
+    "Save_OnNewGameMinus": "04e6cad4043a1cedc28fa6296d48c80f888a16dd9523c4ce5d5b7b2da1188df4",
+    "Save_CondNewGamePlus": "6a5fea849b590e62903beadd6f2cbeeab4aeb733108e9256acc07450314c57f6",
+    "Save_CondNewGameMinus": "fdae0f633bc5527ce4bae585b7a6cd2249d0e88e7a9516f43295a8283c9fe46a",
+    "Save_OnSaveToFile": "7fe4ec31be87c5f0313194facb512ea8df6d2a453f4b9e7702388b63c1e135cb",
+    "Save_Autosave": "f6835d95b81ef0fa7c1bcd4737a353a23750ff74fcf22ac18a12894c336b368c",
+    "Save_InitCommands": "0357de67009fd6da0a3d0330058073a003e1f9dfa0c71e53c5e73998d49428f7",
+    "Trig_Cmd_Load_Code_AllocReader": "6d386880dd109351b3b7900db2ae8b575c4f2359c9fa22bc15dfffd253991489",
+    "Trig_Cmd_Load_Code_FreeReader": "fdd1653eec6a0fe359c1f8f70c9daf799e8dc26acef85e194c80349848fe5c24",
+    "Trig_Cmd_Load_Code_ReadValue": "e10396f5a8e21772f5808bc4b5d409b1b58847f9510ef000f6fc34b0b745a148",
+    "Trig_Cmd_Load_Code_NewReader": "2dd24c99c2025cbf11c3bc5c2f5f4739e56c3ee833be056275216bf579380e9f",
+    "Trig_Cmd_Load_Code_ApplyJobLevel": "467c63638e9ecfec85841e1ecd51f37585349029483d57648413ff381cf04288",
+    "Trig_Cmd_Load_Code_CharToValue": "69d932630e6d8edc6334eca83949d120af2c402c7d2fbf31f7724d2f4ca37ac8",
+    "Trig_Cmd_Load_Code_TrimSpaces": "6264c37888d80482d0436f304f6f37ae13d8f64e79b3adeefa1a7624dc067810",
+    "Trig_Cmd_Load_Code_Checksum": "bca6f9cc64708f8583b61c16266bb8e79322966682a6493056ae5a0957b0643b",
+    "Trig_Cmd_Load_Code_ExpectedChecksum": "1b2f15b5f54f79fd2e45fd7e478c566a7e57baf6534eb9010409f2f143e7ec52",
+    "Trig_Cmd_Load_Code_PlayerNameHash": "3a10d43c42d6ff250a7871ba9b4dd2e8eb62306c54dd9a2e7320e356bafb0534",
+    "Trig_Cmd_Load_Code_OpenCode": "fb765b4cc49322c98f34aaf17efe7d1e7ba9c7993853c76909f93ae629e144ea",
+    "Trig_Cmd_Load_Code_GetCodeChecksum": "2a8beb81c237fc65b80af49ed86503b936110fc4a0e8fc418ed87563063073a9",
+    "Trig_Cmd_Load_Code_ArmoryChecksum": "aa830678d6b5322165f630a51f5333ff55825d184666df3a91822dcbdc05b8eb",
+    "Trig_Cmd_Load_Code_ArmoryHeader": "10dbf5c5b264bc94a10852b2afaabcc34ce9d18369db821c234dbba1ecb7afa0",
+    "Trig_Cmd_Load_Code_ReadBits": "4074c2859538ac27334f69a131b57ecbe3774aff236c70aac089632993a40ce4",
+    "Trig_Cmd_Load_Code_FlushBits": "134d060c7341cf800bc85705ca84355f55e6014e62e4c820aba8652df856cf88",
+    "Trig_Cmd_Load_Code_SeekArmory": "4d3f30f469af0a362b80f7306d8ab272b2fedadc408e71a24705bb4081fd66a7",
+    "Trig_Cmd_Load_Code_ReadLevelCapFlag": "f6b93edb4f09cb046da517f0940a707eed2c31b8af7f5a96492174384bf96568",
+    "Trig_Cmd_Load_Code_ReadUpgradeCapFlag": "3b902d720bff43bac8ded412d50e1646555086752fa2a49c750b2cd9e5b52bf6",
+    "Trig_Cmd_Load_Code_ReadLevel": "fce472d8f1d1dd85905be153fd54ca29f986c70751ffd6fca33541974ac392b4",
+    "Trig_Cmd_Load_Code_LoadJobLevel": "da54b95835b5a8d7c1ad37cef55097394a9095c5d1f8ec566dbadae096ee397b",
+    "Trig_Cmd_Load_Code_LoadHeroLevel": "6db6ae6a37003434739e345b16c8afa71d53c7d0ebf4809e63d3fcae66739595",
+    "Trig_Cmd_Load_Code_LoadInventory": "a049a1b4f1fe83f46a8d07f416a7014bf716cbeaf6df5fbb12e47260cf544175",
+    "Trig_Cmd_Load_Code_LoadUpgrade": "1b66021582ff02eb5122254a927d370b814b3e97dc16b0e80a8643fb035e9f83",
+    "Trig_Cmd_Load_Code_LoadUpgradeCapped": "36d2de65a34c865585246cacfaf020415957f562e601a64e58a88adacbf00c75",
+    "Trig_Cmd_Load_Code_LoadForceFlag": "bb4832765a8e29cf35bcb0de74c1eee3f1523d63cfb727d04cc71033bc91306c",
+    "Trig_Cmd_Load_Code_LoadArmory": "83b2f0777d49816161f3021fc1de54e4d5021604ca7e4c771b17d6fba31f8c09",
+    "Trig_Cmd_Load_Code_LoadArmoryLegacy": "183f2be11001392dee93f43288ed38f51c653d7a93085d7192a12c24042c51d9",
+    "Trig_Cmd_Load_Code_LoadCodeV3": "7f2cf19d1b873d3c2dd18e7f959a9f2dbdcc9a1cca48185fb1a9caf124e1ec75",
+    "Trig_Cmd_Load_Code_LoadCodeV2": "dce2961b1c625226a90ce193cc962333236f45b3c69f693589408fccb8576162",
+    "Trig_Cmd_Load_Code_LoadCodeG": "e43ca1f16a20c93142b71b23cf921e963b20ba8ae186ca42a396913fa5332b3b",
+    "Trig_Cmd_Load_Code_LoadCodeH": "2f896b35c485d228c80825f360d4966bdaef3ab92962cc54db2fb656f81fa087",
+    "Trig_Cmd_Load_Code_LoadCodeE": "151e94a26bd24f0cbf020c0aa10d5563b5bdf2c0435b276a88d7990a5a1216f0",
+    "Trig_Cmd_Load_Code_LoadCodeF": "10b8487219675bcdf9a98a72fcb8df9f2a874006ecdc70b5f2f4d312e653bd9d",
+    "Trig_Cmd_Load_Code_LoadCodeDispatch": "938c89ba518c89ca2b9a3b124136fe385ff477bba08138baee054ce66509c737",
+    "Trig_Cmd_Load_Code_Actions": "5fd5f4086c8e8e6edd6acdaf124a35fe4910ea878feff05bd88c591bbee2f65b",
+    "Code_Create": "de19076502918b929beca5a5aeb76e345b4578201283157576695c68fdbfcd84",
+    "Code_FreeSlot": "654f4f223633b076b0353d8526e19221b3a8cbef6b4fb29bd7a1b0e26a265a28",
+    "Code_WriteInt": "7b3187cb20a0bb63ffcef6d63eab289c3bf81647e73772ca1dea59a528ff36eb",
+    "Code_ReadInt": "628ca346bb5c077a16d801c7de3e9f1fcffb202a4c4cc38b0fd35ff86451baf3"
+  },
+  "charged": {
+    "1": true,
+    "2": false,
+    "3": true,
+    "4": true,
+    "5": true,
+    "6": true,
+    "7": true,
+    "8": true,
+    "9": true,
+    "10": true,
+    "11": true,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false,
+    "16": false,
+    "17": false,
+    "18": false,
+    "19": false,
+    "20": false,
+    "21": false,
+    "22": false,
+    "23": false,
+    "24": false,
+    "25": false,
+    "26": false,
+    "27": false,
+    "28": false,
+    "29": false,
+    "30": false,
+    "31": false,
+    "32": false,
+    "33": false,
+    "34": false,
+    "35": false,
+    "36": false,
+    "37": false,
+    "38": false,
+    "39": false,
+    "40": false,
+    "41": false,
+    "42": false,
+    "43": false,
+    "44": false,
+    "45": false,
+    "46": false,
+    "47": false,
+    "48": false,
+    "49": false,
+    "50": false,
+    "51": false,
+    "52": false,
+    "53": false,
+    "54": false,
+    "55": false,
+    "56": false,
+    "57": false,
+    "58": false,
+    "59": false,
+    "60": false,
+    "61": false,
+    "62": false,
+    "63": false,
+    "64": false,
+    "65": false,
+    "66": false,
+    "67": false,
+    "68": true,
+    "69": true,
+    "70": true,
+    "71": true,
+    "72": false,
+    "73": false,
+    "74": true,
+    "75": false,
+    "76": false,
+    "77": false,
+    "78": true,
+    "79": false,
+    "80": false,
+    "81": false,
+    "82": false,
+    "83": true,
+    "84": false,
+    "85": false,
+    "86": false,
+    "87": false,
+    "88": false,
+    "89": false,
+    "90": false,
+    "91": false,
+    "92": false,
+    "93": false,
+    "94": false,
+    "95": false,
+    "96": true,
+    "97": false,
+    "98": true,
+    "99": true,
+    "100": true,
+    "101": true,
+    "102": true,
+    "103": true,
+    "104": false,
+    "105": true,
+    "106": true,
+    "107": true,
+    "108": true,
+    "109": true,
+    "110": true,
+    "111": false,
+    "112": true,
+    "113": true,
+    "114": true,
+    "115": true,
+    "116": true,
+    "117": true,
+    "118": false,
+    "119": false,
+    "120": false,
+    "121": false,
+    "122": false,
+    "123": false,
+    "124": false,
+    "125": false,
+    "126": false,
+    "127": true,
+    "128": true,
+    "129": false,
+    "130": false,
+    "131": false,
+    "132": false,
+    "133": false,
+    "134": false,
+    "135": false,
+    "136": false,
+    "137": false,
+    "138": false,
+    "139": false,
+    "140": false,
+    "141": true,
+    "142": false,
+    "143": false,
+    "144": false,
+    "145": false,
+    "146": false,
+    "147": true,
+    "148": true,
+    "149": true,
+    "150": true,
+    "151": false,
+    "152": false,
+    "153": true,
+    "154": false,
+    "155": false,
+    "156": true,
+    "157": false,
+    "158": false,
+    "159": false,
+    "160": false,
+    "161": false,
+    "162": false,
+    "163": false,
+    "164": false,
+    "165": false,
+    "166": false,
+    "167": false,
+    "168": false,
+    "169": true,
+    "170": false,
+    "171": false,
+    "172": false,
+    "173": true,
+    "174": true,
+    "175": true,
+    "176": true,
+    "177": true,
+    "178": true,
+    "179": true,
+    "180": false,
+    "181": false,
+    "182": false,
+    "183": false,
+    "184": false,
+    "185": false,
+    "186": false,
+    "187": true,
+    "188": true,
+    "189": false,
+    "190": false,
+    "191": false,
+    "192": false,
+    "193": false,
+    "194": false,
+    "195": true,
+    "196": true,
+    "197": true,
+    "198": false,
+    "199": false,
+    "200": false,
+    "201": false,
+    "202": false,
+    "203": false,
+    "204": false,
+    "205": false,
+    "206": false,
+    "207": false,
+    "208": false,
+    "209": false,
+    "210": true,
+    "211": false,
+    "212": false,
+    "213": false,
+    "214": false,
+    "215": false,
+    "216": false,
+    "217": false,
+    "218": false,
+    "219": false,
+    "220": false,
+    "221": false,
+    "222": true,
+    "223": true,
+    "224": false,
+    "225": false,
+    "226": false,
+    "227": false,
+    "228": false,
+    "229": false,
+    "230": false,
+    "231": false,
+    "232": false,
+    "233": false,
+    "234": false,
+    "235": false,
+    "236": false,
+    "237": false,
+    "238": false,
+    "239": false,
+    "240": false,
+    "241": false,
+    "242": false,
+    "243": false,
+    "244": false,
+    "245": false,
+    "246": false,
+    "247": false,
+    "248": false,
+    "249": false,
+    "250": false,
+    "251": false,
+    "252": false,
+    "253": false,
+    "254": false,
+    "255": false,
+    "256": false,
+    "257": false,
+    "258": false,
+    "259": false,
+    "260": false,
+    "261": false,
+    "262": false,
+    "263": false,
+    "264": false,
+    "265": false,
+    "266": false,
+    "267": false,
+    "268": false,
+    "269": false,
+    "270": false,
+    "271": false,
+    "272": false,
+    "273": false,
+    "274": false,
+    "275": false,
+    "276": false,
+    "277": false,
+    "278": false,
+    "279": false,
+    "280": false,
+    "281": false,
+    "282": false,
+    "283": false,
+    "284": false,
+    "285": false,
+    "286": false,
+    "287": false,
+    "288": false,
+    "289": false,
+    "290": false,
+    "291": false,
+    "292": false,
+    "293": false,
+    "294": false,
+    "295": false,
+    "296": false,
+    "297": false,
+    "298": false,
+    "299": false,
+    "300": false,
+    "301": false,
+    "302": true,
+    "303": false,
+    "304": false,
+    "305": false,
+    "306": false,
+    "307": false,
+    "308": false,
+    "309": false,
+    "310": false,
+    "311": false,
+    "312": false,
+    "313": false,
+    "314": false,
+    "315": false,
+    "316": false,
+    "317": false,
+    "318": false,
+    "319": false,
+    "320": false,
+    "321": true,
+    "322": false,
+    "323": false,
+    "324": false,
+    "325": false,
+    "326": false,
+    "327": false,
+    "328": false,
+    "329": false,
+    "330": false,
+    "331": false,
+    "332": false,
+    "333": false,
+    "334": false,
+    "335": false,
+    "336": false,
+    "337": false,
+    "338": false,
+    "339": false,
+    "340": false,
+    "341": false,
+    "342": false,
+    "343": false,
+    "344": false,
+    "345": false,
+    "346": false,
+    "347": false,
+    "348": false,
+    "349": false,
+    "350": false,
+    "351": false
+  },
+  "item_classes": {
+    "pman": "Charged",
+    "pdiv": null,
+    "pgma": null,
+    "pghe": null,
+    "sman": "Charged",
+    "ankh": null,
+    "phea": "Charged",
+    "stwp": "Charged",
+    "I001": "Charged",
+    "I002": null,
+    "I000": null,
+    "pres": null,
+    "sror": null,
+    "I02V": null,
+    "I02X": null,
+    "I03P": "Charged",
+    "I02E": "Charged",
+    "I02I": null,
+    "I02K": "Charged",
+    "I02N": null,
+    "I02L": null,
+    "I02J": null,
+    "I02M": "Charged",
+    "I02O": null,
+    "I02H": null,
+    "I02D": null,
+    "I05I": null,
+    "I05H": null,
+    "I0DI": "Charged",
+    "I0ET": null,
+    "I0EU": null,
+    "I0KF": null,
+    "I0KG": null,
+    "I0KH": null,
+    "I0KI": null,
+    "I0KJ": null,
+    "I0KK": null,
+    "I0KL": null,
+    "I0KM": null,
+    "I0KN": null,
+    "I0KO": null,
+    "I023": "Charged",
+    "I024": "Charged",
+    "I025": "Charged",
+    "I03G": "Charged",
+    "I03H": "Charged",
+    "I03F": "Charged",
+    "I03L": "Charged",
+    "I03M": "Charged",
+    "I03N": "Charged",
+    "I07N": "Charged",
+    "I07O": "Charged",
+    "I07P": "Charged",
+    "I0DT": null,
+    "I0E0": null,
+    "I0E1": null,
+    "I0E2": null,
+    "I0E7": null,
+    "I0ED": null,
+    "I0GE": null,
+    "I07W": null,
+    "I0ES": null,
+    "I0JV": null,
+    "I0BA": null,
+    "I00D": null,
+    "I00H": null,
+    "I00B": null,
+    "I00E": null,
+    "I00J": null,
+    "I00G": null,
+    "I00K": null,
+    "I00I": null,
+    "I00P": null,
+    "I00F": null,
+    "I00C": null,
+    "I00Q": null,
+    "I00L": null,
+    "I00R": null,
+    "I01X": null,
+    "I02W": null,
+    "I031": null,
+    "I037": null,
+    "I039": null,
+    "I03I": null,
+    "I04M": null,
+    "I04L": null,
+    "I04D": null,
+    "I063": null,
+    "I08F": null,
+    "I0A7": null,
+    "I0CN": null,
+    "I0CO": null,
+    "I0CP": null,
+    "I0D0": null,
+    "I0DL": null,
+    "I0DR": null,
+    "I0DS": null,
+    "I0FD": null,
+    "I0FW": null,
+    "I0FX": null,
+    "I0FY": null,
+    "I0FZ": null,
+    "I0G0": null,
+    "I0G1": null,
+    "I0G6": null,
+    "I0GD": null,
+    "I0GJ": null,
+    "I0HT": null,
+    "I0IB": null,
+    "I0EC": null,
+    "I0JX": null,
+    "I0K1": null,
+    "I0K2": null,
+    "I0K3": null,
+    "I0K4": null,
+    "I0KA": null,
+    "I0KC": null,
+    "I0KB": null,
+    "I0KD": null,
+    "I0A9": null,
+    "I04A": null,
+    "I0B0": null,
+    "I0C8": null,
+    "I0GF": null,
+    "I00N": null,
+    "I00M": null,
+    "I00S": "Permanent",
+    "I00U": null,
+    "I00V": null,
+    "I00W": null,
+    "I00Z": null,
+    "I010": "Permanent",
+    "I011": "Permanent",
+    "I019": null,
+    "I01A": null,
+    "I01B": null,
+    "I01C": null,
+    "I01D": null,
+    "I01E": null,
+    "I01F": null,
+    "I01G": null,
+    "I02C": "Permanent",
+    "I02P": null,
+    "I02Q": null,
+    "I02S": null,
+    "I02Y": null,
+    "I033": null,
+    "I035": null,
+    "I036": null,
+    "I00O": null,
+    "I04E": null,
+    "I04F": null,
+    "I04G": null,
+    "I04H": null,
+    "I04I": null,
+    "I066": null,
+    "I07M": "Permanent",
+    "I07Z": null,
+    "I080": null,
+    "I081": "Permanent",
+    "I08N": "Permanent",
+    "I0CS": "Permanent",
+    "I0CT": null,
+    "I0CU": null,
+    "I0DH": "Permanent",
+    "I0DG": null,
+    "I0DM": null,
+    "I02F": null,
+    "I0DY": null,
+    "I0DZ": null,
+    "I0E6": null,
+    "I0E8": null,
+    "I0F2": null,
+    "I0F3": null,
+    "I0F4": null,
+    "I0F5": null,
+    "I0F6": null,
+    "I0FO": null,
+    "I0FP": null,
+    "I0EW": null,
+    "I0F7": null,
+    "I0GA": "Permanent",
+    "I0F8": null,
+    "I0EY": null,
+    "I0EZ": null,
+    "I0GB": null,
+    "I0GC": null,
+    "I0H1": null,
+    "I0HU": null,
+    "I0ER": "Permanent",
+    "I0BW": null,
+    "I0C0": null,
+    "I0C1": null,
+    "I0C2": null,
+    "I0C3": null,
+    "I0HW": null,
+    "I0EQ": null,
+    "I0JU": null,
+    "I0JW": "Permanent",
+    "I0JY": null,
+    "I0K8": null,
+    "I0G5": "Permanent",
+    "I0KW": "Permanent",
+    "I0L0": "Permanent",
+    "I0L6": null,
+    "I0L7": null,
+    "I0L8": null,
+    "I0L9": null,
+    "I0KX": null,
+    "I0KY": null,
+    "I0KZ": null,
+    "I0LQ": null,
+    "I05S": null,
+    "I05T": null,
+    "I061": "Permanent",
+    "I060": null,
+    "I0BH": null,
+    "I0BI": null,
+    "I0BJ": null,
+    "I0BM": "Permanent",
+    "I0C5": null,
+    "I0C6": null,
+    "I0C7": null,
+    "I0C9": null,
+    "I0BP": null,
+    "I0LP": null,
+    "I03D": null,
+    "I03O": null,
+    "I0BT": null,
+    "I0D1": null,
+    "I0LL": null,
+    "I0A8": null,
+    "I0LJ": "Permanent",
+    "I0LE": null,
+    "I0LA": null,
+    "I0LH": null,
+    "I0LC": "Permanent",
+    "I0LG": null,
+    "I0LD": null,
+    "I0LI": null,
+    "I0LB": null,
+    "I0LF": "Permanent",
+    "I012": "PowerUp",
+    "I013": "PowerUp",
+    "I014": "PowerUp",
+    "I015": "PowerUp",
+    "I016": "PowerUp",
+    "I017": "PowerUp",
+    "I018": "PowerUp",
+    "I02T": "PowerUp",
+    "I04J": "PowerUp",
+    "I064": "PowerUp",
+    "I065": "PowerUp",
+    "I0BU": "PowerUp",
+    "I0E3": "PowerUp",
+    "I0FA": "PowerUp",
+    "I03A": "PowerUp",
+    "I0HN": "PowerUp",
+    "I0HP": "PowerUp",
+    "I0HQ": "PowerUp",
+    "I0HR": "PowerUp",
+    "I0HO": "PowerUp",
+    "I0HH": "PowerUp",
+    "I0HI": "PowerUp",
+    "I0HK": "PowerUp",
+    "I0HJ": "PowerUp",
+    "I0HL": "PowerUp",
+    "I0HM": "PowerUp",
+    "I0I8": "PowerUp",
+    "I0I5": "PowerUp",
+    "I0I2": "PowerUp",
+    "I0I6": "PowerUp",
+    "I0I1": "PowerUp",
+    "I0I4": "PowerUp",
+    "I0HX": "PowerUp",
+    "I0I7": "PowerUp",
+    "I0HZ": "PowerUp",
+    "I0I3": "PowerUp",
+    "I0HY": "PowerUp",
+    "I0H0": "PowerUp",
+    "I0LK": "PowerUp",
+    "I0LN": "PowerUp",
+    "I0B8": "PowerUp",
+    "I05U": "PowerUp",
+    "I05V": "PowerUp",
+    "I05W": "PowerUp",
+    "I05X": "PowerUp",
+    "I05Y": "PowerUp",
+    "I05Z": "PowerUp",
+    "I0BC": "PowerUp",
+    "I0BF": "PowerUp",
+    "I086": "PowerUp",
+    "I0FK": "PowerUp",
+    "I01H": null,
+    "I01I": null,
+    "I01J": "Artifact",
+    "I01K": null,
+    "I026": "Artifact",
+    "I01L": null,
+    "I02R": "Artifact",
+    "I02U": "Artifact",
+    "I02Z": null,
+    "I04C": null,
+    "I06A": null,
+    "I069": "Artifact",
+    "I0AA": null,
+    "I0D4": null,
+    "I0FB": null,
+    "I0FC": "Artifact",
+    "I0L4": "Artifact",
+    "I0L1": "Artifact",
+    "I0L2": "Artifact",
+    "I0L3": "Artifact",
+    "I0LO": null,
+    "I01M": "Purchasable",
+    "I01N": "Purchasable",
+    "I01O": "Purchasable",
+    "I01P": "Purchasable",
+    "I01Q": "Purchasable",
+    "I01R": "Purchasable",
+    "I01S": "Purchasable",
+    "I01T": "Purchasable",
+    "I01U": "Purchasable",
+    "I01V": "Purchasable",
+    "I01W": "Purchasable",
+    "I01Y": "Purchasable",
+    "I030": "Purchasable",
+    "I05G": "Purchasable",
+    "I07X": "Purchasable",
+    "I0A6": "Purchasable",
+    "I0E5": "Purchasable",
+    "I0F9": "Purchasable",
+    "I0GZ": "Purchasable",
+    "I0BX": "Purchasable",
+    "I0K9": "Purchasable",
+    "I0KQ": "Purchasable",
+    "I0KS": "Purchasable",
+    "I0KR": "Purchasable",
+    "I0KT": "Purchasable",
+    "I0LM": "Purchasable",
+    "I0BG": "Purchasable",
+    "I0D2": "Purchasable",
+    "I062": null,
+    "I084": null,
+    "I0CX": "Charged",
+    "I08A": null,
+    "I0B7": null,
+    "I06P": null,
+    "I08B": null,
+    "I089": null,
+    "I07C": null
+  },
+  "baseline": "FFERPG_0.9.7.3-r16-stageS.w3x",
+  "sha256": "923dc01ea5be419299ce02ac802ab34825c28f7e7aad3a3c262d9aa2d87b30ef",
+  "item_bases": {
+    "pman": "pman",
+    "pdiv": "pdiv",
+    "pgma": "pgma",
+    "pghe": "pghe",
+    "sman": "sman",
+    "ankh": "ankh",
+    "phea": "phea",
+    "stwp": "stwp",
+    "I001": "dsum",
+    "I002": "hlst",
+    "I000": "pghe",
+    "pres": "pres",
+    "sror": "sror",
+    "I02V": "pghe",
+    "I02X": "pghe",
+    "I03P": "arsc",
+    "I02E": "ccmd",
+    "I02I": "pgma",
+    "I02K": "ccmd",
+    "I02N": "wlsd",
+    "I02L": "pghe",
+    "I02J": "pghe",
+    "I02M": "shrs",
+    "I02O": "pghe",
+    "I02H": "hlst",
+    "I02D": "fgdg",
+    "I05I": "wlsd",
+    "I05H": "wlsd",
+    "I0DI": "pams",
+    "I0ET": "pghe",
+    "I0EU": "pghe",
+    "I0KF": "hlst",
+    "I0KG": "hlst",
+    "I0KH": "hlst",
+    "I0KI": "hlst",
+    "I0KJ": "hlst",
+    "I0KK": "hlst",
+    "I0KL": "hlst",
+    "I0KM": "hlst",
+    "I0KN": "hlst",
+    "I0KO": "hlst",
+    "I023": "anfg",
+    "I024": "anfg",
+    "I025": "anfg",
+    "I03G": "anfg",
+    "I03H": "anfg",
+    "I03F": "anfg",
+    "I03L": "anfg",
+    "I03M": "anfg",
+    "I03N": "anfg",
+    "I07N": "anfg",
+    "I07O": "anfg",
+    "I07P": "anfg",
+    "I0DT": "sand",
+    "I0E0": "sand",
+    "I0E1": "sand",
+    "I0E2": "sand",
+    "I0E7": "sand",
+    "I0ED": "sand",
+    "I0GE": "sand",
+    "I07W": "sand",
+    "I0ES": "sand",
+    "I0JV": "sand",
+    "I0BA": "sand",
+    "I00D": "anfg",
+    "I00H": "lnrn",
+    "I00B": "rnsp",
+    "I00E": "sksh",
+    "I00J": "anfg",
+    "I00G": "brag",
+    "I00K": "anfg",
+    "I00I": "anfg",
+    "I00P": "anfg",
+    "I00F": "anfg",
+    "I00C": "anfg",
+    "I00Q": "nspi",
+    "I00L": "nspi",
+    "I00R": "anfg",
+    "I01X": "anfg",
+    "I02W": "anfg",
+    "I031": "anfg",
+    "I037": "anfg",
+    "I039": "anfg",
+    "I03I": "anfg",
+    "I04M": "anfg",
+    "I04L": "anfg",
+    "I04D": "anfg",
+    "I063": "anfg",
+    "I08F": "anfg",
+    "I0A7": "anfg",
+    "I0CN": "anfg",
+    "I0CO": "anfg",
+    "I0CP": "anfg",
+    "I0D0": "anfg",
+    "I0DL": "anfg",
+    "I0DR": "anfg",
+    "I0DS": "sprn",
+    "I0FD": "anfg",
+    "I0FW": "anfg",
+    "I0FX": "anfg",
+    "I0FY": "anfg",
+    "I0FZ": "anfg",
+    "I0G0": "anfg",
+    "I0G1": "anfg",
+    "I0G6": "anfg",
+    "I0GD": "anfg",
+    "I0GJ": "anfg",
+    "I0HT": "anfg",
+    "I0IB": "anfg",
+    "I0EC": "olig",
+    "I0JX": "anfg",
+    "I0K1": "drph",
+    "I0K2": "anfg",
+    "I0K3": "anfg",
+    "I0K4": "anfg",
+    "I0KA": "sksh",
+    "I0KC": "anfg",
+    "I0KB": "anfg",
+    "I0KD": "anfg",
+    "I0A9": "anfg",
+    "I04A": "anfg",
+    "I0B0": "anfg",
+    "I0C8": "anfg",
+    "I0GF": "anfg",
+    "I00N": "afac",
+    "I00M": "ajen",
+    "I00S": "ches",
+    "I00U": "gcel",
+    "I00V": "gcel",
+    "I00W": "gcel",
+    "I00Z": "afac",
+    "I010": "crdt",
+    "I011": "crdt",
+    "I019": "afac",
+    "I01A": "pmna",
+    "I01B": "pmna",
+    "I01C": "pmna",
+    "I01D": "hcun",
+    "I01E": "hcun",
+    "I01F": "hcun",
+    "I01G": "hcun",
+    "I02C": "crdt",
+    "I02P": "afac",
+    "I02Q": "afac",
+    "I02S": "afac",
+    "I02Y": "pmna",
+    "I033": "ajen",
+    "I035": "afac",
+    "I036": "evtl",
+    "I00O": "pmna",
+    "I04E": "pmna",
+    "I04F": "evtl",
+    "I04G": "afac",
+    "I04H": "pmna",
+    "I04I": "afac",
+    "I066": "gcel",
+    "I07M": "crdt",
+    "I07Z": "ajen",
+    "I080": "evtl",
+    "I081": "crdt",
+    "I08N": "axas",
+    "I0CS": "crdt",
+    "I0CT": "afac",
+    "I0CU": "afac",
+    "I0DH": "anfg",
+    "I0DG": "afac",
+    "I0DM": "afac",
+    "I02F": "hcun",
+    "I0DY": "hcun",
+    "I0DZ": "hcun",
+    "I0E6": "hcun",
+    "I0E8": "hcun",
+    "I0F2": "gcel",
+    "I0F3": "pmna",
+    "I0F4": "evtl",
+    "I0F5": "afac",
+    "I0F6": "ajen",
+    "I0FO": "ajen",
+    "I0FP": "afac",
+    "I0EW": "pmna",
+    "I0F7": "afac",
+    "I0GA": "crdt",
+    "I0F8": "afac",
+    "I0EY": "afac",
+    "I0EZ": "afac",
+    "I0GB": "afac",
+    "I0GC": "afac",
+    "I0H1": "afac",
+    "I0HU": "gcel",
+    "I0ER": "ches",
+    "I0BW": "evtl",
+    "I0C0": "afac",
+    "I0C1": "afac",
+    "I0C2": "afac",
+    "I0C3": "afac",
+    "I0HW": "stel",
+    "I0EQ": "gcel",
+    "I0JU": "afac",
+    "I0JW": "crdt",
+    "I0JY": "ajen",
+    "I0K8": "afac",
+    "I0G5": "crdt",
+    "I0KW": "crdt",
+    "I0L0": "crdt",
+    "I0L6": "ajen",
+    "I0L7": "gcel",
+    "I0L8": "pmna",
+    "I0L9": "afac",
+    "I0KX": "hcun",
+    "I0KY": "hcun",
+    "I0KZ": "hcun",
+    "I0LQ": "afac",
+    "I05S": "ajen",
+    "I05T": "afac",
+    "I061": "crdt",
+    "I060": "ajen",
+    "I0BH": "gcel",
+    "I0BI": "afac",
+    "I0BJ": "afac",
+    "I0BM": "crdt",
+    "I0C5": "afac",
+    "I0C6": "afac",
+    "I0C7": "afac",
+    "I0C9": "afac",
+    "I0BP": "gcel",
+    "I0LP": "pmna",
+    "I03D": "afac",
+    "I03O": "afac",
+    "I0BT": "gcel",
+    "I0D1": "ajen",
+    "I0LL": "fgdg",
+    "I0A8": "fgdg",
+    "I0LJ": "crdt",
+    "I0LE": "gcel",
+    "I0LA": "evtl",
+    "I0LH": "afac",
+    "I0LC": "anfg",
+    "I0LG": "afac",
+    "I0LD": "pmna",
+    "I0LI": "afac",
+    "I0LB": "ajen",
+    "I0LF": "crdt",
+    "I012": "afac",
+    "I013": "afac",
+    "I014": "afac",
+    "I015": "gcel",
+    "I016": "afac",
+    "I017": "gcel",
+    "I018": "gcel",
+    "I02T": "gcel",
+    "I04J": "gcel",
+    "I064": "afac",
+    "I065": "afac",
+    "I0BU": "afac",
+    "I0E3": "afac",
+    "I0FA": "anfg",
+    "I03A": "gcel",
+    "I0HN": "afac",
+    "I0HP": "afac",
+    "I0HQ": "afac",
+    "I0HR": "afac",
+    "I0HO": "rwiz",
+    "I0HH": "ajen",
+    "I0HI": "ajen",
+    "I0HK": "ajen",
+    "I0HJ": "ajen",
+    "I0HL": "ajen",
+    "I0HM": "ajen",
+    "I0I8": "evtl",
+    "I0I5": "evtl",
+    "I0I2": "evtl",
+    "I0I6": "evtl",
+    "I0I1": "evtl",
+    "I0I4": "evtl",
+    "I0HX": "evtl",
+    "I0I7": "evtl",
+    "I0HZ": "evtl",
+    "I0I3": "evtl",
+    "I0HY": "evtl",
+    "I0H0": "gcel",
+    "I0LK": "rwiz",
+    "I0LN": "gcel",
+    "I0B8": "rwiz",
+    "I05U": "evtl",
+    "I05V": "evtl",
+    "I05W": "evtl",
+    "I05X": "evtl",
+    "I05Y": "evtl",
+    "I05Z": "evtl",
+    "I0BC": "ajen",
+    "I0BF": "afac",
+    "I086": "evtl",
+    "I0FK": "gcel",
+    "I01H": "ckng",
+    "I01I": "ckng",
+    "I01J": "gcel",
+    "I01K": "ckng",
+    "I026": "gcel",
+    "I01L": "ckng",
+    "I02R": "gcel",
+    "I02U": "gcel",
+    "I02Z": "ckng",
+    "I04C": "ckng",
+    "I06A": "ckng",
+    "I069": "gcel",
+    "I0AA": "ckng",
+    "I0D4": "ckng",
+    "I0FB": "ckng",
+    "I0FC": "gcel",
+    "I0L4": "gcel",
+    "I0L1": "gcel",
+    "I0L2": "gcel",
+    "I0L3": "gcel",
+    "I0LO": "ckng",
+    "I01M": "modt",
+    "I01N": "clsd",
+    "I01O": "afac",
+    "I01P": "penr",
+    "I01Q": "gcel",
+    "I01R": "gcel",
+    "I01S": "gcel",
+    "I01T": "cnob",
+    "I01U": "evtl",
+    "I01V": "evtl",
+    "I01W": "evtl",
+    "I01Y": "ckng",
+    "I030": "penr",
+    "I05G": "anfg",
+    "I07X": "evtl",
+    "I0A6": "ckng",
+    "I0E5": "ckng",
+    "I0F9": "gcel",
+    "I0GZ": "ckng",
+    "I0BX": "ckng",
+    "I0K9": "ckng",
+    "I0KQ": "evtl",
+    "I0KS": "evtl",
+    "I0KR": "evtl",
+    "I0KT": "evtl",
+    "I0LM": "clsd",
+    "I0BG": "ckng",
+    "I0D2": "evtl",
+    "I062": "fgdg",
+    "I084": "fgdg",
+    "I0CX": "azhr",
+    "I08A": "fgdg",
+    "I0B7": "fgdg",
+    "I06P": "fgdg",
+    "I08B": "fgdg",
+    "I089": "fgdg",
+    "I07C": "fgdg"
+  },
+  "save_flag_count": 351
+}

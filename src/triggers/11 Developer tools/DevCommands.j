@@ -1,4 +1,4 @@
-library TDevCommands requires TPlayerHero, optional TTitle
+library TDevCommands requires TPlayerHero, optional TTitle, TQuestEngine
 // ==========================================================================================
 // Developer test commands, so testing late-game content takes minutes instead of hours.
 //
@@ -120,6 +120,53 @@ function DevCommands_DumpItems takes player p returns nothing
     call DevCommands_Say(p,I2S(n)+" items written to CustomMapData\\FFERPG\\itemtable.txt")
 endfunction
 
+function DevCommands_QuestState takes player p,integer l_number returns nothing
+    local integer q=1
+    local string l_state
+    local string l_slot
+    local string l_flags
+    local quest l_entry
+    static if LIBRARY_TQuestEngine then
+        loop
+            exitwhen q>QuestCount
+            if (l_number==0 and (QuestState[q]==QUEST_STATE_AVAILABLE or QuestState[q]==QUEST_STATE_ACTIVE)) or q==l_number then
+                set l_state="hidden"
+                if QuestState[q]==QUEST_STATE_AVAILABLE then
+                    set l_state="available"
+                elseif QuestState[q]==QUEST_STATE_ACTIVE then
+                    set l_state="active"
+                elseif QuestState[q]==QUEST_STATE_DONE then
+                    set l_state="done"
+                elseif QuestState[q]==QUEST_STATE_FAILED then
+                    set l_state="failed"
+                endif
+                set l_slot="SideQuest"
+                if QuestLogKind[q]==QUEST_MAIN then
+                    set l_slot="MainQuest"
+                endif
+                set l_flags=""
+                set l_entry=Quest_LogEntry(q)
+                if l_entry!=null then
+                    if IsQuestCompleted(l_entry) then
+                        set l_flags=l_flags+" log completed"
+                    endif
+                    if IsQuestFailed(l_entry) then
+                        set l_flags=l_flags+" log failed"
+                    endif
+                endif
+                call DevCommands_Say(p,"#"+I2S(q)+" "+QuestName[q]+": "+l_state+", step "+I2S(QuestCurrent[q])+"/"+I2S(QuestSteps[q])+", "+l_slot+"["+I2S(QuestLogIndex[q])+"]"+l_flags)
+            endif
+            set q=q+1
+        endloop
+        if l_number<0 or l_number>QuestCount then
+            call DevCommands_Say(p,"usage: -queststate [engine quest number 1.."+I2S(QuestCount)+"]")
+        endif
+    else
+        call DevCommands_Say(p,"the QuestEngine module is switched off")
+    endif
+    set l_entry=null
+endfunction
+
 function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"Developer commands (single player only):")
     call DevCommands_Say(p,"-gold N, -shards N, -bp N (Battle Points), -lvl N (hero level)")
@@ -128,6 +175,7 @@ function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"-kill (selected units), -tp X Y (or -tp: camera), -pos")
     call DevCommands_Say(p,"-time H (0-24), -reveal (toggle), -spawns on/off, -title N")
     call DevCommands_Say(p,"-dumpitems (item table file for tools/savecode.py)")
+    call DevCommands_Say(p,"-queststate [N] (active/available quests, or one engine quest number)")
 endfunction
 
 function DevCommands_KillEnum takes nothing returns nothing
@@ -163,6 +211,8 @@ function Trig_DevCommands_Chat_Actions takes nothing returns nothing
         call DevCommands_Say(p,"Battle Points: "+I2S(udg_BattlePoints[GetConvertedPlayerId(p)]))
     elseif cmd=="-dumpitems" then
         call DevCommands_DumpItems(p)
+    elseif cmd=="-queststate" then
+        call DevCommands_QuestState(p,n)
     elseif h==null then
         call DevCommands_Say(p,"pick a hero first")
     elseif cmd=="-lvl" then

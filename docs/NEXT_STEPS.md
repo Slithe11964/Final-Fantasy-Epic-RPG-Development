@@ -1,33 +1,34 @@
 # FF Epic RPG: readying the map for new development
 
-Updated 2026-10-05, stage S. Current release: release/FFERPG_0.9.7.3-r16-stageS.w3x.
-The user reports stage R works great. All 93 quests are on QuestEngine. Stage S passes automated checks;
-gameplay validation is pending. Read HANDOFF.md for the exact build and STAGES.md for history.
+Updated 2026-10-05, stage U. Current release: release/FFERPG_0.9.7.3-r16-stageU.w3x.
+The user reports stage S is working. All 93 quests are on QuestEngine. Priorities **2, 3 and 4 below
+are implemented** in stages T/U; BUILDS.md describes the new workflow and its limits. U's playable
+script is byte-identical to S. Read HANDOFF.md for the exact build and STAGES.md for history.
+The user asked to ignore the documented bugs in the current map; bug work is deferred.
 
 ## Recommended order
 
-1. **Establish a tested development baseline.** Play the stage S checklist in QUEST_TESTS.md, including
-   both new quests, retries/failure, cinematics on/off, multiplayer and native save/load. Save As through
-   World Editor with JassHelper/vJass enabled, check that saved map, then test it. Preserve the confirmed
-   map and its hash; editor compilation alone is not gameplay proof.
+1. **Tested development baseline established.** Stage S is user-confirmed working and SHA256-pinned
+   in build-config.json. Future gameplay changes still need their focused checklist, including save/load
+   and multiplayer where relevant. A future World Editor Save As needs its own checks/play test.
 
-2. **Make builds repeatable with one command.** Wrap sync_module -> order_libraries -> check_map ->
-   add_header in a build command that stops on any failure, creates a new stage, and saves hashes/check
-   results. Record the Python/pjass/JassHelper versions and the required base map. Maps are ignored by
-   Git, so a fresh clone also needs an identified base archive and its assets. Add a source/runtime drift
-   check for all module bodies; the present check_map agreement checks focus on startup and globals.
+2. **Done: repeatable one-command builds.** build.ps1 selects changed modules, runs sync/order/all
+   checks/header, refuses existing output, and records map/source/tool hashes and runtime/compiler
+   identities. Full enabled-function drift checks preserve exact historical hash pairs while rejecting
+   new differences. Fresh clones still need the identified map/assets and sibling header tool.
 
-3. **Add quest-definition checks and better test tools.** Validate per-quest step limits, array capacity,
-   quest indexes, missing NPC/item references, dependency requirements, and hooks that wait. Extend the
-   lifecycle harness to ordinary talk/kill/deliver flows and engine failure cleanup. Add development-only
-   quest-state inspection. Audit direct interrupted-quest overrides and shared log replacement before
-   introducing new branching story content; their original counting behavior was preserved here.
+3. **Done: quest-definition checks and inspection.** check_quests.py validates capacities, indexes,
+   targets, requires and synchronous waits, including nested expressions/callbacks. The harness now
+   exercises ordinary talk/kill/partial-deliver flows and failure cleanup. Disabled DevCommands includes
+   read-only -queststate inspection, displaying engine state and legacy log overrides separately.
+   Unusual dynamic hooks and branching/shared-log behavior still deserve content-specific review.
 
-4. **Protect save-code and content tables.** Add automated guards for the documented item-index/armory
-   collision above index 500 (BUGS #6), duplicate object IDs and missing item/unit/ability references.
-   Keep known save codes as compatibility fixtures when extending jobs, items, armory or progression.
+4. **Done: save/content guards.** Append-only item indexes <=500, charge/base/class preservation,
+   save-count agreement, job order, serializers and armory mappings are guarded. Typed literal
+   references and duplicate object IDs are checked. Three synthetic fixed G/H vectors and 2,000 random
+   cases protect codec behavior; capture real player codes before changing formats/progression.
 
-5. **Confirm and fix the documented bugs separately.** Prioritize Greed's high-level item lookup,
+5. **Deferred by user request: documented bugs.** If revisited later, reproduce Greed's high-level item lookup,
    arena team-selection recursion, repeatable arena-boss death triggers, and duplicated arena reward
    logic. BUGS.md records suspected issues; reproduce each before changing behavior. Investigate the
    1.29.2-format marker issue only if that release target is needed; the active build is Reforged.
@@ -49,11 +50,16 @@ gameplay validation is pending. Read HANDOFF.md for the exact build and STAGES.m
 ## Tools already available
 
 - tools/check_map.py: compile, startup wiring/order, globals and native-save string checks.
-- tools/tests/test_quest_lifecycle.py: seven source-level lifecycle/report tests (mocked Warcraft natives).
+- build.ps1 / tools/build_stage.py: complete build/gate/header pipeline with manifests.
+- tools/check_sources.py, check_editor_sources.py, check_quests.py, check_content.py, check_save_compat.py:
+  read-only development safeguards; limits in BUILDS.md.
+- tools/tests/run_tests.py: 35 regression tests (10 lifecycle/event tests execute actual quest source
+  with mocked Warcraft natives, plus inspector and build/quest/content/save guard tests).
 - tools/tests/verify_stage_s.py: stage S conversion preservation audit against stage R commit 800ed48.
 - tools/disable_check.py: module dependency/disabling audit.
 - tools/gen_docs.py: regenerate source reference docs.
 - tools/savecode.py and docs/SAVE_CODES.md: save-code inspection and compatibility details.
 - tools/objects.py, tools/objdata.py and docs/OBJECTS.md: object data/reference tools.
 
-These are priorities for subsequent work, not additional gameplay changes made in stage S.
+Remaining work is mainly #7 (worked content examples) and #8 (developer packaging), with #6 as a
+separate optional cleanup effort. No gameplay or bug fixes were made in stages T/U.

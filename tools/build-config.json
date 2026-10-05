@@ -1,0 +1,7 @@
+{
+  "base": "release/FFERPG_0.9.7.3-r16-stageS.w3x",
+  "base_sha256": "923dc01ea5be419299ce02ac802ab34825c28f7e7aad3a3c262d9aa2d87b30ef",
+  "prefix": "FFERPG_0.9.7.3-r16-stage",
+  "title": "Final Fantasy Epic RPG 0.9.7.3-r16",
+  "header_tool": "../MapToolkit/tools/add_header.py"
+}

@@ -14,6 +14,33 @@ The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the abo
 
 **Converted:** all 93 of the map's quests (stages M, N, O, P, R, S). The play-test list is `docs/QUEST_TESTS.md`.
 
+## Development checks and inspection (stages T/U)
+
+Run `python tools/check_quests.py --map release/FFERPG_0.9.7.3-r16-stageU.w3x` for all definitions,
+or add `--quest Cartographer` / `--json` to inspect matching definitions and hooks. This shows declared
+steps rather than live game state. The 97 definition variants represent 93 logical quests; counts
+include mutually exclusive branches conservatively. Checks protect the 16-step stride, 510-definition
+classic-array bound, 8,191 dialogue-line bound, log indexes, required dependencies and map targets.
+
+Hook analysis follows ordinary and nested function calls, synchronous group/force callbacks,
+literal ExecuteFunc names and known TriggerExecute action registrations. Direct waits and text helpers
+that transmit dialogue are rejected. Timer callbacks are asynchronous and allowed. Runtime-generated
+function/trigger names and event side effects are not a complete call graph, so review unusual hooks.
+Known ordinary-text reward branches are distinguished from transmitting reward branches.
+
+In a separate single-player developer copy, enable DevCommands in World Editor and Save As to compile
+it. `-queststate` lists active/available quests; `-queststate N` shows any specific **engine number**,
+including name, state, current/total steps and main/side log index. Existing direct story overrides can
+leave engine state active while its log is completed/failed; the inspector reports both, without changing
+either. N is the displayed engine number, not MainQuest[n]/SideQuest[n]. U keeps DevCommands disabled.
+
+`python tools/tests/run_tests.py` runs 35 regressions. The lifecycle harness executes selected actual
+engine functions with mocked Warcraft natives: ordinary talk/kill/deliver events, partial charges,
+hidden NPC/cinematic rejection, failure trigger/pickup/marker/ping cleanup, silent introductions,
+shared logs, repeated completion and Cartographer tier reports. It does not simulate Warcraft's full
+event scheduler, cinematics or multiplayer. The one-command build includes these checks and also
+compiles disabled editor modules; see BUILDS.md.
+
 ## A quest, step by step
 
 ```

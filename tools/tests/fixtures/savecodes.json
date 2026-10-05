@@ -1,0 +1,608 @@
+{
+  "provenance": "Synthetic G/H vectors pinned from the existing stage S codec. Not captured from Warcraft. H armory data is opaque test data; its checksum and main-code link are exercised.",
+  "cases": [
+    {
+      "name": "G-new",
+      "player": "CompatibilityFixture#4321",
+      "input": {
+        "name_hash": 19253,
+        "difficulty": 0,
+        "gold_plus_1500_per_shard": 0,
+        "jobs": {
+          "Squire": 1,
+          "Knight": 1,
+          "Archer": 1,
+          "Monk": 1,
+          "Thief": 1,
+          "Geomancer": 1,
+          "Samurai": 1,
+          "Lancer": 1,
+          "Ninja": 1,
+          "Holy Swordsman": 1,
+          "Chemist": 1,
+          "Wizard": 1,
+          "Priest": 1,
+          "Summoner": 1,
+          "Time Mage": 1,
+          "Mediator": 1,
+          "Oracle": 1,
+          "Calculator": 1,
+          "Prophet": 1,
+          "Sorcerer": 1,
+          "Dark Knight": 1,
+          "Necromancer": 1
+        },
+        "freelancer": 1,
+        "gaya": {
+          "mastered": false,
+          "level": 1,
+          "abilities": {
+            "break_stun": 2,
+            "mana_transfer": 1,
+            "mega_heal": 3,
+            "tarugaya": 1,
+            "sukugaya": 0,
+            "rakugaya": 1
+          }
+        },
+        "_ng_bits": 0,
+        "hero_items": [],
+        "gaya_items": [],
+        "house_items": [],
+        "upgrades": {
+          "Tools": 0,
+          "Sword": 0,
+          "Bow": 0,
+          "Rod": 0,
+          "Staff": 0,
+          "Plate Armor": 0,
+          "Leather Armor": 0,
+          "Mystic Armor": 0,
+          "Axe": 0,
+          "Spear": 0,
+          "Katana": 0,
+          "Dagger": 0,
+          "Gun": 0,
+          "Greatsword": 0,
+          "Inner Mana": 0
+        },
+        "titles": [],
+        "speedrun_level": 0,
+        "miracle_stage": 0,
+        "meta_fragments": 0,
+        "legendary_guardian": false,
+        "armory_allowed_on_hard": false
+      },
+      "armory": "",
+      "code": "GDETBLg1AH1tVVVUIUMqqlpKrckU",
+      "expected": {
+        "version": "G",
+        "armory_part": false,
+        "armory_chars": 0,
+        "name_hash": 19253,
+        "difficulty": 0,
+        "gold_plus_1500_per_shard": 0,
+        "jobs": {
+          "Squire": 1,
+          "Knight": 1,
+          "Archer": 1,
+          "Monk": 1,
+          "Thief": 1,
+          "Geomancer": 1,
+          "Samurai": 1,
+          "Lancer": 1,
+          "Ninja": 1,
+          "Holy Swordsman": 1,
+          "Chemist": 1,
+          "Wizard": 1,
+          "Priest": 1,
+          "Summoner": 1,
+          "Time Mage": 1,
+          "Mediator": 1,
+          "Oracle": 1,
+          "Calculator": 1,
+          "Prophet": 1,
+          "Sorcerer": 1,
+          "Dark Knight": 1,
+          "Necromancer": 1
+        },
+        "freelancer": 1,
+        "gaya": {
+          "mastered": false,
+          "level": 1,
+          "abilities": {
+            "break_stun": 2,
+            "mana_transfer": 1,
+            "mega_heal": 3,
+            "tarugaya": 1,
+            "sukugaya": 0,
+            "rakugaya": 1
+          }
+        },
+        "hero_items": [],
+        "gaya_items": [],
+        "house_items": [],
+        "upgrades": {
+          "Tools": 0,
+          "Sword": 0,
+          "Bow": 0,
+          "Rod": 0,
+          "Staff": 0,
+          "Plate Armor": 0,
+          "Leather Armor": 0,
+          "Mystic Armor": 0,
+          "Axe": 0,
+          "Spear": 0,
+          "Katana": 0,
+          "Dagger": 0,
+          "Gun": 0,
+          "Greatsword": 0,
+          "Inner Mana": 0
+        },
+        "titles": [],
+        "speedrun_level": 0,
+        "miracle_stage": 0,
+        "meta_fragments": 0,
+        "legendary_guardian": false,
+        "new_game_plus": 5,
+        "armory_allowed_on_hard": false
+      }
+    },
+    {
+      "name": "G-progress",
+      "player": "CompatibilityFixture#4321",
+      "input": {
+        "name_hash": 19253,
+        "difficulty": 1,
+        "gold_plus_1500_per_shard": 456789,
+        "jobs": {
+          "Squire": 10,
+          "Knight": 11,
+          "Archer": 12,
+          "Monk": 13,
+          "Thief": 14,
+          "Geomancer": 15,
+          "Samurai": 16,
+          "Lancer": 17,
+          "Ninja": 18,
+          "Holy Swordsman": 19,
+          "Chemist": 20,
+          "Wizard": 21,
+          "Priest": 22,
+          "Summoner": 23,
+          "Time Mage": 24,
+          "Mediator": 25,
+          "Oracle": 26,
+          "Calculator": 27,
+          "Prophet": 28,
+          "Sorcerer": 29,
+          "Dark Knight": 30,
+          "Necromancer": 31
+        },
+        "freelancer": 100,
+        "gaya": {
+          "mastered": false,
+          "level": 75,
+          "abilities": {
+            "break_stun": 2,
+            "mana_transfer": 1,
+            "mega_heal": 3,
+            "tarugaya": 1,
+            "sukugaya": 0,
+            "rakugaya": 1
+          }
+        },
+        "_ng_bits": 5,
+        "hero_items": [
+          [
+            2,
+            null,
+            false
+          ],
+          [
+            1,
+            127,
+            true
+          ],
+          [
+            351,
+            null,
+            false
+          ]
+        ],
+        "gaya_items": [
+          [
+            321,
+            1,
+            true
+          ]
+        ],
+        "house_items": [
+          [
+            200,
+            null,
+            false
+          ]
+        ],
+        "upgrades": {
+          "Tools": 0,
+          "Sword": 1,
+          "Bow": 2,
+          "Rod": 3,
+          "Staff": 4,
+          "Plate Armor": 5,
+          "Leather Armor": 6,
+          "Mystic Armor": 7,
+          "Axe": 8,
+          "Spear": 9,
+          "Katana": 10,
+          "Dagger": 0,
+          "Gun": 1,
+          "Greatsword": 2,
+          "Inner Mana": 3
+        },
+        "titles": [
+          17,
+          18,
+          20,
+          24,
+          28,
+          29,
+          34,
+          42,
+          49,
+          50,
+          53,
+          54,
+          55,
+          59
+        ],
+        "speedrun_level": 7,
+        "miracle_stage": 1,
+        "meta_fragments": 3,
+        "legendary_guardian": false,
+        "armory_allowed_on_hard": false
+      },
+      "armory": "",
+      "code": "GDYfBLg6vpJw7iNYkcsAOXKr5RpTiMH8MGmi3BFKhJEIi2DwbQKyLeZH3m6Zhf2eGDUKFqe0eo",
+      "expected": {
+        "version": "G",
+        "armory_part": false,
+        "armory_chars": 0,
+        "name_hash": 19253,
+        "difficulty": 1,
+        "gold_plus_1500_per_shard": 456789,
+        "jobs": {
+          "Squire": 10,
+          "Knight": 11,
+          "Archer": 12,
+          "Monk": 13,
+          "Thief": 14,
+          "Geomancer": 15,
+          "Samurai": 16,
+          "Lancer": 17,
+          "Ninja": 18,
+          "Holy Swordsman": 19,
+          "Chemist": 20,
+          "Wizard": 21,
+          "Priest": 22,
+          "Summoner": 23,
+          "Time Mage": 24,
+          "Mediator": 25,
+          "Oracle": 26,
+          "Calculator": 27,
+          "Prophet": 28,
+          "Sorcerer": 29,
+          "Dark Knight": 30,
+          "Necromancer": 31
+        },
+        "freelancer": 100,
+        "gaya": {
+          "mastered": false,
+          "level": 75,
+          "abilities": {
+            "break_stun": 2,
+            "mana_transfer": 1,
+            "mega_heal": 3,
+            "tarugaya": 1,
+            "sukugaya": 0,
+            "rakugaya": 1
+          }
+        },
+        "hero_items": [
+          [
+            2,
+            null,
+            false
+          ],
+          [
+            1,
+            127,
+            true
+          ],
+          [
+            351,
+            null,
+            false
+          ]
+        ],
+        "gaya_items": [
+          [
+            321,
+            1,
+            true
+          ]
+        ],
+        "house_items": [
+          [
+            200,
+            null,
+            false
+          ]
+        ],
+        "upgrades": {
+          "Tools": 0,
+          "Sword": 1,
+          "Bow": 2,
+          "Rod": 3,
+          "Staff": 4,
+          "Plate Armor": 5,
+          "Leather Armor": 6,
+          "Mystic Armor": 7,
+          "Axe": 8,
+          "Spear": 9,
+          "Katana": 10,
+          "Dagger": 0,
+          "Gun": 1,
+          "Greatsword": 2,
+          "Inner Mana": 3
+        },
+        "titles": [
+          15,
+          16,
+          17,
+          18,
+          20,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          49,
+          50,
+          51,
+          53,
+          54,
+          55,
+          59
+        ],
+        "speedrun_level": 7,
+        "miracle_stage": 1,
+        "meta_fragments": 3,
+        "legendary_guardian": false,
+        "new_game_plus": 10,
+        "armory_allowed_on_hard": false
+      }
+    },
+    {
+      "name": "H-armory",
+      "player": "CompatibilityFixture#4321",
+      "input": {
+        "name_hash": 19253,
+        "difficulty": 2,
+        "gold_plus_1500_per_shard": 913578,
+        "jobs": {
+          "Squire": 100,
+          "Knight": 100,
+          "Archer": 100,
+          "Monk": 100,
+          "Thief": 100,
+          "Geomancer": 100,
+          "Samurai": 100,
+          "Lancer": 100,
+          "Ninja": 100,
+          "Holy Swordsman": 100,
+          "Chemist": 100,
+          "Wizard": 100,
+          "Priest": 100,
+          "Summoner": 100,
+          "Time Mage": 100,
+          "Mediator": 100,
+          "Oracle": 100,
+          "Calculator": 100,
+          "Prophet": 100,
+          "Sorcerer": 100,
+          "Dark Knight": 100,
+          "Necromancer": 100
+        },
+        "freelancer": 100,
+        "gaya": {
+          "mastered": true
+        },
+        "_ng_bits": 15,
+        "hero_items": [
+          [
+            2,
+            null,
+            false
+          ],
+          [
+            1,
+            127,
+            true
+          ],
+          [
+            351,
+            null,
+            false
+          ]
+        ],
+        "gaya_items": [
+          [
+            321,
+            1,
+            true
+          ]
+        ],
+        "house_items": [
+          [
+            200,
+            null,
+            false
+          ]
+        ],
+        "upgrades": {
+          "Tools": 10,
+          "Sword": 10,
+          "Bow": 10,
+          "Rod": 10,
+          "Staff": 10,
+          "Plate Armor": 10,
+          "Leather Armor": 10,
+          "Mystic Armor": 10,
+          "Axe": 10,
+          "Spear": 10,
+          "Katana": 10,
+          "Dagger": 10,
+          "Gun": 10,
+          "Greatsword": 10,
+          "Inner Mana": 10
+        },
+        "titles": [
+          17,
+          18,
+          20,
+          24,
+          28,
+          29,
+          34,
+          42,
+          49,
+          50,
+          53,
+          54,
+          55,
+          59
+        ],
+        "speedrun_level": 14,
+        "miracle_stage": 2,
+        "meta_fragments": 6,
+        "legendary_guardian": true,
+        "armory_allowed_on_hard": true
+      },
+      "armory": "ABCxyz019$#",
+      "code": "HDNzBLkDfKrqqqqqqqqq40iCWqHtBj3qqoU9x9kK(DCrDNzABCxyz019$#)",
+      "expected": {
+        "version": "H",
+        "armory_part": true,
+        "armory_chars": 17,
+        "name_hash": 19253,
+        "difficulty": 2,
+        "gold_plus_1500_per_shard": 913578,
+        "jobs": {
+          "Squire": 100,
+          "Knight": 100,
+          "Archer": 100,
+          "Monk": 100,
+          "Thief": 100,
+          "Geomancer": 100,
+          "Samurai": 100,
+          "Lancer": 100,
+          "Ninja": 100,
+          "Holy Swordsman": 100,
+          "Chemist": 100,
+          "Wizard": 100,
+          "Priest": 100,
+          "Summoner": 100,
+          "Time Mage": 100,
+          "Mediator": 100,
+          "Oracle": 100,
+          "Calculator": 100,
+          "Prophet": 100,
+          "Sorcerer": 100,
+          "Dark Knight": 100,
+          "Necromancer": 100
+        },
+        "freelancer": 100,
+        "gaya": {
+          "mastered": true
+        },
+        "hero_items": [
+          [
+            2,
+            null,
+            false
+          ],
+          [
+            1,
+            127,
+            true
+          ],
+          [
+            351,
+            null,
+            false
+          ]
+        ],
+        "gaya_items": [
+          [
+            321,
+            1,
+            true
+          ]
+        ],
+        "house_items": [
+          [
+            200,
+            null,
+            false
+          ]
+        ],
+        "upgrades": {
+          "Tools": 10,
+          "Sword": 10,
+          "Bow": 10,
+          "Rod": 10,
+          "Staff": 10,
+          "Plate Armor": 10,
+          "Leather Armor": 10,
+          "Mystic Armor": 10,
+          "Axe": 10,
+          "Spear": 10,
+          "Katana": 10,
+          "Dagger": 10,
+          "Gun": 10,
+          "Greatsword": 10,
+          "Inner Mana": 10
+        },
+        "titles": [
+          15,
+          16,
+          17,
+          18,
+          20,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          49,
+          50,
+          51,
+          53,
+          54,
+          55,
+          59
+        ],
+        "speedrun_level": 14,
+        "miracle_stage": 2,
+        "meta_fragments": 6,
+        "legendary_guardian": true,
+        "new_game_plus": 0,
+        "armory_allowed_on_hard": true
+      }
+    }
+  ]
+}

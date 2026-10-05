@@ -3,6 +3,17 @@
 Read **docs/HANDOFF.md** first for the current stage, then **docs/QUEST_ENGINE.md** and
 **docs/NEXT_STEPS.md** for quest development and remaining readiness work.
 
+Stage S is user-confirmed working. Current stage U adds development safeguards while keeping S's
+playable script unchanged. For source edits, build a new stage with one command:
+
+```powershell
+.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x
+```
+
+It selects changed modules, checks quests/content/save compatibility, runs compilation/regressions,
+and writes a new map plus report/hash manifest. Outputs are never overwritten. See **docs/BUILDS.md**
+for setup, required baseline/assets, and boundaries of the automated checks.
+
 This folder holds everything a developer needs to keep working on **Final Fantasy Epic RPG**
 (a Warcraft III Reforged map) in the World Editor.
 

@@ -15,6 +15,15 @@ A one-page guide for anyone changing the map. For where things are, read `docs/S
 
 ## The routine for every change
 
+For edits to existing source modules, use `build.ps1` instead of manually assembling a playable map:
+`.\build.ps1 -Stage V -Base release/FFERPG_0.9.7.3-r16-stageU.w3x`. It runs the complete development
+gates and records a new map/report/manifest without overwriting outputs. See docs/BUILDS.md for
+requirements and the handling of new modules, object data, header/global changes and historical drift.
+Keep .j sources in CRLF. After every build, add a STAGES.md row and update HANDOFF.md/RESUME_PROMPT.txt;
+play-test changed gameplay. Commit only the files belonging to your change.
+
+For World Editor changes:
+
 1. **Open the newest map** from `release/` in World Editor.
 2. **Make the change and Save As** under a new name, for example `FFERPG_0.9.7.3-r16.w3x`. Never overwrite
    the only working copy.

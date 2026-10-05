@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "Isolated build/ source copy; automatic enabled-module branch",
+  "change": "Parenthesized Quest_CurrentStep return expression; same value",
+  "modules_selected_and_synced": [
+    "QuestEngine"
+  ],
+  "all_pipeline_gates_passed": true,
+  "real_repo_source_unchanged": true,
+  "scratch": "C:\\Users\\jaked\\WarcraftMapExtractor\\FFERPG\\build\\sync-smoke-07bmbqks",
+  "log_sha256": "0f35227991f61b35306dd9db8c7e03b377faacfcc54f6940dac49033f08ba8ab"
+}

@@ -27,8 +27,15 @@ automatically, and `tools/disable_check.py` confirms this.
 | `-spawns on/off` | Pause or resume monster spawns. |
 | `-title N` | Grant title N (sets the save-code title flags, so it's useful for testing save codes). |
 | `-dumpitems` | Write `Documents\Warcraft III\CustomMapData\FFERPG\itemtable.txt`: every saveable item with its save index, rawcode, whether it is charged, and name. `tools/savecode.py --items` uses it to read save codes exactly. Run it once per map version. |
+| `-queststate [N]` | Read-only: list active/available engine quests, or inspect engine number N (hidden/done/failed too). Shows current/total steps, log slot and completed/failed log flags. N is an engine number, not the main/side quest log index. Works before selecting a hero. |
 
 ## Notes
+
+- Stage U includes the new quest inspector in editor source, but **DevCommands remains disabled** in
+  the release. To use it, enable the module in a separate World Editor development copy and Save As.
+  Its existing single-player/DEV_COMMANDS_ON gates still apply. No quest state or rewards are changed
+  by -queststate. A log flag can differ from engine state because existing story interruptions directly
+  complete/fail some quest logs; the command shows that distinction.
 
 - **Cheat detection:** the map's own cheat detection (module `Cheat`) only reacts to Warcraft's built-in
   cheat codes, so these commands don't trigger it. `-reveal` uses a vision modifier, not "fog off".
