@@ -54,6 +54,10 @@ globals
     integer array QuestState
     boolean array QuestCountsStory
     string array QuestColor                      // colour code before the name in the quest log; "" = default
+    boolean array QuestStartSilent
+    boolean array QuestStartAnnounced
+    questitem array QuestCompletionItem
+    string array QuestCompletionItemText
     boolean array QuestNoMarker                  // no "!" / "?" over NPCs
     effect array QuestAvailableMarker
     effect array QuestActiveMarker
@@ -123,6 +127,10 @@ function Quest_Define takes string l_name,integer l_logKind,integer l_logIndex,s
     set QuestCountsStory[QuestCount]=true
     set QuestColor[QuestCount]=""
     set QuestNoMarker[QuestCount]=false
+    set QuestStartSilent[QuestCount]=false
+    set QuestStartAnnounced[QuestCount]=false
+    set QuestCompletionItem[QuestCount]=null
+    set QuestCompletionItemText[QuestCount]=""
     return QuestCount
 endfunction
 
@@ -297,6 +305,29 @@ function Quest_LogEntry takes integer q returns quest
     return udg_SideQuest[QuestLogIndex[q]]
 endfunction
 
+// A shared main-story log can replace other main-quest slots without making extra engine quests.
+function Quest_AliasMain takes integer q,integer l_index returns nothing
+    if q<=0 or QuestLogKind[q]!=QUEST_MAIN or QuestState[q]!=QUEST_STATE_ACTIVE then
+        return
+    endif
+    set udg_MainQuest[l_index]=Quest_LogEntry(q)
+endfunction
+
+// A custom quest's existing requirement is finished after its log, before the completion count.
+function Quest_CompletionItem takes integer q,questitem l_item,string l_text returns nothing
+    set QuestCompletionItem[q]=l_item
+    set QuestCompletionItemText[q]=l_text
+endfunction
+
+// Announce a silently created quest only when its introduction has reached the original message.
+function Quest_AnnounceStart takes integer q returns nothing
+    if q<=0 or QuestState[q]!=QUEST_STATE_ACTIVE or QuestStartAnnounced[q] then
+        return
+    endif
+    set QuestStartAnnounced[q]=true
+    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00"+QuestName[q]+"|r")
+endfunction
+
 // ---- running steps ----
 
 function QuestEngine_StepOf takes trigger t returns integer
@@ -413,7 +444,9 @@ function QuestEngine_Finish takes integer q,integer s,player p,unit u returns no
     call QuestEngine_Dialogue(s,p)
     if l_step==1 then
         set QuestState[q]=QUEST_STATE_ACTIVE
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00"+QuestName[q]+"|r")
+        if not QuestStartSilent[q] then
+            call Quest_AnnounceStart(q)
+        endif
         if QuestColor[q]=="" and QuestLogKind[q]==QUEST_MAIN then
             set QuestColor[q]=udg_ColorGold
         elseif QuestColor[q]=="" then
@@ -460,6 +493,10 @@ function QuestEngine_Finish takes integer q,integer s,player p,unit u returns no
         set l_quest=Quest_LogEntry(q)
         call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00"+QuestName[q]+"|r")
         call QuestSetCompletedBJ(l_quest,true)
+        if QuestCompletionItem[q]!=null then
+            call QuestItemSetDescriptionBJ(QuestCompletionItem[q],QuestCompletionItemText[q])
+            call QuestItemSetCompletedBJ(QuestCompletionItem[q],true)
+        endif
         set udg_QuestsCompleted=udg_QuestsCompleted+1
     endif
     if QuestStepHook[s]!="" then
@@ -704,6 +741,19 @@ function Quest_Start takes integer q,player p,unit u returns nothing
     if QuestStepType[q*QUEST_MAX_STEPS+1]==QUEST_STEP_CUSTOM then
         call QuestEngine_Finish(q,q*QUEST_MAX_STEPS+1,p,u)
     endif
+endfunction
+
+// Custom introductions can create the log before their cinematic, then announce it later.
+// The first custom step is consumed now, so the final step may finish during that introduction.
+function Quest_StartSilent takes integer q,player p,unit u returns nothing
+    if q<=0 or QuestState[q]!=QUEST_STATE_HIDDEN or QuestSteps[q]==0 then
+        return
+    endif
+    if QuestStepType[q*QUEST_MAX_STEPS+1]!=QUEST_STEP_CUSTOM then
+        return
+    endif
+    set QuestStartSilent[q]=true
+    call Quest_Start(q,p,u)
 endfunction
 
 // Change the quest-log text now; l_announce also shows it as a quest update to all players.

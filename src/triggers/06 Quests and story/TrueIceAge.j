@@ -1,5 +1,6 @@
-library TTrueIceAge requires TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TReward, TText, TWait
+library TTrueIceAge requires TQuestEngine, TCam, TCine, TGroup, TLoc, TMusic, TPlayerHero, TReward, TText, TWait
 globals
+    integer QUEST_TRUE_ICE_AGE=0
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TrueIceAge_GateUnlock=null
     trigger gg_trg_TrueIceAge_Summon=null
@@ -12,6 +13,18 @@ globals
     unit udg_Cuchulainn=null
     boolean udg_DanaAvailable=false
 endglobals
+
+// One log replaces five main-quest slots. Its cinematic announces the silently created entry later.
+// Battle timeout permits a retry, so the final custom step finishes only on victory.
+function QuestTrueIceAge_Define takes nothing returns nothing
+    local integer q=Quest_Define("True Ice Age",QUEST_MAIN,20,"ReplaceableTextures\\CommandButtons\\BTNBlueMagnataur.blp")
+    set QUEST_TRUE_ICE_AGE=q
+    call Quest_Color(q,udg_QuestTitleRed)
+    call Quest_NotStory(q) // The existing summon/victory triggers count story progress at their original points.
+    call Quest_NoMarker(q)
+    call Quest_Custom(q,"You summoned the demon lord Echele! He seems intent and capable of turning the entire world to ice. Face him atop the Snowy Mountain.")
+    call Quest_Custom(q,"") // Win against Echele; retries leave this step active.
+endfunction
 
 function Trig_TrueIceAge_GateUnlock_Conditions takes nothing returns boolean
     return((IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null
@@ -220,11 +233,12 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call UnitRemoveAbilityBJ('A11Z',gg_unit_ndmg_0124) // 'A11Z': ability "Activate Demon Gate"
     call UnitRemoveAbilityBJ('Ane2',gg_unit_ndmg_0124) // 'Ane2': object name not found in map data
-    set udg_MainQuest[8]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestTitleRed+"True Ice Age"),"You summoned the demon lord Echele! He seems intent and capable of turning the entire world to ice. Face him atop the Snowy Mountain.","ReplaceableTextures\\CommandButtons\\BTNBlueMagnataur.blp")
-    set udg_MainQuest[9]=GetLastCreatedQuestBJ()
-    set udg_MainQuest[$B]=GetLastCreatedQuestBJ() // $B = 11
-    set udg_MainQuest[19]=GetLastCreatedQuestBJ()
-    set udg_MainQuest[20]=GetLastCreatedQuestBJ()
+    call QuestTrueIceAge_Define()
+    call Quest_StartSilent(QUEST_TRUE_ICE_AGE,null,null)
+    call Quest_AliasMain(QUEST_TRUE_ICE_AGE,8)
+    call Quest_AliasMain(QUEST_TRUE_ICE_AGE,9)
+    call Quest_AliasMain(QUEST_TRUE_ICE_AGE,11)
+    call Quest_AliasMain(QUEST_TRUE_ICE_AGE,19)
     call DestroyTrigger(gg_trg_Ambush_Skeletons_1)
     call DestroyTrigger(gg_trg_Ambush_Skeletons_2)
     call DestroyTrigger(gg_trg_Ambush_Skeletons_3)
@@ -285,7 +299,7 @@ function Trig_TrueIceAge_Summon_Actions takes nothing returns nothing
     call Text_Say(Player_GetHero(udg_TempPlayer),"Suddenly I'm not sure this was such a good idea after all...",true)
     call Cine_ExitAction()
     set udg_QuestsTotal=(udg_QuestsTotal-$D) // $D = 13
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00True Ice Age|r")
+    call Quest_AnnounceStart(QUEST_TRUE_ICE_AGE)
     call CreateFogModifierRectBJ(true,Player($B),FOG_OF_WAR_VISIBLE,gg_rct_658) // $B = 11
     call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_LTg2_0021)
     call EnumDestructablesInRectAll(gg_rct_494,function Trig_TrueIceAge_Summon_ClearDoodads1)
@@ -1002,9 +1016,7 @@ function Trig_TrueIceAge_Victory_Actions takes nothing returns nothing
         call SaveIntegerBJ(0,2,'z',udg_GameStateHash)
         call SaveIntegerBJ(1,2,'{',udg_GameStateHash)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00True Ice Age|r")
-    call QuestSetCompletedBJ(udg_MainQuest[20],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_TRUE_ICE_AGE,GetOwningPlayer(GetKillingUnitBJ()),GetKillingUnitBJ())
     call SaveIntegerBJ(1,2,91,udg_GameStateHash)
     call SaveIntegerBJ(1,2,'g',udg_GameStateHash)
     call SaveIntegerBJ(1,2,$AD,udg_GameStateHash) // $AD = 173

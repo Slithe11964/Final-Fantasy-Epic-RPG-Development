@@ -1,12 +1,12 @@
-# Quest play-test list (stages O, P and R)
+# Quest play-test list (stages O, P, R and S)
 
 Stage O put 62 side quests on the quest engine, stage P the main story (18 more). Stage N's 10 quests are
 listed in docs/QUEST_ENGINE.md. Every dialogue line was kept word for word (checked by comparing all text
 in the old and new code). Play each quest at least once with cinematics on; the main story also once with
 cinematics off. Tick a box when a quest has been played to the end.
 
-Not on the engine (on purpose): **Cartographer** (rewards worked out over repeated reports, can complete in
-its first talk), **True Ice Age** (one log entry shared by five quest slots). Ao Madoushi was converted in stage R.
+All 93 quests are now on the engine. Ao Madoushi was converted in stage R (user reports it works great);
+Cartographer and True Ice Age in stage S. Their targeted checklists are below.
 
 ## What changed for every quest
 
@@ -118,3 +118,21 @@ reward follows Reward_Give (including Eternity rules); reward and Eye of Jenova/
 | [ ] | Alternative Stone-break scene after the first sage talk | Original alternative scene/spawns; Visit Ao Madoushi log and marker; report completes normally |
 | [ ] | True Ice Age interrupts at Cid stages 9, 10, 11 or 12 | Existing direct quest-log completion and stage-dependent marker/item/trigger cleanup remain as in Q; no new completion announcement, reward or quest-count increment from the custom engine steps |
 | [ ] | Eye of Jenova follow-through | Arena target ping/drop enabled; pickup update; bring Eye to sage; original hand-in, Demi Materia and next Cid quest work |
+
+## Cartographer and True Ice Age (stage S)
+
+Use release/FFERPG_0.9.7.3-r16-stageS.w3x. Automated checks pass, including the lifecycle source harness,
+but game behavior, editor Save As, multiplayer and native save/load need confirmation.
+
+| Done | Quest/path | Check |
+|---|---|---|
+| [ ] | Cartographer, accept below 15% | Log and exploration requirement exist before dialogue; original announcement afterward; original markers/Makenroh unlock; no payout yet |
+| [ ] | Cartographer, accept at 15–89% | Same introductory payout for every achieved tier; no paid tier can be paid again; progress requirement tracks the original exploration scan |
+| [ ] | Cartographer, accept at 90%+, cinematics on/off | Original 24000 gold/XP via Reward_Give; completion during introduction; only Quest Completed, no New Quest Received; requirement Sufficiently explored!, counted once, no story increment |
+| [ ] | Cartographer, repeat reports, cinematics on/off | Every unpaid tier pays once via Reward_GiveAll (1000/2000/3000/4000/6000/8000); skipping tiers pays their sum; final report at 90%+ completes/counts once; total tier payouts 24000 gold/XP; marker shared with Hunt Festival behaves as before |
+| [ ] | Cartographer, revealed fog | Original Cancelled requirement/marker and plagiarism dialogue; failure announcement once; total quests decreases once; no completion count or further report payout |
+| [ ] | True Ice Age, summon | Same red title/icon/text; one log replaces slots 8/9/11/19/20 before cinematic; no early New Quest Received; original announcement after cinematic; original world changes and interrupted-quest cleanup |
+| [ ] | True Ice Age, timeout/retry | Freeze cinematic and respawn behave as before; quest stays active without new failure/discovery messages; another attempt can complete it |
+| [ ] | True Ice Age, hardcore timeout | Original frozen-world ending; no new quest failure announcement |
+| [ ] | True Ice Age, victory | Original cinematic, loot, 50000 gold/XP, 5 shards, awards and epilogue unlocks; one completion/count for the shared log; both original story increments occur at their original summon/victory points |
+| [ ] | Existing engine quests, multiplayer/save/load/editor Save As | At least one ordinary talk/reward quest and Ao Madoushi still work; no duplicate messages/rewards with multiple players; native save/load and editor-saved stage S compile and play |

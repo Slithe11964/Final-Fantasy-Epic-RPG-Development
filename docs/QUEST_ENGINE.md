@@ -12,7 +12,7 @@ A quest is a list of steps. The quest's own module describes it once, as data. T
 The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the about 100 places that check
 `IsQuestCompleted(...)` keep working.
 
-**Converted:** 91 of the map's quests (stages M, N, O, P, R). Not converted: Cartographer and True Ice Age. The play-test list is `docs/QUEST_TESTS.md`.
+**Converted:** all 93 of the map's quests (stages M, N, O, P, R, S). The play-test list is `docs/QUEST_TESTS.md`.
 
 ## A quest, step by step
 
@@ -68,6 +68,10 @@ Then, when the quest becomes available (another module's story step), call `Ques
 | `Quest_StepDone(q, player, unit)` | Finish the current custom step. |
 | `Quest_SetLog(q, text, announce)` | Change the quest-log text at any time; `announce` also shows it as a quest update. |
 | `Quest_Fail(q)` | Fail the quest: it stops waiting, markers go, "Quest Failed" and the log shows it failed. |
+| `Quest_StartSilent(q, player, unit)` | Start a quest whose first step is custom, create its log and consume that first step without a discovery announcement. Custom introductions run in their own event triggers. Hidden quests only; empty/non-custom definitions are ignored. |
+| `Quest_AnnounceStart(q)` | Announce an active quest once, at the original point in its introduction. Does nothing after completion/failure or a previous announcement. |
+| `Quest_AliasMain(q, n)` | Point another main-quest slot at an active main quest's existing log. Creates no additional entry or completion count. |
+| `Quest_CompletionItem(q, item, text)` | Register one custom quest requirement to update and mark complete after the quest log is completed, before the completion count. |
 
 **Step text** is the quest-log description after that step. The first step's text is the description the
 quest starts with. An empty text keeps the description (and announces nothing), which is usual for the last step.
@@ -107,6 +111,31 @@ counts one quest, with Quest_NotStory keeping story progress unchanged. True Ice
 the log complete without counting, as before. The event triggers, including their waits, are not engine
 hooks; the engine helpers never wait. Cid, Turks, AoMadoushi and Cine call helpers through ExecuteFunc to
 avoid adding a library dependency cycle with Cine.
+
+## Cartographer and True Ice Age (stage S)
+
+Both use two custom steps: a silent creation step consumed immediately, and a custom completion step.
+They keep their own dialogue, rewards and markers. StartSilent lets their quest logs exist before the
+introductory cinematics, without moving dialogue into engine hooks that must not wait.
+
+Cartographer registers its existing udg_QuestReq[6] with Quest_CompletionItem. Its first conversation
+may complete the final step immediately at 90% exploration; in that branch it never calls AnnounceStart,
+so only Quest Completed appears. Partial reports keep the final step active while the module pays only
+unpaid exploration tiers. Reward_Give in the first talk and Reward_GiveAll in later reports stay distinct.
+Fog-reveal cancellation calls Quest_Fail at the original point after its dialogue; the module still
+reduces udg_QuestsTotal. Effect 82 stays module-owned and shared with Hunt Festival.
+
+True Ice Age silently creates MainQuest[20], aliases the same log to MainQuest[8/9/11/19], and announces
+after the summon cinematic. Victory finishes its final step; a battle timeout leaves it active because
+the original flow permits retries. No new failure announcement is added on the hardcore ending.
+Quest_NotStory prevents the engine from adding a third story increment: the module still performs its
+original summon and victory increments and milestone checks, in their original order.
+
+Run python tools/tests/test_quest_lifecycle.py for seven tests executing the actual lifecycle functions
+and Cartographer report code with mocked Warcraft natives. This is a limited source-level harness,
+not proof of gameplay or cinematics; use docs/QUEST_TESTS.md in Warcraft. The stage-specific preservation
+audit is python tools/tests/verify_stage_s.py (against commit 800ed48); it is intended for the stage S
+sources and will need updating after future changes to these modules.
 
 ## Limits and next step types
 

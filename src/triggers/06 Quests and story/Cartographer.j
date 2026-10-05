@@ -1,4 +1,4 @@
-library TCartographer requires TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TCartographer requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cartographer_Prepare=null
@@ -7,9 +7,22 @@ globals
     trigger gg_trg_Cartographer_Report=null
     trigger gg_trg_Cartographer_Fail=null
     // Variables only this module uses.
+    integer QUEST_CARTOGRAPHER=0
     integer udg_MapRewardStage=0
     real udg_MapExploredPct=0
 endglobals
+
+// The original reports calculate each unpaid tier; the custom step stays active between reports.
+// Markers remain here because Montblanc shares effect 82 with the Hunt Festival.
+function QuestCartographer_Define takes nothing returns nothing
+    local integer q=Quest_Define("Cartographer",QUEST_SIDE,61,"ReplaceableTextures\\CommandButtons\\BTNSpy.blp")
+    set QUEST_CARTOGRAPHER=q
+    call Quest_Color(q,udg_QuestNamePrefix)
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    call Quest_Custom(q,"Montblanc, leader of the Hunt Club, has tasked you with mapping out Gaya. Explore as much of the world as you can and report your progress to him!")
+    call Quest_Custom(q,"") // Repeat reports until sufficiently explored, or fail for revealed fog.
+endfunction
 
 function Trig_Cartographer_Prepare_Conditions takes nothing returns boolean
     return(udg_InCinematicMode==false)and(IsQuestCompleted(udg_MainQuest[1]))and(udg_CommonHuntsDone>0)
@@ -58,8 +71,10 @@ endfunction
 function Trig_Cartographer_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[82])
-    set udg_SideQuest[61]=CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,(udg_QuestNamePrefix+"Cartographer"),"Montblanc, leader of the Hunt Club, has tasked you with mapping out Gaya. Explore as much of the world as you can and report your progress to him!","ReplaceableTextures\\CommandButtons\\BTNSpy.blp")
+    call QuestCartographer_Define()
+    call Quest_StartSilent(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())
     set udg_QuestReq[6]=CreateQuestItemBJ(udg_SideQuest[61],"Explored: 0.00%")
+    call Quest_CompletionItem(QUEST_CARTOGRAPHER,udg_QuestReq[6],"Sufficiently explored!")
     call ConditionalTriggerExecute(gg_trg_Cartographer_Update)
     if(Trig_Cartographer_Start_IsDialogueOn())then
         call Cine_Enter()
@@ -81,11 +96,7 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
             call Text_Say(gg_unit_n0CE_0020,"Wow, your map is already incredibly detailed. I am very impressed.",false)
             call Text_Say(gg_unit_n0CE_0020,"Here, I will gladly buy it from you right here and now.",false)
             call Reward_Give($5DC0,$5DC0,gg_unit_n0CE_0020) // $5DC0 = 24000
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Cartographer|r")
-            call QuestSetCompletedBJ(udg_SideQuest[61],true)
-            call QuestItemSetDescriptionBJ(udg_QuestReq[6],"Sufficiently explored!")
-            call QuestItemSetCompletedBJ(udg_QuestReq[6],true)
-            set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+            call Quest_StepDone(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())
             call DestroyTrigger(gg_trg_Cartographer_Update)
             call DestroyTrigger(gg_trg_Cartographer_Report)
         else
@@ -105,7 +116,7 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
             else
                 call Text_Say(gg_unit_n0CE_0020,"Come to me periodically when you've mapped out a significant part of our world. I will give you your rewards then.",false)
             endif
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Cartographer|r")
+            call Quest_AnnounceStart(QUEST_CARTOGRAPHER)
             set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")
             call EnableTrigger(gg_trg_Cartographer_Update)
         endif
@@ -113,11 +124,7 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
     else
         if(Trig_Cartographer_Start_IsMapComplete_Quiet())then
             call Reward_Give($5DC0,$5DC0,gg_unit_n0CE_0020) // $5DC0 = 24000
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Cartographer|r")
-            call QuestSetCompletedBJ(udg_SideQuest[61],true)
-            call QuestItemSetDescriptionBJ(udg_QuestReq[6],"Sufficiently explored!")
-            call QuestItemSetCompletedBJ(udg_QuestReq[6],true)
-            set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+            call Quest_StepDone(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())
             call DestroyTrigger(gg_trg_Cartographer_Update)
             call DestroyTrigger(gg_trg_Cartographer_Report)
         else
@@ -133,7 +140,7 @@ function Trig_Cartographer_Start_Actions takes nothing returns nothing
                 set udg_MapRewardStage=(R2I(udg_MapExploredPct)/ $F) // $F = 15
                 call Reward_Give(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
             endif
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Cartographer|r")
+            call Quest_AnnounceStart(QUEST_CARTOGRAPHER)
             set udg_SpecialEffect[82]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n0CE_0020,"Objects\\RandomObject\\RandomObject.mdl")
             call EnableTrigger(gg_trg_Cartographer_Update)
         endif
@@ -281,11 +288,7 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
             call Text_Say(Player_GetHero(GetTriggerPlayer()),"It was nothing at all!",false)
             call Text_Say(gg_unit_n0CE_0020,"Haha, you truly are adventurers. Your spirit is enviable.",false)
             call Text_Say(gg_unit_n0CE_0020,"Do come talk to me again sometime. You've been a valuable ally to the Hunt Club, you're welcome among us anytime.",false)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Cartographer|r")
-            call QuestSetCompletedBJ(udg_SideQuest[61],true)
-            call QuestItemSetDescriptionBJ(udg_QuestReq[6],"Sufficiently explored!")
-            call QuestItemSetCompletedBJ(udg_QuestReq[6],true)
-            set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+            call Quest_StepDone(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())
             call DestroyTrigger(gg_trg_Cartographer_Update)
             call DestroyTrigger(gg_trg_Cartographer_Fail)
             call Cine_ExitAction()
@@ -311,11 +314,7 @@ function Trig_Cartographer_Report_Actions takes nothing returns nothing
         call Reward_GiveAll(udg_TempInteger,udg_TempInteger,gg_unit_n0CE_0020)
         if(Trig_Cartographer_Report_IsMapDone_Quiet())then
             call DisableTrigger(gg_trg_Cartographer_Update)
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Cartographer|r")
-            call QuestSetCompletedBJ(udg_SideQuest[61],true)
-            call QuestItemSetDescriptionBJ(udg_QuestReq[6],"Sufficiently explored!")
-            call QuestItemSetCompletedBJ(udg_QuestReq[6],true)
-            set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+            call Quest_StepDone(QUEST_CARTOGRAPHER,GetTriggerPlayer(),GetTriggerUnit())
             call DestroyTrigger(gg_trg_Cartographer_Update)
             call DestroyTrigger(gg_trg_Cartographer_Fail)
             call DestroyTrigger(GetTriggeringTrigger())
@@ -345,8 +344,7 @@ function Trig_Cartographer_Fail_Actions takes nothing returns nothing
         call Text_Say(gg_unit_n0CE_0020,"Sorry, the deal is off. I'll find another to take on this job. Good day.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Cartographer|r")
-    call QuestSetFailedBJ(udg_SideQuest[61],true)
+    call Quest_Fail(QUEST_CARTOGRAPHER)
     set udg_QuestsTotal=(udg_QuestsTotal-1)
     set udg_MontblancHasNews=false
     call DestroyTrigger(GetTriggeringTrigger())

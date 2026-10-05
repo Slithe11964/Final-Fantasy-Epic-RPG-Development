@@ -1,50 +1,59 @@
-# FF Epic RPG: what's left before handing the map to a new developer
+# FF Epic RPG: readying the map for new development
 
-Current maps:
+Updated 2026-10-05, stage S. Current release: release/FFERPG_0.9.7.3-r16-stageS.w3x.
+The user reports stage R works great. All 93 quests are on QuestEngine. Stage S passes automated checks;
+gameplay validation is pending. Read HANDOFF.md for the exact build and STAGES.md for history.
 
-- Reforged: `release/FFERPG_0.9.7.3-r16-stageK.w3x` (r15 + developer commands + phase 16 tidy-up).
-- 1.29.2: `release/FFERPG_0.9.7.3-r16-stageK-1.29.2.w3x` (build with `downgrade.py --fill-from`, see LEGACY_129.md).
-- Baseline: your r14 editor save.
+## Recommended order
 
-**What each stage changed, and what still needs testing: `docs/STAGES.md`.** Read `README.md` first.
+1. **Establish a tested development baseline.** Play the stage S checklist in QUEST_TESTS.md, including
+   both new quests, retries/failure, cinematics on/off, multiplayer and native save/load. Save As through
+   World Editor with JassHelper/vJass enabled, check that saved map, then test it. Preserve the confirmed
+   map and its hash; editor compilation alone is not gameplay proof.
 
-## Quick wins (small, low risk)
-1. ~~**Release naming.**~~ Done: the map name and loading-screen title say `0.9.7.3-r15`. Once r15 passes its play test, tag it in Git (`git tag r15`) and make it the new baseline.
-2. ~~**Archive the old tooling.**~~ Done: experiment outputs are in `../_archive/2026-10-02_handoff/`. `../Builder24/` keeps only the extractor app's code, tools (pjass, JassHelper) and notes. The reusable tools are in `../MapToolkit/`.
-3. ~~**`CONTRIBUTING.md`.**~~ Done (repo root).
-4. **Publish the repo** (GitHub, private or public) so other people can get it. Share maps through GitHub Releases rather than Git.
+2. **Make builds repeatable with one command.** Wrap sync_module -> order_libraries -> check_map ->
+   add_header in a build command that stops on any failure, creates a new stage, and saves hashes/check
+   results. Record the Python/pjass/JassHelper versions and the required base map. Maps are ignored by
+   Git, so a fresh clone also needs an identified base archive and its assets. Add a source/runtime drift
+   check for all module bodies; the present check_map agreement checks focus on startup and globals.
 
-## Medium (worth doing next)
-5. ~~**Variable Editor.**~~ Done: 576 shared variables are in the Variable Editor ("Shared variables" folder, one sub-folder per code folder). 356 stay in the map header (groups, timers, forces, hashtables, string arrays, variables with a starting value).
-6. ~~**Document the gameplay systems.**~~ Done: `docs/SAVE_CODES.md`, `JOBS.md`, `SPAWNS.md`, `LOOT.md`, `BOSSES.md`, `ARENA.md`. Next candidates: quests (`Quest_*` chains), Chocobos, Gaya.
-7. **Wider play test.** Checklist: `docs/PHASE8_TEST_CHECKLIST.md` (damage, jobs, late-game bosses, arena, Chocobo breeding).
-8. ~~**Rename `Hero_Part01` and `Player_Part01`.**~~ Done: now `Hero_Skills` and `Player_Hero` (`tools/rename_module.py`).
+3. **Add quest-definition checks and better test tools.** Validate per-quest step limits, array capacity,
+   quest indexes, missing NPC/item references, dependency requirements, and hooks that wait. Extend the
+   lifecycle harness to ordinary talk/kill/deliver flows and engine failure cleanup. Add development-only
+   quest-state inspection. Audit direct interrupted-quest overrides and shared log replacement before
+   introducing new branching story content; their original counting behavior was preserved here.
 
-## Large (optional projects)
-9. **Data-driven quest framework.** Quests are currently chains of triggers turning each other on. Survey done (`docs/QUEST_SURVEY.md`): 46 of 91 quests fit a quest table (25 fully, 21 with hooks). Engine built (`docs/QUEST_ENGINE.md`, stage M) with Kill Elmdor and Wolf Fangs converted (play-tested, working). Stages O and P: all quests but Cartographer, True Ice Age and Ao Madoushi are on the engine. Next: play-test `docs/QUEST_TESTS.md`, decide on the Kalm Siege replay bug, then the three remaining quests.
-10. **Legacy 1.29 version.** Study done: `docs/LEGACY_129.md`. The code already works with 1.29.2. The world and object files need a converter (a `downgrade.py` in MapToolkit), which can only be built and proven with a 1.29.2 install to test in.
-11. **Split giant functions.** `Trig_Damage_Engine_CalcDamage` is done: 19 step functions with a per-hit context stack (`DmgCtx_*`), so nested hits stay safe. Left: `MonsterData_Init_*` and `Bazaar` (data tables; splitting them gains little).
+4. **Protect save-code and content tables.** Add automated guards for the documented item-index/armory
+   collision above index 500 (BUGS #6), duplicate object IDs and missing item/unit/ability references.
+   Keep known save codes as compatibility fixtures when extending jobs, items, armory or progression.
 
-12. **Done in the long run (stages A–G):**
-    - suspected bugs list (`BUGS.md`);
-    - developer test commands (`DEBUG_COMMANDS.md`);
-    - save code reader/writer (`tools/savecode.py`);
-    - object reference (`OBJECTS.md`);
-    - first 1.29.2 map (`LEGACY_129.md`);
-    - quest map (`QUESTS.md`);
-    - guides: Chocobos, Gaya, Summons/Shadows, Crafting, Hunts.
-13. **Next:**
-    - play-test results for stages B/C/E;
-    - confirm or fix the items in `BUGS.md`;
-    - ~~phase 16 code tidy-up~~ first pass done (stage K, `docs/PHASE16.md`): 509 functions use locals now;
-      the 1,452 real hand-offs left are listed in `docs/phase16-handoffs.csv` for module-by-module work;
-    - check a real save code with `savecode.py` (needs `itemtable.txt` from `-dumpitems` for items);
-    - `savecode.py rename` moves a code to a new account name (done, stage K).
-14. **Reusable toolkit.** `../MapToolkit` runs deprotect → split → document on other protected JASS maps (tested on one). Ideas: carry module variables into the modules automatically, and support Reforged-format output.
+5. **Confirm and fix the documented bugs separately.** Prioritize Greed's high-level item lookup,
+   arena team-selection recursion, repeatable arena-boss death triggers, and duplicated arena reward
+   logic. BUGS.md records suspected issues; reproduce each before changing behavior. Investigate the
+   1.29.2-format marker issue only if that release target is needed; the active build is Reforged.
 
-## How to resume with Claude or ChatGPT
-Point the assistant at `README.md`, `docs/READABILITY_GAMEPLAN.md` and this file. Tools:
-- `tools/check_map.py` runs all the automated checks.
-- `tools/disable_check.py` checks whether a module can be switched off.
-- `tools/gen_docs.py` regenerates the reference docs.
-- `tools/refactor/*.py` holds the scripts behind each past change.
+6. **Reduce shared temporary-variable handoffs where they are risky.** docs/PHASE16.md and
+   phase16-handoffs.csv identify remaining cases. Start with functions that wait, nested callbacks and
+   frequently fired combat/arena paths. Use locals or explicit context where appropriate, one system
+   at a time, with behavior comparison and focused tests. Splitting large data tables has lower value.
+
+7. **Write a small content-development guide.** Give one worked example each for a new quest, boss,
+   item and reward: source module, object IDs, prerequisites, registration, build and test. Explain when
+   custom quest steps are appropriate and why hooks must not wait. Refresh stale reference docs and
+   the module dependency index as content changes; keep HANDOFF.md/STAGES.md current.
+
+8. **Package the project for another developer.** Supply tested maps through release artifacts,
+   retain source history/backups, and document where baseline/assets/tool versions come from. Publish
+   the repository if wanted. Automated release checks can then run whenever source changes are proposed.
+
+## Tools already available
+
+- tools/check_map.py: compile, startup wiring/order, globals and native-save string checks.
+- tools/tests/test_quest_lifecycle.py: seven source-level lifecycle/report tests (mocked Warcraft natives).
+- tools/tests/verify_stage_s.py: stage S conversion preservation audit against stage R commit 800ed48.
+- tools/disable_check.py: module dependency/disabling audit.
+- tools/gen_docs.py: regenerate source reference docs.
+- tools/savecode.py and docs/SAVE_CODES.md: save-code inspection and compatibility details.
+- tools/objects.py, tools/objdata.py and docs/OBJECTS.md: object data/reference tools.
+
+These are priorities for subsequent work, not additional gameplay changes made in stage S.

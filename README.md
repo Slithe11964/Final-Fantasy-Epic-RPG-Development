@@ -1,5 +1,8 @@
 # FF Epic RPG — developer workspace
 
+Read **docs/HANDOFF.md** first for the current stage, then **docs/QUEST_ENGINE.md** and
+**docs/NEXT_STEPS.md** for quest development and remaining readiness work.
+
 This folder holds everything a developer needs to keep working on **Final Fantasy Epic RPG**
 (a Warcraft III Reforged map) in the World Editor.
 
@@ -11,8 +14,9 @@ This folder holds everything a developer needs to keep working on **Final Fantas
 | `tools/` | Python scripts: export, build, automated checks. |
 | `docs/` | How the map's code is organised (`STARTUP.md`), the cleanup plan, test checklists. |
 
-The **World Editor map is the source of truth**. `src/` is a text mirror of it, so changes can
-be reviewed, diffed and reverted with Git.
+Git records the editable sources in `src/`. A playable map must contain the matching trigger-editor
+source and compiled script. For source edits, use the sync/build/check workflow in docs/HANDOFF.md;
+for World Editor edits, Save As, check, and export the saved map back to `src/` before committing.
 
 ## Everyday workflow
 
