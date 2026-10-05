@@ -99,8 +99,6 @@ its first talk), **True Ice Age** (one log entry shared by five quest slots), **
 | [ ] | End of Zodiac Age | Celeborn (three gate states) or Hashmalum; updates along the way |
 | [ ] | Advent of Ice Age | announced 4 s after Hashmalum dies; Echele |
 
-## Known old bug kept as it was
+## Fixed in stage Q
 
-Kalm Siege I and II: their "complete" triggers are never switched off, so they run again whenever the
-siege timer runs out later (rewards and "Quest Completed" again). The conversion keeps this exactly; it can
-be fixed with one line each if wanted.
+Kalm Siege I and II no longer re-give their reward when the siege timer runs out again later.

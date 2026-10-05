@@ -404,6 +404,8 @@ function Trig_KalmSiege1_Complete_Actions takes nothing returns nothing
         call StartTimerBJ(udg_SiegeTimer,false,1.)
         return
     endif
+    // the siege timer is started again below for the next siege: run only once
+    call DisableTrigger(GetTriggeringTrigger())
     call Cine_Enter()
     call DestroyEffectBJ(udg_SpecialEffect[30])
     if(Trig_KalmSiege1_Complete_CinematicsOn())then
@@ -435,17 +437,7 @@ function Trig_KalmSiege1_Complete_Actions takes nothing returns nothing
     call Wait_Polled(.25)
     call Music_ClearTrack(39)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEIN,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
-    if Quest_IsDone(QUEST_KALM_SIEGE) then
-        // This trigger is never turned off, so it runs again each time the siege timer expires; as in the
-        // original map, the quest is then announced and counted again.
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Kalm Siege|r")
-        call QuestSetCompletedBJ(Quest_LogEntry(QUEST_KALM_SIEGE),true)
-        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
-        set udg_StoryProgress=(udg_StoryProgress+1)
-        call ConditionalTriggerExecute(gg_trg_QuestCount_Milestones)
-    else
-        call Quest_StepDone(QUEST_KALM_SIEGE,null,null)
-    endif
+    call Quest_StepDone(QUEST_KALM_SIEGE,null,null)
     call ConditionalTriggerExecute(gg_trg_Priscilla_ShowMarker)
     call StartTimerBJ(udg_SiegeTimer,false,300.)
     call EnableTrigger(gg_trg_KalmSiege2_Call)
