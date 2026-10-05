@@ -89,6 +89,10 @@ def main():
         texts = [t for t in texts if not any(re.search(r'^\s*library\s+T%s\b' % re.escape(n), t, re.M) for n in off)]
         print('note: %d disabled trigger(s) left out of the source checks: %s' % (len(off), ', '.join(sorted(off))))
     results = {}
+    from editor_layout import layout_errors
+    from wtg import read_wtg
+    layout = layout_errors(read_wtg(m.read('war3map.wtg')), w)
+    results['0 editor folder/source pairing'] = (not layout, layout)
 
     ok, err = pjass(pj, common, blizzard, runtime, 'runtime')
     results['1 playable script compiles (pjass)'] = (ok, err)

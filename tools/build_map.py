@@ -18,9 +18,17 @@ from wct import read_wct, write_wct, raw_of
 def crlf(text):
     return text.replace('\r\n', '\n').replace('\n', '\r\n')
 
-def build_wct(base_wct_bytes, src_dir):
+def build_wct(base_wct_bytes, src_dir, tree_bytes=None):
     w = read_wct(base_wct_bytes)
     entries = json.load(open(os.path.join(src_dir, 'trigger-list.json'), encoding='utf-8'))
+    if tree_bytes is not None:
+        from wtg import read_wtg
+        from editor_layout import trigger_items
+        by_name = {entry['name']: entry for entry in entries}
+        names = [item['name'] for item in trigger_items(read_wtg(tree_bytes))]
+        if set(names) != set(by_name) or len(names) != len(by_name):
+            raise ValueError('map/source trigger names differ')
+        entries = [by_name[name] for name in names]
     if len(entries) != len(w['entries']):
         raise SystemExit('trigger-list.json has %d entries but the base map has %d trigger-editor entries. '
                          'Add/remove triggers in World Editor first, then export_sources.py.' % (len(entries), len(w['entries'])))
@@ -42,7 +50,7 @@ def main():
     ap.add_argument('--src', default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
     a = ap.parse_args()
     base = MPQ(a.base)
-    files = {'war3map.wct': build_wct(base.read('war3map.wct'), a.src)}
+    files = {'war3map.wct': build_wct(base.read('war3map.wct'), a.src, base.read('war3map.wtg'))}
     if a.runtime:
         files['war3map.j'] = open(a.runtime, 'rb').read()
     if os.path.exists(a.output):

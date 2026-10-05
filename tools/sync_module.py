@@ -88,7 +88,7 @@ def main(base_map, out_map, names):
     changed_elsewhere = [n for n in before if n not in touched and n not in replaced and before[n] != after.get(n)]
     if changed_elsewhere:
         sys.exit('refusing: functions outside the modules changed: %s' % changed_elsewhere[:5])
-    wct = build_map.build_wct(base.read('war3map.wct'), src)
+    wct = build_map.build_wct(base.read('war3map.wct'), src, base.read('war3map.wtg'))
     out = rt.replace('\n', '\r\n') if crlf else rt
     tmp = out_map + '.tmp'
     replace_files(base_map, tmp, {'war3map.j': out.encode('utf-8'), 'war3map.wct': wct})

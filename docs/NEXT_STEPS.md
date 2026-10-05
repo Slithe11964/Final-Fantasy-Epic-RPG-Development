@@ -1,6 +1,6 @@
 # FF Epic RPG: readying the map for new development
 
-Updated 2026-10-05, stage V. Current release: release/FFERPG_0.9.7.3-r16-stageV.w3x.
+Updated 2026-10-05, stage W. Current release: release/FFERPG_0.9.7.3-r16-stageW.w3x.
 The user reports stage S is working. All 93 quests are on QuestEngine. Priorities **2, 3 and 4 below
 are implemented** in stages T/U; BUILDS.md describes the new workflow and its limits. U's playable
 script is byte-identical to S. Read HANDOFF.md for the exact build and STAGES.md for history.
@@ -66,3 +66,6 @@ The user asked to ignore the documented bugs in the current map; bug work is def
 
 Remaining readiness work is #8 (developer packaging) and further subsystem passes for #6.
 Stage V needs its focused play test; its gameplay refactor preserves intended behavior. Bugs remain deferred.
+
+W repairs editor folder/source pairing and adds three regression tests (41 total).
+Confirm World Editor Save As on W before making further GUI edits; see HANDOFF.md.

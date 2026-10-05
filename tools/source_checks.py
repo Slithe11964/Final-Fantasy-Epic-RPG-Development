@@ -84,6 +84,8 @@ def fingerprint(text):
 def runtime_agreement(path, root=ROOT, capture=None):
     """Every enabled library function must match its source, after static-if resolution."""
     archive, wct, off = map_sources(path)
+    from editor_layout import paired_text
+    embedded_by_name = paired_text(read_wtg(archive.read('war3map.wtg')), wct)
     entries, texts = sources(root)
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
     present = set(re.findall(r'^constant boolean LIBRARY_(\w+)=true$', runtime, re.M))
@@ -99,7 +101,7 @@ def runtime_agreement(path, root=ROOT, capture=None):
         if library not in present:
             errors.append(f'{name}: enabled source library missing from runtime'); continue
         text = texts[name]
-        if len(wct['entries']) <= entry['index'] or tokens(text_of(wct['entries'][entry['index']])) != tokens(text):
+        if name not in embedded_by_name or tokens(text_of(embedded_by_name[name])) != tokens(text):
             errors.append(f'{name}: repository source differs from embedded editor source')
         libs, _, _ = split_libraries([text])
         body = resolve_static_ifs(libs[library]['body'], present)

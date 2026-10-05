@@ -3,7 +3,7 @@
 Run from the FFERPG repository in PowerShell:
 
 ```powershell
-.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
+.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
 ```
 
 Use a stage that does not exist yet. The command selects changed enabled modules, syncs their code,
@@ -99,3 +99,15 @@ Worked new-content examples: [CONTENT_DEVELOPMENT.md](CONTENT_DEVELOPMENT.md).
 Stage V is the current incremental base: six gameplay functions now own temporary context in
 TrueIceAge/Cartographer. All gates/38 tests pass; preservation-r16-stageV.txt verifies exact
 reversal and unchanged other archive files. Focused gameplay testing is in QUEST_TESTS.md.
+
+## Editor pairing repair (stage W)
+
+Stage W is the editing base. Older post-engine builds have a folder/source storage mismatch:
+an enabled trigger can display another module, causing missing TQuestEngine on editor save.
+editor_layout.py preserves name/source pairs while canonicalizing WTG/WCT into folder order;
+build_stage runs it before order_libraries/check_map. check_map rejects layout mismatches and
+custom source without its own InitTrig. add_module also normalizes. Runtime compilation alone
+does not detect this editor-association issue. Actual World Editor Save As remains required.
+
+W carries the user's Intro.j wording edits and otherwise preserves every gameplay function.
+41 tests and all gates pass; preservation-r16-stageW.json includes an isolated module-add smoke.

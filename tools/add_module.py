@@ -69,7 +69,14 @@ def main():
     json.dump(entries, open(lpath, 'w', encoding='utf-8'), indent=1)
     w = read_wct(base.read('war3map.wct'))
     w['entries'] = list(w['entries']) + [b'']
-    wct = build_map.build_wct(write_wct(w), src)
+    wct = build_map.build_wct(write_wct(w), src, write_wtg(t))
+    from editor_layout import normalize, trigger_items
+    t, w = normalize(t, read_wct(wct))
+    wct = write_wct(w)
+    by_name = {entry['name']: entry for entry in entries}
+    entries = [{**by_name[item['name']], 'index': index}
+               for index, item in enumerate(trigger_items(t))]
+    json.dump(entries, open(lpath, 'w', encoding='utf-8'), indent=1)
     # --- playable script
     rt = lf(base.read('war3map.j').decode('utf-8'))
     pos = {m.group(1): (m.start(), rt.index('//library %s ends' % m.group(1), m.start())) for m in re.finditer(r'^//library (\w+):', rt, re.M)}

@@ -7,7 +7,7 @@ Stage S is user-confirmed working. Current stage U adds development safeguards w
 playable script unchanged. For source edits, build a new stage with one command:
 
 ```powershell
-.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
+.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
 ```
 
 It selects changed modules, checks quests/content/save compatibility, runs compilation/regressions,

@@ -1,9 +1,9 @@
-# Handoff: where FF Epic RPG stands (2026-10-05, after Codex stage V)
+# Handoff: where FF Epic RPG stands (2026-10-05, after Codex stage W)
 
 Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.md.
 
 ## Current map
-- **Play / edit:** `release/FFERPG_0.9.7.3-r16-stageV.w3x` (Reforged format, with the HM3W header so it is
+- **Play / edit:** `release/FFERPG_0.9.7.3-r16-stageW.w3x` (Reforged format, with the HM3W header so it is
   listed in 1.29.2 too). This build is in release/; it has not been copied to Documents/Warcraft III/Maps/Download.
 - Stage P was play-tested by the user and works. Stage Q = P + the Kalm Siege fix (below).
 - Stage R = Q + Ao Madoushi on the quest engine; the user reports it works great.
@@ -19,7 +19,7 @@ Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.m
 ## How a change gets into the map (no World Editor needed)
 Preferred one-command workflow (details/limitations in **docs/BUILDS.md**):
 ```powershell
-.\build.ps1 -Stage W -Base release/FFERPG_0.9.7.3-r16-stageV.w3x
+.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
 ```
 It selects changed enabled modules, runs sync/order/check/header plus quest/content/save/source gates,
 and saves a new map, report and hash/tool manifest. Existing outputs are refused. Default base without
@@ -33,7 +33,7 @@ python tools/order_libraries.py OUT1.w3x OUT2.w3x                   # libraries 
 python tools/check_map.py OUT2.w3x --baseline BASE.w3x [--allow-removed 'gg_trg_(X|Y)']   # all must PASS
 python ../MapToolkit/tools/add_header.py OUT2.w3x release/NAME.w3x --from release/FFERPG_0.9.7.3-r16-stageN.w3x --name "Final Fantasy Epic RPG 0.9.7.3-r16 stageX (Reforged)"
 ```
-- Base for the next incremental change: `release/FFERPG_0.9.7.3-r16-stageV.w3x` (the tools accept its header).
+- Base for the next incremental change: `release/FFERPG_0.9.7.3-r16-stageW.w3x` (the tools accept its header).
 - New module: `tools/add_module.py`; module that became empty: `tools/remove_module.py` (then `git rm` its
   source and remove its `RegisterTriggers_X` call in MapBootstrap.j).
 - World Editor Save As also works (JassHelper orders libraries itself); then re-export sources with
@@ -152,3 +152,26 @@ Stage V still needs the focused in-game test in QUEST_TESTS.md; S remains the us
 CONTENT_DEVELOPMENT.md gives worked quest/boss/item/reward examples and integration/test steps;
 no example content was added. TRIGGER_INDEX/GLOBALS/DEAD_CODE and phase16-handoffs.csv are refreshed.
 LIBRARY_DEPENDENCIES.md lists 731 declared editor libraries, regenerated with gen_dependencies.py.
+
+## Stage W: World Editor source pairing repair
+
+User's enabled QuestEngine displayed TWave, and Save As reported missing TQuestEngine.
+QuestEngine was appended to physical WTG/WCT storage instead of its folder position.
+World Editor traverses the folders when pairing source; 118 entries shifted, and the
+actual engine appeared under disabled DevCommands. Prior compilation checks flattened
+the complete source list and missed this association error. Do not use V or earlier
+post-engine maps as World Editor editing bases; use W. Existing playable scripts still work.
+
+W canonicalizes WTG/WCT together into folder order, preserving each trigger's properties,
+GUI actions and associated source bytes. It also carries the user's existing Intro.j text
+edits verbatim (new welcome/tips/patch notes/credits); that one action is the only changed
+playable function. No quest dialogue, rewards, objects, save formats or startup order changed.
+734 editor entries, 1503 runtime triggers; DevCommands remains disabled. check_map now rejects
+wrong folder/source order or mismatched InitTrig ownership. Builds normalize layout before
+ordering/checking; add_module does the same. Name-based syncing accepts historical base layouts.
+
+All gates, 41 tests and 2,000 codec cases PASS. Isolated actual add_module smoke PASS.
+Proof: release/preservation-r16-stageW.json; checks/manifest: checks-r16-stageW.txt/build-r16-stageW.json.
+Needs user confirmation: reopen W, QuestEngine starts library TQuestEngine, then Save As
+with JassHelper/vJass enabled. The user's TEST editor copy has not been overwritten; preserve
+any unsaved GUI edits and transfer them after confirming the repaired map saves.

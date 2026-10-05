@@ -150,3 +150,10 @@ The intended dialogue, reward amounts, timings and world changes are unchanged. 
 - [ ] Quick old-code save/load smoke test. No objects, item tables, jobs or save format changed.
 
 DevCommands remains disabled; it is not necessary for normal testing. Use separate test copies if enabling it.
+
+## World Editor repair (stage W)
+
+- [ ] Open W; QuestEngine starts library TQuestEngine and remains enabled. Wave starts TWave; DevCommands starts TDevCommands and remains disabled.
+- [ ] Save As to a fresh filename with JassHelper/vJass enabled; no missing TQuestEngine error.
+- [ ] Check user's new welcome/tips/credits appear and an ordinary quest still progresses.
+- [ ] Transfer any unsaved QuestLog_Entries edits from the old TEST copy only after the repaired map saves.

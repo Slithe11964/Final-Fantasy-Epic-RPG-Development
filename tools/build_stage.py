@@ -43,6 +43,9 @@ def refuse_existing(paths):
 
 def changes(base):
     archive, wct, disabled = map_sources(base)
+    from wtg import read_wtg
+    from editor_layout import paired_text
+    embedded_by_name = paired_text(read_wtg(archive.read('war3map.wtg')), wct)
     entries, texts = sources()
     if len(entries) != len(wct['entries']) or any(e['index'] != i for i, e in enumerate(entries)):
         raise ValueError('trigger layout changed; use add_module/remove_module or World Editor and export first')
@@ -52,13 +55,13 @@ def changes(base):
     for entry in entries:
         if not entry.get('library'):
             continue
-        embedded = text_of(wct['entries'][entry['index']])
+        embedded = text_of(embedded_by_name[entry['name']])
         if not re.search(r'^\s*library\s+' + re.escape(entry['library']) + r'\b', embedded, re.M):
             raise ValueError('trigger layout/library mismatch: ' + entry['name'])
         if tokens(texts[entry['name']]) != tokens(embedded) and entry['name'] not in disabled:
             modified.append(entry['name'])
     from build_map import build_wct
-    wct_bytes = build_wct(archive.read('war3map.wct'), str(ROOT / 'src'))
+    wct_bytes = build_wct(archive.read('war3map.wct'), str(ROOT / 'src'), archive.read('war3map.wtg'))
     return modified, wct_bytes != archive.read('war3map.wct')
 
 
@@ -134,9 +137,13 @@ def main():
         else:
             shutil.copyfile(base, synced)
             logs.append('No source changes: copied the tested baseline without resyncing historical differences.\n')
-        run(ROOT / 'tools/order_libraries.py', synced, ordered)
+        laid_out = scratch / 'editor-layout.w3x'
+        run(ROOT / 'tools/editor_layout.py', synced, laid_out)
+        run(ROOT / 'tools/order_libraries.py', laid_out, ordered)
         # For a tooling-only stage, retain the exact tested archive if ordering changed no code.
-        archive_unchanged = not modules and not editor_changed and map_sources(ordered)[0].read('war3map.j') == map_sources(base)[0].read('war3map.j')
+        archive_unchanged = not modules and not editor_changed and all(
+            map_sources(ordered)[0].read(name) == map_sources(base)[0].read(name)
+            for name in ('war3map.j', 'war3map.wtg', 'war3map.wct'))
         if archive_unchanged:
             shutil.copyfile(base, ordered)
             logs.append('Ordering changed no code; retained the exact tested MPQ archive.\n')
