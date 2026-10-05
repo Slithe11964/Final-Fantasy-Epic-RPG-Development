@@ -296,7 +296,7 @@ function Trig_Cine_StoneBreaks_Actions takes nothing returns nothing
     endif
     call ConditionalTriggerExecute(gg_trg_World_AfterDemonAppears)
     call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
-    call QuestSetDescriptionBJ(udg_MainQuest[4],"Visit Ao Madoushi, tell him about what happened and ask him what he knows about it.")
+    call ExecuteFunc("QuestAoMadoushi_StoneBroke")
     call GroupAddUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
     call EnableTrigger(gg_trg_Quest_AoMadoushi_Report)
     set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Othr_0106,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
@@ -829,7 +829,7 @@ function Trig_Cine_StoneBreaks_Alt_Actions takes nothing returns nothing
         else
             if(Trig_Cine_StoneBreaks_Alt_ShouldSendToSage())then
                 call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
-                call QuestSetDescriptionBJ(udg_MainQuest[4],"Visit Ao Madoushi, tell him about what happened and ask him what he knows about it.")
+                call ExecuteFunc("QuestAoMadoushi_StoneBroke")
                 call GroupAddUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
                 call EnableTrigger(gg_trg_Quest_AoMadoushi_Report)
                 set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Othr_0106,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")

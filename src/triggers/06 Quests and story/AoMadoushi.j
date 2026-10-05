@@ -27,7 +27,7 @@ function Trig_AoMadoushi_Summon_Actions takes nothing returns nothing
     call ShowUnitShow(gg_unit_Othr_0106)
     set udg_CidQuestStage=$B // $B = 11
     call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Ao Madoushi.")
-    call QuestSetDescriptionBJ(udg_MainQuest[4],"Talk to Ao Madoushi.")
+    call ExecuteFunc("QuestAoMadoushi_Summoned")
     call EnableTrigger(gg_trg_Quest_AoMadoushi_Talk)
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

@@ -1,4 +1,4 @@
-# Quest play-test list (stages O and P)
+# Quest play-test list (stages O, P and R)
 
 Stage O put 62 side quests on the quest engine, stage P the main story (18 more). Stage N's 10 quests are
 listed in docs/QUEST_ENGINE.md. Every dialogue line was kept word for word (checked by comparing all text
@@ -6,7 +6,7 @@ in the old and new code). Play each quest at least once with cinematics on; the 
 cinematics off. Tick a box when a quest has been played to the end.
 
 Not on the engine (on purpose): **Cartographer** (rewards worked out over repeated reports, can complete in
-its first talk), **True Ice Age** (one log entry shared by five quest slots), **Ao Madoushi** (not yet looked at).
+its first talk), **True Ice Age** (one log entry shared by five quest slots). Ao Madoushi was converted in stage R.
 
 ## What changed for every quest
 
@@ -102,3 +102,19 @@ its first talk), **True Ice Age** (one log entry shared by five quest slots), **
 ## Fixed in stage Q
 
 Kalm Siege I and II no longer re-give their reward when the siege timer runs out again later.
+
+## Ao Madoushi (stage R)
+
+Use release/FFERPG_0.9.7.3-r16-stageR.w3x. Both branches should complete once, add exactly one completed
+quest, leave story progress unchanged and start Eye of Jenova once. The existing 1500 gold / 1500 XP
+reward follows Reward_Give (including Eternity rules); reward and Eye of Jenova/music timing match Q.
+
+| Done | Path | Check |
+|---|---|---|
+| [ ] | Before Hashmalum appears, cinematics on | Cid's Zodiac Stone description; first Turk sends you to the other; second gives one invulnerable flute; original wolf/bear spawns and markers; flute consumed at hut; sage first talk gives no reward and asks for the Stone; Stone-break scene updates to Visit Ao Madoushi; report gives 1500/1500, completes once, starts Eye of Jenova, adds the report's random-object marker, changes music after 4 s |
+| [ ] | Hashmalum already free at first talk, cinematics on | Cid's description reflects his state when the quest starts; sage uses the correct discovered-MainQuest[3] dialogue variants, including incremental People call me that transmissions; first talk gives 1500/1500, completes once, starts Eye of Jenova; no Stone handoff/report needed |
+| [ ] | Hashmalum breaks free between Cid's request and first sage talk | Initial Stone description stays valid until the usual updates; first sage talk takes the already-free completion path regardless of the initial description |
+| [ ] | Both completion paths, cinematics off | Same log updates, markers, reward/count and Eye of Jenova start; no dialogue; music still changes after 4 s |
+| [ ] | Alternative Stone-break scene after the first sage talk | Original alternative scene/spawns; Visit Ao Madoushi log and marker; report completes normally |
+| [ ] | True Ice Age interrupts at Cid stages 9, 10, 11 or 12 | Existing direct quest-log completion and stage-dependent marker/item/trigger cleanup remain as in Q; no new completion announcement, reward or quest-count increment from the custom engine steps |
+| [ ] | Eye of Jenova follow-through | Arena target ping/drop enabled; pickup update; bring Eye to sage; original hand-in, Demi Materia and next Cid quest work |

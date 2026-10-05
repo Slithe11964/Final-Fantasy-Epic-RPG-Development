@@ -12,7 +12,7 @@ A quest is a list of steps. The quest's own module describes it once, as data. T
 The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the about 100 places that check
 `IsQuestCompleted(...)` keep working.
 
-**Converted:** 90 of the map's quests (stages M, N, O, P). Not converted: Cartographer, True Ice Age and Ao Madoushi. The play-test list is `docs/QUEST_TESTS.md`.
+**Converted:** 91 of the map's quests (stages M, N, O, P, R). Not converted: Cartographer and True Ice Age. The play-test list is `docs/QUEST_TESTS.md`.
 
 ## A quest, step by step
 
@@ -94,6 +94,19 @@ stays where it is during kill and hunt steps.
    for the removed triggers. The engine must come before every quest module in the playable script:
    `tools/add_module.py ... QuestEngine --before TElixir,TGnollHunt,...` (see docs/STAGES.md, stage N).
 6. **Play-test** the quest from start to finish, with cinematics on and off.
+
+## Ao Madoushi custom steps (stage R)
+
+Quest_AoMadoushi defines MainQuest[4] when Cid finishes his request. Five custom steps track that request,
+the flute handoff, the summon, the first conversation and the report after the Stone breaks. The first
+conversation completes both remaining steps if Hashmalum is already free; otherwise it advances to the
+report step. Its existing triggers retain the branching Text_Transmission sequences, cameras, reward
+placement and markers, like Eye of Jenova. Intermediate steps have empty text: their triggers keep the
+original announcements to udg_PlayingPlayers and use Quest_SetLog without announcing again. Completion
+counts one quest, with Quest_NotStory keeping story progress unchanged. True Ice Age still directly marks
+the log complete without counting, as before. The event triggers, including their waits, are not engine
+hooks; the engine helpers never wait. Cid, Turks, AoMadoushi and Cine call helpers through ExecuteFunc to
+avoid adding a library dependency cycle with Cine.
 
 ## Limits and next step types
 

@@ -682,13 +682,7 @@ function Trig_Cid_Talk_AoMadoushi_Actions takes nothing returns nothing
         endif
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Ao Madoushi|r")
-    if(Trig_Cid_Talk_AoMadoushi_HashmalumKnown_Quest())then
-        call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Ao Madoushi","Cid and Mid told you about the mysterious hermit who may know something about the demon Hashmalum. You must find him, but in order to call for his aid, Eiko's Flute is required. Find Reno and Rude, the Turks, to obtain it.","ReplaceableTextures\\CommandButtons\\BTNThrall.blp")
-    else
-        call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cffff8040Ao Madoushi","Cid and Mid told you about the mysterious hermit who may know something about the Zodiac Stone and the entity that is imprisoned inside the Stone. You must find him, but in order to call for his aid, Eiko's Flute is required. Find Reno and Rude, the Turks, to obtain it.","ReplaceableTextures\\CommandButtons\\BTNThrall.blp")
-    endif
-    set udg_MainQuest[4]=GetLastCreatedQuestBJ()
+    call ExecuteFunc("QuestAoMadoushi_Start")
     set udg_QuestMarkerEffect[2]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n012_0163,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     set udg_QuestMarkerEffect[3]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_n013_0164,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call GroupAddUnitSimple(gg_unit_n012_0163,udg_QuestUnits)

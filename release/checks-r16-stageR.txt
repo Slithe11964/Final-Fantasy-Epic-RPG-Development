@@ -1,0 +1,14 @@
+note: 1 disabled trigger(s) left out of the source checks: DevCommands
+PASS 1 playable script compiles (pjass)
+PASS 2 trigger-editor source compiles (vjass_lite + pjass)
+PASS 3 startup wiring
+PASS 4 source matches playable script (startup functions)
+PASS 4b globals match playable script
+PASS 5 native save/load text safety
+PASS 6 startup sequence matches baseline
+     1503 triggers checked, 0 independent trigger pairs reordered
+PASS Ao Madoushi preservation audit: 146 existing functions token-identical; 7 action functions differ only in quest lifecycle calls.
+PASS original dialogue, reward calls, waits, announcement audiences, world side effects and log descriptions preserved; all five sources use CRLF.
+PASS final HM3W header added; archive body identical to the checked build.
+PASS 18 world/object/trigger-layout/string-table archive files unchanged from stage Q.
+Stage R SHA256: 20f4b6f3fb5e3a885ed40754037ea416683c00baccba62694563a7be0dfb72e0

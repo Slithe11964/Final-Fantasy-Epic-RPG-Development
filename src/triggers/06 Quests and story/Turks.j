@@ -54,7 +54,7 @@ function Trig_Turks_Give_Flute_Actions takes nothing returns nothing
         call EnableTrigger(gg_trg_AoMadoushi_Summon)
         set udg_CidQuestStage=$A // $A = 10
         call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Find Ao Madoushi's hut and play the flute to make him appear.")
-        call QuestSetDescriptionBJ(udg_MainQuest[4],"Find Ao Madoushi's hut and play the flute to make him appear.")
+        call ExecuteFunc("QuestAoMadoushi_FluteTaken")
         set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
         call CreateNUnitsAtLoc(1,'n00V',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n00V': unit "Ancient Bear"; $B = 11
         call RemoveLocation(udg_TempPoint)

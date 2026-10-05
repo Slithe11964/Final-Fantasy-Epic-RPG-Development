@@ -1,9 +1,51 @@
-library TQuestAoMadoushi requires TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestAoMadoushi requires TQuestEngine, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_AoMadoushi_Talk=null
     trigger gg_trg_Quest_AoMadoushi_Report=null
+    integer QUEST_AO_MADOUSHI=0
 endglobals
+
+// The existing triggers keep the branching cinematics, rewards and markers. Custom steps track
+// Cid's request, the flute, the summon, the first talk and (if needed) the later report.
+function QuestAoMadoushi_Define takes nothing returns nothing
+    local integer q=Quest_Define("Ao Madoushi",QUEST_MAIN,4,"ReplaceableTextures\\CommandButtons\\BTNThrall.blp")
+    set QUEST_AO_MADOUSHI=q
+    call Quest_Color(q,"|cffff8040")
+    call Quest_NotStory(q)
+    call Quest_NoMarker(q)
+    if udg_HashmalumStage>0 then
+        call Quest_Custom(q,"Cid and Mid told you about the mysterious hermit who may know something about the demon Hashmalum. You must find him, but in order to call for his aid, Eiko's Flute is required. Find Reno and Rude, the Turks, to obtain it.")
+    else
+        call Quest_Custom(q,"Cid and Mid told you about the mysterious hermit who may know something about the Zodiac Stone and the entity that is imprisoned inside the Stone. You must find him, but in order to call for his aid, Eiko's Flute is required. Find Reno and Rude, the Turks, to obtain it.")
+    endif
+    // Updates retain their original playing-player announcements in the event triggers.
+    call Quest_Custom(q,"") // Obtain Eiko's Flute.
+    call Quest_Custom(q,"") // Summon Ao Madoushi.
+    call Quest_Custom(q,"") // First talk: request the Stone, or finish if Hashmalum is already free.
+    call Quest_Custom(q,"") // Report after the Stone breaks; skipped when the first talk finishes it.
+endfunction
+
+function QuestAoMadoushi_Start takes nothing returns nothing
+    if QUEST_AO_MADOUSHI==0 then
+        call QuestAoMadoushi_Define()
+    endif
+    call Quest_Start(QUEST_AO_MADOUSHI,null,null)
+endfunction
+
+function QuestAoMadoushi_FluteTaken takes nothing returns nothing
+    call Quest_StepDone(QUEST_AO_MADOUSHI,null,null)
+    call Quest_SetLog(QUEST_AO_MADOUSHI,"Find Ao Madoushi's hut and play the flute to make him appear.",false)
+endfunction
+
+function QuestAoMadoushi_Summoned takes nothing returns nothing
+    call Quest_StepDone(QUEST_AO_MADOUSHI,null,null)
+    call Quest_SetLog(QUEST_AO_MADOUSHI,"Talk to Ao Madoushi.",false)
+endfunction
+
+function QuestAoMadoushi_StoneBroke takes nothing returns nothing
+    call Quest_SetLog(QUEST_AO_MADOUSHI,"Visit Ao Madoushi, tell him about what happened and ask him what he knows about it.",false)
+endfunction
 
 function Trig_Quest_AoMadoushi_Talk_Conditions takes nothing returns boolean
     return(Unit_PlayersNearby(udg_TalkRange,gg_unit_Othr_0106,true,true,true))
@@ -101,10 +143,9 @@ function Trig_Quest_AoMadoushi_Talk_Actions takes nothing returns nothing
             call Reward_Give($5DC,$5DC,gg_unit_Othr_0106) // $5DC = 1500
         endif
     endif
+    call Quest_StepDone(QUEST_AO_MADOUSHI,GetTriggerPlayer(),GetTriggerUnit())
     if(Trig_Quest_AoMadoushi_Talk_ShouldGiveEyeQuest())then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ao Madoushi|r")
-        call QuestSetCompletedBJ(udg_MainQuest[4],true)
-        set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+        call Quest_StepDone(QUEST_AO_MADOUSHI,GetTriggerPlayer(),GetTriggerUnit())
         // "Eye of Jenova" starts (the engine announces it now; it used to be announced 4 seconds later)
         call ExecuteFunc("QuestEyeOfJenova_Start")
         call SaveIntegerBJ(2,2,$8B,udg_GameStateHash) // $8B = 139
@@ -114,7 +155,7 @@ function Trig_Quest_AoMadoushi_Talk_Actions takes nothing returns nothing
         call Music_SetZoneTrack(6)
     else
         call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring the Zodiac Stone to Ao Madoushi.")
-        call QuestSetDescriptionBJ(udg_MainQuest[4],"Hurry and bring the Zodiac Stone to Ao Madoushi.")
+        call Quest_SetLog(QUEST_AO_MADOUSHI,"Hurry and bring the Zodiac Stone to Ao Madoushi.",false)
         call GroupAddUnitSimple(udg_ZodiacStone,udg_QuestUnits)
         call EnableTrigger(gg_trg_Cine_StoneBreaks)
     endif
@@ -175,9 +216,7 @@ function Trig_Quest_AoMadoushi_Report_Actions takes nothing returns nothing
     else
         call Reward_Give($5DC,$5DC,gg_unit_Othr_0106) // $5DC = 1500
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Ao Madoushi|r")
-    call QuestSetCompletedBJ(udg_MainQuest[4],true)
-    set udg_QuestsCompleted=(udg_QuestsCompleted+1)
+    call Quest_StepDone(QUEST_AO_MADOUSHI,GetTriggerPlayer(),GetTriggerUnit())
     // "Eye of Jenova" starts (the engine announces it now; it used to be announced 4 seconds later)
     call ExecuteFunc("QuestEyeOfJenova_Start")
     set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Othr_0106,"Objects\\RandomObject\\RandomObject.mdl")
