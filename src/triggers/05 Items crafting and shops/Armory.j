@@ -12,6 +12,10 @@ globals
     // Variables only this module uses.
     unit array udg_ArmoryUnit
     integer udg_ArmoryStockMax=0
+    integer array ArmoryMissingUnit
+    string array ArmoryHint
+    integer array ArmoryCategory
+    integer array ArmoryPage
 endglobals
 
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
@@ -388,7 +392,634 @@ function Trig_Armory_Item_Hash_Actions takes nothing returns nothing
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
+function Armory_InitHints takes nothing returns nothing
+    set ArmoryMissingUnit[12]='z012'
+    set ArmoryHint[12]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[13]='z013'
+    set ArmoryHint[13]="Challenge Chaos and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[14]='z014'
+    set ArmoryHint[14]="Challenge Orc Chieftain and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[15]='z015'
+    set ArmoryHint[15]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[16]='z016'
+    set ArmoryHint[16]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[17]='z017'
+    set ArmoryHint[17]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[18]='z018'
+    set ArmoryHint[18]="Search the locked treasure vaults."
+    set ArmoryMissingUnit[19]='z019'
+    set ArmoryHint[19]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[20]='z020'
+    set ArmoryHint[20]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[21]='z021'
+    set ArmoryHint[21]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[22]='z022'
+    set ArmoryHint[22]="Check the stock of eaom."
+    set ArmoryMissingUnit[23]='z023'
+    set ArmoryHint[23]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[24]='z024'
+    set ArmoryHint[24]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[25]='z025'
+    set ArmoryHint[25]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[26]='z026'
+    set ArmoryHint[26]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[27]='z027'
+    set ArmoryHint[27]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[28]='z028'
+    set ArmoryHint[28]="Follow the Ultima Weapon quest or event."
+    set ArmoryMissingUnit[29]='z029'
+    set ArmoryHint[29]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[30]='z030'
+    set ArmoryHint[30]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[31]='z031'
+    set ArmoryHint[31]="Check the stock of eaom."
+    set ArmoryMissingUnit[32]='z032'
+    set ArmoryHint[32]="Check the stock of eaom."
+    set ArmoryMissingUnit[33]='z033'
+    set ArmoryHint[33]="Hunt or steal from Holy Knight."
+    set ArmoryMissingUnit[34]='z034'
+    set ArmoryHint[34]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[35]='z035'
+    set ArmoryHint[35]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[36]='z036'
+    set ArmoryHint[36]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[37]='z037'
+    set ArmoryHint[37]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[38]='z038'
+    set ArmoryHint[38]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[39]='z039'
+    set ArmoryHint[39]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[40]='z040'
+    set ArmoryHint[40]="Hunt or steal from Corrupted Orc Warlock."
+    set ArmoryMissingUnit[41]='z041'
+    set ArmoryHint[41]="Follow the Fallen Ranger quest or event."
+    set ArmoryMissingUnit[42]='z042'
+    set ArmoryHint[42]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[43]='z043'
+    set ArmoryHint[43]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[44]='z044'
+    set ArmoryHint[44]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[45]='z045'
+    set ArmoryHint[45]="Check the stock of eaom."
+    set ArmoryMissingUnit[46]='z046'
+    set ArmoryHint[46]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[47]='z047'
+    set ArmoryHint[47]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[48]='z048'
+    set ArmoryHint[48]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[49]='z049'
+    set ArmoryHint[49]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[50]='z050'
+    set ArmoryHint[50]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[51]='z051'
+    set ArmoryHint[51]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[52]='z052'
+    set ArmoryHint[52]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[53]='z053'
+    set ArmoryHint[53]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[54]='z054'
+    set ArmoryHint[54]="Challenge God Dragon and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[55]='z055'
+    set ArmoryHint[55]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[56]='z056'
+    set ArmoryHint[56]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[57]='z057'
+    set ArmoryHint[57]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[58]='z058'
+    set ArmoryHint[58]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[59]='z059'
+    set ArmoryHint[59]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[60]='z060'
+    set ArmoryHint[60]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[61]='z061'
+    set ArmoryHint[61]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[62]='z062'
+    set ArmoryHint[62]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[63]='z063'
+    set ArmoryHint[63]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[64]='z064'
+    set ArmoryHint[64]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[65]='z065'
+    set ArmoryHint[65]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[66]='z066'
+    set ArmoryHint[66]="Check the stock of Armor Vendor."
+    set ArmoryMissingUnit[67]='z067'
+    set ArmoryHint[67]="Challenge Gilgamesh and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[72]='z072'
+    set ArmoryHint[72]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[73]='z073'
+    set ArmoryHint[73]="Follow the Fountain quest or event."
+    set ArmoryMissingUnit[75]='z075'
+    set ArmoryHint[75]="Hunt or steal from ndrv."
+    set ArmoryMissingUnit[76]='z076'
+    set ArmoryHint[76]="Hunt or steal from Vampire."
+    set ArmoryMissingUnit[77]='z077'
+    set ArmoryHint[77]="Hunt or steal from Vampire."
+    set ArmoryMissingUnit[79]='z079'
+    set ArmoryHint[79]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[80]='z080'
+    set ArmoryHint[80]="Follow the Crystal Ball quest or event."
+    set ArmoryMissingUnit[81]='z081'
+    set ArmoryHint[81]="Hunt or steal from nsat."
+    set ArmoryMissingUnit[82]='z082'
+    set ArmoryHint[82]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[84]='z084'
+    set ArmoryHint[84]="Defeat the boss that guards Crusher's Mace."
+    set ArmoryMissingUnit[85]='z085'
+    set ArmoryHint[85]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[86]='z086'
+    set ArmoryHint[86]="Hunt or steal from Brother."
+    set ArmoryMissingUnit[87]='z087'
+    set ArmoryHint[87]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[88]='z088'
+    set ArmoryHint[88]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[89]='z089'
+    set ArmoryHint[89]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[90]='z090'
+    set ArmoryHint[90]="Challenge Dark Ranger and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[91]='z091'
+    set ArmoryHint[91]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[92]='z092'
+    set ArmoryHint[92]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[93]='z093'
+    set ArmoryHint[93]="Challenge Zalera and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[94]='z094'
+    set ArmoryHint[94]="Challenge Ozma and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[95]='z095'
+    set ArmoryHint[95]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[97]='z097'
+    set ArmoryHint[97]="Challenge Zalera and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[104]='z104'
+    set ArmoryHint[104]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[111]='z111'
+    set ArmoryHint[111]="Hunt or steal from Dark Knight."
+    set ArmoryMissingUnit[118]='z118'
+    set ArmoryHint[118]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[119]='z119'
+    set ArmoryHint[119]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[120]='z120'
+    set ArmoryHint[120]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[121]='z121'
+    set ArmoryHint[121]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[122]='z122'
+    set ArmoryHint[122]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[123]='z123'
+    set ArmoryHint[123]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[124]='z124'
+    set ArmoryHint[124]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[125]='z125'
+    set ArmoryHint[125]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[126]='z126'
+    set ArmoryHint[126]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[129]='z129'
+    set ArmoryHint[129]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[130]='z130'
+    set ArmoryHint[130]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[131]='z131'
+    set ArmoryHint[131]="Follow the Nimphrodel quest or event."
+    set ArmoryMissingUnit[132]='z132'
+    set ArmoryHint[132]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[133]='z133'
+    set ArmoryHint[133]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[134]='z134'
+    set ArmoryHint[134]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[135]='z135'
+    set ArmoryHint[135]="Search the locked treasure vaults."
+    set ArmoryMissingUnit[136]='z136'
+    set ArmoryHint[136]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[137]='z137'
+    set ArmoryHint[137]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[138]='z138'
+    set ArmoryHint[138]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[139]='z139'
+    set ArmoryHint[139]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[140]='z140'
+    set ArmoryHint[140]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[142]='z142'
+    set ArmoryHint[142]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[143]='z143'
+    set ArmoryHint[143]="Search for the hidden Excalibur II."
+    set ArmoryMissingUnit[144]='z144'
+    set ArmoryHint[144]="Investigate the ice cache."
+    set ArmoryMissingUnit[145]='z145'
+    set ArmoryHint[145]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[146]='z146'
+    set ArmoryHint[146]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[151]='z151'
+    set ArmoryHint[151]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[152]='z152'
+    set ArmoryHint[152]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[154]='z154'
+    set ArmoryHint[154]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[155]='z155'
+    set ArmoryHint[155]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[157]='z157'
+    set ArmoryHint[157]="Follow the Almighty Shinra quest or event."
+    set ArmoryMissingUnit[158]='z158'
+    set ArmoryHint[158]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[159]='z159'
+    set ArmoryHint[159]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[160]='z160'
+    set ArmoryHint[160]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[161]='z161'
+    set ArmoryHint[161]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[162]='z162'
+    set ArmoryHint[162]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[163]='z163'
+    set ArmoryHint[163]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[164]='z164'
+    set ArmoryHint[164]="Challenge Gilgamesh and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[165]='z165'
+    set ArmoryHint[165]="Challenge Gilgamesh and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[166]='z166'
+    set ArmoryHint[166]="Check the stock of eaom."
+    set ArmoryMissingUnit[167]='z167'
+    set ArmoryHint[167]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[168]='z168'
+    set ArmoryHint[168]="Hunt or steal from Boco the Chocobo."
+    set ArmoryMissingUnit[170]='z170'
+    set ArmoryHint[170]="Challenge Hashmalum and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[171]='z171'
+    set ArmoryHint[171]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[172]='z172'
+    set ArmoryHint[172]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[180]='z180'
+    set ArmoryHint[180]="Search the locked treasure vaults."
+    set ArmoryMissingUnit[181]='z181'
+    set ArmoryHint[181]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[182]='z182'
+    set ArmoryHint[182]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[183]='z183'
+    set ArmoryHint[183]="Challenge Judges and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[184]='z184'
+    set ArmoryHint[184]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[185]='z185'
+    set ArmoryHint[185]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[186]='z186'
+    set ArmoryHint[186]="Search the locked treasure vaults."
+    set ArmoryMissingUnit[189]='z189'
+    set ArmoryHint[189]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[190]='z190'
+    set ArmoryHint[190]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[191]='z191'
+    set ArmoryHint[191]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[192]='z192'
+    set ArmoryHint[192]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[193]='z193'
+    set ArmoryHint[193]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[201]='z201'
+    set ArmoryHint[201]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[202]='z202'
+    set ArmoryHint[202]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[203]='z203'
+    set ArmoryHint[203]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[204]='z204'
+    set ArmoryHint[204]="Follow the Lost Memories quest or event."
+    set ArmoryMissingUnit[205]='z205'
+    set ArmoryHint[205]="Help Relm and Shadow resolve the Lost Memories quest."
+    set ArmoryMissingUnit[206]='z206'
+    set ArmoryHint[206]="Challenge Penance and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[207]='z207'
+    set ArmoryHint[207]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[208]='z208'
+    set ArmoryHint[208]="Challenge Chaos and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[212]='z212'
+    set ArmoryHint[212]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[213]='z213'
+    set ArmoryHint[213]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[214]='z214'
+    set ArmoryHint[214]="Hunt or steal from ngna."
+    set ArmoryMissingUnit[215]='z215'
+    set ArmoryHint[215]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[216]='z216'
+    set ArmoryHint[216]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[217]='z217'
+    set ArmoryHint[217]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[218]='z218'
+    set ArmoryHint[218]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[219]='z219'
+    set ArmoryHint[219]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[220]='z220'
+    set ArmoryHint[220]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[221]='z221'
+    set ArmoryHint[221]="Check the stock of Shield and Helmet Vendor."
+    set ArmoryMissingUnit[225]='z225'
+    set ArmoryHint[225]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[226]='z226'
+    set ArmoryHint[226]="Have your chocobo dig for hidden treasures."
+    set ArmoryMissingUnit[227]='z227'
+    set ArmoryHint[227]="Search the locked treasure vaults."
+    set ArmoryMissingUnit[228]='z228'
+    set ArmoryHint[228]="Challenge Demi Fiend and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[229]='z229'
+    set ArmoryHint[229]="Challenge Dark Fact and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[230]='z230'
+    set ArmoryHint[230]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[231]='z231'
+    set ArmoryHint[231]="Search crates; Ruksel can introduce you to fishing."
+    set ArmoryMissingUnit[232]='z232'
+    set ArmoryHint[232]="Follow the Nebra Angler quest or event."
+    set ArmoryMissingUnit[233]='z233'
+    set ArmoryHint[233]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[234]='z234'
+    set ArmoryHint[234]="Fish for the wandering swordsman Gilgamesh and earn his gift."
+    set ArmoryMissingUnit[235]='z235'
+    set ArmoryHint[235]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[236]='z236'
+    set ArmoryHint[236]="Check the stock of Earth the Pandaren Merchant."
+    set ArmoryMissingUnit[237]='z237'
+    set ArmoryHint[237]="Follow the King Of Sea quest or event."
+    set ArmoryMissingUnit[240]='z240'
+    set ArmoryHint[240]="Have you found a voodoo doll?"
+    set ArmoryMissingUnit[241]='z241'
+    set ArmoryHint[241]="Follow the Beastslayer quest or event."
+    set ArmoryMissingUnit[242]='z242'
+    set ArmoryHint[242]="Hunt or steal from Serpent Witch."
+    set ArmoryMissingUnit[243]='z243'
+    set ArmoryHint[243]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[244]='z244'
+    set ArmoryHint[244]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[245]='z245'
+    set ArmoryHint[245]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[246]='z246'
+    set ArmoryHint[246]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[247]='z247'
+    set ArmoryHint[247]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[248]='z248'
+    set ArmoryHint[248]="Search treasure chests while exploring."
+    set ArmoryMissingUnit[249]='z249'
+    set ArmoryHint[249]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[250]='z250'
+    set ArmoryHint[250]="Search treasure chests while exploring."
+    set ArmoryMissingUnit[251]='z251'
+    set ArmoryHint[251]="Search treasure chests while exploring."
+    set ArmoryMissingUnit[252]='z252'
+    set ArmoryHint[252]="Follow the Ultros quest or event."
+    set ArmoryMissingUnit[253]='z253'
+    set ArmoryHint[253]="Follow the Scorched Earth quest or event."
+    set ArmoryMissingUnit[254]='z254'
+    set ArmoryHint[254]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[255]='z255'
+    set ArmoryHint[255]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[256]='z256'
+    set ArmoryHint[256]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[257]='z257'
+    set ArmoryHint[257]="Follow the Hunt Festival quest or event."
+    set ArmoryMissingUnit[258]='z258'
+    set ArmoryHint[258]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[259]='z259'
+    set ArmoryHint[259]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[260]='z260'
+    set ArmoryHint[260]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[261]='z261'
+    set ArmoryHint[261]="Defeat the boss that guards the Tome of Life."
+    set ArmoryMissingUnit[262]='z262'
+    set ArmoryHint[262]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[263]='z263'
+    set ArmoryHint[263]="Follow the Seek Destroy quest or event."
+    set ArmoryMissingUnit[264]='z264'
+    set ArmoryHint[264]="Challenge Ultima and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[265]='z265'
+    set ArmoryHint[265]="Complete hunts and check the Hunt Club reward shop."
+    set ArmoryMissingUnit[266]='z266'
+    set ArmoryHint[266]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[267]='z267'
+    set ArmoryHint[267]="Follow the Impervious Beast quest or event."
+    set ArmoryMissingUnit[268]='z268'
+    set ArmoryHint[268]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[270]='z270'
+    set ArmoryHint[270]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[271]='z271'
+    set ArmoryHint[271]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[272]='z272'
+    set ArmoryHint[272]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[273]='z273'
+    set ArmoryHint[273]="Destroy the vulnerable neutral buildings around the map."
+    set ArmoryMissingUnit[274]='z274'
+    set ArmoryHint[274]="Follow the True Ice Age quest or event."
+    set ArmoryMissingUnit[275]='z275'
+    set ArmoryHint[275]="Follow the Target Practice quest or event."
+    set ArmoryMissingUnit[276]='z276'
+    set ArmoryHint[276]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[277]='z277'
+    set ArmoryHint[277]="Earn Battle Points and visit the arena outfitters."
+    set ArmoryMissingUnit[278]='z278'
+    set ArmoryHint[278]="Have your chocobo dig for hidden treasures."
+    set ArmoryMissingUnit[279]='z279'
+    set ArmoryHint[279]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[280]='z280'
+    set ArmoryHint[280]="Break destructibles around the map to uncover Fireflies."
+    set ArmoryMissingUnit[281]='z281'
+    set ArmoryHint[281]="Challenge Shemhazai and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[282]='z282'
+    set ArmoryHint[282]="Follow the Ice Age quest or event."
+    set ArmoryMissingUnit[283]='z283'
+    set ArmoryHint[283]="Search treasure chests while exploring."
+    set ArmoryMissingUnit[284]='z284'
+    set ArmoryHint[284]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[285]='z285'
+    set ArmoryHint[285]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[286]='z286'
+    set ArmoryHint[286]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[287]='z287'
+    set ArmoryHint[287]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[288]='z288'
+    set ArmoryHint[288]="Challenge Lilith and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[289]='z289'
+    set ArmoryHint[289]="Follow the Strongest Eidolon quest or event."
+    set ArmoryMissingUnit[290]='z290'
+    set ArmoryHint[290]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[291]='z291'
+    set ArmoryHint[291]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[292]='z292'
+    set ArmoryHint[292]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[293]='z293'
+    set ArmoryHint[293]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[294]='z294'
+    set ArmoryHint[294]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[295]='z295'
+    set ArmoryHint[295]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[296]='z296'
+    set ArmoryHint[296]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[297]='z297'
+    set ArmoryHint[297]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[298]='z298'
+    set ArmoryHint[298]="Search treasure chests while exploring."
+    set ArmoryMissingUnit[299]='z299'
+    set ArmoryHint[299]="Challenge Famfrit and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[300]='z300'
+    set ArmoryHint[300]="Challenge Hashmalum and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[301]='z301'
+    set ArmoryHint[301]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[303]='z303'
+    set ArmoryHint[303]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[304]='z304'
+    set ArmoryHint[304]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[305]='z305'
+    set ArmoryHint[305]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[306]='z306'
+    set ArmoryHint[306]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[307]='z307'
+    set ArmoryHint[307]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[308]='z308'
+    set ArmoryHint[308]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[309]='z309'
+    set ArmoryHint[309]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[310]='z310'
+    set ArmoryHint[310]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[311]='z311'
+    set ArmoryHint[311]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[312]='z312'
+    set ArmoryHint[312]="Ask Bali about celestial weapons."
+    set ArmoryMissingUnit[313]='z313'
+    set ArmoryHint[313]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[314]='z314'
+    set ArmoryHint[314]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[315]='z315'
+    set ArmoryHint[315]="Ask Loki about reforging gear."
+    set ArmoryMissingUnit[316]='z316'
+    set ArmoryHint[316]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[317]='z317'
+    set ArmoryHint[317]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[318]='z318'
+    set ArmoryHint[318]="Hunt or steal from Satyr Assassin."
+    set ArmoryMissingUnit[319]='z319'
+    set ArmoryHint[319]="Help Mid with the Young Engineer quest."
+    set ArmoryMissingUnit[320]='z320'
+    set ArmoryHint[320]="Valfodr was last seen holding it."
+    set ArmoryMissingUnit[322]='z322'
+    set ArmoryHint[322]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[323]='z323'
+    set ArmoryHint[323]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[324]='z324'
+    set ArmoryHint[324]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[325]='z325'
+    set ArmoryHint[325]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[326]='z326'
+    set ArmoryHint[326]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[327]='z327'
+    set ArmoryHint[327]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[328]='z328'
+    set ArmoryHint[328]="Check the stock of Weapon Vendor."
+    set ArmoryMissingUnit[329]='z329'
+    set ArmoryHint[329]="Investigate mimics for a mining tool."
+    set ArmoryMissingUnit[330]='z330'
+    set ArmoryHint[330]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[331]='z331'
+    set ArmoryHint[331]="Follow the Monstrum quest or event."
+    set ArmoryMissingUnit[332]='z332'
+    set ArmoryHint[332]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[333]='z333'
+    set ArmoryHint[333]="Challenge Black Devil and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[334]='z334'
+    set ArmoryHint[334]="Challenge Odin and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[336]='z336'
+    set ArmoryHint[336]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[337]='z337'
+    set ArmoryHint[337]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[338]='z338'
+    set ArmoryHint[338]="Follow the the arena duels quest or event."
+    set ArmoryMissingUnit[339]='z339'
+    set ArmoryHint[339]="Follow the the arena duels quest or event."
+    set ArmoryMissingUnit[340]='z340'
+    set ArmoryHint[340]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[341]='z341'
+    set ArmoryHint[341]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[342]='z342'
+    set ArmoryHint[342]="Follow the Nightmare quest or event."
+    set ArmoryMissingUnit[343]='z343'
+    set ArmoryHint[343]="Follow the Ice Age quest or event."
+    set ArmoryMissingUnit[344]='z344'
+    set ArmoryHint[344]="Complete hunts from the hunt board."
+    set ArmoryMissingUnit[345]='z345'
+    set ArmoryHint[345]="Find its crafting recipe and gather the required ingredients."
+    set ArmoryMissingUnit[346]='z346'
+    set ArmoryHint[346]="Use a Book of Elements to absorb the matching elemental Gem."
+    set ArmoryMissingUnit[347]='z347'
+    set ArmoryHint[347]="Try your luck with the rarest fishing catches."
+    set ArmoryMissingUnit[348]='z348'
+    set ArmoryHint[348]="Have your chocobo dig for hidden treasures."
+    set ArmoryMissingUnit[349]='z349'
+    set ArmoryHint[349]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[350]='z350'
+    set ArmoryHint[350]="Ask Bali about forging this gear."
+    set ArmoryMissingUnit[351]='z351'
+    set ArmoryHint[351]="Complete hunts from the hunt board."
+endfunction
+
+function Armory_InCategory takes integer index,integer category returns boolean
+    if category==0 then
+        return index>=501 and index<=507
+    endif
+    return udg_SaveFlagUnitID[index]!=0 and GetUnitPointValueByType(udg_SaveFlagUnitID[index])==category
+endfunction
+
+function Armory_ClearStock takes unit shop returns nothing
+    local integer i=1
+    loop
+        exitwhen i>udg_ArmoryStockMax
+        if udg_SaveFlagUnitID[i]!=0 then
+            call RemoveUnitFromStock(shop,udg_SaveFlagUnitID[i])
+        endif
+        if ArmoryMissingUnit[i]!=0 then
+            call RemoveUnitFromStock(shop,ArmoryMissingUnit[i])
+        endif
+        set i=i+1
+    endloop
+    call RemoveUnitFromStock(shop,'zNXT')
+    call RemoveUnitFromStock(shop,'zPRV')
+endfunction
+
+function Armory_ShowCategory takes unit shop,integer category,integer page returns nothing
+    local player p=GetOwningPlayer(shop)
+    local integer playerIndex=GetConvertedPlayerId(p)
+    local integer i=1
+    local integer count=0
+    local integer position=0
+    local integer stockId
+    call Armory_ClearStock(shop)
+    loop
+        exitwhen i>udg_ArmoryStockMax
+        if Armory_InCategory(i,category) then
+            set count=count+1
+        endif
+        set i=i+1
+    endloop
+    if page<0 then
+        set page=0
+    endif
+    if count>0 and page*9>=count then
+        set page=(count-1)/9
+    endif
+    set ArmoryCategory[playerIndex]=category
+    set ArmoryPage[playerIndex]=page
+    set i=1
+    loop
+        exitwhen i>udg_ArmoryStockMax
+        if Armory_InCategory(i,category) then
+            if position>=page*9 and position<(page+1)*9 then
+                set stockId=udg_SaveFlagUnitID[i]
+                if ArmoryMissingUnit[i]!=0 and not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+                    set stockId=ArmoryMissingUnit[i]
+                endif
+                call AddUnitToStock(shop,stockId,1,1)
+            endif
+            set position=position+1
+        endif
+        set i=i+1
+    endloop
+    if page>0 then
+        call AddUnitToStock(shop,'zPRV',1,1)
+    endif
+    if (page+1)*9<count then
+        call AddUnitToStock(shop,'zNXT',1,1)
+    endif
+    call SetUnitAbilityLevel(shop,'A0MX',category+1)
+    set p=null
+endfunction
+
 function Trig_Armory_Init_Actions takes nothing returns nothing
+    call Armory_InitHints()
     set udg_ArmoryStockMax=540
     set bj_forLoopAIndex=501
     set bj_forLoopAIndexEnd=udg_ArmoryStockMax
@@ -800,16 +1431,7 @@ function Trig_Armory_Open_Actions takes nothing returns nothing
         call CreateNUnitsAtLoc(1,'e01G',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,bj_UNIT_FACING) // 'e01G': unit "Armory"
         call RemoveLocation(udg_TempPoint)
         set udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
-        set bj_forLoopAIndex=501
-        set bj_forLoopAIndexEnd=506
-        loop
-            exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            call AddUnitToStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],1,1)
-            set bj_forLoopAIndex=bj_forLoopAIndex+1
-        endloop
-        if(Trig_Armory_Open_HasCelestial())then
-            call AddUnitToStockBJ(udg_SaveFlagUnitID[507],udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],1,1)
-        endif
+        call Armory_ShowCategory(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],0,0)
         call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
     endif
     call SelectUnitForPlayerSingle(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
@@ -852,6 +1474,8 @@ function Trig_Armory_Select_NotYourArmory takes nothing returns boolean
 endfunction
 
 function Trig_Armory_Select_Actions takes nothing returns nothing
+    local integer playerIndex=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
+    local integer itemIndex=BlzGetUnitMaxMana(GetSoldUnit())
     call ShowUnitHide(GetSoldUnit())
     call UnitApplyTimedLifeBJ(.21,'BTLF',GetSoldUnit()) // 'BTLF': object name not found in map data
     if(Trig_Armory_Select_NotYourArmory())then
@@ -859,25 +1483,22 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_TempForce,10.,"This is not your armory!")
         call DestroyForce(udg_TempForce)
     else
+        if GetUnitTypeId(GetSoldUnit())=='zNXT' then
+            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex]+1)
+            return
+        endif
+        if GetUnitTypeId(GetSoldUnit())=='zPRV' then
+            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex]-1)
+            return
+        endif
+        if itemIndex>0 and GetUnitTypeId(GetSoldUnit())==ArmoryMissingUnit[itemIndex] then
+            call DisplayTimedTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,15,"Hint: "+ArmoryHint[itemIndex])
+            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex])
+            return
+        endif
         if(Trig_Armory_Select_HasStockId())then
             if(Trig_Armory_Select_IsCategoryNode())then
-                set bj_forLoopAIndex=1
-                set bj_forLoopAIndexEnd=udg_ArmoryStockMax
-                loop
-                    exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    call RemoveUnitFromStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit())
-                    set bj_forLoopAIndex=bj_forLoopAIndex+1
-                endloop
-                set bj_forLoopAIndex=1
-                set bj_forLoopAIndexEnd=udg_ArmoryStockMax
-                loop
-                    exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    if(Trig_Armory_Select_InCategory())then
-                        call AddUnitToStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit(),1,1)
-                    endif
-                    set bj_forLoopAIndex=bj_forLoopAIndex+1
-                endloop
-                call SetUnitAbilityLevelSwapped('A0MX',GetTriggerUnit(),(BlzGetUnitMaxMana(GetSoldUnit())+1)) // 'A0MX': ability "Cancel"
+                call Armory_ShowCategory(GetTriggerUnit(),itemIndex,0)
             else
                 if(Trig_Armory_Select_CanWithdraw())then
                     set udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]-1)
@@ -899,24 +1520,12 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
                     call RemoveLocation(udg_TempPoint2)
                     call RemoveLocation(udg_TempPoint)
                     call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[BlzGetUnitMaxMana(GetSoldUnit())])
+                    call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex])
                 endif
             endif
         else
             if(Trig_Armory_Select_IsCancel())then
-                set bj_forLoopAIndex=1
-                set bj_forLoopAIndexEnd=540
-                loop
-                    exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    call RemoveUnitFromStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit())
-                    set bj_forLoopAIndex=bj_forLoopAIndex+1
-                endloop
-                set bj_forLoopAIndex=500
-                set bj_forLoopAIndexEnd=506
-                loop
-                    exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-                    call AddUnitToStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit(),1,1)
-                    set bj_forLoopAIndex=bj_forLoopAIndex+1
-                endloop
+                call Armory_ShowCategory(GetTriggerUnit(),0,0)
             else
                 if(Trig_Armory_Select_IsClose())then
                     call SelectUnitForPlayerSingle(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
@@ -941,29 +1550,13 @@ function Trig_Armory_Back_IsTopLevel takes nothing returns boolean
 endfunction
 
 function Trig_Armory_Back_Actions takes nothing returns nothing
+    local integer playerIndex=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Armory_Back_IsTopLevel())then
-        call SelectUnitForPlayerSingle(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
+        call SelectUnitForPlayerSingle(udg_PlayerHouse[playerIndex],GetOwningPlayer(GetTriggerUnit()))
         call ShowUnitHide(GetTriggerUnit())
         call KillUnit(GetTriggerUnit())
     else
-        set udg_TempInteger=udg_ArmoryParentCategory[(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1)]
-        set bj_forLoopAIndex=1
-        set bj_forLoopAIndexEnd=udg_ArmoryStockMax
-        loop
-            exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            call RemoveUnitFromStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit())
-            set bj_forLoopAIndex=bj_forLoopAIndex+1
-        endloop
-        set bj_forLoopAIndex=1
-        set bj_forLoopAIndexEnd=udg_ArmoryStockMax
-        loop
-            exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-            if(Trig_Armory_Back_MatchesBackCategory())then
-                call AddUnitToStockBJ(udg_SaveFlagUnitID[GetForLoopIndexA()],GetTriggerUnit(),1,1)
-            endif
-            set bj_forLoopAIndex=bj_forLoopAIndex+1
-        endloop
-        call SetUnitAbilityLevelSwapped('A0MX',GetTriggerUnit(),(udg_TempInteger+1)) // 'A0MX': ability "Cancel"
+        call Armory_ShowCategory(GetTriggerUnit(),udg_ArmoryParentCategory[ArmoryCategory[playerIndex]],0)
     endif
 endfunction
 

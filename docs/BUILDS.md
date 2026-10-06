@@ -3,8 +3,12 @@
 Run from the FFERPG repository in PowerShell:
 
 ```powershell
-.\build.ps1 -Stage AB
+python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
+.\build.ps1 -Stage AD -Base build/armory-objects.w3x
 ```
+
+Stage AB requires additive armory hint objects. On a fresh clone prepare the object base as above;
+for incremental work use the newest reviewed Reforged release as -Base. See ARMORY.md.
 
 Use a stage that does not exist yet. The command selects changed enabled modules, syncs their code,
 orders libraries, runs every gate, adds the HM3W header and publishes three new files in release/:
@@ -13,7 +17,8 @@ reports and manifests. Any failed check stops publication. Scratch maps and logs
 Only one process can build the same stage at a time; its lock is removed on normal exit. If a process
 is forcibly terminated, verify no build is running before removing its leftover stage lock.
 
-For the confirmed baseline, `-Base` may be omitted. `tools/build-config.json` pins baseline/Reforged/FFERPG_0.9.7.3-r16.w3x and its
+The builder retains the confirmed baseline pin, but current armory sources require a prepared
+object base or the latest armory build supplied as `-Base`. `tools/build-config.json` pins baseline/Reforged/FFERPG_0.9.7.3-r16.w3x and its
 SHA256 `45767f6608f38d1235360dcbb818a2da6812f26fb96edc062f734af871123da7`.
 An explicit base's hash is recorded instead of silently changing that pinned baseline. For incremental
 development, supply the newest reviewed map. No stage is selected or overwritten automatically.
@@ -45,7 +50,8 @@ tool location, with `used: false`. Header-only finalization is checked before pu
 | check_quests.py | Definitions, capacities, map references, dependencies and synchronous waits in hooks. |
 | check_content.py | Duplicate object IDs and typed literal item/unit/ability references. |
 | check_save_compat.py | Append-only item indexes <=500, item charge/base/class preservation, job order, armory mappings, serializers and fixed G/H vectors. |
-| tests/run_tests.py | 47 regression tests, including actual quest lifecycle/event source with mocked natives. |
+| check_armory.py | Hint coverage, proxy objects, zero cost and catalogue/source agreement. |
+| tests/run_tests.py | 54 regression tests, including actual quest lifecycle/event source with mocked natives. |
 | savecode.py selftest | 2,000 randomized encode/decode/rename/checksum cases. |
 
 For intentionally new/removed triggers, pass `-AllowNew REGEX` / `-AllowRemoved REGEX` (Python:

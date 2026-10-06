@@ -1,0 +1,2507 @@
+{
+  "12": {
+    "name": "Champion's Belt",
+    "item": "I00D",
+    "unit": "n0D8",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0J8/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "13": {
+    "name": "Griever",
+    "item": "I00H",
+    "unit": "n0D9",
+    "hint": "Challenge Chaos and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Chaos:91"
+    ]
+  },
+  "14": {
+    "name": "Touph Ring",
+    "item": "I00B",
+    "unit": "n0DA",
+    "hint": "Challenge Orc Chieftain and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_OrcChieftain:15"
+    ]
+  },
+  "17": {
+    "name": "Sprint Shoes",
+    "item": "I00E",
+    "unit": "n0DB",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "18": {
+    "name": "Chimes of Piercing",
+    "item": "I00J",
+    "unit": "n0DC",
+    "hint": "Search the locked treasure vaults.",
+    "evidence": [
+      "Loot:1143"
+    ]
+  },
+  "19": {
+    "name": "Armguard",
+    "item": "I00G",
+    "unit": "n0DD",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "20": {
+    "name": "Blue Amulet",
+    "item": "I00K",
+    "unit": "n0DE",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "21": {
+    "name": "Germinas Boots",
+    "item": "I00I",
+    "unit": "n0DF",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IV/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "22": {
+    "name": "Greater Totem of Power",
+    "item": "I00P",
+    "unit": "n0DG",
+    "hint": "Check the stock of eaom.",
+    "evidence": [
+      "eaom/usei"
+    ]
+  },
+  "23": {
+    "name": "Jade Collar",
+    "item": "I00F",
+    "unit": "n0DH",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "24": {
+    "name": "Blazer Gloves",
+    "item": "I00C",
+    "unit": "n0DI",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "25": {
+    "name": "Steel Gorget",
+    "item": "I00Q",
+    "unit": "n0DJ",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "26": {
+    "name": "Totem of Power",
+    "item": "I00L",
+    "unit": "n0DK",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "27": {
+    "name": "Cat's Bell",
+    "item": "I00R",
+    "unit": "n0DL",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "55": {
+    "name": "Heady Pipe",
+    "item": "I01X",
+    "unit": "n0DM",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JE/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "79": {
+    "name": "Necklace of the Sorcerer",
+    "item": "I02W",
+    "unit": "n0DN",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IW/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "87": {
+    "name": "Crusher's Belt",
+    "item": "I031",
+    "unit": "n0DO",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IU/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "92": {
+    "name": "Magic Gloves",
+    "item": "I037",
+    "unit": "n0DP",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "93": {
+    "name": "Death Skull",
+    "item": "I039",
+    "unit": "n0DQ",
+    "hint": "Challenge Zalera and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Zalera:166"
+    ]
+  },
+  "97": {
+    "name": "Growth Egg",
+    "item": "I03I",
+    "unit": "n0DR",
+    "hint": "Challenge Zalera and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Zalera:226"
+    ]
+  },
+  "118": {
+    "name": "Stalwart Belt",
+    "item": "I04M",
+    "unit": "n0DS",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04M"
+    ]
+  },
+  "119": {
+    "name": "Necklace of the Necromancer",
+    "item": "I04L",
+    "unit": "n0DT",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04L"
+    ]
+  },
+  "126": {
+    "name": "Leather Gorget",
+    "item": "I04D",
+    "unit": "n0DU",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "131": {
+    "name": "Charming Banner",
+    "item": "I063",
+    "unit": "n0DV",
+    "hint": "Follow the Nimphrodel quest or event.",
+    "evidence": [
+      "Nimphrodel:225"
+    ]
+  },
+  "152": {
+    "name": "Iron Duke",
+    "item": "I08F",
+    "unit": "n0DW",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I08F"
+    ]
+  },
+  "157": {
+    "name": "Hidden Hero Medicine",
+    "item": "I0A7",
+    "unit": "n0DX",
+    "hint": "Follow the Almighty Shinra quest or event.",
+    "evidence": [
+      "AlmightyShinra:436"
+    ]
+  },
+  "166": {
+    "name": "Summoner's Horn",
+    "item": "I0CN",
+    "unit": "n0DY",
+    "hint": "Check the stock of eaom.",
+    "evidence": [
+      "eaom/usei"
+    ]
+  },
+  "167": {
+    "name": "Silver Glasses",
+    "item": "I0CO",
+    "unit": "n0DZ",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0CO"
+    ]
+  },
+  "168": {
+    "name": "Speed Bracers",
+    "item": "I0CP",
+    "unit": "n0E0",
+    "hint": "Hunt or steal from Boco the Chocobo.",
+    "evidence": [
+      "MonsterData:1314"
+    ]
+  },
+  "180": {
+    "name": "Setzer's Coin",
+    "item": "I0D0",
+    "unit": "n0E1",
+    "hint": "Search the locked treasure vaults.",
+    "evidence": [
+      "Loot:1041"
+    ]
+  },
+  "186": {
+    "name": "Turtleshell Choker",
+    "item": "I0DL",
+    "unit": "n0E2",
+    "hint": "Search the locked treasure vaults.",
+    "evidence": [
+      "Loot:1967"
+    ]
+  },
+  "193": {
+    "name": "Cameo Belt",
+    "item": "I0DR",
+    "unit": "n0E3",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0DR"
+    ]
+  },
+  "205": {
+    "name": "Memento Ring",
+    "item": "I0DS",
+    "unit": "n0E4",
+    "hint": "Help Relm and Shadow resolve the Lost Memories quest.",
+    "evidence": [
+      "Quest_LostMemories:208"
+    ]
+  },
+  "225": {
+    "name": "Jackboots",
+    "item": "I0FD",
+    "unit": "n0E5",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0FD"
+    ]
+  },
+  "95": {
+    "name": "Orb of Fire",
+    "item": "I0FW",
+    "unit": "n0E6",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FW"
+    ]
+  },
+  "158": {
+    "name": "Orb of Frost",
+    "item": "I0FX",
+    "unit": "n0E7",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FX"
+    ]
+  },
+  "159": {
+    "name": "Orb of Lightning",
+    "item": "I0FY",
+    "unit": "n0E8",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FY"
+    ]
+  },
+  "160": {
+    "name": "Orb of Water",
+    "item": "I0FZ",
+    "unit": "n0E9",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FZ"
+    ]
+  },
+  "161": {
+    "name": "Orb of Earth",
+    "item": "I0G0",
+    "unit": "n0EA",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0G0"
+    ]
+  },
+  "162": {
+    "name": "Orb of Wind",
+    "item": "I0G1",
+    "unit": "n0EB",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0G1"
+    ]
+  },
+  "94": {
+    "name": "Force of Nature",
+    "item": "I0G6",
+    "unit": "n0EC",
+    "hint": "Challenge Ozma and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Ozma:313"
+    ]
+  },
+  "235": {
+    "name": "Death Skull X",
+    "item": "I0GD",
+    "unit": "n0EE",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0GD"
+    ]
+  },
+  "236": {
+    "name": "Stopwatch",
+    "item": "I0GJ",
+    "unit": "n0EF",
+    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "evidence": [
+      "n00C/usei"
+    ]
+  },
+  "252": {
+    "name": "Prominent Cloak",
+    "item": "I0HT",
+    "unit": "n0EG",
+    "hint": "Follow the Ultros quest or event.",
+    "evidence": [
+      "Ultros:77"
+    ]
+  },
+  "182": {
+    "name": "Hunter's Cloak",
+    "item": "I0IB",
+    "unit": "n0EH",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0IB"
+    ]
+  },
+  "104": {
+    "name": "White Materia",
+    "item": "I0EC",
+    "unit": "n0EI",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0EC"
+    ]
+  },
+  "271": {
+    "name": "Rabite's Foot",
+    "item": "I0JX",
+    "unit": "n0JQ",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:241"
+    ]
+  },
+  "273": {
+    "name": "Bag of Tricks",
+    "item": "I0K1",
+    "unit": "n0JT",
+    "hint": "Destroy the vulnerable neutral buildings around the map.",
+    "evidence": [
+      "BagOfTricks:28-54"
+    ]
+  },
+  "275": {
+    "name": "Flag of Competition",
+    "item": "I0K2",
+    "unit": "n0JW",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:252"
+    ]
+  },
+  "276": {
+    "name": "Golden Skull",
+    "item": "I0K3",
+    "unit": "n0JX",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0K5/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "277": {
+    "name": "Crystal Skull",
+    "item": "I0K4",
+    "unit": "n0JY",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0K6/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "280": {
+    "name": "Firefly",
+    "item": "I0KA",
+    "unit": "n0K4",
+    "hint": "Break destructibles around the map to uncover Fireflies.",
+    "evidence": [
+      "Firefly:19-33"
+    ]
+  },
+  "281": {
+    "name": "Rosetta Stone",
+    "item": "I0KC",
+    "unit": "n0K6",
+    "hint": "Challenge Shemhazai and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Shemhazai:49"
+    ]
+  },
+  "282": {
+    "name": "Hero's Badge",
+    "item": "I0KB",
+    "unit": "n0K5",
+    "hint": "Follow the Ice Age quest or event.",
+    "evidence": [
+      "IceAge:354"
+    ]
+  },
+  "283": {
+    "name": "Ring of Rejuvenation",
+    "item": "I0KD",
+    "unit": "n0KC",
+    "hint": "Search treasure chests while exploring.",
+    "evidence": [
+      "Loot:445"
+    ]
+  },
+  "322": {
+    "name": "Blank Orb",
+    "item": "I0A9",
+    "unit": "n0M0",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0A9"
+    ]
+  },
+  "334": {
+    "name": "Sleipnir",
+    "item": "I04A",
+    "unit": "n0MR",
+    "hint": "Challenge Odin and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Odin:169"
+    ]
+  },
+  "336": {
+    "name": "Genji Gloves",
+    "item": "I0B0",
+    "unit": "n0MS",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0B0"
+    ]
+  },
+  "340": {
+    "name": "Orb of Cetra",
+    "item": "I0C8",
+    "unit": "n0MX",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0C8"
+    ]
+  },
+  "351": {
+    "name": "Yatagarasu",
+    "item": "I0GF",
+    "unit": "n0ND",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:255"
+    ]
+  },
+  "15": {
+    "name": "Kotetsu",
+    "item": "I00N",
+    "unit": "n0GN",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "16": {
+    "name": "Poison Spear",
+    "item": "I00M",
+    "unit": "n0GO",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I00M"
+    ]
+  },
+  "28": {
+    "name": "Ultimate Weapon",
+    "item": "I00S",
+    "unit": "n0GP",
+    "hint": "Follow the Ultima Weapon quest or event.",
+    "evidence": [
+      "Quest_UltimaWeapon:46"
+    ]
+  },
+  "29": {
+    "name": "Long Sword",
+    "item": "I00U",
+    "unit": "n0GQ",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "30": {
+    "name": "Mithril Sword",
+    "item": "I00V",
+    "unit": "n0GR",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I00V"
+    ]
+  },
+  "31": {
+    "name": "Ancient Sword",
+    "item": "I00W",
+    "unit": "n0GS",
+    "hint": "Check the stock of eaom.",
+    "evidence": [
+      "eaom/usei"
+    ]
+  },
+  "32": {
+    "name": "Rune Blade",
+    "item": "I00Z",
+    "unit": "n0GT",
+    "hint": "Check the stock of eaom.",
+    "evidence": [
+      "eaom/usei"
+    ]
+  },
+  "33": {
+    "name": "Save the Queen",
+    "item": "I010",
+    "unit": "n0GU",
+    "hint": "Hunt or steal from Holy Knight.",
+    "evidence": [
+      "MonsterData:1590"
+    ]
+  },
+  "34": {
+    "name": "Excalibur",
+    "item": "I011",
+    "unit": "n0GV",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I011"
+    ]
+  },
+  "42": {
+    "name": "Masamune",
+    "item": "I019",
+    "unit": "n0GW",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I019"
+    ]
+  },
+  "43": {
+    "name": "Battle Axe",
+    "item": "I01A",
+    "unit": "n0H0",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "44": {
+    "name": "Mithril Axe",
+    "item": "I01B",
+    "unit": "n0H1",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02L/usei"
+    ]
+  },
+  "45": {
+    "name": "Giant Axe",
+    "item": "I01C",
+    "unit": "n0H2",
+    "hint": "Check the stock of eaom.",
+    "evidence": [
+      "eaom/usei"
+    ]
+  },
+  "46": {
+    "name": "Poison Wand",
+    "item": "I01D",
+    "unit": "n0H3",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:57"
+    ]
+  },
+  "47": {
+    "name": "Fire Wand",
+    "item": "I01E",
+    "unit": "n0H4",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IY/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "48": {
+    "name": "Thunder Wand",
+    "item": "I01F",
+    "unit": "n0H5",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IX/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "49": {
+    "name": "Ice Wand",
+    "item": "I01G",
+    "unit": "n0H6",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0IZ/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "73": {
+    "name": "Dragon Wand",
+    "item": "I02C",
+    "unit": "n0H7",
+    "hint": "Follow the Fountain quest or event.",
+    "evidence": [
+      "Quest_Fountain:161"
+    ]
+  },
+  "76": {
+    "name": "Dark Claw",
+    "item": "I02P",
+    "unit": "n0H8",
+    "hint": "Hunt or steal from Vampire.",
+    "evidence": [
+      "MonsterData:1537"
+    ]
+  },
+  "77": {
+    "name": "Unholy Claw",
+    "item": "I02Q",
+    "unit": "n0H9",
+    "hint": "Hunt or steal from Vampire.",
+    "evidence": [
+      "MonsterData:1536"
+    ]
+  },
+  "80": {
+    "name": "Cursed Wand",
+    "item": "I02S",
+    "unit": "n0HA",
+    "hint": "Follow the Crystal Ball quest or event.",
+    "evidence": [
+      "CrystalBall:16"
+    ]
+  },
+  "84": {
+    "name": "Crusher's Mace",
+    "item": "I02Y",
+    "unit": "n0HB",
+    "hint": "Defeat the boss that guards Crusher's Mace.",
+    "evidence": [
+      "Boss_Drop/Register_Boss_Drop_CrushersMace"
+    ]
+  },
+  "88": {
+    "name": "Trident",
+    "item": "I033",
+    "unit": "n0HC",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I033"
+    ]
+  },
+  "89": {
+    "name": "Platinum Dagger",
+    "item": "I035",
+    "unit": "n0HD",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I035"
+    ]
+  },
+  "90": {
+    "name": "Dark Bow",
+    "item": "I036",
+    "unit": "n0HE",
+    "hint": "Challenge Dark Ranger and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_DarkRanger:12"
+    ]
+  },
+  "91": {
+    "name": "Fel Axe",
+    "item": "I00O",
+    "unit": "n0HF",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I00O"
+    ]
+  },
+  "120": {
+    "name": "Doom Mace",
+    "item": "I04E",
+    "unit": "n0HG",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04E"
+    ]
+  },
+  "121": {
+    "name": "Shadow Bow",
+    "item": "I04F",
+    "unit": "n0HH",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04F"
+    ]
+  },
+  "122": {
+    "name": "Death Claw",
+    "item": "I04G",
+    "unit": "n0HI",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04G"
+    ]
+  },
+  "123": {
+    "name": "Ancient Axe",
+    "item": "I04H",
+    "unit": "n0HJ",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04H"
+    ]
+  },
+  "124": {
+    "name": "Demon Claw",
+    "item": "I04I",
+    "unit": "n0HK",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04I"
+    ]
+  },
+  "142": {
+    "name": "Lion Heart",
+    "item": "I066",
+    "unit": "n0HL",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I066"
+    ]
+  },
+  "143": {
+    "name": "Excalibur II",
+    "item": "I07M",
+    "unit": "n0GZ",
+    "hint": "Search for the hidden Excalibur II.",
+    "evidence": [
+      "ExcaliburII:25"
+    ]
+  },
+  "144": {
+    "name": "Zodiac Spear",
+    "item": "I07Z",
+    "unit": "n0HM",
+    "hint": "Investigate the ice cache.",
+    "evidence": [
+      "IceCache:25"
+    ]
+  },
+  "145": {
+    "name": "Artemis Bow",
+    "item": "I080",
+    "unit": "n0JS",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:294"
+    ]
+  },
+  "146": {
+    "name": "Tournesol",
+    "item": "I081",
+    "unit": "n0HO",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I081"
+    ]
+  },
+  "151": {
+    "name": "Nirvana",
+    "item": "I08N",
+    "unit": "n0HP",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:233"
+    ]
+  },
+  "170": {
+    "name": "Life Staff",
+    "item": "I0CS",
+    "unit": "n0HQ",
+    "hint": "Challenge Hashmalum and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Hashmalum:374"
+    ]
+  },
+  "171": {
+    "name": "Main Gauche",
+    "item": "I0CT",
+    "unit": "n0HR",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:147"
+    ]
+  },
+  "172": {
+    "name": "Assassin's Dagger",
+    "item": "I0CU",
+    "unit": "n0HS",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JF/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "184": {
+    "name": "Strange Vision",
+    "item": "I0DH",
+    "unit": "n0HU",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0DH"
+    ]
+  },
+  "185": {
+    "name": "Gladiator's Blade",
+    "item": "I0DG",
+    "unit": "n0HV",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JC/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "189": {
+    "name": "Masamune C",
+    "item": "I0DM",
+    "unit": "n0GX",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0DM"
+    ]
+  },
+  "201": {
+    "name": "Fire Wand K",
+    "item": "I02F",
+    "unit": "n0HW",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I02F"
+    ]
+  },
+  "202": {
+    "name": "Ice Wand U",
+    "item": "I0DY",
+    "unit": "n0HX",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0DY"
+    ]
+  },
+  "203": {
+    "name": "Thunder Wand J",
+    "item": "I0DZ",
+    "unit": "n0HY",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0DZ"
+    ]
+  },
+  "207": {
+    "name": "Magus Rod A",
+    "item": "I0E6",
+    "unit": "n0HZ",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0E6"
+    ]
+  },
+  "208": {
+    "name": "Magus Rod",
+    "item": "I0E8",
+    "unit": "n0I0",
+    "hint": "Challenge Chaos and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Chaos:56"
+    ]
+  },
+  "212": {
+    "name": "Icebrand",
+    "item": "I0F2",
+    "unit": "n0I1",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0F2"
+    ]
+  },
+  "213": {
+    "name": "Mjolnir",
+    "item": "I0F3",
+    "unit": "n0I2",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0F3"
+    ]
+  },
+  "214": {
+    "name": "Longbow",
+    "item": "I0F4",
+    "unit": "n0I3",
+    "hint": "Hunt or steal from ngna.",
+    "evidence": [
+      "MonsterData:727"
+    ]
+  },
+  "215": {
+    "name": "Dagger",
+    "item": "I0F5",
+    "unit": "n0I4",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "216": {
+    "name": "Wildfire Spear",
+    "item": "I0F6",
+    "unit": "n0I5",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0F6"
+    ]
+  },
+  "163": {
+    "name": "Short Lance",
+    "item": "I0FO",
+    "unit": "n0I6",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "226": {
+    "name": "Wirt's Leg",
+    "item": "I0FP",
+    "unit": "n0I7",
+    "hint": "Have your chocobo dig for hidden treasures.",
+    "evidence": [
+      "Chocobo_Population/udg_ChocoboDigItem[99]"
+    ]
+  },
+  "227": {
+    "name": "Demon Axe",
+    "item": "I0EW",
+    "unit": "n0I8",
+    "hint": "Search the locked treasure vaults.",
+    "evidence": [
+      "Loot:1882"
+    ]
+  },
+  "154": {
+    "name": "Muramasa",
+    "item": "I0F7",
+    "unit": "n0GY",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JD/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "229": {
+    "name": "Final Wand",
+    "item": "I0GA",
+    "unit": "n0I9",
+    "hint": "Challenge Dark Fact and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_DarkFact:122"
+    ]
+  },
+  "230": {
+    "name": "Ame-no-Murakumo",
+    "item": "I0F8",
+    "unit": "n0IA",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0F8"
+    ]
+  },
+  "231": {
+    "name": "Fishing Pole",
+    "item": "I0EY",
+    "unit": "n0IB",
+    "hint": "Search crates; Ruksel can introduce you to fishing.",
+    "evidence": [
+      "Fishing_Setup:153-162"
+    ]
+  },
+  "232": {
+    "name": "Muramata",
+    "item": "I0EZ",
+    "unit": "n0IC",
+    "hint": "Follow the Nebra Angler quest or event.",
+    "evidence": [
+      "Quest_NebraAngler:15"
+    ]
+  },
+  "233": {
+    "name": "Matamune",
+    "item": "I0GB",
+    "unit": "n0ID",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0GB"
+    ]
+  },
+  "234": {
+    "name": "Lu Shang",
+    "item": "I0GC",
+    "unit": "n0IE",
+    "hint": "Fish for the wandering swordsman Gilgamesh and earn his gift.",
+    "evidence": [
+      "Gilgamesh/udg_GilgameshGift"
+    ]
+  },
+  "240": {
+    "name": "Mina",
+    "item": "I0H1",
+    "unit": "n0HT",
+    "hint": "Have you found a voodoo doll?",
+    "evidence": [
+      "User confirmation 2026-10-06: Mina is acquired through finding Fairy Voodoo."
+    ]
+  },
+  "253": {
+    "name": "Angbar",
+    "item": "I0HU",
+    "unit": "n0IF",
+    "hint": "Follow the Scorched Earth quest or event.",
+    "evidence": [
+      "Quest_ScorchedEarth:126"
+    ]
+  },
+  "256": {
+    "name": "Caladbolg",
+    "item": "I0ER",
+    "unit": "n0IG",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0ER"
+    ]
+  },
+  "266": {
+    "name": "Phantom Bow",
+    "item": "I0BW",
+    "unit": "n0IH",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:272"
+    ]
+  },
+  "134": {
+    "name": "Vega",
+    "item": "I0C0",
+    "unit": "n0II",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0C0"
+    ]
+  },
+  "135": {
+    "name": "Aldebaran",
+    "item": "I0C1",
+    "unit": "n0IJ",
+    "hint": "Search the locked treasure vaults.",
+    "evidence": [
+      "Loot:697"
+    ]
+  },
+  "136": {
+    "name": "Arcturus",
+    "item": "I0C2",
+    "unit": "n0IK",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0C2"
+    ]
+  },
+  "137": {
+    "name": "Formalhaut",
+    "item": "I0C3",
+    "unit": "n0IL",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0C3"
+    ]
+  },
+  "181": {
+    "name": "Staff of Light",
+    "item": "I0HW",
+    "unit": "n0IM",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0J3/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "111": {
+    "name": "Deathbringer",
+    "item": "I0EQ",
+    "unit": "n0IN",
+    "hint": "Hunt or steal from Dark Knight.",
+    "evidence": [
+      "MonsterData:1645"
+    ]
+  },
+  "268": {
+    "name": "Scourge Wand",
+    "item": "I0JU",
+    "unit": "n0JO",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I0JU"
+    ]
+  },
+  "270": {
+    "name": "Dark Staff",
+    "item": "I0JW",
+    "unit": "n0JP",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0JW"
+    ]
+  },
+  "272": {
+    "name": "Heroic Lance",
+    "item": "I0JY",
+    "unit": "n0JR",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:139"
+    ]
+  },
+  "278": {
+    "name": "Buddha Fist",
+    "item": "I0K8",
+    "unit": "n0K2",
+    "hint": "Have your chocobo dig for hidden treasures.",
+    "evidence": [
+      "Chocobo_Population/udg_ChocoboDigItem[31]"
+    ]
+  },
+  "228": {
+    "name": "Masakados",
+    "item": "I0G5",
+    "unit": "n0ED",
+    "hint": "Challenge Demi Fiend and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_DemiFiend:409"
+    ]
+  },
+  "288": {
+    "name": "Siphoning Staff",
+    "item": "I0KW",
+    "unit": "n0KU",
+    "hint": "Challenge Lilith and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Lilith:33"
+    ]
+  },
+  "289": {
+    "name": "Aeon Scepter",
+    "item": "I0L0",
+    "unit": "n0KT",
+    "hint": "Follow the Strongest Eidolon quest or event.",
+    "evidence": [
+      "Quest_StrongestEidolon:79"
+    ]
+  },
+  "294": {
+    "name": "Shimmering Spear",
+    "item": "I0L6",
+    "unit": "n0L1",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:153"
+    ]
+  },
+  "295": {
+    "name": "Shimmering Sword",
+    "item": "I0L7",
+    "unit": "n0L2",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:150"
+    ]
+  },
+  "296": {
+    "name": "Shimmering Axe",
+    "item": "I0L8",
+    "unit": "n0L3",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:156"
+    ]
+  },
+  "297": {
+    "name": "Shimmering Katana",
+    "item": "I0L9",
+    "unit": "n0L4",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:159"
+    ]
+  },
+  "298": {
+    "name": "Wand of the Wind",
+    "item": "I0KX",
+    "unit": "n0L7",
+    "hint": "Search treasure chests while exploring.",
+    "evidence": [
+      "Loot:490"
+    ]
+  },
+  "299": {
+    "name": "Serpent Rod",
+    "item": "I0KY",
+    "unit": "n0L8",
+    "hint": "Challenge Famfrit and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Famfrit:48"
+    ]
+  },
+  "300": {
+    "name": "Gaya's Rod",
+    "item": "I0KZ",
+    "unit": "n0L9",
+    "hint": "Challenge Hashmalum and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Hashmalum:319"
+    ]
+  },
+  "316": {
+    "name": "Chunchunmaru",
+    "item": "I0LQ",
+    "unit": "n0LP",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0LQ"
+    ]
+  },
+  "317": {
+    "name": "Holy Lance",
+    "item": "I05S",
+    "unit": "n0LQ",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I05S"
+    ]
+  },
+  "318": {
+    "name": "Kiku-Ichimonji",
+    "item": "I05T",
+    "unit": "n0LX",
+    "hint": "Hunt or steal from Satyr Assassin.",
+    "evidence": [
+      "MonsterData:930"
+    ]
+  },
+  "319": {
+    "name": "Auto-Crossbow",
+    "item": "I061",
+    "unit": "n0LY",
+    "hint": "Help Mid with the Young Engineer quest.",
+    "evidence": [
+      "Quest_YoungEngineer:246"
+    ]
+  },
+  "320": {
+    "name": "Halberd of Justice",
+    "item": "I060",
+    "unit": "n0LZ",
+    "hint": "Valfodr was last seen holding it.",
+    "evidence": [
+      "User confirmation 2026-10-06: defeat Valfodr at level 99 for Halberd of Justice."
+    ]
+  },
+  "327": {
+    "name": "Knuckles",
+    "item": "I0BH",
+    "unit": "n0MF",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "328": {
+    "name": "Pickaxe",
+    "item": "I0BI",
+    "unit": "n0MG",
+    "hint": "Check the stock of Weapon Vendor.",
+    "evidence": [
+      "n02M/usei"
+    ]
+  },
+  "329": {
+    "name": "Miner's Pickaxe",
+    "item": "I0BJ",
+    "unit": "n0MH",
+    "hint": "Investigate mimics for a mining tool.",
+    "evidence": [
+      "Mimic:40"
+    ]
+  },
+  "333": {
+    "name": "Gravity Staff",
+    "item": "I0BM",
+    "unit": "n0MM",
+    "hint": "Challenge Black Devil and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_BlackDevil:99"
+    ]
+  },
+  "337": {
+    "name": "Rock Punch",
+    "item": "I0C5",
+    "unit": "n0MU",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:210"
+    ]
+  },
+  "338": {
+    "name": "Edgar's Drill",
+    "item": "I0C6",
+    "unit": "n0MV",
+    "hint": "Follow the the arena duels quest or event.",
+    "evidence": [
+      "Arena_Duel:232"
+    ]
+  },
+  "339": {
+    "name": "Ryuujin no Ken",
+    "item": "I0C7",
+    "unit": "n0MW",
+    "hint": "Follow the the arena duels quest or event.",
+    "evidence": [
+      "Arena_Duel:235"
+    ]
+  },
+  "341": {
+    "name": "Beast Claw",
+    "item": "I0C9",
+    "unit": "n0MY",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:247"
+    ]
+  },
+  "342": {
+    "name": "Executioner Sword",
+    "item": "I0BP",
+    "unit": "n0N2",
+    "hint": "Follow the Nightmare quest or event.",
+    "evidence": [
+      "Nightmare:176"
+    ]
+  },
+  "343": {
+    "name": "True Ice Axe",
+    "item": "I0LP",
+    "unit": "n0N4",
+    "hint": "Follow the Ice Age quest or event.",
+    "evidence": [
+      "IceAge:352"
+    ]
+  },
+  "344": {
+    "name": "Gladius",
+    "item": "I03D",
+    "unit": "n0N5",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:155"
+    ]
+  },
+  "345": {
+    "name": "Wyrmhero Blade",
+    "item": "I03O",
+    "unit": "n0N6",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I03O"
+    ]
+  },
+  "347": {
+    "name": "Brotherhood",
+    "item": "I0BT",
+    "unit": "n0N9",
+    "hint": "Try your luck with the rarest fishing catches.",
+    "evidence": [
+      "Fishing_Setup/udg_FishLoot[100]"
+    ]
+  },
+  "348": {
+    "name": "Storm Lance",
+    "item": "I0D1",
+    "unit": "n0NA",
+    "hint": "Have your chocobo dig for hidden treasures.",
+    "evidence": [
+      "Chocobo_Population/udg_ChocoboDigItem[34]"
+    ]
+  },
+  "303": {
+    "name": "Chainsaw",
+    "item": "I0LJ",
+    "unit": "n0LC",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:128"
+    ]
+  },
+  "304": {
+    "name": "Durandal",
+    "item": "I0LE",
+    "unit": "n0LD",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:129"
+    ]
+  },
+  "305": {
+    "name": "Sagittarius",
+    "item": "I0LA",
+    "unit": "n0LE",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:130"
+    ]
+  },
+  "306": {
+    "name": "Exeter",
+    "item": "I0LH",
+    "unit": "n0LF",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:136"
+    ]
+  },
+  "307": {
+    "name": "Ehrgeiz",
+    "item": "I0LC",
+    "unit": "n0LG",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:127"
+    ]
+  },
+  "308": {
+    "name": "Zwill Crossblade",
+    "item": "I0LG",
+    "unit": "n0LH",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:131"
+    ]
+  },
+  "309": {
+    "name": "Scorpio",
+    "item": "I0LD",
+    "unit": "n0LI",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:133"
+    ]
+  },
+  "310": {
+    "name": "Zanmatou",
+    "item": "I0LI",
+    "unit": "n0LJ",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:134"
+    ]
+  },
+  "311": {
+    "name": "Longinus",
+    "item": "I0LB",
+    "unit": "n0LK",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:132"
+    ]
+  },
+  "312": {
+    "name": "Ragnarok",
+    "item": "I0LF",
+    "unit": "n0LL",
+    "hint": "Ask Bali about celestial weapons.",
+    "evidence": [
+      "Forge:135"
+    ]
+  },
+  "35": {
+    "name": "Round Shield",
+    "item": "I012",
+    "unit": "n0FL",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "36": {
+    "name": "Iron Shield",
+    "item": "I013",
+    "unit": "n0FM",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "37": {
+    "name": "Mithril Shield",
+    "item": "I014",
+    "unit": "n0FN",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I014"
+    ]
+  },
+  "38": {
+    "name": "Aegis Shield",
+    "item": "I015",
+    "unit": "n0FO",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "39": {
+    "name": "Platinum Shield",
+    "item": "I016",
+    "unit": "n0FP",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I016"
+    ]
+  },
+  "40": {
+    "name": "Enchanted Shield",
+    "item": "I017",
+    "unit": "n0FQ",
+    "hint": "Hunt or steal from Corrupted Orc Warlock.",
+    "evidence": [
+      "MonsterData:1234"
+    ]
+  },
+  "41": {
+    "name": "Absorber",
+    "item": "I018",
+    "unit": "n0FR",
+    "hint": "Follow the Fallen Ranger quest or event.",
+    "evidence": [
+      "Quest_FallenRanger:81"
+    ]
+  },
+  "81": {
+    "name": "Unholy Shield",
+    "item": "I02T",
+    "unit": "n0FS",
+    "hint": "Hunt or steal from nsat.",
+    "evidence": [
+      "MonsterData:902"
+    ]
+  },
+  "125": {
+    "name": "Reflect Shield",
+    "item": "I04J",
+    "unit": "n0FT",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04J"
+    ]
+  },
+  "132": {
+    "name": "Zodiac Escutcheon",
+    "item": "I064",
+    "unit": "n0FU",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JI/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "133": {
+    "name": "Ensanguined Shield",
+    "item": "I065",
+    "unit": "n0FV",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I065"
+    ]
+  },
+  "165": {
+    "name": "Genji Shield",
+    "item": "I0BU",
+    "unit": "n0FW",
+    "hint": "Challenge Gilgamesh and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Gilgamesh:228"
+    ]
+  },
+  "204": {
+    "name": "Interceptor Guard",
+    "item": "I0E3",
+    "unit": "n0FY",
+    "hint": "Follow the Lost Memories quest or event.",
+    "evidence": [
+      "Quest_LostMemories:461"
+    ]
+  },
+  "218": {
+    "name": "Flame Shield",
+    "item": "I0FA",
+    "unit": "n0FZ",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FA"
+    ]
+  },
+  "219": {
+    "name": "Frost Shield",
+    "item": "I03A",
+    "unit": "n0G0",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I03A"
+    ]
+  },
+  "241": {
+    "name": "Onion Arrows",
+    "item": "I0HN",
+    "unit": "n0G1",
+    "hint": "Follow the Beastslayer quest or event.",
+    "evidence": [
+      "Quest_Beastslayer:47"
+    ]
+  },
+  "242": {
+    "name": "Icecloud Arrows",
+    "item": "I0HP",
+    "unit": "n0G2",
+    "hint": "Hunt or steal from Serpent Witch.",
+    "evidence": [
+      "MonsterData:1570"
+    ]
+  },
+  "243": {
+    "name": "Shock Arrows",
+    "item": "I0HQ",
+    "unit": "n0G3",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:257"
+    ]
+  },
+  "244": {
+    "name": "Tempest Arrows",
+    "item": "I0HR",
+    "unit": "n0G4",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:262"
+    ]
+  },
+  "245": {
+    "name": "Killer Arrows",
+    "item": "I0HO",
+    "unit": "n0G5",
+    "hint": "Follow the Target Practice quest or event.",
+    "evidence": [
+      "TargetPractice:282"
+    ]
+  },
+  "246": {
+    "name": "Onion Shot",
+    "item": "I0HH",
+    "unit": "n0G6",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0HH"
+    ]
+  },
+  "247": {
+    "name": "Piercing Shot",
+    "item": "I0HI",
+    "unit": "n0G7",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0HI"
+    ]
+  },
+  "248": {
+    "name": "Rock Shot",
+    "item": "I0HK",
+    "unit": "n0G8",
+    "hint": "Search treasure chests while exploring.",
+    "evidence": [
+      "Loot:535"
+    ]
+  },
+  "249": {
+    "name": "Scattershot",
+    "item": "I0HJ",
+    "unit": "n0G9",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0HJ"
+    ]
+  },
+  "250": {
+    "name": "Molotov Shot",
+    "item": "I0HL",
+    "unit": "n0GA",
+    "hint": "Search treasure chests while exploring.",
+    "evidence": [
+      "Loot:277"
+    ]
+  },
+  "251": {
+    "name": "Bubble Shot",
+    "item": "I0HM",
+    "unit": "n0GB",
+    "hint": "Search treasure chests while exploring.",
+    "evidence": [
+      "Loot:400"
+    ]
+  },
+  "254": {
+    "name": "Tome of Agility",
+    "item": "I0I8",
+    "unit": "n0GC",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:131"
+    ]
+  },
+  "255": {
+    "name": "Tome of Crippling",
+    "item": "I0I5",
+    "unit": "n0GD",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:163"
+    ]
+  },
+  "257": {
+    "name": "Tome of Strength",
+    "item": "I0I2",
+    "unit": "n0GE",
+    "hint": "Follow the Hunt Festival quest or event.",
+    "evidence": [
+      "HuntFestival:589"
+    ]
+  },
+  "258": {
+    "name": "Tome of the Breaker",
+    "item": "I0I6",
+    "unit": "n0GF",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0I6"
+    ]
+  },
+  "259": {
+    "name": "Tome of Banishment",
+    "item": "I0I1",
+    "unit": "n0GG",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:202"
+    ]
+  },
+  "260": {
+    "name": "Tome of Heresy",
+    "item": "I0I4",
+    "unit": "n0GH",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:186"
+    ]
+  },
+  "261": {
+    "name": "Tome of Life",
+    "item": "I0HX",
+    "unit": "n0GI",
+    "hint": "Defeat the boss that guards the Tome of Life.",
+    "evidence": [
+      "Boss_Drop/Register_Boss_Drop_TomeOfLife"
+    ]
+  },
+  "262": {
+    "name": "Tome of Phantasm",
+    "item": "I0I7",
+    "unit": "n0GJ",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:117"
+    ]
+  },
+  "263": {
+    "name": "Tome of Time",
+    "item": "I0HZ",
+    "unit": "n0GK",
+    "hint": "Follow the Seek Destroy quest or event.",
+    "evidence": [
+      "Quest_SeekDestroy:119"
+    ]
+  },
+  "264": {
+    "name": "Holy Book of Galbados",
+    "item": "I0I3",
+    "unit": "n0GL",
+    "hint": "Challenge Ultima and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Ultima:93"
+    ]
+  },
+  "265": {
+    "name": "Tome of the Tortoise",
+    "item": "I0HY",
+    "unit": "n0GM",
+    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "evidence": [
+      "Hunt_Board/udg_HuntRewardItem/I0HY"
+    ]
+  },
+  "274": {
+    "name": "Paladin Shield",
+    "item": "I0H0",
+    "unit": "n0JU",
+    "hint": "Follow the True Ice Age quest or event.",
+    "evidence": [
+      "TrueIceAge:980"
+    ]
+  },
+  "301": {
+    "name": "Artemis Arrows",
+    "item": "I0LK",
+    "unit": "n0LA",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0LK"
+    ]
+  },
+  "313": {
+    "name": "Shimmering Shield",
+    "item": "I0LN",
+    "unit": "n0LO",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:169"
+    ]
+  },
+  "323": {
+    "name": "Pulsar Shot",
+    "item": "I0B8",
+    "unit": "n0M4",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0B8"
+    ]
+  },
+  "190": {
+    "name": "Book of Flames",
+    "item": "I05U",
+    "unit": "n0M6",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:50"
+    ]
+  },
+  "191": {
+    "name": "Book of Glaciers",
+    "item": "I05V",
+    "unit": "n0FH",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:53"
+    ]
+  },
+  "192": {
+    "name": "Book of Storms",
+    "item": "I05W",
+    "unit": "n0EX",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:56"
+    ]
+  },
+  "324": {
+    "name": "Book of Depths",
+    "item": "I05X",
+    "unit": "n0FX",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:59"
+    ]
+  },
+  "325": {
+    "name": "Book of Tremors",
+    "item": "I05Y",
+    "unit": "n0M7",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:62"
+    ]
+  },
+  "326": {
+    "name": "Book of Winds",
+    "item": "I05Z",
+    "unit": "n0M8",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:65"
+    ]
+  },
+  "332": {
+    "name": "Canister Shot",
+    "item": "I0BC",
+    "unit": "n0M9",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I0BC"
+    ]
+  },
+  "331": {
+    "name": "Slither Shield",
+    "item": "I0BF",
+    "unit": "n0MD",
+    "hint": "Follow the Monstrum quest or event.",
+    "evidence": [
+      "Quest_Monstrum:27"
+    ]
+  },
+  "346": {
+    "name": "Akashic Records",
+    "item": "I086",
+    "unit": "n0N8",
+    "hint": "Use a Book of Elements to absorb the matching elemental Gem.",
+    "evidence": [
+      "Book:68"
+    ]
+  },
+  "350": {
+    "name": "Invert Shield",
+    "item": "I0FK",
+    "unit": "n0NC",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FK"
+    ]
+  },
+  "50": {
+    "name": "Iron Helmet",
+    "item": "I01H",
+    "unit": "n0F4",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "51": {
+    "name": "Mithril Helmet",
+    "item": "I01I",
+    "unit": "n0F5",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I01I"
+    ]
+  },
+  "52": {
+    "name": "Diamond Helmet",
+    "item": "I01J",
+    "unit": "n0F6",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I01J"
+    ]
+  },
+  "53": {
+    "name": "Platinum Helmet",
+    "item": "I01K",
+    "unit": "n0F7",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I01K"
+    ]
+  },
+  "72": {
+    "name": "Helm of the Magi",
+    "item": "I026",
+    "unit": "n0F8",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "54": {
+    "name": "Grand Helmet",
+    "item": "I01L",
+    "unit": "n0F9",
+    "hint": "Challenge God Dragon and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_GodDragon:87"
+    ]
+  },
+  "75": {
+    "name": "Headgear of the Damned",
+    "item": "I02R",
+    "unit": "n0FA",
+    "hint": "Hunt or steal from ndrv.",
+    "evidence": [
+      "MonsterData:456"
+    ]
+  },
+  "82": {
+    "name": "Helm of the Necromancer",
+    "item": "I02U",
+    "unit": "n0FB",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JG/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "85": {
+    "name": "Barbarian's Helmet",
+    "item": "I02Z",
+    "unit": "n0FC",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0J4/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "129": {
+    "name": "Berserker's Helmet",
+    "item": "I04C",
+    "unit": "n0FD",
+    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "evidence": [
+      "Recipe/udg_RecipeResult/I04C"
+    ]
+  },
+  "138": {
+    "name": "Zodiac Helmet",
+    "item": "I06A",
+    "unit": "n0FE",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JH/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "139": {
+    "name": "Circlet",
+    "item": "I069",
+    "unit": "n0FF",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JK/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "164": {
+    "name": "Genji Mask",
+    "item": "I0AA",
+    "unit": "n0FG",
+    "hint": "Challenge Gilgamesh and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Gilgamesh:230"
+    ]
+  },
+  "183": {
+    "name": "Helm of Divine Judgement",
+    "item": "I0D4",
+    "unit": "n0FI",
+    "hint": "Challenge Judges and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Judges:456"
+    ]
+  },
+  "220": {
+    "name": "Serpent Helmet",
+    "item": "I0FB",
+    "unit": "n0FJ",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0FB"
+    ]
+  },
+  "221": {
+    "name": "Enchanted Helmet",
+    "item": "I0FC",
+    "unit": "n0FK",
+    "hint": "Check the stock of Shield and Helmet Vendor.",
+    "evidence": [
+      "n0MK/usei"
+    ]
+  },
+  "290": {
+    "name": "Glimmering Hat",
+    "item": "I0L4",
+    "unit": "n0KV",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:179"
+    ]
+  },
+  "291": {
+    "name": "Ice Hat",
+    "item": "I0L1",
+    "unit": "n0KW",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0L1"
+    ]
+  },
+  "292": {
+    "name": "Green Hat",
+    "item": "I0L2",
+    "unit": "n0KX",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0L2"
+    ]
+  },
+  "293": {
+    "name": "Earth Hat",
+    "item": "I0L3",
+    "unit": "n0KY",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0L3"
+    ]
+  },
+  "315": {
+    "name": "Shimmering Helmet",
+    "item": "I0LO",
+    "unit": "n0LN",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:176"
+    ]
+  },
+  "56": {
+    "name": "Studded Leather Armor",
+    "item": "I01M",
+    "unit": "n0EK",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "57": {
+    "name": "Reinforced Leather Armor",
+    "item": "I01N",
+    "unit": "n0EL",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "58": {
+    "name": "Storm Wyrm Hide Armor",
+    "item": "I01O",
+    "unit": "n0EM",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I01O"
+    ]
+  },
+  "59": {
+    "name": "Grandmasterwork Leather",
+    "item": "I01P",
+    "unit": "n0EN",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0J5/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "60": {
+    "name": "Elven Mail",
+    "item": "I01Q",
+    "unit": "n0EP",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "61": {
+    "name": "Mithril Mail",
+    "item": "I01R",
+    "unit": "n0EQ",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I01R"
+    ]
+  },
+  "62": {
+    "name": "Shimmering Mail",
+    "item": "I01S",
+    "unit": "n0ER",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:190"
+    ]
+  },
+  "63": {
+    "name": "Platinum Mail",
+    "item": "I01T",
+    "unit": "n0ES",
+    "hint": "Look for a matching recipe in the bazaar.",
+    "evidence": [
+      "Bazaar/udg_BazaarResultItem/I01T"
+    ]
+  },
+  "64": {
+    "name": "Wizard's Robe",
+    "item": "I01U",
+    "unit": "n0ET",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "65": {
+    "name": "Magician's Robe",
+    "item": "I01V",
+    "unit": "n0EU",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "66": {
+    "name": "Sorcerer's Robe",
+    "item": "I01W",
+    "unit": "n0EV",
+    "hint": "Check the stock of Armor Vendor.",
+    "evidence": [
+      "n02R/usei"
+    ]
+  },
+  "67": {
+    "name": "Genji Armor",
+    "item": "I01Y",
+    "unit": "n0EW",
+    "hint": "Challenge Gilgamesh and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Gilgamesh:226"
+    ]
+  },
+  "86": {
+    "name": "Fur Armor",
+    "item": "I030",
+    "unit": "n0EO",
+    "hint": "Hunt or steal from Brother.",
+    "evidence": [
+      "MonsterData:1541"
+    ]
+  },
+  "130": {
+    "name": "Gaia Gear",
+    "item": "I05G",
+    "unit": "n0EY",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I05G"
+    ]
+  },
+  "140": {
+    "name": "Robe of Lords",
+    "item": "I07X",
+    "unit": "n0EZ",
+    "hint": "Earn Battle Points and visit the arena outfitters.",
+    "evidence": [
+      "I0JJ/ilev",
+      "Arena_Rewards/Trig_Arena_BuyPrize_Actions"
+    ]
+  },
+  "155": {
+    "name": "Adamant Armor",
+    "item": "I0A6",
+    "unit": "n0EJ",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0A6"
+    ]
+  },
+  "206": {
+    "name": "Maximillian",
+    "item": "I0E5",
+    "unit": "n0F0",
+    "hint": "Challenge Penance and check the rewards unlocked by that battle.",
+    "evidence": [
+      "Boss_Penance:415"
+    ]
+  },
+  "217": {
+    "name": "Windbreaker",
+    "item": "I0F9",
+    "unit": "n0F1",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0F9"
+    ]
+  },
+  "237": {
+    "name": "Nebra Suit",
+    "item": "I0GZ",
+    "unit": "n0F2",
+    "hint": "Follow the King Of Sea quest or event.",
+    "evidence": [
+      "Quest_KingOfSea:122"
+    ]
+  },
+  "267": {
+    "name": "Grand Armor",
+    "item": "I0BX",
+    "unit": "n0F3",
+    "hint": "Follow the Impervious Beast quest or event.",
+    "evidence": [
+      "Quest_ImperviousBeast:75"
+    ]
+  },
+  "279": {
+    "name": "Vishnu Vest",
+    "item": "I0K9",
+    "unit": "n0K3",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0K9"
+    ]
+  },
+  "284": {
+    "name": "Glimmering Robe",
+    "item": "I0KQ",
+    "unit": "n0KH",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:193"
+    ]
+  },
+  "285": {
+    "name": "Light Robe",
+    "item": "I0KS",
+    "unit": "n0KI",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0KS"
+    ]
+  },
+  "286": {
+    "name": "Red Robe",
+    "item": "I0KR",
+    "unit": "n0KJ",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0KR"
+    ]
+  },
+  "287": {
+    "name": "Azure Robe",
+    "item": "I0KT",
+    "unit": "n0KK",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0KT"
+    ]
+  },
+  "314": {
+    "name": "Shimmering Cloth",
+    "item": "I0LM",
+    "unit": "n0LM",
+    "hint": "Ask Loki about reforging gear.",
+    "evidence": [
+      "Loki:187"
+    ]
+  },
+  "330": {
+    "name": "Mirage Vest",
+    "item": "I0BG",
+    "unit": "n0ME",
+    "hint": "Complete hunts from the hunt board.",
+    "evidence": [
+      "Hunt_Board:218"
+    ]
+  },
+  "349": {
+    "name": "White Robe",
+    "item": "I0D2",
+    "unit": "n0NB",
+    "hint": "Ask Bali about forging this gear.",
+    "evidence": [
+      "Forge/udg_ForgeRecipeResult/I0D2"
+    ]
+  }
+}

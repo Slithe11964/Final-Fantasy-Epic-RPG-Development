@@ -1,14 +1,31 @@
-# FF Epic RPG handoff — 2026-10-06, paired r16 baseline
+# FF Epic RPG handoff — 2026-10-06, stage AC armory discovery
 
-Read this first, then STAGES.md and QUEST_ENGINE.md. Z establishes the baseline; AA verifies
-the default build after packaging. Next unused stage: AB.
+Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
+Stage AB adds armory discovery hints and pagination. Next unused stage: AD.
+
+## Current development build — AC
+
+- Reforged/editor: release/FFERPG_0.9.7.3-r16-stageAC.w3x.
+- Shared playable copy: release/1.29.2/FFERPG_0.9.7.3-r16-stageAC.w3x.
+- 276 missing gear entries have question-mark icons and source-backed hover/click hints.
+  Nine entries per page; all categories, including celestial gear, can be browsed.
+  Existing Armory title requirement, deposits, withdrawals, rewards and save format remain.
+- All map/source/quest/content/save/catalogue gates, 2,000 codec cases and 54 regressions pass.
+  Classic check_map/compilation also pass.
+  Preservation audit: only Armory script/editor source and 278 added unit objects differ.
+- Needs both-client UI/pagination, withdrawal/store, save/load, multiplayer and Editor Save As
+  testing: docs/ARMORY.md. AC corrects Mina/Halberd hints from user-confirmed acquisition routes.
+- Incremental build: .\build.ps1 -Stage AD -Base release/FFERPG_0.9.7.3-r16-stageAC.w3x.
+  Fresh clones must prepare the armory object base first; see ARMORY.md. The pinned baseline
+  predates these objects and cannot be used alone with the new sources.
+
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
 rewriting author/committer metadata; all 47 tests pass. The original history bundle is kept outside
 this repository in ../_archive/FFERPG-before-slithe-attribution-2026-10-06/. Map bytes are unchanged.
 
-## Current maps
+## Confirmed public baseline
 
 - **Develop/edit:** baseline/Reforged/FFERPG_0.9.7.3-r16.w3x.
 - **Play in 1.29.2 or Reforged:** baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x.
@@ -30,7 +47,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AB
+.\build.ps1 -Stage AD -Base release/FFERPG_0.9.7.3-r16-stageAC.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs
@@ -78,5 +95,5 @@ auditors remain: current regressions depend on the V auditor and Git history.
 
 Old stages, reports, obsolete surveys/readability plan and scratch files are preserved at
 `../_archive/FFERPG-before-r16-baseline-2026-10-06/`, including the original user r16, previous docs,
-pre-cleanup diff and eleven already-deleted reports recovered from Git. Nothing published remotely.
-Next: requested new content or further shared-state cleanup in PHASE16.md.
+pre-cleanup diff and eleven already-deleted reports recovered from Git. The paired baseline/source repository is now published under Slithe11964.
+Next: play-test AC, then requested content; bugs remain deferred.

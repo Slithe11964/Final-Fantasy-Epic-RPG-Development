@@ -156,11 +156,12 @@ def main():
         run(ROOT / 'tools/check_quests.py', '--map', ordered)
         run(ROOT / 'tools/check_save_compat.py', '--map', ordered)
         run(ROOT / 'tools/check_content.py', '--map', ordered)
+        run(ROOT / 'tools/check_armory.py', '--map', ordered)
         run(header_tool, ordered, ready, '--from', base, '--name', config['title'] + ' stage' + a.stage + ' (Reforged)')
         before, after = ordered.read_bytes(), ready.read_bytes()
         if before[before.index(b'MPQ\x1a'):] != after[after.index(b'MPQ\x1a'):]:
             raise ValueError('header finalization changed the checked MPQ archive')
-        source_files = sorted((ROOT / 'src').rglob('*.j')) + [ROOT / 'src/trigger-list.json', ROOT / 'src/itemtable.txt']
+        source_files = sorted((ROOT / 'src').rglob('*.j')) + [ROOT / 'src/trigger-list.json', ROOT / 'src/itemtable.txt', ROOT / 'src/armory-hints.json']
         tool_files = sorted((ROOT / 'tools').rglob('*.py')) + sorted((ROOT / 'tools/contracts').glob('*.json')) + [ROOT / 'tools/build-config.json', ROOT / 'build.ps1', header_tool, ROOT / 'tools/tests/fixtures/savecodes.json']
         native = {name: identity(check_map.find(name, None)) for name in ['pjass', 'common.j', 'blizzard.j']}
         helper = ROOT.parent / 'Builder24/tools/JassHelper/jasshelper.exe'
