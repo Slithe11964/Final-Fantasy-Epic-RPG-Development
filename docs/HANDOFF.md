@@ -38,7 +38,9 @@ python ../MapToolkit/tools/add_header.py OUT2.w3x release/NAME.w3x --from releas
   source and remove its `RegisterTriggers_X` call in MapBootstrap.j).
 - World Editor Save As also works (JassHelper orders libraries itself); then re-export sources with
   `tools/export_sources.py`.
-- 1.29.2 build: `MapToolkit/downgrade_129.bat` (drag the map on it). **Known issue (BUGS.md #7):** the
+- 1.29.2 build: `MapToolkit/downgrade_129.bat` (drag the map on it). It writes to a `1.29.2` subfolder
+  next to the input, keeping the filename and using its basename as the in-game name, without a
+  version suffix. Existing outputs are refused; the Reforged original is preserved. **Known issue (BUGS.md #7):** the
   1.29.2-format build shows game markers (Chemist blue glow, circle+line under Gaya) when played in Reforged.
   Play the Reforged build in Reforged.
 
