@@ -31,3 +31,8 @@ in World Editor requires Warcraft III and enabled JassHelper/vJass, which are no
 This audit prepares the files; it does not create a GitHub repository or publish anything.
 No project LICENSE has been selected. Compiler/game libraries and map assets retain their original
 ownership; do not treat the entire package as having a newly assigned blanket open-source license.
+
+Fresh full-history clone verification passed: all 47 regressions, then make_129.ps1 ran using only
+files in that clone and an explicitly supplied Python executable. Its output SHA256 was
+9a4bf6206812fa373566a2f7bb31bfa266a61f908e9309fa14f49143c1ce8472, byte-identical to the tracked
+classic baseline. No MapToolkit files were used.
