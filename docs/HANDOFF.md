@@ -55,10 +55,15 @@ passes check_map against the master: 1,503 startup triggers, no reorder. Selecte
 GUI actions/pathing are preserved in both; object files/WTS are byte-identical in the Reforged
 master. Classic runtime exactly matches the converter transform of the master.
 
-Before calling this a tested release: open/save a separate Reforged copy with JassHelper, start
-a fresh game in both clients, check welcome/quest-log text, Chemist/Ninja/Gaya selection and spells,
-start/finish a quest, and save/load. Use QUEST_TESTS.md for focused content. Compilation cannot prove
-rendering, cinematics or multiplayer behavior. The new pair has not yet had those play tests.
+The user confirms both paired maps are working great on 2026-10-06. This is the confirmed
+development starting point for Reforged and 1.29.2. Specific multiplayer/save-load/cinematic coverage
+was not itemized. A separate editor Save As was not explicitly confirmed. Test each future change
+in both clients and use QUEST_TESTS.md for focused content.
+
+GitHub readiness checked: baseline pair, sources, toolchain, contracts, fixtures and guides are
+tracked. The local downgrade_129.bat/make_129.ps1 and every conversion dependency are included.
+No MapToolkit installation or parent-folder r7 map is needed. Use Python 3; JassHelper/World Editor
+are external requirements for editor saves. Historical source regressions require full Git history.
 
 ## Repository and archive
 
@@ -69,4 +74,4 @@ auditors remain: current regressions depend on the V auditor and Git history.
 Old stages, reports, obsolete surveys/readability plan and scratch files are preserved at
 `../_archive/FFERPG-before-r16-baseline-2026-10-06/`, including the original user r16, previous docs,
 pre-cleanup diff and eleven already-deleted reports recovered from Git. Nothing published remotely.
-Next: cross-client smoke test, then requested new content or further shared-state cleanup in PHASE16.md.
+Next: requested new content or further shared-state cleanup in PHASE16.md.

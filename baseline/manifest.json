@@ -32,5 +32,10 @@
     "tools/versions/1.29.2/blizzard.j": "a611079df06d768325852492d4bec6325a66f9482cdb421bacf78eebb86d6d7a",
     "tools/versions/1.29.2/common.j": "cbaa1df5e128bd7b1bb32e828f278be9847734ca500cc34a1ffca272106289b3"
   },
-  "pending": "In-game smoke test in both clients; World Editor Save As with JassHelper enabled"
+  "pending": "Separate World Editor Save As not explicitly confirmed; focused testing required for future changes",
+  "user_confirmation": {
+    "date": "2026-10-06",
+    "result": "User reports both baseline maps are working great",
+    "scope": "Both maps; detailed test coverage not itemized"
+  }
 }

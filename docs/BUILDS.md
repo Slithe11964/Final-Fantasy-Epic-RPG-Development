@@ -86,7 +86,7 @@ when extending the save format.
 
 Stage Z carries the user's latest r16 quest-log/pathing edits and Intro source text into the repaired
 Reforged master, with a matching 1.29.2 copy. All gates pass. Stage AA validates the pinned default
-after packaging. See baseline/manifest.json and HANDOFF.md. Both client smoke tests remain pending.
+after packaging. See baseline/manifest.json and HANDOFF.md. User confirms both maps work great on 2026-10-06; test future changes in both clients.
 
 editor_layout.py normalizes folder/source pairing before compilation. check_map rejects mismatches
 and custom text missing its InitTrig. A playable compile alone cannot detect editor misassociation.

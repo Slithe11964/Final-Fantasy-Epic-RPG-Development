@@ -10,8 +10,8 @@ paired 0.9.7.3-r16 baseline, assembled in stage Z on 2026-10-06.
 | `baseline/manifest.json` | Hashes, provenance, verification and pending play tests. |
 
 Both maps retain the latest quest-log/pathing edits, welcome source text and Chemist/Ninja passive
-art fix. Automated checks pass, including 1.29.2 compilation. A fresh smoke test in both clients
-and a Reforged World Editor Save As remain required before release.
+art fix. Automated checks pass, including 1.29.2 compilation. The user confirms both baseline maps work well (2026-10-06). A separate World Editor Save As
+confirmation was not reported; future gameplay/editor changes need their focused checks.
 
 The two baseline maps are tracked in Git. Future builds, scratch files and generated reports are
 ignored. Sources, compiler libraries, compatibility contracts and regression fixtures stay tracked.

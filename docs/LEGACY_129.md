@@ -30,7 +30,7 @@ game for Gaya selection/health-panel behavior with restored normal unit settings
 
 ## Release testing
 
-Conversion and compilation pass; actual 1.29.2 and Reforged smoke tests remain: map loading, welcome/
+The user confirms both baseline maps work great (2026-10-06). For future releases, test: map loading, welcome/
 quest log, hero spells, Gaya selection, quest completion, save/load and multiplayer where relevant.
 Include Thief Fan of Knives/Channel spells to check missing object defaults. See QUEST_TESTS.md.
 Compilation does not establish cross-client visual/gameplay equivalence. Historical experiments are

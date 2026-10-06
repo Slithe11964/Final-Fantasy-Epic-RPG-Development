@@ -3,8 +3,8 @@
 Updated 2026-10-06. The paired r16 baseline is ready for development; see HANDOFF.md for paths and
 verification limits. All 93 quests use QuestEngine. Bugs remain deferred by user request.
 
-1. **Verify the new pair in both clients.** Fresh game, welcome/quest log, spells, Gaya selection,
-   quest completion and save/load. Save As a separate Reforged copy with JassHelper enabled.
+1. **Confirmed paired starting point.** The user reports both maps work great (2026-10-06).
+   Continue focused tests for new changes; verify a separate editor Save As with JassHelper enabled.
 2. **Add the next requested content.** CONTENT_DEVELOPMENT.md gives worked quest, boss, item and
    reward examples. Build with the complete gates and test the affected content in both clients.
 3. **Continue shared-context cleanup when useful.** PHASE16.md and phase16-handoffs.csv identify
