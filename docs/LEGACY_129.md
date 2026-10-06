@@ -130,7 +130,30 @@ The batch keeps the original filename in a `1.29.2` subfolder and sets the in-ga
 basename. It adds no `(1.29.2)` suffix. Existing outputs are refused. Select the copy from the
 intended folder when testing; older stage K guidance to add version suffixes is superseded.
 
-## Stage X appearance profile (2026-10-06)
+## Stage Y appearance profile (2026-10-06; supersedes X)
+
+The user confirmed the Chemist/Ninja moon fix in X. Gaya/crow lines persisted, and Gaya's health/level
+panel jumped to unrelated screen locations while clicking. Y removes X's selection-scale/height edits,
+restoring normal Gaya values (scale 1, selection height 100). The zero-size selection workaround may
+have disrupted UI placement; that cause is not yet confirmed. All unit data now exactly matches a
+normal conversion. The confirmed passive-art fix remains in the batch.
+
+The screenshot instead matches Warcraft 3.0's new Air-to-Ground Indicators. Blizzard's
+[official 3.0 patch notes](https://us.forums.blizzard.com/en/warcraft3/t/warcraft-iii-reforged-forsaken-kingdom-patch-notes/38400)
+document this feature. Installed game strings include `showAirToGroundIndicators`,
+`PREF_GAMEPLAY_SHOW_AIR_TO_GROUND_INDICATORS` and a separate unit field `showAirToGround`.
+The user's War3Preferences.txt has `showAirToGroundIndicators=1`. Disable the game's display option
+to hide the lines for Gaya and the crow; selection circle size is independent of that feature.
+No preferences were edited because the game was running. Do not change flying movement or height
+to remove the indicators; that would affect gameplay.
+
+Test `release/1.29.2/FFERPG_0.9.7.3-r16-stageY.w3x` in a fresh game: repeatedly select/deselect Gaya,
+click NPCs and ground, and move the camera; her health/level panel should stay attached. Confirm the
+moons stay absent and Gaya support/control work. To include newer editor changes, reconvert the
+original Reforged map with the updated batch. Do not use X as input: it already contains zero selection
+values. Move existing converted outputs aside before rebuilding.
+
+## Stage X investigation history (superseded)
 
 The user reported the persistent blue moon on Chemist and Ninja and circle/stem beneath Gaya
 after conversion. The comparison found unchanged ability lists and explicit spell art. Pharmacology
