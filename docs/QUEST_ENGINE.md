@@ -161,7 +161,7 @@ original summon and victory increments and milestone checks, in their original o
 Run python tools/tests/test_quest_lifecycle.py for seven tests executing the actual lifecycle functions
 and Cartographer report code with mocked Warcraft natives. This is a limited source-level harness,
 not proof of gameplay or cinematics; use docs/QUEST_TESTS.md in Warcraft. The stage-specific preservation
-audit is python tools/tests/verify_stage_s.py (against commit 800ed48); it is intended for the stage S
+audit is python tools/tests/verify_stage_s.py (against commit dc1e9af); it is intended for the stage S
 sources and will need updating after future changes to these modules.
 
 ## Limits and next step types

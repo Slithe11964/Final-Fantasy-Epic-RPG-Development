@@ -47,7 +47,7 @@ def main():
     unchanged = changed = 0
     for module in ['QuestEngine', 'Cartographer', 'TrueIceAge']:
         path = f'src/triggers/06 Quests and story/{module}.j'
-        old = subprocess.check_output(['git', 'show', f'800ed48:{path}'], cwd=ROOT).decode('utf-8')
+        old = subprocess.check_output(['git', 'show', f'dc1e9af:{path}'], cwd=ROOT).decode('utf-8')
         raw = (ROOT / path).read_bytes()
         assert b'\n' not in raw.replace(b'\r\n', b''), path
         new = raw.decode('utf-8')

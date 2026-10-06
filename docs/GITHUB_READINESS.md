@@ -3,7 +3,9 @@
 Upload the FFERPG Git repository, including its history. Both baseline maps are tracked, together
 with source modules/header/variables/item table, build and conversion tools, Windows pjass, both
 compiler-library sets, reviewed contracts, fixtures and documentation. No sibling MapToolkit or
-parent r7 file is required. Original archive/build scratch/logs are excluded. No remote is configured.
+parent r7 file is required. Original archive/build scratch/logs are excluded. The remote is
+https://github.com/Slithe11964/FF-Epic-RPG.git. Author/committer history and future local identity
+were changed to Slithe using the account's private email by explicit user request.
 
 The user confirms both maps work great. Map hashes remain pinned in baseline/manifest.json and
 tools/build-config.json. Code checks and 47 regressions pass. Historical source-preservation tests

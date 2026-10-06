@@ -3,6 +3,11 @@
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z establishes the baseline; AA verifies
 the default build after packaging. Next unused stage: AB.
 
+Git attribution: the user requested all repository history and future commits use Slithe with
+338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
+rewriting author/committer metadata; all 47 tests pass. The original history bundle is kept outside
+this repository in ../_archive/FFERPG-before-slithe-attribution-2026-10-06/. Map bytes are unchanged.
+
 ## Current maps
 
 - **Develop/edit:** baseline/Reforged/FFERPG_0.9.7.3-r16.w3x.

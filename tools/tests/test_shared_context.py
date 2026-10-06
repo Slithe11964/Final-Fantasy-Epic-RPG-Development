@@ -103,7 +103,7 @@ class SharedContextTests(unittest.TestCase):
 
     def test_every_changed_source_function_reverses_to_stage_u(self):
         for module in ['Cartographer', 'TrueIceAge']:
-            old = subprocess.check_output(['git', 'show', '300f4a4:' + verify_stage_v.FOLDER + module + '.j'], cwd=verify_stage_v.ROOT).decode()
+            old = subprocess.check_output(['git', 'show', '64809ce:' + verify_stage_v.FOLDER + module + '.j'], cwd=verify_stage_v.ROOT).decode()
             new = SOURCE.with_name(module + '.j').read_text(encoding='utf-8')
             verify_stage_v.compare(old, new, module)
 

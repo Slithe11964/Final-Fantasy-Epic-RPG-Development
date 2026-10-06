@@ -1,7 +1,7 @@
 """Reverse the exact local/parameter refactor and compare all source/runtime functions.
 
 python tools/tests/verify_stage_v.py [--map release/...stageV.w3x]
-This audit is specific to stage V (parent source commit 300f4a4).
+This audit is specific to stage V (parent source commit 64809ce).
 """
 import argparse
 from pathlib import Path
@@ -13,7 +13,7 @@ from jtok import functions, tokens
 from source_checks import ROOT
 from mpq import MPQ
 
-PARENT = '300f4a4'
+PARENT = '64809ce'
 FOLDER = 'src/triggers/06 Quests and story/'
 CHANGES = {
     'Trig_Cartographer_Start_Actions': {'l_rewardTotal': 'udg_TempInteger'},
