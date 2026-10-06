@@ -1,10 +1,14 @@
-# Handoff: where FF Epic RPG stands (2026-10-05, after Codex stage W)
+# Handoff: where FF Epic RPG stands (2026-10-06, after Codex stage X legacy visual mitigation)
 
 Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.md.
 
 ## Current map
 - **Play / edit:** `release/FFERPG_0.9.7.3-r16-stageW.w3x` (Reforged format, with the HM3W header so it is
   listed in 1.29.2 too). This build is in release/; it has not been copied to Documents/Warcraft III/Maps/Download.
+- **Legacy visual test:** `release/1.29.2/FFERPG_0.9.7.3-r16-stageX.w3x`, converted from W.
+  Chemist/Ninja dummy-passive art is explicitly empty; Gaya's flying selection circle/stem is hidden.
+  This is a cosmetic mitigation pending an in-game check, not a confirmed resolution of BUGS #7.
+  No trigger-source edits were made. Existing user edits to Intro.j remain uncommitted and untouched.
 - Stage P was play-tested by the user and works. Stage Q = P + the Kalm Siege fix (below).
 - Stage R = Q + Ao Madoushi on the quest engine; the user reports it works great.
 - Stage S = R + Cartographer and True Ice Age on the engine. **User reports S is working.**
@@ -19,7 +23,7 @@ Read this first, then docs/STAGES.md (one row per build) and docs/QUEST_ENGINE.m
 ## How a change gets into the map (no World Editor needed)
 Preferred one-command workflow (details/limitations in **docs/BUILDS.md**):
 ```powershell
-.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
+.\build.ps1 -Stage Y -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
 ```
 It selects changed enabled modules, runs sync/order/check/header plus quest/content/save/source gates,
 and saves a new map, report and hash/tool manifest. Existing outputs are refused. Default base without
@@ -40,9 +44,12 @@ python ../MapToolkit/tools/add_header.py OUT2.w3x release/NAME.w3x --from releas
   `tools/export_sources.py`.
 - 1.29.2 build: `MapToolkit/downgrade_129.bat` (drag the map on it). It writes to a `1.29.2` subfolder
   next to the input, keeping the filename and using its basename as the in-game name, without a
-  version suffix. Existing outputs are refused; the Reforged original is preserved. **Known issue (BUGS.md #7):** the
-  1.29.2-format build shows game markers (Chemist blue glow, circle+line under Gaya) when played in Reforged.
-  Play the Reforged build in Reforged.
+  version suffix. Existing outputs are refused; the Reforged original is preserved. The batch now applies
+  `--fferpg-visuals` after merging/filling object data. Stage X checks pass: W input map gates, converted
+  script compilation against 1.29.2, three profile tests and preservation audit (only eight missing art
+  fields added and two Gaya selection fields changed; other 509 listed files identical to normal conversion).
+  Test Chemist, Ninja and Gaya after starting a fresh game, then switch jobs and enter/leave a cinematic.
+  Gaya intentionally has no selection circle in this converted copy; she remains selectable. See LEGACY_129.md.
 
 ## Quest engine (docs/QUEST_ENGINE.md)
 - Module `06 Quests and story/QuestEngine.j`. A quest = Quest_Define + steps (Talk, Return, Kill, Hunt,

@@ -124,12 +124,34 @@ freeze their caster (seen with Fan of Knives). Always build the 1.29.2 map with
 Objects added after r7 have no older copy to fill from: if one misbehaves in 1.29.2 only, set its
 per-level values explicitly for every level in the Object Editor.
 
-## Give every build its own in-game name
+## Output naming (user preference, updated 2026-10-05)
 
-The game lists maps by the name inside the file, not the file name. Two builds with the same
-name (e.g. the Reforged and 1.29.2 build of one stage) look identical in the list, which caused a
-false "freeze" report in stage K. Always pass `downgrade.py --name "... (1.29.2)"` and give the
-Reforged build its own name too (stage K: "... r16 stageK (Reforged)" / "... r16 stageK (1.29.2)").
+The batch keeps the original filename in a `1.29.2` subfolder and sets the in-game name to its
+basename. It adds no `(1.29.2)` suffix. Existing outputs are refused. Select the copy from the
+intended folder when testing; older stage K guidance to add version suffixes is superseded.
+
+## Stage X appearance profile (2026-10-06)
+
+The user reported the persistent blue moon on Chemist and Ninja and circle/stem beneath Gaya
+after conversion. The comparison found unchanged ability lists and explicit spell art. Pharmacology
+(`A0HL`) and Dual Wield (`A0HP`) both inherit `Amgl` (Moon Glaives) without art overrides. This is a
+plausible source of the moons; an installed-stock-data read could not be completed, so the exact
+rendering cause has not been proven. Gaya is an owl-based flying unit (`H01D`, base `now3`) with
+selection scale 1 and selection height 100, consistent with the pictured circle/stem.
+
+`downgrade_129.bat` now uses `--fferpg-visuals`. After skin merge and r7 field restoration, it adds
+empty caster/target/effect/special art only where absent on those two dummy passives. Explicit
+authored art remains intact. Gaya selection scale and selection height become zero, deliberately
+hiding her normal selection feedback too; selection/control still work. Flying height, movement,
+auras, abilities, combat data, script, dialogue and rewards are unchanged.
+
+Test `release/1.29.2/FFERPG_0.9.7.3-r16-stageX.w3x` in a fresh game: check Chemist and Ninja at rest,
+switch between them, inspect/select Gaya, and enter/leave a cinematic. Also check Pharmacology,
+Dual Wield and Gaya support spells still function. This mitigation remains unconfirmed until the
+user reports the visual result. Other BUGS #7 observations (Geomancer/bird) are not patched here.
+
+The release copy comes from W. To include newer saved editor changes, drag that saved map onto
+the updated batch. If an output already exists, move it aside before converting again.
 
 ## One map for both games?
 
