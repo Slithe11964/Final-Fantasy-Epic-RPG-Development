@@ -1,7 +1,12 @@
-# Map binaries live in release/ and baseline/ but are not tracked (large, rebuildable)
+# Track the stable baseline pair; ignore generated map builds
 *.w3x
 *.w3m
 __pycache__/
 *.pyc
 build/
 *.tmp
+
+!baseline/Reforged/FFERPG_0.9.7.3-r16.w3x
+!baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x
+release/*
+!release/.gitkeep

@@ -1,5 +1,5 @@
 """Reader/writer for war3map.wtg (the Trigger Editor's tree: folders, triggers, GUI actions)
-in the Reforged format this map uses (sub-version 0x80000004, format 7).
+in classic format 7 and Reforged sub-version 0x80000004, format 7.
 
 Only the GUI functions this project uses are known (ARG_COUNTS); reading a map that contains
 other GUI actions raises an error instead of guessing.
@@ -65,7 +65,10 @@ def write_function(w, f):
 def read_wtg(d):
     r = R(d)
     assert d[:4] == b'WTG!'; r.o = 4
-    sub, fmt = r.i(), r.i()
+    sub = r.i()
+    if sub == 7:
+        return read_classic(r)
+    fmt = r.i()
     assert sub == -2147483644 and fmt == 7, (hex(sub), fmt)
     t = dict(counts={}, deleted={}, items=[])
     for typ in ITEM_TYPES:
@@ -93,6 +96,8 @@ def read_wtg(d):
     return t
 
 def write_wtg(t):
+    if t.get('format') == 'classic':
+        return write_classic(t)
     w = W()
     w.b += b'WTG!'; w.i(-2147483644); w.i(7)
     for typ in ITEM_TYPES:
@@ -116,6 +121,53 @@ def write_wtg(t):
                 write_function(w, f)
         else:
             w.i(it['id']); w.s(it['name']); w.i(it['parent'])
+    w.b += t['tail']
+    return bytes(w.b)
+
+def read_classic(r):
+    t = dict(format='classic', counts={k: 0 for k in ITEM_TYPES},
+             deleted={k: [] for k in ITEM_TYPES}, items=[
+                 dict(kind=ROOT, id=0, name='Map', is_comment=0, expanded=1, parent=-1)])
+    for _ in range(r.i()):
+        t['items'].append(dict(kind=CATEGORY, id=r.i(), name=r.s(), is_comment=r.i(), expanded=1, parent=0))
+    t['game_version'] = r.i()
+    t['variables'] = []
+    for i in range(r.i()):
+        t['variables'].append(dict(name=r.s(), type=r.s(), unk=r.i(), is_array=r.i(),
+                                   size=r.i(), is_init=r.i(), init=r.s(), id=-100000-i, parent=0))
+    for i in range(r.i()):
+        it = dict(name=r.s(), desc=r.s(), is_comment=r.i(), id=-1-i,
+                  enabled=r.i(), custom=r.i(), initially_off=r.i(), run_on_init=r.i(), parent=r.i())
+        it['kind'] = COMMENT if it['is_comment'] else GUI
+        it['functions'] = [read_function(r, False) for _ in range(r.i())]
+        t['items'].append(it)
+    t['tail'] = r.d[r.o:]
+    for it in t['items']:
+        t['counts'][it['kind']] += 1
+    return t
+
+def write_classic(t):
+    w = W(); w.b += b'WTG!'; w.i(7)
+    categories = [it for it in t['items'] if it['kind'] == CATEGORY]
+    if any(it['parent'] != 0 for it in categories):
+        raise ValueError('classic trigger format does not support nested folders')
+    w.i(len(categories))
+    for it in categories:
+        w.i(it['id']); w.s(it['name']); w.i(it['is_comment'])
+    w.i(t['game_version']); w.i(len(t['variables']))
+    for v in t['variables']:
+        w.s(v['name']); w.s(v['type']); w.i(v['unk']); w.i(v['is_array'])
+        w.i(v['size']); w.i(v['is_init']); w.s(v['init'])
+    triggers = [it for it in t['items'] if it['kind'] in (GUI, COMMENT, SCRIPT)]
+    parents = {it['id'] for it in categories}
+    w.i(len(triggers))
+    for it in triggers:
+        if it['parent'] not in parents:
+            raise ValueError('classic trigger must belong to a top-level folder: ' + it['name'])
+        w.s(it['name']); w.s(it['desc']); w.i(it['is_comment']); w.i(it['enabled']); w.i(it['custom'])
+        w.i(it['initially_off']); w.i(it['run_on_init']); w.i(it['parent']); w.i(len(it['functions']))
+        for f in it['functions']:
+            write_function(w, f)
     w.b += t['tail']
     return bytes(w.b)
 

@@ -277,3 +277,82 @@ def compact(src, dst):
         if a.read(n) != b.read(n):
             raise RuntimeError('compaction changed ' + n)
     return dst
+
+
+def write_files(src, dst, files):
+    """Copy archive SRC to DST with FILES applied: {name: bytes} adds or replaces a file,
+    {name: None} removes it. Unknown (unnamed) files are kept as they are. When files are added
+    or removed, (attributes) is dropped (the game does not need it) and (listfile) is updated."""
+    if os.path.exists(dst):
+        raise FileExistsError(dst)
+    m = MPQ(src)
+    pre = m.d[:m.o]
+    body = bytearray(m.d[m.o:m.o + m.arch_size])
+    structural = False
+    names = set()
+    lf = m.read('(listfile)')
+    if lf:
+        names = {n for n in lf.decode('utf-8', 'replace').replace('\r', '').split('\n') if n}
+    def drop(name):
+        i = m.hash_index(name)
+        if i is not None:
+            m.bt[m.ht[i][4]] = [0, 0, 0, 0]
+            m.ht[i][4] = 0xFFFFFFFE
+            m.ht[i][0] = m.ht[i][1] = 0xFFFFFFFF
+            return True
+        return False
+    for name, data in files.items():
+        if data is None:
+            if drop(name):
+                structural = True
+            names.discard(name)
+            continue
+        payload = _compress_file(data, m.ss)
+        pos = len(body)
+        body += payload
+        entry = [pos, len(payload), len(data), FLAG_EXISTS | FLAG_COMPRESS]
+        bi = m.block_index(name)
+        if bi is None:
+            structural = True
+            start = hash_string(name, 0) % len(m.ht)
+            for k in range(len(m.ht)):
+                i = (start + k) % len(m.ht)
+                if m.ht[i][4] in (0xFFFFFFFF, 0xFFFFFFFE):
+                    break
+            else:
+                raise RuntimeError('hash table full')
+            m.bt.append(entry)
+            m.ht[i] = [hash_string(name, 1), hash_string(name, 2), 0, 0, len(m.bt) - 1]
+        else:
+            m.bt[bi] = entry
+        names.add(name)
+    if structural:
+        drop('(attributes)')
+        names.discard('(attributes)')
+        lf_data = ('\r\n'.join(sorted(n for n in names if n != '(listfile)')) + '\r\n').encode('utf-8')
+        payload = _compress_file(lf_data, m.ss)
+        pos = len(body); body += payload
+        bi = m.block_index('(listfile)')
+        entry = [pos, len(payload), len(lf_data), FLAG_EXISTS | FLAG_COMPRESS]
+        if bi is None:
+            start = hash_string('(listfile)', 0) % len(m.ht)
+            for k in range(len(m.ht)):
+                i = (start + k) % len(m.ht)
+                if m.ht[i][4] in (0xFFFFFFFF, 0xFFFFFFFE):
+                    break
+            m.bt.append(entry)
+            m.ht[i] = [hash_string('(listfile)', 1), hash_string('(listfile)', 2), 0, 0, len(m.bt) - 1]
+        else:
+            m.bt[bi] = entry
+    hto = len(body)
+    body += encrypt(b''.join(struct.pack('<IIHHI', *e) for e in m.ht), hash_string('(hash table)', 3))
+    bto = len(body)
+    body += encrypt(b''.join(struct.pack('<IIII', *e) for e in m.bt), hash_string('(block table)', 3))
+    struct.pack_into('<IIHHIIII', body, 4, 32, len(body), 0, m.bss, hto, bto, len(m.ht), len(m.bt))
+    with open(dst, 'wb') as f:
+        f.write(pre + bytes(body))
+    b = MPQ(dst)
+    for name, data in files.items():
+        if b.read(name) != data:
+            raise RuntimeError('readback mismatch for ' + name)
+    return dst

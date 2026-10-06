@@ -1,0 +1,36 @@
+{
+  "created": "2026-10-06",
+  "stage": "Z",
+  "original": {
+    "file": "FFERPG_0.9.7.3-r16.w3x",
+    "sha256": "557c69d17e0d5969cfdcee27b0066ea94905a3fc94102f9661d64344e3d53dda"
+  },
+  "maps": {
+    "baseline/Reforged/FFERPG_0.9.7.3-r16.w3x": {
+      "sha256": "45767f6608f38d1235360dcbb818a2da6812f26fb96edc062f734af871123da7",
+      "bytes": 11008128
+    },
+    "baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x": {
+      "sha256": "9a4bf6206812fa373566a2f7bb31bfa266a61f908e9309fa14f49143c1ce8472",
+      "bytes": 10957082
+    }
+  },
+  "checks": [
+    "Stage Z full build gates passed",
+    "47 regression tests passed",
+    "1.29.2 script compilation passed",
+    "Legacy check_map all gates passed, 1503 startup triggers, no reorder",
+    "Selected r16 quest-log GUI actions and pathing preserved in both maps",
+    "Selected r16 object files and strings byte-identical in Reforged master",
+    "Classic playable script exactly equals converter transform of Reforged master",
+    "Editor files round-trip byte-exact and have valid source pairing in both maps",
+    "Stage AA pinned default full build passed, no enabled modules changed",
+    "Stage AA MPQ archive byte-identical to pinned master",
+    "Local make_129.ps1 smoke output byte-identical to pinned classic baseline"
+  ],
+  "toolchain": {
+    "tools/versions/1.29.2/blizzard.j": "a611079df06d768325852492d4bec6325a66f9482cdb421bacf78eebb86d6d7a",
+    "tools/versions/1.29.2/common.j": "cbaa1df5e128bd7b1bb32e828f278be9847734ca500cc34a1ffca272106289b3"
+  },
+  "pending": "In-game smoke test in both clients; World Editor Save As with JassHelper enabled"
+}

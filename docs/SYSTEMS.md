@@ -16,7 +16,7 @@ System explainers (written by hand):
 
 - [SAVE_CODES.md](SAVE_CODES.md): `-save` / `-load`, what a code holds, how to change the format safely, moving a code to a new account name.
 - [QUEST_ENGINE.md](QUEST_ENGINE.md): the quest engine: quests written as data (Kill Elmdor, Wolf Fangs so far).
-- [QUEST_SURVEY.md](QUEST_SURVEY.md): how each of the 91 quests is built, and which could move to a data-driven quest engine.
+- [QUEST_ENGINE.md](QUEST_ENGINE.md): the data-driven engine used by all 93 quests.
 - [PHASE16.md](PHASE16.md): shared `udg_Temp*` variables turned into locals; the hand-offs still left.
 - [JOBS.md](JOBS.md): one hero per job, job change, unlock tree, mastery, the Shrine.
 - [SPAWNS.md](SPAWNS.md): spawn zones, monster pools, the monster data table.

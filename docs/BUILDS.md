@@ -1,20 +1,20 @@
-# Repeatable source builds (stages T/U)
+# Repeatable source builds
 
 Run from the FFERPG repository in PowerShell:
 
 ```powershell
-.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
+.\build.ps1 -Stage AB
 ```
 
 Use a stage that does not exist yet. The command selects changed enabled modules, syncs their code,
 orders libraries, runs every gate, adds the HM3W header and publishes three new files in release/:
-the map, `checks-r16-stageV.txt`, and `build-r16-stageV.json`. Existing files are refused, including
+the map, `checks-r16-stageAB.txt`, and `build-r16-stageAB.json`. Existing files are refused, including
 reports and manifests. Any failed check stops publication. Scratch maps and logs remain in build/.
 Only one process can build the same stage at a time; its lock is removed on normal exit. If a process
 is forcibly terminated, verify no build is running before removing its leftover stage lock.
 
-For the confirmed baseline, `-Base` may be omitted. `tools/build-config.json` pins stage S and its
-SHA256 `923dc01ea5be419299ce02ac802ab34825c28f7e7aad3a3c262d9aa2d87b30ef`.
+For the confirmed baseline, `-Base` may be omitted. `tools/build-config.json` pins baseline/Reforged/FFERPG_0.9.7.3-r16.w3x and its
+SHA256 `45767f6608f38d1235360dcbb818a2da6812f26fb96edc062f734af871123da7`.
 An explicit base's hash is recorded instead of silently changing that pinned baseline. For incremental
 development, supply the newest reviewed map. No stage is selected or overwritten automatically.
 
@@ -22,13 +22,13 @@ development, supply the newest reviewed map. No stage is selected or overwritten
 
 - Python 3.9+; the PowerShell wrapper finds this PC's bundled Python or python on PATH. An explicit
   `-PythonPath C:\path\python.exe` is supported. The portable entry point is
-  `python tools/build_stage.py W --base release/FFERPG_0.9.7.3-r16-stageV.w3x`.
+  `python tools/build_stage.py AB`.
 - `tools/bin/pjass.exe`, `common.j`, `blizzard.j` (or the locations accepted by check_map.py).
-- Sibling `../MapToolkit/tools/add_header.py`. Its exact hash is recorded and header finalization
+- Local `tools/add_header.py`. Its exact hash is recorded and header finalization
   must preserve the checked archive bytes. JassHelper is needed for World Editor saves; this command
   uses sync_module/vjass_lite instead, and records that distinction.
-- Git and an identified baseline map, including its terrain/objects/assets. Maps are ignored by Git;
-  cloning the repository alone cannot recreate those assets. Keep the baseline and manifests backed up.
+- Git and an identified baseline map, including its terrain/objects/assets. The paired baseline maps are tracked in Git;
+  generated release maps are ignored. Keep baseline maps/manifests backed up.
 
 The manifest records base/output hashes, Git commit/dirty status, source and tool hashes, Python
 version/platform, and compiler/native-file identities. pjass has no embedded version here, so its
@@ -45,7 +45,7 @@ tool location, with `used: false`. Header-only finalization is checked before pu
 | check_quests.py | Definitions, capacities, map references, dependencies and synchronous waits in hooks. |
 | check_content.py | Duplicate object IDs and typed literal item/unit/ability references. |
 | check_save_compat.py | Append-only item indexes <=500, item charge/base/class preservation, job order, armory mappings, serializers and fixed G/H vectors. |
-| tests/run_tests.py | 38 regression tests, including actual quest lifecycle/event source with mocked natives. |
+| tests/run_tests.py | 47 regression tests, including actual quest lifecycle/event source with mocked natives. |
 | savecode.py selftest | 2,000 randomized encode/decode/rename/checksum cases. |
 
 For intentionally new/removed triggers, pass `-AllowNew REGEX` / `-AllowRemoved REGEX` (Python:
@@ -82,32 +82,16 @@ are deliberately maintained by the developer rather than treating a passing buil
 confirmation. Run focused in-game tests for gameplay changes and preserve actual player save codes
 when extending the save format.
 
-## Current result
+## Current baseline
 
-Stage T established the workflow; stage U strengthened expression-call tracing, buff/base reference
-resolution and inherited item/save-count guards. Stage S is user-confirmed working. Stage U's playable
-script is byte-identical to S; of 521 listed archive files, only war3map.wct changed (the disabled
-DevCommands inspector). T and U have identical MPQ archives, with different outer map-name headers.
-Proof: release/preservation-r16-stageU.json. All U checks, 35 tests and 2,000 codec cases pass.
-An isolated source-copy smoke build also selected and synced a changed enabled QuestEngine module,
-then passed the full pipeline; release/smoke-r16-stageU.json records it. No real repository source
-was changed by that test. Reusing stage U was separately verified to refuse the existing release.
-The documented bugs were left unchanged at the user's request.
+Stage Z carries the user's latest r16 quest-log/pathing edits and Intro source text into the repaired
+Reforged master, with a matching 1.29.2 copy. All gates pass. Stage AA validates the pinned default
+after packaging. See baseline/manifest.json and HANDOFF.md. Both client smoke tests remain pending.
 
-Worked new-content examples: [CONTENT_DEVELOPMENT.md](CONTENT_DEVELOPMENT.md).
+editor_layout.py normalizes folder/source pairing before compilation. check_map rejects mismatches
+and custom text missing its InitTrig. A playable compile alone cannot detect editor misassociation.
+The tools now read/write classic WTG7/WCT1 as well as Reforged formats; unknown GUI actions remain
+rejected. World Editor Save As with JassHelper still needs verification after editor changes.
 
-Stage V is the current incremental base: six gameplay functions now own temporary context in
-TrueIceAge/Cartographer. All gates/38 tests pass; preservation-r16-stageV.txt verifies exact
-reversal and unchanged other archive files. Focused gameplay testing is in QUEST_TESTS.md.
-
-## Editor pairing repair (stage W)
-
-Stage W is the editing base. Older post-engine builds have a folder/source storage mismatch:
-an enabled trigger can display another module, causing missing TQuestEngine on editor save.
-editor_layout.py preserves name/source pairs while canonicalizing WTG/WCT into folder order;
-build_stage runs it before order_libraries/check_map. check_map rejects layout mismatches and
-custom source without its own InitTrig. add_module also normalizes. Runtime compilation alone
-does not detect this editor-association issue. Actual World Editor Save As remains required.
-
-W carries the user's Intro.j wording edits and otherwise preserves every gameplay function.
-41 tests and all gates pass; preservation-r16-stageW.json includes an isolated module-add smoke.
+For classic copies use make_129.ps1; LEGACY_129.md explains the conversion and testing limits.
+Worked new-content examples: CONTENT_DEVELOPMENT.md.

@@ -121,7 +121,7 @@ reward follows Reward_Give (including Eternity rules); reward and Eye of Jenova/
 
 ## Cartographer and True Ice Age (stage S)
 
-Use release/FFERPG_0.9.7.3-r16-stageS.w3x. Automated checks pass, including the lifecycle source harness,
+Use baseline/Reforged/FFERPG_0.9.7.3-r16.w3x. Automated checks pass, including the lifecycle source harness,
 but game behavior, editor Save As, multiplayer and native save/load need confirmation.
 
 | Done | Quest/path | Check |
@@ -139,7 +139,7 @@ but game behavior, editor Save As, multiplayer and native save/load need confirm
 
 ## Shared temporary-context cleanup (stage V)
 
-Use release/FFERPG_0.9.7.3-r16-stageV.w3x. Automated gates/38 tests/whole-script reversal pass.
+Use baseline/Reforged/FFERPG_0.9.7.3-r16.w3x. Automated gates/38 tests/whole-script reversal pass.
 The intended dialogue, reward amounts, timings and world changes are unchanged. Check:
 
 - [ ] Cartographer: accept, explore more, report twice; progress changes normally and paid tiers never pay again.

@@ -1,6 +1,6 @@
 # Adding content to FF Epic RPG
 
-Start from stage W: `release/FFERPG_0.9.7.3-r16-stageW.w3x`. Keep a working copy and
+Start from the paired r16 Reforged master: `baseline/Reforged/FFERPG_0.9.7.3-r16.w3x`. Keep a working copy and
 give every release build a fresh stage letter. These examples describe a **future**
 "Grove Trial" quest, its Sentinel boss and a Sentinel Charm. They add no actual
 content to the current map. Names, balance and unused IDs must be chosen when implementing it.
@@ -140,10 +140,10 @@ Eternity/Pointless/Gaya paths when changing reward rules. A second NPC approach 
 For edits to existing modules the normal command is:
 
 ```powershell
-.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
+.\build.ps1 -Stage AB
 ```
 
-X is an example next stage; check STAGES.md and release/ before using it. The wrapper
+AB is an example next stage; check STAGES.md and release/ before using it. The wrapper
 syncs changes, orders libraries, runs all gates and adds the outer map header. It refuses
 an existing release name. See BUILDS.md for dependencies and complete limits.
 
@@ -156,7 +156,7 @@ original release; using a prepared base does not itself audit how that base was 
 
 After an editor save, export sources using tools/export_sources.py and review the diff.
 After archive-editing tools, restore the HM3W header with the sibling
-`../MapToolkit/tools/add_header.py` before using the prepared map as a build.ps1 base
+`tools/add_header.py` before using the prepared map as a build.ps1 base
 if that header is absent. Use check_map against the original release too, with narrowly
 named --allow-new triggers where appropriate. Review any new source/runtime optimizations;
 never reset a compatibility contract simply to make the check green.

@@ -16,7 +16,7 @@ A one-page guide for anyone changing the map. For where things are, read `docs/S
 ## The routine for every change
 
 For edits to existing source modules, use `build.ps1` instead of manually assembling a playable map:
-`.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x`. It runs the complete development
+`.\build.ps1 -Stage AB`. It runs the complete development
 gates and records a new map/report/manifest without overwriting outputs. See docs/BUILDS.md for
 requirements and the handling of new modules, object data, header/global changes and historical drift.
 Keep .j sources in CRLF. After every build, add a STAGES.md row and update HANDOFF.md/RESUME_PROMPT.txt;
@@ -24,19 +24,20 @@ play-test changed gameplay. Commit only the files belonging to your change.
 
 For World Editor changes:
 
-1. **Open the newest map** from `release/` in World Editor.
+1. **Open the Reforged master** in `baseline/Reforged/` or the newest Reforged build in `release/`.
 2. **Make the change and Save As** under a new name, for example `FFERPG_0.9.7.3-r16.w3x`. Never overwrite
    the only working copy.
 3. **Run the checks:**
-   `python tools/check_map.py <your map>.w3x --baseline baseline/<last good map>.w3x`.
+   `python tools/check_map.py <your map>.w3x --baseline baseline/Reforged/FFERPG_0.9.7.3-r16.w3x`.
    All must say PASS. Check 6 compares startup with the baseline, so expect it to report the
    triggers you added or removed on purpose.
 4. **Play test** what you changed, plus a quick save code (`-save`, then `-load` in a new game).
 5. **Record it:**
    - `python tools/export_sources.py <your map>.w3x`
-   - `git add -A`
+   - Review exported source differences and stage only the intended changes.
    - `git commit -m "what changed"`
-6. **When a map is confirmed working,** copy it to `baseline/` so the next change is compared with it.
+6. **Generate its classic copy:** `.\make_129.ps1 -Map <your map>.w3x`; test both clients.
+   Promote a new paired baseline deliberately, updating its manifest and build-config hash.
 
 ## Where to put things
 

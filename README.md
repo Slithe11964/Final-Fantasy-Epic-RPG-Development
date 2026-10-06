@@ -1,85 +1,52 @@
-# FF Epic RPG — developer workspace
+# FF Epic RPG
 
-Read **docs/HANDOFF.md** first for the current stage, then **docs/QUEST_ENGINE.md** and
-**docs/NEXT_STEPS.md** for quest development and remaining readiness work.
+Warcraft III RPG sources and development tools. The starting point for new development is the
+paired 0.9.7.3-r16 baseline, assembled in stage Z on 2026-10-06.
 
-Stage S is user-confirmed working. Current stage U adds development safeguards while keeping S's
-playable script unchanged. For source edits, build a new stage with one command:
+| File | Use |
+|---|---|
+| `baseline/Reforged/FFERPG_0.9.7.3-r16.w3x` | Development master: open in the Reforged World Editor. |
+| `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` | Matching classic playable copy; also usable in Reforged. |
+| `baseline/manifest.json` | Hashes, provenance, verification and pending play tests. |
+
+Both maps retain the latest quest-log/pathing edits, welcome source text and Chemist/Ninja passive
+art fix. Automated checks pass, including 1.29.2 compilation. A fresh smoke test in both clients
+and a Reforged World Editor Save As remain required before release.
+
+The two baseline maps are tracked in Git. Future builds, scratch files and generated reports are
+ignored. Sources, compiler libraries, compatibility contracts and regression fixtures stay tracked.
+
+## Development
+
+Read docs/HANDOFF.md, docs/STAGES.md, then docs/QUEST_ENGINE.md. Install Python 3 and use PowerShell;
+Windows pjass and both sets of script libraries are included. Editor saves require JassHelper/vJass.
 
 ```powershell
-.\build.ps1 -Stage X -Base release/FFERPG_0.9.7.3-r16-stageW.w3x
+.\build.ps1 -Stage AB
 ```
 
-It selects changed modules, checks quests/content/save compatibility, runs compilation/regressions,
-and writes a new map plus report/hash manifest. Outputs are never overwritten. See **docs/BUILDS.md**
-for setup, required baseline/assets, and boundaries of the automated checks.
+This builds from the pinned Reforged baseline, syncs changed modules, orders libraries, runs all
+safeguards and adds the header. A new map/report/manifest goes to release/. Use the next unused
+stage. For incremental work, pass `-Base release/<latest-Reforged-map>.w3x`. Keep vJass .j sources
+CRLF. Preserve behavior, dialogue and rewards unless a change is requested.
 
-This folder holds everything a developer needs to keep working on **Final Fantasy Epic RPG**
-(a Warcraft III Reforged map) in the World Editor.
+For editor changes: open the Reforged master or newest Reforged build, Save As to a new file,
+check/export/review it, then convert the saved map:
 
-| Folder | What's in it |
-|---|---|
-| `release/` | Map files ready to test. Not tracked by Git. |
-| `baseline/` | The last map confirmed to play correctly, for comparisons. Not tracked by Git. |
-| `src/` | The map's trigger code exported as text, one file per World Editor trigger, in the same 10 folders. This is what Git tracks and diffs. |
-| `tools/` | Python scripts: export, build, automated checks. |
-| `docs/` | How the map's code is organised (`STARTUP.md`), the cleanup plan, test checklists. |
+```powershell
+.\make_129.ps1 -Map release/<editor-saved-map>.w3x
+```
 
-Git records the editable sources in `src/`. A playable map must contain the matching trigger-editor
-source and compiled script. For source edits, use the sync/build/check workflow in docs/HANDOFF.md;
-for World Editor edits, Save As, check, and export the saved map back to `src/` before committing.
+The classic copy goes to release/1.29.2/ with the same filename and no version suffix in its
+displayed name. Existing outputs are refused. downgrade_129.bat runs the same wrapper; without
+arguments it converts the pinned baseline. No sibling toolkit is required.
 
-## Everyday workflow
+See CONTRIBUTING.md, docs/BUILDS.md, docs/LEGACY_129.md and docs/CONTENT_DEVELOPMENT.md.
+Record each build in STAGES.md and update HANDOFF.md. Preserve existing save item/job indexes.
 
-1. Open the map from `release/` in World Editor. Keep **JassHelper** and **vJass** enabled
-   (Trigger Editor menu).
-2. Make your changes and **Save As** a new file name. The saved map is directly playable.
-3. Run the automated checks on it:
-   `python tools/check_map.py <saved map>.w3x --baseline baseline/FFERPG_0.9.7.3-r14.w3x`
-4. Test in game.
-5. Optional: **Build Play Copy** in `WarcraftMapExtractor` (`dotnet run`) runs extra checks,
-   such as neutral unit ownership, and produces a separate copy. It is no longer needed for
-   saved games to load, because the long help texts now live in the GUI trigger `QuestLog_Entries`.
-6. Record the change in Git:
-   `python tools/export_sources.py <your saved map>.w3x`, then `git add -A` and `git commit`.
+## Local archive
 
-## Where things are in the code
-
-Read `CONTRIBUTING.md` (the routine for every change) and `docs/SYSTEMS.md`, a folder-by-folder guide. The top of the map header in the
-Trigger Editor has a short version of it.
-
-- Startup is described in `docs/STARTUP.md`. Short version: `main_old` (in
-  `10 Startup coordinator/MapBootstrap`) runs 11 named `Startup_*` steps.
-- To find where a trigger is created, search for `Register_<TriggerName>`. It sits in the
-  same module as the trigger's code.
-- A module's own variables are in the `globals` block at its top. Shared variables are in the
-  Variable Editor (Ctrl+B, folder "Shared variables"); a few that World Editor can't hold the
-  same way stay in the map header. `docs/GLOBALS.md` lists them all.
-- System explainers: `docs/SAVE_CODES.md`, `JOBS.md`, `SPAWNS.md`, `LOOT.md`, `BOSSES.md`, `ARENA.md`.
-- Older game versions: `docs/LEGACY_129.md`. Tools for doing all this on another map: `../MapToolkit/`.
-- Object IDs such as `'A0B3'` carry a comment with the object's name. Formulas carry comments
-  explaining the math.
-
-## Switching systems off
-
-Untick **Enabled** on a module in the Trigger Editor to leave it out of the map. Startup skips
-it automatically. Before you do, run
-`python tools/disable_check.py <map>.w3x <Module> [<Module> ...]`: it says whether other code
-still needs the module. `docs/DISABLING.md` lists the answer for every module on its own.
-
-## Tools
-
-| Command | Purpose |
-|---|---|
-| `python tools/check_map.py MAP [--baseline MAP]` | All automated checks (compile, startup wiring, text safety, startup audit). |
-| `python tools/startup_audit.py OLD NEW` | Proves NEW's startup does the same work as OLD's. |
-| `python tools/export_sources.py MAP` | Map → `src/` (for Git). |
-| `python tools/build_map.py BASE OUT [--runtime war3map.j]` | `src/` → map (for tool-driven refactors). |
-| `python tools/disable_check.py MAP MODULE...` | Can these modules be switched off? (`--all` regenerates `docs/DISABLING.md`.) |
-| `python tools/rename_module.py BASE OUT OLD NEW` | Renames a module everywhere (trigger tree, library, `requires`, file). |
-| `python tools/gen_docs.py` | Regenerates `docs/TRIGGER_INDEX.md`, `GLOBALS.md` and `DEAD_CODE.md` from `src/`. |
-
-`check_map.py` needs `pjass`, `common.j` and `blizzard.j`. It finds them in `tools/bin/` or in
-`../Builder24/tools/JassHelper/`; on Windows that's the bundled `pjass.exe`.
-
-Worked new-content examples: [CONTENT_DEVELOPMENT.md](docs/CONTENT_DEVELOPMENT.md).
+Older maps, checks, scratch builds and superseded surveys are preserved outside this repo:
+`../_archive/FFERPG-before-r16-baseline-2026-10-06/`. Its manifest lists moved material. Previous
+documentation and the untouched user r16 are saved there too. Git retains source history.
+The archive is for local recovery and is not required for normal development.

@@ -61,7 +61,7 @@ def main():
     trig_items = [i for i in t['items'] if i['kind'] in (8, 16, 32)]
     if len(trig_items) != len(entries):
         sys.exit('trigger-list.json (%d) does not match the map (%d triggers)' % (len(entries), len(trig_items)))
-    new_id = max(i['id'] for i in trig_items) + 1
+    new_id = max(i['id'] for i in t['items']) + 1
     t['items'].append(dict(kind=GUI, name=a.name, desc=a.desc, is_comment=0, id=new_id, enabled=1, custom=1,
                            initially_off=0, run_on_init=0, parent=cat_id, functions=[]))
     t['counts'][GUI] += 1

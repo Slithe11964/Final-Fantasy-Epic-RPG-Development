@@ -1,71 +1,20 @@
-# FF Epic RPG: readying the map for new development
+# Preparing for new development
 
-Updated 2026-10-05, stage W. Current release: release/FFERPG_0.9.7.3-r16-stageW.w3x.
-The user reports stage S is working. All 93 quests are on QuestEngine. Priorities **2, 3 and 4 below
-are implemented** in stages T/U; BUILDS.md describes the new workflow and its limits. U's playable
-script is byte-identical to S. Read HANDOFF.md for the exact build and STAGES.md for history.
-The user asked to ignore the documented bugs in the current map; bug work is deferred.
+Updated 2026-10-06. The paired r16 baseline is ready for development; see HANDOFF.md for paths and
+verification limits. All 93 quests use QuestEngine. Bugs remain deferred by user request.
 
-## Recommended order
+1. **Verify the new pair in both clients.** Fresh game, welcome/quest log, spells, Gaya selection,
+   quest completion and save/load. Save As a separate Reforged copy with JassHelper enabled.
+2. **Add the next requested content.** CONTENT_DEVELOPMENT.md gives worked quest, boss, item and
+   reward examples. Build with the complete gates and test the affected content in both clients.
+3. **Continue shared-context cleanup when useful.** PHASE16.md and phase16-handoffs.csv identify
+   remaining arena/job/cross-module handoffs. V covered TrueIceAge and Cartographer. Work one
+   subsystem at a time, preserving behavior and using focused tests.
+4. **Capture real player saves before progression changes.** Existing append-only compatibility
+   guards, fixed codec vectors and 2,000 randomized cases are in place; real saves add coverage.
+5. **Publish when ready.** The repository now includes baseline maps and local build/conversion
+   tooling. Old material lives in the external archive. No remote publication has been performed.
 
-1. **Tested development baseline established.** Stage S is user-confirmed working and SHA256-pinned
-   in build-config.json. Future gameplay changes still need their focused checklist, including save/load
-   and multiplayer where relevant. A future World Editor Save As needs its own checks/play test.
-
-2. **Done: repeatable one-command builds.** build.ps1 selects changed modules, runs sync/order/all
-   checks/header, refuses existing output, and records map/source/tool hashes and runtime/compiler
-   identities. Full enabled-function drift checks preserve exact historical hash pairs while rejecting
-   new differences. Fresh clones still need the identified map/assets and sibling header tool.
-
-3. **Done: quest-definition checks and inspection.** check_quests.py validates capacities, indexes,
-   targets, requires and synchronous waits, including nested expressions/callbacks. The harness now
-   exercises ordinary talk/kill/partial-deliver flows and failure cleanup. Disabled DevCommands includes
-   read-only -queststate inspection, displaying engine state and legacy log overrides separately.
-   Unusual dynamic hooks and branching/shared-log behavior still deserve content-specific review.
-
-4. **Done: save/content guards.** Append-only item indexes <=500, charge/base/class preservation,
-   save-count agreement, job order, serializers and armory mappings are guarded. Typed literal
-   references and duplicate object IDs are checked. Three synthetic fixed G/H vectors and 2,000 random
-   cases protect codec behavior; capture real player codes before changing formats/progression.
-
-5. **Deferred by user request: documented bugs.** If revisited later, reproduce Greed's high-level item lookup,
-   arena team-selection recursion, repeatable arena-boss death triggers, and duplicated arena reward
-   logic. BUGS.md records suspected issues; reproduce each before changing behavior. Investigate the
-   1.29.2-format marker issue only if that release target is needed; the active build is Reforged.
-
-6. **First pass done in V: reduce risky shared temporary-variable handoffs.** TrueIceAge summon
-   and Cartographer scan/report now own their scratch context; six functions changed and tested.
-   Larger arena/job/cross-module cases remain for incremental passes. docs/PHASE16.md and
-   phase16-handoffs.csv identify remaining cases. Start with functions that wait, nested callbacks and
-   frequently fired combat/arena paths. Use locals or explicit context where appropriate, one system
-   at a time, with behavior comparison and focused tests. Splitting large data tables has lower value.
-
-7. **Done in V: CONTENT_DEVELOPMENT.md.** Worked quest, boss, item and reward examples cover
-   source, objects, prerequisites, registration, custom steps, non-waiting hooks, builds and tests.
-   Source reference docs and the declared library dependency index are refreshed; regenerate as
-   content changes and keep HANDOFF.md/STAGES.md current.
-
-8. **Package the project for another developer.** Supply tested maps through release artifacts,
-   retain source history/backups, and document where baseline/assets/tool versions come from. Publish
-   the repository if wanted. Automated release checks can then run whenever source changes are proposed.
-
-## Tools already available
-
-- tools/check_map.py: compile, startup wiring/order, globals and native-save string checks.
-- build.ps1 / tools/build_stage.py: complete build/gate/header pipeline with manifests.
-- tools/check_sources.py, check_editor_sources.py, check_quests.py, check_content.py, check_save_compat.py:
-  read-only development safeguards; limits in BUILDS.md.
-- tools/tests/run_tests.py: 38 regression tests (10 lifecycle/event tests execute actual quest source
-  with mocked Warcraft natives, plus inspector and build/quest/content/save guard tests).
-- tools/tests/verify_stage_s.py: stage S conversion preservation audit against stage R commit 800ed48.
-- tools/disable_check.py: module dependency/disabling audit.
-- tools/gen_docs.py / tools/gen_dependencies.py: regenerate source references/declared library dependencies.
-- tools/tests/verify_stage_v.py: exact source/playable-script preservation audit for the V refactor.
-- tools/savecode.py and docs/SAVE_CODES.md: save-code inspection and compatibility details.
-- tools/objects.py, tools/objdata.py and docs/OBJECTS.md: object data/reference tools.
-
-Remaining readiness work is #8 (developer packaging) and further subsystem passes for #6.
-Stage V needs its focused play test; its gameplay refactor preserves intended behavior. Bugs remain deferred.
-
-W repairs editor folder/source pairing and adds three regression tests (41 total).
-Confirm World Editor Save As on W before making further GUI edits; see HANDOFF.md.
+Readiness #2/3/4 (repeatable builds, quest checks/inspection, content/save guards), #7 (content
+guide) and developer packaging are complete. #6 shared-state cleanup has a first pass. Bugs are
+still deferred. The tool suite has 47 regression tests; keep contracts/fixtures and Git history.

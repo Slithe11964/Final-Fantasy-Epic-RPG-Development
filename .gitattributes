@@ -2,3 +2,6 @@
 src/**/*.j -text
 *.py text eol=lf
 *.md text eol=lf
+# Preserve vendored compiler libraries exactly, including their original whitespace.
+tools/versions/**/*.j -text whitespace=-blank-at-eol,-blank-at-eof
+*.bat text eol=crlf

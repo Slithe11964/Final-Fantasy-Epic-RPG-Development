@@ -16,7 +16,7 @@ The quest-log entry is still `udg_SideQuest[n]` / `udg_MainQuest[n]`, so the abo
 
 ## Development checks and inspection (stages T/U)
 
-Run `python tools/check_quests.py --map release/FFERPG_0.9.7.3-r16-stageV.w3x` for all definitions,
+Run `python tools/check_quests.py --map baseline/Reforged/FFERPG_0.9.7.3-r16.w3x` for all definitions,
 or add `--quest Cartographer` / `--json` to inspect matching definitions and hooks. This shows declared
 steps rather than live game state. The 97 definition variants represent 93 logical quests; counts
 include mutually exclusive branches conservatively. Checks protect the 16-step stride, 510-definition
@@ -109,7 +109,7 @@ stays where it is during kill and hunt steps.
 
 ## Converting an old quest
 
-1. **Read it.** List its triggers and what each waits for. `docs/QUEST_SURVEY.md` and `docs/quest-survey.csv`
+1. **Read it.** List its triggers and what each waits for. The current module sources and `docs/QUESTS.md`
    give the steps and modules.
 2. **Write the definition** in the quest's module, keeping all dialogue lines word for word. Put anything
    special in small `Quest_OnDone` functions in the same module: units appearing, items dropped, news text,
@@ -172,8 +172,7 @@ sources and will need updating after future changes to these modules.
   `call DestroyTimer(GetExpiredTimer())` in X (Arachnophobia offering Harpy Hunt, Melaniya teleporting away,
   Fire selling Elixirs after 3 minutes).
 - Quests are shared by the party, as before: one log entry, every player sees it.
-- Quest_Reach already handles reaching a place. An attack-unit step can be added when needed. `docs/QUEST_SURVEY.md` shows
-  which quests need them.
+- Quest_Reach already handles reaching a place. An attack-unit step can be added when needed. Add new step types when new content requires them; all existing quests are converted.
 - An entry point another module enables directly becomes a function it calls through `ExecuteFunc`, guarded by
   `static if LIBRARY_T...` (Valera -> Wolf Fangs, Kiros -> Gnoll Hunt, Melaniya -> Greed is Good).
 
