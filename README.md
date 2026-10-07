@@ -24,12 +24,13 @@ Windows pjass and both sets of script libraries are included. Editor saves requi
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AK -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\build.ps1 -Stage AL -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
 ```
 
 Stages AB through AD add armory question marks and hints on one panel per category, sorted by required level; see docs/ARMORY.md for testing.
-Stages AE through AJ add a spoiler-free Bazaar browser. AI shows three padded, larger-text recipe panels per group
-in Reforged, with green counts and click-to-craft; the classic conversion uses AE's single dialog; see docs/BAZAAR.md. The preparers add both reviewed shop features to the public baseline. The builder syncs changed modules, orders libraries, runs all
+Stages AE through AK add a spoiler-free Bazaar browser. AI shows three padded, larger-text recipe panels per group
+in Reforged, with green counts and click-to-craft; the classic conversion uses AE's single dialog; see docs/BAZAAR.md. AK also increases Gaya gather/follow ranges by 25% and adds
+`-teleporters` to the disabled developer module (docs/DEBUG_COMMANDS.md). The preparers add both reviewed shop features to the public baseline. The builder syncs changed modules, orders libraries, runs all
 safeguards and adds the header. A new map/report/manifest goes to release/. Use the next unused
 stage. For incremental work, pass `-Base release/<latest-Reforged-map>.w3x`. Keep vJass .j sources
 CRLF. Preserve behavior, dialogue and rewards unless a change is requested.

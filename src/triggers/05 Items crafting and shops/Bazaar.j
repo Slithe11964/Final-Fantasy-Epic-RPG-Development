@@ -261,6 +261,35 @@ function Bazaar_AllIngredients takes integer recipe returns string
     return text
 endfunction
 
+function Bazaar_MarkPageText takes integer page returns string
+    local string text="Sold parts (shared):|nMarks of Darkness:"
+    local string name
+    local string color
+    local integer slot=3+page*16
+    local integer last=IMinBJ(slot+14,2+2*LoadInteger(udg_BazaarRecipeHash,1,1))
+    local integer material
+    local integer needed
+    if slot>last then
+        return ""
+    endif
+    loop
+        exitwhen slot>last
+        set material=LoadInteger(udg_BazaarRecipeHash,1,slot+1)
+        set needed=LoadInteger(udg_BazaarRecipeHash,1,slot)
+        set name=Bazaar_PlainName(GetObjectName(udg_DropItemIdTable[material]))
+        if SubString(name,0,18)=="Mark of Darkness: " then
+            set name=SubString(name,18,StringLength(name))
+        endif
+        set color="|cffffcc00"
+        if udg_MaterialOwnedCount[material]>=needed then
+            set color="|cff00ff00"
+        endif
+        set text=text+"|n"+color+name+"|r|n"+color+I2S(udg_MaterialOwnedCount[material])+" / "+I2S(needed)+"|r"
+        set slot=slot+2
+    endloop
+    return text
+endfunction
+
 function Bazaar_IngredientPageText takes integer recipe, integer page returns string
     local string text=Bazaar_AllIngredients(recipe)
     local string result="Sold parts (shared):"
@@ -270,6 +299,9 @@ function Bazaar_IngredientPageText takes integer recipe, integer page returns st
     local integer start=0
     local integer line=-1
     local integer length=StringLength(text)
+    if recipe==1 then
+        return Bazaar_MarkPageText(page)
+    endif
     loop
         exitwhen i>length
         if SubString(text,i,i+2)=="|c" then

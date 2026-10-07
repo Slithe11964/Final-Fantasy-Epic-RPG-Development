@@ -1,5 +1,6 @@
 """Exercise local frame navigation, synchronized spending and the classic fallback."""
 import copy
+import re
 from collections import defaultdict
 import unittest
 from unittest.mock import patch
@@ -35,7 +36,7 @@ def frame_runtime():
                      'FRAMEPOINT_BOTTOMLEFT', 'FRAMEEVENT_CONTROL_CLICK',
                      'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT']:
         e[constant] = constant
-    names = ['Bazaar_AllIngredients', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',
+    names = ['Bazaar_AllIngredients', 'Bazaar_MarkPageText', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',
              'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_Init']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), names, e)
@@ -126,7 +127,7 @@ class BazaarFrameTests(unittest.TestCase):
     def test_long_recipe_pages_preserve_every_line_and_green_color_without_spending(self):
         e, data, pool, money, created, frames, packets = frame_runtime()
         e['GetObjectName'] = lambda raw: '|cffff0000A very long ingredient name '+raw+'|r'
-        for recipe in range(1, 57):
+        for recipe in range(2, 57):
             for material, amount in ingredients(data, recipe):
                 pool[material] = amount
             complete = e['Bazaar_PlainName'](e['Bazaar_AllIngredients'](recipe)).split('|n')[1:]
@@ -141,7 +142,6 @@ class BazaarFrameTests(unittest.TestCase):
                 seen.extend(e['Bazaar_PlainName'](line) for line in lines)
                 page += 1
             self.assertEqual(seen, complete)
-        self.assertEqual(len(e['Bazaar_IngredientPageText'](1, 0).split('|n'))-1, 18)
         before = copy.deepcopy(pool)
         e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameMore'][0]
         e['BazaarFrame_Show'](0)
@@ -150,7 +150,34 @@ class BazaarFrameTests(unittest.TestCase):
         e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameNext']
         e['BazaarFrame_OnClick']()
         self.assertEqual(e['BazaarFramePartPage'][0], 0)
-        self.assertEqual(pool, before)
+        self.assertEqual({k: v for k, v in pool.items() if v}, {k: v for k, v in before.items() if v})
+        self.assertFalse(created or packets)
+
+    def test_all_sixteen_marks_fit_eight_per_page_without_missing_or_repeated_entries(self):
+        e, data, pool, money, created, frames, packets = frame_runtime()
+        source = SOURCE.read_text(encoding='utf-8')
+        names = dict(re.findall(r"set udg_DropItemIdTable\[[^]]+\]='([^']+)' // [^\n]*item \"([^\"]+)\"", source))
+        e['GetObjectName'] = lambda raw: names[raw]
+        expected = []
+        for material, amount in ingredients(data, 1):
+            pool[material] = amount
+            expected.append(names[e['udg_DropItemIdTable'][material]].removeprefix('Mark of Darkness: '))
+        seen = []
+        for page in range(2):
+            text = e['Bazaar_IngredientPageText'](1, page)
+            lines = e['Bazaar_PlainName'](text).split('|n')
+            self.assertEqual(lines[:2], ['Sold parts (shared):', 'Marks of Darkness:'])
+            self.assertEqual(len(lines[2:]), 16)
+            seen.extend(lines[2::2])
+            self.assertEqual(text.count('|cff00ff00'), 16)
+        self.assertEqual(seen, expected)
+        self.assertEqual(e['Bazaar_IngredientPageText'](1, 2), '')
+        e['BazaarFrame_Show'](0)
+        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameMore'][0]
+        e['BazaarFrame_OnClick']()
+        self.assertEqual(e['BazaarFramePartPage'][0], 1)
+        e['BazaarFrame_OnClick']()
+        self.assertEqual(e['BazaarFramePartPage'][0], 0)
         self.assertFalse(created or packets)
 
     def test_close_button_is_above_cards_and_closes_immediately_then_synchronizes(self):

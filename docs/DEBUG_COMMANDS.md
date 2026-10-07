@@ -27,6 +27,7 @@ automatically, and `tools/disable_check.py` confirms this.
 | `-spawns on/off` | Pause or resume monster spawns. |
 | `-title N` | Grant title N (sets the save-code title flags, so it's useful for testing save codes). |
 | `-dumpitems` | Write `Documents\Warcraft III\CustomMapData\FFERPG\itemtable.txt`: every saveable item with its save index, rawcode, whether it is charged, and name. `tools/savecode.py --items` uses it to read save codes exactly. Run it once per map version. |
+| `-teleporters` | Unlock all initialized travel destinations and refresh their dialog/effects. Repeat use does not duplicate effects. Does not require a selected hero. |
 | `-queststate [N]` | Read-only: list active/available engine quests, or inspect engine number N (hidden/done/failed too). Shows current/total steps, log slot and completed/failed log flags. N is an engine number, not the main/side quest log index. Works before selecting a hero. |
 
 ## Notes
@@ -43,3 +44,8 @@ automatically, and `tools/disable_check.py` confirms this.
   testing, but don't share such codes.
 - **Adding a command:** add an `elseif cmd=="-name" then` branch in
   `Trig_DevCommands_Chat_Actions` and a line in `DevCommands_Help`.
+
+Stage AK adds `-teleporters` in editor source; DevCommands remains disabled in release maps.
+Enable it in a separate World Editor test copy with JassHelper/vJass enabled and Save As. In single
+player type `-teleporters`, then enter a travel point and check every destination is offered. Run
+it twice to check effects are not duplicated. Multiplayer still ignores all dev commands.

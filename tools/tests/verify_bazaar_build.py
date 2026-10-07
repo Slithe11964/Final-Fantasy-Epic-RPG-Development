@@ -18,8 +18,8 @@ from wtg import read_wtg
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', default='AJ')
-    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAI.w3x')
+    parser.add_argument('--stage', default='AK')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAJ.w3x')
     args = parser.parse_args()
     final = ROOT/f'release/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
     classic = ROOT/f'release/1.29.2/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
@@ -44,7 +44,32 @@ def main():
     before = functions(a.read('war3map.j').decode('utf-8'))
     after = functions(b.read('war3map.j').decode('utf-8'))
     different = sorted(name for name in before if tokens(before[name]) != tokens(after.get(name, '')))
-    assert all(name.startswith(('Bazaar_', 'BazaarFrame_', 'Trig_Bazaar_', 'Register_Bazaar_', 'RegisterTriggers_Bazaar')) for name in different), different
+    allowed = ('Bazaar_', 'BazaarFrame_', 'Trig_Bazaar_', 'Register_Bazaar_', 'RegisterTriggers_Bazaar')
+    if args.stage == 'AK':
+        allowed += ('Trig_Gaya_',)
+        prior_modules = paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))
+        next_modules = paired_text(read_wtg(b.read('war3map.wtg')), read_wct(b.read('war3map.wct')))
+        edits = {
+            'Gaya_Movement': ('Trig_Gaya_Follow_MoveGayaToHero', [('>=480', '>=384')]),
+            'Gaya_Inventory': ('Trig_Gaya_GatherItems_Actions', [('625.', '500.'), ('375.', '300.')]),
+        }
+        for module, (edited, replacements) in edits.items():
+            prior_functions = functions(text_of(prior_modules[module]))
+            next_functions = functions(text_of(next_modules[module]))
+            assert set(prior_functions) == set(next_functions)
+            for name, body in next_functions.items():
+                restored = body
+                if name == edited:
+                    for new_value, old_value in replacements:
+                        restored = restored.replace(new_value, old_value)
+                assert tokens(restored) == tokens(prior_functions[name]), name
+                assert tokens(body) == tokens(after[name]), name
+        developer = functions(text_of(next_modules['DevCommands']))
+        source_developer = functions((ROOT/'src/triggers/11 Developer tools/DevCommands.j').read_text(encoding='utf-8'))
+        for name in ['DevCommands_UnlockTeleporters', 'DevCommands_Help', 'Trig_DevCommands_Chat_Actions']:
+            assert tokens(developer[name]) == tokens(source_developer[name]), name
+        assert 'DevCommands_UnlockTeleporters' not in after
+    assert all(name.startswith(allowed) for name in different), different
     assert not set(before)-set(after)
     old_editor = functions(text_of(paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))['Bazaar']))
     new_editor = functions(text_of(paired_text(read_wtg(b.read('war3map.wtg')), read_wct(b.read('war3map.wct')))['Bazaar']))
@@ -58,7 +83,10 @@ def main():
     assert not check(final) and not check(classic)
     assert not check_armory(final) and not check_armory(classic)
     legacy = functions(MPQ(str(classic)).read('war3map.j').decode('utf-8'))
-    for name in ['Bazaar_CraftRecipe', 'Bazaar_MaterialsReady', 'Bazaar_InitBrowserData', 'Trig_Bazaar_Recipes_Actions']:
+    preserved = ['Bazaar_CraftRecipe', 'Bazaar_MaterialsReady', 'Bazaar_InitBrowserData', 'Trig_Bazaar_Recipes_Actions']
+    if args.stage == 'AK':
+        preserved += ['Trig_Gaya_Follow_MoveGayaToHero', 'Trig_Gaya_GatherItems_Actions']
+    for name in preserved:
         assert tokens(after[name]) == tokens(legacy[name]), name
     assert 'Blz' not in legacy['BazaarFrame_Init']
     assert legacy['Bazaar_ShowRecipe'].count('DialogAddButton') == 4
@@ -73,7 +101,7 @@ def main():
                   hashes={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                           for p in [args.base, final, classic]})
     (ROOT/f'release/preservation-r16-stage{args.stage}.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print('PASS preservation: Bazaar-only runtime/editor changes; recipe data/items/armory unchanged.' +
+    print('PASS preservation: scoped Bazaar/Gaya runtime and developer editor changes; recipe data/items/armory unchanged.' +
           (' Objects and craft transaction unchanged.' if browser_exists else ' Added recipe button/shop selling ability.'))
 
 

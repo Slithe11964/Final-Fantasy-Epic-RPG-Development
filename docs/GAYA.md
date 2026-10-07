@@ -31,11 +31,11 @@ Modules (folder 04):
 | Feature | Where | How |
 |---|---|---|
 | Can't die | `Gaya_Stats` (`Gaya_RefreshStats`) | Every second (`udg_LoadRefreshTimer`) Gaya is set to 1,000,000 max HP/mana, its life to 990,000, and its buffs are cleared. Gaya is effectively immortal; its mana stays topped up. |
-| Follow | `Gaya_Movement` (`Gaya_Follow`, every 1 s, starts off) | If Gaya is 384+ away from the hero, or from the transport the hero is in (`udg_PlayerTransport`), it is moved next to them. |
+| Follow | `Gaya_Movement` (`Gaya_Follow`, every 1 s, starts off) | If Gaya is 480+ away on either axis from the hero, or from the transport the hero is in (`udg_PlayerTransport`), it is moved next to them. |
 | House portal | `Gaya_HousePortal` | Spell cast to travel to the player's house (`udg_PlayerHouse`). |
 | Item use | `Gaya_Orders` | Orders 852008–852013 (the six inventory slots) on Gaya call `Item_UseFromOtherUnit(gaya, slot, 0/1/2)` (no target / point / unit). |
 | Shop | `Gaya_Inventory` (`Gaya_ShopPurchase`) | The items Break Stun `'I007'`, Mana Transfer `'I008'` and Mega Heal unlock a tech the first time (`'Resi'`, `'R00F'`, `'R00G'`), then raise the matching ability up to level 3. Buying past level 3 refunds 1500 gold + 1 shard. |
-| Gathering | `Gaya_GatherItems` | Collects items around Gaya into the player's house. |
+| Gathering | `Gaya_GatherItems` | Collects eligible items in boxes around the hero (625 half-range) and Gaya (375 half-range) into the player's house. |
 | Busy flag | `Gaya_Channeling` | `udg_GayaReady[player]` is false while Gaya channels a spell. |
 | Support spells | `Gaya_Support` | Break Stun `'A0B4'` removes stun/freeze/daze/sleep buffs from the hero. Mana Transfer `'A02K'` gives the hero (level+1)×50 mana. Mega Heal `'A02L'` heals the hero. |
 | Scan | `Gaya_Scan` (650 lines, mostly text) | Prints unit info. Species comes from `udg_MonsterDataHash[type][1]` (see [SPAWNS.md](SPAWNS.md)), elements from `Element_SetFromUnit`, accuracy/evasion from the damage engine. |
@@ -46,7 +46,7 @@ Modules (folder 04):
 | Change | Where |
 |---|---|
 | New Gaya ability | Add it in `Gaya_ShopPurchase` (buy/level rules) and in `Gaya_RecreateSpirit` (or it's lost when Gaya is rebuilt). For it to survive save codes, add it to `Save_WriteCode` and the loader too ([SAVE_CODES.md](SAVE_CODES.md)). |
-| Follow distance | The `384` in `Trig_Gaya_Follow_MoveGayaToHero`. |
+| Follow distance | The `480` in `Trig_Gaya_Follow_MoveGayaToHero`. |
 | Mana Transfer amount | `(abilityLevel+1)*50` in `Trig_Gaya_ManaTransfer_Actions`. |
 | Scan text | `Trig_Gaya_Scan_Actions`. |
 
@@ -59,3 +59,7 @@ Modules (folder 04):
 - **Rebuilding:** any new state on Gaya must also be copied in `Gaya_RecreateSpirit`.
 - **Variables:** `udg_SpiritOfGaya` and the other per-player arrays are indexed by player
   number (1–8), not player id (0–7).
+
+Stage AK increases gathering and follow thresholds by 25%, preserving item eligibility/ownership,
+transport handling and the one-second follow timer. Test pickup just inside/outside both gather
+boxes, owned/hidden/powerup rejection, both follow axes and loaded/unloaded transport behavior.

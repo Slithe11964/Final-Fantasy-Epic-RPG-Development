@@ -1,4 +1,4 @@
-library TDevCommands requires TPlayerHero, optional TTitle, TQuestEngine
+library TDevCommands requires TPlayerHero, optional TTitle, TQuestEngine, TWarp
 // ==========================================================================================
 // Developer test commands, so testing late-game content takes minutes instead of hours.
 //
@@ -167,6 +167,29 @@ function DevCommands_QuestState takes player p,integer l_number returns nothing
     set l_entry=null
 endfunction
 
+function DevCommands_UnlockTeleporters takes player p returns nothing
+    local integer i=1
+    static if LIBRARY_TWarp then
+        if udg_TravelCount<=0 then
+            call DevCommands_Say(p,"teleporters are not initialized yet")
+            return
+        endif
+        call ForForce(udg_PlayingPlayers,function Warp_HideDialog)
+        loop
+            exitwhen i>udg_TravelCount
+            if not udg_WarpUnlocked[i] then
+                set udg_WarpUnlocked[i]=true
+                set udg_WarpEffect[i]=AddSpecialEffect("Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTo.mdl",udg_TravelX[i],udg_TravelY[i])
+            endif
+            set i=i+1
+        endloop
+        call Trig_Quest_52_Scorching_TravelDialog_Rebuild()
+        call DevCommands_Say(p,"all teleporters unlocked")
+    else
+        call DevCommands_Say(p,"Warp module is disabled")
+    endif
+endfunction
+
 function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"Developer commands (single player only):")
     call DevCommands_Say(p,"-gold N, -shards N, -bp N (Battle Points), -lvl N (hero level)")
@@ -174,6 +197,7 @@ function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"-item XXXX (create item by rawcode), -unit XXXX [N] (enemy units)")
     call DevCommands_Say(p,"-kill (selected units), -tp X Y (or -tp: camera), -pos")
     call DevCommands_Say(p,"-time H (0-24), -reveal (toggle), -spawns on/off, -title N")
+    call DevCommands_Say(p,"-teleporters (unlock all travel destinations)")
     call DevCommands_Say(p,"-dumpitems (item table file for tools/savecode.py)")
     call DevCommands_Say(p,"-queststate [N] (active/available quests, or one engine quest number)")
 endfunction
@@ -211,6 +235,8 @@ function Trig_DevCommands_Chat_Actions takes nothing returns nothing
         call DevCommands_Say(p,"Battle Points: "+I2S(udg_BattlePoints[GetConvertedPlayerId(p)]))
     elseif cmd=="-dumpitems" then
         call DevCommands_DumpItems(p)
+    elseif cmd=="-teleporters" then
+        call DevCommands_UnlockTeleporters(p)
     elseif cmd=="-queststate" then
         call DevCommands_QuestState(p,n)
     elseif h==null then

@@ -37,7 +37,7 @@ function Trig_Gaya_Follow_MoveGayaToHero takes nothing returns nothing
     else
         set l_ady=hy-gy
     endif
-    if l_adx>=384 or l_ady>=384 then
+    if l_adx>=480 or l_ady>=480 then
         call SetUnitX(l_gaya,hx)
         call SetUnitY(l_gaya,hy)
         call IssueTargetOrderById(l_gaya,$D0003,l_hero) // $D0003 = 851971

@@ -141,8 +141,8 @@ function Trig_Gaya_GatherItems_GatherItemsAround takes unit u,real l_radius retu
 endfunction
 
 function Trig_Gaya_GatherItems_Actions takes nothing returns nothing
-    call Trig_Gaya_GatherItems_GatherItemsAround(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),500.)
-    call Trig_Gaya_GatherItems_GatherItemsAround(GetTriggerUnit(),300.)
+    call Trig_Gaya_GatherItems_GatherItemsAround(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),625.)
+    call Trig_Gaya_GatherItems_GatherItemsAround(GetTriggerUnit(),375.)
 endfunction
 
 function InitTrig_Gaya_Inventory takes nothing returns nothing

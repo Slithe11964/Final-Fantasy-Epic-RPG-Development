@@ -1,40 +1,33 @@
-# FF Epic RPG handoff - 2026-10-07, stage AJ Bazaar panels
+# FF Epic RPG handoff - 2026-10-07, stage AK Bazaar/Gaya/dev travel
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User confirms AH looks much better: its ordinary TEXT ingredient frames work in game.
-AI addresses requested inset padding, more visible Mark of Darkness ingredients and larger text.
-AJ also moves Close to the top center above all panels (.55), with explicit frame level 11.
-The user reports the old bottom Close did not exit the UI; overlap with native HUD is suspected,
-not proven. Local Hide and synchronized browser cleanup are tested; confirm actual game clicks.
-Three-panel layout and the AE classic fallback remain. AD armory is user-confirmed working.
-Next unused stage: AK.
+User confirms AJ looks great (including the larger three-panel UI); requests eight marks per
+page, a dev teleporter unlock, slightly larger Gaya Gather Items range and follow allowance.
+Next unused stage: AL.
 
-## Current development build - AJ
+## Current development build - AK
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAJ.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAJ.w3x.
-  This also runs in Reforged, but uses the AE dialog. Play the Reforged build for three panels.
-- Three tall recipe panels across one row. Ingredient/price left inset grows from .016 to .028;
-  font grows from .014 to .016 (titles .015 to .016), body height .215 to .235 and card .405 to .425.
-  Names wrap to 24 characters; counts have their own lines. At most eighteen ingredient text lines
-  plus the shared-parts heading per panel; recipe 1 shows about six marks instead of three.
-  Omni Gem (recipe 49) shows all six required gems on one page, without More ingredients. More ingredients cycles remaining lines in long
-  recipes, preserving green color across page boundaries; hidden when the whole list fits.
-  Next/Previous move three recipes; nineteen groups, eighteen Next clicks reach recipes 55-56.
-  Navigation resets ingredient pages, and wrap returns to the first group.
-- Craft/Close use AG's synchronized session/recipe messages. Navigation is local presentation;
-  only synchronized crafting spends parts. All frame handles are created globally. Classic
-  conversion replaces frame functions in both runtime and editor source with the AE dialog.
-- Shared material pool, prices, recipe data, outputs/charges and payment code unchanged.
-  AD armory/hints/required-level order retained. No additional startup triggers in AJ.
-- Full gates, 67 regressions, 2,000 codec cases, classic compilation/check_map and preservation
-  audit pass. Against AI only Bazaar runtime/editor text differs; all objects unchanged.
-- Needs AJ top Close click, padding/larger-font fit and the expanded first recipe page, More ingredients and recipe-group
-  navigation, real multiplayer, transactions, save/load and Editor Save As: docs/BAZAAR.md.
-  Mocked text/geometry tests did not detect AG's native TEXTAREA failure; do not claim game-tested.
-- Incremental: .\build.ps1 -Stage AK -Base release/FFERPG_0.9.7.3-r16-stageAJ.w3x.
-  Fresh clones prepare armory and Bazaar objects and allow four added Bazaar event triggers;
-  see BAZAAR.md. Builds from AJ need no allowance. Develop from the Reforged master.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAK.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAK.w3x.
+  Classic still uses AE's single-recipe dialog, even in Reforged. Develop from the Reforged map.
+- Recipe 1 shows exactly eight marks/page. One More ingredients click reaches the other eight;
+  another wraps. Grouped Marks of Darkness heading avoids repeating the prefix, with each boss
+  name and count on its own line; original requirements/order preserved. Other recipe layouts,
+  all six Omni Gem ingredients, text size/padding and AJ top Close retained.
+- Gaya Gather Items box half-ranges rise 25%: hero 500 -> 625, Gaya 300 -> 375.
+  Follow axis threshold rises 384 -> 480; transport tracking, cadence and collection filters
+  unchanged. This preserves the existing square checks rather than inventing a circular range.
+- DevCommands gains -teleporters: unlock all initialized travel points, add effects only for
+  newly unlocked points and rebuild the destination dialog. Repeats do not duplicate effects.
+  Uses existing single-player/DEV_COMMANDS_ON gates. Module remains DISABLED in the release;
+  enable it in a separate World Editor test copy and Save As. Source/editor compilation tested.
+- Full gates, 69 regressions, 2,000 codec cases, classic compilation/check_map and preservation
+  audit pass. Startup, object data, recipes/prices/results/charges and save format unchanged.
+  Gaya source audit reverses exactly the three requested numeric changes; other functions match.
+- Needs eight-mark page traversal, top Close, enlarged UI fit, Gaya pickup/ownership/follow and
+  transport behavior in game, dev command in an enabled test copy, multiplayer/save-load/Save As.
+- Incremental: .\build.ps1 -Stage AL -Base release/FFERPG_0.9.7.3-r16-stageAK.w3x.
+  Fresh clone workflow: docs/BAZAAR.md. Current releases already contain reviewed shop objects.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -63,7 +56,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AK -Base release/FFERPG_0.9.7.3-r16-stageAJ.w3x
+.\build.ps1 -Stage AL -Base release/FFERPG_0.9.7.3-r16-stageAK.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs
