@@ -17,6 +17,10 @@ from objdata import read_objects, fields
 from jtok import functions
 
 
+def rawcode(value):
+    return value
+
+
 class ForsakenTests(unittest.TestCase):
     def test_native_slots_and_accessories(self):
         for category, slot in [(12, 'Primary'), (24, 'Offhand'), (28, 'Head'), (30, 'Chest')]:
@@ -285,9 +289,9 @@ class ForsakenTests(unittest.TestCase):
                          ForsakenTalentLabel={i:'label'+str(i) for i in range(12)},
                          Forsaken_DefensePercent=lambda d:100*d/(d+50),
                          Forsaken_TalentCanPurchase=lambda k,n,r:n<3,
-                         Forsaken_TalentRank=lambda u:2,ForsakenPanelOpen=True,
+                         Forsaken_TalentRank=lambda u:2,ForsakenPanelOpen=True,ForsakenHeroHPRegen={},ForsakenHeroMPRegen={},
                          Forsaken_FindFrame=lambda n:None,ForsakenHPRegen=60.,ForsakenMPRegen=120.,
-                         ForsakenStatValue={i:'stat-'+str(i) for i in range(9)},
+                         Forsaken_RenderStats=lambda u:calls.append(('stats',u)),
                          LoadBoolean=lambda *a:False,ModuloInteger=lambda a,b:a%b,
                          R2SW=lambda v,w,p:format(v,'.2f'),SubString=lambda s,a,b:s[a:b],
                          BlzFrameSetText=lambda f,t:calls.append(('text',f,t)))
@@ -299,8 +303,7 @@ class ForsakenTests(unittest.TestCase):
             tooltip_calls=[c for c in calls if c[0]=='tooltip']
             self.assertEqual(len(tooltip_calls),0)
             if local_player==0:
-                self.assertIn(('text','stat-7','100'),calls)
-                self.assertIn(('text','stat-8','66.67%'),calls)
+                self.assertIn(('stats','hero'),calls)
             else:
                 self.assertFalse(any(c[0]=='text' for c in calls))
         self.assertNotIn('Hero_LearnSkill',functions(overlay)['Forsaken_UpdatePanels'])
@@ -480,18 +483,135 @@ class ForsakenTests(unittest.TestCase):
             state.setdefault(name,name)
         def create(*args):
             frame='frame-'+str(len(frames));frames.append((frame,args));return frame
-        state.update(ForsakenStatName={},ForsakenStatValue={},ForsakenTalentButton={},
+        state.update(ForsakenTalentRoot=None,ForsakenStatsNext=None,ForsakenStatsHeading=None,
+                     ForsakenStatName={},ForsakenStatValue={},ForsakenStatLabel={},ForsakenTalentButton={},
                      ForsakenTalentIcon={},ForsakenTalentLabel={},Forsaken_PanelAccess=lambda:None,
                      BlzCreateFrame=create,BlzCreateFrameByType=create,ModuloInteger=lambda a,b:a%b,I2R=float,
                      BlzTriggerRegisterFrameEvent=lambda trigger,frame,event:events.append(frame))
         runtime=execute(source,['Register_Forsaken_PanelAccess'],state)
         runtime['Register_Forsaken_PanelAccess']()
         self.assertEqual(len(runtime['ForsakenTalentButton']),12)
-        self.assertEqual(len(runtime['ForsakenStatValue']),9)
+        self.assertEqual(len(runtime['ForsakenStatValue']),12)
         self.assertTrue(set(runtime['ForsakenTalentButton'].values())<=set(events))
         self.assertNotIn('BlzGetFrameByName',functions(source)['Register_Forsaken_PanelAccess'])
-        self.assertEqual(runtime['ForsakenStatName'][7],'Magic Defense')
-        self.assertEqual(runtime['ForsakenStatName'][8],'Magic Defense %')
+        self.assertEqual(runtime['ForsakenStatName'][3],'Water')
+        self.assertIn(runtime['ForsakenStatsNext'],events)
+
+
+    def stat_runtime(self, names, abilities=None, **extra):
+        from unittest.mock import patch
+        import test_quest_lifecycle as harness
+        original=harness.expression
+        source=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text())
+        levels=abilities if abilities is not None else {}
+        state=mocks(source)
+        state.update(Forsaken_StatAbilityLevel=lambda u,raw:levels.get(raw,0),
+                     GetHeroAgi=lambda *a:200,I2R=float,
+                     RMinBJ=min,RMaxBJ=max,Pow=pow,
+                     Prof_GetLevel=lambda *a:10,
+                     IsUnitInGroup=lambda *a:False,
+                     LoadInteger=lambda *a:0,LoadReal=lambda *a:.02,
+                     GetUnitState=lambda u,kind:100.,
+                     UNIT_STATE_LIFE=0,UNIT_STATE_MAX_LIFE=1,
+                     GAME_STATE_TIME_OF_DAY=0,GetFloatGameState=lambda *a:12.,
+                     ForsakenGearTypes='gear',udg_RunicHash='runic',udg_DefendingUnits='defenders')
+        state.update(extra)
+        with patch.object(harness,'expression',lambda e:original(e).replace('//','/')):
+            return execute(source,names,state)
+
+    def test_cooldown_buff_priority_and_live_changes(self):
+        levels={}
+        runtime=self.stat_runtime(['Forsaken_StatCooldown'],levels)
+        fn=runtime['Forsaken_StatCooldown']
+        self.assertAlmostEqual(fn('hero'),100*(1-1000/1200))
+        levels[rawcode('B00F')]=1
+        self.assertAlmostEqual(fn('hero'),37.5)
+        levels[rawcode('B08T')]=1
+        levels[rawcode('Bslo')]=1
+        self.assertAlmostEqual(fn('hero'),100*(1-1000/1200*.67))
+        levels[rawcode('A1C3')]=1
+        levels[rawcode('A18K')]=1
+        self.assertAlmostEqual(fn('hero'),100*(1-1000/1200*.67*.7*.8))
+        levels.clear();levels[rawcode('B08Y')]=1
+        self.assertAlmostEqual(fn('hero'),-25.)
+
+    def test_block_combines_without_rolling_and_sword_fallback(self):
+        levels={rawcode('A05F'):1,rawcode('A0S6'):1}
+        runtime=self.stat_runtime(['Forsaken_StatBlockRoll','Forsaken_StatBlock'],levels)
+        self.assertAlmostEqual(runtime['Forsaken_StatBlock']('hero',True),52.)
+        self.assertAlmostEqual(runtime['Forsaken_StatBlock']('hero',False),100*(.2+.8*.2*.52))
+        levels[rawcode('A0PP')]=1
+        self.assertAlmostEqual(runtime['Forsaken_StatBlock']('hero',True),61.6)
+
+    def test_element_bonus_and_resistance_do_not_roll_absorption(self):
+        levels={rawcode('A19V'):1,rawcode('A0PM'):1}
+        arrays={name:{i:0 for i in range(1,8)} for name in ['udg_ElementAttackAbil',
+            'udg_ElementKnowledgeAbil','udg_ElementBoostAbil','udg_ElementSpellAmpAbil',
+            'udg_ElementOrbAmpAbil','udg_ElementEnchantBuff','udg_ElementWeaknessAbil',
+            'udg_ElementResistAbil','udg_ElementImmunityAbil','udg_ElementAbsorbAbil']}
+        arrays['udg_ElementKnowledgeAbil'][4]=rawcode('A19V')
+        arrays['udg_ElementAbsorbAbil'][4]=rawcode('A0T2')
+        runtime=self.stat_runtime(['Forsaken_Stat_GetElementBonus','Forsaken_Stat_GetElementResist','Forsaken_StatResistance'],levels,**arrays)
+        self.assertEqual(runtime['Forsaken_Stat_GetElementBonus']('hero',4,False),.5)
+        self.assertEqual(runtime['Forsaken_StatResistance']('hero',4),'0%')
+        levels[rawcode('A0T2')]=1
+        self.assertEqual(runtime['Forsaken_StatResistance']('hero',4),'Absorb')
+        levels[rawcode('B057')]=1
+        self.assertEqual(runtime['Forsaken_StatResistance']('hero',4),'Immune')
+        self.assertNotIn('GetRandom',build.combat_stat_helpers())
+
+    def test_healing_and_armor_use_actual_stacking(self):
+        levels={rawcode('B076'):1,rawcode('B07D'):1,
+                rawcode('B070'):1,rawcode('A13R'):1}
+        runtime=self.stat_runtime(['Forsaken_StatHealing','Forsaken_StatHealingReceived','Forsaken_StatArmorDefense'],levels)
+        self.assertAlmostEqual(runtime['Forsaken_StatHealing']('hero',False),300.)
+        self.assertAlmostEqual(runtime['Forsaken_StatHealing']('hero',True),100.)
+        self.assertAlmostEqual(runtime['Forsaken_StatHealingReceived']('hero'),5.)
+        self.assertAlmostEqual(runtime['Forsaken_StatArmorDefense'](100.),100*2/3)
+        self.assertAlmostEqual(runtime['Forsaken_StatArmorDefense'](-10.),100*(.98**10-1))
+
+    def test_stat_query_uses_only_active_gear_and_current_unit_level(self):
+        items={2:'quick',6:'equipped'}
+        abilities={'quick':[11], 'equipped':[22]}
+        runtime=self.stat_runtime(['Forsaken_StatAbilityLevel'],
+            GetUnitAbilityLevel=lambda hero,raw:3 if raw==33 else 0,
+            UnitItemInSlot=lambda hero,slot:items.get(slot),
+            UnitItemInEquipmentSlot=lambda hero,slot:items.get(slot+6),ConvertLoadoutSlot=lambda i:i,
+            BlzGetItemAbilityByIndex=lambda item,i:abilities.get(item,[])[i] if i<len(abilities.get(item,[])) else None,
+            BlzGetAbilityId=lambda a:a)
+        fn=runtime['Forsaken_StatAbilityLevel']
+        self.assertEqual(fn('hero',11),1)
+        self.assertEqual(fn('hero',22),1)
+        self.assertEqual(fn('hero',33),3)
+        self.assertEqual(fn('hero',44),0)
+        self.assertNotIn('UnitItemInBagSlot',functions(build.combat_stat_helpers())['Forsaken_StatAbilityLevel'])
+
+    def test_panel_geometry_keeps_content_inside_gold_border(self):
+        source=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text())
+        state=mocks(source); frames=[]; points={};sizes={}
+        for name in set(re.findall(r'\b(?:OSKEY_|ORIGIN_|FRAMEPOINT_|FRAMEEVENT_|TEXT_JUSTIFY_)[A-Z0-9_]+\b',source)):
+            state.setdefault(name,name)
+        def create(*args):
+            frame='frame-'+str(len(frames));frames.append((frame,args));return frame
+        state.update(ForsakenTalentRoot=None,ForsakenStatsNext=None,ForsakenStatsHeading=None,
+                     ForsakenStatName={},ForsakenStatValue={},ForsakenStatLabel={},ForsakenTalentButton={},
+                     ForsakenTalentIcon={},ForsakenTalentLabel={},Forsaken_PanelAccess=lambda:None,
+                     BlzCreateFrame=create,BlzCreateFrameByType=create,ModuloInteger=lambda a,b:a%b,I2R=float,
+                     BlzFrameSetPoint=lambda f,p,a,ap,x,y:points.update({f:(p,a,x,y)}),
+                     BlzFrameSetSize=lambda f,w,h:sizes.update({f:(w,h)}))
+        runtime=execute(source,['Register_Forsaken_PanelAccess'],state)
+        runtime['Register_Forsaken_PanelAccess']()
+        root=runtime['ForsakenTalentRoot'];width,height=sizes[root]
+        for frame,(point,anchor,x,y) in points.items():
+            if anchor!=root:continue
+            w,h=sizes[frame]
+            if point=='FRAMEPOINT_TOPLEFT': left=x
+            elif point=='FRAMEPOINT_TOPRIGHT':left=width+x-w
+            else:left=(width-w)/2+x
+            self.assertGreaterEqual(left,.022-1e-8)
+            self.assertLessEqual(left+w,width-.022+1e-8)
+            self.assertGreaterEqual(-y,.022-1e-8)
+            self.assertLessEqual(-y+h,height-.022+1e-8)
 
 
 if __name__=='__main__':

@@ -22,7 +22,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BC: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BD: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
         set holder=null
         return

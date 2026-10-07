@@ -2,7 +2,16 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BD. Normal development stays on AS; Forsaken BC replaces BB's failed stat/talent display.
+Next unused stage: BE. Normal development stays on AS; Forsaken BD adds padded, paged combat stats to the accepted BC UI.
+
+## Separate experiment - Forsaken BD
+
+- BC UI and sparse bag transfer accepted in game. BD removes STR/AGI/INT/maxHP/maxMP from the displayed stats. Wider .21 x .49 panel, .028 side insets, centered3x4 talent grid/title, inset close button;12 reusable rows and More stats cycles four local pages, retaining talent state.
+- Combat: health/mana regeneration, Magic Defense raw/%, live armor and armor defense%, evasion/accuracy ratings, physical/magical block%, cooldown reduction%. Resistances: six elemental states, non-elemental, random absorption proc separately. Elements: six attack/spell bonus pairs including omni contribution. Other bonuses: physical/magic buffs, HP/MP healing buffs, healing received, Staff/healing/Rod/Inner Mana power, flat damage guard and movement speed.
+- Copied read-only accuracy/evasion/element/proficiency queries are generated from canonical sources with an active ability lookup: current unit level first, else quick6/equipped9 item abilities; bag excluded. Random absorption roll deliberately removed from resistance query; separate15% row, no UI RNG/combat probes/stat mutations. Imperil displays one lower resistance tier. Block combines independent rolls as1-product(miss); includes Interceptor, Runic, Defend and Sword fallback; attacker bypass cannot be folded into a universal chance. Evasion/accuracy remain ratings, not standalone hit probabilities.
+- Cooldown reduction mirrors Cooldown.j's AGI denominator, multiplicative gear .7/.8, Hastera .67 > Haste/Auto-Haste .75 > Slowra1.5 > Slow1.3. Refresh every second and on gear events; gear/passive/buff/HP/MP changes reflected. Skill exceptions/Pharmacology's specific base cooldown remain conditional. Armor uses map DefenseArmor0.02 and native live armor; negative armor exponential vulnerability. Per-player regen cache prevents local page clicks borrowing another player's last regen. HP/MP regeneration limits from BC remain.
+- Bonuses show separate applicable layers, not one promised final damage/heal multiplier. Staff power includes proficiency/current mana/Mind Charge/Concentration; physical/magic buffs include bravery/faith/pain/fog, HP-dependent Focus/Adrenaline/Serenity/Spellbreaker, Night Might/Inner Fire/Oversoul where applicable. General HP/MP healing buffs and incoming Rejuvenation/Death Screech are separate. Target/position/skill/proc-specific effects are not represented as unconditional percentages. Existing item-ID/proc/save migration remains future work; no gameplay/equipment/talent/save mechanics changed.
+- All build/editor/source/map gates,96 regressions,2,000 codec cases,26 experiment tests, archive audit and additional installed3.0.1.24342 check_map PASS;0 new source/runtime differences. Original ability/item fields/world/NPC/imports intact; classic fallback exact AS, canonical AS untouched, Gaya unchanged, saving disabled. Experimental JASS CRLF. Unpublished attempts were stopped on declaration order and incorrect native equipment-slot signature/type; corrected without relaxing checks. Native page controls/readability/live buff acceptance pending. Next BE.
 
 ## Separate experiment - Forsaken BC
 

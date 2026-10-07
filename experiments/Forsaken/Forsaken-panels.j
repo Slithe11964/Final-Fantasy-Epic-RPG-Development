@@ -195,6 +195,11 @@ function Forsaken_PanelAccess takes nothing returns nothing
     if GetLocalPlayer()==owner then
         if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE or BlzGetTriggerFrame()==ForsakenPanelClose then
             set ForsakenPanelOpen=false
+        elseif BlzGetTriggerFrame()==ForsakenStatsNext then
+            set ForsakenStatsPage=ModuloInteger(ForsakenStatsPage+1,4)
+            call Forsaken_RenderStats(hero)
+            call BlzFrameSetEnable(ForsakenStatsNext,false)
+            call BlzFrameSetEnable(ForsakenStatsNext,true)
         elseif hero!=null and IsUnitSelected(hero,owner) and now-ForsakenPanelLastToggle>.1 then
             set ForsakenPanelOpen=not ForsakenPanelOpen
             set ForsakenPanelLastToggle=now
@@ -213,15 +218,12 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     local framehandle label
     local framehandle line
     local framehandle heading
-    set ForsakenStatName[0]="Strength"
-    set ForsakenStatName[1]="Agility"
-    set ForsakenStatName[2]="Intelligence"
-    set ForsakenStatName[3]="Maximum HP"
-    set ForsakenStatName[4]="Maximum MP"
-    set ForsakenStatName[5]="Health Regeneration"
-    set ForsakenStatName[6]="Mana Regeneration"
-    set ForsakenStatName[7]="Magic Defense"
-    set ForsakenStatName[8]="Magic Defense %"
+    set ForsakenStatName[0]="Fire"
+    set ForsakenStatName[1]="Ice"
+    set ForsakenStatName[2]="Thunder"
+    set ForsakenStatName[3]="Water"
+    set ForsakenStatName[4]="Earth"
+    set ForsakenStatName[5]="Wind"
     set gg_trg_Forsaken_PanelAccess=CreateTrigger()
     loop
         exitwhen i>=8
@@ -236,22 +238,22 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     call TimerStart(ForsakenPanelClock,86400.,false,null)
     set ForsakenTalentRoot=BlzCreateFrame("EscMenuBackdrop",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
     call BlzFrameSetAbsPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,.385,.585)
-    call BlzFrameSetSize(ForsakenTalentRoot,.145,.405)
+    call BlzFrameSetSize(ForsakenTalentRoot,.21,.49)
     call BlzFrameSetLevel(ForsakenTalentRoot,30)
     set ForsakenPanelClose=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,0)
-    call BlzFrameSetPoint(ForsakenPanelClose,FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.008,-.008)
+    call BlzFrameSetPoint(ForsakenPanelClose,FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.026,-.022)
     call BlzFrameSetSize(ForsakenPanelClose,.016,.016)
     call BlzFrameSetText(ForsakenPanelClose,"X")
     call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenPanelClose,FRAMEEVENT_CONTROL_CLICK)
     set heading=BlzCreateFrameByType("TEXT","ForsakenHeading",ForsakenTalentRoot,"",0)
-    call BlzFrameSetPoint(heading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.014)
-    call BlzFrameSetSize(heading,.13,.016)
+    call BlzFrameSetPoint(heading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.026)
+    call BlzFrameSetSize(heading,.14,.016)
     call BlzFrameSetFont(heading,"Fonts\\FRIZQT__.TTF",.013,0)
     call BlzFrameSetTextAlignment(heading,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
     call BlzFrameSetText(heading,"Talents")
     set ForsakenTalentPoints=BlzCreateFrameByType("TEXT","ForsakenPoints",ForsakenTalentRoot,"",0)
-    call BlzFrameSetPoint(ForsakenTalentPoints,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.033)
-    call BlzFrameSetSize(ForsakenTalentPoints,.13,.018)
+    call BlzFrameSetPoint(ForsakenTalentPoints,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.049)
+    call BlzFrameSetSize(ForsakenTalentPoints,.15,.018)
     call BlzFrameSetFont(ForsakenTalentPoints,"Fonts\\FRIZQT__.TTF",.007,0)
     call BlzFrameSetTextAlignment(ForsakenTalentPoints,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
     loop
@@ -259,7 +261,7 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         set row=node/3
         set column=ModuloInteger(node,3)
         set ForsakenTalentButton[node]=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,node+1)
-        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.012+I2R(column)*.041,-.06-I2R(row)*.041)
+        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.034+I2R(column)*.054,-.08-I2R(row)*.043)
         call BlzFrameSetSize(ForsakenTalentButton[node],.034,.034)
         set ForsakenTalentIcon[node]=BlzCreateFrameByType("BACKDROP","ForsakenTalentIcon",ForsakenTalentButton[node],"",node+1)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_TOPLEFT,ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,.003,-.003)
@@ -284,19 +286,30 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     endloop
     set node=0
     loop
-        exitwhen node>=9
-        set label=BlzCreateFrameByType("TEXT","ForsakenStatLabel",ForsakenTalentRoot,"",node+1)
-        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.011,-.245-I2R(node)*.014)
-        call BlzFrameSetSize(label,.088,.014)
+        exitwhen node>=12
+        set ForsakenStatLabel[node]=BlzCreateFrameByType("TEXT","ForsakenStatLabel",ForsakenTalentRoot,"",node+1)
+        set label=ForsakenStatLabel[node]
+        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.266-I2R(node)*.014)
+        call BlzFrameSetSize(label,.102,.014)
         call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.0065,0)
-        call BlzFrameSetText(label,ForsakenStatName[node])
+        call BlzFrameSetText(label,"")
         set ForsakenStatValue[node]=BlzCreateFrameByType("TEXT","ForsakenStatValue",ForsakenTalentRoot,"",node+1)
-        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.011,-.245-I2R(node)*.014)
-        call BlzFrameSetSize(ForsakenStatValue[node],.038,.014)
+        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.028,-.266-I2R(node)*.014)
+        call BlzFrameSetSize(ForsakenStatValue[node],.05,.014)
         call BlzFrameSetFont(ForsakenStatValue[node],"Fonts\\FRIZQT__.TTF",.0065,0)
         call BlzFrameSetTextAlignment(ForsakenStatValue[node],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_RIGHT)
         set node=node+1
     endloop
+    set ForsakenStatsHeading=BlzCreateFrameByType("TEXT","ForsakenStatsHeading",ForsakenTalentRoot,"",0)
+    call BlzFrameSetPoint(ForsakenStatsHeading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.244)
+    call BlzFrameSetSize(ForsakenStatsHeading,.15,.016)
+    call BlzFrameSetFont(ForsakenStatsHeading,"Fonts\\FRIZQT__.TTF",.008,0)
+    call BlzFrameSetTextAlignment(ForsakenStatsHeading,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
+    set ForsakenStatsNext=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,0)
+    call BlzFrameSetPoint(ForsakenStatsNext,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.443)
+    call BlzFrameSetSize(ForsakenStatsNext,.15,.025)
+    call BlzFrameSetText(ForsakenStatsNext,"More stats >")
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenStatsNext,FRAMEEVENT_CONTROL_CLICK)
     call BlzFrameSetVisible(ForsakenTalentRoot,false)
     set heading=null
     set label=null
@@ -327,6 +340,8 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
     set udg_CurrentHero=previous
     set udg_StatCalcValue=previousCalc
     call Forsaken_ReadRegeneration(hero)
+    set ForsakenHeroHPRegen[playerIndex+1]=ForsakenHPRegen
+    set ForsakenHeroMPRegen[playerIndex+1]=ForsakenMPRegen
     if rank==2 then
         set mastery="Master"
     elseif rank==3 then
@@ -344,15 +359,7 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
             call BlzFrameSetPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPLEFT,-.002,0)
         endif
         call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen)
-        call BlzFrameSetText(ForsakenStatValue[0],I2S(GetHeroStr(hero,true)))
-        call BlzFrameSetText(ForsakenStatValue[1],I2S(GetHeroAgi(hero,true)))
-        call BlzFrameSetText(ForsakenStatValue[2],I2S(GetHeroInt(hero,true)))
-        call BlzFrameSetText(ForsakenStatValue[3],I2S(BlzGetUnitMaxHP(hero)))
-        call BlzFrameSetText(ForsakenStatValue[4],I2S(BlzGetUnitMaxMana(hero)))
-        call BlzFrameSetText(ForsakenStatValue[5],R2SW(ForsakenHPRegen,1,2))
-        call BlzFrameSetText(ForsakenStatValue[6],R2SW(ForsakenMPRegen,1,2))
-        call BlzFrameSetText(ForsakenStatValue[7],I2S(udg_MagicDefense[playerIndex+1]))
-        call BlzFrameSetText(ForsakenStatValue[8],R2SW(Forsaken_DefensePercent(udg_MagicDefense[playerIndex+1]),1,2)+"%")
+        call Forsaken_RenderStats(hero)
         call BlzFrameSetText(ForsakenTalentPoints,"Choices: "+I2S(rank-LoadInteger(ForsakenTalentState,key,20))+" / "+mastery+"|nPreview: no bonuses")
         loop
             exitwhen node>=12

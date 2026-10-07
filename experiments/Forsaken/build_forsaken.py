@@ -163,7 +163,7 @@ def prepare_panels(table):
 
 def equip_overlay(original):
     text = original.replace('library TEquip requires TForce, TJob',
-                            'library TEquip requires TForce, TJob, TPlayerHero, TMagicDefense')
+                            'library TEquip requires TForce, TJob, TPlayerHero, TMagicDefense, TProf, TElement')
     text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
     trigger gg_trg_Forsaken_TestEquip=null
     timer ForsakenInventoryTimer=null
@@ -190,6 +190,12 @@ def equip_overlay(original):
     framehandle ForsakenPanelClose=null
     string array ForsakenStatName
     framehandle array ForsakenStatValue
+    framehandle array ForsakenStatLabel
+    framehandle ForsakenStatsNext=null
+    framehandle ForsakenStatsHeading=null
+    integer ForsakenStatsPage=0
+    real array ForsakenHeroHPRegen
+    real array ForsakenHeroMPRegen
     hashtable ForsakenRegenScratch=null
     real ForsakenHPFlat=0.
     real ForsakenMPPercent=0.
@@ -216,12 +222,71 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     validation = validation.replace('UnitRemoveItemSwapped(', 'Forsaken_RejectEquipment(')
     validation = validation.replace('GetManipulatingUnit()', 'GetTriggerUnit()')
     extra = (HERE / 'Forsaken-extra.j').read_text(encoding='utf-8')
-    extra = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8') + '\n\n' + extra
+    panels = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8')
+    defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
+    panels = panels.replace(defense, '', 1)
+    extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
                         '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Forsaken_PanelAccess()\n    call Register_Equip_Restrictions() //', 1)
     return text
+
+
+def combat_stat_helpers():
+    """Reuse only read-only combat queries; never roll RNG or simulate a hit for UI."""
+    source = (ROOT / 'src/triggers/04 Combat and abilities/Damage.j').read_text(encoding='utf-8')
+    names = ['GetSpeedBonus', 'GetAccuracy', 'GetEvasion', 'GetElementBonus', 'GetElementResist']
+    result = []
+    for name in names:
+        body = re.search(r'function Trig_Damage_Engine_' + name + r'\b.*?endfunction', source, re.S).group()
+        if name == 'GetElementResist':
+            # A random absorption proc has its own probability row, not a fluctuating rolled resistance.
+            body, count = re.subn(r'    // A random whole number.*?    endif\n', '', body, count=1, flags=re.S)
+            assert count == 1 and 'GetRandom' not in body
+        body = body.replace('Trig_Damage_Engine_', 'Forsaken_Stat_').replace('GetUnitAbilityLevel(', 'Forsaken_StatAbilityLevel(')
+        result.append(body)
+    prof = (ROOT / 'src/triggers/03 Jobs and progression/Prof.j').read_text(encoding='utf-8')
+    body = re.search(r'function Prof_GetSpellPower\b.*?endfunction', prof, re.S).group()
+    result.append(body.replace('Prof_GetSpellPower', 'Forsaken_StatSpellPower').replace('GetUnitAbilityLevel(', 'Forsaken_StatAbilityLevel('))
+    block = re.search(r'function Trig_Damage_Engine_RollBlock\b.*?endfunction', source, re.S).group()
+    physical, magical = block.split('    elseif l_magical then')
+    physical = physical[physical.index("if(GetUnitAbilityLevel(u,'A0S0')") :]
+    bodies = []
+    for text, expected in [(physical,19), (magical,8)]:
+        pairs = re.findall(r"if\(GetUnitAbilityLevel\(u,'(.{4})'\)>0 and GetRandomInt\(1,'d'\)<=([0-9]+|\$[0-9A-F]+)\)", text)
+        assert len(pairs) == expected, pairs
+        bodies.append('\n'.join("        if Forsaken_StatAbilityLevel(u,'%s')>0 then\n            set miss=miss*(1.-%s/100.)\n        endif" % (raw, str(int(chance[1:],16)) if chance.startswith('$') else chance) for raw,chance in pairs))
+    result.append('''function Forsaken_StatBlockRoll takes unit u,boolean physical returns real
+    local real miss=1.
+    local real chance
+    if Forsaken_StatAbilityLevel(u,'A0RT')>0 then
+        set miss=miss*.7
+    endif
+    if Forsaken_StatAbilityLevel(u,'B07R')>0 then
+        set chance=I2R(LoadInteger(udg_RunicHash,GetHandleId(u),6))
+        if physical then
+            set chance=chance*2.
+        endif
+        set miss=miss*(1.-RMinBJ(100.,RMaxBJ(0.,chance))/100.)
+    endif
+    if physical then
+        if Forsaken_StatAbilityLevel(u,'A0PP')>0 then
+            if IsUnitInGroup(u,udg_DefendingUnits) then
+                set miss=miss*.7
+            else
+                set miss=miss*.8
+            endif
+        endif
+%s
+    else
+%s
+    endif
+    // Independent block checks combine as one minus the probability that all checks miss.
+    return 1.-miss
+endfunction''' % tuple(bodies))
+    result.insert(0, (HERE / 'Forsaken-stat-ability.j').read_text(encoding='utf-8'))
+    return '\n\n'.join(result)
 
 
 def job_overlay(original):
@@ -302,7 +367,7 @@ def regeneration_initialization(base):
     result.append('    call SaveInteger(ForsakenGearTypes,34,0,%d)'%len(buffs))
     result += ["    call SaveInteger(ForsakenGearTypes,34,%d,'%s')"%(i,buff) for i,buff in enumerate(sorted(buffs),1)]
     misc=(archive.read('war3mapMisc.txt') or b'').decode('utf-8')
-    for index,key,default in [(0,'StrRegenBonus',.05),(1,'IntRegenBonus',.05)]:
+    for index,key,default in [(0,'StrRegenBonus',.05),(1,'IntRegenBonus',.05),(2,'DefenseArmor',.06)]:
         value=re.search(r'^'+key+r'=([^\r\n]+)',misc,re.M)
         result.append('    call SaveReal(ForsakenGearTypes,40,%d,%s)'%(index,str(float(value[1]) if value else default)))
     return result
