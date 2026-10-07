@@ -1,0 +1,167 @@
+"""Build an isolated 3.0 gear preview; canonical sources and release maps stay intact."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / 'tools'))
+from mpq import MPQ, replace_files
+from objdata import read_objects, write_objects, fields
+from armory_catalog import set_field
+
+
+def slot_for(entry, category):
+    if category == 8:
+        return None
+    if category in (28, 29):
+        return 'Head'
+    if category in (30, 31, 32):
+        return 'Chest'
+    if category in (24, 25, 26, 27, 38, 40):
+        return 'Offhand'
+    if category in (33, 34, 35, 36, 37, 39):
+        name = entry['name'].lower()
+        if any(word in name for word in ('boots', 'shoes', 'jackboots')):
+            return 'Boots'
+        if any(word in name for word in ('gloves', 'bracers', 'armguard')):
+            return 'Gloves'
+        if 'ring' in name.split():
+            return 'Ring'
+        return 'Trinket'
+    if category in (7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23):
+        return 'Primary'
+    raise ValueError('unreviewed armory category ' + str(category))
+
+
+def prepare_objects(base, out, mapping_out):
+    archive = MPQ(str(base))
+    unit_table = read_objects(archive.read('war3map.w3u'), 'w3u')
+    units = {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in unit_table[g]}
+    table = read_objects(archive.read('war3map.w3t'), 'w3t')
+    items = {o['id'] or o['base']: o for g in ('original', 'custom') for o in table[g]}
+    catalog = json.loads((ROOT / 'src/armory-hints.json').read_text(encoding='utf-8'))
+    mapping = {}
+    for entry in catalog.values():
+        raw = entry['item']
+        slot = slot_for(entry, units[entry['unit']]['upoi'])
+        mapping[raw] = dict(name=entry['name'], slot=slot or 'Inventory')
+        if slot:
+            set_field(items[raw], 'iequ', slot)
+    ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
+    existing = {o['id'] or o['base'] for g in ('original', 'custom') for o in ability_table[g]}
+    for raw, native in [('fBag', 'AInx'), ('fGer', 'AEqu')]:
+        if raw in existing:
+            raise ValueError('experimental ability ID already used: ' + raw)
+        ability_table['custom'].append(dict(base=native, id=raw, sets=[dict(flag=0, mods=[])]))
+    replace_files(str(base), str(out), {
+        'war3map.w3t': write_objects(table, table['version'], 'w3t'),
+        'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
+    })
+    mapping_out.write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
+    return mapping
+
+
+def equip_overlay(original):
+    text = original.replace('library TEquip requires TForce, TJob',
+                            'library TEquip requires TForce, TJob, TPlayerHero')
+    text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
+    timer ForsakenInventoryTimer=null
+    item ForsakenEquippedItem=null
+    boolean ForsakenSaveBlocked=false
+endglobals''', 1)
+    text = text.replace('GetManipulatedItem()', 'Forsaken_EventItem()')
+    text = text.replace('function Trig_Equip_Restrictions_Conditions', '''function Forsaken_EventItem takes nothing returns item
+    if ForsakenEquippedItem!=null then
+        return ForsakenEquippedItem
+    endif
+    return GetManipulatedItem()
+endfunction
+
+function Trig_Equip_Restrictions_Conditions''', 1)
+    conditions = re.search(r'function Trig_Equip_Restrictions_Conditions.*?endfunction', text, re.S)
+    body = conditions.group().replace('    return',
+          '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE then\n        return false\n    endif\n    return', 1)
+    text = text[:conditions.start()] + body + text[conditions.end():]
+    actions = re.search(r'function Trig_Equip_Restrictions_Actions.*?endfunction', text, re.S).group()
+    validation = actions[actions.index('    if(Trig_Equip_Restrictions_GaiaLevelTooLow())'):]
+    validation = 'function Forsaken_ValidateEquipment takes nothing returns nothing\n' + validation
+    validation = validation.replace('UnitRemoveItemSwapped(', 'Forsaken_RejectEquipment(')
+    validation = validation.replace('GetManipulatingUnit()', 'GetTriggerUnit()')
+    extra = (HERE / 'Forsaken-extra.j').read_text(encoding='utf-8')
+    extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
+    text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
+    text = text.replace('    call Register_Equip_Restrictions() //',
+                        '    call Register_Forsaken_Equipment()\n    call Register_Equip_Restrictions() //', 1)
+    return text
+
+
+def run(command, cwd=ROOT):
+    subprocess.run(list(map(str, command)), cwd=cwd, check=True)
+
+
+def manifest(base, classic_base, modern, classic, stage):
+    def identity(path):
+        return dict(file=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+    return dict(stage=stage, experimental=True, save_export_disabled=True,
+                normal_development_stage='AS', base=identity(base),
+                classic_base=identity(classic_base), output=identity(modern),
+                classic_output=identity(classic),
+                sources={p.name:identity(p) for p in HERE.iterdir() if p.suffix in ('.py','.j')})
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--stage', default='AT')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x')
+    parser.add_argument('--classic', type=Path, default=ROOT/'release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x')
+    args = parser.parse_args()
+    if not re.fullmatch('[A-Z][A-Z0-9]*', args.stage):
+        parser.error('invalid stage')
+    destination = ROOT/'release/Forsaken'
+    basename = 'FFERPG_0.9.7.3-r16-Forsaken' + args.stage + '.w3x'
+    final, classic = destination/basename, destination/'1.29.2'/basename
+    if final.exists() or classic.exists():
+        parser.error('existing test release; choose a new stage')
+    (ROOT/'build').mkdir(exist_ok=True)
+    run([sys.executable, HERE/'test_forsaken.py'])
+    scratch = Path(tempfile.mkdtemp(prefix='Forsaken'+args.stage+'-', dir=ROOT/'build'))
+    work = scratch/'FFERPG'
+    for folder in ('src', 'tools', 'baseline'):
+        shutil.copytree(ROOT/folder, work/folder, ignore=shutil.ignore_patterns('__pycache__'))
+    shutil.copy2(ROOT/'build.ps1', work/'build.ps1')
+    source = work/'src/triggers/05 Items crafting and shops/Equip.j'
+    source.write_bytes(equip_overlay(source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
+    config_path = work/'tools/build-config.json'
+    config = json.loads(config_path.read_text())
+    config['prefix'] = 'FFERPG_0.9.7.3-r16-Forsaken'
+    config['title'] += ' Forsaken TEST - saving disabled'
+    config_path.write_text(json.dumps(config, indent=2)+'\n')
+    base = scratch/'objects.w3x'
+    mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
+    print('Isolated sources:', work, flush=True)
+    print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
+    run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
+         '--allow-new', '^gg_trg_Forsaken_Equipment$'], cwd=work)
+    destination.mkdir(parents=True, exist_ok=True)
+    classic.parent.mkdir(parents=True, exist_ok=True)
+    for name in (basename, 'checks-r16-stage'+args.stage+'.txt', 'build-r16-stage'+args.stage+'.json'):
+        shutil.copy2(work/'release'/name, destination/name)
+    shutil.copy2(args.classic.resolve(), classic)
+    shutil.copy2(scratch/'gear-slots.json', destination/('gear-slots-'+args.stage+'.json'))
+    (destination/('forsaken-manifest-'+args.stage+'.json')).write_text(
+        json.dumps(manifest(args.base.resolve(),args.classic.resolve(),final,classic,args.stage),indent=2)+'\n',
+        encoding='utf-8')
+    print('Published experimental Reforged:', final)
+    print('Classic fallback is byte-identical to', args.classic)
+    print('Normal sources/releases unchanged. Scratch sources retained:', work)
+
+
+if __name__ == '__main__':
+    main()

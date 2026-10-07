@@ -2,7 +2,16 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AT.
+Next unused stage: AU. Normal development stays on AS; AT is a separate Forsaken experiment.
+
+## Separate experiment - Forsaken AT
+
+- User requested the actual 3.0 native bag/loadout, with Armory gear assigned to its slots, and explicitly asked to keep these maps in a separate `Forsaken` release folder.
+- Reforged test: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenAT.w3x`. Classic fallback: same basename under `release/Forsaken/1.29.2/`, byte-identical to the working AS classic map. Do not downgrade this native test using the regular shortcut.
+- Reproducible isolated source overlay/build/tests: `experiments/Forsaken/`. Canonical `src` and ordinary releases remain unchanged; generated source tree under `build/ForsakenAT-y4rpudog/FFERPG`.
+- 276 Armory gear objects receive native `iequ` slot types; four Materia remain inventory items. Add native-based fBag/fGer abilities; heroes receive both, Gaya gets the bag. Equip event runs existing level/mastery gates. Mapping is in `release/Forsaken/gear-slots-AT.json`.
+- This is a UI/basic-equipment preview. Save/savef/autosave/New Game exports are blocked by replacing trigger actions, with a message; existing serializers/readers/Armory indexes remain unchanged. Expanded inventory saving, item procs/queries, crafting/quests/transfers/job changes and Ninja dual-wield migration are still required before progression play. See the experiment README.
+- Full Reforged gates,96 regressions,2,000 codec cases and4 experiment tests PASS. No native in-game acceptance yet; verify actual UI, slotting/bonuses, unequipping, restrictions, Gaya, hero recreation and multiplayer. Classic fallback hash equality verified.
 
 ## Current development build - AS
 
