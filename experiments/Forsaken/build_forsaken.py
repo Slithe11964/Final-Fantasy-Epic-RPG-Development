@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -16,6 +17,37 @@ sys.path.insert(0, str(ROOT / 'tools'))
 from mpq import MPQ, replace_files
 from objdata import read_objects, write_objects, fields
 from armory_catalog import set_field
+
+
+def game_data_version_offset(info):
+    """Locate only the expansion selector; preserve every other map-info byte."""
+    version = struct.unpack_from('<i', info)[0]
+    if version not in (31, 32, 33, 39):
+        raise ValueError('unsupported experimental map-info format: ' + str(version))
+    offset = 28
+    def strings(count):
+        nonlocal offset
+        for _ in range(count):
+            offset = info.index(b'\0', offset) + 1
+    strings(4)
+    offset += 65 + (4 if version == 39 else 0)  # Bounds/loading index and v39 race HUD.
+    strings(4)
+    offset += 4  # Data set, distinct from expansion version.
+    strings(4)
+    offset += 20 + (24 if version == 39 else 0) + 4  # Fog, v39 height fog, weather.
+    strings(1)
+    offset += 5 + 8  # Light/water tint, script language and supported graphics modes.
+    value = struct.unpack_from('<i', info, offset)[0]
+    if value not in (0, 1, 2):
+        raise ValueError('unexpected game data version: ' + str(value))
+    return offset
+
+
+def forsaken_map_info(info):
+    offset = game_data_version_offset(info)
+    updated = bytearray(info)
+    struct.pack_into('<i', updated, offset, 2)
+    return bytes(updated)
 
 
 def slot_for(entry, category):
@@ -92,6 +124,7 @@ def prepare_objects(base, out, mapping_out):
         dict(field='abpy',type=0,level=0,data=0,value=-11,end=0),
     ])]))
     replace_files(str(base), str(out), {
+        'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
     })
@@ -143,6 +176,7 @@ def manifest(base, classic_base, modern, classic, stage):
     def identity(path):
         return dict(file=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
     return dict(stage=stage, experimental=True, save_export_disabled=True,
+                game_data_version='Forsaken Kingdom (2)',
                 normal_development_stage='AS', base=identity(base),
                 classic_base=identity(classic_base), output=identity(modern),
                 classic_output=identity(classic),

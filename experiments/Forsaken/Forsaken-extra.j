@@ -21,7 +21,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AW: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+", legacy inventory="+I2S(GetUnitAbilityLevel(holder,'AInv'))+". Click Backpack to open the native UI.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AX: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+", legacy inventory="+I2S(GetUnitAbilityLevel(holder,'AInv'))+". Click Backpack to open the native UI.")
         endif
         set holder=null
         return

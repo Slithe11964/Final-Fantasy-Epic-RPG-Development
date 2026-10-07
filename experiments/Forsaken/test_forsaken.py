@@ -2,6 +2,7 @@
 from pathlib import Path
 import sys
 import tempfile
+import struct
 import unittest
 
 HERE = Path(__file__).resolve().parent
@@ -31,8 +32,14 @@ class ForsakenTests(unittest.TestCase):
             mapping = build.prepare_objects(base, out, Path(folder)/'mapping.json')
             old, new = MPQ(base), MPQ(out)
             for filename in old.read('(listfile)').decode().splitlines():
-                if filename not in ('war3map.w3t', 'war3map.w3a'):
+                if filename not in ('war3map.w3t', 'war3map.w3a', 'war3map.w3i'):
                     self.assertEqual(old.read(filename), new.read(filename), filename)
+            info_before, info_after = old.read('war3map.w3i'),new.read('war3map.w3i')
+            offset = build.game_data_version_offset(info_before)
+            self.assertEqual(struct.unpack_from('<i',info_before,offset)[0],1)
+            self.assertEqual(struct.unpack_from('<i',info_after,offset)[0],2)
+            self.assertEqual(info_before[:offset],info_after[:offset])
+            self.assertEqual(info_before[offset+4:],info_after[offset+4:])
             def items(archive):
                 t = read_objects(archive.read('war3map.w3t'), 'w3t')
                 return {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in t[g]}

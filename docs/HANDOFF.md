@@ -2,7 +2,16 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AX. Normal development stays on AS; Forsaken AW is the next native UI test.
+Next unused stage: AY. Normal development stays on AS; Forsaken AX enables the required expansion data.
+
+## Separate experiment - Forsaken AX
+
+- AW native test FAILED: capacity0, direct fBag/fGer/ASpc all0, legacy AInv1. Investigation found AS and every earlier experimental map still use war3map.w3i Game Data Version1 (Frozen Throne). Installed new ability records have version2; editor strings identify expansion2 as Forsaken Kingdom.
+- AX changes only that four-byte expansion selector to2 in map info. Format39 has extra race-HUD and height-fog fields; explicit version-aware parsing preserves all other metadata bytes. This is separate from Game Data Set and installed executable version. Earlier builds missed this prerequisite.
+- Object preparation now always enables expansion2 for Forsaken modern maps; manifest records it. Regression verifies selector1->2 and all surrounding bytes identical. Existing original item bases were audited against installed stock data: none inherit native equipment types; source has no stock ChooseRandomItem/ChooseRandomCreep calls, using explicit drop lists.
+- AW direct native setup, Backpack item, variants, legacy AInv retention and save blocking retained. Normal AS and byte-identical classic fallback remain Frozen Throne/current behavior.
+- Final checks in STAGES; native Backpack click/bag capacity still needs acceptance.
+- Validation: all gates,96 regressions,2,000 codec cases,6 experiment tests PASS. Final AX vs AW audit confirms only map expansion selector and diagnostic stage text changed; object/world/NPC payloads identical. Scratch build/ForsakenAX-nmj40hbx/FFERPG.
 
 ## Separate experiment - Forsaken AW
 
