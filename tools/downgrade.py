@@ -352,6 +352,8 @@ DROP_LINE = re.compile(r'^\s*call\s+(BlzSetTerrainFogMaxLinearDensity|BlzSetTerr
                        r'DEPTH_OF_FIELD_\w+|ZABSOLUTE)\b.*$', re.M)
 
 def script_129(text):
+    from bazaar_legacy import convert
+    text = convert(text)
     text = replace_calls(text, 'BlzCreateUnitWithSkin', lambda a: 'CreateUnit(%s)' % ','.join(a[:5]))
     text = replace_calls(text, 'SetTerrainFogExV', lambda a: 'SetTerrainFogEx(%s)' % ','.join(a[:4] + a[8:]))
     text, n = DROP_LINE.subn('', text)
@@ -409,6 +411,8 @@ def main():
         report.append('FF Epic RPG: explicit dummy-passive art; unit selection/UI settings preserved')
     files['war3map.w3i'] = w3i_v25(MPQ(a.w3i_template).read('war3map.w3i'), m.read('war3map.w3i')); report.append('map info -> v25')
     text = m.read('war3map.j').decode('utf-8')
+    if 'function BazaarFrame_Init ' in text:
+        report.append('FF Epic RPG: Bazaar frame panels -> AE single-recipe dialog (runtime and editor)')
     crlf = '\r\n' in text
     text, dropped = script_129(text.replace('\r\n', '\n'))
     ok, errs = pjass(text)
@@ -426,6 +430,8 @@ def main():
         if m.read('war3map.w3c'):
             files['war3map.w3c'] = w3c_v0(m.read('war3map.w3c'))
         files['war3map.wtg'], files['war3map.wct'] = triggers_classic(m.read('war3map.wtg'), m.read('war3map.wct'))
+        from bazaar_legacy import convert_wct
+        files['war3map.wct'] = convert_wct(files['war3map.wct'])
         report.append('trigger editor files -> classic (wtg 7 / wct 1); regions -> v5; cameras -> v0')
     for n in REFORGED_ONLY:
         if m.read(n) is not None:

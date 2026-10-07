@@ -1,21 +1,20 @@
-# Bazaar recipe browser - stage AF
+# Bazaar recipe browser - stage AG
 
-The Bazaar Shop's bottom-right slot now has a Recipes icon. Click it with your buyer selected
-to open five anonymous recipe choices at a time. Next 5 recipes cycles through all twelve pages
-and wraps to the start; the last page contains recipe 56. A recipe choice turns green when all its
-parts are satisfied. Select a recipe to see its ingredients and original price, then use Back to
-recipes to return to the same group.
+Click the Bazaar Shop's bottom-right Recipes icon with your buyer selected.
+Reforged shows five complete recipe panels at once: three across the top and two below.
+Each has its ingredients, owned/required counts, original gold/shard price and Craft button.
+Next 5 recipes and Previous 5 move between groups. There are twelve groups for 56 recipes;
+eleven Next clicks reach the final recipe, and one more wraps to the start.
+Long ingredient lists scroll inside their own panel rather than spilling outside it.
+Each satisfied ingredient turns green. Reward names/icons stay hidden until crafting.
 
-The detail view shows two ingredients at a time. More ingredients cycles through every part of
-longer recipes, including all sixteen ingredients in recipe 1. Long names wrap at word boundaries
-to at most 24 characters per line; owned/required counts appear on their own lines. Gold and crystal
-shards have separate short lines. Each satisfied ingredient is green. Reward names/icons stay hidden
-until crafting. Craft checks all ingredients, including those on other ingredient pages.
+The 1.29.2 conversion uses AE's original single-recipe dialog with Previous recipe, Next recipe,
+Craft this recipe and Close. It does not show the five-panel layout, even when played in Reforged.
+AF's five-choice list and two-ingredient detail pages were rejected by the user and are superseded.
 
-Click **Craft this recipe** to buy one recipe's goods. The bazaar checks your buyer, distance,
-parts and payment again, then deducts exactly one ingredient set and the original bundle price.
-It gives the original items and charge quantities to the buyer. If the buyer's inventory is full,
-items remain on the ground beside them, matching the previous bundle delivery behavior.
+Craft checks the buyer, distance, parts and payment again, then deducts exactly one ingredient
+set and the original bundle price. It gives the original items and charge quantities to the buyer.
+If inventory is full, items remain beside the buyer, matching the previous bundle behavior.
 Successful crafting closes the browser so you can see the reward.
 
 Selling parts, waiting, opening, browsing and closing never spend ingredients. Automatic recipe
@@ -25,31 +24,34 @@ as before; each player's selected recipe and buyer are separate. Open browsers r
 the sold-part update or another player's craft. Wolf Fangs still contributes its ten fangs.
 
 Prices, original recipe data, starting material counts, quest rewards and save format are unchanged.
-The armory layout and hints from user-tested stage AD are retained.
+The user-tested AD armory layout, hints and required-level ordering are retained.
 
 ## In-game checks
 
-Play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAF.w3x` in both clients. The Reforged editor master
-is `release/FFERPG_0.9.7.3-r16-stageAF.w3x`.
+For the five-panel interface, play `release/FFERPG_0.9.7.3-r16-stageAG.w3x` in Reforged.
+For classic, play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAG.w3x` in 1.29.2.
+The classic copy also runs in Reforged but uses the AE dialog.
 
-1. Visit the bazaar with a buyer selected. Check the bottom-right Recipes icon and open it.
-   Check five choices at a time, Next 5 wraps after recipe 56, and Back returns to the same group.
-   Confirm all list buttons fit on screen. Select recipe 1 and cycle its eight ingredient pages;
-   check long names, counts and both price lines stay within the panel. No reward should be revealed.
-2. Sell enough parts for one ingredient, then the rest. Its name/count should become green when
-   satisfied. Wait at least thirty seconds and browse other recipes: parts must remain available.
-3. With insufficient parts, gold or shards, click Craft. Nothing should be spent or received.
-4. Craft a ready recipe. Check exact ingredient deduction, original price and reward/charges;
-   unrelated parts remain. Test a multi-item recipe and a full inventory.
-5. Use two players browsing a recipe that shares the same parts. Craft once with only one set
-   available: the other browser should update and its attempt must fail without spending money.
-6. Close and reopen, and move the buyer away while browsing. Craft must reject a distant/dead
-   buyer. Complete Wolf Fangs; its ten fangs should be available for your recipe choice.
-7. Check the armory, save/load, and Reforged World Editor Save As with JassHelper enabled.
+1. Open Recipes in Reforged. Confirm five complete panels, individual Craft buttons, Next/Previous
+   groups and Close fit on screen. Next eleven times reaches recipe 56; another Next wraps.
+   Scroll recipe 1's sixteen ingredients. Check long names, counts and both price lines stay inside
+   their panel. Repeat at your usual resolution/UI scale. No reward should be revealed.
+2. Check the classic copy uses the AE single-recipe dialog and both navigation buttons wrap.
+3. Sell enough parts for one ingredient, then the rest. Its name/count should become green when
+   satisfied. Wait thirty seconds and browse other recipes: parts must remain available.
+4. With insufficient parts, gold or shards, click Craft. Nothing should be spent or received.
+5. Craft a ready recipe. Check exact deduction, original price and reward/charges; unrelated
+   parts remain. Test a multi-item recipe and a full inventory.
+6. Use two players browsing recipes that share parts. Craft with only one set available: the other
+   browser should refresh and its attempt must fail without spending money. Rapidly click Craft,
+   close/reopen and navigate while a click is pending. Confirm no duplicate reward or desync.
+7. Move the buyer away or let it die while browsing. Craft must reject it. Complete Wolf Fangs;
+   its ten fangs should remain available. Check armory, save/load and Editor Save As with JassHelper.
 
-Automated tests execute all 56 recipe transactions, display text, navigation, failed payments,
-buyer checks and shared-pool competition against mocked natives. Compilation and preservation
-audits cover both builds. The compact-text test checks all recipe pages for bounded line lengths and heights. Actual shop/dialog layout still needs the in-game checks above.
+Automated tests execute all 56 recipe transactions, local group navigation, full ingredient text,
+panel bounds, synchronized recipe selection, duplicate/stale click rejection and the classic
+conversion against mocked natives. Compilation/preservation audits cover both builds. Native
+frame rendering and real multiplayer still require the in-game checks above.
 
 ## Rebuilding
 
@@ -58,18 +60,24 @@ For a fresh Git clone, prepare both object additions from the tracked baseline:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AG -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAG.w3x
+.\build.ps1 -Stage AH -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAH.w3x
 ```
 
-Use unused stage/output names. For incremental development use the latest reviewed Reforged
-release as `-Base`. The preparer adds `bRcp`, appends the Sell Units ability to `n030`, and copies
-the current bundle prices into `Bazaar_InitBrowserData`. It preserves all item objects. If bundle
-prices change later, synchronize that function with `bazaar_catalog.sync_prices`; the mandatory
-`check_bazaar.py` gate rejects stale prices, missing buttons and invalid recipe ingredients.
+Use unused stage/output names. For incremental work use the latest reviewed Reforged release as
+`-Base`. Builds from AG need no new-trigger allowance. The preparers add `bRcp`, append Sell Units
+to `n030`, and copy current bundle prices into `Bazaar_InitBrowserData`, preserving all item objects.
+If prices change, synchronize that function with `bazaar_catalog.sync_prices`; the mandatory
+`check_bazaar.py` gate rejects stale prices, missing buttons and invalid ingredients.
 
-`tools/tests/verify_bazaar_build.py --stage AF` records the preservation comparison with AE.
-Syncing Bazaar restores its unchanged pawn and legacy bundle handlers from editor source;
-the predecessor's runtime had inlined their condition helpers. The audit checks the unchanged
-editor handlers and recipe initializer as well as every function outside Bazaar.
-Generated maps/reports stay outside Git; sources, tools and guides are tracked.
+All frame handles are created globally. Navigation/text visibility are local to the viewer.
+Craft/Close send an explicit recipe and browser-session number via player sync events; only the
+synchronized handler can change game state. Delayed clicks from earlier visits are rejected.
+The converter applies `tools/bazaar_legacy.py` to both runtime and editor source, removing frame
+APIs and restoring the AE dialog while preserving the shared transaction. Its two unused event
+triggers remain as harmless classic placeholders to keep startup identities aligned.
+
+`tools/tests/verify_bazaar_build.py --stage AG` records preservation against AF: original objects,
+recipe data, results, charges and payment code are unchanged; runtime changes are confined to
+Bazaar. Syncing retains the original pawn and bundle editor handlers. Generated maps/reports stay
+outside Git; sources, tools and guides are tracked.

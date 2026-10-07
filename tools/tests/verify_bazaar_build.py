@@ -18,8 +18,8 @@ from wtg import read_wtg
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', default='AF')
-    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAE.w3x')
+    parser.add_argument('--stage', default='AG')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAF.w3x')
     args = parser.parse_args()
     final = ROOT/f'release/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
     classic = ROOT/f'release/1.29.2/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
@@ -44,7 +44,7 @@ def main():
     before = functions(a.read('war3map.j').decode('utf-8'))
     after = functions(b.read('war3map.j').decode('utf-8'))
     different = sorted(name for name in before if tokens(before[name]) != tokens(after.get(name, '')))
-    assert all(name.startswith(('Bazaar_', 'Trig_Bazaar_', 'RegisterTriggers_Bazaar')) for name in different), different
+    assert all(name.startswith(('Bazaar_', 'BazaarFrame_', 'Trig_Bazaar_', 'Register_Bazaar_', 'RegisterTriggers_Bazaar')) for name in different), different
     assert not set(before)-set(after)
     old_editor = functions(text_of(paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))['Bazaar']))
     new_editor = functions(text_of(paired_text(read_wtg(b.read('war3map.wtg')), read_wct(b.read('war3map.wct')))['Bazaar']))
@@ -57,10 +57,16 @@ def main():
             assert tokens(before[name]) == tokens(after[name]), name
     assert not check(final) and not check(classic)
     assert not check_armory(final) and not check_armory(classic)
+    legacy = functions(MPQ(str(classic)).read('war3map.j').decode('utf-8'))
+    for name in ['Bazaar_CraftRecipe', 'Bazaar_MaterialsReady', 'Bazaar_InitBrowserData', 'Trig_Bazaar_Recipes_Actions']:
+        assert tokens(after[name]) == tokens(legacy[name]), name
+    assert 'Blz' not in legacy['BazaarFrame_Init']
+    assert legacy['Bazaar_ShowRecipe'].count('DialogAddButton') == 4
     report = dict(changed_assets=changed, changed_runtime_functions=different,
                   new_runtime_functions=sorted(set(after)-set(before)),
                   recipe_ingredients_results_and_charges_unchanged=True,
                   original_items_and_armory_unchanged=True,
+                  classic_uses_AE_dialog_with_same_recipe_transaction=True,
                   unchanged_editor_handlers_resynced=['Trig_Bazaar_PawnMaterial_Actions', 'Trig_Bazaar_Sell_Bundle_Actions'],
                   existing_unit_change=None if browser_exists else 'n030: append Asud only',
                   added_units=[] if browser_exists else ['bRcp'],

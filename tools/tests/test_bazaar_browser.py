@@ -58,7 +58,7 @@ def runtime():
                SetItemCharges=lambda item, count: item.update(charges=count),
                UnitAddItem=lambda buyer, item: True,
                DisplayTimedTextToPlayer=lambda *args: messages.append(args[-1]),
-               DialogAddButton=add_button)
+               DialogAddButton=add_button, BazaarUseFrames=False)
     names = ['Bazaar_InitBrowserData', 'Bazaar_MaterialsReady', 'Bazaar_WrapText', 'Bazaar_PlainName', 'Bazaar_RecipeText',
              'Bazaar_CraftRecipe', 'Bazaar_ShowRecipe', 'Bazaar_CloseBrowser',
              'Bazaar_RefreshBrowsers', 'Trig_Bazaar_BrowseRecipes_Actions',
@@ -129,7 +129,7 @@ class BazaarBrowserTests(unittest.TestCase):
         material, amount = ingredients(data, 7)[0]
         pool[material] = amount
         before = copy.deepcopy(pool)
-        text = e['Bazaar_RecipeText'](7, 0)
+        text = e['Bazaar_RecipeText'](7)
         self.assertIn('|cff00ff00Ingredient '+e['udg_DropItemIdTable'][material], text)
         self.assertIn('???', text)
         self.assertNotIn(e['udg_BazaarResultItem'][data[7, 4+2*data[7, 1]]], text)
@@ -185,25 +185,18 @@ class BazaarBrowserTests(unittest.TestCase):
         e['BazaarSelectedRecipe'][1] = 20
         e['BazaarBrowserOpen'][0] = True
         e['BazaarBrowserOpen'][1] = True
-        e['BazaarRecipeList'][0] = True
-        e['BazaarRecipeList'][1] = True
         e['GetTriggerPlayer'] = lambda: 0
         seen = []
-        for page in range(12):
+        for recipe in range(1, 57):
             e['Bazaar_ShowRecipe'](0)
-            self.assertEqual(e['BazaarRecipePage'][0], page)
-            for slot in range(min(5, 56-page*5)):
-                e['GetClickedButton'] = lambda slot=slot: e['BazaarRecipeChoice'][slot]
-                e['Trig_Bazaar_BrowseRecipes_Actions']()
-                self.assertFalse(e['BazaarRecipeList'][0])
-                seen.append(e['BazaarSelectedRecipe'][0])
-                e['GetClickedButton'] = lambda: e['BazaarPrevious'][0]
-                e['Trig_Bazaar_BrowseRecipes_Actions']()
-                self.assertTrue(e['BazaarRecipeList'][0])
+            seen.append(e['BazaarSelectedRecipe'][0])
             e['GetClickedButton'] = lambda: e['BazaarNext'][0]
             e['Trig_Bazaar_BrowseRecipes_Actions']()
         self.assertEqual(seen, list(range(1, 57)))
-        self.assertEqual(e['BazaarRecipePage'][0], 0)
+        self.assertEqual(e['BazaarSelectedRecipe'][0], 1)
+        e['GetClickedButton'] = lambda: e['BazaarPrevious'][0]
+        e['Trig_Bazaar_BrowseRecipes_Actions']()
+        self.assertEqual(e['BazaarSelectedRecipe'][0], 56)
         self.assertEqual(e['BazaarSelectedRecipe'][1], 20)
         e['GetClickedButton'] = lambda: -1
         e['Trig_Bazaar_BrowseRecipes_Actions']()
@@ -211,27 +204,13 @@ class BazaarBrowserTests(unittest.TestCase):
         self.assertTrue(e['BazaarBrowserOpen'][1])
         self.assertEqual(created, [])
 
-    def test_long_names_and_all_ingredient_pages_fit_compact_text(self):
+    def test_classic_dialog_contains_every_ingredient_without_detail_pages(self):
         e, data, pool, money, created = runtime()
         e['GetObjectName'] = lambda raw: '|cffff0000Mark of Darkness: Bahamut Zero|r'
         for recipe in range(1, 57):
-            seen = 0
-            for page in range((data[recipe, 1]+1)//2):
-                text = e['Bazaar_RecipeText'](recipe, page)
-                plain = e['Bazaar_PlainName'](text)
-                self.assertLessEqual(len(plain.split('|n')), 10)
-                self.assertTrue(all(len(line) <= 26 for line in plain.split('|n')))
-                seen += text.count(' sold|r')
-            self.assertEqual(seen, data[recipe, 1])
-        e['BazaarSelectedRecipe'][0] = 1
-        e['BazaarBrowserOpen'][0] = True
-        e['Bazaar_ShowRecipe'](0)
-        e['GetTriggerPlayer'] = lambda: 0
-        e['GetClickedButton'] = lambda: e['BazaarNext'][0]
-        for page in range(8):
-            self.assertEqual(e['BazaarIngredientPage'][0], page)
-            e['Trig_Bazaar_BrowseRecipes_Actions']()
-        self.assertEqual(e['BazaarIngredientPage'][0], 0)
+            text = e['Bazaar_RecipeText'](recipe)
+            self.assertEqual(text.count('Mark of Darkness: Bahamut Zero'), data[recipe, 1])
+            self.assertIn('Reward: ???', text)
 
 
 if __name__ == '__main__':
