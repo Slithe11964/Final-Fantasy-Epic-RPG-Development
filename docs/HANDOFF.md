@@ -2,7 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AY. Normal development stays on AS; Forsaken AX enables the required expansion data.
+Next unused stage: AZ. Normal development stays on AS; Forsaken AY repairs item/control handling.
+
+## Separate experiment - Forsaken AY
+
+- AX user test: Backpack missing and carried items disappeared without stats. Confirmed code defects: conversion deleted originals after bag acceptance without equipping; periodic Backpack supply searched only six slots, while UnitAddItem may place it in the bag; stock ASpc button was hidden by the earlier abpy=-11 override.
+- AY stops automatic conversion and restores canonical pickup restrictions for original items. Visible ASpc Backpack button at0,1 with B hotkey; physical fBpk carries only ASpc, direct hero abilities supply storage/equipment. Supply uses UnitAddItemToSlotById for an empty visible slot, checks both visible inventory and bag, and never overwrites gear. Full visible inventory waits; command button remains available.
+- Explicit -forsaken-equip converts mapped originals in both visible inventory and bag. Remove original only when UnitAddItem AND UnitEquipItem succeed and IsItemEquipped confirms it remains equipped after restrictions; otherwise delete replacement and retain original charges/owner/stats. New chat trigger gg_trg_Forsaken_TestEquip explicitly allowed.
+- Saving blocked, Forsaken data2 retained, classic exact AS. Native panel/active bonuses still need user testing; this is the experiment, not normal progression. Tests/build status in STAGES.
+- Validation: all gates,96 regressions,2,000 codec cases,8 experiment tests PASS. Extra execution audit confirms manual chat registered for8 players. Native controller visibility/expansion2 and world/NPC preservation audited. Scratch build/ForsakenAY-ry_o2gzc/FFERPG.
 
 ## Separate experiment - Forsaken AX
 

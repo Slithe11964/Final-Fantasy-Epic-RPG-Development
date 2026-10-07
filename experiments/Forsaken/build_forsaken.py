@@ -97,7 +97,7 @@ def prepare_objects(base, out, mapping_out):
     if 'fBpk' in items:
         raise ValueError('experimental backpack ID already used')
     backpack = dict(base='ebac', id='fBpk', sets=[dict(flag=0, mods=[])])
-    for key, value in dict(unam='Backpack', iabi='fBgi,fGer,ASpc',
+    for key, value in dict(unam='Backpack', iabi='ASpc',
                            icla='Campaign', iuse=0, iusa=1, iper=0,
                            idrp=0, ipaw=0, isel=0, igol=0, ilum=0,
                            iico=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',
@@ -121,7 +121,11 @@ def prepare_objects(base, out, mapping_out):
     ability_table['original'].append(dict(base='ASpc', id=None, sets=[dict(flag=0, mods=[
         dict(field='anam',type=3,level=0,data=0,value='Backpack',end=0),
         dict(field='aart',type=3,level=0,data=0,value=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',end=0),
-        dict(field='abpy',type=0,level=0,data=0,value=-11,end=0),
+        dict(field='abpx',type=0,level=0,data=0,value=0,end=0),
+        dict(field='abpy',type=0,level=0,data=0,value=1,end=0),
+        dict(field='ahky',type=3,level=0,data=0,value='B',end=0),
+        dict(field='atp1',type=3,level=1,data=0,value='Backpack (B)',end=0),
+        dict(field='aub1',type=3,level=1,data=0,value='Open your native backpack and equipment panel.',end=0),
     ])]))
     replace_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
@@ -136,6 +140,7 @@ def equip_overlay(original):
     text = original.replace('library TEquip requires TForce, TJob',
                             'library TEquip requires TForce, TJob, TPlayerHero')
     text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
+    trigger gg_trg_Forsaken_TestEquip=null
     timer ForsakenInventoryTimer=null
     hashtable ForsakenGearTypes=null
     item ForsakenEquippedItem=null
@@ -153,7 +158,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     conditions = re.search(r'function Trig_Equip_Restrictions_Conditions.*?endfunction', text, re.S)
     body = conditions.group().replace('    return',
           '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE then\n        return false\n    endif\n'
-          '    if GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit())) and UnitExtendedInventorySize(GetTriggerUnit())>0 and LoadInteger(ForsakenGearTypes,0,GetItemTypeId(GetManipulatedItem()))!=0 then\n        return false\n    endif\n    return', 1)
+          '    return', 1)
     text = text[:conditions.start()] + body + text[conditions.end():]
     actions = re.search(r'function Trig_Equip_Restrictions_Actions.*?endfunction', text, re.S).group()
     validation = actions[actions.index('    if(Trig_Equip_Restrictions_GaiaLevelTooLow())'):]
@@ -221,7 +226,7 @@ def main():
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
-         '--allow-new', '^gg_trg_Forsaken_Equipment$'], cwd=work)
+         '--allow-new', '^gg_trg_Forsaken_(Equipment|TestEquip)$'], cwd=work)
     destination.mkdir(parents=True, exist_ok=True)
     classic.parent.mkdir(parents=True, exist_ok=True)
     for name in (basename, 'checks-r16-stage'+args.stage+'.txt', 'build-r16-stage'+args.stage+'.json'):

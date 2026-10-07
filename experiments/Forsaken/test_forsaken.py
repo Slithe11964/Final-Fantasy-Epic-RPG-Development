@@ -51,7 +51,7 @@ class ForsakenTests(unittest.TestCase):
                     updated = after[mapping[raw]['variant']].copy()
                     self.assertEqual(updated.pop('iequ'), mapping[raw]['slot'])
                     self.assertEqual(original, updated, raw)
-            self.assertEqual(after['fBpk']['iabi'],'fBgi,fGer,ASpc')
+            self.assertEqual(after['fBpk']['iabi'],'ASpc')
             self.assertEqual(after['fBpk']['idrp'],0)
             self.assertEqual(len(mapping), 280)
             abilities = read_objects(new.read('war3map.w3a'), 'w3a')
@@ -102,7 +102,7 @@ class ForsakenTests(unittest.TestCase):
 
     def test_conversion_preserves_original_when_the_bag_refuses_the_variant(self):
         overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
-        for accepts in [False, True]:
+        for accepts, equips, stays_equipped in [(False,False,False),(True,False,False),(True,True,False),(True,True,True)]:
             removed, copied = [], []
             state = mocks(overlay)
             state.update(ForsakenGearTypes='types', UnitItemInSlot=lambda u,s:'original' if s==0 else None,
@@ -112,10 +112,12 @@ class ForsakenTests(unittest.TestCase):
                          GetItemUserData=lambda i:2,
                          SetItemCharges=lambda i,v:copied.append(('charges',i,v)),
                          SetItemUserData=lambda i,v:copied.append(('owner',i,v)),
-                         UnitAddItem=lambda *a:accepts, RemoveItem=lambda i:removed.append(i))
+                         UnitExtendedInventorySize=lambda u:0,
+                         UnitAddItem=lambda *a:accepts, UnitEquipItem=lambda *a:equips,
+                         IsItemEquipped=lambda i:stays_equipped, RemoveItem=lambda i:removed.append(i))
             runtime = execute(overlay, ['Forsaken_ConvertCarriedGear'], state)
             runtime['Forsaken_ConvertCarriedGear']('hero')
-            self.assertEqual(removed, ['original'] if accepts else ['variant'])
+            self.assertEqual(removed, ['original'] if accepts and equips and stays_equipped else ['variant'])
             self.assertEqual(copied, [('charges','variant',4),('owner','variant',2)])
 
     def test_native_setup_attaches_all_three_abilities_to_the_player_hero(self):
@@ -129,6 +131,38 @@ class ForsakenTests(unittest.TestCase):
         self.assertEqual(calls, [call for raw in ['fBag','fGer','ASpc']
                                for call in [('add','hero',raw),('permanent','hero',True,raw)]])
         self.assertNotIn('UnitRemoveAbility',overlay)
+
+    def test_backpack_uses_a_free_visible_slot_and_never_overwrites_or_duplicates(self):
+        overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
+        for present, bagged, slots, expected in [(True,False,{},[]),(False,True,{},[]),
+                                         (False,False,{0:'gear'},[('hero','fBpk',1)]),
+                                         (False,False,{i:'gear' for i in range(6)},[])]:
+            created = []
+            state = mocks(overlay)
+            state.update(UnitHasItemOfTypeBJ=lambda *a:present, UnitItemInSlot=lambda u,s:slots.get(s),
+                         UnitHasItemOfTypeBaggedBJ=lambda *a:bagged,
+                         UnitAddItemToSlotById=lambda *a:created.append(a))
+            runtime = execute(overlay,['Forsaken_SupplyBackpack'],state)
+            runtime['Forsaken_SupplyBackpack']('hero')
+            self.assertEqual(created,expected)
+        self.assertNotIn('Forsaken_ConvertCarriedGear',functions(overlay)['Forsaken_PrepareInventories'])
+        self.assertNotIn('LoadInteger',functions(overlay)['Trig_Equip_Restrictions_Conditions'])
+
+    def test_manual_conversion_reaches_original_gear_already_in_the_native_bag(self):
+        overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
+        removed = []
+        state = mocks(overlay)
+        state.update(ForsakenGearTypes='types', UnitExtendedInventorySize=lambda u:2,
+                     UnitItemInSlot=lambda *a:None,
+                     UnitItemInBagSlot=lambda u,s:'original' if s==1 else None,
+                     GetItemTypeId=lambda i:1 if i=='original' else 0,
+                     LoadInteger=lambda h,p,c:123 if c==1 else 0,
+                     CreateItem=lambda *a:'variant',UnitAddItem=lambda *a:True,
+                     UnitEquipItem=lambda *a:True,IsItemEquipped=lambda i:True,
+                     RemoveItem=lambda i:removed.append(i))
+        runtime = execute(overlay,['Forsaken_ConvertCarriedGear'],state)
+        runtime['Forsaken_ConvertCarriedGear']('hero')
+        self.assertEqual(removed,['original'])
 
 
 if __name__=='__main__':

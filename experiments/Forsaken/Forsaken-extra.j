@@ -16,12 +16,27 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
 endfunction
 
+function Forsaken_SupplyBackpack takes unit holder returns nothing
+    local integer slot=0
+    if UnitHasItemOfTypeBJ(holder,'fBpk') or UnitHasItemOfTypeBaggedBJ(holder,'fBpk') then
+        return
+    endif
+    loop
+        exitwhen slot>=6
+        if UnitItemInSlot(holder,slot)==null then
+            call UnitAddItemToSlotById(holder,'fBpk',slot)
+            return
+        endif
+        set slot=slot+1
+    endloop
+endfunction
+
 function Forsaken_OnEquip takes nothing returns nothing
     local unit holder=GetTriggerUnit()
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AX: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+", legacy inventory="+I2S(GetUnitAbilityLevel(holder,'AInv'))+". Click Backpack to open the native UI.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AY: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+", legacy inventory="+I2S(GetUnitAbilityLevel(holder,'AInv'))+". Click Backpack or the Backpack command button. Type -forsaken-equip to test equipping carried gear.")
         endif
         set holder=null
         return
@@ -36,19 +51,28 @@ endfunction
 
 function Forsaken_ConvertCarriedGear takes unit holder returns nothing
     local integer slot=0
+    local integer limit=6+UnitExtendedInventorySize(holder)
     local item original
     local item replacement
     local integer variant
     loop
-        exitwhen slot>=6
-        set original=UnitItemInSlot(holder,slot)
+        exitwhen slot>=limit
+        if slot<6 then
+            set original=UnitItemInSlot(holder,slot)
+        else
+            set original=UnitItemInBagSlot(holder,slot-6)
+        endif
         set variant=LoadInteger(ForsakenGearTypes,0,GetItemTypeId(original))
         if original!=null and variant!=0 then
             set replacement=CreateItem(variant,GetUnitX(holder),GetUnitY(holder))
             call SetItemCharges(replacement,GetItemCharges(original))
             call SetItemUserData(replacement,GetItemUserData(original))
             if UnitAddItem(holder,replacement) then
-                call RemoveItem(original)
+                if UnitEquipItem(holder,replacement) and IsItemEquipped(replacement) then
+                    call RemoveItem(original)
+                else
+                    call RemoveItem(replacement)
+                endif
             else
                 call RemoveItem(replacement)
             endif
@@ -59,11 +83,19 @@ function Forsaken_ConvertCarriedGear takes unit holder returns nothing
     set replacement=null
 endfunction
 
+function Forsaken_TestEquip takes nothing returns nothing
+    local unit hero=Player_GetHero(GetTriggerPlayer())
+    if hero!=null and UnitExtendedInventorySize(hero)>0 then
+        call Forsaken_ConvertCarriedGear(hero)
+        call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,15,"Forsaken test: carried gear was equipped where accepted. Rejected replacements keep their original items.")
+    endif
+    set hero=null
+endfunction
+
 function Forsaken_PrepareInventories takes nothing returns nothing
     local integer i=0
     local unit hero
     local unit gaya
-    local item backpack
     if not ForsakenSaveBlocked and udg_SaveCommandTrig!=null and udg_SaveToFileTrig!=null and udg_NewGamePlusTrig!=null and udg_NewGameMinusTrig!=null and udg_AutosaveTimerTrig!=null then
         call TriggerClearActions(udg_SaveCommandTrig)
         call TriggerAddAction(udg_SaveCommandTrig,function Forsaken_SaveUnavailable)
@@ -82,15 +114,7 @@ function Forsaken_PrepareInventories takes nothing returns nothing
         set gaya=udg_SpiritOfGaya[i+1]
         if hero!=null then
             call Forsaken_EnableHero(hero)
-            if not UnitHasItemOfTypeBJ(hero,'fBpk') then
-                set backpack=CreateItem('fBpk',GetUnitX(hero),GetUnitY(hero))
-                if not UnitAddItem(hero,backpack) then
-                    call RemoveItem(backpack)
-                endif
-            endif
-            if UnitExtendedInventorySize(hero)>0 then
-                call Forsaken_ConvertCarriedGear(hero)
-            endif
+            call Forsaken_SupplyBackpack(hero)
         endif
         if gaya!=null then
             call UnitAddAbility(gaya,'fBag')
@@ -100,7 +124,6 @@ function Forsaken_PrepareInventories takes nothing returns nothing
     endloop
     set hero=null
     set gaya=null
-    set backpack=null
 endfunction
 
 function Register_Forsaken_Equipment takes nothing returns nothing
@@ -113,6 +136,13 @@ function Register_Forsaken_Equipment takes nothing returns nothing
         set i=i+1
     endloop
     call TriggerAddAction(gg_trg_Forsaken_Equipment,function Forsaken_OnEquip)
+    set gg_trg_Forsaken_TestEquip=CreateTrigger()
+    loop
+        exitwhen i<=0
+        set i=i-1
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_TestEquip,Player(i),"-forsaken-equip",true)
+    endloop
+    call TriggerAddAction(gg_trg_Forsaken_TestEquip,function Forsaken_TestEquip)
     set ForsakenInventoryTimer=CreateTimer()
     call TimerStart(ForsakenInventoryTimer,1.,true,function Forsaken_PrepareInventories)
 endfunction
