@@ -1,33 +1,30 @@
-# FF Epic RPG handoff - 2026-10-07, stage AK Bazaar/Gaya/dev travel
+# FF Epic RPG handoff - 2026-10-07, stage AL armory tooltip counter
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User confirms AJ looks great (including the larger three-panel UI); requests eight marks per
-page, a dev teleporter unlock, slightly larger Gaya Gather Items range and follow allowance.
-Next unused stage: AL.
+User asks where armory hints are customized and requests stored/total count on the house Armory icon.
+Next unused stage: AM.
 
-## Current development build - AK
+## Current development build - AL
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAK.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAK.w3x.
-  Classic still uses AE's single-recipe dialog, even in Reforged. Develop from the Reforged map.
-- Recipe 1 shows exactly eight marks/page. One More ingredients click reaches the other eight;
-  another wraps. Grouped Marks of Darkness heading avoids repeating the prefix, with each boss
-  name and count on its own line; original requirements/order preserved. Other recipe layouts,
-  all six Omni Gem ingredients, text size/padding and AJ top Close retained.
-- Gaya Gather Items box half-ranges rise 25%: hero 500 -> 625, Gaya 300 -> 375.
-  Follow axis threshold rises 384 -> 480; transport tracking, cadence and collection filters
-  unchanged. This preserves the existing square checks rather than inventing a circular range.
-- DevCommands gains -teleporters: unlock all initialized travel points, add effects only for
-  newly unlocked points and rebuild the destination dialog. Repeats do not duplicate effects.
-  Uses existing single-player/DEV_COMMANDS_ON gates. Module remains DISABLED in the release;
-  enable it in a separate World Editor test copy and Save As. Source/editor compilation tested.
-- Full gates, 69 regressions, 2,000 codec cases, classic compilation/check_map and preservation
-  audit pass. Startup, object data, recipes/prices/results/charges and save format unchanged.
-  Gaya source audit reverses exactly the three requested numeric changes; other functions match.
-- Needs eight-mark page traversal, top Close, enlarged UI fit, Gaya pickup/ownership/follow and
-  transport behavior in game, dev command in an enabled test copy, multiplayer/save-load/Save As.
-- Incremental: .\build.ps1 -Stage AL -Base release/FFERPG_0.9.7.3-r16-stageAK.w3x.
-  Fresh clone workflow: docs/BAZAAR.md. Current releases already contain reviewed shop objects.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAL.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAL.w3x.
+  Classic uses AE's single-recipe Bazaar dialog, even in Reforged. Develop from the Reforged map.
+- House Armory ability A0MW retains its original description and adds Armory collection: N / 276.
+  Derived from eligible stored save flags, excluding category/title/special flags. Withdrawals
+  decrease the count; deposits/load update it. Local viewer presentation refreshes once per second
+  only when the displayed text changes. No shared flags/counts/rewards are modified.
+  Both client versions support the tooltip native; no classic presentation fallback needed here.
+- Hints are src/armory-hints.json, field hint. New armory_catalog.py --refresh-hints updates existing
+  proxy tooltip text and generated ArmoryHint source without recreating stock/objects. Edit only hint
+  text, keep save indexes/rawcodes/evidence intact; docs/ARMORY.md has the incremental workflow.
+- AK eight-mark pages, all-six Omni Gem layout, top Close, Gaya +25% gathering/follow and disabled
+  dev -teleporters remain. No play-test confirmation of AK's additional changes has been reported.
+- Full gates, 71 regressions, 2,000 codec cases, classic compilation/check_map and preservation
+  pass. Against AK only Armory runtime/editor text changed; all objects and other modules unchanged.
+- Needs house-icon hover count before/after deposits, withdrawal, loading, second-player isolation,
+  both clients and Editor Save As; also remaining AK checks from GAYA.md/DEBUG_COMMANDS.md/BAZAAR.md.
+- Incremental: .\build.ps1 -Stage AM -Base release/FFERPG_0.9.7.3-r16-stageAL.w3x.
+  Fresh clone workflow in BAZAAR.md; armory hint-edit instructions in ARMORY.md.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -56,7 +53,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AL -Base release/FFERPG_0.9.7.3-r16-stageAK.w3x
+.\build.ps1 -Stage AM -Base release/FFERPG_0.9.7.3-r16-stageAL.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

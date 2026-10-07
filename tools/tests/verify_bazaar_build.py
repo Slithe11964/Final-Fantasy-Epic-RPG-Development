@@ -18,8 +18,8 @@ from wtg import read_wtg
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', default='AK')
-    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAJ.w3x')
+    parser.add_argument('--stage', default='AL')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAK.w3x')
     args = parser.parse_args()
     final = ROOT/f'release/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
     classic = ROOT/f'release/1.29.2/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
@@ -45,6 +45,18 @@ def main():
     after = functions(b.read('war3map.j').decode('utf-8'))
     different = sorted(name for name in before if tokens(before[name]) != tokens(after.get(name, '')))
     allowed = ('Bazaar_', 'BazaarFrame_', 'Trig_Bazaar_', 'Register_Bazaar_', 'RegisterTriggers_Bazaar')
+    if args.stage == 'AL':
+        allowed += ('Armory_', 'Trig_Armory_')
+        prior_modules = paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))
+        next_modules = paired_text(read_wtg(b.read('war3map.wtg')), read_wct(b.read('war3map.wct')))
+        prior_armory = functions(text_of(prior_modules['Armory']))
+        next_armory = functions(text_of(next_modules['Armory']))
+        for name, body in prior_armory.items():
+            restored = next_armory[name]
+            if name == 'Trig_Armory_Init_Actions':
+                restored = restored.replace('    call Armory_InitCounter()\r\n', '').replace('    call Armory_InitCounter()\n', '')
+            assert tokens(restored) == tokens(body), name
+        assert set(next_armory)-set(prior_armory) == {'Armory_CollectionText', 'Armory_RefreshCounter', 'Armory_InitCounter'}
     if args.stage == 'AK':
         allowed += ('Trig_Gaya_',)
         prior_modules = paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))
@@ -86,6 +98,8 @@ def main():
     preserved = ['Bazaar_CraftRecipe', 'Bazaar_MaterialsReady', 'Bazaar_InitBrowserData', 'Trig_Bazaar_Recipes_Actions']
     if args.stage == 'AK':
         preserved += ['Trig_Gaya_Follow_MoveGayaToHero', 'Trig_Gaya_GatherItems_Actions']
+    if args.stage == 'AL':
+        preserved += ['Armory_CollectionText', 'Armory_RefreshCounter', 'Armory_InitCounter']
     for name in preserved:
         assert tokens(after[name]) == tokens(legacy[name]), name
     assert 'Blz' not in legacy['BazaarFrame_Init']
@@ -101,7 +115,7 @@ def main():
                   hashes={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                           for p in [args.base, final, classic]})
     (ROOT/f'release/preservation-r16-stage{args.stage}.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print('PASS preservation: scoped Bazaar/Gaya runtime and developer editor changes; recipe data/items/armory unchanged.' +
+    print('PASS preservation: scoped UI changes; recipe data/items/armory collection behavior unchanged.' +
           (' Objects and craft transaction unchanged.' if browser_exists else ' Added recipe button/shop selling ability.'))
 
 

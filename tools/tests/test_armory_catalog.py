@@ -9,7 +9,7 @@ import test_quest_lifecycle as harness
 from test_shared_context import mocks
 from source_checks import ROOT, sources
 from check_save_compat import assignments
-from armory_catalog import catalog_objects, hint_id, ICON
+from armory_catalog import catalog_objects, refresh_hint_objects, hint_id, ICON
 from check_armory import check
 from mpq import MPQ
 from objdata import read_objects, fields
@@ -50,6 +50,59 @@ def runtime():
 
 
 class ArmoryTests(unittest.TestCase):
+    def test_collection_counter_is_per_player_and_tracks_stored_flags_only(self):
+        e, shop, stock, flags = runtime()
+        e['ArmoryMissingUnit'] = defaultdict(int)
+        e['Armory_InitHints']()
+        e.update(ArmoryTooltipBase='', ArmoryTooltipShown='')
+        with patch.object(harness, 'SELECTED', []):
+            e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), ['Armory_CollectionText', 'Armory_RefreshCounter'], e)
+        e['I2S'] = str
+        flags[12].add(1)
+        flags[13].add(1)
+        flags[507].add(1)
+        flags[0].add(1)
+        self.assertEqual(e['Armory_CollectionText'](1), '2 / 276')
+        self.assertEqual(e['Armory_CollectionText'](2), '0 / 276')
+        flags[12].remove(1)
+        flags[13].add(2)
+        self.assertEqual(e['Armory_CollectionText'](1), '1 / 276')
+        updates = []
+        e.update(ArmoryTooltipBase='Original armory description.', ArmoryTooltipShown='',
+                 GetLocalPlayer=lambda: 1, BlzSetAbilityExtendedTooltip=lambda *args: updates.append(args))
+        before = copy.deepcopy(flags)
+        e['Armory_RefreshCounter']()
+        e['Armory_RefreshCounter']()
+        self.assertEqual(len(updates), 1)
+        self.assertIn('Original armory description.', updates[0][1])
+        self.assertIn('1 / 276', updates[0][1])
+        self.assertEqual(flags, before)
+        flags[12].add(1)
+        e['Armory_RefreshCounter']()
+        self.assertIn('2 / 276', updates[-1][1])
+
+    def test_hint_refresh_changes_tooltip_only_and_refuses_missing_objects(self):
+        archive = MPQ(str(ROOT/'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
+        table = read_objects(archive.read('war3map.w3u'), 'w3u')
+        proxy = copy.deepcopy(next(o for o in table['custom'] if o['id'] == 'n0D8'))
+        proxy['id'] = 'z012'
+        table['custom'].append(proxy)
+        catalog = {'12': {'hint': 'Original hint.'}}
+        changed = copy.deepcopy(catalog)
+        changed['12']['hint'] = 'A custom hint for testing.'
+        refreshed = refresh_hint_objects(table, changed)
+        self.assertEqual(len(table['custom']), len(refreshed['custom']))
+        for group in ('original', 'custom'):
+            for before, after in zip(table[group], refreshed[group]):
+                if before['id'] == 'z012':
+                    self.assertIn('A custom hint for testing.', fields(after)['utub'])
+                    for obj in (before, after):
+                        obj['sets'][0]['mods'][:] = [m for m in obj['sets'][0]['mods'] if m['field'] != 'utub']
+                # Field order can change when replacing an identical tooltip.
+                self.assertEqual(fields(before), fields(after))
+        with self.assertRaises(ValueError):
+            refresh_hint_objects({'original': [], 'custom': []}, changed)
+
     def test_original_baseline_without_hint_objects_is_rejected(self):
         errors = check(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x')
         self.assertTrue(any('missing/wrong hint object field' in error for error in errors))

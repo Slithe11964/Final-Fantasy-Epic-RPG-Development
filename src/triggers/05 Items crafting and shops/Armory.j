@@ -13,6 +13,8 @@ globals
     unit array udg_ArmoryUnit
     integer udg_ArmoryStockMax=0
     integer array ArmoryMissingUnit
+    string ArmoryTooltipBase=""
+    string ArmoryTooltipShown=""
     string array ArmoryHint
     integer array ArmoryCategory
 endglobals
@@ -989,6 +991,39 @@ function Armory_ShowCategory takes unit shop,integer category returns nothing
     set p=null
 endfunction
 
+function Armory_CollectionText takes player p returns string
+    local integer i=1
+    local integer total=0
+    local integer stored=0
+    loop
+        exitwhen i>udg_SaveFlagCount
+        if ArmoryMissingUnit[i]!=0 then
+            set total=total+1
+            if IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+                set stored=stored+1
+            endif
+        endif
+        set i=i+1
+    endloop
+    return I2S(stored)+" / "+I2S(total)
+endfunction
+
+function Armory_RefreshCounter takes nothing returns nothing
+    local player p=GetLocalPlayer()
+    local string tooltip=ArmoryTooltipBase+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
+    if tooltip!=ArmoryTooltipShown then
+        call BlzSetAbilityExtendedTooltip('A0MW',tooltip,0)
+        set ArmoryTooltipShown=tooltip
+    endif
+    set p=null
+endfunction
+
+function Armory_InitCounter takes nothing returns nothing
+    set ArmoryTooltipBase=BlzGetAbilityExtendedTooltip('A0MW',0)
+    call Armory_RefreshCounter()
+    call TimerStart(CreateTimer(),1.,true,function Armory_RefreshCounter)
+endfunction
+
 function Trig_Armory_Init_Actions takes nothing returns nothing
     call Armory_InitHints()
     set udg_ArmoryStockMax=540
@@ -1381,6 +1416,7 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[314]='n0LM' // 'n0LM': unit "Shimmering Cloth"
     set udg_SaveFlagUnitID[330]='n0ME' // 'n0ME': unit "Mirage Vest"
     set udg_SaveFlagUnitID[349]='n0NB' // 'n0NB': unit "White Robe"
+    call Armory_InitCounter()
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

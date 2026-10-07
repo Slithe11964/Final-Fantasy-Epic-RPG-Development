@@ -1,4 +1,4 @@
-# Armory discovery hints — stages AB through AD
+# Armory discovery hints — stages AB through AL
 
 The existing Armory title/access requirement remains. Once the armory is available, all its
 categories can be browsed, including Celestial Weapons before storing one. Each of the 276
@@ -19,8 +19,8 @@ holding it." These hints add no acquisition methods or change the existing rewar
 
 ## In-game test
 
-Use release/1.29.2/FFERPG_0.9.7.3-r16-stageAD.w3x for the shared playable copy in either client.
-Use release/FFERPG_0.9.7.3-r16-stageAD.w3x for Reforged editor development.
+Use release/FFERPG_0.9.7.3-r16-stageAL.w3x for Reforged play/editor development.
+Use release/1.29.2/FFERPG_0.9.7.3-r16-stageAL.w3x for classic play (AE Bazaar presentation).
 
 1. With an armory-enabled character, browse a category with no stored gear. Hover a question mark
    and click it: the hint appears, no item/gold/BP is gained or spent, and the entry remains.
@@ -46,8 +46,8 @@ prepare a fresh base from that baseline (Python 3 on PATH):
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AG -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAG.w3x
+.\build.ps1 -Stage AM -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAM.w3x
 ```
 
 Use an unused stage and output filename. For ongoing local development, use the newest reviewed
@@ -58,12 +58,40 @@ fields, items, abilities, terrain, dialogue and rewards are preserved.
 Current sources also need the Bazaar preparer in the example above; see BAZAAR.md for that addition.
 
 Edit src/armory-hints.json to change hints. Each entry retains the save item index, item/unit IDs,
-hint and evidence for its acquisition route. Re-run the preparer from the original baseline before
-building changed hints, so both hover tooltips and click messages update together. To carry forward
-other Object Editor edits, use a reviewed map that has those edits but no existing hint proxy IDs.
+hint and evidence for its acquisition route. Use the hint refresh workflow below on an existing
+prepared map so hover tooltips and click messages update together while retaining Object Editor edits.
 check_armory.py is a build gate: missing proxy objects or catalogue/source mismatches block release.
 
 tools/tests/verify_armory_build.py records the current stage preservation audit. Only war3map.j, war3map.wct and
 war3map.w3u differ from the public baseline; existing unit fields are preserved except collectible proxy button positions. All runtime
 functions outside Armory are unchanged. Syncing Armory also restores two pre-existing optimized
 store-handler bodies from the unchanged editor source; the save compatibility gate still passes.
+
+## House icon collection counter - stage AL
+
+Hover the house's Armory icon. The original description is followed by `Armory collection: N / 276`.
+N counts currently stored collectible gear, not lifetime acquisitions or reward/title flags.
+The denominator comes from eligible hint entries. Withdrawals lower N; depositing or loading
+updates it within one second. The text is local to the viewing player; no collection flags,
+rewards or save data are changed. Test 0/partial/full collections, deposits/withdrawals/load,
+two players with different collections, both clients and World Editor Save As.
+
+## Customizing hints
+
+Edit `src/armory-hints.json`: find the entry by its `name` and change only its `hint` text.
+Keep the numbered keys, `item`, `unit` and evidence mappings intact. `Armory_InitHints` in
+Armory.j is generated from this file; editing it alone leaves the hover tooltip/catalogue stale.
+
+For an existing prepared development map, update both the question-mark tooltip objects and
+generated source, then build/convert using unused filenames/stage names:
+
+```powershell
+python tools/armory_catalog.py release/FFERPG_0.9.7.3-r16-stageAL.w3x build/custom-hints.w3x --refresh-hints
+.\build.ps1 -Stage AM -Base build/custom-hints.w3x
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAM.w3x
+```
+
+The refresh mode preserves existing objects and stock positions, changes only missing-item
+extended tooltip fields and synchronizes hint source in CRLF. It refuses missing proxies and
+existing output files. For a fresh baseline use the original object preparer workflow above.
+The mandatory catalogue gate checks source and tooltips agree before a build is published.

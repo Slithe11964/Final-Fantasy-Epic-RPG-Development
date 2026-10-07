@@ -89,11 +89,28 @@ def catalog_objects(table, catalog, flags, item_fields):
     return result
 
 
+def refresh_hint_objects(table, catalog):
+    result = copy.deepcopy(table)
+    units = {o['id'] or o['base']: o for group in ('original', 'custom') for o in result[group]}
+    for key, entry in catalog.items():
+        raw = hint_id(int(key))
+        if raw not in units:
+            raise ValueError('missing hint object ' + raw + '; prepare armory objects first')
+        if not entry['hint'].strip():
+            raise ValueError('empty hint: ' + key)
+        set_field(units[raw], 'utub', '|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] +
+                  '|n|nStore this item in your house to unlock it in the armory.')
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('base', type=Path)
     parser.add_argument('out', type=Path)
+    parser.add_argument('--refresh-hints', action='store_true', help='update hint tooltips in an already prepared map')
     args = parser.parse_args()
+    if args.out.exists() or args.base.resolve() == args.out.resolve():
+        raise ValueError('choose a new output; existing maps are not overwritten')
     _, texts = sources()
     flags, errors = assignments(texts, 'udg_SaveFlagUnitID', repeated=True)
     flags = {k: v[-1] for k, v in flags.items()}
@@ -104,11 +121,12 @@ def main():
     table = read_objects(archive.read('war3map.w3u'), 'w3u')
     items = read_objects(archive.read('war3map.w3t'), 'w3t')
     item_fields = {o['id'] or o['base']: fields(o) for group in ('original', 'custom') for o in items[group]}
-    updated = catalog_objects(table, catalog, flags, item_fields)
+    updated = refresh_hint_objects(table, catalog) if args.refresh_hints else catalog_objects(table, catalog, flags, item_fields)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     write_files(str(args.base), str(args.out), {'war3map.w3u': write_objects(updated, table['version'], 'w3u')})
     sync_hint_source(catalog)
-    print(f'Added {len(catalog)} hint entries; stock button positions sorted by required level.')
+    print(f'Refreshed {len(catalog)} hint tooltips.' if args.refresh_hints else
+          f'Added {len(catalog)} hint entries; stock button positions sorted by required level.')
 
 
 if __name__ == '__main__':
