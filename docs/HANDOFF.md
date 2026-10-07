@@ -2,7 +2,7 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AR.
+Next unused stage: AS.
 
 ## Current development build - AQ
 
@@ -11,6 +11,7 @@ Next unused stage: AR.
 - Chronicle category buttons now show only their names; unlocked/maximum counters remain in the descriptions.
 - Secrets and its Keg Hunter entry are hidden until title59 is completed. Keg Hunter displays the standard green title and rare-drop effect wording.
 - Next page uses a navigation icon and has no category preview description.
+- Next page now uses `ReplaceableTextures\\CommandButtons\\BTNMove.blp`, the standard move-arrow icon.
 - Full gates,94 regressions,2,000 codec cases,classic check_map and preservation PASS;1508 startup triggers,0 independent reorder.
 - Elysium report remains under investigation: the east rainbow bridge is `gg_dest_DTsb_0068`, hidden during preparation and shown when Andre's reveal completes. Confirm whether the failure occurs in a fresh game after the reveal or only after loading.
 

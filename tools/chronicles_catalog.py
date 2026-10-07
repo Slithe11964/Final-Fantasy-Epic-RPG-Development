@@ -11,7 +11,7 @@ from mpq import MPQ, write_files
 from objdata import read_objects, write_objects, fields
 
 NEW_IDS = {'cPg2', 'cSec', 'cKeg'}
-NEXT_PAGE_ICON = r'ReplaceableTextures\CommandButtons\BTNReplay.blp'
+NEXT_PAGE_ICON = r'ReplaceableTextures\CommandButtons\BTNMove.blp'
 
 
 def set_field(obj, key, value, level=0, data=0):
