@@ -49,7 +49,7 @@ class ForsakenTests(unittest.TestCase):
             self.assertEqual(len(mapping), 280)
             abilities = read_objects(new.read('war3map.w3a'), 'w3a')
             abilities = {o['id'] or o['base']: o for g in ('original', 'custom') for o in abilities[g]}
-            for raw, capacity_field, capacity, item_ability in [('fBag','inv6',30,0),('fBgi','inv6',30,1),('fGer','equ1',0,1)]:
+            for raw, capacity_field, capacity, item_ability in [('fBag','inv6',30,0),('fBgi','inv6',30,1),('fGer','equ1',0,0)]:
                 self.assertEqual(fields(abilities[raw])[(capacity_field,1)],capacity)
                 self.assertEqual(fields(abilities[raw])['aite'],item_ability)
                 capacity_mod = next(m for m in abilities[raw]['sets'][0]['mods'] if m['field']==capacity_field)
@@ -110,6 +110,18 @@ class ForsakenTests(unittest.TestCase):
             runtime['Forsaken_ConvertCarriedGear']('hero')
             self.assertEqual(removed, ['original'] if accepts else ['variant'])
             self.assertEqual(copied, [('charges','variant',4),('owner','variant',2)])
+
+    def test_native_setup_attaches_all_three_abilities_to_the_player_hero(self):
+        overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
+        calls = []
+        state = mocks(overlay)
+        state.update(UnitAddAbility=lambda u,a:calls.append(('add',u,a)),
+                     UnitMakeAbilityPermanent=lambda u,p,a:calls.append(('permanent',u,p,a)))
+        runtime = execute(overlay, ['Forsaken_EnableHero'], state)
+        runtime['Forsaken_EnableHero']('hero')
+        self.assertEqual(calls, [call for raw in ['fBag','fGer','ASpc']
+                               for call in [('add','hero',raw),('permanent','hero',True,raw)]])
+        self.assertNotIn('UnitRemoveAbility',overlay)
 
 
 if __name__=='__main__':

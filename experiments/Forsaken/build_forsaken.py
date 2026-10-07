@@ -76,7 +76,7 @@ def prepare_objects(base, out, mapping_out):
     for base_id, raw, item_ability, capacity_field, capacity in (
             ('AInx', 'fBag', 0, 'inv6', 30),
             ('AIni', 'fBgi', 1, 'inv6', 30),
-            ('AEqu', 'fGer', 1, 'equ1', 0)):
+            ('AEqu', 'fGer', 0, 'equ1', 0)):
         if any((o['id'] or o['base']) == raw for o in ability_table['custom']):
             raise ValueError('experimental ability ID already used: ' + raw)
         mods = [dict(field=field, type=0, level=0, data=0, value=value, end=0)
@@ -84,6 +84,13 @@ def prepare_objects(base, out, mapping_out):
         # Native Data F holds bag capacity or the equipment level threshold.
         mods.append(dict(field=capacity_field, type=0, level=1, data=6, value=capacity, end=0))
         ability_table['custom'].append(dict(base=base_id, id=raw, sets=[dict(flag=0, mods=mods)]))
+    if any((o['id'] or o['base']) == 'ASpc' for g in ('original','custom') for o in ability_table[g]):
+        raise ValueError('base already modifies the native panel controller')
+    ability_table['original'].append(dict(base='ASpc', id=None, sets=[dict(flag=0, mods=[
+        dict(field='anam',type=3,level=0,data=0,value='Backpack',end=0),
+        dict(field='aart',type=3,level=0,data=0,value=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',end=0),
+        dict(field='abpy',type=0,level=0,data=0,value=-11,end=0),
+    ])]))
     replace_files(str(base), str(out), {
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),

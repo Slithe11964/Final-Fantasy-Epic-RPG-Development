@@ -7,12 +7,21 @@ function Forsaken_RejectEquipment takes item gear,unit holder returns nothing
     call UnitRemoveItem(holder,gear)
 endfunction
 
+function Forsaken_EnableHero takes unit holder returns nothing
+    call UnitAddAbility(holder,'fBag')
+    call UnitMakeAbilityPermanent(holder,true,'fBag')
+    call UnitAddAbility(holder,'fGer')
+    call UnitMakeAbilityPermanent(holder,true,'fGer')
+    call UnitAddAbility(holder,'ASpc')
+    call UnitMakeAbilityPermanent(holder,true,'ASpc')
+endfunction
+
 function Forsaken_OnEquip takes nothing returns nothing
     local unit holder=GetTriggerUnit()
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AV: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", bag ability="+I2S(GetUnitAbilityLevel(holder,'fBgi'))+", gear ability="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+". Click the Backpack item in your six-slot inventory to open the native UI.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AW: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+", legacy inventory="+I2S(GetUnitAbilityLevel(holder,'AInv'))+". Click Backpack to open the native UI.")
         endif
         set holder=null
         return
@@ -72,6 +81,7 @@ function Forsaken_PrepareInventories takes nothing returns nothing
         set hero=Player_GetHero(Player(i))
         set gaya=udg_SpiritOfGaya[i+1]
         if hero!=null then
+            call Forsaken_EnableHero(hero)
             if not UnitHasItemOfTypeBJ(hero,'fBpk') then
                 set backpack=CreateItem('fBpk',GetUnitX(hero),GetUnitY(hero))
                 if not UnitAddItem(hero,backpack) then

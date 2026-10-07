@@ -2,7 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AW. Normal development stays on AS; Forsaken AV is the next native UI test.
+Next unused stage: AX. Normal development stays on AS; Forsaken AW is the next native UI test.
+
+## Separate experiment - Forsaken AW
+
+- AV user test FAILED: Backpack visible in slot1, capacity0, queried hero levels fBgi/fGer/ASpc all0, clicking did not open UI. GetUnitAbilityLevel on a holder is not a reliable proof about item-attached abilities; zero native capacity is the confirmed failure.
+- AW bypasses item attachment by giving the player hero fBag, fGer and stock ASpc directly/permanently. fGer is a unit ability (aite0); Backpack remains present. Original stock ASpc receives a name/icon and hidden command-card position to keep existing job buttons. Its native behavior is unchanged.
+- Diagnostic reports direct hero ability levels and stock AInv legacy level. Legacy inventory/item definitions are retained; no inventory-removal experiment or global NPC changes. Conversion still waits for native bag capacity and successful variant acceptance.
+- Release/check results in STAGES. Normal AS and exact AS classic fallback retained; saving blocked in modern experiment. Native acceptance pending.
+- Validation: full gates,96 regressions,2,000 codec cases,6 experiment tests PASS. Scratch build/ForsakenAW-d1e4ofp7/FFERPG. Native Backpack click and direct ability levels need user testing.
 
 ## Separate experiment - Forsaken AV
 
