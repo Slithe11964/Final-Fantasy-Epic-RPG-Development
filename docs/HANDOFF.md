@@ -1,8 +1,18 @@
-# FF Epic RPG handoff - 2026-10-07, stage AP Chronicles, Keg Hunter and Bazaar reopening
+# FF Epic RPG handoff - 2026-10-07, stage AQ Chronicle presentation
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AQ.
+Next unused stage: AR.
+
+## Current development build - AQ
+
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAQ.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAQ.w3x (AE Bazaar UI).
+- Chronicle category buttons now show only their names; unlocked/maximum counters remain in the descriptions.
+- Secrets and its Keg Hunter entry are hidden until title59 is completed. Keg Hunter displays the standard green title and rare-drop effect wording.
+- Next page uses a navigation icon and has no category preview description.
+- Full gates,94 regressions,2,000 codec cases,classic check_map and preservation PASS;1508 startup triggers,0 independent reorder.
+- Elysium report remains under investigation: the east rainbow bridge is `gg_dest_DTsb_0068`, hidden during preparation and shown when Andre's reveal completes. Confirm whether the failure occurs in a fresh game after the reveal or only after loading.
 
 ## Current development build - AP
 

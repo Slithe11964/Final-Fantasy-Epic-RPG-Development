@@ -11,10 +11,14 @@ from mpq import MPQ, write_files
 from objdata import read_objects, write_objects, fields
 
 NEW_IDS = {'cPg2', 'cSec', 'cKeg'}
+NEXT_PAGE_ICON = r'ReplaceableTextures\CommandButtons\BTNReplay.blp'
 
 
 def set_field(obj, key, value, level=0, data=0):
     mods = obj['sets'][0]['mods']
+    for mod in mods:
+        if mod['field'] == key and mod['level'] == level and mod['value'] == value and mod['data'] == data:
+            return
     mods[:] = [m for m in mods if not (m['field'] == key and m['level'] == level)]
     mods.append(dict(field=key, type=3 if isinstance(value, str) else 0,
                      level=level, data=data, value=value, end=0))
@@ -27,6 +31,14 @@ def prepare(table):
     if present:
         if present != NEW_IDS or fields(objects['A0AR']).get(('spb1', 1), '').split(',')[-1] != 'cPg2':
             raise ValueError('Incomplete Chronicle objects or conflicting IDs; review the input map.')
+        # Keep the existing additive objects usable when preparing a later stage.
+        # The replay-arrow icon makes the page control read as navigation instead of a locked entry.
+        set_field(objects['cPg2'], 'aart', NEXT_PAGE_ICON)
+        set_field(objects['cPg2'], 'aub1', '', 1)
+        for level in (1, 2):
+            set_field(objects['cKeg'], 'atp1', 'Keg Hunter', level)
+            set_field(objects['cKeg'], 'aub1',
+                      '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas.', level)
         return result
     root = objects['A0AR']
     spells = fields(root)[('spb1', 1)].split(',')
@@ -44,8 +56,8 @@ def prepare(table):
             set_field(obj, key, value, level, data)
         return obj
     page = book('cPg2', 'Next page', ['A10C', 'cSec'], (2, 2), 'carrionswarm',
-                r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp',
-                'Open Chronicle page 2: Time Trial and Secrets.')
+                NEXT_PAGE_ICON,
+                '')
     secret = book('cSec', 'Secrets', ['cKeg'], (1, 0), 'breathoffire',
                   r'ReplaceableTextures\CommandButtons\BTNTome.blp',
                   'Hidden accomplishments. Discover all ten monographs to become a Keg Hunter.')
@@ -58,9 +70,7 @@ def prepare(table):
     for level in (1, 2):
         set_field(keg, 'atp1', 'Keg Hunter', level)
         set_field(keg, 'aub1',
-                  ('Hold each of the ten monographs with your hero or Spirit of Gaya during one game. '
-                   'They may be collected one at a time. Unlocks all monograph effects permanently.') if level == 1 else
-                  'All ten monograph effects are permanently active. Carrying monographs gives no additional bonus.', level)
+                  '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas.', level)
     set_field(root, 'spb1', ','.join(spells[:-1] + ['cPg2']), 1, 1)
     set_field(objects['A10C'], 'abpx', 0)
     set_field(objects['A10C'], 'abpy', 0)

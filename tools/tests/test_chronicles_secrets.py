@@ -141,7 +141,7 @@ class ChronicleTests(unittest.TestCase):
         self.assertEqual(len(e['writes']), size)
         e['viewer'] = 1
         e['Chronicles_RefreshTooltips']()
-        self.assertIn(('name', 'A0ZK', 'Chronicle (0 / 5)', 0), e['writes'])
+        self.assertIn(('name', 'A0ZK', 'Chronicle', 0), e['writes'])
         self.assertEqual({k: v for k, v in e['udg_TitleForce'].items() if v},
                          {k: v for k, v in prior.items() if v})
 
@@ -151,6 +151,8 @@ class ChronicleTests(unittest.TestCase):
         e['Chronicles_RestoreSecrets'](0)
         self.assertEqual(e['ability_levels'][(0, 'gaya'), 'cKeg'], 2)
         self.assertTrue(e['available'][0, 'A0AR'])
+        self.assertTrue(e['available'][0, 'cSec'])
+        self.assertTrue(e['available'][0, 'cKeg'])
         self.assertEqual(e['ChroniclesMonographCount'][1], 0)
         fixture = __import__('json').loads((ROOT / 'tools/tests/fixtures/savecodes.json').read_text())
         # Existing G/H payloads already have the reserved title59 bit; no extra fields.
@@ -166,6 +168,20 @@ class ChronicleTests(unittest.TestCase):
             self.assertEqual(59 in loaded['titles'], owned)
             self.assertEqual({k: v for k, v in original.items() if k not in ('titles', 'code', 'trace', 'checksum')},
                              {k: v for k, v in loaded.items() if k not in ('titles', 'code', 'trace', 'checksum')})
+
+    def test_secrets_category_and_locked_entries_stay_hidden_until_completion(self):
+        e = runtime()
+        e['Chronicles_RestoreSecrets'](0)
+        self.assertFalse(e['available'][0, 'cSec'])
+        self.assertFalse(e['available'][0, 'cKeg'])
+        e['udg_TitleForce'][59].add(0)
+        e['Chronicles_RestoreSecrets'](0)
+        self.assertTrue(e['available'][0, 'cSec'])
+        self.assertTrue(e['available'][0, 'cKeg'])
+        e['ChroniclesSecretsBase'] = 'Secrets description'
+        e['Chronicles_RefreshTooltips']()
+        self.assertIn(('name', 'cSec', 'Secrets', 0), e['writes'])
+        self.assertNotIn('Chronicles unlocked:', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))
 
 
 class MonographLootTests(unittest.TestCase):

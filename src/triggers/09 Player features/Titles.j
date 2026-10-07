@@ -122,8 +122,12 @@ function Chronicles_RestoreSecrets takes player p returns nothing
         if IsPlayerInForce(p,udg_TitleForce[59]) then
             call SetUnitAbilityLevel(spirit,'cKeg',2)
             call SetPlayerAbilityAvailable(p,'A0AR',true)
+            call SetPlayerAbilityAvailable(p,'cSec',true)
+            call SetPlayerAbilityAvailable(p,'cKeg',true)
         else
             call SetUnitAbilityLevel(spirit,'cKeg',1)
+            call SetPlayerAbilityAvailable(p,'cSec',false)
+            call SetPlayerAbilityAvailable(p,'cKeg',false)
         endif
         call SetUnitAbilityLevel(spirit,'A10C',udg_SpeedrunLevel[GetPlayerId(p)+1]+1)
     endif
@@ -152,17 +156,17 @@ function Chronicles_RefreshTooltips takes nothing returns nothing
                 set tooltip=tooltip+"|nMonographs held this game: "+I2S(found)+" / 10"
             endif
             if tooltip!=ChroniclesTooltipShown[key] then
-                call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key]+" ("+progress+")",level)
+                call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key],level)
                 call BlzSetAbilityExtendedTooltip(udg_ChronicleAbility[category],tooltip,level)
                 set ChroniclesTooltipShown[key]=tooltip
             endif
         endif
         set category=category+1
     endloop
-    set tooltip=ChroniclesSecretsBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,12)
+    set tooltip=ChroniclesSecretsBase
     if tooltip!=ChroniclesSecretsShown then
         call BlzSetAbilityExtendedTooltip('cSec',tooltip,0)
-        call BlzSetAbilityTooltip('cSec',"Secrets ("+Chronicles_Progress(p,12)+")",0)
+        call BlzSetAbilityTooltip('cSec',"Secrets",0)
         set ChroniclesSecretsShown=tooltip
     endif
     set tooltip=ChroniclesRootBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,0)
@@ -229,12 +233,13 @@ endfunction
 function Trig_Titles_Init_HideChronicleAbilities takes nothing returns nothing
     call SetPlayerAbilityAvailableBJ(false,'A0AR',GetEnumPlayer()) // 'A0AR': ability "Hero Chronicles"
     set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=$B // $B = 11
+    set bj_forLoopAIndexEnd=12
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         call SetPlayerAbilityAvailableBJ(false,udg_ChronicleAbility[GetForLoopIndexA()],GetEnumPlayer())
         set bj_forLoopAIndex=bj_forLoopAIndex+1
     endloop
+    call SetPlayerAbilityAvailableBJ(false,'cSec',GetEnumPlayer())
 endfunction
 
 function Trig_Titles_Init_Actions takes nothing returns nothing
