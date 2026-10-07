@@ -127,16 +127,10 @@ def prepare_objects(base, out, mapping_out):
         dict(field='aub1',type=3,level=1,data=0,value='Open your native backpack and equipment panel.',end=0),
     ])]))
     prepare_panels(ability_table)
-    imports=archive.read('war3map.imp') or struct.pack('<ii',1,0)
-    version,count=struct.unpack_from('<ii',imports)
-    imports=struct.pack('<ii',version,count+2)+imports[8:]+b'\x0dForsakenPanels.fdf\0\x0dForsakenPanels.toc\0'
     write_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
-        'ForsakenPanels.fdf': (HERE/'ForsakenPanels.fdf').read_bytes(),
-        'ForsakenPanels.toc': b'ForsakenPanels.fdf\r\n',
-        'war3map.imp': imports,
     })
     mapping_out.write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
     return mapping
@@ -178,6 +172,7 @@ def equip_overlay(original):
     boolean ForsakenSaveBlocked=false
     trigger gg_trg_Forsaken_TalentClick=null
     trigger gg_trg_Forsaken_TalentSync=null
+    trigger gg_trg_Forsaken_PanelAccess=null
     hashtable ForsakenTalentState=null
     framehandle ForsakenTalentRoot=null
     framehandle ForsakenTalentPoints=null
@@ -189,6 +184,17 @@ def equip_overlay(original):
     framehandle ForsakenDefenseValue=null
     framehandle ForsakenReductionValue=null
     boolean ForsakenPanelFramesReady=false
+    timer ForsakenPanelClock=null
+    real ForsakenPanelLastToggle=-1.
+    boolean ForsakenPanelOpen=false
+    framehandle ForsakenPanelClose=null
+    string array ForsakenStatName
+    framehandle array ForsakenStatValue
+    hashtable ForsakenRegenScratch=null
+    real ForsakenHPFlat=0.
+    real ForsakenMPPercent=0.
+    real ForsakenHPRegen=0.
+    real ForsakenMPRegen=0.
 endglobals''', 1)
     text = text.replace('GetManipulatedItem()', 'Forsaken_EventItem()')
     text = text.replace('function Trig_Equip_Restrictions_Conditions', '''function Forsaken_EventItem takes nothing returns item
@@ -214,7 +220,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
-                        '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Equip_Restrictions() //', 1)
+                        '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Forsaken_PanelAccess()\n    call Register_Equip_Restrictions() //', 1)
     return text
 
 
@@ -274,6 +280,34 @@ def run(command, cwd=ROOT):
     subprocess.run(list(map(str, command)), cwd=cwd, check=True)
 
 
+def regeneration_initialization(base):
+    archive=MPQ(base)
+    table=read_objects(archive.read('war3map.w3a'),'w3a')
+    classes=dict(Arel=1,AIrm=2,AIrn=2,AHab=3,AUau=4)
+    result=['    set ForsakenRegenScratch=InitHashtable()']
+    buffs=set()
+    for group in ('original','custom'):
+        for obj in table[group]:
+            kind=classes.get(obj['base'])
+            if not kind: continue
+            raw=obj['id'] or obj['base']; data=fields(obj)
+            result.append("    call SaveInteger(ForsakenGearTypes,30,'%s',%d)"%(raw,kind))
+            item_ability=data.get('aite',int(kind<3))
+            result.append("    call SaveBoolean(ForsakenGearTypes,32,'%s',%s)"%(raw,'true' if item_ability else 'false'))
+            if kind>=3:
+                buff=data.get(('abuf',1),'BHab' if kind==3 else 'BUau').split(',')[0]
+                if len(buff)!=4: raise ValueError('unreviewed regeneration buff: '+raw)
+                buffs.add(buff)
+                result.append("    call SaveInteger(ForsakenGearTypes,31,'%s','%s')"%(raw,buff))
+    result.append('    call SaveInteger(ForsakenGearTypes,34,0,%d)'%len(buffs))
+    result += ["    call SaveInteger(ForsakenGearTypes,34,%d,'%s')"%(i,buff) for i,buff in enumerate(sorted(buffs),1)]
+    misc=(archive.read('war3mapMisc.txt') or b'').decode('utf-8')
+    for index,key,default in [(0,'StrRegenBonus',.05),(1,'IntRegenBonus',.05)]:
+        value=re.search(r'^'+key+r'=([^\r\n]+)',misc,re.M)
+        result.append('    call SaveReal(ForsakenGearTypes,40,%d,%s)'%(index,str(float(value[1]) if value else default)))
+    return result
+
+
 def manifest(base, classic_base, modern, classic, stage):
     def identity(path):
         return dict(file=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
@@ -324,6 +358,7 @@ def main():
                        for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,2,%d,'fT%02d')" % (i,i) for i in range(8)]
     initialization += ["    call SaveInteger(ForsakenGearTypes,3,%d,'fV%02d')" % (i,i) for i in range(48)]
+    initialization += regeneration_initialization(args.base.resolve())
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
@@ -334,7 +369,7 @@ def main():
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
-         '--allow-new', '^gg_trg_Forsaken_(Equipment|TestEquip|TalentClick|TalentSync)$'], cwd=work)
+         '--allow-new', '^gg_trg_Forsaken_(Equipment|TestEquip|TalentClick|TalentSync|PanelAccess)$'], cwd=work)
     destination.mkdir(parents=True, exist_ok=True)
     classic.parent.mkdir(parents=True, exist_ok=True)
     for name in (basename, 'checks-r16-stage'+args.stage+'.txt', 'build-r16-stage'+args.stage+'.json'):

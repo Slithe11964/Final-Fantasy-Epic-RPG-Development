@@ -2,7 +2,18 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BC. Normal development stays on AS; Forsaken BB extends the accepted BA experiment.
+Next unused stage: BD. Normal development stays on AS; Forsaken BC replaces BB's failed stat/talent display.
+
+## Separate experiment - Forsaken BC
+
+- User confirmed BB preserves sparse bag positions. User rejected stat/talent display: mana regeneration stayed22 despite Sorcerer's60/120 aura; Magic Defense labels/values absent; native talent icons2x4 placeholders. Do not describe BB's custom UI as accepted. Keep its successful bag transfer unchanged.
+- BC creates an independent normal-frame FF panel at startup; no dependency on native stat-row handles, mixed simple/normal anchors or an all-or-nothing native frame lookup. Hero receives only fBag/fGer/ASpc; no ASde/ATal assignment. Native equipment/body and30-slot bag remain. Existing unused preview object definitions stay dormant. Obsolete ForsakenPanels.fdf/toc imports removed; baseline import table preserved.
+- B/command-button4 toggles FF panel with debounce; Esc/X closes FF panel, changing selected unit hides it. -forsaken-panels provides an independent fallback if stock mouse-frame event forwarding fails. A native EquipmentPanelBackdrop found across contexts supplies alignment; otherwise fixed screen anchor. All presentation state local. Native B/mouse/key positioning and closing require play-test.
+- Nine live FF labels: Strength, Agility, Intelligence, max HP/MP, health/mana regeneration, Magic Defense/raw + %. Regeneration reads live passive and active item ability levels/fields. Base plus attributes use map IntRegenBonus0.04/default StrRegenBonus0.05; Arel flatHP, AIrm/AIrn mana%, AHab/AUau auraamount/flatpercent flags, strongest own same-buff aura once. Scan hero non-item abilities plus6 active slots/9 equipped positions, excluding bag and duplicate unit/item enumeration. Sorcerer A033/Hab1 rank11=>60, rank22=>120 during Burst, added to intrinsic/gear regen. No gameplay regen changed. Instant restoration, scripted heal-over-time ticks and nearby external auras are not modeled; no claim of full combat-stat migration.
+- Preserve BB equipped-variant MagicDefense helper and exact formula100*defense/(defense+50), canonical shield priority and shared calc-context restoration. Raw100=>66.67%. No native resistance stacking.
+- Twelve own buttons3 columns x4 rows. Canonical A02F ranks1/2/3/4 unlock Normal/Master/Ultimate/Legendary rows. One choice per row; immediate parent required (G needs C). Row1 starts available, then one additional choice per mastery tier. Sync validation rejects wrong job, duplicate/same-row alternative, missing parent and locked rank; local visuals reflect per-player/job state. No actual skills, stats, elements or save-format changes.
+- All gates,96 regressions,2,000 codec cases,20 experiment tests, final archive audit and extra installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Original objects/world/NPC/imports intact, classic exact AS. Scratch build/ForsakenBC-pu1xpnba/FFERPG. First unpublished BC-ekunknmk failed reserved JASS identifiers effect/buff; renamed regenAbility/buffId, no compiler/check relaxation. Experimental JASS CRLF retained.
+- Native acceptance pending: B opens native gear/bag + FF3x4 panel and9 labels; position/readability, mouse B and Esc/X; Sorcerer normal/Burst changes after passive sync/1sec refresh; active/bag gear; Absorber defense/%; mastery rows/one choice/G parent; jobs/players, no real bonuses. Bag/Gaya/normal AS behavior preserved. Save export remains blocked.
 
 ## Separate experiment - Forsaken BB
 

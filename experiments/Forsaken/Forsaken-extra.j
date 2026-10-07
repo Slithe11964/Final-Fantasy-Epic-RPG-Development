@@ -14,8 +14,6 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitMakeAbilityPermanent(holder,true,'fGer')
     call UnitAddAbility(holder,'ASpc')
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
-    call UnitAddAbility(holder,'fSta')
-    call UnitMakeAbilityPermanent(holder,true,'fSta')
     call Forsaken_UpdatePanels(holder)
 endfunction
 
@@ -24,7 +22,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BB: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Use Backpack (B). Bag slots stay in place across jobs. Magic Defense and Magic Defense % show FF defense. Talents: three paths, four rows, four preview points per job; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BC: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
         set holder=null
         return

@@ -2,10 +2,23 @@ function Forsaken_DefensePercent takes integer defense returns real
     return 100.*I2R(defense)/I2R(defense+50)
 endfunction
 
-function Forsaken_TalentCanPurchase takes integer key,integer node returns boolean
-    if node<0 or node>=12 or LoadInteger(ForsakenTalentState,key,20)>=4 or LoadBoolean(ForsakenTalentState,key,node) then
+function Forsaken_TalentRank takes unit hero returns integer
+    return IMinBJ(4,IMaxBJ(1,GetUnitAbilityLevel(hero,'A02F')))
+endfunction
+
+function Forsaken_TalentCanPurchase takes integer key,integer node,integer rank returns boolean
+    local integer row=node/3
+    local integer column=0
+    if node<0 or node>=12 or row>=rank then
         return false
     endif
+    loop
+        exitwhen column>=3
+        if LoadBoolean(ForsakenTalentState,key,row*3+column) then
+            return false
+        endif
+        set column=column+1
+    endloop
     if node>=3 then
         return LoadBoolean(ForsakenTalentState,key,node-3)
     endif
@@ -15,12 +28,11 @@ endfunction
 function Forsaken_TalentClick takes nothing returns nothing
     local integer node=0
     local unit hero=Player_GetHero(GetTriggerPlayer())
-    local integer job=Job_GetIndex(hero)
     loop
         exitwhen node>=12
         if BlzGetTriggerFrame()==ForsakenTalentButton[node] then
-            if GetLocalPlayer()==GetTriggerPlayer() and hero!=null and job>=0 then
-                call BlzSendSyncData("FFERPGTAL",I2S(job*100+node))
+            if GetLocalPlayer()==GetTriggerPlayer() and hero!=null then
+                call BlzSendSyncData("FFERPGTAL",I2S(Job_GetIndex(hero)*100+node))
             endif
             call BlzFrameSetEnable(ForsakenTalentButton[node],false)
             call BlzFrameSetEnable(ForsakenTalentButton[node],true)
@@ -39,7 +51,7 @@ function Forsaken_TalentSync takes nothing returns nothing
     local integer job=packet/100
     local integer node=ModuloInteger(packet,100)
     local integer key=GetPlayerId(owner)*100+job
-    if hero!=null and job==Job_GetIndex(hero) and job>=0 and job<=udg_JobCount and Forsaken_TalentCanPurchase(key,node) then
+    if hero!=null and job==Job_GetIndex(hero) and job>=0 and job<=udg_JobCount and Forsaken_TalentCanPurchase(key,node,Forsaken_TalentRank(hero)) then
         call SaveBoolean(ForsakenTalentState,key,node,true)
         call SaveInteger(ForsakenTalentState,key,20,LoadInteger(ForsakenTalentState,key,20)+1)
     endif
@@ -64,45 +76,181 @@ function Register_Forsaken_TalentSync takes nothing returns nothing
     call TriggerAddAction(gg_trg_Forsaken_TalentSync,function Forsaken_TalentSync)
 endfunction
 
-function Forsaken_CreatePanelFrames takes nothing returns nothing
-    local framehandle nativeTree=BlzGetFrameByName("SimpleTalentsPanel",0)
-    local framehandle rawRow=BlzGetFrameByName("SimpleStatDetailsAbilityVampPercentage",0)
-    local framehandle percentRow=BlzGetFrameByName("SimpleStatDetailsMagicResistance",0)
-    local framehandle line
+function Forsaken_FindFrame takes string name returns framehandle
+    local integer context=0
+    local framehandle found
+    loop
+        exitwhen context>255
+        set found=BlzGetFrameByName(name,context)
+        if found!=null then
+            return found
+        endif
+        set context=context+1
+    endloop
+    return null
+endfunction
+
+function Forsaken_RegenAbility takes ability regenAbility,integer level returns nothing
+    local integer raw=BlzGetAbilityId(regenAbility)
+    local integer kind=LoadInteger(ForsakenGearTypes,30,raw)
+    local integer buffId=LoadInteger(ForsakenGearTypes,31,raw)
+    local real value
+    local boolean percent=false
+    if kind==1 then
+        set ForsakenHPFlat=ForsakenHPFlat+I2R(BlzGetAbilityIntegerLevelField(regenAbility,ABILITY_ILF_HIT_POINTS_REGENERATED_PER_SECOND,level))
+    elseif kind==2 then
+        set ForsakenMPPercent=ForsakenMPPercent+BlzGetAbilityRealLevelField(regenAbility,ABILITY_RLF_MANA_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL,level)
+    elseif kind==3 or kind==4 then
+        if kind==3 then
+            set value=BlzGetAbilityRealLevelField(regenAbility,ABILITY_RLF_MANA_REGENERATION_INCREASE,level)
+            set percent=BlzGetAbilityBooleanLevelField(regenAbility,ABILITY_BLF_PERCENT_BONUS_HAB2,level)
+        else
+            set value=BlzGetAbilityRealLevelField(regenAbility,ABILITY_RLF_LIFE_REGENERATION_INCREASE_PERCENT,level)
+            set percent=BlzGetAbilityBooleanLevelField(regenAbility,ABILITY_BLF_PERCENT_BONUS_UAU3,level)
+        endif
+        if not HaveSavedReal(ForsakenRegenScratch,0,buffId) or value>LoadReal(ForsakenRegenScratch,0,buffId) then
+            call SaveReal(ForsakenRegenScratch,0,buffId,value)
+            call SaveInteger(ForsakenRegenScratch,1,buffId,kind)
+            call SaveBoolean(ForsakenRegenScratch,2,buffId,percent)
+        endif
+    endif
+endfunction
+
+function Forsaken_ReadRegeneration takes unit hero returns nothing
+    local integer index=0
+    local integer slot=0
+    local integer raw
+    local integer buffId
+    local ability regenAbility
+    local item carried
+    local real hp=BlzGetUnitRealField(hero,UNIT_RF_HIT_POINTS_REGENERATION_RATE)+I2R(GetHeroStr(hero,true))*LoadReal(ForsakenGearTypes,40,0)
+    local real mp=BlzGetUnitRealField(hero,UNIT_RF_MANA_REGENERATION)+I2R(GetHeroInt(hero,true))*LoadReal(ForsakenGearTypes,40,1)
+    local real hpPercent=0.
+    local real hpAura=0.
+    local real mpAura=0.
+    local real value
+    set ForsakenHPFlat=0.
+    set ForsakenMPPercent=0.
+    call FlushChildHashtable(ForsakenRegenScratch,0)
+    call FlushChildHashtable(ForsakenRegenScratch,1)
+    call FlushChildHashtable(ForsakenRegenScratch,2)
+    loop
+        set regenAbility=BlzGetUnitAbilityByIndex(hero,index)
+        exitwhen regenAbility==null
+        set raw=BlzGetAbilityId(regenAbility)
+        if not LoadBoolean(ForsakenGearTypes,32,raw) then
+            call Forsaken_RegenAbility(regenAbility,IMaxBJ(0,GetUnitAbilityLevel(hero,raw)-1))
+        endif
+        set index=index+1
+    endloop
+    loop
+        exitwhen slot>=15
+        if slot<6 then
+            set carried=UnitItemInSlot(hero,slot)
+        else
+            set carried=UnitItemInEquipmentSlot(hero,ConvertLoadoutSlot(slot-6))
+        endif
+        if carried!=null then
+            set index=0
+            loop
+                set regenAbility=BlzGetItemAbilityByIndex(carried,index)
+                exitwhen regenAbility==null
+                call Forsaken_RegenAbility(regenAbility,0)
+                set index=index+1
+            endloop
+        endif
+        set slot=slot+1
+    endloop
+    set index=1
+    loop
+        exitwhen index>LoadInteger(ForsakenGearTypes,34,0)
+        set buffId=LoadInteger(ForsakenGearTypes,34,index)
+        set value=LoadReal(ForsakenRegenScratch,0,buffId)
+        if LoadInteger(ForsakenRegenScratch,1,buffId)==3 then
+            if LoadBoolean(ForsakenRegenScratch,2,buffId) then
+                set ForsakenMPPercent=ForsakenMPPercent+value
+            else
+                set mpAura=mpAura+value
+            endif
+        elseif LoadInteger(ForsakenRegenScratch,1,buffId)==4 then
+            if LoadBoolean(ForsakenRegenScratch,2,buffId) then
+                set hpPercent=hpPercent+value
+            else
+                set hpAura=hpAura+value
+            endif
+        endif
+        set index=index+1
+    endloop
+    // Same-buffId auras contribute once; items in the bag contribute nothing.
+    set ForsakenHPRegen=(hp+ForsakenHPFlat)*(1.+hpPercent)+hpAura
+    set ForsakenMPRegen=mp*(1.+ForsakenMPPercent)+mpAura
+    set regenAbility=null
+    set carried=null
+endfunction
+
+function Forsaken_PanelAccess takes nothing returns nothing
+    local player owner=GetTriggerPlayer()
+    local unit hero=Player_GetHero(owner)
+    local real now=TimerGetElapsed(ForsakenPanelClock)
+    if GetLocalPlayer()==owner then
+        if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE or BlzGetTriggerFrame()==ForsakenPanelClose then
+            set ForsakenPanelOpen=false
+        elseif hero!=null and IsUnitSelected(hero,owner) and now-ForsakenPanelLastToggle>.1 then
+            set ForsakenPanelOpen=not ForsakenPanelOpen
+            set ForsakenPanelLastToggle=now
+        endif
+        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen)
+    endif
+    set hero=null
+    set owner=null
+endfunction
+
+function Register_Forsaken_PanelAccess takes nothing returns nothing
+    local integer i=0
     local integer node=0
-    local integer child=0
     local integer row
     local integer column
-    if nativeTree==null or rawRow==null or percentRow==null then
-        set nativeTree=null
-        set rawRow=null
-        set percentRow=null
-        return
-    endif
-    call BlzLoadTOCFile("ForsakenPanels.toc")
+    local framehandle label
+    local framehandle line
+    local framehandle heading
+    set ForsakenStatName[0]="Strength"
+    set ForsakenStatName[1]="Agility"
+    set ForsakenStatName[2]="Intelligence"
+    set ForsakenStatName[3]="Maximum HP"
+    set ForsakenStatName[4]="Maximum MP"
+    set ForsakenStatName[5]="Health Regeneration"
+    set ForsakenStatName[6]="Mana Regeneration"
+    set ForsakenStatName[7]="Magic Defense"
+    set ForsakenStatName[8]="Magic Defense %"
+    set gg_trg_Forsaken_PanelAccess=CreateTrigger()
     loop
-        exitwhen child>=BlzFrameGetChildrenCount(rawRow)
-        call BlzFrameSetVisible(BlzFrameGetChild(rawRow,child),false)
-        set child=child+1
+        exitwhen i>=8
+        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)
+        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_PanelAccess,Player(i),"-forsaken-panels",true)
+        set i=i+1
     endloop
-    set child=0
-    loop
-        exitwhen child>=BlzFrameGetChildrenCount(percentRow)
-        call BlzFrameSetVisible(BlzFrameGetChild(percentRow,child),false)
-        set child=child+1
-    endloop
-    set ForsakenDefenseRow=BlzCreateSimpleFrame("ForsakenDefenseRow",rawRow,0)
-    call BlzFrameSetAllPoints(ForsakenDefenseRow,rawRow)
-    set ForsakenReductionRow=BlzCreateSimpleFrame("ForsakenReductionRow",percentRow,0)
-    call BlzFrameSetAllPoints(ForsakenReductionRow,percentRow)
-    set ForsakenDefenseValue=BlzGetFrameByName("ForsakenDefenseValue",0)
-    set ForsakenReductionValue=BlzGetFrameByName("ForsakenReductionValue",0)
-    call BlzFrameSetVisible(BlzGetFrameByName("PointsAvailableText",0),false)
-    set ForsakenTalentRoot=BlzCreateFrameByType("FRAME","ForsakenPaths",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),"",0)
-    call BlzFrameSetAllPoints(ForsakenTalentRoot,nativeTree)
-    call BlzFrameSetLevel(ForsakenTalentRoot,20)
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,4),FRAMEEVENT_CONTROL_CLICK)
+    call TriggerAddAction(gg_trg_Forsaken_PanelAccess,function Forsaken_PanelAccess)
+    set ForsakenPanelClock=CreateTimer()
+    call TimerStart(ForsakenPanelClock,86400.,false,null)
+    set ForsakenTalentRoot=BlzCreateFrame("EscMenuBackdrop",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
+    call BlzFrameSetAbsPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,.385,.585)
+    call BlzFrameSetSize(ForsakenTalentRoot,.145,.405)
+    call BlzFrameSetLevel(ForsakenTalentRoot,30)
+    set ForsakenPanelClose=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,0)
+    call BlzFrameSetPoint(ForsakenPanelClose,FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.008,-.008)
+    call BlzFrameSetSize(ForsakenPanelClose,.016,.016)
+    call BlzFrameSetText(ForsakenPanelClose,"X")
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenPanelClose,FRAMEEVENT_CONTROL_CLICK)
+    set heading=BlzCreateFrameByType("TEXT","ForsakenHeading",ForsakenTalentRoot,"",0)
+    call BlzFrameSetPoint(heading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.014)
+    call BlzFrameSetSize(heading,.13,.016)
+    call BlzFrameSetFont(heading,"Fonts\\FRIZQT__.TTF",.013,0)
+    call BlzFrameSetTextAlignment(heading,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
+    call BlzFrameSetText(heading,"Talents")
     set ForsakenTalentPoints=BlzCreateFrameByType("TEXT","ForsakenPoints",ForsakenTalentRoot,"",0)
-    call BlzFrameSetPoint(ForsakenTalentPoints,FRAMEPOINT_TOP,nativeTree,FRAMEPOINT_TOP,0,-.032)
+    call BlzFrameSetPoint(ForsakenTalentPoints,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.033)
     call BlzFrameSetSize(ForsakenTalentPoints,.13,.018)
     call BlzFrameSetFont(ForsakenTalentPoints,"Fonts\\FRIZQT__.TTF",.007,0)
     call BlzFrameSetTextAlignment(ForsakenTalentPoints,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
@@ -111,7 +259,7 @@ function Forsaken_CreatePanelFrames takes nothing returns nothing
         set row=node/3
         set column=ModuloInteger(node,3)
         set ForsakenTalentButton[node]=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,node+1)
-        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,nativeTree,FRAMEPOINT_TOPLEFT,.012+I2R(column)*.042,-.058-I2R(row)*.045)
+        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.012+I2R(column)*.041,-.06-I2R(row)*.041)
         call BlzFrameSetSize(ForsakenTalentButton[node],.034,.034)
         set ForsakenTalentIcon[node]=BlzCreateFrameByType("BACKDROP","ForsakenTalentIcon",ForsakenTalentButton[node],"",node+1)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_TOPLEFT,ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,.003,-.003)
@@ -119,26 +267,39 @@ function Forsaken_CreatePanelFrames takes nothing returns nothing
         call BlzFrameSetEnable(ForsakenTalentIcon[node],false)
         set ForsakenTalentLabel[node]=BlzCreateFrameByType("TEXT","ForsakenTalentLabel",ForsakenTalentButton[node],"",node+1)
         call BlzFrameSetAllPoints(ForsakenTalentLabel[node],ForsakenTalentButton[node])
-        call BlzFrameSetFont(ForsakenTalentLabel[node],"Fonts\\FRIZQT__.TTF",.009,0)
+        call BlzFrameSetFont(ForsakenTalentLabel[node],"Fonts\\FRIZQT__.TTF",.008,0)
         call BlzFrameSetTextAlignment(ForsakenTalentLabel[node],TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
         call BlzFrameSetEnable(ForsakenTalentLabel[node],false)
         call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenTalentButton[node],FRAMEEVENT_CONTROL_CLICK)
         if row<3 then
             set line=BlzCreateFrameByType("TEXT","ForsakenTalentLink",ForsakenTalentRoot,"",node+1)
-            call BlzFrameSetPoint(line,FRAMEPOINT_TOP,ForsakenTalentButton[node],FRAMEPOINT_BOTTOM,0,0)
-            call BlzFrameSetSize(line,.012,.012)
-            call BlzFrameSetFont(line,"Fonts\\FRIZQT__.TTF",.009,0)
+            call BlzFrameSetPoint(line,FRAMEPOINT_TOP,ForsakenTalentButton[node],FRAMEPOINT_BOTTOM,0,.001)
+            call BlzFrameSetSize(line,.012,.009)
+            call BlzFrameSetFont(line,"Fonts\\FRIZQT__.TTF",.007,0)
             call BlzFrameSetTextAlignment(line,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
             call BlzFrameSetText(line,"|cffffcc00v|r")
             call BlzFrameSetEnable(line,false)
         endif
         set node=node+1
     endloop
+    set node=0
+    loop
+        exitwhen node>=9
+        set label=BlzCreateFrameByType("TEXT","ForsakenStatLabel",ForsakenTalentRoot,"",node+1)
+        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.011,-.245-I2R(node)*.014)
+        call BlzFrameSetSize(label,.088,.014)
+        call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.0065,0)
+        call BlzFrameSetText(label,ForsakenStatName[node])
+        set ForsakenStatValue[node]=BlzCreateFrameByType("TEXT","ForsakenStatValue",ForsakenTalentRoot,"",node+1)
+        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.011,-.245-I2R(node)*.014)
+        call BlzFrameSetSize(ForsakenStatValue[node],.038,.014)
+        call BlzFrameSetFont(ForsakenStatValue[node],"Fonts\\FRIZQT__.TTF",.0065,0)
+        call BlzFrameSetTextAlignment(ForsakenStatValue[node],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_RIGHT)
+        set node=node+1
+    endloop
     call BlzFrameSetVisible(ForsakenTalentRoot,false)
-    set ForsakenPanelFramesReady=true
-    set nativeTree=null
-    set rawRow=null
-    set percentRow=null
+    set heading=null
+    set label=null
     set line=null
 endfunction
 
@@ -146,34 +307,53 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
     local player owner=GetOwningPlayer(hero)
     local integer playerIndex=GetPlayerId(owner)
     local integer job=Job_GetIndex(hero)
-    local integer tree=LoadInteger(ForsakenGearTypes,2,playerIndex)
     local unit previous=udg_CurrentHero
     local integer previousCalc=udg_StatCalcValue
     local integer key=playerIndex*100+job
+    local integer rank=Forsaken_TalentRank(hero)
     local integer node=0
-    local integer skill=0
     local integer column
+    local integer skill
     local string letter
-    if tree==0 or job<0 then
+    local string mastery="Normal"
+    local framehandle anchor
+    if job<0 then
         set owner=null
         set previous=null
         return
     endif
-    call UnitAddAbility(hero,tree)
-    call UnitMakeAbilityPermanent(hero,true,tree)
     set udg_CurrentHero=hero
     call Trig_MagicDefense_Calc_Actions()
     set udg_CurrentHero=previous
     set udg_StatCalcValue=previousCalc
-    if not ForsakenPanelFramesReady then
-        call Forsaken_CreatePanelFrames()
+    call Forsaken_ReadRegeneration(hero)
+    if rank==2 then
+        set mastery="Master"
+    elseif rank==3 then
+        set mastery="Ultimate"
+    elseif rank==4 then
+        set mastery="Legendary"
     endif
-    if GetLocalPlayer()==owner and ForsakenPanelFramesReady then
-        call BlzSetAbilityTooltip(tree,GetUnitName(hero)+" Talents",0)
-        call BlzFrameSetText(ForsakenDefenseValue,I2S(udg_MagicDefense[playerIndex+1]))
-        call BlzFrameSetText(ForsakenReductionValue,R2SW(Forsaken_DefensePercent(udg_MagicDefense[playerIndex+1]),1,2)+"%")
-        call BlzFrameSetVisible(ForsakenTalentRoot,BlzFrameIsVisible(BlzGetFrameByName("SimpleTalentsPanel",0)) and IsUnitSelected(hero,owner))
-        call BlzFrameSetText(ForsakenTalentPoints,"Preview points: "+I2S(4-LoadInteger(ForsakenTalentState,key,20))+"|nNo combat bonuses")
+    if GetLocalPlayer()==owner then
+        if not IsUnitSelected(hero,owner) then
+            set ForsakenPanelOpen=false
+        endif
+        set anchor=Forsaken_FindFrame("EquipmentPanelBackdrop")
+        if anchor!=null then
+            call BlzFrameClearAllPoints(ForsakenTalentRoot)
+            call BlzFrameSetPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPLEFT,-.002,0)
+        endif
+        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen)
+        call BlzFrameSetText(ForsakenStatValue[0],I2S(GetHeroStr(hero,true)))
+        call BlzFrameSetText(ForsakenStatValue[1],I2S(GetHeroAgi(hero,true)))
+        call BlzFrameSetText(ForsakenStatValue[2],I2S(GetHeroInt(hero,true)))
+        call BlzFrameSetText(ForsakenStatValue[3],I2S(BlzGetUnitMaxHP(hero)))
+        call BlzFrameSetText(ForsakenStatValue[4],I2S(BlzGetUnitMaxMana(hero)))
+        call BlzFrameSetText(ForsakenStatValue[5],R2SW(ForsakenHPRegen,1,2))
+        call BlzFrameSetText(ForsakenStatValue[6],R2SW(ForsakenMPRegen,1,2))
+        call BlzFrameSetText(ForsakenStatValue[7],I2S(udg_MagicDefense[playerIndex+1]))
+        call BlzFrameSetText(ForsakenStatValue[8],R2SW(Forsaken_DefensePercent(udg_MagicDefense[playerIndex+1]),1,2)+"%")
+        call BlzFrameSetText(ForsakenTalentPoints,"Choices: "+I2S(rank-LoadInteger(ForsakenTalentState,key,20))+" / "+mastery+"|nPreview: no bonuses")
         loop
             exitwhen node>=12
             set column=ModuloInteger(node,3)
@@ -196,7 +376,7 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
             if LoadBoolean(ForsakenTalentState,key,node) then
                 call BlzFrameSetText(ForsakenTalentLabel[node],"|cff00ff00"+letter+" +|r")
                 call BlzFrameSetAlpha(ForsakenTalentIcon[node],255)
-            elseif Forsaken_TalentCanPurchase(key,node) then
+            elseif Forsaken_TalentCanPurchase(key,node,rank) then
                 call BlzFrameSetText(ForsakenTalentLabel[node],"|cffffcc00"+letter+"|r")
                 call BlzFrameSetAlpha(ForsakenTalentIcon[node],255)
             else
@@ -206,6 +386,7 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
             set node=node+1
         endloop
     endif
+    set anchor=null
     set owner=null
     set previous=null
 endfunction
