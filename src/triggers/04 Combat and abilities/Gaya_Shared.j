@@ -21,7 +21,7 @@ function Gaya_RecreateSpirit takes player p returns nothing
     endloop
     set i=1
     loop
-        exitwhen i>=$C // $C = 12
+        exitwhen i>12
         call SetUnitAbilityLevel(l_newSpirit,udg_ChronicleAbility[i],GetUnitAbilityLevel(l_oldSpirit,udg_ChronicleAbility[i]))
         set i=i+1
     endloop

@@ -124,3 +124,7 @@ Test Back, each missing hint and original icon, all four deposits/withdrawals, d
 lower-tier rejection, N / 280 changes, older saves and new materia save/load in both clients.
 Use two players to check ownership and independent collections. Also verify World Editor Save As.
 tools/tests/verify_armory_materia_build.py audits the AM maps against AL.
+
+Current sources also require Chronicle page/Secrets abilities. Use the complete fresh workflow
+in BUILDS.md, or an AP-or-later map for incremental work; older partial object examples above
+need the Chronicle preparer before a current-source build.

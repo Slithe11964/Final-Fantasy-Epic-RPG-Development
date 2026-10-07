@@ -625,6 +625,8 @@ function Trig_Bazaar_OpenRecipes_Actions takes nothing returns nothing
     local integer id=GetPlayerId(p)
     local integer slot=0
     call RemoveUnit(GetSoldUnit())
+    call RemoveUnitFromStock(GetSellingUnit(),'bRcp')
+    call AddUnitToStock(GetSellingUnit(),'bRcp',1,1)
     if id<0 or id>=bj_MAX_PLAYERS or udg_BazaarRecipeHash==null then
         set buyer=null
         set p=null

@@ -1,10 +1,42 @@
-# FF Epic RPG handoff - 2026-10-07, stage AO hunt availability and blue-girl waiting
+# FF Epic RPG handoff - 2026-10-07, stage AP Chronicles, Keg Hunter and Bazaar reopening
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User requests five-minute blue-girl waiting and Harpy Hunt while helping Kollin.
-Next unused stage: AP.
+User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
+Next unused stage: AQ.
 
-## Current development build - AO
+## Current development build - AP
+
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAP.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAP.w3x (AE Bazaar UI).
+- Chronicles: first10 categories + Next page; nested page2 has Time Trial and Secrets; Secrets
+  contains Keg Hunter. Additive abilities cPg2/cSec/cKeg, distinct spellbook orders. Only existing
+  A0AR spell list and A10C button position changed. Each category shows unlocked titles / maximum,
+  including root total63. Count force membership rather than internal weighted ability levels.
+  Local tooltip update1sec; synchronized pickup/inventory paths own progression.
+- Keg Hunter: collect all10 books one at a time with your own hero/Gaya in one game. Duplicates,
+  other units/players and rejected pickups do not count. Completion grants title59; partial
+  progress stays in this game per user choice. Existing dedicated title59 save bit already read/
+  written: no serializer, field, contract or inventory index changes. Restores after load/Gaya
+  recreation. Full title applies all monograph bonuses without inventory space; no stacking.
+- Regional books already worked on hero OR Gaya. Shared Loot predicate adds earned title59 and
+  zone0 for Knight's previously excluded ordinary-loot effect. Preserve drop tables/chances,
+  charged/powerup/Spider Leg rules, hero-kill restriction and essence region1..8 behavior.
+  Detailed effects/region table in docs/CHRONICLES.md.
+- User also reports Bazaar will not reopen after closing once. Recipe entry now explicitly
+  removed/re-added at full stock after each purchase, preventing exhausted stock from blocking
+  reopening. UI/session/crafting code unchanged. Source regression opens/closes3 times and
+  rejects old Close packets; in-game cause/fix acceptance still needs confirmation.
+- Full gates,93 regressions,2,000 codec cases,classic check_map and scoped preservation PASS.
+  New pickup trigger allowed explicitly;1508 startup triggers, no existing pair reorder.
+  Objects/items/recipes/quests/rewards/save format outside requested changes unchanged.
+- Test native nested page navigation/Cancel and counters in both clients, sequential10 books,
+  two-player isolation, completion save/load/recreation, Knight/regional loot and repeated Bazaar
+  reopening from hero/Gaya/shops. Multiplayer and World Editor Save As remain unconfirmed.
+  AO blue-girl timing and concurrent hunts still need user confirmation. AN/AM retained.
+- Next incremental: .\build.ps1 -Stage AQ -Base release/FFERPG_0.9.7.3-r16-stageAP.w3x.
+  Fresh objects/build: docs/BUILDS.md. Chronicle implementation: Titles/Loot/GameLoad/Gaya_Shared.
+
+## Previous development build - AO
 
 - Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAO.w3x.
 - Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAO.w3x (AE Bazaar UI).
@@ -87,7 +119,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AO -Base release/FFERPG_0.9.7.3-r16-stageAN.w3x
+.\build.ps1 -Stage AQ -Base release/FFERPG_0.9.7.3-r16-stageAP.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

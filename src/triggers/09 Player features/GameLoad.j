@@ -15,7 +15,7 @@ endfunction
 function Trig_GameLoad_RestoreTitles_RestoreChronicleLevels takes nothing returns nothing
     set udg_TempInteger=1
     loop
-        exitwhen udg_TempInteger>$A // $A = 10
+        exitwhen udg_TempInteger>12
         call SetUnitAbilityLevelSwapped(udg_ChronicleAbility[udg_TempInteger],udg_SpiritOfGaya[GetConvertedPlayerId(GetEnumPlayer())],1)
         set udg_TempInteger=udg_TempInteger+1
     endloop

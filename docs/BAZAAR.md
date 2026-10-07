@@ -97,3 +97,8 @@ recipe data, results, charges and payment code are unchanged. Runtime changes ar
 Bazaar and the two requested Gaya range functions; the audit checks those exact numeric edits.
 The disabled DevCommands editor source adds -teleporters. Syncing retains the original pawn and bundle editor handlers. Generated maps/reports stay
 outside Git; sources, tools and guides are tracked.
+
+Stage AP explicitly resets the Recipes unit stock immediately after each purchase. This addresses
+the user report that the browser would not reopen after its first Close. UI/session/transactions
+are preserved; the new regression exercises three open/Close cycles and stale sync rejection.
+Retest in both clients with hero/Gaya buyers and multiplayer; native acceptance is pending.

@@ -1,10 +1,222 @@
-library TTitles requires TJob, TPlayerHero
+library TTitles requires TJob, TPlayerHero, TTitle
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Titles_Init=null
     trigger gg_trg_Titles_CheckAll=null
     trigger gg_trg_Titles_CheckBasic=null
+    trigger gg_trg_Titles_MonographPickup=null
+    boolean array ChroniclesMonographSeen
+    integer array ChroniclesMonographCount
+    integer array ChroniclesLevels
+    string array ChroniclesTooltipBase
+    string array ChroniclesTooltipShown
+    string array ChroniclesNameBase
+    string ChroniclesRootBase=""
+    string ChroniclesRootShown=""
+    string ChroniclesSecretsBase=""
+    string ChroniclesSecretsShown=""
 endglobals
+
+function Chronicles_MonographIndex takes integer raw returns integer
+    if raw=='I0EI' then
+        return 0
+    elseif raw=='I0EF' then
+        return 1
+    elseif raw=='I0EG' then
+        return 2
+    elseif raw=='I0EJ' then
+        return 3
+    elseif raw=='I0EH' then
+        return 4
+    elseif raw=='I0EM' then
+        return 5
+    elseif raw=='I0EK' then
+        return 6
+    elseif raw=='I0EL' then
+        return 7
+    elseif raw=='I0EO' then
+        return 8
+    elseif raw=='I0EN' then
+        return 9
+    endif
+    return -1
+endfunction
+
+function Chronicles_RecordMonograph takes player p,integer raw returns nothing
+    local integer index=Chronicles_MonographIndex(raw)
+    local integer pid=GetPlayerId(p)+1
+    local integer key=pid*10+index
+    local player previousPlayer=udg_TempPlayer
+    local integer previousTitle=udg_TempInteger
+    if index<0 or IsPlayerInForce(p,udg_PlayingPlayers)==false or IsPlayerInForce(p,udg_TitleForce[59]) then
+        return
+    endif
+    if not ChroniclesMonographSeen[key] then
+        set ChroniclesMonographSeen[key]=true
+        set ChroniclesMonographCount[pid]=ChroniclesMonographCount[pid]+1
+        if ChroniclesMonographCount[pid]==10 then
+            set udg_TempPlayer=p
+            set udg_TempInteger=59
+            call ConditionalTriggerExecute(gg_trg_Title_Grant)
+            set udg_TempPlayer=previousPlayer
+            set udg_TempInteger=previousTitle
+        endif
+    endif
+    set previousPlayer=null
+endfunction
+
+function Chronicles_MonographPickup takes nothing returns nothing
+    local unit u=GetTriggerUnit()
+    local player p=GetOwningPlayer(u)
+    if u==Player_GetHero(p) or u==udg_SpiritOfGaya[GetPlayerId(p)+1] then
+        if UnitHasItem(u,GetManipulatedItem()) then
+            call Chronicles_RecordMonograph(p,GetItemTypeId(GetManipulatedItem()))
+        endif
+    endif
+    set u=null
+    set p=null
+endfunction
+
+function Chronicles_CheckInventory takes player p returns nothing
+    local integer i=0
+    local unit hero=Player_GetHero(p)
+    local unit spirit=udg_SpiritOfGaya[GetPlayerId(p)+1]
+    if IsPlayerInForce(p,udg_TitleForce[59]) or hero==null then
+        set hero=null
+        set spirit=null
+        return
+    endif
+    loop
+        exitwhen i>=6
+        call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(hero,i)))
+        call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(spirit,i)))
+        set i=i+1
+    endloop
+    set hero=null
+    set spirit=null
+endfunction
+
+function Chronicles_Progress takes player p,integer category returns string
+    local integer i=1
+    local integer unlocked=0
+    local integer total=0
+    loop
+        exitwhen i>65
+        if udg_TitleName[i]!="" and udg_TitleChronicleIndex[i]>0 and (category==0 or udg_TitleChronicleIndex[i]==category) then
+            set total=total+1
+            if udg_TitleChronicleIndex[i]!=11 and IsPlayerInForce(p,udg_TitleForce[i]) then
+                set unlocked=unlocked+1
+            endif
+        endif
+        set i=i+1
+    endloop
+    if category==0 or category==11 then
+        set unlocked=unlocked+IMinBJ(udg_SpeedrunLevel[GetPlayerId(p)+1],5)
+    endif
+    return I2S(unlocked)+" / "+I2S(total)
+endfunction
+
+function Chronicles_RestoreSecrets takes player p returns nothing
+    local unit spirit=udg_SpiritOfGaya[GetPlayerId(p)+1]
+    if spirit!=null then
+        if IsPlayerInForce(p,udg_TitleForce[59]) then
+            call SetUnitAbilityLevel(spirit,'cKeg',2)
+            call SetPlayerAbilityAvailable(p,'A0AR',true)
+        else
+            call SetUnitAbilityLevel(spirit,'cKeg',1)
+        endif
+        call SetUnitAbilityLevel(spirit,'A10C',udg_SpeedrunLevel[GetPlayerId(p)+1]+1)
+    endif
+    set spirit=null
+endfunction
+
+function Chronicles_RefreshTooltips takes nothing returns nothing
+    local player p=GetLocalPlayer()
+    local integer category=1
+    local integer level
+    local integer key
+    local integer found=ChroniclesMonographCount[GetPlayerId(p)+1]
+    local string progress
+    local string tooltip
+    if IsPlayerInForce(p,udg_TitleForce[59]) then
+        set found=10
+    endif
+    loop
+        exitwhen category>12
+        set progress=Chronicles_Progress(p,category)
+        set level=GetUnitAbilityLevel(udg_SpiritOfGaya[GetPlayerId(p)+1],udg_ChronicleAbility[category])-1
+        if level>=0 and level<ChroniclesLevels[category] then
+            set key=category*64+level
+            set tooltip=ChroniclesTooltipBase[key]+"|n|n|cffffcc00Chronicles unlocked:|r "+progress
+            if category==12 then
+                set tooltip=tooltip+"|nMonographs held this game: "+I2S(found)+" / 10"
+            endif
+            if tooltip!=ChroniclesTooltipShown[key] then
+                call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key]+" ("+progress+")",level)
+                call BlzSetAbilityExtendedTooltip(udg_ChronicleAbility[category],tooltip,level)
+                set ChroniclesTooltipShown[key]=tooltip
+            endif
+        endif
+        set category=category+1
+    endloop
+    set tooltip=ChroniclesSecretsBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,12)
+    if tooltip!=ChroniclesSecretsShown then
+        call BlzSetAbilityExtendedTooltip('cSec',tooltip,0)
+        call BlzSetAbilityTooltip('cSec',"Secrets ("+Chronicles_Progress(p,12)+")",0)
+        set ChroniclesSecretsShown=tooltip
+    endif
+    set tooltip=ChroniclesRootBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,0)
+    if tooltip!=ChroniclesRootShown then
+        call BlzSetAbilityExtendedTooltip('A0AR',tooltip,0)
+        set ChroniclesRootShown=tooltip
+    endif
+    set p=null
+endfunction
+
+function Chronicles_Tick takes nothing returns nothing
+    local integer i=0
+    loop
+        exitwhen i>=8
+        call Chronicles_CheckInventory(Player(i))
+        call Chronicles_RestoreSecrets(Player(i))
+        set i=i+1
+    endloop
+    call Chronicles_RefreshTooltips()
+endfunction
+
+function Chronicles_Init takes nothing returns nothing
+    local integer category=1
+    local integer level
+    local integer key
+    set ChroniclesLevels[1]=8
+    set ChroniclesLevels[2]=8
+    set ChroniclesLevels[3]=8
+    set ChroniclesLevels[4]=7
+    set ChroniclesLevels[5]=32
+    set ChroniclesLevels[6]=19
+    set ChroniclesLevels[7]=20
+    set ChroniclesLevels[8]=32
+    set ChroniclesLevels[9]=8
+    set ChroniclesLevels[10]=20
+    set ChroniclesLevels[11]=6
+    set ChroniclesLevels[12]=2
+    loop
+        exitwhen category>12
+        set level=0
+        loop
+            exitwhen level>=ChroniclesLevels[category]
+            set key=category*64+level
+            set ChroniclesTooltipBase[key]=BlzGetAbilityExtendedTooltip(udg_ChronicleAbility[category],level)
+            set ChroniclesNameBase[key]=BlzGetAbilityTooltip(udg_ChronicleAbility[category],level)
+            set level=level+1
+        endloop
+        set category=category+1
+    endloop
+    set ChroniclesRootBase=BlzGetAbilityExtendedTooltip('A0AR',0)
+    set ChroniclesSecretsBase=BlzGetAbilityExtendedTooltip('cSec',0)
+    call Chronicles_Tick()
+    call TimerStart(CreateTimer(),1.,true,function Chronicles_Tick)
+endfunction
 
 function Trig_Titles_Init_Title_BoostsPrimaryOnly takes nothing returns boolean
     return(udg_TitlePrimaryStatOnly[GetForLoopIndexA()])
@@ -37,6 +249,8 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_ChronicleAbility[9]='A10A' // 'A10A': ability "Gear Collection"
     set udg_ChronicleAbility[$A]='A10B' // $A = 10; 'A10B': ability "Quests"
     set udg_ChronicleAbility[$B]='A10C' // $B = 11; 'A10C': ability "Time Trial"
+    set udg_ChronicleAbility[12]='cKeg'
+    set udg_TitleChronicleIndex[59]=12
     set udg_BonusValue[1]=$A // $A = 10
     set udg_BonusValue[4]=$A // $A = 10
     set udg_BonusValue[$B]=$A // $B = 11; $A = 10
@@ -261,6 +475,7 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_TitleName[56]="Arms Completionist"
     set udg_TitleName[57]="Arms Connoisseur"
     set udg_TitleName[58]="Arms Expert"
+    set udg_TitleName[59]="Keg Hunter"
     set bj_forLoopAIndex=$A // $A = 10
     set bj_forLoopAIndexEnd=75
     loop
@@ -315,6 +530,7 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_BonusText[56]="There is no longer any penalty for death and you always revive with full HP and MP!"
     set udg_BonusText[57]="Your base damage increases by 20 and defense by 5!"
     set udg_BonusText[58]="Your base damage increases by 20 and defense by 5!"
+    set udg_BonusText[59]="All ten monograph effects are now permanently active without carrying the books!"
     set udg_BonusText[(udg_SpeedrunTitleBase+1)]=(udg_BonusText[(udg_SpeedrunTitleBase+1)]+" Next Speedrun Challenge: Defeat Zalera within 8 minutes of game time.")
     set udg_BonusText[(udg_SpeedrunTitleBase+2)]=(udg_BonusText[(udg_SpeedrunTitleBase+2)]+" Next Speedrun Challenge: Defeat Zeromus within 15 minutes of game time.")
     set udg_BonusText[(udg_SpeedrunTitleBase+3)]=(udg_BonusText[(udg_SpeedrunTitleBase+3)]+" Next Speedrun Challenge: Defeat Hashmalum within 20 minutes of game time.")
@@ -322,6 +538,7 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_BonusText[(udg_SpeedrunTitleBase+5)]=(udg_BonusText[(udg_SpeedrunTitleBase+5)]+" You cleared all speedrun challenges! Congratulations!")
     call ForForce(udg_ActivePlayers,function Trig_Titles_Init_HideChronicleAbilities)
     call DestroyTrigger(GetTriggeringTrigger())
+    call Chronicles_Init()
 endfunction
 
 function Trig_Titles_CheckAll_Wargod_Met takes nothing returns boolean
@@ -557,6 +774,7 @@ function Trig_Titles_CheckAll_Actions takes nothing returns nothing
         endif
         set udg_TempInteger=udg_TempInteger+1
     endloop
+    call Chronicles_RestoreSecrets(udg_TempPlayer)
 endfunction
 
 function Trig_Titles_CheckBasic_Warlord_Ready takes nothing returns boolean
@@ -698,11 +916,18 @@ function Register_Titles_CheckBasic takes nothing returns nothing
     call TriggerAddAction(gg_trg_Titles_CheckBasic,function Trig_Titles_CheckBasic_Actions)
 endfunction
 
+function Register_Titles_MonographPickup takes nothing returns nothing
+    set gg_trg_Titles_MonographPickup=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Titles_MonographPickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerAddAction(gg_trg_Titles_MonographPickup,function Chronicles_MonographPickup)
+endfunction
+
 // Creates this module's triggers. Called once at startup from Startup_RegisterTriggers (MapBootstrap).
 function RegisterTriggers_Titles takes nothing returns nothing
     call Register_Titles_Init() // starts off; run by Init
     call Register_Titles_CheckAll() // starts off; run by Cmd
     call Register_Titles_CheckBasic() // starts off; run by JobLevels
+    call Register_Titles_MonographPickup()
 endfunction
 
 endlibrary

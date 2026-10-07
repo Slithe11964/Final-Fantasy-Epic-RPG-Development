@@ -2124,11 +2124,16 @@ function Trig_Loot_MonsterDrop_HasItemOfType takes unit u,integer l_itemTypeID r
     return false
 endfunction
 
+function Loot_HasMonographBonus takes player p,integer zone returns boolean
+    if zone<0 or zone>9 then
+        return false
+    endif
+    return IsPlayerInForce(p,udg_TitleForce[59]) or Trig_Loot_MonsterDrop_HasItemOfType(Player_GetHero(p),udg_MonographItem[zone]) or Trig_Loot_MonsterDrop_HasItemOfType(udg_SpiritOfGaya[GetPlayerId(p)+1],udg_MonographItem[zone])
+endfunction
+
 function Trig_Loot_MonsterDrop_Cond_MonographBonus takes nothing returns boolean
-    if(((GetUnitUserData(GetTriggerUnit())>0)and(GetUnitUserData(GetTriggerUnit())<=9))and(GetKillingUnit()==Player_GetHero(GetOwningPlayer(GetKillingUnit()))))then
-        if(((Trig_Loot_MonsterDrop_HasItemOfType(GetKillingUnit(),udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))or(Trig_Loot_MonsterDrop_HasItemOfType(udg_SpiritOfGaya[GetPlayerId(GetOwningPlayer(GetKillingUnit()))+1],udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))))then
-            return true
-        endif
+    if GetKillingUnit()!=null and GetKillingUnit()==Player_GetHero(GetOwningPlayer(GetKillingUnit())) then
+        return Loot_HasMonographBonus(GetOwningPlayer(GetKillingUnit()),GetUnitUserData(GetTriggerUnit()))
     endif
     return false
 endfunction
@@ -2370,7 +2375,7 @@ function Trig_Loot_EssenceDrop_Cond_ZoneChanged takes nothing returns boolean
 endfunction
 
 function Trig_Loot_EssenceDrop_HasMonograph takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetKillingUnitBJ(),udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))],udg_MonographItem[GetUnitUserData(GetTriggerUnit())]))
+    return Loot_HasMonographBonus(GetOwningPlayer(GetKillingUnitBJ()),GetUnitUserData(GetTriggerUnit()))
 endfunction
 
 function Trig_Loot_EssenceDrop_Cond_DoubleEssenceCharges takes nothing returns boolean
@@ -2451,7 +2456,7 @@ function Trig_Loot_BlockLeaverItems_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Loot_Cuchulainn_EyeDrop_Conditions takes nothing returns boolean
-    return(GetUnitTypeId(GetTriggerUnit())=='uabc') // 'uabc': unit "Tainted Cúchulainn"
+    return(GetUnitTypeId(GetTriggerUnit())=='uabc') // 'uabc': unit "Tainted CÃºchulainn"
 endfunction
 
 function Trig_Loot_Cuchulainn_EyeDrop_RollPotion takes nothing returns boolean
