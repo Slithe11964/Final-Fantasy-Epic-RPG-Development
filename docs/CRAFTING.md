@@ -66,7 +66,7 @@ Item numbering is explained in [LOOT.md](LOOT.md).
   - sets `udg_BazaarGoodItem[1..56]` and what each costs in materials.
 - **Pawning:** `Bazaar_PawnMaterial` counts pawned materials per type (`udg_MaterialOwnedCount[i]`).
   The shared pool is retained; `Bazaar_UpdateStock` refreshes open recipe browsers without spending.
-- **Recipes (stage AE):** bottom-right Recipes icon, Previous/Next navigation, hidden rewards and
+- **Recipes (stages AE/AF):** bottom-right Recipes icon, five choices per page, compact details, hidden rewards and
   green satisfied ingredients. Craft rechecks parts, buyer and original gold/shard price, spends one
   set and delivers the original bundle results/charges. See BAZAAR.md.
 - **Bundles:** original bundle definitions and delivery data remain; automatic stocking is replaced.

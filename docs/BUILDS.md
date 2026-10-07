@@ -5,7 +5,7 @@ Run from the FFERPG repository in PowerShell:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AF -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
+.\build.ps1 -Stage AG -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
 ```
 
 Current sources require armory hint objects and the Bazaar recipe button. On a fresh clone prepare both as above;
@@ -53,7 +53,7 @@ tool location, with `used: false`. Header-only finalization is checked before pu
 | check_save_compat.py | Append-only item indexes <=500, item charge/base/class preservation, job order, armory mappings, serializers and fixed G/H vectors. |
 | check_armory.py | Hint coverage, proxy objects, zero cost and catalogue/source agreement. |
 | check_bazaar.py | Last-slot browser button, all recipe ingredients/results and unchanged bundle prices. |
-| tests/run_tests.py | 60 regression tests, including actual quest lifecycle/event source with mocked natives. |
+| tests/run_tests.py | 61 regression tests, including actual quest lifecycle/event source with mocked natives. |
 | savecode.py selftest | 2,000 randomized encode/decode/rename/checksum cases. |
 
 For intentionally new/removed triggers, pass `-AllowNew REGEX` / `-AllowRemoved REGEX` (Python:

@@ -18,6 +18,10 @@ globals
     trigger gg_trg_Bazaar_OpenRecipes=null
     trigger gg_trg_Bazaar_BrowseRecipes=null
     dialog array BazaarDialog
+    boolean array BazaarRecipeList
+    integer array BazaarRecipePage
+    integer array BazaarIngredientPage
+    button array BazaarRecipeChoice
     button array BazaarPrevious
     button array BazaarNext
     button array BazaarCraft
@@ -157,36 +161,105 @@ function Bazaar_MaterialsReady takes integer recipe returns boolean
     return true
 endfunction
 
-function Bazaar_RecipeText takes integer recipe returns string
-    local string text="Recipe "+I2S(recipe)+" / "+I2S(udg_BazaarGoodCount)+"|nReward: ???|n|nSold parts (shared):"
+function Bazaar_WrapText takes string text returns string
+    local string result=""
+    local integer start=0
+    local integer length=StringLength(text)
+    local integer cut
+    loop
+        exitwhen start>=length
+        if length-start<=24 then
+            return result+SubString(text,start,length)
+        endif
+        set cut=start+24
+        loop
+            exitwhen cut<=start or SubString(text,cut-1,cut)==" "
+            set cut=cut-1
+        endloop
+        if cut<=start then
+            set cut=start+24
+        endif
+        set result=result+SubString(text,start,cut)+"|n"
+        set start=cut
+    endloop
+    return result
+endfunction
+
+function Bazaar_PlainName takes string text returns string
+    local string result=""
+    local integer i=0
+    loop
+        exitwhen i>=StringLength(text)
+        if SubString(text,i,i+2)=="|c" then
+            set i=i+10
+        elseif SubString(text,i,i+2)=="|r" then
+            set i=i+2
+        else
+            set result=result+SubString(text,i,i+1)
+            set i=i+1
+        endif
+    endloop
+    return result
+endfunction
+
+function Bazaar_RecipeText takes integer recipe,integer page returns string
+    local integer count=LoadInteger(udg_BazaarRecipeHash,recipe,1)
+    local integer first=page*2+1
+    local integer last=IMinBJ(first+1,count)
+    local string text="Recipe "+I2S(recipe)+" / "+I2S(udg_BazaarGoodCount)+" - ???|nParts "+I2S(first)+"-"+I2S(last)+" / "+I2S(count)+" (shared)"
     local string color
-    local integer slot=3
+    local integer part=first
+    local integer slot
     local integer material
     local integer needed
-    local integer last=2+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)
     loop
-        exitwhen slot>last
+        exitwhen part>last
+        set slot=part*2+1
         set material=LoadInteger(udg_BazaarRecipeHash,recipe,slot+1)
         set needed=LoadInteger(udg_BazaarRecipeHash,recipe,slot)
         set color="|cffffcc00"
         if udg_MaterialOwnedCount[material]>=needed then
             set color="|cff00ff00"
         endif
-        set text=text+"|n"+color+GetObjectName(udg_DropItemIdTable[material])+": "+I2S(udg_MaterialOwnedCount[material])+" / "+I2S(needed)+"|r"
-        set slot=slot+2
+        set text=text+"|n"+color+Bazaar_WrapText(Bazaar_PlainName(GetObjectName(udg_DropItemIdTable[material])))+"|n"+I2S(udg_MaterialOwnedCount[material])+" / "+I2S(needed)+" sold|r"
+        set part=part+1
     endloop
-    return text+"|n|nPrice: "+I2S(BazaarGoldCost[recipe])+" gold, "+I2S(BazaarShardCost[recipe])+" crystal shards"
+    return text+"|nGold: "+I2S(BazaarGoldCost[recipe])+"|nCrystal shards: "+I2S(BazaarShardCost[recipe])
 endfunction
 
 function Bazaar_ShowRecipe takes player p returns nothing
     local integer id=GetPlayerId(p)
     local integer recipe=BazaarSelectedRecipe[id]
+    local integer first=BazaarRecipePage[id]*5+1
+    local integer last=IMinBJ(first+4,udg_BazaarGoodCount)
+    local integer slot=0
+    local string label
     call DialogClear(BazaarDialog[id])
-    call DialogSetMessage(BazaarDialog[id],Bazaar_RecipeText(recipe))
-    set BazaarPrevious[id]=DialogAddButton(BazaarDialog[id],"Previous recipe",0)
-    set BazaarNext[id]=DialogAddButton(BazaarDialog[id],"Next recipe",0)
-    set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Craft this recipe",0)
-    call DialogAddButton(BazaarDialog[id],"Close",0)
+    if BazaarRecipeList[id] then
+        call DialogSetMessage(BazaarDialog[id],"Recipes "+I2S(first)+"-"+I2S(last)+" / "+I2S(udg_BazaarGoodCount))
+        loop
+            exitwhen slot>=5
+            set BazaarRecipeChoice[id*5+slot]=null
+            if first+slot<=last then
+                set label="Recipe "+I2S(first+slot)
+                if Bazaar_MaterialsReady(first+slot) then
+                    set label="|cff00ff00"+label+" - Ready|r"
+                endif
+                set BazaarRecipeChoice[id*5+slot]=DialogAddButton(BazaarDialog[id],label,0)
+            endif
+            set slot=slot+1
+        endloop
+        set BazaarNext[id]=DialogAddButton(BazaarDialog[id],"Next 5 recipes",0)
+        call DialogAddButton(BazaarDialog[id],"Close",0)
+    else
+        call DialogSetMessage(BazaarDialog[id],Bazaar_RecipeText(recipe,BazaarIngredientPage[id]))
+        set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Craft this recipe",0)
+        set BazaarNext[id]=null
+        if LoadInteger(udg_BazaarRecipeHash,recipe,1)>2 then
+            set BazaarNext[id]=DialogAddButton(BazaarDialog[id],"More ingredients",0)
+        endif
+        set BazaarPrevious[id]=DialogAddButton(BazaarDialog[id],"Back to recipes",0)
+    endif
     call DialogDisplay(p,BazaarDialog[id],true)
 endfunction
 
@@ -284,6 +357,8 @@ function Trig_Bazaar_OpenRecipes_Actions takes nothing returns nothing
     if BazaarSelectedRecipe[id]<1 then
         set BazaarSelectedRecipe[id]=1
     endif
+    set BazaarRecipeList[id]=true
+    set BazaarRecipePage[id]=(BazaarSelectedRecipe[id]-1)/5
     call Bazaar_ShowRecipe(p)
     set buyer=null
     set p=null
@@ -293,16 +368,39 @@ function Trig_Bazaar_BrowseRecipes_Actions takes nothing returns nothing
     local player p=GetTriggerPlayer()
     local integer id=GetPlayerId(p)
     local button clicked=GetClickedButton()
+    local integer slot=0
+    local boolean chosen=false
     if BazaarBrowserOpen[id] then
-        if clicked==BazaarPrevious[id] then
-            set BazaarSelectedRecipe[id]=BazaarSelectedRecipe[id]-1
-            if BazaarSelectedRecipe[id]<1 then
-                set BazaarSelectedRecipe[id]=udg_BazaarGoodCount
+        if BazaarRecipeList[id] then
+            loop
+                exitwhen slot>=5
+                if clicked!=null and clicked==BazaarRecipeChoice[id*5+slot] then
+                    set BazaarSelectedRecipe[id]=BazaarRecipePage[id]*5+slot+1
+                    set BazaarIngredientPage[id]=0
+                    set BazaarRecipeList[id]=false
+                    set chosen=true
+                endif
+                set slot=slot+1
+            endloop
+            if not chosen then
+                if clicked==BazaarNext[id] then
+                    set BazaarRecipePage[id]=BazaarRecipePage[id]+1
+                    if BazaarRecipePage[id]*5>=udg_BazaarGoodCount then
+                        set BazaarRecipePage[id]=0
+                    endif
+                else
+                    call Bazaar_CloseBrowser(p)
+                    set clicked=null
+                    set p=null
+                    return
+                endif
             endif
-        elseif clicked==BazaarNext[id] then
-            set BazaarSelectedRecipe[id]=BazaarSelectedRecipe[id]+1
-            if BazaarSelectedRecipe[id]>udg_BazaarGoodCount then
-                set BazaarSelectedRecipe[id]=1
+        elseif clicked==BazaarPrevious[id] then
+            set BazaarRecipeList[id]=true
+        elseif clicked!=null and clicked==BazaarNext[id] then
+            set BazaarIngredientPage[id]=BazaarIngredientPage[id]+1
+            if BazaarIngredientPage[id]*2>=LoadInteger(udg_BazaarRecipeHash,BazaarSelectedRecipe[id],1) then
+                set BazaarIngredientPage[id]=0
             endif
         elseif clicked==BazaarCraft[id] then
             if Bazaar_CraftRecipe(p,BazaarSelectedRecipe[id],BazaarBuyer[id],BazaarShop[id]) then

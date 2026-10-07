@@ -46,8 +46,8 @@ prepare a fresh base from that baseline (Python 3 on PATH):
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AF -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAF.w3x
+.\build.ps1 -Stage AG -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAG.w3x
 ```
 
 Use an unused stage and output filename. For ongoing local development, use the newest reviewed

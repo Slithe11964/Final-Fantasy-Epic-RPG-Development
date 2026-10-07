@@ -18,8 +18,8 @@ from wtg import read_wtg
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', default='AE')
-    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAD.w3x')
+    parser.add_argument('--stage', default='AF')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAE.w3x')
     args = parser.parse_args()
     final = ROOT/f'release/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
     classic = ROOT/f'release/1.29.2/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
@@ -30,10 +30,12 @@ def main():
     old = read_objects(a.read('war3map.w3u'), 'w3u')
     new = read_objects(b.read('war3map.w3u'), 'w3u')
     assert old['original'] == new['original']
-    assert len(new['custom']) == len(old['custom'])+1
-    assert new['custom'][-1]['id'] == 'bRcp'
+    browser_exists = any(o['id'] == 'bRcp' for o in old['custom'])
+    assert len(new['custom']) == len(old['custom'])+int(not browser_exists)
+    if not browser_exists:
+        assert new['custom'][-1]['id'] == 'bRcp'
     for before, after in zip(old['custom'], new['custom']):
-        if before['id'] == 'n030':
+        if before['id'] == 'n030' and not browser_exists:
             assert fields(after)['uabi'].split(',') == fields(before)['uabi'].split(',')+['Asud']
             for obj in (before, after):
                 for group in obj['sets']:
@@ -42,7 +44,7 @@ def main():
     before = functions(a.read('war3map.j').decode('utf-8'))
     after = functions(b.read('war3map.j').decode('utf-8'))
     different = sorted(name for name in before if tokens(before[name]) != tokens(after.get(name, '')))
-    assert all(name.startswith(('Trig_Bazaar_', 'RegisterTriggers_Bazaar')) for name in different), different
+    assert all(name.startswith(('Bazaar_', 'Trig_Bazaar_', 'RegisterTriggers_Bazaar')) for name in different), different
     assert not set(before)-set(after)
     old_editor = functions(text_of(paired_text(read_wtg(a.read('war3map.wtg')), read_wct(a.read('war3map.wct')))['Bazaar']))
     new_editor = functions(text_of(paired_text(read_wtg(b.read('war3map.wtg')), read_wct(b.read('war3map.wct')))['Bazaar']))
@@ -50,6 +52,9 @@ def main():
         assert tokens(old_editor[name]) == tokens(new_editor[name]), name
         assert tokens(new_editor[name]) == tokens(after[name]), name
     assert tokens(before['Trig_Bazaar_Recipes_Actions']) == tokens(after['Trig_Bazaar_Recipes_Actions'])
+    if browser_exists:
+        for name in ['Bazaar_CraftRecipe', 'Bazaar_MaterialsReady', 'Bazaar_InitBrowserData']:
+            assert tokens(before[name]) == tokens(after[name]), name
     assert not check(final) and not check(classic)
     assert not check_armory(final) and not check_armory(classic)
     report = dict(changed_assets=changed, changed_runtime_functions=different,
@@ -57,11 +62,13 @@ def main():
                   recipe_ingredients_results_and_charges_unchanged=True,
                   original_items_and_armory_unchanged=True,
                   unchanged_editor_handlers_resynced=['Trig_Bazaar_PawnMaterial_Actions', 'Trig_Bazaar_Sell_Bundle_Actions'],
-                  existing_unit_change='n030: append Asud only', added_units=['bRcp'],
+                  existing_unit_change=None if browser_exists else 'n030: append Asud only',
+                  added_units=[] if browser_exists else ['bRcp'],
                   hashes={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                           for p in [args.base, final, classic]})
     (ROOT/f'release/preservation-r16-stage{args.stage}.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print('PASS preservation: Bazaar-only runtime/editor changes, one recipe button and shop selling ability; recipe data/items/armory unchanged.')
+    print('PASS preservation: Bazaar-only runtime/editor changes; recipe data/items/armory unchanged.' +
+          (' Objects and craft transaction unchanged.' if browser_exists else ' Added recipe button/shop selling ability.'))
 
 
 if __name__ == '__main__':

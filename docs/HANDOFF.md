@@ -1,28 +1,29 @@
-# FF Epic RPG handoff - 2026-10-06, stage AE Bazaar browser
+# FF Epic RPG handoff - 2026-10-06, stage AF Bazaar browsing
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User confirms stage AD armory is working excellently; client versions were not specified.
-Next unused stage: AF.
+User confirms AD armory works excellently and likes the AE Bazaar overall. AE screenshot exposed
+wide/long dialog text; AF adds five-recipe pages and compact ingredient detail views.
+Next unused stage: AG.
 
-## Current development build - AE
+## Current development build - AF
 
-- Reforged/editor: release/FFERPG_0.9.7.3-r16-stageAE.w3x.
-- Shared playable copy: release/1.29.2/FFERPG_0.9.7.3-r16-stageAE.w3x.
-- Bazaar bottom-right Recipes icon opens all 56 anonymous recipes. Ingredient counts become green
-  when satisfied; rewards stay hidden until crafted. Previous/Next wraps, selection is per player.
-  The original shared sold-material pool remains. Selling, browsing and timers spend no parts.
-  Craft rechecks parts/buyer/payment, spends exactly one recipe set and original gold/shard price,
-  and gives original rewards/charges. Other open browsers refresh after spending. Wolf Fangs retained.
+- Reforged/editor: release/FFERPG_0.9.7.3-r16-stageAF.w3x.
+- Shared playable copy: release/1.29.2/FFERPG_0.9.7.3-r16-stageAF.w3x.
+- Bazaar Recipes icon opens five anonymous recipe choices per page. Next 5 wraps through all
+  56; choosing a recipe opens two ingredients per detail page. More ingredients cycles every
+  ingredient; Back returns to the same group. Names wrap to 24 characters, counts/price lines are
+  separated. Satisfied ingredients and list recipes remain green; rewards stay hidden until crafted.
+  Shared sold-material pool, prices, all recipe data and click-to-craft transactions unchanged.
 - AD single-panel armory, hints and required-level ordering retained, including Mina/Halberd hints.
-- All map/source/quest/content/save/armory/Bazaar gates, 2,000 codec cases and 60 regressions pass.
-  Classic compilation/check_map and preservation audit pass. Against AD: only Bazaar runtime/editor
-  source, one recipe button unit and Bazaar's added Sell Units ability differ; item/recipe data unchanged.
+- All map/source/quest/content/save/armory/Bazaar gates, 2,000 codec cases and 61 regressions pass.
+  Classic compilation/check_map and preservation audit pass. Against AE: only Bazaar runtime/editor
+  source differs. All objects and craft/payment code are unchanged.
 - Needs focused both-client shop/dialog layout and transactions, shared-pool multiplayer, save/load
-  and Editor Save As checks: docs/BAZAAR.md. Recipe 1 has sixteen ingredients; confirm full display.
-- Incremental: .\build.ps1 -Stage AF -Base release/FFERPG_0.9.7.3-r16-stageAE.w3x.
+  and Editor Save As checks: docs/BAZAAR.md. Check all seven list buttons and recipe 1's eight ingredient pages. Actual UI geometry needs game confirmation.
+- Incremental: .\build.ps1 -Stage AG -Base release/FFERPG_0.9.7.3-r16-stageAF.w3x.
   Fresh clones must prepare both armory and Bazaar objects and explicitly allow the two added
   browser triggers for the first build; see BAZAAR.md. Never use the pinned baseline alone with
-  current sources. Subsequent builds from AE need no new-trigger allowance.
+  current sources. Subsequent builds from AF need no new-trigger allowance.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -51,7 +52,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AF -Base release/FFERPG_0.9.7.3-r16-stageAE.w3x
+.\build.ps1 -Stage AG -Base release/FFERPG_0.9.7.3-r16-stageAF.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

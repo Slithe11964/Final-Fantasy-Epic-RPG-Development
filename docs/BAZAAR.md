@@ -1,10 +1,16 @@
-# Bazaar recipe browser - stage AE
+# Bazaar recipe browser - stage AF
 
 The Bazaar Shop's bottom-right slot now has a Recipes icon. Click it with your buyer selected
-to open a browser for all 56 recipes. Previous/Next recipe wraps around the list. Each entry
-shows ingredient names and the shared sold count / required count, plus its existing gold and
-crystal-shard price. Ingredients turn green individually when enough have been sold. Recipe
-numbers identify entries; the reward name and icon stay hidden until you craft.
+to open five anonymous recipe choices at a time. Next 5 recipes cycles through all twelve pages
+and wraps to the start; the last page contains recipe 56. A recipe choice turns green when all its
+parts are satisfied. Select a recipe to see its ingredients and original price, then use Back to
+recipes to return to the same group.
+
+The detail view shows two ingredients at a time. More ingredients cycles through every part of
+longer recipes, including all sixteen ingredients in recipe 1. Long names wrap at word boundaries
+to at most 24 characters per line; owned/required counts appear on their own lines. Gold and crystal
+shards have separate short lines. Each satisfied ingredient is green. Reward names/icons stay hidden
+until crafting. Craft checks all ingredients, including those on other ingredient pages.
 
 Click **Craft this recipe** to buy one recipe's goods. The bazaar checks your buyer, distance,
 parts and payment again, then deducts exactly one ingredient set and the original bundle price.
@@ -23,12 +29,13 @@ The armory layout and hints from user-tested stage AD are retained.
 
 ## In-game checks
 
-Play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAE.w3x` in both clients. The Reforged editor master
-is `release/FFERPG_0.9.7.3-r16-stageAE.w3x`.
+Play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAF.w3x` in both clients. The Reforged editor master
+is `release/FFERPG_0.9.7.3-r16-stageAF.w3x`.
 
 1. Visit the bazaar with a buyer selected. Check the bottom-right Recipes icon and open it.
-   Scroll through recipes 1 through 56 and wrap around both ways. Recipe 1 has sixteen ingredients;
-   confirm the complete list and all four buttons fit on screen. No reward should be revealed.
+   Check five choices at a time, Next 5 wraps after recipe 56, and Back returns to the same group.
+   Confirm all list buttons fit on screen. Select recipe 1 and cycle its eight ingredient pages;
+   check long names, counts and both price lines stay within the panel. No reward should be revealed.
 2. Sell enough parts for one ingredient, then the rest. Its name/count should become green when
    satisfied. Wait at least thirty seconds and browse other recipes: parts must remain available.
 3. With insufficient parts, gold or shards, click Craft. Nothing should be spent or received.
@@ -42,7 +49,7 @@ is `release/FFERPG_0.9.7.3-r16-stageAE.w3x`.
 
 Automated tests execute all 56 recipe transactions, display text, navigation, failed payments,
 buyer checks and shared-pool competition against mocked natives. Compilation and preservation
-audits cover both builds. Actual shop/dialog layout still needs the in-game checks above.
+audits cover both builds. The compact-text test checks all recipe pages for bounded line lengths and heights. Actual shop/dialog layout still needs the in-game checks above.
 
 ## Rebuilding
 
@@ -51,8 +58,8 @@ For a fresh Git clone, prepare both object additions from the tracked baseline:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AF -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAF.w3x
+.\build.ps1 -Stage AG -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAG.w3x
 ```
 
 Use unused stage/output names. For incremental development use the latest reviewed Reforged
@@ -61,7 +68,7 @@ the current bundle prices into `Bazaar_InitBrowserData`. It preserves all item o
 prices change later, synchronize that function with `bazaar_catalog.sync_prices`; the mandatory
 `check_bazaar.py` gate rejects stale prices, missing buttons and invalid recipe ingredients.
 
-`tools/tests/verify_bazaar_build.py --stage AE` records the preservation comparison with AD.
+`tools/tests/verify_bazaar_build.py --stage AF` records the preservation comparison with AE.
 Syncing Bazaar restores its unchanged pawn and legacy bundle handlers from editor source;
 the predecessor's runtime had inlined their condition helpers. The audit checks the unchanged
 editor handlers and recipe initializer as well as every function outside Bazaar.
