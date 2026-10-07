@@ -2,7 +2,16 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AU. Normal development stays on AS; AT is a separate Forsaken experiment.
+Next unused stage: AV. Normal development stays on AS; Forsaken AU supersedes the failed AT experiment.
+
+## Separate experiment - Forsaken AU
+
+- User play-test rejected AT: no backpack controls and map-wide NPC/hero gear dropped. Global changes to existing equipment item types were unsafe for legacy inventories; adding the native abilities directly did not expose usable UI in that test.
+- AU preserves every original item definition and adds276 native equipment variants plus a visible fBpk Backpack based on stock ebac with AIni,AEqu. Hero gets the item once there is a free six-slot slot; click it to open the native UI. Gaya gets stock AInx. `-forsaken` reports Backpack slot/native bag capacity for diagnosis.
+- Only the player's hero's carried mapped gear converts, after native bag capacity is available. Variant must be accepted before deleting original; charges/ownership retained. NPC/preplaced item definitions stay untouched. Existing equip level/mastery checks retained.
+- Pair under release/Forsaken/ with basename FFERPG_0.9.7.3-r16-ForsakenAU.w3x; classic fallback remains exact AS classic. Test line only, saving still blocked. New variants do not yet map back to Armory or other item-ID-based features; migration remains necessary.
+- Source/builder/tests remain isolated in experiments/Forsaken. Build/native acceptance status is recorded in STAGES; automated compilation does not prove native UI rendering. Test visible Backpack click, NPC gear retention, conversion/full-bag failure and native slots. Normal development stays AS.
+- AU validation: full build gates,96 regressions,2,000 codec cases and5 experiment tests PASS. Every existing item object and NPC/unit/terrain/region payload retained exactly; classic fallback byte-identical to AS. Native acceptance still pending. Generated source tree: build/ForsakenAU-riidd9k2/FFERPG.
 
 ## Separate experiment - Forsaken AT
 

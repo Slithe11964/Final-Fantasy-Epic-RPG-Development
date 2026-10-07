@@ -1,5 +1,6 @@
 """Build an isolated 3.0 gear preview; canonical sources and release maps stay intact."""
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -48,18 +49,34 @@ def prepare_objects(base, out, mapping_out):
     items = {o['id'] or o['base']: o for g in ('original', 'custom') for o in table[g]}
     catalog = json.loads((ROOT / 'src/armory-hints.json').read_text(encoding='utf-8'))
     mapping = {}
-    for entry in catalog.values():
+    for number, entry in enumerate(catalog.values()):
         raw = entry['item']
         slot = slot_for(entry, units[entry['unit']]['upoi'])
         mapping[raw] = dict(name=entry['name'], slot=slot or 'Inventory')
         if slot:
-            set_field(items[raw], 'iequ', slot)
+            variant = 'f%03d' % number
+            if variant in items:
+                raise ValueError('experimental item ID already used: ' + variant)
+            obj = copy.deepcopy(items[raw])
+            obj['id'] = variant
+            set_field(obj, 'iequ', slot)
+            table['custom'].append(obj)
+            mapping[raw]['variant'] = variant
+    if 'fBpk' in items:
+        raise ValueError('experimental backpack ID already used')
+    backpack = dict(base='ebac', id='fBpk', sets=[dict(flag=0, mods=[])])
+    for key, value in dict(unam='Backpack', iabi='AIni,AEqu',
+                           icla='Campaign', iuse=0, iusa=1, iper=0,
+                           idrp=0, ipaw=0, isel=0, igol=0, ilum=0,
+                           iico=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',
+                           utip='Backpack', utub='Open your Forsaken test backpack and equipment slots. Saving is disabled in this experiment.').items():
+        set_field(backpack, key, value)
+    table['custom'].append(backpack)
+    # A definition also exposes the stock bag base to the object-reference checks.
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
-    existing = {o['id'] or o['base'] for g in ('original', 'custom') for o in ability_table[g]}
-    for raw, native in [('fBag', 'AInx'), ('fGer', 'AEqu')]:
-        if raw in existing:
-            raise ValueError('experimental ability ID already used: ' + raw)
-        ability_table['custom'].append(dict(base=native, id=raw, sets=[dict(flag=0, mods=[])]))
+    bag = dict(base='AInx', id='fBag', sets=[dict(flag=0,mods=[dict(
+        field='aher',type=0,level=0,data=0,value=0,end=0)])])
+    ability_table['custom'].append(bag)
     replace_files(str(base), str(out), {
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
@@ -73,6 +90,7 @@ def equip_overlay(original):
                             'library TEquip requires TForce, TJob, TPlayerHero')
     text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
     timer ForsakenInventoryTimer=null
+    hashtable ForsakenGearTypes=null
     item ForsakenEquippedItem=null
     boolean ForsakenSaveBlocked=false
 endglobals''', 1)
@@ -87,7 +105,8 @@ endfunction
 function Trig_Equip_Restrictions_Conditions''', 1)
     conditions = re.search(r'function Trig_Equip_Restrictions_Conditions.*?endfunction', text, re.S)
     body = conditions.group().replace('    return',
-          '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE then\n        return false\n    endif\n    return', 1)
+          '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE then\n        return false\n    endif\n'
+          '    if GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit())) and UnitExtendedInventorySize(GetTriggerUnit())>0 and LoadInteger(ForsakenGearTypes,0,GetItemTypeId(GetManipulatedItem()))!=0 then\n        return false\n    endif\n    return', 1)
     text = text[:conditions.start()] + body + text[conditions.end():]
     actions = re.search(r'function Trig_Equip_Restrictions_Actions.*?endfunction', text, re.S).group()
     validation = actions[actions.index('    if(Trig_Equip_Restrictions_GaiaLevelTooLow())'):]
@@ -136,8 +155,6 @@ def main():
     for folder in ('src', 'tools', 'baseline'):
         shutil.copytree(ROOT/folder, work/folder, ignore=shutil.ignore_patterns('__pycache__'))
     shutil.copy2(ROOT/'build.ps1', work/'build.ps1')
-    source = work/'src/triggers/05 Items crafting and shops/Equip.j'
-    source.write_bytes(equip_overlay(source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     config_path = work/'tools/build-config.json'
     config = json.loads(config_path.read_text())
     config['prefix'] = 'FFERPG_0.9.7.3-r16-Forsaken'
@@ -145,6 +162,14 @@ def main():
     config_path.write_text(json.dumps(config, indent=2)+'\n')
     base = scratch/'objects.w3x'
     mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
+    source = work/'src/triggers/05 Items crafting and shops/Equip.j'
+    overlay = equip_overlay(source.read_text(encoding='utf-8'))
+    initialization = ['    set ForsakenGearTypes=InitHashtable()']
+    initialization += ["    call SaveInteger(ForsakenGearTypes,0,'%s','%s')" % (raw,entry['variant'])
+                       for raw, entry in mapping.items() if 'variant' in entry]
+    overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
+                              '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
+    source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
