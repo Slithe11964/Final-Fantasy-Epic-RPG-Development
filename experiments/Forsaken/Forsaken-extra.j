@@ -14,6 +14,9 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitMakeAbilityPermanent(holder,true,'fGer')
     call UnitAddAbility(holder,'ASpc')
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
+    call UnitAddAbility(holder,'fSta')
+    call UnitMakeAbilityPermanent(holder,true,'fSta')
+    call Forsaken_UpdatePanels(holder)
 endfunction
 
 function Forsaken_OnEquip takes nothing returns nothing
@@ -21,7 +24,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AZ: bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+". Use Backpack (B). Gear automatically fills empty slots; bag and equipped gear follow job changes.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BA: bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+". Use Backpack (B). Job talent preview and native stats included. Backpack contents stay in the bag across jobs.")
         endif
         set holder=null
         return
@@ -81,7 +84,6 @@ endfunction
 function Forsaken_PrepareInventories takes nothing returns nothing
     local integer i=0
     local unit hero
-    local unit gaya
     if not ForsakenSaveBlocked and udg_SaveCommandTrig!=null and udg_SaveToFileTrig!=null and udg_NewGamePlusTrig!=null and udg_NewGameMinusTrig!=null and udg_AutosaveTimerTrig!=null then
         call TriggerClearActions(udg_SaveCommandTrig)
         call TriggerAddAction(udg_SaveCommandTrig,function Forsaken_SaveUnavailable)
@@ -97,21 +99,15 @@ function Forsaken_PrepareInventories takes nothing returns nothing
     loop
         exitwhen i>7
         set hero=Player_GetHero(Player(i))
-        set gaya=udg_SpiritOfGaya[i+1]
         if hero!=null then
             call Forsaken_EnableHero(hero)
             if UnitExtendedInventorySize(hero)>0 then
                 call Forsaken_ConvertCarriedGear(hero)
             endif
         endif
-        if gaya!=null then
-            call UnitAddAbility(gaya,'fBag')
-            call UnitMakeAbilityPermanent(gaya,true,'fBag')
-        endif
         set i=i+1
     endloop
     set hero=null
-    set gaya=null
 endfunction
 
 function Register_Forsaken_Equipment takes nothing returns nothing

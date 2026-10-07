@@ -95,6 +95,9 @@ def prepare_objects(base, out, mapping_out):
             table['custom'].append(obj)
             mapping[raw]['variant'] = variant
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
+    if not any((o['id'] or o['base'])=='AInv' for g in ('original','custom') for o in ability_table[g]):
+        # Declare the unchanged stock ability for strict object-reference verification.
+        ability_table['original'].append(dict(base='AInv',id=None,sets=[dict(flag=0,mods=[])]))
     for base_id, raw, item_ability, capacity_field, capacity in (
             ('AInx', 'fBag', 0, 'inv6', 30),
             ('AIni', 'fBgi', 1, 'inv6', 30),
@@ -117,6 +120,7 @@ def prepare_objects(base, out, mapping_out):
         dict(field='atp1',type=3,level=1,data=0,value='Backpack (B)',end=0),
         dict(field='aub1',type=3,level=1,data=0,value='Open your native backpack and equipment panel.',end=0),
     ])]))
+    prepare_panels(ability_table)
     replace_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
@@ -124,6 +128,31 @@ def prepare_objects(base, out, mapping_out):
     })
     mapping_out.write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
     return mapping
+
+
+def prepare_panels(table):
+    existing={o['id'] or o['base'] for g in ('original','custom') for o in table[g]}
+    def add(base,raw,values,leveled):
+        if raw in existing:
+            raise ValueError('panel ID already used: '+raw)
+        existing.add(raw)
+        mods=[dict(field=key,type=3 if isinstance(value,str) else 0,level=0,data=0,value=value,end=0)
+              for key,value in values.items()]
+        mods += [dict(field=key,type=3 if isinstance(value,str) else 0,level=level,data=data,value=value,end=0)
+                 for key,level,data,value in leveled]
+        table['custom'].append(dict(base=base,id=raw,sets=[dict(flag=0,mods=mods)]))
+    add('ASde','fSta',dict(anam='Hero Stats',aher=0,aite=0,alev=1,abpy=-11),
+        [('Asdf',1,1,','.join('AS%02X'%i for i in range(1,18)))])
+    for player in range(8):
+        icons=['fV%02d'%(player*6+slot) for slot in range(6)]
+        add('ATal','fT%02d'%player,dict(anam='Job Talents (preview)',aher=0,aite=0,alev=2,abpy=-11),
+            [('aabi',1,0,','.join(icons[:3])),('aabi',2,0,','.join(icons[3:]))])
+        for icon in icons:
+            # Cosmetic attribute-bonus abilities cannot grant real job skills or stats.
+            add('Aamk',icon,dict(anam='Job talent preview',aher=0,aite=0,alev=1,abpy=-11,
+                               aart=r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'),
+                [('Iagi',1,1,0),('Iint',1,2,0),('Istr',1,3,0),('Ihid',1,4,1),
+                 ('atp1',1,0,'Future upgrade path'),('aub1',1,0,'Preview only. Existing job progression is unchanged.')])
 
 
 def equip_overlay(original):
@@ -156,6 +185,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     validation = validation.replace('UnitRemoveItemSwapped(', 'Forsaken_RejectEquipment(')
     validation = validation.replace('GetManipulatingUnit()', 'GetTriggerUnit()')
     extra = (HERE / 'Forsaken-extra.j').read_text(encoding='utf-8')
+    extra = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8') + '\n\n' + extra
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
@@ -165,12 +195,19 @@ function Trig_Equip_Restrictions_Conditions''', 1)
 
 def job_overlay(original):
     extra = (HERE / 'Forsaken-job.j').read_text(encoding='utf-8')
-    text = original.replace('function Trig_Job_Change_Actions takes',
+    text = original.replace('endglobals','    item array ForsakenSharedBag\nendglobals',1)
+    text = text.replace('function Trig_Job_Change_Actions takes',
                             extra + '\n\nfunction Trig_Job_Change_Actions takes', 1)
     text = text.replace('    local group l_tempGroup\n    set udg_SelectedJobId',
                         '    local group l_tempGroup\n    local unit forsakenPrevious=Player_GetHero(GetOwningPlayer(GetSoldUnit()))\n    set udg_SelectedJobId', 1)
-    text = text.replace('    if(Trig_Job_Change_IsStatLocked())then',
-                        '    call Forsaken_TransferSharedInventory(forsakenPrevious,Player_GetHero(udg_TempPlayer))\n    set forsakenPrevious=null\n    if(Trig_Job_Change_IsStatLocked())then', 1)
+    restore = '''    set bj_forLoopAIndex=1
+    set bj_forLoopAIndexEnd=6
+    loop
+        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
+        if(Trig_Job_Change_HasSavedItem())then'''
+    if text.count(restore)!=1:
+        raise ValueError('expected one six-slot restoration boundary')
+    text = text.replace(restore,'    call Forsaken_TransferSharedInventory(forsakenPrevious,Player_GetHero(udg_TempPlayer))\n    set forsakenPrevious=null\n'+restore,1)
     # Clear the additional handle on the original early-return paths too.
     start = text.index('function Trig_Job_Change_Actions takes')
     end = text.index('endfunction', start)
@@ -228,6 +265,8 @@ def main():
     slots = dict(Head=0,Chest=1,Gloves=2,Boots=3,Ring=4,Primary=6,Offhand=7,Trinket=8)
     initialization += ["    call SaveInteger(ForsakenGearTypes,1,'%s',%d)" % (raw,slots[entry['slot']])
                        for raw, entry in mapping.items() if 'variant' in entry]
+    initialization += ["    call SaveInteger(ForsakenGearTypes,2,%d,'fT%02d')" % (i,i) for i in range(8)]
+    initialization += ["    call SaveInteger(ForsakenGearTypes,3,%d,'fV%02d')" % (i,i) for i in range(48)]
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))

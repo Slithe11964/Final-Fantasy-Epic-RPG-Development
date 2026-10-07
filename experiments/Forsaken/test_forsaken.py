@@ -129,9 +129,9 @@ class ForsakenTests(unittest.TestCase):
                      UnitMakeAbilityPermanent=lambda u,p,a:calls.append(('permanent',u,p,a)))
         runtime = execute(overlay, ['Forsaken_EnableHero'], state)
         runtime['Forsaken_EnableHero']('hero')
-        self.assertEqual(calls, [call for raw in ['fBag','fGer','ASpc']
+        self.assertEqual(calls, [call for raw in ['fBag','fGer','ASpc','fSta']
                                for call in [('add','hero',raw),('permanent','hero',True,raw)]])
-        self.assertNotIn('UnitRemoveAbility',overlay)
+        self.assertNotIn("UnitRemoveAbility(holder,'AInv')",overlay)
 
     def test_backpack_is_only_an_ability_and_automatic_conversion_is_enabled(self):
         overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
@@ -180,10 +180,14 @@ class ForsakenTests(unittest.TestCase):
         action=fs['Trig_Job_Change_Actions']
         self.assertLess(action.index('set udg_PlayerHero'),action.index('call Forsaken_TransferSharedInventory'))
         self.assertLess(action.index('call Forsaken_TransferSharedInventory'),action.index('call ConditionalTriggerExecute(gg_trg_AttackSpeed_Update)'))
+        self.assertLess(action.index('call UnitRemoveItemFromSlotSwapped'),action.index('call Forsaken_TransferSharedInventory'))
+        self.assertLess(action.index('call Forsaken_TransferSharedInventory'),action.index('if(Trig_Job_Change_HasSavedItem())'))
         self.assertNotIn('requires TEquip',overlay)
         shared_bag=['potion','materia']+['part-'+str(i) for i in range(28)]
         bags={'squire':shared_bag.copy(),'ninja':[],'other':['other-player-item']}
         equipped={'squire':{0:'hat',4:'ring',5:'second-ring',6:'sword'},'ninja':{},'other':{}}
+        quick_slots={'squire':[],'ninja':[],'other':[]}
+        legacy_enabled={u:True for u in bags}
         charges={i:7 for i in shared_bag+['hat','ring','second-ring','sword']}
         initial_charges=charges.copy()
         def remove(u,i):
@@ -191,6 +195,9 @@ class ForsakenTests(unittest.TestCase):
             for s,v in list(equipped[u].items()):
                 if v==i: del equipped[u][s]
         def add(u,i):
+            if legacy_enabled[u] and len(quick_slots[u])<6:
+                quick_slots[u].append(i)
+                return True
             if len(bags[u])>=30: return False
             bags[u].append(i)
             return True
@@ -201,6 +208,10 @@ class ForsakenTests(unittest.TestCase):
             return True
         state=mocks(overlay)
         state.update(UnitExtendedInventorySize=lambda u:30,ConvertLoadoutSlot=lambda i:i,
+                     ForsakenSharedBag={},
+                     GetUnitAbilityLevel=lambda u,a:1 if a=='AInv' and legacy_enabled[u] else 0,
+                     UnitRemoveAbility=lambda u,a:legacy_enabled.__setitem__(u,False) if a=='AInv' else None,
+                     UnitAddAbility=lambda u,a:legacy_enabled.__setitem__(u,True) if a=='AInv' else None,
                      UnitItemInBagSlot=lambda u,s:bags[u][s] if s<len(bags[u]) else None,
                      UnitItemInEquipmentSlot=lambda u,s:equipped[u].get(s),
                      GetItemCharges=lambda i:charges[i],SetItemCharges=lambda i,v:charges.__setitem__(i,v),
@@ -210,7 +221,9 @@ class ForsakenTests(unittest.TestCase):
             runtime['Forsaken_TransferSharedInventory'](previous,current)
             self.assertEqual(bags[previous],[])
             self.assertEqual(equipped[previous],{})
-            self.assertEqual(set(bags[current]),set(shared_bag))
+            self.assertEqual(bags[current],shared_bag)
+            self.assertEqual(quick_slots[current],[])
+            self.assertTrue(legacy_enabled[current])
             self.assertEqual(equipped[current],{0:'hat',4:'ring',5:'second-ring',6:'sword'})
             self.assertEqual(charges,initial_charges)
             self.assertEqual(bags['other'],['other-player-item'])
@@ -228,6 +241,55 @@ class ForsakenTests(unittest.TestCase):
         execute(overlay,['Forsaken_MoveSharedItem'],state)['Forsaken_MoveSharedItem']('old','new','potion',False)
         self.assertEqual(calls,[('remove','old','potion'),('charges','potion',0),
                                ('charges','potion',8),('position','potion',42.,24.)])
+
+    def test_panels_use_native_bases_and_only_zero_bonus_preview_cells(self):
+        table={'original':[],'custom':[]}
+        build.prepare_panels(table)
+        abilities={o['id']:o for o in table['custom']}
+        self.assertEqual(abilities['fSta']['base'],'ASde')
+        self.assertEqual(fields(abilities['fSta'])[('Asdf',1)],','.join('AS%02X'%i for i in range(1,18)))
+        for player in range(8):
+            tree=abilities['fT%02d'%player]
+            self.assertEqual(tree['base'],'ATal')
+            self.assertEqual(fields(tree)['alev'],2)
+            for level in (1,2):
+                row=fields(tree)[('aabi',level)].split(',')
+                self.assertEqual(len(row),3)
+                for raw in row:
+                    cell=abilities[raw]
+                    self.assertEqual(cell['base'],'Aamk')
+                    for field in ('Iagi','Iint','Istr'):
+                        self.assertEqual(fields(cell)[(field,1)],0)
+
+    def test_talent_preview_reflects_job_ranks_without_granting_real_skills(self):
+        overlay=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
+        for local_player in (0,1):
+            calls=[]
+            state=mocks(overlay)
+            state.update(GetOwningPlayer=lambda u:0,GetPlayerId=lambda p:p,Job_GetIndex=lambda u:0,
+                         GetLocalPlayer=lambda:local_player,GetUnitName=lambda u:'Squire',ForsakenGearTypes='types',
+                         LoadInteger=lambda h,p,c:'tree' if p==2 else 'preview-'+str(c),
+                         udg_JobCount=22,udg_JobSkill={i:'skill-'+str(i) for i in range(1,6)},
+                         GetUnitAbilityLevel=lambda u,a:2 if a in ('skill-1','A02F') else 0,
+                         UnitAddAbility=lambda u,a:calls.append(('add',a)),
+                         UnitRemoveAbility=lambda u,a:calls.append(('remove',a)),
+                         BlzGetAbilityTooltip=lambda a,l:'Skill '+str(a),
+                         BlzGetAbilityExtendedTooltip=lambda a,l:'Existing description',
+                         BlzSetAbilityTooltip=lambda a,t,l:calls.append(('tooltip',a,t)),
+                         I2S=str,IMaxBJ=max)
+            execute(overlay,['Forsaken_UpdatePanels'],state)['Forsaken_UpdatePanels']('hero')
+            self.assertEqual([a for kind,a,*_ in calls if kind=='add'],['tree','preview-0','preview-5'])
+            self.assertTrue(all(a.startswith('preview-') for kind,a,*_ in calls if kind=='remove'))
+            tooltip_calls=[c for c in calls if c[0]=='tooltip']
+            self.assertEqual(len(tooltip_calls),7 if local_player==0 else 0)
+            if local_player==0:
+                self.assertIn('[Rank 2]',tooltip_calls[0][2])
+        self.assertNotIn('Hero_LearnSkill',functions(overlay)['Forsaken_UpdatePanels'])
+
+    def test_gaya_keeps_its_canonical_inventory_without_native_bag(self):
+        overlay=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
+        self.assertNotIn('gaya',functions(overlay)['Forsaken_PrepareInventories'])
+        self.assertNotIn('udg_SpiritOfGaya',functions(overlay)['Forsaken_PrepareInventories'])
 
 
 if __name__=='__main__':

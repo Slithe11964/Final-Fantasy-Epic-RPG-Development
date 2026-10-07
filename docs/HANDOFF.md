@@ -2,7 +2,17 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BA. Normal development stays on AS; Forsaken AZ adds automatic slotting and shared job inventory.
+Next unused stage: BB. Normal development stays on AS; Forsaken BA preserves bag placement and adds native panel previews.
+
+## Separate experiment - Forsaken BA
+
+- User accepted AZ gear transfer/automatic slotting, but Greater Nectar moved from the30-slot bag to quick inventory on job change. UnitAddItem uses free quick slots first. Move the shared transfer hook after the destination's six slots are cleared and before canonical saved-item restoration. Disable only that empty destination's stock AInv during native transfer; restore its level/permanence before quick items return. Never disable the source's quick inventory. Snapshot bag items, move in source order, clear temporary references; retain equipped gear/charges and failed-add ground fallback.
+- User requested stat/talent panels, selected FF job/mastery, and clarified only the visual preview matters; functional elemental upgrade paths are future work. Add fSta/ASde with installed default17 stat modifiers. Add8 player-specific ATal preview trees, each2 rows of3 cosmetic Aamk cells with all attribute bonuses0. Icons/descriptions/current ranks reflect existing5 job skills + Mastery; Freelancer uses4 borrowed skills, future-path cell + Mastery. Sync cosmetic learned indicators; update tooltip presentation locally. Never learn/upgrade actual skills or grant new talent points.
+- Native stat panel reports engine modifiers; FF scripted crit/damage calculations remain independent and are not claimed as fully reflected. Talent clicks can only affect cosmetic zero-bonus indicators; existing job/mastery progression remains authoritative.
+- Per user request, Gaya keeps canonical six-slot inventory: no native bag/panels supplied. Hero Backpack remains ASpc/B ability only. Saving disabled, canonical src/AS pair intact, exact AS classic fallback.
+- Builder declares stock AInv with an empty modification record so new direct calls pass strict typed-reference checks; no contract relaxation or stock behavior changes. Source and panel object data remain isolated in experiments/Forsaken.
+- Build/check results in STAGES. Native acceptance: Nectar remains bagged across jobs/back; quick items stay quick, charges/order retained, full30 bag/both rings, Gaya has no bag, stat/talent panels render and follow jobs, preview does not grant real skills/bonuses, multiplayer.
+- Validation: all build/map/editor/source gates,96 regressions,2,000 codec cases,14 experiment tests and final archive/object audit PASS;0 new source/runtime differences. Original ability/item fields/world/NPC payloads preserved, stock AInv empty declaration, native panel bases/zero-bonus cells verified; classic exact AS. Scratch: build/ForsakenBA-x1dx47oq/FFERPG. Earlier BA-ey2p1j5m failed strict stock-AInv reference checks before declaration; no release from that attempt.
 
 ## Separate experiment - Forsaken AZ
 

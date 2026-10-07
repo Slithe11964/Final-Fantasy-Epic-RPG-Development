@@ -19,6 +19,7 @@ endfunction
 
 function Forsaken_TransferSharedInventory takes unit previous,unit current returns nothing
     local integer slot=0
+    local integer inventoryLevel
     local item carried
     if previous==null or current==null or previous==current then
         return
@@ -29,6 +30,11 @@ function Forsaken_TransferSharedInventory takes unit previous,unit current retur
     call UnitMakeAbilityPermanent(current,true,'fGer')
     call UnitAddAbility(current,'ASpc')
     call UnitMakeAbilityPermanent(current,true,'ASpc')
+    set inventoryLevel=GetUnitAbilityLevel(current,'AInv')
+    // The destination's six slots have been cleared; force additions into its native bag.
+    if inventoryLevel>0 then
+        call UnitRemoveAbility(current,'AInv')
+    endif
     loop
         exitwhen slot>8
         set carried=UnitItemInEquipmentSlot(previous,ConvertLoadoutSlot(slot))
@@ -37,14 +43,26 @@ function Forsaken_TransferSharedInventory takes unit previous,unit current retur
         endif
         set slot=slot+1
     endloop
-    set slot=UnitExtendedInventorySize(previous)-1
+    set slot=0
     loop
-        exitwhen slot<0
-        set carried=UnitItemInBagSlot(previous,slot)
+        exitwhen slot>=UnitExtendedInventorySize(previous)
+        set ForsakenSharedBag[slot]=UnitItemInBagSlot(previous,slot)
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=UnitExtendedInventorySize(previous)
+        set carried=ForsakenSharedBag[slot]
+        set ForsakenSharedBag[slot]=null
         if carried!=null then
             call Forsaken_MoveSharedItem(previous,current,carried,false)
         endif
-        set slot=slot-1
+        set slot=slot+1
     endloop
+    if inventoryLevel>0 then
+        call UnitAddAbility(current,'AInv')
+        call SetUnitAbilityLevel(current,'AInv',inventoryLevel)
+        call UnitMakeAbilityPermanent(current,true,'AInv')
+    endif
     set carried=null
 endfunction
