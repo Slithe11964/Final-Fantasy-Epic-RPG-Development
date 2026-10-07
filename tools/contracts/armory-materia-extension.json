@@ -1,0 +1,34 @@
+{
+  "stage": "AM",
+  "purpose": "Append final-tier materia after all legacy armory flags, retaining inventory indexes and old readers/writers.",
+  "legacy_commit": "0db1622",
+  "armory_flags": {
+    "71": [
+      "m071"
+    ],
+    "100": [
+      "m100"
+    ],
+    "103": [
+      "m103"
+    ],
+    "150": [
+      "m150"
+    ]
+  },
+  "serializers": {
+    "Save_EncodeUnitFlags": {
+      "legacy": "ec23241c511dfd4d1c12f7dccde2be5bfa7cb85e348395ddd9a4b2cb30b45fc0",
+      "extended": "0a965dcb6d07c6e2474aa5f9bebeab7a61c71cc3e8830db6c26287cb680ece1a"
+    },
+    "Trig_Cmd_Load_Code_LoadArmory": {
+      "legacy": "83b2f0777d49816161f3021fc1de54e4d5021604ca7e4c771b17d6fba31f8c09",
+      "extended": "c5ad8fb6903c3dd8784a14bf353357800070c1d1021a085538b35cfb8f41babf"
+    }
+  },
+  "helper": {
+    "name": "Trig_Cmd_Load_Code_ArmoryFlagIndex",
+    "fingerprint": "d13d058b59335d51c96c37035d0501dc16dd93769878edb7bad624f6be6a8d98"
+  },
+  "verification": "Reversing only index lookup and +4 traversal makes both serializer bodies identical to the original contract. Executable source tests cover old bitmap loads, old-reader acceptance without new materia, randomized and dense/sparse runs, all four appended flags and round trips."
+}

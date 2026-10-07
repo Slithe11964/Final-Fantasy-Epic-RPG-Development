@@ -403,12 +403,12 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
     call Save_WriteBits(l_sid,0,18)
     call Save_WriteBits(l_sid,0,18)
     loop
-        exitwhen i>udg_SaveFlagCount
-        if udg_SaveFlagUnitID[i]!=null then
+        exitwhen i>udg_SaveFlagCount+4
+        if udg_SaveFlagUnitID[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)]!=null then
             if l_runStart==0 then
                 set l_runStart=i
             endif
-            if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[i])then
+            if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)])then
                 set l_bit=1
             else
                 set l_bit=0
@@ -576,8 +576,8 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                     set l_runStart=$FF // $FF = 255
                     loop
                         exitwhen(l_runStart<=0)
-                        if udg_SaveFlagUnitID[i]!=null then
-                            if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[i])then
+                        if udg_SaveFlagUnitID[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)]!=null then
+                            if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)])then
                                 set l_bit=1
                             else
                                 set l_bit=0
@@ -595,9 +595,9 @@ function Save_EncodeUnitFlags takes integer l_sid,integer cs returns nothing
                 set l_opcodes=l_opcodes+"E("+I2S(l_count)+")-"
                 call Save_WriteBits(l_sid,l_count,8)
                 loop
-                    exitwhen(i>udg_SaveFlagCount or l_count<=0)
-                    if udg_SaveFlagUnitID[i]!=null then
-                        if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[i])then
+                    exitwhen(i>udg_SaveFlagCount+4 or l_count<=0)
+                    if udg_SaveFlagUnitID[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)]!=null then
+                        if IsPlayerInForce(udg_SavePlayer[l_sid],udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)])then
                             set l_bit=1
                         else
                             set l_bit=0

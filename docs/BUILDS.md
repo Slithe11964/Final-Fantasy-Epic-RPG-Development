@@ -53,7 +53,7 @@ tool location, with `used: false`. Header-only finalization is checked before pu
 | check_save_compat.py | Append-only item indexes <=500, item charge/base/class preservation, job order, armory mappings, serializers and fixed G/H vectors. |
 | check_armory.py | Hint coverage, proxy objects, zero cost and catalogue/source agreement. |
 | check_bazaar.py | Last-slot browser button, all recipe ingredients/results and unchanged bundle prices. |
-| tests/run_tests.py | 71 regression tests, including actual quest lifecycle/event source with mocked natives. |
+| tests/run_tests.py | 76 regression tests, including actual quest lifecycle/event source with mocked natives. |
 | savecode.py selftest | 2,000 randomized encode/decode/rename/checksum cases. |
 
 For intentionally new/removed triggers, pass `-AllowNew REGEX` / `-AllowRemoved REGEX` (Python:
@@ -103,3 +103,9 @@ rejected. World Editor Save As with JassHelper still needs verification after ed
 
 For classic copies use make_129.ps1; LEGACY_129.md explains the conversion and testing limits.
 Worked new-content examples: CONTENT_DEVELOPMENT.md.
+
+Stage AM adds a reviewed armory bitmap extension in tools/contracts/armory-materia-extension.json.
+The original compatibility contract is never regenerated. Two exact serializer revisions preserve
+old flag order and append only the four newly storable materia; a hashed index helper protects the
+ordering. Unexpected new flags interleaved below the old item count are rejected. Source-executed
+regressions load original payloads and round-trip the new entries with dense/sparse/random runs.

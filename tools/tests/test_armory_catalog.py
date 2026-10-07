@@ -9,7 +9,7 @@ import test_quest_lifecycle as harness
 from test_shared_context import mocks
 from source_checks import ROOT, sources
 from check_save_compat import assignments
-from armory_catalog import catalog_objects, refresh_hint_objects, hint_id, ICON
+from armory_catalog import catalog_objects, refresh_hint_objects, prepare_materia, hint_id, ICON
 from check_armory import check
 from mpq import MPQ
 from objdata import read_objects, fields
@@ -62,11 +62,11 @@ class ArmoryTests(unittest.TestCase):
         flags[13].add(1)
         flags[507].add(1)
         flags[0].add(1)
-        self.assertEqual(e['Armory_CollectionText'](1), '2 / 276')
-        self.assertEqual(e['Armory_CollectionText'](2), '0 / 276')
+        self.assertEqual(e['Armory_CollectionText'](1), '2 / 280')
+        self.assertEqual(e['Armory_CollectionText'](2), '0 / 280')
         flags[12].remove(1)
         flags[13].add(2)
-        self.assertEqual(e['Armory_CollectionText'](1), '1 / 276')
+        self.assertEqual(e['Armory_CollectionText'](1), '1 / 280')
         updates = []
         e.update(ArmoryTooltipBase='Original armory description.', ArmoryTooltipShown='',
                  GetLocalPlayer=lambda: 1, BlzSetAbilityExtendedTooltip=lambda *args: updates.append(args))
@@ -75,11 +75,11 @@ class ArmoryTests(unittest.TestCase):
         e['Armory_RefreshCounter']()
         self.assertEqual(len(updates), 1)
         self.assertIn('Original armory description.', updates[0][1])
-        self.assertIn('1 / 276', updates[0][1])
+        self.assertIn('1 / 280', updates[0][1])
         self.assertEqual(flags, before)
         flags[12].add(1)
         e['Armory_RefreshCounter']()
-        self.assertIn('2 / 276', updates[-1][1])
+        self.assertIn('2 / 280', updates[-1][1])
 
     def test_hint_refresh_changes_tooltip_only_and_refuses_missing_objects(self):
         archive = MPQ(str(ROOT/'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
@@ -105,7 +105,7 @@ class ArmoryTests(unittest.TestCase):
 
     def test_original_baseline_without_hint_objects_is_rejected(self):
         errors = check(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x')
-        self.assertTrue(any('missing/wrong hint object field' in error for error in errors))
+        self.assertTrue(any('missing' in error for error in errors))
 
     def test_single_panel_shows_all_eleven_entries(self):
         e, shop, stock, flags = runtime()
@@ -180,6 +180,14 @@ class ArmoryTests(unittest.TestCase):
         table = read_objects(archive.read('war3map.w3u'), 'w3u')
         items = read_objects(archive.read('war3map.w3t'), 'w3t')
         item_fields = {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in items[g]}
+        prior=copy.deepcopy(table)
+        table=prepare_materia(table,item_fields)
+        self.assertEqual(table['original'],prior['original'])
+        self.assertEqual(table['custom'][:len(prior['custom'])],prior['custom'])
+        self.assertEqual(len(table['custom'])-len(prior['custom']),5)
+        category=fields(next(o for o in table['custom'] if o['id']=='mCat'))
+        accessory=fields(next(o for o in table['custom'] if o['id']=='n0JL'))
+        self.assertEqual((category['ubpx'],category['ubpy']),(accessory.get('ubpx',0)+1,accessory['ubpy']))
         changed = catalog_objects(table, catalog, flags, item_fields)
         self.assertEqual(changed['original'], table['original'])
         for before, after in zip(table['custom'], changed['custom']):
@@ -187,7 +195,7 @@ class ArmoryTests(unittest.TestCase):
                 for group in obj['sets']:
                     group['mods'][:] = [m for m in group['mods'] if m['field'] not in ('ubpx', 'ubpy')]
             self.assertEqual(before, after)
-        self.assertEqual(len(changed['custom']) - len(table['custom']), 276)
+        self.assertEqual(len(changed['custom']) - len(table['custom']), 280)
         for obj in changed['custom'][len(table['custom']):]:
             f = fields(obj)
             self.assertEqual(f['ugol'], 0)

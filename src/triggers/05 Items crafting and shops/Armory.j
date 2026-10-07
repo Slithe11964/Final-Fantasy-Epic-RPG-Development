@@ -506,6 +506,8 @@ function Armory_InitHints takes nothing returns nothing
     set ArmoryHint[66]="Check the stock of Armor Vendor."
     set ArmoryMissingUnit[67]='z067'
     set ArmoryHint[67]="Challenge Gilgamesh and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[71]='z071'
+    set ArmoryHint[71]="Obtain Water Materia from the Hydra Egg quest or the bazaar. Keep using it through both upgrades until it reaches level 3."
     set ArmoryMissingUnit[72]='z072'
     set ArmoryHint[72]="Check the stock of Shield and Helmet Vendor."
     set ArmoryMissingUnit[73]='z073'
@@ -550,6 +552,10 @@ function Armory_InitHints takes nothing returns nothing
     set ArmoryHint[95]="Ask Bali about forging this gear."
     set ArmoryMissingUnit[97]='z097'
     set ArmoryHint[97]="Challenge Zalera and check the rewards unlocked by that battle."
+    set ArmoryMissingUnit[100]='z100'
+    set ArmoryHint[100]="Obtain Quake Materia from the Rematch quest or the bazaar. Keep using it through both upgrades until it reaches level 3."
+    set ArmoryMissingUnit[103]='z103'
+    set ArmoryHint[103]="Obtain Demi Materia from the Eye of Jenova quest or the bazaar. Keep using it through both upgrades until it reaches level 3."
     set ArmoryMissingUnit[104]='z104'
     set ArmoryHint[104]="Find its crafting recipe and gather the required ingredients."
     set ArmoryMissingUnit[111]='z111'
@@ -606,6 +612,8 @@ function Armory_InitHints takes nothing returns nothing
     set ArmoryHint[145]="Follow the Target Practice quest or event."
     set ArmoryMissingUnit[146]='z146'
     set ArmoryHint[146]="Look for a matching recipe in the bazaar."
+    set ArmoryMissingUnit[150]='z150'
+    set ArmoryHint[150]="Obtain Aero Materia from the Mithril Golem's Heart quest or the bazaar. Keep using it through both upgrades until it reaches level 3."
     set ArmoryMissingUnit[151]='z151'
     set ArmoryHint[151]="Complete hunts from the hunt board."
     set ArmoryMissingUnit[152]='z152'
@@ -950,7 +958,7 @@ endfunction
 
 function Armory_InCategory takes integer index,integer category returns boolean
     if category==0 then
-        return index>=501 and index<=507
+        return index>=501 and index<=508
     endif
     return udg_SaveFlagUnitID[index]!=0 and GetUnitPointValueByType(udg_SaveFlagUnitID[index])==category
 endfunction
@@ -1041,6 +1049,11 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[504]='n0JJ' // 'n0JJ': unit "Gear: Helmets"
     set udg_SaveFlagUnitID[505]='n0JK' // 'n0JK': unit "Gear: Armor"
     set udg_SaveFlagUnitID[506]='n0JL' // 'n0JL': unit "Gear: Accessories"
+    set udg_SaveFlagUnitID[508]='mCat'
+    set udg_SaveFlagUnitID[71]='m071'
+    set udg_SaveFlagUnitID[100]='m100'
+    set udg_SaveFlagUnitID[103]='m103'
+    set udg_SaveFlagUnitID[150]='m150'
     set udg_SaveFlagUnitID[507]='n0LB' // 'n0LB': unit "Gear: Celestial Weapons"
     set udg_SaveFlagUnitID[511]='n0J3' // 'n0J3': unit "Weapon: Tools"
     set udg_SaveFlagUnitID[512]='n0J4' // 'n0J4': unit "Weapon: Sword"
@@ -1572,8 +1585,12 @@ function Trig_Armory_Store_Item_ItemIsMine takes nothing returns boolean
     return(GetItemUserData(GetManipulatedItem())==0)or(GetItemUserData(GetManipulatedItem())==GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit())))
 endfunction
 
+function Armory_IsStorableMateria takes integer raw returns boolean
+    return raw=='I025' or raw=='I03F' or raw=='I03N' or raw=='I07P'
+endfunction
+
 function Trig_Armory_Store_Item_Conditions takes nothing returns boolean
-    return(GetTriggerUnit()==udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_TitleForce[35]))and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CAMPAIGN)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CHARGED)and(Trig_Armory_Store_Item_ItemIsMine())
+    return(GetTriggerUnit()==udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_TitleForce[35]))and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CAMPAIGN)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CHARGED or Armory_IsStorableMateria(GetItemTypeId(GetManipulatedItem())))and(Trig_Armory_Store_Item_ItemIsMine())
 endfunction
 
 function Trig_Armory_Store_Item_ArmoryOpen takes nothing returns boolean

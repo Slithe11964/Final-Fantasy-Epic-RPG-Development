@@ -2503,5 +2503,49 @@
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0D2"
     ]
+  },
+  "71": {
+    "name": "Wateraga Materia",
+    "item": "I025",
+    "unit": "m071",
+    "hint": "Obtain Water Materia from the Hydra Egg quest or the bazaar. Keep using it through both upgrades until it reaches level 3.",
+    "evidence": [
+      "Bazaar/Trig_Bazaar_Recipes_Actions",
+      "HydraEgg",
+      "Item_Upgrade/Trig_Item_Upgrade_Wateraga_Actions"
+    ]
+  },
+  "100": {
+    "name": "Quakeraga Materia",
+    "item": "I03F",
+    "unit": "m100",
+    "hint": "Obtain Quake Materia from the Rematch quest or the bazaar. Keep using it through both upgrades until it reaches level 3.",
+    "evidence": [
+      "Bazaar/Trig_Bazaar_Recipes_Actions",
+      "Quest_Rematch",
+      "Item_Upgrade/Trig_Item_Upgrade_Quakeraga_Actions"
+    ]
+  },
+  "103": {
+    "name": "Demiga Materia",
+    "item": "I03N",
+    "unit": "m103",
+    "hint": "Obtain Demi Materia from the Eye of Jenova quest or the bazaar. Keep using it through both upgrades until it reaches level 3.",
+    "evidence": [
+      "Bazaar/Trig_Bazaar_Recipes_Actions",
+      "Quest_EyeOfJenova",
+      "Item_Upgrade/Trig_Item_Upgrade_Demiga_Actions"
+    ]
+  },
+  "150": {
+    "name": "Aeroga Materia",
+    "item": "I07P",
+    "unit": "m150",
+    "hint": "Obtain Aero Materia from the Mithril Golem's Heart quest or the bazaar. Keep using it through both upgrades until it reaches level 3.",
+    "evidence": [
+      "Bazaar/Trig_Bazaar_Recipes_Actions",
+      "MithrilGolem",
+      "Item_Upgrade/Trig_Item_Upgrade_Aeroga_Actions"
+    ]
   }
 }

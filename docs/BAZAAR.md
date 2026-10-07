@@ -75,8 +75,8 @@ For a fresh Git clone, prepare both object additions from the tracked baseline:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AM -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAM.w3x
+.\build.ps1 -Stage AN -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAN.w3x
 ```
 
 Use unused stage/output names. For incremental work use the latest reviewed Reforged release as

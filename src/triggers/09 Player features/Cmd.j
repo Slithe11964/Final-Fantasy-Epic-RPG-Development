@@ -462,6 +462,24 @@ function Trig_Cmd_Load_Code_LoadForceFlag takes integer l_reader,force f returns
     set f=null
 endfunction
 
+// Preserve the legacy flag order; the four newly storable materia follow its 351 item slots.
+function Trig_Cmd_Load_Code_ArmoryFlagIndex takes integer position returns integer
+    if position==352 then
+        return 71
+    elseif position==353 then
+        return 100
+    elseif position==354 then
+        return 103
+    elseif position==355 then
+        return 150
+    elseif position>355 then
+        return position-4
+    elseif position==71 or position==100 or position==103 or position==150 then
+        return 0
+    endif
+    return position
+endfunction
+
 function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns nothing
     local integer i=0
     local integer l_runLeft=0
@@ -498,8 +516,8 @@ function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns n
     call Trig_Cmd_Load_Code_ReadBits(l_reader,18)
     set i=1
     loop
-        exitwhen i>udg_SaveFlagCount
-        if udg_SaveFlagUnitID[i]!=null then
+        exitwhen i>udg_SaveFlagCount+4
+        if udg_SaveFlagUnitID[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)]!=null then
             if(l_runLeft<=0)then
                 if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
                     set l_runMode=Trig_Cmd_Load_Code_ReadBits(l_reader,1)
@@ -523,7 +541,7 @@ function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns n
                             set l_bitLog=l_bitLog+"1"
                             set l_runLog=l_runLog+"O-"
                             set l_owned=l_owned+1
-                            call ForceAddPlayer(udg_SaveFlagForce[i],p)
+                            call ForceAddPlayer(udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)],p)
                         endif
                     else
                         set l_runMode=2
@@ -538,14 +556,14 @@ function Trig_Cmd_Load_Code_LoadArmory takes integer l_reader,player p returns n
                 if(l_runMode==2)then
                     if(Trig_Cmd_Load_Code_ReadBits(l_reader,1)==1)then
                         set l_owned=l_owned+1
-                        call ForceAddPlayer(udg_SaveFlagForce[i],p)
+                        call ForceAddPlayer(udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)],p)
                         set l_bitLog=l_bitLog+"1"
                     else
                         set l_bitLog=l_bitLog+"0"
                     endif
                 elseif(l_runMode==1)then
                     set l_owned=l_owned+1
-                    call ForceAddPlayer(udg_SaveFlagForce[i],p)
+                    call ForceAddPlayer(udg_SaveFlagForce[Trig_Cmd_Load_Code_ArmoryFlagIndex(i)],p)
                     set l_bitLog=l_bitLog+"1"
                 else
                     set l_bitLog=l_bitLog+"0"

@@ -20,6 +20,9 @@ def check(path):
     _, texts = sources()
     flags, errors = assignments(texts, 'udg_SaveFlagUnitID', repeated=True)
     flags = {k: v[-1] for k, v in flags.items()}
+    missing=[raw for raw in flags.values() if raw not in units]
+    if missing:
+        return errors + ['armory stored proxy missing: '+raw for raw in missing]
     items, extra = assignments(texts, 'udg_ItemIdTable')
     errors += extra
     expected = {k for k, raw in flags.items() if int(k) <= 500 and units[raw].get('upoi', 0) > 0}

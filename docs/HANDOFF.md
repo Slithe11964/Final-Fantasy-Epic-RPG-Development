@@ -1,30 +1,40 @@
-# FF Epic RPG handoff - 2026-10-07, stage AL armory tooltip counter
+# FF Epic RPG handoff - 2026-10-07, stage AM armory materia
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User asks where armory hints are customized and requests stored/total count on the house Armory icon.
-Next unused stage: AM.
+User requests Materia beside Accessories, with storage/hints/counting for four final-tier materia.
+Next unused stage: AN.
 
-## Current development build - AL
+## Current development build - AM
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAL.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAL.w3x.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAM.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAM.w3x.
   Classic uses AE's single-recipe Bazaar dialog, even in Reforged. Develop from the Reforged map.
-- House Armory ability A0MW retains its original description and adds Armory collection: N / 276.
-  Derived from eligible stored save flags, excluding category/title/special flags. Withdrawals
-  decrease the count; deposits/load update it. Local viewer presentation refreshes once per second
-  only when the displayed text changes. No shared flags/counts/rewards are modified.
-  Both client versions support the tooltip native; no classic presentation fallback needed here.
-- Hints are src/armory-hints.json, field hint. New armory_catalog.py --refresh-hints updates existing
-  proxy tooltip text and generated ArmoryHint source without recreating stock/objects. Edit only hint
-  text, keep save indexes/rawcodes/evidence intact; docs/ARMORY.md has the incremental workflow.
-- AK eight-mark pages, all-six Omni Gem layout, top Close, Gaya +25% gathering/follow and disabled
-  dev -teleporters remain. No play-test confirmation of AK's additional changes has been reported.
-- Full gates, 71 regressions, 2,000 codec cases, classic compilation/check_map and preservation
-  pass. Against AK only Armory runtime/editor text changed; all objects and other modules unchanged.
-- Needs house-icon hover count before/after deposits, withdrawal, loading, second-player isolation,
-  both clients and Editor Save As; also remaining AK checks from GAYA.md/DEBUG_COMMANDS.md/BAZAAR.md.
-- Incremental: .\build.ps1 -Stage AM -Base release/FFERPG_0.9.7.3-r16-stageAL.w3x.
-  Fresh clone workflow in BAZAAR.md; armory hint-edit instructions in ARMORY.md.
+- Materia category (8, stock flag 508) sits immediately beside Accessories (button 1,2).
+  Four final-tier entries: Wateraga/I025/71, Quakeraga/I03F/100, Demiga/I03N/103,
+  Aeroga/I07P/150 (user called it Aeroaga; existing item name retained).
+  Nine additive stock units: mCat, m071/m100/m103/m150 and z071/z100/z103/z150.
+  Missing ? entries give acquisition/upgrade hints; stored entries withdraw the original items.
+  Only these four charged item IDs are newly accepted by the existing house/title/ownership gate.
+  Duplicate deposits remain intact; lower-tier materia and all other charged items remain rejected.
+- Armory hover collection now N / 280. Existing count/title thresholds are retained; materia count
+  toward the collection through the same flags and existing deposit/load/withdraw handlers.
+- Save compatibility: keep all 351 inventory indexes/classes/charge classifications. New materia
+  armory bits APPEND after the legacy flag sequence, rather than interleaving at item indexes.
+  Cmd's ArmoryFlagIndex helper preserves old omitted slots; future inventory additions follow
+  the four appended bits. Only Save_EncodeUnitFlags and Cmd LoadArmory traversal/index lookups
+  change. tools/contracts/armory-materia-extension.json narrowly approves reviewed hashes;
+  original save-compatibility.json stays unchanged. Bodies reverse exactly to original fingerprints.
+  Older armory codes load unchanged. Saves containing new materia need AM or newer to retain them.
+- Fresh baseline armory_catalog.py preparation includes materia automatically; existing AL base
+  uses --add-materia once. Hint edits still use --refresh-hints; src/armory-hints.json is authoritative.
+- Full gates, 76 regressions, 2,000 codec cases, classic compile/check_map and scoped preservation
+  pass. Original objects/items/abilities/rewards and modules outside Armory/Cmd/Save unchanged.
+  Source-executed tests cover original bitmap payloads, dense/sparse/random runs, new materia
+  round trips, deposit restrictions/duplicates, category/counter/withdraw and compatibility refusal.
+- Needs Materia/Back layout and hints, deposit/withdraw each item, old and new save/load,
+  two-player isolation, both clients and Editor Save As. Remaining AK UI/Gaya/dev checks remain.
+- Incremental: .\build.ps1 -Stage AN -Base release/FFERPG_0.9.7.3-r16-stageAM.w3x.
+  Fresh clone workflow: docs/ARMORY.md and BAZAAR.md.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -53,7 +63,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AM -Base release/FFERPG_0.9.7.3-r16-stageAL.w3x
+.\build.ps1 -Stage AN -Base release/FFERPG_0.9.7.3-r16-stageAM.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

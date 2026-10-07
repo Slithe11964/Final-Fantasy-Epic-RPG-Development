@@ -16,6 +16,7 @@ import savecode
 
 CONTRACT = ROOT / 'tools/contracts/save-compatibility.json'
 FIXTURES = ROOT / 'tools/tests/fixtures/savecodes.json'
+MATERIA_EXTENSION = ROOT / 'tools/contracts/armory-materia-extension.json'
 
 
 def assignments(texts, array, repeated=False):
@@ -66,6 +67,7 @@ def snapshot(map_path):
 
 def compare(current, contract):
     errors = []
+    extension = json.loads(MATERIA_EXTENSION.read_text(encoding='utf-8'))
     items = current['items']
     numeric = sorted(int(k) for k in items)
     if not numeric or numeric != list(range(1, max(numeric) + 1)):
@@ -80,7 +82,23 @@ def compare(current, contract):
     for key in ['items', 'charged', 'item_classes', 'item_bases', 'armory_flags', 'serializers']:
         for index, original in contract[key].items():
             if current[key].get(index) != original:
+                approved = extension['serializers'].get(index, {}) if key == 'serializers' else {}
+                if approved.get('legacy') == original and approved.get('extended') == current[key].get(index):
+                    continue
                 errors.append(f'{key}/{index}: existing save contract changed or removed')
+    new_flags = {k:v for k,v in current['armory_flags'].items() if k not in contract['armory_flags'] and int(k)<=contract['save_flag_count']}
+    for index,value in new_flags.items():
+        if extension['armory_flags'].get(index) != value:
+            errors.append('armory_flags/'+index+': new flag would shift the legacy bitmap')
+    if new_flags or any(current['serializers'].get(k) == v['extended'] for k,v in extension['serializers'].items()):
+        for index,value in extension['armory_flags'].items():
+            if current['armory_flags'].get(index) != value:
+                errors.append('materia armory mapping differs: '+index)
+        for name,value in extension['serializers'].items():
+            if current['serializers'].get(name) != value['extended']:
+                errors.append('materia serializer extension differs: '+name)
+        if current['serializers'].get(extension['helper']['name']) != extension['helper']['fingerprint']:
+            errors.append('materia bitmap index order differs')
     if current['jobs'] != contract['jobs']:
         errors.append('job order/count changed: a new save format and preserved legacy readers are required')
     for key in items:

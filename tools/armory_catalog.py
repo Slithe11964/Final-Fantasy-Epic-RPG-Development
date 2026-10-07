@@ -16,6 +16,8 @@ from source_checks import ROOT, sources
 from check_save_compat import assignments
 
 ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
+MATERIA = {71: ('I025', 'm071'), 100: ('I03F', 'm100'),
+           103: ('I03N', 'm103'), 150: ('I07P', 'm150')}
 
 
 def set_field(obj, key, value):
@@ -44,7 +46,35 @@ def sync_hint_source(catalog):
     path.write_bytes(source.replace('\n', '\r\n').encode('utf-8'))
 
 
-def catalog_objects(table, catalog, flags, item_fields):
+def prepare_materia(table, item_fields):
+    result = copy.deepcopy(table)
+    original = {o['id'] or o['base']: o for group in ('original', 'custom') for o in table[group]}
+    ids = {'mCat'} | {raw for item, raw in MATERIA.values()}
+    if ids <= original.keys():
+        return result
+    if ids & original.keys():
+        raise ValueError('partial/colliding Materia armory objects')
+    category = copy.deepcopy(original['n0JL'])
+    category['id'] = 'mCat'
+    for field, value in dict(unam='Gear: Materia', utip='Materia',
+                             utub='Look through your fully upgraded materia.', umpm=8,
+                             ubpx=1, ubpy=2, uico=item_fields['I07P']['iico']).items():
+        set_field(category, field, value)
+    result['custom'].append(category)
+    for index, (item, raw) in MATERIA.items():
+        obj = copy.deepcopy(original['n0EI'])
+        obj['id'] = raw
+        f = item_fields[item]
+        for field, value in dict(unam=f['unam'], utip=f['utip'], utub=f['utub'],
+                                 uico=f['iico'], upoi=8, umpm=index, ulev=0,
+                                 ugol=0, ulum=0, ubpx=0, ubpy=0).items():
+            set_field(obj, field, value)
+        result['custom'].append(obj)
+    return result
+
+
+def catalog_objects(table, catalog, flags, item_fields, extend=False):
+    table = prepare_materia(table, item_fields)
     result = copy.deepcopy(table)
     original = {o['id'] or o['base']: o for group in ('original', 'custom') for o in table[group]}
     expected = {int(k) for k, raw in flags.items() if int(k) <= 500 and fields(original[raw]).get('upoi', 0) > 0}
@@ -73,6 +103,8 @@ def catalog_objects(table, catalog, flags, item_fields):
         index = int(key)
         if not entry['hint'].strip() or not entry['evidence']:
             raise ValueError('missing hint/evidence: ' + key)
+        if extend and hint_id(index) in original:
+            continue
         obj = copy.deepcopy(original[flags[key]])
         obj['id'] = hint_id(index)
         for field, value in dict(unam='Missing: ' + entry['name'], utip='? - Missing item',
@@ -98,8 +130,9 @@ def refresh_hint_objects(table, catalog):
             raise ValueError('missing hint object ' + raw + '; prepare armory objects first')
         if not entry['hint'].strip():
             raise ValueError('empty hint: ' + key)
-        set_field(units[raw], 'utub', '|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] +
-                  '|n|nStore this item in your house to unlock it in the armory.')
+        tooltip='|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] + '|n|nStore this item in your house to unlock it in the armory.'
+        if fields(units[raw]).get('utub') != tooltip:
+            set_field(units[raw], 'utub', tooltip)
     return result
 
 
@@ -108,7 +141,10 @@ def main():
     parser.add_argument('base', type=Path)
     parser.add_argument('out', type=Path)
     parser.add_argument('--refresh-hints', action='store_true', help='update hint tooltips in an already prepared map')
+    parser.add_argument('--add-materia', action='store_true', help='extend a prepared armory with final-tier materia')
     args = parser.parse_args()
+    if args.refresh_hints and args.add_materia:
+        raise ValueError('choose either hint refresh or materia extension')
     if args.out.exists() or args.base.resolve() == args.out.resolve():
         raise ValueError('choose a new output; existing maps are not overwritten')
     _, texts = sources()
@@ -121,7 +157,7 @@ def main():
     table = read_objects(archive.read('war3map.w3u'), 'w3u')
     items = read_objects(archive.read('war3map.w3t'), 'w3t')
     item_fields = {o['id'] or o['base']: fields(o) for group in ('original', 'custom') for o in items[group]}
-    updated = refresh_hint_objects(table, catalog) if args.refresh_hints else catalog_objects(table, catalog, flags, item_fields)
+    updated = refresh_hint_objects(table, catalog) if args.refresh_hints else catalog_objects(table, catalog, flags, item_fields, args.add_materia)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     write_files(str(args.base), str(args.out), {'war3map.w3u': write_objects(updated, table['version'], 'w3u')})
     sync_hint_source(catalog)
