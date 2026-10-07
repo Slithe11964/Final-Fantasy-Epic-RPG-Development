@@ -4,7 +4,7 @@ Run from the FFERPG repository in PowerShell:
 
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
-.\build.ps1 -Stage AD -Base build/armory-objects.w3x
+.\build.ps1 -Stage AE -Base build/armory-objects.w3x
 ```
 
 Stage AB requires additive armory hint objects. On a fresh clone prepare the object base as above;

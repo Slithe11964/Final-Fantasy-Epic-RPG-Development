@@ -1,21 +1,23 @@
-# FF Epic RPG handoff — 2026-10-06, stage AC armory discovery
+# FF Epic RPG handoff — 2026-10-06, stage AD armory layout
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-Stage AB adds armory discovery hints and pagination. Next unused stage: AD.
+Stages AB/AC add armory discovery hints. AD removes pagination and sorts by required level.
+Next unused stage: AE.
 
-## Current development build — AC
+## Current development build — AD
 
-- Reforged/editor: release/FFERPG_0.9.7.3-r16-stageAC.w3x.
-- Shared playable copy: release/1.29.2/FFERPG_0.9.7.3-r16-stageAC.w3x.
+- Reforged/editor: release/FFERPG_0.9.7.3-r16-stageAD.w3x.
+- Shared playable copy: release/1.29.2/FFERPG_0.9.7.3-r16-stageAD.w3x.
 - 276 missing gear entries have question-mark icons and source-backed hover/click hints.
-  Nine entries per page; all categories, including celestial gear, can be browsed.
+  Every category fits on one panel, with at most eleven items plus Back. Stored/missing icons
+  share fixed slots sorted by required level; equal-level items retain authored order.
   Existing Armory title requirement, deposits, withdrawals, rewards and save format remain.
 - All map/source/quest/content/save/catalogue gates, 2,000 codec cases and 54 regressions pass.
   Classic check_map/compilation also pass.
-  Preservation audit: only Armory script/editor source and 278 added unit objects differ.
-- Needs both-client UI/pagination, withdrawal/store, save/load, multiplayer and Editor Save As
-  testing: docs/ARMORY.md. AC corrects Mina/Halberd hints from user-confirmed acquisition routes.
-- Incremental build: .\build.ps1 -Stage AD -Base release/FFERPG_0.9.7.3-r16-stageAC.w3x.
+  Preservation audit: only Armory script/editor source and 276 added hint units and collectible stock button positions differ.
+- User likes the feature overall. Needs focused both-client single-panel/order, withdrawal/store,
+  save/load, multiplayer and Editor Save As testing: docs/ARMORY.md. AC corrects Mina/Halberd hints from user-confirmed acquisition routes.
+- Incremental build: .\build.ps1 -Stage AE -Base release/FFERPG_0.9.7.3-r16-stageAD.w3x.
   Fresh clones must prepare the armory object base first; see ARMORY.md. The pinned baseline
   predates these objects and cannot be used alone with the new sources.
 
@@ -47,7 +49,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AD -Base release/FFERPG_0.9.7.3-r16-stageAC.w3x
+.\build.ps1 -Stage AE -Base release/FFERPG_0.9.7.3-r16-stageAD.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

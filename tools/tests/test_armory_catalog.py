@@ -20,12 +20,12 @@ SOURCE = ROOT / 'src/triggers/05 Items crafting and shops/Armory.j'
 def runtime():
     source = SOURCE.read_text(encoding='utf-8')
     env = mocks(source)
-    for name in ['ArmoryMissingUnit', 'ArmoryCategory', 'ArmoryPage']:
+    for name in ['ArmoryMissingUnit', 'ArmoryCategory']:
         env[name] = defaultdict(int)
     env['ArmoryHint'] = defaultdict(str)
     shop = {'owner': 1}
     stock = []
-    categories = {f'u{i}': 12 for i in range(1, 26)}
+    categories = {f'u{i}': 12 for i in range(1, 12)}
     flags = defaultdict(set)
     env.update(GetOwningPlayer=lambda u: u['owner'], GetConvertedPlayerId=lambda p: p,
                IsPlayerInForce=lambda p, force: p in force,
@@ -33,7 +33,7 @@ def runtime():
                RemoveUnitFromStock=lambda u, raw: stock.remove(raw) if raw in stock else None,
                AddUnitToStock=lambda u, raw, a, b: stock.append(raw),
                SetUnitAbilityLevel=lambda u, ability, level: u.update(back=level),
-               udg_SaveFlagUnitID=defaultdict(int, {i: f'u{i}' for i in range(1, 26)}),
+               udg_SaveFlagUnitID=defaultdict(int, {i: f'u{i}' for i in range(1, 12)}),
                udg_SaveFlagForce=flags, udg_SaveFlagCount=351, udg_ArmoryStockMax=540)
     names = ['Armory_InitHints', 'Armory_InCategory', 'Armory_ClearStock', 'Armory_ShowCategory',
              'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions']
@@ -41,7 +41,7 @@ def runtime():
         e = harness.load_engine(source, names, env)
     e['Armory_InitHints']()
     # Synthetic unit identities keep the stock assertions readable.
-    e['ArmoryMissingUnit'] = defaultdict(int, {i: hint_id(i) for i in range(1, 26)})
+    e['ArmoryMissingUnit'] = defaultdict(int, {i: hint_id(i) for i in range(1, 12)})
     e['GetTriggerUnit'] = lambda: shop
     e['GetUnitTypeId'] = lambda u: u['raw']
     e['BlzGetUnitMaxMana'] = lambda u: u['index']
@@ -54,35 +54,32 @@ class ArmoryTests(unittest.TestCase):
         errors = check(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x')
         self.assertTrue(any('missing/wrong hint object field' in error for error in errors))
 
-    def test_pages_reach_every_entry_without_hiding_missing_items(self):
+    def test_single_panel_shows_all_eleven_entries(self):
         e, shop, stock, flags = runtime()
-        seen = []
-        for page in range(3):
-            e['Armory_ShowCategory'](shop, 12, page)
-            self.assertLessEqual(len(stock), 11)  # one slot remains for Back
-            seen.extend(raw for raw in stock if raw not in ('zNXT', 'zPRV'))
-        self.assertEqual(seen, [hint_id(i) for i in range(1, 26)])
+        e['Armory_ShowCategory'](shop, 12)
+        self.assertEqual(stock, [hint_id(i) for i in range(1, 12)])
         self.assertNotIn('zNXT', stock)
-        e['Armory_ShowCategory'](shop, 12, 999)
-        self.assertEqual(e['ArmoryPage'][1], 2)
+        self.assertNotIn('zPRV', stock)
 
-    def test_collection_and_page_are_independent_for_each_player(self):
+    def test_collection_and_category_are_independent_for_each_player(self):
         e, shop, stock, flags = runtime()
-        flags[12].add(1)
-        e['Armory_ShowCategory'](shop, 12, 1)
-        self.assertIn('u12', stock)
+        flags[5].add(1)
+        e['Armory_ShowCategory'](shop, 12)
+        self.assertIn('u5', stock)
         second = {'owner': 2}
-        e['Armory_ShowCategory'](second, 12, 0)
-        self.assertIn('z001', stock)
-        self.assertEqual(e['ArmoryPage'][1], 1)
-        self.assertEqual(e['ArmoryPage'][2], 0)
+        e['Armory_ShowCategory'](second, 12)
+        self.assertIn('z005', stock)
+        self.assertNotIn('u5', stock)
+        e['Armory_ShowCategory'](second, 0)
+        self.assertEqual(e['ArmoryCategory'][1], 12)
+        self.assertEqual(e['ArmoryCategory'][2], 0)
 
     def test_hint_click_does_not_withdraw_or_change_saved_flags(self):
         e, shop, stock, flags = runtime()
         messages = []
-        e['Armory_ShowCategory'](shop, 12, 0)
+        e['Armory_ShowCategory'](shop, 12)
         before = copy.deepcopy(flags)
-        e['GetSoldUnit'] = lambda: {'raw': 'z012', 'index': 12}
+        e['GetSoldUnit'] = lambda: {'raw': 'z005', 'index': 5}
         e['DisplayTimedTextToPlayer'] = lambda *args: messages.append(args[-1])
         e['CreateItemLoc'] = lambda *args: self.fail('hint granted an item')
         e['Trig_Armory_Select_Actions']()
@@ -90,28 +87,24 @@ class ArmoryTests(unittest.TestCase):
         self.assertEqual(len(messages), 1)
         self.assertIn('z001', stock)
 
-    def test_page_click_and_back_use_the_current_players_category(self):
+    def test_back_uses_the_current_players_category(self):
         e, shop, stock, flags = runtime()
-        e['Armory_ShowCategory'](shop, 12, 0)
-        e['GetSoldUnit'] = lambda: {'raw': 'zNXT', 'index': 0}
-        e['Trig_Armory_Select_Actions']()
-        self.assertEqual(e['ArmoryPage'][1], 1)
+        e['Armory_ShowCategory'](shop, 12)
         e['udg_ArmoryParentCategory'][12] = 1
         e['Trig_Armory_Back_IsTopLevel'] = lambda: False
         e['Trig_Armory_Back_Actions']()
         self.assertEqual(e['ArmoryCategory'][1], 1)
-        self.assertEqual(e['ArmoryPage'][1], 0)
 
     def test_withdrawal_replaces_stored_icon_with_hint_and_removes_one_flag(self):
         e, shop, stock, flags = runtime()
-        flags[12].add(1)
+        flags[5].add(1)
         e['udg_TitleForce'][35] = {1}
         e['udg_ArmoryItemCount'][1] = 1
-        e['Armory_ShowCategory'](shop, 12, 1)
-        e['GetSoldUnit'] = lambda: {'raw': 'u12', 'index': 12}
+        e['Armory_ShowCategory'](shop, 12)
+        e['GetSoldUnit'] = lambda: {'raw': 'u5', 'index': 5}
         e['Trig_Armory_Select_HasStockId'] = lambda: True
         e['Trig_Armory_Select_IsCategoryNode'] = lambda: False
-        e['udg_ItemIdTable'][12] = 'I00D'
+        e['udg_ItemIdTable'][5] = 'I00D'
         created = []
         e['CreateItemLoc'] = lambda raw, loc: created.append(raw)
         e['GetLastCreatedItem'] = lambda: 'withdrawn item'
@@ -120,9 +113,9 @@ class ArmoryTests(unittest.TestCase):
         e['Trig_Armory_Select_Actions']()
         self.assertEqual(created, ['I00D'])
         self.assertEqual(e['udg_ArmoryItemCount'][1], 0)
-        self.assertNotIn(1, flags[12])
-        self.assertIn('z012', stock)
-        self.assertNotIn('u12', stock)
+        self.assertNotIn(1, flags[5])
+        self.assertIn('z005', stock)
+        self.assertNotIn('u5', stock)
 
     def test_catalog_covers_all_collectibles_and_preserves_original_objects(self):
         _, texts = sources()
@@ -132,11 +125,17 @@ class ArmoryTests(unittest.TestCase):
         catalog = json.loads((ROOT / 'src/armory-hints.json').read_text())
         archive = MPQ(str(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
         table = read_objects(archive.read('war3map.w3u'), 'w3u')
-        changed = catalog_objects(table, catalog, flags)
+        items = read_objects(archive.read('war3map.w3t'), 'w3t')
+        item_fields = {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in items[g]}
+        changed = catalog_objects(table, catalog, flags, item_fields)
         self.assertEqual(changed['original'], table['original'])
-        self.assertEqual(changed['custom'][:len(table['custom'])], table['custom'])
-        self.assertEqual(len(changed['custom']) - len(table['custom']), 278)
-        for obj in changed['custom'][len(table['custom']):-2]:
+        for before, after in zip(table['custom'], changed['custom']):
+            for obj in (before, after):
+                for group in obj['sets']:
+                    group['mods'][:] = [m for m in group['mods'] if m['field'] not in ('ubpx', 'ubpy')]
+            self.assertEqual(before, after)
+        self.assertEqual(len(changed['custom']) - len(table['custom']), 276)
+        for obj in changed['custom'][len(table['custom']):]:
             f = fields(obj)
             self.assertEqual(f['ugol'], 0)
             self.assertEqual(f['ulum'], 0)

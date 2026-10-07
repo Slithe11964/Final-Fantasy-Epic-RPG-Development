@@ -15,7 +15,6 @@ globals
     integer array ArmoryMissingUnit
     string array ArmoryHint
     integer array ArmoryCategory
-    integer array ArmoryPage
 endglobals
 
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
@@ -966,54 +965,26 @@ function Armory_ClearStock takes unit shop returns nothing
         endif
         set i=i+1
     endloop
-    call RemoveUnitFromStock(shop,'zNXT')
-    call RemoveUnitFromStock(shop,'zPRV')
 endfunction
 
-function Armory_ShowCategory takes unit shop,integer category,integer page returns nothing
+function Armory_ShowCategory takes unit shop,integer category returns nothing
     local player p=GetOwningPlayer(shop)
     local integer playerIndex=GetConvertedPlayerId(p)
     local integer i=1
-    local integer count=0
-    local integer position=0
     local integer stockId
     call Armory_ClearStock(shop)
-    loop
-        exitwhen i>udg_ArmoryStockMax
-        if Armory_InCategory(i,category) then
-            set count=count+1
-        endif
-        set i=i+1
-    endloop
-    if page<0 then
-        set page=0
-    endif
-    if count>0 and page*9>=count then
-        set page=(count-1)/9
-    endif
     set ArmoryCategory[playerIndex]=category
-    set ArmoryPage[playerIndex]=page
-    set i=1
     loop
         exitwhen i>udg_ArmoryStockMax
         if Armory_InCategory(i,category) then
-            if position>=page*9 and position<(page+1)*9 then
-                set stockId=udg_SaveFlagUnitID[i]
-                if ArmoryMissingUnit[i]!=0 and not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
-                    set stockId=ArmoryMissingUnit[i]
-                endif
-                call AddUnitToStock(shop,stockId,1,1)
+            set stockId=udg_SaveFlagUnitID[i]
+            if ArmoryMissingUnit[i]!=0 and not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+                set stockId=ArmoryMissingUnit[i]
             endif
-            set position=position+1
+            call AddUnitToStock(shop,stockId,1,1)
         endif
         set i=i+1
     endloop
-    if page>0 then
-        call AddUnitToStock(shop,'zPRV',1,1)
-    endif
-    if (page+1)*9<count then
-        call AddUnitToStock(shop,'zNXT',1,1)
-    endif
     call SetUnitAbilityLevel(shop,'A0MX',category+1)
     set p=null
 endfunction
@@ -1431,7 +1402,7 @@ function Trig_Armory_Open_Actions takes nothing returns nothing
         call CreateNUnitsAtLoc(1,'e01G',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,bj_UNIT_FACING) // 'e01G': unit "Armory"
         call RemoveLocation(udg_TempPoint)
         set udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
-        call Armory_ShowCategory(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],0,0)
+        call Armory_ShowCategory(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],0)
         call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
     endif
     call SelectUnitForPlayerSingle(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
@@ -1483,22 +1454,14 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
         call DisplayTimedTextToForce(udg_TempForce,10.,"This is not your armory!")
         call DestroyForce(udg_TempForce)
     else
-        if GetUnitTypeId(GetSoldUnit())=='zNXT' then
-            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex]+1)
-            return
-        endif
-        if GetUnitTypeId(GetSoldUnit())=='zPRV' then
-            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex]-1)
-            return
-        endif
         if itemIndex>0 and GetUnitTypeId(GetSoldUnit())==ArmoryMissingUnit[itemIndex] then
             call DisplayTimedTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,15,"Hint: "+ArmoryHint[itemIndex])
-            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex])
+            call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex])
             return
         endif
         if(Trig_Armory_Select_HasStockId())then
             if(Trig_Armory_Select_IsCategoryNode())then
-                call Armory_ShowCategory(GetTriggerUnit(),itemIndex,0)
+                call Armory_ShowCategory(GetTriggerUnit(),itemIndex)
             else
                 if(Trig_Armory_Select_CanWithdraw())then
                     set udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]-1)
@@ -1520,12 +1483,12 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
                     call RemoveLocation(udg_TempPoint2)
                     call RemoveLocation(udg_TempPoint)
                     call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[BlzGetUnitMaxMana(GetSoldUnit())])
-                    call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex],ArmoryPage[playerIndex])
+                    call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex])
                 endif
             endif
         else
             if(Trig_Armory_Select_IsCancel())then
-                call Armory_ShowCategory(GetTriggerUnit(),0,0)
+                call Armory_ShowCategory(GetTriggerUnit(),0)
             else
                 if(Trig_Armory_Select_IsClose())then
                     call SelectUnitForPlayerSingle(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
@@ -1556,7 +1519,7 @@ function Trig_Armory_Back_Actions takes nothing returns nothing
         call ShowUnitHide(GetTriggerUnit())
         call KillUnit(GetTriggerUnit())
     else
-        call Armory_ShowCategory(GetTriggerUnit(),udg_ArmoryParentCategory[ArmoryCategory[playerIndex]],0)
+        call Armory_ShowCategory(GetTriggerUnit(),udg_ArmoryParentCategory[ArmoryCategory[playerIndex]])
     endif
 endfunction
 

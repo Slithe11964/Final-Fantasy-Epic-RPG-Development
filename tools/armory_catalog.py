@@ -1,7 +1,8 @@
 """Add reviewed armory hint objects to a new map before running build.ps1.
 
 python tools/armory_catalog.py BASE OUT
-Hints live in src/armory-hints.json. Existing objects and save indexes are preserved.
+Hints live in src/armory-hints.json. Only stock button positions change on existing objects;
+save indexes and item requirements are preserved.
 """
 import argparse
 import copy
@@ -43,13 +44,31 @@ def sync_hint_source(catalog):
     path.write_bytes(source.replace('\n', '\r\n').encode('utf-8'))
 
 
-def catalog_objects(table, catalog, flags):
+def catalog_objects(table, catalog, flags, item_fields):
     result = copy.deepcopy(table)
     original = {o['id'] or o['base']: o for group in ('original', 'custom') for o in table[group]}
     expected = {int(k) for k, raw in flags.items() if int(k) <= 500 and fields(original[raw]).get('upoi', 0) > 0}
     if set(map(int, catalog)) != expected:
         raise ValueError('hint coverage must match every armory item with a category')
     additions = []
+    categories = {}
+    for key, entry in catalog.items():
+        f = fields(original[flags[key]])
+        categories.setdefault(f['upoi'], []).append(key)
+    positions = {}
+    for keys in categories.values():
+        if len(keys) > 11:
+            raise ValueError('armory category exceeds eleven item slots')
+        keys.sort(key=lambda key: (item_fields[catalog[key]['item']].get('ihtp', 1),
+                                  fields(original[flags[key]]).get('ubpy', 0) * 4 +
+                                  fields(original[flags[key]]).get('ubpx', 0), int(key)))
+        positions.update({key: slot for slot, key in enumerate(keys)})
+    for group in ('original', 'custom'):
+        for obj in result[group]:
+            key = next((k for k in catalog if flags[k] == (obj['id'] or obj['base'])), None)
+            if key is not None:
+                set_field(obj, 'ubpx', positions[key] % 4)
+                set_field(obj, 'ubpy', positions[key] // 4)
     for key, entry in sorted(catalog.items(), key=lambda pair: int(pair[0])):
         index = int(key)
         if not entry['hint'].strip() or not entry['evidence']:
@@ -59,22 +78,13 @@ def catalog_objects(table, catalog, flags):
         for field, value in dict(unam='Missing: ' + entry['name'], utip='? - Missing item',
                                  utub='|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] +
                                       '|n|nStore this item in your house to unlock it in the armory.',
-                                 uico=ICON, ugol=0, ulum=0, ulev=0, ubpx=-1, ubpy=-1,
+                                 uico=ICON, ugol=0, ulum=0, ulev=0,
+                                 ubpx=positions[key] % 4, ubpy=positions[key] // 4,
                                  umpm=index, usma=1, usrg=1).items():
             set_field(obj, field, value)
         additions.append(obj)
-    for raw, label, tooltip, icon in [
-        ('zNXT', 'Next page', 'View the next page in this category.', r'ReplaceableTextures\CommandButtons\BTNReplay-SpeedUp.blp'),
-        ('zPRV', 'Previous page', 'View the previous page in this category.', r'ReplaceableTextures\CommandButtons\BTNReplay-SpeedDown.blp')]:
-        obj = copy.deepcopy(original[flags['501']])
-        obj['id'] = raw
-        for field, value in dict(unam=label, utip=label, utub=tooltip, uico=icon,
-                                 ugol=0, ulum=0, ulev=0, umpm=0, upoi=0,
-                                 ubpx=-1, ubpy=-1, usma=1, usrg=1).items():
-            set_field(obj, field, value)
-        additions.append(obj)
     if any(o['id'] in original for o in additions):
-        raise ValueError('hint/page object ID already exists; use an unmodified base')
+        raise ValueError('hint object ID already exists; use an unmodified base')
     result['custom'].extend(additions)
     return result
 
@@ -92,11 +102,13 @@ def main():
     catalog = json.loads((ROOT / 'src/armory-hints.json').read_text(encoding='utf-8'))
     archive = MPQ(str(args.base))
     table = read_objects(archive.read('war3map.w3u'), 'w3u')
-    updated = catalog_objects(table, catalog, flags)
+    items = read_objects(archive.read('war3map.w3t'), 'w3t')
+    item_fields = {o['id'] or o['base']: fields(o) for group in ('original', 'custom') for o in items[group]}
+    updated = catalog_objects(table, catalog, flags, item_fields)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     write_files(str(args.base), str(args.out), {'war3map.w3u': write_objects(updated, table['version'], 'w3u')})
     sync_hint_source(catalog)
-    print(f'Added {len(catalog)} hint entries and two page controls; existing objects preserved.')
+    print(f'Added {len(catalog)} hint entries; stock button positions sorted by required level.')
 
 
 if __name__ == '__main__':

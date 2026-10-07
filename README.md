@@ -23,10 +23,10 @@ Windows pjass and both sets of script libraries are included. Editor saves requi
 
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
-.\build.ps1 -Stage AD -Base build/armory-objects.w3x
+.\build.ps1 -Stage AE -Base build/armory-objects.w3x
 ```
 
-Stages AB/AC add armory question marks, hints and pagination; see docs/ARMORY.md for testing.
+Stages AB through AD add armory question marks and hints on one panel per category, sorted by required level; see docs/ARMORY.md for testing.
 The preparer adds the reviewed hint objects to the public baseline. The builder syncs changed modules, orders libraries, runs all
 safeguards and adds the header. A new map/report/manifest goes to release/. Use the next unused
 stage. For incremental work, pass `-Base release/<latest-Reforged-map>.w3x`. Keep vJass .j sources
