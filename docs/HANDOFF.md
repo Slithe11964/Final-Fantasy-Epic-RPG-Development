@@ -2,7 +2,17 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AZ. Normal development stays on AS; Forsaken AY repairs item/control handling.
+Next unused stage: BA. Normal development stays on AS; Forsaken AZ adds automatic slotting and shared job inventory.
+
+## Separate experiment - Forsaken AZ
+
+- User confirmed AY native panel and -forsaken-equip work. AZ removes the physical Backpack object/supply; ASpc remains visible at0,1 with B hotkey, and fBag/fGer remain direct permanent hero abilities.
+- Automatic one-second scan fills empty matching native slots from mapped original items in visible inventory/bag. Both ring slots supported; occupied slots never automatically replaced. Retain AY's accepted/equipped/IsItemEquipped checks before deleting originals; failed conversions retain charges/ownership and original items.
+- Separate Forsaken-job.j and builder Job overlay capture the previous hero before the canonical change. After existing six-slot transfer and before stat recalculation, move equipped gear (all9 slots) then bag contents backwards using the same item handles. Enable native abilities on the new job immediately. Charges use canonical zero-during-transfer convention. Failed additions leave the item beside the current hero with a message, never delete it. No cyclic Equip/Job dependency.
+- Register_Forsaken_TestEquip is now a separate startup registration helper; optional manual rescan and -forsaken diagnostic remain. Saving blocked, Forsaken data2 and exact AS classic fallback retained. Source overlays only; canonical src/release AS untouched.
+- Validation/build results recorded in STAGES. Native AZ acceptance pending: automatic slots/bonuses, full bag and both rings across jobs and back, ability-only access, two-player separation and NPC gear. Remaining item-ID/proc/Armory/save migration is in experiments/Forsaken/README.md.
+- Scratch source: build/ForsakenAZ-stqnkwnu/FFERPG.
+- Validation: all build/map/editor/source gates,96 regressions,2,000 codec cases and11 experiment tests PASS (including full30-slot bag, both rings, job round trip and other-player isolation). Complete source/runtime agreement has0 new differences; both new triggers explicitly registered. Final preservation audit: only script/editor text, abilities/items and expansion selector differ; original item fields/world/NPC payloads retained, physical Backpack absent, classic byte-identical AS.
 
 ## Separate experiment - Forsaken AY
 

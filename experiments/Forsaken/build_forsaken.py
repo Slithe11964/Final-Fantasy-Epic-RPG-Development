@@ -94,16 +94,6 @@ def prepare_objects(base, out, mapping_out):
             set_field(obj, 'iequ', slot)
             table['custom'].append(obj)
             mapping[raw]['variant'] = variant
-    if 'fBpk' in items:
-        raise ValueError('experimental backpack ID already used')
-    backpack = dict(base='ebac', id='fBpk', sets=[dict(flag=0, mods=[])])
-    for key, value in dict(unam='Backpack', iabi='ASpc',
-                           icla='Campaign', iuse=0, iusa=1, iper=0,
-                           idrp=0, ipaw=0, isel=0, igol=0, ilum=0,
-                           iico=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',
-                           utip='Backpack', utub='Open your Forsaken test backpack and equipment slots. Saving is disabled in this experiment.').items():
-        set_field(backpack, key, value)
-    table['custom'].append(backpack)
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
     for base_id, raw, item_ability, capacity_field, capacity in (
             ('AInx', 'fBag', 0, 'inv6', 30),
@@ -169,8 +159,23 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
-                        '    call Register_Forsaken_Equipment()\n    call Register_Equip_Restrictions() //', 1)
+                        '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Equip_Restrictions() //', 1)
     return text
+
+
+def job_overlay(original):
+    extra = (HERE / 'Forsaken-job.j').read_text(encoding='utf-8')
+    text = original.replace('function Trig_Job_Change_Actions takes',
+                            extra + '\n\nfunction Trig_Job_Change_Actions takes', 1)
+    text = text.replace('    local group l_tempGroup\n    set udg_SelectedJobId',
+                        '    local group l_tempGroup\n    local unit forsakenPrevious=Player_GetHero(GetOwningPlayer(GetSoldUnit()))\n    set udg_SelectedJobId', 1)
+    text = text.replace('    if(Trig_Job_Change_IsStatLocked())then',
+                        '    call Forsaken_TransferSharedInventory(forsakenPrevious,Player_GetHero(udg_TempPlayer))\n    set forsakenPrevious=null\n    if(Trig_Job_Change_IsStatLocked())then', 1)
+    # Clear the additional handle on the original early-return paths too.
+    start = text.index('function Trig_Job_Change_Actions takes')
+    end = text.index('endfunction', start)
+    action = text[start:end].replace('        return', '        set forsakenPrevious=null\n        return')
+    return text[:start] + action + text[end:]
 
 
 def run(command, cwd=ROOT):
@@ -220,9 +225,14 @@ def main():
     initialization = ['    set ForsakenGearTypes=InitHashtable()']
     initialization += ["    call SaveInteger(ForsakenGearTypes,0,'%s','%s')" % (raw,entry['variant'])
                        for raw, entry in mapping.items() if 'variant' in entry]
+    slots = dict(Head=0,Chest=1,Gloves=2,Boots=3,Ring=4,Primary=6,Offhand=7,Trinket=8)
+    initialization += ["    call SaveInteger(ForsakenGearTypes,1,'%s',%d)" % (raw,slots[entry['slot']])
+                       for raw, entry in mapping.items() if 'variant' in entry]
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
+    job_source = work/'src/triggers/03 Jobs and progression/Job.j'
+    job_source.write_bytes(job_overlay(job_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
