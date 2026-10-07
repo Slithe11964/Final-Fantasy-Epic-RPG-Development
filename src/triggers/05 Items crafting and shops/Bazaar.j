@@ -33,6 +33,8 @@ globals
     integer array BazaarShardCost
     constant boolean BazaarUseFrames=true
     integer array BazaarSession
+    integer array BazaarFramePartPage
+    framehandle array BazaarFrameMore
     integer array BazaarFramePage
     trigger gg_trg_Bazaar_FrameClick=null
     trigger gg_trg_Bazaar_FrameSync=null
@@ -253,27 +255,62 @@ function Bazaar_AllIngredients takes integer recipe returns string
         if udg_MaterialOwnedCount[material]>=needed then
             set color="|cff00ff00"
         endif
-        set text=text+"|n"+color+Bazaar_PlainName(GetObjectName(udg_DropItemIdTable[material]))+": "+I2S(udg_MaterialOwnedCount[material])+" / "+I2S(needed)+"|r"
+        set text=text+"|n"+color+Bazaar_WrapText(Bazaar_PlainName(GetObjectName(udg_DropItemIdTable[material])))+"|n"+I2S(udg_MaterialOwnedCount[material])+" / "+I2S(needed)+"|r"
         set slot=slot+2
     endloop
     return text
 endfunction
 
+function Bazaar_IngredientPageText takes integer recipe, integer page returns string
+    local string text=Bazaar_AllIngredients(recipe)
+    local string result="Sold parts (shared):"
+    local string color="|cffffcc00"
+    local string lineColor=color
+    local integer i=0
+    local integer start=0
+    local integer line=-1
+    local integer length=StringLength(text)
+    loop
+        exitwhen i>length
+        if SubString(text,i,i+2)=="|c" then
+            set color=SubString(text,i,i+10)
+        elseif SubString(text,i,i+2)=="|r" then
+            set color="|cffffcc00"
+        endif
+        if i==length or SubString(text,i,i+2)=="|n" then
+            if line>=page*9 and line<page*9+9 then
+                set result=result+"|n"+lineColor+SubString(text,start,i)+"|r"
+            endif
+            set line=line+1
+            set i=i+2
+            set start=i
+            set lineColor=color
+        else
+            set i=i+1
+        endif
+    endloop
+    if result=="Sold parts (shared):" then
+        return ""
+    endif
+    return result
+endfunction
+
 function BazaarFrame_Show takes player p returns nothing
     local integer id=GetPlayerId(p)
-    local integer first=BazaarFramePage[id]*5+1
+    local integer first=BazaarFramePage[id]*3+1
     local integer slot=0
     local integer recipe
     if GetLocalPlayer()==p then
         call BlzFrameSetVisible(BazaarFrameRoot,true)
-        call BlzFrameSetText(BazaarFrameHeading,"Bazaar Recipes "+I2S(first)+"-"+I2S(IMinBJ(first+4,udg_BazaarGoodCount))+" / "+I2S(udg_BazaarGoodCount))
+        call BlzFrameSetText(BazaarFrameHeading,"Bazaar Recipes "+I2S(first)+"-"+I2S(IMinBJ(first+2,udg_BazaarGoodCount))+" / "+I2S(udg_BazaarGoodCount))
         loop
-            exitwhen slot>=5
+            exitwhen slot>=3
             set recipe=first+slot
             call BlzFrameSetVisible(BazaarFrameCard[slot],recipe<=udg_BazaarGoodCount)
             if recipe<=udg_BazaarGoodCount then
                 call BlzFrameSetText(BazaarFrameTitle[slot],"Recipe "+I2S(recipe)+"|nReward: ???")
-                call BlzFrameSetText(BazaarFrameParts[slot],Bazaar_AllIngredients(recipe))
+                call BlzFrameSetText(BazaarFrameParts[slot],Bazaar_IngredientPageText(recipe,BazaarFramePartPage[slot]))
+                call BlzFrameSetVisible(BazaarFrameMore[slot],Bazaar_IngredientPageText(recipe,1)!="")
                 call BlzFrameSetText(BazaarFramePrice[slot],"Gold: "+I2S(BazaarGoldCost[recipe])+"|nCrystal shards: "+I2S(BazaarShardCost[recipe]))
                 call BlzFrameSetText(BazaarFrameCraft[slot],"Craft recipe "+I2S(recipe))
             endif
@@ -390,24 +427,41 @@ function BazaarFrame_OnClick takes nothing returns nothing
         call BlzFrameSetEnable(clicked,true)
         if clicked==BazaarFrameNext then
             set BazaarFramePage[id]=BazaarFramePage[id]+1
-            if BazaarFramePage[id]*5>=udg_BazaarGoodCount then
+            if BazaarFramePage[id]*3>=udg_BazaarGoodCount then
                 set BazaarFramePage[id]=0
             endif
+            loop
+                exitwhen slot>=3
+                set BazaarFramePartPage[slot]=0
+                set slot=slot+1
+            endloop
             call BazaarFrame_Show(p)
         elseif clicked==BazaarFramePrevious then
             set BazaarFramePage[id]=BazaarFramePage[id]-1
             if BazaarFramePage[id]<0 then
-                set BazaarFramePage[id]=(udg_BazaarGoodCount-1)/5
+                set BazaarFramePage[id]=(udg_BazaarGoodCount-1)/3
             endif
+            loop
+                exitwhen slot>=3
+                set BazaarFramePartPage[slot]=0
+                set slot=slot+1
+            endloop
             call BazaarFrame_Show(p)
         elseif clicked==BazaarFrameClose then
             call BazaarFrame_Hide(p)
             call BlzSendSyncData("FFERPGBZR",I2S(BazaarSession[id]*1000))
         else
             loop
-                exitwhen slot>=5
-                if clicked==BazaarFrameCraft[slot] then
-                    set recipe=BazaarFramePage[id]*5+slot+1
+                exitwhen slot>=3
+                if clicked==BazaarFrameMore[slot] then
+                    set recipe=BazaarFramePage[id]*3+slot+1
+                    set BazaarFramePartPage[slot]=BazaarFramePartPage[slot]+1
+                    if Bazaar_IngredientPageText(recipe,BazaarFramePartPage[slot])=="" then
+                        set BazaarFramePartPage[slot]=0
+                    endif
+                    call BazaarFrame_Show(p)
+                elseif clicked==BazaarFrameCraft[slot] then
+                    set recipe=BazaarFramePage[id]*3+slot+1
                     if recipe<=udg_BazaarGoodCount then
                         call BlzSendSyncData("FFERPGBZR",I2S(BazaarSession[id]*1000+recipe))
                     endif
@@ -468,57 +522,59 @@ function BazaarFrame_Init takes nothing returns nothing
     call BlzFrameSetSize(BazaarFrameRoot,.79,.57)
     call BlzFrameSetLevel(BazaarFrameRoot,10)
     set BazaarFrameHeading=BlzCreateFrameByType("TEXT","BazaarHeading",BazaarFrameRoot,"",0)
-    call BlzFrameSetAbsPoint(BazaarFrameHeading,FRAMEPOINT_TOP,.4,.582)
+    call BlzFrameSetAbsPoint(BazaarFrameHeading,FRAMEPOINT_TOP,.4,.565)
     call BlzFrameSetSize(BazaarFrameHeading,.36,.028)
     call BlzFrameSetFont(BazaarFrameHeading,"Fonts\\FRIZQT__.TTF",.013,0)
     call BlzFrameSetTextAlignment(BazaarFrameHeading,TEXT_JUSTIFY_MIDDLE,TEXT_JUSTIFY_CENTER)
     call BlzFrameSetEnable(BazaarFrameHeading,false)
     loop
-        exitwhen slot>=5
+        exitwhen slot>=3
         set x=.022+I2R(slot)*.253
-        set y=.542
-        if slot>=3 then
-            set x=.1485+I2R(slot-3)*.253
-            set y=.296
-        endif
+        set y=.52
         set BazaarFrameCard[slot]=BlzCreateFrame("EscMenuBackdrop",BazaarFrameRoot,0,slot+1)
         call BlzFrameSetAbsPoint(BazaarFrameCard[slot],FRAMEPOINT_TOPLEFT,x,y)
-        call BlzFrameSetSize(BazaarFrameCard[slot],.245,.232)
+        call BlzFrameSetSize(BazaarFrameCard[slot],.245,.405)
         set BazaarFrameTitle[slot]=BlzCreateFrameByType("TEXT","BazaarRecipeTitle",BazaarFrameCard[slot],"",slot+1)
-        call BlzFrameSetPoint(BazaarFrameTitle[slot],FRAMEPOINT_TOP,BazaarFrameCard[slot],FRAMEPOINT_TOP,0,-.009)
-        call BlzFrameSetSize(BazaarFrameTitle[slot],.22,.028)
-        call BlzFrameSetFont(BazaarFrameTitle[slot],"Fonts\\FRIZQT__.TTF",.011,0)
+        call BlzFrameSetPoint(BazaarFrameTitle[slot],FRAMEPOINT_TOP,BazaarFrameCard[slot],FRAMEPOINT_TOP,0,-.022)
+        call BlzFrameSetSize(BazaarFrameTitle[slot],.22,.040)
+        call BlzFrameSetFont(BazaarFrameTitle[slot],"Fonts\\FRIZQT__.TTF",.015,0)
         call BlzFrameSetTextAlignment(BazaarFrameTitle[slot],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
         call BlzFrameSetEnable(BazaarFrameTitle[slot],false)
-        set BazaarFrameParts[slot]=BlzCreateFrame("EscMenuTextAreaTemplate",BazaarFrameCard[slot],0,slot+1)
-        call BlzFrameSetPoint(BazaarFrameParts[slot],FRAMEPOINT_TOPLEFT,BazaarFrameCard[slot],FRAMEPOINT_TOPLEFT,.011,-.04)
-        call BlzFrameSetSize(BazaarFrameParts[slot],.223,.126)
-        call BlzFrameSetFont(BazaarFrameParts[slot],"Fonts\\FRIZQT__.TTF",.010,0)
-        call BlzTextAreaFrameSetAutoScroll(BazaarFrameParts[slot],false)
+        set BazaarFrameParts[slot]=BlzCreateFrameByType("TEXT","BazaarRecipeIngredients",BazaarFrameCard[slot],"",slot+1)
+        call BlzFrameSetPoint(BazaarFrameParts[slot],FRAMEPOINT_TOPLEFT,BazaarFrameCard[slot],FRAMEPOINT_TOPLEFT,.016,-.07)
+        call BlzFrameSetSize(BazaarFrameParts[slot],.213,.215)
+        call BlzFrameSetFont(BazaarFrameParts[slot],"Fonts\\FRIZQT__.TTF",.014,0)
+        call BlzFrameSetTextAlignment(BazaarFrameParts[slot],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_LEFT)
+        call BlzFrameSetEnable(BazaarFrameParts[slot],false)
+        set BazaarFrameMore[slot]=BlzCreateFrame("ScriptDialogButton",BazaarFrameCard[slot],0,slot+10)
+        call BlzFrameSetPoint(BazaarFrameMore[slot],FRAMEPOINT_BOTTOM,BazaarFrameCard[slot],FRAMEPOINT_BOTTOM,0,.085)
+        call BlzFrameSetSize(BazaarFrameMore[slot],.215,.030)
+        call BlzFrameSetText(BazaarFrameMore[slot],"More ingredients")
+        call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameMore[slot],FRAMEEVENT_CONTROL_CLICK)
         set BazaarFramePrice[slot]=BlzCreateFrameByType("TEXT","BazaarRecipePrice",BazaarFrameCard[slot],"",slot+1)
-        call BlzFrameSetPoint(BazaarFramePrice[slot],FRAMEPOINT_BOTTOMLEFT,BazaarFrameCard[slot],FRAMEPOINT_BOTTOMLEFT,.014,.035)
-        call BlzFrameSetSize(BazaarFramePrice[slot],.215,.026)
-        call BlzFrameSetFont(BazaarFramePrice[slot],"Fonts\\FRIZQT__.TTF",.010,0)
+        call BlzFrameSetPoint(BazaarFramePrice[slot],FRAMEPOINT_BOTTOMLEFT,BazaarFrameCard[slot],FRAMEPOINT_BOTTOMLEFT,.016,.047)
+        call BlzFrameSetSize(BazaarFramePrice[slot],.213,.035)
+        call BlzFrameSetFont(BazaarFramePrice[slot],"Fonts\\FRIZQT__.TTF",.014,0)
         call BlzFrameSetTextAlignment(BazaarFramePrice[slot],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_LEFT)
         call BlzFrameSetEnable(BazaarFramePrice[slot],false)
         set BazaarFrameCraft[slot]=BlzCreateFrame("ScriptDialogButton",BazaarFrameCard[slot],0,slot+1)
-        call BlzFrameSetPoint(BazaarFrameCraft[slot],FRAMEPOINT_BOTTOM,BazaarFrameCard[slot],FRAMEPOINT_BOTTOM,0,.006)
-        call BlzFrameSetSize(BazaarFrameCraft[slot],.215,.027)
+        call BlzFrameSetPoint(BazaarFrameCraft[slot],FRAMEPOINT_BOTTOM,BazaarFrameCard[slot],FRAMEPOINT_BOTTOM,0,.007)
+        call BlzFrameSetSize(BazaarFrameCraft[slot],.215,.033)
         call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameCraft[slot],FRAMEEVENT_CONTROL_CLICK)
         set slot=slot+1
     endloop
     set BazaarFramePrevious=BlzCreateFrame("ScriptDialogButton",BazaarFrameRoot,0,6)
-    call BlzFrameSetAbsPoint(BazaarFramePrevious,FRAMEPOINT_TOPLEFT,.022,.583)
+    call BlzFrameSetAbsPoint(BazaarFramePrevious,FRAMEPOINT_TOPLEFT,.022,.565)
     call BlzFrameSetSize(BazaarFramePrevious,.16,.030)
-    call BlzFrameSetText(BazaarFramePrevious,"Previous 5")
+    call BlzFrameSetText(BazaarFramePrevious,"Previous 3")
     call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFramePrevious,FRAMEEVENT_CONTROL_CLICK)
     set BazaarFrameNext=BlzCreateFrame("ScriptDialogButton",BazaarFrameRoot,0,7)
-    call BlzFrameSetAbsPoint(BazaarFrameNext,FRAMEPOINT_TOPRIGHT,.773,.583)
+    call BlzFrameSetAbsPoint(BazaarFrameNext,FRAMEPOINT_TOPRIGHT,.773,.565)
     call BlzFrameSetSize(BazaarFrameNext,.16,.030)
-    call BlzFrameSetText(BazaarFrameNext,"Next 5 recipes")
+    call BlzFrameSetText(BazaarFrameNext,"Next 3 recipes")
     call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameNext,FRAMEEVENT_CONTROL_CLICK)
     set BazaarFrameClose=BlzCreateFrame("ScriptDialogButton",BazaarFrameRoot,0,8)
-    call BlzFrameSetAbsPoint(BazaarFrameClose,FRAMEPOINT_TOP,.4,.055)
+    call BlzFrameSetAbsPoint(BazaarFrameClose,FRAMEPOINT_TOP,.4,.095)
     call BlzFrameSetSize(BazaarFrameClose,.18,.030)
     call BlzFrameSetText(BazaarFrameClose,"Close")
     call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameClose,FRAMEEVENT_CONTROL_CLICK)
@@ -534,6 +590,7 @@ function Trig_Bazaar_OpenRecipes_Actions takes nothing returns nothing
     local unit buyer=GetBuyingUnit()
     local player p=GetOwningPlayer(buyer)
     local integer id=GetPlayerId(p)
+    local integer slot=0
     call RemoveUnit(GetSoldUnit())
     if id<0 or id>=bj_MAX_PLAYERS or udg_BazaarRecipeHash==null then
         set buyer=null
@@ -547,7 +604,14 @@ function Trig_Bazaar_OpenRecipes_Actions takes nothing returns nothing
         set BazaarSelectedRecipe[id]=1
     endif
     set BazaarSession[id]=BazaarSession[id]+1
-    set BazaarFramePage[id]=(BazaarSelectedRecipe[id]-1)/5
+    set BazaarFramePage[id]=(BazaarSelectedRecipe[id]-1)/3
+    if GetLocalPlayer()==p then
+        loop
+            exitwhen slot>=3
+            set BazaarFramePartPage[slot]=0
+            set slot=slot+1
+        endloop
+    endif
     call Bazaar_ShowRecipe(p)
     set buyer=null
     set p=null

@@ -1,16 +1,20 @@
-# Bazaar recipe browser - stage AG
+# Bazaar recipe browser - stage AH
 
 Click the Bazaar Shop's bottom-right Recipes icon with your buyer selected.
-Reforged shows five complete recipe panels at once: three across the top and two below.
-Each has its ingredients, owned/required counts, original gold/shard price and Craft button.
-Next 5 recipes and Previous 5 move between groups. There are twelve groups for 56 recipes;
-eleven Next clicks reach the final recipe, and one more wraps to the start.
-Long ingredient lists scroll inside their own panel rather than spilling outside it.
-Each satisfied ingredient turns green. Reward names/icons stay hidden until crafting.
+Reforged shows three tall recipe panels across one row. Each has ingredients, owned/required
+counts, original gold/shard price and its own Craft button. Next 3 recipes and Previous 3 move
+between nineteen groups; eighteen Next clicks reach recipes 55-56, then wrap to the start.
+
+AH uses ordinary TEXT frames for ingredients, replacing AG's blank TEXTAREA regions observed
+in the user's screenshot. Ingredient/price text is larger. Names wrap to 24 characters; counts
+appear on separate lines. The ingredient region shows at most nine lines plus its heading.
+More ingredients cycles the remaining lines of longer recipes inside the same panel, and is
+hidden when all ingredients fit. Satisfied ingredients remain green across text-page boundaries.
+Changing recipe groups resets ingredient pages. Rewards stay hidden until crafting.
 
 The 1.29.2 conversion uses AE's original single-recipe dialog with Previous recipe, Next recipe,
-Craft this recipe and Close. It does not show the five-panel layout, even when played in Reforged.
-AF's five-choice list and two-ingredient detail pages were rejected by the user and are superseded.
+Craft this recipe and Close. It does not show the three-panel layout, even when played in Reforged.
+AF's five-choice list and AG's five panels were rejected by the user and are superseded.
 
 Craft checks the buyer, distance, parts and payment again, then deducts exactly one ingredient
 set and the original bundle price. It gives the original items and charge quantities to the buyer.
@@ -28,14 +32,16 @@ The user-tested AD armory layout, hints and required-level ordering are retained
 
 ## In-game checks
 
-For the five-panel interface, play `release/FFERPG_0.9.7.3-r16-stageAG.w3x` in Reforged.
-For classic, play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAG.w3x` in 1.29.2.
+For the three-panel interface, play `release/FFERPG_0.9.7.3-r16-stageAH.w3x` in Reforged.
+For classic, play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAH.w3x` in 1.29.2.
 The classic copy also runs in Reforged but uses the AE dialog.
 
-1. Open Recipes in Reforged. Confirm five complete panels, individual Craft buttons, Next/Previous
-   groups and Close fit on screen. Next eleven times reaches recipe 56; another Next wraps.
-   Scroll recipe 1's sixteen ingredients. Check long names, counts and both price lines stay inside
-   their panel. Repeat at your usual resolution/UI scale. No reward should be revealed.
+1. Open Recipes in Reforged. Confirm three panels with visible, readable ingredient names/counts,
+   price lines and individual Craft buttons. Confirm navigation and Close are within the screen.
+   Eighteen Next clicks reach recipes 55-56; another Next wraps. For recipe 1, use More ingredients
+   to see all sixteen ingredients; confirm the text stays inside the panel and its green status
+   is preserved. Check shorter recipes hide More ingredients. Try your usual resolution/UI scale.
+   No reward should be revealed. This actual rendering check is essential after AG's blank text.
 2. Check the classic copy uses the AE single-recipe dialog and both navigation buttons wrap.
 3. Sell enough parts for one ingredient, then the rest. Its name/count should become green when
    satisfied. Wait thirty seconds and browse other recipes: parts must remain available.
@@ -48,7 +54,7 @@ The classic copy also runs in Reforged but uses the AE dialog.
 7. Move the buyer away or let it die while browsing. Craft must reject it. Complete Wolf Fangs;
    its ten fangs should remain available. Check armory, save/load and Editor Save As with JassHelper.
 
-Automated tests execute all 56 recipe transactions, local group navigation, full ingredient text,
+Automated tests execute all 56 recipe transactions, local group navigation, complete ingredient-page traversal, bounded visible text,
 panel bounds, synchronized recipe selection, duplicate/stale click rejection and the classic
 conversion against mocked natives. Compilation/preservation audits cover both builds. Native
 frame rendering and real multiplayer still require the in-game checks above.
@@ -60,12 +66,12 @@ For a fresh Git clone, prepare both object additions from the tracked baseline:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AH -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAH.w3x
+.\build.ps1 -Stage AI -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAI.w3x
 ```
 
 Use unused stage/output names. For incremental work use the latest reviewed Reforged release as
-`-Base`. Builds from AG need no new-trigger allowance. The preparers add `bRcp`, append Sell Units
+`-Base`. Builds from AH need no new-trigger allowance. The preparers add `bRcp`, append Sell Units
 to `n030`, and copy current bundle prices into `Bazaar_InitBrowserData`, preserving all item objects.
 If prices change, synchronize that function with `bazaar_catalog.sync_prices`; the mandatory
 `check_bazaar.py` gate rejects stale prices, missing buttons and invalid ingredients.
@@ -77,7 +83,7 @@ The converter applies `tools/bazaar_legacy.py` to both runtime and editor source
 APIs and restoring the AE dialog while preserving the shared transaction. Its two unused event
 triggers remain as harmless classic placeholders to keep startup identities aligned.
 
-`tools/tests/verify_bazaar_build.py --stage AG` records preservation against AF: original objects,
+`tools/tests/verify_bazaar_build.py --stage AH` records preservation against AG: original objects,
 recipe data, results, charges and payment code are unchanged; runtime changes are confined to
 Bazaar. Syncing retains the original pawn and bundle editor handlers. Generated maps/reports stay
 outside Git; sources, tools and guides are tracked.

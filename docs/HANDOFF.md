@@ -1,33 +1,36 @@
-# FF Epic RPG handoff - 2026-10-07, stage AG Bazaar panels
+# FF Epic RPG handoff - 2026-10-07, stage AH readable Bazaar panels
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User confirms AD armory works excellently and likes AE's Bazaar overall. AF's five-choice list
-was rejected: the user wants five complete AE-style panels simultaneously with Next 5.
-User chose Reforged frames with AE single-dialog fallback for the classic conversion.
-Next unused stage: AH.
+User confirms AD armory works excellently and prefers AE's Bazaar over AF/AG. AG screenshot
+shows titles/prices but no ingredient text. User requests three panels and meaningful readable text.
+AH replaces the failing TEXTAREA presentation with ordinary TEXT frames, already rendering
+titles/prices, and uses three taller panels. Classic conversion retains the AE single dialog.
+Next unused stage: AI.
 
-## Current development build - AG
+## Current development build - AH
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAG.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAG.w3x.
-  This also runs in Reforged, but uses the AE dialog. Play the Reforged build for five panels.
-- Five complete panels: three top, two below; each has ingredients, counts, hidden reward,
-  original price and Craft button. Next/Previous move by five, wrap across twelve groups;
-  eleven Next clicks reach recipe 56. Long ingredient lists scroll inside each panel.
-- Craft/Close use synchronized session/recipe messages. Navigation is local presentation;
-  only synchronized crafting spends parts. Delayed/duplicate successful clicks are rejected.
-  All frame handles are created globally. Classic conversion replaces frame functions in both
-  runtime and editor text with the AE dialog; two unused event triggers keep startup aligned.
-- Shared sold-material pool, prices, all recipe data, outputs/charges and payment code unchanged.
-  AD armory, hints and required-level ordering retained, including Mina/Halberd hints.
-- Full gates, 65 regressions, 2,000 codec cases, classic compilation/check_map and preservation
-  audit pass. Changes confined to Bazaar presentation and the classic presentation converter.
-- Needs native Reforged panel/scroll rendering, real multiplayer, transactions, save/load and
-  Editor Save As tests: docs/BAZAAR.md. Do not mark user-tested until actually confirmed.
-- Incremental: .\build.ps1 -Stage AH -Base release/FFERPG_0.9.7.3-r16-stageAG.w3x.
-  Fresh clones prepare armory and Bazaar objects and allow four new Bazaar event triggers;
-  see BAZAAR.md. Builds from AG need no allowance. Never use the pinned baseline alone with
-  current sources. Use the Reforged build for development, not the converted classic source.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAH.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAH.w3x.
+  This also runs in Reforged, but uses the AE dialog. Play the Reforged build for three panels.
+- Three tall recipe panels across one row, with larger ingredients, counts and prices.
+  Names wrap to 24 characters; counts have their own lines. At most nine ingredient text lines
+  plus the shared-parts heading per panel. More ingredients cycles remaining lines in long
+  recipes, preserving green color across page boundaries; hidden when the whole list fits.
+  Next/Previous move three recipes; nineteen groups, eighteen Next clicks reach recipes 55-56.
+  Navigation resets ingredient pages, and wrap returns to the first group.
+- Craft/Close use AG's synchronized session/recipe messages. Navigation is local presentation;
+  only synchronized crafting spends parts. All frame handles are created globally. Classic
+  conversion replaces frame functions in both runtime and editor source with the AE dialog.
+- Shared material pool, prices, recipe data, outputs/charges and payment code unchanged.
+  AD armory/hints/required-level order retained. No additional startup triggers in AH.
+- Full gates, 66 regressions, 2,000 codec cases, classic compilation/check_map and preservation
+  audit pass. Against AG only Bazaar runtime/editor text differs; all objects unchanged.
+- Needs actual three-panel ingredient rendering/readability, More ingredients and recipe-group
+  navigation, real multiplayer, transactions, save/load and Editor Save As: docs/BAZAAR.md.
+  Mocked text/geometry tests did not detect AG's native TEXTAREA failure; do not claim game-tested.
+- Incremental: .\build.ps1 -Stage AI -Base release/FFERPG_0.9.7.3-r16-stageAH.w3x.
+  Fresh clones prepare armory and Bazaar objects and allow four added Bazaar event triggers;
+  see BAZAAR.md. Builds from AH need no allowance. Develop from the Reforged master.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -56,7 +59,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AH -Base release/FFERPG_0.9.7.3-r16-stageAG.w3x
+.\build.ps1 -Stage AI -Base release/FFERPG_0.9.7.3-r16-stageAH.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

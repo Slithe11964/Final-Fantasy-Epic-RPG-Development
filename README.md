@@ -24,11 +24,11 @@ Windows pjass and both sets of script libraries are included. Editor saves requi
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AH -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\build.ps1 -Stage AI -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
 ```
 
 Stages AB through AD add armory question marks and hints on one panel per category, sorted by required level; see docs/ARMORY.md for testing.
-Stages AE through AG add a spoiler-free Bazaar browser. AG shows five complete panels per group
+Stages AE through AH add a spoiler-free Bazaar browser. AH shows three readable recipe panels per group
 in Reforged, with green counts and click-to-craft; the classic conversion uses AE's single dialog; see docs/BAZAAR.md. The preparers add both reviewed shop features to the public baseline. The builder syncs changed modules, orders libraries, runs all
 safeguards and adds the header. A new map/report/manifest goes to release/. Use the next unused
 stage. For incremental work, pass `-Base release/<latest-Reforged-map>.w3x`. Keep vJass .j sources
@@ -43,7 +43,7 @@ check/export/review it, then convert the saved map:
 
 The classic copy goes to release/1.29.2/ with the same filename and no version suffix in its
 displayed name. The converted Bazaar uses AE's dialog even in Reforged; play the Reforged release
-for the five-panel interface. Existing outputs are refused. downgrade_129.bat runs the same wrapper; without
+for the three-panel interface. Existing outputs are refused. downgrade_129.bat runs the same wrapper; without
 arguments it converts the pinned baseline. No sibling toolkit is required.
 
 See CONTRIBUTING.md, docs/BUILDS.md, docs/LEGACY_129.md and docs/CONTENT_DEVELOPMENT.md.

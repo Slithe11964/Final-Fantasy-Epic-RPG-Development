@@ -18,8 +18,8 @@ from wtg import read_wtg
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', default='AG')
-    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAF.w3x')
+    parser.add_argument('--stage', default='AH')
+    parser.add_argument('--base', type=Path, default=ROOT/'release/FFERPG_0.9.7.3-r16-stageAG.w3x')
     args = parser.parse_args()
     final = ROOT/f'release/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'
     classic = ROOT/f'release/1.29.2/FFERPG_0.9.7.3-r16-stage{args.stage}.w3x'

@@ -38,9 +38,9 @@ in the external archive; the current workflow requires neither sibling MapToolki
 
 ## Bazaar presentation from stage AG
 
-Reforged releases show five recipe panels with custom frame APIs. The local converter uses
+Reforged releases show recipe panels with custom frame APIs. The local converter uses
 `bazaar_legacy.py` to replace those frame functions in both runtime and editor source with AE's
 single-recipe dialog. Crafting data, prices, result charges and the shared material transaction
 are preserved. Classic releases use this dialog even when played in Reforged; use the Reforged
-release to see five panels. Continue development from the Reforged master. Two unused frame event
+release to see the three-panel interface. Continue development from the Reforged master. Two unused frame event
 triggers remain as classic startup placeholders. Test both presentations as described in BAZAAR.md.

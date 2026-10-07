@@ -35,7 +35,7 @@ def frame_runtime():
                      'FRAMEPOINT_BOTTOMLEFT', 'FRAMEEVENT_CONTROL_CLICK',
                      'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT']:
         e[constant] = constant
-    names = ['Bazaar_AllIngredients', 'BazaarFrame_Show', 'BazaarFrame_Hide',
+    names = ['Bazaar_AllIngredients', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',
              'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_Init']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), names, e)
@@ -51,19 +51,20 @@ def frame_runtime():
 
 
 class BazaarFrameTests(unittest.TestCase):
-    def test_five_full_panels_cover_all_recipes_in_eleven_next_clicks(self):
+    def test_three_panels_cover_all_recipes_in_eighteen_next_clicks(self):
         e, data, pool, money, created, frames, packets = frame_runtime()
         e['GetObjectName'] = lambda raw: 'A very long ingredient name '+raw
         before = copy.deepcopy(money)
         seen = []
-        for page in range(12):
+        for page in range(19):
             e['BazaarFrame_Show'](0)
-            for slot in range(5):
+            for slot in range(3):
                 if frames[e['BazaarFrameCard'][slot]]['visible']:
-                    recipe = page*5+slot+1
+                    recipe = page*3+slot+1
                     seen.append(recipe)
                     body = frames[e['BazaarFrameParts'][slot]]['text']
-                    self.assertEqual(body.count('A very long ingredient name'), data[recipe, 1])
+                    self.assertIn('Sold parts (shared):', body)
+                    self.assertLessEqual(len(e['Bazaar_PlainName'](body).split('|n')), 10)
                     self.assertIn('Reward: ???', frames[e['BazaarFrameTitle'][slot]]['text'])
             e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameNext']
             e['BazaarFrame_OnClick']()
@@ -71,15 +72,15 @@ class BazaarFrameTests(unittest.TestCase):
         self.assertEqual(e['BazaarFramePage'][0], 0)
         e['BlzGetTriggerFrame'] = lambda: e['BazaarFramePrevious']
         e['BazaarFrame_OnClick']()
-        self.assertEqual(e['BazaarFramePage'][0], 11)
+        self.assertEqual(e['BazaarFramePage'][0], 18)
         self.assertEqual(e['BazaarFramePage'][1], 0)
         self.assertEqual(money, before)
         self.assertFalse(created or packets)
 
-    def test_cards_fit_viewport_and_long_text_has_its_own_scrollable_area(self):
+    def test_cards_fit_viewport_and_ingredients_use_working_text_frame_type(self):
         e, _, _, _, _, frames, _ = frame_runtime()
         rectangles = []
-        for slot in range(5):
+        for slot in range(3):
             card = frames[e['BazaarFrameCard'][slot]]
             _, x, y = card['abs']
             width, height = card['size']
@@ -87,7 +88,7 @@ class BazaarFrameTests(unittest.TestCase):
             self.assertTrue(0 <= y-height < y <= .6)
             rectangles.append((x, y-height, x+width, y))
             parts = frames[e['BazaarFrameParts'][slot]]
-            self.assertEqual(parts['kind'], 'EscMenuTextAreaTemplate')
+            self.assertEqual(parts['kind'], 'TEXT')
             self.assertLess(parts['size'][0]+parts['point'][-2], width)
             self.assertLess(parts['size'][1]-parts['point'][-1], height-.061)
         for i, a in enumerate(rectangles):
@@ -100,8 +101,8 @@ class BazaarFrameTests(unittest.TestCase):
         for material, amount in ingredients(data, recipe):
             pool[material] = amount*2
         before = copy.deepcopy(pool)
-        e['BazaarFramePage'][0] = 1
-        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameCraft'][1]
+        e['BazaarFramePage'][0] = 2
+        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameCraft'][0]
         e['BazaarFrame_OnClick']()
         self.assertEqual(packets, [('FFERPGBZR', '3007')])
         self.assertEqual(pool, before)
@@ -121,6 +122,35 @@ class BazaarFrameTests(unittest.TestCase):
         self.assertEqual(pool, before)
         self.assertEqual(money, cash)
         self.assertEqual(created, items)
+
+    def test_long_recipe_pages_preserve_every_line_and_green_color_without_spending(self):
+        e, data, pool, money, created, frames, packets = frame_runtime()
+        e['GetObjectName'] = lambda raw: '|cffff0000A very long ingredient name '+raw+'|r'
+        for recipe in range(1, 57):
+            for material, amount in ingredients(data, recipe):
+                pool[material] = amount
+            complete = e['Bazaar_PlainName'](e['Bazaar_AllIngredients'](recipe)).split('|n')[1:]
+            seen, page = [], 0
+            while True:
+                text = e['Bazaar_IngredientPageText'](recipe, page)
+                if not text:
+                    break
+                lines = text.split('|n')[1:]
+                self.assertLessEqual(len(lines), 9)
+                self.assertTrue(all('|cff00ff00' in line for line in lines))
+                seen.extend(e['Bazaar_PlainName'](line) for line in lines)
+                page += 1
+            self.assertEqual(seen, complete)
+        before = copy.deepcopy(pool)
+        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameMore'][0]
+        e['BazaarFrame_Show'](0)
+        e['BazaarFrame_OnClick']()
+        self.assertEqual(e['BazaarFramePartPage'][0], 1)
+        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameNext']
+        e['BazaarFrame_OnClick']()
+        self.assertEqual(e['BazaarFramePartPage'][0], 0)
+        self.assertEqual(pool, before)
+        self.assertFalse(created or packets)
 
     def test_classic_conversion_preserves_transactions_and_removes_frame_apis(self):
         source = SOURCE.read_bytes().decode('utf-8')
