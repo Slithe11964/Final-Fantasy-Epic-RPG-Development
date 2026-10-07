@@ -13,7 +13,7 @@ function Warp_OnEnterPoint takes nothing returns nothing
     local unit triggeringUnit=GetTriggerUnit()
     loop
         exitwhen i>udg_TravelCount
-        if IsUnitInRegion(udg_TravelRegion[i],triggeringUnit)then
+        if GetTriggeringRegion()==udg_TravelRegion[i] then
             if udg_WarpUnlocked[i]==false then
                 set udg_WarpUnlocked[i]=true
                 call ForForce(udg_PlayingPlayers,function Warp_HideDialog)

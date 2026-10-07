@@ -32,6 +32,8 @@ function Travel_InitDestinations takes nothing returns nothing
     call Travel_AddDestination("|cFFFFFFFFI|rcy Realm",gg_rct_403,73)
     call Travel_AddDestination("|cFFFFFFFFD|rark Dragon Marsh",gg_rct_456,68)
     call Travel_AddDestination("|cFFFFFFFFE|rlysium",gg_rct_402,69)
+    call Travel_AddDestination("|cFFFFFFFFS|rhipyard",gg_rct_Shipyard,83)
+    call Travel_AddDestination("|cFFFFFFFFA|rrena of Darkness",gg_rct_ArenaDarkness,65)
 endfunction
 
 // ---- Travel ----

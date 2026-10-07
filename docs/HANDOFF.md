@@ -1,8 +1,21 @@
-# FF Epic RPG handoff - 2026-10-07, stage AQ Chronicle presentation
+# FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AS.
+Next unused stage: AT.
+
+## Current development build - AS
+
+- Pair: release/FFERPG_0.9.7.3-r16-stageAS.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x.
+- Base is the user's World Editor saved AR from Documents/Warcraft III/Maps/Download/TEST. It already contains both new regions and compiled Travel entries; the earlier stale-script diagnosis does not apply to that saved copy.
+- Editor save produced 557 source/runtime differences from JassHelper transformations. Integration preserves editor terrain/regions/units and generated map functions, retaining checked AR library bodies before syncing Travel/Warp. No historical-difference contracts were relaxed.
+- World Editor split unit/item display fields into skin files, omitted default-valued fields and externalized tooltips into WTS. The build copies missing skin fields into the main unit/item tables, restores omitted AR defaults and resolves WTS text there; skins and original editor input retained.
+- Shipyard region bounds: (3040,-5984) to (3328,-5696). ArenaDarkness: (26176,-24608) to (26496,-24320).
+- Append Shipyard and Arena of Darkness at indexes12/13; original indexes1..11 stay fixed, including Ice Realm9 and Elysium11.
+- Warp entry selects GetTriggeringRegion instead of rechecking IsUnitInRegion. This avoids dependence on membership timing at the entry boundary; the reported native failure is not yet reproduced or confirmed fixed.
+- Hero-only entry, shared per-game unlock, one effect per destination and menu behavior retained. Test both new destinations in game, including ordinary walking, repeat visits, both clients and multiplayer.
+- Validation: all Reforged build gates,classic check_map,96 regressions and2,000 codec cases PASS; source/runtime agreement has0 new differences. Final editor preservation audit PASS: only script/editor text and normalized unit/item tables differ; region placements and all other named payloads retained.
+- New source regressions exercise stale membership, repeat visits and fixed destination indexes. For future incremental builds use AS or another map containing these regions; the original baseline lacks them.
 
 ## Current development build - AQ
 
