@@ -1,20 +1,24 @@
-# FF Epic RPG handoff - 2026-10-07, stage AH readable Bazaar panels
+# FF Epic RPG handoff - 2026-10-07, stage AJ Bazaar panels
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User confirms AD armory works excellently and prefers AE's Bazaar over AF/AG. AG screenshot
-shows titles/prices but no ingredient text. User requests three panels and meaningful readable text.
-AH replaces the failing TEXTAREA presentation with ordinary TEXT frames, already rendering
-titles/prices, and uses three taller panels. Classic conversion retains the AE single dialog.
-Next unused stage: AI.
+User confirms AH looks much better: its ordinary TEXT ingredient frames work in game.
+AI addresses requested inset padding, more visible Mark of Darkness ingredients and larger text.
+AJ also moves Close to the top center above all panels (.55), with explicit frame level 11.
+The user reports the old bottom Close did not exit the UI; overlap with native HUD is suspected,
+not proven. Local Hide and synchronized browser cleanup are tested; confirm actual game clicks.
+Three-panel layout and the AE classic fallback remain. AD armory is user-confirmed working.
+Next unused stage: AK.
 
-## Current development build - AH
+## Current development build - AJ
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAH.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAH.w3x.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAJ.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAJ.w3x.
   This also runs in Reforged, but uses the AE dialog. Play the Reforged build for three panels.
-- Three tall recipe panels across one row, with larger ingredients, counts and prices.
-  Names wrap to 24 characters; counts have their own lines. At most nine ingredient text lines
-  plus the shared-parts heading per panel. More ingredients cycles remaining lines in long
+- Three tall recipe panels across one row. Ingredient/price left inset grows from .016 to .028;
+  font grows from .014 to .016 (titles .015 to .016), body height .215 to .235 and card .405 to .425.
+  Names wrap to 24 characters; counts have their own lines. At most eighteen ingredient text lines
+  plus the shared-parts heading per panel; recipe 1 shows about six marks instead of three.
+  Omni Gem (recipe 49) shows all six required gems on one page, without More ingredients. More ingredients cycles remaining lines in long
   recipes, preserving green color across page boundaries; hidden when the whole list fits.
   Next/Previous move three recipes; nineteen groups, eighteen Next clicks reach recipes 55-56.
   Navigation resets ingredient pages, and wrap returns to the first group.
@@ -22,15 +26,15 @@ Next unused stage: AI.
   only synchronized crafting spends parts. All frame handles are created globally. Classic
   conversion replaces frame functions in both runtime and editor source with the AE dialog.
 - Shared material pool, prices, recipe data, outputs/charges and payment code unchanged.
-  AD armory/hints/required-level order retained. No additional startup triggers in AH.
-- Full gates, 66 regressions, 2,000 codec cases, classic compilation/check_map and preservation
-  audit pass. Against AG only Bazaar runtime/editor text differs; all objects unchanged.
-- Needs actual three-panel ingredient rendering/readability, More ingredients and recipe-group
+  AD armory/hints/required-level order retained. No additional startup triggers in AJ.
+- Full gates, 67 regressions, 2,000 codec cases, classic compilation/check_map and preservation
+  audit pass. Against AI only Bazaar runtime/editor text differs; all objects unchanged.
+- Needs AJ top Close click, padding/larger-font fit and the expanded first recipe page, More ingredients and recipe-group
   navigation, real multiplayer, transactions, save/load and Editor Save As: docs/BAZAAR.md.
   Mocked text/geometry tests did not detect AG's native TEXTAREA failure; do not claim game-tested.
-- Incremental: .\build.ps1 -Stage AI -Base release/FFERPG_0.9.7.3-r16-stageAH.w3x.
+- Incremental: .\build.ps1 -Stage AK -Base release/FFERPG_0.9.7.3-r16-stageAJ.w3x.
   Fresh clones prepare armory and Bazaar objects and allow four added Bazaar event triggers;
-  see BAZAAR.md. Builds from AH need no allowance. Develop from the Reforged master.
+  see BAZAAR.md. Builds from AJ need no allowance. Develop from the Reforged master.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -59,7 +63,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AI -Base release/FFERPG_0.9.7.3-r16-stageAH.w3x
+.\build.ps1 -Stage AK -Base release/FFERPG_0.9.7.3-r16-stageAJ.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs

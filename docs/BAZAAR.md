@@ -1,15 +1,21 @@
-# Bazaar recipe browser - stage AH
+# Bazaar recipe browser - stage AJ
 
 Click the Bazaar Shop's bottom-right Recipes icon with your buyer selected.
 Reforged shows three tall recipe panels across one row. Each has ingredients, owned/required
 counts, original gold/shard price and its own Craft button. Next 3 recipes and Previous 3 move
 between nineteen groups; eighteen Next clicks reach recipes 55-56, then wrap to the start.
 
-AH uses ordinary TEXT frames for ingredients, replacing AG's blank TEXTAREA regions observed
+AH's ordinary TEXT frames are user-confirmed visible and much better. AI retains these frames for ingredients, replacing AG's blank TEXTAREA regions observed
 in the user's screenshot. Ingredient/price text is larger. Names wrap to 24 characters; counts
-appear on separate lines. The ingredient region shows at most nine lines plus its heading.
+appear on separate lines. The ingredient region now shows at most eighteen lines plus its heading, typically six Mark of
+Darkness entries instead of three. Omni Gem (recipe 49) shows all six required gems on one
+page; More ingredients is hidden for it. Text is inset farther from the borders and the font grows
+from .014 to .016; the taller body/card gives the enlarged text room.
 More ingredients cycles the remaining lines of longer recipes inside the same panel, and is
 hidden when all ingredients fit. Satisfied ingredients remain green across text-page boundaries.
+AJ moves Close above the cards, away from the normal command/inventory controls, and explicitly
+raises its frame level. Clicking it hides the local UI immediately and synchronizes browser cleanup.
+The reported bottom Close failure may be HUD input overlap; the root cause is not game-confirmed.
 Changing recipe groups resets ingredient pages. Rewards stay hidden until crafting.
 
 The 1.29.2 conversion uses AE's original single-recipe dialog with Previous recipe, Next recipe,
@@ -32,16 +38,18 @@ The user-tested AD armory layout, hints and required-level ordering are retained
 
 ## In-game checks
 
-For the three-panel interface, play `release/FFERPG_0.9.7.3-r16-stageAH.w3x` in Reforged.
-For classic, play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAH.w3x` in 1.29.2.
+For the three-panel interface, play `release/FFERPG_0.9.7.3-r16-stageAJ.w3x` in Reforged.
+For classic, play `release/1.29.2/FFERPG_0.9.7.3-r16-stageAJ.w3x` in 1.29.2.
 The classic copy also runs in Reforged but uses the AE dialog.
 
 1. Open Recipes in Reforged. Confirm three panels with visible, readable ingredient names/counts,
-   price lines and individual Craft buttons. Confirm navigation and Close are within the screen.
+   price lines and individual Craft buttons. Click the top-center Close: the entire custom UI must disappear and you must be able to
+   interact with the game. Reopen Recipes; confirm the enlarged layout remains usable.
    Eighteen Next clicks reach recipes 55-56; another Next wraps. For recipe 1, use More ingredients
-   to see all sixteen ingredients; confirm the text stays inside the panel and its green status
+   to see all sixteen ingredients; confirm the first page shows roughly six marks, enlarged text stays inside the inset borders,
+   and its green status
    is preserved. Check shorter recipes hide More ingredients. Try your usual resolution/UI scale.
-   No reward should be revealed. This actual rendering check is essential after AG's blank text.
+   No reward should be revealed. AH rendering is user-confirmed; AI's enlarged text/padding still needs this check.
 2. Check the classic copy uses the AE single-recipe dialog and both navigation buttons wrap.
 3. Sell enough parts for one ingredient, then the rest. Its name/count should become green when
    satisfied. Wait thirty seconds and browse other recipes: parts must remain available.
@@ -66,12 +74,12 @@ For a fresh Git clone, prepare both object additions from the tracked baseline:
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AI -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAI.w3x
+.\build.ps1 -Stage AK -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAK.w3x
 ```
 
 Use unused stage/output names. For incremental work use the latest reviewed Reforged release as
-`-Base`. Builds from AH need no new-trigger allowance. The preparers add `bRcp`, append Sell Units
+`-Base`. Builds from AJ need no new-trigger allowance. The preparers add `bRcp`, append Sell Units
 to `n030`, and copy current bundle prices into `Bazaar_InitBrowserData`, preserving all item objects.
 If prices change, synchronize that function with `bazaar_catalog.sync_prices`; the mandatory
 `check_bazaar.py` gate rejects stale prices, missing buttons and invalid ingredients.
@@ -83,7 +91,7 @@ The converter applies `tools/bazaar_legacy.py` to both runtime and editor source
 APIs and restoring the AE dialog while preserving the shared transaction. Its two unused event
 triggers remain as harmless classic placeholders to keep startup identities aligned.
 
-`tools/tests/verify_bazaar_build.py --stage AH` records preservation against AG: original objects,
+`tools/tests/verify_bazaar_build.py --stage AJ` records preservation against AG: original objects,
 recipe data, results, charges and payment code are unchanged; runtime changes are confined to
 Bazaar. Syncing retains the original pawn and bundle editor handlers. Generated maps/reports stay
 outside Git; sources, tools and guides are tracked.

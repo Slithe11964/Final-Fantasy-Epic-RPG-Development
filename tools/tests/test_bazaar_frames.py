@@ -64,7 +64,7 @@ class BazaarFrameTests(unittest.TestCase):
                     seen.append(recipe)
                     body = frames[e['BazaarFrameParts'][slot]]['text']
                     self.assertIn('Sold parts (shared):', body)
-                    self.assertLessEqual(len(e['Bazaar_PlainName'](body).split('|n')), 10)
+                    self.assertLessEqual(len(e['Bazaar_PlainName'](body).split('|n')), 19)
                     self.assertIn('Reward: ???', frames[e['BazaarFrameTitle'][slot]]['text'])
             e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameNext']
             e['BazaarFrame_OnClick']()
@@ -136,11 +136,12 @@ class BazaarFrameTests(unittest.TestCase):
                 if not text:
                     break
                 lines = text.split('|n')[1:]
-                self.assertLessEqual(len(lines), 9)
+                self.assertLessEqual(len(lines), 18)
                 self.assertTrue(all('|cff00ff00' in line for line in lines))
                 seen.extend(e['Bazaar_PlainName'](line) for line in lines)
                 page += 1
             self.assertEqual(seen, complete)
+        self.assertEqual(len(e['Bazaar_IngredientPageText'](1, 0).split('|n'))-1, 18)
         before = copy.deepcopy(pool)
         e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameMore'][0]
         e['BazaarFrame_Show'](0)
@@ -151,6 +152,23 @@ class BazaarFrameTests(unittest.TestCase):
         self.assertEqual(e['BazaarFramePartPage'][0], 0)
         self.assertEqual(pool, before)
         self.assertFalse(created or packets)
+
+    def test_close_button_is_above_cards_and_closes_immediately_then_synchronizes(self):
+        e, _, pool, money, created, frames, packets = frame_runtime()
+        _, _, close_top = frames[e['BazaarFrameClose']]['abs']
+        close_bottom = close_top-frames[e['BazaarFrameClose']]['size'][1]
+        self.assertGreater(close_bottom, max(frames[e['BazaarFrameCard'][slot]]['abs'][2] for slot in range(3)))
+        e['BazaarFrame_Show'](0)
+        before = copy.deepcopy(pool)
+        e['BlzGetTriggerFrame'] = lambda: e['BazaarFrameClose']
+        e['BazaarFrame_OnClick']()
+        self.assertFalse(frames[e['BazaarFrameRoot']]['visible'])
+        self.assertEqual(packets, [('FFERPGBZR', '3000')])
+        e['BlzGetTriggerSyncData'] = lambda: packets[0][1]
+        e['BazaarFrame_OnSync']()
+        self.assertFalse(e['BazaarBrowserOpen'][0])
+        self.assertEqual(pool, before)
+        self.assertFalse(created)
 
     def test_classic_conversion_preserves_transactions_and_removes_frame_apis(self):
         source = SOURCE.read_bytes().decode('utf-8')
