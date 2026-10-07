@@ -2,7 +2,17 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BB. Normal development stays on AS; Forsaken BA preserves bag placement and adds native panel previews.
+Next unused stage: BC. Normal development stays on AS; Forsaken BB extends the accepted BA experiment.
+
+## Separate experiment - Forsaken BB
+
+- User confirmed BA working. Preserve exact30-slot bag positions across jobs, including gaps: snapshot source, move real handles in ascending slots, fill gaps with temporary fGap items (no abilities/charges/use), then remove only spacers. Existing destination-AInv suspension/restoration, quick-slot distinction, all9 equipped slots, charges and failed-add ground fallback retained. Gaya still has no native bag/panels.
+- Add FF Magic Defense/raw and Magic Defense % text overlays to native ASde rows (replace Ability Vamp % and Magic Resistance display only). Import ForsakenPanels.fdf/toc with war3map.imp entries so editor saves retain them. Percentage uses the actual Damage.j layer: defense/(defense+50)*100; total100=>66.67%. Absorber contributes100 plus Intelligence/upgrades/other gear. Do not set native resistance modifiers, which would add a second damage-reduction layer.
+- Isolated MagicDefense overlay checks original six-slot item IDs and equipped native variants, excluding unequipped bag variants. Preserve original calculation/priority, including the shield elseif chain. Build initialization belongs inside Register_Forsaken_Equipment; do not add statements to existing RegisterTriggers_MagicDefense (first attempt failed strict startup comparison). Preserve udg_CurrentHero/udg_StatCalcValue around periodic refresh. Other item-ID/proc/Armory migration remains pending.
+- Replace six-cell preview with native ATal shell plus custom4x3 path buttons. Paths A-D-H-K / B-F-I-L / C-G-J-M; immediate parent required,1 point each,4 preview points per player/job. Sync validated purchases, no duplicate/wrong-job/overspending/cross-player grants. State persists only in match across job changes. Uses first3 job/borrowed icons; purchased green, available gold, locked dim. Empty native tier lists prevent native purchases. No real abilities/stats/upgrades/save fields granted; real talents are future design.
+- All changes isolated in experiments/Forsaken and scratch Job/MagicDefense/Equip overlays. Native data2, ability-only Backpack/B and disabled saving retained; normal AS/src intact, classic fallback exact AS.
+- Native acceptance needed: sparse bag gaps/order/charges across jobs and back; own-hero Magic Defense raw/% changes when equipping Absorber and falls when removed; bagged equipment gives no defense; talent4x3 render within native shell, G rejects before C, three paths/four points/duplicate protection, job and player isolation; closing Backpack hides overlay. No automated test claims native UI rendering.
+- Validation: all build/map/editor/source gates,96 regressions,2,000 codec cases,18 experiment tests and final archive audit PASS;0 new source/runtime differences. Additional final check_map against freshly extracted installed3.0.1.24342 common.j/blizzard.j PASS, startup1508 triggers/no independent reorder. Original objects/world/NPC payloads preserved, UI import entries retained, classic exact AS. Scratch build/ForsakenBB-2qswbikv/FFERPG. First unpublished attempt build/ForsakenBB-inqj2kfm failed startup-order check; corrected without relaxing contracts. Native UI acceptance pending.
 
 ## Separate experiment - Forsaken BA
 

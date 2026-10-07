@@ -56,6 +56,23 @@ function Forsaken_TransferSharedInventory takes unit previous,unit current retur
         set ForsakenSharedBag[slot]=null
         if carried!=null then
             call Forsaken_MoveSharedItem(previous,current,carried,false)
+        else
+            // Temporary items hold empty positions until the entire sparse bag is transferred.
+            set carried=CreateItem('fGap',GetUnitX(current),GetUnitY(current))
+            if UnitAddItem(current,carried) then
+                set ForsakenSharedBag[slot]=carried
+            else
+                call RemoveItem(carried)
+            endif
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=UnitExtendedInventorySize(previous)
+        if ForsakenSharedBag[slot]!=null then
+            call RemoveItem(ForsakenSharedBag[slot])
+            set ForsakenSharedBag[slot]=null
         endif
         set slot=slot+1
     endloop

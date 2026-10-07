@@ -32,7 +32,7 @@ class ForsakenTests(unittest.TestCase):
             mapping = build.prepare_objects(base, out, Path(folder)/'mapping.json')
             old, new = MPQ(base), MPQ(out)
             for filename in old.read('(listfile)').decode().splitlines():
-                if filename not in ('war3map.w3t', 'war3map.w3a', 'war3map.w3i'):
+                if filename not in ('war3map.w3t', 'war3map.w3a', 'war3map.w3i','war3map.imp','(listfile)','(attributes)'):
                     self.assertEqual(old.read(filename), new.read(filename), filename)
             info_before, info_after = old.read('war3map.w3i'),new.read('war3map.w3i')
             offset = build.game_data_version_offset(info_before)
@@ -44,7 +44,10 @@ class ForsakenTests(unittest.TestCase):
                 t = read_objects(archive.read('war3map.w3t'), 'w3t')
                 return {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in t[g]}
             before, after = items(old), items(new)
-            self.assertEqual(len(after)-len(before),276)
+            self.assertEqual(len(after)-len(before),277)
+            self.assertEqual(after['fGap']['iabi'],'')
+            self.assertEqual(new.read('ForsakenPanels.fdf'),(HERE/'ForsakenPanels.fdf').read_bytes())
+            self.assertIn(b'ForsakenPanels.fdf\0',new.read('war3map.imp'))
             for raw, original in before.items():
                 self.assertEqual(original, after[raw], raw)
                 if raw in mapping and mapping[raw]['slot']!='Inventory':
@@ -251,24 +254,22 @@ class ForsakenTests(unittest.TestCase):
         for player in range(8):
             tree=abilities['fT%02d'%player]
             self.assertEqual(tree['base'],'ATal')
-            self.assertEqual(fields(tree)['alev'],2)
-            for level in (1,2):
-                row=fields(tree)[('aabi',level)].split(',')
-                self.assertEqual(len(row),3)
-                for raw in row:
-                    cell=abilities[raw]
-                    self.assertEqual(cell['base'],'Aamk')
-                    for field in ('Iagi','Iint','Istr'):
-                        self.assertEqual(fields(cell)[(field,1)],0)
+            self.assertEqual(fields(tree)['alev'],4)
+            for level in range(1,5):
+                self.assertEqual(fields(tree)[('aabi',level)],'')
+        for raw,cell in abilities.items():
+            if raw.startswith('fV'):
+                for field in ('Iagi','Iint','Istr'):
+                    self.assertEqual(fields(cell)[(field,1)],0)
 
-    def test_talent_preview_reflects_job_ranks_without_granting_real_skills(self):
+    def test_talent_preview_updates_only_local_ui_and_restores_shared_calc_context(self):
         overlay=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
         for local_player in (0,1):
             calls=[]
             state=mocks(overlay)
             state.update(GetOwningPlayer=lambda u:0,GetPlayerId=lambda p:p,Job_GetIndex=lambda u:0,
                          GetLocalPlayer=lambda:local_player,GetUnitName=lambda u:'Squire',ForsakenGearTypes='types',
-                         LoadInteger=lambda h,p,c:'tree' if p==2 else 'preview-'+str(c),
+                         LoadInteger=lambda h,p,c:'tree' if p==2 else 0,
                          udg_JobCount=22,udg_JobSkill={i:'skill-'+str(i) for i in range(1,6)},
                          GetUnitAbilityLevel=lambda u,a:2 if a in ('skill-1','A02F') else 0,
                          UnitAddAbility=lambda u,a:calls.append(('add',a)),
@@ -276,20 +277,134 @@ class ForsakenTests(unittest.TestCase):
                          BlzGetAbilityTooltip=lambda a,l:'Skill '+str(a),
                          BlzGetAbilityExtendedTooltip=lambda a,l:'Existing description',
                          BlzSetAbilityTooltip=lambda a,t,l:calls.append(('tooltip',a,t)),
-                         I2S=str,IMaxBJ=max)
-            execute(overlay,['Forsaken_UpdatePanels'],state)['Forsaken_UpdatePanels']('hero')
-            self.assertEqual([a for kind,a,*_ in calls if kind=='add'],['tree','preview-0','preview-5'])
-            self.assertTrue(all(a.startswith('preview-') for kind,a,*_ in calls if kind=='remove'))
+                         I2S=str,IMaxBJ=max, ForsakenPanelFramesReady=True,
+                         ForsakenTalentState='talents',udg_CurrentHero='previous',udg_StatCalcValue=777,
+                         udg_MagicDefense={1:100},ForsakenDefenseValue='defense',ForsakenReductionValue='percent',
+                         ForsakenTalentRoot='root',ForsakenTalentPoints='points',
+                         ForsakenTalentIcon={i:'icon'+str(i) for i in range(12)},
+                         ForsakenTalentLabel={i:'label'+str(i) for i in range(12)},
+                         Forsaken_DefensePercent=lambda d:100*d/(d+50),
+                         Forsaken_TalentCanPurchase=lambda k,n:n<3,
+                         LoadBoolean=lambda *a:False,ModuloInteger=lambda a,b:a%b,
+                         R2SW=lambda v,w,p:format(v,'.2f'),SubString=lambda s,a,b:s[a:b],
+                         BlzFrameSetText=lambda f,t:calls.append(('text',f,t)))
+            runtime=execute(overlay,['Forsaken_UpdatePanels'],state)
+            runtime['Forsaken_UpdatePanels']('hero')
+            self.assertEqual(runtime['udg_CurrentHero'],'previous')
+            self.assertEqual(runtime['udg_StatCalcValue'],777)
+            self.assertEqual([a for kind,a,*_ in calls if kind=='add'],['tree'])
             tooltip_calls=[c for c in calls if c[0]=='tooltip']
-            self.assertEqual(len(tooltip_calls),7 if local_player==0 else 0)
+            self.assertEqual(len(tooltip_calls),1 if local_player==0 else 0)
             if local_player==0:
-                self.assertIn('[Rank 2]',tooltip_calls[0][2])
+                self.assertIn(('text','defense','100'),calls)
+                self.assertIn(('text','percent','66.67%'),calls)
+            else:
+                self.assertFalse(any(c[0]=='text' for c in calls))
         self.assertNotIn('Hero_LearnSkill',functions(overlay)['Forsaken_UpdatePanels'])
 
     def test_gaya_keeps_its_canonical_inventory_without_native_bag(self):
         overlay=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
         self.assertNotIn('gaya',functions(overlay)['Forsaken_PrepareInventories'])
         self.assertNotIn('udg_SpiritOfGaya',functions(overlay)['Forsaken_PrepareInventories'])
+
+    def test_sparse_bag_keeps_exact_slots_and_gaps_on_job_round_trip(self):
+        source=(HERE/'Forsaken-job.j').read_text()
+        original=[None]*30
+        for slot in (1,7,18,29): original[slot]='item-'+str(slot)
+        bags={'old':original.copy(),'new':[None]*30}
+        spacers=[]
+        charges={i:9 for i in original if i}
+        def remove(hero,item):
+            bags[hero][bags[hero].index(item)]=None
+        def add(hero,item):
+            if None not in bags[hero]: return False
+            bags[hero][bags[hero].index(None)]=item
+            return True
+        def create(*args):
+            item='spacer-'+str(len(spacers)); spacers.append(item); return item
+        def destroy(item):
+            for bag in bags.values():
+                if item in bag: bag[bag.index(item)]=None
+        state=mocks(source)
+        state.update(ForsakenSharedBag={},UnitExtendedInventorySize=lambda u:30,
+                     GetUnitAbilityLevel=lambda *a:1,
+                     UnitItemInEquipmentSlot=lambda *a:None,
+                     UnitItemInBagSlot=lambda u,s:bags[u][s],
+                     UnitRemoveItem=remove,UnitAddItem=add,CreateItem=create,RemoveItem=destroy,
+                     GetItemCharges=lambda i:charges[i],SetItemCharges=lambda i,v:charges.__setitem__(i,v))
+        runtime=execute(source,['Forsaken_MoveSharedItem','Forsaken_TransferSharedInventory'],state)
+        for old,new in [('old','new'),('new','old')]:
+            runtime['Forsaken_TransferSharedInventory'](old,new)
+            self.assertEqual(bags[new],original)
+            self.assertEqual(bags[old],[None]*30)
+            self.assertFalse(any(runtime['ForsakenSharedBag'].values()))
+        self.assertEqual(len(spacers),52)
+        self.assertTrue(all(v==9 for v in charges.values()))
+
+    def test_defense_counts_equipped_variants_but_not_gear_in_bag(self):
+        original=(build.ROOT/'src/triggers/04 Combat and abilities/MagicDefense.j').read_text()
+        source=build.defense_overlay(original,{'I018':{'variant':'f123'}})
+        self.assertIn('LoadInteger(ForsakenDefenseTypes,0,original)',source)
+        self.assertEqual(functions(source)['RegisterTriggers_MagicDefense'],functions(original)['RegisterTriggers_MagicDefense'])
+        self.assertIn('Forsaken_HasDefenseItem(udg_CurrentHero',source)
+        for equipped,legacy,expected in [('absorber',False,True),(None,True,True),(None,False,False)]:
+            state=mocks(source)
+            state.update(ForsakenDefenseTypes='types',LoadInteger=lambda *a:123,
+                         UnitHasItemOfTypeBJ=lambda *a:legacy,ConvertLoadoutSlot=lambda s:s,
+                         UnitItemInEquipmentSlot=lambda u,s:equipped if s==7 else None,
+                         GetItemTypeId=lambda i:123 if i=='absorber' else 0)
+            runtime=execute(source,['Forsaken_HasDefenseItem'],state)
+            self.assertEqual(runtime['Forsaken_HasDefenseItem']('hero',18),expected)
+        self.assertNotIn('UnitItemInBagSlot',functions(source)['Forsaken_HasDefenseItem'])
+
+    def test_magic_defense_percent_matches_damage_formula(self):
+        source=(HERE/'Forsaken-panels.j').read_text()
+        state=mocks(source); state['I2R']=float
+        from unittest.mock import patch
+        import test_quest_lifecycle as harness
+        expression=harness.expression
+        # This helper uses real division; the quest harness defaults to integer division.
+        with patch.object(harness,'expression',lambda s:expression(s).replace('//','/')):
+            fn=execute(source,['Forsaken_DefensePercent'],state)['Forsaken_DefensePercent']
+        for defense in (0,25,50,100,150,200,500):
+            self.assertAlmostEqual(fn(defense),100*(1-50/(defense+50)))
+        self.assertAlmostEqual(fn(100),66.6666666667)
+
+    def test_talent_purchase_requires_direct_parent_and_isolates_jobs_and_players(self):
+        from collections import defaultdict
+        source=(HERE/'Forsaken-panels.j').read_text()
+        learned=defaultdict(bool); spent=defaultdict(int)
+        current={'player':0,'job':0,'packet':'5'}
+        state=mocks(source)
+        state.update(ForsakenTalentState='talents',udg_JobCount=22,
+                     GetTriggerPlayer=lambda:current['player'],GetPlayerId=lambda p:p,
+                     Player_GetHero=lambda p:'hero',Job_GetIndex=lambda u:current['job'],
+                     BlzGetTriggerSyncData=lambda:current['packet'],S2I=int,ModuloInteger=lambda a,b:a%b,
+                     LoadBoolean=lambda h,k,n:learned[k,n],LoadInteger=lambda h,k,n:spent[k,n],
+                     SaveBoolean=lambda h,k,n,v:learned.__setitem__((k,n),v),
+                     SaveInteger=lambda h,k,n,v:spent.__setitem__((k,n),v))
+        runtime=execute(source,['Forsaken_TalentCanPurchase','Forsaken_TalentSync'],state)
+        def purchase(node):
+            current['packet']=str(current['job']*100+node)
+            runtime['Forsaken_TalentSync']()
+        purchase(5)  # G is locked before C.
+        self.assertEqual(spent[0,20],0)
+        purchase(0); purchase(5)  # A cannot unlock G.
+        self.assertEqual(spent[0,20],1)
+        purchase(2); purchase(5); purchase(8)
+        self.assertTrue(all(learned[0,n] for n in (0,2,5,8)))
+        purchase(11); purchase(2)
+        self.assertEqual(spent[0,20],4)
+        self.assertFalse(learned[0,11])
+        current.update(player=1,job=0); purchase(5)
+        self.assertEqual(spent[100,20],0)
+        current.update(player=0,job=1); purchase(5)
+        self.assertEqual(spent[1,20],0)
+        purchase(2); purchase(5)
+        self.assertEqual(spent[1,20],2)
+        current['packet']='202'  # Delayed packet for another job is rejected.
+        runtime['Forsaken_TalentSync']()
+        self.assertFalse(learned[2,2])
 
 
 if __name__=='__main__':

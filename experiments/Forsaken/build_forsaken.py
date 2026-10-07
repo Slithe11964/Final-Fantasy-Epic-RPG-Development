@@ -14,7 +14,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / 'tools'))
-from mpq import MPQ, replace_files
+from mpq import MPQ, write_files
 from objdata import read_objects, write_objects, fields
 from armory_catalog import set_field
 
@@ -81,6 +81,12 @@ def prepare_objects(base, out, mapping_out):
     items = {o['id'] or o['base']: o for g in ('original', 'custom') for o in table[g]}
     catalog = json.loads((ROOT / 'src/armory-hints.json').read_text(encoding='utf-8'))
     mapping = {}
+    if 'fGap' in items:
+        raise ValueError('reserved bag spacer ID already used')
+    table['custom'].append(dict(base='ratf',id='fGap',sets=[dict(flag=0,mods=[
+        dict(field=key,type=kind,value=value,end=0) for key,kind,value in
+        [('unam',3,'Temporary bag spacer'),('iabi',3,''),('icla',3,'Miscellaneous'),
+         ('ipow',0,0),('iuse',0,0),('idro',0,0),('igol',0,0)]])]))
     for number, entry in enumerate(catalog.values()):
         raw = entry['item']
         slot = slot_for(entry, units[entry['unit']]['upoi'])
@@ -121,10 +127,16 @@ def prepare_objects(base, out, mapping_out):
         dict(field='aub1',type=3,level=1,data=0,value='Open your native backpack and equipment panel.',end=0),
     ])]))
     prepare_panels(ability_table)
-    replace_files(str(base), str(out), {
+    imports=archive.read('war3map.imp') or struct.pack('<ii',1,0)
+    version,count=struct.unpack_from('<ii',imports)
+    imports=struct.pack('<ii',version,count+2)+imports[8:]+b'\x0dForsakenPanels.fdf\0\x0dForsakenPanels.toc\0'
+    write_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
+        'ForsakenPanels.fdf': (HERE/'ForsakenPanels.fdf').read_bytes(),
+        'ForsakenPanels.toc': b'ForsakenPanels.fdf\r\n',
+        'war3map.imp': imports,
     })
     mapping_out.write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
     return mapping
@@ -145,8 +157,8 @@ def prepare_panels(table):
         [('Asdf',1,1,','.join('AS%02X'%i for i in range(1,18)))])
     for player in range(8):
         icons=['fV%02d'%(player*6+slot) for slot in range(6)]
-        add('ATal','fT%02d'%player,dict(anam='Job Talents (preview)',aher=0,aite=0,alev=2,abpy=-11),
-            [('aabi',1,0,','.join(icons[:3])),('aabi',2,0,','.join(icons[3:]))])
+        add('ATal','fT%02d'%player,dict(anam='Job Talents (preview)',aher=0,aite=0,alev=4,abpy=-11),
+            [('aabi',level,0,'') for level in range(1,5)])
         for icon in icons:
             # Cosmetic attribute-bonus abilities cannot grant real job skills or stats.
             add('Aamk',icon,dict(anam='Job talent preview',aher=0,aite=0,alev=1,abpy=-11,
@@ -157,13 +169,26 @@ def prepare_panels(table):
 
 def equip_overlay(original):
     text = original.replace('library TEquip requires TForce, TJob',
-                            'library TEquip requires TForce, TJob, TPlayerHero')
+                            'library TEquip requires TForce, TJob, TPlayerHero, TMagicDefense')
     text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
     trigger gg_trg_Forsaken_TestEquip=null
     timer ForsakenInventoryTimer=null
     hashtable ForsakenGearTypes=null
     item ForsakenEquippedItem=null
     boolean ForsakenSaveBlocked=false
+    trigger gg_trg_Forsaken_TalentClick=null
+    trigger gg_trg_Forsaken_TalentSync=null
+    hashtable ForsakenTalentState=null
+    framehandle ForsakenTalentRoot=null
+    framehandle ForsakenTalentPoints=null
+    framehandle array ForsakenTalentButton
+    framehandle array ForsakenTalentIcon
+    framehandle array ForsakenTalentLabel
+    framehandle ForsakenDefenseRow=null
+    framehandle ForsakenReductionRow=null
+    framehandle ForsakenDefenseValue=null
+    framehandle ForsakenReductionValue=null
+    boolean ForsakenPanelFramesReady=false
 endglobals''', 1)
     text = text.replace('GetManipulatedItem()', 'Forsaken_EventItem()')
     text = text.replace('function Trig_Equip_Restrictions_Conditions', '''function Forsaken_EventItem takes nothing returns item
@@ -189,7 +214,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
-                        '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Equip_Restrictions() //', 1)
+                        '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Equip_Restrictions() //', 1)
     return text
 
 
@@ -215,6 +240,36 @@ def job_overlay(original):
     return text[:start] + action + text[end:]
 
 
+def defense_overlay(original, mapping):
+    text=original.replace('endglobals','    hashtable ForsakenDefenseTypes=null\nendglobals',1)
+    helper='''function Forsaken_HasDefenseItem takes unit hero,integer original returns boolean
+    local integer slot=0
+    local integer variant=LoadInteger(ForsakenDefenseTypes,0,original)
+    local item equipped
+    if UnitHasItemOfTypeBJ(hero,original) then
+        return true
+    endif
+    if variant!=0 then
+        loop
+            exitwhen slot>8
+            set equipped=UnitItemInEquipmentSlot(hero,ConvertLoadoutSlot(slot))
+            if equipped!=null and GetItemTypeId(equipped)==variant then
+                set equipped=null
+                return true
+            endif
+            set slot=slot+1
+        endloop
+    endif
+    set equipped=null
+    return false
+endfunction
+
+'''
+    text=text.replace('UnitHasItemOfTypeBJ(', 'Forsaken_HasDefenseItem(')
+    text=text.replace('function Trig_MagicDefense_',helper+'function Trig_MagicDefense_',1)
+    return text
+
+
 def run(command, cwd=ROOT):
     subprocess.run(list(map(str, command)), cwd=cwd, check=True)
 
@@ -227,7 +282,7 @@ def manifest(base, classic_base, modern, classic, stage):
                 normal_development_stage='AS', base=identity(base),
                 classic_base=identity(classic_base), output=identity(modern),
                 classic_output=identity(classic),
-                sources={p.name:identity(p) for p in HERE.iterdir() if p.suffix in ('.py','.j')})
+                sources={p.name:identity(p) for p in HERE.iterdir() if p.suffix in ('.py','.j','.fdf')})
 
 
 def main():
@@ -259,7 +314,9 @@ def main():
     mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
     source = work/'src/triggers/05 Items crafting and shops/Equip.j'
     overlay = equip_overlay(source.read_text(encoding='utf-8'))
-    initialization = ['    set ForsakenGearTypes=InitHashtable()']
+    initialization = ['    set ForsakenGearTypes=InitHashtable()', '    set ForsakenDefenseTypes=InitHashtable()']
+    initialization += ["    call SaveInteger(ForsakenDefenseTypes,0,'%s','%s')" % (raw,entry['variant'])
+                       for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,0,'%s','%s')" % (raw,entry['variant'])
                        for raw, entry in mapping.items() if 'variant' in entry]
     slots = dict(Head=0,Chest=1,Gloves=2,Boots=3,Ring=4,Primary=6,Offhand=7,Trinket=8)
@@ -272,10 +329,12 @@ def main():
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
     job_source = work/'src/triggers/03 Jobs and progression/Job.j'
     job_source.write_bytes(job_overlay(job_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
+    defense_source=work/'src/triggers/04 Combat and abilities/MagicDefense.j'
+    defense_source.write_bytes(defense_overlay(defense_source.read_text(encoding='utf-8'),mapping).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,
-         '--allow-new', '^gg_trg_Forsaken_(Equipment|TestEquip)$'], cwd=work)
+         '--allow-new', '^gg_trg_Forsaken_(Equipment|TestEquip|TalentClick|TalentSync)$'], cwd=work)
     destination.mkdir(parents=True, exist_ok=True)
     classic.parent.mkdir(parents=True, exist_ok=True)
     for name in (basename, 'checks-r16-stage'+args.stage+'.txt', 'build-r16-stage'+args.stage+'.json'):

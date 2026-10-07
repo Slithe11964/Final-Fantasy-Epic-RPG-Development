@@ -24,7 +24,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BA: bag capacity="+I2S(UnitExtendedInventorySize(holder))+", hero bag="+I2S(GetUnitAbilityLevel(holder,'fBag'))+", gear="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+". Use Backpack (B). Job talent preview and native stats included. Backpack contents stay in the bag across jobs.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BB: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Use Backpack (B). Bag slots stay in place across jobs. Magic Defense and Magic Defense % show FF defense. Talents: three paths, four rows, four preview points per job; no combat bonuses.")
         endif
         set holder=null
         return
@@ -33,6 +33,7 @@ function Forsaken_OnEquip takes nothing returns nothing
         set ForsakenEquippedItem=GetEquippedItem()
         call Forsaken_ValidateEquipment()
         set ForsakenEquippedItem=null
+        call Forsaken_UpdatePanels(holder)
     endif
     set holder=null
 endfunction
