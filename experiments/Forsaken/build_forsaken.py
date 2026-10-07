@@ -65,18 +65,25 @@ def prepare_objects(base, out, mapping_out):
     if 'fBpk' in items:
         raise ValueError('experimental backpack ID already used')
     backpack = dict(base='ebac', id='fBpk', sets=[dict(flag=0, mods=[])])
-    for key, value in dict(unam='Backpack', iabi='AIni,AEqu',
+    for key, value in dict(unam='Backpack', iabi='fBgi,fGer,ASpc',
                            icla='Campaign', iuse=0, iusa=1, iper=0,
                            idrp=0, ipaw=0, isel=0, igol=0, ilum=0,
                            iico=r'ReplaceableTextures\CommandButtons\BTNbackpack.blp',
                            utip='Backpack', utub='Open your Forsaken test backpack and equipment slots. Saving is disabled in this experiment.').items():
         set_field(backpack, key, value)
     table['custom'].append(backpack)
-    # A definition also exposes the stock bag base to the object-reference checks.
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
-    bag = dict(base='AInx', id='fBag', sets=[dict(flag=0,mods=[dict(
-        field='aher',type=0,level=0,data=0,value=0,end=0)])])
-    ability_table['custom'].append(bag)
+    for base_id, raw, item_ability, capacity_field, capacity in (
+            ('AInx', 'fBag', 0, 'inv6', 30),
+            ('AIni', 'fBgi', 1, 'inv6', 30),
+            ('AEqu', 'fGer', 1, 'equ1', 0)):
+        if any((o['id'] or o['base']) == raw for o in ability_table['custom']):
+            raise ValueError('experimental ability ID already used: ' + raw)
+        mods = [dict(field=field, type=0, level=0, data=0, value=value, end=0)
+                for field, value in [('aher', 0), ('aite', item_ability), ('alev', 1)]]
+        # Native Data F holds bag capacity or the equipment level threshold.
+        mods.append(dict(field=capacity_field, type=0, level=1, data=6, value=capacity, end=0))
+        ability_table['custom'].append(dict(base=base_id, id=raw, sets=[dict(flag=0, mods=mods)]))
     replace_files(str(base), str(out), {
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),

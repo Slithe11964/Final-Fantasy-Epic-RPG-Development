@@ -2,7 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: AV. Normal development stays on AS; Forsaken AU supersedes the failed AT experiment.
+Next unused stage: AW. Normal development stays on AS; Forsaken AV is the next native UI test.
+
+## Separate experiment - Forsaken AV
+
+- AU user test restored original items/NPC gear, but Backpack click did not open the panel; diagnostic showed backpack=1, bag capacity=0. Do not treat AU's native UI as accepted.
+- AV adds explicit custom item abilities fBgi (AIni) and fGer (AEqu). Installed 3.0 AbilityMetaData defines inv6/equ1 as Data F (pointer6); AV writes level1 bag capacity30 and equipment level threshold0 instead of relying on inherited stock defaults. Backpack carries fBgi,fGer,ASpc to include the native interface controller. Gaya uses the explicitly configured fBag.
+- This is a candidate correction, not a reproduced in-game fix. Native acceptance must confirm clicking Backpack opens the equipment/bag panel. The -forsaken diagnostic includes custom bag/gear and ASpc ability levels plus bag capacity.
+- Original items/NPCs, isolated variant conversion, save blocking and exact AS classic fallback retained. Full build results in STAGES; normal development remains AS.
+- Validation: full build gates,96 regressions,2,000 codec cases and5 experiment tests PASS. Scratch source: build/ForsakenAV-rp5wnkdm/FFERPG. Native play-test pending.
 
 ## Separate experiment - Forsaken AU
 

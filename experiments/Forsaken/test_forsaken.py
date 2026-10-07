@@ -44,9 +44,16 @@ class ForsakenTests(unittest.TestCase):
                     updated = after[mapping[raw]['variant']].copy()
                     self.assertEqual(updated.pop('iequ'), mapping[raw]['slot'])
                     self.assertEqual(original, updated, raw)
-            self.assertEqual(after['fBpk']['iabi'],'AIni,AEqu')
+            self.assertEqual(after['fBpk']['iabi'],'fBgi,fGer,ASpc')
             self.assertEqual(after['fBpk']['idrp'],0)
             self.assertEqual(len(mapping), 280)
+            abilities = read_objects(new.read('war3map.w3a'), 'w3a')
+            abilities = {o['id'] or o['base']: o for g in ('original', 'custom') for o in abilities[g]}
+            for raw, capacity_field, capacity, item_ability in [('fBag','inv6',30,0),('fBgi','inv6',30,1),('fGer','equ1',0,1)]:
+                self.assertEqual(fields(abilities[raw])[(capacity_field,1)],capacity)
+                self.assertEqual(fields(abilities[raw])['aite'],item_ability)
+                capacity_mod = next(m for m in abilities[raw]['sets'][0]['mods'] if m['field']==capacity_field)
+                self.assertEqual(capacity_mod['data'],6)
 
     def test_equipment_validation_uses_event_item_and_save_serializers_are_untouched(self):
         source = (build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8')

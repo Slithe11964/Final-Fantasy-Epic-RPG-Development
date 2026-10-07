@@ -12,7 +12,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken test: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Click the Backpack item in your six-slot inventory to open the native UI.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken AV: backpack="+I2S(GetInventoryIndexOfItemTypeBJ(holder,'fBpk'))+", bag capacity="+I2S(UnitExtendedInventorySize(holder))+", bag ability="+I2S(GetUnitAbilityLevel(holder,'fBgi'))+", gear ability="+I2S(GetUnitAbilityLevel(holder,'fGer'))+", UI="+I2S(GetUnitAbilityLevel(holder,'ASpc'))+". Click the Backpack item in your six-slot inventory to open the native UI.")
         endif
         set holder=null
         return
@@ -83,8 +83,8 @@ function Forsaken_PrepareInventories takes nothing returns nothing
             endif
         endif
         if gaya!=null then
-            call UnitAddAbility(gaya,'AInx')
-            call UnitMakeAbilityPermanent(gaya,true,'AInx')
+            call UnitAddAbility(gaya,'fBag')
+            call UnitMakeAbilityPermanent(gaya,true,'fBag')
         endif
         set i=i+1
     endloop
