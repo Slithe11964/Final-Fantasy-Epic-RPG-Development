@@ -1,7 +1,7 @@
 library TQuestHarpyHunt requires TQuestEngine
 // Side quest "Harpy Hunt", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Caroline, the Hunt Club's Barrens representative, wants 20 harpies killed.
-// Made available by Arachnophobia when it is completed (QuestHarpyHunt_Available).
+// Made available by Arachnophobia when its opening conversation is completed (QuestHarpyHunt_Available).
 globals
     // The quest's number in the quest engine (0 until it is defined).
     integer QUEST_HARPY_HUNT=0
@@ -21,8 +21,8 @@ function QuestHarpyHunt_Define takes nothing returns nothing
     set QUEST_HARPY_HUNT=q
     // 1. Talk to Caroline
     call Quest_Talk(q,gg_unit_n0B3_0049,"Caroline, the Hunt Club Barrens representative, asked you to slay evil harpies who live in the Barrens south of Kalm. Report back after killing at least 20!")
-    call Quest_Say(q,gg_unit_n0B3_0049,"Hello. I've heard from Kollin that you are now an honorary member of our Hunt Club.")
-    call Quest_Say(q,gg_unit_n0B3_0049,"As such, I have another task for you to complete. For a gold reward, of course.")
+    call Quest_Say(q,gg_unit_n0B3_0049,"Hello. Since you're helping Kollin, could you help me too?")
+    call Quest_Say(q,gg_unit_n0B3_0049,"I have another task for you to complete. For a gold reward, of course.")
     call Quest_Say(q,null,"So you want us to slay more dangerous monsters?")
     call Quest_Say(q,gg_unit_n0B3_0049,"Indeed. The club received a request from a Kalm resident who was recently cursed by an evil spell. The perpetrator was an arrogant harpy from the Barrens.")
     call Quest_Say(q,gg_unit_n0B3_0049,"He continues to work in poor failing health, but he won't be able to go on like this. Unfortunately the only way to break the curse is to kill the harpy that inflicted it. But we do not know which harpy it was.")

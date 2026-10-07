@@ -50,6 +50,8 @@ function Trig_Bernkastel_Try_Spawn_Actions takes nothing returns nothing
             set udg_BlueGirl=GetLastCreatedUnit()
             call SetUnitColor(udg_BlueGirl,PLAYER_COLOR_BLUE)
             call SetUnitVertexColorBJ(udg_BlueGirl,.0,.0,'d',75.)
+            call PauseUnit(udg_BlueGirl,true)
+            call SetUnitPropWindow(udg_BlueGirl,0.)
             call StartTimerBJ(udg_BlueGirlTimer,false,300.)
             call EnableTrigger(gg_trg_Bernkastel_First_Talk)
         endif
@@ -61,6 +63,8 @@ function Trig_Bernkastel_Try_Spawn_Actions takes nothing returns nothing
             call RemoveLocation(udg_TempPoint)
             set udg_BlueGirl=GetLastCreatedUnit()
             call SetUnitColor(udg_BlueGirl,PLAYER_COLOR_BLUE)
+            call PauseUnit(udg_BlueGirl,true)
+            call SetUnitPropWindow(udg_BlueGirl,0.)
             call StartTimerBJ(udg_BlueGirlTimer,false,300.)
             call EnableTrigger(gg_trg_Bernkastel_Second_Talk)
         else
@@ -70,6 +74,8 @@ function Trig_Bernkastel_Try_Spawn_Actions takes nothing returns nothing
                 call RemoveLocation(udg_TempPoint)
                 set udg_BlueGirl=GetLastCreatedUnit()
                 call SetUnitColor(udg_BlueGirl,PLAYER_COLOR_BLUE)
+                call PauseUnit(udg_BlueGirl,true)
+                call SetUnitPropWindow(udg_BlueGirl,0.)
                 call StartTimerBJ(udg_BlueGirlTimer,false,300.)
                 call EnableTrigger(gg_trg_Bernkastel_Hint_Talk)
             endif

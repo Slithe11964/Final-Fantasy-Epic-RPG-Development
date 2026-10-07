@@ -1,10 +1,33 @@
-# FF Epic RPG handoff - 2026-10-07, stage AN nuts/greens saving
+# FF Epic RPG handoff - 2026-10-07, stage AO hunt availability and blue-girl waiting
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User requests all usable nuts/greens save outside Speedrun; Speedrun loads must discard them.
-Next unused stage: AO.
+User requests five-minute blue-girl waiting and Harpy Hunt while helping Kollin.
+Next unused stage: AP.
 
-## Current development build - AN
+## Current development build - AO
+
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAO.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAO.w3x (AE Bazaar UI).
+- Completing Kollin's opening Arachnophobia conversation schedules Harpy Hunt availability
+  two seconds later. Spider completion still unlocks Thextera only; both hunts can run together.
+  Caroline: "Hello. Since you're helping Kollin, could you help me too?" Her next line drops
+  "As such,". Hunt targets, 15/20 counts, rewards, logs and rare hunts are unchanged.
+- Blue girl: AN source AND compiled map already had a 300-second timer on all three town visits.
+  User saw her at about15:10 and absent by17:20 before talking. Early removal was not reproduced.
+  Her object inherits Archer movement; AO pauses her and sets propulsion window0 on each spawn,
+  preventing her walking away (including after cinematics unpause units). This is a stationarity
+  safeguard, not a confirmed diagnosis of that report. Existing300-second timer, spawn chance,
+  dialogue, conversation exits, gifts and ending sequence remain unchanged.
+- Full gates,84 regressions,2,000 codec cases,classic check_map and scoped preservation pass.
+  No objects/save serializers/startup or other modules changed. Prior AN/AM features retained.
+- Test: talk to Kollin, visit Caroline before killing15 spiders; run both hunts concurrently,
+  verify separate counters/rewards and rare hunts. With cinematics on/off, verify her introduction.
+  Blue girl should stay at her town spawn from appearance until five minutes later when untouched;
+  approach/select her during that window and check normal conversation/gift. Test with intervening
+  cinematics, both clients and multiplayer. Her reported early disappearance still needs play-test.
+- Next incremental: .\build.ps1 -Stage AP -Base release/FFERPG_0.9.7.3-r16-stageAO.w3x.
+
+## Previous development build - AN
 
 - Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAN.w3x.
 - Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAN.w3x.
@@ -34,7 +57,7 @@ Next unused stage: AO.
   confirmation has been reported. Test each food quantity outside Speedrun, then load the same
   mixed inventory into Speedrun: food absent, other items/quantities correct. Test Speedrun saves
   omit food, hero/house/Gaya, old codes, both clients/multiplayer and World Editor Save As.
-- Incremental: .\build.ps1 -Stage AO -Base release/FFERPG_0.9.7.3-r16-stageAN.w3x.
+- Incremental: .\build.ps1 -Stage AP -Base release/FFERPG_0.9.7.3-r16-stageAO.w3x.
   Fresh clone workflow: docs/ARMORY.md / BAZAAR.md. Food policy: docs/SAVE_CODES.md.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
