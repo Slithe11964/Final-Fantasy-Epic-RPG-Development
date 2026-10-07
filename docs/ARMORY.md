@@ -45,8 +45,9 @@ prepare a fresh base from that baseline (Python 3 on PATH):
 
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
-.\build.ps1 -Stage AE -Base build/armory-objects.w3x
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAE.w3x
+python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
+.\build.ps1 -Stage AF -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAF.w3x
 ```
 
 Use an unused stage and output filename. For ongoing local development, use the newest reviewed
@@ -54,6 +55,7 @@ Reforged release as -Base. The object preparer refuses existing output/object ID
 question-mark unit proxies and sorts existing collectible proxy button positions, and synchronizes Armory_InitHints in CRLF.
 Only presentation positions on existing collectible proxies change. Item requirements, other unit
 fields, items, abilities, terrain, dialogue and rewards are preserved.
+Current sources also need the Bazaar preparer in the example above; see BAZAAR.md for that addition.
 
 Edit src/armory-hints.json to change hints. Each entry retains the save item index, item/unit IDs,
 hint and evidence for its acquisition route. Re-run the preparer from the original baseline before

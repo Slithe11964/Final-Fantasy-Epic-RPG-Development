@@ -18,7 +18,7 @@ Item numbering is explained in [LOOT.md](LOOT.md).
 |---|---|
 | Recipes | Buy an item called "Recipe: X" from a shop while carrying the ingredients. The ingredients are used up and X appears in the inventory. |
 | Forge (Bali) | Give Bali a base item and a material (a gem, Psypher …). He forges the result, e.g. Shimmering Sword + Ice Gem → Icebrand. Psypher on a level-99 weapon makes its Celestial version. |
-| Bazaar | Pawn materials (monster parts, Marks of Darkness …) at the bazaar. It stocks goods you can afford from what you pawned, and sells material bundles. |
+| Bazaar | Pawn materials (monster parts, Marks of Darkness …) at the bazaar. Browse anonymous recipes and spend pawned parts only when crafting the chosen recipe. |
 | Materia | Drop a high-grade materia (…aga Materia) on its altar for a one-time ritual. Each altar works once (`udg_MateriaAltarDone[n]`). |
 | Cooking | Fireplaces (`'n0KG'`) sell cooking recipes. More are unlocked with titles (`udg_CookingStage` 0–3). |
 | Dismantle | A spell (`'A1BB'`) for dismantling mechanical enemies (species 22 in the monster table). It deals pure, unavoidable damage. |
@@ -65,9 +65,11 @@ Item numbering is explained in [LOOT.md](LOOT.md).
   - sets `udg_MaterialTypeCount`;
   - sets `udg_BazaarGoodItem[1..56]` and what each costs in materials.
 - **Pawning:** `Bazaar_PawnMaterial` counts pawned materials per type (`udg_MaterialOwnedCount[i]`).
-  `Bazaar_UpdateStock` (timer `udg_BazaarUpdateTimer`) adds goods whose material costs can be paid.
-  Selling a good spends the materials.
-- **Bundles:** `Bazaar_Sell_Bundle` handles material bundles.
+  The shared pool is retained; `Bazaar_UpdateStock` refreshes open recipe browsers without spending.
+- **Recipes (stage AE):** bottom-right Recipes icon, Previous/Next navigation, hidden rewards and
+  green satisfied ingredients. Craft rechecks parts, buyer and original gold/shard price, spends one
+  set and delivers the original bundle results/charges. See BAZAAR.md.
+- **Bundles:** original bundle definitions and delivery data remain; automatic stocking is replaced.
 
 ## Common changes
 

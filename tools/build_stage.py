@@ -157,6 +157,7 @@ def main():
         run(ROOT / 'tools/check_save_compat.py', '--map', ordered)
         run(ROOT / 'tools/check_content.py', '--map', ordered)
         run(ROOT / 'tools/check_armory.py', '--map', ordered)
+        run(ROOT / 'tools/check_bazaar.py', '--map', ordered)
         run(header_tool, ordered, ready, '--from', base, '--name', config['title'] + ' stage' + a.stage + ' (Reforged)')
         before, after = ordered.read_bytes(), ready.read_bytes()
         if before[before.index(b'MPQ\x1a'):] != after[after.index(b'MPQ\x1a'):]:
