@@ -2456,7 +2456,7 @@ function Trig_Loot_BlockLeaverItems_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Loot_Cuchulainn_EyeDrop_Conditions takes nothing returns boolean
-    return(GetUnitTypeId(GetTriggerUnit())=='uabc') // 'uabc': unit "Tainted CÃºchulainn"
+    return(GetUnitTypeId(GetTriggerUnit())=='uabc') // 'uabc': unit "Tainted Cúchulainn"
 endfunction
 
 function Trig_Loot_Cuchulainn_EyeDrop_RollPotion takes nothing returns boolean

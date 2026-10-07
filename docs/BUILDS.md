@@ -9,8 +9,8 @@ python tools/chronicles_catalog.py build/bazaar-objects.w3x build/chronicles-obj
 .\build.ps1 -Stage AQ -Base build/chronicles-objects.w3x -AllowNew '^gg_trg_(Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)|Titles_MonographPickup)$'
 ```
 
-Current sources require armory hint objects, the Bazaar recipe button and Chronicle page/Secrets abilities. On a fresh clone prepare both as above;
-for incremental work use the newest reviewed Reforged release as -Base. See ARMORY.md and BAZAAR.md.
+Current sources require armory hint objects, the Bazaar recipe button and Chronicle page/Secrets abilities. On a fresh clone prepare all three as above;
+for incremental work use the newest reviewed Reforged release as -Base. See ARMORY.md, BAZAAR.md and CHRONICLES.md.
 
 Use a stage that does not exist yet. The command selects changed enabled modules, syncs their code,
 orders libraries, runs every gate, adds the HM3W header and publishes three new files in release/:
