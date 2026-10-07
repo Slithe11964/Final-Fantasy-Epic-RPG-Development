@@ -19,8 +19,8 @@ holding it." These hints add no acquisition methods or change the existing rewar
 
 ## In-game test
 
-Use release/FFERPG_0.9.7.3-r16-stageAM.w3x for Reforged play/editor development.
-Use release/1.29.2/FFERPG_0.9.7.3-r16-stageAM.w3x for classic play (AE Bazaar presentation).
+Use release/FFERPG_0.9.7.3-r16-stageAN.w3x for Reforged play/editor development.
+Use release/1.29.2/FFERPG_0.9.7.3-r16-stageAN.w3x for classic play (AE Bazaar presentation).
 
 1. With an armory-enabled character, browse a category with no stored gear. Hover a question mark
    and click it: the hint appears, no item/gold/BP is gained or spent, and the entry remains.
@@ -46,8 +46,8 @@ prepare a fresh base from that baseline (Python 3 on PATH):
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AN -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAN.w3x
+.\build.ps1 -Stage AO -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAO.w3x
 ```
 
 Use an unused stage and output filename. For ongoing local development, use the newest reviewed
@@ -85,9 +85,9 @@ For an existing prepared development map, update both the question-mark tooltip 
 generated source, then build/convert using unused filenames/stage names:
 
 ```powershell
-python tools/armory_catalog.py release/FFERPG_0.9.7.3-r16-stageAM.w3x build/custom-hints.w3x --refresh-hints
-.\build.ps1 -Stage AN -Base build/custom-hints.w3x
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAN.w3x
+python tools/armory_catalog.py release/FFERPG_0.9.7.3-r16-stageAN.w3x build/custom-hints.w3x --refresh-hints
+.\build.ps1 -Stage AO -Base build/custom-hints.w3x
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAO.w3x
 ```
 
 The refresh mode preserves existing objects and stock positions, changes only missing-item
@@ -109,8 +109,8 @@ To extend a prepared pre-AM map, use unused output/stage names:
 
 ```powershell
 python tools/armory_catalog.py release/FFERPG_0.9.7.3-r16-stageAL.w3x build/materia-objects.w3x --add-materia
-.\build.ps1 -Stage AN -Base build/materia-objects.w3x
-.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAN.w3x
+.\build.ps1 -Stage AO -Base build/materia-objects.w3x
+.\make_129.ps1 -Map release/FFERPG_0.9.7.3-r16-stageAO.w3x
 ```
 
 The fresh-baseline workflow above includes the new objects automatically. --add-materia keeps

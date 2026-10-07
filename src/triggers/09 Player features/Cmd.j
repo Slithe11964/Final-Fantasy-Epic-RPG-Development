@@ -402,6 +402,14 @@ function Trig_Cmd_Load_Code_LoadHeroLevel takes integer l_reader,unit u returns 
     call SetHeroLevel(u,Trig_Cmd_Load_Code_ReadLevel(l_reader),false)
 endfunction
 
+function Trig_Cmd_Load_Code_IsChocoboFood takes integer raw returns boolean
+    return raw=='I045' or raw=='I07F' or raw=='I07G' or raw=='I07H' or raw=='I027' or raw=='I07Q' or raw=='I0KE'
+endfunction
+
+function Trig_Cmd_Load_Code_ItemAllowed takes integer raw returns boolean
+    return not udg_SpeedrunMode or not Trig_Cmd_Load_Code_IsChocoboFood(raw)
+endfunction
+
 function Trig_Cmd_Load_Code_LoadInventory takes integer l_reader,unit u returns nothing
     local integer i=0
     local real x=GetUnitX(u)
@@ -423,7 +431,7 @@ function Trig_Cmd_Load_Code_LoadInventory takes integer l_reader,unit u returns 
             call DisplayTimedTextToPlayer(udg_SavePlayer[l_reader],0,0,60,"Load: Inventory Item #"+I2S(i)+": "+I2S(l_itemIndex))
         endif
         set l_itm=CreateItem(udg_ItemIdTable[l_itemIndex],x,y)
-        if not(IsPlayerInForce(Player(9),udg_SaveFlagForce[l_itemIndex])and(udg_SaveVersion[l_reader]<=Trig_Cmd_Load_Code_CharToValue("F")))then
+        if not(IsPlayerInForce(Player(9),udg_SaveFlagForce[l_itemIndex])and(udg_SaveVersion[l_reader]<=Trig_Cmd_Load_Code_CharToValue("F"))) and Trig_Cmd_Load_Code_ItemAllowed(udg_ItemIdTable[l_itemIndex]) then
             if(GetItemType(l_itm)==ITEM_TYPE_CHARGED)then
                 call SetItemCharges(l_itm,Trig_Cmd_Load_Code_ReadBits(l_reader,7))
             endif

@@ -27,7 +27,7 @@ function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
 endfunction
 
 function Trig_Armory_Item_List_Actions takes nothing returns nothing
-    set udg_SaveFlagCount=351
+    set udg_SaveFlagCount=358
     set udg_ItemIdTable[1]='pman' // 'pman': item "Ether"
     set udg_ItemIdTable[2]='pdiv' // 'pdiv': item "Hero Drink"
     set udg_ItemIdTable[3]='pgma' // 'pgma': item "Hi-Ether"
@@ -379,6 +379,13 @@ function Trig_Armory_Item_List_Actions takes nothing returns nothing
     set udg_ItemIdTable[$B1]='I08B' // $B1 = 177; 'I08B': item "Serpent Gem"
     set udg_ItemIdTable[$B2]='I089' // $B2 = 178; 'I089': item "Soul Powder"
     set udg_ItemIdTable[$B3]='I07C' // $B3 = 179; 'I07C': item "Nethril"
+    set udg_ItemIdTable[352]='I045' // 'I045': item "Pram Nut"
+    set udg_ItemIdTable[353]='I07F' // 'I07F': item "Luchil Nut"
+    set udg_ItemIdTable[354]='I07G' // 'I07G': item "Carob Nut"
+    set udg_ItemIdTable[355]='I07H' // 'I07H': item "Zeio Nut"
+    set udg_ItemIdTable[356]='I027' // 'I027': item "Gysahl Greens"
+    set udg_ItemIdTable[357]='I07Q' // 'I07Q': item "Mimett Greens"
+    set udg_ItemIdTable[358]='I0KE' // 'I0KE': item "Silkis Greens"
     call TriggerExecute(gg_trg_Armory_Item_Hash)
 endfunction
 

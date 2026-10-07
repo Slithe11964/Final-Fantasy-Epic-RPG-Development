@@ -24,10 +24,11 @@ Windows pjass and both sets of script libraries are included. Editor saves requi
 ```powershell
 python tools/armory_catalog.py baseline/Reforged/FFERPG_0.9.7.3-r16.w3x build/armory-objects.w3x
 python tools/bazaar_catalog.py build/armory-objects.w3x build/bazaar-objects.w3x
-.\build.ps1 -Stage AN -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
+.\build.ps1 -Stage AO -Base build/bazaar-objects.w3x -AllowNew '^gg_trg_Bazaar_(OpenRecipes|BrowseRecipes|FrameClick|FrameSync)$'
 ```
 
 Stages AB through AM add armory question marks and hints on one panel per category, sorted by required level; AL adds a stored/total counter on the house Armory tooltip. AM adds four final-tier materia beside Accessories and raises the total to 280 while preserving old armory saves; see docs/ARMORY.md for testing and hint editing.
+AN adds saving of all seven active chocobo nuts/greens outside Speedrun; Speedrun loads discard them. See docs/SAVE_CODES.md.
 Stages AE through AK add a spoiler-free Bazaar browser. AI shows three padded, larger-text recipe panels per group
 in Reforged, with green counts and click-to-craft; the classic conversion uses AE's single dialog; see docs/BAZAAR.md. AK also increases Gaya gather/follow ranges by 25% and adds
 `-teleporters` to the disabled developer module (docs/DEBUG_COMMANDS.md). The preparers add both reviewed shop features to the public baseline. The builder syncs changed modules, orders libraries, runs all

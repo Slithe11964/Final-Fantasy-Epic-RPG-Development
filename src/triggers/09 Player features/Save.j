@@ -308,7 +308,7 @@ function Save_EncodeInventory takes integer l_sid,unit u returns nothing
     local integer l_ownerIdx=GetPlayerId(udg_SavePlayer[l_sid])+1
     loop
         set l_itm=UnitItemInSlot(u,i)
-        if(l_itm!=null and LoadInteger(udg_ItemSaveID,0,GetItemTypeId(l_itm))!=0 and(GetItemUserData(l_itm)==0 or GetItemUserData(l_itm)==l_ownerIdx))then
+        if(l_itm!=null and LoadInteger(udg_ItemSaveID,0,GetItemTypeId(l_itm))!=0 and(GetItemUserData(l_itm)==0 or GetItemUserData(l_itm)==l_ownerIdx) and Trig_Cmd_Load_Code_ItemAllowed(GetItemTypeId(l_itm)))then
             set l_count=l_count+1
         endif
         set i=i+1
@@ -323,7 +323,7 @@ function Save_EncodeInventory takes integer l_sid,unit u returns nothing
                 if not udg_IsAutosave then
                     call DisplayTimedTextToPlayer(udg_SavePlayer[l_sid],0,0,30,"|cffff0000Warning: Carried Item|r "+GetItemName(l_itm)+" |cffff0000belongs to another player!")
                 endif
-            elseif(LoadInteger(udg_ItemSaveID,0,GetItemTypeId(l_itm))!=0)then
+            elseif(LoadInteger(udg_ItemSaveID,0,GetItemTypeId(l_itm))!=0 and Trig_Cmd_Load_Code_ItemAllowed(GetItemTypeId(l_itm)))then
                 call Save_WriteBits(l_sid,LoadInteger(udg_ItemSaveID,0,GetItemTypeId(l_itm)),9)
                 if(GetItemType(l_itm)==ITEM_TYPE_CHARGED)then
                     call Save_WriteBits(l_sid,GetItemCharges(l_itm),7)

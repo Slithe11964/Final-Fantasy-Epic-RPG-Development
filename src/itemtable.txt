@@ -352,6 +352,13 @@ function PreloadFiles takes nothing returns nothing
 	call Preload( "ITEM 349 I0D2 0 |cff00ff00White Robe|r" )
 	call Preload( "ITEM 350 I0FK 0 |cff00ff00Invert Shield|r" )
 	call Preload( "ITEM 351 I0GF 0 |cff00ff00Yatagarasu|r" )
+	call Preload( "ITEM 352 I045 1 Pram Nut" )
+	call Preload( "ITEM 353 I07F 1 Luchil Nut" )
+	call Preload( "ITEM 354 I07G 1 Carob Nut" )
+	call Preload( "ITEM 355 I07H 1 Zeio Nut" )
+	call Preload( "ITEM 356 I027 1 Gysahl Greens" )
+	call Preload( "ITEM 357 I07Q 1 Mimett Greens" )
+	call Preload( "ITEM 358 I0KE 1 Silkis Greens" )
 	call PreloadEnd( 4.4 )
 
 endfunction

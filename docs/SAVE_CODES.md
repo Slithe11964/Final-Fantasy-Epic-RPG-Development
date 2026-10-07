@@ -11,7 +11,7 @@ tools/contracts/. Existing save item indexes, charge classification, object base
 order, armory assignments and Save_/Code_/load-code function fingerprints must stay unchanged.
 Repeated historical armory assignments are preserved as ordered values at their index, not repaired.
 
-Append new items after index 351, with no gaps/duplicates, and update udg_SaveFlagCount to the new
+Append new items after the current highest index (358 as of AN), with no gaps/duplicates, and update udg_SaveFlagCount to the new
 highest index. The ceiling is **500** because flags 501..540 are reserved. Refresh src/itemtable.txt
 using -dumpitems in a separately enabled developer copy; the table must match source indexes/rawcodes.
 The corresponding object must be present in the selected base map. The guard preserves both explicit
@@ -180,3 +180,28 @@ between 1.29 and Reforged; check the result with `checkname` and in game.
 
 Note for maintainers: `rename` lets anyone move any code to any name. Keep the old-name check, and
 only do this for players who can show the old account was theirs.
+
+
+## Chocobo nuts and greens - stage AN
+
+Pram, Luchil, Carob and Zeio Nuts and Gysahl, Mimett and Silkis Greens are now saved with their
+quantities in every mode except Speedrun. This checks the actual Speedrun mode flag, independently
+of difficulty. Only usable food items are included, not purchase proxies, information or unused OLD items.
+
+Speedrun saves omit these seven items. Loading a code containing them in Speedrun consumes their
+saved fields but discards the items, allowing the following gear, potion charges and character data
+to load normally. Outside Speedrun, the original quantity is restored. Ownership restrictions and
+existing legacy F item rejection still apply. All shared serialized inventories use this policy.
+
+The new inventory IDs are appended at 352..358; old 1..351 IDs are unchanged. The save format,
+job order and old G/H fixtures are retained. New codes containing food require AN or newer to
+restore it outside Speedrun. Food adds no armory entries; the counter stays at 280 and the existing
+materia flag order is preserved. No item object/class/ability or feeding/breeding rules change.
+
+Test mixed food/gear inventories in the hero, house and Gaya. Save/load normally and compare each
+quantity; load the same code in Speedrun and confirm only food is missing, including when food is
+before another charged item. Save in Speedrun and load normally: those foods must remain absent.
+Repeat with autosaves, old codes, both clients, multiplayer and World Editor Save As.
+
+The exact reviewed policy is tools/contracts/chocobo-food-save-extension.json. Tests execute the
+inventory source and validate bit alignment; tools/tests/verify_food_save_build.py audits AN against AM.

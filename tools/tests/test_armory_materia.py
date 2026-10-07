@@ -48,7 +48,7 @@ def writer(source, owned, current):
         flags.update({i: 'm%03d'%i for i in MATERIA})
     env.update(udg_SaveFlagUnitID=defaultdict(lambda:None, flags),
                udg_SaveFlagForce=defaultdict(set, {i: {1} for i in owned}),
-               udg_SaveFlagCount=351, udg_SaveDebug=False,
+               udg_SaveFlagCount=358 if current else 351, udg_SaveDebug=False,
                udg_SavePlayer=defaultdict(int, {0: 1}),
                udg_SaveCodePlain=defaultdict(str), udg_SaveCodeChunk=defaultdict(str),
                udg_SaveChunkIndex=defaultdict(int), udg_SaveChunkBase=defaultdict(int),
@@ -84,7 +84,7 @@ def reader(source, bits, current):
         pos+=size
         return value
     env.update(udg_SaveFlagUnitID=defaultdict(lambda:None,flags), udg_SaveFlagForce=forces,
-               udg_SaveFlagCount=351, udg_ArmoryItemCount=defaultdict(int),
+               udg_SaveFlagCount=358 if current else 351, udg_ArmoryItemCount=defaultdict(int),
                Trig_Cmd_Load_Code_ArmoryHeader=lambda r:'AAAAAA',
                Trig_Cmd_Load_Code_CharToValue=lambda c:0,
                Trig_Cmd_Load_Code_ArmoryChecksum=lambda r:0,

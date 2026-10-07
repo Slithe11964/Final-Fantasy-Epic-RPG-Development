@@ -1,0 +1,28 @@
+{
+  "stage": "AN",
+  "purpose": "Append seven charged chocobo food inventory IDs; omit them on Speedrun saving/loading without changing the existing format.",
+  "items": {
+    "352": "I045",
+    "353": "I07F",
+    "354": "I07G",
+    "355": "I07H",
+    "356": "I027",
+    "357": "I07Q",
+    "358": "I0KE"
+  },
+  "serializers": {
+    "Save_EncodeInventory": {
+      "legacy": "ea0a7e15d4426bccbff62a1ca8c877783a4e728c241c460285852a8afdf24041",
+      "extended": "dae2b5df91c2915a572da4eb82ec969d19588b945bec62ea09dfe6283d250f13"
+    },
+    "Trig_Cmd_Load_Code_LoadInventory": {
+      "legacy": "a049a1b4f1fe83f46a8d07f416a7014bf716cbeaf6df5fbb12e47260cf544175",
+      "extended": "94725a28ffd5eb6aa5bd3a9b1ae93aaf0e671b63daed2404efbabc5123441214"
+    }
+  },
+  "helpers": {
+    "Trig_Cmd_Load_Code_IsChocoboFood": "464d8202cde1ddd75e0a5f2bd743f4bf00e6e9d0a0648366309dcb5e020837e5",
+    "Trig_Cmd_Load_Code_ItemAllowed": "b01d19839dfd3fa6972a1935d133fa396f75f4a56d37fb6696c628952eaf65eb"
+  },
+  "verification": "Reverse only the mode predicates to reproduce original serializer fingerprints. Existing item indexes, bytes and G/H vectors unchanged. Source tests exercise charge quantities and skip/read alignment including items after skipped food."
+}

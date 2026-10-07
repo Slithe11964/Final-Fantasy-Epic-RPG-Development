@@ -17,6 +17,7 @@ import savecode
 CONTRACT = ROOT / 'tools/contracts/save-compatibility.json'
 FIXTURES = ROOT / 'tools/tests/fixtures/savecodes.json'
 MATERIA_EXTENSION = ROOT / 'tools/contracts/armory-materia-extension.json'
+FOOD_EXTENSION = ROOT / 'tools/contracts/chocobo-food-save-extension.json'
 
 
 def assignments(texts, array, repeated=False):
@@ -68,6 +69,8 @@ def snapshot(map_path):
 def compare(current, contract):
     errors = []
     extension = json.loads(MATERIA_EXTENSION.read_text(encoding='utf-8'))
+    food = json.loads(FOOD_EXTENSION.read_text(encoding='utf-8'))
+    approved_serializers = {**extension['serializers'], **food['serializers']}
     items = current['items']
     numeric = sorted(int(k) for k in items)
     if not numeric or numeric != list(range(1, max(numeric) + 1)):
@@ -82,7 +85,7 @@ def compare(current, contract):
     for key in ['items', 'charged', 'item_classes', 'item_bases', 'armory_flags', 'serializers']:
         for index, original in contract[key].items():
             if current[key].get(index) != original:
-                approved = extension['serializers'].get(index, {}) if key == 'serializers' else {}
+                approved = approved_serializers.get(index, {}) if key == 'serializers' else {}
                 if approved.get('legacy') == original and approved.get('extended') == current[key].get(index):
                     continue
                 errors.append(f'{key}/{index}: existing save contract changed or removed')
@@ -99,6 +102,16 @@ def compare(current, contract):
                 errors.append('materia serializer extension differs: '+name)
         if current['serializers'].get(extension['helper']['name']) != extension['helper']['fingerprint']:
             errors.append('materia bitmap index order differs')
+    if any(raw in food['items'].values() for raw in items.values()) or any(current['serializers'].get(k) == v['extended'] for k,v in food['serializers'].items()):
+        for index,raw in food['items'].items():
+            if items.get(index) != raw or current['charged'].get(index) is not True:
+                errors.append('chocobo food item index/charge classification differs: '+index)
+        for name,value in food['serializers'].items():
+            if current['serializers'].get(name) != value['extended']:
+                errors.append('chocobo food serializer extension differs: '+name)
+        for name,value in food['helpers'].items():
+            if current['serializers'].get(name) != value:
+                errors.append('chocobo food Speedrun filter differs: '+name)
     if current['jobs'] != contract['jobs']:
         errors.append('job order/count changed: a new save format and preserved legacy readers are required')
     for key in items:

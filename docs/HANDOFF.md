@@ -1,40 +1,41 @@
-# FF Epic RPG handoff - 2026-10-07, stage AM armory materia
+# FF Epic RPG handoff - 2026-10-07, stage AN nuts/greens saving
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
-User requests Materia beside Accessories, with storage/hints/counting for four final-tier materia.
-Next unused stage: AN.
+User requests all usable nuts/greens save outside Speedrun; Speedrun loads must discard them.
+Next unused stage: AO.
 
-## Current development build - AM
+## Current development build - AN
 
-- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAM.w3x.
-- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAM.w3x.
-  Classic uses AE's single-recipe Bazaar dialog, even in Reforged. Develop from the Reforged map.
-- Materia category (8, stock flag 508) sits immediately beside Accessories (button 1,2).
-  Four final-tier entries: Wateraga/I025/71, Quakeraga/I03F/100, Demiga/I03N/103,
-  Aeroga/I07P/150 (user called it Aeroaga; existing item name retained).
-  Nine additive stock units: mCat, m071/m100/m103/m150 and z071/z100/z103/z150.
-  Missing ? entries give acquisition/upgrade hints; stored entries withdraw the original items.
-  Only these four charged item IDs are newly accepted by the existing house/title/ownership gate.
-  Duplicate deposits remain intact; lower-tier materia and all other charged items remain rejected.
-- Armory hover collection now N / 280. Existing count/title thresholds are retained; materia count
-  toward the collection through the same flags and existing deposit/load/withdraw handlers.
-- Save compatibility: keep all 351 inventory indexes/classes/charge classifications. New materia
-  armory bits APPEND after the legacy flag sequence, rather than interleaving at item indexes.
-  Cmd's ArmoryFlagIndex helper preserves old omitted slots; future inventory additions follow
-  the four appended bits. Only Save_EncodeUnitFlags and Cmd LoadArmory traversal/index lookups
-  change. tools/contracts/armory-materia-extension.json narrowly approves reviewed hashes;
-  original save-compatibility.json stays unchanged. Bodies reverse exactly to original fingerprints.
-  Older armory codes load unchanged. Saves containing new materia need AM or newer to retain them.
-- Fresh baseline armory_catalog.py preparation includes materia automatically; existing AL base
-  uses --add-materia once. Hint edits still use --refresh-hints; src/armory-hints.json is authoritative.
-- Full gates, 76 regressions, 2,000 codec cases, classic compile/check_map and scoped preservation
-  pass. Original objects/items/abilities/rewards and modules outside Armory/Cmd/Save unchanged.
-  Source-executed tests cover original bitmap payloads, dense/sparse/random runs, new materia
-  round trips, deposit restrictions/duplicates, category/counter/withdraw and compatibility refusal.
-- Needs Materia/Back layout and hints, deposit/withdraw each item, old and new save/load,
-  two-player isolation, both clients and Editor Save As. Remaining AK UI/Gaya/dev checks remain.
-- Incremental: .\build.ps1 -Stage AN -Base release/FFERPG_0.9.7.3-r16-stageAM.w3x.
-  Fresh clone workflow: docs/ARMORY.md and BAZAAR.md.
+- Reforged play/editor: release/FFERPG_0.9.7.3-r16-stageAN.w3x.
+- Classic play: release/1.29.2/FFERPG_0.9.7.3-r16-stageAN.w3x.
+  Classic retains AE Bazaar presentation. Develop from the Reforged map.
+- Seven active chocobo foods appended at inventory indexes 352..358: Pram Nut/I045,
+  Luchil Nut/I07F, Carob Nut/I07G, Zeio Nut/I07H, Gysahl Greens/I027,
+  Mimett Greens/I07Q and Silkis Greens/I0KE. Charged classification recorded; quantities saved.
+  BP/bazaar purchase proxies, information items and unused OLD greens remain unsavable.
+- ItemAllowed checks udg_SpeedrunMode, not difficulty. All other modes/difficulties allow the
+  seven items. Inventory save count and payload both skip food in Speedrun; load consumes its
+  charge bits and discards it through the existing rejection path. Other inventory still loads.
+  Shared inventory functions cover hero, house, Gaya and other serialized inventory containers;
+  manual/autosaving use the same mode check. Ownership and legacy F rejection retained.
+- Old 351 inventory IDs, jobs, fields and existing G/H fixtures unchanged; SaveFlagCount now358.
+  No new armory flag/proxy: counter stays280. AM's four appended materia bits retain their order;
+  its helper already places future inventory indexes after them. No object/ability/item edits.
+- Only Save_EncodeInventory and Cmd LoadInventory gain mode predicates. Separate reviewed
+  tools/contracts/chocobo-food-save-extension.json pins exact body/helper hashes and appended
+  item/charge mappings. Original compatibility contract and AM extension remain unchanged.
+  Reverse only mode predicates to recover original serializer fingerprints. Older saves remain valid.
+  New saves containing food need AN+ to restore it outside Speedrun.
+- Full gates, 82 regressions, 2,000 codec cases, classic compile/check_map and scoped preservation
+  pass. Original objects/rewards/Bazaar/travel/Gaya behavior and other modules unchanged.
+  Tests execute actual source across every difficulty, all seven quantities, skipped-item alignment,
+  mixed/all-food inventories, ownership, legacy rejection and reviewed-policy refusal.
+- AM Materia storage/hints/N / 280 and earlier UI/Gaya/dev changes retained; no new in-game
+  confirmation has been reported. Test each food quantity outside Speedrun, then load the same
+  mixed inventory into Speedrun: food absent, other items/quantities correct. Test Speedrun saves
+  omit food, hero/house/Gaya, old codes, both clients/multiplayer and World Editor Save As.
+- Incremental: .\build.ps1 -Stage AO -Base release/FFERPG_0.9.7.3-r16-stageAN.w3x.
+  Fresh clone workflow: docs/ARMORY.md / BAZAAR.md. Food policy: docs/SAVE_CODES.md.
 
 Git attribution: the user requested all repository history and future commits use Slithe with
 338753050+Slithe11964@users.noreply.github.com. Historical comparison references were updated after
@@ -63,7 +64,7 @@ the client's Air-to-Ground Indicators, independent of conversion.
 ## Workflow
 
 ```powershell
-.\build.ps1 -Stage AN -Base release/FFERPG_0.9.7.3-r16-stageAM.w3x
+.\build.ps1 -Stage AO -Base release/FFERPG_0.9.7.3-r16-stageAN.w3x
 ```
 
 The builder selects changed enabled modules, syncs, normalizes pairing, orders libraries, runs
