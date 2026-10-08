@@ -19,6 +19,36 @@ function Forsaken_ActiveGear takes unit holder,integer slot returns item
     return UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(slot-6))
 endfunction
 
+function Forsaken_WeaponType takes unit hero,integer kind returns boolean
+    local integer slot=0
+    local item gear
+    loop
+        exitwhen slot>=15
+        set gear=Forsaken_ActiveGear(hero,slot)
+        if gear!=null and Forsaken_GearClass(gear)==ITEM_TYPE_PERMANENT and GetItemLevel(gear)==kind then
+            set gear=null
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    set gear=null
+    return false
+endfunction
+
+function Forsaken_ItemAccuracy takes unit hero returns real
+    local integer slot=0
+    local real total=0.
+    local item gear
+    loop
+        exitwhen slot>=15
+        set gear=Forsaken_ActiveGear(hero,slot)
+        set total=total+I2R(LoadInteger(ForsakenElementSources,41,GetItemTypeId(gear)))
+        set slot=slot+1
+    endloop
+    set gear=null
+    return total
+endfunction
+
 function Forsaken_ActiveGearBJ takes unit holder,integer slot returns item
     return Forsaken_ActiveGear(holder,slot-1)
 endfunction
@@ -31,6 +61,9 @@ function Forsaken_ActiveAbilityLevel takes unit holder,integer raw returns integ
     local ability itemAbility
     if rank>0 then
         return rank
+    endif
+    if LoadBoolean(ForsakenElementSources,43,0) and not LoadBoolean(ForsakenElementSources,43,raw) then
+        return 0
     endif
     loop
         exitwhen slot>=15
@@ -86,6 +119,10 @@ function Forsaken_ElementAbilityLevel takes unit holder,integer raw returns inte
     set gear=null
     set itemAbility=null
     return rank
+endfunction
+
+function Forsaken_EquipmentAbilityLevelSwapped takes integer raw,unit holder returns integer
+    return Forsaken_ElementAbilityLevel(holder,raw)
 endfunction
 
 function Forsaken_TwoHandedWeapon takes unit holder returns item

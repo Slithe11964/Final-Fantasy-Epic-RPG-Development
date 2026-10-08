@@ -124,6 +124,9 @@ def prepare_objects(base, out, mapping_out):
             obj['id'] = variant
             set_field(obj, 'iequ', slot)
             set_field(obj, 'icla', 'Equipment')
+            # Keep a harmless item ability while stored passives are detached.
+            # Avoid an empty list after every real passive has been suspended.
+            set_field(obj, 'iabi', fields(obj).get('iabi', '') + ',fGmk')
             table['custom'].append(obj)
             mapping[raw]['variant'] = variant
             if slot == 'Primary':
@@ -136,6 +139,13 @@ def prepare_objects(base, out, mapping_out):
                 table['custom'].append(alternate)
                 mapping[raw]['offhand']=offhand
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
+    ability_table['custom'].append(dict(base='AIi1', id='fGmk', sets=[dict(flag=0, mods=[
+        dict(field='aite',type=0,level=0,data=0,value=1,end=0),
+        dict(field='alev',type=0,level=0,data=0,value=1,end=0),
+        dict(field='Iagi',type=0,level=1,data=1,value=0,end=0),
+        dict(field='Iint',type=0,level=1,data=2,value=0,end=0),
+        dict(field='Istr',type=0,level=1,data=3,value=0,end=0),
+    ])]))
     if not any((o['id'] or o['base'])=='AInv' for g in ('original','custom') for o in ability_table[g]):
         # Declare the unchanged stock ability for strict object-reference verification.
         ability_table['original'].append(dict(base='AInv',id=None,sets=[dict(flag=0,mods=[])]))
@@ -303,7 +313,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     panels = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8')
     defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
     panels = panels.replace(defense, '', 1)
-    stats = (HERE/'Forsaken-stats.j').read_text(encoding='utf-8').replace('function Forsaken_RenderStats', (HERE/'Forsaken-conditions.j').read_text(encoding='utf-8')+'\n\nfunction Forsaken_RenderStats',1)
+    stats = (HERE/'Forsaken-stats.j').read_text(encoding='utf-8').replace('function Forsaken_RenderStats', (HERE/'Forsaken-conditions.j').read_text(encoding='utf-8')+'\n\n'+(HERE/'Forsaken-gear-stats.j').read_text(encoding='utf-8')+'\n\nfunction Forsaken_RenderStats',1)
     extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + stats + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
     extra = extra.replace('function Forsaken_EnableHero', (HERE / 'Forsaken-dual.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_EnableHero',1)
     extra = extra.replace('function Forsaken_OnEquip', (HERE / 'Forsaken-carry.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_OnEquip',1)
@@ -332,6 +342,8 @@ def active_gear_overlay(original, module):
             body = body.replace('GetUnitAbilityLevel(', query)
         if name=='Trig_Damage_Engine_FindTwoHandedItem':
             body='function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing\n    set udg_TwoHandedItem=Forsaken_TwoHandedWeapon(u)\nendfunction'
+        if name=='Element_GetOfUnit':
+            body=body.replace("Prof_GetLevel(u,'R002')>0",'Forsaken_WeaponType(u,3)').replace("Prof_GetLevel(u,'R00M')>0",'Forsaken_WeaponType(u,11)')
         if name=='Trig_TwoHanded_Check_Actions':
             body="""function Trig_TwoHanded_Check_Actions takes nothing returns nothing
     if Forsaken_TwoHandedWeapon(GetAttacker())!=null then
@@ -344,6 +356,12 @@ endfunction"""
         original = original[:match.start()] + body + original[match.end():]
     original=original.replace('GetItemType(', 'Forsaken_GearClass(')
     if module=='Damage':
+        # Native equipment does not reliably expose item abilities on the unit.
+        # Read actual equipment for all combat checks; storage remains excluded.
+        original=original.replace('GetUnitAbilityLevel(', 'Forsaken_ElementAbilityLevel(')
+        match=re.search(r'function Trig_Damage_Engine_GetAccuracy\b.*?endfunction',original,re.S)
+        body=match.group().replace('    return l_acc','    return l_acc+Forsaken_ItemAccuracy(u)')
+        original=original[:match.start()]+body+original[match.end():]
         helper=element_damage_helper()
         original=original.replace('function Trig_Damage_Engine_Step11_ElementBonus',helper+'\n\nfunction Trig_Damage_Engine_Step11_ElementBonus',1)
         original=original.replace('1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)','1.+Forsaken_ElementDamageBonus(u,l_element,l_physical)')
@@ -568,10 +586,13 @@ def item_accuracy_initialization(base, mapping):
         # The same localized description is commonly present in both fields;
         # use the larger parsed value so a bonus is never counted twice.
         value = max(parse(data.get('ides', '')), parse(data.get('utub', '')))
+        canonical = dict(A16L=70,A16R=200,A19E=9,A19G=20,A19F=30,A19H=35,
+                         A1A1=35,A19J=40,A19I=50,A19D=60,A19K=75,A18O=255,A068=40,A02D=120)
+        value = max(0, value-sum(canonical.get(ability,0) for ability in data.get('iabi','').split(',')))
         if not value:
             continue
         ids = [raw, entry.get('variant'), entry.get('offhand')]
-        result.extend("    call SaveInteger(ForsakenGearTypes,41,'%s',%d)" % (item, value)
+        result.extend("    call SaveInteger(ForsakenElementSources,41,'%s',%d)" % (item, value)
                       for item in ids if item)
     return result
 
@@ -684,6 +705,8 @@ def element_source_data(base):
     element=(ROOT/'src/triggers/04 Combat and abilities/Element.j').read_text(encoding='utf-8')
     damage=(ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(encoding='utf-8')
     arrays=set(re.findall(r"set udg_Element(?:Attack|Knowledge|Boost|SpellAmp|OrbAmp)Abil\[\d\]='(.{4})'",element))
+    # Item-only markers must not survive in native unit caches after unequipping.
+    arrays.update('A16L A16R A19E A19G A19F A19H A1A1 A19J A19I A19D A19K A18O A068 A02D A139 A13H A0TW A182 A0HS A0OQ A13G A1DG A13F A13E A13D A13C A13B A13A A0Y7 A04H A0Y8 A0Y9 A174 A0Y6 A0YA A1AL A1FE A0YB A1AM A144 A145 A0YC A18L A1CB A10X A05L A12S A12V A03R A03D A0QK A05H A0PQ A0PR A115 A116 A118 A119 A0V9 A0VA A08N A0NP A0NN A0H4 A0H5 A0H6 A0KU'.split())
     for source,name in [(element,'Element_GetOfUnit'),(damage,'Trig_Damage_Engine_GetElementBonus')]:
         body=re.search(r'function '+name+r'\b.*?endfunction',source,re.S).group()
         arrays.update(re.findall(r"GetUnitAbilityLevel\(u,'(.{4})'\)",body))
@@ -703,6 +726,10 @@ def element_source_data(base):
 def element_source_initialization(base):
     managed,innate=element_source_data(base)
     result=['    set ForsakenElementSources=InitHashtable()']
+    table=read_objects(MPQ(str(base)).read('war3map.w3t'),'w3t')
+    gear={raw for group in ('original','custom') for obj in table[group] for raw in fields(obj).get('iabi','').split(',') if raw}
+    result.append('    call SaveBoolean(ForsakenElementSources,43,0,true)')
+    result += ["    call SaveBoolean(ForsakenElementSources,43,'%s',true)"%raw for raw in sorted(gear)]
     result += ["    call SaveBoolean(ForsakenElementSources,0,'%s',true)"%raw for raw in sorted(managed)]
     result += ["    call SaveBoolean(ForsakenElementSources,'%s','%s',true)"%(unit,raw) for unit,abilities in sorted(innate.items()) for raw in sorted(abilities)]
     return result
@@ -746,6 +773,15 @@ def main():
     config_path.write_text(json.dumps(config, indent=2)+'\n')
     base = scratch/'objects.w3x'
     mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
+    for module in ('Loot','Recharge','Summon_Scaling','ManaRefund','Haste','Oracle','Protect','Shell'):
+        path=next((work/'src/triggers').rglob(module+'.j'))
+        text=path.read_text(encoding='utf-8')
+        first,rest=text.split('\n',1)
+        if 'TUnit' not in first:
+            first += ', TUnit' if ' requires ' in first else ' requires TUnit'
+        text=re.sub(r"GetUnitAbilityLevelSwapped(?=\('(?:A12V|A12S|A05H|A03D|A0QK)')",
+                    'Forsaken_EquipmentAbilityLevelSwapped',first+'\n'+rest)
+        path.write_bytes(text.replace('\n','\r\n').encode('utf-8'))
     source = work/'src/triggers/05 Items crafting and shops/Equip.j'
     overlay = equip_overlay(source.read_text(encoding='utf-8'))
     initialization = ['    set ForsakenGearTypes=InitHashtable()', '    set ForsakenDefenseTypes=InitHashtable()', '    set ForsakenWaterWaves=InitHashtable()']
@@ -767,9 +803,9 @@ def main():
                                "    call SaveInteger(ForsakenGearTypes,6,'%s','%s')" % (entry['offhand'],entry['variant']),
                                "    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['offhand'],raw)]
     initialization += bag_passive_initialization(base)
-    initialization += item_accuracy_initialization(base, mapping)
     initialization += regeneration_initialization(base)
     initialization += element_source_initialization(base)
+    initialization += item_accuracy_initialization(base, mapping)
     item_table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')
     item_fields={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in item_table[g]}
     classes={'Permanent':0,'Charged':1,'PowerUp':2,'Artifact':3,'Purchasable':4,'Campaign':5,'Miscellaneous':6}

@@ -445,8 +445,8 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         set row=node/3
         set column=ModuloInteger(node,3)
         set ForsakenTalentButton[node]=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,node+1)
-        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.045+I2R(column)*.06,-.08-I2R(row)*.03)
-        call BlzFrameSetSize(ForsakenTalentButton[node],.028,.028)
+        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.045+I2R(column)*.06,-.068-I2R(row)*.025)
+        call BlzFrameSetSize(ForsakenTalentButton[node],.024,.024)
         set ForsakenTalentIcon[node]=BlzCreateFrameByType("BACKDROP","ForsakenTalentIcon",ForsakenTalentButton[node],"",node+1)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_TOPLEFT,ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,.003,-.003)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_BOTTOMRIGHT,ForsakenTalentButton[node],FRAMEPOINT_BOTTOMRIGHT,-.003,.003)
@@ -471,27 +471,27 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     endloop
     set ForsakenNPCSummary=BlzCreateFrameByType("TEXT","ForsakenNPCSummary",ForsakenTalentRoot,"",0)
     call BlzFrameSetPoint(ForsakenNPCSummary,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.08)
-    call BlzFrameSetSize(ForsakenNPCSummary,.189,.13)
+    call BlzFrameSetSize(ForsakenNPCSummary,.189,.09)
     call BlzFrameSetFont(ForsakenNPCSummary,"Fonts\\FRIZQT__.TTF",.007,0)
     call BlzFrameSetVisible(ForsakenNPCSummary,false)
     set node=0
     loop
-        exitwhen node>=12
+        exitwhen node>=16
         set ForsakenStatLabel[node]=BlzCreateFrameByType("TEXT","ForsakenStatLabel",ForsakenTalentRoot,"",node+1)
         set label=ForsakenStatLabel[node]
-        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.225-I2R(node)*.011)
-        call BlzFrameSetSize(label,.099,.014)
+        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.19-I2R(node)*.0105)
+        call BlzFrameSetSize(label,.109,.0105)
         call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.0065,0)
         call BlzFrameSetText(label,"")
         set ForsakenStatValue[node]=BlzCreateFrameByType("TEXT","ForsakenStatValue",ForsakenTalentRoot,"",node+1)
-        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.028,-.225-I2R(node)*.011)
-        call BlzFrameSetSize(ForsakenStatValue[node],.09,.014)
+        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.028,-.19-I2R(node)*.0105)
+        call BlzFrameSetSize(ForsakenStatValue[node],.08,.0105)
         call BlzFrameSetFont(ForsakenStatValue[node],"Fonts\\FRIZQT__.TTF",.0065,0)
         call BlzFrameSetTextAlignment(ForsakenStatValue[node],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_RIGHT)
         set node=node+1
     endloop
     set ForsakenStatsHeading=BlzCreateFrameByType("TEXT","ForsakenStatsHeading",ForsakenTalentRoot,"",0)
-    call BlzFrameSetPoint(ForsakenStatsHeading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.203)
+    call BlzFrameSetPoint(ForsakenStatsHeading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.172)
     call BlzFrameSetSize(ForsakenStatsHeading,.15,.016)
     call BlzFrameSetFont(ForsakenStatsHeading,"Fonts\\FRIZQT__.TTF",.008,0)
     call BlzFrameSetTextAlignment(ForsakenStatsHeading,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)

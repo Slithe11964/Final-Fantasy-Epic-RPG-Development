@@ -2,7 +2,22 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BR. Normal development stays on AS; Forsaken BQ is the current playable checkpoint for water casts and equipped-item accuracy.
+Next unused stage: BS. Normal development stays on AS; Forsaken BR is the current gear/stat test checkpoint.
+
+## Separate experiment - Forsaken BR
+
+BR corrects BQ's doubled lance accuracy. Tooltip accuracy contributes only the residual missing from the original formula, and that residual now reaches actual combat as well as the panel. Source-aware equipment queries prevent stale item markers from bagged/unequipped gear, while preserving innate and shrine passives. Requested trinket hooks (drop rolls, mana on kill, gold-for-MP, enhanced buffs and summon scaling) read native equipment.
+
+All 276 native gear variants keep a zero-stat fGmk marker while their real passive abilities are suspended in storage. Its AGI/INT/STR fields are explicitly zero with the installed metadata's data pointers 1/2/3. This addresses the reported passive-only claws, fists, helmets and shields losing native equip interaction; actual in-game equip acceptance remains to be confirmed. Real level/mastery restrictions, original/Gaya items, active book spells and cooldown groups are preserved. No automatic equipping.
+
+Damage bonuses adds base gun Critical Chance/multiplier (including Canister multiplier), katana combo chance/minimum total hits, elemental weakness damage, Deathbringer execute chance (disabled in Eternity), bow-only technique bonuses, gun-only perfect accuracy and shot effects, Chimes and Setzer's Coin. Ammo element highlighting follows actual equipped bow/gun and the existing elemental priority. Flat ammunition damage includes current proficiency. Rock/Piercing Shot adds armor-piercing damage rather than subtracting armor. Gun proficiency/time buildup still applies on top of the displayed base critical chance. Molotov's text follows its original tooltip; its existing proc cadence is unchanged.
+
+Other bonuses adds Cat's Bell, Blue Amulet (the item referred to as Blue Gorget), Turtleshell Choker, White Materia, Bag of Tricks (+20 percentage points to the normal drop roll) and Summoner's Horn. Existing outgoing-damage rows dynamically show Leather/Steel Gorget at <=30% HP and Magic Gloves at >=99% HP. Armguard's halved-damage row appears only at <=30% HP. Defenses has no blank accuracy row. The talent grid is smaller and raised, leaving 16 stat rows with the same text size, gold-border padding and HUD clearance.
+
+Repeatable audit: `experiments/Forsaken/audit_gear.py`; full 276-entry report: `docs/FORSAKEN_GEAR_AUDIT.md`. Checks compare all original gear ability definitions/numeric fields and every native variant's abilities, slots, charges, cooldown groups and requirements. Lifecycle tests cycle all 276 items between stored/equipped states while retaining active abilities. These do not substitute for native in-game equip and damage testing.
+
+Validation: all build/editor/playable/source gates, 85 focused Forsaken tests, 96 repository regressions, 2,000 codec cases, all-276 final gear/object audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. JASS CRLF and byte-identical AS classic fallback verified. Scratch: build/ForsakenBR-qbnzzpyu/FFERPG. Reforged output: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBR.w3x`. Normal sources/AS and exact AS classic fallback remain unchanged; saving is disabled. Native acceptance: equip the reported claws/hats/shields after meeting their requirements; repeat equip/unequip and job changes; check lance accuracy, gun/katana/ammunition rows, low/full-HP effects, trinkets and panel spacing. Next unused stage BS.
+
 
 ## Separate experiment - Forsaken BQ
 

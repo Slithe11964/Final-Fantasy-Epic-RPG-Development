@@ -34,6 +34,116 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_compact_talents_and_sixteen_stat_rows_do_not_overlap(self):
+        source=(HERE/'Forsaken-panels.j').read_text()
+        self.assertIn('-.068-I2R(row)*.025',source)
+        self.assertIn('-.19-I2R(node)*.0105',source)
+        self.assertLess(.068+3*.025+.024,.172)
+        self.assertLess(.172+.016,.19)
+        self.assertLess(.19+15*.0105+.0105,.367)
+
+    def test_accuracy_residuals_do_not_double_lances_and_reach_real_combat(self):
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        mapping={raw:{} for raw in ['I0FO','I0JY','I0D1']}
+        lines=build.item_accuracy_initialization(base,mapping)
+        self.assertFalse(any("'I0FO'" in line or "'I0JY'" in line for line in lines))
+        self.assertTrue(any("'I0D1',55)" in line for line in lines))
+        original=(build.ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text()
+        source=build.active_gear_overlay(original,'Damage')
+        levels={};residual=[0.]
+        state=mocks(source);state.update(Trig_Damage_Engine_GetSpeedBonus=lambda u:0.,
+            GetUnitDefaultMoveSpeed=lambda u:80.,GetHeroAgi=lambda *a:0,
+            IsUnitType=lambda *a:True,UNIT_TYPE_HERO=1,I2R=float,
+            Forsaken_ElementAbilityLevel=lambda u,r:levels.get(r,0),Forsaken_ItemAccuracy=lambda u:residual[0])
+        read=execute(source,['Trig_Damage_Engine_GetAccuracy'],state)['Trig_Damage_Engine_GetAccuracy']
+        baseline=read('hero')
+        for raw,bonus in [('A19E',9),('A19G',20),('A19F',30),('A19H',35)]:
+            levels.clear();levels[raw]=1
+            self.assertEqual(read('hero')-baseline,bonus)
+        levels.clear();residual[0]=55.
+        self.assertEqual(read('hero')-baseline,55.)
+
+    def test_special_gear_rows_follow_current_weapon_and_equipped_effects(self):
+        source=(HERE/'Forsaken-gear-stats.j').read_text();levels={};rows={};weapon=[11]
+        state=mocks(source);state.update(Forsaken_StatAbilityLevel=lambda u,r:levels.get(r,0),
+            Forsaken_WeaponType=lambda u,k:weapon[0]==k,Forsaken_StatGun=lambda u:weapon[0]==11,
+            IsUnitType=lambda *a:True,UNIT_TYPE_MELEE_ATTACKER=1,Prof_GetLevel=lambda *a:4,
+            I2S=str,IMinBJ=min,R2SW=lambda n,w,p:format(n,'.'+str(p)+'f'),udg_EternityMode=False,
+            Forsaken_StatRow=lambda row,label,value:rows.update({row:(label,value)}))
+        runtime=execute(source,['Forsaken_StatCrit','Forsaken_StatCombo','Forsaken_RenderGearDamage','Forsaken_RenderGearOther'],state)
+        levels.update(A118=1,A0YB=1)
+        runtime['Forsaken_RenderGearDamage']('hero',10)
+        self.assertEqual(rows[10],('Critical Chance','15% | 1.8x'))
+        self.assertEqual(rows[11],('Armor-piercing damage','+210'))
+        rows.clear();weapon[0]=3;levels.clear();levels['A04H']=1
+        runtime['Forsaken_RenderGearDamage']('hero',10)
+        self.assertEqual(rows[10],('Tech Damage','15% | +140'))
+        rows.clear();weapon[0]=1
+        runtime['Forsaken_RenderGearDamage']('hero',10);self.assertFalse(rows)
+        levels.clear();levels.update(A139=1,A13C=1)
+        self.assertEqual(runtime['Forsaken_StatCombo']('hero'),'5% | 7+')
+        levels.clear();levels.update(A03R=1,A12S=1,A03D=1,A0QK=1,A12V=1,A05H=1)
+        runtime['Forsaken_RenderGearOther']('hero',7)
+        self.assertEqual(len(rows),6)
+        self.assertEqual(rows[8],('Mana on Kill','+100 | Tech +200'))
+        levels.clear();rows.clear();runtime['Forsaken_RenderGearOther']('hero',7);self.assertFalse(rows)
+
+    def test_all_276_native_gear_variants_keep_zero_stat_storage_marker(self):
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
+            out=Path(folder)/'gear.w3x'
+            mapping=build.prepare_objects(base,out,Path(folder)/'mapping.json')
+            archive=MPQ(out);table=read_objects(archive.read('war3map.w3t'),'w3t')
+            items={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in table[g]}
+            passive=build.bag_passive_types(base)
+            self.assertNotIn('fGmk',passive)
+            checked=0
+            for raw,entry in mapping.items():
+                if 'variant' not in entry:continue
+                checked+=1
+                for variant in [entry['variant']]+([entry['offhand']] if 'offhand' in entry else []):
+                    self.assertEqual(items[variant]['icla'],'Equipment')
+                    self.assertIn('fGmk',set(items[variant]['iabi'].split(','))-passive)
+                    self.assertEqual(items[variant]['iequ'],'Offhand' if variant==entry.get('offhand') else entry['slot'])
+            self.assertEqual(checked,276)
+            abilities=read_objects(archive.read('war3map.w3a'),'w3a')
+            marker=next(o for o in abilities['custom'] if o['id']=='fGmk')
+            self.assertEqual(marker['base'],'AIi1')
+            self.assertEqual(fields(marker)[('Iint',1)],0)
+            for key,pointer in [('Iagi',1),('Iint',2),('Istr',3)]:
+                mod=next(m for m in marker['sets'][0]['mods'] if m['field']==key)
+                self.assertEqual((mod['data'],mod['value']),(pointer,0))
+
+    def test_every_armory_gear_preserves_actives_and_restores_passives_over_storage_cycles(self):
+        import json
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')
+        items={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in table[g]}
+        catalog=json.loads((build.ROOT/'src/armory-hints.json').read_text())
+        passive=build.bag_passive_types(base);active={};saved={}
+        source=(HERE/'Forsaken-bag-effects.j').read_text();state=mocks(source)
+        state.update(ForsakenBagAbilities='cache',ForsakenBagPassiveTypes='types',GetHandleId=lambda i:i,
+            LoadInteger=lambda h,k,i:saved.get((k,i),0),LoadBoolean=lambda h,k,i:i in passive if h=='types' else saved.get((k,i),False),
+            SaveInteger=lambda h,k,i,v:saved.update({(k,i):v}),SaveBoolean=lambda h,k,i,v:saved.update({(k,i):v}),
+            FlushChildHashtable=lambda h,k:[saved.pop(entry) for entry in list(saved) if entry[0]==k],
+            BlzGetItemAbilityByIndex=lambda item,i:active[item][i] if i<len(active[item]) else None,
+            BlzGetAbilityId=lambda a:a,BlzItemRemoveAbility=lambda item,raw:active[item].remove(raw),
+            BlzItemAddAbility=lambda item,raw:active[item].append(raw))
+        runtime=execute(source,['Forsaken_SuspendStoredItem','Forsaken_RestoreStoredItem'],state)
+        unit_table=read_objects(MPQ(base).read('war3map.w3u'),'w3u')
+        units={o['id'] or o['base']:fields(o) for group in ('original','custom') for o in unit_table[group]}
+        checked=0
+        for entry in catalog.values():
+            raw=entry['item']
+            if build.slot_for(entry,units[entry['unit']]['upoi']) is None:continue
+            checked+=1;original=items[raw]['iabi'].split(',')+['fGmk'];active[raw]=list(original)
+            for cycle in range(3):
+                runtime['Forsaken_SuspendStoredItem'](raw)
+                self.assertEqual(set(active[raw]),set(original)-passive,entry['name'])
+                runtime['Forsaken_RestoreStoredItem'](raw)
+                self.assertEqual(set(active[raw]),set(original),entry['name'])
+        self.assertEqual(checked,276)
+
     def test_bag_suppresses_real_book_firefly_passives_without_touching_bolt_or_cooldown(self):
         source=(HERE/'Forsaken-bag-effects.j').read_text()
         base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
@@ -236,7 +346,7 @@ class ForsakenTests(unittest.TestCase):
         for label in ['Mana regen','Cooldown reduction']:
             self.assertNotIn('"'+label+'"',defense);self.assertIn('"'+label+'"',other)
         panels=(HERE/'Forsaken-panels.j').read_text()
-        self.assertIn('ForsakenStatValue[node],.09,.014',panels)
+        self.assertIn('ForsakenStatValue[node],.08,.0105',panels)
         self.assertIn('Forsaken_ConditionCount(hero)>4',panels)
 
     def test_inherited_item_categories_are_bundled_for_portable_builds(self):
@@ -386,7 +496,7 @@ class ForsakenTests(unittest.TestCase):
         slots={};levels={'A15J':1};state=mocks(source)
         state.update(UnitItemInSlot=lambda u,i:None,UnitItemInEquipmentSlot=lambda u,i:slots.get(i),ConvertLoadoutSlot=lambda i:i,
             GetItemType=lambda i:'shield' if i=='shield' else 'weapon',GetItemLevel=lambda i:2 if i=='shield' else 0,
-            ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='shield',GetUnitAbilityLevel=lambda u,r:levels.get(r,0),
+            ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='shield',GetUnitAbilityLevel=lambda u,r:levels.get(r,0),Forsaken_ElementAbilityLevel=lambda u,r:levels.get(r,0),
             GetOwningPlayer=lambda u:0,Player=lambda p:p,Player_GetHero=lambda p:'hero',Prof_GetWeaponUpgrade=lambda u:0,I2R=float)
         runtime=execute(source,['Forsaken_ActiveGear','Unit_HasNoEquipment','Trig_Damage_Engine_ProficiencyMult'],state)
         read=runtime['Trig_Damage_Engine_ProficiencyMult']
@@ -500,7 +610,7 @@ class ForsakenTests(unittest.TestCase):
         self.assertEqual(rows[1][0],'|cff00ff00Ice damage|r');self.assertEqual(rows[0][0],'Fire damage')
         current[0]=1;render('hero');self.assertEqual(rows[1][0],'Ice damage');self.assertIn('|cff00ff00',rows[0][0])
         current[0]=0;render('hero');self.assertTrue(all('|cff00ff00' not in rows[i][0] for i in range(6)))
-        current[0]=7;render('hero');self.assertEqual(rows[11],('|cff00ff00Basic attack element|r','Omni'))
+        current[0]=7;render('hero');self.assertEqual(rows[10],('|cff00ff00Basic attack element|r','Omni'))
 
     def test_attack_speed_reading_includes_gear_and_haste_slow_without_mutation(self):
         source=build.attack_speed_helper();levels={}
@@ -807,17 +917,18 @@ class ForsakenTests(unittest.TestCase):
     def test_equipped_item_accuracy_is_read_from_item_tooltips_and_excludes_bag_items(self):
         source=(HERE/'Forsaken-stats.j').read_text(encoding='utf-8')
         self.assertIn('function Forsaken_StatItemAccuracy takes unit hero returns real',source)
-        self.assertIn('Forsaken_ActiveGear(hero,slot)',source)
-        self.assertIn('LoadInteger(ForsakenGearTypes,41,GetItemTypeId(gear))',source)
+        shared=(HERE/'Forsaken-active-gear.j').read_text()
+        self.assertIn('Forsaken_ActiveGear(hero,slot)',shared)
+        self.assertIn('LoadInteger(ForsakenElementSources,41,GetItemTypeId(gear))',shared)
         self.assertIn('Forsaken_Stat_GetAccuracy(hero)+Forsaken_StatItemAccuracy(hero)',source)
         helper=build.item_accuracy_initialization
         with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
             base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
             mapping={'I0D1':{'variant':'f000','offhand':'g000'}}
             lines=helper(base,mapping)
-            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'I0D1',55)" in line for line in lines))
-            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'f000',55)" in line for line in lines))
-            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'g000',55)" in line for line in lines))
+            self.assertTrue(any("SaveInteger(ForsakenElementSources,41,'I0D1',55)" in line for line in lines))
+            self.assertTrue(any("SaveInteger(ForsakenElementSources,41,'f000',55)" in line for line in lines))
+            self.assertTrue(any("SaveInteger(ForsakenElementSources,41,'g000',55)" in line for line in lines))
 
     def test_carry_order_targets_quick_slots_and_gaya_pickups_without_mutating_attack_orders(self):
         source=(HERE/'Forsaken-carry.j').read_text();converted=[];issued=[];saved={}
@@ -903,6 +1014,8 @@ class ForsakenTests(unittest.TestCase):
                     self.assertEqual(updated['icla'],'Equipment')
                     if 'icla' in before[raw]: updated['icla']=before[raw]['icla']
                     else: updated.pop('icla')
+                    self.assertEqual(updated['iabi'],expected.get('iabi','')+',fGmk',raw)
+                    updated['iabi']=expected['iabi']
                     self.assertEqual(expected, updated, raw)
             self.assertNotIn('fBpk',after)
             self.assertEqual(len(mapping), 280)
@@ -1337,7 +1450,7 @@ class ForsakenTests(unittest.TestCase):
         runtime=execute(source,['Register_Forsaken_PanelAccess'],state)
         runtime['Register_Forsaken_PanelAccess']()
         self.assertEqual(len(runtime['ForsakenTalentButton']),12)
-        self.assertEqual(len(runtime['ForsakenStatValue']),12)
+        self.assertEqual(len(runtime['ForsakenStatValue']),16)
         self.assertTrue(set(runtime['ForsakenTalentButton'].values())<=set(events))
         self.assertNotIn('BlzGetFrameByName',functions(source)['Register_Forsaken_PanelAccess'])
         self.assertEqual(runtime['ForsakenStatName'][3],'Water')
@@ -1423,7 +1536,7 @@ class ForsakenTests(unittest.TestCase):
         abilities={'quick':[11], 'equipped':[22]}
         runtime=self.stat_runtime(['Forsaken_StatAbilityLevel'],
             GetUnitAbilityLevel=lambda hero,raw:3 if raw==33 else 0,
-            UnitItemInSlot=lambda hero,slot:items.get(slot),
+            Forsaken_ActiveGear=lambda hero,slot:items.get(slot),UnitItemInSlot=lambda hero,slot:items.get(slot),
             UnitItemInEquipmentSlot=lambda hero,slot:items.get(slot+6),ConvertLoadoutSlot=lambda i:i,
             BlzGetItemAbilityByIndex=lambda item,i:abilities.get(item,[])[i] if i<len(abilities.get(item,[])) else None,
             BlzGetAbilityId=lambda a:a)

@@ -4,16 +4,15 @@ function Forsaken_StatAbilityLevel takes unit hero,integer raw returns integer
     local integer index
     local ability itemAbility
     local item gear
+    if LoadBoolean(ForsakenElementSources,0,raw) then
+        return Forsaken_ElementAbilityLevel(hero,raw)
+    endif
     if level>0 then
         return level
     endif
     loop
         exitwhen slot>=15
-        if slot<6 then
-            set gear=UnitItemInSlot(hero,slot)
-        else
-            set gear=UnitItemInEquipmentSlot(hero,ConvertLoadoutSlot(slot-6))
-        endif
+        set gear=Forsaken_ActiveGear(hero,slot)
         set index=0
         loop
             exitwhen gear==null
