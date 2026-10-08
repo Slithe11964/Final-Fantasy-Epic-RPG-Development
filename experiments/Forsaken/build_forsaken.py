@@ -73,6 +73,21 @@ def slot_for(entry, category):
     raise ValueError('unreviewed armory category ' + str(category))
 
 
+SLOT_LABELS = dict(Head='Helm', Chest='Chest', Gloves='Gloves', Boots='Boots',
+                   Ring='Ring', Primary='Weapon', Offhand='Offhand', Trinket='Trinket')
+
+
+def slot_tooltip(tooltip, slot):
+    line = '|cffffcc00Forsaken slot|r: ' + SLOT_LABELS[slot]
+    lines = tooltip.split('|n')
+    for index, text in enumerate(lines):
+        plain = re.sub(r'\|c[0-9a-fA-F]{8}|\|r', '', text)
+        if re.search(r'required level|level requirement', plain, re.I):
+            lines.insert(index + 1, line)
+            return '|n'.join(lines)
+    return tooltip + ('|n' if tooltip else '') + line
+
+
 def prepare_objects(base, out, mapping_out):
     archive = MPQ(str(base))
     unit_table = read_objects(archive.read('war3map.w3u'), 'w3u')
@@ -92,6 +107,10 @@ def prepare_objects(base, out, mapping_out):
         slot = slot_for(entry, units[entry['unit']]['upoi'])
         mapping[raw] = dict(name=entry['name'], slot=slot or 'Inventory')
         if slot:
+            tooltip = fields(items[raw]).get('utub', '')
+            if tooltip.startswith('TRIGSTR_'):
+                raise ValueError('unresolved gear tooltip: ' + raw)
+            set_field(items[raw], 'utub', slot_tooltip(tooltip, slot))
             variant = 'f%03d' % number
             if variant in items:
                 raise ValueError('experimental item ID already used: ' + variant)
@@ -163,12 +182,13 @@ def prepare_panels(table):
 
 def equip_overlay(original):
     text = original.replace('library TEquip requires TForce, TJob',
-                            'library TEquip requires TForce, TJob, TPlayerHero, TMagicDefense, TProf, TElement')
+                            'library TEquip requires TForce, TJob, TPlayerHero, TMagicDefense, TProf, TElement, TMultiboard')
     text = text.replace('endglobals', '''    trigger gg_trg_Forsaken_Equipment=null
     trigger gg_trg_Forsaken_TestEquip=null
     timer ForsakenInventoryTimer=null
     hashtable ForsakenGearTypes=null
     item ForsakenEquippedItem=null
+    boolean ForsakenConvertingGear=false
     boolean ForsakenSaveBlocked=false
     trigger gg_trg_Forsaken_TalentClick=null
     trigger gg_trg_Forsaken_TalentSync=null
@@ -190,6 +210,8 @@ def equip_overlay(original):
     timer ForsakenPanelClock=null
     real ForsakenPanelLastToggle=-1.
     boolean ForsakenPanelOpen=false
+    framehandle ForsakenTalentToggle=null
+    framehandle ForsakenBoardToggle=null
     framehandle ForsakenPanelClose=null
     string array ForsakenStatName
     framehandle array ForsakenStatValue
@@ -246,6 +268,12 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
                         '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Forsaken_PanelAccess()\n    call Register_Equip_Restrictions() //', 1)
     return text
+
+
+def multiboard_overlay(original):
+    text=original.replace('globals\n','globals\n    boolean ForsakenBoardHidden=false\n    boolean ForsakenBoardCovered=false\n',1)
+    return text.replace('call MultiboardDisplay(udg_ScoreBoard,true)',
+                        'call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardHidden and not ForsakenBoardCovered)')
 
 
 def combat_stat_helpers():
@@ -445,6 +473,8 @@ def main():
     job_source = work/'src/triggers/03 Jobs and progression/Job.j'
     job_source.write_bytes(job_overlay(job_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     defense_source=work/'src/triggers/04 Combat and abilities/MagicDefense.j'
+    board_source=work/'src/triggers/09 Player features/Multiboard.j'
+    board_source.write_bytes(multiboard_overlay(board_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     defense_source.write_bytes(defense_overlay(defense_source.read_text(encoding='utf-8'),mapping).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)

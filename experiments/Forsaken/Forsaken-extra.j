@@ -7,37 +7,69 @@ function Forsaken_RejectEquipment takes item gear,unit holder returns nothing
     call UnitRemoveItem(holder,gear)
 endfunction
 
+function Forsaken_HoldsItem takes unit holder,item carried returns boolean
+    local integer slot=0
+    loop
+        exitwhen slot>=6
+        if UnitItemInSlot(holder,slot)==carried then
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=UnitExtendedInventorySize(holder)
+        if UnitItemInBagSlot(holder,slot)==carried then
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    return false
+endfunction
+
 function Forsaken_PrepareQuickGear takes unit holder returns nothing
     local integer slot=0
     local integer variant
     local integer charges
-    local integer tag
     local item original
     local item replacement
+    if ForsakenConvertingGear then
+        return
+    endif
+    set ForsakenConvertingGear=true
     loop
-        exitwhen slot>=6
-        set original=UnitItemInSlot(holder,slot)
+        exitwhen slot>=6+UnitExtendedInventorySize(holder)
+        if slot<6 then
+            set original=UnitItemInSlot(holder,slot)
+        else
+            set original=UnitItemInBagSlot(holder,slot-6)
+        endif
         set variant=LoadInteger(ForsakenGearTypes,0,GetItemTypeId(original))
-        if original!=null and variant!=0 then
+        if original!=null and variant!=0 and not LoadBoolean(ForsakenGearTypes,50,GetHandleId(original)) then
+            call SaveBoolean(ForsakenGearTypes,50,GetHandleId(original),true)
             set charges=GetItemCharges(original)
-            set tag=GetItemUserData(original)
+            set replacement=CreateItem(variant,GetUnitX(holder),GetUnitY(holder))
+            call SetItemCharges(replacement,0)
+            call SetItemUserData(replacement,GetItemUserData(original))
+            call SetWidgetLife(replacement,GetWidgetLife(original))
+            call SetItemPlayer(replacement,GetItemPlayer(original),false)
             call UnitRemoveItem(holder,original)
-            call UnitAddItemToSlotById(holder,variant,slot)
-            set replacement=UnitItemInSlot(holder,slot)
-            if replacement!=null and GetItemTypeId(replacement)==variant then
+            call UnitAddItem(holder,replacement)
+            if Forsaken_HoldsItem(holder,replacement) then
                 call SetItemCharges(replacement,charges)
-                call SetItemUserData(replacement,tag)
-                call SetWidgetLife(replacement,GetWidgetLife(original))
-                call SetItemPlayer(replacement,GetItemPlayer(original),false)
+                call RemoveSavedBoolean(ForsakenGearTypes,50,GetHandleId(original))
                 call RemoveItem(original)
             else
-                if UnitAddItem(holder,original) then
-                    call UnitDropItemSlot(holder,original,slot)
-                endif
+                call RemoveItem(replacement)
+                call SetItemCharges(original,0)
+                call UnitAddItem(holder,original)
+                call SetItemCharges(original,charges)
+                call DisplayTimedTextToPlayer(GetOwningPlayer(holder),0,0,15,"This gear could not enter your backpack. Your original item has been kept.")
             endif
         endif
         set slot=slot+1
     endloop
+    set ForsakenConvertingGear=false
     set original=null
     set replacement=null
 endfunction
@@ -58,12 +90,17 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BF: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BG: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
         set holder=null
         return
     endif
     if holder==Player_GetHero(GetOwningPlayer(holder)) then
+        if GetTriggerEventId()==EVENT_PLAYER_UNIT_PICKUP_ITEM then
+            call Forsaken_PrepareQuickGear(holder)
+            set holder=null
+            return
+        endif
         set ForsakenEquippedItem=GetEquippedItem()
         call Forsaken_ValidateEquipment()
         set ForsakenEquippedItem=null
@@ -146,6 +183,7 @@ function Register_Forsaken_Equipment takes nothing returns nothing
     local integer i=0
     set gg_trg_Forsaken_Equipment=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_EQUIP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     loop
         exitwhen i>7
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_Equipment,Player(i),"-forsaken",true)

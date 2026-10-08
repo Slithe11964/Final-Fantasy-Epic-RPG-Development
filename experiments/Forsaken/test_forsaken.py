@@ -53,11 +53,14 @@ class ForsakenTests(unittest.TestCase):
             self.assertEqual(after['fGap']['iabi'],'')
             self.assertEqual(new.read('war3map.imp'),old.read('war3map.imp'))
             for raw, original in before.items():
-                self.assertEqual(original, after[raw], raw)
+                expected=original.copy()
+                if raw in mapping and mapping[raw]['slot']!='Inventory':
+                    expected['utub']=build.slot_tooltip(original.get('utub',''),mapping[raw]['slot'])
+                self.assertEqual(expected, after[raw], raw)
                 if raw in mapping and mapping[raw]['slot']!='Inventory':
                     updated = after[mapping[raw]['variant']].copy()
                     self.assertEqual(updated.pop('iequ'), mapping[raw]['slot'])
-                    self.assertEqual(original, updated, raw)
+                    self.assertEqual(expected, updated, raw)
             self.assertNotIn('fBpk',after)
             self.assertEqual(len(mapping), 280)
             abilities = read_objects(new.read('war3map.w3a'), 'w3a')
@@ -91,7 +94,7 @@ class ForsakenTests(unittest.TestCase):
         for gaya_level, rejected in [(10, True), (30, False)]:
             calls = []
             state = mocks(overlay)
-            state.update(ForsakenEquippedItem=None, GetTriggerUnit=lambda:'hero', GetOwningPlayer=lambda u:0,
+            state.update(EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup', GetTriggerEventId=lambda:'equip', ForsakenEquippedItem=None, GetTriggerUnit=lambda:'hero', GetOwningPlayer=lambda u:0,
                          Player_GetHero=lambda p:'hero', GetEquippedItem=lambda:'gear',
                          GetManipulatedItem=lambda:None, IsPlayerInForce=lambda *a:True,
                          udg_PlayingPlayers='players', udg_SpiritOfGaya={1:'gaya'},
@@ -623,6 +626,10 @@ class ForsakenTests(unittest.TestCase):
         state.update(ForsakenInspectTarget=None,ForsakenSelectedTarget=None,ForsakenPanelOpen=False,
             ForsakenPanelNeedsRefresh=False,ForsakenBackpackWasVisible=False,ForsakenStatsPage=0,
             ForsakenInspectRoot='inspect-root',ForsakenInspectButton='inspect',ForsakenInspectClose='inspect-close',
+            ForsakenTalentToggle='talent-toggle',ForsakenBoardToggle='board-toggle',
+            ForsakenBoardCovered=False,ForsakenBoardHidden=False,udg_ScoreBoard='board',
+            FRAMEPOINT_TOPLEFT='top-left',FRAMEPOINT_TOPRIGHT='top-right',
+            MultiboardDisplay=lambda b,v:calls.append(('board',v)),
             ForsakenEquipButton='equip',ForsakenPanelClose='close',ForsakenTalentRoot='talents',ForsakenStatsNext='next',
             EVENT_PLAYER_UNIT_SELECTED='selected',EVENT_PLAYER_UNIT_DESELECTED='deselected',OSKEY_ESCAPE='escape',
             GetTriggerEventId=lambda:control['event'],GetTriggerUnit=lambda:control['selected'],
@@ -651,6 +658,34 @@ class ForsakenTests(unittest.TestCase):
         c['visible']=False;poll();c['visible']=True;poll()
         self.assertTrue(runtime['ForsakenPanelOpen'])
         self.assertFalse(any(a[0]=='sync' for a in calls))
+
+    def test_talents_toggle_reopens_custom_panel_without_closing_native_backpack(self):
+        runtime,c,calls=self.panel_runtime()
+        c['visible']=True;runtime['Forsaken_PollPanels']()
+        c['frame']='talent-toggle';runtime['Forsaken_PanelAccess']();runtime['Forsaken_PollPanels']()
+        self.assertFalse(runtime['ForsakenPanelOpen'])
+        self.assertTrue(c['visible'])
+        runtime['Forsaken_PanelAccess']();runtime['Forsaken_PollPanels']()
+        self.assertTrue(runtime['ForsakenPanelOpen'])
+        self.assertFalse(any(a[0]=='sync' for a in calls))
+
+    def test_board_hides_entirely_during_backpack_and_manual_preference_survives_closing(self):
+        runtime,c,calls=self.panel_runtime()
+        poll=runtime['Forsaken_PollPanels'];access=runtime['Forsaken_PanelAccess']
+        poll();self.assertIn(('board',True),calls)
+        c['visible']=True;poll();self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',False))
+        c['visible']=False;poll();self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',True))
+        c['frame']='board-toggle';access()
+        self.assertTrue(runtime['ForsakenBoardHidden'])
+        c['visible']=True;poll();c['visible']=False;poll()
+        self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',False))
+        board=(build.ROOT/'src/triggers/09 Player features/Multiboard.j').read_text()
+        overlay=build.multiboard_overlay(board)
+        self.assertNotIn('call MultiboardDisplay(udg_ScoreBoard,true)',overlay)
+        self.assertIn('not ForsakenBoardHidden and not ForsakenBoardCovered',overlay)
+        self.assertNotIn('ForsakenBoardHidden',board)
+        inspect=(HERE/'Forsaken-inspect.j').read_text()
+        self.assertIn('BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3),FRAMEPOINT_TOPRIGHT',inspect)
 
     def test_inspection_selects_current_other_hero_and_keeps_gear_when_talents_close(self):
         runtime,c,calls=self.panel_runtime();access=runtime['Forsaken_PanelAccess'];poll=runtime['Forsaken_PollPanels']
@@ -749,35 +784,66 @@ class ForsakenTests(unittest.TestCase):
         self.assertEqual(set(events),{runtime['ForsakenInspectButton'],runtime['ForsakenInspectClose']})
 
 
-    def test_quick_gear_conversion_preserves_position_charges_and_tag_and_failure_retains_original(self):
+    def test_conversion_tracks_real_handles_in_quick_or_bag_and_cleans_rejection_without_retries(self):
         source=(HERE/'Forsaken-extra.j').read_text()
-        for accepted in [True,False]:
-            inventory={0:'potion',3:'original',5:'native'}
+        self.assertNotIn('UnitAddItemToSlotById',functions(source)['Forsaken_PrepareQuickGear'])
+        for destination in ['quick','bag','rejected']:
+            quick={0:'potion',3:'original',5:'native'};bag={}
             types={'original':100,'replacement':200,'potion':1,'native':200}
-            charges={'original':7};tags={'original':321};life={'original':40.};owners={'original':3};removed=[];equips=[]
+            charges={'original':7};tags={'original':321};life={'original':40.};owners={'original':3}
+            deleted=[];created=[];failed=set();equips=[]
             state=mocks(source)
             def remove(holder,item):
-                for slot in list(inventory):
-                    if inventory[slot]==item:del inventory[slot]
-            def add_slot(holder,raw,slot):
-                if accepted:inventory[slot]='replacement'
-                return accepted
-            def add(holder,item):inventory[3]=item;return True
-            state.update(ForsakenGearTypes='gear',UnitItemInSlot=lambda h,s:inventory.get(s),
-                GetItemTypeId=lambda i:types.get(i,0),LoadInteger=lambda h,p,r:200 if r==100 else 0,
+                for inventory in [quick,bag]:
+                    for slot in list(inventory):
+                        if inventory[slot]==item:del inventory[slot]
+            def create(raw,x,y):created.append('replacement');return 'replacement'
+            def add(holder,item):
+                # Native routing may accept into the bag instead of the requested legacy position.
+                if item=='original' or destination=='quick':quick[3]=item
+                elif destination=='bag':bag[0]=item
+                return destination!='rejected'
+            def delete(item):deleted.append(item);remove('hero',item)
+            state.update(ForsakenGearTypes='gear',ForsakenConvertingGear=False,
+                UnitItemInSlot=lambda h,s:quick.get(s),UnitItemInBagSlot=lambda h,s:bag.get(s),
+                UnitExtendedInventorySize=lambda h:30,GetItemTypeId=lambda i:types.get(i,0),
+                LoadInteger=lambda h,p,r:200 if r==100 else 0,GetHandleId=lambda i:i,
+                LoadBoolean=lambda h,p,i:i in failed,SaveBoolean=lambda h,p,i,v:failed.add(i),
+                RemoveSavedBoolean=lambda h,p,i:failed.discard(i),
                 GetItemCharges=lambda i:charges.get(i,0),GetItemUserData=lambda i:tags.get(i,0),
                 GetWidgetLife=lambda i:life.get(i,0),SetWidgetLife=lambda i,v:life.update({i:v}),
                 GetItemPlayer=lambda i:owners.get(i),SetItemPlayer=lambda i,v,c:owners.update({i:v}),
-                UnitRemoveItem=remove,UnitAddItemToSlotById=add_slot,UnitAddItem=add,
+                UnitRemoveItem=remove,CreateItem=create,UnitAddItem=add,GetUnitX=lambda h:0.,GetUnitY=lambda h:0.,
                 SetItemCharges=lambda i,v:charges.update({i:v}),SetItemUserData=lambda i,v:tags.update({i:v}),
-                RemoveItem=lambda i:removed.append(i),UnitEquipItem=lambda *a:equips.append(a))
-            execute(source,['Forsaken_PrepareQuickGear'],state)['Forsaken_PrepareQuickGear']('hero')
-            self.assertEqual(inventory,{0:'potion',3:'replacement' if accepted else 'original',5:'native'})
-            self.assertEqual(removed,['original'] if accepted else [])
+                RemoveItem=delete,UnitEquipItem=lambda *a:equips.append(a))
+            runtime=execute(source,['Forsaken_HoldsItem','Forsaken_PrepareQuickGear'],state)
+            for _ in range(100):runtime['Forsaken_PrepareQuickGear']('hero')
+            self.assertEqual(created,['replacement'])
+            self.assertEqual(deleted,['replacement'] if destination=='rejected' else ['original'])
             self.assertEqual(equips,[])
-            if accepted:
+            self.assertFalse(runtime['ForsakenConvertingGear'])
+            self.assertEqual(quick[0],'potion');self.assertEqual(quick[5],'native')
+            if destination=='rejected':
+                self.assertEqual(quick[3],'original');self.assertEqual(charges['original'],7)
+            else:
+                self.assertNotIn('original',quick.values())
                 self.assertEqual(charges['replacement'],7);self.assertEqual(tags['replacement'],321)
                 self.assertEqual(life['replacement'],40.);self.assertEqual(owners['replacement'],3)
+                self.assertEqual(bag.get(0) if destination=='bag' else quick.get(3),'replacement')
+            runtime['ForsakenConvertingGear']=True
+            runtime['Forsaken_PrepareQuickGear']('hero')
+            self.assertEqual(created,['replacement'])
+
+    def test_forsaken_tooltips_put_slot_immediately_after_required_level(self):
+        original='Bonuses|n|cffffcc00Required level|r: 45|nExisting footer'
+        for slot,label in build.SLOT_LABELS.items():
+            updated=build.slot_tooltip(original,slot)
+            self.assertEqual(updated.split('|n')[2],'|cffffcc00Forsaken slot|r: '+label)
+            self.assertEqual(updated.replace('|n|cffffcc00Forsaken slot|r: '+label,''),original)
+        self.assertEqual(build.slot_tooltip('No level','Head'),'No level|n|cffffcc00Forsaken slot|r: Helm')
+        source=(HERE/'Forsaken-extra.j').read_text()
+        self.assertIn('EVENT_PLAYER_UNIT_PICKUP_ITEM',functions(source)['Register_Forsaken_Equipment'])
+        self.assertIn('Forsaken_PrepareQuickGear(holder)',functions(source)['Forsaken_OnEquip'])
 
     def test_npc_inspection_refreshes_locally_without_granting_abilities_or_talents(self):
         runtime,c,calls=self.panel_runtime()

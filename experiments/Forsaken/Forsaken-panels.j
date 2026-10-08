@@ -215,6 +215,14 @@ function Forsaken_PanelAccess takes nothing returns nothing
             set ForsakenPanelNeedsRefresh=true
             call Forsaken_RenderInspection(ForsakenInspectTarget)
             call BlzFrameSetVisible(ForsakenInspectRoot,true)
+        elseif BlzGetTriggerFrame()==ForsakenTalentToggle then
+            set ForsakenPanelOpen=not ForsakenPanelOpen
+            set ForsakenBackpackWasVisible=true
+        elseif BlzGetTriggerFrame()==ForsakenBoardToggle then
+            set ForsakenBoardHidden=not ForsakenBoardHidden
+            if udg_ScoreBoard!=null then
+                call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardHidden and not ForsakenBoardCovered)
+            endif
         elseif BlzGetTriggerFrame()==ForsakenInspectClose or BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
             set ForsakenInspectTarget=null
             set ForsakenPanelOpen=false
@@ -268,6 +276,7 @@ function Forsaken_PollPanels takes nothing returns nothing
     local unit hero=Player_GetHero(viewer)
     local framehandle nativePanel=Forsaken_FindFrame("SimpleEquipmentPanel")
     local boolean visible=false
+    local framehandle anchor=Forsaken_FindFrame("EquipmentPanelBackdrop")
     if ForsakenInspectTarget!=null then
         if not Forsaken_CanInspect(ForsakenInspectTarget,viewer) or not IsUnitSelected(ForsakenInspectTarget,viewer) then
             set ForsakenInspectTarget=null
@@ -289,9 +298,28 @@ function Forsaken_PollPanels takes nothing returns nothing
     if ForsakenInspectTarget!=null and ForsakenInspectTarget!=Player_GetHero(GetOwningPlayer(ForsakenInspectTarget)) then
         call Forsaken_RenderNPC(ForsakenInspectTarget)
     endif
+    if ForsakenInspectTarget!=null then
+        set anchor=ForsakenInspectRoot
+    endif
+    if anchor!=null then
+        call BlzFrameClearAllPoints(ForsakenTalentToggle)
+        call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPLEFT,anchor,FRAMEPOINT_TOPRIGHT,.003,-.055)
+    endif
+    call BlzFrameSetVisible(ForsakenTalentToggle,visible or ForsakenInspectTarget!=null)
+    if ForsakenInspectTarget!=null and ForsakenInspectTarget!=Player_GetHero(GetOwningPlayer(ForsakenInspectTarget)) then
+        call BlzFrameSetText(ForsakenTalentToggle,"Stats")
+    else
+        call BlzFrameSetText(ForsakenTalentToggle,"Talents")
+    endif
+    set ForsakenBoardCovered=visible or ForsakenInspectTarget!=null
+    if udg_ScoreBoard!=null then
+        call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardHidden and not ForsakenBoardCovered)
+    endif
+    call BlzFrameSetVisible(ForsakenBoardToggle,not ForsakenBoardCovered)
     set ForsakenBackpackWasVisible=visible
     call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
     call BlzFrameSetVisible(ForsakenInspectButton,Forsaken_CanInspect(ForsakenSelectedTarget,viewer))
+    set anchor=null
     set nativePanel=null
     set hero=null
     set viewer=null
@@ -405,6 +433,17 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     call BlzFrameSetSize(ForsakenStatsNext,.15,.025)
     call BlzFrameSetText(ForsakenStatsNext,"More stats >")
     call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenStatsNext,FRAMEEVENT_CONTROL_CLICK)
+    set ForsakenTalentToggle=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
+    call BlzFrameSetAbsPoint(ForsakenTalentToggle,FRAMEPOINT_TOPLEFT,.688,.53)
+    call BlzFrameSetSize(ForsakenTalentToggle,.06,.025)
+    call BlzFrameSetText(ForsakenTalentToggle,"Talents")
+    call BlzFrameSetVisible(ForsakenTalentToggle,false)
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenTalentToggle,FRAMEEVENT_CONTROL_CLICK)
+    set ForsakenBoardToggle=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
+    call BlzFrameSetAbsPoint(ForsakenBoardToggle,FRAMEPOINT_TOPRIGHT,.795,.595)
+    call BlzFrameSetSize(ForsakenBoardToggle,.045,.019)
+    call BlzFrameSetText(ForsakenBoardToggle,"Board")
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenBoardToggle,FRAMEEVENT_CONTROL_CLICK)
     call Forsaken_CreateInspection()
     set ForsakenUITimer=CreateTimer()
     call TimerStart(ForsakenUITimer,.1,true,function Forsaken_PollPanels)
