@@ -67,10 +67,43 @@ class ForsakenTests(unittest.TestCase):
             GetUnitAbilityLevel=lambda u,r:levels.get(r,0),GetPlayerTechCount=lambda *a:5,
             GetItemType=lambda i:types.get(i),GetItemLevel=lambda i:3,GetItemLifeBJ=lambda i:90.,R2I=int,
             ITEM_TYPE_PURCHASABLE='armor',ITEM_TYPE_PERMANENT='weapon')
-        runtime=execute(source,['Forsaken_ActiveGear','Prof_GetLevel'],state)
+        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_ActiveAbilityLevel','Prof_GetLevel'],state)
         self.assertEqual(runtime['Prof_GetLevel']('hero','R002'),16)
         levels['A15I']=1;self.assertEqual(runtime['Prof_GetLevel']('hero','R002'),21)
         slots.clear();self.assertEqual(runtime['Prof_GetLevel']('hero','R002'),6)
+
+    def test_basic_attack_element_uses_equipped_weapon_enchant_priority_and_omni(self):
+        source=(HERE/'Forsaken-active-gear.j').read_text()+build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Element.j').read_text(),'Element')
+        levels={};slots={6:'weapon'};abilities={'weapon':['A0LD']}
+        state=mocks(source);state.update(GetUnitAbilityLevel=lambda u,r:levels.get(r,0),
+            UnitItemInSlot=lambda *a:None,UnitItemInEquipmentSlot=lambda u,i:slots.get(i),ConvertLoadoutSlot=lambda i:i,
+            BlzGetItemAbilityByIndex=lambda i,n:abilities[i][n] if n<len(abilities[i]) else None,
+            BlzGetAbilityId=lambda a:a,Prof_GetLevel=lambda *a:0)
+        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_ActiveAbilityLevel','Element_GetOfUnit'],state)
+        read=runtime['Element_GetOfUnit']
+        self.assertEqual(read('hero',True),1)
+        self.assertEqual(read('hero',False),0)
+        levels['B05D']=1;self.assertEqual(read('hero',True),2)
+        levels.clear();self.assertEqual(read('hero',True),1)
+        levels['A0MD']=1;self.assertEqual(read('hero',True),7)
+        levels.clear();slots.clear();self.assertEqual(read('hero',True),0)
+        self.assertNotIn('UnitItemInBagSlot',source)
+
+    def test_damage_page_highlight_moves_and_clears_with_current_attack_element(self):
+        source=(HERE/'Forsaken-stats.j').read_text();current=[2];rows={}
+        state=mocks(source);state.update(ForsakenStatsPage=0,ForsakenStatName=dict(enumerate(['Fire','Ice','Thunder','Water','Earth','Wind'])),
+            Element_GetOfUnit=lambda *a:current[0],GetOwningPlayer=lambda u:0,GetPlayerId=lambda p:p,
+            Forsaken_StatAbilityLevel=lambda *a:0,Forsaken_StatDefenseMultiplier=lambda *a:1.,
+            Forsaken_StatRow=lambda r,n,v:rows.update({r:(n,v)}),Forsaken_StatElementText=lambda *a:'0.00%',
+            Forsaken_StatOutgoing=lambda *a:0.,Forsaken_StatAttackSpeed=lambda *a:100.,
+            Forsaken_StatPercent=lambda v:str(v)+'%',Forsaken_StatPenalty=lambda s,b:s,R2SW=lambda *a:'100',I2S=str,
+            ForsakenStatsHeading='heading')
+        runtime=execute(source,['Forsaken_RenderStats'],state)
+        render=runtime['Forsaken_RenderStats'];render('hero')
+        self.assertEqual(rows[1][0],'|cff00ff00Ice damage|r');self.assertEqual(rows[0][0],'Fire damage')
+        current[0]=1;render('hero');self.assertEqual(rows[1][0],'Ice damage');self.assertIn('|cff00ff00',rows[0][0])
+        current[0]=0;render('hero');self.assertTrue(all('|cff00ff00' not in rows[i][0] for i in range(6)))
+        current[0]=7;render('hero');self.assertEqual(rows[9],('|cff00ff00Basic attack element|r','Omni'))
 
     def test_attack_speed_reading_includes_gear_and_haste_slow_without_mutation(self):
         source=build.attack_speed_helper();levels={}

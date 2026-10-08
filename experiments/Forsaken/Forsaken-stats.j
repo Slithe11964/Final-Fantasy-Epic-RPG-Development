@@ -217,7 +217,7 @@ endfunction
 
 function Forsaken_RenderStats takes unit hero returns nothing
     local integer i=0
-    local integer element
+    local integer element=Element_GetOfUnit(hero,true)
     local integer playerIndex=GetPlayerId(GetOwningPlayer(hero))+1
     local string name
     local string title="Defenses"
@@ -282,12 +282,19 @@ function Forsaken_RenderStats takes unit hero returns nothing
         set i=0
         loop
             exitwhen i>=6
-            call Forsaken_StatRow(i,ForsakenStatName[i]+" damage",Forsaken_StatElementText(hero,i+1))
+            set name=ForsakenStatName[i]+" damage"
+            if element==i+1 then
+                set name="|cff00ff00"+name+"|r"
+            endif
+            call Forsaken_StatRow(i,name,Forsaken_StatElementText(hero,i+1))
             set i=i+1
         endloop
         call Forsaken_StatRow(6,"Physical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,true)),Forsaken_StatAbilityLevel(hero,'B08W')>0 or Forsaken_StatAbilityLevel(hero,'B06H')>0))
         call Forsaken_StatRow(7,"Magical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,false)),Forsaken_StatAbilityLevel(hero,'B08X')>0 or Forsaken_StatAbilityLevel(hero,'B06I')>0))
         call Forsaken_StatRow(8,"Attack speed",Forsaken_StatPenalty(R2SW(Forsaken_StatAttackSpeed(hero),1,0)+"%",Forsaken_StatAbilityLevel(hero,'Bslo')>0 or Forsaken_StatAbilityLevel(hero,'B08Y')>0))
+        if element==7 then
+            call Forsaken_StatRow(9,"|cff00ff00Basic attack element|r","Omni")
+        endif
     else
         set title="Other bonuses"
         if hero==Player_GetHero(GetOwningPlayer(hero)) then

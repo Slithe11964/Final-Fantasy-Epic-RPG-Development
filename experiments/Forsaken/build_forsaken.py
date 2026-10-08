@@ -312,14 +312,18 @@ function Trig_Equip_Restrictions_Conditions''', 1)
 def active_gear_overlay(original, module):
     selected = {
         'Unit': ['Unit_HasNoEquipment'],
-        'Prof': ['Prof_GetLevel'],
-        'Damage': ['Trig_Damage_Engine_FindTwoHandedItem', 'Trig_Damage_Engine_ProficiencyMult'],
+        'Prof': ['Prof_GetLevel', 'Prof_GetWeaponUpgrade', 'Prof_GetArmorUpgrade'],
+        'Damage': ['Trig_Damage_Engine_FindTwoHandedItem', 'Trig_Damage_Engine_ProficiencyMult',
+                   'Trig_Damage_Engine_GetElementBonus', 'Trig_Damage_Engine_GetElementResist'],
+        'Element': ['Element_GetOfUnit'],
         'TwoHanded': ['Trig_TwoHanded_Check_SlotCancelsBonus', 'Trig_TwoHanded_Check_ItemIsGear',
                       'Trig_TwoHanded_Check_SlotHasGear', 'Trig_TwoHanded_Check_Actions'],
     }[module]
     for name in selected:
         match = re.search(r'function '+name+r'\b.*?endfunction', original, re.S)
         body = match.group().replace('UnitItemInSlotBJ(', 'Forsaken_ActiveGearBJ(').replace('UnitItemInSlot(', 'Forsaken_ActiveGear(')
+        if module in ('Prof','Element') or name in ('Trig_Damage_Engine_GetElementBonus','Trig_Damage_Engine_GetElementResist'):
+            body = body.replace('GetUnitAbilityLevel(', 'Forsaken_ActiveAbilityLevel(')
         body = body.replace('i>=bj_MAX_INVENTORY','i>=15').replace('udg_SlotIndex>6','udg_SlotIndex>15')
         original = original[:match.start()] + body + original[match.end():]
     if module == 'Unit':
@@ -601,7 +605,7 @@ def main():
     board_source=work/'src/triggers/09 Player features/Multiboard.j'
     board_source.write_bytes(multiboard_overlay(board_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     defense_source.write_bytes(defense_overlay(defense_source.read_text(encoding='utf-8'),mapping).replace('\n','\r\n').encode('utf-8'))
-    for module, folder in [('Unit','04 Combat and abilities'),('Prof','03 Jobs and progression'),('Damage','04 Combat and abilities'),('TwoHanded','04 Combat and abilities')]:
+    for module, folder in [('Unit','04 Combat and abilities'),('Prof','03 Jobs and progression'),('Damage','04 Combat and abilities'),('TwoHanded','04 Combat and abilities'),('Element','04 Combat and abilities')]:
         path=work/'src/triggers'/folder/(module+'.j')
         path.write_bytes(active_gear_overlay(path.read_text(),module).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
