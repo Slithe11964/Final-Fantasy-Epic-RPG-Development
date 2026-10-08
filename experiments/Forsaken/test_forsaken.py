@@ -22,6 +22,111 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_penalties_update_existing_values_and_preserve_defense_status_precedence(self):
+        levels={}
+        runtime=self.stat_runtime(['Forsaken_StatAccuracy','Forsaken_StatDefenseMultiplier','Forsaken_StatEffectiveDefense','Forsaken_StatPenalty'],levels,
+            Forsaken_Stat_GetAccuracy=lambda u:200.)
+        accuracy=runtime['Forsaken_StatAccuracy']; defense=runtime['Forsaken_StatDefenseMultiplier']
+        self.assertEqual(accuracy('hero'),200.)
+        levels['B00P']=1;self.assertEqual(accuracy('hero'),100.)
+        self.assertEqual(runtime['Forsaken_StatPenalty']('100.00',True),'|cffff4040100.00|r')
+        levels['B02V']=1;self.assertEqual(accuracy('hero'),0.)
+        levels.clear();levels['B003']=1;self.assertEqual(accuracy('hero'),160.)
+        for physical,penalty,protect,stronger in [(True,'B06J','B007','B08R'),(False,'B06K','B005','B08S')]:
+            levels.clear();levels[penalty]=1
+            self.assertEqual(defense('hero',physical),1.5)
+            self.assertAlmostEqual(runtime['Forsaken_StatEffectiveDefense'](80.,1.5),70.)
+            levels[protect]=1;self.assertEqual(defense('hero',physical),.66666)
+            levels[stronger]=1;self.assertEqual(defense('hero',physical),.5)
+            levels['A0F3']=1;self.assertEqual(defense('hero',physical),.66666)
+            del levels[penalty];self.assertEqual(defense('hero',physical),1.5)
+
+    def test_element_rows_combine_equal_bonuses_and_keep_type_specific_values_honest(self):
+        runtime=self.stat_runtime(['Forsaken_StatElementText','Forsaken_StatPercent'],
+            Forsaken_Stat_GetElementBonus=lambda u,e,p:.5 if e==4 else 0.,R2SW=lambda n,w,d:format(n,'.'+str(d)+'f'),RAbsBJ=abs)
+        self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'50.00%')
+        runtime['Forsaken_Stat_GetElementBonus']=lambda u,e,p:(.1 if p else .8) if e==4 else 0.
+        self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'10/80.00%')
+        source=(HERE/'Forsaken-stats.j').read_text()
+        for removed in ('Staff / healing power','Rod spell power','Inner Mana power','attack bonus','spell bonus','Physical buffs','Magic buffs'):
+            self.assertNotIn('"'+removed+'"',source)
+
+    def test_armory_stock_and_missing_entries_only_gain_slot_tooltips(self):
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
+            out=Path(folder)/'gear.w3x';build.prepare_objects(base,out,Path(folder)/'mapping.json')
+            def units(path):
+                table=read_objects(MPQ(path).read('war3map.w3u'),'w3u')
+                return {o['id'] or o['base']:fields(o) for g in ('original','custom') for o in table[g]}
+            before,after=units(base),units(out)
+            catalog=__import__('json').loads((build.ROOT/'src/armory-hints.json').read_text())
+            changed=set()
+            for index,entry in catalog.items():
+                slot=build.slot_for(entry,before[entry['unit']]['upoi'])
+                if slot:
+                    changed.update([entry['unit'],'z%03d'%int(index)])
+            self.assertEqual(set(before),set(after))
+            for raw,data in before.items():
+                expected=dict(data)
+                if raw in changed:
+                    self.assertIn('Forsaken slot',after[raw]['utub'])
+                    expected['utub']=after[raw]['utub']
+                self.assertEqual(expected,after[raw],raw)
+            self.assertEqual(len(changed),552)
+
+    def test_regen_manifest_includes_helmet_sorcerer_inherited_ring_and_native_variants(self):
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
+            out=Path(folder)/'gear.w3x';mapping=build.prepare_objects(base,out,Path(folder)/'mapping.json')
+            source='\n'.join(build.regeneration_initialization(out))
+            self.assertIn("SaveReal(ForsakenRegenData,'A0OE',0,45.0)",source)
+            self.assertIn("SaveReal(ForsakenRegenData,'A033',10,60.0)",source)
+            self.assertIn("SaveReal(ForsakenRegenData,'A033',21,120.0)",source)
+            self.assertIn("SaveReal(ForsakenRegenData,'A062',0,0.5)",source)
+            for raw in ('I0FB',mapping['I0FB']['variant']):
+                self.assertIn("SaveInteger(ForsakenRegenData,'%s',1001,'A0OE')"%raw,source)
+
+    def test_regen_uses_authored_effects_when_native_handles_are_missing(self):
+        from collections import defaultdict
+        source=(HERE/'Forsaken-panels.j').read_text()
+        cache={'types':{(30,'hat-regen'):1,(30,'mana-regen'):2,(30,'sorcerer'):3,(34,0):1,(34,1):'aura',(40,0):.05,(40,1):.04},
+               'data':{(0,0):3,(0,1):'hat-regen',(0,2):'mana-regen',(0,3):'sorcerer',('hat',1000):1,('hat',1001):'hat-regen',('ring',1000):1,('ring',1001):'mana-regen',
+                       ('hat-regen',0):45.,('mana-regen',0):.5,('sorcerer',10):60.,('sorcerer',21):120.,('sorcerer',210):'aura',('sorcerer',221):'aura'},
+               'scratch':{}}
+        equipped={0:'hat',4:'ring'};live={'rank':11}
+        def get(h,p,k):return cache[h].get((p,k),0)
+        state=mocks(source)
+        state.update(ForsakenHPFlat=0.,ForsakenMPPercent=0.,ForsakenHPRegen=0.,ForsakenMPRegen=0.,ForsakenGearTypes='types',ForsakenRegenData='data',ForsakenRegenScratch='scratch',
+            LoadInteger=get,LoadReal=get,LoadBoolean=get,HaveSavedReal=lambda h,p,k:(p,k) in cache[h],
+            SaveReal=lambda h,p,k,v:cache[h].__setitem__((p,k),v),SaveInteger=lambda h,p,k,v:cache[h].__setitem__((p,k),v),SaveBoolean=lambda h,p,k,v:cache[h].__setitem__((p,k),v),
+            FlushChildHashtable=lambda h,p:[cache[h].pop(key) for key in list(cache[h]) if key[0]==p],
+            UnitItemInSlot=lambda u,s:None,UnitItemInEquipmentSlot=lambda u,s:equipped.get(s),ConvertLoadoutSlot=lambda s:s,GetItemTypeId=lambda i:i,
+            GetHeroStr=lambda *a:100,GetHeroInt=lambda *a:100,I2R=float,IMaxBJ=max,
+            UNIT_RF_HIT_POINTS_REGENERATION_RATE='hp',UNIT_RF_MANA_REGENERATION='mp',BlzGetUnitRealField=lambda u,f:11. if f=='hp' else 2.,
+            BlzGetUnitAbilityByIndex=lambda *a:None,BlzGetItemAbilityByIndex=lambda *a:None,GetUnitAbilityLevel=lambda u,r:live['rank'] if r=='sorcerer' else (1 if r=='hat-regen' else 0))
+        runtime=execute(source,['Forsaken_RegenEffect','Forsaken_RegenAbility','Forsaken_ReadRegeneration'],state)
+        runtime['Forsaken_ReadRegeneration']('hero')
+        self.assertEqual(runtime['ForsakenHPRegen'],61.)
+        self.assertEqual(runtime['ForsakenMPRegen'],69.)
+        live['rank']=22;runtime['Forsaken_ReadRegeneration']('hero')
+        self.assertEqual(runtime['ForsakenMPRegen'],129.)
+        equipped.clear();runtime['GetUnitAbilityLevel']=lambda u,r:22 if r=='sorcerer' else 0
+        runtime['Forsaken_ReadRegeneration']('hero')
+        self.assertEqual(runtime['ForsakenHPRegen'],16.)
+        self.assertEqual(runtime['ForsakenMPRegen'],126.)
+
+    def test_custom_controls_have_stable_anchor_and_direct_frame_dispatch(self):
+        source=(HERE/'Forsaken-panels.j').read_text();inspect=(HERE/'Forsaken-inspect.j').read_text()
+        self.assertIn('anchor!=ForsakenTalentAnchor',functions(source)['Forsaken_PollPanels'])
+        self.assertIn('FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.017,-.027',source)
+        self.assertNotIn('BlzGetTriggerPlayerKey',functions(source)['Forsaken_PanelClick'])
+        self.assertNotIn('GetTriggerUnit',functions(source)['Forsaken_PanelClick'])
+        for frame in ('ForsakenTalentToggle','ForsakenPanelClose','ForsakenStatsNext'):
+            self.assertIn('gg_trg_Forsaken_TalentClick,'+frame+',FRAMEEVENT_CONTROL_CLICK',source)
+        self.assertIn('gg_trg_Forsaken_TalentClick,ForsakenInspectButton,FRAMEEVENT_CONTROL_CLICK',inspect)
+        self.assertIn('ForsakenInspectButton,60',inspect)
+        self.assertIn('FRAMEPOINT_TOPRIGHT,0,.024',inspect)
+
     def test_native_slots_and_accessories(self):
         for category, slot in [(12, 'Primary'), (24, 'Offhand'), (28, 'Head'), (30, 'Chest')]:
             self.assertEqual(build.slot_for({'name': 'Example'}, category), slot)
@@ -37,7 +142,7 @@ class ForsakenTests(unittest.TestCase):
             mapping = build.prepare_objects(base, out, Path(folder)/'mapping.json')
             old, new = MPQ(base), MPQ(out)
             for filename in old.read('(listfile)').decode().splitlines():
-                if filename not in ('war3map.w3t', 'war3map.w3a', 'war3map.w3i','war3map.imp','(listfile)','(attributes)'):
+                if filename not in ('war3map.w3t', 'war3map.w3u', 'war3map.w3a', 'war3map.w3i','war3map.imp','(listfile)','(attributes)'):
                     self.assertEqual(old.read(filename), new.read(filename), filename)
             info_before, info_after = old.read('war3map.w3i'),new.read('war3map.w3i')
             offset = build.game_data_version_offset(info_before)
@@ -434,7 +539,7 @@ class ForsakenTests(unittest.TestCase):
         live={'rank':11}
         equipment={7:'shield',4:'ring',0:'hat'}
         effects={'shield':['gear-aura'],'ring':['mana-ring'],'hat':['health-gear'],'bag':['mana-ring']}
-        def integer(h,p,k): return cache.get((p,k),0) if h=='types' else integers[p,k]
+        def integer(h,p,k): return cache.get((p,k),0) if h=='types' else (integers[p,k] if h=='scratch' else 0)
         def real(h,p,k): return (.05 if k==0 else .04) if h=='types' else scratch[p,k]
         def amount(effect,field,level):
             if effect=='passive': return 60. if level==10 else 120.
@@ -448,13 +553,13 @@ class ForsakenTests(unittest.TestCase):
         state=mocks(source)
         for name in set(re.findall(r'\bABILITY_[A-Z0-9_]+\b',source)):
             state.setdefault(name,name)
-        state.update(ForsakenGearTypes='types',ForsakenRegenScratch='scratch',
+        state.update(ForsakenGearTypes='types',ForsakenRegenScratch='scratch',ForsakenRegenData='data',
                      ForsakenHPFlat=0.,ForsakenMPPercent=0.,ForsakenHPRegen=0.,ForsakenMPRegen=0.,
                      LoadInteger=integer,LoadReal=real,LoadBoolean=lambda h,p,k:booleans[p,k] if h=='scratch' else False,
                      SaveReal=lambda h,p,k,v:scratch.__setitem__((p,k),v),
                      SaveInteger=lambda h,p,k,v:integers.__setitem__((p,k),v),
                      SaveBoolean=lambda h,p,k,v:booleans.__setitem__((p,k),v),
-                     HaveSavedReal=lambda h,p,k:(p,k) in scratch,FlushChildHashtable=flush,
+                     HaveSavedReal=lambda h,p,k:h=='scratch' and (p,k) in scratch,FlushChildHashtable=flush,
                      BlzGetAbilityId=lambda a:a,BlzGetAbilityRealLevelField=amount,
                      BlzGetAbilityIntegerLevelField=lambda a,f,l:20,
                      BlzGetAbilityBooleanLevelField=lambda *a:False,
@@ -465,7 +570,7 @@ class ForsakenTests(unittest.TestCase):
                      GetUnitAbilityLevel=lambda *a:live['rank'],UnitItemInSlot=lambda *a:None,
                      UnitItemInEquipmentSlot=lambda u,s:equipment.get(s),ConvertLoadoutSlot=lambda s:s,
                      BlzGetItemAbilityByIndex=lambda item,i:effects[item][i] if i<len(effects[item]) else None)
-        runtime=execute(source,['Forsaken_RegenAbility','Forsaken_ReadRegeneration'],state)
+        runtime=execute(source,['Forsaken_RegenEffect','Forsaken_RegenAbility','Forsaken_ReadRegeneration'],state)
         runtime['Forsaken_ReadRegeneration']('hero')
         self.assertEqual(runtime['ForsakenHPRegen'],26.)
         self.assertEqual(runtime['ForsakenMPRegen'],79.)  # (2 + 100*.04)*1.5 + strongest same-buff aura70.
@@ -627,7 +732,7 @@ class ForsakenTests(unittest.TestCase):
             ForsakenPanelNeedsRefresh=False,ForsakenBackpackWasVisible=False,ForsakenStatsPage=0,
             ForsakenInspectRoot='inspect-root',ForsakenInspectButton='inspect',ForsakenInspectClose='inspect-close',
             ForsakenTalentToggle='talent-toggle',ForsakenBoardToggle='board-toggle',
-            ForsakenBoardCovered=False,ForsakenBoardHidden=False,udg_ScoreBoard='board',
+            ForsakenBoardCovered=False,ForsakenTalentAnchor=None,udg_ScoreBoard='board',
             FRAMEPOINT_TOPLEFT='top-left',FRAMEPOINT_TOPRIGHT='top-right',
             MultiboardDisplay=lambda b,v:calls.append(('board',v)),
             ForsakenEquipButton='equip',ForsakenPanelClose='close',ForsakenTalentRoot='talents',ForsakenStatsNext='next',
@@ -636,6 +741,9 @@ class ForsakenTests(unittest.TestCase):
             GetTriggerPlayer=lambda:0,GetLocalPlayer=lambda:0,
             Player_GetHero=lambda p:{0:'self',1:'other',2:'third'}.get(p),
             GetOwningPlayer=lambda u:{'self':0,'other':1,'third':2,'npc':8}.get(u,8),
+            UNIT_TYPE_STRUCTURE='building',UNIT_TYPE_HERO='hero',udg_BossGroup='bosses',
+            IsUnitType=lambda u,t:(t=='hero' and u in ('self','other','third')) or (t=='building' and u=='house'),
+            IsUnitInGroup=lambda u,g:u=='boss',
             GetPlayerId=lambda p:p,IsUnitVisible=lambda *a:True,GetUnitTypeId=lambda u:1,IsUnitHidden=lambda u:False,
             IsUnitSelected=lambda u,p:u==control['selected'],
             BlzGetTriggerPlayerKey=lambda:control['key'],BlzGetTriggerFrame=lambda:control['frame'],
@@ -644,7 +752,9 @@ class ForsakenTests(unittest.TestCase):
             Forsaken_RenderStats=lambda u:calls.append(('stats',u)),ModuloInteger=lambda a,b:a%b,
             BlzSendSyncData=lambda *a:calls.append(('sync',)+a),
             BlzFrameSetVisible=lambda f,v:calls.append(('visible',f,v)))
-        runtime=execute(source,['Forsaken_CanInspect','Forsaken_PanelAccess','Forsaken_PollPanels'],state)
+        runtime=execute(source,['Forsaken_CanInspect','Forsaken_PanelAccess','Forsaken_PanelClick','Forsaken_PollPanels'],state)
+        access=runtime['Forsaken_PanelAccess']
+        runtime['Forsaken_PanelAccess']=lambda:runtime['Forsaken_PanelClick']() if control['event']=='frame' and control['frame'] in ('inspect','inspect-close','talent-toggle','close','next') else access()
         return runtime,control,calls
 
     def test_backpack_open_edges_restore_talents_but_close_does_not_reopen_them(self):
@@ -669,20 +779,17 @@ class ForsakenTests(unittest.TestCase):
         self.assertTrue(runtime['ForsakenPanelOpen'])
         self.assertFalse(any(a[0]=='sync' for a in calls))
 
-    def test_board_hides_entirely_during_backpack_and_manual_preference_survives_closing(self):
+    def test_board_hides_entirely_during_backpack_without_manual_button(self):
         runtime,c,calls=self.panel_runtime()
         poll=runtime['Forsaken_PollPanels'];access=runtime['Forsaken_PanelAccess']
         poll();self.assertIn(('board',True),calls)
         c['visible']=True;poll();self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',False))
         c['visible']=False;poll();self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',True))
-        c['frame']='board-toggle';access()
-        self.assertTrue(runtime['ForsakenBoardHidden'])
-        c['visible']=True;poll();c['visible']=False;poll()
-        self.assertEqual([a for a in calls if a[0]=='board'][-1],('board',False))
         board=(build.ROOT/'src/triggers/09 Player features/Multiboard.j').read_text()
         overlay=build.multiboard_overlay(board)
         self.assertNotIn('call MultiboardDisplay(udg_ScoreBoard,true)',overlay)
-        self.assertIn('not ForsakenBoardHidden and not ForsakenBoardCovered',overlay)
+        self.assertIn('not ForsakenBoardCovered',overlay)
+        self.assertNotIn('ForsakenBoardToggle',source if False else (HERE/'Forsaken-panels.j').read_text())
         self.assertNotIn('ForsakenBoardHidden',board)
         inspect=(HERE/'Forsaken-inspect.j').read_text()
         self.assertIn('BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3),FRAMEPOINT_TOPRIGHT',inspect)
@@ -709,7 +816,9 @@ class ForsakenTests(unittest.TestCase):
     def test_inspection_is_limited_to_visible_other_players_current_hero(self):
         runtime,c,calls=self.panel_runtime();fn=runtime['Forsaken_CanInspect']
         self.assertTrue(fn('other',0))
-        self.assertTrue(fn('npc',0))
+        self.assertFalse(fn('npc',0))
+        self.assertFalse(fn('house',0))
+        self.assertTrue(fn('boss',0))
         for hero in ['self',None]:self.assertFalse(fn(hero,0))
         runtime['IsUnitVisible']=lambda *a:False
         self.assertFalse(fn('other',0))
@@ -847,10 +956,10 @@ class ForsakenTests(unittest.TestCase):
 
     def test_npc_inspection_refreshes_locally_without_granting_abilities_or_talents(self):
         runtime,c,calls=self.panel_runtime()
-        runtime['Forsaken_RenderNPC']=lambda u:calls.append(('npc',u))
-        c.update(event='selected',selected='npc');runtime['Forsaken_PanelAccess']()
+        runtime['Forsaken_RenderNPC']=lambda u:calls.append(('boss',u))
+        c.update(event='selected',selected='boss');runtime['Forsaken_PanelAccess']()
         c.update(event='frame',frame='inspect');runtime['Forsaken_PanelAccess']();runtime['Forsaken_PollPanels']()
-        self.assertIn(('npc','npc'),calls)
+        self.assertIn(('boss','boss'),calls)
         source=(HERE/'Forsaken-panels.j').read_text();body=functions(source)['Forsaken_RenderNPC']
         for forbidden in ['UnitAddAbility','UnitAddItem','SaveBoolean','Forsaken_ReadRegeneration','Trig_MagicDefense']:
             self.assertNotIn(forbidden,body)

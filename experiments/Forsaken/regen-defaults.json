@@ -1,0 +1,54 @@
+{
+  "source": "Warcraft III 3.0.1.24342 AbilityData.slk; inherited regeneration defaults only",
+  "abilities": {
+    "Arel": {
+      "levels": 1,
+      "item": 1,
+      "amount": [
+        2.0
+      ],
+      "percent": 0,
+      "buff": ""
+    },
+    "AIrm": {
+      "levels": 1,
+      "item": 1,
+      "amount": [
+        0.5
+      ],
+      "percent": 0,
+      "buff": ""
+    },
+    "AIrn": {
+      "levels": 1,
+      "item": 1,
+      "amount": [
+        0.25
+      ],
+      "percent": 0,
+      "buff": ""
+    },
+    "AHab": {
+      "levels": 3,
+      "item": 0,
+      "amount": [
+        0.75,
+        1.25,
+        2.0
+      ],
+      "percent": 0,
+      "buff": "BHab"
+    },
+    "AUau": {
+      "levels": 3,
+      "item": 0,
+      "amount": [
+        0.5,
+        1.0,
+        1.5
+      ],
+      "percent": 0,
+      "buff": "BUau"
+    }
+  }
+}

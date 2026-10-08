@@ -5,7 +5,7 @@ function Forsaken_CanInspect takes unit hero,player viewer returns boolean
         return false
     endif
     set owner=GetOwningPlayer(hero)
-    set allowed=hero!=Player_GetHero(viewer) and IsUnitVisible(hero,viewer) and not IsUnitHidden(hero)
+    set allowed=hero!=Player_GetHero(viewer) and IsUnitVisible(hero,viewer) and not IsUnitHidden(hero) and not IsUnitType(hero,UNIT_TYPE_STRUCTURE) and (IsUnitType(hero,UNIT_TYPE_HERO) or IsUnitInGroup(hero,udg_BossGroup))
     set owner=null
     return allowed
 endfunction
@@ -72,12 +72,13 @@ function Forsaken_CreateInspection takes nothing returns nothing
     set ForsakenInspectSlotName[7]="Offhand"
     set ForsakenInspectSlotName[8]="Trinket"
     set ForsakenInspectButton=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
-    call BlzFrameSetPoint(ForsakenInspectButton,FRAMEPOINT_BOTTOMRIGHT,BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3),FRAMEPOINT_TOPRIGHT,0,.004)
+    call BlzFrameSetPoint(ForsakenInspectButton,FRAMEPOINT_BOTTOMRIGHT,BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3),FRAMEPOINT_TOPRIGHT,0,.024)
+    call BlzFrameSetLevel(ForsakenInspectButton,60)
     call BlzFrameSetSize(ForsakenInspectButton,.032,.032)
     set texture=BlzCreateFrameByType("BACKDROP","ForsakenInspectButtonIcon",ForsakenInspectButton,"",0)
     call BlzFrameSetPoint(texture,FRAMEPOINT_TOPLEFT,ForsakenInspectButton,FRAMEPOINT_TOPLEFT,.003,-.003)
     call BlzFrameSetPoint(texture,FRAMEPOINT_BOTTOMRIGHT,ForsakenInspectButton,FRAMEPOINT_BOTTOMRIGHT,-.003,.003)
-    call BlzFrameSetTexture(texture,"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
+    call BlzFrameSetTexture(texture,"ReplaceableTextures\\CommandButtons\\BTNFarSight.blp",0,true)
     call BlzFrameSetEnable(texture,false)
     set tip=BlzCreateFrame("EscMenuBackdrop",ForsakenInspectButton,0,0)
     call BlzFrameSetPoint(tip,FRAMEPOINT_BOTTOMRIGHT,ForsakenInspectButton,FRAMEPOINT_TOPRIGHT,0,.004)
@@ -90,7 +91,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
     call BlzFrameSetTooltip(ForsakenInspectButton,tip)
     call BlzFrameSetVisible(tip,false)
     call BlzFrameSetVisible(ForsakenInspectButton,false)
-    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenInspectButton,FRAMEEVENT_CONTROL_CLICK)
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenInspectButton,FRAMEEVENT_CONTROL_CLICK)
     set ForsakenInspectRoot=BlzCreateFrame("EscMenuBackdrop",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
     call BlzFrameSetAbsPoint(ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.392,.585)
     call BlzFrameSetSize(ForsakenInspectRoot,.29,.49)
@@ -99,7 +100,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
     call BlzFrameSetPoint(ForsakenInspectClose,FRAMEPOINT_TOPRIGHT,ForsakenInspectRoot,FRAMEPOINT_TOPRIGHT,-.026,-.022)
     call BlzFrameSetSize(ForsakenInspectClose,.016,.016)
     call BlzFrameSetText(ForsakenInspectClose,"X")
-    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenInspectClose,FRAMEEVENT_CONTROL_CLICK)
+    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenInspectClose,FRAMEEVENT_CONTROL_CLICK)
     set ForsakenInspectTitle=BlzCreateFrameByType("TEXT","ForsakenInspectTitle",ForsakenInspectRoot,"",0)
     call BlzFrameSetPoint(ForsakenInspectTitle,FRAMEPOINT_TOPLEFT,ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.028,-.028)
     call BlzFrameSetSize(ForsakenInspectTitle,.212,.037)

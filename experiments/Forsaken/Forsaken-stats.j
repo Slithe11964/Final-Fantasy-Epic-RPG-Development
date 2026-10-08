@@ -139,6 +139,77 @@ function Forsaken_StatHealingReceived takes unit hero returns real
     return (mult-1.)*100.
 endfunction
 
+function Forsaken_StatPenalty takes string value,boolean reduced returns string
+    if reduced then
+        return "|cffff4040"+value+"|r"
+    endif
+    return value
+endfunction
+
+function Forsaken_StatAccuracy takes unit hero returns real
+    local real value=Forsaken_Stat_GetAccuracy(hero)
+    if Forsaken_StatAbilityLevel(hero,'B00X')>0 then
+        set value=value+25.
+    endif
+    if Forsaken_StatAbilityLevel(hero,'B01F')>0 then
+        set value=value+40.
+    endif
+    if Forsaken_StatAbilityLevel(hero,'B003')>0 then
+        set value=value-40.
+    endif
+    // Blind halves the hit margin after target evasion; this rating is its target-independent display.
+    if Forsaken_StatAbilityLevel(hero,'B02V')>0 then
+        return 0.
+    elseif Forsaken_StatAbilityLevel(hero,'B00P')>0 then
+        set value=value*.5
+    endif
+    return RMaxBJ(0.,value)
+endfunction
+
+function Forsaken_StatDefenseMultiplier takes unit hero,boolean physical returns real
+    local boolean inverted=Forsaken_StatAbilityLevel(hero,'A0F3')>0
+    local boolean penalty
+    local boolean protect
+    local boolean stronger
+    if physical then
+        set penalty=Forsaken_StatAbilityLevel(hero,'B06J')>0 or Forsaken_StatAbilityLevel(hero,'A15Q')>0
+        set stronger=Forsaken_StatAbilityLevel(hero,'B08R')>0
+        set protect=stronger or Forsaken_StatAbilityLevel(hero,'B007')>0 or Forsaken_StatAbilityLevel(hero,'B07G')>0 or Forsaken_StatAbilityLevel(hero,'A15P')>0
+    else
+        set penalty=Forsaken_StatAbilityLevel(hero,'B06K')>0 or Forsaken_StatAbilityLevel(hero,'A15S')>0
+        set stronger=Forsaken_StatAbilityLevel(hero,'B08S')>0
+        set protect=stronger or Forsaken_StatAbilityLevel(hero,'B005')>0 or Forsaken_StatAbilityLevel(hero,'B07H')>0 or Forsaken_StatAbilityLevel(hero,'A15R')>0
+    endif
+    if inverted then
+        if penalty then
+            return .66666
+        elseif protect then
+            return 1.5
+        endif
+    elseif stronger then
+        return .5
+    elseif protect then
+        return .66666
+    elseif penalty then
+        return 1.5
+    endif
+    return 1.
+endfunction
+
+function Forsaken_StatEffectiveDefense takes real base,real multiplier returns real
+    // Defense statuses multiply the damage remaining after armor; they do not change the raw rating.
+    return 100.*(1.-(1.-base*.01)*multiplier)
+endfunction
+
+function Forsaken_StatElementText takes unit hero,integer element returns string
+    local real physical=100.*(Forsaken_Stat_GetElementBonus(hero,element,true)+Forsaken_Stat_GetElementBonus(hero,7,true))
+    local real magical=100.*(Forsaken_Stat_GetElementBonus(hero,element,false)+Forsaken_Stat_GetElementBonus(hero,7,false))
+    if RAbsBJ(physical-magical)<.001 then
+        return Forsaken_StatPercent(physical)
+    endif
+    return R2SW(physical,1,0)+"/"+Forsaken_StatPercent(magical)
+endfunction
+
 function Forsaken_StatRow takes integer row,string label,string value returns nothing
     call BlzFrameSetText(ForsakenStatLabel[row],label)
     call BlzFrameSetText(ForsakenStatValue[row],value)
@@ -151,6 +222,9 @@ function Forsaken_RenderStats takes unit hero returns nothing
     local string name
     local string title="Combat"
     local real value
+    local real physicalDefense=Forsaken_StatDefenseMultiplier(hero,true)
+    local real magicalDefense=Forsaken_StatDefenseMultiplier(hero,false)
+    local boolean blind=Forsaken_StatAbilityLevel(hero,'B00P')>0 or Forsaken_StatAbilityLevel(hero,'B02V')>0 or Forsaken_StatAbilityLevel(hero,'B003')>0
     loop
         exitwhen i>=12
         call Forsaken_StatRow(i,"","")
@@ -161,7 +235,7 @@ function Forsaken_RenderStats takes unit hero returns nothing
             call Forsaken_StatRow(0,"Health regen",R2SW(ForsakenHeroHPRegen[playerIndex],1,2))
             call Forsaken_StatRow(1,"Mana regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
             call Forsaken_StatRow(2,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
-            call Forsaken_StatRow(3,"Magic Defense %",Forsaken_StatPercent(Forsaken_DefensePercent(udg_MagicDefense[playerIndex])))
+            call Forsaken_StatRow(3,"Magic Defense %",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatEffectiveDefense(Forsaken_DefensePercent(udg_MagicDefense[playerIndex]),magicalDefense)),magicalDefense>1.))
         else
             call Forsaken_StatRow(0,"Base health regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_HIT_POINTS_REGENERATION_RATE),1,2))
             call Forsaken_StatRow(1,"Base mana regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_MANA_REGENERATION),1,2))
@@ -169,19 +243,19 @@ function Forsaken_RenderStats takes unit hero returns nothing
             call Forsaken_StatRow(3,"Armor reduction %",Forsaken_StatPercent(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero))))
         endif
         call Forsaken_StatRow(4,"Armor",R2SW(BlzGetUnitArmor(hero),1,2))
-        call Forsaken_StatRow(5,"Armor defense %",Forsaken_StatPercent(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero))))
-        call Forsaken_StatRow(6,"Evasion rating",R2SW(Forsaken_Stat_GetEvasion(hero),1,2))
-        call Forsaken_StatRow(7,"Accuracy rating",R2SW(Forsaken_Stat_GetAccuracy(hero),1,2))
+        call Forsaken_StatRow(5,"Armor defense %",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatEffectiveDefense(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero)),physicalDefense)),physicalDefense>1.))
+        call Forsaken_StatRow(6,"Evasion rating",Forsaken_StatPenalty(R2SW(Forsaken_Stat_GetEvasion(hero),1,2),Forsaken_StatAbilityLevel(hero,'A1DB')>0))
+        call Forsaken_StatRow(7,"Accuracy rating",Forsaken_StatPenalty(R2SW(Forsaken_StatAccuracy(hero),1,2),blind))
         call Forsaken_StatRow(8,"Physical block",Forsaken_StatPercent(Forsaken_StatBlock(hero,true)))
         call Forsaken_StatRow(9,"Magical block",Forsaken_StatPercent(Forsaken_StatBlock(hero,false)))
-        call Forsaken_StatRow(10,"Cooldown reduction",Forsaken_StatPercent(Forsaken_StatCooldown(hero)))
+        call Forsaken_StatRow(10,"Cooldown reduction",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatCooldown(hero)),(Forsaken_StatAbilityLevel(hero,'B08Y')>0 or Forsaken_StatAbilityLevel(hero,'Bslo')>0) and Forsaken_StatAbilityLevel(hero,'B08T')==0 and Forsaken_StatAbilityLevel(hero,'B00F')==0 and Forsaken_StatAbilityLevel(hero,'B07F')==0 and Forsaken_StatAbilityLevel(hero,'A0GJ')==0))
     elseif ForsakenStatsPage==1 then
         set title="Resistances"
         set i=0
         loop
             exitwhen i>=6
             set name=ForsakenStatName[i]
-            call Forsaken_StatRow(i,name+" resistance",Forsaken_StatResistance(hero,i+1))
+            call Forsaken_StatRow(i,name+" resistance",Forsaken_StatPenalty(Forsaken_StatResistance(hero,i+1),Forsaken_StatAbilityLevel(hero,'B057')>0))
             set i=i+1
         endloop
         set value=0.
@@ -202,37 +276,26 @@ function Forsaken_RenderStats takes unit hero returns nothing
         set title="Element bonuses"
         set i=0
         loop
-            exitwhen i>=12
-            set element=i/2+1
-            set name=ForsakenStatName[element-1]
-            if ModuloInteger(i,2)==0 then
-                set name=name+" attack bonus"
-                set value=Forsaken_Stat_GetElementBonus(hero,element,true)+Forsaken_Stat_GetElementBonus(hero,7,true)
-            else
-                set name=name+" spell bonus"
-                set value=Forsaken_Stat_GetElementBonus(hero,element,false)+Forsaken_Stat_GetElementBonus(hero,7,false)
-            endif
-            call Forsaken_StatRow(i,name,Forsaken_StatPercent(value*100.))
+            exitwhen i>=6
+            call Forsaken_StatRow(i,ForsakenStatName[i]+" damage increased",Forsaken_StatElementText(hero,i+1))
             set i=i+1
         endloop
+        call Forsaken_StatRow(8,"Split values:","Phys/Magic")
     else
         set title="Other bonuses"
-        call Forsaken_StatRow(0,"Physical buffs",Forsaken_StatPercent(Forsaken_StatOutgoing(hero,true)))
-        call Forsaken_StatRow(1,"Magic buffs",Forsaken_StatPercent(Forsaken_StatOutgoing(hero,false)))
+        call Forsaken_StatRow(0,"Physical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,true)),Forsaken_StatAbilityLevel(hero,'B08W')>0 or Forsaken_StatAbilityLevel(hero,'B06H')>0))
+        call Forsaken_StatRow(1,"Magical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,false)),Forsaken_StatAbilityLevel(hero,'B08X')>0 or Forsaken_StatAbilityLevel(hero,'B06I')>0))
         call Forsaken_StatRow(2,"HP healing buffs",Forsaken_StatPercent(Forsaken_StatHealing(hero,false)))
         call Forsaken_StatRow(3,"MP healing buffs",Forsaken_StatPercent(Forsaken_StatHealing(hero,true)))
-        call Forsaken_StatRow(4,"Healing received",Forsaken_StatPercent(Forsaken_StatHealingReceived(hero)))
-        call Forsaken_StatRow(5,"Staff / healing power",Forsaken_StatPercent((Forsaken_StatSpellPower(hero,'R004',.5)-1.)*100.))
-        call Forsaken_StatRow(6,"Rod spell power",Forsaken_StatPercent((Forsaken_StatSpellPower(hero,'R003',.5)-1.)*100.))
-        call Forsaken_StatRow(7,"Inner Mana power",Forsaken_StatPercent((Forsaken_StatSpellPower(hero,'R00L',1.)-1.)*100.))
+        call Forsaken_StatRow(4,"Healing received",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatHealingReceived(hero)),Forsaken_StatAbilityLevel(hero,'B070')>0))
         set value=0.
         if Forsaken_StatAbilityLevel(hero,'A0RV')>0 or Forsaken_StatAbilityLevel(hero,'A0EI')>0 then
             set value=25.
         elseif Forsaken_StatAbilityLevel(hero,'A0RU')>0 then
             set value=10.
         endif
-        call Forsaken_StatRow(8,"Flat damage guard",R2SW(value,1,0))
-        call Forsaken_StatRow(9,"Move speed",R2SW(GetUnitMoveSpeed(hero),1,0))
+        call Forsaken_StatRow(5,"Flat damage guard",R2SW(value,1,0))
+        call Forsaken_StatRow(6,"Move speed",Forsaken_StatPenalty(R2SW(GetUnitMoveSpeed(hero),1,0),Forsaken_StatAbilityLevel(hero,'B08Y')>0 or Forsaken_StatAbilityLevel(hero,'Bslo')>0 or Forsaken_StatAbilityLevel(hero,'B05M')>0 or Forsaken_StatAbilityLevel(hero,'B05N')>0))
     endif
     call BlzFrameSetText(ForsakenStatsHeading,title+" ("+I2S(ForsakenStatsPage+1)+"/4)")
 endfunction

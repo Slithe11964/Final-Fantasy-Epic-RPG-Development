@@ -102,7 +102,8 @@ def prepare_objects(base, out, mapping_out):
         dict(field=key,type=kind,value=value,end=0) for key,kind,value in
         [('unam',3,'Temporary bag spacer'),('iabi',3,''),('icla',3,'Miscellaneous'),
          ('ipow',0,0),('iuse',0,0),('idro',0,0),('igol',0,0)]])]))
-    for number, entry in enumerate(catalog.values()):
+    unit_objects={o["id"] or o["base"]:o for g in ("original","custom") for o in unit_table[g]}
+    for number, (save_index, entry) in enumerate(catalog.items()):
         raw = entry['item']
         slot = slot_for(entry, units[entry['unit']]['upoi'])
         mapping[raw] = dict(name=entry['name'], slot=slot or 'Inventory')
@@ -111,6 +112,9 @@ def prepare_objects(base, out, mapping_out):
             if tooltip.startswith('TRIGSTR_'):
                 raise ValueError('unresolved gear tooltip: ' + raw)
             set_field(items[raw], 'utub', slot_tooltip(tooltip, slot))
+            for unit_id in (entry['unit'], 'z%03d' % int(save_index)):
+                obj_unit=unit_objects[unit_id]
+                set_field(obj_unit,'utub',slot_tooltip(fields(obj_unit).get('utub',''),slot))
             variant = 'f%03d' % number
             if variant in items:
                 raise ValueError('experimental item ID already used: ' + variant)
@@ -148,6 +152,7 @@ def prepare_objects(base, out, mapping_out):
     prepare_panels(ability_table)
     write_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
+        'war3map.w3u': write_objects(unit_table, unit_table['version'], 'w3u'),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
     })
@@ -211,7 +216,7 @@ def equip_overlay(original):
     real ForsakenPanelLastToggle=-1.
     boolean ForsakenPanelOpen=false
     framehandle ForsakenTalentToggle=null
-    framehandle ForsakenBoardToggle=null
+    framehandle ForsakenTalentAnchor=null
     framehandle ForsakenPanelClose=null
     string array ForsakenStatName
     framehandle array ForsakenStatValue
@@ -234,6 +239,7 @@ def equip_overlay(original):
     framehandle array ForsakenInspectItemText
     string array ForsakenInspectSlotName
     hashtable ForsakenRegenScratch=null
+    hashtable ForsakenRegenData=null
     real ForsakenHPFlat=0.
     real ForsakenMPPercent=0.
     real ForsakenHPRegen=0.
@@ -271,9 +277,9 @@ function Trig_Equip_Restrictions_Conditions''', 1)
 
 
 def multiboard_overlay(original):
-    text=original.replace('globals\n','globals\n    boolean ForsakenBoardHidden=false\n    boolean ForsakenBoardCovered=false\n',1)
+    text=original.replace('globals\n','globals\n    boolean ForsakenBoardCovered=false\n',1)
     return text.replace('call MultiboardDisplay(udg_ScoreBoard,true)',
-                        'call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardHidden and not ForsakenBoardCovered)')
+                        'call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardCovered)')
 
 
 def combat_stat_helpers():
@@ -391,22 +397,41 @@ def run(command, cwd=ROOT):
 def regeneration_initialization(base):
     archive=MPQ(base)
     table=read_objects(archive.read('war3map.w3a'),'w3a')
+    defaults=json.loads((HERE/'regen-defaults.json').read_text())['abilities']
     classes=dict(Arel=1,AIrm=2,AIrn=2,AHab=3,AUau=4)
-    result=['    set ForsakenRegenScratch=InitHashtable()']
-    buffs=set()
-    for group in ('original','custom'):
-        for obj in table[group]:
-            kind=classes.get(obj['base'])
-            if not kind: continue
-            raw=obj['id'] or obj['base']; data=fields(obj)
-            result.append("    call SaveInteger(ForsakenGearTypes,30,'%s',%d)"%(raw,kind))
-            item_ability=data.get('aite',int(kind<3))
-            result.append("    call SaveBoolean(ForsakenGearTypes,32,'%s',%s)"%(raw,'true' if item_ability else 'false'))
+    objects={o['id'] or o['base']:o for g in ('original','custom') for o in table[g]}
+    for raw in classes:
+        objects.setdefault(raw,dict(base=raw,id=None,sets=[dict(mods=[])]))
+    result=['    set ForsakenRegenScratch=InitHashtable()', '    set ForsakenRegenData=InitHashtable()']
+    buffs=set(); regen=[]
+    for raw,obj in objects.items():
+        kind=classes.get(obj['base'])
+        if not kind: continue
+        data=fields(obj); stock=defaults[obj['base']]; regen.append(raw)
+        result.append("    call SaveInteger(ForsakenGearTypes,30,'%s',%d)"%(raw,kind))
+        result.append("    call SaveBoolean(ForsakenGearTypes,32,'%s',%s)"%(raw,'true' if data.get('aite',stock['item']) else 'false'))
+        field={1:'Ihpr',2:'Imrp',3:'Hab1',4:'Uau2'}[kind]
+        for level in range(1,data.get('alev',stock['levels'])+1):
+            value=data.get((field,level),stock['amount'][min(level,len(stock['amount']))-1])
+            result.append("    call SaveReal(ForsakenRegenData,'%s',%d,%s)"%(raw,level-1,str(float(value))))
             if kind>=3:
-                buff=data.get(('abuf',1),'BHab' if kind==3 else 'BUau').split(',')[0]
+                percent=data.get((('Hab2' if kind==3 else 'Uau3'),level),stock['percent'])
+                buff=data.get(('abuf',level),data.get(('abuf',1),stock['buff'])).split(',')[0]
                 if len(buff)!=4: raise ValueError('unreviewed regeneration buff: '+raw)
                 buffs.add(buff)
+                result.append("    call SaveBoolean(ForsakenRegenData,'%s',%d,%s)"%(raw,100+level-1,'true' if percent else 'false'))
+                result.append("    call SaveInteger(ForsakenRegenData,'%s',%d,'%s')"%(raw,200+level-1,buff))
                 result.append("    call SaveInteger(ForsakenGearTypes,31,'%s','%s')"%(raw,buff))
+    result.append('    call SaveInteger(ForsakenRegenData,0,0,%d)'%len(regen))
+    result += ["    call SaveInteger(ForsakenRegenData,0,%d,'%s')"%(i,raw) for i,raw in enumerate(regen,1)]
+    items=read_objects(archive.read('war3map.w3t'),'w3t')
+    for group in ('original','custom'):
+        for obj in items[group]:
+            raw=obj['id'] or obj['base']; data=fields(obj)
+            effects=[effect for effect in data.get('iabi','').split(',') if effect in regen]
+            if not effects: continue
+            result.append("    call SaveInteger(ForsakenRegenData,'%s',1000,%d)"%(raw,len(effects)))
+            result += ["    call SaveInteger(ForsakenRegenData,'%s',%d,'%s')"%(raw,1000+i,effect) for i,effect in enumerate(effects,1)]
     result.append('    call SaveInteger(ForsakenGearTypes,34,0,%d)'%len(buffs))
     result += ["    call SaveInteger(ForsakenGearTypes,34,%d,'%s')"%(i,buff) for i,buff in enumerate(sorted(buffs),1)]
     misc=(archive.read('war3mapMisc.txt') or b'').decode('utf-8')
@@ -424,7 +449,7 @@ def manifest(base, classic_base, modern, classic, stage):
                 normal_development_stage='AS', base=identity(base),
                 classic_base=identity(classic_base), output=identity(modern),
                 classic_output=identity(classic),
-                sources={p.name:identity(p) for p in HERE.iterdir() if p.suffix in ('.py','.j','.fdf')})
+                sources={p.name:identity(p) for p in HERE.iterdir() if p.suffix in ('.py','.j','.fdf','.json')})
 
 
 def main():
@@ -466,7 +491,7 @@ def main():
                        for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,2,%d,'fT%02d')" % (i,i) for i in range(8)]
     initialization += ["    call SaveInteger(ForsakenGearTypes,3,%d,'fV%02d')" % (i,i) for i in range(48)]
-    initialization += regeneration_initialization(args.base.resolve())
+    initialization += regeneration_initialization(base)
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
