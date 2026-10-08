@@ -31,11 +31,11 @@ function Forsaken_TalentClick takes nothing returns nothing
     loop
         exitwhen node>=12
         if BlzGetTriggerFrame()==ForsakenTalentButton[node] then
-            if GetLocalPlayer()==GetTriggerPlayer() and hero!=null then
+            if GetLocalPlayer()==GetTriggerPlayer() and hero!=null and ForsakenInspectTarget==null then
                 call BlzSendSyncData("FFERPGTAL",I2S(Job_GetIndex(hero)*100+node))
+                call BlzFrameSetEnable(ForsakenTalentButton[node],false)
+                call BlzFrameSetEnable(ForsakenTalentButton[node],true)
             endif
-            call BlzFrameSetEnable(ForsakenTalentButton[node],false)
-            call BlzFrameSetEnable(ForsakenTalentButton[node],true)
             set hero=null
             return
         endif
@@ -189,25 +189,94 @@ function Forsaken_ReadRegeneration takes unit hero returns nothing
 endfunction
 
 function Forsaken_PanelAccess takes nothing returns nothing
-    local player owner=GetTriggerPlayer()
-    local unit hero=Player_GetHero(owner)
-    local real now=TimerGetElapsed(ForsakenPanelClock)
-    if GetLocalPlayer()==owner then
-        if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE or BlzGetTriggerFrame()==ForsakenPanelClose then
+    local player viewer=GetTriggerPlayer()
+    local unit hero=Player_GetHero(viewer)
+    local unit selected=GetTriggerUnit()
+    if GetLocalPlayer()==viewer then
+        if GetTriggerEventId()==EVENT_PLAYER_UNIT_SELECTED then
+            set ForsakenSelectedTarget=selected
+            if ForsakenInspectTarget!=selected then
+                set ForsakenInspectTarget=null
+                call BlzFrameSetVisible(ForsakenInspectRoot,false)
+                set ForsakenPanelOpen=false
+            endif
+            call BlzFrameSetVisible(ForsakenInspectButton,Forsaken_CanInspect(selected,viewer))
+        elseif GetTriggerEventId()==EVENT_PLAYER_UNIT_DESELECTED then
+            if ForsakenSelectedTarget==selected then
+                set ForsakenSelectedTarget=null
+                set ForsakenInspectTarget=null
+                set ForsakenPanelOpen=false
+                call BlzFrameSetVisible(ForsakenInspectButton,false)
+                call BlzFrameSetVisible(ForsakenInspectRoot,false)
+            endif
+        elseif BlzGetTriggerFrame()==ForsakenInspectButton and Forsaken_CanInspect(ForsakenSelectedTarget,viewer) then
+            set ForsakenInspectTarget=ForsakenSelectedTarget
+            set ForsakenPanelOpen=true
+            set ForsakenPanelNeedsRefresh=true
+            call Forsaken_RenderInspection(ForsakenInspectTarget)
+            call BlzFrameSetVisible(ForsakenInspectRoot,true)
+        elseif BlzGetTriggerFrame()==ForsakenEquipButton then
+            if hero!=null and ForsakenInspectTarget==null and IsUnitSelected(hero,viewer) then
+                call BlzSendSyncData("FFERPGEQUIP","equip")
+            endif
+        elseif BlzGetTriggerFrame()==ForsakenInspectClose or BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
+            set ForsakenInspectTarget=null
             set ForsakenPanelOpen=false
+            call BlzFrameSetVisible(ForsakenInspectRoot,false)
+        elseif BlzGetTriggerFrame()==ForsakenPanelClose then
+            set ForsakenPanelOpen=false
+            set ForsakenBackpackWasVisible=true
         elseif BlzGetTriggerFrame()==ForsakenStatsNext then
-            set ForsakenStatsPage=ModuloInteger(ForsakenStatsPage+1,4)
-            call Forsaken_RenderStats(hero)
+            if ForsakenInspectTarget!=null then
+                set hero=ForsakenInspectTarget
+            endif
+            if hero!=null then
+                set ForsakenStatsPage=ModuloInteger(ForsakenStatsPage+1,4)
+                call Forsaken_RenderStats(hero)
+            endif
             call BlzFrameSetEnable(ForsakenStatsNext,false)
             call BlzFrameSetEnable(ForsakenStatsNext,true)
-        elseif hero!=null and IsUnitSelected(hero,owner) and now-ForsakenPanelLastToggle>.1 then
-            set ForsakenPanelOpen=not ForsakenPanelOpen
-            set ForsakenPanelLastToggle=now
+        elseif hero!=null and IsUnitSelected(hero,viewer) then
+            set ForsakenInspectTarget=null
+            set ForsakenPanelOpen=true
         endif
-        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen)
+        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
     endif
+    set selected=null
     set hero=null
-    set owner=null
+    set viewer=null
+endfunction
+
+function Forsaken_PollPanels takes nothing returns nothing
+    local player viewer=GetLocalPlayer()
+    local unit hero=Player_GetHero(viewer)
+    local framehandle nativePanel=Forsaken_FindFrame("SimpleEquipmentPanel")
+    local boolean visible=false
+    if ForsakenInspectTarget!=null then
+        if not Forsaken_CanInspect(ForsakenInspectTarget,viewer) or not IsUnitSelected(ForsakenInspectTarget,viewer) then
+            set ForsakenInspectTarget=null
+            set ForsakenPanelOpen=false
+            call BlzFrameSetVisible(ForsakenInspectRoot,false)
+        endif
+    elseif hero!=null and IsUnitSelected(hero,viewer) then
+        if nativePanel!=null then
+            set visible=BlzFrameIsVisible(nativePanel)
+            if visible and not ForsakenBackpackWasVisible then
+                set ForsakenPanelOpen=true
+            elseif not visible then
+                set ForsakenPanelOpen=false
+            endif
+        endif
+    else
+        set ForsakenPanelOpen=false
+    endif
+    set ForsakenBackpackWasVisible=visible
+    call BlzFrameSetVisible(ForsakenEquipButton,visible and ForsakenInspectTarget==null)
+    call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
+    call BlzFrameSetVisible(ForsakenInspectButton,Forsaken_CanInspect(ForsakenSelectedTarget,viewer))
+    set nativePanel=null
+    set hero=null
+    set viewer=null
 endfunction
 
 function Register_Forsaken_PanelAccess takes nothing returns nothing
@@ -227,6 +296,8 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     set gg_trg_Forsaken_PanelAccess=CreateTrigger()
     loop
         exitwhen i>=8
+        call TriggerRegisterPlayerUnitEvent(gg_trg_Forsaken_PanelAccess,Player(i),EVENT_PLAYER_UNIT_SELECTED,null)
+        call TriggerRegisterPlayerUnitEvent(gg_trg_Forsaken_PanelAccess,Player(i),EVENT_PLAYER_UNIT_DESELECTED,null)
         call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)
         call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_PanelAccess,Player(i),"-forsaken-panels",true)
@@ -310,6 +381,9 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     call BlzFrameSetSize(ForsakenStatsNext,.15,.025)
     call BlzFrameSetText(ForsakenStatsNext,"More stats >")
     call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenStatsNext,FRAMEEVENT_CONTROL_CLICK)
+    call Forsaken_CreateInspection()
+    set ForsakenUITimer=CreateTimer()
+    call TimerStart(ForsakenUITimer,.1,true,function Forsaken_PollPanels)
     call BlzFrameSetVisible(ForsakenTalentRoot,false)
     set heading=null
     set label=null
@@ -349,20 +423,30 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
     elseif rank==4 then
         set mastery="Legendary"
     endif
-    if GetLocalPlayer()==owner then
-        if not IsUnitSelected(hero,owner) then
+    if (ForsakenInspectTarget==null and GetLocalPlayer()==owner) or ForsakenInspectTarget==hero then
+        if ForsakenInspectTarget==null and not IsUnitSelected(hero,owner) then
             set ForsakenPanelOpen=false
         endif
+        set ForsakenPanelNeedsRefresh=false
         set anchor=Forsaken_FindFrame("EquipmentPanelBackdrop")
-        if anchor!=null then
+        if ForsakenInspectTarget!=null then
+            call BlzFrameClearAllPoints(ForsakenTalentRoot)
+            call BlzFrameSetAbsPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,.39,.585)
+            call Forsaken_RenderInspection(hero)
+        elseif anchor!=null then
             call BlzFrameClearAllPoints(ForsakenTalentRoot)
             call BlzFrameSetPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPLEFT,-.002,0)
         endif
-        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen)
+        call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
         call Forsaken_RenderStats(hero)
-        call BlzFrameSetText(ForsakenTalentPoints,"Choices: "+I2S(rank-LoadInteger(ForsakenTalentState,key,20))+" / "+mastery+"|nPreview: no bonuses")
+        if ForsakenInspectTarget!=null then
+            call BlzFrameSetText(ForsakenTalentPoints,GetPlayerName(owner)+" / "+mastery+"|nInspect: read only")
+        else
+            call BlzFrameSetText(ForsakenTalentPoints,"Choices: "+I2S(rank-LoadInteger(ForsakenTalentState,key,20))+" / "+mastery+"|nPreview: no bonuses")
+        endif
         loop
             exitwhen node>=12
+            call BlzFrameSetEnable(ForsakenTalentButton[node],ForsakenInspectTarget==null)
             set column=ModuloInteger(node,3)
             set skill=0
             if job<udg_JobCount then

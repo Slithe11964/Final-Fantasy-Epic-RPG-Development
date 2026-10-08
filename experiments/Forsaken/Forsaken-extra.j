@@ -22,7 +22,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BD: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BE: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
         set holder=null
         return
@@ -100,9 +100,6 @@ function Forsaken_PrepareInventories takes nothing returns nothing
         set hero=Player_GetHero(Player(i))
         if hero!=null then
             call Forsaken_EnableHero(hero)
-            if UnitExtendedInventorySize(hero)>0 then
-                call Forsaken_ConvertCarriedGear(hero)
-            endif
         endif
         set i=i+1
     endloop
@@ -129,6 +126,7 @@ function Register_Forsaken_TestEquip takes nothing returns nothing
     loop
         exitwhen i>7
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_TestEquip,Player(i),"-forsaken-equip",true)
+        call BlzTriggerRegisterPlayerSyncEvent(gg_trg_Forsaken_TestEquip,Player(i),"FFERPGEQUIP",false)
         set i=i+1
     endloop
     call TriggerAddAction(gg_trg_Forsaken_TestEquip,function Forsaken_TestEquip)

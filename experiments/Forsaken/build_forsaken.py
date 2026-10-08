@@ -196,6 +196,19 @@ def equip_overlay(original):
     integer ForsakenStatsPage=0
     real array ForsakenHeroHPRegen
     real array ForsakenHeroMPRegen
+    timer ForsakenUITimer=null
+    boolean ForsakenBackpackWasVisible=false
+    unit ForsakenSelectedTarget=null
+    unit ForsakenInspectTarget=null
+    framehandle ForsakenInspectButton=null
+    framehandle ForsakenEquipButton=null
+    boolean ForsakenPanelNeedsRefresh=false
+    framehandle ForsakenInspectRoot=null
+    framehandle ForsakenInspectClose=null
+    framehandle ForsakenInspectTitle=null
+    framehandle array ForsakenInspectIcon
+    framehandle array ForsakenInspectItemText
+    string array ForsakenInspectSlotName
     hashtable ForsakenRegenScratch=null
     real ForsakenHPFlat=0.
     real ForsakenMPPercent=0.
@@ -225,7 +238,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     panels = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8')
     defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
     panels = panels.replace(defense, '', 1)
-    extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
+    extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
