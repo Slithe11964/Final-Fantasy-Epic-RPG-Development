@@ -45,7 +45,7 @@ function Forsaken_PrepareQuickGear takes unit holder returns nothing
             set original=UnitItemInBagSlot(holder,slot-6)
         endif
         set variant=LoadInteger(ForsakenGearTypes,0,GetItemTypeId(original))
-        if original!=null and variant!=0 and not LoadBoolean(ForsakenGearTypes,50,GetHandleId(original)) then
+        if original!=null and variant!=0 and not LoadBoolean(ForsakenGearTypes,50,GetHandleId(original)) and (slot>=6 or not LoadBoolean(ForsakenGearTypes,51,GetHandleId(original))) then
             call SaveBoolean(ForsakenGearTypes,50,GetHandleId(original),true)
             set charges=GetItemCharges(original)
             set replacement=CreateItem(variant,GetUnitX(holder),GetUnitY(holder))
@@ -58,6 +58,7 @@ function Forsaken_PrepareQuickGear takes unit holder returns nothing
             if Forsaken_HoldsItem(holder,replacement) then
                 call SetItemCharges(replacement,charges)
                 call RemoveSavedBoolean(ForsakenGearTypes,50,GetHandleId(original))
+                call RemoveSavedBoolean(ForsakenGearTypes,51,GetHandleId(original))
                 call RemoveItem(original)
             else
                 call RemoveItem(replacement)
@@ -90,8 +91,17 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BG: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BI: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
+        set holder=null
+        return
+    endif
+    if ForsakenConvertingGear then
+        set holder=null
+        return
+    endif
+    call Forsaken_CarryEvent(holder)
+    if GetTriggerEventId()!=EVENT_PLAYER_UNIT_PICKUP_ITEM and GetTriggerEventId()!=EVENT_PLAYER_UNIT_EQUIP_ITEM then
         set holder=null
         return
     endif
@@ -184,6 +194,10 @@ function Register_Forsaken_Equipment takes nothing returns nothing
     set gg_trg_Forsaken_Equipment=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_EQUIP_ITEM)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_ISSUED_ORDER)
     loop
         exitwhen i>7
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_Equipment,Player(i),"-forsaken",true)

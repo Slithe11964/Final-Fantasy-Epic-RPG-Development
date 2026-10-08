@@ -71,6 +71,8 @@ class ForsakenTests(unittest.TestCase):
                 if raw in changed:
                     self.assertIn('Forsaken slot',after[raw]['utub'])
                     expected['utub']=after[raw]['utub']
+                    self.assertIn('Forsaken slot',after[raw]['utip'])
+                    expected['utip']=after[raw]['utip']
                 self.assertEqual(expected,after[raw],raw)
             self.assertEqual(len(changed),552)
 
@@ -126,6 +128,118 @@ class ForsakenTests(unittest.TestCase):
         self.assertIn('gg_trg_Forsaken_TalentClick,ForsakenInspectButton,FRAMEEVENT_CONTROL_CLICK',inspect)
         self.assertIn('ForsakenInspectButton,60',inspect)
         self.assertIn('FRAMEPOINT_TOPRIGHT,0,.024',inspect)
+
+    def test_quick_carried_legacy_gear_is_not_forced_into_native_bag(self):
+        source=(HERE/'Forsaken-extra.j').read_text();created=[]
+        state=mocks(source)
+        state.update(ForsakenConvertingGear=False,ForsakenGearTypes='gear',UnitExtendedInventorySize=lambda u:30,
+            UnitItemInBagSlot=lambda u,s:None,UnitItemInSlot=lambda u,s:'legacy-hat',GetItemTypeId=lambda i:100 if i else 0,
+            LoadBoolean=lambda h,p,k:p==51,GetHandleId=lambda i:i,
+            LoadInteger=lambda *a:200,CreateItem=lambda *a:created.append(a))
+        runtime=execute(source,['Forsaken_PrepareQuickGear'],state)
+        for _ in range(100):runtime['Forsaken_PrepareQuickGear']('hero')
+        self.assertEqual(created,[])
+
+    def test_native_carry_replacement_preserves_state_and_rolls_back_failed_quick_placement(self):
+        source=(HERE/'Forsaken-extra.j').read_text()+'\n'+(HERE/'Forsaken-carry.j').read_text()
+        for holder in ('hero','gaya',None):
+            for accepted in (True,False):
+                quick={};bag={0:'native'} if holder else {};deleted=[];created=[]
+                charges={'native':7};tags={'native':123};life={'native':45.};owners={'native':2}
+                def remove(u,item):
+                    for inv in (quick,bag):
+                        for slot in list(inv):
+                            if inv[slot]==item:del inv[slot]
+                def add(u,item):
+                    if item=='native':bag[0]=item
+                    elif accepted:quick[0]=item
+                def delete(item):deleted.append(item);remove(holder,item)
+                def create(*a):created.append('legacy');return 'legacy'
+                state=mocks(source)
+                state.update(ForsakenConvertingGear=False,ForsakenGearTypes='gear',
+                    GetItemTypeId=lambda i:200 if i=='native' else 100,LoadInteger=lambda h,p,k:100 if p==4 and k==200 else 0,
+                    GetItemX=lambda i:12.,GetItemY=lambda i:34.,CreateItem=create,
+                    GetItemCharges=lambda i:charges.get(i,0),SetItemCharges=lambda i,v:charges.update({i:v}),
+                    GetItemUserData=lambda i:tags.get(i,0),SetItemUserData=lambda i,v:tags.update({i:v}),
+                    GetWidgetLife=lambda i:life.get(i,0),SetWidgetLife=lambda i,v:life.update({i:v}),
+                    GetItemPlayer=lambda i:owners.get(i),SetItemPlayer=lambda i,v,c:owners.update({i:v}),
+                    GetHandleId=lambda i:i,UnitHasItemEquipped=lambda *a:False,
+                    UnitRemoveItem=remove,UnitAddItem=add,RemoveItem=delete,
+                    UnitItemInSlot=lambda u,i:quick.get(i),UnitItemInBagSlot=lambda u,i:bag.get(i),UnitExtendedInventorySize=lambda u:30 if u=='hero' else 0,
+                    UnitDropItemSlot=lambda u,i,slot:quick.update({slot:quick.pop(0)}) if accepted else False)
+                runtime=execute(source,['Forsaken_HoldsItem','Forsaken_CarryReplacement'],state)
+                result=runtime['Forsaken_CarryReplacement'](holder,'native',2 if holder=='hero' else -1)
+                if accepted or holder is None:
+                    self.assertEqual(result,'legacy');self.assertEqual(deleted,['native'])
+                    self.assertEqual((charges['legacy'],tags['legacy'],life['legacy'],owners['legacy']),(7,123,45.,2))
+                    if holder=='hero':self.assertEqual(quick[2],'legacy')
+                else:
+                    self.assertEqual(result,'native');self.assertEqual(deleted,['legacy']);self.assertIn('native',bag.values())
+                self.assertEqual(created,['legacy']);self.assertFalse(runtime['ForsakenConvertingGear'])
+                runtime['ForsakenConvertingGear']=True
+                self.assertEqual(runtime['Forsaken_CarryReplacement'](holder,'native',-1),'native')
+                self.assertEqual(created,['legacy'])
+
+    def test_native_carry_drop_does_not_rewrite_gear_during_job_transfer(self):
+        source=(HERE/'Forsaken-carry.j').read_text();converted=[];cleaned=[]
+        state=mocks(source)
+        state.update(ForsakenGearTypes='gear',GetExpiredTimer=lambda:'clock',GetHandleId=lambda h:h,
+            LoadItemHandle=lambda *a:'gear',LoadUnitHandle=lambda *a:None,GetItemTypeId=lambda i:200,
+            IsItemOwned=lambda i:True,Forsaken_CarryReplacement=lambda *a:converted.append(a),
+            RemoveSavedHandle=lambda h,p,k:cleaned.append((p,k)))
+        runtime=execute(source,['Forsaken_CarryDrop'],state);runtime['Forsaken_CarryDrop']()
+        self.assertEqual(converted,[]);self.assertEqual(cleaned,[(60,'clock'),(61,'clock')])
+
+    def test_stat_page_assignments_match_requested_layout(self):
+        source=functions((HERE/'Forsaken-stats.j').read_text())['Forsaken_RenderStats']
+        combat,resist,damage,other=re.split(r'    elseif ForsakenStatsPage==[12] then|    else\n        set title="Other bonuses"',source)
+        self.assertIn('"Flat damage guard"',combat);self.assertNotIn('"Health regen"',combat)
+        self.assertIn('"Health regen"',other);self.assertNotIn('"Flat damage guard"',other)
+        self.assertIn('"Physical damage"',damage);self.assertIn('"Magical damage"',damage)
+        self.assertNotIn('"Physical damage"',other);self.assertNotIn('Split values',source);self.assertNotIn('damage increased',source)
+
+    def test_carry_order_targets_quick_slots_and_gaya_pickups_without_mutating_attack_orders(self):
+        source=(HERE/'Forsaken-carry.j').read_text();converted=[];issued=[];saved={}
+        current={'order':852004,'owned':True,'unit':'hero','target':None}
+        state=mocks(source)
+        def convert(*a):converted.append(a);return 'legacy'
+        state.update(ForsakenConvertingGear=False,ForsakenGearTypes='gear',
+            GetIssuedOrderId=lambda:current['order'],GetOrderTargetItem=lambda:'native',GetOrderTargetUnit=lambda:current['target'],
+            GetItemTypeId=lambda i:200 if i=='native' else 100,LoadInteger=lambda h,p,k:100 if p==4 and k==200 else 0,
+            GetHandleId=lambda u:u,GetOwningPlayer=lambda u:0,Player_GetHero=lambda p:'hero',GetUnitTypeId=lambda u:'H01D' if u=='gaya' else 'hero',
+            Forsaken_HoldsItem=lambda u,i:current['owned'],UnitHasItemEquipped=lambda *a:False,IsItemOwned=lambda i:current['owned'],
+            Forsaken_CarryReplacement=convert,OrderId=lambda s:851971 if s=='smart' else 851981,
+            IssueTargetOrderById=lambda *a:issued.append(a),RemoveSavedHandle=lambda h,p,k:saved.pop((p,k),None),SaveUnitHandle=lambda h,p,k,v:saved.update({(p,k):v}))
+        runtime=execute(source,['Forsaken_CarryOrder'],state)
+        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(converted,[('hero','native',2)])
+        converted.clear();current.update(order=851971,owned=False)
+        runtime['Forsaken_CarryOrder']('gaya');self.assertEqual(converted,[(None,'native',-1)])
+        self.assertEqual(issued,[('gaya',851971,'legacy')]);self.assertFalse(runtime['ForsakenConvertingGear'])
+        converted.clear();current['order']=851983
+        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(converted,[])
+        current.update(order=852001,target='gaya',owned=True)
+        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(saved[62,'hero'],'gaya')
+        current.update(order=851971,target=None)
+        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(saved,{})
+
+    def test_carry_drop_delivers_legacy_form_to_pending_recipient_only_after_release(self):
+        source=(HERE/'Forsaken-carry.j').read_text();converted=[];added=[]
+        state=mocks(source)
+        state.update(ForsakenGearTypes='gear',GetExpiredTimer=lambda:'clock',GetHandleId=lambda h:h,
+            LoadItemHandle=lambda *a:'native',LoadUnitHandle=lambda *a:'gaya',GetItemTypeId=lambda i:200,
+            IsItemOwned=lambda i:False,Forsaken_CarryReplacement=lambda *a:converted.append(a) or 'legacy',UnitAddItem=lambda *a:added.append(a))
+        runtime=execute(source,['Forsaken_CarryDrop'],state);runtime['Forsaken_CarryDrop']()
+        self.assertEqual(converted,[(None,'native',-1)]);self.assertEqual(added,[('gaya','legacy')])
+
+    def test_gaya_pickup_marks_legacy_gear_for_six_slot_carry(self):
+        source=(HERE/'Forsaken-carry.j').read_text();saved={}
+        state=mocks(source)
+        state.update(ForsakenGearTypes='gear',GetManipulatedItem=lambda:'legacy',GetTriggerEventId=lambda:'pickup',GetUnitTypeId=lambda u:'H01D',
+            EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup',EVENT_PLAYER_UNIT_DROP_ITEM='drop',EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER='target',EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER='point',EVENT_PLAYER_UNIT_ISSUED_ORDER='order',
+            GetHandleId=lambda i:i,GetItemTypeId=lambda i:100,LoadInteger=lambda h,p,k:200 if p==0 else 0,
+            SaveBoolean=lambda h,p,k,v:saved.update({(p,k):v}))
+        runtime=execute(source,['Forsaken_CarryEvent'],state);runtime['Forsaken_CarryEvent']('gaya')
+        self.assertEqual(saved,{(51,'legacy'):True})
 
     def test_native_slots_and_accessories(self):
         for category, slot in [(12, 'Primary'), (24, 'Offhand'), (28, 'Head'), (30, 'Chest')]:
@@ -199,7 +313,7 @@ class ForsakenTests(unittest.TestCase):
         for gaya_level, rejected in [(10, True), (30, False)]:
             calls = []
             state = mocks(overlay)
-            state.update(EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup', GetTriggerEventId=lambda:'equip', ForsakenEquippedItem=None, GetTriggerUnit=lambda:'hero', GetOwningPlayer=lambda u:0,
+            state.update(ForsakenConvertingGear=False,Forsaken_CarryEvent=lambda u:None,EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup',EVENT_PLAYER_UNIT_EQUIP_ITEM='equip', GetTriggerEventId=lambda:'equip', ForsakenEquippedItem=None, GetTriggerUnit=lambda:'hero', GetOwningPlayer=lambda u:0,
                          Player_GetHero=lambda p:'hero', GetEquippedItem=lambda:'gear',
                          GetManipulatedItem=lambda:None, IsPlayerInForce=lambda *a:True,
                          udg_PlayingPlayers='players', udg_SpiritOfGaya={1:'gaya'},
@@ -252,7 +366,7 @@ class ForsakenTests(unittest.TestCase):
         overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
         self.assertNotIn('fBpk',overlay)
         self.assertNotIn('Forsaken_ConvertCarriedGear',functions(overlay)['Forsaken_PrepareInventories'])
-        self.assertNotIn('LoadInteger',functions(overlay)['Trig_Equip_Restrictions_Conditions'])
+        self.assertIn('LoadInteger(ForsakenGearTypes,0,GetItemTypeId(GetManipulatedItem()))!=0',functions(overlay)['Trig_Equip_Restrictions_Conditions'])
 
     def test_manual_conversion_reaches_original_gear_already_in_the_native_bag(self):
         overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
@@ -897,7 +1011,7 @@ class ForsakenTests(unittest.TestCase):
         source=(HERE/'Forsaken-extra.j').read_text()
         self.assertNotIn('UnitAddItemToSlotById',functions(source)['Forsaken_PrepareQuickGear'])
         for destination in ['quick','bag','rejected']:
-            quick={0:'potion',3:'original',5:'native'};bag={}
+            quick={0:'potion',5:'native'};bag={0:'original'}
             types={'original':100,'replacement':200,'potion':1,'native':200}
             charges={'original':7};tags={'original':321};life={'original':40.};owners={'original':3}
             deleted=[];created=[];failed=set();equips=[]
@@ -936,6 +1050,7 @@ class ForsakenTests(unittest.TestCase):
                 self.assertEqual(quick[3],'original');self.assertEqual(charges['original'],7)
             else:
                 self.assertNotIn('original',quick.values())
+                self.assertNotIn('original',bag.values())
                 self.assertEqual(charges['replacement'],7);self.assertEqual(tags['replacement'],321)
                 self.assertEqual(life['replacement'],40.);self.assertEqual(owners['replacement'],3)
                 self.assertEqual(bag.get(0) if destination=='bag' else quick.get(3),'replacement')

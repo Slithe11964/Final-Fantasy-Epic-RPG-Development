@@ -115,6 +115,7 @@ def prepare_objects(base, out, mapping_out):
             for unit_id in (entry['unit'], 'z%03d' % int(save_index)):
                 obj_unit=unit_objects[unit_id]
                 set_field(obj_unit,'utub',slot_tooltip(fields(obj_unit).get('utub',''),slot))
+                set_field(obj_unit,'utip',slot_tooltip(fields(obj_unit).get('utip',''),slot))
             variant = 'f%03d' % number
             if variant in items:
                 raise ValueError('experimental item ID already used: ' + variant)
@@ -256,7 +257,7 @@ endfunction
 function Trig_Equip_Restrictions_Conditions''', 1)
     conditions = re.search(r'function Trig_Equip_Restrictions_Conditions.*?endfunction', text, re.S)
     body = conditions.group().replace('    return',
-          '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE then\n        return false\n    endif\n'
+          '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE or LoadInteger(ForsakenGearTypes,0,GetItemTypeId(GetManipulatedItem()))!=0 then\n        return false\n    endif\n'
           '    return', 1)
     text = text[:conditions.start()] + body + text[conditions.end():]
     actions = re.search(r'function Trig_Equip_Restrictions_Actions.*?endfunction', text, re.S).group()
@@ -269,6 +270,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
     panels = panels.replace(defense, '', 1)
     extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
+    extra = extra.replace('function Forsaken_OnEquip', (HERE / 'Forsaken-carry.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_OnEquip',1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
@@ -487,6 +489,8 @@ def main():
     initialization += ["    call SaveInteger(ForsakenGearTypes,0,'%s','%s')" % (raw,entry['variant'])
                        for raw, entry in mapping.items() if 'variant' in entry]
     slots = dict(Head=0,Chest=1,Gloves=2,Boots=3,Ring=4,Primary=6,Offhand=7,Trinket=8)
+    initialization += ["    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['variant'],raw)
+                       for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,1,'%s',%d)" % (raw,slots[entry['slot']])
                        for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,2,%d,'fT%02d')" % (i,i) for i in range(8)]
