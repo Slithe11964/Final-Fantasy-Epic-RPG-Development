@@ -51,6 +51,7 @@ function Forsaken_CarryReplacement takes unit holder,item original,integer quick
     call SetItemCharges(replacement,charges)
     call RemoveSavedBoolean(ForsakenGearTypes,50,GetHandleId(original))
     call RemoveSavedBoolean(ForsakenGearTypes,51,GetHandleId(original))
+    call FlushChildHashtable(ForsakenBagAbilities,GetHandleId(original))
     call RemoveItem(original)
     set ForsakenConvertingGear=false
     return replacement

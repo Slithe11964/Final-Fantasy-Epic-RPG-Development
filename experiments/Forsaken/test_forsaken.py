@@ -19,6 +19,12 @@ from jtok import functions
 
 def execute(source, names, state):
     state.setdefault('ForsakenElementSources','element-sources')
+    state.setdefault('ForsakenBagAbilities','bag-abilities')
+    state.setdefault('ForsakenBagPassiveTypes','bag-passive-types')
+    state.setdefault('EVENT_PLAYER_UNIT_DROP_ITEM','drop')
+    state.setdefault('EVENT_PLAYER_UNIT_UNEQUIP_ITEM','unequip')
+    for helper in ('Forsaken_RestoreStoredItem','Forsaken_SuspendStoredItem','Forsaken_SyncStoredEffects'):
+        state.setdefault(helper,lambda *args:None)
     state['Forsaken_GearClass']=state.get('GetItemType',lambda *a:None)
     return _execute(source,names,state)
 
@@ -28,6 +34,81 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_bag_suppresses_real_book_firefly_passives_without_touching_bolt_or_cooldown(self):
+        source=(HERE/'Forsaken-bag-effects.j').read_text()
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        passive=build.bag_passive_types(base)
+        table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')
+        items={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in table[g]}
+        originals={raw:items[raw]['iabi'].split(',') for raw in ['I05U','I05W','I0KA','I0CO']}
+        active={raw:list(effects) for raw,effects in originals.items()}
+        removed=[];added=[];cache={};cooldowns={'A19R':7.5,'A19P':4.5};charges={'I05W':11}
+        quick={};equipment={};bag={0:'I05W',1:'I05U',2:'I0KA',3:'I0CO'}
+        def remove(item,raw):
+            removed.append((item,raw));active[item].remove(raw)
+        def add(item,raw):
+            added.append((item,raw));active[item].append(raw)
+        state=mocks(source);state.update(ForsakenBagAbilities='cache',ForsakenBagPassiveTypes='types',
+            GetHandleId=lambda item:item,LoadInteger=lambda h,k,i:cache.get((k,i),0),
+            LoadBoolean=lambda h,k,i:i in passive if h=='types' else cache.get((k,i),False),
+            SaveInteger=lambda h,k,i,v:cache.update({(k,i):v}),SaveBoolean=lambda h,k,i,v:cache.update({(k,i):v}),
+            FlushChildHashtable=lambda h,k:[cache.pop(entry) for entry in list(cache) if entry[0]==k],
+            BlzGetItemAbilityByIndex=lambda item,i:active[item][i] if i<len(active[item]) else None,
+            BlzGetAbilityId=lambda effect:effect,BlzItemRemoveAbility=remove,BlzItemAddAbility=add,
+            UnitItemInSlot=lambda u,i:quick.get(i),UnitItemInEquipmentSlot=lambda u,i:equipment.get(i),
+            ConvertLoadoutSlot=lambda i:i,UnitExtendedInventorySize=lambda u:30,
+            UnitItemInBagSlot=lambda u,i:bag.get(i))
+        runtime=execute(source,['Forsaken_SuspendStoredItem','Forsaken_RestoreStoredItem','Forsaken_SyncStoredEffects'],state)
+        self.assertIn('A0L9',passive);self.assertIn('A063',passive);self.assertIn('A19U',passive)
+        self.assertIn('A14P',passive);self.assertIn('A0RA',passive)
+        self.assertIn('A178',passive)
+        self.assertNotIn('A19R',passive);self.assertNotIn('A19P',passive)
+        self.assertNotIn('A0L1',passive);self.assertNotIn('A06F',passive)
+        for cycle in range(100):
+            runtime['Forsaken_SyncStoredEffects']('hero')
+            for raw,effects in originals.items():self.assertEqual(set(active[raw]),set(effects)-passive)
+            self.assertEqual(active['I05W'],['A19R'])
+            # The same cast ability stays installed; its running cooldown and item charges survive.
+            self.assertEqual(cooldowns,{'A19R':7.5,'A19P':4.5});self.assertEqual(charges['I05W'],11)
+            before=(len(removed),len(added));runtime['Forsaken_SyncStoredEffects']('hero')
+            self.assertEqual(before,(len(removed),len(added)))
+            del bag[0];equipment[7]='I05W'
+            runtime['Forsaken_SyncStoredEffects']('hero')
+            self.assertEqual(set(active['I05W']),set(originals['I05W']))
+            del equipment[7];bag[0]='I05W'
+        for raw in originals:runtime['Forsaken_RestoreStoredItem'](raw)
+        self.assertFalse(cache)
+        for raw in originals:self.assertEqual(set(active[raw]),set(originals[raw]))
+        self.assertFalse(any(raw in ('A19R','A19P') for item,raw in removed+added))
+
+    def test_condition_resistances_only_show_present_sources_and_real_dark_knight_knockback(self):
+        source=(HERE/'Forsaken-conditions.j').read_text();levels={};rows={}
+        state=mocks(source);state.update(Forsaken_StatAbilityLevel=lambda u,r:levels.get(r,0),
+            IsUnitInGroup=lambda u,g:u=='boss',udg_BossGroup='boss-group',
+            Forsaken_StatRow=lambda row,label,value:rows.update({row:(label,value)}))
+        runtime=execute(source,list(functions(source)),state)
+        self.assertEqual(runtime['Forsaken_ConditionCount']('hero'),0)
+        runtime['Forsaken_RenderConditions']('hero',8);self.assertFalse(rows)
+        levels['A0RA']=1;levels['A0KV']=1
+        runtime['Forsaken_RenderConditions']('hero',8)
+        self.assertEqual(rows[8],('Blind','|cff00ff00Immune|r'))
+        self.assertEqual(rows[9],('Knockback','|cff00ff00-80%|r'))
+        self.assertEqual(runtime['Forsaken_ConditionValue']('hero',8),'')
+        self.assertEqual(runtime['Forsaken_ConditionValue']('boss',8),'Immune')
+        rows.clear();levels.clear();runtime['Forsaken_RenderConditions']('hero',8);self.assertFalse(rows)
+        for raw in ['A0RA','A0FX','A0U6','A0GJ','A0WE','A0WG','A15P','A15R','A0KV']:levels[raw]=1
+        runtime['Forsaken_RenderConditions']('boss',0);self.assertEqual(len(rows),10)
+
+    def test_regeneration_and_cooldown_rows_move_to_other_bonuses_and_values_fit(self):
+        source=(HERE/'Forsaken-stats.j').read_text()
+        defense=source.split('if ForsakenStatsPage==1 then',1)[1].split('elseif ForsakenStatsPage==2 then',1)[0]
+        other=source.split('set title="Other bonuses"',1)[1]
+        for label in ['Mana regen','Cooldown reduction']:
+            self.assertNotIn('"'+label+'"',defense);self.assertIn('"'+label+'"',other)
+        panels=(HERE/'Forsaken-panels.j').read_text()
+        self.assertIn('ForsakenStatValue[node],.09,.014',panels)
+        self.assertIn('Forsaken_ConditionCount(hero)>4',panels)
+
     def test_inherited_item_categories_are_bundled_for_portable_builds(self):
         import json
         defaults=json.loads((HERE/'item-class-defaults.json').read_text())
@@ -224,7 +305,7 @@ class ForsakenTests(unittest.TestCase):
         self.assertFalse(runtime['Unit_HasNoEquipment']('hero'))
         slots.clear();slots[12]='fists';types['fists']='weapon';levels['fists']=0
         self.assertTrue(runtime['Unit_HasNoEquipment']('hero'))
-        self.assertNotIn('UnitItemInBagSlot',source)
+        self.assertNotIn('UnitItemInBagSlot',functions(source)['Forsaken_ActiveGear'])
         for module,folder,names in [('Damage','04 Combat and abilities',['Trig_Damage_Engine_FindTwoHandedItem','Trig_Damage_Engine_ProficiencyMult']),('Prof','03 Jobs and progression',['Prof_GetLevel']),('TwoHanded','04 Combat and abilities',['Trig_TwoHanded_Check_Actions'])]:
             original=(build.ROOT/'src/triggers'/folder/(module+'.j')).read_text()
             patched=functions(build.active_gear_overlay(original,module))
@@ -374,10 +455,10 @@ class ForsakenTests(unittest.TestCase):
 
     def test_element_rows_combine_equal_bonuses_and_keep_type_specific_values_honest(self):
         runtime=self.stat_runtime(['Forsaken_StatElementText','Forsaken_StatPercent','Forsaken_StatElementDamageBonus'],
-            Forsaken_Stat_GetElementBonus=lambda u,e,p:.5 if e==4 else 0.,R2SW=lambda n,w,d:format(n,'.'+str(d)+'f'),RAbsBJ=abs)
+            Forsaken_Stat_GetElementBonus=lambda u,e,p:.5 if e==4 else 0.,R2SW=lambda n,w,d:format(n,'.'+str(d)+'f'),RAbsBJ=abs,R2I=int,I2R=float,I2S=str)
         self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'50.00%')
         runtime['Forsaken_Stat_GetElementBonus']=lambda u,e,p:(.1 if p else .8) if e==4 else 0.
-        self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'10/80.00%')
+        self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'10% | 80.00%')
         source=(HERE/'Forsaken-stats.j').read_text()
         for removed in ('Staff / healing power','Rod spell power','Inner Mana power','attack bonus','spell bonus','Physical buffs','Magic buffs'):
             self.assertNotIn('"'+removed+'"',source)

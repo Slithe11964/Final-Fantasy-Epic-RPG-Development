@@ -59,6 +59,7 @@ function Forsaken_PrepareQuickGear takes unit holder returns nothing
                 call SetItemCharges(replacement,charges)
                 call RemoveSavedBoolean(ForsakenGearTypes,50,GetHandleId(original))
                 call RemoveSavedBoolean(ForsakenGearTypes,51,GetHandleId(original))
+                call FlushChildHashtable(ForsakenBagAbilities,GetHandleId(original))
                 call RemoveItem(original)
             else
                 call RemoveItem(replacement)
@@ -132,6 +133,7 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call Forsaken_PrepareQuickGear(holder)
     call Forsaken_StoreHeroGear(holder)
     call Forsaken_PrepareDualWield(holder)
+    call Forsaken_SyncStoredEffects(holder)
     if GetUnitAbilityLevel(holder,'A0GP')>0 and Forsaken_TwoHandedWeapon(holder)==null then
         call UnitRemoveAbility(holder,'B05W')
     endif
@@ -152,10 +154,18 @@ function Forsaken_OnEquip takes nothing returns nothing
         set holder=null
         return
     endif
+    if GetTriggerEventId()==EVENT_PLAYER_UNIT_DROP_ITEM or GetTriggerEventId()==EVENT_PLAYER_UNIT_PICKUP_ITEM then
+        call Forsaken_RestoreStoredItem(GetManipulatedItem())
+    elseif GetTriggerEventId()==EVENT_PLAYER_UNIT_EQUIP_ITEM then
+        call Forsaken_RestoreStoredItem(GetEquippedItem())
+    endif
     if GetUnitAbilityLevel(holder,'A0GP')>0 and Forsaken_TwoHandedWeapon(holder)==null then
         call UnitRemoveAbility(holder,'B05W')
     endif
     call Forsaken_CarryEvent(holder)
+    if GetTriggerEventId()==EVENT_PLAYER_UNIT_UNEQUIP_ITEM then
+        call Forsaken_SyncStoredEffects(holder)
+    endif
     if GetTriggerEventId()!=EVENT_PLAYER_UNIT_PICKUP_ITEM and GetTriggerEventId()!=EVENT_PLAYER_UNIT_EQUIP_ITEM then
         set holder=null
         return
@@ -164,12 +174,14 @@ function Forsaken_OnEquip takes nothing returns nothing
         if GetTriggerEventId()==EVENT_PLAYER_UNIT_PICKUP_ITEM then
             call Forsaken_PrepareQuickGear(holder)
             call Forsaken_StoreHeroGear(holder)
+            call Forsaken_SyncStoredEffects(holder)
             set holder=null
             return
         endif
         set ForsakenEquippedItem=GetEquippedItem()
         call Forsaken_ValidateEquipment()
         set ForsakenEquippedItem=null
+        call Forsaken_SyncStoredEffects(holder)
         call Forsaken_UpdatePanels(holder)
     endif
     set holder=null
@@ -196,6 +208,7 @@ function Forsaken_ConvertCarriedGear takes unit holder returns nothing
             call SetItemUserData(replacement,GetItemUserData(original))
             if UnitAddItem(holder,replacement) then
                 if UnitEquipItem(holder,replacement) and IsItemEquipped(replacement) then
+                    call FlushChildHashtable(ForsakenBagAbilities,GetHandleId(original))
                     call RemoveItem(original)
                 else
                     call RemoveItem(replacement)
@@ -249,6 +262,7 @@ function Register_Forsaken_Equipment takes nothing returns nothing
     local integer i=0
     set gg_trg_Forsaken_Equipment=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_EQUIP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_UNEQUIP_ITEM)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_DROP_ITEM)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Forsaken_Equipment,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)

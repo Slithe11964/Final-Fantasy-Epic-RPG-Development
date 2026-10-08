@@ -44,6 +44,7 @@ function Forsaken_PrepareWeaponHand takes unit holder,item original,integer bagS
     call UnitAddItem(holder,replacement)
     if UnitItemInBagSlot(holder,bagSlot)==replacement then
         call SetItemCharges(replacement,charges)
+        call FlushChildHashtable(ForsakenBagAbilities,GetHandleId(original))
         call RemoveItem(original)
     else
         call RemoveItem(replacement)

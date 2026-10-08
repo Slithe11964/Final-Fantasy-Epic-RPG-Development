@@ -50,7 +50,12 @@ function Forsaken_PanelClick takes nothing returns nothing
                 set hero=ForsakenInspectTarget
             endif
             if hero!=null then
-                set ForsakenStatsPage=ModuloInteger(ForsakenStatsPage+1,4)
+                if ForsakenStatsPage==2 and not ForsakenConditionPage and Forsaken_ConditionCount(hero)>4 then
+                    set ForsakenConditionPage=true
+                else
+                    set ForsakenConditionPage=false
+                    set ForsakenStatsPage=ModuloInteger(ForsakenStatsPage+1,4)
+                endif
                 call Forsaken_RenderStats(hero)
             endif
             call BlzFrameSetEnable(ForsakenStatsNext,false)
@@ -331,7 +336,7 @@ function Forsaken_RenderNPC takes unit target returns nothing
         endif
         set node=node+1
     endloop
-    call BlzFrameSetText(ForsakenNPCSummary,"|cffffcc00"+GetUnitName(target)+"|r|nLevel "+I2S(GetUnitLevel(target))+"|n|nHP: "+R2SW(GetWidgetLife(target),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_LIFE),1,0)+"|nMP: "+R2SW(GetUnitState(target,UNIT_STATE_MANA),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_MANA),1,0)+"|n|nMagic defense uses native armor. Damage types and scripted effects also affect damage.|n|nMore stats: resistances, bonuses and buffs.|nBase regen excludes auras/abilities.")
+    call BlzFrameSetText(ForsakenNPCSummary,"|cffffcc00"+GetUnitName(target)+"|r|nLevel "+I2S(GetUnitLevel(target))+"|n|nHP: "+R2SW(GetWidgetLife(target),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_LIFE),1,0)+"|nMP: "+R2SW(GetUnitState(target,UNIT_STATE_MANA),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_MANA),1,0)+"|n|nMagic defense uses native armor; scripted damage effects also apply.|nBase regen excludes auras/abilities.")
     call BlzFrameSetVisible(ForsakenNPCSummary,true)
     call Forsaken_RenderInspection(target)
     call Forsaken_RenderStats(target)
@@ -368,7 +373,11 @@ function Forsaken_PollPanels takes nothing returns nothing
     if anchor!=null and anchor!=ForsakenTalentAnchor then
         set ForsakenTalentAnchor=anchor
         call BlzFrameClearAllPoints(ForsakenTalentToggle)
-        call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.010,-.010)
+        if ForsakenInspectTarget!=null then
+            call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.052,-.022)
+        else
+            call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.010,-.010)
+        endif
     endif
     call BlzFrameSetVisible(ForsakenTalentToggle,visible or ForsakenInspectTarget!=null)
     if ForsakenInspectTarget!=null and ForsakenInspectTarget!=Player_GetHero(GetOwningPlayer(ForsakenInspectTarget)) then
@@ -416,7 +425,7 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     call TimerStart(ForsakenPanelClock,86400.,false,null)
     set ForsakenTalentRoot=BlzCreateFrame("EscMenuBackdrop",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
     call BlzFrameSetAbsPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,.385,.585)
-    call BlzFrameSetSize(ForsakenTalentRoot,.21,.49)
+    call BlzFrameSetSize(ForsakenTalentRoot,.245,.415)
     call BlzFrameSetLevel(ForsakenTalentRoot,30)
     set ForsakenPanelClose=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,0)
     call BlzFrameSetPoint(ForsakenPanelClose,FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.026,-.022)
@@ -439,8 +448,8 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         set row=node/3
         set column=ModuloInteger(node,3)
         set ForsakenTalentButton[node]=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,node+1)
-        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.034+I2R(column)*.054,-.08-I2R(row)*.043)
-        call BlzFrameSetSize(ForsakenTalentButton[node],.034,.034)
+        call BlzFrameSetPoint(ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.045+I2R(column)*.06,-.08-I2R(row)*.03)
+        call BlzFrameSetSize(ForsakenTalentButton[node],.028,.028)
         set ForsakenTalentIcon[node]=BlzCreateFrameByType("BACKDROP","ForsakenTalentIcon",ForsakenTalentButton[node],"",node+1)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_TOPLEFT,ForsakenTalentButton[node],FRAMEPOINT_TOPLEFT,.003,-.003)
         call BlzFrameSetPoint(ForsakenTalentIcon[node],FRAMEPOINT_BOTTOMRIGHT,ForsakenTalentButton[node],FRAMEPOINT_BOTTOMRIGHT,-.003,.003)
@@ -465,7 +474,7 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
     endloop
     set ForsakenNPCSummary=BlzCreateFrameByType("TEXT","ForsakenNPCSummary",ForsakenTalentRoot,"",0)
     call BlzFrameSetPoint(ForsakenNPCSummary,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.08)
-    call BlzFrameSetSize(ForsakenNPCSummary,.154,.157)
+    call BlzFrameSetSize(ForsakenNPCSummary,.189,.13)
     call BlzFrameSetFont(ForsakenNPCSummary,"Fonts\\FRIZQT__.TTF",.007,0)
     call BlzFrameSetVisible(ForsakenNPCSummary,false)
     set node=0
@@ -473,24 +482,24 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         exitwhen node>=12
         set ForsakenStatLabel[node]=BlzCreateFrameByType("TEXT","ForsakenStatLabel",ForsakenTalentRoot,"",node+1)
         set label=ForsakenStatLabel[node]
-        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.266-I2R(node)*.014)
-        call BlzFrameSetSize(label,.102,.014)
+        call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.225-I2R(node)*.011)
+        call BlzFrameSetSize(label,.099,.014)
         call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.0065,0)
         call BlzFrameSetText(label,"")
         set ForsakenStatValue[node]=BlzCreateFrameByType("TEXT","ForsakenStatValue",ForsakenTalentRoot,"",node+1)
-        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.028,-.266-I2R(node)*.014)
-        call BlzFrameSetSize(ForsakenStatValue[node],.05,.014)
+        call BlzFrameSetPoint(ForsakenStatValue[node],FRAMEPOINT_TOPRIGHT,ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,-.028,-.225-I2R(node)*.011)
+        call BlzFrameSetSize(ForsakenStatValue[node],.09,.014)
         call BlzFrameSetFont(ForsakenStatValue[node],"Fonts\\FRIZQT__.TTF",.0065,0)
         call BlzFrameSetTextAlignment(ForsakenStatValue[node],TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_RIGHT)
         set node=node+1
     endloop
     set ForsakenStatsHeading=BlzCreateFrameByType("TEXT","ForsakenStatsHeading",ForsakenTalentRoot,"",0)
-    call BlzFrameSetPoint(ForsakenStatsHeading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.244)
+    call BlzFrameSetPoint(ForsakenStatsHeading,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.203)
     call BlzFrameSetSize(ForsakenStatsHeading,.15,.016)
     call BlzFrameSetFont(ForsakenStatsHeading,"Fonts\\FRIZQT__.TTF",.008,0)
     call BlzFrameSetTextAlignment(ForsakenStatsHeading,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
     set ForsakenStatsNext=BlzCreateFrame("ScriptDialogButton",ForsakenTalentRoot,0,0)
-    call BlzFrameSetPoint(ForsakenStatsNext,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.443)
+    call BlzFrameSetPoint(ForsakenStatsNext,FRAMEPOINT_TOP,ForsakenTalentRoot,FRAMEPOINT_TOP,0,-.367)
     call BlzFrameSetSize(ForsakenStatsNext,.15,.025)
     call BlzFrameSetText(ForsakenStatsNext,"More stats >")
     call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenStatsNext,FRAMEEVENT_CONTROL_CLICK)

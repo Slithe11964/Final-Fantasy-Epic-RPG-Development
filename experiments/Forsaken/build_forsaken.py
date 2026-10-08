@@ -264,6 +264,7 @@ def equip_overlay(original):
     unit ForsakenInspectTarget=null
     framehandle ForsakenInspectButton=null
     boolean ForsakenPanelNeedsRefresh=false
+    boolean ForsakenConditionPage=false
     framehandle ForsakenInspectRoot=null
     framehandle ForsakenInspectClose=null
     framehandle ForsakenInspectTitle=null
@@ -302,7 +303,8 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     panels = (HERE / 'Forsaken-panels.j').read_text(encoding='utf-8')
     defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
     panels = panels.replace(defense, '', 1)
-    extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
+    stats = (HERE/'Forsaken-stats.j').read_text(encoding='utf-8').replace('function Forsaken_RenderStats', (HERE/'Forsaken-conditions.j').read_text(encoding='utf-8')+'\n\nfunction Forsaken_RenderStats',1)
+    extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + stats + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
     extra = extra.replace('function Forsaken_EnableHero', (HERE / 'Forsaken-dual.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_EnableHero',1)
     extra = extra.replace('function Forsaken_OnEquip', (HERE / 'Forsaken-carry.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_OnEquip',1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
@@ -346,8 +348,8 @@ endfunction"""
         original=original.replace('function Trig_Damage_Engine_Step11_ElementBonus',helper+'\n\nfunction Trig_Damage_Engine_Step11_ElementBonus',1)
         original=original.replace('1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)','1.+Forsaken_ElementDamageBonus(u,l_element,l_physical)')
     if module == 'Unit':
-        original=original.replace('globals\n','globals\n    hashtable ForsakenElementSources=null\n',1)
-        original = original.replace('function Unit_HasNoEquipment', (HERE/'Forsaken-active-gear.j').read_text()+'\nfunction Unit_HasNoEquipment',1)
+        original=original.replace('globals\n','globals\n    hashtable ForsakenElementSources=null\n    hashtable ForsakenBagAbilities=null\n    hashtable ForsakenBagPassiveTypes=null\n',1)
+        original = original.replace('function Unit_HasNoEquipment', (HERE/'Forsaken-bag-effects.j').read_text()+'\n'+(HERE/'Forsaken-active-gear.j').read_text()+'\nfunction Unit_HasNoEquipment',1)
     elif module in ('Prof','TwoHanded'):
         original = original.replace('library T'+module+' requires TPlayerHero','library T'+module+' requires TPlayerHero, TUnit') if module=='Prof' else original.replace('library TTwoHanded','library TTwoHanded requires TUnit',1)
     return original
@@ -471,6 +473,30 @@ endfunction''' % tuple(bodies))
     result.append(attack_speed_helper())
     result.insert(0, (HERE / 'Forsaken-stat-ability.j').read_text(encoding='utf-8'))
     return '\n\n'.join(result)
+
+
+PASSIVE_ITEM_CODES = frozenset(('AEev', 'AHab', 'AIab', 'AIas', 'AIat', 'AIde',
+    'AIml', 'AImm', 'AIms', 'AIrm', 'AOac', 'AOae', 'AOcr',
+    'AUau', 'AUav', 'Aasl', 'Atru', 'Arel'))
+
+
+def bag_passive_types(base):
+    codes = json.loads((HERE/'ability-base-codes.json').read_text(encoding='utf-8'))
+    table = read_objects(MPQ(str(base)).read('war3map.w3a'), 'w3a')
+    result = {raw for raw, code in codes.items() if code in PASSIVE_ITEM_CODES}
+    for group in ('original', 'custom'):
+        for obj in table[group]:
+            code = fields(obj).get('acod') or codes.get(obj['base'], obj['base'])
+            if code in PASSIVE_ITEM_CODES:
+                result.add(obj['id'] or obj['base'])
+    return result
+
+
+def bag_passive_initialization(base):
+    return ['    set ForsakenBagAbilities=InitHashtable()',
+            '    set ForsakenBagPassiveTypes=InitHashtable()'] + [
+        "    call SaveBoolean(ForsakenBagPassiveTypes,0,'%s',true)"%raw
+        for raw in sorted(bag_passive_types(base))]
 
 
 def job_overlay(original):
@@ -663,6 +689,7 @@ def main():
             initialization += ["    call SaveInteger(ForsakenGearTypes,5,'%s','%s')" % (entry['variant'],entry['offhand']),
                                "    call SaveInteger(ForsakenGearTypes,6,'%s','%s')" % (entry['offhand'],entry['variant']),
                                "    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['offhand'],raw)]
+    initialization += bag_passive_initialization(base)
     initialization += regeneration_initialization(base)
     initialization += element_source_initialization(base)
     item_table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')

@@ -8,9 +8,16 @@ function Forsaken_MoveSharedItem takes unit previous,unit current,item carried,b
     if UnitAddItem(current,carried) then
         call SetItemCharges(carried,charges)
         if equipped then
+            call Forsaken_RestoreStoredItem(carried)
             call UnitEquipItem(current,carried)
         endif
+        if UnitHasItemBagged(current,carried) then
+            call Forsaken_SuspendStoredItem(carried)
+        else
+            call Forsaken_RestoreStoredItem(carried)
+        endif
     else
+        call Forsaken_RestoreStoredItem(carried)
         call SetItemCharges(carried,charges)
         call SetItemPosition(carried,GetUnitX(current),GetUnitY(current))
         call DisplayTimedTextToPlayer(GetOwningPlayer(current),0,0,15,"Your backpack is full. The remaining item is beside your hero.")

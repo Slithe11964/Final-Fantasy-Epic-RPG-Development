@@ -94,7 +94,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
     call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenInspectButton,FRAMEEVENT_CONTROL_CLICK)
     set ForsakenInspectRoot=BlzCreateFrame("EscMenuBackdrop",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
     call BlzFrameSetAbsPoint(ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.392,.585)
-    call BlzFrameSetSize(ForsakenInspectRoot,.29,.49)
+    call BlzFrameSetSize(ForsakenInspectRoot,.29,.415)
     call BlzFrameSetLevel(ForsakenInspectRoot,30)
     set ForsakenInspectClose=BlzCreateFrame("ScriptDialogButton",ForsakenInspectRoot,0,0)
     call BlzFrameSetPoint(ForsakenInspectClose,FRAMEPOINT_TOPRIGHT,ForsakenInspectRoot,FRAMEPOINT_TOPRIGHT,-.026,-.022)
@@ -111,8 +111,8 @@ function Forsaken_CreateInspection takes nothing returns nothing
         if slot<9 then
             set row=slot/3
             set column=ModuloInteger(slot,3)
-            call BlzFrameSetPoint(slotButton,FRAMEPOINT_TOPLEFT,ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.058+I2R(column)*.066,-.083-I2R(row)*.052)
-            call BlzFrameSetSize(slotButton,.04,.04)
+            call BlzFrameSetPoint(slotButton,FRAMEPOINT_TOPLEFT,ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.058+I2R(column)*.066,-.075-I2R(row)*.045)
+            call BlzFrameSetSize(slotButton,.035,.035)
             set label=BlzCreateFrameByType("TEXT","ForsakenInspectSlot",ForsakenInspectRoot,"",slot+1)
             call BlzFrameSetPoint(label,FRAMEPOINT_TOP,slotButton,FRAMEPOINT_BOTTOM,0,-.001)
             call BlzFrameSetSize(label,.062,.01)
@@ -123,8 +123,8 @@ function Forsaken_CreateInspection takes nothing returns nothing
         else
             set row=(slot-9)/6
             set column=ModuloInteger(slot-9,6)
-            call BlzFrameSetPoint(slotButton,FRAMEPOINT_TOPLEFT,ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.035+I2R(column)*.038,-.272-I2R(row)*.035)
-            call BlzFrameSetSize(slotButton,.03,.03)
+            call BlzFrameSetPoint(slotButton,FRAMEPOINT_TOPLEFT,ForsakenInspectRoot,FRAMEPOINT_TOPLEFT,.035+I2R(column)*.038,-.246-I2R(row)*.028)
+            call BlzFrameSetSize(slotButton,.024,.024)
         endif
         set ForsakenInspectIcon[slot]=BlzCreateFrameByType("BACKDROP","ForsakenInspectItemIcon",slotButton,"",slot+1)
         call BlzFrameSetPoint(ForsakenInspectIcon[slot],FRAMEPOINT_TOPLEFT,slotButton,FRAMEPOINT_TOPLEFT,.002,-.002)
@@ -143,7 +143,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
         set slot=slot+1
     endloop
     set label=BlzCreateFrameByType("TEXT","ForsakenInspectBagLabel",ForsakenInspectRoot,"",0)
-    call BlzFrameSetPoint(label,FRAMEPOINT_TOP,ForsakenInspectRoot,FRAMEPOINT_TOP,0,-.25)
+    call BlzFrameSetPoint(label,FRAMEPOINT_TOP,ForsakenInspectRoot,FRAMEPOINT_TOP,0,-.225)
     call BlzFrameSetSize(label,.22,.015)
     call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.008,0)
     call BlzFrameSetTextAlignment(label,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
