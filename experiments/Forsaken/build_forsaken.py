@@ -151,11 +151,30 @@ def prepare_objects(base, out, mapping_out):
         dict(field='aub1',type=3,level=1,data=0,value='Open your native backpack and equipment panel.',end=0),
     ])]))
     prepare_panels(ability_table)
+    skin_updates = {}
+    for ext, objects, tooltip_fields in (("w3u", unit_objects, ("utip", "utub")),
+                                         ("w3t", items, ("utub",))):
+        name = "war3mapSkin." + ext
+        skin_data = archive.read(name)
+        if skin_data is None:
+            continue
+        skin = read_objects(skin_data, ext)
+        for group in ("original", "custom"):
+            for obj in skin[group]:
+                raw = obj["id"] or obj["base"]
+                updated = fields(objects[raw]) if raw in objects else {}
+                for st in obj["sets"]:
+                    for mod in st["mods"]:
+                        field = mod["field"]
+                        if field in tooltip_fields and "Forsaken slot" in updated.get(field, ""):
+                            mod["value"] = updated[field]
+        skin_updates[name] = write_objects(skin, skin["version"], ext)
     write_files(str(base), str(out), {
         'war3map.w3i': forsaken_map_info(archive.read('war3map.w3i')),
         'war3map.w3u': write_objects(unit_table, unit_table['version'], 'w3u'),
         'war3map.w3t': write_objects(table, table['version'], 'w3t'),
         'war3map.w3a': write_objects(ability_table, ability_table['version'], 'w3a'),
+        **skin_updates,
     })
     mapping_out.write_text(json.dumps(mapping, indent=2) + '\n', encoding='utf-8')
     return mapping

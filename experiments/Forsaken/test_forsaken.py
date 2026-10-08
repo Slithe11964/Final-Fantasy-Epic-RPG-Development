@@ -76,6 +76,44 @@ class ForsakenTests(unittest.TestCase):
                 self.assertEqual(expected,after[raw],raw)
             self.assertEqual(len(changed),552)
 
+    def test_reforged_skin_tooltips_match_prepared_gear_without_other_skin_changes(self):
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
+            out=Path(folder)/'gear.w3x';build.prepare_objects(base,out,Path(folder)/'mapping.json')
+            old,new=MPQ(base),MPQ(out)
+            for ext,allowed in [('w3u',('utip','utub')),('w3t',('utub',))]:
+                main=read_objects(new.read('war3map.'+ext),ext)
+                main={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in main[g]}
+                before=read_objects(old.read('war3mapSkin.'+ext),ext)
+                after=read_objects(new.read('war3mapSkin.'+ext),ext)
+                expected=__import__('copy').deepcopy(before)
+                changes=0
+                for group in ('original','custom'):
+                    for obj in expected[group]:
+                        data=main.get(obj['id'] or obj['base'],{})
+                        for st in obj['sets']:
+                            for mod in st['mods']:
+                                field=mod['field']
+                                if field in allowed and 'Forsaken slot' in data.get(field,''):
+                                    mod['value']=data[field];changes+=1
+                self.assertGreater(changes,0)
+                self.assertEqual(expected,after)
+                boots=next(o for o in after['custom'] if o['id']==('n0DF' if ext=='w3u' else 'I00I'))
+                self.assertIn('Required level|r: 14|n|cffffcc00Forsaken slot|r: Boots',fields(boots)['utub'])
+
+    def test_gaya_cannot_be_inspected_even_as_a_hero_or_boss(self):
+        runtime,c,calls=self.panel_runtime()
+        runtime['GetUnitTypeId']=lambda u:rawcode('H01D') if u=='gaya' else 1
+        runtime['IsUnitType']=lambda u,t:t=='hero'
+        runtime['IsUnitInGroup']=lambda u,g:True
+        self.assertFalse(runtime['Forsaken_CanInspect']('gaya',0))
+        c.update(event='selected',selected='gaya')
+        runtime['Forsaken_PanelAccess']();runtime['Forsaken_PollPanels']()
+        self.assertIn(('visible','inspect',False),calls)
+        c.update(event='frame',frame='inspect');runtime['Forsaken_PanelAccess']()
+        self.assertIsNone(runtime['ForsakenInspectTarget'])
+        self.assertNotIn(('inspect','gaya'),calls)
+
     def test_regen_manifest_includes_helmet_sorcerer_inherited_ring_and_native_variants(self):
         base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
         with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
@@ -256,7 +294,7 @@ class ForsakenTests(unittest.TestCase):
             mapping = build.prepare_objects(base, out, Path(folder)/'mapping.json')
             old, new = MPQ(base), MPQ(out)
             for filename in old.read('(listfile)').decode().splitlines():
-                if filename not in ('war3map.w3t', 'war3map.w3u', 'war3map.w3a', 'war3map.w3i','war3map.imp','(listfile)','(attributes)'):
+                if filename not in ('war3map.w3t', 'war3map.w3u', 'war3map.w3a', 'war3map.w3i','war3mapSkin.w3u','war3mapSkin.w3t','war3map.imp','(listfile)','(attributes)'):
                     self.assertEqual(old.read(filename), new.read(filename), filename)
             info_before, info_after = old.read('war3map.w3i'),new.read('war3map.w3i')
             offset = build.game_data_version_offset(info_before)

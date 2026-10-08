@@ -2,9 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BJ. Normal development stays on AS; Forsaken BI rearranges stats, adds Armory hover-title slot labels and supports explicit hero/Gaya six-slot gear carry.
+Next unused stage: BK. Normal development stays on AS; Forsaken BJ fixes Reforged skin Armory tooltip overrides and explicitly excludes Gaya from Inspect.
 
-## Separate experiment - Forsaken BI
+## Separate experiment - Forsaken BJ
+
+- BJ fixes the Armory tooltip override and Gaya inspection reported after BI. BI already contained slot labels in war3map.w3u/w3t, but the Reforged war3mapSkin.w3u/w3t files retained TRIGSTR references to older tooltips. Mirror the prepared gear unit basic/extended tooltips and item extended descriptions into the existing skin tooltip modifications, across every modification set. Other skin fields, names, icons, gameplay values, hints, catalog order and rewards remain unchanged. Germinas Boots now has Forsaken slot: Boots below Required level: 14 in both object layers. No shared WTS changes.
+- Explicitly reject Spirit of Gaya rawcode H01D before the hero/boss inspection predicate, so selection cannot show Inspect and clicks cannot open it even if Gaya qualifies as a hero or belongs to the boss group. Existing hero/boss inspection and Gaya six-slot carrying are preserved. Changes remain exclusively in the Forsaken experiment; canonical AS and its exact classic fallback remain unchanged. Saving remains disabled.
+- Validation: all build/editor/source/map checks, 96 regression tests, 2,000 codec cases, 53 experimental tests, final archive/object isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. The final skin audit verifies exactly 1,104 unit tooltip fields and 276 item extended tooltip fields changed, with every other skin field identical. CRLF JASS and byte-identical AS classic fallback verified. Scratch: build/ForsakenBJ-sku2xngk/FFERPG. Native acceptance pending: start a fresh BJ game, hover stored Germinas Boots and a missing Armory entry, verify the slot line, select Gaya and verify no Inspect, and verify another hero/boss still supports Inspect. Next unused stage BK.
+
+## Separate experiment - Forsaken BI (superseded by BJ)
 
 - BI responds to user feedback that BH mostly works. Stat page1 retains mana regeneration/combat stats and now includes Flat damage guard; page3 labels each element simply Ice damage/Earth damage/etc, removes the Split values legend and adds Physical damage/Magical damage; page4 now contains Health regen with healing/movement rows. Preserve actual combat calculations, current penalty colors and same-row elemental physical/magical values where they differ.
 - Armory BH archive inspection confirmed Forsaken slot labels were already in extended unit descriptions, including Germinas Boots/Jackboots and missing entries. BI also appends the explicit label to the basic utip hover title for all276 gear entries plus their276 missing placeholders, retaining the extended line. This addresses visibility in the stock hover header; it is not claimed that BH lacked object data. Only Armory utip/utub are changed on those original units; all other unit fields/hints/prices/order, item data boundaries, four Materia and world/import payloads remain intact.

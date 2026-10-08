@@ -1,7 +1,7 @@
 function Forsaken_CanInspect takes unit hero,player viewer returns boolean
     local player owner
     local boolean allowed=false
-    if hero==null or GetUnitTypeId(hero)==0 then
+    if hero==null or GetUnitTypeId(hero)==0 or GetUnitTypeId(hero)=='H01D' then
         return false
     endif
     set owner=GetOwningPlayer(hero)
