@@ -31,7 +31,7 @@ function Forsaken_PanelClick takes nothing returns nothing
     if GetLocalPlayer()==viewer then
         if BlzGetTriggerFrame()==ForsakenInspectButton and Forsaken_CanInspect(ForsakenSelectedTarget,viewer) then
             set ForsakenInspectTarget=ForsakenSelectedTarget
-            set ForsakenPanelOpen=true
+            set ForsakenPanelOpen=false
             set ForsakenPanelNeedsRefresh=true
             call Forsaken_RenderInspection(ForsakenInspectTarget)
             call BlzFrameSetVisible(ForsakenInspectRoot,true)
@@ -309,9 +309,6 @@ function Forsaken_PanelAccess takes nothing returns nothing
             set ForsakenInspectTarget=null
             set ForsakenPanelOpen=false
             call BlzFrameSetVisible(ForsakenInspectRoot,false)
-        elseif hero!=null and IsUnitSelected(hero,viewer) then
-            set ForsakenInspectTarget=null
-            set ForsakenPanelOpen=true
         endif
         call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
     endif
@@ -355,9 +352,7 @@ function Forsaken_PollPanels takes nothing returns nothing
     elseif hero!=null and IsUnitSelected(hero,viewer) then
         if nativePanel!=null then
             set visible=BlzFrameIsVisible(nativePanel)
-            if visible and not ForsakenBackpackWasVisible then
-                set ForsakenPanelOpen=true
-            elseif not visible then
+            if not visible then
                 set ForsakenPanelOpen=false
             endif
         endif
@@ -373,7 +368,7 @@ function Forsaken_PollPanels takes nothing returns nothing
     if anchor!=null and anchor!=ForsakenTalentAnchor then
         set ForsakenTalentAnchor=anchor
         call BlzFrameClearAllPoints(ForsakenTalentToggle)
-        call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.017,-.027)
+        call BlzFrameSetPoint(ForsakenTalentToggle,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.010,-.010)
     endif
     call BlzFrameSetVisible(ForsakenTalentToggle,visible or ForsakenInspectTarget!=null)
     if ForsakenInspectTarget!=null and ForsakenInspectTarget!=Player_GetHero(GetOwningPlayer(ForsakenInspectTarget)) then
@@ -413,12 +408,9 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         exitwhen i>=8
         call TriggerRegisterPlayerUnitEvent(gg_trg_Forsaken_PanelAccess,Player(i),EVENT_PLAYER_UNIT_SELECTED,null)
         call TriggerRegisterPlayerUnitEvent(gg_trg_Forsaken_PanelAccess,Player(i),EVENT_PLAYER_UNIT_DESELECTED,null)
-        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)
         call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)
-        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_PanelAccess,Player(i),"-forsaken-panels",true)
         set i=i+1
     endloop
-    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,4),FRAMEEVENT_CONTROL_CLICK)
     call TriggerAddAction(gg_trg_Forsaken_PanelAccess,function Forsaken_PanelAccess)
     set ForsakenPanelClock=CreateTimer()
     call TimerStart(ForsakenPanelClock,86400.,false,null)
@@ -466,7 +458,7 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
             call BlzFrameSetSize(line,.012,.009)
             call BlzFrameSetFont(line,"Fonts\\FRIZQT__.TTF",.007,0)
             call BlzFrameSetTextAlignment(line,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
-            call BlzFrameSetText(line,"|cffffcc00v|r")
+            call BlzFrameSetText(line,"")
             call BlzFrameSetEnable(line,false)
         endif
         set node=node+1

@@ -83,6 +83,7 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitAddAbility(holder,'ASpc')
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
     call Forsaken_PrepareQuickGear(holder)
+    call Forsaken_PrepareDualWield(holder)
     call Forsaken_UpdatePanels(holder)
 endfunction
 

@@ -53,6 +53,8 @@ def forsaken_map_info(info):
 def slot_for(entry, category):
     if category == 8:
         return None
+    if entry['name'] == 'Firefly':
+        return 'Ring'
     if category in (28, 29):
         return 'Head'
     if category in (30, 31, 32):
@@ -115,7 +117,6 @@ def prepare_objects(base, out, mapping_out):
             for unit_id in (entry['unit'], 'z%03d' % int(save_index)):
                 obj_unit=unit_objects[unit_id]
                 set_field(obj_unit,'utub',slot_tooltip(fields(obj_unit).get('utub',''),slot))
-                set_field(obj_unit,'utip',slot_tooltip(fields(obj_unit).get('utip',''),slot))
             variant = 'f%03d' % number
             if variant in items:
                 raise ValueError('experimental item ID already used: ' + variant)
@@ -124,6 +125,15 @@ def prepare_objects(base, out, mapping_out):
             set_field(obj, 'iequ', slot)
             table['custom'].append(obj)
             mapping[raw]['variant'] = variant
+            if slot == 'Primary':
+                offhand = 'g%03d' % number
+                if offhand in items:
+                    raise ValueError('experimental offhand ID already used: '+offhand)
+                alternate=copy.deepcopy(obj)
+                alternate['id']=offhand
+                set_field(alternate,'iequ','Offhand')
+                table['custom'].append(alternate)
+                mapping[raw]['offhand']=offhand
     ability_table = read_objects(archive.read('war3map.w3a'), 'w3a')
     if not any((o['id'] or o['base'])=='AInv' for g in ('original','custom') for o in ability_table[g]):
         # Declare the unchanged stock ability for strict object-reference verification.
@@ -152,7 +162,7 @@ def prepare_objects(base, out, mapping_out):
     ])]))
     prepare_panels(ability_table)
     skin_updates = {}
-    for ext, objects, tooltip_fields in (("w3u", unit_objects, ("utip", "utub")),
+    for ext, objects, tooltip_fields in (("w3u", unit_objects, ("utub",)),
                                          ("w3t", items, ("utub",))):
         name = "war3mapSkin." + ext
         skin_data = archive.read(name)
@@ -213,6 +223,7 @@ def equip_overlay(original):
     timer ForsakenInventoryTimer=null
     hashtable ForsakenGearTypes=null
     item ForsakenEquippedItem=null
+    item array ForsakenHandSpacers
     boolean ForsakenConvertingGear=false
     boolean ForsakenSaveBlocked=false
     trigger gg_trg_Forsaken_TalentClick=null
@@ -281,7 +292,7 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     text = text[:conditions.start()] + body + text[conditions.end():]
     actions = re.search(r'function Trig_Equip_Restrictions_Actions.*?endfunction', text, re.S).group()
     validation = actions[actions.index('    if(Trig_Equip_Restrictions_GaiaLevelTooLow())'):]
-    validation = 'function Forsaken_ValidateEquipment takes nothing returns nothing\n' + validation
+    validation = "function Forsaken_ValidateEquipment takes nothing returns nothing\n    if LoadInteger(ForsakenGearTypes,6,GetItemTypeId(ForsakenEquippedItem))!=0 and GetUnitAbilityLevel(GetTriggerUnit(),'A0HP')==0 then\n        call UnitUnequipItem(GetTriggerUnit(),ForsakenEquippedItem)\n        return\n    endif\n" + validation
     validation = validation.replace('UnitRemoveItemSwapped(', 'Forsaken_RejectEquipment(')
     validation = validation.replace('GetManipulatingUnit()', 'GetTriggerUnit()')
     extra = (HERE / 'Forsaken-extra.j').read_text(encoding='utf-8')
@@ -289,12 +300,71 @@ function Trig_Equip_Restrictions_Conditions''', 1)
     defense = re.search(r'function Forsaken_DefensePercent\b.*?endfunction', panels, re.S).group()
     panels = panels.replace(defense, '', 1)
     extra = defense + '\n\n' + combat_stat_helpers() + '\n\n' + (HERE / 'Forsaken-stats.j').read_text(encoding='utf-8') + '\n\n' + (HERE / 'Forsaken-inspect.j').read_text(encoding='utf-8') + '\n\n' + panels + '\n\n' + extra
+    extra = extra.replace('function Forsaken_EnableHero', (HERE / 'Forsaken-dual.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_EnableHero',1)
     extra = extra.replace('function Forsaken_OnEquip', (HERE / 'Forsaken-carry.j').read_text(encoding='utf-8') + '\n\nfunction Forsaken_OnEquip',1)
     extra = extra.replace('function Forsaken_OnEquip', validation + '\n\nfunction Forsaken_OnEquip', 1)
     text = text.replace('function Register_Equip_Restrictions takes', extra + '\n\nfunction Register_Equip_Restrictions takes', 1)
     text = text.replace('    call Register_Equip_Restrictions() //',
                         '    call Register_Forsaken_Equipment()\n    call Register_Forsaken_TestEquip()\n    call Register_Forsaken_TalentClick()\n    call Register_Forsaken_TalentSync()\n    call Register_Forsaken_PanelAccess()\n    call Register_Equip_Restrictions() //', 1)
     return text
+
+
+def active_gear_overlay(original, module):
+    selected = {
+        'Unit': ['Unit_HasNoEquipment'],
+        'Prof': ['Prof_GetLevel'],
+        'Damage': ['Trig_Damage_Engine_FindTwoHandedItem', 'Trig_Damage_Engine_ProficiencyMult'],
+        'TwoHanded': ['Trig_TwoHanded_Check_SlotCancelsBonus', 'Trig_TwoHanded_Check_ItemIsGear',
+                      'Trig_TwoHanded_Check_SlotHasGear', 'Trig_TwoHanded_Check_Actions'],
+    }[module]
+    for name in selected:
+        match = re.search(r'function '+name+r'\b.*?endfunction', original, re.S)
+        body = match.group().replace('UnitItemInSlotBJ(', 'Forsaken_ActiveGearBJ(').replace('UnitItemInSlot(', 'Forsaken_ActiveGear(')
+        body = body.replace('i>=bj_MAX_INVENTORY','i>=15').replace('udg_SlotIndex>6','udg_SlotIndex>15')
+        original = original[:match.start()] + body + original[match.end():]
+    if module == 'Unit':
+        original = original.replace('function Unit_HasNoEquipment', (HERE/'Forsaken-active-gear.j').read_text()+'\nfunction Unit_HasNoEquipment',1)
+    elif module in ('Prof','TwoHanded'):
+        original = original.replace('library T'+module+' requires TPlayerHero','library T'+module+' requires TPlayerHero, TUnit') if module=='Prof' else original.replace('library TTwoHanded','library TTwoHanded requires TUnit',1)
+    return original
+
+
+def attack_speed_helper():
+    source=(ROOT/'src/triggers/04 Combat and abilities/AtkSpd.j').read_text()
+    body=re.search(r'function Trig_AtkSpd_Command_Actions\b.*?endfunction',source,re.S).group()
+    body=body[body.index("    set udg_StatCalcValue=(udg_StatCalcValue+'d')"):body.index('    if(Trig_AtkSpd_Command_Cond_UsesFastBaseSpeed())')]
+    for name in set(re.findall(r'Trig_AtkSpd_Command_Cond_\w+',body)):
+        predicate=re.search(r'function '+name+r'\b.*?endfunction',source,re.S).group()
+        expression=predicate.split('    return',1)[1].splitlines()[0].split(' //',1)[0].strip()
+        expression=re.sub(r"GetUnitAbilityLevelSwapped\('(.{4})',udg_CurrentHero\)",r"Forsaken_StatAbilityLevel(hero,'\1')",expression)
+        expression=expression.replace("UnitHasBuffBJ(udg_CurrentHero,'B01Q')","Forsaken_StatAbilityLevel(hero,'B01Q')>0")
+        body=body.replace(name+'()',expression)
+    body=body.replace('udg_StatCalcValue','speed')
+    body=re.sub(r"'([A-Za-z])'",lambda m:str(ord(m[1])),body)
+    return """function Forsaken_StatAttackSpeed takes unit hero returns real
+    local integer rank=Forsaken_StatAbilityLevel(hero,'A00V')
+    local integer speed=R2I(SquareRoot(I2R(GetHeroAgi(hero,true)))*4.+I2R(GetHeroAgi(hero,true))*.4)
+    if Forsaken_StatAbilityLevel(hero,'A0HS')>0 then
+        set speed=0
+    elseif rank==11 then
+        set speed=speed+100
+    elseif rank==22 then
+        set speed=speed+200
+    else
+        set speed=speed+rank*8
+    endif
+""" + body + """    if Forsaken_StatAbilityLevel(hero,'B08T')>0 then
+        set speed=speed+120
+    elseif Forsaken_StatAbilityLevel(hero,'B00F')>0 or Forsaken_StatAbilityLevel(hero,'B07F')>0 then
+        set speed=speed+80
+    endif
+    if Forsaken_StatAbilityLevel(hero,'B08Y')>0 then
+        set speed=speed-100
+    elseif Forsaken_StatAbilityLevel(hero,'Bslo')>0 then
+        set speed=speed-50
+    endif
+    return I2R(IMaxBJ(40,IMinBJ(1000,speed)))
+endfunction"""
 
 
 def multiboard_overlay(original):
@@ -355,6 +425,7 @@ def combat_stat_helpers():
     // Independent block checks combine as one minus the probability that all checks miss.
     return 1.-miss
 endfunction''' % tuple(bodies))
+    result.append(attack_speed_helper())
     result.insert(0, (HERE / 'Forsaken-stat-ability.j').read_text(encoding='utf-8'))
     return '\n\n'.join(result)
 
@@ -394,7 +465,7 @@ def defense_overlay(original, mapping):
         loop
             exitwhen slot>8
             set equipped=UnitItemInEquipmentSlot(hero,ConvertLoadoutSlot(slot))
-            if equipped!=null and GetItemTypeId(equipped)==variant then
+            if equipped!=null and (GetItemTypeId(equipped)==variant or GetItemTypeId(equipped)==LoadInteger(ForsakenDefenseTypes,1,original)) then
                 set equipped=null
                 return true
             endif
@@ -514,6 +585,12 @@ def main():
                        for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,2,%d,'fT%02d')" % (i,i) for i in range(8)]
     initialization += ["    call SaveInteger(ForsakenGearTypes,3,%d,'fV%02d')" % (i,i) for i in range(48)]
+    for raw, entry in mapping.items():
+        if 'offhand' in entry:
+            initialization += ["    call SaveInteger(ForsakenDefenseTypes,1,'%s','%s')" % (raw,entry['offhand'])]
+            initialization += ["    call SaveInteger(ForsakenGearTypes,5,'%s','%s')" % (entry['variant'],entry['offhand']),
+                               "    call SaveInteger(ForsakenGearTypes,6,'%s','%s')" % (entry['offhand'],entry['variant']),
+                               "    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['offhand'],raw)]
     initialization += regeneration_initialization(base)
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
@@ -524,6 +601,9 @@ def main():
     board_source=work/'src/triggers/09 Player features/Multiboard.j'
     board_source.write_bytes(multiboard_overlay(board_source.read_text(encoding='utf-8')).replace('\n','\r\n').encode('utf-8'))
     defense_source.write_bytes(defense_overlay(defense_source.read_text(encoding='utf-8'),mapping).replace('\n','\r\n').encode('utf-8'))
+    for module, folder in [('Unit','04 Combat and abilities'),('Prof','03 Jobs and progression'),('Damage','04 Combat and abilities'),('TwoHanded','04 Combat and abilities')]:
+        path=work/'src/triggers'/folder/(module+'.j')
+        path.write_bytes(active_gear_overlay(path.read_text(),module).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,

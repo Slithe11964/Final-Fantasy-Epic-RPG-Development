@@ -220,7 +220,7 @@ function Forsaken_RenderStats takes unit hero returns nothing
     local integer element
     local integer playerIndex=GetPlayerId(GetOwningPlayer(hero))+1
     local string name
-    local string title="Combat"
+    local string title="Defenses"
     local real value
     local real physicalDefense=Forsaken_StatDefenseMultiplier(hero,true)
     local real magicalDefense=Forsaken_StatDefenseMultiplier(hero,false)
@@ -230,7 +230,7 @@ function Forsaken_RenderStats takes unit hero returns nothing
         call Forsaken_StatRow(i,"","")
         set i=i+1
     endloop
-    if ForsakenStatsPage==0 then
+    if ForsakenStatsPage==1 then
         if hero==Player_GetHero(GetOwningPlayer(hero)) then
             call Forsaken_StatRow(0,"Mana regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
             call Forsaken_StatRow(1,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
@@ -254,7 +254,7 @@ function Forsaken_RenderStats takes unit hero returns nothing
             set value=10.
         endif
         call Forsaken_StatRow(10,"Flat damage guard",R2SW(value,1,0))
-    elseif ForsakenStatsPage==1 then
+    elseif ForsakenStatsPage==2 then
         set title="Resistances"
         set i=0
         loop
@@ -277,8 +277,8 @@ function Forsaken_RenderStats takes unit hero returns nothing
             set value=15.
         endif
         call Forsaken_StatRow(7,"Random absorption",Forsaken_StatPercent(value))
-    elseif ForsakenStatsPage==2 then
-        set title="Element bonuses"
+    elseif ForsakenStatsPage==0 then
+        set title="Damage bonuses"
         set i=0
         loop
             exitwhen i>=6
@@ -287,6 +287,7 @@ function Forsaken_RenderStats takes unit hero returns nothing
         endloop
         call Forsaken_StatRow(6,"Physical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,true)),Forsaken_StatAbilityLevel(hero,'B08W')>0 or Forsaken_StatAbilityLevel(hero,'B06H')>0))
         call Forsaken_StatRow(7,"Magical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,false)),Forsaken_StatAbilityLevel(hero,'B08X')>0 or Forsaken_StatAbilityLevel(hero,'B06I')>0))
+        call Forsaken_StatRow(8,"Attack speed",Forsaken_StatPenalty(R2SW(Forsaken_StatAttackSpeed(hero),1,0)+"%",Forsaken_StatAbilityLevel(hero,'Bslo')>0 or Forsaken_StatAbilityLevel(hero,'B08Y')>0))
     else
         set title="Other bonuses"
         if hero==Player_GetHero(GetOwningPlayer(hero)) then
