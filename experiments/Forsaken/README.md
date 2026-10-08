@@ -1,5 +1,11 @@
 # Forsaken equipment experiment
 
+## Separate experiment - Forsaken BQ
+
+BQ is the current test checkpoint. It preserves BP's independent talent rows and bagged active book abilities, replaces the Depths/Wateraga proxy with a direct scripted Crushing Wave missile sweep using the original mana and rod-power formula, and applies one water hit per target with timer/effect cleanup. Accuracy rating is shown on Damage bonuses and is generated from item descriptions for every original, Forsaken equipment variant and offhand type ID; only active equipped slots contribute. The catalogue audit covers all 280 armory entries (276 equipment items plus four unchanged Materia).
+
+Validation: all source/editor/playable/map gates, 80 focused Forsaken tests, 96 repository regressions, 2,000 codec cases, armory/Bazaar checks, startup preservation and installed 3.0.1.24342 compilation PASS. Reforged output is `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBQ.w3x`; the classic output remains the unchanged AS fallback. Native acceptance is still needed for Depths/Wateraga wave and damage, Storm Lance Accuracy rating, and bagged static-stat exclusion. Saving remains disabled. Next unused stage BR.
+
 ## Separate experiment - Forsaken BP
 
 BP removes the same-column prerequisite from talent purchases. Each mastery-unlocked row independently permits one of its three choices; job/player isolation, mastery gates and cosmetic-only behavior remain unchanged.

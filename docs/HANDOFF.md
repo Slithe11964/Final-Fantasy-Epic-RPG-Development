@@ -2,7 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BQ. Normal development stays on AS; Forsaken BP allows independent talent-row choices and addresses book casts/cooldowns after unequipping plus water proxies.
+Next unused stage: BR. Normal development stays on AS; Forsaken BQ is the current playable checkpoint for water casts and equipped-item accuracy.
+
+## Separate experiment - Forsaken BQ
+
+BQ keeps BP's independent talent rows and bagged active book abilities, but replaces the Depths/Wateraga proxy with a direct scripted Crushing Wave missile sweep. It preserves the original mana and rod-power formula, handles ground and unit targets, applies one water hit per target, and cleans its timer/groups/effect. The startup hashtable is initialized outside the water trigger registration so the baseline startup audit remains exact.
+
+The stat panel now shows Accuracy rating on Damage bonuses. Build-time item descriptions are audited for accuracy bonuses and stored by original, Forsaken equipment-variant and offhand type ID; only active equipped Forsaken slots are read, so six-slot and 30-slot bag storage remain stat-free. The armory catalogue maps all 280 entries, including 276 equipment items and four unchanged Materia.
+
+Validation: all source/editor/playable/map gates, 80 focused Forsaken tests, 96 repository regressions, 2,000 codec cases, armory/Bazaar checks, startup preservation and installed 3.0.1.24342 compilation PASS. Reforged output: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBQ.w3x`; the classic path is the unchanged AS fallback. Native acceptance remains: cast Depths and Wateraga at ground and units, verify visible wave/damage, equip Storm Lance and confirm Accuracy rating updates, and verify bagged gear still grants no static stats. Saving remains disabled in the experiment.
 
 ## Separate experiment - Forsaken BP
 

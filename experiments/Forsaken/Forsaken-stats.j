@@ -146,8 +146,24 @@ function Forsaken_StatPenalty takes string value,boolean reduced returns string
     return value
 endfunction
 
+function Forsaken_StatItemAccuracy takes unit hero returns real
+    local integer slot=0
+    local item gear
+    local real total=0.
+    loop
+        exitwhen slot>=15
+        set gear=Forsaken_ActiveGear(hero,slot)
+        if gear!=null then
+            set total=total+I2R(LoadInteger(ForsakenGearTypes,41,GetItemTypeId(gear)))
+        endif
+        set slot=slot+1
+    endloop
+    set gear=null
+    return total
+endfunction
+
 function Forsaken_StatAccuracy takes unit hero returns real
-    local real value=Forsaken_Stat_GetAccuracy(hero)
+    local real value=Forsaken_Stat_GetAccuracy(hero)+Forsaken_StatItemAccuracy(hero)
     if Forsaken_StatAbilityLevel(hero,'B00X')>0 then
         set value=value+25.
     endif
@@ -245,7 +261,6 @@ function Forsaken_RenderStats takes unit hero returns nothing
         call Forsaken_StatRow(2,"Armor",R2SW(BlzGetUnitArmor(hero),1,2))
         call Forsaken_StatRow(3,"Armor defense %",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatEffectiveDefense(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero)),physicalDefense)),physicalDefense>1.))
         call Forsaken_StatRow(4,"Evasion rating",Forsaken_StatPenalty(R2SW(Forsaken_Stat_GetEvasion(hero),1,2),Forsaken_StatAbilityLevel(hero,'A1DB')>0))
-        call Forsaken_StatRow(5,"Accuracy rating",Forsaken_StatPenalty(R2SW(Forsaken_StatAccuracy(hero),1,2),blind))
         call Forsaken_StatRow(6,"Physical block",Forsaken_StatPercent(Forsaken_StatBlock(hero,true)))
         call Forsaken_StatRow(7,"Magical block",Forsaken_StatPercent(Forsaken_StatBlock(hero,false)))
         set value=0.
@@ -299,12 +314,13 @@ function Forsaken_RenderStats takes unit hero returns nothing
         call Forsaken_StatRow(6,"Physical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,true)),Forsaken_StatAbilityLevel(hero,'B08W')>0 or Forsaken_StatAbilityLevel(hero,'B06H')>0))
         call Forsaken_StatRow(7,"Magical damage",Forsaken_StatPenalty(Forsaken_StatPercent(Forsaken_StatOutgoing(hero,false)),Forsaken_StatAbilityLevel(hero,'B08X')>0 or Forsaken_StatAbilityLevel(hero,'B06I')>0))
         call Forsaken_StatRow(8,"Attack speed",Forsaken_StatPenalty(R2SW(Forsaken_StatAttackSpeed(hero),1,0)+"%",Forsaken_StatAbilityLevel(hero,'Bslo')>0 or Forsaken_StatAbilityLevel(hero,'B08Y')>0))
+        call Forsaken_StatRow(9,"Accuracy rating",Forsaken_StatPenalty(R2SW(Forsaken_StatAccuracy(hero),1,2),blind))
         if Forsaken_StatAbilityLevel(hero,'A0AP')>0 or Forsaken_StatAbilityLevel(hero,'A15J')>0 then
-            call Forsaken_StatRow(9,"Attack multiplier",R2SW(Forsaken_StatAttackMultiplier(hero),1,2)+"x")
+            call Forsaken_StatRow(10,"Attack multiplier",R2SW(Forsaken_StatAttackMultiplier(hero),1,2)+"x")
             if Unit_HasNoEquipment(hero) then
-                call Forsaken_StatRow(10,"Brawler","|cff00ff00Active|r")
+                call Forsaken_StatRow(11,"Brawler","|cff00ff00Active|r")
             else
-                call Forsaken_StatRow(10,"Brawler","Inactive")
+                call Forsaken_StatRow(11,"Brawler","Inactive")
             endif
         elseif Forsaken_StatAbilityLevel(hero,'A0GP')>0 then
             if twoHandedWeapon!=null then
@@ -315,8 +331,8 @@ function Forsaken_RenderStats takes unit hero returns nothing
                 call Forsaken_StatRow(11,"Two-Handed speed","+0%")
             endif
         endif
-        if element==7 then
-            call Forsaken_StatRow(9,"|cff00ff00Basic attack element|r","Omni")
+        if element==7 and Forsaken_StatAbilityLevel(hero,'A0AP')==0 and Forsaken_StatAbilityLevel(hero,'A15J')==0 and Forsaken_StatAbilityLevel(hero,'A0GP')==0 then
+            call Forsaken_StatRow(11,"|cff00ff00Basic attack element|r","Omni")
         endif
     else
         set title="Other bonuses"

@@ -388,17 +388,9 @@ endfunction
         start=original.index('function Trig_Cooldown_Scaling_Actions')
         original=original[:start]+original[start:].replace('call BlzSetUnitAbilityCooldown(', 'call Forsaken_SetCastCooldown(').replace('GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())','Forsaken_CastAbilityLevel(GetSpellAbilityId(),GetTriggerUnit())')
     elif module == 'Spell_Water':
-        original=original.replace('    local integer l_tempHandleId', '    local unit waveDummy\n    local integer l_tempHandleId',1)
-        original=original.replace("    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint)","    set waveDummy=CreateUnit(GetOwningPlayer(GetTriggerUnit()),'h01B',GetLocationX(l_tempPoint),GetLocationY(l_tempPoint),0.)",1)
-        original=original.replace('GetLastCreatedUnit()','waveDummy')
-        # h01B has nothing.mdl and Locust already: engine hiding is unnecessary
-        # and can suppress a native proxy cast/projectile in the new inventory runtime.
-        original=original.replace('    call ShowUnitHide(waveDummy)\n','',1)
-        original=original.replace('    call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)', """    // This proxy is a spell carrier; its own mana must never gate the wave.
-    call BlzSetUnitAbilityManaCost(waveDummy,'A0PZ',0,0)
-    call BlzSetUnitRealField(waveDummy,UNIT_RF_CAST_POINT,0.)
-    call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)""",1)
-        original=original.replace('    set l_tempPoint=null','    set waveDummy=null\n    set l_tempPoint=null',1)
+        replacement=(HERE/'Forsaken-water.j').read_text(encoding='utf-8')
+        body=re.search(r'function Trig_Spell_Water_Actions\b.*?endfunction',original,re.S)
+        original=original[:body.start()]+replacement+original[body.end():]
     return original
 
 
@@ -544,6 +536,44 @@ def bag_passive_initialization(base):
             '    set ForsakenBagPassiveTypes=InitHashtable()'] + [
         "    call SaveBoolean(ForsakenBagPassiveTypes,0,'%s',true)"%raw
         for raw in sorted(bag_passive_types(base))]
+
+
+def item_accuracy_initialization(base, mapping):
+    """Record item accuracy bonuses so the Forsaken panel can audit every gear item.
+
+    The canonical map stores many item bonuses in tooltip text rather than an
+    ability field.  Accuracy is one of those bonuses (for example Storm
+    Lance), so the generated branch keeps a compact type-id lookup for the
+    original item and every Forsaken equipment variant.
+    """
+    archive = MPQ(str(base))
+    table = read_objects(archive.read('war3map.w3t'), 'w3t')
+    fields_by_raw = {o['id'] or o['base']: fields(o)
+                     for group in ('original', 'custom') for o in table[group]}
+
+    def parse(value):
+        if not value or value.startswith('TRIGSTR_'):
+            return 0
+        plain = re.sub(r'\|c[0-9a-fA-F]{8}|\|r', '', value)
+        total = 0
+        for pattern in (
+                r'\baccuracy(?:\s+rating)?\s*(?:by|:|\+)\s*\+?(\d+)',
+                r'\+\s*(\d+)\s+accuracy(?:\s+rating)?\b'):
+            total += sum(int(match) for match in re.findall(pattern, plain, re.I))
+        return total
+
+    result = []
+    for raw, entry in mapping.items():
+        data = fields_by_raw.get(raw, {})
+        # The same localized description is commonly present in both fields;
+        # use the larger parsed value so a bonus is never counted twice.
+        value = max(parse(data.get('ides', '')), parse(data.get('utub', '')))
+        if not value:
+            continue
+        ids = [raw, entry.get('variant'), entry.get('offhand')]
+        result.extend("    call SaveInteger(ForsakenGearTypes,41,'%s',%d)" % (item, value)
+                      for item in ids if item)
+    return result
 
 
 def job_overlay(original):
@@ -718,7 +748,7 @@ def main():
     mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
     source = work/'src/triggers/05 Items crafting and shops/Equip.j'
     overlay = equip_overlay(source.read_text(encoding='utf-8'))
-    initialization = ['    set ForsakenGearTypes=InitHashtable()', '    set ForsakenDefenseTypes=InitHashtable()']
+    initialization = ['    set ForsakenGearTypes=InitHashtable()', '    set ForsakenDefenseTypes=InitHashtable()', '    set ForsakenWaterWaves=InitHashtable()']
     initialization += ["    call SaveInteger(ForsakenDefenseTypes,0,'%s','%s')" % (raw,entry['variant'])
                        for raw, entry in mapping.items() if 'variant' in entry]
     initialization += ["    call SaveInteger(ForsakenGearTypes,0,'%s','%s')" % (raw,entry['variant'])
@@ -737,6 +767,7 @@ def main():
                                "    call SaveInteger(ForsakenGearTypes,6,'%s','%s')" % (entry['offhand'],entry['variant']),
                                "    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['offhand'],raw)]
     initialization += bag_passive_initialization(base)
+    initialization += item_accuracy_initialization(base, mapping)
     initialization += regeneration_initialization(base)
     initialization += element_source_initialization(base)
     item_table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')

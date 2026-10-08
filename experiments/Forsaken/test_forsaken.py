@@ -100,17 +100,80 @@ class ForsakenTests(unittest.TestCase):
         runtime['Forsaken_SetCastCooldown']('hero','other',0,9.)
         self.assertEqual(calls[-1],('unit',('hero','other',0,9.)))
 
-    def test_water_proxy_uses_owned_reference_and_cannot_fail_for_dummy_mana(self):
+    def test_water_uses_scripted_wave_with_original_cast_ids_formula_and_registration(self):
         source=(build.ROOT/'src/triggers/04 Combat and abilities/Spell_Water.j').read_text(encoding='utf-8')
         result=build.cast_overlay(source,'Spell_Water')
+        self.assertNotIn('IssuePointOrder',result)
         self.assertNotIn('GetLastCreatedUnit()',result)
-        self.assertNotIn('ShowUnitHide(waveDummy)',result)
-        self.assertIn("call BlzSetUnitAbilityManaCost(waveDummy,'A0PZ',0,0)",result)
-        self.assertIn('call BlzSetUnitRealField(waveDummy,UNIT_RF_CAST_POINT,0.)',result)
-        self.assertIn('call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)',result)
-        # Both Depths and Wateraga retain the same wave trigger and damage formula.
+        self.assertIn('CrushingWaveMissile.mdl',result)
+        self.assertNotIn('set ForsakenWaterWaves=InitHashtable()',result)
+        self.assertIn('EVENT_PLAYER_UNIT_SPELL_EFFECT',result)
         for raw in ('A08X','A0Q2'):self.assertIn(raw,result)
-        self.assertIn('Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5',result)
+        self.assertIn('Abil_GetLevel(caster,GetSpellAbilityId()))*5',result)
+        self.assertIn('power=power+GetHeroInt(caster,true)*6',result)
+        self.assertIn('I2R(power)*Prof_RodPower(caster)',result)
+
+    def test_water_cone_sweeps_without_gaps_and_rejects_out_of_range(self):
+        source=(HERE/'Forsaken-water.j').read_text(encoding='utf-8')
+        state=mocks(source);state.update(RMaxBJ=max,RMinBJ=min,RAbsBJ=abs)
+        touch=execute(source,['Forsaken_WaterTouches'],state)['Forsaken_WaterTouches']
+        for along in range(0,801):
+            previous=min(792,(along//33)*33)
+            self.assertTrue(touch(along,0.,0.,previous,min(800.,previous+33.)))
+        self.assertTrue(touch(400.,199.,0.,396.,429.))
+        self.assertFalse(touch(400.,201.,0.,396.,429.))
+        self.assertFalse(touch(900.,0.,0.,792.,800.))
+        self.assertFalse(touch(-50.,0.,0.,0.,33.))
+        self.assertTrue(touch(35.,110.,16.,0.,33.))
+
+    def test_water_ground_and_unit_casts_move_damage_once_and_clean_up(self):
+        source=(HERE/'Forsaken-water.j').read_text(encoding='utf-8')
+        cache={};clocks=[];effects=[];damage=[];destroyed=[]
+        targets={'ground':(200.,0.),'flying':(400.,50.),'building':(650.,0.),
+                 'outside':(400.,500.),'ally':(300.,0.),'immune':(250.,0.),'dead':(350.,0.)}
+        current={'clock':None,'target':None,'raw':'A0Q2'}
+        def create_timer():
+            clock='clock'+str(len(clocks));clocks.append(clock);return clock
+        def effect(*args):
+            handle='wave'+str(len(effects));effects.append((handle,args));return handle
+        def save(h,k,i,v):cache[k,i]=v
+        def group_enum(group,x,y,r,f):group.update(targets)
+        def destroy(kind,value):destroyed.append((kind,value))
+        state=mocks(source);state.update(ForsakenWaterWaves='waves',RMaxBJ=max,RMinBJ=min,RAbsBJ=abs,
+            GetTriggerUnit=lambda:'hero',GetSpellTargetUnit=lambda:current['target'],GetSpellTargetLoc=lambda:(800.,0.),
+            GetUnitX=lambda u:targets.get(u,(0.,0.))[0],GetUnitY=lambda u:targets.get(u,(0.,0.))[1],
+            GetLocationX=lambda p:p[0],GetLocationY=lambda p:p[1],GetLocationZ=lambda p:0.,
+            Location=lambda x,y:(x,y),RemoveLocation=lambda p:None,GetUnitFacing=lambda u:0.,
+            GetSpellAbilityId=lambda:current['raw'],Abil_GetLevel=lambda u,r:0,
+            BlzGetAbilityManaCost=lambda r,l:400 if r=='A0Q2' else 500,GetHeroInt=lambda u,b:100,
+            Prof_RodPower=lambda u:1.25,IsUnitType=lambda u,t:u=='hero' if t=='hero-type' else u=='immune',
+            UNIT_TYPE_HERO='hero-type',UNIT_TYPE_MAGIC_IMMUNE='immune-type',ATTACK_TYPE_NORMAL='normal',DAMAGE_TYPE_MAGIC='magic',
+            CreateTimer=create_timer,GetExpiredTimer=lambda:current['clock'],GetHandleId=lambda h:h,
+            AddSpecialEffect=effect,BlzSetSpecialEffectYaw=lambda *a:None,BlzSetSpecialEffectPosition=lambda *a:None,
+            SaveUnitHandle=save,SaveReal=save,SaveEffectHandle=save,SaveGroupHandle=save,
+            LoadUnitHandle=lambda h,k,i:cache.get((k,i)),LoadReal=lambda h,k,i:cache.get((k,i),0.),
+            LoadEffectHandle=lambda h,k,i:cache.get((k,i)),LoadGroupHandle=lambda h,k,i:cache.get((k,i)),
+            CreateGroup=set,GroupEnumUnitsInRange=group_enum,FirstOfGroup=lambda g:next(iter(g),None),
+            GroupRemoveUnit=lambda g,u:g.remove(u),GroupAddUnit=lambda g,u:g.add(u),IsUnitInGroup=lambda u,g:u in g,
+            GetOwningPlayer=lambda u:0,IsUnitEnemy=lambda u,p:u!='ally',GetWidgetLife=lambda u:0. if u=='dead' else 100.,
+            IsUnitHidden=lambda u:False,BlzIsUnitInvulnerable=lambda u:False,BlzGetUnitCollisionSize=lambda u:16.,
+            UnitDamageTarget=lambda *args:damage.append(args),GetUnitTypeId=lambda u:1,
+            TimerStart=lambda *a:None,DestroyEffect=lambda v:destroy('effect',v),DestroyGroup=lambda v:destroy('group',v),
+            DestroyTimer=lambda v:destroy('timer',v),FlushChildHashtable=lambda h,k:[cache.pop(e) for e in list(cache) if e[0]==k])
+        import math
+        state.update(Atan2=math.atan2,Cos=math.cos,Sin=math.sin,I2R=float,bj_DEGTORAD=math.pi/180.)
+        runtime=execute(source,['Forsaken_WaterTouches','Forsaken_WaterTick','Trig_Spell_Water_Actions'],state)
+        for raw,target,expected in [('A0Q2',None,3250.),('A08X','ground',3875.)]:
+            current.update(raw=raw,target=target)
+            runtime['Trig_Spell_Water_Actions']();current['clock']=clocks[-1]
+            for tick in range(25):runtime['Forsaken_WaterTick']()
+            hits=damage[-3:]
+            self.assertEqual({args[1] for args in hits},{'ground','flying','building'})
+            self.assertTrue(all(args[0]=='hero' and args[2]==expected and args[5:7]==('normal','magic') for args in hits))
+        self.assertEqual(len(damage),6);self.assertFalse(cache)
+        self.assertEqual(sum(kind=='timer' for kind,v in destroyed),2)
+        self.assertEqual(sum(kind=='group' for kind,v in destroyed),4)
+        self.assertEqual(sum(kind=='effect' for kind,v in destroyed),2)
 
     def test_unequip_rebind_keeps_sparse_bag_handles_charges_and_passives_inert(self):
         source=(HERE/'Forsaken-extra.j').read_text(encoding='utf-8')
@@ -437,7 +500,7 @@ class ForsakenTests(unittest.TestCase):
         self.assertEqual(rows[1][0],'|cff00ff00Ice damage|r');self.assertEqual(rows[0][0],'Fire damage')
         current[0]=1;render('hero');self.assertEqual(rows[1][0],'Ice damage');self.assertIn('|cff00ff00',rows[0][0])
         current[0]=0;render('hero');self.assertTrue(all('|cff00ff00' not in rows[i][0] for i in range(6)))
-        current[0]=7;render('hero');self.assertEqual(rows[9],('|cff00ff00Basic attack element|r','Omni'))
+        current[0]=7;render('hero');self.assertEqual(rows[11],('|cff00ff00Basic attack element|r','Omni'))
 
     def test_attack_speed_reading_includes_gear_and_haste_slow_without_mutation(self):
         source=build.attack_speed_helper();levels={}
@@ -504,7 +567,7 @@ class ForsakenTests(unittest.TestCase):
     def test_penalties_update_existing_values_and_preserve_defense_status_precedence(self):
         levels={}
         runtime=self.stat_runtime(['Forsaken_StatAccuracy','Forsaken_StatDefenseMultiplier','Forsaken_StatEffectiveDefense','Forsaken_StatPenalty'],levels,
-            Forsaken_Stat_GetAccuracy=lambda u:200.)
+            Forsaken_Stat_GetAccuracy=lambda u:200.,Forsaken_StatItemAccuracy=lambda u:0.)
         accuracy=runtime['Forsaken_StatAccuracy']; defense=runtime['Forsaken_StatDefenseMultiplier']
         self.assertEqual(accuracy('hero'),200.)
         levels['B00P']=1;self.assertEqual(accuracy('hero'),100.)
@@ -737,7 +800,24 @@ class ForsakenTests(unittest.TestCase):
         self.assertIn('if ForsakenStatsPage==1 then',combat)
         self.assertIn('local string title="Defenses"',combat)
         self.assertIn('"Physical damage"',damage);self.assertIn('"Magical damage"',damage)
+        self.assertIn('"Accuracy rating"',damage)
+        self.assertNotIn('"Accuracy rating"',combat)
         self.assertNotIn('"Physical damage"',other);self.assertNotIn('Split values',source);self.assertNotIn('damage increased',source)
+
+    def test_equipped_item_accuracy_is_read_from_item_tooltips_and_excludes_bag_items(self):
+        source=(HERE/'Forsaken-stats.j').read_text(encoding='utf-8')
+        self.assertIn('function Forsaken_StatItemAccuracy takes unit hero returns real',source)
+        self.assertIn('Forsaken_ActiveGear(hero,slot)',source)
+        self.assertIn('LoadInteger(ForsakenGearTypes,41,GetItemTypeId(gear))',source)
+        self.assertIn('Forsaken_Stat_GetAccuracy(hero)+Forsaken_StatItemAccuracy(hero)',source)
+        helper=build.item_accuracy_initialization
+        with tempfile.TemporaryDirectory(dir=build.ROOT/'build') as folder:
+            base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+            mapping={'I0D1':{'variant':'f000','offhand':'g000'}}
+            lines=helper(base,mapping)
+            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'I0D1',55)" in line for line in lines))
+            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'f000',55)" in line for line in lines))
+            self.assertTrue(any("SaveInteger(ForsakenGearTypes,41,'g000',55)" in line for line in lines))
 
     def test_carry_order_targets_quick_slots_and_gaya_pickups_without_mutating_attack_orders(self):
         source=(HERE/'Forsaken-carry.j').read_text();converted=[];issued=[];saved={}
