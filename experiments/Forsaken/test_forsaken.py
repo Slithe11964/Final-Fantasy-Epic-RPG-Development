@@ -22,6 +22,86 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_internal_spacers_skip_legacy_accessory_restrictions(self):
+        source=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text())
+        item=['spacer'];types={'spacer':'fGap','accessory':'oldA','weapon':'f001'}
+        state=mocks(source);state.update(ForsakenConvertingGear=False,ForsakenGearTypes='gear',
+            GetManipulatedItem=lambda:item[0],GetItemTypeId=lambda i:types[i],
+            GetItemEquipmentType=lambda i:'none',EQUIPMENT_TYPE_NONE='none',LoadInteger=lambda *a:0,
+            GetItemType=lambda i:'accessory',ITEM_TYPE_CHARGED='charged',ITEM_TYPE_CAMPAIGN='campaign',
+            GetUnitTypeId=lambda u:'H00F',GetManipulatingUnit=lambda:'hero',IsUnitType=lambda *a:True,
+            UNIT_TYPE_HERO='hero',GetTriggerUnit=lambda:'hero',GetOwningPlayer=lambda u:0,IsPlayerInForce=lambda *a:True,
+            udg_ActivePlayers='players',ForsakenEquippedItem=None)
+        runtime=execute(source,['Forsaken_EventItem','Trig_Equip_Restrictions_Conditions'],state)
+        check=runtime['Trig_Equip_Restrictions_Conditions']
+        for _ in range(100):self.assertFalse(check())
+        item[0]='accessory';self.assertTrue(check())
+        runtime['ForsakenConvertingGear']=True
+        for _ in range(100):self.assertFalse(check())
+        runtime['ForsakenConvertingGear']=False;self.assertTrue(check())
+
+    def test_gaya_strength_counts_once_in_combat_and_display_including_enchant(self):
+        source=build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(),'Damage')
+        levels={};arrays={name:{i:'none'+str(i) for i in range(1,8)} for name in ['udg_ElementAttackAbil','udg_ElementKnowledgeAbil','udg_ElementBoostAbil','udg_ElementSpellAmpAbil','udg_ElementOrbAmpAbil','udg_ElementEnchantBuff']}
+        arrays['udg_ElementEnchantBuff']={i:'enchant'+str(i) for i in range(1,8)}
+        state=mocks(source);state.update(arrays);state.update(Forsaken_ActiveAbilityLevel=lambda u,r:levels.get(r,0))
+        runtime=execute(source,['Trig_Damage_Engine_GetElementBonus','Forsaken_ElementDamageBonus'],state)
+        read=runtime['Forsaken_ElementDamageBonus']
+        display=self.stat_runtime(['Forsaken_Stat_GetElementBonus','Forsaken_StatElementDamageBonus'],levels,**arrays)
+        for raw in ('A0PN','B08Z'):
+            levels.clear();levels[raw]=1
+            for physical in (False,True):
+                for element in range(1,8):
+                    self.assertAlmostEqual(read('hero',element,physical),.33333)
+                    self.assertAlmostEqual(display['Forsaken_StatElementDamageBonus']('hero',element,physical),read('hero',element,physical))
+            levels['enchant1']=1
+            self.assertAlmostEqual(read('hero',1,True),(1.+.33333)*1.2-1.)
+        levels.clear();levels['A0PN']=1;levels['omniBoost']=1
+        arrays['udg_ElementBoostAbil'][7]='omniBoost'
+        self.assertAlmostEqual(read('hero',1,False),.33333+.15)
+        self.assertAlmostEqual(display['Forsaken_StatElementDamageBonus']('hero',1,False),.33333+.15)
+        step=functions(source)['Trig_Damage_Engine_Step11_ElementBonus']
+        self.assertIn('Forsaken_ElementDamageBonus(u,l_element,l_physical)',step)
+
+    def test_monk_brawler_attack_multiplier_drops_with_native_shield_and_recovers(self):
+        unit=build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Unit.j').read_text(),'Unit')
+        source=unit+build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(),'Damage')
+        slots={};levels={'A15J':1};state=mocks(source)
+        state.update(UnitItemInSlot=lambda u,i:None,UnitItemInEquipmentSlot=lambda u,i:slots.get(i),ConvertLoadoutSlot=lambda i:i,
+            GetItemType=lambda i:'shield' if i=='shield' else 'weapon',GetItemLevel=lambda i:2 if i=='shield' else 0,
+            ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='shield',GetUnitAbilityLevel=lambda u,r:levels.get(r,0),
+            GetOwningPlayer=lambda u:0,Player=lambda p:p,Player_GetHero=lambda p:'hero',Prof_GetWeaponUpgrade=lambda u:0,I2R=float)
+        runtime=execute(source,['Forsaken_ActiveGear','Unit_HasNoEquipment','Trig_Damage_Engine_ProficiencyMult'],state)
+        read=runtime['Trig_Damage_Engine_ProficiencyMult']
+        self.assertEqual(read('hero'),3.4)
+        slots[6]='fists';self.assertEqual(read('hero'),3.4)
+        slots[7]='shield';self.assertEqual(read('hero'),1.4)
+        del slots[7];self.assertEqual(read('hero'),3.4)
+        levels['A136']=1;self.assertEqual(read('hero'),4.6)
+        slots[7]='shield';self.assertEqual(read('hero'),1.6)
+
+    def test_two_handed_swing_bonus_and_display_follow_native_offhand(self):
+        active=(HERE/'Forsaken-active-gear.j').read_text()
+        source=active+build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/TwoHanded.j').read_text(),'TwoHanded')+build.attack_speed_helper()
+        slots={6:'weapon'};calls=[]
+        state=mocks(source);state.update(UnitItemInSlot=lambda *a:None,UnitItemInEquipmentSlot=lambda u,i:slots.get(i),ConvertLoadoutSlot=lambda i:i,
+            EQUIPMENT_LOADOUT_SLOT_OFFHAND=7,GetItemType=lambda i:'weapon',ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='shield',
+            GetAttacker=lambda:'hero',UnitAddItemByIdSwapped=lambda *a:calls.append(('bonus',a)),UnitRemoveBuffBJ=lambda *a:calls.append(('clear',a)),
+            Forsaken_StatAbilityLevel=lambda u,r:1 if r=='A0GP' else 0,IsUnitType=lambda *a:True,UNIT_TYPE_MELEE_ATTACKER='melee',
+            GetHeroAgi=lambda *a:100,R2I=int,I2R=float,SquareRoot=__import__('math').sqrt,IMinBJ=min,IMaxBJ=max)
+        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_TwoHandedWeapon','Trig_TwoHanded_Check_Actions','Forsaken_StatAttackSpeed'],state)
+        read=runtime['Forsaken_StatAttackSpeed'];attack=runtime['Trig_TwoHanded_Check_Actions']
+        self.assertEqual(read('hero'),420.);attack();self.assertEqual(calls[-1][0],'bonus')
+        # An occupied native offhand cancels even if the client reports a weapon class.
+        slots[7]='shield';self.assertEqual(read('hero'),180.);attack();self.assertEqual(calls[-1][0],'clear')
+        del slots[7];self.assertEqual(read('hero'),420.);attack();self.assertEqual(calls[-1][0],'bonus')
+
+    def test_talent_icons_have_no_hotkey_letter_labels_or_letter_bindings(self):
+        source=(HERE/'Forsaken-panels.j').read_text()
+        self.assertNotIn('ABCDFGHIJKLM',source);self.assertNotIn('local string letter',source)
+        keys=re.findall(r'BlzTriggerRegisterPlayerKeyEvent.*OSKEY_(\w+)',source)
+        self.assertEqual(keys,['ESCAPE'])
+
     def test_active_gear_checks_include_equipment_and_exclude_bag_storage(self):
         source=(build.ROOT/'src/triggers/04 Combat and abilities/Unit.j').read_text()
         source=build.active_gear_overlay(source,'Unit')
@@ -43,7 +123,7 @@ class ForsakenTests(unittest.TestCase):
             original=(build.ROOT/'src/triggers'/folder/(module+'.j')).read_text()
             patched=functions(build.active_gear_overlay(original,module))
             for name in names:
-                self.assertIn('15',patched[name])
+                self.assertTrue('15' in patched[name] or 'Forsaken_TwoHandedWeapon' in patched[name])
                 self.assertNotIn('UnitItemInSlot(',patched[name])
 
     def test_two_handed_and_proficiency_use_native_hands_with_existing_formulas(self):
@@ -52,8 +132,8 @@ class ForsakenTests(unittest.TestCase):
         slots={12:'sword'};types={'sword':'weapon','shield':'offhand','second':'weapon'}
         state=mocks(source);state.update(udg_TwoHandedItem=None,UnitItemInSlot=lambda u,i:slots.get(i),
             UnitItemInEquipmentSlot=lambda u,i:slots.get(i+6),ConvertLoadoutSlot=lambda i:i,
-            GetItemType=lambda i:types.get(i),ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='offhand')
-        runtime=execute(source,['Forsaken_ActiveGear','Trig_Damage_Engine_FindTwoHandedItem'],state)
+            GetItemType=lambda i:types.get(i),EQUIPMENT_LOADOUT_SLOT_OFFHAND=7,ITEM_TYPE_PERMANENT='weapon',ITEM_TYPE_POWERUP='offhand')
+        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_TwoHandedWeapon','Trig_Damage_Engine_FindTwoHandedItem'],state)
         read=runtime['Trig_Damage_Engine_FindTwoHandedItem']
         read('hero');self.assertEqual(runtime['udg_TwoHandedItem'],'sword')
         for offhand in ('shield','second'):
@@ -187,7 +267,7 @@ class ForsakenTests(unittest.TestCase):
             del levels[penalty];self.assertEqual(defense('hero',physical),1.5)
 
     def test_element_rows_combine_equal_bonuses_and_keep_type_specific_values_honest(self):
-        runtime=self.stat_runtime(['Forsaken_StatElementText','Forsaken_StatPercent'],
+        runtime=self.stat_runtime(['Forsaken_StatElementText','Forsaken_StatPercent','Forsaken_StatElementDamageBonus'],
             Forsaken_Stat_GetElementBonus=lambda u,e,p:.5 if e==4 else 0.,R2SW=lambda n,w,d:format(n,'.'+str(d)+'f'),RAbsBJ=abs)
         self.assertEqual(runtime['Forsaken_StatElementText']('hero',4),'50.00%')
         runtime['Forsaken_Stat_GetElementBonus']=lambda u,e,p:(.1 if p else .8) if e==4 else 0.
@@ -501,8 +581,8 @@ class ForsakenTests(unittest.TestCase):
             calls = []
             state = mocks(overlay)
             state.update(ForsakenGearTypes='gear-types',ForsakenConvertingGear=False,Forsaken_CarryEvent=lambda u:None,EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup',EVENT_PLAYER_UNIT_EQUIP_ITEM='equip', GetTriggerEventId=lambda:'equip', ForsakenEquippedItem=None, GetTriggerUnit=lambda:'hero', GetOwningPlayer=lambda u:0,
-                         Player_GetHero=lambda p:'hero', GetEquippedItem=lambda:'gear',
-                         GetManipulatedItem=lambda:None, IsPlayerInForce=lambda *a:True,
+                         Player_GetHero=lambda p:'hero', GetEquippedItem=lambda:'gear',LoadInteger=lambda *a:0,
+                         GetUnitAbilityLevel=lambda *a:0, GetManipulatedItem=lambda:None, IsPlayerInForce=lambda *a:True,
                          udg_PlayingPlayers='players', udg_SpiritOfGaya={1:'gaya'},
                          udg_PlayerName={1:'Slithe'}, GetConvertedPlayerId=lambda p:1,
                          I2R=float, R2I=int, I2S=str,
@@ -541,7 +621,7 @@ class ForsakenTests(unittest.TestCase):
         overlay = build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text(encoding='utf-8'))
         calls = []
         state = mocks(overlay)
-        state.update(UnitAddAbility=lambda u,a:calls.append(('add',u,a)),
+        state.update(GetUnitAbilityLevel=lambda *a:0,UnitAddAbility=lambda u,a:calls.append(('add',u,a)),
                      UnitMakeAbilityPermanent=lambda u,p,a:calls.append(('permanent',u,p,a)))
         runtime = execute(overlay, ['Forsaken_EnableHero'], state)
         runtime['Forsaken_EnableHero']('hero')

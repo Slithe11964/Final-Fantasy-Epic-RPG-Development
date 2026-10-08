@@ -37,3 +37,27 @@ function Forsaken_ActiveAbilityLevel takes unit holder,integer raw returns integ
     set itemAbility=null
     return rank
 endfunction
+
+function Forsaken_TwoHandedWeapon takes unit holder returns item
+    local integer slot=0
+    local item gear
+    local item weapon=null
+    if UnitItemInEquipmentSlot(holder,EQUIPMENT_LOADOUT_SLOT_OFFHAND)!=null then
+        return null
+    endif
+    loop
+        exitwhen slot>=15
+        set gear=Forsaken_ActiveGear(holder,slot)
+        if gear!=null and (GetItemType(gear)==ITEM_TYPE_PERMANENT or GetItemType(gear)==ITEM_TYPE_POWERUP) then
+            if weapon!=null or GetItemType(gear)==ITEM_TYPE_POWERUP then
+                set gear=null
+                set weapon=null
+                return null
+            endif
+            set weapon=gear
+        endif
+        set slot=slot+1
+    endloop
+    set gear=null
+    return weapon
+endfunction

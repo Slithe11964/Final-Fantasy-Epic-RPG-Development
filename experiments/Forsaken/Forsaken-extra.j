@@ -84,6 +84,9 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
     call Forsaken_PrepareQuickGear(holder)
     call Forsaken_PrepareDualWield(holder)
+    if GetUnitAbilityLevel(holder,'A0GP')>0 and Forsaken_TwoHandedWeapon(holder)==null then
+        call UnitRemoveAbility(holder,'B05W')
+    endif
     call Forsaken_UpdatePanels(holder)
 endfunction
 
@@ -100,6 +103,9 @@ function Forsaken_OnEquip takes nothing returns nothing
     if ForsakenConvertingGear then
         set holder=null
         return
+    endif
+    if GetUnitAbilityLevel(holder,'A0GP')>0 and Forsaken_TwoHandedWeapon(holder)==null then
+        call UnitRemoveAbility(holder,'B05W')
     endif
     call Forsaken_CarryEvent(holder)
     if GetTriggerEventId()!=EVENT_PLAYER_UNIT_PICKUP_ITEM and GetTriggerEventId()!=EVENT_PLAYER_UNIT_EQUIP_ITEM then

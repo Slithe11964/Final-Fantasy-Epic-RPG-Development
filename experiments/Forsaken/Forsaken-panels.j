@@ -521,7 +521,6 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
     local integer node=0
     local integer column
     local integer skill
-    local string letter
     local string mastery="Normal"
     local framehandle anchor
     if job<0 then
@@ -588,15 +587,14 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
             else
                 call BlzFrameSetTexture(ForsakenTalentIcon[node],"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
             endif
-            set letter=SubString("ABCDFGHIJKLM",node,node+1)
             if LoadBoolean(ForsakenTalentState,key,node) then
-                call BlzFrameSetText(ForsakenTalentLabel[node],"|cff00ff00"+letter+" +|r")
+                call BlzFrameSetText(ForsakenTalentLabel[node],"|cff00ff00+|r")
                 call BlzFrameSetAlpha(ForsakenTalentIcon[node],255)
             elseif Forsaken_TalentCanPurchase(key,node,rank) then
-                call BlzFrameSetText(ForsakenTalentLabel[node],"|cffffcc00"+letter+"|r")
+                call BlzFrameSetText(ForsakenTalentLabel[node],"")
                 call BlzFrameSetAlpha(ForsakenTalentIcon[node],255)
             else
-                call BlzFrameSetText(ForsakenTalentLabel[node],"|cffaaaaaa"+letter+"|r")
+                call BlzFrameSetText(ForsakenTalentLabel[node],"")
                 call BlzFrameSetAlpha(ForsakenTalentIcon[node],90)
             endif
             set node=node+1

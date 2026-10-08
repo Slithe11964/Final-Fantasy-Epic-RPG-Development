@@ -287,6 +287,7 @@ endfunction
 function Trig_Equip_Restrictions_Conditions''', 1)
     conditions = re.search(r'function Trig_Equip_Restrictions_Conditions.*?endfunction', text, re.S)
     body = conditions.group().replace('    return',
+          '    if ForsakenConvertingGear or GetItemTypeId(GetManipulatedItem())==\'fGap\' then\n        return false\n    endif\n'
           '    if GetItemEquipmentType(GetManipulatedItem())!=EQUIPMENT_TYPE_NONE or LoadInteger(ForsakenGearTypes,0,GetItemTypeId(GetManipulatedItem()))!=0 then\n        return false\n    endif\n'
           '    return', 1)
     text = text[:conditions.start()] + body + text[conditions.end():]
@@ -324,8 +325,22 @@ def active_gear_overlay(original, module):
         body = match.group().replace('UnitItemInSlotBJ(', 'Forsaken_ActiveGearBJ(').replace('UnitItemInSlot(', 'Forsaken_ActiveGear(')
         if module in ('Prof','Element') or name in ('Trig_Damage_Engine_GetElementBonus','Trig_Damage_Engine_GetElementResist'):
             body = body.replace('GetUnitAbilityLevel(', 'Forsaken_ActiveAbilityLevel(')
+        if name=='Trig_Damage_Engine_FindTwoHandedItem':
+            body='function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing\n    set udg_TwoHandedItem=Forsaken_TwoHandedWeapon(u)\nendfunction'
+        if name=='Trig_TwoHanded_Check_Actions':
+            body="""function Trig_TwoHanded_Check_Actions takes nothing returns nothing
+    if Forsaken_TwoHandedWeapon(GetAttacker())!=null then
+        call UnitAddItemByIdSwapped('I0GK',GetAttacker())
+    else
+        call UnitRemoveBuffBJ('B05W',GetAttacker())
+    endif
+endfunction"""
         body = body.replace('i>=bj_MAX_INVENTORY','i>=15').replace('udg_SlotIndex>6','udg_SlotIndex>15')
         original = original[:match.start()] + body + original[match.end():]
+    if module=='Damage':
+        helper=element_damage_helper()
+        original=original.replace('function Trig_Damage_Engine_Step11_ElementBonus',helper+'\n\nfunction Trig_Damage_Engine_Step11_ElementBonus',1)
+        original=original.replace('1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)','1.+Forsaken_ElementDamageBonus(u,l_element,l_physical)')
     if module == 'Unit':
         original = original.replace('function Unit_HasNoEquipment', (HERE/'Forsaken-active-gear.j').read_text()+'\nfunction Unit_HasNoEquipment',1)
     elif module in ('Prof','TwoHanded'):
@@ -367,6 +382,9 @@ def attack_speed_helper():
     elseif Forsaken_StatAbilityLevel(hero,'Bslo')>0 then
         set speed=speed-50
     endif
+    if Forsaken_StatAbilityLevel(hero,'A0GP')>0 and IsUnitType(hero,UNIT_TYPE_MELEE_ATTACKER) and Forsaken_TwoHandedWeapon(hero)!=null then
+        set speed=speed+240
+    endif
     return I2R(IMaxBJ(40,IMinBJ(1000,speed)))
 endfunction"""
 
@@ -375,6 +393,17 @@ def multiboard_overlay(original):
     text=original.replace('globals\n','globals\n    boolean ForsakenBoardCovered=false\n',1)
     return text.replace('call MultiboardDisplay(udg_ScoreBoard,true)',
                         'call MultiboardDisplay(udg_ScoreBoard,not ForsakenBoardCovered)')
+
+
+def element_damage_helper():
+    return '''function Forsaken_ElementDamageBonus takes unit u,integer element,boolean physical returns real
+    local real bonus=Trig_Damage_Engine_GetElementBonus(u,element,physical)+Trig_Damage_Engine_GetElementBonus(u,7,physical)
+    if element!=7 and (Forsaken_ActiveAbilityLevel(u,'A0PN')>0 or Forsaken_ActiveAbilityLevel(u,'B08Z')>0) then
+        // Gaya Strength is already included in this element; remove its duplicate half from Omni.
+        set bonus=bonus-.33333*.5
+    endif
+    return bonus
+endfunction'''
 
 
 def combat_stat_helpers():
@@ -390,6 +419,9 @@ def combat_stat_helpers():
             assert count == 1 and 'GetRandom' not in body
         body = body.replace('Trig_Damage_Engine_', 'Forsaken_Stat_').replace('GetUnitAbilityLevel(', 'Forsaken_StatAbilityLevel(')
         result.append(body)
+    result.append(element_damage_helper().replace('Forsaken_ElementDamageBonus','Forsaken_StatElementDamageBonus').replace('Trig_Damage_Engine_GetElementBonus','Forsaken_Stat_GetElementBonus').replace('Forsaken_ActiveAbilityLevel','Forsaken_StatAbilityLevel'))
+    body=re.search(r'function Trig_Damage_Engine_ProficiencyMult\b.*?endfunction',active_gear_overlay(source,'Damage'),re.S).group()
+    result.append(body.replace('Trig_Damage_Engine_ProficiencyMult','Forsaken_StatAttackMultiplier'))
     prof = (ROOT / 'src/triggers/03 Jobs and progression/Prof.j').read_text(encoding='utf-8')
     body = re.search(r'function Prof_GetSpellPower\b.*?endfunction', prof, re.S).group()
     result.append(body.replace('Prof_GetSpellPower', 'Forsaken_StatSpellPower').replace('GetUnitAbilityLevel(', 'Forsaken_StatAbilityLevel('))
