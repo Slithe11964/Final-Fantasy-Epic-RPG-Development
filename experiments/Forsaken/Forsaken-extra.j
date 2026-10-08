@@ -45,7 +45,7 @@ function Forsaken_PrepareQuickGear takes unit holder returns nothing
             set original=UnitItemInBagSlot(holder,slot-6)
         endif
         set variant=LoadInteger(ForsakenGearTypes,0,GetItemTypeId(original))
-        if original!=null and variant!=0 and not LoadBoolean(ForsakenGearTypes,50,GetHandleId(original)) and (slot>=6 or not LoadBoolean(ForsakenGearTypes,51,GetHandleId(original))) then
+        if original!=null and variant!=0 and not LoadBoolean(ForsakenGearTypes,50,GetHandleId(original)) then
             call SaveBoolean(ForsakenGearTypes,50,GetHandleId(original),true)
             set charges=GetItemCharges(original)
             set replacement=CreateItem(variant,GetUnitX(holder),GetUnitY(holder))
@@ -75,6 +75,53 @@ function Forsaken_PrepareQuickGear takes unit holder returns nothing
     set replacement=null
 endfunction
 
+function Forsaken_StoreHeroGear takes unit holder returns nothing
+    local integer slot=0
+    local integer emptySlot
+    local item gear
+    local item spacer
+    if holder!=Player_GetHero(GetOwningPlayer(holder)) or ForsakenConvertingGear then
+        return
+    endif
+    set ForsakenConvertingGear=true
+    loop
+        exitwhen slot>=6
+        set gear=UnitItemInSlot(holder,slot)
+        if gear!=null and LoadBoolean(ForsakenElementSources,2,GetItemTypeId(gear)) then
+            call UnitRemoveItem(holder,gear)
+            set emptySlot=0
+            loop
+                exitwhen emptySlot>=6
+                if UnitItemInSlot(holder,emptySlot)==null then
+                    set spacer=CreateItem('fGap',GetUnitX(holder),GetUnitY(holder))
+                    call UnitAddItem(holder,spacer)
+                    set ForsakenHandSpacers[emptySlot]=spacer
+                endif
+                set emptySlot=emptySlot+1
+            endloop
+            call UnitAddItem(holder,gear)
+            if not UnitHasItemBagged(holder,gear) then
+                call UnitRemoveItem(holder,gear)
+                call SetItemPosition(gear,GetUnitX(holder),GetUnitY(holder))
+                call DisplayTimedTextToPlayer(GetOwningPlayer(holder),0,0,15,"Gear belongs in your backpack or equipment slots. Your backpack is full; the item is beside you.")
+            endif
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=6
+        if ForsakenHandSpacers[slot]!=null then
+            call RemoveItem(ForsakenHandSpacers[slot])
+            set ForsakenHandSpacers[slot]=null
+        endif
+        set slot=slot+1
+    endloop
+    set ForsakenConvertingGear=false
+    set gear=null
+    set spacer=null
+endfunction
+
 function Forsaken_EnableHero takes unit holder returns nothing
     call UnitAddAbility(holder,'fBag')
     call UnitMakeAbilityPermanent(holder,true,'fBag')
@@ -83,6 +130,7 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitAddAbility(holder,'ASpc')
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
     call Forsaken_PrepareQuickGear(holder)
+    call Forsaken_StoreHeroGear(holder)
     call Forsaken_PrepareDualWield(holder)
     if GetUnitAbilityLevel(holder,'A0GP')>0 and Forsaken_TwoHandedWeapon(holder)==null then
         call UnitRemoveAbility(holder,'B05W')
@@ -115,6 +163,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==Player_GetHero(GetOwningPlayer(holder)) then
         if GetTriggerEventId()==EVENT_PLAYER_UNIT_PICKUP_ITEM then
             call Forsaken_PrepareQuickGear(holder)
+            call Forsaken_StoreHeroGear(holder)
             set holder=null
             return
         endif

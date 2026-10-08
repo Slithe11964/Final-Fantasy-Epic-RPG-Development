@@ -89,12 +89,8 @@ function Forsaken_CarryOrder takes unit holder returns nothing
     call RemoveSavedHandle(ForsakenGearTypes,62,GetHandleId(holder))
     if order==852001 and recipient!=null and GetOwningPlayer(recipient)==GetOwningPlayer(holder) and (recipient==Player_GetHero(GetOwningPlayer(holder)) or GetUnitTypeId(recipient)=='H01D') then
         call SaveUnitHandle(ForsakenGearTypes,62,GetHandleId(holder),recipient)
-    elseif gear!=null and order>=852002 and order<=852007 and LoadInteger(ForsakenGearTypes,0,GetItemTypeId(gear))!=0 and holder==Player_GetHero(GetOwningPlayer(holder)) and Forsaken_HoldsItem(holder,gear) then
-        call SaveBoolean(ForsakenGearTypes,51,GetHandleId(gear),true)
     elseif gear!=null and LoadInteger(ForsakenGearTypes,4,GetItemTypeId(gear))!=0 then
-        if order>=852002 and order<=852007 and holder==Player_GetHero(GetOwningPlayer(holder)) and (Forsaken_HoldsItem(holder,gear) or UnitHasItemEquipped(holder,gear)) then
-            set replacement=Forsaken_CarryReplacement(holder,gear,order-852002)
-        elseif (order==OrderId("smart") or order==OrderId("getitem")) and not IsItemOwned(gear) and (holder==Player_GetHero(GetOwningPlayer(holder)) or GetUnitTypeId(holder)=='H01D') then
+        if (order==OrderId("smart") or order==OrderId("getitem")) and not IsItemOwned(gear) and (holder==Player_GetHero(GetOwningPlayer(holder)) or GetUnitTypeId(holder)=='H01D') then
             set replacement=Forsaken_CarryReplacement(null,gear,-1)
             if replacement!=gear then
                 set ForsakenConvertingGear=true

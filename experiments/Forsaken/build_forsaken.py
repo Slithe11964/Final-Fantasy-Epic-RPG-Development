@@ -123,6 +123,7 @@ def prepare_objects(base, out, mapping_out):
             obj = copy.deepcopy(items[raw])
             obj['id'] = variant
             set_field(obj, 'iequ', slot)
+            set_field(obj, 'icla', 'Equipment')
             table['custom'].append(obj)
             mapping[raw]['variant'] = variant
             if slot == 'Primary':
@@ -276,6 +277,7 @@ def equip_overlay(original):
     real ForsakenHPRegen=0.
     real ForsakenMPRegen=0.
 endglobals''', 1)
+    text = text.replace('GetItemType(', 'Forsaken_GearClass(')
     text = text.replace('GetManipulatedItem()', 'Forsaken_EventItem()')
     text = text.replace('function Trig_Equip_Restrictions_Conditions', '''function Forsaken_EventItem takes nothing returns item
     if ForsakenEquippedItem!=null then
@@ -324,7 +326,8 @@ def active_gear_overlay(original, module):
         match = re.search(r'function '+name+r'\b.*?endfunction', original, re.S)
         body = match.group().replace('UnitItemInSlotBJ(', 'Forsaken_ActiveGearBJ(').replace('UnitItemInSlot(', 'Forsaken_ActiveGear(')
         if module in ('Prof','Element') or name in ('Trig_Damage_Engine_GetElementBonus','Trig_Damage_Engine_GetElementResist'):
-            body = body.replace('GetUnitAbilityLevel(', 'Forsaken_ActiveAbilityLevel(')
+            query='Forsaken_ElementAbilityLevel(' if module=='Element' or name=='Trig_Damage_Engine_GetElementBonus' else 'Forsaken_ActiveAbilityLevel('
+            body = body.replace('GetUnitAbilityLevel(', query)
         if name=='Trig_Damage_Engine_FindTwoHandedItem':
             body='function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing\n    set udg_TwoHandedItem=Forsaken_TwoHandedWeapon(u)\nendfunction'
         if name=='Trig_TwoHanded_Check_Actions':
@@ -337,11 +340,13 @@ def active_gear_overlay(original, module):
 endfunction"""
         body = body.replace('i>=bj_MAX_INVENTORY','i>=15').replace('udg_SlotIndex>6','udg_SlotIndex>15')
         original = original[:match.start()] + body + original[match.end():]
+    original=original.replace('GetItemType(', 'Forsaken_GearClass(')
     if module=='Damage':
         helper=element_damage_helper()
         original=original.replace('function Trig_Damage_Engine_Step11_ElementBonus',helper+'\n\nfunction Trig_Damage_Engine_Step11_ElementBonus',1)
         original=original.replace('1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)','1.+Forsaken_ElementDamageBonus(u,l_element,l_physical)')
     if module == 'Unit':
+        original=original.replace('globals\n','globals\n    hashtable ForsakenElementSources=null\n',1)
         original = original.replace('function Unit_HasNoEquipment', (HERE/'Forsaken-active-gear.j').read_text()+'\nfunction Unit_HasNoEquipment',1)
     elif module in ('Prof','TwoHanded'):
         original = original.replace('library T'+module+' requires TPlayerHero','library T'+module+' requires TPlayerHero, TUnit') if module=='Prof' else original.replace('library TTwoHanded','library TTwoHanded requires TUnit',1)
@@ -418,6 +423,8 @@ def combat_stat_helpers():
             body, count = re.subn(r'    // A random whole number.*?    endif\n', '', body, count=1, flags=re.S)
             assert count == 1 and 'GetRandom' not in body
         body = body.replace('Trig_Damage_Engine_', 'Forsaken_Stat_').replace('GetUnitAbilityLevel(', 'Forsaken_StatAbilityLevel(')
+        if name=='GetElementBonus':
+            body=body.replace('Forsaken_StatAbilityLevel(', 'Forsaken_ElementAbilityLevel(')
         result.append(body)
     result.append(element_damage_helper().replace('Forsaken_ElementDamageBonus','Forsaken_StatElementDamageBonus').replace('Trig_Damage_Engine_GetElementBonus','Forsaken_Stat_GetElementBonus').replace('Forsaken_ActiveAbilityLevel','Forsaken_StatAbilityLevel'))
     body=re.search(r'function Trig_Damage_Engine_ProficiencyMult\b.*?endfunction',active_gear_overlay(source,'Damage'),re.S).group()
@@ -569,6 +576,35 @@ def regeneration_initialization(base):
     return result
 
 
+def element_source_data(base):
+    archive=MPQ(str(base))
+    element=(ROOT/'src/triggers/04 Combat and abilities/Element.j').read_text(encoding='utf-8')
+    damage=(ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(encoding='utf-8')
+    arrays=set(re.findall(r"set udg_Element(?:Attack|Knowledge|Boost|SpellAmp|OrbAmp)Abil\[\d\]='(.{4})'",element))
+    for source,name in [(element,'Element_GetOfUnit'),(damage,'Trig_Damage_Engine_GetElementBonus')]:
+        body=re.search(r'function '+name+r'\b.*?endfunction',source,re.S).group()
+        arrays.update(re.findall(r"GetUnitAbilityLevel\(u,'(.{4})'\)",body))
+    items=read_objects(archive.read('war3map.w3t'),'w3t')
+    gear={raw for group in ('original','custom') for obj in items[group] for raw in fields(obj).get('iabi','').split(',')}
+    managed=arrays & gear
+    units=read_objects(archive.read('war3map.w3u'),'w3u')
+    innate={}
+    for group in ('original','custom'):
+        for obj in units[group]:
+            data=fields(obj)
+            abilities=set((data.get('uabi','')+','+data.get('uhab','')).split(',')) & managed
+            if abilities: innate[obj['id'] or obj['base']]=abilities
+    return managed,innate
+
+
+def element_source_initialization(base):
+    managed,innate=element_source_data(base)
+    result=['    set ForsakenElementSources=InitHashtable()']
+    result += ["    call SaveBoolean(ForsakenElementSources,0,'%s',true)"%raw for raw in sorted(managed)]
+    result += ["    call SaveBoolean(ForsakenElementSources,'%s','%s',true)"%(unit,raw) for unit,abilities in sorted(innate.items()) for raw in sorted(abilities)]
+    return result
+
+
 def manifest(base, classic_base, modern, classic, stage):
     def identity(path):
         return dict(file=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
@@ -628,6 +664,18 @@ def main():
                                "    call SaveInteger(ForsakenGearTypes,6,'%s','%s')" % (entry['offhand'],entry['variant']),
                                "    call SaveInteger(ForsakenGearTypes,4,'%s','%s')" % (entry['offhand'],raw)]
     initialization += regeneration_initialization(base)
+    initialization += element_source_initialization(base)
+    item_table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')
+    item_fields={o['id'] or o['base']:fields(o) for g in ('original','custom') for o in item_table[g]}
+    classes={'Permanent':0,'Charged':1,'PowerUp':2,'Artifact':3,'Purchasable':4,'Campaign':5,'Miscellaneous':6}
+    item_bases={o['id'] or o['base']:o['base'] for g in ('original','custom') for o in item_table[g]}
+    class_defaults=json.loads((HERE/'item-class-defaults.json').read_text(encoding='utf-8'))
+    for original,entry in mapping.items():
+        if entry['slot']=='Inventory': continue
+        category=classes[item_fields[original].get('icla') or class_defaults[item_bases[original]]]
+        for variant in (entry.get('variant'),entry.get('offhand')):
+            if variant: initialization.append("    call SaveInteger(ForsakenElementSources,3,'%s',%d)"%(variant,category+1))
+    initialization += ["    call SaveBoolean(ForsakenElementSources,2,'%s',true)"%raw for original,entry in mapping.items() if entry['slot']!='Inventory' for raw in (original,entry.get('variant'),entry.get('offhand')) if raw]
     overlay = overlay.replace('    set gg_trg_Forsaken_Equipment=CreateTrigger()',
                               '\n'.join(initialization)+'\n    set gg_trg_Forsaken_Equipment=CreateTrigger()')
     source.write_bytes(overlay.replace('\n','\r\n').encode('utf-8'))
@@ -640,6 +688,11 @@ def main():
     for module, folder in [('Unit','04 Combat and abilities'),('Prof','03 Jobs and progression'),('Damage','04 Combat and abilities'),('TwoHanded','04 Combat and abilities'),('Element','04 Combat and abilities')]:
         path=work/'src/triggers'/folder/(module+'.j')
         path.write_bytes(active_gear_overlay(path.read_text(),module).replace('\n','\r\n').encode('utf-8'))
+    for module,folder in [('Item_Shared','05 Items crafting and shops'),('Forge','05 Items crafting and shops'),('Loki','06 Quests and story')]:
+        path=work/'src/triggers'/folder/(module+'.j')
+        text=path.read_text().replace('GetItemType(', 'Forsaken_GearClass(')
+        if module=='Forge': text=text.replace('library TForge requires','library TForge requires TUnit,',1)
+        path.write_bytes(text.replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,

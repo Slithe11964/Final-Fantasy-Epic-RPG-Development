@@ -11,10 +11,16 @@ sys.path.insert(0, str(HERE))
 import build_forsaken as build
 sys.path.insert(0, str(build.ROOT/'tools/tests'))
 from test_shared_context import mocks
-from test_armory_materia import execute
+from test_armory_materia import execute as _execute
 from mpq import MPQ
 from objdata import read_objects, fields
 from jtok import functions
+
+
+def execute(source, names, state):
+    state.setdefault('ForsakenElementSources','element-sources')
+    state['Forsaken_GearClass']=state.get('GetItemType',lambda *a:None)
+    return _execute(source,names,state)
 
 
 def rawcode(value):
@@ -22,6 +28,106 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_inherited_item_categories_are_bundled_for_portable_builds(self):
+        import json
+        defaults=json.loads((HERE/'item-class-defaults.json').read_text())
+        self.assertEqual(defaults['rnsp'],'Permanent')
+        self.assertEqual(defaults['anfg'],'Miscellaneous')
+        self.assertEqual(defaults['ckng'],'Artifact')
+
+    def test_native_equipment_class_preserves_script_weapon_and_armor_categories(self):
+        source=(HERE/'Forsaken-active-gear.j').read_text()
+        categories={'weapon':1,'offhand':3,'helmet':4,'armor':5,'accessory':7}
+        state=mocks(source);state.update(ForsakenElementSources='sources',GetItemTypeId=lambda i:i,
+            LoadInteger=lambda h,p,k:categories.get(k,0),ConvertItemType=lambda i:i,GetItemType=lambda i:99)
+        runtime=execute(source,['Forsaken_GearClass'],state)
+        for item,stored in categories.items():self.assertEqual(runtime['Forsaken_GearClass'](item),stored-1)
+        self.assertEqual(runtime['Forsaken_GearClass']('legacy'),99)
+
+    def test_quick_gear_does_not_count_as_active_hero_equipment_but_gaya_carry_remains(self):
+        source=(HERE/'Forsaken-active-gear.j').read_text()
+        state=mocks(source);state.update(ForsakenElementSources='sources',UnitItemInSlot=lambda *a:'gear',
+            GetItemTypeId=lambda i:i,GetOwningPlayer=lambda u:0,Player_GetHero=lambda p:'hero',
+            LoadBoolean=lambda h,p,k:p==2 and k=='gear')
+        runtime=execute(source,['Forsaken_ActiveGear'],state)
+        self.assertIsNone(runtime['Forsaken_ActiveGear']('hero',0))
+        self.assertEqual(runtime['Forsaken_ActiveGear']('gaya',0),'gear')
+
+    def elemental_runtime(self):
+        import json
+        base=build.ROOT/'release/FFERPG_0.9.7.3-r16-stageAS.w3x'
+        managed,innate=build.element_source_data(base)
+        table=read_objects(MPQ(base).read('war3map.w3t'),'w3t')
+        items={obj['id'] or obj['base']:fields(obj) for group in ('original','custom') for obj in table[group]}
+        catalog=json.loads((build.ROOT/'src/armory-hints.json').read_text())
+        gear_ids={entry['item'] for entry in catalog.values()}
+        arrays={}
+        element=(build.ROOT/'src/triggers/04 Combat and abilities/Element.j').read_text()
+        for name,index,raw in re.findall(r"set (udg_Element\w+Abil)\[(\d)\]='(.{4})'",element):
+            arrays.setdefault(name,{})[int(index)]=raw
+        arrays['udg_ElementEnchantBuff']={i:'enchant'+str(i) for i in range(1,8)}
+        equipment={};quick={};levels={};unit=['job'];owner=['hero']
+        def flag(h,parent,raw):
+            if parent==0:return raw in managed
+            if parent==2:return raw in gear_ids
+            return raw in innate.get(parent,set())
+        active=(HERE/'Forsaken-active-gear.j').read_text()
+        source=active+build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(),'Damage')+build.combat_stat_helpers()
+        state=mocks(source);state.update(arrays);state.update(ForsakenElementSources='sources',
+            GetUnitAbilityLevel=lambda u,r:levels.get(r,0),Player_GetHero=lambda p:owner[0],GetOwningPlayer=lambda u:0,GetUnitTypeId=lambda u:unit[0],
+            LoadBoolean=flag,GetItemTypeId=lambda item:item,UnitItemInSlot=lambda u,i:quick.get(i),
+            UnitItemInEquipmentSlot=lambda u,i:equipment.get(i),ConvertLoadoutSlot=lambda i:i,
+            GetItemEquipmentType=lambda item:'native' if item in gear_ids else 'none',EQUIPMENT_TYPE_NONE='none',
+            BlzGetItemAbilityByIndex=lambda item,i:items[item]['iabi'].split(',')[i] if i<len(items[item].get('iabi','').split(',')) else None,
+            BlzGetAbilityId=lambda a:a,GetUnitState=lambda *a:100.,UNIT_STATE_LIFE=0,UNIT_STATE_MAX_LIFE=1)
+        names=['Forsaken_ActiveGear','Forsaken_ActiveAbilityLevel','Forsaken_ElementAbilityLevel',
+            'Trig_Damage_Engine_GetElementBonus','Forsaken_ElementDamageBonus','Forsaken_StatAbilityLevel','Forsaken_Stat_GetElementBonus','Forsaken_StatElementDamageBonus']
+        return execute(source,names,state),equipment,quick,levels,unit,owner,items,arrays,managed
+
+    def test_book_of_flames_unequip_repeats_clear_stale_ability_and_quick_carry(self):
+        runtime,equipment,quick,levels,unit,owner,items,arrays,managed=self.elemental_runtime()
+        levels['A19S']=1  # Client still reports the former item ability after unequipping.
+        read=runtime['Forsaken_ElementDamageBonus'];display=runtime['Forsaken_StatElementDamageBonus']
+        for _ in range(100):
+            equipment[7]='I05U'
+            for physical in (False,True):
+                self.assertAlmostEqual(read('hero',1,physical),.5)
+                self.assertAlmostEqual(display('hero',1,physical),.5)
+                for element in range(2,7):self.assertEqual(read('hero',element,physical),0.)
+            equipment.clear();quick[0]='I05U'
+            for physical in (False,True):
+                self.assertEqual(read('hero',1,physical),0.)
+                self.assertEqual(display('hero',1,physical),0.)
+            quick.clear();self.assertEqual(read('hero',1,False),0.)
+        # Genuine innate/cast/copied abilities on NPCs are not filtered as hero gear.
+        owner[0]='other';self.assertEqual(read('npc',1,False),.5)
+
+    def test_every_elemental_gear_bonus_matches_rates_and_clears_after_unequip(self):
+        runtime,equipment,quick,levels,unit,owner,items,arrays,managed=self.elemental_runtime()
+        bonus_arrays=[('Attack',.1),('Knowledge',.5),('Boost',.3),('SpellAmp',.8),('OrbAmp',.6)]
+        relevant={raw for name,rate in bonus_arrays for raw in arrays['udg_Element'+name+'Abil'].values()}
+        tested=0
+        for raw,data in items.items():
+            abilities=set(data.get('iabi','').split(','))
+            if not abilities & relevant:continue
+            tested+=1;levels.clear();levels.update({a:1 for a in abilities})
+            equipment[7]=raw
+            for physical in (False,True):
+                for element in range(1,7):
+                    expected=0.
+                    for name,rate in bonus_arrays:
+                        if name=='Attack' and not physical or name=='SpellAmp' and physical:continue
+                        table=arrays['udg_Element'+name+'Abil']
+                        if table[element] in abilities:expected+=rate
+                        if table[7] in abilities:expected+=rate*.5
+                    if element==6 and 'A1FF' in abilities:expected+=1.2
+                    self.assertAlmostEqual(runtime['Forsaken_ElementDamageBonus']('hero',element,physical),expected,msg=raw)
+                    self.assertAlmostEqual(runtime['Forsaken_StatElementDamageBonus']('hero',element,physical),expected,msg=raw)
+            equipment.clear()
+            for element in range(1,7):
+                self.assertEqual(runtime['Forsaken_ElementDamageBonus']('hero',element,False),0.,raw)
+        self.assertGreater(tested,30)
+
     def test_internal_spacers_skip_legacy_accessory_restrictions(self):
         source=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text())
         item=['spacer'];types={'spacer':'fGap','accessory':'oldA','weapon':'f001'}
@@ -44,7 +150,7 @@ class ForsakenTests(unittest.TestCase):
         source=build.active_gear_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Damage.j').read_text(),'Damage')
         levels={};arrays={name:{i:'none'+str(i) for i in range(1,8)} for name in ['udg_ElementAttackAbil','udg_ElementKnowledgeAbil','udg_ElementBoostAbil','udg_ElementSpellAmpAbil','udg_ElementOrbAmpAbil','udg_ElementEnchantBuff']}
         arrays['udg_ElementEnchantBuff']={i:'enchant'+str(i) for i in range(1,8)}
-        state=mocks(source);state.update(arrays);state.update(Forsaken_ActiveAbilityLevel=lambda u,r:levels.get(r,0))
+        state=mocks(source);state.update(arrays);state.update(Forsaken_ElementAbilityLevel=lambda u,r:levels.get(r,0),Forsaken_ActiveAbilityLevel=lambda u,r:levels.get(r,0))
         runtime=execute(source,['Trig_Damage_Engine_GetElementBonus','Forsaken_ElementDamageBonus'],state)
         read=runtime['Forsaken_ElementDamageBonus']
         display=self.stat_runtime(['Forsaken_Stat_GetElementBonus','Forsaken_StatElementDamageBonus'],levels,**arrays)
@@ -159,7 +265,7 @@ class ForsakenTests(unittest.TestCase):
             UnitItemInSlot=lambda *a:None,UnitItemInEquipmentSlot=lambda u,i:slots.get(i),ConvertLoadoutSlot=lambda i:i,
             BlzGetItemAbilityByIndex=lambda i,n:abilities[i][n] if n<len(abilities[i]) else None,
             BlzGetAbilityId=lambda a:a,Prof_GetLevel=lambda *a:0)
-        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_ActiveAbilityLevel','Element_GetOfUnit'],state)
+        runtime=execute(source,['Forsaken_ActiveGear','Forsaken_ActiveAbilityLevel','Forsaken_ElementAbilityLevel','Element_GetOfUnit'],state)
         read=runtime['Element_GetOfUnit']
         self.assertEqual(read('hero',True),1)
         self.assertEqual(read('hero',False),0)
@@ -392,16 +498,36 @@ class ForsakenTests(unittest.TestCase):
         self.assertIn('ForsakenInspectButton,60',inspect)
         self.assertIn('FRAMEPOINT_TOPRIGHT,0,.024',inspect)
 
-    def test_quick_carried_legacy_gear_is_not_forced_into_native_bag(self):
-        source=(HERE/'Forsaken-extra.j').read_text();created=[]
-        state=mocks(source)
-        state.update(ForsakenConvertingGear=False,ForsakenGearTypes='gear',UnitExtendedInventorySize=lambda u:30,
-            UnitItemInBagSlot=lambda u,s:None,UnitItemInSlot=lambda u,s:'legacy-hat',GetItemTypeId=lambda i:100 if i else 0,
-            LoadBoolean=lambda h,p,k:p==51,GetHandleId=lambda i:i,
-            LoadInteger=lambda *a:200,CreateItem=lambda *a:created.append(a))
-        runtime=execute(source,['Forsaken_PrepareQuickGear'],state)
-        for _ in range(100):runtime['Forsaken_PrepareQuickGear']('hero')
-        self.assertEqual(created,[])
+    def test_quick_gear_is_routed_to_bag_without_touching_consumables_or_gaya(self):
+        source=(HERE/'Forsaken-extra.j').read_text()
+        for full in (False,True):
+            quick={0:'gear',2:'nectar'};bag={};removed=[];messages=[];raws={'gear':'f001','nectar':'potion'};counter=[0]
+            def create(raw,*a):
+                counter[0]+=1;key='gap'+str(counter[0]);raws[key]=raw;return key
+            def remove(u,item):
+                for slots in (quick,bag):
+                    for slot in list(slots):
+                        if slots[slot]==item:del slots[slot]
+            def add(u,item):
+                for slot in range(6):
+                    if slot not in quick:quick[slot]=item;return True
+                if not full:
+                    bag[0]=item;return True
+                return False
+            def destroy(item):remove('hero',item);removed.append(item)
+            state=mocks(source);state.update(ForsakenElementSources='sources',ForsakenConvertingGear=False,
+                ForsakenHandSpacers=__import__('collections').defaultdict(lambda:None),GetOwningPlayer=lambda u:0,Player_GetHero=lambda p:'hero',
+                UnitItemInSlot=lambda u,i:quick.get(i),GetItemTypeId=lambda i:raws.get(i,0),LoadBoolean=lambda h,p,k:k=='f001',
+                CreateItem=create,UnitAddItem=add,UnitRemoveItem=remove,RemoveItem=destroy,UnitHasItemBagged=lambda u,i:i in bag.values(),
+                DisplayTimedTextToPlayer=lambda *a:messages.append(a))
+            runtime=execute(source,['Forsaken_StoreHeroGear'],state)
+            runtime['Forsaken_StoreHeroGear']('gaya');self.assertEqual(quick,{0:'gear',2:'nectar'})
+            runtime['Forsaken_StoreHeroGear']('hero');self.assertEqual(quick,{2:'nectar'})
+            self.assertEqual(bag,{} if full else {0:'gear'});self.assertEqual(len(messages),int(full))
+            self.assertNotIn('gear',removed);self.assertFalse(runtime['ForsakenConvertingGear'])
+            for _ in range(100):runtime['Forsaken_StoreHeroGear']('hero')
+            self.assertEqual(len(messages),int(full))
+
 
     def test_native_carry_replacement_preserves_state_and_rolls_back_failed_quick_placement(self):
         source=(HERE/'Forsaken-extra.j').read_text()+'\n'+(HERE/'Forsaken-carry.j').read_text()
@@ -478,7 +604,7 @@ class ForsakenTests(unittest.TestCase):
             Forsaken_CarryReplacement=convert,OrderId=lambda s:851971 if s=='smart' else 851981,
             IssueTargetOrderById=lambda *a:issued.append(a),RemoveSavedHandle=lambda h,p,k:saved.pop((p,k),None),SaveUnitHandle=lambda h,p,k,v:saved.update({(p,k):v}))
         runtime=execute(source,['Forsaken_CarryOrder'],state)
-        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(converted,[('hero','native',2)])
+        runtime['Forsaken_CarryOrder']('hero');self.assertEqual(converted,[])
         converted.clear();current.update(order=851971,owned=False)
         runtime['Forsaken_CarryOrder']('gaya');self.assertEqual(converted,[(None,'native',-1)])
         self.assertEqual(issued,[('gaya',851971,'legacy')]);self.assertFalse(runtime['ForsakenConvertingGear'])
@@ -546,6 +672,9 @@ class ForsakenTests(unittest.TestCase):
                 if raw in mapping and mapping[raw]['slot']!='Inventory':
                     updated = after[mapping[raw]['variant']].copy()
                     self.assertEqual(updated.pop('iequ'), mapping[raw]['slot'])
+                    self.assertEqual(updated['icla'],'Equipment')
+                    if 'icla' in before[raw]: updated['icla']=before[raw]['icla']
+                    else: updated.pop('icla')
                     self.assertEqual(expected, updated, raw)
             self.assertNotIn('fBpk',after)
             self.assertEqual(len(mapping), 280)
@@ -994,7 +1123,7 @@ class ForsakenTests(unittest.TestCase):
         source=build.equip_overlay((build.ROOT/'src/triggers/05 Items crafting and shops/Equip.j').read_text())
         levels=abilities if abilities is not None else {}
         state=mocks(source)
-        state.update(Forsaken_StatAbilityLevel=lambda u,raw:levels.get(raw,0),
+        state.update(Forsaken_ElementAbilityLevel=lambda u,raw:levels.get(raw,0),Forsaken_StatAbilityLevel=lambda u,raw:levels.get(raw,0),
                      GetHeroAgi=lambda *a:200,I2R=float,
                      RMinBJ=min,RMaxBJ=max,Pow=pow,
                      Prof_GetLevel=lambda *a:10,
