@@ -270,6 +270,9 @@ function Forsaken_OnEquip takes nothing returns nothing
     endif
     if holder==Player_GetHero(GetOwningPlayer(holder)) then
         if GetTriggerEventId()==EVENT_PLAYER_UNIT_PICKUP_ITEM then
+            // A fresh pickup may retry a conversion previously refused by a full bag.
+            // Internal replacement pickups already returned through the conversion guard.
+            call RemoveSavedBoolean(ForsakenGearTypes,50,GetHandleId(GetManipulatedItem()))
             call Forsaken_PrepareQuickGear(holder)
             call Forsaken_StoreHeroGear(holder)
             call Forsaken_SyncStoredEffects(holder)

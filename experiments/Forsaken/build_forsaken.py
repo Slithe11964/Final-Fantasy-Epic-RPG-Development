@@ -712,6 +712,7 @@ def element_source_data(base):
         arrays.update(re.findall(r"GetUnitAbilityLevel\(u,'(.{4})'\)",body))
     items=read_objects(archive.read('war3map.w3t'),'w3t')
     gear={raw for group in ('original','custom') for obj in items[group] for raw in fields(obj).get('iabi','').split(',')}
+    arrays.update('A1B9 A1EV A0B3'.split())
     managed=arrays & gear
     units=read_objects(archive.read('war3map.w3u'),'w3u')
     innate={}

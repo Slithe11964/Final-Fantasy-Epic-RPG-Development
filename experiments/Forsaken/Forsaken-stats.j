@@ -218,18 +218,19 @@ function Forsaken_StatElementText takes unit hero,integer element returns string
 endfunction
 
 function Forsaken_StatRow takes integer row,string label,string value returns nothing
+    local real valueWidth=.08
     if row>=16 then
         return
     endif
-    if StringLength(label)>22 and SubString(label,0,2)!="|c" then
-        set label=label+"  "+value
-        set value=""
+    if StringLength(value)<=8 then
+        set valueWidth=.034
     endif
     if value=="" then
         call BlzFrameSetSize(ForsakenStatLabel[row],.189,.0105)
     else
-        call BlzFrameSetSize(ForsakenStatLabel[row],.109,.0105)
+        call BlzFrameSetSize(ForsakenStatLabel[row],.189-valueWidth-.006,.0105)
     endif
+    call BlzFrameSetSize(ForsakenStatValue[row],valueWidth,.0105)
     call BlzFrameSetText(ForsakenStatLabel[row],label)
     call BlzFrameSetText(ForsakenStatValue[row],value)
 endfunction

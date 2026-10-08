@@ -34,6 +34,41 @@ def rawcode(value):
 
 
 class ForsakenTests(unittest.TestCase):
+    def test_long_stat_labels_keep_values_in_the_right_column(self):
+        source=(HERE/'Forsaken-stats.j').read_text()
+        sizes={};texts={}
+        state=mocks(source);state.update(ForsakenStatLabel={0:'label'},ForsakenStatValue={0:'value'},
+            StringLength=len,BlzFrameSetSize=lambda f,w,h:sizes.update({f:(w,h)}),
+            BlzFrameSetText=lambda f,t:texts.update({f:t}))
+        render=execute(source,['Forsaken_StatRow'],state)['Forsaken_StatRow']
+        for label,value in [('Elemental Weakness Damage','30%'),
+            ('Reduce Enemy Block Chance','66.67%'),('Regenerate HP when out of combat','1%'),
+            ('Execute common enemies below lvl 40','5%'),('Increased Summon Stats','+80%')]:
+            render(0,label,value)
+            self.assertEqual(texts,{'label':label,'value':value})
+            self.assertAlmostEqual(sizes['label'][0]+sizes['value'][0]+.006,.189)
+
+    def test_ammo_proficiency_and_new_effect_rows_use_the_inspected_target(self):
+        source=(HERE/'Forsaken-gear-stats.j').read_text();rows={}
+        levels={'archer':{'A174':1},'gunner':{'A1AL':1,'A0YA':1,'A0YB':1},
+            'dagger':{'A1B9':1},'lancer':{'A1EV':1},'death':{'A10X':1},
+            'shield':{'A0B3':1},'ice':{'A04H':1}}
+        state=mocks(source);state.update(Forsaken_StatAbilityLevel=lambda u,r:levels[u].get(r,0),
+            Forsaken_WeaponType=lambda u,k:k==3 and u in ('archer','ice'),
+            Forsaken_StatGun=lambda u:u=='gunner',Forsaken_StatCrit=lambda u:'',
+            Forsaken_StatCombo=lambda u:'',IsUnitType=lambda *a:True,UNIT_TYPE_MELEE_ATTACKER=1,
+            Prof_GetLevel=lambda u,r:6 if u=='gunner' else 4,I2S=str,udg_EternityMode=False,
+            Forsaken_StatRow=lambda r,n,v:rows.update({r:(n,v)}))
+        runtime=execute(source,['Forsaken_RenderGearDamage','Forsaken_RenderGearOther'],state)
+        for target,expected in [('archer',('Tech Damage','30% | +1120')),
+            ('ice',('Tech Damage','15% | +140')),('gunner',('Shot attack damage','+960')),
+            ('dagger',('Backstab','1.5x')),('lancer',('Chance to Shock','10%')),
+            ('death',('Execute common enemies below lvl 40','5%'))]:
+            rows.clear();runtime['Forsaken_RenderGearDamage'](target,10)
+            self.assertIn(expected,rows.values())
+        rows.clear();runtime['Forsaken_RenderGearOther']('shield',7)
+        self.assertEqual(rows[7],('Movement speed penalty','|cffff3333-20%|r'))
+
     def test_compact_talents_and_sixteen_stat_rows_do_not_overlap(self):
         source=(HERE/'Forsaken-panels.j').read_text()
         self.assertIn('-.068-I2R(row)*.025',source)
@@ -84,8 +119,9 @@ class ForsakenTests(unittest.TestCase):
         self.assertEqual(runtime['Forsaken_StatCombo']('hero'),'5% | 7+')
         levels.clear();levels.update(A03R=1,A12S=1,A03D=1,A0QK=1,A12V=1,A05H=1)
         runtime['Forsaken_RenderGearOther']('hero',7)
-        self.assertEqual(len(rows),6)
-        self.assertEqual(rows[8],('Mana on Kill','+100 | Tech +200'))
+        self.assertEqual(len(rows),7)
+        self.assertEqual(rows[8],('Mana on Kill','+100'))
+        self.assertEqual(rows[9],('Mana on Tech Kill','+200'))
         levels.clear();rows.clear();runtime['Forsaken_RenderGearOther']('hero',7);self.assertFalse(rows)
 
     def test_all_276_native_gear_variants_keep_zero_stat_storage_marker(self):
@@ -1785,6 +1821,24 @@ class ForsakenTests(unittest.TestCase):
             self.assertEqual(quick[0],'potion');self.assertEqual(quick[5],'native')
             if destination=='rejected':
                 self.assertEqual(quick[3],'original');self.assertEqual(charges['original'],7)
+                # A genuine repick clears only this item's failed-attempt marker.
+                destination='bag'
+                state.update(GetTriggerUnit=lambda:'hero',GetTriggerEventId=lambda:'pickup',
+                    GetManipulatedItem=lambda:'original',GetOwningPlayer=lambda u:0,
+                    Player_GetHero=lambda p:'hero',GetUnitAbilityLevel=lambda *a:0,
+                    Forsaken_CarryEvent=lambda *a:None,EVENT_PLAYER_UNIT_EQUIP_ITEM='equip',
+                    EVENT_PLAYER_UNIT_PICKUP_ITEM='pickup')
+                pickup=execute(source,['Forsaken_OnEquip'],state)
+                pickup['Forsaken_PrepareQuickGear']=runtime['Forsaken_PrepareQuickGear']
+                pickup['Forsaken_OnEquip']()
+                self.assertNotIn('original',quick.values())
+                self.assertEqual(bag[0],'replacement')
+                self.assertEqual(created,['replacement','replacement'])
+                self.assertEqual(deleted,['replacement','original'])
+                self.assertEqual(charges['replacement'],7)
+                self.assertEqual(tags['replacement'],321)
+                self.assertEqual(life['replacement'],40.)
+                self.assertEqual(owners['replacement'],3)
             else:
                 self.assertNotIn('original',quick.values())
                 self.assertNotIn('original',bag.values())
@@ -1793,7 +1847,7 @@ class ForsakenTests(unittest.TestCase):
                 self.assertEqual(bag.get(0) if destination=='bag' else quick.get(3),'replacement')
             runtime['ForsakenConvertingGear']=True
             runtime['Forsaken_PrepareQuickGear']('hero')
-            self.assertEqual(created,['replacement'])
+            self.assertEqual(len(created),2 if len(deleted)==2 else 1)
 
     def test_forsaken_tooltips_put_slot_immediately_after_required_level(self):
         original='Bonuses|n|cffffcc00Required level|r: 45|nExisting footer'

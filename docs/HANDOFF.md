@@ -2,7 +2,15 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BS. Normal development stays on AS; Forsaken BR is the current gear/stat test checkpoint.
+Next unused stage: BT. Normal development stays on AS; Forsaken BS is the current gear/stat test checkpoint.
+
+## Forsaken BS - 2026-10-08
+
+Fresh external pickup clears a prior full-bag conversion failure marker, allowing the same original gear to convert and equip after space is freed. Internal replacement events remain guarded, preventing duplicate loops; charges/user data/life/owner survive rollback and retry. In-game acceptance still required for the reported Armory/full-bag sequence.
+
+Long stat labels retain right-aligned values. Add Dagger/Platinum Dagger Backstab 1.5x, Storm Lance Chance to Shock 10%, and Reflect Shield Movement speed penalty -20%; revise Molotov, Cat's Bell, Blue Amulet (two mana rows), White Materia and Deathbringer wording. Deathbringer reads Execute common enemies below lvl 40 / 5%, disabled in Eternity. Equipment-aware effect reads and summaries are shared with player inspection. Ammo math remains canonical: flat bonus scales by (10 + proficiency)/10; arrow percentage applies to incoming damage before the separate flat term, not to the flat bonus itself.
+
+Validation: 87 focused tests, 96 repository regressions, 2,000 codec cases, all build/source/editor/map gates, installed 3.0.1.24342 compilation and all-276 item/ability audit PASS. Complete source/runtime agreement has 0 new differences. Scratch: build/ForsakenBS-hz94mr9k/FFERPG. Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBS.w3x. Native UI/equip/multiplayer acceptance remains; saving disabled, canonical AS and exact AS classic fallback unchanged.
 
 ## Separate experiment - Forsaken BR
 

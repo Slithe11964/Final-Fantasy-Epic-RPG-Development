@@ -1,5 +1,15 @@
 # Forsaken equipment experiment
 
+## Separate experiment - Forsaken BS
+
+BS retries original-to-native gear conversion on a fresh external pickup after a full-backpack rejection. The internal conversion guard and failed-attempt suppression still prevent repeated replacement loops. Charges, user data, durability and ownership are preserved. Native acceptance: fill the bag, withdraw Armory gear, free a slot, pick up the dropped item and equip it; repeat without duplicate items or lost bonuses.
+
+Stat values remain in the right column even for long labels. Add Dagger/Platinum Dagger Backstab 1.5x, Storm Lance Chance to Shock 10%, and Reflect Shield Movement speed penalty -20%. Use the requested Molotov, Cat's Bell, Blue Amulet, White Materia, Summoner's Horn and Deathbringer wording; Blue Amulet's two mana rewards have separate rows. These summaries use the target's active equipment when inspecting another player.
+
+Ammo combat math is unchanged. Bow/gun proficiency scales the flat bonus by `(10 + proficiency) / 10`. Bow proficiency 4 produces Artemis +1120 and Icecloud +140; gun proficiency 6 produces Scatter +400, Onion +560 and Rock/Piercing +240. Arrow percentage multiplies incoming damage separately before the flat term is added; it does not multiply that flat term.
+
+Validation: 87 focused tests, 96 repository regressions, 2,000 codec cases, all stage checks, installed 3.0.1.24342 compilation and the all-276 gear audit PASS. Complete source/runtime agreement: 0 new differences. Output: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBS.w3x`; scratch: `build/ForsakenBS-hz94mr9k/FFERPG`. Normal AS sources/releases and the classic fallback remain unchanged. Saving is disabled in this experiment. Next unused stage BT.
+
 ## Separate experiment - Forsaken BR
 
 BR corrects BQ's doubled lance accuracy. Tooltip accuracy contributes only the residual missing from the original formula, and that residual now reaches actual combat as well as the panel. Source-aware equipment queries prevent stale item markers from bagged/unequipped gear, while preserving innate and shrine passives. Requested trinket hooks (drop rolls, mana on kill, gold-for-MP, enhanced buffs and summon scaling) read native equipment.

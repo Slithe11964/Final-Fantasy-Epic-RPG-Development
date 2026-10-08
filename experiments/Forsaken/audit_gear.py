@@ -20,7 +20,7 @@ def audit(base, modern, mapping, output):
     old_abilities,new_abilities=objects(before,'w3a'),objects(after,'w3a')
     passive=build.bag_passive_types(base)
     residual={raw:int(value) for raw,value in re.findall(r"41,'(.{4})',(\d+)\)",'\n'.join(build.item_accuracy_initialization(base,mapping)))}
-    report=['# Forsaken BR gear audit','',
+    report=['# '+modern.stem.split('-')[-1]+' gear audit','',
         '276 equipment entries checked against Stage AS; four Materia remain outside the native equipment conversion.',
         'Every original equipment ability definition and its numeric fields match AS. Every native variant retains the original abilities, cooldown group, charges and level/mastery requirements, adding only native slot/class metadata and the zero-stat storage marker. Original items remain available for Gaya.',
         '',
@@ -52,7 +52,7 @@ def audit(base, modern, mapping, output):
     assert count==276,count
     marker=new_abilities['fGmk']
     assert all(marker[(field,1)]==0 for field in ('Iagi','Iint','Istr'))
-    output.write_text('\n'.join(report)+'\n',encoding='utf-8')
+    output.write_bytes(('\n'.join(report)+'\n').encode('utf-8'))
     print('PASS all 276 gear variants and original ability values; wrote',output)
 
 

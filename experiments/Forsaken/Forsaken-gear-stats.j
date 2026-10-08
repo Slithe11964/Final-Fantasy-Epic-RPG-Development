@@ -141,7 +141,7 @@ function Forsaken_RenderGearDamage takes unit hero,integer row returns nothing
             set row=row+1
         endif
         if Forsaken_StatAbilityLevel(hero,'A144')>0 then
-            call Forsaken_StatRow(row,"10th Attack is Incendiary","")
+            call Forsaken_StatRow(row,"Every 10th Attack is Incendiary","")
             set row=row+1
         endif
         if Forsaken_StatAbilityLevel(hero,'A0YC')>0 then
@@ -197,11 +197,19 @@ function Forsaken_RenderGearDamage takes unit hero,integer row returns nothing
         call Forsaken_StatRow(row,"Elemental Weakness Damage","30%")
         set row=row+1
     endif
+    if IsUnitType(hero,UNIT_TYPE_MELEE_ATTACKER) and Forsaken_StatAbilityLevel(hero,'A1B9')>0 then
+        call Forsaken_StatRow(row,"Backstab","1.5x")
+        set row=row+1
+    endif
+    if Forsaken_StatAbilityLevel(hero,'A1EV')>0 then
+        call Forsaken_StatRow(row,"Chance to Shock","10%")
+        set row=row+1
+    endif
     if Forsaken_StatAbilityLevel(hero,'A10X')>0 then
         if udg_EternityMode then
-            call Forsaken_StatRow(row,"Execute lvl 39","Disabled")
+            call Forsaken_StatRow(row,"Execute common enemies below lvl 40","Disabled")
         else
-            call Forsaken_StatRow(row,"Execute lvl 39","5%")
+            call Forsaken_StatRow(row,"Execute common enemies below lvl 40","5%")
         endif
         set row=row+1
     endif
@@ -216,11 +224,13 @@ endfunction
 
 function Forsaken_RenderGearOther takes unit hero,integer row returns nothing
     if Forsaken_StatAbilityLevel(hero,'A03R')>0 then
-        call Forsaken_StatRow(row,"Regenerate HP out of combat","1%")
+        call Forsaken_StatRow(row,"Regenerate HP when out of combat","1%")
         set row=row+1
     endif
     if Forsaken_StatAbilityLevel(hero,'A12S')>0 then
-        call Forsaken_StatRow(row,"Mana on Kill","+100 | Tech +200")
+        call Forsaken_StatRow(row,"Mana on Kill","+100")
+        set row=row+1
+        call Forsaken_StatRow(row,"Mana on Tech Kill","+200")
         set row=row+1
     endif
     if Forsaken_StatAbilityLevel(hero,'A03D')>0 then
@@ -228,7 +238,7 @@ function Forsaken_RenderGearOther takes unit hero,integer row returns nothing
         set row=row+1
     endif
     if Forsaken_StatAbilityLevel(hero,'A0QK')>0 then
-        call Forsaken_StatRow(row,"Increases Buffs","")
+        call Forsaken_StatRow(row,"Buffs are stronger","")
         set row=row+1
     endif
     if Forsaken_StatAbilityLevel(hero,'A12V')>0 then
@@ -237,5 +247,9 @@ function Forsaken_RenderGearOther takes unit hero,integer row returns nothing
     endif
     if Forsaken_StatAbilityLevel(hero,'A05H')>0 then
         call Forsaken_StatRow(row,"Increased Summon Stats","+80%")
+        set row=row+1
+    endif
+    if Forsaken_StatAbilityLevel(hero,'A0B3')>0 then
+        call Forsaken_StatRow(row,"Movement speed penalty","|cffff3333-20%|r")
     endif
 endfunction
