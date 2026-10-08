@@ -2,7 +2,16 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BP. Normal development stays on AS; Forsaken BO suppresses stored passive abilities while preserving bag casts, and improves stats/protection display and panel layout.
+Next unused stage: BQ. Normal development stays on AS; Forsaken BP allows independent talent-row choices and addresses book casts/cooldowns after unequipping plus water proxies.
+
+## Separate experiment - Forsaken BP
+
+BP removes the same-column prerequisite from talent purchases. Each mastery-unlocked row independently permits one of its three choices; job/player isolation, mastery gates and cosmetic-only behavior remain unchanged.
+Native testing of BO reported that equipped-then-bagged Storms/Winds stopped casting and sharing cooldowns, and Depths/Wateraga lost their water wave. BP queues one zero-delay bag owner refresh after native unequip completes, suspending passives before removing/re-adding the same item handles. Keep sparse bag positions, charges and the six quick slots; never recreate real items, mutate active ability lists or automatically equip. Ignore a delayed refresh for a hero that is no longer the player's current job. Original and variant book active abilities and shared Acdh cooldown groups stay identical.
+Experimental Abil/Cooldown overlays fall back to the actual spell event when a bagged item has no legacy unit ability rank, and apply cooldown scaling to the event ability handle. Water uses a local proxy reference, explicit zero proxy mana cost/cast point, and the existing invisible-model/Locust dummy without engine ShowUnitHide, so native proxy casting/projectiles are not gated by hidden-unit state. Keep original source damage formulas, book spell IDs, targets and rewards. These are fixes for the reported symptoms; native success is not established by mocked tests or compilation.
+All changes stay in experiments/Forsaken and isolated scratch/release/Forsaken. Canonical AS, exact AS classic fallback, original item/gameplay object fields and world/import assets remain unchanged; saving disabled.
+
+Validation: all stage source/editor/playable/map gates, 77 experimental tests, 96 regression tests, 2,000 codec cases, final object/skin/archive isolation audit and installed 3.0.1.24342 compilation PASS. Complete source/runtime agreement: 0 new differences. JASS CRLF and exact AS classic fallback verified. Scratch: build/ForsakenBP-205nu15d/FFERPG. Native acceptance required in a fresh BP game: equip Storms and Winds, unequip to bag, cast both and verify the original shared book cooldown; repeat through multiple cycles and job changes. Cast Depths and Wateraga at ground and units and confirm visible wave/damage; verify bagged passive stats remain off, equipped bonuses restore, sparse bag order/charges survive and Gaya carrying remains intact. Next unused stage BQ.
 
 ## Separate experiment - Forsaken BO
 

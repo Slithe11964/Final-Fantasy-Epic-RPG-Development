@@ -140,6 +140,103 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call Forsaken_UpdatePanels(holder)
 endfunction
 
+// Rebind the same stored handles after native unequip has finished detaching abilities.
+// Passives stay suspended; empty positions and charges survive the owner refresh.
+function Forsaken_RebindBag takes nothing returns nothing
+    local timer clock=GetExpiredTimer()
+    local integer key=GetHandleId(clock)
+    local unit holder=LoadUnitHandle(ForsakenBagAbilities,key,-3)
+    local integer slot=0
+    local integer size=UnitExtendedInventorySize(holder)
+    local item carried
+    local item spacer
+    // A job switch can complete before this deferred unequip callback.
+    if holder==null or holder!=Player_GetHero(GetOwningPlayer(holder)) then
+        call RemoveSavedBoolean(ForsakenBagAbilities,GetHandleId(holder),-5)
+        call FlushChildHashtable(ForsakenBagAbilities,key)
+        call DestroyTimer(clock)
+        set holder=null
+        set clock=null
+        return
+    endif
+    set ForsakenConvertingGear=true
+    loop
+        exitwhen slot>=size
+        set carried=UnitItemInBagSlot(holder,slot)
+        call SaveItemHandle(ForsakenBagAbilities,key,1000+slot,carried)
+        call SaveInteger(ForsakenBagAbilities,key,2000+slot,GetItemCharges(carried))
+        if carried!=null then
+            call Forsaken_SuspendStoredItem(carried)
+            call UnitRemoveItem(holder,carried)
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=6
+        if UnitItemInSlot(holder,slot)==null then
+            set spacer=CreateItem('fGap',GetUnitX(holder),GetUnitY(holder))
+            call UnitAddItem(holder,spacer)
+            call SaveItemHandle(ForsakenBagAbilities,key,3000+slot,spacer)
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=size
+        set carried=LoadItemHandle(ForsakenBagAbilities,key,1000+slot)
+        if carried==null then
+            set carried=CreateItem('fGap',GetUnitX(holder),GetUnitY(holder))
+            call SaveItemHandle(ForsakenBagAbilities,key,3100+slot,carried)
+        else
+            call SetItemCharges(carried,0)
+        endif
+        call UnitAddItem(holder,carried)
+        if LoadItemHandle(ForsakenBagAbilities,key,1000+slot)!=null then
+            call SetItemCharges(carried,LoadInteger(ForsakenBagAbilities,key,2000+slot))
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=6
+        set spacer=LoadItemHandle(ForsakenBagAbilities,key,3000+slot)
+        if spacer!=null then
+            call RemoveItem(spacer)
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=size
+        set spacer=LoadItemHandle(ForsakenBagAbilities,key,3100+slot)
+        if spacer!=null then
+            call RemoveItem(spacer)
+        endif
+        set slot=slot+1
+    endloop
+    set ForsakenConvertingGear=false
+    call RemoveSavedBoolean(ForsakenBagAbilities,GetHandleId(holder),-5)
+    call FlushChildHashtable(ForsakenBagAbilities,key)
+    call DestroyTimer(clock)
+    set holder=null
+    set clock=null
+    set carried=null
+    set spacer=null
+endfunction
+
+function Forsaken_QueueBagRebind takes unit holder returns nothing
+    local timer clock
+    if holder!=Player_GetHero(GetOwningPlayer(holder)) or LoadBoolean(ForsakenBagAbilities,GetHandleId(holder),-5) then
+        return
+    endif
+    call SaveBoolean(ForsakenBagAbilities,GetHandleId(holder),-5,true)
+    set clock=CreateTimer()
+    call SaveUnitHandle(ForsakenBagAbilities,GetHandleId(clock),-3,holder)
+    call TimerStart(clock,0.,false,function Forsaken_RebindBag)
+    set clock=null
+endfunction
+
 function Forsaken_OnEquip takes nothing returns nothing
     local unit holder=GetTriggerUnit()
     if holder==null then
@@ -165,6 +262,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     call Forsaken_CarryEvent(holder)
     if GetTriggerEventId()==EVENT_PLAYER_UNIT_UNEQUIP_ITEM then
         call Forsaken_SyncStoredEffects(holder)
+        call Forsaken_QueueBagRebind(holder)
     endif
     if GetTriggerEventId()!=EVENT_PLAYER_UNIT_PICKUP_ITEM and GetTriggerEventId()!=EVENT_PLAYER_UNIT_EQUIP_ITEM then
         set holder=null

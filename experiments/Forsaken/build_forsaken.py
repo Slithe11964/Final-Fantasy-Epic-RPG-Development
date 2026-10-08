@@ -355,6 +355,53 @@ endfunction"""
     return original
 
 
+def cast_overlay(original, module):
+    """Read item casts from their event handle, not the legacy unit ability list."""
+    if module == 'Abil':
+        original = original.replace('    if udg_AbilityLevelShift then', """    // Native bag item casts need not appear in GetUnitAbilityLevel.
+    if l_level<=0 and GetSpellAbilityId()==l_abilId and GetSpellAbility()!=null then
+        set l_level=1
+    endif
+    if udg_AbilityLevelShift then""", 1)
+    elif module == 'Cooldown':
+        original = original.replace('library TCooldown requires TPlayerHero', 'library TCooldown requires TPlayerHero, TAbil', 1)
+        helper = """function Forsaken_SetCastCooldown takes unit caster,integer raw,integer level,real duration returns nothing
+    local ability castAbility=GetSpellAbility()
+    if castAbility!=null and GetSpellAbilityId()==raw then
+        call BlzSetAbilityRealLevelField(castAbility,ABILITY_RLF_COOLDOWN,IMaxBJ(0,level),duration)
+    else
+        call BlzSetUnitAbilityCooldown(caster,raw,level,duration)
+    endif
+    set castAbility=null
+endfunction
+
+function Forsaken_CastAbilityLevel takes integer raw,unit caster returns integer
+    local integer rank=GetUnitAbilityLevel(caster,raw)
+    if rank<=0 and GetSpellAbilityId()==raw and GetSpellAbility()!=null then
+        return 1
+    endif
+    return rank
+endfunction
+
+"""
+        original = original.replace('function Trig_Cooldown_Scaling_Actions',helper+'function Trig_Cooldown_Scaling_Actions',1)
+        start=original.index('function Trig_Cooldown_Scaling_Actions')
+        original=original[:start]+original[start:].replace('call BlzSetUnitAbilityCooldown(', 'call Forsaken_SetCastCooldown(').replace('GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())','Forsaken_CastAbilityLevel(GetSpellAbilityId(),GetTriggerUnit())')
+    elif module == 'Spell_Water':
+        original=original.replace('    local integer l_tempHandleId', '    local unit waveDummy\n    local integer l_tempHandleId',1)
+        original=original.replace("    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint)","    set waveDummy=CreateUnit(GetOwningPlayer(GetTriggerUnit()),'h01B',GetLocationX(l_tempPoint),GetLocationY(l_tempPoint),0.)",1)
+        original=original.replace('GetLastCreatedUnit()','waveDummy')
+        # h01B has nothing.mdl and Locust already: engine hiding is unnecessary
+        # and can suppress a native proxy cast/projectile in the new inventory runtime.
+        original=original.replace('    call ShowUnitHide(waveDummy)\n','',1)
+        original=original.replace('    call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)', """    // This proxy is a spell carrier; its own mana must never gate the wave.
+    call BlzSetUnitAbilityManaCost(waveDummy,'A0PZ',0,0)
+    call BlzSetUnitRealField(waveDummy,UNIT_RF_CAST_POINT,0.)
+    call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)""",1)
+        original=original.replace('    set l_tempPoint=null','    set waveDummy=null\n    set l_tempPoint=null',1)
+    return original
+
+
 def attack_speed_helper():
     source=(ROOT/'src/triggers/04 Combat and abilities/AtkSpd.j').read_text()
     body=re.search(r'function Trig_AtkSpd_Command_Actions\b.*?endfunction',source,re.S).group()
@@ -720,6 +767,9 @@ def main():
         text=path.read_text().replace('GetItemType(', 'Forsaken_GearClass(')
         if module=='Forge': text=text.replace('library TForge requires','library TForge requires TUnit,',1)
         path.write_bytes(text.replace('\n','\r\n').encode('utf-8'))
+    for module in ('Abil','Cooldown','Spell_Water'):
+        path=work/'src/triggers/04 Combat and abilities'/(module+'.j')
+        path.write_bytes(cast_overlay(path.read_text(encoding='utf-8'),module).replace('\n','\r\n').encode('utf-8'))
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,

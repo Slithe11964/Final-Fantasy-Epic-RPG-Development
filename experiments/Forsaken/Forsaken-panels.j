@@ -19,9 +19,6 @@ function Forsaken_TalentCanPurchase takes integer key,integer node,integer rank 
         endif
         set column=column+1
     endloop
-    if node>=3 then
-        return LoadBoolean(ForsakenTalentState,key,node-3)
-    endif
     return true
 endfunction
 

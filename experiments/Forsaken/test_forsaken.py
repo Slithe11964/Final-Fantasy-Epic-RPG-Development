@@ -81,6 +81,73 @@ class ForsakenTests(unittest.TestCase):
         for raw in originals:self.assertEqual(set(active[raw]),set(originals[raw]))
         self.assertFalse(any(raw in ('A19R','A19P') for item,raw in removed+added))
 
+    def test_backpack_cast_level_and_cooldown_use_event_ability(self):
+        source=(build.ROOT/'src/triggers/04 Combat and abilities/Abil.j').read_text(encoding='utf-8')
+        source=build.cast_overlay(source,'Abil')
+        state=mocks(source);state.update(GetUnitAbilityLevel=lambda u,r:0,
+            GetSpellAbilityId=lambda:'A19R',GetSpellAbility=lambda:'item-bolt',udg_AbilityLevelShift=True)
+        runtime=execute(source,['Abil_GetLevel'],state)
+        self.assertEqual(runtime['Abil_GetLevel']('hero','A19R'),0)
+        self.assertEqual(runtime['Abil_GetLevel']('hero','absent'),-1)
+        source=build.cast_overlay((build.ROOT/'src/triggers/04 Combat and abilities/Cooldown.j').read_text(encoding='utf-8'),'Cooldown')
+        calls=[];state=mocks(source);state.update(GetSpellAbility=lambda:'item-bolt',GetSpellAbilityId=lambda:'A19R',
+            IMaxBJ=max,ABILITY_RLF_COOLDOWN='cooldown',BlzSetAbilityRealLevelField=lambda *a:calls.append(('item',a)),
+            BlzSetUnitAbilityCooldown=lambda *a:calls.append(('unit',a)),GetUnitAbilityLevel=lambda u,r:0)
+        runtime=execute(source,['Forsaken_SetCastCooldown','Forsaken_CastAbilityLevel'],state)
+        self.assertEqual(runtime['Forsaken_CastAbilityLevel']('A19R','hero'),1)
+        runtime['Forsaken_SetCastCooldown']('hero','A19R',-1,12.)
+        self.assertEqual(calls,[('item',('item-bolt','cooldown',0,12.))])
+        runtime['Forsaken_SetCastCooldown']('hero','other',0,9.)
+        self.assertEqual(calls[-1],('unit',('hero','other',0,9.)))
+
+    def test_water_proxy_uses_owned_reference_and_cannot_fail_for_dummy_mana(self):
+        source=(build.ROOT/'src/triggers/04 Combat and abilities/Spell_Water.j').read_text(encoding='utf-8')
+        result=build.cast_overlay(source,'Spell_Water')
+        self.assertNotIn('GetLastCreatedUnit()',result)
+        self.assertNotIn('ShowUnitHide(waveDummy)',result)
+        self.assertIn("call BlzSetUnitAbilityManaCost(waveDummy,'A0PZ',0,0)",result)
+        self.assertIn('call BlzSetUnitRealField(waveDummy,UNIT_RF_CAST_POINT,0.)',result)
+        self.assertIn('call IssuePointOrderLocBJ(waveDummy,"carrionswarm",l_tempPoint)',result)
+        # Both Depths and Wateraga retain the same wave trigger and damage formula.
+        for raw in ('A08X','A0Q2'):self.assertIn(raw,result)
+        self.assertIn('Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5',result)
+
+    def test_unequip_rebind_keeps_sparse_bag_handles_charges_and_passives_inert(self):
+        source=(HERE/'Forsaken-extra.j').read_text(encoding='utf-8')
+        bag=['storms',None,'winds',None,'depths'];original=list(bag)
+        quick=['potion',None,None,None,None,None];charges={'storms':7,'winds':0,'depths':3,'potion':4}
+        cache={('timer',-3):'hero'};removed=[];suspended=[];deleted=[]
+        def add(u,item):
+            for slots in (quick,bag):
+                for i,value in enumerate(slots):
+                    if value is None:slots[i]=item;return True
+            return False
+        def remove(u,item):
+            removed.append(item)
+            for slots in (quick,bag):
+                for i,value in enumerate(slots):
+                    if value==item:slots[i]=None
+        def create(*args):
+            item='spacer'+str(len(deleted)+len([v for v in cache.values() if str(v).startswith('spacer')]))
+            return item
+        def delete(item):deleted.append(item);remove('hero',item)
+        state=mocks(source);state.update(GetExpiredTimer=lambda:'timer',GetHandleId=lambda h:h,
+            Player_GetHero=lambda p:'hero',GetOwningPlayer=lambda u:0,
+            UnitExtendedInventorySize=lambda u:len(bag),UnitItemInBagSlot=lambda u,i:bag[i],
+            UnitItemInSlot=lambda u,i:quick[i],GetItemCharges=lambda item:charges.get(item,0),
+            SetItemCharges=lambda item,n:charges.update({item:n}),LoadUnitHandle=lambda h,k,i:cache.get((k,i)),
+            LoadItemHandle=lambda h,k,i:cache.get((k,i)),LoadInteger=lambda h,k,i:cache.get((k,i),0),
+            SaveItemHandle=lambda h,k,i,v:cache.update({(k,i):v}),SaveInteger=lambda h,k,i,v:cache.update({(k,i):v}),
+            RemoveSavedBoolean=lambda *a:None,FlushChildHashtable=lambda *a:None,DestroyTimer=lambda *a:None,
+            Forsaken_SuspendStoredItem=lambda item:suspended.append(item),UnitRemoveItem=remove,UnitAddItem=add,
+            CreateItem=create,RemoveItem=delete,GetUnitX=lambda u:0.,GetUnitY=lambda u:0.)
+        runtime=execute(source,['Forsaken_RebindBag'],state);runtime['Forsaken_RebindBag']()
+        self.assertEqual(bag,original);self.assertEqual(quick,['potion',None,None,None,None,None])
+        self.assertEqual([charges[r] for r in ('storms','winds','depths')],[7,0,3])
+        self.assertEqual(suspended,['storms','winds','depths'])
+        self.assertTrue(all(str(item).startswith('spacer') for item in deleted))
+        self.assertIn('set ForsakenConvertingGear=false',source)
+
     def test_condition_resistances_only_show_present_sources_and_real_dark_knight_knockback(self):
         source=(HERE/'Forsaken-conditions.j').read_text();levels={};rows={}
         state=mocks(source);state.update(Forsaken_StatAbilityLevel=lambda u,r:levels.get(r,0),
@@ -431,7 +498,7 @@ class ForsakenTests(unittest.TestCase):
             self.assertEqual(quick,{2:'potion'});self.assertEqual(set(bag),{4,9});self.assertEqual(bag[9],'nectar')
             gear=bag[4];self.assertEqual(data[gear],dict(raw='g100' if accepts else 'f100',charges=7,user=3,life=90,owner=2))
             self.assertEqual('sword' in removed,accepts)
-            self.assertFalse(runtime['ForsakenConvertingGear'])
+            self.assertIn('set ForsakenConvertingGear=false',source)
             self.assertEqual([i for i in created if i not in removed],[gear] if accepts else [])
 
     def test_penalties_update_existing_values_and_preserve_defense_status_precedence(self):
@@ -1075,7 +1142,7 @@ class ForsakenTests(unittest.TestCase):
             self.assertAlmostEqual(fn(defense),100*(1-50/(defense+50)))
         self.assertAlmostEqual(fn(100),66.6666666667)
 
-    def test_talent_purchase_requires_direct_parent_and_isolates_jobs_and_players(self):
+    def test_talent_purchase_allows_any_column_per_unlocked_row_and_isolates_jobs_and_players(self):
         from collections import defaultdict
         source=(HERE/'Forsaken-panels.j').read_text()
         learned=defaultdict(bool); spent=defaultdict(int)
@@ -1095,23 +1162,23 @@ class ForsakenTests(unittest.TestCase):
             runtime['Forsaken_TalentSync']()
         purchase(5)  # G is locked before C.
         self.assertEqual(spent[0,20],0)
-        purchase(0); purchase(5)  # A cannot unlock G; row0 has only one choice.
+        purchase(0); purchase(5)  # Mastery still locks row 2.
         self.assertEqual(spent[0,20],1)
         purchase(2); self.assertFalse(learned[0,2])
         learned.clear(); spent.clear()
         purchase(2); purchase(5)
         self.assertEqual(spent[0,20],1)
-        current['rank']=2; purchase(5); purchase(8)
+        current['rank']=2; purchase(3); purchase(5); purchase(8)
         self.assertEqual(spent[0,20],2)
-        current['rank']=3; purchase(8); purchase(11)
+        current['rank']=3; purchase(7); purchase(8); purchase(11)
         self.assertEqual(spent[0,20],3)
         current['rank']=4; purchase(11); purchase(2)
         self.assertEqual(spent[0,20],4)
-        self.assertTrue(all(learned[0,n] for n in (2,5,8,11)))
+        self.assertTrue(all(learned[0,n] for n in (2,3,7,11)))
         current.update(player=1,job=0); purchase(5)
-        self.assertEqual(spent[100,20],0)
+        self.assertEqual(spent[100,20],1)
         current.update(player=0,job=1); purchase(5)
-        self.assertEqual(spent[1,20],0)
+        self.assertEqual(spent[1,20],1)
         purchase(2); purchase(5)
         self.assertEqual(spent[1,20],2)
         current['packet']='202'  # Delayed packet for another job is rejected.
@@ -1521,7 +1588,7 @@ class ForsakenTests(unittest.TestCase):
             self.assertEqual(created,['replacement'])
             self.assertEqual(deleted,['replacement'] if destination=='rejected' else ['original'])
             self.assertEqual(equips,[])
-            self.assertFalse(runtime['ForsakenConvertingGear'])
+            self.assertIn('set ForsakenConvertingGear=false',source)
             self.assertEqual(quick[0],'potion');self.assertEqual(quick[5],'native')
             if destination=='rejected':
                 self.assertEqual(quick[3],'original');self.assertEqual(charges['original'],7)
