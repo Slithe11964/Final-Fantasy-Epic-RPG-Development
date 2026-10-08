@@ -207,9 +207,9 @@ function Forsaken_RenderGearDamage takes unit hero,integer row returns nothing
     endif
     if Forsaken_StatAbilityLevel(hero,'A10X')>0 then
         if udg_EternityMode then
-            call Forsaken_StatRow(row,"Execute common enemies below lvl 40","Disabled")
+            call Forsaken_StatRow(row,"Kill Commons below 40","Disabled")
         else
-            call Forsaken_StatRow(row,"Execute common enemies below lvl 40","5%")
+            call Forsaken_StatRow(row,"Kill Commons below 40","5%")
         endif
         set row=row+1
     endif
@@ -224,7 +224,7 @@ endfunction
 
 function Forsaken_RenderGearOther takes unit hero,integer row returns nothing
     if Forsaken_StatAbilityLevel(hero,'A03R')>0 then
-        call Forsaken_StatRow(row,"Regenerate HP when out of combat","1%")
+        call Forsaken_StatRow(row,"HP regen not in combat","1%")
         set row=row+1
     endif
     if Forsaken_StatAbilityLevel(hero,'A12S')>0 then

@@ -1,4 +1,4 @@
-# ForsakenBS gear audit
+# ForsakenBT gear audit
 
 276 equipment entries checked against Stage AS; four Materia remain outside the native equipment conversion.
 Every original equipment ability definition and its numeric fields match AS. Every native variant retains the original abilities, cooldown group, charges and level/mastery requirements, adding only native slot/class metadata and the zero-stat storage marker. Original items remain available for Gaya.

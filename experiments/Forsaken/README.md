@@ -1,5 +1,7 @@
 # Forsaken equipment experiment
 
+BT is a labels-only patch of BS: Cat's Bell now reads `HP regen not in combat` / `1%`; Deathbringer reads `Kill Commons below 40` / `5%`. Playable/editor sources updated. Normal checks PASS: 87 focused tests, 96 regressions, 2,000 codec cases, installed-library compilation, source/map/content checks and all-276 gear audit. Output: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x`. Next unused stage BU.
+
 ## Separate experiment - Forsaken BS
 
 BS retries original-to-native gear conversion on a fresh external pickup after a full-backpack rejection. The internal conversion guard and failed-attempt suppression still prevent repeated replacement loops. Charges, user data, durability and ownership are preserved. Native acceptance: fill the bag, withdraw Armory gear, free a slot, pick up the dropped item and equip it; repeat without duplicate items or lost bonuses.

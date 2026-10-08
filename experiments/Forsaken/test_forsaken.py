@@ -42,8 +42,8 @@ class ForsakenTests(unittest.TestCase):
             BlzFrameSetText=lambda f,t:texts.update({f:t}))
         render=execute(source,['Forsaken_StatRow'],state)['Forsaken_StatRow']
         for label,value in [('Elemental Weakness Damage','30%'),
-            ('Reduce Enemy Block Chance','66.67%'),('Regenerate HP when out of combat','1%'),
-            ('Execute common enemies below lvl 40','5%'),('Increased Summon Stats','+80%')]:
+            ('Reduce Enemy Block Chance','66.67%'),('HP regen not in combat','1%'),
+            ('Kill Commons below 40','5%'),('Increased Summon Stats','+80%')]:
             render(0,label,value)
             self.assertEqual(texts,{'label':label,'value':value})
             self.assertAlmostEqual(sizes['label'][0]+sizes['value'][0]+.006,.189)
@@ -63,7 +63,7 @@ class ForsakenTests(unittest.TestCase):
         for target,expected in [('archer',('Tech Damage','30% | +1120')),
             ('ice',('Tech Damage','15% | +140')),('gunner',('Shot attack damage','+960')),
             ('dagger',('Backstab','1.5x')),('lancer',('Chance to Shock','10%')),
-            ('death',('Execute common enemies below lvl 40','5%'))]:
+            ('death',('Kill Commons below 40','5%'))]:
             rows.clear();runtime['Forsaken_RenderGearDamage'](target,10)
             self.assertIn(expected,rows.values())
         rows.clear();runtime['Forsaken_RenderGearOther']('shield',7)

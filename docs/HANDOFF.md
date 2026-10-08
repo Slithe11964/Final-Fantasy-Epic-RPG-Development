@@ -2,7 +2,9 @@
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
-Next unused stage: BT. Normal development stays on AS; Forsaken BS is the current gear/stat test checkpoint.
+Next unused stage: BU. Normal development stays on AS; Forsaken BT is the current gear/stat test checkpoint.
+
+BT is a labels-only patch of BS: Cat's Bell reads HP regen not in combat / 1%; Deathbringer reads Kill Commons below 40 / 5%. Playable and embedded editor sources updated together; gameplay unchanged. Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x. BT validation PASS: 87 focused tests, 96 regressions, 2,000 codec cases, editor/playable compilation against installed libraries, source agreement, quests/save/content/armory/Bazaar checks and all-276 gear audit. Log: build/BT-checks.txt.
 
 ## Forsaken BS - 2026-10-08
 
