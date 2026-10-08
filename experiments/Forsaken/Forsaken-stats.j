@@ -3,7 +3,10 @@ function Forsaken_StatPercent takes real value returns string
 endfunction
 
 function Forsaken_StatCooldown takes unit hero returns real
-    local real scale=1000./(1000.+I2R(GetHeroAgi(hero,true)))
+    local real scale=1.
+    if hero==Player_GetHero(GetOwningPlayer(hero)) and IsPlayerInForce(GetOwningPlayer(hero),udg_PlayingPlayers) then
+        set scale=1000./(1000.+I2R(GetHeroAgi(hero,true)))
+    endif
     if Forsaken_StatAbilityLevel(hero,'A1C3')>0 then
         set scale=scale*.7
     endif
@@ -154,10 +157,17 @@ function Forsaken_RenderStats takes unit hero returns nothing
         set i=i+1
     endloop
     if ForsakenStatsPage==0 then
-        call Forsaken_StatRow(0,"Health regen",R2SW(ForsakenHeroHPRegen[playerIndex],1,2))
-        call Forsaken_StatRow(1,"Mana regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
-        call Forsaken_StatRow(2,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
-        call Forsaken_StatRow(3,"Magic Defense %",Forsaken_StatPercent(Forsaken_DefensePercent(udg_MagicDefense[playerIndex])))
+        if hero==Player_GetHero(GetOwningPlayer(hero)) then
+            call Forsaken_StatRow(0,"Health regen",R2SW(ForsakenHeroHPRegen[playerIndex],1,2))
+            call Forsaken_StatRow(1,"Mana regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
+            call Forsaken_StatRow(2,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
+            call Forsaken_StatRow(3,"Magic Defense %",Forsaken_StatPercent(Forsaken_DefensePercent(udg_MagicDefense[playerIndex])))
+        else
+            call Forsaken_StatRow(0,"Base health regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_HIT_POINTS_REGENERATION_RATE),1,2))
+            call Forsaken_StatRow(1,"Base mana regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_MANA_REGENERATION),1,2))
+            call Forsaken_StatRow(2,"Magic defense basis","Native armor")
+            call Forsaken_StatRow(3,"Armor reduction %",Forsaken_StatPercent(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero))))
+        endif
         call Forsaken_StatRow(4,"Armor",R2SW(BlzGetUnitArmor(hero),1,2))
         call Forsaken_StatRow(5,"Armor defense %",Forsaken_StatPercent(Forsaken_StatArmorDefense(BlzGetUnitArmor(hero))))
         call Forsaken_StatRow(6,"Evasion rating",R2SW(Forsaken_Stat_GetEvasion(hero),1,2))

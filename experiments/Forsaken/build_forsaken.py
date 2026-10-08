@@ -178,6 +178,9 @@ def equip_overlay(original):
     framehandle ForsakenTalentPoints=null
     framehandle array ForsakenTalentButton
     framehandle array ForsakenTalentIcon
+    framehandle array ForsakenTalentLink
+    framehandle ForsakenNPCSummary=null
+    framehandle ForsakenInspectBagLabel=null
     framehandle array ForsakenTalentLabel
     framehandle ForsakenDefenseRow=null
     framehandle ForsakenReductionRow=null
@@ -201,7 +204,6 @@ def equip_overlay(original):
     unit ForsakenSelectedTarget=null
     unit ForsakenInspectTarget=null
     framehandle ForsakenInspectButton=null
-    framehandle ForsakenEquipButton=null
     boolean ForsakenPanelNeedsRefresh=false
     framehandle ForsakenInspectRoot=null
     framehandle ForsakenInspectClose=null

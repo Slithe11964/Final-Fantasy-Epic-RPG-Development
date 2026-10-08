@@ -1,11 +1,11 @@
 function Forsaken_CanInspect takes unit hero,player viewer returns boolean
     local player owner
     local boolean allowed=false
-    if hero==null then
+    if hero==null or GetUnitTypeId(hero)==0 then
         return false
     endif
     set owner=GetOwningPlayer(hero)
-    set allowed=owner!=viewer and GetPlayerId(owner)<8 and hero==Player_GetHero(owner) and IsUnitVisible(hero,viewer)
+    set allowed=hero!=Player_GetHero(viewer) and IsUnitVisible(hero,viewer) and not IsUnitHidden(hero)
     set owner=null
     return allowed
 endfunction
@@ -14,12 +14,24 @@ function Forsaken_RenderInspection takes unit hero returns nothing
     local integer slot=0
     local item carried
     local string description
-    call BlzFrameSetText(ForsakenInspectTitle,GetPlayerName(GetOwningPlayer(hero))+"|n"+GetUnitName(hero)+" - Level "+I2S(GetHeroLevel(hero)))
+    call BlzFrameSetText(ForsakenInspectTitle,GetPlayerName(GetOwningPlayer(hero))+"|n"+GetUnitName(hero)+" - Level "+I2S(GetUnitLevel(hero)))
+    if UnitExtendedInventorySize(hero)==0 then
+        call BlzFrameSetText(ForsakenInspectBagLabel,"Inventory - read only (first row)")
+    else
+        call BlzFrameSetText(ForsakenInspectBagLabel,"Backpack - read only")
+    endif
     loop
         exitwhen slot>=39
         if slot<9 then
             set carried=UnitItemInEquipmentSlot(hero,ConvertLoadoutSlot(slot))
             set description=ForsakenInspectSlotName[slot]
+        elseif UnitExtendedInventorySize(hero)==0 then
+            set carried=null
+            set description="No backpack"
+            if slot<15 then
+                set carried=UnitItemInSlot(hero,slot-9)
+                set description="Inventory slot "+I2S(slot-8)
+            endif
         else
             set carried=UnitItemInBagSlot(hero,slot-9)
             set description="Bag slot "+I2S(slot-8)
@@ -59,12 +71,6 @@ function Forsaken_CreateInspection takes nothing returns nothing
     set ForsakenInspectSlotName[6]="Weapon"
     set ForsakenInspectSlotName[7]="Offhand"
     set ForsakenInspectSlotName[8]="Trinket"
-    set ForsakenEquipButton=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
-    call BlzFrameSetAbsPoint(ForsakenEquipButton,FRAMEPOINT_TOPLEFT,.505,.20)
-    call BlzFrameSetSize(ForsakenEquipButton,.086,.026)
-    call BlzFrameSetText(ForsakenEquipButton,"Equip gear")
-    call BlzFrameSetVisible(ForsakenEquipButton,false)
-    call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_PanelAccess,ForsakenEquipButton,FRAMEEVENT_CONTROL_CLICK)
     set ForsakenInspectButton=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
     call BlzFrameSetAbsPoint(ForsakenInspectButton,FRAMEPOINT_TOPLEFT,.565,.20)
     call BlzFrameSetSize(ForsakenInspectButton,.032,.032)
@@ -80,7 +86,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
     call BlzFrameSetPoint(label,FRAMEPOINT_TOPLEFT,tip,FRAMEPOINT_TOPLEFT,.018,-.018)
     call BlzFrameSetSize(label,.134,.025)
     call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.008,0)
-    call BlzFrameSetText(label,"Inspect selected hero|nGear, bag, stats and talents")
+    call BlzFrameSetText(label,"Inspect selected unit|nGear, bag, stats and talents")
     call BlzFrameSetTooltip(ForsakenInspectButton,tip)
     call BlzFrameSetVisible(tip,false)
     call BlzFrameSetVisible(ForsakenInspectButton,false)
@@ -140,6 +146,7 @@ function Forsaken_CreateInspection takes nothing returns nothing
     call BlzFrameSetSize(label,.22,.015)
     call BlzFrameSetFont(label,"Fonts\\FRIZQT__.TTF",.008,0)
     call BlzFrameSetTextAlignment(label,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
+    set ForsakenInspectBagLabel=label
     call BlzFrameSetText(label,"Backpack - read only")
     call BlzFrameSetVisible(ForsakenInspectRoot,false)
     set slotButton=null

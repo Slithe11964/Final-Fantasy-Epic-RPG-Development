@@ -7,6 +7,41 @@ function Forsaken_RejectEquipment takes item gear,unit holder returns nothing
     call UnitRemoveItem(holder,gear)
 endfunction
 
+function Forsaken_PrepareQuickGear takes unit holder returns nothing
+    local integer slot=0
+    local integer variant
+    local integer charges
+    local integer tag
+    local item original
+    local item replacement
+    loop
+        exitwhen slot>=6
+        set original=UnitItemInSlot(holder,slot)
+        set variant=LoadInteger(ForsakenGearTypes,0,GetItemTypeId(original))
+        if original!=null and variant!=0 then
+            set charges=GetItemCharges(original)
+            set tag=GetItemUserData(original)
+            call UnitRemoveItem(holder,original)
+            call UnitAddItemToSlotById(holder,variant,slot)
+            set replacement=UnitItemInSlot(holder,slot)
+            if replacement!=null and GetItemTypeId(replacement)==variant then
+                call SetItemCharges(replacement,charges)
+                call SetItemUserData(replacement,tag)
+                call SetWidgetLife(replacement,GetWidgetLife(original))
+                call SetItemPlayer(replacement,GetItemPlayer(original),false)
+                call RemoveItem(original)
+            else
+                if UnitAddItem(holder,original) then
+                    call UnitDropItemSlot(holder,original,slot)
+                endif
+            endif
+        endif
+        set slot=slot+1
+    endloop
+    set original=null
+    set replacement=null
+endfunction
+
 function Forsaken_EnableHero takes unit holder returns nothing
     call UnitAddAbility(holder,'fBag')
     call UnitMakeAbilityPermanent(holder,true,'fBag')
@@ -14,6 +49,7 @@ function Forsaken_EnableHero takes unit holder returns nothing
     call UnitMakeAbilityPermanent(holder,true,'fGer')
     call UnitAddAbility(holder,'ASpc')
     call UnitMakeAbilityPermanent(holder,true,'ASpc')
+    call Forsaken_PrepareQuickGear(holder)
     call Forsaken_UpdatePanels(holder)
 endfunction
 
@@ -22,7 +58,7 @@ function Forsaken_OnEquip takes nothing returns nothing
     if holder==null then
         if GetEventPlayerChatString()=="-forsaken" then
             set holder=Player_GetHero(GetTriggerPlayer())
-            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BE: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
+            call DisplayTimedTextToPlayer(GetTriggerPlayer(),0,0,30,"Forsaken BF: bag capacity="+I2S(UnitExtendedInventorySize(holder))+". Backpack (B) opens FF talents/stats beside native gear. If needed use -forsaken-panels. Rows unlock at Normal, Master, Ultimate and Legendary mastery. Choices are cosmetic; no combat bonuses.")
         endif
         set holder=null
         return
@@ -126,7 +162,6 @@ function Register_Forsaken_TestEquip takes nothing returns nothing
     loop
         exitwhen i>7
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_TestEquip,Player(i),"-forsaken-equip",true)
-        call BlzTriggerRegisterPlayerSyncEvent(gg_trg_Forsaken_TestEquip,Player(i),"FFERPGEQUIP",false)
         set i=i+1
     endloop
     call TriggerAddAction(gg_trg_Forsaken_TestEquip,function Forsaken_TestEquip)

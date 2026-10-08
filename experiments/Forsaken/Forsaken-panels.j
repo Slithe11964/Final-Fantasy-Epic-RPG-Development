@@ -215,10 +215,6 @@ function Forsaken_PanelAccess takes nothing returns nothing
             set ForsakenPanelNeedsRefresh=true
             call Forsaken_RenderInspection(ForsakenInspectTarget)
             call BlzFrameSetVisible(ForsakenInspectRoot,true)
-        elseif BlzGetTriggerFrame()==ForsakenEquipButton then
-            if hero!=null and ForsakenInspectTarget==null and IsUnitSelected(hero,viewer) then
-                call BlzSendSyncData("FFERPGEQUIP","equip")
-            endif
         elseif BlzGetTriggerFrame()==ForsakenInspectClose or BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
             set ForsakenInspectTarget=null
             set ForsakenPanelOpen=false
@@ -247,6 +243,26 @@ function Forsaken_PanelAccess takes nothing returns nothing
     set viewer=null
 endfunction
 
+function Forsaken_RenderNPC takes unit target returns nothing
+    local integer node=0
+    set ForsakenPanelNeedsRefresh=false
+    call BlzFrameClearAllPoints(ForsakenTalentRoot)
+    call BlzFrameSetAbsPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,.39,.585)
+    call BlzFrameSetText(ForsakenTalentPoints,"Unit inspection|nNo FF job talents")
+    loop
+        exitwhen node>=12
+        call BlzFrameSetVisible(ForsakenTalentButton[node],false)
+        if node<9 then
+            call BlzFrameSetVisible(ForsakenTalentLink[node],false)
+        endif
+        set node=node+1
+    endloop
+    call BlzFrameSetText(ForsakenNPCSummary,"|cffffcc00"+GetUnitName(target)+"|r|nLevel "+I2S(GetUnitLevel(target))+"|n|nHP: "+R2SW(GetWidgetLife(target),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_LIFE),1,0)+"|nMP: "+R2SW(GetUnitState(target,UNIT_STATE_MANA),1,0)+" / "+R2SW(GetUnitState(target,UNIT_STATE_MAX_MANA),1,0)+"|n|nMagic defense uses native armor. Damage types and scripted effects also affect damage.|n|nMore stats: resistances, bonuses and buffs.|nBase regen excludes auras/abilities.")
+    call BlzFrameSetVisible(ForsakenNPCSummary,true)
+    call Forsaken_RenderInspection(target)
+    call Forsaken_RenderStats(target)
+endfunction
+
 function Forsaken_PollPanels takes nothing returns nothing
     local player viewer=GetLocalPlayer()
     local unit hero=Player_GetHero(viewer)
@@ -270,8 +286,10 @@ function Forsaken_PollPanels takes nothing returns nothing
     else
         set ForsakenPanelOpen=false
     endif
+    if ForsakenInspectTarget!=null and ForsakenInspectTarget!=Player_GetHero(GetOwningPlayer(ForsakenInspectTarget)) then
+        call Forsaken_RenderNPC(ForsakenInspectTarget)
+    endif
     set ForsakenBackpackWasVisible=visible
-    call BlzFrameSetVisible(ForsakenEquipButton,visible and ForsakenInspectTarget==null)
     call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
     call BlzFrameSetVisible(ForsakenInspectButton,Forsaken_CanInspect(ForsakenSelectedTarget,viewer))
     set nativePanel=null
@@ -346,6 +364,7 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         call BlzTriggerRegisterFrameEvent(gg_trg_Forsaken_TalentClick,ForsakenTalentButton[node],FRAMEEVENT_CONTROL_CLICK)
         if row<3 then
             set line=BlzCreateFrameByType("TEXT","ForsakenTalentLink",ForsakenTalentRoot,"",node+1)
+            set ForsakenTalentLink[node]=line
             call BlzFrameSetPoint(line,FRAMEPOINT_TOP,ForsakenTalentButton[node],FRAMEPOINT_BOTTOM,0,.001)
             call BlzFrameSetSize(line,.012,.009)
             call BlzFrameSetFont(line,"Fonts\\FRIZQT__.TTF",.007,0)
@@ -355,6 +374,11 @@ function Register_Forsaken_PanelAccess takes nothing returns nothing
         endif
         set node=node+1
     endloop
+    set ForsakenNPCSummary=BlzCreateFrameByType("TEXT","ForsakenNPCSummary",ForsakenTalentRoot,"",0)
+    call BlzFrameSetPoint(ForsakenNPCSummary,FRAMEPOINT_TOPLEFT,ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.028,-.08)
+    call BlzFrameSetSize(ForsakenNPCSummary,.154,.157)
+    call BlzFrameSetFont(ForsakenNPCSummary,"Fonts\\FRIZQT__.TTF",.007,0)
+    call BlzFrameSetVisible(ForsakenNPCSummary,false)
     set node=0
     loop
         exitwhen node>=12
@@ -438,6 +462,7 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
             call BlzFrameSetPoint(ForsakenTalentRoot,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPLEFT,-.002,0)
         endif
         call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)
+        call BlzFrameSetVisible(ForsakenNPCSummary,false)
         call Forsaken_RenderStats(hero)
         if ForsakenInspectTarget!=null then
             call BlzFrameSetText(ForsakenTalentPoints,GetPlayerName(owner)+" / "+mastery+"|nInspect: read only")
@@ -446,6 +471,10 @@ function Forsaken_UpdatePanels takes unit hero returns nothing
         endif
         loop
             exitwhen node>=12
+            call BlzFrameSetVisible(ForsakenTalentButton[node],true)
+            if node<9 then
+                call BlzFrameSetVisible(ForsakenTalentLink[node],true)
+            endif
             call BlzFrameSetEnable(ForsakenTalentButton[node],ForsakenInspectTarget==null)
             set column=ModuloInteger(node,3)
             set skill=0
