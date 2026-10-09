@@ -392,7 +392,7 @@ function FHP_Discard takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_HousePending[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     // Owned replacements are disposed by the existing ownership/reference/unit path.

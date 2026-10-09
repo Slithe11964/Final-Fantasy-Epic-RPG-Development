@@ -403,3 +403,11 @@ compile with --inventory-profile plus prior policies.11 new tests plus25 focused
 regressions and three compile probes PASS. See ../../docs/SAVE_INVENTORY_PROFILE.md
 for remaining policy initialization, house, equipment effects and controller work.
 No map build; full character save/load remains blocked.
+
+Forsaken-save-house.j stages a separately owned contained empty replacement house
+without changing original house items or live references. Failed containment and
+deletion retain a cleanup guard; published/borrowed handles and unexpected cargo
+refuse deletion. Run test_save_house.py; compile --house plus prior policies.11 new checks plus66
+focused regressions and three final compiler probes PASS.
+See ../../docs/SAVE_HOUSE.md. House cargo, reference switching and controller
+integration remain pending. No new map; full character saves remain blocked.

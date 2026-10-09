@@ -2,6 +2,8 @@ library TForsakenSaveUnits requires TForsakenSaveSession
 // Owned replacement-unit allocation only. Caller must suppress synchronized gameplay hooks.
 // No original mutation, reference promotion, initializer or successful-load commit.
 globals
+    // Separately owned contained replacement house; never a hero role.
+    unit array FHS_Unit
     // Contained pair cargo journal; populated only by TForsakenSaveCargo.
     integer array FCG_State
     integer array FCG_Count
@@ -53,8 +55,14 @@ endfunction
 function FSU_Tracked takes unit candidate returns boolean
     local integer pid=0
     local integer slot
+    if candidate==null then
+        return false
+    endif
     loop
         exitwhen pid>=8
+        if candidate==FHS_Unit[pid] then
+            return true
+        endif
         set slot=0
         loop
             exitwhen slot>=FSU_Count[pid]
@@ -376,7 +384,7 @@ function FSU_Abort takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_HousePending[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
         return false
     endif
     if FSU_State[pid]==0 then

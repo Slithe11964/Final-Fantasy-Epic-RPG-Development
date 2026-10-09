@@ -37,7 +37,7 @@ function FCG_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=0 or FSJ_CargoPending[pid] or FHA_State[pid]!=0 or FSC_Writing[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or not FHP_Verify(pid) or not FSJ_Verify(pid) then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=0 or FSJ_HousePending[pid] or FSJ_CargoPending[pid] or FHA_State[pid]!=0 or FSC_Writing[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or not FHP_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     set FCG_Unit[pid*2]=FSO_Unit[pid*2]

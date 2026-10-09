@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False, include_player_target=False, include_cargo=False, include_inventory_profile=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False, include_player_target=False, include_cargo=False, include_inventory_profile=False, include_house=False):
+    include_inventory_profile = include_inventory_profile or include_house
     include_cargo = include_cargo or include_inventory_profile
     include_activation = include_activation or include_cargo
     include_prepared_heroes = include_prepared_heroes or include_player_target
@@ -80,6 +81,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-cargo.j')
     if include_inventory_profile:
         source_paths.append(HERE / 'Forsaken-save-inventory-profile.j')
+    if include_house:
+        source_paths.append(HERE / 'Forsaken-save-house.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -160,8 +163,9 @@ def main():
     parser.add_argument('--player-target', action='store_true', help='include reversible Gaya research/skill-choice targets')
     parser.add_argument('--cargo', action='store_true', help='include contained owned-cargo audit and cleanup journal')
     parser.add_argument('--inventory-profile', action='store_true', help='include explicit target inventory profile bridge')
+    parser.add_argument('--house', action='store_true', help='include contained replacement house staging/cleanup')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy, args.player_target, args.cargo, args.inventory_profile)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy, args.player_target, args.cargo, args.inventory_profile, args.house)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

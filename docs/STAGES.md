@@ -1,5 +1,16 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Contained replacement house checkpoint, 2026-10-09 (isolated; no map build).
+A separately owned empty house now stages under neutral ownership, with hidden/
+paused/invulnerable/alive/storage readback, original inventory and complete
+prepared context rechecks. Owned provenance and pending disposal guards protect
+originals; failed deletion retains a retry handle. Unexpected cargo/publication
+refuses cleanup. See [SAVE_HOUSE.md](SAVE_HOUSE.md).
+11 new house checks plus66 inventory/cargo/unit/prepared/activation regressions
+PASS; three final compile probes PASS: build/save-codec-compile-2jn7cj2k/report.json.
+All24 compiled source hashes/CRLF match. Saved house cargo and live reference
+integration remain pending; BT/BU unchanged, BV unused, full saves/loads blocked.
+
 Saved inventory profile checkpoint, 2026-10-09 (isolated; no map build).
 The explicit target-code bridge freezes51 non-house positions and drives guarded
 creation/preparation/placement; full source retains dormant records. Registry,

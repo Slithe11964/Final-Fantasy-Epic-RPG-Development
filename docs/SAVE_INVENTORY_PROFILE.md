@@ -1,5 +1,8 @@
 # Saved inventory profile bridge
 
+Subsequent foundation: [SAVE_HOUSE.md](SAVE_HOUSE.md) adds separately owned,
+contained empty-house staging and cleanup. Saved house cargo is still refused.
+
 2026-10-09, isolated internal route; no map build or usable load command.
 
 Forsaken-save-inventory-profile.j parses an explicit complete target code in a
