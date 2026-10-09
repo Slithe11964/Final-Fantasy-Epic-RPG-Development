@@ -1,8 +1,23 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-## Save-system continuation — 2026-10-08 (docs/tools only)
+## Save-system continuation — 2026-10-08 (isolated source/tools; no map build)
 
-Latest checkpoint: `SAVE_PROGRESSION_MIGRATION.md`, `save_progression.py` and
+Latest isolated source checkpoint: `SAVE_JASS_CODEC.md` and
+`experiments/Forsaken/Forsaken-save-codec.j` implement FSV envelope/schema1
+sections1–9 in JASS; per-player accepted/scratch/writer buffers, profile checks,
+exact re-emission, bounded unknown retention and failed-parse preservation.
+No initializer/routes/build wiring. Life bits validate; real conversion, legacy
+semantic replay and gameplay restoration remain unimplemented.
+13 JASS tests (150 seeded differential envelopes+150 mutations) plus13 reference,
+16 migration and13 legacy tests PASS,55 total. Standalone compiles with bundled
+and classic1.29.2 libraries; standalone/BT-runtime/BT-editor read-only probes pass
+with extracted local libraries. Report: build/save-codec-compile-zl7pgdq8/report.json.
+Compiler needed outside-sandbox execution due DLL error623; no relaxed checks.
+BT hash unchanged; no playable build; BU unused; saving blocked. Next: engine
+execution/work scheduling limits, exact real/default capture, staged restore and
+rollback, legacy evidence/account linkage and entry-route transport tests.
+
+Progression checkpoint: `SAVE_PROGRESSION_MIGRATION.md`, `save_progression.py` and
 `migrate_save.py` add core/Gaya/upgrades/title/Armory sections, required-field
 profiles, frozen migration policy1 and required original-code provenance.
 All eight synthetic E/F/G/H fixtures translate with62 passing comparison entries.
@@ -13,8 +28,8 @@ and cheat status refuse export. NG+ source reset tested; no successor Minus rout
 16 migration tests (250 seeded progression round trips and CLI validation),13 codec tests
 (1000 seeded inventory round trips),13 legacy and10 identity tests PASS.
 Full synthetic logical profile:2803 characters; with full opaque budget6704.
-No runtime/source/release changes; saving blocked, BU unused. Next: differential
-JASS codec and vectors, then default resolution, transactional adapters and transport.
+No gameplay/release changes; saving blocked, BU unused. JASS implementation is
+covered above; default resolution, transactional adapters and transport remain.
 
 New-format foundation: `ITEM_SAVE_METADATA.md` audits item life as gameplay data,
 charges, account-relative binding and reconstructable runtime passive state.

@@ -206,5 +206,10 @@ See [ITEM_SAVE_METADATA.md](../../docs/ITEM_SAVE_METADATA.md) for the source aud
 legacy translation and62-entry comparison reports with original-code provenance.
 Run `test_save_migration.py`; frozen policy and eight successor goldens are checked.
 See [SAVE_PROGRESSION_MIGRATION.md](../../docs/SAVE_PROGRESSION_MIGRATION.md).
-JASS/runtime integration remains pending; the research envelope is not accepted
-by the map, and saving remains blocked.
+`Forsaken-save-codec.j` now implements the isolated JASS envelope/schema codec
+with per-player accepted/scratch/writer buffers. Run `test_save_jass.py` for source
+differential vectors and standalone compilation, and `check_save_jass.py` for
+read-only BT runtime/editor compile probes. See
+[SAVE_JASS_CODEC.md](../../docs/SAVE_JASS_CODEC.md). Real-engine limits, capture,
+restoration/rollback and transport remain pending; the codec is not wired into
+the map, and saving remains blocked.

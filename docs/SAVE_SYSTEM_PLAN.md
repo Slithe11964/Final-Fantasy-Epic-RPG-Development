@@ -1,7 +1,7 @@
 # Durable save system implementation plan
 
-Status: identity foundation, detached legacy decoder, logical progression profile
-and reference migration/equality reports implemented, 2026-10-08. Runtime saving remains
+Status: identity foundation, detached legacy decoder, logical progression profile,
+reference migration/equality reports and isolated JASS codec implemented, 2026-10-08. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
@@ -111,7 +111,7 @@ chunk count and actual transport must be measured before claiming support.
 | 1 — identity foundation (complete) | Frozen registry, source/mapping checker, negative tests, this plan and reapplication guide | All 358 items/22 jobs pinned; all generated original/variant/offhand identities resolve; mismatches fail; runtime unchanged |
 | 2 — full save contract and fixtures (in progress) | Field-by-field E/F/G/H ledger (width, order, default, rule, target state); reviewed permanent progression IDs; legacy reference decode to detached snapshot | Real consented anonymized E/F/G/H examples plus synthetic edge vectors; independent expected fields; actual Armory contents; no mutation; fixed22-value V2/V3 layouts with the three-job V2 permutation confirmed from source |
 | 3 — new reference codec (reference checkpoint implemented; runtime/default acceptance open) | Envelope/inventory/jobs, logical progression, bounded dormant extension, automated legacy translation, provenance and 62-entry equality report implemented | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 dormant IDs; quantities0..120 plus lossless imported121..127; full57 slots and sparse layouts; no manual legacy conversion; exact bound rejection; runtime/default verification remains with Steps2/5 |
-| 4 — isolated JASS codec | Separate experimental module and per-player staging buffers; differential Python/JASS vectors | Compile playable/editor against installed libraries; source/map agreement; bounded operations/allocations; byte parity with reference vectors and documented measured limits |
+| 4 — isolated JASS codec (implementation/compile checkpoint; engine gates open) | Experimental module, per-player accepted/scratch/writer buffers, differential source-harness vectors and read-only compile probes implemented | Standalone/playable/editor probes pass with extracted libraries, plus classic standalone; real-engine execution/work scheduling limits and source/map integration still required |
 | 5 — transactional adapters | Legacy/new parse → validate → stage → synchronized commit; native capture/restore and rollback | Full inventory/progression equivalence; no drops/duplication; failed create/equip/placement rolls back all items/progression; failed load does not consume load eligibility; actual native tests required |
 | 6 — all entry routes | One snapshot/parser/serializer for chat, files, autosave, NG+, full load and Armory-only load | Segmented/reordered/replayed/missing/wrong-owner messages rejected; NG intentional resets enumerated; -loada never materializes inventory; file readback verified; prior successful save retained on failure |
 | 7 — public Forsaken gate | New uniquely staged map, reports, fixtures, human acceptance log and release notes | Real legacy and new code/file restart tests plus multiplayer matrix below; no unresolved data-loss route; only then remove export block and release |
@@ -166,7 +166,8 @@ Its detached decoder and synthetic fixtures are implemented; real-data and runti
 acceptance remain open. Item metadata audit: [ITEM_SAVE_METADATA.md](ITEM_SAVE_METADATA.md).
 First new-format prototype: [SAVE_VNEXT_REFERENCE.md](SAVE_VNEXT_REFERENCE.md).
 Progression/translation checkpoint: [SAVE_PROGRESSION_MIGRATION.md](SAVE_PROGRESSION_MIGRATION.md).
-Next: differential JASS codec, runtime default resolution and transactional adapters;
+Isolated JASS checkpoint: [SAVE_JASS_CODEC.md](SAVE_JASS_CODEC.md).
+Next: measured engine execution/work scheduling, default resolution and transactional adapters;
 continue real-fixture/default-semantics work before enabling runtime integration.
 
 Validation on 2026-10-08: 10 identity tests and 87 existing Forsaken tests PASS.
@@ -193,3 +194,9 @@ Every synthetic migration passes62 comparison entries. Full logical profile
 with57 items/42 jobs/31 titles/280 Armory/50 dormant records measures2803 characters;
 with the full unknown-data allowance6704. Details and unresolved default/runtime
 semantics: [SAVE_PROGRESSION_MIGRATION.md](SAVE_PROGRESSION_MIGRATION.md).
+
+JASS checkpoint:13 differential/source-harness tests,13 reference codec,16
+migration and13 legacy tests PASS (55 total). Standalone compiler checks pass
+with bundled/classic1.29.2 libraries. Standalone/BT-runtime/BT-editor read-only
+probes pass with extracted local libraries. No map integration or release yet.
+Exact report paths, hashes, API and unverified engine limits: SAVE_JASS_CODEC.md.

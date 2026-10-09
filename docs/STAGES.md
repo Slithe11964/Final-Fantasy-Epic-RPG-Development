@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated JASS save checkpoint, 2026-10-08 (experimental source/tools/docs only):
+FSV envelope/schema1 sections1–9, per-player accepted/scratch/writer buffers,
+canonical re-encoding and bounded validation.13 JASS differential tests (150
+seeded envelopes+150 mutations),13 reference,16 migration and13 legacy tests
+PASS,55 total. Bundled/classic1.29.2 standalone compilation and standalone/BT
+runtime/BT editor probes against extracted local libraries PASS. Report:
+build/save-codec-compile-zl7pgdq8/report.json. No map writes/runtime integration;
+BU unused, saving blocked. Engine limits, real capture, adapters/transport remain.
+
 Logical save/migration checkpoint, 2026-10-08 (docs/tools only): core, Gaya,
 upgrades, titles, Armory and required legacy-provenance schemas; frozen policy1;
 eight synthetic E/F/G/H successor goldens and62-entry comparison reports;

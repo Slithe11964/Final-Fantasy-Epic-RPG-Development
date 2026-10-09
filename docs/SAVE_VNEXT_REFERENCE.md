@@ -130,6 +130,8 @@ changed, so no new playable map, compilation or in-game acceptance is claimed.
 
 The next checkpoint implements logical progression, legacy-to-new translation,
 62-entry comparison reports and fuller size profiles; see the migration document.
-Next: differential JASS codec/adapters, exact life conversion, failure rollback and
+The isolated JASS implementation and compile evidence are now recorded in
+[SAVE_JASS_CODEC.md](SAVE_JASS_CODEC.md). Next: engine execution limits,
+adapters, exact life conversion, failure rollback and
 real restart/multiplayer transport tests. No public capacity or preservation claim
 is warranted from these Python round trips alone.

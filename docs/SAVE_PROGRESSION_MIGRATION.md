@@ -141,7 +141,8 @@ adding the full shared unknown-data budget gives **6704**. Migrated fixtures ran
 346–521 characters including source evidence. These are specific synthetic sizes,
 not maximum-content or Warcraft string/file/chat/multiplayer capacity guarantees.
 
-Next: differential JASS codec implementation and vectors, then runtime capture,
+The isolated JASS implementation/vectors are now recorded in
+[SAVE_JASS_CODEC.md](SAVE_JASS_CODEC.md). Next: engine execution limits, runtime capture,
 default resolution, transactional restoration/rollback and measured transport.
 Real-code and in-game acceptance gates in [SAVE_SYSTEM_PLAN.md](SAVE_SYSTEM_PLAN.md)
 remain open. Saving stays blocked; baseline Z, development AS and experiment BT
