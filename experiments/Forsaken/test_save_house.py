@@ -11,6 +11,8 @@ class HouseTests(unittest.TestCase):
     def setUp(self):
         p.InventoryProfileTests.setUp(self);old=self.e;env=self.w.natives()
         env['HaveSavedInteger']=old['HaveSavedInteger'];original_type=env['IsUnitType']
+        env['BlzItemRemoveAbility']=old['BlzItemRemoveAbility']
+        env['CreateItem']=old['CreateItem']
         env['IsUnitType']=lambda u,t:False if u.get('raw')==1 else original_type(u,t)
         def create(owner,raw,x,y,facing):
             if raw!=1:return self.w.create_unit(owner,raw,x,y,facing)
@@ -93,10 +95,10 @@ class HouseTests(unittest.TestCase):
         self.assertTrue(self.stage());self.w.unit_hook=None
         self.assertTrue(attempts);self.assertTrue(all(v==(False,False,False) for v in attempts))
         self.assertFalse(self.e['FHA_Begin'](0,0.,0.,0.,0.,0.,0.))
-        for name in ('FCG_Begin','FHP_Discard','FSU_Abort','FSJ_Release'):
+        for name in ('FHP_Discard','FSU_Abort','FSJ_Release'):
             self.assertFalse(self.e[name](0),name)
-        self.clean();self.assertTrue(self.e['FCG_Begin'](0));self.assertFalse(self.stage())
-        self.assertTrue(self.e['FCG_Recover'](0));self.assertTrue(self.e['FCG_Release'](0))
+        self.assertTrue(self.e['FCG_Begin'](0));self.assertFalse(self.e['FHS_Recover'](0));self.assertFalse(self.stage())
+        self.assertTrue(self.e['FCG_Recover'](0));self.assertTrue(self.e['FCG_Release'](0));self.clean()
 
     def test_invalid_preflight_never_allocates(self):
         self.ready();before=len(self.w.created)

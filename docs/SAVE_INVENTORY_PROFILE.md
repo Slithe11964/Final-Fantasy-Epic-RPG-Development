@@ -1,5 +1,9 @@
 # Saved inventory profile bridge
 
+Subsequent checkpoint: [SAVE_HOUSE_CARGO.md](SAVE_HOUSE_CARGO.md) connects all57
+positions, including the separately owned house, to guarded preparation/recovery.
+The implementation below records the earlier checkpoint.
+
 Subsequent foundation: [SAVE_HOUSE.md](SAVE_HOUSE.md) adds separately owned,
 contained empty-house staging and cleanup. Saved house cargo is still refused.
 

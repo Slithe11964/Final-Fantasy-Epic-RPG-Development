@@ -411,3 +411,12 @@ refuse deletion. Run test_save_house.py; compile --house plus prior policies.11 
 focused regressions and three final compiler probes PASS.
 See ../../docs/SAVE_HOUSE.md. House cargo, reference switching and controller
 integration remain pending. No new map; full character saves remain blocked.
+
+The inventory/cargo route now covers57 positions with an attached separately owned
+neutral house, canonical house items and owner-aware readback. Cargo must recover
+and release before house deletion; originals remain untouched. Five new plus43
+focused checks PASS, along with ten house-probe plus32 storage/codec regressions.
+Compile --house plus prior policies; see ../../docs/SAVE_HOUSE_CARGO.md.
+The opt-in build_save_probe.py --house-probe adds a private synthetic house test
+with bounded static/dynamic trigger-state restoration and watchdog/cleanup retry. Engine acceptance
+and full loaded activation/controller remain pending; exports stay blocked.

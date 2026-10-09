@@ -3,6 +3,9 @@ library TForsakenSaveUnits requires TForsakenSaveSession
 // No original mutation, reference promotion, initializer or successful-load commit.
 globals
     // Separately owned contained replacement house; never a hero role.
+    integer array FHS_State
+    integer array FHS_Raw
+    unit array FCG_House
     unit array FHS_Unit
     // Contained pair cargo journal; populated only by TForsakenSaveCargo.
     integer array FCG_State
@@ -108,6 +111,53 @@ function FSU_Empty takes unit candidate returns boolean
     return true
 endfunction
 
+function FHS_Referenced takes unit candidate returns boolean
+    local integer pid=0
+    if FSU_Referenced(candidate) then
+        return true
+    endif
+    loop
+        exitwhen pid>=8
+        if candidate==udg_PlayerHouse[pid+1] then
+            return true
+        endif
+        set pid=pid+1
+    endloop
+    return false
+endfunction
+
+function FHS_Exclusive takes integer pid,unit candidate returns boolean
+    local integer other=0
+    local integer slot
+    loop
+        exitwhen other>=8
+        if other!=pid and candidate==FHS_Unit[other] then
+            return false
+        endif
+        set slot=0
+        loop
+            exitwhen slot>=FSU_Count[other]
+            if candidate==FSU_Unit[other*24+slot] then
+                return false
+            endif
+            set slot=slot+1
+        endloop
+        set other=other+1
+    endloop
+    return true
+endfunction
+
+function FHS_Contained takes integer pid returns boolean
+    local unit candidate=FHS_Unit[pid]
+    local boolean valid=candidate!=null
+    if valid then
+        set valid=FHS_State[pid]==1 or FHS_State[pid]==2
+        set valid=valid and FSP_HouseShape(candidate,FHS_Raw[pid]) and not FHS_Referenced(candidate) and FHS_Exclusive(pid,candidate)
+    endif
+    set candidate=null
+    return valid
+endfunction
+
 function FSU_CargoAt takes integer pid,unit candidate,integer kind,integer slot returns boolean
     local integer position=slot
     local integer ordinal
@@ -117,11 +167,13 @@ function FSU_CargoAt takes integer pid,unit candidate,integer kind,integer slot 
         set position=6+slot
     elseif kind==3 then
         set position=36+slot
+    elseif kind==5 then
+        set position=51+slot
     elseif kind==4 then
         set position=45+slot
     endif
-    if (kind==4 and candidate==FCG_Unit[pid*2+1]) or (kind!=4 and candidate==FCG_Unit[pid*2]) then
-        set ordinal=FCG_Ordinal[pid*51+position]
+    if (kind==5 and candidate==FCG_House[pid]) or (kind==4 and candidate==FCG_Unit[pid*2+1]) or (kind<4 and candidate==FCG_Unit[pid*2]) then
+        set ordinal=FCG_Ordinal[pid*57+position]
         if ordinal>0 and ordinal<=FCG_Count[pid] then
             if FSN_PlacedItem[pid*57+ordinal-1]==FSN_Item[pid*57+ordinal-1] then
                 set carried=FSN_Item[pid*57+ordinal-1]
@@ -152,7 +204,15 @@ function FSU_CargoUnit takes integer pid,unit candidate returns boolean
         set slot=0
         loop
             exitwhen slot>=limit
-            if candidate==FCG_Unit[pid*2+1] then
+            if candidate==FCG_House[pid] then
+                if kind==1 then
+                    if not FSU_CargoAt(pid,candidate,5,slot) then
+                        return false
+                    endif
+                elseif FSP_At(candidate,kind,slot)!=null then
+                    return false
+                endif
+            elseif candidate==FCG_Unit[pid*2+1] then
                 if kind==1 then
                     if not FSU_CargoAt(pid,candidate,4,slot) then
                         return false
@@ -177,18 +237,20 @@ function FSU_CargoAudit takes integer pid returns boolean
     local integer index
     local integer stage=0
     local unit expected
-    if FCG_Count[pid]<0 or FCG_Count[pid]>51 or FSN_Count[pid]!=FCG_Count[pid] or FSN_AuxCount[pid]!=0 or (FSN_State[pid]!=4 and not (FCG_Count[pid]==0 and FSN_State[pid]==0)) then
+    if FCG_Count[pid]<0 or FCG_Count[pid]>57 or FSN_Count[pid]!=FCG_Count[pid] or FSN_AuxCount[pid]!=0 or (FSN_State[pid]!=4 and not (FCG_Count[pid]==0 and FSN_State[pid]==0)) then
         return false
     endif
     loop
         exitwhen ordinal>=FCG_Count[pid]
-        set key=pid*51+ordinal
+        set key=pid*57+ordinal
         set index=pid*57+ordinal
         set expected=FCG_Unit[pid*2]
         if FCG_Holder[key]==4 then
             set expected=FCG_Unit[pid*2+1]
+        elseif FCG_Holder[key]==5 then
+            set expected=FCG_House[pid]
         endif
-        if FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index) then
+        if FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=GetOwningPlayer(expected) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index) then
             set expected=null
             return false
         endif
@@ -211,7 +273,7 @@ function FSU_CargoAudit takes integer pid returns boolean
         endif
         set stage=stage+1
     endloop
-    return true
+    return FCG_House[pid]==null or FSU_CargoUnit(pid,FCG_House[pid])
 endfunction
 
 function FSU_CargoMatches takes integer pid,unit candidate returns boolean
@@ -228,12 +290,14 @@ function FSU_CargoMatches takes integer pid,unit candidate returns boolean
     loop
         exitwhen ordinal>=FCG_Count[pid]
         set index=pid*57+ordinal
-        set key=pid*51+ordinal
+        set key=pid*57+ordinal
         set expected=FCG_Unit[pid*2]
         if FCG_Holder[key]==4 then
             set expected=FCG_Unit[pid*2+1]
+        elseif FCG_Holder[key]==5 then
+            set expected=FCG_House[pid]
         endif
-        if candidate==expected and (FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index)) then
+        if candidate==expected and (FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=GetOwningPlayer(expected) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index)) then
             set expected=null
             return false
         endif

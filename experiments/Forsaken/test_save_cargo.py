@@ -46,7 +46,7 @@ class CargoTests(unittest.TestCase):
     def placed_fixture(self,pid=0):
         # Future adapter output fixture, not a bypass of production staging guards.
         for ordinal in range(self.e['FCG_Count'][pid]):
-            key=pid*51+ordinal;index=pid*57+ordinal
+            key=pid*57+ordinal;index=pid*57+ordinal
             h,s=self.e['FCG_Holder'][key],self.e['FCG_Slot'][key]
             unit=self.e['FCG_Unit'][pid*2+(h==4)]
             item=self.w.create(1234,0.,0.)

@@ -13,6 +13,13 @@ function FCG_Context takes integer pid returns boolean
     if FCG_Unit[pid*2]!=FSO_Unit[pid*2] or FCG_Unit[pid*2+1]!=FSO_Unit[pid*2+1] or FCG_Unit[pid*2]==FCG_Unit[pid*2+1] then
         return false
     endif
+    if FCG_House[pid]!=null then
+        if FCG_House[pid]!=FHS_Unit[pid] or FHS_State[pid]!=1 or not FSJ_HousePending[pid] or not FHS_Contained(pid) then
+            return false
+        endif
+    elseif FSJ_HousePending[pid] then
+        return false
+    endif
     loop
         exitwhen stage>=FSU_Count[pid]
         set key=pid*24+stage
@@ -37,12 +44,21 @@ function FCG_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=0 or FSJ_HousePending[pid] or FSJ_CargoPending[pid] or FHA_State[pid]!=0 or FSC_Writing[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or not FHP_Verify(pid) or not FSJ_Verify(pid) then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=0 or FSJ_CargoPending[pid] or FHA_State[pid]!=0 or FSC_Writing[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or not FHP_Verify(pid) or not FSJ_Verify(pid) then
+        return false
+    endif
+    if FSJ_HousePending[pid] then
+        if FHS_State[pid]!=1 or not FHS_Contained(pid) or not FSU_Empty(FHS_Unit[pid]) then
+            return false
+        endif
+        set FCG_House[pid]=FHS_Unit[pid]
+    elseif FHS_State[pid]!=0 or FHS_Unit[pid]!=null then
         return false
     endif
     set FCG_Unit[pid*2]=FSO_Unit[pid*2]
     set FCG_Unit[pid*2+1]=FSO_Unit[pid*2+1]
     if not FCG_Context(pid) then
+        set FCG_House[pid]=null
         set FCG_Unit[pid*2]=null
         set FCG_Unit[pid*2+1]=null
         return false
@@ -61,7 +77,10 @@ function FCG_Plan takes integer pid,integer raw,integer holder,integer slot retu
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=1 or FSC_Writing[pid] or FSN_Count[pid]!=0 or FSN_State[pid]!=0 or raw==0 or holder<1 or holder>4 or FCG_Count[pid]>=51 or not FCG_Context(pid) then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FCG_State[pid]!=1 or FSC_Writing[pid] or FSN_Count[pid]!=0 or FSN_State[pid]!=0 or raw==0 or holder<1 or holder>5 or FCG_Count[pid]>=57 or not FCG_Context(pid) then
+        return false
+    endif
+    if holder==5 and FCG_House[pid]==null then
         return false
     endif
     if holder==2 then
@@ -76,22 +95,24 @@ function FCG_Plan takes integer pid,integer raw,integer holder,integer slot retu
         set position=6+slot
     elseif holder==3 then
         set position=36+slot
+    elseif holder==5 then
+        set position=51+slot
     elseif holder==4 then
         set position=45+slot
     endif
     loop
         exitwhen ordinal>=FCG_Count[pid]
-        set key=pid*51+ordinal
+        set key=pid*57+ordinal
         if FCG_Holder[key]==holder and FCG_Slot[key]==slot then
             return false
         endif
         set ordinal=ordinal+1
     endloop
-    set key=pid*51+FCG_Count[pid]
+    set key=pid*57+FCG_Count[pid]
     set FCG_Raw[key]=raw
     set FCG_Holder[key]=holder
     set FCG_Slot[key]=slot
-    set FCG_Ordinal[pid*51+position]=FCG_Count[pid]+1
+    set FCG_Ordinal[pid*57+position]=FCG_Count[pid]+1
     set FCG_Count[pid]=FCG_Count[pid]+1
     return true
 endfunction
@@ -109,7 +130,7 @@ function FCG_ItemsValid takes integer pid,boolean prepared returns boolean
     loop
         exitwhen ordinal>=FSN_Count[pid]
         set index=pid*57+ordinal
-        set key=pid*51+ordinal
+        set key=pid*57+ordinal
         if FSN_Item[index]==null or FSN_Raw[index]!=FCG_Raw[key] then
             return false
         endif
@@ -117,8 +138,10 @@ function FCG_ItemsValid takes integer pid,boolean prepared returns boolean
             set expected=FCG_Unit[pid*2]
             if FCG_Holder[key]==4 then
                 set expected=FCG_Unit[pid*2+1]
+            elseif FCG_Holder[key]==5 then
+                set expected=FCG_House[pid]
             endif
-            if FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index) then
+            if FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=GetOwningPlayer(expected) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index) then
                 set expected=null
                 return false
             endif
@@ -148,7 +171,7 @@ function FCG_ItemsValid takes integer pid,boolean prepared returns boolean
         endif
         set stage=stage+1
     endloop
-    return true
+    return FCG_House[pid]==null or FSU_CargoUnit(pid,FCG_House[pid])
 endfunction
 
 function FCG_StartItems takes integer pid returns boolean
@@ -166,6 +189,9 @@ function FCG_StartItems takes integer pid returns boolean
         endif
         set stage=stage+1
     endloop
+    if FCG_House[pid]!=null and not FSU_Empty(FCG_House[pid]) then
+        return false
+    endif
     set FCG_State[pid]=5
     set FSN_State[pid]=1
     return true
@@ -203,7 +229,7 @@ function FCG_Stage takes integer pid,integer charges,boolean bound,integer flags
     if not FCG_CallReady(pid) or FSN_State[pid]!=1 or FSN_Count[pid]>=FCG_Count[pid] or not (x>=-32768. and x<=32768. and y>=-32768. and y<=32768.) or not FCG_ItemsValid(pid,false) then
         return false
     endif
-    set key=pid*51+FSN_Count[pid]
+    set key=pid*57+FSN_Count[pid]
     call FSR_Lock(pid,true)
     set FSN_Operation[pid]=1
     set result=FSN_StageCore(pid,FCG_Raw[key],charges,bound,flags,high,low,x,y)
@@ -220,7 +246,7 @@ function FCG_PrepareItem takes integer pid,integer ordinal,hashtable policy retu
     endif
     call FSR_Lock(pid,true)
     set FSN_Operation[pid]=2
-    set result=FSA_PrepareCore(pid,ordinal,FCG_Holder[pid*51+ordinal]==2,policy)
+    set result=FSA_PrepareCore(pid,ordinal,FCG_Holder[pid*57+ordinal]==2,policy)
     return FCG_CallDone(pid,result,false)
 endfunction
 
@@ -234,10 +260,12 @@ function FCG_PlaceItem takes integer pid,integer ordinal,integer spacerRaw,integ
     if not FCG_CallReady(pid) or FSN_Count[pid]!=FCG_Count[pid] or ordinal<0 or ordinal>=FCG_Count[pid] or not FCG_ItemsValid(pid,true) then
         return false
     endif
-    set key=pid*51+ordinal
+    set key=pid*57+ordinal
     set holder=FCG_Unit[pid*2]
     if FCG_Holder[key]==4 then
         set holder=FCG_Unit[pid*2+1]
+    elseif FCG_Holder[key]==5 then
+        set holder=FCG_House[pid]
     endif
     call FSR_Lock(pid,true)
     if FCG_Holder[key]==3 then
@@ -286,7 +314,7 @@ function FCG_Recover takes integer pid returns boolean
         exitwhen ordinal>=FSN_Count[pid]
         set index=pid*57+ordinal
         if FSN_Item[index]!=null then
-            if FSN_Raw[index]!=FCG_Raw[pid*51+ordinal] then
+            if FSN_Raw[index]!=FCG_Raw[pid*57+ordinal] then
                 return false
             endif
             set prior=0
@@ -332,6 +360,9 @@ function FCG_Recover takes integer pid returns boolean
         endif
         set stage=stage+1
     endloop
+    if FCG_House[pid]!=null and not FSU_Empty(FCG_House[pid]) then
+        return false
+    endif
     set FCG_State[pid]=4
     return true
 endfunction
@@ -352,16 +383,19 @@ function FCG_Release takes integer pid returns boolean
         endif
         set stage=stage+1
     endloop
+    if FCG_House[pid]!=null and not FSU_Empty(FCG_House[pid]) then
+        return false
+    endif
     set stage=0
     loop
-        exitwhen stage>=51
-        set FCG_Ordinal[pid*51+stage]=0
+        exitwhen stage>=57
+        set FCG_Ordinal[pid*57+stage]=0
         set stage=stage+1
     endloop
     set stage=0
     loop
         exitwhen stage>=FCG_Count[pid]
-        set key=pid*51+stage
+        set key=pid*57+stage
         set FCG_Raw[key]=0
         set FCG_Holder[key]=0
         set FCG_Slot[key]=0
@@ -369,6 +403,7 @@ function FCG_Release takes integer pid returns boolean
     endloop
     set FCG_Unit[pid*2]=null
     set FCG_Unit[pid*2+1]=null
+    set FCG_House[pid]=null
     set FCG_Count[pid]=0
     set FCG_State[pid]=0
     set FSJ_CargoPending[pid]=false

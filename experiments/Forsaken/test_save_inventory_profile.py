@@ -99,7 +99,7 @@ class InventoryProfileTests(unittest.TestCase):
         self.ready(7);identity=self.gear_id('Primary');raw=CATALOG[identity-1]['rawcode']
         alternate=MAPPING[raw]['offhand'];self.policy[4,alternate]=0
         self.begin([record(identity,3,7,quantity=None)],7)
-        self.assertEqual(self.e['FIP_Raw'][7*51],alternate);self.apply(7)
+        self.assertEqual(self.e['FIP_Raw'][7*57],alternate);self.apply(7)
         item=self.e['FSN_Item'][7*57];self.assertEqual((item['binding'],item['charges']),(8,0));self.close(7)
 
     def test_unknown_records_and_optional_metadata_preserve_entire_code(self):

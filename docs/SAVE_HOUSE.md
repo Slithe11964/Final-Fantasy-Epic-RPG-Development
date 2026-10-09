@@ -1,5 +1,9 @@
 # Contained replacement house staging
 
+Subsequent checkpoint: [SAVE_HOUSE_CARGO.md](SAVE_HOUSE_CARGO.md) connects all57
+positions, including the separately owned house, to guarded preparation/recovery.
+The implementation below records the earlier checkpoint.
+
 2026-10-09, isolated internal primitive; no map build or usable load command.
 
 Forsaken-save-house.j provides the separately owned replacement house needed

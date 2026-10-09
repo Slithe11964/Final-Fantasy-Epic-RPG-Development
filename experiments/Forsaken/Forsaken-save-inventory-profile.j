@@ -23,8 +23,8 @@ function FIP_Clear takes integer pid returns nothing
     local integer i=0
     local integer key
     loop
-        exitwhen i>=51
-        set key=pid*51+i
+        exitwhen i>=57
+        set key=pid*57+i
         set FIP_Charges[key]=0
         set FIP_Bound[key]=false
         set FIP_High[key]=0
@@ -70,13 +70,13 @@ function FIP_Read takes integer pid,integer ctx,hashtable policy returns boolean
         exitwhen ordinal>=FSC_ItemCount[ctx]
         set key=ctx*57+ordinal
         set identity=FSC_ItemId[key]
-        if FSC_ItemHolder[key]==5 then
+        if FSC_ItemHolder[key]==5 and (FHS_State[pid]!=1 or not FSJ_HousePending[pid] or not FHS_Contained(pid) or not FSU_Empty(FHS_Unit[pid])) then
             return false
         endif
         if identity>358 or FSC_ItemDormant[key] then
             set FIP_Dormant[pid]=FIP_Dormant[pid]+1
         else
-            // A known house item requires its original-house recovery journal.
+            // Known records require exact captured metadata.
             if not FSC_ItemComplete[key] then
                 return false
             endif
@@ -115,10 +115,10 @@ function FIP_Read takes integer pid,integer ctx,hashtable policy returns boolean
                 endif
                 set charges=LoadInteger(policy,4,raw)
             endif
-            if charges<0 or charges>127 or FIP_Count[pid]>=51 then
+            if charges<0 or charges>127 or FIP_Count[pid]>=57 then
                 return false
             endif
-            set target=pid*51+FIP_Count[pid]
+            set target=pid*57+FIP_Count[pid]
             set FIP_Raw[target]=raw
             set FIP_Holder[target]=FSC_ItemHolder[key]
             set FIP_Slot[target]=FSC_ItemSlot[key]
@@ -138,9 +138,9 @@ function FIP_Read takes integer pid,integer ctx,hashtable policy returns boolean
         set ordinal=0
         loop
             exitwhen ordinal>=FIP_Count[pid]
-            set target=pid*51+ordinal
+            set target=pid*57+ordinal
             if FIP_Holder[target]==3 and FIP_Slot[target]==slot then
-                set FIP_Order[pid*51+order]=ordinal
+                set FIP_Order[pid*57+order]=ordinal
                 set order=order+1
             endif
             set ordinal=ordinal+1
@@ -150,8 +150,8 @@ function FIP_Read takes integer pid,integer ctx,hashtable policy returns boolean
     set ordinal=0
     loop
         exitwhen ordinal>=FIP_Count[pid]
-        if FIP_Holder[pid*51+ordinal]!=3 then
-            set FIP_Order[pid*51+order]=ordinal
+        if FIP_Holder[pid*57+ordinal]!=3 then
+            set FIP_Order[pid*57+order]=ordinal
             set order=order+1
         endif
         set ordinal=ordinal+1
@@ -173,7 +173,7 @@ function FIP_Begin takes integer pid,string encoded,integer account,hashtable po
     set ordinal=51
     loop
         exitwhen ordinal>=57
-        if FSJ_Item[pid*57+ordinal]!=null then
+        if FSJ_Item[pid*57+ordinal]!=null and (FHS_State[pid]!=1 or not FSJ_HousePending[pid] or not FHS_Contained(pid) or not FSU_Empty(FHS_Unit[pid])) then
             return false
         endif
         set ordinal=ordinal+1
@@ -205,7 +205,7 @@ function FIP_Begin takes integer pid,string encoded,integer account,hashtable po
     set FIP_State[pid]=1
     loop
         exitwhen ordinal>=FIP_Count[pid]
-        set key=pid*51+ordinal
+        set key=pid*57+ordinal
         if not FCG_Plan(pid,FIP_Raw[key],FIP_Holder[key],FIP_Slot[key]) then
             set FIP_State[pid]=3
             return false
@@ -227,7 +227,7 @@ function FIP_StageNext takes integer pid returns boolean
     if not FSU_Idle(pid) or FSR_Busy[pid] or FIP_State[pid]!=1 or FSN_Count[pid]>=FIP_Count[pid] then
         return false
     endif
-    set key=pid*51+FSN_Count[pid]
+    set key=pid*57+FSN_Count[pid]
     if not FCG_Stage(pid,FIP_Charges[key],FIP_Bound[key],FIP_Flags[key],FIP_High[key],FIP_Low[key],GetUnitX(FCG_Unit[pid*2]),GetUnitY(FCG_Unit[pid*2])) then
         set FIP_State[pid]=3
         return false
@@ -257,7 +257,7 @@ function FIP_PlaceNext takes integer pid,integer spacer,integer ringSpacer,integ
     if not FSU_Idle(pid) or FSR_Busy[pid] or FIP_State[pid]!=1 or FIP_Prepared[pid]!=FIP_Count[pid] or FIP_Placed[pid]>=FIP_Count[pid] then
         return false
     endif
-    if not FCG_PlaceItem(pid,FIP_Order[pid*51+FIP_Placed[pid]],spacer,ringSpacer,marker) then
+    if not FCG_PlaceItem(pid,FIP_Order[pid*57+FIP_Placed[pid]],spacer,ringSpacer,marker) then
         set FIP_State[pid]=3
         return false
     endif

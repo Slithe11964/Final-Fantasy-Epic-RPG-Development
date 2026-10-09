@@ -2,6 +2,14 @@ library TForsakenSavePosition requires TForsakenSaveEffects
 // Placement primitive only. Caller must suppress gameplay hooks and journal originals.
 // Equipment is refused until passive/cooldown rollback is implemented.
 
+// Shared readback used by owned house staging and the private engine probe.
+function FSP_HouseShape takes unit candidate,integer raw returns boolean
+    if candidate==null then
+        return false
+    endif
+    return GetUnitTypeId(candidate)==raw and GetOwningPlayer(candidate)==Player(PLAYER_NEUTRAL_PASSIVE) and not IsUnitType(candidate,UNIT_TYPE_HERO) and GetWidgetLife(candidate)>0.405 and IsUnitHidden(candidate) and IsUnitPaused(candidate) and BlzIsUnitInvulnerable(candidate) and UnitInventorySize(candidate)==6 and UnitExtendedInventorySize(candidate)==0
+endfunction
+
 function FSP_At takes unit holder,integer kind,integer slot returns item
     if kind==2 then
         return UnitItemInBagSlot(holder,slot)

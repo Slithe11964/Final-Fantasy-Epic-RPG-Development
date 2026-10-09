@@ -1,5 +1,34 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+Connected house cargo and private BW engine gate — 2026-10-09.
+Saved-profile/cargo preparation now covers57 exact positions with a separately
+owned contained house; neutral container ownership is checked separately from
+loading-player item ownership. House cargo recovers/releases before house disposal.
+Five new plus43 prior house/profile/cargo/placement tests PASS; ten private probe
+plus32 codec/probe/position regressions PASS. Three isolated compile probes PASS:
+build/save-codec-compile-kloyunqa/report.json;24 source hashes/CRLF match.
+
+Private BW map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBW.w3x
+SHA256: 1d4632eb00bbcceea619f8cd9904f1fe4faefbf3408d2f5b627dc22794594741
+Build scratch: build/SaveProbeBW-ojh6s931/FFERPG; reports in release/Forsaken:
+checks-r16-stageBW.txt, build-r16-stageBW.json, save-probe-BW.json.
+Mandatory build gates PASS,96 repository tests and2,000 codec cases PASS.
+Complete source/runtime agreement, installed-library playable/editor/startup checks
+PASS. All517 other archive members and original editor source preserved; all nine
+reported diagnostic source hashes match.2254 scalar trigger states plus bounded
+QuestStepTrigger/QuestStepPickupTrigger arrays are guarded/restored, with watchdog.
+BT/BU unchanged. BV was an intermediate private build; BW is the human test map.
+BX next unused. No new classic output; full character saving/loading stays blocked.
+
+HUMAN GATE: open BW, select a hero, run -savecheck and wait for PASS, then
+-savehousecheck, then -saveverify. Repeat the house check once. Report the exact
+House test result; -savehousecleanup is available if cleanup needs attention.
+See SAVE_HOUSE_ENGINE_TEST.md. This synthetic test resolves native house ownership,
+non-droppable sparse slot movement, zero charges, life/flags and verified deletion.
+It is not full prepared-profile/controller acceptance. Continue only after that
+engine evidence; loaded house references, equipment effects, runtime policies,
+legacy integration and the complete controller/transport remain pending.
+
 Contained replacement house checkpoint, 2026-10-09 (isolated; no map build).
 A separately owned empty house now stages under neutral ownership, with hidden/
 paused/invulnerable/alive/storage readback, original inventory and complete

@@ -1,55 +1,8 @@
 library TForsakenSaveHouse requires TForsakenSaveInventoryProfile
 // Contained empty house staging only. No live house reference or item publication.
-globals
-    // 0 idle,1 prepared,2 cleanup required,3 removed awaiting release.
-    integer array FHS_State
-    integer array FHS_Raw
-endglobals
-
-function FHS_Referenced takes unit candidate returns boolean
-    local integer pid=0
-    if FSU_Referenced(candidate) then
-        return true
-    endif
-    loop
-        exitwhen pid>=8
-        if candidate==udg_PlayerHouse[pid+1] then
-            return true
-        endif
-        set pid=pid+1
-    endloop
-    return false
-endfunction
-
-function FHS_Exclusive takes integer pid,unit candidate returns boolean
-    local integer other=0
-    local integer slot
-    loop
-        exitwhen other>=8
-        if other!=pid and candidate==FHS_Unit[other] then
-            return false
-        endif
-        set slot=0
-        loop
-            exitwhen slot>=FSU_Count[other]
-            if candidate==FSU_Unit[other*24+slot] then
-                return false
-            endif
-            set slot=slot+1
-        endloop
-        set other=other+1
-    endloop
-    return true
-endfunction
 
 function FHS_Valid takes integer pid returns boolean
-    local unit candidate=FHS_Unit[pid]
-    local boolean valid=candidate!=null
-    if valid then
-        set valid=GetUnitTypeId(candidate)==FHS_Raw[pid] and GetOwningPlayer(candidate)==Player(PLAYER_NEUTRAL_PASSIVE) and not IsUnitType(candidate,UNIT_TYPE_HERO) and GetWidgetLife(candidate)>0.405 and IsUnitHidden(candidate) and IsUnitPaused(candidate) and BlzIsUnitInvulnerable(candidate) and UnitInventorySize(candidate)==6 and UnitExtendedInventorySize(candidate)==0 and FSU_Empty(candidate) and not FHS_Referenced(candidate) and FHS_Exclusive(pid,candidate)
-    endif
-    set candidate=null
-    return valid
+    return FHS_Contained(pid) and FSU_Empty(FHS_Unit[pid])
 endfunction
 
 function FHS_Stage takes integer pid,real x,real y returns boolean
@@ -96,7 +49,7 @@ function FHS_Verify takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    return FSU_Idle(pid) and not FSR_Busy[pid] and FHS_State[pid]==1 and FSJ_HousePending[pid] and FCG_State[pid]==0 and FIP_State[pid]==0 and FHP_Verify(pid) and FSJ_Verify(pid) and FHS_Valid(pid)
+    return FSU_Idle(pid) and not FSR_Busy[pid] and FHS_State[pid]==1 and FSJ_HousePending[pid] and (FCG_State[pid]==0 or FCG_State[pid]==2 or FCG_State[pid]==4) and FHP_Verify(pid) and FSJ_Verify(pid) and FHS_Contained(pid) and FSU_CargoMatches(pid,FHS_Unit[pid])
 endfunction
 
 function FHS_Recover takes integer pid returns boolean

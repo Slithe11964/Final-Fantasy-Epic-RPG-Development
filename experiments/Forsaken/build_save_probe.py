@@ -27,9 +27,48 @@ def probe_source(aliases):
     return text.replace('    // FSX_IDENTITY_INITIALIZATION','\n'.join(lines))
 
 
+def modules(house=False):
+    result=[('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j')]
+    if house:
+        result += [('ForsakenSaveNative','Forsaken-save-native.j'),('ForsakenSaveJournal','Forsaken-save-journal.j'),
+                   ('ForsakenSaveEffects','Forsaken-save-effects.j'),('ForsakenSavePosition','Forsaken-save-position.j')]
+    result.append(('ForsakenSaveProbe','Forsaken-save-probe.j'))
+    if house:result.append(('ForsakenHouseProbe','Forsaken-house-probe.j'))
+    return result
+
+
+def house_probe_source(runtime):
+    triggers=sorted(set(re.findall(r'^\s*trigger\s+([A-Za-z_]\w*)\s*=',runtime,re.M)))
+    if not triggers or len(triggers)>4096:raise ValueError('unexpected trigger guard count')
+    arrays=set(re.findall(r'^\s*trigger\s+array\s+(\w+)',runtime,re.M))
+    dynamic='QuestStepPickupTrigger' in arrays
+    if dynamic and ('QuestStepTrigger' not in arrays or not re.search(r'constant integer QUEST_MAX_STEPS=16\b',runtime)):
+        raise ValueError('unreviewed dynamic quest trigger layout')
+    for first in re.findall(r'TriggerRegister\w+\(([^,]+),[^\n]*EVENT_(?:PLAYER_)?UNIT_(?:PICKUP_ITEM|DROP_ITEM|USE_ITEM)',runtime):
+        if first.strip() not in triggers and not (dynamic and re.fullmatch(r'QuestStepPickupTrigger\[\w+\]',first.strip())):
+            raise ValueError('unguarded inventory event registration: '+first)
+    text=(HERE/'Forsaken-house-probe.j').read_text(encoding='utf-8')
+    lines=['    call FHT_OneGuard(%s,%d,block)'%(name,i) for i,name in enumerate(triggers)]
+    text=text.replace('    // FHT_TRIGGER_GUARD_INITIALIZATION','\n'.join(lines))
+    if dynamic:
+        capacity='    return QuestCount>=0 and QuestCount<=(8192-%d)/32-1'%len(triggers)
+        text=text.replace('    // FHT_TRIGGER_GUARD_CAPACITY\n    return true',capacity)
+        guard='    if block then\n        set FHT_Span=(QuestCount+1)*QUEST_MAX_STEPS\n    endif\n    loop\n        exitwhen slot>=FHT_Span\n        call FHT_OneGuard(QuestStepTrigger[slot],BASE+slot,block)\n        call FHT_OneGuard(QuestStepPickupTrigger[slot],BASE+FHT_Span+slot,block)\n        set slot=slot+1\n    endloop\n    if not block then\n        set FHT_Span=0\n    endif'.replace('BASE',str(len(triggers)))
+        text=text.replace('    // FHT_DYNAMIC_TRIGGER_GUARD_INITIALIZATION',guard)
+    return text
+
+
+def module_source(module,file,aliases,runtime):
+    if module=='ForsakenSaveProbe':return probe_source(aliases)
+    if module=='ForsakenHouseProbe':return house_probe_source(runtime)
+    return (HERE/file).read_text(encoding='utf-8').replace('endlibrary',
+        'function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--stage',default='BU')
+    p.add_argument('--house-probe',action='store_true',help='include reversible temporary native house storage tests')
     p.add_argument('--base',type=Path,default=ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x')
     p.add_argument('--mapping',type=Path,default=ROOT/'release/Forsaken/gear-slots-BS.json')
     p.add_argument('--resume-checked-build',type=Path,help='reuse a completed mandatory stage build after a publication/audit interruption')
@@ -43,6 +82,21 @@ def main():
     if base.read_bytes()[:4]!=b'HM3W': raise ValueError('base must have a playable HM3W header')
     registry,aliases=save_registry.check(json.loads(args.mapping.read_text()))
     runtime=MPQ(str(base)).read('war3map.j').decode()
+    if args.house_probe:
+        from objdata import read_objects,fields
+        objects={}
+        archive=MPQ(str(base))
+        for member in ('war3map.w3t','war3mapSkin.w3t'):
+            data=archive.read(member)
+            if data:
+                table=read_objects(data,'w3t')
+                for group in ('original','custom'):
+                    for obj in table[group]:objects.setdefault(obj['id'] or obj['base'],{}).update(fields(obj))
+        gap=objects.get('fGap',{})
+        if gap.get('iabi')!='' or gap.get('ipow')!=0 or gap.get('iuse')!=0:
+            raise ValueError('fGap is not the reviewed zero-ability temporary spacer')
+        house_probe_source(runtime)
+    allow_new='^gg_trg_Forsaken_(Save|House)Probe$' if args.house_probe else '^gg_trg_Forsaken_SaveProbe$'
     alias_roots=dict(re.findall(r"SaveInteger\(ForsakenGearTypes,4,'(....)','(....)'\)",runtime))
     offhands=dict(re.findall(r"SaveInteger\(ForsakenGearTypes,6,'(....)','(....)'\)",runtime))
     canonical={r['rawcode']:r['id'] for r in registry['items']}
@@ -59,13 +113,13 @@ def main():
             raise ValueError('checked output hash changed')
         if hashlib.sha256((work/'release'/names[1]).read_bytes()).hexdigest()!=checked['checks_sha256']:
             raise ValueError('checked build log changed')
-        for module,file in [('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j'),('ForsakenSaveProbe','Forsaken-save-probe.j')]:
-            expected=probe_source(aliases) if module=='ForsakenSaveProbe' else (HERE/file).read_text().replace('endlibrary','function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
+        for module,file in modules(args.house_probe):
+            expected=module_source(module,file,aliases,runtime)
             if (work/'src/triggers/11 Save diagnostics'/(module+'.j')).read_text()!=expected:
                 raise ValueError('resume source differs: '+module)
-        for tool,values in [('check_map.py',[built,'--baseline',base,'--allow-new','^gg_trg_Forsaken_SaveProbe$']),('check_sources.py',[built])]:
+        for tool,values in [('check_map.py',[built,'--baseline',base,'--allow-new',allow_new]),('check_sources.py',[built])]:
             subprocess.run([sys.executable,str(work/'tools'/tool),*map(str,values)],cwd=work,check=True)
-        publish(base,built,args.mapping,aliases,work,names,dest,args.stage)
+        publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe)
         return
     scratch=Path(tempfile.mkdtemp(prefix='SaveProbe'+args.stage+'-',dir=ROOT/'build'))
     work=scratch/'FFERPG'
@@ -85,24 +139,23 @@ def main():
         if result.returncode: raise ValueError('failed '+str(tool)+'; scratch retained at '+str(scratch))
     run(work/'tools/export_sources.py',base,work/'src')
     previous=base
-    for module,file in [('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j'),('ForsakenSaveProbe','Forsaken-save-probe.j')]:
-        source=probe_source(aliases) if module=='ForsakenSaveProbe' else (HERE/file).read_text().replace('endlibrary',
-                'function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
+    for module,file in modules(args.house_probe):
+        source=module_source(module,file,aliases,runtime)
         path=work/'src/triggers/11 Save diagnostics'/ (module+'.j')
         path.parent.mkdir(parents=True,exist_ok=True)
         path.write_bytes(source.replace('\n','\r\n').encode())
         current=scratch/(module+'.w3x')
         run(work/'tools/add_module.py',previous,current,'11 Save diagnostics',module)
         previous=current
-    run(work/'tools/check_map.py',previous,'--baseline',base,'--allow-new','^gg_trg_Forsaken_SaveProbe$')
+    run(work/'tools/check_map.py',previous,'--baseline',base,'--allow-new',allow_new)
     # Use the established stage builder for all compilation/source/compatibility/content gates.
     run(work/'tools/build_stage.py',args.stage,'--base',previous)
     built=work/'release'/names[0]
-    run(work/'tools/check_map.py',built,'--baseline',base,'--allow-new','^gg_trg_Forsaken_SaveProbe$')
-    publish(base,built,args.mapping,aliases,work,names,dest,args.stage)
+    run(work/'tools/check_map.py',built,'--baseline',base,'--allow-new',allow_new)
+    publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe)
 
 
-def publish(base,built,mapping,aliases,work,names,dest,stage):
+def publish(base,built,mapping,aliases,work,names,dest,stage,house=False):
     original,out=MPQ(str(base)),MPQ(str(built))
     # MPQ member CRC metadata changes when scripts change; it is not gameplay content.
     changed={'war3map.j','war3map.wtg','war3map.wct','(attributes)'}
@@ -116,9 +169,17 @@ def publish(base,built,mapping,aliases,work,names,dest,stage):
         raise ValueError('original editor source changed')
     report=dict(stage=stage,scope='Private inventory/codec engine diagnostic; no character load, durable save export, files or multiplayer transport.',
                 base=identity(base),output=identity(built),mapping=identity(mapping),
-                sources={name:identity(HERE/name) for name in ('Forsaken-save-codec.j','Forsaken-save-life.j','Forsaken-save-probe.j','build_save_probe.py')},
+                sources={name:identity(HERE/name) for name in [file for _,file in modules(house)]+['build_save_probe.py']},
                 preserved_members=preserved,original_editor_source_preserved=True,aliases=len(aliases),
-                scratch=str(work),commands=['-savecheck','-saveverify'],save_export_disabled=True)
+                scratch=str(work),commands=['-savecheck','-saveverify']+(['-savehousecheck','-savehousecleanup'] if house else []),save_export_disabled=True,
+                house_probe=house)
+    if house:
+        generated=house_probe_source(original.read('war3map.j').decode('utf-8'))
+        report['house_guard_sha256']=hashlib.sha256(generated.encode('utf-8')).hexdigest()
+        report['guarded_triggers']=len(re.findall(r'call FHT_OneGuard\([^,]+,\d+,block\)',generated))
+        report['dynamic_trigger_arrays']=['QuestStepTrigger','QuestStepPickupTrigger'] if 'QuestStepPickupTrigger[slot]' in generated else []
+        report['trigger_guard_capacity']=8192
+        report['scope']='Private inventory/codec and synthetic temporary native house diagnostic; no character load, durable export, files or multiplayer transport.'
     if any((dest/name).exists() for name in names): raise ValueError('output appeared while building; refusing overwrite')
     dest.mkdir(exist_ok=True)
     for name in names[:3]:
