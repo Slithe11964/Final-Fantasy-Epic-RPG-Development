@@ -2,6 +2,10 @@
 
 2026-10-09, isolated native-source checkpoint. No map build or character-load route.
 
+This records the first audit/cleanup checkpoint. Its subsequent guarded internal
+allocation/placement route is documented in SAVE_CARGO_PLACEMENT.md; original
+public API phase guards remain enforced.
+
 Forsaken-save-cargo.j adds a bounded cargo journal for the contained replacement
 hero/Gaya pair. Begin requires verified prepared heroes, assigned ownership,
 switched references, original inventory and no activation or staged items. Plan

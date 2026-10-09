@@ -2,6 +2,9 @@ library TForsakenSaveNative requires TForsakenSaveLife
 // Isolated modern-client staging only. Caller must hold a synchronized gameplay guard.
 // No placement, promotion, initializer, save route or original-item mutation.
 globals
+    // Internal primitive authorization, held only across a guarded caller.
+    integer array FSN_Operation
+    boolean array FSN_Executing
     // 0 idle, 1 open, 2 failed, 3 cleanup unverified, 4 placement started.
     integer array FSN_State
     boolean array FSN_Busy
@@ -192,20 +195,22 @@ endfunction
 function FSN_Fail takes integer pid returns boolean
     set FSN_State[pid]=2
     call FSN_Cleanup(pid)
+    set FSN_Executing[pid]=false
     set FSN_Busy[pid]=false
     return false
 endfunction
 
-function FSN_Stage takes integer pid,integer raw,integer charges,boolean bound,integer flags,integer high,integer low,real x,real y returns boolean
+function FSN_StageCore takes integer pid,integer raw,integer charges,boolean bound,integer flags,integer high,integer low,real x,real y returns boolean
     local integer index
     local item carried
     local real life
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_PreparedBlocked[pid] or FSN_ActivationBlocked[pid] or FSN_State[pid]!=1 or FSN_Busy[pid] then
+    if FSN_Operation[pid]!=1 or not FSN_Busy[pid] or FSN_Executing[pid] then
         return false
     endif
+    set FSN_Executing[pid]=true
     set FSN_Busy[pid]=true
     set life=FSL_Real(high,low)
     if raw==0 or charges<0 or charges>127 or flags<0 or flags>7 or life<=0.0 or FSN_Count[pid]>=57 then
@@ -261,8 +266,26 @@ function FSN_Stage takes integer pid,integer raw,integer charges,boolean bound,i
     if not FSN_Check(pid,index) then
         return FSN_Fail(pid)
     endif
+    set FSN_Executing[pid]=false
     set FSN_Busy[pid]=false
     return true
+endfunction
+
+// Legacy entry retains every original phase guard.
+function FSN_Stage takes integer pid,integer raw,integer charges,boolean bound,integer flags,integer high,integer low,real x,real y returns boolean
+    local boolean result
+    if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_PreparedBlocked[pid] or FSN_ActivationBlocked[pid] or FSN_State[pid]!=1 or FSN_Busy[pid] then
+        return false
+    endif
+    set FSN_Busy[pid]=true
+    set FSN_Operation[pid]=1
+    set result=FSN_StageCore(pid,raw,charges,bound,flags,high,low,x,y)
+    set FSN_Operation[pid]=0
+    set FSN_Busy[pid]=false
+    return result
 endfunction
 
 function FSN_Verify takes integer pid returns boolean

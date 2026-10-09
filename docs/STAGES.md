@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: guarded contained item creation/preparation and
+placement. Specific internal primitive permits retain original phase guards;
+shared lock holds through readback. Plan freezes in state5; partial/exact cargo
+audits and filler cleanup preserve retry. See SAVE_CARGO_PLACEMENT.md.
+12 new plus63 focused regressions and three compile probes PASS:
+build/save-codec-compile-ngp325p5/report.json; final source hashes/CRLF match.
+Profile adapter, house, equipment effects, loaded activation/controller/engine
+acceptance remain pending. No map build; BT/BU unchanged, BV unused, saves blocked.
+
 Isolated checkpoint, 2026-10-09: contained owned-cargo audit/recovery journal.
 Exact51 slots, metadata/abilities and complete owned batch auditing; sealed cargo
 accepted in ongoing contexts, fresh units remain empty. Pending disposal guard,

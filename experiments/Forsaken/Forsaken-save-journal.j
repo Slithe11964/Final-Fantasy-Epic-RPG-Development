@@ -108,16 +108,16 @@ function FSJ_Matches takes integer pid,integer index,item carried returns boolea
     return FSL_High[pid]==FSJ_High[index] and FSL_Low[pid]==FSJ_Low[index]
 endfunction
 
-function FSJ_Verify takes integer pid returns boolean
+// Readback for a caller already holding the journal lock.
+function FSJ_VerifyCore takes integer pid returns boolean
     local integer position=0
     local boolean matches=true
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSJ_Ready[pid] or FSJ_Busy[pid] then
+    if not FSJ_Ready[pid] or not FSJ_Busy[pid] then
         return false
     endif
-    set FSJ_Busy[pid]=true
     if not FSJ_UnitsValid(pid,FSJ_Hero[pid],FSJ_Gaya[pid],FSJ_House[pid]) then
         set matches=false
     elseif GetOwningPlayer(FSJ_Hero[pid])!=FSJ_HeroOwner[pid] then
@@ -132,6 +132,19 @@ function FSJ_Verify takes integer pid returns boolean
         set matches=FSJ_Matches(pid,pid*57+position,FSJ_At(FSJ_Hero[pid],FSJ_Gaya[pid],FSJ_House[pid],position))
         set position=position+1
     endloop
+    return matches
+endfunction
+
+function FSJ_Verify takes integer pid returns boolean
+    local boolean matches
+    if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    if not FSJ_Ready[pid] or FSJ_Busy[pid] then
+        return false
+    endif
+    set FSJ_Busy[pid]=true
+    set matches=FSJ_VerifyCore(pid)
     set FSJ_Busy[pid]=false
     return matches
 endfunction

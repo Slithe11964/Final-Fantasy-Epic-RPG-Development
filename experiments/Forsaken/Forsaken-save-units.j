@@ -115,7 +115,9 @@ function FSU_CargoAt takes integer pid,unit candidate,integer kind,integer slot 
     if (kind==4 and candidate==FCG_Unit[pid*2+1]) or (kind!=4 and candidate==FCG_Unit[pid*2]) then
         set ordinal=FCG_Ordinal[pid*51+position]
         if ordinal>0 and ordinal<=FCG_Count[pid] then
-            set carried=FSN_Item[pid*57+ordinal-1]
+            if FSN_PlacedItem[pid*57+ordinal-1]==FSN_Item[pid*57+ordinal-1] then
+                set carried=FSN_Item[pid*57+ordinal-1]
+            endif
         endif
     endif
     set matches=FSP_At(candidate,kind,slot)==carried

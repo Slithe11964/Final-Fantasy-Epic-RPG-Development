@@ -1,8 +1,21 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Guarded contained item placement — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_CARGO_PLACEMENT.md. Cargo state5 freezes the plan and
+drives guarded item allocation, ability preparation and exact storage/equipment
+placement. Original APIs retain phase guards; specific primitive permits and
+shared exclusion prevent reentry. Readback remains locked, including the new
+internal original-inventory verifier. Sparse/alternate-ring fillers now recover
+with provenance checks and retry. Equipment must precede full bag placement.
+12 new plus63 focused regressions and three final compile probes PASS:
+build/save-codec-compile-ngp325p5/report.json; all22 source hashes/CRLF match.
+Profile adapter, house, equipment effects, loaded activation/controller/engine
+acceptance remain pending. BT/BU unchanged, BV unused; full saves/loads blocked.
+
 ## Contained cargo recovery — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_CARGO.md and Forsaken-save-cargo.j. Exact51-position
+Previous checkpoint: SAVE_CARGO.md and Forsaken-save-cargo.j. Exact51-position
 cargo audit permits sealed owned cargo in ongoing ownership/prepared contexts;
 fresh contexts remain empty. Pending guard blocks activation/disposal until
 verified cleanup/release. Failed deletion, metadata/core drift and unexpected

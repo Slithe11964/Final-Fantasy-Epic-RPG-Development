@@ -383,3 +383,13 @@ test_save_cargo.py and compile with --cargo plus prior options.
 Allocation/placement authorization, fillers, equipment effects, house and loaded
 activation/controller
 remain pending. See ../../docs/SAVE_CARGO.md. No new map; full saves stay blocked.
+
+The cargo journal now freezes plans and invokes guarded native creation,
+preparation and exact placement through operation-specific internal primitives.
+Original public phase guards stay intact; shared locking covers post-readback.
+Sparse bag/ring fillers support verified cleanup retry. Run
+test_save_cargo_placement.py; compile options remain --cargo plus prior policies.
+12 new plus63 focused regressions and three final compile probes PASS.
+Place equipment before filling the complete bag. Saved-profile adapter, house,
+equipment effects and loaded activation/controller remain pending. See
+../../docs/SAVE_CARGO_PLACEMENT.md. No new map or usable load command.

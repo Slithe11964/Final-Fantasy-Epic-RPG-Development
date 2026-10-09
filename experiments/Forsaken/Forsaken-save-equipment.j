@@ -46,7 +46,7 @@ function FSE_CheckEquipment takes integer pid,unit hero returns boolean
     return true
 endfunction
 
-function FSE_Place takes integer pid,integer ordinal,unit hero,integer slot,integer ringSpacerRaw,integer harmlessMarker returns boolean
+function FSE_PlaceCore takes integer pid,integer ordinal,unit hero,integer slot,integer ringSpacerRaw,integer harmlessMarker returns boolean
     local integer index
     local integer auxiliary
     local item spacer
@@ -55,9 +55,10 @@ function FSE_Place takes integer pid,integer ordinal,unit hero,integer slot,inte
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_PreparedBlocked[pid] or FSN_ActivationBlocked[pid] or FSN_Busy[pid] or (FSN_State[pid]!=1 and FSN_State[pid]!=4) then
+    if FSN_Operation[pid]!=4 or not FSN_Busy[pid] or FSN_Executing[pid] then
         return false
     endif
+    set FSN_Executing[pid]=true
     set FSN_Busy[pid]=true
     if ordinal<0 or ordinal>=FSN_Count[pid] or hero==null or GetUnitTypeId(hero)==0 or slot<0 or slot>=9 then
         return FSN_Fail(pid)
@@ -124,7 +125,25 @@ function FSE_Place takes integer pid,integer ordinal,unit hero,integer slot,inte
         return FSN_Fail(pid)
     endif
     set FSN_State[pid]=4
+    set FSN_Executing[pid]=false
     set FSN_Busy[pid]=false
     return true
+endfunction
+
+// Legacy entry retains every original phase guard.
+function FSE_Place takes integer pid,integer ordinal,unit hero,integer slot,integer ringSpacerRaw,integer harmlessMarker returns boolean
+    local boolean result
+    if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_PreparedBlocked[pid] or FSN_ActivationBlocked[pid] or FSN_Busy[pid] or (FSN_State[pid]!=1 and FSN_State[pid]!=4) then
+        return false
+    endif
+    set FSN_Busy[pid]=true
+    set FSN_Operation[pid]=4
+    set result=FSE_PlaceCore(pid,ordinal,hero,slot,ringSpacerRaw,harmlessMarker)
+    set FSN_Operation[pid]=0
+    set FSN_Busy[pid]=false
+    return result
 endfunction
 endlibrary
