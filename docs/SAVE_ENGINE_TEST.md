@@ -139,3 +139,12 @@ larger live inventory populated by the legacy loader. The input legacy format,
 exact item list/container distribution, client build and player slot were not
 supplied. This is not evidence that the new decoder migrated the old code or
 that the new system restored the character; those paths were not exercised.
+
+User reports selling two Scarletite from the house and moving Wateraga into the
+Armory, followed by PASS/PASS. The fourth screenshot shows two passing snapshots
+of 18 items across 57 positions and 428 characters. The command order relative
+to these changes has not been established: recapture followed by verify would
+normally pass, whereas verify directly against the earlier snapshot should report
+CHANGED for captured inventory changes. House quantity-change detection remains
+pending clarification. Armory collection flags are outside this inventory-only
+diagnostic; this result does not verify Armory persistence.
