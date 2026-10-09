@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: H02L Freelancer level/mastery/attribute policy.
+Exact canonical stat parity across160 vectors; borrowed choices stay fresh
+session targets. Owned role22 core/mastery bridge refuses borrowed skills and
+invalid fresh context. Eight new plus61 focused regressions PASS; BT object/cap
+and three compile checks PASS, build/save-codec-compile-932yb14c/report.json.
+See SAVE_FREELANCER_POLICY.md. Other variants/player effects/controller/native
+acceptance still open. No map build; BT/BU unchanged, full saves remain blocked.
+
 Isolated checkpoint, 2026-10-09: accepted Gaya support/chant planning bridge.
 Preserves purchases and ownership; derives Spiritual Power plus separate player
 research/availability targets. Owned fresh role23 only, exact absolute rank retry;

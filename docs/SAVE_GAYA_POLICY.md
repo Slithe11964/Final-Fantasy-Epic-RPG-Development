@@ -50,3 +50,7 @@ build/save-codec-compile-ytmg1kff/report.json. Run test_save_gaya_policy.py and
 compile --activation --job-policy --gaya-policy with the existing BT/native-library
 arguments. The entire older regression catalog was not rerun for this additive
 bridge. BT/BU hashes unchanged; BV unused; full saves remain blocked.
+
+Following checkpoint: [SAVE_FREELANCER_POLICY.md](SAVE_FREELANCER_POLICY.md) resolves
+the staged H02L level/mastery/stat plan. Other variants and controller application
+of Gaya/Freelancer player targets remain open.

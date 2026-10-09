@@ -353,3 +353,10 @@ and availability are separate targets, with no setters in this bridge. Run
 test_save_gaya_policy.py and compile --activation --job-policy --gaya-policy.
 10 new plus51 focused regressions PASS; three compile probes and BT object binding
 checks PASS. See ../../docs/SAVE_GAYA_POLICY.md for remaining controller/effects.
+
+Forsaken-save-freelancer-policy.j and the extended hero policy prepare H02L
+level/mastery/derived attributes. Canonical Freelancer source parity covers160
+vectors; borrowed choices remain fresh session targets. Run
+test_save_freelancer_policy.py and compile with --freelancer-policy plus prior
+options. Eight new and61 focused regressions PASS; three compile checks PASS.
+See ../../docs/SAVE_FREELANCER_POLICY.md for variant/controller/engine limits.

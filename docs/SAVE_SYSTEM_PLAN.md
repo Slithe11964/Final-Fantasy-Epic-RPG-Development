@@ -34,6 +34,9 @@ per-skill allocations. Freelancer/Gaya policy is handled separately.
 Gaya support/chant unit plans and separate research/availability targets now
 resolve through [SAVE_GAYA_POLICY.md](SAVE_GAYA_POLICY.md); player application
 and remaining derived effects still require the synchronized controller.
+The staged H02L Freelancer level/mastery/attribute plan is now resolved in
+[SAVE_FREELANCER_POLICY.md](SAVE_FREELANCER_POLICY.md), with fresh borrowed-choice
+targets. Other variants and all player target application remain pending.
 Future level requirement (2026-10-09): allow a later cap150, with save-format
 headroom for999. Separate actual level from mastery tier in a new reviewed job
 schema; migrate the existing value100 sentinel to native level99/tier4 instead

@@ -25,6 +25,43 @@ class HeroPolicy:
     jobs: tuple
     dormant_jobs: tuple
     gaya: 'GayaPlan'
+    freelancer: 'FreelancerPlan'
+
+
+@dataclass(frozen=True)
+class FreelancerPlan:
+    saved_level: int
+    native_level: int
+    mastery_rank: int
+    attributes: tuple
+    borrowed_choices: tuple = (0, 0, 0, 0)
+
+
+def freelancer(saved_level, jobs):
+    # Current staging owns H02L, the Strength variant. Other variants need adapters.
+    marker = normal_job(1, saved_level)
+    if not set(range(1,23)) <= jobs.keys():
+        raise codec.Error('missing reviewed Freelancer inheritance job')
+    for identity in range(1,23): normal_job(identity, jobs[identity])
+    bonus = (0,0,20,50,100)[marker.mastery_rank]
+    strength = agility = intelligence = 10 + bonus
+    # Existing inheritance uses saved level99+, independently of skill mastery50.
+    for index in range(10):
+        if jobs[index+1] >= 99:
+            if index % 9 == 0:
+                strength += 24; agility += 24
+            elif index % 2:
+                strength += 48
+            else:
+                agility += 48
+    intelligence += 24 * sum(jobs[i+1] >= 99 for i in range(10,20))
+    if jobs[21] >= 99: strength += 16; agility += 16
+    if jobs[22] >= 99: intelligence += 16
+    strength += marker.native_level + 39
+    agility += marker.native_level // 2
+    intelligence += marker.native_level // 2
+    return FreelancerPlan(saved_level, marker.native_level, marker.mastery_rank,
+                           (strength,agility,intelligence))
 
 
 @dataclass(frozen=True)
@@ -88,4 +125,5 @@ def plan(envelope, expected_account):
         raise codec.Error('cheat status requires separate reviewed load policy')
     jobs = tuple(normal_job(i, snapshot['jobs'][i]) for i in range(1, 23))
     dormant = tuple(sorted((i, v) for i, v in snapshot['jobs'].items() if i > 22))
-    return HeroPolicy(envelope, jobs, dormant, gaya(snapshot['gaya']))
+    return HeroPolicy(envelope, jobs, dormant, gaya(snapshot['gaya']),
+                       freelancer(snapshot['core']['freelancer'], snapshot['jobs']))

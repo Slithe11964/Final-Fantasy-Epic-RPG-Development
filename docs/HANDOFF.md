@@ -1,8 +1,21 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Saved Freelancer policy — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_FREELANCER_POLICY.md, extended save_hero_policy.py and
+Forsaken-save-freelancer-policy.j. Resolves H02L level/mastery/inherited attributes,
+retaining saved100→native99/mastery4 and unknown-job preservation. Calculation
+matches actual canonical stat source across160 vectors. Four borrowed choices
+are zero session targets, not applied by the bridge. Role22/fresh Versatility/no
+reviewed borrowed skill preflight precedes owned core/mastery plans. Eight new
+and61 focused regressions PASS; three compile probes PASS:
+build/save-codec-compile-932yb14c/report.json. Other variants, player targets,
+combat/equipment/controller/full commit/native acceptance remain open. BT/BU
+unchanged, BV unused; full saving/loading remains blocked.
+
 ## Saved Gaya support policy — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_GAYA_POLICY.md, extended save_hero_policy.py and
+Previous checkpoint: SAVE_GAYA_POLICY.md, extended save_hero_policy.py and
 Forsaken-save-gaya-policy.j. Preserves purchased support ranks/chant ownership,
 derives exact Spiritual Power and separate research/availability targets. Zero
 support purchases retain the locked native rank1 menu; mastered fields must be
