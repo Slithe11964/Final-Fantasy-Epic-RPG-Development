@@ -322,3 +322,12 @@ and owned-unit deletion; independent guards retain failed recovery. Run
 test_save_ownership.py and check_save_jass.py --ownership with BT/native-library
 arguments. 13 new plus 281 prior checks PASS (294). No activation or commit.
 See ../../docs/SAVE_OWNERSHIP_PREPARATION.md for controller ordering and open work.
+
+Forsaken-save-prepared-heroes.j prepares exact owned hero XP/level/base attributes
+and explicit ability ranks with readback/retry. Normal jobs below 50 keep skills
+unlearned and refund level points; mastered jobs learn four rank-11 skills and
+ultimate rank 6 through bounded SelectHeroSkill calls. Targets stay contained,
+originals unchanged. Plan discard precedes ownership/reference/unit cleanup. Run
+test_save_prepared_heroes.py and check_save_jass.py --prepared-heroes with existing
+BT/native-library arguments. 14 new plus 294 prior checks PASS (308). See
+../../docs/SAVE_PREPARED_HEROES.md for untranslated policy and engine limits.

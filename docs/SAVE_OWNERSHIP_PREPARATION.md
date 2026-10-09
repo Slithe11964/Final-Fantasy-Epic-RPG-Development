@@ -71,3 +71,9 @@ usable code export, file/restart or multiplayer acceptance is provided.
 
 BT and private BU are unchanged; BV is unused. Full new saving/loading remains
 blocked. BU remains the inventory/codec diagnostic.
+
+Following checkpoint: [SAVE_PREPARED_HEROES.md](SAVE_PREPARED_HEROES.md) prepares
+owned replacement progression/ability plans while retaining containment. Its
+prepared pending guard now blocks ownership neutralization until FHP_Discard
+clears the target plan; ownership and reference guards continue to protect the
+remaining cleanup. No visible activation or successful commit is added.

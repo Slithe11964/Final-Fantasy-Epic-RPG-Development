@@ -5,6 +5,7 @@ globals
     constant integer FSC_MAX_PAYLOAD=16384
     constant integer FSC_MAX_OPAQUE=4096
     hashtable FSC_Seen=null
+    boolean array FSC_PreparedBlocked
     boolean array FSC_OwnershipBlocked
     boolean array FSC_BodyBlocked
     boolean array FSC_ReferenceBlocked
@@ -597,7 +598,7 @@ function FSC_Decode takes integer pid,string encoded,integer expectedAccount,boo
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_Busy[pid] or FSC_Writing[pid] or expectedAccount< -1 or expectedAccount>=1048576 then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or FSC_Busy[pid] or FSC_Writing[pid] or expectedAccount< -1 or expectedAccount>=1048576 then
         return false
     endif
     set FSC_Busy[pid]=true
@@ -652,7 +653,7 @@ function FSC_Reencode takes integer pid returns string
     if not FSC_PlayerValid(pid) then
         return null
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_Count[pid+1]==0 or FSC_Busy[pid] then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or FSC_Count[pid+1]==0 or FSC_Busy[pid] then
         return null
     endif
     return FSC_EncodeContext(pid+1)
@@ -662,7 +663,7 @@ function FSC_Begin takes integer pid,integer account returns boolean
     if not FSC_PlayerValid(pid) or account<0 or account>=1048576 then
         return false
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_Busy[pid] or FSC_Writing[pid] then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or FSC_Busy[pid] or FSC_Writing[pid] then
         return false
     endif
     call FSC_Clear(pid+17)
@@ -680,7 +681,7 @@ function FSC_Add takes integer pid,integer sid,integer schemaVersion,boolean req
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or not FSC_Writing[pid] or not FSC_BuildOk[pid] then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or not FSC_Writing[pid] or not FSC_BuildOk[pid] then
         return false
     endif
     if FSC_Count[ctx]>=32 or sid<=0 or schemaVersion<=0 or StringLength(payload)>FSC_MAX_PAYLOAD then
@@ -722,7 +723,7 @@ function FSC_Finish takes integer pid,boolean requireProfile returns string
     if not FSC_PlayerValid(pid) then
         return null
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or not FSC_Writing[pid] then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or not FSC_Writing[pid] then
         return null
     endif
     if not FSC_BuildOk[pid] or FSC_Count[ctx]==0 then
@@ -743,7 +744,7 @@ function FSC_Reset takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_Busy[pid] then
+    if FSC_SessionBlocked[pid] or FSC_UnitBlocked[pid] or FSC_ReferenceBlocked[pid] or FSC_BodyBlocked[pid] or FSC_OwnershipBlocked[pid] or FSC_PreparedBlocked[pid] or FSC_Busy[pid] then
         return false
     endif
     call FSC_Abort(pid)

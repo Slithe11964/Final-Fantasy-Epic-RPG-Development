@@ -26,6 +26,11 @@ replacement system; keep existing-code decoding, but no new Minus export/command
 Cooldowns are per-game and never serialized. User explicitly permits refreshed
 cooldowns on new-game load/character changes, including rollback after a failed
 change. Cooldown equality is not a restoration acceptance gate.
+User skill decision (2026-10-09): normal jobs below level50 reset learned skills
+and refund available skill points on successful load. At mastery (level50+),
+four regular skills are rank11 and the ultimate rank6. Failed-load recovery still
+restores original per-game choices/points. These are load defaults, not durable
+per-skill allocations. Freelancer/Gaya policy is handled separately.
 
 Keep E/F and G/H meanings, item eligibility, account/owner restrictions, difficulty,
 Speedrun and Hardcore rules, load window/once-per-game rules, jobs/mastery,
@@ -325,3 +330,16 @@ runtime/editor compile PASS, build/save-codec-compile-va2hotyc/report.json. No
 activation or map build. Staged progression/abilities, safe spawn/visual/pathing
 policy, placement/controller/scheduling and full commit/file/restart/multiplayer
 acceptance remain open. BT/BU unchanged, BV unused; full saves remain blocked.
+
+Owned replacement preparation: [SAVE_PREPARED_HEROES.md](SAVE_PREPARED_HEROES.md).
+14 new plus all 294 prior checks PASS (308), including 18 fixture setters, six
+learning-failure boundaries and 24 units×40 ability plans at player 7/index 7679.
+Exact XP/level, base stats and bounded ability ranks prepare only owned contained
+units; originals stay untouched. Below-50 normal jobs retain unlearned skills and
+refund level points; mastered jobs receive four rank-11 skills and rank-6 ultimate
+(50 points spent). Independent guards retain failures/retry; plan discard precedes
+ownership/reference/unit cleanup. Standalone/BT runtime/editor compile PASS,
+build/save-codec-compile-ze0vosm3/report.json. Profile translation/mastery bonuses,
+other effects, native learning/point acceptance, placement/spawn/activation,
+scheduling and full commit/file/restart/multiplayer remain open. BT/BU unchanged,
+BV unused; full saves remain blocked.

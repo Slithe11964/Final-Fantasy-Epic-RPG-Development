@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: owned replacement core/ability preparation.
+Exact progression/stat/rank readback; below-50 jobs reset skills/refund points,
+mastered jobs learn four rank-11 skills and ultimate rank 6. Independent guards,
+retry and target-plan discard precede ownership/reference/unit cleanup. No
+original mutation, activation/commit or map build. 14 new plus 294 prior checks
+PASS (308); standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-ze0vosm3/report.json. See SAVE_PREPARED_HEROES.md.
+BT/BU unchanged, BV unused; full saves blocked.
+
 Isolated checkpoint, 2026-10-09: contained replacement ownership preparation
 assigns active/Gaya owned targets to the player while retaining hidden/paused/
 invulnerable/empty state. Neutral ownership recovery/readback precedes reference

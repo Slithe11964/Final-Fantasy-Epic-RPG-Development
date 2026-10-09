@@ -1,8 +1,24 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Owned hero core/ability preparation — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_PREPARED_HEROES.md and Forsaken-save-prepared-heroes.j.
+Owned hidden replacements receive exact XP/level, base stats, skill points and
+bounded explicit ability plans. Below-50 normal jobs keep five skills unlearned
+and refund level points; mastered jobs learn four rank-11 skills/ultimate rank 6
+(50 points spent). Policy skill IDs are frozen and cannot be overridden.
+Readback, bounded native learning and independent guards retain failed plans;
+discard must precede ownership neutralization/reference reversal/unit cleanup.
+Original heroes remain untouched. 14 new plus all 294 prior checks PASS (308),
+including 18 setter faults, six learning boundaries and 24×40 plans at player
+7/index 7679. Standalone/BT runtime/editor compile PASS:
+build/save-codec-compile-ze0vosm3/report.json. Profile translation/mastery bonuses,
+other effects, item placement, spawn/activation/scheduling/controller remain open.
+BT/BU unchanged, BV unused; full saving/loading blocked.
+
 ## Contained replacement ownership — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_OWNERSHIP_PREPARATION.md and Forsaken-save-ownership.j.
+Previous checkpoint: SAVE_OWNERSHIP_PREPARATION.md and Forsaken-save-ownership.j.
 After reference publication, assigns only owned active/Gaya replacements to the
 player while keeping them hidden/paused/invulnerable/empty. Originals remain
 untouched. Neutralization/readback and ownership release must precede reference
