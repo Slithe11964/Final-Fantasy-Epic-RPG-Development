@@ -1,8 +1,20 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Current-map inventory targets — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_INVENTORY_PLAN.md and save_inventory_plan.py. Read-only
+targets resolve actual BT objects/compiled passive roles and BS slot mappings;
+retain all57 positions, binding, metadata, charges and dormant records. Explicit
+reviewed defaults are mandatory when inherited or legacy data is absent.
+12 new plus53 focused regressions PASS; all276 aliases and eight legacy vectors
+covered. Native placement requires phase-aware cargo audits and equipment effects
+in the prepared hero projection; existing recovery guards are not bypassed.
+No JASS changes or compile rerun. BT/BU unchanged, BV unused; full saves/loads
+and controller/engine acceptance remain pending.
+
 ## Reversible player targets — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_PLAYER_TARGET.md and Forsaken-save-player-target.j.
+Previous checkpoint: SAVE_PLAYER_TARGET.md and Forsaken-save-player-target.j.
 Applies/readbacks Gaya purchase research and six zeroed per-game skill choices;
 captures originals against prior journals and restores them with retry. Prepared
 core readback before/after application catches research side effects. Independent

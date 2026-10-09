@@ -57,6 +57,7 @@ Get-FileHash -Algorithm SHA256 release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/test_save_gaya_policy.py
 & $ffPython experiments/Forsaken/test_save_freelancer_policy.py
 & $ffPython experiments/Forsaken/test_save_player_target.py
+& $ffPython experiments/Forsaken/test_save_inventory_plan.py
 & $ffPython experiments/Forsaken/test_save_probe.py
 & $ffPython experiments/Forsaken/measure_save_vnext.py
 & $ffPython experiments/Forsaken/test_forsaken.py

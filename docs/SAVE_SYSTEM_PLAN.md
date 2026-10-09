@@ -36,10 +36,14 @@ resolve through [SAVE_GAYA_POLICY.md](SAVE_GAYA_POLICY.md); player application
 and remaining derived effects still require the synchronized controller.
 The staged H02L Freelancer level/mastery/attribute plan is now resolved in
 [SAVE_FREELANCER_POLICY.md](SAVE_FREELANCER_POLICY.md), with fresh borrowed-choice
-targets. Other variants and all player target application remain pending.
+targets. Other variants and broader player target application remain pending.
 The narrow Gaya purchase/skill-choice target now applies and recovers through
 [SAVE_PLAYER_TARGET.md](SAVE_PLAYER_TARGET.md). Broader player state, ability
 availability verification and the complete controller remain pending.
+Read-only inventory targets now resolve actual map aliases, passive roles and
+exact positions through [SAVE_INVENTORY_PLAN.md](SAVE_INVENTORY_PLAN.md). Native
+placement still requires recovery-phase cargo auditing and equipment effects in
+the prepared hero projection; existing empty-unit guards remain enforced.
 Future level requirement (2026-10-09): allow a later cap150, with save-format
 headroom for999. Separate actual level from mastery tier in a new reviewed job
 schema; migrate the existing value100 sentinel to native level99/tier4 instead

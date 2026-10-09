@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: current-map read-only inventory target resolution.
+Actual BT objects/passive policy and BS mapping bind canonical IDs to exact slots;
+missing legacy/inherited defaults refuse, dormant records reserve positions.
+12 new plus53 focused regressions PASS, including all276 gear and57 positions.
+See SAVE_INVENTORY_PLAN.md. Native cargo/recovery integration, equipment effects
+and controller/engine acceptance remain pending. No JASS changes/compile rerun or
+map build; BT/BU unchanged, BV unused; full saves remain blocked.
+
 Isolated checkpoint, 2026-10-09: reversible Gaya research/skill-choice player target.
 Readback and original recovery retain failed writes; independent pending guard
 blocks disposal and activation recovery precedes player recovery. Ten new plus74

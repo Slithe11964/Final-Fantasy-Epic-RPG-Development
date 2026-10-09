@@ -366,3 +366,11 @@ six fresh skill choices, with verified original recovery and disposal guards.
 Run test_save_player_target.py and compile all prior options plus --player-target.
 Ten new plus74 focused checks PASS; three compile probes PASS. Availability has
 no native getter and remains pending. See ../../docs/SAVE_PLAYER_TARGET.md.
+
+save_inventory_plan.py resolves read-only exact inventory targets against BT
+objects/compiled passive roles and BS mapping, with explicit legacy/inherited
+defaults and complete dormant position preservation. Run test_save_inventory_plan.py.
+12 new plus53 focused regressions PASS, including all276 gear aliases and57 slots.
+Native placement needs phase-aware cargo/equipment auditing before controller
+integration. No JASS changes, compile rerun or new map. Full saves remain blocked.
+See ../../docs/SAVE_INVENTORY_PLAN.md.
