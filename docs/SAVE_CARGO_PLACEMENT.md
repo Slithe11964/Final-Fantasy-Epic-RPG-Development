@@ -1,5 +1,8 @@
 # Guarded contained item creation and placement
 
+Subsequent checkpoint: [SAVE_INVENTORY_PROFILE.md](SAVE_INVENTORY_PROFILE.md)
+connects explicit saved inventory targets to this guarded route.
+
 2026-10-09, isolated internal native route; no map build or usable load command.
 
 The cargo journal now drives the existing item primitives while replacement

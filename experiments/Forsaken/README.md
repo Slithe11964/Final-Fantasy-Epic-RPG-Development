@@ -393,3 +393,13 @@ test_save_cargo_placement.py; compile options remain --cargo plus prior policies
 Place equipment before filling the complete bag. Saved-profile adapter, house,
 equipment effects and loaded activation/controller remain pending. See
 ../../docs/SAVE_CARGO_PLACEMENT.md. No new map or usable load command.
+
+The explicit saved inventory profile bridge freezes non-house targets against the
+permanent registry and actual gear tables, then drives guarded cargo preparation
+and exact placement. Full source retains dormant records through recovery.
+Saved/existing house contents and migration evidence refuse before allocation.
+Run test_save_inventory_profile.py and test_save_inventory_projection.py;
+compile with --inventory-profile plus prior policies.11 new tests plus25 focused
+regressions and three compile probes PASS. See ../../docs/SAVE_INVENTORY_PROFILE.md
+for remaining policy initialization, house, equipment effects and controller work.
+No map build; full character save/load remains blocked.

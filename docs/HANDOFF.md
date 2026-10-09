@@ -1,5 +1,16 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+Saved inventory profile checkpoint, 2026-10-09 (isolated; no map build).
+The explicit target-code bridge freezes51 non-house positions and drives guarded
+creation/preparation/placement; full source retains dormant records. Registry,
+aliases, explicit defaults and metadata are checked before allocation. Saved or
+existing house contents and migration evidence refuse pending dedicated recovery.
+11 new tests plus25 codec/cargo regressions and three compile probes PASS:
+build/save-codec-compile-p1tf8tny/report.json;23 source hashes/CRLF match.
+See [SAVE_INVENTORY_PROFILE.md](SAVE_INVENTORY_PROFILE.md). Policy initialization,
+house, equipment effects, loaded activation/controller and engine acceptance
+remain pending. BT/BU unchanged; BV unused, full saves/loads blocked.
+
 ## Guarded contained item placement — 2026-10-09 (isolated; no map build)
 
 Latest checkpoint: SAVE_CARGO_PLACEMENT.md. Cargo state5 freezes the plan and

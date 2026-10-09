@@ -43,8 +43,10 @@ availability verification and the complete controller remain pending.
 Read-only inventory targets now resolve actual map aliases, passive roles and
 exact positions through [SAVE_INVENTORY_PLAN.md](SAVE_INVENTORY_PLAN.md). Native
 placement now has phase-aware internal allocation/preparation/placement through
-[SAVE_CARGO_PLACEMENT.md](SAVE_CARGO_PLACEMENT.md). The saved-profile adapter and
-equipment effects in the prepared hero projection remain pending. The cargo journal
+[SAVE_CARGO_PLACEMENT.md](SAVE_CARGO_PLACEMENT.md). The explicit saved-profile adapter now freezes and drives non-house inventory
+through [SAVE_INVENTORY_PROFILE.md](SAVE_INVENTORY_PROFILE.md). Reviewed runtime
+policy initialization, house and migration-evidence integration, and equipment
+effects in the prepared hero projection remain pending. The cargo journal
 in [SAVE_CARGO.md](SAVE_CARGO.md) now audits exact owned positions and cleanup;
 ongoing contexts accept sealed cargo, while fresh captures still require empty
 units. Loaded activation and house integration remain pending.

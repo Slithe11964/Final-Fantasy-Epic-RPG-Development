@@ -1,6 +1,24 @@
 library TForsakenSaveCodec
 // Isolated research codec. No triggers, gameplay writes, file IO or save routes.
 globals
+    // Bounded scratch item projection; payloads remain authoritative.
+    integer array FSC_ItemCount
+    integer array FSC_ItemOrdinal
+    integer array FSC_ItemId
+    integer array FSC_ItemHolder
+    integer array FSC_ItemSlot
+    integer array FSC_ItemQuantity
+    boolean array FSC_ItemBound
+    integer array FSC_ItemHigh
+    integer array FSC_ItemLow
+    integer array FSC_ItemFlags
+    boolean array FSC_ItemDormant
+    boolean array FSC_ItemComplete
+    integer array FSC_MetaHigh
+    integer array FSC_MetaLow
+    integer array FSC_MetaFlags
+    boolean array FSC_MetaDormant
+    boolean array FSC_Cheater
     constant string FSC_ALPHABET="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$#"
     constant integer FSC_MAX_PAYLOAD=16384
     constant integer FSC_MAX_OPAQUE=4096
@@ -180,6 +198,24 @@ function FSC_Clear takes integer ctx returns nothing
         set FSC_Gaya[ctx*16+i]=0
         set i=i+1
     endloop
+    set i=0
+    loop
+        exitwhen i>=57
+        set FSC_ItemOrdinal[ctx*57+i]=0
+        set FSC_ItemId[ctx*57+i]=0
+        set FSC_ItemHolder[ctx*57+i]=0
+        set FSC_ItemSlot[ctx*57+i]=0
+        set FSC_ItemQuantity[ctx*57+i]=0
+        set FSC_ItemBound[ctx*57+i]=false
+        set FSC_ItemHigh[ctx*57+i]=0
+        set FSC_ItemLow[ctx*57+i]=0
+        set FSC_ItemFlags[ctx*57+i]=0
+        set FSC_ItemDormant[ctx*57+i]=false
+        set FSC_ItemComplete[ctx*57+i]=false
+        set i=i+1
+    endloop
+    set FSC_ItemCount[ctx]=0
+    set FSC_Cheater[ctx]=false
     set FSC_Count[ctx]=0
     set FSC_Account[ctx]=0
     set FSC_Text[ctx]=null
@@ -206,6 +242,8 @@ endfunction
 function FSC_Life takes integer ctx returns nothing
     local integer high=FSC_Read(ctx)
     local integer low=FSC_Read(ctx)
+    set FSC_MetaHigh[ctx]=high
+    set FSC_MetaLow[ctx]=low
     // Validate binary32 words without converting/reinterpreting a JASS real.
     // Sign, exponent255, and zero are invalid; positive subnormals are valid.
     if high>65535 or low>65535 or high>=32640 or (high==0 and low==0) then
@@ -223,6 +261,10 @@ function FSC_Metadata takes integer ctx,integer count returns nothing
     local integer value
     local boolean life=false
     local boolean itemFlags=false
+    set FSC_MetaHigh[ctx]=0
+    set FSC_MetaLow[ctx]=0
+    set FSC_MetaFlags[ctx]=-1
+    set FSC_MetaDormant[ctx]=false
     call FlushChildHashtable(FSC_Seen,ctx*16+4)
     if count>16 then
         set FSC_Ok[ctx]=false
@@ -247,6 +289,7 @@ function FSC_Metadata takes integer ctx,integer count returns nothing
             set life=true
         elseif sid==2 then
             set value=FSC_Read(ctx)
+            set FSC_MetaFlags[ctx]=value
             if value>7 then
                 set FSC_Ok[ctx]=false
             endif
@@ -254,6 +297,7 @@ function FSC_Metadata takes integer ctx,integer count returns nothing
         elseif flags==1 then
             set FSC_Ok[ctx]=false
         else
+            set FSC_MetaDormant[ctx]=true
             set FSC_Opaque[ctx]=FSC_Opaque[ctx]+size
             set FSC_Pos[ctx]=entryEnd
         endif
@@ -282,6 +326,9 @@ function FSC_Inventory takes integer ctx returns nothing
     local integer metaCount
     local integer outerEnd=FSC_End[ctx]
     local integer itemEnd
+    local integer key
+    local integer quantity
+    local boolean bound
     call FlushChildHashtable(FSC_Seen,ctx*16+2)
     call FlushChildHashtable(FSC_Seen,ctx*16+3)
     if count>57 then
@@ -308,6 +355,7 @@ function FSC_Inventory takes integer ctx returns nothing
         if not FSC_Mark(ctx,2,ordinal) or not FSC_Mark(ctx,3,holder*32+slot) then
             return
         endif
+        set quantity=-1
         set flag=FSC_Read(ctx)
         if flag==1 then
             if itemEnd-FSC_Pos[ctx]<2 then
@@ -316,6 +364,7 @@ function FSC_Inventory takes integer ctx returns nothing
             endif
             set low=FSC_Value(SubString(FSC_Text[ctx],FSC_Pos[ctx],FSC_Pos[ctx]+1))
             set high=FSC_Value(SubString(FSC_Text[ctx],FSC_Pos[ctx]+1,FSC_Pos[ctx]+2))
+            set quantity=low+64*high
             set FSC_Pos[ctx]=FSC_Pos[ctx]+2
             if low<0 or high<0 or high>1 then
                 set FSC_Ok[ctx]=false
@@ -324,17 +373,33 @@ function FSC_Inventory takes integer ctx returns nothing
             set FSC_Ok[ctx]=false
         endif
         set flag=FSC_Read(ctx)
+        set bound=flag==1
         set metaCount=FSC_Read(ctx)
         if flag>1 then
             set FSC_Ok[ctx]=false
         endif
         call FSC_Metadata(ctx,metaCount)
+        set key=ctx*57+i
+        set FSC_ItemOrdinal[key]=ordinal
+        set FSC_ItemId[key]=identity
+        set FSC_ItemHolder[key]=holder
+        set FSC_ItemSlot[key]=slot
+        set FSC_ItemQuantity[key]=quantity
+        set FSC_ItemBound[key]=bound
+        set FSC_ItemHigh[key]=FSC_MetaHigh[ctx]
+        set FSC_ItemLow[key]=FSC_MetaLow[ctx]
+        set FSC_ItemFlags[key]=FSC_MetaFlags[ctx]
+        set FSC_ItemDormant[key]=FSC_MetaDormant[ctx]
+        set FSC_ItemComplete[key]=(FSC_MetaHigh[ctx]!=0 or FSC_MetaLow[ctx]!=0) and FSC_MetaFlags[ctx]>=0
         if FSC_Pos[ctx]!=itemEnd then
             set FSC_Ok[ctx]=false
         endif
         set FSC_End[ctx]=outerEnd
         set i=i+1
     endloop
+    if FSC_Ok[ctx] then
+        set FSC_ItemCount[ctx]=count
+    endif
 endfunction
 
 function FSC_CoreMaximum takes integer identity returns integer
@@ -399,6 +464,9 @@ function FSC_Pairs takes integer ctx,integer sid returns nothing
             endif
             call SaveBoolean(FSC_Seen,ctx*16+8,identity,true)
         elseif sid==4 then
+            if identity==11 then
+                set FSC_Cheater[ctx]=value!=0
+            endif
             if value>FSC_CoreMaximum(identity) then
                 set FSC_Ok[ctx]=false
             endif
