@@ -148,3 +148,12 @@ normally pass, whereas verify directly against the earlier snapshot should repor
 CHANGED for captured inventory changes. House quantity-change detection remains
 pending clarification. Armory collection flags are outside this inventory-only
 diagnostic; this result does not verify Armory persistence.
+
+User then explicitly reports running -savecheck, selling eight Nethril and running
+-saveverify directly, receiving CHANGED. The fifth screenshot shows an initial
+"FAIL: inventory changed during capture" message, a subsequent passing 18-item,
+428-character capture, and CHANGED against that passing snapshot. This adds
+reported engine evidence for detection of the sale and rejection/retry of an
+unstable capture. The sale's exact container and whether a stack remained were
+not specified, so this does not independently establish a particular house slot
+or quantity-only change. The earlier Scarletite command order remains unknown.
