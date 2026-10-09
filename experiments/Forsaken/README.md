@@ -314,3 +314,11 @@ and verifies all eight native writes per unique hero. Independent guards retain
 failed recovery for retry. Run test_save_body.py and check_save_jass.py --body
 with BT/native-library arguments. 17 new plus 264 prior checks PASS (281).
 See ../../docs/SAVE_BODY_RECOVERY.md for ordering and engine/remaining-state limits.
+
+Forsaken-save-ownership.j prepares player ownership on the published owned
+active/Gaya pair while keeping both hidden/paused/invulnerable/empty. Original
+heroes are untouched. Verified neutralization/release precedes reference reversal
+and owned-unit deletion; independent guards retain failed recovery. Run
+test_save_ownership.py and check_save_jass.py --ownership with BT/native-library
+arguments. 13 new plus 281 prior checks PASS (294). No activation or commit.
+See ../../docs/SAVE_OWNERSHIP_PREPARATION.md for controller ordering and open work.

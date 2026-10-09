@@ -72,3 +72,8 @@ multiplayer acceptance remain open.
 
 BT/private BU unchanged; BV unused. BU remains the inventory/codec diagnostic.
 Full new character saving/loading remains blocked.
+
+Following checkpoint: [SAVE_OWNERSHIP_PREPARATION.md](SAVE_OWNERSHIP_PREPARATION.md)
+uses a captured body journal as a prerequisite for assigning contained owned
+active/Gaya replacements. Ownership neutralizes/releases before reference
+reversal, then original body recovery follows the existing journal order.

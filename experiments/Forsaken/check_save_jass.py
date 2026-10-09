@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False):
+    include_body = include_body or include_ownership
     include_references = include_references or include_body
     include_units = include_units or include_references
     include_session = include_session or include_units
@@ -53,6 +54,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-references.j')
     if include_body:
         source_paths.append(HERE / 'Forsaken-save-body.j')
+    if include_ownership:
+        source_paths.append(HERE / 'Forsaken-save-ownership.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -124,8 +127,9 @@ def main():
     parser.add_argument('--units', action='store_true', help='include owned replacement-unit allocation and cleanup')
     parser.add_argument('--references', action='store_true', help='include reversible staged hero reference switching')
     parser.add_argument('--body', action='store_true', help='include living original hero body recovery')
+    parser.add_argument('--ownership', action='store_true', help='include reversible contained replacement ownership preparation')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

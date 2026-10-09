@@ -51,3 +51,9 @@ Following checkpoint: [SAVE_BODY_RECOVERY.md](SAVE_BODY_RECOVERY.md) adds living
 original body recovery. References must reverse before its setters; body recovery
 blocks new planning/application while reference reversal and owned cleanup remain
 available. Successful replacement activation/commit remains open.
+
+Following ownership checkpoint: [SAVE_OWNERSHIP_PREPARATION.md](SAVE_OWNERSHIP_PREPARATION.md)
+assigns the contained active/Gaya replacement pair to the player. Ownership must
+neutralize and release before reference reversal; the ownership pending guard
+now explicitly blocks FSR_Reverse and owned-unit cleanup until that succeeds.
+This adds no visible activation or successful commit.

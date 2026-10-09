@@ -314,3 +314,14 @@ PASS, build/save-codec-compile-0cy567c4/report.json. No map build or activation.
 Buffs/orders/remaining combat effects, replacement activation, prepared-state
 controller, native scheduling, full commit and file/restart/multiplayer acceptance
 remain open. BT/BU unchanged, BV unused; full saving/loading remains blocked.
+
+Contained replacement ownership: [SAVE_OWNERSHIP_PREPARATION.md](SAVE_OWNERSHIP_PREPARATION.md).
+13 new plus all 281 prior checks PASS (294), including two assignment/eight
+neutralization setter faults. Published owned active/Gaya targets can be assigned
+to Player(pid) while hidden/paused/invulnerable/empty. Originals are untouched.
+Verified neutralization and ownership release must precede reference reversal
+and owned-unit cleanup; independent guards retain recovery state. Standalone/BT
+runtime/editor compile PASS, build/save-codec-compile-va2hotyc/report.json. No
+activation or map build. Staged progression/abilities, safe spawn/visual/pathing
+policy, placement/controller/scheduling and full commit/file/restart/multiplayer
+acceptance remain open. BT/BU unchanged, BV unused; full saves remain blocked.

@@ -1,8 +1,22 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Contained replacement ownership — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_OWNERSHIP_PREPARATION.md and Forsaken-save-ownership.j.
+After reference publication, assigns only owned active/Gaya replacements to the
+player while keeping them hidden/paused/invulnerable/empty. Originals remain
+untouched. Neutralization/readback and ownership release must precede reference
+reversal and owned-unit deletion. Foreign owners/identity/items refuse setters;
+independent guards retain failed recovery. 13 new tests plus all 281 prior checks
+PASS (294), including two assignment/eight recovery setter fault positions,
+Freelancer aliases and player 7/keys 14–15. Standalone/BT runtime/editor compile
+PASS: build/save-codec-compile-va2hotyc/report.json. Staged progression/abilities,
+placement, visual/pathing/spawn policy, activation, scheduling and full controller
+remain open. BT/BU unchanged, BV unused; full saves remain blocked.
+
 ## Living hero body recovery — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_BODY_RECOVERY.md and Forsaken-save-body.j. Captures 25
+Previous checkpoint: SAVE_BODY_RECOVERY.md and Forsaken-save-body.j. Captures 25
 original hero reference positions with alias deduplication, health/mana,
 position/facing and visibility/pause/invulnerability. Recovery requires original
 living identities and restored maxima; reference reversal precedes setters.

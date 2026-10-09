@@ -4,6 +4,7 @@ library TForsakenSaveUnits requires TForsakenSaveSession
 globals
     // 0 idle, 1 open, 2 failed, 3 cleanup unverified.
     integer array FSU_State
+    boolean array FSO_Busy
     boolean array FSB_Busy
     boolean array FSU_Busy
     integer array FSU_Count
@@ -104,6 +105,7 @@ function FSU_Check takes integer index returns boolean
 endfunction
 
 function FSU_Lock takes integer pid,boolean flag returns nothing
+    set FSO_Busy[pid]=flag
     set FSB_Busy[pid]=flag
     set FSU_Busy[pid]=flag
     set FSN_Busy[pid]=flag
@@ -116,7 +118,7 @@ function FSU_Lock takes integer pid,boolean flag returns nothing
 endfunction
 
 function FSU_Idle takes integer pid returns boolean
-    return not FSB_Busy[pid] and not FSU_Busy[pid] and not FSN_Busy[pid] and not FSJ_Busy[pid] and not FQR_Busy[pid] and not FPG_Busy[pid] and not FHU_Busy[pid] and not FSS_Busy[pid] and not FSC_Busy[pid]
+    return not FSO_Busy[pid] and not FSB_Busy[pid] and not FSU_Busy[pid] and not FSN_Busy[pid] and not FSJ_Busy[pid] and not FQR_Busy[pid] and not FPG_Busy[pid] and not FHU_Busy[pid] and not FSS_Busy[pid] and not FSC_Busy[pid]
 endfunction
 
 function FSU_Block takes integer pid returns nothing
@@ -128,7 +130,7 @@ function FSU_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSU_State[pid]!=0 or FSU_Count[pid]!=0 or FSS_State[pid]!=1 or FSC_Writing[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSC_UnitBlocked[pid] or FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
+    if not FSU_Idle(pid) or FSU_State[pid]!=0 or FSU_Count[pid]!=0 or FSS_State[pid]!=1 or FSC_Writing[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSC_UnitBlocked[pid] or FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     set FSU_State[pid]=1
@@ -144,7 +146,7 @@ function FSU_Stage takes integer pid,integer role,real x,real y returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSU_State[pid]!=1 or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSU_State[pid]!=1 or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSC_Writing[pid] then
         return false
     endif
     if role<0 or role>=24 or FSU_Count[pid]>=24 or not (x>=-32768. and x<=32768. and y>=-32768. and y<=32768.) then
@@ -227,7 +229,7 @@ function FSU_Abort takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
         return false
     endif
     if FSU_State[pid]==0 then

@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: contained replacement ownership preparation
+assigns active/Gaya owned targets to the player while retaining hidden/paused/
+invulnerable/empty state. Neutral ownership recovery/readback precedes reference
+reversal and cleanup. No activation/commit/map build. 13 new plus all 281 prior
+checks PASS (294); standalone/BT runtime/editor compile PASS:
+build/save-codec-compile-va2hotyc/report.json. See SAVE_OWNERSHIP_PREPARATION.md.
+BT/BU unchanged, BV unused; full saves blocked.
+
 Isolated checkpoint, 2026-10-09: original living hero body recovery captures
 health/mana, position/facing and hidden/paused/invulnerable flags on 25 reference
 positions. Alias deduplication, readback and independent guards retain failed
