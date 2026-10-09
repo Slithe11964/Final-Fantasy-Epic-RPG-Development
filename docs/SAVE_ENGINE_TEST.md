@@ -129,3 +129,13 @@ reported one-item equipment/backpack change-detection case in the engine.
 A new -savecheck deliberately replaces the comparison baseline, so PASS after
 recapture is expected. Fuller inventories, stack changes, Gaya/house and actual
 character restoration remain unverified by these results.
+
+User subsequently reports both checks working after loading their old save via
+the existing loader. The third screenshot shows a Level 51 Chemist and two
+passing captures, each reporting 19 items across 57 positions and 451 encoded
+characters, with equipment and sparse backpack items visible. This adds reported
+engine evidence for capture/codec round trip and unchanged verification of a
+larger live inventory populated by the legacy loader. The input legacy format,
+exact item list/container distribution, client build and player slot were not
+supplied. This is not evidence that the new decoder migrated the old code or
+that the new system restored the character; those paths were not exercised.
