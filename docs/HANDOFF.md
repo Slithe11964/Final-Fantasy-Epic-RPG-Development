@@ -1,15 +1,30 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Original-item recovery — 2026-10-09 (isolated module; no map build)
+
+Latest checkpoint: SAVE_ORIGINAL_RECOVERY.md and Forsaken-save-recovery.j.
+Quarantine/recovery preserve original handles across all 57 positions, actual
+ability instances and known passive bookkeeping. Failed recovery retains the
+journal, blocks staging and allows retry; verified items stay blocked until
+internal release. Originals are never deleted. The user permits cooldown refresh
+on character changes, including failed-change recovery; cooldowns are never saved
+or an equality gate. 20 new tests and all 125 previous tests PASS (145 total).
+Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-3e9quhly/report.json. Full progression/session rollback,
+derived stats/effects, live policy/filler objects, gameplay guards, publication
+and engine acceptance remain open. BT unchanged, BU unused, saving blocked.
+
 ## Prepared abilities/equipment — 2026-10-09 (isolated modules; no map build)
 
-Latest checkpoint: SAVE_EQUIPMENT_RESTORE.md, Forsaken-save-effects.j and
+Previous checkpoint: SAVE_EQUIPMENT_RESTORE.md, Forsaken-save-effects.j and
 Forsaken-save-equipment.j. Classified staged ability lists (max16), verified
 bag-passive removal, retained active/marker abilities, complete-batch preparation
 before placement and exact equipment readback. A lone Ring5 uses a tracked
 reviewed inert ring filler; no such filler is installed in BT yet. Ability policy
 loader/defaults also remain future integration work; tests use synthetic inputs.
-Original equipment refuses before mutation; quarantine/full rollback and actual
-stats/cooldowns remain unimplemented/unverified. No guard/routes/publication.
+Original equipment refuses before mutation; full rollback and actual
+stats remain unimplemented/unverified. Original-item recovery follows above;
+cooldown refresh is permitted. No gameplay guard/routes/publication.
 19 new tests and all 106 previous tests PASS (125 total), including a full modeled
 57-item batch. Standalone/BT-runtime/BT-editor compilation PASS with extracted
 libraries: build/save-codec-compile-h6pyfqj1/report.json. BT unchanged, BU unused,
@@ -94,7 +109,7 @@ New-format foundation: `ITEM_SAVE_METADATA.md` audits item life as gameplay data
 charges, account-relative binding and reconstructable runtime passive state.
 `SAVE_VNEXT_REFERENCE.md` specifies the isolated `save_vnext.py` prototype:
 bounded/versioned length-delimited sections; canonical signed-JASS-safe varints;
-full57 sparse inventory positions; explicit seven-bit quantities; exact binary32
+full 57 sparse inventory positions; explicit seven-bit quantities; exact binary32
 life words; counted job IDs and dormant extension progression; bounded unknown
 optional retention and required-schema rejection. Progression/translation is now
 covered above; no JASS adapter or runtime routes yet.13 prototype tests with

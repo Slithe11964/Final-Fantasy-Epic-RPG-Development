@@ -55,7 +55,7 @@ function FSE_Place takes integer pid,integer ordinal,unit hero,integer slot,inte
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_Busy[pid] or (FSN_State[pid]!=1 and FSN_State[pid]!=4) then
+    if FSN_RecoveryBlocked[pid] or FSN_Busy[pid] or (FSN_State[pid]!=1 and FSN_State[pid]!=4) then
         return false
     endif
     set FSN_Busy[pid]=true

@@ -79,7 +79,7 @@ the following operations; tests supply a model backend, not a Warcraft simulator
 | Phase | Backend contract |
 |---|---|
 | validate_policy/acquire | Check actual mode/load window/once-only/owner/equip rules; acquire a guard that prevents concurrent gameplay mutation |
-| journal | Read-only capture of original handles, positions, metadata, engine owner, cooldown/passive/session state, progression, reservations, prior accepted data and eligibility |
+| journal | Read-only capture of original handles, positions, metadata, engine owner, passive/session state, progression, reservations, prior accepted data and eligibility; cooldown refresh is allowed |
 | project/resolve | Resolve only reviewed identities/defaults/container variants; missing legacy fields retain explicit current defaults; unavailable records grant nothing |
 | create_hidden/configure_hidden | Allocate transaction-owned inaccessible items, recording ownership immediately even if a later operation fails; stage metadata without affecting old inventory |
 | verify_original/quarantine | Confirm original state still matches the journal; detach originals alive and inaccessible; never destroy them before commit |
@@ -93,7 +93,9 @@ the following operations; tests supply a model backend, not a Warcraft simulator
 Guard acquisition/release and journaling must satisfy their contracts, not perform
 hidden fallible gameplay work. Python exceptions do not model a Warcraft operation
 cap terminating a thread. Scheduling, interruption recovery, synchronized promotion
-and native rollback of cooldowns/abilities are unimplemented engine obligations.
+and native rollback of abilities/derived effects are unimplemented engine obligations.
+User permits cooldown refresh on character changes, including failed-change
+rollback. Cooldowns are never serialized and their equality is not a load gate.
 
 Unknown items or optional item metadata produce Dormant records, no fallback item.
 Known items require reviewed defaults keyed by canonical ID and destination.

@@ -2,7 +2,8 @@
 
 Status: identity foundation, detached legacy decoder, logical progression profile,
 reference migration/equality reports, isolated JASS codec, life/native staging,
-item journal, prepared abilities and storage/equipment placement primitives
+item journal, prepared abilities, storage/equipment placement and original-item
+quarantine/recovery primitives
 implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
@@ -19,6 +20,9 @@ Older published maps cannot be expected to read expanded saves.
 User decisions: normal quantities need not exceed120; retain seven-bit quantity
 fields and preserve imported121..127. New Game Minus is retired from the
 replacement system; keep existing-code decoding, but no new Minus export/command.
+Cooldowns are per-game and never serialized. User explicitly permits refreshed
+cooldowns on new-game load/character changes, including rollback after a failed
+change. Cooldown equality is not a restoration acceptance gate.
 
 Keep E/F and G/H meanings, item eligibility, account/owner restrictions, difficulty,
 Speedrun and Hardcore rules, load window/once-per-game rules, jobs/mastery,
@@ -112,7 +116,7 @@ chunk count and actual transport must be measured before claiming support.
 |---|---|---|
 | 1 — identity foundation (complete) | Frozen registry, source/mapping checker, negative tests, this plan and reapplication guide | All 358 items/22 jobs pinned; all generated original/variant/offhand identities resolve; mismatches fail; runtime unchanged |
 | 2 — full save contract and fixtures (in progress) | Field-by-field E/F/G/H ledger (width, order, default, rule, target state); reviewed permanent progression IDs; legacy reference decode to detached snapshot | Real consented anonymized E/F/G/H examples plus synthetic edge vectors; independent expected fields; actual Armory contents; no mutation; fixed22-value V2/V3 layouts with the three-job V2 permutation confirmed from source |
-| 3 — new reference codec (reference checkpoint implemented; runtime/default acceptance open) | Envelope/inventory/jobs, logical progression, bounded dormant extension, automated legacy translation, provenance and 62-entry equality report implemented | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 dormant IDs; quantities0..120 plus lossless imported121..127; full57 slots and sparse layouts; no manual legacy conversion; exact bound rejection; runtime/default verification remains with Steps2/5 |
+| 3 — new reference codec (reference checkpoint implemented; runtime/default acceptance open) | Envelope/inventory/jobs, logical progression, bounded dormant extension, automated legacy translation, provenance and 62-entry equality report implemented | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 dormant IDs; quantities0..120 plus lossless imported121..127; full 57 slots and sparse layouts; no manual legacy conversion; exact bound rejection; runtime/default verification remains with Steps2/5 |
 | 4 — isolated JASS codec (implementation/compile checkpoint; engine gates open) | Experimental module, per-player accepted/scratch/writer buffers, differential source-harness vectors and read-only compile probes implemented | Standalone/playable/editor probes pass with extracted libraries, plus classic standalone; real-engine execution/work scheduling limits and source/map integration still required |
 | 5 — transactional adapters (reference protocol/life/native staging foundation implemented; full backend open) | JASS exact-life arithmetic and hidden native allocation/metadata/cleanup; Python capture/restore controller with failure injection; original capture, placement, synchronization and rollback remain required | Full native inventory/progression equivalence; no drops/duplication; failed create/equip/placement rolls back all items/progression; failed load does not consume eligibility; actual native tests required |
 | 6 — all entry routes | One snapshot/parser/serializer for chat, files, autosave, NG+, full load and Armory-only load | Segmented/reordered/replayed/missing/wrong-owner messages rejected; NG intentional resets enumerated; -loada never materializes inventory; file readback verified; prior successful save retained on failure |
@@ -185,7 +189,7 @@ test passed when rerun with a writable workspace temporary directory. Full detai
 and the legacy-only NG− discrepancy are recorded in LEGACY_SAVE_LEDGER.md.
 
 Reference prototype checkpoint:13 new-format tests (1000 seeded round trips) and
-13 legacy migration tests PASS. Full57-item inventory profile1453 characters;
+13 legacy migration tests PASS. Full 57-item inventory profile1453 characters;
 inventory+42 jobs+50 dormant records1804 characters; same plus full opaque budget
 5705 characters. These are partial-schema Python measurements, not Warcraft limits.
 
@@ -229,5 +233,13 @@ Prepared abilities/equipment: [SAVE_EQUIPMENT_RESTORE.md](SAVE_EQUIPMENT_RESTORE
 19 new tests plus all 106 previous tests PASS (125 total); full modeled 57-item
 batch and standalone/BT runtime/editor compilation pass. Original quarantine,
 session/progression journal and verified rollback remain open. Live policy/default
-loader and reviewed inert ring filler are not installed; actual stat/cooldown
+loader and reviewed inert ring filler are not installed; actual stat
 and engine behavior remain acceptance gates. No entry route/publication enabled.
+
+Original-item recovery: [SAVE_ORIGINAL_RECOVERY.md](SAVE_ORIGINAL_RECOVERY.md).
+20 new tests plus all 125 prior tests PASS (145 total); standalone/BT runtime/editor
+compilation passes. Original handles, ability instances, known passive bookkeeping
+and exact 57 positions are verified, retaining recovery blocks on failure.
+Cooldown refresh on character changes is permitted, including rollback. Complete
+session/progression, derived effects, gameplay guards, live policy/filler objects,
+publication and engine acceptance remain open.

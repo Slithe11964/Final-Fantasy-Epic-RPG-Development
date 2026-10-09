@@ -22,17 +22,19 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False):
     source_path = HERE / 'Forsaken-save-codec.j'
     source_paths = [source_path]
-    if include_life or include_native or include_position or include_equipment:
+    if include_life or include_native or include_position or include_equipment or include_recovery:
         source_paths.append(HERE / 'Forsaken-save-life.j')
-    if include_native or include_position or include_equipment:
+    if include_native or include_position or include_equipment or include_recovery:
         source_paths.append(HERE / 'Forsaken-save-native.j')
-    if include_position or include_equipment:
+    if include_position or include_equipment or include_recovery:
         source_paths.extend([HERE / 'Forsaken-save-journal.j', HERE / 'Forsaken-save-effects.j', HERE / 'Forsaken-save-position.j'])
-    if include_equipment:
+    if include_equipment or include_recovery:
         source_paths.append(HERE / 'Forsaken-save-equipment.j')
+    if include_recovery:
+        source_paths.append(HERE / 'Forsaken-save-recovery.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -87,8 +89,9 @@ def main():
     parser.add_argument('--native', action='store_true', help='include life and modern-client hidden item staging')
     parser.add_argument('--position', action='store_true', help='include native staging, item journal and storage placement')
     parser.add_argument('--equipment', action='store_true', help='include all save modules and prepared equipment placement')
+    parser.add_argument('--recovery', action='store_true', help='include all modules and original-item quarantine/recovery')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

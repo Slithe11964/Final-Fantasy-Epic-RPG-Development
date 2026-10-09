@@ -1,5 +1,16 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Original-item recovery, 2026-10-09 (isolated modules/tools/docs): actual original
+handles quarantined/restored across 57 positions, with native ability-instance
+and known passive-table verification. Failed recovery retains journal/handles
+and blocks staging while allowing retry; only tracked replacements/fillers can
+be deleted. User permits cooldown refresh on character changes and rollback.
+20 new tests plus all 125 prior tests PASS (145 total); standalone/BT runtime/editor
+compilation PASS, build/save-codec-compile-3e9quhly/report.json. See
+SAVE_ORIGINAL_RECOVERY.md. Full session/progression/derived effects, gameplay
+guards, live policy/filler objects and engine acceptance remain open.
+No map build: BT unchanged, BU unused, exports blocked.
+
 Prepared abilities/equipment, 2026-10-09 (isolated modules/tools/docs): mandatory
 classified ability preparation and verified bag-passive removal; exact equipment
 placement with alternate-ring filler checks. Original equipment refuses; native

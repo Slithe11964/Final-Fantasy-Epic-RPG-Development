@@ -3,6 +3,7 @@ library TForsakenSaveJournal requires TForsakenSaveLife
 globals
     boolean array FSJ_Ready
     boolean array FSJ_Busy
+    boolean array FSJ_RecoveryPending
     unit array FSJ_Hero
     unit array FSJ_Gaya
     unit array FSJ_House
@@ -235,6 +236,12 @@ endfunction
 function FSJ_Release takes integer pid returns boolean
     local integer position=0
     local integer index
+    if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    if FSJ_RecoveryPending[pid] then
+        return false
+    endif
     if not FSJ_Verify(pid) then
         return false
     endif

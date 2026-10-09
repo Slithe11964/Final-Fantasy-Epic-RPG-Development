@@ -51,8 +51,9 @@ policy on load; retain exact engine owner in same-game rollback journals.
 
 Visibility, dummy/path probes and temporary invulnerability can be transaction
 state. Persist only the reviewed flags of eligible real items, not hidden probes
-or temporary adapter settings. Per-instance book cooldowns and active ability
-handles remain session state unless an explicit future requirement changes that.
+or temporary adapter settings. Cooldowns remain per-game and are never saved;
+user permits refreshes when changing characters, including rollback. Active
+ability definitions/effects still require verified reconstruction/preservation.
 
 ## Legacy limitation and adapter obligations
 

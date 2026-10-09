@@ -105,3 +105,8 @@ Next: reviewed live policy/defaults/filler objects, complete session/progression
 journal, synchronized guard/scheduling, original quarantine and verified original
 restoration. Only then connect legacy/account policy and publish after full-state
 verification, followed by real restart/multiplayer/transport acceptance.
+
+Following checkpoint: [SAVE_ORIGINAL_RECOVERY.md](SAVE_ORIGINAL_RECOVERY.md)
+implements original-item quarantine/recovery. Full session/progression and
+derived effects remain open. The user permits cooldown refresh on character
+changes, including rollback; cooldown equality is no longer required.

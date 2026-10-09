@@ -246,3 +246,11 @@ Run `test_save_equipment.py`; compile all modules with `--equipment`. See
 [SAVE_EQUIPMENT_RESTORE.md](../../docs/SAVE_EQUIPMENT_RESTORE.md). Live policy
 and filler objects, original quarantine/session rollback and native acceptance
 remain open; no map integration or saving enabled.
+
+`Forsaken-save-recovery.j` quarantines/restores actual original handles, verifying
+exact positions, native ability instances and known passive bookkeeping. Failure
+retains journals and blocks staging until verified release. Run
+`test_save_recovery.py`; compile all modules with `--recovery`. See
+[SAVE_ORIGINAL_RECOVERY.md](../../docs/SAVE_ORIGINAL_RECOVERY.md). Cooldown refresh
+on character changes is permitted. Full session/progression rollback, derived
+effects, gameplay guards and native acceptance remain open; saving stays blocked.
