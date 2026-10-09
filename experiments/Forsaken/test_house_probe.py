@@ -40,7 +40,7 @@ class HouseProbeTests(unittest.TestCase):
         self.e['gg_trg_One']=Handle(enabled=True);self.e['gg_trg_Two']=Handle(enabled=False)
         self.hero=self.w.unit(0,30);self.gaya=self.w.unit(0);self.house=self.w.unit(9);self.house.update(x=300.,y=200.)
         self.e['udg_PlayerHero'][1]=self.hero;self.e['udg_SpiritOfGaya'][1]=self.gaya;self.e['udg_PlayerHouse'][1]=self.house
-        self.original=self.w.create('orig',0,0);self.original.update(charges=3,binding=0,owner=0,owned=True,life=Real32(145.25))
+        self.original=self.w.create('orig',0,0);self.original.update(charges=3,binding=0,owner=0,owned=True,life=Real32(50.25))
         self.house['quick'][5]=self.original
 
     def guarded_originals(self):

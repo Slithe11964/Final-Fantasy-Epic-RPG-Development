@@ -13,6 +13,10 @@ including [native: ...; cleanup=...; originals=...; release=...].
 BY engine: no crash, item0 metadata failed; manual cleanup then PASS/originals unchanged.
 Exact item failure remains unresolved. Full character load/save stays blocked; CA next unused.
 
+Post-BZ source correction: fGap's native health cap rejected the old 145.25 test
+value. The next build uses exact fractional 50.25. Map publication is pending the
+elevated compiler allowance; no existing map was overwritten.
+
 BY engine result and precise item failure diagnostics — 2026-10-09.
 BY no longer crashed. Human screenshot reached STEP10 trigger restoration but
 reported FAIL at item allocation / metadata0. This is NOT all six-item stages:

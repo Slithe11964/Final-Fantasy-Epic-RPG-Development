@@ -7,7 +7,9 @@ but failed on the first staged item's allocation/properties. Its final STEP10 wa
 trigger restoration after the failure, not completion of all item stages. Manual
 cleanup then PASSed and verified original inventory unchanged.
 
-BZ identifies the exact failed item check in `[native: ...]` and separately reports
+BZ identified the exact failed item check: the old 145.25 fixture exceeded fGap's
+native item-health capacity. The next diagnostic uses exact fractional 50.25 and
+still reports any failed item check in `[native: ...]` and separately reports
 `cleanup`, `originals`, and `release`. It also allows one guarded next-frame cleanup
 readback, retaining unresolved handles. Strict property checks remain enforced.
 Full character save/load remains blocked. CA is next unused.
