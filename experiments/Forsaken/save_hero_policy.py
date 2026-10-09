@@ -4,6 +4,9 @@ from dataclasses import dataclass
 import save_progression as progression
 import save_vnext as codec
 
+# Reviewed runtime bindings, derived after decoding; never persisted identities.
+GAYA_SUPPORT_RESEARCH = ('Resi', 'R00F', 'R00G')
+
 
 @dataclass(frozen=True)
 class JobPlan:
@@ -21,6 +24,42 @@ class HeroPolicy:
     envelope: codec.Envelope
     jobs: tuple
     dormant_jobs: tuple
+    gaya: 'GayaPlan'
+
+
+@dataclass(frozen=True)
+class GayaPlan:
+    saved_level: int
+    native_level: int
+    mastered: bool
+    support_ranks: tuple
+    chants: tuple
+    spiritual_power: int
+    purchases: tuple
+
+    @property
+    def research(self):
+        return tuple((raw, int(purchased)) for raw, purchased in zip(GAYA_SUPPORT_RESEARCH, self.purchases))
+
+    @property
+    def spiritual_power_available(self):
+        return any(self.chants)
+
+
+def gaya(values):
+    # Validate through the existing reviewed schema, including mastered consistency.
+    encoded = progression.scalars(values, progression.GAYA)
+    checked = progression.read_scalars(encoded, progression.GAYA)
+    if set(checked) != {name for name, _ in progression.GAYA.values()}:
+        raise codec.Error('missing Gaya field')
+    if checked['mastered'] and (checked['level'] != 99 or any(
+            checked[name] != maximum for i, (name, maximum) in progression.GAYA.items() if i >= 3)):
+        raise codec.Error('inconsistent mastered Gaya')
+    supports = tuple(checked[n] for n in ('break_stun', 'mana_transfer', 'mega_heal'))
+    chants = tuple(bool(checked[n]) for n in ('tarugaya', 'sukugaya', 'rakugaya'))
+    return GayaPlan(checked['level'], max(1, checked['level']), bool(checked['mastered']),
+                    supports, chants, 1 + sum(weight for weight, owned in zip((1,2,4), chants) if owned),
+                    tuple(rank > 0 for rank in supports))
 
 
 def normal_job(identity, saved_level):
@@ -49,4 +88,4 @@ def plan(envelope, expected_account):
         raise codec.Error('cheat status requires separate reviewed load policy')
     jobs = tuple(normal_job(i, snapshot['jobs'][i]) for i in range(1, 23))
     dormant = tuple(sorted((i, v) for i, v in snapshot['jobs'].items() if i > 22))
-    return HeroPolicy(envelope, jobs, dormant)
+    return HeroPolicy(envelope, jobs, dormant, gaya(snapshot['gaya']))

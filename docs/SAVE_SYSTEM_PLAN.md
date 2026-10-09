@@ -31,6 +31,9 @@ and refund available skill points on successful load. At mastery (level50+),
 four regular skills are rank11 and the ultimate rank6. Failed-load recovery still
 restores original per-game choices/points. These are load defaults, not durable
 per-skill allocations. Freelancer/Gaya policy is handled separately.
+Gaya support/chant unit plans and separate research/availability targets now
+resolve through [SAVE_GAYA_POLICY.md](SAVE_GAYA_POLICY.md); player application
+and remaining derived effects still require the synchronized controller.
 Future level requirement (2026-10-09): allow a later cap150, with save-format
 headroom for999. Separate actual level from mastery tier in a new reviewed job
 schema; migrate the existing value100 sentinel to native level99/tier4 instead

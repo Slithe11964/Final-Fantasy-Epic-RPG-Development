@@ -57,6 +57,10 @@ remain unchanged, BV unused.
 
 ## Future level caps
 
+Following checkpoint: [SAVE_GAYA_POLICY.md](SAVE_GAYA_POLICY.md) resolves Gaya's
+support/chant fields and separate player targets. Freelancer and remaining combat
+effects/native evidence/controller integration remain open.
+
 The user wants the option of level 150, with save-format headroom for 999.
 The underlying bounded integer encoding can represent both, but current job
 schema1 and preparation guards deliberately accept only the existing 0–100

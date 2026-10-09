@@ -1,8 +1,22 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Saved Gaya support policy — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_GAYA_POLICY.md, extended save_hero_policy.py and
+Forsaken-save-gaya-policy.j. Preserves purchased support ranks/chant ownership,
+derives exact Spiritual Power and separate research/availability targets. Zero
+support purchases retain the locked native rank1 menu; mastered fields must be
+consistent. Fresh role23 preflight precedes core/ability plans; no player writes.
+Native XP/grown attributes/points remain explicit reviewed caller inputs.
+10 new tests and 51 focused regressions PASS; three compile probes PASS:
+build/save-codec-compile-ytmg1kff/report.json. BT object bindings also checked.
+Player target application/readback, remaining Gaya effects, Freelancer,
+inventory/controller/full commit remain open. BT/BU unchanged, BV unused; full
+saving/loading remains blocked.
+
 ## Saved normal-job policy — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_JOB_POLICY.md, save_hero_policy.py and
+Previous checkpoint: SAVE_JOB_POLICY.md, save_hero_policy.py and
 Forsaken-save-job-policy.j. Validates accepted logical profile/account, retains
 unknown/evidence data and maps reviewed normal jobs to prepared core/mastery
 plans. Below50 resets/refunds; four rank11 skills and rank6 ultimate at50+.

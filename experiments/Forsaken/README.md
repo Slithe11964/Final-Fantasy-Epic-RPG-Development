@@ -346,3 +346,10 @@ schema1 meanings, including enhanced mastery100→native99, remain intact. Run
 test_save_hero_policy.py and compile --activation --job-policy. 12 new tests and
 53 focused regressions PASS; three compile probes PASS. SAVE_JOB_POLICY.md records
 remaining native evidence/effects and future cap150/headroom999 schema planning.
+
+Forsaken-save-gaya-policy.j and the extended save_hero_policy.py preserve Gaya
+support purchases/chant ownership and plan exact Spiritual Power. Player research
+and availability are separate targets, with no setters in this bridge. Run
+test_save_gaya_policy.py and compile --activation --job-policy --gaya-policy.
+10 new plus51 focused regressions PASS; three compile probes and BT object binding
+checks PASS. See ../../docs/SAVE_GAYA_POLICY.md for remaining controller/effects.

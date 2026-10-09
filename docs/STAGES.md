@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: accepted Gaya support/chant planning bridge.
+Preserves purchases and ownership; derives Spiritual Power plus separate player
+research/availability targets. Owned fresh role23 only, exact absolute rank retry;
+originals unchanged. 10 new and 51 focused regressions PASS; BT object bindings
+and three compile probes PASS, build/save-codec-compile-ytmg1kff/report.json.
+See SAVE_GAYA_POLICY.md. Player application/remaining effects/Freelancer/native
+evidence/inventory/controller still open. No map build; full saves remain blocked.
+
 Isolated checkpoint, 2026-10-09: accepted normal-job profile/preparation bridge.
 Preserves enhanced-mastery sentinel and base bonuses; below50 resets/refunds,
 50+ learns four rank11 skills/ultimate6. Unknown jobs and optional/evidence data
