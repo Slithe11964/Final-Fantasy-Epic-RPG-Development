@@ -99,3 +99,8 @@ live policy/default/filler objects, synchronized scheduling/containment and
 commit/publication. Follow with real restart/multiplayer/transport acceptance.
 BT SHA256 remains `4a7cd22fe195ffec8740ff418c0d02ea17d6539d275348962f7609a34aea74b2`;
 AS/Z unchanged, BU unused, save exports blocked.
+
+Following checkpoint: [SAVE_HERO_RECOVERY.md](SAVE_HERO_RECOVERY.md) restores
+existing unit progression/ability ranks/base attributes and checks total primary
+stats. FPG now records exact cached owners, including neutral inactive heroes.
+Wider effects and complete session/controller acceptance remain open.

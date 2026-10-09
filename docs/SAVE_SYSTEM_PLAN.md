@@ -3,7 +3,7 @@
 Status: identity foundation, detached legacy decoder, logical progression profile,
 reference migration/equality reports, isolated JASS codec, life/native staging,
 item journal, prepared abilities, storage/equipment placement and original-item
-quarantine/recovery plus bounded live progression journal/recovery primitives
+quarantine/recovery, bounded live progression journal and original hero recovery
 implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
@@ -251,3 +251,11 @@ currency/research/force/table state is restored and read back. Original item and
 progression guards are independent. Job heroes are read-only boundaries; actual
 unit recovery, Gaya/Freelancer, derived effects and other session state remain
 open. Standalone/BT runtime/editor compilation passes; no route or map build.
+
+Original hero recovery: [SAVE_HERO_RECOVERY.md](SAVE_HERO_RECOVERY.md). 27 new tests
+and all 174 prior checks PASS (201), including both level directions, existing
+ability instances/ranks, skill points, base/total primary attributes and all six
+journal release orders. Actual cached owners support neutral inactive jobs.
+Wider effects/session data, owned new units/reference promotion and the full
+guarded controller remain open. Standalone/BT runtime/editor compilation passes;
+no entry route, map build or engine acceptance. Cooldown refresh remains allowed.

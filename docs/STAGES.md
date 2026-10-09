@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Original hero recovery, 2026-10-09 (isolated modules/tools/docs): same-unit job/
+Freelancer/Gaya XP, levels, ability ranks/instances, skill points and base attribute
+restoration, with total primary-stat verification before release. Actual cached
+owners retained; neutral inactive jobs supported. Added abilities can be removed;
+original unit/ability recreation refuses. 27 new tests plus all 174 prior checks
+PASS (201 total); standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-f7upkafj/report.json. See SAVE_HERO_RECOVERY.md for remaining
+session/effect/native acceptance and full controller gates. No map build: BT
+unchanged, BU unused, saving blocked; cooldown refresh remains permitted.
+
 Live progression journal, 2026-10-09 (isolated modules/tools/docs): actual scalar,
 currency/research/title/Armory/stored-job state capture/recovery with readback.
 Job heroes are read-only boundaries; unit/derived-state/full-session recovery

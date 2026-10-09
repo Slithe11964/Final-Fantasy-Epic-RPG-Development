@@ -1,8 +1,25 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Original hero recovery — 2026-10-09 (isolated module; no map build)
+
+Latest checkpoint: SAVE_HERO_RECOVERY.md and Forsaken-save-heroes.j. Original
+job/Freelancer/Gaya/active hero XP, levels, skill points, ability ranks/instances
+and base attributes restore with readback; release also checks total primary
+stats. Aliased references restore once. FPG now captures actual cached owners,
+including neutral inactive jobs. Missing/replaced originals refuse; no unit or
+original ability recreation. Added Gaya supports can be removed with verification.
+Independent hero guards retain all journals after failure; all six release orders
+tested. 27 new tests and all 174 prior checks PASS (201 total), including 28 setter
+and three support-removal faults, both level directions and player 7/index 7999.
+Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-f7upkafj/report.json. Wider derived effects, session state,
+owned new-unit cleanup/reference promotion, gameplay guards/scheduling and full
+load/publication remain open. Cooldown refresh permitted. BT unchanged, BU unused,
+saving blocked. Native item-derived ability projections still require acceptance.
+
 ## Live progression journal — 2026-10-09 (isolated module; no map build)
 
-Latest checkpoint: SAVE_PROGRESSION_JOURNAL.md, Forsaken-save-progression.j.
+Previous checkpoint: SAVE_PROGRESSION_JOURNAL.md, Forsaken-save-progression.j.
 Actual per-player globals/eligibility, gold/shards/food used, 18 research levels,
 644 title/Armory/policy force slots and 22 stored job entries captured/restored
 with native readback. Missing table entries stay missing. Job hero handles/XP/

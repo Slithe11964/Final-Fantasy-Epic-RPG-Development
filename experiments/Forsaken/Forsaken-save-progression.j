@@ -15,6 +15,7 @@ globals
     unit array FPG_JobHero
     integer array FPG_JobXP
     integer array FPG_JobLevel
+    player array FPG_JobOwner
     integer array FPG_JobMastery
     hashtable array FPG_LevelTable
     hashtable array FPG_HeroTable
@@ -154,7 +155,7 @@ function FPG_Context takes integer pid returns boolean
             return false
         endif
         if hero!=null then
-            if GetUnitTypeId(hero)!=FPG_JobRaw(slot) or GetOwningPlayer(hero)!=Player(pid) or GetHeroXP(hero)!=FPG_JobXP[index] or GetHeroLevel(hero)!=FPG_JobLevel[index] or GetUnitAbilityLevel(hero,'A02F')!=FPG_JobMastery[index] then
+            if GetUnitTypeId(hero)!=FPG_JobRaw(slot) or GetOwningPlayer(hero)!=FPG_JobOwner[index] or GetHeroXP(hero)!=FPG_JobXP[index] or GetHeroLevel(hero)!=FPG_JobLevel[index] or GetUnitAbilityLevel(hero,'A02F')!=FPG_JobMastery[index] then
                 set hero=null
                 return false
             endif
@@ -257,6 +258,7 @@ function FPG_Clear takes integer pid returns nothing
     loop
         exitwhen slot>=22
         set FPG_JobHero[pid*22+slot]=null
+        set FPG_JobOwner[pid*22+slot]=null
         set FPG_JobPresent[pid*22+slot]=false
         set FPG_JobValue[pid*22+slot]=0
         set FPG_JobXP[pid*22+slot]=0
@@ -340,6 +342,7 @@ function FPG_Begin takes integer pid returns boolean
         set hero=LoadUnitHandle(udg_JobHeroHash,FPG_JobRaw(slot),pid)
         set FPG_JobHero[index]=hero
         if hero!=null then
+            set FPG_JobOwner[index]=GetOwningPlayer(hero)
             set FPG_JobXP[index]=GetHeroXP(hero)
             set FPG_JobLevel[index]=GetHeroLevel(hero)
             set FPG_JobMastery[index]=GetUnitAbilityLevel(hero,'A02F')

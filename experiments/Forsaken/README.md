@@ -262,3 +262,13 @@ Independent progression guards retain journals and block staging until verified
 release. Run `test_save_progression_journal.py`; compile with `--progression`.
 See [SAVE_PROGRESSION_JOURNAL.md](../../docs/SAVE_PROGRESSION_JOURNAL.md).
 No map integration or saving enabled; cooldown refresh remains permitted.
+
+`Forsaken-save-heroes.j` captures/restores existing job/Freelancer/Gaya/active
+heroes: exact XP/levels, skill points, base attributes and actual ability ranks/
+instances. Added abilities can be removed; missing/replaced originals refuse.
+Release checks total primary attributes after other recoveries. Independent hero
+guards retain journals; cached neutral owners and aliased references are supported.
+Run `test_save_heroes.py`; compile with `--heroes`. See
+[SAVE_HERO_RECOVERY.md](../../docs/SAVE_HERO_RECOVERY.md). Wider effects/session
+state, owned new units and the full controller remain open. No saving enabled;
+cooldown refresh remains permitted.
