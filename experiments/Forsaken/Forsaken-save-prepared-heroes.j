@@ -258,14 +258,11 @@ function FHP_PrepareSkills takes integer key returns boolean
     return FHP_SkillsMatch(key)
 endfunction
 
-function FHP_Matches takes integer pid returns boolean
+function FHP_CoreMatches takes integer pid returns boolean
     local integer stage=0
     local integer key
     local integer ordinal
     local unit candidate
-    if not FHP_Context(pid) then
-        return false
-    endif
     loop
         exitwhen stage>=FHP_Count[pid]
         set key=pid*24+stage
@@ -287,6 +284,10 @@ function FHP_Matches takes integer pid returns boolean
     endloop
     set candidate=null
     return true
+endfunction
+
+function FHP_Matches takes integer pid returns boolean
+    return FHP_Context(pid) and FHP_CoreMatches(pid)
 endfunction
 
 function FHP_Apply takes integer pid returns boolean
@@ -391,7 +392,7 @@ function FHP_Discard takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_ActivationPending[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     // Owned replacements are disposed by the existing ownership/reference/unit path.

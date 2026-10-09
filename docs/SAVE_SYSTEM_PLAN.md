@@ -343,3 +343,15 @@ build/save-codec-compile-ze0vosm3/report.json. Profile translation/mastery bonus
 other effects, native learning/point acceptance, placement/spawn/activation,
 scheduling and full commit/file/restart/multiplayer remain open. BT/BU unchanged,
 BV unused; full saves remain blocked.
+
+Reversible empty active-hero/Gaya exposure: [SAVE_ACTIVATION.md](SAVE_ACTIVATION.md).
+12 new plus 308 prior checks PASS (320). Both originals are contained before
+replacement positions are verified and the prepared pair is exposed. All 18
+exposure and 12 containment setter failures retain recovery guards; containment
+can recover despite prepared-stat drift without approving the changed plan.
+Activation release requires containment and retains all preceding journals.
+Standalone/BT runtime/editor compile PASS, build/save-codec-compile-ths3v4mz/report.json.
+The module still requires synchronized gameplay exclusion. Profile translation,
+prepared inventory integration, spawn/pathing policy, scheduling and full
+commit/file/restart/multiplayer acceptance remain open. BT/BU unchanged, BV unused;
+full new saves remain blocked.

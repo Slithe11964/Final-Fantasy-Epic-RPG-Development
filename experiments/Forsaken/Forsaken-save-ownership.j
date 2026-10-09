@@ -149,7 +149,7 @@ function FSO_Neutralize takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_PreparedPending[pid] or FSO_State[pid]==0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_PreparedPending[pid] or FSJ_ActivationPending[pid] or FSO_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     set FSO_State[pid]=3

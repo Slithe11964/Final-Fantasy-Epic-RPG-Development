@@ -331,3 +331,11 @@ originals unchanged. Plan discard precedes ownership/reference/unit cleanup. Run
 test_save_prepared_heroes.py and check_save_jass.py --prepared-heroes with existing
 BT/native-library arguments. 14 new plus 294 prior checks PASS (308). See
 ../../docs/SAVE_PREPARED_HEROES.md for untranslated policy and engine limits.
+
+Forsaken-save-activation.j reversibly exposes an empty prepared active hero/Gaya
+pair after protecting both originals and verifying replacement positions.
+Containment and release precede prepared-plan discard and existing recovery.
+Independent guards retain interrupted exposure; no successful commit is enabled.
+Run test_save_activation.py and check_save_jass.py --activation with existing
+BT/native-library arguments. 12 new plus 308 prior checks PASS (320). See
+../../docs/SAVE_ACTIVATION.md for controller exclusion and remaining integration.

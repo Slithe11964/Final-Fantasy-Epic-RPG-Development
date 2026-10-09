@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False):
+    include_prepared_heroes = include_prepared_heroes or include_activation
     include_ownership = include_ownership or include_prepared_heroes
     include_body = include_body or include_ownership
     include_references = include_references or include_body
@@ -59,6 +60,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-ownership.j')
     if include_prepared_heroes:
         source_paths.append(HERE / 'Forsaken-save-prepared-heroes.j')
+    if include_activation:
+        source_paths.append(HERE / 'Forsaken-save-activation.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -132,8 +135,9 @@ def main():
     parser.add_argument('--body', action='store_true', help='include living original hero body recovery')
     parser.add_argument('--ownership', action='store_true', help='include reversible contained replacement ownership preparation')
     parser.add_argument('--prepared-heroes', action='store_true', help='include owned replacement core/ability preparation')
+    parser.add_argument('--activation', action='store_true', help='include reversible empty replacement-pair exposure')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

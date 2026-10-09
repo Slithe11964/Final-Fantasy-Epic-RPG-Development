@@ -89,3 +89,12 @@ operation-budget scheduling, prepared item placement, activation and full
 capture/load/commit. Native learning/point/refund behavior must receive engine
 acceptance. No full save export, file/restart or multiplayer acceptance yet.
 BT/private BU unchanged, BV unused; full new saving/loading remains blocked.
+
+Following checkpoint: [SAVE_ACTIVATION.md](SAVE_ACTIVATION.md) adds reversible
+empty-pair exposure. FHP_CoreMatches contains the prepared-data readback;
+FHP_Matches retains the original strict contained-context check. Activation
+validates its own exposure context before using the data readback. FHP_Discard
+now refuses a pending activation, so exposure must be contained and released
+before discarding the prepared plan. Recovery can contain a pair whose prepared
+data has drifted; this never approves that data. All 308 prior checks plus the
+12 activation checks pass (320). No successful load/commit route is enabled.

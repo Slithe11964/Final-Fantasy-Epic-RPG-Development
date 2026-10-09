@@ -1,8 +1,24 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Reversible pair exposure — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_ACTIVATION.md and Forsaken-save-activation.j. Protects
+the original active/Gaya pair, verifies replacement positions, then exposes the
+prepared empty pair with readback. Recontainment restores staged poses before
+prepared/ownership/reference/unit cleanup; original body recovery restores flags.
+No original owner/item/progression mutation, deletion or successful commit.
+Activation guards prevent disposal while exposed; core/body/dormant-flag drift
+does not prevent safe containment of known owned targets. 12 new plus all 308
+prior checks PASS (320), including 18 exposure/12 recovery setter faults and
+player 7/keys 14–15. Standalone/BT runtime/editor compile PASS:
+build/save-codec-compile-ths3v4mz/report.json. Full profile/inventory integration,
+spawn/pathing/visual policy, synchronized exclusion/scheduling, original
+retirement and complete controller/commit remain open. BT/BU unchanged, BV unused;
+full saving/loading remains blocked.
+
 ## Owned hero core/ability preparation — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_PREPARED_HEROES.md and Forsaken-save-prepared-heroes.j.
+Previous checkpoint: SAVE_PREPARED_HEROES.md and Forsaken-save-prepared-heroes.j.
 Owned hidden replacements receive exact XP/level, base stats, skill points and
 bounded explicit ability plans. Below-50 normal jobs keep five skills unlearned
 and refund level points; mastered jobs learn four rank-11 skills/ultimate rank 6

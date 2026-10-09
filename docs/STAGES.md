@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: reversible empty replacement-pair exposure.
+Original pair flag protection and replacement poses verify before exposure;
+containment/readback precedes all downstream disposal. Original flags recover
+through the body journal. 12 new plus all 308 checks PASS (320), including 18
+exposure/12 containment faults. Standalone/BT runtime/editor compile PASS:
+build/save-codec-compile-ths3v4mz/report.json. See SAVE_ACTIVATION.md.
+No map build or successful commit; BT/BU unchanged, BV unused, full saves blocked.
+
 Isolated checkpoint, 2026-10-09: owned replacement core/ability preparation.
 Exact progression/stat/rank readback; below-50 jobs reset skills/refund points,
 mastered jobs learn four rank-11 skills and ultimate rank 6. Independent guards,
