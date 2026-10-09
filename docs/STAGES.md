@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+BU, 2026-10-09 (private inventory/codec engine diagnostic): BT-based map with
+-savecheck/-saveverify, incremental 57-position native capture/readback and codec
+round trip, invalid-input rejection and watchdog. No full character load or usable
+save export; original items/heroes/progression are not mutated. 10 new tests plus
+all 239 save-system checks PASS (249); mandatory map/editor/source/content/legacy/
+Armory/Bazaar gates, 96 repository tests and 2,000 legacy codec cases PASS.
+Canonical sources and BT unchanged; original archive content/editor source
+preserved. Reports beside BU record final hashes/scratch. Human engine testing
+pending; see SAVE_ENGINE_TEST.md. BV next; public saving remains blocked.
+
 Owned replacement-unit staging, 2026-10-09 (isolated modules/tools/docs): tracks
 up to 24 new job/Freelancer/Gaya heroes with native containment/empty-inventory
 readback. Originals and live references are preserved; cleanup refuses published

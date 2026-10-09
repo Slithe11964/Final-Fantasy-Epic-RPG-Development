@@ -291,3 +291,10 @@ Run `test_save_units.py`; compile with `--units`. See
 [SAVE_UNIT_STAGING.md](../../docs/SAVE_UNIT_STAGING.md). No reference promotion or
 commit API yet; hook exclusion, operation limits/scheduling, body/combat recovery
 and full controller/engine acceptance remain open. No map integration or saving.
+
+First private engine diagnostic: `Forsaken-save-probe.j` and
+`build_save_probe.py` produce BT-based BU with `-savecheck`/`-saveverify`. These
+capture all 57 live positions, test the inventory codec and compare snapshots;
+they never load a character or export a usable save. Run `test_save_probe.py`.
+See [SAVE_ENGINE_TEST.md](../../docs/SAVE_ENGINE_TEST.md) for human tests and
+limits. Existing save exports remain blocked; full controller work continues.

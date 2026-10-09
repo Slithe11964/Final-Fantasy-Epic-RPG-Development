@@ -1,9 +1,10 @@
 # Repeatable Forsaken checkpoint reapplication
 
 Run from `C:\Users\jaked\WarcraftMapExtractor\FFERPG`. Shared development remains
-AS; public baseline Z is not an input to overwrite. Latest experiment is BT at
+AS; public baseline Z is not an input to overwrite. Latest gear baseline is BT at
 `fa6ed31`; BS full scratch is `build/ForsakenBS-hz94mr9k/FFERPG`. Scratch trees and
-generated releases are evidence, not editable sources of truth.
+generated releases are evidence, not editable sources of truth. Private BU now
+provides -savecheck/-saveverify; see SAVE_ENGINE_TEST.md. BV is next.
 
 ## Prerequisites and checkpoint review
 
@@ -17,7 +18,7 @@ generated releases are evidence, not editable sources of truth.
 - The Reforged input must contain current Armory/Bazaar/Chronicle objects.
   When preparing a new shared pair follow docs/BUILDS.md first. Do not run the
   ordinary downgrade converter on a Forsaken output.
-- Choose a genuinely unused stage. BU was next at this handoff; do not reuse BT
+- Choose a genuinely unused stage. BV is next at this handoff; do not reuse BT
   or overwrite any existing map/report/manifest. No map is needed for docs/tools.
 
 ## Commands
@@ -47,15 +48,16 @@ Get-FileHash -Algorithm SHA256 release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/test_save_heroes.py
 & $ffPython experiments/Forsaken/test_save_session.py
 & $ffPython experiments/Forsaken/test_save_units.py
+& $ffPython experiments/Forsaken/test_save_probe.py
 & $ffPython experiments/Forsaken/measure_save_vnext.py
 & $ffPython experiments/Forsaken/test_forsaken.py
 # Read-only codec compile probes; use reviewed extracted library paths.
 & $ffPython experiments/Forsaken/check_save_jass.py --units --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x --common ../war3.w3mod/scripts/common.j --blizzard ../war3.w3mod/scripts/blizzard.j
-# Only when an actual new experimental map is needed; check BU is still unused.
-& $ffPython experiments/Forsaken/build_forsaken.py --stage BU --base release/FFERPG_0.9.7.3-r16-stageAS.w3x --classic release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
-& $ffPython experiments/Forsaken/save_registry.py --mapping release/Forsaken/gear-slots-BU.json
-& $ffPython experiments/Forsaken/audit_gear.py --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBU.w3x --mapping release/Forsaken/gear-slots-BU.json --output build/ForsakenBU-gear-audit.md
-Get-FileHash -Algorithm SHA256 release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenBU.w3x
+# Only when an actual new experimental map is needed; check BV is still unused.
+& $ffPython experiments/Forsaken/build_forsaken.py --stage BV --base release/FFERPG_0.9.7.3-r16-stageAS.w3x --classic release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
+& $ffPython experiments/Forsaken/save_registry.py --mapping release/Forsaken/gear-slots-BV.json
+& $ffPython experiments/Forsaken/audit_gear.py --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBV.w3x --mapping release/Forsaken/gear-slots-BV.json --output build/ForsakenBV-gear-audit.md
+Get-FileHash -Algorithm SHA256 release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenBV.w3x
 ```
 
 For a later shared checkpoint replace both explicit inputs and choose a fresh
@@ -98,12 +100,12 @@ produce an updated classic save adapter.
 
 ## Outputs and required review
 
-For stage BU retain:
+For stage BV retain:
 
-- `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBU.w3x`
-- `release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenBU.w3x` (unchanged input fallback)
-- `release/Forsaken/checks-r16-stageBU.txt`, `build-r16-stageBU.json`
-- `release/Forsaken/gear-slots-BU.json`, `forsaken-manifest-BU.json`
+- `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBV.w3x`
+- `release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenBV.w3x` (unchanged input fallback)
+- `release/Forsaken/checks-r16-stageBV.txt`, `build-r16-stageBV.json`
+- `release/Forsaken/gear-slots-BV.json`, `forsaken-manifest-BV.json`
 - Scratch path printed by the builder, full logs and additional object/gear audits.
 
 Inspect every gate result and verify modern/editor source agreement, native

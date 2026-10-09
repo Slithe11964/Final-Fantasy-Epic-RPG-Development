@@ -1,8 +1,23 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## First engine diagnostic — 2026-10-09 (private map BU)
+
+Latest checkpoint: SAVE_ENGINE_TEST.md, Forsaken-save-probe.j and
+build_save_probe.py. BU adds -savecheck/-saveverify for live 57-position inventory
+capture, native metadata checks, codec round trip and unchanged/changed readback.
+Only a tracked temporary fGap receives flag setters/deletion; no original item
+or hero mutation, progression application, usable code export or full load.
+Per-position timer work and a timeout make engine limits observable. 10 new probe
+tests plus all 239 prior save-system checks PASS (249). Mandatory map gates,
+96 repository tests and 2,000 legacy codec cases also PASS. See the report beside
+the map for final hashes and preserved archive members. Canonical sources/BT
+unchanged; BU is now the private diagnostic, BV next. Saving stays blocked.
+Human engine acceptance is pending. Next: reference promotion/reversal, effects
+and complete controller; prioritize BU's native/operation-limit findings.
+
 ## Owned replacement-unit staging — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_UNIT_STAGING.md and Forsaken-save-units.j. Direct native
+Previous checkpoint: SAVE_UNIT_STAGING.md and Forsaken-save-units.j. Direct native
 allocation tracks up to 24 job/Freelancer/Gaya heroes, verifies neutral ownership,
 hidden/paused/invulnerable state and empty inventories, and preserves originals.
 Cleanup refuses published/item-carrying heroes, verifies deletion and retains

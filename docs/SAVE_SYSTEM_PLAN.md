@@ -7,7 +7,9 @@ quarantine/recovery, bounded live progression journal, original hero recovery,
 session choices/accepted-code recovery and owned replacement-unit staging
 implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
-(`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
+(`fa6ed31`) remain unchanged. BU is now a private live inventory/codec diagnostic,
+documented in [SAVE_ENGINE_TEST.md](SAVE_ENGINE_TEST.md); BV is next. Full character
+save/load is not yet enabled.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
 
 ## Decisions and release boundary
@@ -281,3 +283,12 @@ guards survive other journal release. Standalone/BT runtime/editor compilation
 passes, build/save-codec-compile-5anxjlgn/report.json. No promotion/commit API,
 map build or saving enabled. Native operation limits, synchronized hook exclusion,
 reference promotion, body/combat state and the full controller remain open.
+
+First engine diagnostic: [SAVE_ENGINE_TEST.md](SAVE_ENGINE_TEST.md). Private BU
+adds -savecheck/-saveverify for incremental live inventory capture, exact codec
+round trip, invalid-input rejection and unchanged/changed comparisons. 10 new
+tests plus all 239 prior checks PASS (249); mandatory map gates, 96 repository
+regressions and 2,000 legacy codec cases also PASS. 517 original archive members
+and all original editor source are preserved. BT/shared sources unchanged.
+Human native/operation-limit testing can start; full character restoration,
+progression/profile capture, file output and multiplayer transport remain open.
