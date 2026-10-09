@@ -38,7 +38,7 @@ function FHP_Context takes integer pid returns boolean
         if candidate==FSO_Unit[pid*2] or candidate==FSO_Unit[pid*2+1] then
             set owner=Player(pid)
         endif
-        if candidate==null or candidate!=FSU_Unit[key] or GetUnitTypeId(candidate)!=FHP_Raw[key] or FHP_Raw[key]!=FSU_Raw[key] or GetOwningPlayer(candidate)!=FHP_Owner[key] or GetOwningPlayer(candidate)!=owner or not IsUnitType(candidate,UNIT_TYPE_HERO) or IsUnitType(candidate,UNIT_TYPE_DEAD) or not (GetWidgetLife(candidate)>0.405) or not IsUnitHidden(candidate) or not IsUnitPaused(candidate) or not BlzIsUnitInvulnerable(candidate) or not FSU_Empty(candidate) then
+        if candidate==null or candidate!=FSU_Unit[key] or GetUnitTypeId(candidate)!=FHP_Raw[key] or FHP_Raw[key]!=FSU_Raw[key] or GetOwningPlayer(candidate)!=FHP_Owner[key] or GetOwningPlayer(candidate)!=owner or not IsUnitType(candidate,UNIT_TYPE_HERO) or IsUnitType(candidate,UNIT_TYPE_DEAD) or not (GetWidgetLife(candidate)>0.405) or not IsUnitHidden(candidate) or not IsUnitPaused(candidate) or not BlzIsUnitInvulnerable(candidate) or not FSU_CargoMatches(pid,candidate) then
             set candidate=null
             set owner=null
             return false
@@ -392,7 +392,7 @@ function FHP_Discard takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FHP_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     // Owned replacements are disposed by the existing ownership/reference/unit path.

@@ -23,7 +23,7 @@ function FSO_Context takes integer pid returns boolean
         set key=pid*2+slot
         set stage=FSO_Stage[key]
         set candidate=FSO_Unit[key]
-        if stage<0 or stage>=FSU_Count[pid] or candidate==null or candidate!=FSU_Unit[pid*24+stage] or GetUnitTypeId(candidate)!=FSO_Raw[key] or not IsUnitType(candidate,UNIT_TYPE_HERO) or IsUnitType(candidate,UNIT_TYPE_DEAD) or not (GetWidgetLife(candidate)>0.405) or not FSU_Empty(candidate) then
+        if stage<0 or stage>=FSU_Count[pid] or candidate==null or candidate!=FSU_Unit[pid*24+stage] or GetUnitTypeId(candidate)!=FSO_Raw[key] or not IsUnitType(candidate,UNIT_TYPE_HERO) or IsUnitType(candidate,UNIT_TYPE_DEAD) or not (GetWidgetLife(candidate)>0.405) or not FSU_CargoMatches(pid,candidate) then
             set candidate=null
             return false
         endif
@@ -149,7 +149,7 @@ function FSO_Neutralize takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_PreparedPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSO_State[pid]==0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FSJ_PreparedPending[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSO_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     set FSO_State[pid]=3

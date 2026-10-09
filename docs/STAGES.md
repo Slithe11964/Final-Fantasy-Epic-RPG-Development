@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: contained owned-cargo audit/recovery journal.
+Exact51 slots, metadata/abilities and complete owned batch auditing; sealed cargo
+accepted in ongoing contexts, fresh units remain empty. Pending disposal guard,
+locked deletion/readback, context-change and failed-deletion retry.
+12 new checks,122 focused regressions and three compile probes PASS:
+build/save-codec-compile-v7_1uxkv/report.json; compiled source hashes/CRLF match.
+See SAVE_CARGO.md. Native allocation/placement authorization, fillers, equipment
+effects, house and loaded activation/controller remain pending. No map build;
+BT/BU unchanged, BV unused; full saving/loading stays blocked.
+
 Isolated checkpoint, 2026-10-09: current-map read-only inventory target resolution.
 Actual BT objects/passive policy and BS mapping bind canonical IDs to exact slots;
 missing legacy/inherited defaults refuse, dormant records reserve positions.

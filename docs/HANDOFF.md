@@ -1,8 +1,21 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Contained cargo recovery — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_CARGO.md and Forsaken-save-cargo.j. Exact51-position
+cargo audit permits sealed owned cargo in ongoing ownership/prepared contexts;
+fresh contexts remain empty. Pending guard blocks activation/disposal until
+verified cleanup/release. Failed deletion, metadata/core drift and unexpected
+cargo retain recovery safely; context rechecked after native cleanup.
+12 new checks,122 focused regressions and three final compile probes PASS:
+build/save-codec-compile-v7_1uxkv/report.json; all22 source hashes/CRLF match.
+Native allocation/placement authorization, auxiliary fillers, equipment effects,
+house quarantine, loaded activation/controller/engine acceptance remain pending.
+BT/BU unchanged, BV unused; full new saves/loads remain blocked.
+
 ## Current-map inventory targets — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_INVENTORY_PLAN.md and save_inventory_plan.py. Read-only
+Previous checkpoint: SAVE_INVENTORY_PLAN.md and save_inventory_plan.py. Read-only
 targets resolve actual BT objects/compiled passive roles and BS slot mappings;
 retain all57 positions, binding, metadata, charges and dormant records. Explicit
 reviewed defaults are mandatory when inherited or legacy data is absent.

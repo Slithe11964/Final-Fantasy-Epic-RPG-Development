@@ -127,7 +127,7 @@ function FHA_Begin takes integer pid,real heroX,real heroY,real heroFacing,real 
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FHA_State[pid]!=0 or FSC_Writing[pid] or FSN_BodyBlocked[pid] or not FHP_Verify(pid) or not FSJ_Verify(pid) then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FHA_State[pid]!=0 or FSJ_CargoPending[pid] or FSC_Writing[pid] or FSN_BodyBlocked[pid] or not FHP_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     if not (heroX>=-32768. and heroX<=32768. and heroY>=-32768. and heroY<=32768. and heroFacing>=0. and heroFacing<360. and gayaX>=-32768. and gayaX<=32768. and gayaY>=-32768. and gayaY<=32768. and gayaFacing>=0. and gayaFacing<360.) then

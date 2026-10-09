@@ -2,6 +2,14 @@ library TForsakenSaveUnits requires TForsakenSaveSession
 // Owned replacement-unit allocation only. Caller must suppress synchronized gameplay hooks.
 // No original mutation, reference promotion, initializer or successful-load commit.
 globals
+    // Contained pair cargo journal; populated only by TForsakenSaveCargo.
+    integer array FCG_State
+    integer array FCG_Count
+    unit array FCG_Unit
+    integer array FCG_Holder
+    integer array FCG_Slot
+    integer array FCG_Raw
+    integer array FCG_Ordinal
     // 0 idle, 1 open, 2 failed, 3 cleanup unverified.
     integer array FSU_State
     boolean array FHA_Busy
@@ -90,6 +98,139 @@ function FSU_Empty takes unit candidate returns boolean
         set slot=slot+1
     endloop
     return true
+endfunction
+
+function FSU_CargoAt takes integer pid,unit candidate,integer kind,integer slot returns boolean
+    local integer position=slot
+    local integer ordinal
+    local item carried=null
+    local boolean matches
+    if kind==2 then
+        set position=6+slot
+    elseif kind==3 then
+        set position=36+slot
+    elseif kind==4 then
+        set position=45+slot
+    endif
+    if (kind==4 and candidate==FCG_Unit[pid*2+1]) or (kind!=4 and candidate==FCG_Unit[pid*2]) then
+        set ordinal=FCG_Ordinal[pid*51+position]
+        if ordinal>0 and ordinal<=FCG_Count[pid] then
+            set carried=FSN_Item[pid*57+ordinal-1]
+        endif
+    endif
+    set matches=FSP_At(candidate,kind,slot)==carried
+    set carried=null
+    return matches
+endfunction
+
+function FSU_CargoUnit takes integer pid,unit candidate returns boolean
+    local integer kind=1
+    local integer slot
+    local integer limit
+    local integer bag=UnitExtendedInventorySize(candidate)
+    if candidate==null or UnitInventorySize(candidate)<0 or UnitInventorySize(candidate)>6 or bag<0 or bag>30 then
+        return false
+    endif
+    loop
+        exitwhen kind>3
+        set limit=6
+        if kind==2 then
+            set limit=bag
+        elseif kind==3 then
+            set limit=9
+        endif
+        set slot=0
+        loop
+            exitwhen slot>=limit
+            if candidate==FCG_Unit[pid*2+1] then
+                if kind==1 then
+                    if not FSU_CargoAt(pid,candidate,4,slot) then
+                        return false
+                    endif
+                elseif FSP_At(candidate,kind,slot)!=null then
+                    return false
+                endif
+            elseif not FSU_CargoAt(pid,candidate,kind,slot) then
+                return false
+            endif
+            set slot=slot+1
+        endloop
+        set kind=kind+1
+    endloop
+    return true
+endfunction
+
+function FSU_CargoAudit takes integer pid returns boolean
+    local integer ordinal=0
+    local integer prior
+    local integer key
+    local integer index
+    local integer stage=0
+    local unit expected
+    if FCG_Count[pid]<0 or FCG_Count[pid]>51 or FSN_Count[pid]!=FCG_Count[pid] or FSN_AuxCount[pid]!=0 or (FSN_State[pid]!=4 and not (FCG_Count[pid]==0 and FSN_State[pid]==0)) then
+        return false
+    endif
+    loop
+        exitwhen ordinal>=FCG_Count[pid]
+        set key=pid*51+ordinal
+        set index=pid*57+ordinal
+        set expected=FCG_Unit[pid*2]
+        if FCG_Holder[key]==4 then
+            set expected=FCG_Unit[pid*2+1]
+        endif
+        if FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index) then
+            set expected=null
+            return false
+        endif
+        set prior=0
+        loop
+            exitwhen prior>=ordinal
+            if FSN_Item[pid*57+prior]==FSN_Item[index] then
+                set expected=null
+                return false
+            endif
+            set prior=prior+1
+        endloop
+        set ordinal=ordinal+1
+    endloop
+    set expected=null
+    loop
+        exitwhen stage>=FSU_Count[pid]
+        if not FSU_CargoUnit(pid,FSU_Unit[pid*24+stage]) then
+            return false
+        endif
+        set stage=stage+1
+    endloop
+    return true
+endfunction
+
+function FSU_CargoMatches takes integer pid,unit candidate returns boolean
+    local integer ordinal=0
+    local integer index
+    local integer key
+    local unit expected
+    if FCG_State[pid]!=2 then
+        return FSU_Empty(candidate)
+    endif
+    if FSN_Count[pid]!=FCG_Count[pid] or FSN_AuxCount[pid]!=0 or (FSN_State[pid]!=4 and not (FCG_Count[pid]==0 and FSN_State[pid]==0)) then
+        return false
+    endif
+    loop
+        exitwhen ordinal>=FCG_Count[pid]
+        set index=pid*57+ordinal
+        set key=pid*51+ordinal
+        set expected=FCG_Unit[pid*2]
+        if FCG_Holder[key]==4 then
+            set expected=FCG_Unit[pid*2+1]
+        endif
+        if candidate==expected and (FSN_Raw[index]!=FCG_Raw[key] or FSN_PlacedUnit[index]!=expected or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=FCG_Holder[key] or FSN_PlacedSlot[index]!=FCG_Slot[key] or not FSP_Check(pid,index)) then
+            set expected=null
+            return false
+        endif
+        set ordinal=ordinal+1
+    endloop
+    set expected=null
+    return FSU_CargoUnit(pid,candidate)
 endfunction
 
 function FSU_Check takes integer index returns boolean
@@ -233,7 +374,7 @@ function FSU_Abort takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
+    if not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_CargoPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSN_State[pid]!=0 or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 or FSC_Writing[pid] then
         return false
     endif
     if FSU_State[pid]==0 then

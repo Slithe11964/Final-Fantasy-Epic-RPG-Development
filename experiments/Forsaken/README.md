@@ -374,3 +374,12 @@ defaults and complete dormant position preservation. Run test_save_inventory_pla
 Native placement needs phase-aware cargo/equipment auditing before controller
 integration. No JASS changes, compile rerun or new map. Full saves remain blocked.
 See ../../docs/SAVE_INVENTORY_PLAN.md.
+
+Forsaken-save-cargo.j plans/audits contained exact owned cargo and verifies cleanup
+with retry. Sealed cargo is accepted by ongoing ownership/prepared contexts;
+fresh capture stays empty, activation/disposal remains guarded. Run
+test_save_cargo.py and compile with --cargo plus prior options.
+12 new plus122 focused regressions and three final compile probes PASS.
+Allocation/placement authorization, fillers, equipment effects, house and loaded
+activation/controller
+remain pending. See ../../docs/SAVE_CARGO.md. No new map; full saves stay blocked.
