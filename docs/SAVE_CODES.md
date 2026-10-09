@@ -1,5 +1,11 @@
 # Save codes: how `-save` and `-load` work
 
+Durable Forsaken successor: see [SAVE_SYSTEM_PLAN.md](SAVE_SYSTEM_PLAN.md).
+This page describes the existing legacy system; the proposed successor is not
+enabled. Reapply experimental checkpoints using
+[FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md). Preserve existing readers
+and contracts; do not unblock the six-slot writer for native bag progression.
+
 Modules: `Save` (09), `Load` (09), `Cmd` (09, the `Trig_Cmd_Load_Code_*` functions), `Code` (01),
 `Autosave` (09), `SaveDebug` (09).
 

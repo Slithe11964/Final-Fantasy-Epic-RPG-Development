@@ -181,3 +181,11 @@ python experiments/Forsaken/build_forsaken.py --stage BQ
 Existing releases are refused. Choose a new stage for another test. `--base` and `--classic` accept explicit input maps. The builder copies sources/tools into an isolated scratch tree under `build/`, applies the Equip, Job and MagicDefense overlays there, prepares the equipment objects, and runs the complete existing stage pipeline: source/quest/save/content/editor checks, regressions, codec test, module sync, library ordering, map checks and header finalization. Only successful builds are copied into `release/Forsaken`. Scratch sources and logs remain available for review; the overlays and builder in this directory are the reproducible source of the test.
 
 Blizzard confirms the new campaign's gear/inventory features are available to custom map creators in its [Forsaken Kingdom deep dive](https://news.blizzard.com/en-gb/article/24298590/warcraft-iii-reforged-forsaken-kingdom-deep-dive-recap). Native names were verified against the locally installed3.0 libraries; the [PTR patch notes](https://us.forums.blizzard.com/en/warcraft3/t/new-300-ptr-build-24306/39295) describe newer Blz-prefixed aliases. BB also passes playable/editor compilation against freshly extracted installed3.0.1.24342 common.j/blizzard.j; the earlier native aliases remain present. UI row/frame names were read from that installation's StatDetailsPanel.fdf and InventoryBar.fdf. Native rendering still requires in-game acceptance.
+# Save-system work
+
+The durable successor plan is [SAVE_SYSTEM_PLAN.md](../../docs/SAVE_SYSTEM_PLAN.md)
+and the checkpoint procedure is [FORSAKEN_REAPPLICATION.md](../../docs/FORSAKEN_REAPPLICATION.md).
+`save-identities.json` freezes canonical item/job identities; `save_registry.py`
+checks source and optional generated gear mappings. `test_save_registry.py`
+tests rejected drift and alias resolution. These are read-only tools, not a game
+save codec. Saving remains blocked; no new release stage is consumed.

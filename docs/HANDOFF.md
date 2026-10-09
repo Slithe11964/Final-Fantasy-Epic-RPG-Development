@@ -1,5 +1,16 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Save-system continuation — 2026-10-08 (docs/tools only)
+
+Read `SAVE_SYSTEM_PLAN.md` for the phased implementation and release gates, and
+`FORSAKEN_REAPPLICATION.md` for exact checkpoint inputs, commands, overlays,
+outputs and checks. First milestone adds a read-only frozen registry for 358 item
+IDs and 22 job IDs, with source/variant/offhand preflight and negative tests under
+experiments/Forsaken. No game serializer, release or baseline changes; export
+blocking stays in place. Next is the complete E/F/G/H field ledger and detached
+legacy fixture decoder. Real native/legacy/multiplayer acceptance is outstanding.
+BU remains unused. Shared base stays AS, latest experimental map BT/fa6ed31.
+
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
 User requests Chronicle paging/counters, Secrets/Keg Hunter, monograph effects and Bazaar reopening.
 Next unused stage: BU. Normal development stays on AS; Forsaken BT is the current gear/stat test checkpoint.

@@ -1,5 +1,12 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Save-system continuation, 2026-10-08 (docs/tools only; no stage consumed): durable
+plan and checkpoint reapplication guide; frozen 358-item/22-job identity registry
+and read-only alias preflight. 10 identity tests, 87 focused Forsaken tests PASS;
+retained BS mapping resolves 750 runtime identities. No map or canonical gameplay
+source changed, saving blocked, public Z/shared AS/latest BT preserved. Next stage
+BU remains unused; real legacy/native/multiplayer save acceptance outstanding.
+
 Each stage is saved separately, so it can be checked on its own and undone if needed:
 
 - a Git commit in this repo (or in `../MapToolkit`);
