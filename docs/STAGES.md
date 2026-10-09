@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Native staging foundation, 2026-10-08 (isolated source/tools/docs): bounded
+per-player hidden item allocation, exact metadata readback, per-created-handle
+droppability probe and verified cleanup/retry. No original inventory mutation or
+promotion. 13 staging tests plus 74 previous tests PASS (87 total); standalone/
+BT runtime/editor compile probes PASS with extracted libraries. Report:
+build/save-codec-compile-26ozv4tt/report.json. Native game execution, capture,
+placement and complete rollback/publication remain open. BT unchanged, BU unused,
+saving blocked; no map built.
+
 Item-life/reference restore foundation, 2026-10-08 (isolated source/tools/docs):
 JASS binary32 real/word conversion and read-only life capture; reference inventory
 capture, staged restore controller and verified rollback/cleanup quarantine.

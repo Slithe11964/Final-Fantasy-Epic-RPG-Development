@@ -221,3 +221,11 @@ restore/recovery orchestration against a future backend contract. Run
 probes. See [SAVE_RESTORE_PROTOCOL.md](../../docs/SAVE_RESTORE_PROTOCOL.md).
 Native flags, inventory capture/restoration and engine limits remain unverified;
 the fault-injection backend is a test model, and saving stays blocked.
+
+`Forsaken-save-native.j` now implements isolated modern-client hidden allocation,
+exact metadata readback and verified owned-allocation cleanup/retry. It probes
+droppability on each newly created handle and refuses an unchanged-default getter.
+Run `test_save_native.py`; `check_save_jass.py --native` includes all three modules.
+See [SAVE_NATIVE_STAGING.md](../../docs/SAVE_NATIVE_STAGING.md). Original capture,
+placement, passive effects, complete rollback and publication remain open. No
+map wiring or native-engine acceptance yet; saving remains blocked.

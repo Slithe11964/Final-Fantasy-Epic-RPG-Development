@@ -2,7 +2,20 @@
 
 ## Save-system continuation — 2026-10-08 (isolated source/tools; no map build)
 
-Latest capture/restore foundation: SAVE_RESTORE_PROTOCOL.md, Forsaken-save-life.j
+Latest native staging foundation: SAVE_NATIVE_STAGING.md and
+experiments/Forsaken/Forsaken-save-native.j. Native CreateItem/metadata readback
+and owned-allocation cleanup implemented; no original inventory mutations,
+placement, promotion, initializer or entry route. Each new handle probes the
+droppability getter across false/true before accepting metadata. Failed deletion
+retains the handle and blocks reuse; failed hiding is not claimed contained.
+13 native staging tests plus all 74 previous tests PASS (87 total). Standalone/
+BT-runtime/BT-editor read-only probes PASS with extracted local libraries:
+build/save-codec-compile-26ozv4tt/report.json. Actual native behavior, synchronized
+gameplay guard, original flags/journal, placement/passives/progression/rollback
+and publication remain required. Modern-only staging; classic codec/life unchanged.
+BT unchanged, BU unused, saving blocked; no playable build or engine test claim.
+
+Previous capture/restore foundation: SAVE_RESTORE_PROTOCOL.md, Forsaken-save-life.j
 and save_transaction.py. JASS real/word conversion plus read-only life capture;
 reference inventory capture and staged restore controller with verified rollback,
 unavailable reservations and post-commit cleanup quarantine. Native inventory/
@@ -16,7 +29,7 @@ BT unchanged, BU unused, saving blocked. Native execution/work scheduling,
 droppability getter/journal verification, reviewed defaults and native rollback
 remain required. Model success does not establish Warcraft restoration.
 
-Latest isolated source checkpoint: `SAVE_JASS_CODEC.md` and
+Earlier isolated codec checkpoint: `SAVE_JASS_CODEC.md` and
 `experiments/Forsaken/Forsaken-save-codec.j` implement FSV envelope/schema1
 sections1–9 in JASS; per-player accepted/scratch/writer buffers, profile checks,
 exact re-emission, bounded unknown retention and failed-parse preservation.

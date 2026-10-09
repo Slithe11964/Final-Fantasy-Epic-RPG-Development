@@ -6,6 +6,10 @@ JASS real/word conversion and a Python reference capture/restore controller.
 It does **not** implement a Warcraft restoration backend, live flag capture,
 actual inventory capture/placement or a playable save route. Saving stays blocked.
 
+Following checkpoint: [SAVE_NATIVE_STAGING.md](SAVE_NATIVE_STAGING.md) implements
+the isolated native allocation/metadata/cleanup portion. Full native backend,
+original capture, placement and publication remain open.
+
 ## Binary32 item life
 
 Library TForsakenSaveLife requires TForsakenSaveCodec and has no initializer.
