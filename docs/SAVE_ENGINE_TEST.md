@@ -109,3 +109,18 @@ Next: complete reference promotion/reversal and character effects, then assemble
 the controller. The human BU results determine any codec scheduling/native fixes
 before a private full save/load build. Public release still requires the gates
 in SAVE_SYSTEM_PLAN.md.
+
+## Human result — 2026-10-09
+
+User reports PASS for -savecheck followed by -saveverify with boots equipped,
+then moving the boots into the 30-slot backpack and receiving PASS for a new
+-savecheck followed by -saveverify. Attached screenshot shows a Level 1 Chemist,
+one captured item, a 40-character passing snapshot followed by two 39-character
+passing snapshots, and the boots in the backpack. This is evidence of the
+reported one-item engine capture/codec checks across equipment and backpack.
+The exact client build and player slot were not supplied. This does not establish
+full character restoration, fuller inventories or multiplayer acceptance.
+
+The CHANGED case remains pending: run -savecheck, move the boots, then run
+**-saveverify directly**, without another -savecheck. A new -savecheck deliberately
+replaces the comparison baseline, so PASS after recapture is expected.
