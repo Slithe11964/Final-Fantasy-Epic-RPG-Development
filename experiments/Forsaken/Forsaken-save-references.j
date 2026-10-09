@@ -229,7 +229,7 @@ function FSR_Reverse takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSR_Busy[pid] or not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_ActivationPending[pid] or FSR_State[pid]==0 or FSC_Writing[pid] then
+    if FSR_Busy[pid] or not FSU_Idle(pid) or FSJ_OwnershipPending[pid] or FSJ_PreparedPending[pid] or FSJ_PlayerPending[pid] or FSJ_ActivationPending[pid] or FSR_State[pid]==0 or FSC_Writing[pid] then
         return false
     endif
     call FSR_Block(pid)

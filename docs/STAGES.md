@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: reversible Gaya research/skill-choice player target.
+Readback and original recovery retain failed writes; independent pending guard
+blocks disposal and activation recovery precedes player recovery. Ten new plus74
+focused regressions PASS; three compile probes PASS:
+build/save-codec-compile-f77nce38/report.json. See SAVE_PLAYER_TARGET.md. Availability
+verification and broader player/inventory/controller/engine acceptance remain open.
+No map build; BT/BU unchanged, BV unused; full saves remain blocked.
+
 Isolated checkpoint, 2026-10-09: H02L Freelancer level/mastery/attribute policy.
 Exact canonical stat parity across160 vectors; borrowed choices stay fresh
 session targets. Owned role22 core/mastery bridge refuses borrowed skills and

@@ -1,8 +1,21 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Reversible player targets — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_PLAYER_TARGET.md and Forsaken-save-player-target.j.
+Applies/readbacks Gaya purchase research and six zeroed per-game skill choices;
+captures originals against prior journals and restores them with retry. Prepared
+core readback before/after application catches research side effects. Independent
+player pending guard prevents disposal until recovered/released; activation must
+first be contained/released. Ten new plus74 focused regressions PASS; three compile
+probes PASS, build/save-codec-compile-f77nce38/report.json. Spiritual Power player
+availability has no native getter and remains pending, as do other player effects,
+inventory/controller/full commit/engine acceptance. BT/BU unchanged, BV unused;
+full saving/loading remains blocked.
+
 ## Saved Freelancer policy — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_FREELANCER_POLICY.md, extended save_hero_policy.py and
+Previous checkpoint: SAVE_FREELANCER_POLICY.md, extended save_hero_policy.py and
 Forsaken-save-freelancer-policy.j. Resolves H02L level/mastery/inherited attributes,
 retaining saved100→native99/mastery4 and unknown-job preservation. Calculation
 matches actual canonical stat source across160 vectors. Four borrowed choices

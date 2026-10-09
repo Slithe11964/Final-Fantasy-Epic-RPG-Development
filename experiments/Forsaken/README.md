@@ -360,3 +360,9 @@ vectors; borrowed choices remain fresh session targets. Run
 test_save_freelancer_policy.py and compile with --freelancer-policy plus prior
 options. Eight new and61 focused regressions PASS; three compile checks PASS.
 See ../../docs/SAVE_FREELANCER_POLICY.md for variant/controller/engine limits.
+
+Forsaken-save-player-target.j applies/readbacks three Gaya research flags and
+six fresh skill choices, with verified original recovery and disposal guards.
+Run test_save_player_target.py and compile all prior options plus --player-target.
+Ten new plus74 focused checks PASS; three compile probes PASS. Availability has
+no native getter and remains pending. See ../../docs/SAVE_PLAYER_TARGET.md.

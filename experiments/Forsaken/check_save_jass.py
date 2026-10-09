@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False, include_player_target=False):
+    include_prepared_heroes = include_prepared_heroes or include_player_target
     include_prepared_heroes = include_prepared_heroes or include_freelancer_policy
     include_prepared_heroes = include_prepared_heroes or include_gaya_policy
     include_prepared_heroes = include_prepared_heroes or include_job_policy
@@ -71,6 +72,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-gaya-policy.j')
     if include_freelancer_policy:
         source_paths.append(HERE / 'Forsaken-save-freelancer-policy.j')
+    if include_player_target:
+        source_paths.append(HERE / 'Forsaken-save-player-target.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -148,8 +151,9 @@ def main():
     parser.add_argument('--job-policy', action='store_true', help='include normal saved-job mastery/core planning bridge')
     parser.add_argument('--gaya-policy', action='store_true', help='include saved Gaya support/chant planning bridge')
     parser.add_argument('--freelancer-policy', action='store_true', help='include reviewed H02L level/mastery planning bridge')
+    parser.add_argument('--player-target', action='store_true', help='include reversible Gaya research/skill-choice targets')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy, args.player_target)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])
