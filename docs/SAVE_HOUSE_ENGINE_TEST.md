@@ -39,7 +39,7 @@ under neutral ownership, hidden, paused and invulnerable, and creates six
 zero-ability `fGap` temporary spacer items. It uses the actual native staging,
 metadata, ability preparation and house placement primitives. Sparse-first slot
 order5/2/0/1/3/4 exercises exact quick-slot movement before filling the house.
-Charges include0/120/127; binding alternates; exact145.25 life words and different
+Charges include0/120/127; binding alternates; exact50.25 life words and different
 persistent flag masks are checked. No real inventory item is moved or replaced.
 
 The probe records and disables every scalar trigger from the base map, including
