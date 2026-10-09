@@ -26,6 +26,7 @@ class HouseProbeTests(unittest.TestCase):
             ShowUnit=lambda u,v:u.update(hidden=not v),PauseUnit=lambda u,v:u.update(paused=v),
             SetUnitInvulnerable=lambda u,v:u.update(invulnerable=v),
             IsUnitHidden=lambda u:u['hidden'],IsUnitPaused=lambda u:u['paused'],BlzIsUnitInvulnerable=lambda u:u['invulnerable'],
+            TriggerSleepAction=lambda seconds:None,
             I2S=str,GetHandleId=id,CreateTimer=lambda:Handle(),TimerStart=lambda t,d,r,c:t.update(callback=c),
             PauseTimer=lambda t:None,DestroyTimer=lambda t:self.timers.append(t),
             IsTriggerEnabled=lambda t:t['enabled'],DisableTrigger=lambda t:t.update(enabled=False),
@@ -43,6 +44,18 @@ class HouseProbeTests(unittest.TestCase):
         self.assertTrue(self.e['gg_trg_One']['enabled']);self.assertFalse(self.e['gg_trg_Two']['enabled'])
         self.assertIs(self.house['quick'][5],self.original);self.assertEqual(self.original['raw'],'orig')
         self.assertFalse(self.e['FHT_Busy'])
+
+    def test_trace_precedes_native_phases_and_preserves_busy_during_yield(self):
+        sleeps=[]
+        self.e['TriggerSleepAction']=lambda seconds:sleeps.append((seconds,self.e['FHT_Busy'],self.messages[-1]))
+        self.e['FHT_Run'](0)
+        self.assertTrue(sleeps)
+        self.assertTrue(all(seconds==0.5 and busy for seconds,busy,_ in sleeps))
+        trace=[message for _,_,message in sleeps]
+        self.assertIn('original inventory journal',trace[0])
+        self.assertTrue(any('house placement slot 5' in message for message in trace))
+        self.assertIn('trigger restoration',trace[-1])
+        self.assertIn('PASS:',self.messages[-1]);self.guarded_originals()
 
     def test_success_six_slots_and_repeated_cleanup(self):
         before=dict(self.original)
@@ -77,6 +90,7 @@ class HouseProbeTests(unittest.TestCase):
         self.assertTrue(self.e['FSJ_Capture'](0,self.hero,self.gaya,self.house,True))
         self.e['FHT_Busy']=True;self.e['FHT_Player']=0;self.e['FHT_Guard'](True)
         self.e['FSN_Busy'][0]=True;self.e['FSN_Executing'][0]=True;self.e['FSN_Operation'][0]=1
+        self.e['TriggerSleepAction']=lambda seconds:self.fail('timer cleanup must not sleep')
         self.e['FHT_Timeout']();self.assertIn('watchdog / interrupted test',self.messages[-1])
         self.assertFalse(self.e['FSN_Busy'][0]);self.assertEqual(self.e['FSN_Operation'][0],0);self.guarded_originals()
 

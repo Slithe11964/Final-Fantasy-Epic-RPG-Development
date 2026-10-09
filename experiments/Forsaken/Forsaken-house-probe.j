@@ -2,6 +2,7 @@ library TForsakenHouseProbe requires TForsakenSavePosition, TForsakenSaveJournal
 // Private synthetic storage test. Never swaps live units or exports a save.
 globals
     trigger gg_trg_Forsaken_HouseProbe=null
+    boolean FHT_WatchdogRecovering=false
     boolean FHT_Busy=false
     integer FHT_Player=-1
     timer FHT_Watchdog=null
@@ -14,6 +15,15 @@ endglobals
 
 function FHT_Message takes integer pid,string message returns nothing
     call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"House test: "+message)
+endfunction
+
+// Yield before native operations so the last checkpoint is rendered before a crash.
+// Busy remains held across these diagnostic-only sleeps; the watchdog is independent.
+function FHT_Trace takes integer pid,string step returns nothing
+    call FHT_Message(pid,"TRACE: next "+step)
+    if not FHT_WatchdogRecovering then
+        call TriggerSleepAction(0.5)
+    endif
 endfunction
 
 function FHT_OneGuard takes trigger candidate,integer index,boolean block returns nothing
@@ -124,12 +134,17 @@ function FHT_Cleanup takes integer pid returns boolean
 endfunction
 
 function FHT_Finish takes integer pid,boolean passed,string step returns nothing
-    local boolean clean=FHT_Cleanup(pid)
-    local boolean originals=FSJ_Verify(pid)
+    local boolean clean
+    local boolean originals
     local boolean released=false
+    call FHT_Trace(pid,"temporary cleanup")
+    set clean=FHT_Cleanup(pid)
+    call FHT_Trace(pid,"original inventory readback")
+    set originals=FSJ_Verify(pid)
     if clean and originals then
         set released=FSJ_Release(pid)
     endif
+    call FHT_Trace(pid,"trigger restoration")
     call FHT_Guard(false)
     if FHT_Watchdog!=null then
         call PauseTimer(FHT_Watchdog)
@@ -151,7 +166,9 @@ endfunction
 
 function FHT_Timeout takes nothing returns nothing
     if FHT_Busy and FSC_PlayerValid(FHT_Player) then
+        set FHT_WatchdogRecovering=true
         call FHT_Finish(FHT_Player,false,"watchdog / interrupted test")
+        set FHT_WatchdogRecovering=false
     endif
 endfunction
 
@@ -183,17 +200,22 @@ function FHT_Run takes integer pid returns nothing
         call FHT_Message(pid,"previous test needs cleanup; use -savehousecleanup.")
         return
     endif
+    set FHT_Busy=true
+    call FHT_Trace(pid,"original inventory journal")
     if not FSJ_Capture(pid,udg_PlayerHero[pid+1],udg_SpiritOfGaya[pid+1],udg_PlayerHouse[pid+1],true) then
+        set FHT_Busy=false
         call FHT_Message(pid,"FAIL: original inventory could not be journaled; select a Forsaken hero and stand still.")
         return
     endif
     set FHT_Player=pid
     set FHT_Busy=true
     set FHT_Watchdog=CreateTimer()
-    call TimerStart(FHT_Watchdog,5.,false,function FHT_Timeout)
+    call TimerStart(FHT_Watchdog,60.,false,function FHT_Timeout)
+    call FHT_Trace(pid,"trigger guard")
     call FHT_Guard(true)
     set x=GetRectMinX(bj_mapInitialPlayableArea)-128.
     set y=GetRectMinY(bj_mapInitialPlayableArea)-128.
+    call FHT_Trace(pid,"temporary house allocation")
     set candidate=CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'h006',x,y,0.)
     if candidate==null or FHT_Referenced(candidate) then
         set candidate=null
@@ -201,12 +223,19 @@ function FHT_Run takes integer pid returns nothing
         return
     endif
     set FHT_Unit[pid]=candidate
+    call FHT_Trace(pid,"temporary house containment")
     call ShowUnit(candidate,false)
     call PauseUnit(candidate,true)
     call SetUnitInvulnerable(candidate,true)
     set candidate=null
-    if not FSP_HouseShape(FHT_Unit[pid],'h006') or not FHT_Empty(FHT_Unit[pid]) or not FSN_Begin(pid) then
+    call FHT_Trace(pid,"house shape readback")
+    if not FSP_HouseShape(FHT_Unit[pid],'h006') or not FHT_Empty(FHT_Unit[pid]) then
         call FHT_Finish(pid,false,"house containment / native begin")
+        return
+    endif
+    call FHT_Trace(pid,"native scratch begin")
+    if not FSN_Begin(pid) then
+        call FHT_Finish(pid,false,"native begin")
         return
     endif
     if FHT_Policy==null then
@@ -229,6 +258,7 @@ function FHT_Run takes integer pid returns nothing
         elseif ordinal==2 then
             set flags=6
         endif
+        call FHT_Trace(pid,"item metadata "+I2S(ordinal))
         if not FSN_Stage(pid,'fGap',charges,ModuloInteger(ordinal,2)==0,flags,17169,16384,x,y) then
             call FHT_Finish(pid,false,"item allocation / metadata "+I2S(ordinal))
             return
@@ -238,6 +268,7 @@ function FHT_Run takes integer pid returns nothing
     set ordinal=0
     loop
         exitwhen ordinal>=6
+        call FHT_Trace(pid,"item ability preparation "+I2S(ordinal))
         if not FSA_Prepare(pid,ordinal,false,FHT_Policy) then
             call FHT_Finish(pid,false,"item ability preparation "+I2S(ordinal))
             return
@@ -261,12 +292,14 @@ function FHT_Run takes integer pid returns nothing
         else
             set slot=4
         endif
+        call FHT_Trace(pid,"house placement slot "+I2S(slot))
         if not FSP_Place(pid,ordinal,FHT_Unit[pid],5,slot,'fGap') then
             call FHT_Finish(pid,false,"house placement slot "+I2S(slot))
             return
         endif
         set ordinal=ordinal+1
     endloop
+    call FHT_Trace(pid,"final placement readback")
     call FHT_Finish(pid,FSP_Verify(pid) and FSP_HouseShape(FHT_Unit[pid],'h006'),"final placement readback")
 endfunction
 
@@ -285,7 +318,8 @@ function FHT_Retry takes integer pid returns nothing
     set FHT_Busy=true
     set FHT_Player=pid
     set FHT_Watchdog=CreateTimer()
-    call TimerStart(FHT_Watchdog,5.,false,function FHT_Timeout)
+    call TimerStart(FHT_Watchdog,60.,false,function FHT_Timeout)
+    call FHT_Trace(pid,"trigger guard")
     call FHT_Guard(true)
     call FHT_Finish(pid,false,"cleanup retry")
 endfunction

@@ -1,6 +1,29 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-Connected house cargo and private BW engine gate — 2026-10-09.
+BX private crash-localization map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBX.w3x
+SHA256: cf25d7cbc158399e59d5e3ee2323af91cb51961beb7aefe8ffc262aecf416c10
+Scratch: build/SaveProbeBX-u39appvh/FFERPG; mandatory stage scratch stageBX-2jbz45im.
+Mandatory build gates PASS,96 repository tests and2,000 codec cases PASS.
+43 focused diagnostic/projection/placement checks PASS. All nine reported source
+hashes match;517 other archive members and original editor source preserved.
+Human gate: open BX, select/load hero, stand still; -savecheck then -savehousecheck.
+Report the LAST visible TRACE checkpoint if it crashes, otherwise the result.
+After PASS use -saveverify. BY next unused. Crash is not yet fixed or localized.
+
+House engine crash investigation — 2026-10-09.
+BW FAILED the human engine gate: -savehousecheck crashed Warcraft III.
+User confirms the crash was immediate, before any House test message.
+Local Errors/2026-10-09 18.39.58 b69ccef0/Crash.txt reports an engine
+ACCESS_VIOLATION reading address0; War3Log.txt confirms the BW map.
+The log has no diagnostic/native name, so the failing operation is unknown.
+Do not repeat BW or treat automated PASS as engine acceptance.
+BX adds visible half-second checkpoints before journal, guard, allocation,
+containment, shape, staging, preparation, each placement and cleanup. Busy stays
+held across sleeps; timer recovery never sleeps. The watchdog is60 seconds to
+allow checkpoint rendering. This is localization instrumentation, not a proven fix.
+Full character save/load remains blocked. See SAVE_HOUSE_ENGINE_TEST.md.
+
+Historical BW automated build evidence (engine test later crashed) — 2026-10-09.
 Saved-profile/cargo preparation now covers57 exact positions with a separately
 owned contained house; neutral container ownership is checked separately from
 loading-player item ownership. House cargo recovers/releases before house disposal.
