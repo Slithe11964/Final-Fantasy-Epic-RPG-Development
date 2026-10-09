@@ -292,7 +292,7 @@ function FHT_Run takes integer pid returns nothing
         call FHT_Trace(pid,"item metadata "+I2S(ordinal))
         // fGap's native item health is capped below the old 145.25 fixture.
         // 50.25 remains fractional and is checked by exact binary32 words.
-        if not FSN_Stage(pid,'fGap',charges,ModuloInteger(ordinal,2)==0,flags,17092,8192,x,y) then
+        if not FSN_Stage(pid,'fGap',charges,ModuloInteger(ordinal,2)==0,flags,16969,0,x,y) then
             call FHT_Finish(pid,false,"item allocation / metadata "+I2S(ordinal))
             return
         endif
