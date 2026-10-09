@@ -121,6 +121,11 @@ reported one-item engine capture/codec checks across equipment and backpack.
 The exact client build and player slot were not supplied. This does not establish
 full character restoration, fuller inventories or multiplayer acceptance.
 
-The CHANGED case remains pending: run -savecheck, move the boots, then run
-**-saveverify directly**, without another -savecheck. A new -savecheck deliberately
-replaces the comparison baseline, so PASS after recapture is expected.
+User subsequently reports CHANGED after moving the boots and running -saveverify
+directly without another -savecheck. The second screenshot shows a passing
+one-item, 39-character capture followed by "CHANGED: inventory differs from the
+last passing capture", boots equipped and an empty backpack. This confirms the
+reported one-item equipment/backpack change-detection case in the engine.
+A new -savecheck deliberately replaces the comparison baseline, so PASS after
+recapture is expected. Fuller inventories, stack changes, Gaya/house and actual
+character restoration remain unverified by these results.
