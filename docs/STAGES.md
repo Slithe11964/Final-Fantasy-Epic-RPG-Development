@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Live progression journal, 2026-10-09 (isolated modules/tools/docs): actual scalar,
+currency/research/title/Armory/stored-job state capture/recovery with readback.
+Job heroes are read-only boundaries; unit/derived-state/full-session recovery
+remains open. Independent progression/item guards retain journals on failure;
+all 54 modeled native setter failures retry safely. 19 new and all 145 prior save
+tests PASS (164), plus 10 identity tests; standalone/
+BT runtime/editor compilation PASS, build/save-codec-compile-x01z46c2/report.json.
+See SAVE_PROGRESSION_JOURNAL.md. No map build: BT unchanged, BU unused, saving
+blocked; cooldown refresh remains permitted.
+
 Original-item recovery, 2026-10-09 (isolated modules/tools/docs): actual original
 handles quarantined/restored across 57 positions, with native ability-instance
 and known passive-table verification. Failed recovery retains journal/handles

@@ -254,3 +254,11 @@ retains journals and blocks staging until verified release. Run
 [SAVE_ORIGINAL_RECOVERY.md](../../docs/SAVE_ORIGINAL_RECOVERY.md). Cooldown refresh
 on character changes is permitted. Full session/progression rollback, derived
 effects, gameplay guards and native acceptance remain open; saving stays blocked.
+
+`Forsaken-save-progression.j` journals/restores actual per-player globals,
+resources, research, force membership and stored job-table entries with readback.
+Job heroes are read-only boundaries; unit/derived-state recovery remains open.
+Independent progression guards retain journals and block staging until verified
+release. Run `test_save_progression_journal.py`; compile with `--progression`.
+See [SAVE_PROGRESSION_JOURNAL.md](../../docs/SAVE_PROGRESSION_JOURNAL.md).
+No map integration or saving enabled; cooldown refresh remains permitted.

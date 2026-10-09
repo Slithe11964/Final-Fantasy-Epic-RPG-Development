@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False):
+    include_recovery = include_recovery or include_progression
     source_path = HERE / 'Forsaken-save-codec.j'
     source_paths = [source_path]
     if include_life or include_native or include_position or include_equipment or include_recovery:
@@ -35,6 +36,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-equipment.j')
     if include_recovery:
         source_paths.append(HERE / 'Forsaken-save-recovery.j')
+    if include_progression:
+        source_paths.append(HERE / 'Forsaken-save-progression.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -55,7 +58,14 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
     tail = ('function Trig_MainDeprotected_Actions takes nothing returns nothing\ncall main_old()\nendfunction\n'
             'function main takes nothing returns nothing\ncall Trig_MainDeprotected_Actions()\nendfunction\n'
             'function config takes nothing returns nothing\nendfunction\n')
-    standalone, _ = flatten('', sources, tail='function main takes nothing returns nothing\nendfunction\n'
+    # Standalone only: declarations come from the actual map, never guessed stubs.
+    isolated_globals = {name for source in sources for block in GLOBALS_RE.finditer(source)
+                        for name, _ in declared(block.group(1))}
+    external = set(re.findall(r'\budg_\w+\b', '\n'.join(sources))) - isolated_globals
+    external_lines = {name: line for name, line in declared(runtime_globals) if name in external}
+    if external - external_lines.keys():
+        raise ValueError('missing runtime globals: '+str(sorted(external - external_lines.keys())))
+    standalone, _ = flatten('', sources, extra_globals='\n'.join(external_lines.values())+'\n', tail='function main takes nothing returns nothing\nendfunction\n'
                              'function config takes nothing returns nothing\nendfunction\n')
     runtime_probe, _ = flatten(runtime, sources)
     editor_probe, _ = flatten(header, texts+sources, extra_globals='\n'.join(generated)+'\n', tail=tail)
@@ -90,8 +100,9 @@ def main():
     parser.add_argument('--position', action='store_true', help='include native staging, item journal and storage placement')
     parser.add_argument('--equipment', action='store_true', help='include all save modules and prepared equipment placement')
     parser.add_argument('--recovery', action='store_true', help='include all modules and original-item quarantine/recovery')
+    parser.add_argument('--progression', action='store_true', help='include original items and live progression table/force recovery')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

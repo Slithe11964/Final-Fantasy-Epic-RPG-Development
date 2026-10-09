@@ -1,8 +1,25 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Live progression journal — 2026-10-09 (isolated module; no map build)
+
+Latest checkpoint: SAVE_PROGRESSION_JOURNAL.md, Forsaken-save-progression.j.
+Actual per-player globals/eligibility, gold/shards/food used, 18 research levels,
+644 title/Armory/policy force slots and 22 stored job entries captured/restored
+with native readback. Missing table entries stay missing. Job hero handles/XP/
+levels/mastery are read-only boundaries; changed heroes refuse before setters.
+Independent progression guards retain both journals and block staging after
+failed recovery; releasing item recovery does not clear progression protection.
+19 new tests and all 145 prior save tests PASS (164), plus 10 identity tests;
+coverage includes all 54 native write failures/retry and both release orders.
+Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-x01z46c2/report.json. Actual job/Gaya/Freelancer unit
+recovery, derived effects, other session state, gameplay guards/scheduling and
+publication remain next. Cooldown refresh is permitted. BT unchanged, BU unused,
+saving blocked. See the checkpoint document for exact scope and remaining gates.
+
 ## Original-item recovery — 2026-10-09 (isolated module; no map build)
 
-Latest checkpoint: SAVE_ORIGINAL_RECOVERY.md and Forsaken-save-recovery.j.
+Previous checkpoint: SAVE_ORIGINAL_RECOVERY.md and Forsaken-save-recovery.j.
 Quarantine/recovery preserve original handles across all 57 positions, actual
 ability instances and known passive bookkeeping. Failed recovery retains the
 journal, blocks staging and allows retry; verified items stay blocked until

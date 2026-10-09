@@ -74,3 +74,7 @@ BU is unused and exports remain blocked. Complete progression/session capture
 and rollback, derived stat/effect verification, live policy/default loading,
 reviewed ring filler objects, synchronized guards/scheduling, accepted-data
 publication and real restart/multiplayer/transport tests remain required.
+
+Following checkpoint: [SAVE_PROGRESSION_JOURNAL.md](SAVE_PROGRESSION_JOURNAL.md)
+adds bounded live progression recovery and independent guards. Full unit/session
+and derived-effect recovery remain required.

@@ -5,6 +5,7 @@ globals
     // 0 idle, 1 open, 2 failed, 3 cleanup unverified, 4 placement started.
     integer array FSN_State
     boolean array FSN_Busy
+    boolean array FSN_ProgressionBlocked
     boolean array FSN_RecoveryBlocked
     integer array FSN_Count
     item array FSN_Item
@@ -32,7 +33,7 @@ function FSN_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_RecoveryBlocked[pid] or FSN_State[pid]!=0 or FSN_Busy[pid] or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 then
+    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_State[pid]!=0 or FSN_Busy[pid] or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 then
         return false
     endif
     set FSN_State[pid]=1
@@ -194,7 +195,7 @@ function FSN_Stage takes integer pid,integer raw,integer charges,boolean bound,i
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_RecoveryBlocked[pid] or FSN_State[pid]!=1 or FSN_Busy[pid] then
+    if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_State[pid]!=1 or FSN_Busy[pid] then
         return false
     endif
     set FSN_Busy[pid]=true
