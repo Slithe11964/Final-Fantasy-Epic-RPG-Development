@@ -303,3 +303,14 @@ build/save-codec-compile-2seobnrz/report.json. No activation/commit or map build
 Prepared-state controller, body/combat effects, ownership/activation, synchronized
 hooks, native scheduling, file/restart and multiplayer acceptance remain open.
 BT/BU unchanged, BV unused, full character saving/loading remains blocked.
+
+Living original hero body recovery: [SAVE_BODY_RECOVERY.md](SAVE_BODY_RECOVERY.md).
+17 new tests plus all 264 prior checks PASS (281), including all 24 fixture setter
+faults and 25 distinct heroes/200 writes at player 7/index 199. Health/mana,
+position/facing and hidden/paused/invulnerable flags restore on living originals
+with native readback and independent guards. Maximum health/mana must first
+recover; switched references must reverse. Standalone/BT runtime/editor compile
+PASS, build/save-codec-compile-0cy567c4/report.json. No map build or activation.
+Buffs/orders/remaining combat effects, replacement activation, prepared-state
+controller, native scheduling, full commit and file/restart/multiplayer acceptance
+remain open. BT/BU unchanged, BV unused; full saving/loading remains blocked.

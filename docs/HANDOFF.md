@@ -1,8 +1,22 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Living hero body recovery — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_BODY_RECOVERY.md and Forsaken-save-body.j. Captures 25
+original hero reference positions with alias deduplication, health/mana,
+position/facing and visibility/pause/invulnerability. Recovery requires original
+living identities and restored maxima; reference reversal precedes setters.
+Eight writes per unique hero receive exact readback, independent guards and retry.
+17 new tests plus all 264 prior checks PASS (281 total), including 24 setter-fault
+positions and 25 distinct heroes/200 writes at player 7/index 199.
+Standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-0cy567c4/report.json. Buffs/orders/other combat effects,
+replacement activation, prepared-state controller, native scheduling and full
+load/commit remain open. BT/BU unchanged, BV unused, full saving/loading blocked.
+
 ## Reversible hero references — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_REFERENCE_SWITCH.md and Forsaken-save-references.j.
+Previous checkpoint: SAVE_REFERENCE_SWITCH.md and Forsaken-save-references.j.
 Captures 26 live/cache references and typed presence, plans owned replacements,
 switches with readback and restores originals before replacement cleanup.
 Independent guards survive other journal release. Original heroes stay alive;

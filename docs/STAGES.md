@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: original living hero body recovery captures
+health/mana, position/facing and hidden/paused/invulnerable flags on 25 reference
+positions. Alias deduplication, readback and independent guards retain failed
+recovery; no activation/commit/map build. 17 new tests plus all 264 earlier checks
+PASS (281), including 24 setter-fault positions and 200 writes at player 7/index
+199. Standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-0cy567c4/report.json. See SAVE_BODY_RECOVERY.md.
+BT/BU unchanged, BV unused; full saves blocked.
+
 Isolated checkpoint, 2026-10-09: reversible hero-reference journal captures 26
 positions, switches owned staged replacements and restores originals before
 cleanup. No activation/commit or map build. 15 new tests plus all 249 earlier

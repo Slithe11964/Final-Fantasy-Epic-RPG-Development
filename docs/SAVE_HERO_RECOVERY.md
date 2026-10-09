@@ -110,3 +110,9 @@ Following checkpoint: [SAVE_SESSION_RECOVERY.md](SAVE_SESSION_RECOVERY.md) adds
 talent choices, selected skills, partial monographs and accepted-code recovery.
 It checks original hero references without replacing them; body/combat effects,
 owned new units and the complete controller remain open.
+
+Following body checkpoint: [SAVE_BODY_RECOVERY.md](SAVE_BODY_RECOVERY.md) captures
+current health/mana, position/facing and hidden/paused/invulnerable flags on living
+originals with alias deduplication and exact readback. It requires reference
+reversal and recovered maxima before body setters; remaining combat effects,
+orders/buffs and the complete controller remain open.

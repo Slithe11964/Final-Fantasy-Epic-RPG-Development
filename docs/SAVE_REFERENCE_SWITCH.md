@@ -46,3 +46,8 @@ acceptance remain open. Cooldown refresh remains permitted.
 BT and private BU are unchanged; BV is unused. BU remains the inventory/codec
 diagnostic described in [SAVE_ENGINE_TEST.md](SAVE_ENGINE_TEST.md). Full new
 character saving/loading remains blocked.
+
+Following checkpoint: [SAVE_BODY_RECOVERY.md](SAVE_BODY_RECOVERY.md) adds living
+original body recovery. References must reverse before its setters; body recovery
+blocks new planning/application while reference reversal and owned cleanup remain
+available. Successful replacement activation/commit remains open.

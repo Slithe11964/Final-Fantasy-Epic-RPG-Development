@@ -96,7 +96,7 @@ function FSR_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSR_Busy[pid] or not FSU_Idle(pid) or FSR_State[pid]!=0 or FSU_State[pid]!=1 or FSS_State[pid]!=1 or FSC_Writing[pid] or not FSU_Verify(pid) or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
+    if FSR_Busy[pid] or not FSU_Idle(pid) or FSN_BodyBlocked[pid] or FSR_State[pid]!=0 or FSU_State[pid]!=1 or FSS_State[pid]!=1 or FSC_Writing[pid] or not FSU_Verify(pid) or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     // Present non-unit handles at known unit keys cannot be removed safely.
@@ -137,7 +137,7 @@ function FSR_Plan takes integer pid,integer staged,boolean activate returns bool
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSR_Busy[pid] or not FSU_Idle(pid) or FSR_State[pid]!=1 or staged<0 or staged>=FSU_Count[pid] or not FSR_Matches(pid,false) or not FSU_Verify(pid) then
+    if FSR_Busy[pid] or not FSU_Idle(pid) or FSN_BodyBlocked[pid] or FSR_State[pid]!=1 or staged<0 or staged>=FSU_Count[pid] or not FSR_Matches(pid,false) or not FSU_Verify(pid) then
         return false
     endif
     set role=FSU_Role[pid*24+staged]
@@ -208,7 +208,7 @@ function FSR_Apply takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSR_Busy[pid] or not FSU_Idle(pid) or FSR_State[pid]!=1 or FSC_Writing[pid] or not FSR_Matches(pid,false) or not FSU_Verify(pid) or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
+    if FSR_Busy[pid] or not FSU_Idle(pid) or FSN_BodyBlocked[pid] or FSR_State[pid]!=1 or FSC_Writing[pid] or not FSR_Matches(pid,false) or not FSU_Verify(pid) or not FSS_Verify(pid) or not FHU_Verify(pid,true) or not FPG_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     call FSR_Block(pid)

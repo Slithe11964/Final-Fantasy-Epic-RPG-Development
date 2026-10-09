@@ -306,3 +306,11 @@ Replacement heroes remain hidden and empty; no activation or successful commit.
 Run test_save_references.py and check_save_jass.py --references with the existing
 BT/native-library arguments. 15 new tests plus 249 earlier checks PASS (264).
 See ../../docs/SAVE_REFERENCE_SWITCH.md for recovery ordering and open work.
+
+Forsaken-save-body.j captures/restores living original heroes' health/mana,
+position/facing and hidden/paused/invulnerable flags. It deduplicates 25 reference
+positions, requires original identities/recovered maxima/reference reversal,
+and verifies all eight native writes per unique hero. Independent guards retain
+failed recovery for retry. Run test_save_body.py and check_save_jass.py --body
+with BT/native-library arguments. 17 new plus 264 prior checks PASS (281).
+See ../../docs/SAVE_BODY_RECOVERY.md for ordering and engine/remaining-state limits.
