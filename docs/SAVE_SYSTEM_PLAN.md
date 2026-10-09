@@ -1,7 +1,8 @@
 # Durable save system implementation plan
 
 Status: identity foundation, detached legacy decoder, logical progression profile,
-reference migration/equality reports and isolated JASS codec implemented, 2026-10-08. Runtime saving remains
+reference migration/equality reports, isolated JASS codec, life/native staging,
+item journal and storage placement primitives implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
@@ -215,3 +216,10 @@ Modern hidden allocation/metadata verification/cleanup implemented; read-only
 standalone/BT runtime/editor compilation passes. This is not native restoration
 acceptance; original capture, placement, passives, progression and publication
 remain unimplemented, with no route or map integration.
+
+Item journal/storage placement: [SAVE_ITEM_JOURNAL.md](SAVE_ITEM_JOURNAL.md).
+19 tests plus all 87 previous tests PASS (106 total); standalone/BT runtime/editor
+compilation passes. Read-only 57-position journal and exact 48-position storage
+placement implemented, with tracked filler cleanup. Native equipment, complete
+session/progression journal, original quarantine/rollback and publication remain
+open. Actual getter behavior and gameplay guards still need engine integration.

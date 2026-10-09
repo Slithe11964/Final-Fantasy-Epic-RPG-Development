@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Original-item journal/storage placement, 2026-10-09 (isolated modules/tools/docs):
+read-only actual-handle/metadata journal for all 57 positions and exact placement
+for 48 storage positions, with owned filler cleanup/retry. Equipment placement
+refuses; native quarantine/full rollback and gameplay guard remain incomplete.
+19 new tests and all 87 previous tests PASS (106 total). Standalone/BT runtime/
+BT editor compilation PASS with extracted libraries. Report:
+build/save-codec-compile-8rx50iid/report.json. No map writes; BT unchanged,
+BU unused, saving blocked. Original flag behavior still requires engine acceptance.
+
 Native staging foundation, 2026-10-08 (isolated source/tools/docs): bounded
 per-player hidden item allocation, exact metadata readback, per-created-handle
 droppability probe and verified cleanup/retry. No original inventory mutation or

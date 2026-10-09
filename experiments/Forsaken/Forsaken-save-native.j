@@ -2,7 +2,7 @@ library TForsakenSaveNative requires TForsakenSaveLife
 // Isolated modern-client staging only. Caller must hold a synchronized gameplay guard.
 // No placement, promotion, initializer, save route or original-item mutation.
 globals
-    // 0 idle, 1 open, 2 failed (Abort acknowledges), 3 cleanup unverified.
+    // 0 idle, 1 open, 2 failed, 3 cleanup unverified, 4 placement started.
     integer array FSN_State
     boolean array FSN_Busy
     integer array FSN_Count
@@ -13,26 +13,33 @@ globals
     integer array FSN_Flags
     integer array FSN_High
     integer array FSN_Low
+    integer array FSN_AuxCount
+    item array FSN_PlacedItem
+    unit array FSN_PlacedUnit
+    player array FSN_PlacedOwner
+    integer array FSN_PlacedHolder
+    integer array FSN_PlacedSlot
+    item array FSN_AuxItem
 endglobals
 
 function FSN_Begin takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSN_State[pid]!=0 or FSN_Busy[pid] or FSN_Count[pid]!=0 then
+    if FSN_State[pid]!=0 or FSN_Busy[pid] or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 then
         return false
     endif
     set FSN_State[pid]=1
     return true
 endfunction
 
-function FSN_Check takes integer pid,integer index returns boolean
+function FSN_CheckMetadata takes integer pid,integer index returns boolean
     local item carried=FSN_Item[index]
     if carried==null or GetItemTypeId(carried)!=FSN_Raw[index] then
         set carried=null
         return false
     endif
-    if IsItemVisible(carried) or IsItemOwned(carried) or GetItemPlayer(carried)!=Player(pid) then
+    if GetItemPlayer(carried)!=Player(pid) then
         set carried=null
         return false
     endif
@@ -60,11 +67,48 @@ function FSN_Check takes integer pid,integer index returns boolean
     return FSL_High[pid]==FSN_High[index] and FSL_Low[pid]==FSN_Low[index]
 endfunction
 
+function FSN_Check takes integer pid,integer index returns boolean
+    if not FSN_CheckMetadata(pid,index) then
+        return false
+    endif
+    return not IsItemVisible(FSN_Item[index]) and not IsItemOwned(FSN_Item[index])
+endfunction
+
+// Placement fillers are allocations too: Abort must never lose their handles.
+function FSN_CleanupAux takes integer pid returns boolean
+    local integer slot=0
+    local integer index
+    local boolean clean=true
+    loop
+        exitwhen slot>=FSN_AuxCount[pid]
+        set index=pid*36+slot
+        if FSN_AuxItem[index]!=null then
+            call RemoveItem(FSN_AuxItem[index])
+            if GetItemTypeId(FSN_AuxItem[index])==0 then
+                set FSN_AuxItem[index]=null
+            else
+                call SetItemVisible(FSN_AuxItem[index],false)
+                set clean=false
+            endif
+        endif
+        set slot=slot+1
+    endloop
+    if clean then
+        set FSN_AuxCount[pid]=0
+    else
+        set FSN_State[pid]=3
+    endif
+    return clean
+endfunction
+
 // Internal helper: only transaction-owned allocations, never caller-owned items.
 function FSN_Cleanup takes integer pid returns boolean
     local integer slot=0
     local integer index
     local boolean clean=true
+    if not FSN_CleanupAux(pid) then
+        set clean=false
+    endif
     loop
         exitwhen slot>=FSN_Count[pid]
         set index=pid*57+slot
@@ -84,6 +128,13 @@ function FSN_Cleanup takes integer pid returns boolean
                 call SetItemVisible(FSN_Item[index],false)
                 set clean=false
             endif
+        endif
+        if FSN_Item[index]==null then
+            set FSN_PlacedItem[index]=null
+            set FSN_PlacedUnit[index]=null
+            set FSN_PlacedOwner[index]=null
+            set FSN_PlacedHolder[index]=0
+            set FSN_PlacedSlot[index]=0
         endif
         set slot=slot+1
     endloop

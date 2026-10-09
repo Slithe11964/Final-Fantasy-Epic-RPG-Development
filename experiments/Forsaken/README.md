@@ -229,3 +229,11 @@ Run `test_save_native.py`; `check_save_jass.py --native` includes all three modu
 See [SAVE_NATIVE_STAGING.md](../../docs/SAVE_NATIVE_STAGING.md). Original capture,
 placement, passive effects, complete rollback and publication remain open. No
 map wiring or native-engine acceptance yet; saving remains blocked.
+
+`Forsaken-save-journal.j` records original handles/metadata across all 57 positions,
+requiring an external verified droppability capability. `Forsaken-save-position.j`
+places tracked items in exact quick/bag/Gaya/house positions and tracks fillers
+through cleanup. Equipment refuses until session/passive rollback exists. Run
+`test_save_position.py`; compile with `check_save_jass.py --position`. See
+[SAVE_ITEM_JOURNAL.md](../../docs/SAVE_ITEM_JOURNAL.md). Native quarantine/full
+rollback, progression, guards and publication remain open; saving stays blocked.

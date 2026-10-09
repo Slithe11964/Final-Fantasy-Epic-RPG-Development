@@ -1,8 +1,25 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Item journal/storage placement — 2026-10-09 (isolated modules; no map build)
+
+Latest checkpoint: SAVE_ITEM_JOURNAL.md, Forsaken-save-journal.j and
+Forsaken-save-position.j. Read-only journal preserves actual handles and metadata
+across all 57 positions, both rings and sparse gaps. Requires an external verified
+droppability capability; actual original flags remain an engine gate. House owner
+is recorded rather than assumed equal to the player. Ready journals cannot be
+overwritten or released after a failed equivalence check.
+Exact placement covers 48 storage positions with tracked fillers and actual-item
+readback. Equipment refuses before mutation; native quarantine/full rollback,
+passives/cooldowns/progression and publication remain open. FSN state 4 means
+placement started; use FSP_Verify, not hidden-only FSN_Verify. Abort cleans tracked
+items/fillers and retains failures. Caller gameplay exclusion is not implemented.
+19 new tests plus all 87 previous tests PASS (106 total). Standalone/BT runtime/
+BT editor read-only probes PASS: build/save-codec-compile-8rx50iid/report.json.
+No native-engine execution claim; BT unchanged, BU unused, saving blocked.
+
 ## Save-system continuation — 2026-10-08 (isolated source/tools; no map build)
 
-Latest native staging foundation: SAVE_NATIVE_STAGING.md and
+Previous native staging foundation: SAVE_NATIVE_STAGING.md and
 experiments/Forsaken/Forsaken-save-native.j. Native CreateItem/metadata readback
 and owned-allocation cleanup implemented; no original inventory mutations,
 placement, promotion, initializer or entry route. Each new handle probes the

@@ -6,6 +6,11 @@ allocation/metadata/cleanup part of the reference restore protocol. It has no
 initializer, entry route or build integration. No map is changed; saving stays
 blocked. This is not the complete native restoration backend.
 
+Following checkpoint: [SAVE_ITEM_JOURNAL.md](SAVE_ITEM_JOURNAL.md) adds an original
+item journal and exact storage placement. FSN now also owns temporary fillers
+and placement records. State 4 means placement started; use FSP_Verify then,
+because FSN_Verify remains hidden-only. Abort cleans both kinds of allocations.
+
 ## Lifecycle
 
 `FSN_Begin(pid)` opens an empty batch for human player IDs 0–7. `FSN_Stage`

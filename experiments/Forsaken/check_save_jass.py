@@ -22,13 +22,15 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False):
     source_path = HERE / 'Forsaken-save-codec.j'
     source_paths = [source_path]
-    if include_life or include_native:
+    if include_life or include_native or include_position:
         source_paths.append(HERE / 'Forsaken-save-life.j')
-    if include_native:
+    if include_native or include_position:
         source_paths.append(HERE / 'Forsaken-save-native.j')
+    if include_position:
+        source_paths.extend([HERE / 'Forsaken-save-journal.j', HERE / 'Forsaken-save-position.j'])
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -81,8 +83,9 @@ def main():
     parser.add_argument('--compiler', type=Path, default=ROOT / 'tools/bin/pjass.exe')
     parser.add_argument('--life', action='store_true', help='include the isolated real/word conversion module')
     parser.add_argument('--native', action='store_true', help='include life and modern-client hidden item staging')
+    parser.add_argument('--position', action='store_true', help='include native staging, item journal and storage placement')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])
