@@ -1,9 +1,10 @@
 # New save reference prototype, version1
 
 Implemented in `experiments/Forsaken/save_vnext.py`; tests in test_save_vnext.py.
-This is a bounded envelope/inventory/job foundation, not a complete character
-save. It does not yet encode all currencies, titles, Gaya abilities, upgrades,
-Armory or NG+ rules, migrate legacy snapshots, or apply runtime item eligibility.
+The bounded envelope/inventory/job foundation now includes a logical progression
+profile and detached legacy translation: [SAVE_PROGRESSION_MIGRATION.md](SAVE_PROGRESSION_MIGRATION.md).
+Core currency/NG+ state, titles, Gaya abilities, upgrades and Armory are represented.
+Runtime capture, item eligibility and NG+ export policy are not implemented.
 No Warcraft route recognizes this envelope. Keep saving blocked.
 
 ## Encoding and limits
@@ -45,6 +46,10 @@ which sections must be present; this generic envelope does not yet enforce one.
 | 1 | Counted length-delimited item records | Detached inventory data |
 | 2 | Count then `(permanent job ID,saved level)` pairs | Levels0..100; default semantics remain a later adapter obligation |
 | 3 | Count then `(extension progression ID,unsigned value)` pairs | Optional and dormant; bounded preservation only, no actual quest rewards/state application |
+
+Sections 4–9 reserve core, Gaya, upgrades, titles, Armory and required migration
+evidence. Their field IDs, profile requirements and absence semantics are specified
+in [SAVE_PROGRESSION_MIGRATION.md](SAVE_PROGRESSION_MIGRATION.md).
 
 These are experimental section reservations. They do not allocate real new
 jobs/items/quest IDs or make unreviewed quest state persistent. Scalar records
@@ -123,8 +128,8 @@ Validation at this checkpoint:13 prototype tests PASS, including1000 seeded
 random round trips;13 existing legacy migration tests PASS. No runtime sources
 changed, so no new playable map, compilation or in-game acceptance is claimed.
 
-Next: complete logical progression schema and legacy-to-new translation, a
-snapshot equality report and measured size profiles; freeze required/default
-rules; then JASS codec/adapters, exact life conversion, failure rollback and
+The next checkpoint implements logical progression, legacy-to-new translation,
+62-entry comparison reports and fuller size profiles; see the migration document.
+Next: differential JASS codec/adapters, exact life conversion, failure rollback and
 real restart/multiplayer transport tests. No public capacity or preservation claim
 is warranted from these Python round trips alone.

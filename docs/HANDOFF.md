@@ -2,18 +2,33 @@
 
 ## Save-system continuation — 2026-10-08 (docs/tools only)
 
+Latest checkpoint: `SAVE_PROGRESSION_MIGRATION.md`, `save_progression.py` and
+`migrate_save.py` add core/Gaya/upgrades/title/Armory sections, required-field
+profiles, frozen migration policy1 and required original-code provenance.
+All eight synthetic E/F/G/H fixtures translate with62 passing comparison entries.
+Hero gear goes to deterministic bag slots without equipping; Gaya/house stay
+separate; V2/Speedrun exclusions are reported and retained in evidence. Missing
+legacy item metadata/defaults remain explicit and unresolved. Incomplete Armory
+and cheat status refuse export. NG+ source reset tested; no successor Minus route.
+16 migration tests (250 seeded progression round trips and CLI validation),13 codec tests
+(1000 seeded inventory round trips),13 legacy and10 identity tests PASS.
+Full synthetic logical profile:2803 characters; with full opaque budget6704.
+No runtime/source/release changes; saving blocked, BU unused. Next: differential
+JASS codec and vectors, then default resolution, transactional adapters and transport.
+
 New-format foundation: `ITEM_SAVE_METADATA.md` audits item life as gameplay data,
 charges, account-relative binding and reconstructable runtime passive state.
 `SAVE_VNEXT_REFERENCE.md` specifies the isolated `save_vnext.py` prototype:
 bounded/versioned length-delimited sections; canonical signed-JASS-safe varints;
 full57 sparse inventory positions; explicit seven-bit quantities; exact binary32
 life words; counted job IDs and dormant extension progression; bounded unknown
-optional retention and required-schema rejection. No complete character schema,
-legacy translation, JASS adapter or runtime routes yet.13 prototype tests with
+optional retention and required-schema rejection. Progression/translation is now
+covered above; no JASS adapter or runtime routes yet.13 prototype tests with
 1000 seeded round trips and13 legacy migration tests PASS. Synthetic sizes1453
 characters inventory-only,1804 with42 jobs/50 dormant records,5705 with full opaque
 budget. Reproduce with measure_save_vnext.py; these are not engine capacity claims.
-Next: complete progression schema, legacy translation and equality/size reports.
+Progression, legacy translation and fuller equality/size reports are now implemented
+as a detached reference checkpoint; see above for remaining runtime gates.
 
 Next checkpoint: `LEGACY_SAVE_LEDGER.md`, frozen `legacy-layouts.json`, eight
 synthetic E/F/G/H fixtures and read-only `legacy_snapshot.py` now exist.13 focused

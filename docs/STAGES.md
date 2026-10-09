@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Logical save/migration checkpoint, 2026-10-08 (docs/tools only): core, Gaya,
+upgrades, titles, Armory and required legacy-provenance schemas; frozen policy1;
+eight synthetic E/F/G/H successor goldens and62-entry comparison reports;
+deterministic detached placement and explicit exclusions/default provenance.
+16 migration tests (250 seeded round trips and CLI validation),13 codec tests (1000 seeded),13
+legacy tests and10 identity tests PASS. Synthetic complete logical profile2803
+characters,6704 with full opaque budget. JASS/adapters/real-code/transport gates
+remain open. Gameplay/releases unchanged; saving blocked, BU unused.
+
 New save prototype, 2026-10-08 (docs/tools only): item metadata audit; bounded
 envelope/inventory/job codec with sparse57-slot layout, seven-bit quantities,
 exact binary32 life words and optional unknown-data preservation; three golden

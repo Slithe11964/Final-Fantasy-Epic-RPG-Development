@@ -202,5 +202,9 @@ in [SAVE_VNEXT_REFERENCE.md](../../docs/SAVE_VNEXT_REFERENCE.md). Run
 `test_save_vnext.py` and `measure_save_vnext.py` for bounded sections, sparse
 inventory, metadata, expanded IDs, unknown-data tests and synthetic size profiles.
 See [ITEM_SAVE_METADATA.md](../../docs/ITEM_SAVE_METADATA.md) for the source audit.
-Complete progression, migration and JASS/runtime integration are still pending;
-the research envelope is not accepted by the map, and saving remains blocked.
+`save_progression.py` and `migrate_save.py` now add logical progression, automated
+legacy translation and62-entry comparison reports with original-code provenance.
+Run `test_save_migration.py`; frozen policy and eight successor goldens are checked.
+See [SAVE_PROGRESSION_MIGRATION.md](../../docs/SAVE_PROGRESSION_MIGRATION.md).
+JASS/runtime integration remains pending; the research envelope is not accepted
+by the map, and saving remains blocked.

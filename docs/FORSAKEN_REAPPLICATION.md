@@ -35,6 +35,7 @@ Get-FileHash -Algorithm SHA256 release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/test_save_registry.py
 & $ffPython experiments/Forsaken/test_legacy_snapshot.py
 & $ffPython experiments/Forsaken/test_save_vnext.py
+& $ffPython experiments/Forsaken/test_save_migration.py
 & $ffPython experiments/Forsaken/measure_save_vnext.py
 & $ffPython experiments/Forsaken/test_forsaken.py
 # Only when an actual new experimental map is needed; check BU is still unused.

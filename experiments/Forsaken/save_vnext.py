@@ -105,6 +105,8 @@ def encode(envelope):
         if section.id <= 0 or section.version <= 0 or section.id in ids or type(section.required) is not bool:
             raise Error('invalid or duplicate section')
         ids.add(section.id)
+        if len(section.payload) > MAX_PAYLOAD:
+            raise Error('section payload budget exceeded')
         alphabet(section.payload)
         extra, extra_records = validate_section(section)
         opaque += extra
@@ -286,6 +288,10 @@ def read_inventory(text):
 
 
 def validate_section(section):
+    if section.version == 1 and section.id in range(4, 10):
+        from save_progression import validate_payload
+        validate_payload(section.id, section.payload)
+        return 0, 0
     if section.version != 1 or section.id not in (1, 2, 3):
         if section.required:
             raise Error('unsupported required section/schema')
