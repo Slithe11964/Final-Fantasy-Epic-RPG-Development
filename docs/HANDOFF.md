@@ -2,6 +2,19 @@
 
 ## Save-system continuation — 2026-10-08 (docs/tools only)
 
+New-format foundation: `ITEM_SAVE_METADATA.md` audits item life as gameplay data,
+charges, account-relative binding and reconstructable runtime passive state.
+`SAVE_VNEXT_REFERENCE.md` specifies the isolated `save_vnext.py` prototype:
+bounded/versioned length-delimited sections; canonical signed-JASS-safe varints;
+full57 sparse inventory positions; explicit seven-bit quantities; exact binary32
+life words; counted job IDs and dormant extension progression; bounded unknown
+optional retention and required-schema rejection. No complete character schema,
+legacy translation, JASS adapter or runtime routes yet.13 prototype tests with
+1000 seeded round trips and13 legacy migration tests PASS. Synthetic sizes1453
+characters inventory-only,1804 with42 jobs/50 dormant records,5705 with full opaque
+budget. Reproduce with measure_save_vnext.py; these are not engine capacity claims.
+Next: complete progression schema, legacy translation and equality/size reports.
+
 Next checkpoint: `LEGACY_SAVE_LEDGER.md`, frozen `legacy-layouts.json`, eight
 synthetic E/F/G/H fixtures and read-only `legacy_snapshot.py` now exist.13 focused
 migration tests pass, including actual JASS main-reader control flow with mocked
@@ -19,8 +32,8 @@ Read `SAVE_SYSTEM_PLAN.md` for the phased implementation and release gates, and
 outputs and checks. First milestone adds a read-only frozen registry for 358 item
 IDs and 22 job IDs, with source/variant/offhand preflight and negative tests under
 experiments/Forsaken. No game serializer, release or baseline changes; export
-blocking stays in place. Next is real fixture coverage, expanded NG route/default
-semantics tests and persistent metadata audit. Real native/legacy/multiplayer acceptance is outstanding.
+blocking stays in place. Real fixture coverage and expanded NG+/default semantics
+remain open. Real native/legacy/multiplayer acceptance is outstanding.
 BU remains unused. Shared base stays AS, latest experimental map BT/fa6ed31.
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.

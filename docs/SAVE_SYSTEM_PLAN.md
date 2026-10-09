@@ -1,6 +1,7 @@
 # Durable save system implementation plan
 
-Status: identity foundation complete; detached legacy decoder implemented, 2026-10-08. Runtime saving remains
+Status: identity foundation and detached legacy decoder implemented; first new-format
+reference prototype tested, 2026-10-08. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
@@ -109,7 +110,7 @@ chunk count and actual transport must be measured before claiming support.
 |---|---|---|
 | 1 — identity foundation (complete) | Frozen registry, source/mapping checker, negative tests, this plan and reapplication guide | All 358 items/22 jobs pinned; all generated original/variant/offhand identities resolve; mismatches fail; runtime unchanged |
 | 2 — full save contract and fixtures (in progress) | Field-by-field E/F/G/H ledger (width, order, default, rule, target state); reviewed permanent progression IDs; legacy reference decode to detached snapshot | Real consented anonymized E/F/G/H examples plus synthetic edge vectors; independent expected fields; actual Armory contents; no mutation; fixed22-value V2/V3 layouts with the three-job V2 permutation confirmed from source |
-| 3 — new reference codec | Versioned bounded sections, strict parser, unknown preservation, snapshot equality comparator and size report | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 quest IDs; quantities0..120 plus lossless imported121..127; full 57 slots and sparse layouts; no manual legacy conversion; exact bound rejection |
+| 3 — new reference codec (in progress) | Envelope/inventory/jobs and bounded dormant extension prototype implemented; remaining complete progression/migration and equality report required | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 quest IDs; quantities0..120 plus lossless imported121..127; full57 slots and sparse layouts; no manual legacy conversion; exact bound rejection |
 | 4 — isolated JASS codec | Separate experimental module and per-player staging buffers; differential Python/JASS vectors | Compile playable/editor against installed libraries; source/map agreement; bounded operations/allocations; byte parity with reference vectors and documented measured limits |
 | 5 — transactional adapters | Legacy/new parse → validate → stage → synchronized commit; native capture/restore and rollback | Full inventory/progression equivalence; no drops/duplication; failed create/equip/placement rolls back all items/progression; failed load does not consume load eligibility; actual native tests required |
 | 6 — all entry routes | One snapshot/parser/serializer for chat, files, autosave, NG+, full load and Armory-only load | Segmented/reordered/replayed/missing/wrong-owner messages rejected; NG intentional resets enumerated; -loada never materializes inventory; file readback verified; prior successful save retained on failure |
@@ -162,8 +163,10 @@ builder alias allocation; it is not a migration decoder or save implementation.
 No release map or gameplay source is changed. Runtime gates remain the existing
 Forsaken save blockers. Step2's field ledger is [LEGACY_SAVE_LEDGER.md](LEGACY_SAVE_LEDGER.md).
 Its detached decoder and synthetic fixtures are implemented; real-data and runtime
-acceptance remain open. Next: NG route fixtures, missing runtime/default semantics
-and persistent metadata audit, then new reference format review before JASS integration.
+acceptance remain open. Item metadata audit: [ITEM_SAVE_METADATA.md](ITEM_SAVE_METADATA.md).
+First new-format prototype: [SAVE_VNEXT_REFERENCE.md](SAVE_VNEXT_REFERENCE.md).
+Next: complete progression schema, legacy-to-new translation and equality reports;
+continue real-fixture/default-semantics work before JASS integration.
 
 Validation on 2026-10-08: 10 identity tests and 87 existing Forsaken tests PASS.
 Preflight against `build/ForsakenBS-hz94mr9k/gear-slots.json` resolves 750 runtime
@@ -176,3 +179,8 @@ Legacy foundation checkpoint:13 migration tests and2,000 existing codec cases
 PASS;95 repository tests passed in the main run and the remaining build-overwrite
 test passed when rerun with a writable workspace temporary directory. Full details
 and the legacy-only NG− discrepancy are recorded in LEGACY_SAVE_LEDGER.md.
+
+Reference prototype checkpoint:13 new-format tests (1000 seeded round trips) and
+13 legacy migration tests PASS. Full57-item inventory profile1453 characters;
+inventory+42 jobs+50 dormant records1804 characters; same plus full opaque budget
+5705 characters. These are partial-schema Python measurements, not Warcraft limits.

@@ -1,5 +1,13 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+New save prototype, 2026-10-08 (docs/tools only): item metadata audit; bounded
+envelope/inventory/job codec with sparse57-slot layout, seven-bit quantities,
+exact binary32 life words and optional unknown-data preservation; three golden
+vectors and synthetic size profiles.13 tests including1000 seeded new-format
+round trips and13 legacy migration tests PASS. Complete progression/translation,
+JASS/runtime and transport work remains. Gameplay/releases unchanged; saving
+blocked; no map stage consumed, BU remains unused.
+
 Legacy save milestone, 2026-10-08 (docs/tools only): field ledger; detached strict
 E/F/G/H decoder; frozen charge/job/Armory layouts; eight pinned synthetic vectors;
 13 migration tests against source-reader and current/historical Armory writer

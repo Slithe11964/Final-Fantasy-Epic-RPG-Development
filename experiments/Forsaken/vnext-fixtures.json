@@ -1,0 +1,50 @@
+{
+  "provenance": "Synthetic research envelope vectors. No Warcraft runtime or transport acceptance.",
+  "cases": [
+    {
+      "name": "empty-inventory",
+      "account_hash": 42,
+      "sections": [
+        {
+          "id": 1,
+          "version": 1,
+          "required": true,
+          "payload": "A"
+        }
+      ],
+      "code": "FSVBqBFBwjgrhBBBBBA"
+    },
+    {
+      "name": "sparse-life-and-legacy-quantity",
+      "account_hash": 42,
+      "sections": [
+        {
+          "id": 1,
+          "version": 1,
+          "required": true,
+          "payload": "CQBdCdB#BBBBBEpxQAICofDFABA"
+        }
+      ],
+      "code": "FSVBqBfB7wg07KBBBbCQBdCdB#BBBBBEpxQAICofDFABA"
+    },
+    {
+      "name": "expanded-identity-and-opaque",
+      "account_hash": 42,
+      "sections": [
+        {
+          "id": 2,
+          "version": 1,
+          "required": true,
+          "payload": "CBjDqBkD"
+        },
+        {
+          "id": 99,
+          "version": 7,
+          "required": false,
+          "payload": "ABC123"
+        }
+      ],
+      "code": "FSVBqBXCtvg8tGCBBICBjDqBkDjDHAGABC123"
+    }
+  ]
+}
