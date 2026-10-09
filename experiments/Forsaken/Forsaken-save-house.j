@@ -12,7 +12,7 @@ function FHS_Stage takes integer pid,real x,real y returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if not FSU_Idle(pid) or FSR_Busy[pid] or FHS_State[pid]!=0 or FHS_Unit[pid]!=null or FSJ_HousePending[pid] or FCG_State[pid]!=0 or FIP_State[pid]!=0 or FHA_State[pid]!=0 or FSC_Writing[pid] or not (x>=-32768. and x<=32768. and y>=-32768. and y<=32768.) or not FHP_Verify(pid) or not FSJ_Verify(pid) then
+    if not FSU_Idle(pid) or FSR_Busy[pid] or FHS_State[pid]!=0 or FHS_Unit[pid]!=null or FSJ_HousePending[pid] or FCG_State[pid]!=0 or FIP_State[pid]!=0 or FHA_State[pid]!=0 or FSC_Writing[pid] or not FSP_HousePoint(x,y) or not FHP_Verify(pid) or not FSJ_Verify(pid) then
         return false
     endif
     set original=FSJ_House[pid]

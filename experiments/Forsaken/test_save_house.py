@@ -22,13 +22,15 @@ class HouseTests(unittest.TestCase):
             u.update(life=Real32(100),body_life=Real32(100),hidden=False,paused=False,invulnerable=False,
                      inventory_size=6,x=x,y=y,facing=facing,is_hero=False)
             self.w.created.append(u);return u
+        env.update(GetRectMinX=lambda r:-1000.,GetRectMinY=lambda r:-1000.,
+                   GetRectMaxX=lambda r:1000.,GetRectMaxY=lambda r:1000.)
         env['CreateUnit']=create
         env.update(ShowUnit=lambda u,v:self.w.unit_flag('hidden',u,not v),
                    PauseUnit=lambda u,v:self.w.unit_flag('paused',u,v),
                    SetUnitInvulnerable=lambda u,v:self.w.unit_flag('invulnerable',u,v))
         sources='\n'.join(SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in p.MODULES)
         self.e=engine(p.DECLARATIONS+p.EXTRA+p.SESSION_GLOBALS+p.SKILL_GLOBALS+p.GLOBALS+
-            'globals\n unit array udg_PlayerHouse\nendglobals\n'+sources+
+            'globals\n unit array udg_PlayerHouse\n integer bj_mapInitialPlayableArea=0\nendglobals\n'+sources+
             p.REFERENCES.read_text()+p.BODY.read_text()+p.OWNERSHIP.read_text()+p.PREPARED.read_text()+
             p.ACTIVATION.read_text()+p.CARGO.read_text()+p.PROFILE.read_text()+HOUSE.read_text(),env)
         self.e.update({k:v for k,v in old.items() if not callable(v)})
@@ -39,6 +41,14 @@ class HouseTests(unittest.TestCase):
     def clean(self,pid=0):
         self.assertTrue(self.e['FHS_Recover'](pid));self.assertTrue(self.e['FHS_Release'](pid))
     def stage(self,pid=0):return self.e['FHS_Stage'](pid,100.,200.)
+
+    def test_actual_map_bounds_refuse_before_allocation(self):
+        self.ready()
+        for x,y in ((900.,200.),(100.,-1128.),(float('nan'),200.)):
+            self.assertFalse(self.e['FHS_Stage'](0,x,y))
+            self.assertIsNone(self.e['FHS_Unit'][0]);self.assertFalse(self.e['FSJ_HousePending'][0])
+            self.assertEqual(self.e['FHS_State'][0],0)
+        self.assertTrue(self.stage());self.clean()
 
     def test_contained_house_player7_originals_untouched(self):
         self.ready(7);original=dict(self.house);code=self.e['FSC_Code'][7]

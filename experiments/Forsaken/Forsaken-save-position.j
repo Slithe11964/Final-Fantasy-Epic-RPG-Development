@@ -2,6 +2,12 @@ library TForsakenSavePosition requires TForsakenSaveEffects
 // Placement primitive only. Caller must suppress gameplay hooks and journal originals.
 // Equipment is refused until passive/cooldown rollback is implemented.
 
+// A generic signed coordinate range is not the actual terrain boundary.
+// Leave a full tile of clearance for the house footprint at creation.
+function FSP_HousePoint takes real x,real y returns boolean
+    return x>=GetRectMinX(bj_mapInitialPlayableArea)+128. and x<=GetRectMaxX(bj_mapInitialPlayableArea)-128. and y>=GetRectMinY(bj_mapInitialPlayableArea)+128. and y<=GetRectMaxY(bj_mapInitialPlayableArea)-128.
+endfunction
+
 // Shared readback used by owned house staging and the private engine probe.
 function FSP_HouseShape takes unit candidate,integer raw returns boolean
     if candidate==null then

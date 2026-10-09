@@ -1,20 +1,22 @@
-# Private house crash diagnostic — BX
+# Private house bounds correction — BY
 
 Use the new Reforged diagnostic map:
-`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBX.w3x`.
-BW crashed on -savehousecheck in the real engine. The local crash report records
-an engine null-address access violation; it does not identify a JASS operation.
-BX is a diagnostic to locate that operation, not a verified crash fix. Character
-saving remains disabled. Do not repeat the BW house test. BY is next unused.
+`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBY.w3x`.
+BW and BX crashed. The user saw BX's third checkpoint, temporary house allocation.
+The probe location was below this map's terrain edge. BY creates the test house
+at the real house's known position and checks actual playable bounds first.
+The original load uses eight preplaced houses; this temporary copy exists only to
+exercise cargo without changing original items. The coordinate bug is corrected,
+but the engine test must still confirm the crash is resolved. BZ is next unused.
 
 ## When you return
 
-1. Start BX and select your character. You can load the same old save used for
+1. Start BY and select your character. You can load the same old save used for
    earlier tests, with some real items in the house if convenient.
 2. Stand still and run `-savecheck`. Wait for PASS.
-3. Run `-savehousecheck` and stand still. It displays TRACE checkpoints for about
+3. Run `-savehousecheck` and stand still. It displays numbered STEP checkpoints for about
    15 seconds. Each says which operation will run next. If it crashes, report the
-   LAST visible `House test: TRACE: next ...` line. If it finishes, send its result.
+   LAST visible numbered `House test: STEP ...: NEXT ...` line. If it finishes, send its result.
 4. Run `-saveverify`. Expect PASS for unchanged original inventory.
 5. Repeat only if the first test finishes with PASS.
 
@@ -27,7 +29,8 @@ full new-format character save/load is not enabled.
 ## What the test does
 
 The probe journals the original57 inventory positions and live storage references.
-It creates one separate neutral-owned, hidden, paused, invulnerable house and six
+It creates one separate house at the original house position, then contains it
+under neutral ownership, hidden, paused and invulnerable, and creates six
 zero-ability `fGap` temporary spacer items. It uses the actual native staging,
 metadata, ability preparation and house placement primitives. Sparse-first slot
 order5/2/0/1/3/4 exercises exact quick-slot movement before filling the house.
@@ -68,3 +71,11 @@ Its automated checks passed, but its house test FAILED in the real engine.
 
 BX SHA256: `cf25d7cbc158399e59d5e3ee2323af91cb51961beb7aefe8ffc262aecf416c10`. Mandatory gates,96 repository tests,
 2,000 codec cases and43 focused checks PASS;517 other archive members preserved.
+
+BY also guards FHS_Stage allocation with actual playable bounds and128 clearance.
+Earlier BW/BX point(-4096,-28800) is below terrain y=-28672. The original houses
+are preplaced h006 objects assigned by Player.j; original loading does not need
+this synthetic allocation. Three full-dependency compile probes PASS.
+
+BY SHA256: `ff6ae8d961d131347fb4b65e430bef09bb8b02f74a01e78e48e271da5fd57b2d`. Full build gates,96 repository tests,
+2,000 codec cases and60 focused checks PASS;517 other members preserved.

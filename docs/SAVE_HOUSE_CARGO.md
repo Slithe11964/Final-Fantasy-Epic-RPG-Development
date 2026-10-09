@@ -1,5 +1,11 @@
 # Connected57-position inventory and house cargo
 
+Bounds correction,2026-10-09: staging now rejects points outside the actual playable
+rectangle with128 clearance before any allocation. BW/BX's private probe used a
+point below terrain; BY uses the journaled original house location. Original houses
+are preplaced; the separate owned house is transaction/test scaffolding. Real-engine
+acceptance remains pending. See [SAVE_HOUSE_ENGINE_TEST.md](SAVE_HOUSE_ENGINE_TEST.md).
+
 2026-10-09, isolated transaction preparation; no full character load command.
 
 The saved-profile and guarded cargo routes now cover all57 positions: six quick,

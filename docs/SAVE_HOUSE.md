@@ -1,5 +1,11 @@
 # Contained replacement house staging
 
+Bounds correction,2026-10-09: staging now rejects points outside the actual playable
+rectangle with128 clearance before any allocation. BW/BX's private probe used a
+point below terrain; BY uses the journaled original house location. Original houses
+are preplaced; the separate owned house is transaction/test scaffolding. Real-engine
+acceptance remains pending. See [SAVE_HOUSE_ENGINE_TEST.md](SAVE_HOUSE_ENGINE_TEST.md).
+
 Subsequent checkpoint: [SAVE_HOUSE_CARGO.md](SAVE_HOUSE_CARGO.md) connects all57
 positions, including the separately owned house, to guarded preparation/recovery.
 The implementation below records the earlier checkpoint.

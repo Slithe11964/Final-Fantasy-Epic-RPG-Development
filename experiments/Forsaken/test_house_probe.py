@@ -17,7 +17,7 @@ class HouseProbeTests(unittest.TestCase):
         def create(owner,raw,x,y,face):
             if self.fail_unit:return None
             if self.forced is not None:return self.forced
-            u=self.w.unit(owner);u.update(raw=raw,life=Real32(100),hidden=False,paused=False,invulnerable=False)
+            u=self.w.unit(owner);u.update(x=x,y=y,raw=raw,life=Real32(100),hidden=False,paused=False,invulnerable=False)
             self.created.append(u);return u
         env=self.w.natives()
         env.update(PLAYER_NEUTRAL_PASSIVE=15,UNIT_TYPE_HERO='hero',
@@ -31,11 +31,14 @@ class HouseProbeTests(unittest.TestCase):
             PauseTimer=lambda t:None,DestroyTimer=lambda t:self.timers.append(t),
             IsTriggerEnabled=lambda t:t['enabled'],DisableTrigger=lambda t:t.update(enabled=False),
             EnableTrigger=lambda t:t.update(enabled=True),DisplayTimedTextToPlayer=lambda p,x,y,d,s:self.messages.append(s),
-            GetRectMinX=lambda r:-1000.,GetRectMinY=lambda r:-1000.)
+            ClearTextMessages=lambda:None,
+            GetUnitX=lambda u:u['x'],GetUnitY=lambda u:u['y'],
+            GetRectMinX=lambda r:-1000.,GetRectMinY=lambda r:-1000.,
+            GetRectMaxX=lambda r:1000.,GetRectMaxY=lambda r:1000.)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text(encoding='utf-8') for m in ('life','native','journal','effects','position')]
         self.e=engine(DECL+GLOBALS+'\n'.join(pieces)+probe_source({'fGap':1,'orig':2})+house_probe_source(RUNTIME),env)
         self.e['gg_trg_One']=Handle(enabled=True);self.e['gg_trg_Two']=Handle(enabled=False)
-        self.hero=self.w.unit(0,30);self.gaya=self.w.unit(0);self.house=self.w.unit(9)
+        self.hero=self.w.unit(0,30);self.gaya=self.w.unit(0);self.house=self.w.unit(9);self.house.update(x=300.,y=200.)
         self.e['udg_PlayerHero'][1]=self.hero;self.e['udg_SpiritOfGaya'][1]=self.gaya;self.e['udg_PlayerHouse'][1]=self.house
         self.original=self.w.create('orig',0,0);self.original.update(charges=3,binding=0,owner=0,owned=True,life=Real32(145.25))
         self.house['quick'][5]=self.original
@@ -44,6 +47,15 @@ class HouseProbeTests(unittest.TestCase):
         self.assertTrue(self.e['gg_trg_One']['enabled']);self.assertFalse(self.e['gg_trg_Two']['enabled'])
         self.assertIs(self.house['quick'][5],self.original);self.assertEqual(self.original['raw'],'orig')
         self.assertFalse(self.e['FHT_Busy'])
+
+    def test_known_house_point_and_actual_bounds_gate(self):
+        self.e['FHT_Run'](0)
+        self.assertEqual((self.created[-1]['x'],self.created[-1]['y']),(300.,200.))
+        self.assertTrue(any('STEP 3: NEXT temporary house allocation inside map' in m for m in self.messages))
+        self.setUp();self.house['y']=-1128.
+        self.e['FHT_Run'](0)
+        self.assertEqual(self.created,[])
+        self.assertIn('outside safe playable bounds',self.messages[-1]);self.guarded_originals()
 
     def test_trace_precedes_native_phases_and_preserves_busy_during_yield(self):
         sleeps=[]

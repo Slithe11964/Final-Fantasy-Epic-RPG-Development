@@ -1,5 +1,31 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+BY build evidence: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBY.w3x
+SHA256: ff6ae8d961d131347fb4b65e430bef09bb8b02f74a01e78e48e271da5fd57b2d
+Scratch: build/SaveProbeBY-wfm0w4uf/FFERPG; stageBY-oo65vhfw.
+Mandatory build gates,96 repository tests,2,000 codec cases and60 focused
+house/probe/cargo/placement tests PASS. Three dependency compile probes PASS;
+all20 compiled input hashes/CRLF match.517 other archive members and original
+editor source preserved; all nine private map source hashes match.
+Human gate: BY, load/select hero, stand still, -savecheck PASS, -savehousecheck.
+Report PASS/FAIL or last visible STEP number; after PASS run -saveverify.
+
+House allocation bounds correction — 2026-10-09.
+User reports BX reached the third checkpoint then crashed. The third checkpoint
+is temporary house allocation. New local crash at18.52.37 repeats BW's same
+engine null-address access violation. User correctly notes original houses are
+preplaced; original Player.j assigns the eight h006 houses, not freshly creates them.
+The synthetic probe was independently allocating one to preserve real cargo.
+Confirmed terrain bounds from BT war3map.w3e: x[-4096,28672], y[-28672,4096].
+BW/BX used the playable minimum minus128, yielding(-4096,-28800): below terrain.
+BY uses the journaled original house's coordinates and checks playable bounds with
+128 clearance before allocation. FHS_Stage likewise replaces generic +/-32768
+validation with actual map bounds. No original house or item is moved by the probe.
+Checkpoints now show one large readable STEP number, clearing prior test text.
+This fixes a concrete invalid location; engine causality still awaits the BY test.
+Three isolated compile probes PASS: build/save-codec-compile-k8l7q5dc/report.json.
+Full character save/load stays blocked. BZ is the next unused stage after BY.
+
 BX private crash-localization map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBX.w3x
 SHA256: cf25d7cbc158399e59d5e3ee2323af91cb51961beb7aefe8ffc262aecf416c10
 Scratch: build/SaveProbeBX-u39appvh/FFERPG; mandatory stage scratch stageBX-2jbz45im.

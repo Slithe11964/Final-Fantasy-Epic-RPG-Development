@@ -5,6 +5,7 @@ globals
     boolean FHT_WatchdogRecovering=false
     boolean FHT_Busy=false
     integer FHT_Player=-1
+    integer FHT_Checkpoint=0
     timer FHT_Watchdog=null
     hashtable FHT_Policy=null
     unit array FHT_Unit
@@ -20,7 +21,9 @@ endfunction
 // Yield before native operations so the last checkpoint is rendered before a crash.
 // Busy remains held across these diagnostic-only sleeps; the watchdog is independent.
 function FHT_Trace takes integer pid,string step returns nothing
-    call FHT_Message(pid,"TRACE: next "+step)
+    set FHT_Checkpoint=FHT_Checkpoint+1
+    call ClearTextMessages()
+    call FHT_Message(pid,"STEP "+I2S(FHT_Checkpoint)+": NEXT "+step)
     if not FHT_WatchdogRecovering then
         call TriggerSleepAction(0.5)
     endif
@@ -201,6 +204,7 @@ function FHT_Run takes integer pid returns nothing
         return
     endif
     set FHT_Busy=true
+    set FHT_Checkpoint=0
     call FHT_Trace(pid,"original inventory journal")
     if not FSJ_Capture(pid,udg_PlayerHero[pid+1],udg_SpiritOfGaya[pid+1],udg_PlayerHouse[pid+1],true) then
         set FHT_Busy=false
@@ -213,9 +217,17 @@ function FHT_Run takes integer pid returns nothing
     call TimerStart(FHT_Watchdog,60.,false,function FHT_Timeout)
     call FHT_Trace(pid,"trigger guard")
     call FHT_Guard(true)
-    set x=GetRectMinX(bj_mapInitialPlayableArea)-128.
-    set y=GetRectMinY(bj_mapInitialPlayableArea)-128.
-    call FHT_Trace(pid,"temporary house allocation")
+    if FSJ_House[pid]==null then
+        call FHT_Finish(pid,false,"missing original house")
+        return
+    endif
+    set x=GetUnitX(FSJ_House[pid])
+    set y=GetUnitY(FSJ_House[pid])
+    if not FSP_HousePoint(x,y) then
+        call FHT_Finish(pid,false,"house point outside safe playable bounds")
+        return
+    endif
+    call FHT_Trace(pid,"temporary house allocation inside map")
     set candidate=CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'h006',x,y,0.)
     if candidate==null or FHT_Referenced(candidate) then
         set candidate=null
@@ -316,6 +328,7 @@ function FHT_Retry takes integer pid returns nothing
         return
     endif
     set FHT_Busy=true
+    set FHT_Checkpoint=0
     set FHT_Player=pid
     set FHT_Watchdog=CreateTimer()
     call TimerStart(FHT_Watchdog,60.,false,function FHT_Timeout)
