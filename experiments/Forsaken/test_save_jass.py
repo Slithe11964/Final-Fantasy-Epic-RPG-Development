@@ -34,8 +34,8 @@ class JassArray(defaultdict):
         super().__setitem__(index, value)
 
 
-def engine():
-    source = SOURCE.read_text(encoding='utf-8')
+def engine(extra_source='', extra_env=None):
+    source = SOURCE.read_text(encoding='utf-8')+'\n'+extra_source
     env = dict(StringLength=lambda s: len(s or ''), SubString=lambda s, a, b: (s or '')[a:b],
                ModuloInteger=lambda a, b: a % b, InitHashtable=dict,
                LoadBoolean=lambda t, p, k: t.get((p, k), False),
@@ -44,10 +44,11 @@ def engine():
         for key in list(table):
             if key[0] == parent: del table[key]
     env['FlushChildHashtable'] = flush
+    env.update(extra_env or {})
     for name in functions(source): env[name] = lambda *args: None
-    block = re.search(r'\nglobals\n(.*?)\nendglobals', source, re.S)[1]
     defaults = dict(integer=0, string=None, boolean=False, hashtable=None)
-    for line in strip_comments(block).splitlines():
+    blocks = '\n'.join(m[1] for m in re.finditer(r'\nglobals\n(.*?)\nendglobals', source, re.S))
+    for line in strip_comments(blocks).splitlines():
         match = re.fullmatch(r'\s*(?:constant\s+)?(\w+)\s+(array\s+)?(\w+)(?:=(.*))?\s*', line)
         if not match:
             assert not line.strip(), line

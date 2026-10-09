@@ -22,9 +22,12 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler):
+def check(map_path, common, blizzard, compiler, include_life=False):
     source_path = HERE / 'Forsaken-save-codec.j'
-    source = source_path.read_text(encoding='utf-8')
+    source_paths = [source_path]
+    if include_life:
+        source_paths.append(HERE / 'Forsaken-save-life.j')
+    sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
     wct = read_wct(archive.read('war3map.wct'))
@@ -35,7 +38,7 @@ def check(map_path, common, blizzard, compiler):
     texts = [t for t in texts if not any(re.search(r'^\s*library\s+T%s\b' % re.escape(n), t, re.M)
                                         for n in disabled)]
     custom = set()
-    for text in [header]+texts+[source]:
+    for text in [header]+texts+sources:
         for block in GLOBALS_RE.finditer(text.replace('\r\n', '\n')):
             custom.update(n for n, _ in declared(block.group(1)))
     runtime_globals = GLOBALS_RE.search(runtime).group(1)
@@ -44,12 +47,13 @@ def check(map_path, common, blizzard, compiler):
     tail = ('function Trig_MainDeprotected_Actions takes nothing returns nothing\ncall main_old()\nendfunction\n'
             'function main takes nothing returns nothing\ncall Trig_MainDeprotected_Actions()\nendfunction\n'
             'function config takes nothing returns nothing\nendfunction\n')
-    standalone, _ = flatten('', [source], tail='function main takes nothing returns nothing\nendfunction\n'
+    standalone, _ = flatten('', sources, tail='function main takes nothing returns nothing\nendfunction\n'
                              'function config takes nothing returns nothing\nendfunction\n')
-    runtime_probe, _ = flatten(runtime, [source])
-    editor_probe, _ = flatten(header, texts+[source], extra_globals='\n'.join(generated)+'\n', tail=tail)
+    runtime_probe, _ = flatten(runtime, sources)
+    editor_probe, _ = flatten(header, texts+sources, extra_globals='\n'.join(generated)+'\n', tail=tail)
     scratch = Path(tempfile.mkdtemp(prefix='save-codec-compile-', dir=ROOT / 'build'))
-    report = dict(source=identity(source_path), map=identity(map_path), common=identity(common),
+    report = dict(source=identity(source_path), sources=[identity(path) for path in source_paths],
+                  map=identity(map_path), common=identity(common),
                   blizzard=identity(blizzard), compiler=identity(compiler),
                   disabled_editor_libraries=sorted(disabled), checks=[],
                   scope='Compilation probes only; map untouched, no codec wiring or engine execution.')
@@ -73,8 +77,9 @@ def main():
     parser.add_argument('--common', type=Path, required=True)
     parser.add_argument('--blizzard', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, default=ROOT / 'tools/bin/pjass.exe')
+    parser.add_argument('--life', action='store_true', help='include the isolated real/word conversion module')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve())
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

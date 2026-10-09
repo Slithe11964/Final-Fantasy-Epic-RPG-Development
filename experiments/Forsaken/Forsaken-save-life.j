@@ -1,0 +1,111 @@
+library TForsakenSaveLife requires TForsakenSaveCodec
+// Exact binary32 arithmetic prototype. No initializer or gameplay mutation.
+globals
+    integer array FSL_High
+    integer array FSL_Low
+endglobals
+
+function FSL_Real takes integer high,integer low returns real
+    local integer exponent
+    local integer mantissa
+    local integer steps
+    local real result
+    if high<0 or low<0 or high>65535 or low>65535 or high>=32640 or (high==0 and low==0) then
+        return 0.0
+    endif
+    set exponent=high/128
+    set mantissa=ModuloInteger(high,128)*65536+low
+    if exponent==0 then
+        set result=I2R(mantissa)
+        set steps=149
+        loop
+            exitwhen steps==0
+            set result=result/2.0
+            set steps=steps-1
+        endloop
+    else
+        set result=1.0+I2R(mantissa)/8388608.0
+        set steps=exponent-127
+        loop
+            exitwhen steps==0
+            if steps>0 then
+                set result=result*2.0
+                set steps=steps-1
+            else
+                set result=result/2.0
+                set steps=steps+1
+            endif
+        endloop
+    endif
+    return result
+endfunction
+
+function FSL_Pack takes integer pid,real value returns boolean
+    local real scaled=value
+    local integer exponent=127
+    local integer mantissa
+    local integer high
+    local integer low
+    local integer steps=0
+    if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    // Nonpositive, NaN and infinity are not saved item life.
+    if value<=0.0 or value!=value or value/2.0==value then
+        return false
+    endif
+    loop
+        exitwhen scaled<2.0 or steps>=149
+        set scaled=scaled/2.0
+        set exponent=exponent+1
+        set steps=steps+1
+    endloop
+    loop
+        exitwhen scaled>=1.0 or steps>=149
+        set scaled=scaled*2.0
+        set exponent=exponent-1
+        set steps=steps+1
+    endloop
+    if scaled<1.0 or scaled>=2.0 or exponent>254 or exponent< -22 then
+        return false
+    endif
+    // Normalized binary32 has an exact 23-bit integer fraction.
+    set mantissa=R2I((scaled-1.0)*8388608.0)
+    if exponent<=0 then
+        set mantissa=mantissa+8388608
+        set steps=1-exponent
+        loop
+            exitwhen steps==0
+            if ModuloInteger(mantissa,2)!=0 then
+                return false
+            endif
+            set mantissa=mantissa/2
+            set steps=steps-1
+        endloop
+        set exponent=0
+    endif
+    set high=exponent*128+mantissa/65536
+    set low=ModuloInteger(mantissa,65536)
+    // Fail closed if the client arithmetic flushes/changes this encoding.
+    if FSL_Real(high,low)!=value then
+        return false
+    endif
+    set FSL_High[pid]=high
+    set FSL_Low[pid]=low
+    return true
+endfunction
+
+function FSL_Encode takes integer pid,real value returns string
+    if not FSL_Pack(pid,value) then
+        return null
+    endif
+    return FSC_Uint(FSL_High[pid])+FSC_Uint(FSL_Low[pid])
+endfunction
+
+function FSL_CaptureLife takes integer pid,item carried returns string
+    if carried==null or GetItemTypeId(carried)==0 then
+        return null
+    endif
+    return FSL_Encode(pid,GetWidgetLife(carried))
+endfunction
+endlibrary

@@ -65,7 +65,8 @@ without changing permanent identity or granting bagged passive bonuses.
 
 The reference codec represents life as two unsigned16-bit words containing an
 IEEE binary32 value. Python conversion and fractional round trips are tested.
-Exact JASS real conversion is **not implemented or verified**; this is an explicit
-milestone4/5 requirement. Reject nonfinite/nonpositive/unrepresentable life,
+An isolated JASS real/word arithmetic prototype is now implemented and tested;
+see [SAVE_RESTORE_PROTOCOL.md](SAVE_RESTORE_PROTOCOL.md). Actual engine real/API
+behavior is **not verified** and remains a milestone4/5 gate. Reject nonfinite/nonpositive/unrepresentable life,
 invalid binding, unknown required metadata, and occupied duplicate positions
 before gameplay mutation. No runtime save writer is enabled by this audit.

@@ -119,3 +119,7 @@ No real-engine, playable-codec build, restart, multiplayer or transport acceptan
 Next: measured engine execution/work scheduling, exact real capture/default
 resolution, staged restoration/rollback, in-game legacy evidence/account linkage,
 then entry routes and transport. BU remains unused; AS and baseline Z unchanged.
+
+Following foundation: [SAVE_RESTORE_PROTOCOL.md](SAVE_RESTORE_PROTOCOL.md) adds
+the separate JASS real/word module, read-only life capture and reference inventory/
+restore controller. Native flags/backend and engine execution remain gated.

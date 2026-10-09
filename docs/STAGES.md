@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Item-life/reference restore foundation, 2026-10-08 (isolated source/tools/docs):
+JASS binary32 real/word conversion and read-only life capture; reference inventory
+capture, staged restore controller and verified rollback/cleanup quarantine.
+5 life tests (6282 patterns),14 transaction tests (417 injected positions),13
+JASS codec,13 reference,16 migration and13 legacy tests PASS,74 total. Codec+life
+standalone/BT-runtime/BT-editor compile probes PASS; report:
+build/save-codec-compile-otuota82/report.json. Native flag capture/backend and
+engine execution gates remain open. No map changed; BU unused; saving blocked.
+
 Isolated JASS save checkpoint, 2026-10-08 (experimental source/tools/docs only):
 FSV envelope/schema1 sections1–9, per-player accepted/scratch/writer buffers,
 canonical re-encoding and bounded validation.13 JASS differential tests (150

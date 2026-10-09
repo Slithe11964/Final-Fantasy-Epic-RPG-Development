@@ -213,3 +213,11 @@ read-only BT runtime/editor compile probes. See
 [SAVE_JASS_CODEC.md](../../docs/SAVE_JASS_CODEC.md). Real-engine limits, capture,
 restoration/rollback and transport remain pending; the codec is not wired into
 the map, and saving remains blocked.
+
+`Forsaken-save-life.j` adds JASS binary32 real/word conversion and read-only life
+capture. `save_transaction.py` provides reference inventory capture and staged
+restore/recovery orchestration against a future backend contract. Run
+`test_save_life.py` and `test_save_transaction.py`; add `--life` to compilation
+probes. See [SAVE_RESTORE_PROTOCOL.md](../../docs/SAVE_RESTORE_PROTOCOL.md).
+Native flags, inventory capture/restoration and engine limits remain unverified;
+the fault-injection backend is a test model, and saving stays blocked.

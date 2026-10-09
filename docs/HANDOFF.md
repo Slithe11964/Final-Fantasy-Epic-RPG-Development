@@ -2,6 +2,20 @@
 
 ## Save-system continuation — 2026-10-08 (isolated source/tools; no map build)
 
+Latest capture/restore foundation: SAVE_RESTORE_PROTOCOL.md, Forsaken-save-life.j
+and save_transaction.py. JASS real/word conversion plus read-only life capture;
+reference inventory capture and staged restore controller with verified rollback,
+unavailable reservations and post-commit cleanup quarantine. Native inventory/
+flag capture and Warcraft restoration backend remain unimplemented.
+5 life tests (6282 binary32 patterns) and14 capture/transaction tests (417 injected
+failure positions) PASS, plus13 JASS codec,13 reference,16 migration and13 legacy
+tests:74 total. Codec+life standalone/BT-runtime/BT-editor probes PASS with
+extracted libraries; bundled/classic standalone also PASS. Evidence:
+build/save-codec-compile-otuota82/report.json. No map writes/build integration;
+BT unchanged, BU unused, saving blocked. Native execution/work scheduling,
+droppability getter/journal verification, reviewed defaults and native rollback
+remain required. Model success does not establish Warcraft restoration.
+
 Latest isolated source checkpoint: `SAVE_JASS_CODEC.md` and
 `experiments/Forsaken/Forsaken-save-codec.j` implement FSV envelope/schema1
 sections1–9 in JASS; per-player accepted/scratch/writer buffers, profile checks,
