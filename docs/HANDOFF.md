@@ -1,8 +1,24 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Session recovery — 2026-10-09 (isolated module; no map build)
+
+Latest checkpoint: SAVE_SESSION_RECOVERY.md and Forsaken-save-session.j. Talent
+choices preserve typed presence/value across all 23 jobs; six skill slots,
+partial monographs and prior accepted codec state restore with readback. These
+choices remain per-game, never serialized. Independent guards retain journals
+and block staging/codec publication after recovery begins. Read-only hero/table
+identities refuse changes; writer Abort remains allowed for cleanup/retry.
+18 new tests plus all 201 prior checks PASS (219 total), including all 299 talent
+write faults, player 7, unknown optional sections and all 24 release orders.
+Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-jzm76o6b/report.json. Wider combat/body effects, owned
+new-unit cleanup/reference promotion, gameplay guards/scheduling and full load/
+publication remain open. Cooldown refresh permitted. BT unchanged, BU unused,
+saving blocked; native projections and full engine acceptance remain required.
+
 ## Original hero recovery — 2026-10-09 (isolated module; no map build)
 
-Latest checkpoint: SAVE_HERO_RECOVERY.md and Forsaken-save-heroes.j. Original
+Previous checkpoint: SAVE_HERO_RECOVERY.md and Forsaken-save-heroes.j. Original
 job/Freelancer/Gaya/active hero XP, levels, skill points, ability ranks/instances
 and base attributes restore with readback; release also checks total primary
 stats. Aliased references restore once. FPG now captures actual cached owners,

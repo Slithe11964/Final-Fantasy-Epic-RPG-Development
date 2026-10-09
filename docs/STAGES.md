@@ -1,5 +1,16 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Session recovery, 2026-10-09 (isolated modules/tools/docs): talent typed presence/
+values, six selected skills, partial monographs and prior accepted codec state
+restore with exact readback. Read-only hero/table references refuse changes.
+Independent session guards block staging/codec publication until verified release;
+writer Abort allows owned cleanup/retry. 18 new tests plus all 201 prior checks
+PASS (219 total), including all 299 talent write faults and 24 release orders.
+Standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-jzm76o6b/report.json. See SAVE_SESSION_RECOVERY.md.
+No map build: BT unchanged, BU unused, saving blocked. Talents/partial monographs
+remain unsaved; cooldown refresh permitted. Full controller/engine gates remain.
+
 Original hero recovery, 2026-10-09 (isolated modules/tools/docs): same-unit job/
 Freelancer/Gaya XP, levels, ability ranks/instances, skill points and base attribute
 restoration, with total primary-stat verification before release. Actual cached

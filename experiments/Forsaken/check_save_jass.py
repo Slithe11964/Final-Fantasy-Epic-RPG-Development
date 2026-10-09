@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False):
+    include_heroes = include_heroes or include_session
     include_progression = include_progression or include_heroes
     include_recovery = include_recovery or include_progression
     source_path = HERE / 'Forsaken-save-codec.j'
@@ -41,6 +42,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-progression.j')
     if include_heroes:
         source_paths.append(HERE / 'Forsaken-save-heroes.j')
+    if include_session:
+        source_paths.append(HERE / 'Forsaken-save-session.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -64,8 +67,11 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
     # Standalone only: declarations come from the actual map, never guessed stubs.
     isolated_globals = {name for source in sources for block in GLOBALS_RE.finditer(source)
                         for name, _ in declared(block.group(1))}
-    external = set(re.findall(r'\budg_\w+\b', '\n'.join(sources))) - isolated_globals
-    external_lines = {name: line for name, line in declared(runtime_globals) if name in external}
+    runtime_declarations = dict(declared(runtime_globals))
+    used_tokens = set(re.findall(r'\b[A-Za-z_]\w*\b', '\n'.join(sources)))
+    external = ((used_tokens & runtime_declarations.keys()) |
+                set(re.findall(r'\budg_\w+\b', '\n'.join(sources)))) - isolated_globals
+    external_lines = {name: line for name, line in runtime_declarations.items() if name in external}
     if external - external_lines.keys():
         raise ValueError('missing runtime globals: '+str(sorted(external - external_lines.keys())))
     standalone, _ = flatten('', sources, extra_globals='\n'.join(external_lines.values())+'\n', tail='function main takes nothing returns nothing\nendfunction\n'
@@ -105,8 +111,9 @@ def main():
     parser.add_argument('--recovery', action='store_true', help='include all modules and original-item quarantine/recovery')
     parser.add_argument('--progression', action='store_true', help='include original items and live progression table/force recovery')
     parser.add_argument('--heroes', action='store_true', help='include original hero progression, ability ranks and stat readback')
+    parser.add_argument('--session', action='store_true', help='include talent/session and prior accepted-code recovery')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

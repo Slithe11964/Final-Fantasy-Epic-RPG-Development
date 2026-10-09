@@ -272,3 +272,13 @@ Run `test_save_heroes.py`; compile with `--heroes`. See
 [SAVE_HERO_RECOVERY.md](../../docs/SAVE_HERO_RECOVERY.md). Wider effects/session
 state, owned new units and the full controller remain open. No saving enabled;
 cooldown refresh remains permitted.
+
+`Forsaken-save-session.j` journals/restores talent typed presence and values,
+six selected skills, partial monographs and prior accepted codec state. Choices
+remain per-game and are never serialized. Read-only hero/table identities refuse
+changes; independent session guards block staging/codec publication after a
+recovery attempt. Writer Abort remains allowed for cleanup/retry. Run
+`test_save_session.py`; compile with `--session`. See
+[SAVE_SESSION_RECOVERY.md](../../docs/SAVE_SESSION_RECOVERY.md). Wider effects,
+owned new units, gameplay exclusion/scheduling and the full controller remain
+open; no map integration or saving enabled.

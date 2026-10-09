@@ -105,3 +105,8 @@ AS/Z unchanged, BU unused, exports blocked. Next: remaining session/effect state
 owned unit allocation and reference promotion, live policy/default/filler objects,
 synchronized containment/scheduling and the full capture/load/commit controller.
 Real restart/multiplayer/transport acceptance remains required.
+
+Following checkpoint: [SAVE_SESSION_RECOVERY.md](SAVE_SESSION_RECOVERY.md) adds
+talent choices, selected skills, partial monographs and accepted-code recovery.
+It checks original hero references without replacing them; body/combat effects,
+owned new units and the complete controller remain open.

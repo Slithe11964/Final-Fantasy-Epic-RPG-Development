@@ -3,6 +3,7 @@ library TForsakenSaveJournal requires TForsakenSaveLife
 globals
     boolean array FSJ_Ready
     boolean array FSJ_Busy
+    boolean array FSJ_SessionPending
     boolean array FSJ_HeroPending
     boolean array FSJ_ProgressionPending
     boolean array FSJ_RecoveryPending
@@ -241,7 +242,7 @@ function FSJ_Release takes integer pid returns boolean
     if not FSC_PlayerValid(pid) then
         return false
     endif
-    if FSJ_RecoveryPending[pid] or FSJ_ProgressionPending[pid] or FSJ_HeroPending[pid] then
+    if FSJ_RecoveryPending[pid] or FSJ_ProgressionPending[pid] or FSJ_HeroPending[pid] or FSJ_SessionPending[pid] then
         return false
     endif
     if not FSJ_Verify(pid) then
