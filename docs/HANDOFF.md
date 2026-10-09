@@ -1,8 +1,23 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Prepared abilities/equipment — 2026-10-09 (isolated modules; no map build)
+
+Latest checkpoint: SAVE_EQUIPMENT_RESTORE.md, Forsaken-save-effects.j and
+Forsaken-save-equipment.j. Classified staged ability lists (max16), verified
+bag-passive removal, retained active/marker abilities, complete-batch preparation
+before placement and exact equipment readback. A lone Ring5 uses a tracked
+reviewed inert ring filler; no such filler is installed in BT yet. Ability policy
+loader/defaults also remain future integration work; tests use synthetic inputs.
+Original equipment refuses before mutation; quarantine/full rollback and actual
+stats/cooldowns remain unimplemented/unverified. No guard/routes/publication.
+19 new tests and all 106 previous tests PASS (125 total), including a full modeled
+57-item batch. Standalone/BT-runtime/BT-editor compilation PASS with extracted
+libraries: build/save-codec-compile-h6pyfqj1/report.json. BT unchanged, BU unused,
+saving blocked. Native original/session journal and quarantine/recovery are next.
+
 ## Item journal/storage placement — 2026-10-09 (isolated modules; no map build)
 
-Latest checkpoint: SAVE_ITEM_JOURNAL.md, Forsaken-save-journal.j and
+Previous checkpoint: SAVE_ITEM_JOURNAL.md, Forsaken-save-journal.j and
 Forsaken-save-position.j. Read-only journal preserves actual handles and metadata
 across all 57 positions, both rings and sparse gaps. Requires an external verified
 droppability capability; actual original flags remain an engine gate. House owner

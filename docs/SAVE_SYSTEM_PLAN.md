@@ -2,7 +2,8 @@
 
 Status: identity foundation, detached legacy decoder, logical progression profile,
 reference migration/equality reports, isolated JASS codec, life/native staging,
-item journal and storage placement primitives implemented, 2026-10-09. Runtime saving remains
+item journal, prepared abilities and storage/equipment placement primitives
+implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
@@ -223,3 +224,10 @@ compilation passes. Read-only 57-position journal and exact 48-position storage
 placement implemented, with tracked filler cleanup. Native equipment, complete
 session/progression journal, original quarantine/rollback and publication remain
 open. Actual getter behavior and gameplay guards still need engine integration.
+
+Prepared abilities/equipment: [SAVE_EQUIPMENT_RESTORE.md](SAVE_EQUIPMENT_RESTORE.md).
+19 new tests plus all 106 previous tests PASS (125 total); full modeled 57-item
+batch and standalone/BT runtime/editor compilation pass. Original quarantine,
+session/progression journal and verified rollback remain open. Live policy/default
+loader and reviewed inert ring filler are not installed; actual stat/cooldown
+and engine behavior remain acceptance gates. No entry route/publication enabled.

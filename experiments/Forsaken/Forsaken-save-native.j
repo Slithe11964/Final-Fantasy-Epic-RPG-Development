@@ -20,6 +20,11 @@ globals
     integer array FSN_PlacedHolder
     integer array FSN_PlacedSlot
     item array FSN_AuxItem
+    boolean array FSN_EffectsReady
+    boolean array FSN_EffectsStored
+    integer array FSN_EffectCount
+    integer array FSN_EffectId
+    integer array FSN_EffectRole
 endglobals
 
 function FSN_Begin takes integer pid returns boolean
@@ -105,6 +110,7 @@ endfunction
 function FSN_Cleanup takes integer pid returns boolean
     local integer slot=0
     local integer index
+    local integer abilityIndex
     local boolean clean=true
     if not FSN_CleanupAux(pid) then
         set clean=false
@@ -130,6 +136,16 @@ function FSN_Cleanup takes integer pid returns boolean
             endif
         endif
         if FSN_Item[index]==null then
+            set abilityIndex=0
+            loop
+                exitwhen abilityIndex>=FSN_EffectCount[index]
+                set FSN_EffectId[index*16+abilityIndex]=0
+                set FSN_EffectRole[index*16+abilityIndex]=0
+                set abilityIndex=abilityIndex+1
+            endloop
+            set FSN_EffectCount[index]=0
+            set FSN_EffectsReady[index]=false
+            set FSN_EffectsStored[index]=false
             set FSN_PlacedItem[index]=null
             set FSN_PlacedUnit[index]=null
             set FSN_PlacedOwner[index]=null

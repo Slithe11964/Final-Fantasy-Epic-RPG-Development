@@ -237,3 +237,12 @@ through cleanup. Equipment refuses until session/passive rollback exists. Run
 `test_save_position.py`; compile with `check_save_jass.py --position`. See
 [SAVE_ITEM_JOURNAL.md](../../docs/SAVE_ITEM_JOURNAL.md). Native quarantine/full
 rollback, progression, guards and publication remain open; saving stays blocked.
+
+`Forsaken-save-effects.j` classifies/verifies staged ability sets and removes
+stored passives without removing active abilities. Storage now requires prepared
+effects. `Forsaken-save-equipment.j` places prepared gear in exact equipment
+positions, with tracked inert-ring filler checks for a lone alternate ring.
+Run `test_save_equipment.py`; compile all modules with `--equipment`. See
+[SAVE_EQUIPMENT_RESTORE.md](../../docs/SAVE_EQUIPMENT_RESTORE.md). Live policy
+and filler objects, original quarantine/session rollback and native acceptance
+remain open; no map integration or saving enabled.

@@ -6,6 +6,10 @@ placement primitives. The staging module also tracks temporary slot fillers.
 No initializer, command, map integration or publication is added. Saving remains
 blocked. Full native quarantine, rollback and load restoration are unfinished.
 
+Following checkpoint: [SAVE_EQUIPMENT_RESTORE.md](SAVE_EQUIPMENT_RESTORE.md)
+adds mandatory prepared ability sets to storage placement and a separate exact
+equipment primitive. Original equipment still refuses until safely quarantined.
+
 ## Journal
 
 `FSJ_Capture(pid, hero, gaya, house, dropGetterVerified)` records all 57 positions:

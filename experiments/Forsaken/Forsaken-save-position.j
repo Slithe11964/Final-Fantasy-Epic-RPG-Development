@@ -1,10 +1,12 @@
-library TForsakenSavePosition requires TForsakenSaveNative
+library TForsakenSavePosition requires TForsakenSaveEffects
 // Placement primitive only. Caller must suppress gameplay hooks and journal originals.
 // Equipment is refused until passive/cooldown rollback is implemented.
 
 function FSP_At takes unit holder,integer kind,integer slot returns item
     if kind==2 then
         return UnitItemInBagSlot(holder,slot)
+    elseif kind==3 then
+        return UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(slot))
     endif
     return UnitItemInSlot(holder,slot)
 endfunction
@@ -20,6 +22,9 @@ function FSP_Check takes integer pid,integer index returns boolean
         return false
     endif
     if FSP_At(FSN_PlacedUnit[index],FSN_PlacedHolder[index],FSN_PlacedSlot[index])!=FSN_PlacedItem[index] then
+        return false
+    endif
+    if not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(FSN_PlacedHolder[index]==2) or not FSA_Check(index) then
         return false
     endif
     return IsItemOwned(FSN_PlacedItem[index]) and not IsItemVisible(FSN_PlacedItem[index]) and FSN_CheckMetadata(pid,index)
@@ -58,7 +63,8 @@ function FSP_Place takes integer pid,integer ordinal,unit holder,integer kind,in
         return FSN_Fail(pid)
     endif
     set index=pid*57+ordinal
-    if not FSN_Check(pid,index) then
+    set FSN_PlacedOwner[index]=GetOwningPlayer(holder)
+    if not FSN_Check(pid,index) or not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(kind==2) or not FSA_BatchReady(pid) then
         return FSN_Fail(pid)
     endif
     // Fill earlier empty quick/bag positions so UnitAddItem reaches the exact
@@ -99,7 +105,6 @@ function FSP_Place takes integer pid,integer ordinal,unit holder,integer kind,in
     set FSN_PlacedUnit[index]=holder
     set FSN_PlacedHolder[index]=kind
     set FSN_PlacedSlot[index]=slot
-    set FSN_PlacedOwner[index]=GetOwningPlayer(holder)
     set carried=null
     if not FSP_Check(pid,index) then
         return FSN_Fail(pid)
@@ -129,6 +134,9 @@ function FSP_Verify takes integer pid returns boolean
     loop
         exitwhen ordinal>=FSN_Count[pid]
         set index=pid*57+ordinal
+        if not FSN_EffectsReady[index] or not FSA_Check(index) then
+            return FSN_Fail(pid)
+        endif
         if FSN_PlacedItem[index]==FSN_Item[index] then
             if not FSP_Check(pid,index) then
                 return FSN_Fail(pid)

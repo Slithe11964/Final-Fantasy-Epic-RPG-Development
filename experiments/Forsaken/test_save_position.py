@@ -7,6 +7,7 @@ from test_save_native import NATIVE, World
 
 JOURNAL = SOURCE.with_name('Forsaken-save-journal.j')
 POSITION = SOURCE.with_name('Forsaken-save-position.j')
+EFFECTS = SOURCE.with_name('Forsaken-save-effects.j')
 SPACER = 777
 
 
@@ -85,13 +86,17 @@ class InventoryWorld(World):
             UnitItemInEquipmentSlot=lambda u, s: self.at(u, 'equip', s),
             ConvertLoadoutSlot=lambda s: s, GetUnitX=lambda u: 0., GetUnitY=lambda u: 0.,
             UnitAddItem=self.add, UnitDropItemSlot=self.drop_slot)
+        # These storage tests model items with no abilities. Equipment tests supply
+        # real classified ability lists and injected ability-native failures.
+        env.update(BlzGetItemAbilityByIndex=lambda i,s:None,BlzGetItemAbility=lambda i,a:None,
+                   LoadInteger=lambda table,p,k:table.get((p,k),0))
         return env
 
 
 class PositionTests(unittest.TestCase):
     def setUp(self):
         self.w = InventoryWorld()
-        self.e = engine('\n'.join(p.read_text() for p in [LIFE, NATIVE, JOURNAL, POSITION]), self.w.natives())
+        self.e = engine('\n'.join(p.read_text() for p in [LIFE, NATIVE, JOURNAL, EFFECTS, POSITION]), self.w.natives())
         self.hero, self.gaya, self.house = self.w.unit(bag=30), self.w.unit(), self.w.unit(owner=9)
 
     def original(self, unit, kind, slot, raw=1234):
@@ -111,6 +116,8 @@ class PositionTests(unittest.TestCase):
 
     def place(self, kind, slot, unit=None):
         unit = unit or {1:self.hero, 2:self.hero, 4:self.gaya, 5:self.house}.get(kind, self.hero)
+        if self.e['FSN_State'][0]==1 and not self.e['FSN_EffectsReady'][0]:
+            self.assertTrue(self.e['FSA_Prepare'](0,0,kind==2,{}))
         return self.e['FSP_Place'](0, 0, unit, kind, slot, SPACER)
 
     def assert_no_allocations(self):
@@ -244,6 +251,7 @@ class PositionTests(unittest.TestCase):
             self.assertTrue(self.e['FSN_Begin'](pid))
             for ordinal in range(48):
                 self.assertTrue(self.e['FSN_Stage'](pid,1000+ordinal,127,ordinal%2==1,ordinal%8,0x4311,0x4000,0.,0.))
+                self.assertTrue(self.e['FSA_Prepare'](pid,ordinal,6<=ordinal<36,{}))
             ordinal=0
             for unit,kind,size in [(hero,1,6),(hero,2,30),(gaya,4,6),(house,5,6)]:
                 for slot in range(size):

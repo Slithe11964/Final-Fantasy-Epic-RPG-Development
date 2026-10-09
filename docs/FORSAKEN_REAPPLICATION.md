@@ -41,10 +41,11 @@ Get-FileHash -Algorithm SHA256 release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/test_save_transaction.py
 & $ffPython experiments/Forsaken/test_save_native.py
 & $ffPython experiments/Forsaken/test_save_position.py
+& $ffPython experiments/Forsaken/test_save_equipment.py
 & $ffPython experiments/Forsaken/measure_save_vnext.py
 & $ffPython experiments/Forsaken/test_forsaken.py
 # Read-only codec compile probes; use reviewed extracted library paths.
-& $ffPython experiments/Forsaken/check_save_jass.py --position --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x --common ../war3.w3mod/scripts/common.j --blizzard ../war3.w3mod/scripts/blizzard.j
+& $ffPython experiments/Forsaken/check_save_jass.py --equipment --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x --common ../war3.w3mod/scripts/common.j --blizzard ../war3.w3mod/scripts/blizzard.j
 # Only when an actual new experimental map is needed; check BU is still unused.
 & $ffPython experiments/Forsaken/build_forsaken.py --stage BU --base release/FFERPG_0.9.7.3-r16-stageAS.w3x --classic release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/save_registry.py --mapping release/Forsaken/gear-slots-BU.json

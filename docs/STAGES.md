@@ -1,5 +1,14 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Prepared abilities/equipment, 2026-10-09 (isolated modules/tools/docs): mandatory
+classified ability preparation and verified bag-passive removal; exact equipment
+placement with alternate-ring filler checks. Original equipment refuses; native
+quarantine/session rollback remain open. Inert ring object and production policy
+loader are not installed. 19 new tests plus all 106 previous tests PASS (125 total),
+including a full modeled 57-item batch; standalone/BT runtime/editor compilation
+PASS. Report: build/save-codec-compile-h6pyfqj1/report.json. BT unchanged,
+BU unused, saving blocked; no native-engine or full restoration acceptance claim.
+
 Original-item journal/storage placement, 2026-10-09 (isolated modules/tools/docs):
 read-only actual-handle/metadata journal for all 57 positions and exact placement
 for 48 storage positions, with owned filler cleanup/retry. Equipment placement
