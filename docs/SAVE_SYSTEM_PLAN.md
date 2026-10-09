@@ -292,3 +292,14 @@ regressions and 2,000 legacy codec cases also PASS. 517 original archive members
 and all original editor source are preserved. BT/shared sources unchanged.
 Human native/operation-limit testing can start; full character restoration,
 progression/profile capture, file output and multiplayer transport remain open.
+
+Reversible hero references: [SAVE_REFERENCE_SWITCH.md](SAVE_REFERENCE_SWITCH.md).
+15 new tests and all 249 earlier checks PASS (264), including 52 reference-write
+fault cases. Captures 26 references with typed presence, switches only owned
+replacement roles, and restores original references before replacement cleanup.
+Original heroes remain alive; targets stay hidden/neutral/paused/invulnerable/empty.
+Standalone/BT runtime/editor compilation PASS,
+build/save-codec-compile-2seobnrz/report.json. No activation/commit or map build.
+Prepared-state controller, body/combat effects, ownership/activation, synchronized
+hooks, native scheduling, file/restart and multiplayer acceptance remain open.
+BT/BU unchanged, BV unused, full character saving/loading remains blocked.

@@ -298,3 +298,11 @@ capture all 57 live positions, test the inventory codec and compare snapshots;
 they never load a character or export a usable save. Run `test_save_probe.py`.
 See [SAVE_ENGINE_TEST.md](../../docs/SAVE_ENGINE_TEST.md) for human tests and
 limits. Existing save exports remain blocked; full controller work continues.
+
+Forsaken-save-references.j journals 26 hero references with typed handle presence,
+plans only owned replacement roles, and switches/reverses references with native
+readback. Independent guards retain recovery state and prevent premature cleanup.
+Replacement heroes remain hidden and empty; no activation or successful commit.
+Run test_save_references.py and check_save_jass.py --references with the existing
+BT/native-library arguments. 15 new tests plus 249 earlier checks PASS (264).
+See ../../docs/SAVE_REFERENCE_SWITCH.md for recovery ordering and open work.

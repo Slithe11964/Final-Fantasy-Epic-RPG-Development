@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False):
+    include_units = include_units or include_references
     include_session = include_session or include_units
     include_heroes = include_heroes or include_session
     include_progression = include_progression or include_heroes
@@ -47,6 +48,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-session.j')
     if include_units:
         source_paths.append(HERE / 'Forsaken-save-units.j')
+    if include_references:
+        source_paths.append(HERE / 'Forsaken-save-references.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -116,8 +119,9 @@ def main():
     parser.add_argument('--heroes', action='store_true', help='include original hero progression, ability ranks and stat readback')
     parser.add_argument('--session', action='store_true', help='include talent/session and prior accepted-code recovery')
     parser.add_argument('--units', action='store_true', help='include owned replacement-unit allocation and cleanup')
+    parser.add_argument('--references', action='store_true', help='include reversible staged hero reference switching')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])

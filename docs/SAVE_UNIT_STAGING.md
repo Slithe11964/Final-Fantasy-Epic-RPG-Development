@@ -99,3 +99,8 @@ batch must currently be aborted. Cooldown refresh remains permitted.
 
 BT SHA256 remains
 `4a7cd22fe195ffec8740ff418c0d02ea17d6539d275348962f7609a34aea74b2`.
+
+Following checkpoint: [SAVE_REFERENCE_SWITCH.md](SAVE_REFERENCE_SWITCH.md) adds
+reversible publication of owned replacement references and restores originals
+before this module can clean up published units. It adds no ownership transfer,
+activation or successful-load commit. BT/BU remain unchanged.

@@ -1,8 +1,21 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Reversible hero references — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_REFERENCE_SWITCH.md and Forsaken-save-references.j.
+Captures 26 live/cache references and typed presence, plans owned replacements,
+switches with readback and restores originals before replacement cleanup.
+Independent guards survive other journal release. Original heroes stay alive;
+targets remain hidden/neutral/paused/invulnerable/empty. No activation or commit.
+15 new tests plus all 249 earlier checks PASS (264), including 52 reference-write
+fault cases. Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-2seobnrz/report.json. Body/combat effects, prepared-state
+controller, ownership/activation, synchronized hooks and native scheduling remain
+open. BT/BU unchanged, BV unused, full saving/loading still blocked.
+
 ## First engine diagnostic — 2026-10-09 (private map BU)
 
-Latest checkpoint: SAVE_ENGINE_TEST.md, Forsaken-save-probe.j and
+Previous checkpoint: SAVE_ENGINE_TEST.md, Forsaken-save-probe.j and
 build_save_probe.py. BU adds -savecheck/-saveverify for live 57-position inventory
 capture, native metadata checks, codec round trip and unchanged/changed readback.
 Only a tracked temporary fGap receives flag setters/deletion; no original item
@@ -12,8 +25,9 @@ tests plus all 239 prior save-system checks PASS (249). Mandatory map gates,
 96 repository tests and 2,000 legacy codec cases also PASS. See the report beside
 the map for final hashes and preserved archive members. Canonical sources/BT
 unchanged; BU is now the private diagnostic, BV next. Saving stays blocked.
-Human engine acceptance is pending. Next: reference promotion/reversal, effects
-and complete controller; prioritize BU's native/operation-limit findings.
+Human tests now include PASS with 1, 19 and 18 items, boots-move CHANGED and
+explicit check/sell-8-Nethril/verify CHANGED. See SAVE_ENGINE_TEST.md for limits
+and the capture-failure/retry observation. Full load acceptance remains open.
 
 ## Owned replacement-unit staging — 2026-10-09 (isolated; no map build)
 

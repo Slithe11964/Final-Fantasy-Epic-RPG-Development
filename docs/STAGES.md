@@ -1,5 +1,12 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: reversible hero-reference journal captures 26
+positions, switches owned staged replacements and restores originals before
+cleanup. No activation/commit or map build. 15 new tests plus all 249 earlier
+checks PASS (264), including 52 write-fault cases; standalone/BT runtime/editor
+compilation PASS (build/save-codec-compile-2seobnrz/report.json).
+See SAVE_REFERENCE_SWITCH.md. BT/BU unchanged, BV unused; full saves blocked.
+
 BU, 2026-10-09 (private inventory/codec engine diagnostic): BT-based map with
 -savecheck/-saveverify, incremental 57-position native capture/readback and codec
 round trip, invalid-input rejection and watchdog. No full character load or usable
