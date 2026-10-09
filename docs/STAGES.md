@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Isolated checkpoint, 2026-10-09: accepted normal-job profile/preparation bridge.
+Preserves enhanced-mastery sentinel and base bonuses; below50 resets/refunds,
+50+ learns four rank11 skills/ultimate6. Unknown jobs and optional/evidence data
+remain preserved without materialization. 12 new and 53 focused regression checks
+PASS; standalone/BT runtime/editor compile PASS:
+build/save-codec-compile-zgse3g26/report.json. See SAVE_JOB_POLICY.md, including
+future cap150/headroom999 and the required separate level/mastery schema.
+XP/growth evidence, remaining effects/Gaya/Freelancer/controller/inventory still
+open. No map build or usable save/load; BT/BU unchanged, BV unused.
+
 Isolated checkpoint, 2026-10-09: reversible empty replacement-pair exposure.
 Original pair flag protection and replacement poses verify before exposure;
 containment/readback precedes all downstream disposal. Original flags recover

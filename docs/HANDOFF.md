@@ -1,8 +1,25 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Saved normal-job policy — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_JOB_POLICY.md, save_hero_policy.py and
+Forsaken-save-job-policy.j. Validates accepted logical profile/account, retains
+unknown/evidence data and maps reviewed normal jobs to prepared core/mastery
+plans. Below50 resets/refunds; four rank11 skills and rank6 ultimate at50+.
+Existing saved100 sentinel remains native99/mastery4/+100 base attributes;
+saved99 is mastery3/+50, 50–98 mastery2/+20. Native XP/natural grown stats still
+require reviewed caller inputs; no curve or rounding guessed. 12 new tests and
+53 focused regressions PASS; all three compile probes PASS:
+build/save-codec-compile-zgse3g26/report.json. Gaya/Freelancer, derived combat
+effects, native evidence/controller/inventory and full commit remain open.
+Future user requirement: cap150 with format headroom999; separate actual level
+and mastery tier in a new versioned schema, preserving old sentinel meaning.
+No level-cap change or engine999 acceptance claimed. BT/BU unchanged, BV unused;
+full saving/loading remains blocked.
+
 ## Reversible pair exposure — 2026-10-09 (isolated; no map build)
 
-Latest checkpoint: SAVE_ACTIVATION.md and Forsaken-save-activation.j. Protects
+Previous checkpoint: SAVE_ACTIVATION.md and Forsaken-save-activation.j. Protects
 the original active/Gaya pair, verifies replacement positions, then exposes the
 prepared empty pair with readback. Recontainment restores staged poses before
 prepared/ownership/reference/unit cleanup; original body recovery restores flags.

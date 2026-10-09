@@ -339,3 +339,10 @@ Independent guards retain interrupted exposure; no successful commit is enabled.
 Run test_save_activation.py and check_save_jass.py --activation with existing
 BT/native-library arguments. 12 new plus 308 prior checks PASS (320). See
 ../../docs/SAVE_ACTIVATION.md for controller exclusion and remaining integration.
+
+save_hero_policy.py and Forsaken-save-job-policy.j resolve accepted normal-job
+levels into contained core/mastery plans without XP/growth guesses. All saved
+schema1 meanings, including enhanced mastery100→native99, remain intact. Run
+test_save_hero_policy.py and compile --activation --job-policy. 12 new tests and
+53 focused regressions PASS; three compile probes PASS. SAVE_JOB_POLICY.md records
+remaining native evidence/effects and future cap150/headroom999 schema planning.

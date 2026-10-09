@@ -31,6 +31,10 @@ and refund available skill points on successful load. At mastery (level50+),
 four regular skills are rank11 and the ultimate rank6. Failed-load recovery still
 restores original per-game choices/points. These are load defaults, not durable
 per-skill allocations. Freelancer/Gaya policy is handled separately.
+Future level requirement (2026-10-09): allow a later cap150, with save-format
+headroom for999. Separate actual level from mastery tier in a new reviewed job
+schema; migrate the existing value100 sentinel to native level99/tier4 instead
+of changing its meaning. Engine/cap/XP/growth/transport acceptance remains required.
 
 Keep E/F and G/H meanings, item eligibility, account/owner restrictions, difficulty,
 Speedrun and Hardcore rules, load window/once-per-game rules, jobs/mastery,
@@ -355,3 +359,13 @@ The module still requires synchronized gameplay exclusion. Profile translation,
 prepared inventory integration, spawn/pathing policy, scheduling and full
 commit/file/restart/multiplayer acceptance remain open. BT/BU unchanged, BV unused;
 full new saves remain blocked.
+
+Accepted normal-job translation: [SAVE_JOB_POLICY.md](SAVE_JOB_POLICY.md).
+The detached profile resolves reviewed job identities while retaining unknown
+records and original evidence. The native planning bridge preserves mastery
+markers/base bonuses and user skill defaults, using caller-reviewed XP/grown
+attributes without guesses. 12 new tests and 53 focused regressions PASS; all
+three compile probes PASS, build/save-codec-compile-zgse3g26/report.json.
+Gaya/Freelancer and remaining derived effects/native evidence/controller/item
+integration remain open. Future caps require separate actual-level/mastery-tier
+records before relaxing schema1 limits. No map build; full saves remain blocked.
