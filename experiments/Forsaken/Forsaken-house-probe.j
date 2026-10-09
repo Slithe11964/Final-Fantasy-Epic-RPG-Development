@@ -136,12 +136,30 @@ function FHT_Cleanup takes integer pid returns boolean
     return clean
 endfunction
 
+function FHT_YesNo takes boolean value returns string
+    if value then
+        return "yes"
+    endif
+    return "no"
+endfunction
+
 function FHT_Finish takes integer pid,boolean passed,string step returns nothing
     local boolean clean
     local boolean originals
     local boolean released=false
+    local string nativeError=FSN_LastError[pid]
+    local string detail
+    if nativeError==null or nativeError=="" then
+        set nativeError="none recorded"
+    endif
     call FHT_Trace(pid,"temporary cleanup")
     set clean=FHT_Cleanup(pid)
+    // Some removals become observable after the engine processes a frame.
+    // Keep owned handles and the full trigger guard until the second readback.
+    if not clean and not FHT_WatchdogRecovering then
+        call FHT_Trace(pid,"deferred cleanup readback")
+        set clean=FHT_Cleanup(pid)
+    endif
     call FHT_Trace(pid,"original inventory readback")
     set originals=FSJ_Verify(pid)
     if clean and originals then
@@ -156,14 +174,15 @@ function FHT_Finish takes integer pid,boolean passed,string step returns nothing
     endif
     set FHT_Busy=false
     set FHT_Player=-1
+    set detail=" [native: "+nativeError+"; cleanup="+FHT_YesNo(clean)+"; originals="+FHT_YesNo(originals)+"; release="+FHT_YesNo(released)+"]"
     if passed and clean and originals and released then
         call FHT_Message(pid,"PASS: six exact house slots, quantities0/120/127, binding, life and flags; temporary cleanup verified; original inventory unchanged.")
     elseif clean and originals and released and step=="cleanup retry" then
         call FHT_Message(pid,"PASS: temporary cleanup verified; original inventory unchanged.")
     elseif clean and originals and released then
-        call FHT_Message(pid,"FAIL at "+step+"; temporary cleanup verified; original inventory unchanged.")
+        call FHT_Message(pid,"FAIL at "+step+"; temporary cleanup verified; original inventory unchanged."+detail)
     else
-        call FHT_Message(pid,"FAIL at "+step+"; cleanup or original readback needs attention. Use -savehousecleanup; do not save this test session.")
+        call FHT_Message(pid,"FAIL at "+step+"; cleanup or original readback needs attention. Use -savehousecleanup; do not save this test session."+detail)
     endif
 endfunction
 

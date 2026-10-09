@@ -1,5 +1,34 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+BZ private item-property diagnostic: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBZ.w3x
+SHA256: b64570f7cf5818ab9059b6e951725a5c86a950ca229dc366ba1672a68c227b89
+Scratch: build/SaveProbeBZ-4xm7i_iz/FFERPG; stageBZ-ct7kzsux.
+Mandatory build gates,96 repository tests and2,000 codec cases PASS.
+46 focused probe/native/placement tests PASS after correcting diagnostic null-string
+formatting and running the compiler test outside the restricted sandbox.
+Three dependency compile probes PASS;20 input hashes/CRLF match.517 other archive
+members and original editor source preserved; all nine private input hashes match.
+Human gate: fresh BZ session, -savecheck PASS, -savehousecheck; send final result
+including [native: ...; cleanup=...; originals=...; release=...].
+BY engine: no crash, item0 metadata failed; manual cleanup then PASS/originals unchanged.
+Exact item failure remains unresolved. Full character load/save stays blocked; CA next unused.
+
+BY engine result and precise item failure diagnostics — 2026-10-09.
+BY no longer crashed. Human screenshot reached STEP10 trigger restoration but
+reported FAIL at item allocation / metadata0. This is NOT all six-item stages:
+STEP7 was first-item metadata,8 cleanup,9 originals,10 guard restoration.
+Human -savehousecleanup then PASSed all4 recovery steps: temporary cleanup
+verified and original inventory unchanged. Full house cargo acceptance remains open.
+BZ keeps strict item checks and records FSN_LastError before failure cleanup.
+Failure output names the property/native and separates cleanup/originals/release.
+When cleanup is unverified, one guarded deferred readback follows a half-second
+frame yield; unresolved handles remain retained. Timer recovery never sleeps.
+Tests cover constant droppable getter values, clamped life and deferred house
+removal. No getter workaround or weakened acceptance was introduced.
+Three compile probes PASS: build/save-codec-compile-q31pkmp6/report.json.
+BZ human gate is the final House test result, particularly [native: ...].
+Full character saving/loading stays blocked; CA next unused after BZ.
+
 BY build evidence: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBY.w3x
 SHA256: ff6ae8d961d131347fb4b65e430bef09bb8b02f74a01e78e48e271da5fd57b2d
 Scratch: build/SaveProbeBY-wfm0w4uf/FFERPG; stageBY-oo65vhfw.

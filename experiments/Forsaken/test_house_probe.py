@@ -48,6 +48,27 @@ class HouseProbeTests(unittest.TestCase):
         self.assertIs(self.house['quick'][5],self.original);self.assertEqual(self.original['raw'],'orig')
         self.assertFalse(self.e['FHT_Busy'])
 
+    def test_exact_failure_and_cleanup_components_are_reported(self):
+        for stale,label in ((True,'droppable false toggle getter'),(False,'droppable true toggle getter')):
+            self.setUp();self.w.stale_drop=stale;self.e['FHT_Run'](0)
+            self.assertIn(label,self.messages[-1])
+            self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+            self.guarded_originals()
+        self.setUp();self.w.clamp_life=80.;self.e['FHT_Run'](0)
+        self.assertIn('item life words',self.messages[-1]);self.guarded_originals()
+
+    def test_deferred_house_removal_is_verified_without_manual_retry(self):
+        pending=[]
+        self.e['RemoveUnit']=lambda u:pending.append(u)
+        def frame(seconds):
+            for u in pending:u['raw']=0
+            pending.clear()
+        self.e['TriggerSleepAction']=frame
+        self.e['FHT_Run'](0)
+        self.assertIn('PASS:',self.messages[-1])
+        self.assertTrue(any('deferred cleanup readback' in m for m in self.messages))
+        self.assertIsNone(self.e['FHT_Unit'][0]);self.guarded_originals()
+
     def test_known_house_point_and_actual_bounds_gate(self):
         self.e['FHT_Run'](0)
         self.assertEqual((self.created[-1]['x'],self.created[-1]['y']),(300.,200.))

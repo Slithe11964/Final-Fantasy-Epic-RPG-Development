@@ -3,6 +3,7 @@ library TForsakenSaveNative requires TForsakenSaveLife
 // No placement, promotion, initializer, save route or original-item mutation.
 globals
     // Internal primitive authorization, held only across a guarded caller.
+    string array FSN_LastError
     integer array FSN_Operation
     boolean array FSN_Executing
     // 0 idle, 1 open, 2 failed, 3 cleanup unverified, 4 placement started.
@@ -47,6 +48,7 @@ function FSN_Begin takes integer pid returns boolean
     if FSN_RecoveryBlocked[pid] or FSN_ProgressionBlocked[pid] or FSN_HeroBlocked[pid] or FSN_SessionBlocked[pid] or FSN_UnitBlocked[pid] or FSN_ReferenceBlocked[pid] or FSN_BodyBlocked[pid] or FSN_OwnershipBlocked[pid] or FSN_PreparedBlocked[pid] or FSN_ActivationBlocked[pid] or FSN_State[pid]!=0 or FSN_Busy[pid] or FSN_Count[pid]!=0 or FSN_AuxCount[pid]!=0 then
         return false
     endif
+    set FSN_LastError[pid]=""
     set FSN_State[pid]=1
     return true
 endfunction
@@ -54,42 +56,57 @@ endfunction
 function FSN_CheckMetadata takes integer pid,integer index returns boolean
     local item carried=FSN_Item[index]
     if carried==null or GetItemTypeId(carried)!=FSN_Raw[index] then
+        set FSN_LastError[pid]="item handle or type"
         set carried=null
         return false
     endif
     if GetItemPlayer(carried)!=Player(pid) then
+        set FSN_LastError[pid]="item player owner"
         set carried=null
         return false
     endif
     if GetItemCharges(carried)!=FSN_Charges[index] or GetItemUserData(carried)!=FSN_Binding[index] then
+        set FSN_LastError[pid]="item charges or binding"
         set carried=null
         return false
     endif
     if IsItemInvulnerable(carried)!=(ModuloInteger(FSN_Flags[index],2)==1) then
+        set FSN_LastError[pid]="item invulnerability"
         set carried=null
         return false
     endif
     if IsItemPawnable(carried)!=(FSN_Flags[index]/4==1) then
+        set FSN_LastError[pid]="item pawnable flag"
         set carried=null
         return false
     endif
     if BlzGetItemBooleanField(carried,ITEM_BF_CAN_BE_DROPPED)!=(ModuloInteger(FSN_Flags[index]/2,2)==1) then
+        set FSN_LastError[pid]="item droppable field readback"
         set carried=null
         return false
     endif
     if not FSL_Pack(pid,GetWidgetLife(carried)) then
+        set FSN_LastError[pid]="item life encoding"
         set carried=null
         return false
     endif
     set carried=null
-    return FSL_High[pid]==FSN_High[index] and FSL_Low[pid]==FSN_Low[index]
+    if FSL_High[pid]!=FSN_High[index] or FSL_Low[pid]!=FSN_Low[index] then
+        set FSN_LastError[pid]="item life words"
+        return false
+    endif
+    return true
 endfunction
 
 function FSN_Check takes integer pid,integer index returns boolean
     if not FSN_CheckMetadata(pid,index) then
         return false
     endif
-    return not IsItemVisible(FSN_Item[index]) and not IsItemOwned(FSN_Item[index])
+    if IsItemVisible(FSN_Item[index]) or IsItemOwned(FSN_Item[index]) then
+        set FSN_LastError[pid]="hidden unowned item containment"
+        return false
+    endif
+    return true
 endfunction
 
 // Placement fillers are allocations too: Abort must never lose their handles.
@@ -208,25 +225,30 @@ function FSN_StageCore takes integer pid,integer raw,integer charges,boolean bou
         return false
     endif
     if FSN_Operation[pid]!=1 or not FSN_Busy[pid] or FSN_Executing[pid] then
+        set FSN_LastError[pid]="item operation guard"
         return false
     endif
     set FSN_Executing[pid]=true
     set FSN_Busy[pid]=true
     set life=FSL_Real(high,low)
     if raw==0 or charges<0 or charges>127 or flags<0 or flags>7 or life<=0.0 or FSN_Count[pid]>=57 then
+        set FSN_LastError[pid]="item input limits"
         return FSN_Fail(pid)
     endif
     // Verify client arithmetic before allocating. Resolution/eligibility of raw
     // and staging coordinates belongs to the future reviewed policy adapter.
     if not FSL_Pack(pid,life) then
+        set FSN_LastError[pid]="requested life encoding"
         return FSN_Fail(pid)
     endif
     if FSL_High[pid]!=high or FSL_Low[pid]!=low then
+        set FSN_LastError[pid]="requested life words"
         return FSN_Fail(pid)
     endif
     set index=pid*57+FSN_Count[pid]
     set carried=CreateItem(raw,x,y)
     if carried==null then
+        set FSN_LastError[pid]="CreateItem returned null"
         return FSN_Fail(pid)
     endif
     // Own the handle before the first fallible setter or callback.
@@ -247,11 +269,13 @@ function FSN_StageCore takes integer pid,integer raw,integer charges,boolean bou
     // of original items or replace real-client acceptance tests.
     call SetItemDroppable(carried,false)
     if BlzGetItemBooleanField(carried,ITEM_BF_CAN_BE_DROPPED) then
+        set FSN_LastError[pid]="droppable false toggle getter"
         set carried=null
         return FSN_Fail(pid)
     endif
     call SetItemDroppable(carried,true)
     if not BlzGetItemBooleanField(carried,ITEM_BF_CAN_BE_DROPPED) then
+        set FSN_LastError[pid]="droppable true toggle getter"
         set carried=null
         return FSN_Fail(pid)
     endif
