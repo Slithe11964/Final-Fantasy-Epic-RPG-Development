@@ -79,3 +79,7 @@ acceptance. Saving remains blocked.
 
 BT SHA256 remains
 `4a7cd22fe195ffec8740ff418c0d02ea17d6539d275348962f7609a34aea74b2`.
+
+Following checkpoint: [SAVE_UNIT_STAGING.md](SAVE_UNIT_STAGING.md) adds tracked
+replacement-unit allocation and verified deletion/retry. Reference promotion and
+the remaining original body/combat state stay open.

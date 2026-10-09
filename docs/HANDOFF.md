@@ -1,8 +1,24 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
+## Owned replacement-unit staging — 2026-10-09 (isolated; no map build)
+
+Latest checkpoint: SAVE_UNIT_STAGING.md and Forsaken-save-units.j. Direct native
+allocation tracks up to 24 job/Freelancer/Gaya heroes, verifies neutral ownership,
+hidden/paused/invulnerable state and empty inventories, and preserves originals.
+Cleanup refuses published/item-carrying heroes, verifies deletion and retains
+failed handles for retry. Independent unit guards block staging/codec publication
+and item-journal disposal until verified cleanup. No promotion/commit API yet.
+20 new tests plus all 219 prior checks PASS (239 total), including all 24 deletion
+fault positions, creation/flag faults, cross-player references and release guards.
+Standalone/BT-runtime/BT-editor compilation PASS:
+build/save-codec-compile-5anxjlgn/report.json. Reference promotion, body/combat state,
+hook suppression/scheduling and the full controller remain open. Batch operation
+limits and native behavior still require engine acceptance. Cooldown refresh
+permitted. BT unchanged, BU unused, saving blocked.
+
 ## Session recovery — 2026-10-09 (isolated module; no map build)
 
-Latest checkpoint: SAVE_SESSION_RECOVERY.md and Forsaken-save-session.j. Talent
+Previous checkpoint: SAVE_SESSION_RECOVERY.md and Forsaken-save-session.j. Talent
 choices preserve typed presence/value across all 23 jobs; six skill slots,
 partial monographs and prior accepted codec state restore with readback. These
 choices remain per-game, never serialized. Independent guards retain journals

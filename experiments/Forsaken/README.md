@@ -282,3 +282,12 @@ recovery attempt. Writer Abort remains allowed for cleanup/retry. Run
 [SAVE_SESSION_RECOVERY.md](../../docs/SAVE_SESSION_RECOVERY.md). Wider effects,
 owned new units, gameplay exclusion/scheduling and the full controller remain
 open; no map integration or saving enabled.
+
+`Forsaken-save-units.j` allocates up to 24 tracked replacement job/Freelancer/Gaya
+heroes with hidden/paused/invulnerable and empty-inventory readback. Originals and
+live references are preserved. Cleanup refuses published/item-carrying heroes,
+retains failed deletions for retry and clears only its own staging/codec guards.
+Run `test_save_units.py`; compile with `--units`. See
+[SAVE_UNIT_STAGING.md](../../docs/SAVE_UNIT_STAGING.md). No reference promotion or
+commit API yet; hook exclusion, operation limits/scheduling, body/combat recovery
+and full controller/engine acceptance remain open. No map integration or saving.

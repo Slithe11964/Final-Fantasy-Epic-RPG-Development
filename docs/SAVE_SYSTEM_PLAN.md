@@ -3,8 +3,8 @@
 Status: identity foundation, detached legacy decoder, logical progression profile,
 reference migration/equality reports, isolated JASS codec, life/native staging,
 item journal, prepared abilities, storage/equipment placement and original-item
-quarantine/recovery, bounded live progression journal, original hero recovery
-and session choices/accepted-code recovery
+quarantine/recovery, bounded live progression journal, original hero recovery,
+session choices/accepted-code recovery and owned replacement-unit staging
 implemented, 2026-10-09. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
@@ -271,3 +271,13 @@ runtime/editor compilation passes, build/save-codec-compile-jzm76o6b/report.json
 Wider body/combat effects, owned new units/reference promotion, synchronized
 containment/scheduling and the full load/commit controller remain open. No map
 build or saving enabled; engine acceptance remains required.
+
+Owned unit staging: [SAVE_UNIT_STAGING.md](SAVE_UNIT_STAGING.md). 20 new tests plus
+all 219 prior checks PASS (239 total). Up to 24 job/Freelancer/Gaya replacements
+are tracked and verified hidden/paused/invulnerable with empty inventories.
+Original/live/journal references cannot be adopted; cleanup refuses published
+or item-carrying units and retains failed deletions for retry. Independent unit
+guards survive other journal release. Standalone/BT runtime/editor compilation
+passes, build/save-codec-compile-5anxjlgn/report.json. No promotion/commit API,
+map build or saving enabled. Native operation limits, synchronized hook exclusion,
+reference promotion, body/combat state and the full controller remain open.

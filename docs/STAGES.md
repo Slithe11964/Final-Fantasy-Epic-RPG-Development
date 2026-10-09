@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Owned replacement-unit staging, 2026-10-09 (isolated modules/tools/docs): tracks
+up to 24 new job/Freelancer/Gaya heroes with native containment/empty-inventory
+readback. Originals and live references are preserved; cleanup refuses published
+or item-carrying units and retains failed deletion handles for retry. Independent
+unit guards survive other journal release. 20 new tests plus all 219 prior checks
+PASS (239 total); standalone/BT runtime/editor compilation PASS:
+build/save-codec-compile-5anxjlgn/report.json. See SAVE_UNIT_STAGING.md. No promotion/
+commit or engine execution acceptance; operation limits/scheduling remain open.
+No map build: BT unchanged, BU unused, saving blocked; cooldown refresh permitted.
+
 Session recovery, 2026-10-09 (isolated modules/tools/docs): talent typed presence/
 values, six selected skills, partial monographs and prior accepted codec state
 restore with exact readback. Read-only hero/table references refuse changes.
