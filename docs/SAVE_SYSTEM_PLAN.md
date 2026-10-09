@@ -1,6 +1,6 @@
 # Durable save system implementation plan
 
-Status: planning and identity preflight only, 2026-10-08. Runtime saving remains
+Status: identity foundation complete; detached legacy decoder implemented, 2026-10-08. Runtime saving remains
 blocked in Forsaken. Public baseline Z, shared development AS, experimental BT
 (`fa6ed31`) are unchanged. BU remains unused; this milestone creates no map.
 Reapply with [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md).
@@ -13,6 +13,9 @@ pieces at deliberate checkpoints. Do not simply re-enable Save_WriteCode.
 Public Forsaken requires verified legacy migration and a full native inventory
 round trip. Updated classic 1.29.2 support is a subsequent explicit milestone.
 Older published maps cannot be expected to read expanded saves.
+User decisions: normal quantities need not exceed120; retain seven-bit quantity
+fields and preserve imported121..127. New Game Minus is retired from the
+replacement system; keep existing-code decoding, but no new Minus export/command.
 
 Keep E/F and G/H meanings, item eligibility, account/owner restrictions, difficulty,
 Speedrun and Hardcore rules, load window/once-per-game rules, jobs/mastery,
@@ -33,9 +36,9 @@ terrain, time-travel or content expansion is part of this work.
 
 | Evidence | Current behavior | Required change |
 |---|---|---|
-| Save_EncodeInventory / Cmd LoadInventory | Count 3 bits; six slots per holder; item 9 bits; charged quantity 7 bits | Explicit sparse positions, canonical item IDs and expandable quantities |
+| Save_EncodeInventory / Cmd LoadInventory | Count 3 bits; six slots per holder; item 9 bits; charged quantity 7 bits | Explicit sparse positions and canonical item IDs; keep seven-bit quantities, gameplay limit120 |
 | Armory.j / compatibility contracts | 358 inventory IDs; legacy practical ceiling 500; category records 501..540 | Separate inventory and Armory namespaces; freeze old interpretation |
-| Init.j / V2 and V3 readers | 22 jobs in fixed order; readers loop to live udg_JobCount; V2 skips indexes 5..7 | Frozen per-version layouts before adding jobs; new ID-keyed counted jobs |
+| Init.j / V2 and V3 readers | 22 jobs; readers loop to live udg_JobCount; V2 reorders indexes5..7 as7,5,6 | Frozen per-version layouts before adding jobs; new ID-keyed counted jobs |
 | Save.j stream allocator | Stream ID wraps after 8190; five display chunks reserved per stream | Bounded independent new buffers, no cross-stream overwrite |
 | Save.j / Code.j | Colored chunks split around 1000 characters; chat warning above 121 plain characters | Measured segmented transport, no truncation; warning is not a proven engine limit |
 | Save_WriteCodeFile / Load.j | Whole code in preload/player-name handoff; multiplayer uses two UI keystrokes per character | Measure file/string/UI latency and limits on each target client |
@@ -60,7 +63,7 @@ chunk count and actual transport must be measured before claiming support.
    is experiments/Forsaken/save-identities.json; its preflight is save_registry.py.
    Quest/Chronicle/upgrade registries require a field audit before allocation.
 2. **Detached logical snapshot:** schema-bound account/mode/progression records;
-   item records with canonical ID, holder, exact slot, quantity (including zero),
+   item records with canonical ID, holder, exact slot, seven-bit quantity (including zero),
    binding and reviewed persistent metadata. Containers are quick 6, sparse bag
    30, equipment 9 (both rings separately), Gaya 6 and house 6. Use per-save record
    ordinals to detect repeated references; identical legitimate items are allowed.
@@ -93,7 +96,8 @@ chunk count and actual transport must be measured before claiming support.
    preserves sparse order, quantities, bindings and metadata. Stored gear remains
    passive-free, active books usable, equipped gear grants bonuses. Legacy hero
    items first enter a migration snapshot: eligible gear goes to deterministic
-   free bag positions, never auto-equips; consumables retain quick-slot positions.
+   free bag positions, never auto-equips; consumables use deterministic quick-slot
+   positions. Legacy provides packed order, not original empty slot positions.
    Gaya and house remain their own inventories. Fail if placement cannot be
    preserved. Classic later materializes only representable quick/Gaya/house
    items and retains bag/equipment as inaccessible logical storage; define explicit
@@ -103,17 +107,17 @@ chunk count and actual transport must be measured before claiming support.
 
 | Step | Deliverable | Exit criteria |
 |---|---|---|
-| 1 — identity foundation (started) | Frozen registry, source/mapping checker, negative tests, this plan and reapplication guide | All 358 items/22 jobs pinned; all generated original/variant/offhand identities resolve; mismatches fail; runtime unchanged |
-| 2 — full save contract and fixtures | Field-by-field E/F/G/H ledger (width, order, default, rule, target state); reviewed permanent progression IDs; legacy reference decode to detached snapshot | Real consented anonymized E/F/G/H examples plus synthetic edge vectors; independent expected fields; actual Armory contents; no mutation; fixed 19-value V2/22-value V3 job layout confirmed from source |
-| 3 — new reference codec | Versioned bounded sections, strict parser, unknown preservation, snapshot equality comparator and size report | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, >127 quantity, 42 jobs and 50 quest IDs; full 57 slots and sparse layouts; no manual legacy conversion; exact bound rejection |
+| 1 — identity foundation (complete) | Frozen registry, source/mapping checker, negative tests, this plan and reapplication guide | All 358 items/22 jobs pinned; all generated original/variant/offhand identities resolve; mismatches fail; runtime unchanged |
+| 2 — full save contract and fixtures (in progress) | Field-by-field E/F/G/H ledger (width, order, default, rule, target state); reviewed permanent progression IDs; legacy reference decode to detached snapshot | Real consented anonymized E/F/G/H examples plus synthetic edge vectors; independent expected fields; actual Armory contents; no mutation; fixed22-value V2/V3 layouts with the three-job V2 permutation confirmed from source |
+| 3 — new reference codec | Versioned bounded sections, strict parser, unknown preservation, snapshot equality comparator and size report | Golden vectors; truncation/corruption/overflow/duplicate/unknown tests; >500 item IDs, 42 jobs and50 quest IDs; quantities0..120 plus lossless imported121..127; full 57 slots and sparse layouts; no manual legacy conversion; exact bound rejection |
 | 4 — isolated JASS codec | Separate experimental module and per-player staging buffers; differential Python/JASS vectors | Compile playable/editor against installed libraries; source/map agreement; bounded operations/allocations; byte parity with reference vectors and documented measured limits |
 | 5 — transactional adapters | Legacy/new parse → validate → stage → synchronized commit; native capture/restore and rollback | Full inventory/progression equivalence; no drops/duplication; failed create/equip/placement rolls back all items/progression; failed load does not consume load eligibility; actual native tests required |
-| 6 — all entry routes | One snapshot/parser/serializer for chat, files, autosave, NG+/−, full load and Armory-only load | Segmented/reordered/replayed/missing/wrong-owner messages rejected; NG intentional resets enumerated; -loada never materializes inventory; file readback verified; prior successful save retained on failure |
+| 6 — all entry routes | One snapshot/parser/serializer for chat, files, autosave, NG+, full load and Armory-only load | Segmented/reordered/replayed/missing/wrong-owner messages rejected; NG intentional resets enumerated; -loada never materializes inventory; file readback verified; prior successful save retained on failure |
 | 7 — public Forsaken gate | New uniquely staged map, reports, fixtures, human acceptance log and release notes | Real legacy and new code/file restart tests plus multiplayer matrix below; no unresolved data-loss route; only then remove export block and release |
 | 8 — updated classic | Shared logical model and classic preservation adapter, 1.29.2 transport | Real old-save → Forsaken → UPDATED classic → save → Forsaken equality, including all bag/equipment/unknown data; native runtime not used in classic |
 
-Step 2 must verify the V2 count and skipped fields rather than copy the current
-live-count loop into a new reader. Keep published legacy routines/contracts intact;
+Step2 verified22 jobs in both versions; V2 permutes three positions. The earlier
+19-job assumption was corrected before decoder implementation. Keep published legacy routines/contracts intact;
 new staging decoder must match their supported interpretation. Do not regenerate
 compatibility fingerprints to force a passing build.
 
@@ -129,7 +133,7 @@ Saving captures once, validates, encodes, then decodes/compares before output.
 Do not bind item ownership or replace a valid file until output validation succeeds.
 Use alternating generation files with verified readback and recoverable previous
 generation; do not assume Warcraft provides atomic rename. Autosave rotates only
-after success. NG+/− creates a transformed snapshot with reviewed intentional
+after success. NG+ creates a transformed snapshot with reviewed intentional
 resets and uses the same writer, rather than a second serializer.
 
 Chat transport needs numbered bounded segments with format/session/player identity,
@@ -146,8 +150,8 @@ eight supported human slots; concurrent different-player loads/saves; same-playe
 replay; disconnect during input; local-file-disabled/error; another owner's code;
 foreign-bound item; Hardcore/refused window/already-loaded; each difficulty/mode;
 Speedrun food consumed-but-discarded; both ring positions, offhand, active books,
-full/sparse bag, quantities 0/127/128; Gaya/house; cached job changes; Armory-only;
-NG+/−; autosave rotation; corrupted last chunk and preservation overflow.
+full/sparse bag, quantities0/120 and imported127; Gaya/house; cached job changes; Armory-only;
+NG+; autosave rotation; corrupted last chunk and preservation overflow.
 Automated mocks/codec tests and compilation are separate evidence columns from
 real Warcraft legacy/native/multiplayer acceptance. Public release requires both.
 
@@ -156,8 +160,10 @@ real Warcraft legacy/native/multiplayer acceptance. Public release requires both
 The identity tool is read-only and opt-in. It pins source mappings and checks
 builder alias allocation; it is not a migration decoder or save implementation.
 No release map or gameplay source is changed. Runtime gates remain the existing
-Forsaken save blockers. Next work is Step 2's field ledger and legacy fixture
-decoder, then reference format review before JASS integration.
+Forsaken save blockers. Step2's field ledger is [LEGACY_SAVE_LEDGER.md](LEGACY_SAVE_LEDGER.md).
+Its detached decoder and synthetic fixtures are implemented; real-data and runtime
+acceptance remain open. Next: NG route fixtures, missing runtime/default semantics
+and persistent metadata audit, then new reference format review before JASS integration.
 
 Validation on 2026-10-08: 10 identity tests and 87 existing Forsaken tests PASS.
 Preflight against `build/ForsakenBS-hz94mr9k/gear-slots.json` resolves 750 runtime
@@ -165,3 +171,8 @@ identities (358 canonical + 276 equipment + 116 offhand). BT changes only labels
 this is a check of the retained BS mapping, not a newly built BT/BU map. Existing
 MPQ file-handle ResourceWarnings appear in the focused suite; tests pass. No
 in-game, multiplayer or new-code save validation has been performed here.
+
+Legacy foundation checkpoint:13 migration tests and2,000 existing codec cases
+PASS;95 repository tests passed in the main run and the remaining build-overwrite
+test passed when rerun with a writable workspace temporary directory. Full details
+and the legacy-only NG− discrepancy are recorded in LEGACY_SAVE_LEDGER.md.

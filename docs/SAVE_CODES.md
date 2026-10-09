@@ -6,6 +6,11 @@ enabled. Reapply experimental checkpoints using
 [FORSAKEN_REAPPLICATION.md](FORSAKEN_REAPPLICATION.md). Preserve existing readers
 and contracts; do not unblock the six-slot writer for native bag progression.
 
+The source-reviewed E/F/G/H migration ledger and detached decoder are documented
+in [LEGACY_SAVE_LEDGER.md](LEGACY_SAVE_LEDGER.md). They preserve raw saved values;
+the existing Python inspector displays low short levels as1 where JASS reads0.
+Quantities remain seven bits: gameplay limit120, imported legacy0..127 preserved.
+
 Modules: `Save` (09), `Load` (09), `Cmd` (09, the `Trig_Cmd_Load_Code_*` functions), `Code` (01),
 `Autosave` (09), `SaveDebug` (09).
 

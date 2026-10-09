@@ -1,5 +1,15 @@
 # Stage log: the long autonomous run that started on 2026-10-02
 
+Legacy save milestone, 2026-10-08 (docs/tools only): field ledger; detached strict
+E/F/G/H decoder; frozen charge/job/Armory layouts; eight pinned synthetic vectors;
+13 migration tests against source-reader and current/historical Armory writer
+control flow. V2 corrected to22 reordered jobs. Seven-bit quantities retained,
+normal gameplay<=120 and legacy121..127 lossless. NG− writer/reader mismatch
+recorded, not changed. Runtime saving remains blocked; no map; BU still unused.
+User retired NG− from the successor and kept gameplay quantities<=120. Codec
+selftest2,000 PASS;95 repository regressions passed initially, remaining
+build-overwrite test passed with workspace TEMP/TMP after sandbox temp denial.
+
 Save-system continuation, 2026-10-08 (docs/tools only; no stage consumed): durable
 plan and checkpoint reapplication guide; frozen 358-item/22-job identity registry
 and read-only alias preflight. 10 identity tests, 87 focused Forsaken tests PASS;

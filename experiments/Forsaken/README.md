@@ -189,3 +189,10 @@ and the checkpoint procedure is [FORSAKEN_REAPPLICATION.md](../../docs/FORSAKEN_
 checks source and optional generated gear mappings. `test_save_registry.py`
 tests rejected drift and alias resolution. These are read-only tools, not a game
 save codec. Saving remains blocked; no new release stage is consumed.
+
+`legacy_snapshot.py` now decodes E/F/G/H to a detached snapshot using frozen
+`legacy-layouts.json`; `legacy-fixtures.json` contains eight synthetic vectors.
+Run `test_legacy_snapshot.py` for source/codec comparisons. Field ledger:
+[LEGACY_SAVE_LEDGER.md](../../docs/LEGACY_SAVE_LEDGER.md). These tests do not
+establish native, real-player or multiplayer acceptance. Quantities stay seven
+bits (gameplay120; preserve imported127); V2 contains22 reordered job values.

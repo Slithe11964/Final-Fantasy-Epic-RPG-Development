@@ -2,13 +2,25 @@
 
 ## Save-system continuation — 2026-10-08 (docs/tools only)
 
+Next checkpoint: `LEGACY_SAVE_LEDGER.md`, frozen `legacy-layouts.json`, eight
+synthetic E/F/G/H fixtures and read-only `legacy_snapshot.py` now exist.13 focused
+migration tests pass, including actual JASS main-reader control flow with mocked
+world operations and current/historical Armory writer cases. Corrected initial
+plan: V2 has22 jobs with three-job permutation, not19. JASS low short-level is0
+(Python inspector displays1); legacy sparse gaps are not encoded. User chooses
+gameplay quantities<=120; keep seven bits and preserve imported121..127 exactly.
+Source-tested finding: NG− writer emits NG bits9, which current reader marks as
+cheating; BT playable writer token-equal. User retired NG− from the replacement
+system: no new Minus export/command or repair work. Keep old decoding/audit evidence;
+no change to legacy runtime. Real-code/restart/multiplayer acceptance remains open.
+
 Read `SAVE_SYSTEM_PLAN.md` for the phased implementation and release gates, and
 `FORSAKEN_REAPPLICATION.md` for exact checkpoint inputs, commands, overlays,
 outputs and checks. First milestone adds a read-only frozen registry for 358 item
 IDs and 22 job IDs, with source/variant/offhand preflight and negative tests under
 experiments/Forsaken. No game serializer, release or baseline changes; export
-blocking stays in place. Next is the complete E/F/G/H field ledger and detached
-legacy fixture decoder. Real native/legacy/multiplayer acceptance is outstanding.
+blocking stays in place. Next is real fixture coverage, expanded NG route/default
+semantics tests and persistent metadata audit. Real native/legacy/multiplayer acceptance is outstanding.
 BU remains unused. Shared base stays AS, latest experimental map BT/fa6ed31.
 
 Read this first, then STAGES.md and QUEST_ENGINE.md. Z remains the confirmed public baseline.
