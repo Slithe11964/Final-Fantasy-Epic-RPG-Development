@@ -28,14 +28,14 @@ endfunction
 // Reviewed f003 only, after its initial strict preparation and a native equipment move.
 // Empty indexed enumeration after return is observed in CO/CP; direct getters remain.
 // Shared FSA/FSP/FSE validators retain their generic strict enumeration requirements.
-function FGT_CheckReturnedBoots takes integer pid,unit target returns boolean
+function FGT_CheckReturnedBoots takes integer pid,unit target,boolean suspended returns boolean
     local integer index=pid*57
     local integer slot=0
     if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
         set FSN_LastError[pid]="returned boots temporary hero containment"
         return false
     endif
-    if FSN_Raw[index]!='f003' or FSN_PlacedItem[index]!=FSN_Item[index] or FSN_PlacedUnit[index]!=target or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=3 or FSN_PlacedSlot[index]!=3 or not FSN_EffectsReady[index] or FSN_EffectsStored[index] or FSN_EffectCount[index]!=2 or FSN_EffectId[index*16]!='A0MU' or FSN_EffectRole[index*16]!=1 or FSN_EffectId[index*16+1]!='fGmk' or FSN_EffectRole[index*16+1]!=2 then
+    if FSN_Raw[index]!='f003' or FSN_PlacedItem[index]!=FSN_Item[index] or FSN_PlacedUnit[index]!=target or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=3 or FSN_PlacedSlot[index]!=3 or not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=suspended or FSN_EffectCount[index]!=2 or FSN_EffectId[index*16]!='A0MU' or FSN_EffectRole[index*16]!=1 or FSN_EffectId[index*16+1]!='fGmk' or FSN_EffectRole[index*16+1]!=2 then
         set FSN_LastError[pid]="returned boots verified plan or tracked placement"
         return false
     endif
@@ -51,7 +51,7 @@ function FGT_CheckReturnedBoots takes integer pid,unit target returns boolean
         endif
         set slot=slot+1
     endloop
-    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null or BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
+    if (not suspended and BlzGetItemAbility(FSN_Item[index],'A0MU')==null) or (suspended and BlzGetItemAbility(FSN_Item[index],'A0MU')!=null) or BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
         return FSA_ReadbackFailure(index,"returned direct lookup missing",'A0MU')
     endif
     if BlzGetItemAbilityByIndex(FSN_Item[index],0)!=null then
@@ -138,7 +138,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
             set FSN_LastError[pid]="boots equipment return containment after wait"
             return false
         endif
-        if not FGT_CheckReturnedBoots(pid,target) then
+        if not FGT_CheckReturnedBoots(pid,target,false) then
             set failure=FSN_LastError[pid]
             call FSA_ReadbackFailure(first,"first equipment return",'A0MU')
             set FSN_LastError[pid]="boots first equipment return: "+failure+"; equipment raw="+I2S(GetItemTypeId(UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))))+" item raw="+I2S(GetItemTypeId(FSN_Item[first]))+"; "+FSN_LastError[pid]
@@ -304,8 +304,7 @@ function FGT_Run takes integer pid returns nothing
         call FHT_Finish(pid,false,"real boots equipment slot3")
         return
     endif
-    // Validate the exact bonus against the same hero after owned item deletion.
-    // This does not assume the fresh allocation speed is already recalculated.
+    // Capture equipped speed; compare against same-slot passive suspension later.
     call FHT_Trace(pid,"equipped movement speed readback")
     set equipped=GetUnitMoveSpeed(target)
     if equipped<45. or equipped>522. then
@@ -323,10 +322,26 @@ function FGT_Run takes integer pid returns nothing
     set FSN_State[pid]=4
     call FHT_Trace(pid,"stored passive and whole inventory readback")
     set actual=GetUnitMoveSpeed(target)
-    if not FGT_CheckStoredBoots(pid,target) or not FGT_CheckReturnedBoots(pid,target) or actual!=equipped then
+    if not FGT_CheckStoredBoots(pid,target) or not FGT_CheckReturnedBoots(pid,target,false) or actual!=equipped then
         set FSN_LastError[pid]="stored speed wanted="+R2S(equipped)+" actual="+R2S(actual)
         set target=null
         call FHT_Finish(pid,false,"stored passive or inventory readback")
+        return
+    endif
+    // Keep both items in place while isolating the reviewed80 movement passive.
+    set FSN_EffectsStored[pid*57]=true
+    call BlzItemRemoveAbility(FSN_Item[pid*57],'A0MU')
+    call FHT_Trace(pid,"same-slot passive-free movement speed")
+    if not FHT_Busy or FHT_Unit[pid]!=target or FSN_State[pid]!=4 or FSN_Count[pid]!=2 then
+        set target=null
+        call FHT_Finish(pid,false,"passive speed control interrupted")
+        return
+    endif
+    set actual=GetUnitMoveSpeed(target)
+    if not FGT_CheckReturnedBoots(pid,target,true) or not FGT_CheckStoredBoots(pid,target) or equipped!=actual+80. then
+        set FSN_LastError[pid]="passive speed control wanted="+R2S(equipped-80.)+" actual="+R2S(actual)+"; "+FSN_LastError[pid]
+        set target=null
+        call FHT_Finish(pid,false,"same-slot passive speed")
         return
     endif
     call FHT_Trace(pid,"owned item cleanup")
@@ -337,8 +352,8 @@ function FGT_Run takes integer pid returns nothing
     endif
     call FHT_Trace(pid,"empty inventory and restored baseline speed")
     set actual=GetUnitMoveSpeed(target)
-    if not FHT_Empty(target) or actual<45. or actual>442. or equipped!=actual+80. then
-        set FSN_LastError[pid]="cleanup speed wanted="+R2S(equipped-80.)+" actual="+R2S(actual)+" equipped="+R2S(equipped)
+    if not FHT_Empty(target) or actual<45. or actual>442. or actual!=baseline then
+        set FSN_LastError[pid]="cleanup speed wanted="+R2S(baseline)+" actual="+R2S(actual)+" equipped="+R2S(equipped)
         set target=null
         call FHT_Finish(pid,false,"cleanup baseline speed")
         return

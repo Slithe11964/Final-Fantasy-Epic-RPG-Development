@@ -64,7 +64,7 @@ class GearProbeTests(unittest.TestCase):
             bonus=sum(self.bonus_size for i in active.values() if 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
             if self.sticky_bonus and self.w.adds>0 and all(i['raw']==0 for i in self.w.items if i is not self.original):bonus=80
-            return self.base_speed+(self.pickup_recalculation if self.w.adds>0 else 0.)+bonus
+            return self.base_speed+(self.pickup_recalculation if active else 0.)+bonus
         self.env=dict(self.e)
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
@@ -93,7 +93,7 @@ class GearProbeTests(unittest.TestCase):
         self.guarded_originals()
 
     def test_native_effect_and_placement_failures_cleanup(self):
-        for fault,label in [('ignore_passive','stored boots bag slot29'),('reject_equip','equipment slot3'),('no_bonus','cleanup baseline speed'),('sticky_bonus','cleanup baseline speed')]:
+        for fault,label in [('ignore_passive','stored boots bag slot29'),('reject_equip','equipment slot3'),('no_bonus','same-slot passive speed'),('sticky_bonus','cleanup baseline speed')]:
             with self.subTest(fault=fault):
                 self.setUp();setattr(self,fault,True);self.e['FGT_Run'](0)
                 self.assertIn('FAIL at '+label if label in ('equipped speed','cleanup baseline speed') else label,self.messages[-1])
@@ -178,11 +178,11 @@ class GearProbeTests(unittest.TestCase):
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 
-    def test_wrong_nonzero_bonus_cannot_pass_cleanup_delta(self):
+    def test_wrong_nonzero_bonus_cannot_pass_same_slot_control(self):
         for bonus in (40,100):
             self.setUp();self.bonus_size=bonus
             self.e['FGT_Run'](0)
-            self.assertIn('FAIL at cleanup baseline speed',self.messages[-1])
+            self.assertIn('FAIL at same-slot passive speed',self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
 
@@ -272,5 +272,13 @@ class GearProbeTests(unittest.TestCase):
             self.assertIn('FAIL at ',self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
+
+    def test_equipped_control_removal_refusal_fails_before_cleanup(self):
+        remove=self.e['BlzItemRemoveAbility']
+        self.e['BlzItemRemoveAbility']=lambda item,raw: True if item['charges']==0 else remove(item,raw)
+        self.e['FGT_Run'](0)
+        self.assertIn('FAIL at same-slot passive speed',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
 if __name__=='__main__':unittest.main()

@@ -198,3 +198,14 @@ list; generic FSA/FSP/FSE remain strict and full save/load remains disabled.
 CQ:22 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+CQ engine passed stored/equipped inventory readback, then deletion changed speed
+440 to340, exceeding the expected80 reduction by20. Cleanup/originals/release passed. CR isolates A0MU by removing it while both
+fixtures stay in place, validates the marker and exact80 speed drop, then deletes
+the owned fixtures and requires the original measured baseline. It never re-adds
+the passive. Native placement recalculation is measured separately; its cause
+is not assumed. Full character saving and general restoration remain disabled.
+
+CR:23 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.
