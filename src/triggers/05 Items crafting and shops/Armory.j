@@ -15,6 +15,7 @@ globals
     integer array ArmoryMissingUnit
     string ArmoryTooltipBase=""
     string ArmoryTooltipShown=""
+    integer ArmoryTooltipLevel=0
     string array ArmoryHint
     integer array ArmoryCategory
 endglobals
@@ -1027,14 +1028,19 @@ function Armory_RefreshCounter takes nothing returns nothing
     local player p=GetLocalPlayer()
     local string tooltip=ArmoryTooltipBase+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
     if tooltip!=ArmoryTooltipShown then
-        call BlzSetAbilityExtendedTooltip('A0MW',tooltip,0)
+        call BlzSetAbilityExtendedTooltip('A0MW',tooltip,ArmoryTooltipLevel)
         set ArmoryTooltipShown=tooltip
     endif
     set p=null
 endfunction
 
 function Armory_InitCounter takes nothing returns nothing
-    set ArmoryTooltipBase=BlzGetAbilityExtendedTooltip('A0MW',0)
+    // Tooltip natives index levels from 0 in Reforged; if level 0 reads empty (seen in 1.29.2),
+    // the game counts from 1, so read and write the tooltip one index higher.
+    if StringLength(BlzGetAbilityExtendedTooltip('A0MW',0))==0 then
+        set ArmoryTooltipLevel=1
+    endif
+    set ArmoryTooltipBase=BlzGetAbilityExtendedTooltip('A0MW',ArmoryTooltipLevel)
     call Armory_RefreshCounter()
     call TimerStart(CreateTimer(),1.,true,function Armory_RefreshCounter)
 endfunction

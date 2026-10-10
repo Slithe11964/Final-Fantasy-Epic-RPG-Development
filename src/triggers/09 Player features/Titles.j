@@ -14,6 +14,7 @@ globals
     string ChroniclesRootBase=""
     string ChroniclesRootShown=""
     string ChroniclesSecretsBase=""
+    integer ChroniclesTooltipOffset=0
     string ChroniclesSecretsShown=""
 endglobals
 
@@ -156,8 +157,8 @@ function Chronicles_RefreshTooltips takes nothing returns nothing
                 set tooltip=tooltip+"|nMonographs held this game: "+I2S(found)+" / 10"
             endif
             if tooltip!=ChroniclesTooltipShown[key] then
-                call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key],level)
-                call BlzSetAbilityExtendedTooltip(udg_ChronicleAbility[category],tooltip,level)
+                call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key],level+ChroniclesTooltipOffset)
+                call BlzSetAbilityExtendedTooltip(udg_ChronicleAbility[category],tooltip,level+ChroniclesTooltipOffset)
                 set ChroniclesTooltipShown[key]=tooltip
             endif
         endif
@@ -165,13 +166,13 @@ function Chronicles_RefreshTooltips takes nothing returns nothing
     endloop
     set tooltip=ChroniclesSecretsBase
     if tooltip!=ChroniclesSecretsShown then
-        call BlzSetAbilityExtendedTooltip('cSec',tooltip,0)
-        call BlzSetAbilityTooltip('cSec',"Secrets",0)
+        call BlzSetAbilityExtendedTooltip('cSec',tooltip,ChroniclesTooltipOffset)
+        call BlzSetAbilityTooltip('cSec',"Secrets",ChroniclesTooltipOffset)
         set ChroniclesSecretsShown=tooltip
     endif
     set tooltip=ChroniclesRootBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,0)
     if tooltip!=ChroniclesRootShown then
-        call BlzSetAbilityExtendedTooltip('A0AR',tooltip,0)
+        call BlzSetAbilityExtendedTooltip('A0AR',tooltip,ChroniclesTooltipOffset)
         set ChroniclesRootShown=tooltip
     endif
     set p=null
@@ -192,6 +193,11 @@ function Chronicles_Init takes nothing returns nothing
     local integer category=1
     local integer level
     local integer key
+    // Tooltip natives index levels from 0 in Reforged; if level 0 reads empty (seen in 1.29.2),
+    // the game counts from 1, so read and write the tooltip one index higher.
+    if StringLength(BlzGetAbilityExtendedTooltip('A0AR',0))==0 then
+        set ChroniclesTooltipOffset=1
+    endif
     set ChroniclesLevels[1]=8
     set ChroniclesLevels[2]=8
     set ChroniclesLevels[3]=8
@@ -210,14 +216,14 @@ function Chronicles_Init takes nothing returns nothing
         loop
             exitwhen level>=ChroniclesLevels[category]
             set key=category*64+level
-            set ChroniclesTooltipBase[key]=BlzGetAbilityExtendedTooltip(udg_ChronicleAbility[category],level)
-            set ChroniclesNameBase[key]=BlzGetAbilityTooltip(udg_ChronicleAbility[category],level)
+            set ChroniclesTooltipBase[key]=BlzGetAbilityExtendedTooltip(udg_ChronicleAbility[category],level+ChroniclesTooltipOffset)
+            set ChroniclesNameBase[key]=BlzGetAbilityTooltip(udg_ChronicleAbility[category],level+ChroniclesTooltipOffset)
             set level=level+1
         endloop
         set category=category+1
     endloop
-    set ChroniclesRootBase=BlzGetAbilityExtendedTooltip('A0AR',0)
-    set ChroniclesSecretsBase=BlzGetAbilityExtendedTooltip('cSec',0)
+    set ChroniclesRootBase=BlzGetAbilityExtendedTooltip('A0AR',ChroniclesTooltipOffset)
+    set ChroniclesSecretsBase=BlzGetAbilityExtendedTooltip('cSec',ChroniclesTooltipOffset)
     call Chronicles_Tick()
     call TimerStart(CreateTimer(),1.,true,function Chronicles_Tick)
 endfunction

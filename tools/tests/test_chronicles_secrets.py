@@ -38,7 +38,8 @@ def runtime():
              udg_MonographItem=dict(enumerate(ITEMS)), inventory=defaultdict(list),
              ability_levels=defaultdict(lambda: 1), available={}, messages=[], writes=[],
              viewer=0, picked_unit=(0, 'hero'), picked_item=ITEMS[0], killer=(0, 'hero'), zone=1,
-             ChroniclesRootBase='', ChroniclesRootShown='', ChroniclesSecretsBase='', ChroniclesSecretsShown='')
+             ChroniclesRootBase='', ChroniclesRootShown='', ChroniclesSecretsBase='', ChroniclesSecretsShown='',
+             ChroniclesTooltipOffset=0)
     e.update(GetPlayerId=lambda p: p, GetConvertedPlayerId=lambda p: p + 1,
              bj_forLoopAIndex=0, bj_forLoopAIndexEnd=0,
              IsPlayerInForce=lambda p, f: p in f, Player_GetHero=lambda p: (p, 'hero'),
@@ -142,6 +143,13 @@ class ChronicleTests(unittest.TestCase):
         e['viewer'] = 1
         e['Chronicles_RefreshTooltips']()
         self.assertIn(('name', 'A0ZK', 'Chronicle', 0), e['writes'])
+        # 1.29.2 counts tooltip levels from 1: every write moves up one index.
+        e['ChroniclesTooltipOffset'] = 1
+        e['ChroniclesTooltipShown'].clear()
+        e['ChroniclesRootShown'] = ''
+        e['Chronicles_RefreshTooltips']()
+        self.assertIn(('name', 'A0ZK', 'Chronicle', 1), e['writes'])
+        self.assertTrue(any(w[:2] == ('body', 'A0AR') and w[3] == 1 for w in e['writes']))
         self.assertEqual({k: v for k, v in e['udg_TitleForce'].items() if v},
                          {k: v for k, v in prior.items() if v})
 

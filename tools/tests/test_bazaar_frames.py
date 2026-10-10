@@ -30,14 +30,18 @@ def frame_runtime():
              BlzFrameSetSize=lambda h, x, y: prop(h, 'size', (x, y)),
              BlzFrameSetAbsPoint=lambda h, p, x, y: prop(h, 'abs', (p, x, y)),
              BlzFrameSetPoint=lambda h, *args: prop(h, 'point', args),
-             BlzSendSyncData=lambda prefix, packet: packets.append((prefix, packet)))
+             BlzSendSyncData=lambda prefix, packet: packets.append((prefix, packet)),
+             CreateTrigger=lambda: {'events': [], 'actions': []},
+             TriggerRegisterPlayerEvent=lambda t, p, event: t['events'].append((p, event)),
+             TriggerAddAction=lambda t, fn: t['actions'].append(fn) if isinstance(t, dict) else None)
     for constant in ['ORIGIN_FRAME_GAME_UI', 'FRAMEPOINT_CENTER', 'FRAMEPOINT_TOP',
                      'FRAMEPOINT_TOPLEFT', 'FRAMEPOINT_TOPRIGHT', 'FRAMEPOINT_BOTTOM',
                      'FRAMEPOINT_BOTTOMLEFT', 'FRAMEEVENT_CONTROL_CLICK',
-                     'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT']:
+                     'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT',
+                     'EVENT_PLAYER_END_CINEMATIC']:
         e[constant] = constant
     names = ['Bazaar_AllIngredients', 'Bazaar_MarkPageText', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',
-             'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_Init']
+             'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_OnEscape', 'BazaarFrame_Init']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), names, e)
     e['BazaarFrame_Init']()
@@ -196,6 +200,16 @@ class BazaarFrameTests(unittest.TestCase):
         self.assertFalse(e['BazaarBrowserOpen'][0])
         self.assertEqual(pool, before)
         self.assertFalse(created)
+
+    def test_escape_closes_only_an_open_browser_without_spending(self):
+        e, _, pool, money, created, frames, packets = frame_runtime()
+        before = copy.deepcopy(pool)
+        e['BazaarFrame_OnEscape']()
+        self.assertFalse(e['BazaarBrowserOpen'][0])
+        e['BazaarFrame_OnEscape']()
+        self.assertFalse(e['BazaarBrowserOpen'][0])
+        self.assertEqual(pool, before)
+        self.assertFalse(created or packets)
 
     def test_classic_conversion_preserves_transactions_and_removes_frame_apis(self):
         source = SOURCE.read_bytes().decode('utf-8')

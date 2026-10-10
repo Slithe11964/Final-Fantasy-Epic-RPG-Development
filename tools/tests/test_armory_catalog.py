@@ -54,7 +54,7 @@ class ArmoryTests(unittest.TestCase):
         e, shop, stock, flags = runtime()
         e['ArmoryMissingUnit'] = defaultdict(int)
         e['Armory_InitHints']()
-        e.update(ArmoryTooltipBase='', ArmoryTooltipShown='')
+        e.update(ArmoryTooltipBase='', ArmoryTooltipShown='', ArmoryTooltipLevel=0)
         with patch.object(harness, 'SELECTED', []):
             e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), ['Armory_CollectionText', 'Armory_RefreshCounter'], e)
         e['I2S'] = str
@@ -80,6 +80,10 @@ class ArmoryTests(unittest.TestCase):
         flags[12].add(1)
         e['Armory_RefreshCounter']()
         self.assertIn('2 / 280', updates[-1][1])
+        self.assertEqual(updates[-1][2], 0)
+        e.update(ArmoryTooltipLevel=1, ArmoryTooltipShown='')
+        e['Armory_RefreshCounter']()
+        self.assertEqual(updates[-1][2], 1)
 
     def test_hint_refresh_changes_tooltip_only_and_refuses_missing_objects(self):
         archive = MPQ(str(ROOT/'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))

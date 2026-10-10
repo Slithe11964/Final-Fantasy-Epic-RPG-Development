@@ -538,17 +538,35 @@ function Register_Bazaar_FrameSync takes nothing returns nothing
     call TriggerAddAction(gg_trg_Bazaar_FrameSync,function BazaarFrame_OnSync)
 endfunction
 
+function BazaarFrame_OnEscape takes nothing returns nothing
+    local player p=GetTriggerPlayer()
+    if BazaarBrowserOpen[GetPlayerId(p)] then
+        call Bazaar_CloseBrowser(p)
+    endif
+    set p=null
+endfunction
+
 function BazaarFrame_Init takes nothing returns nothing
     local framehandle origin=BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0)
     local integer slot=0
     local integer id=0
     local real x
     local real y
+    local trigger escape
     loop
         exitwhen id>=bj_MAX_PLAYERS
         call BlzTriggerRegisterPlayerSyncEvent(gg_trg_Bazaar_FrameSync,Player(id),"FFERPGBZR",false)
         set id=id+1
     endloop
+    // Esc (the cinematic-skip key) closes this player's recipe panels.
+    set escape=CreateTrigger()
+    set id=0
+    loop
+        exitwhen id>=bj_MAX_PLAYERS
+        call TriggerRegisterPlayerEvent(escape,Player(id),EVENT_PLAYER_END_CINEMATIC)
+        set id=id+1
+    endloop
+    call TriggerAddAction(escape,function BazaarFrame_OnEscape)
     set BazaarFrameRoot=BlzCreateFrameByType("FRAME","BazaarRecipeWindow",origin,"",0)
     call BlzFrameSetAbsPoint(BazaarFrameRoot,FRAMEPOINT_CENTER,.4,.3)
     call BlzFrameSetSize(BazaarFrameRoot,.79,.57)
@@ -613,6 +631,7 @@ function BazaarFrame_Init takes nothing returns nothing
     call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameClose,FRAMEEVENT_CONTROL_CLICK)
     call BlzFrameSetVisible(BazaarFrameRoot,false)
     set origin=null
+    set escape=null
 endfunction
 
 function Trig_Bazaar_OpenRecipes_Conditions takes nothing returns boolean
