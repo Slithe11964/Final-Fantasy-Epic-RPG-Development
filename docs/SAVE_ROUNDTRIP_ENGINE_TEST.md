@@ -39,6 +39,20 @@ and Freelancer variant1/2/3 for Strength/Agility/Intelligence. Existing live sta
 schema rather than confusing real level100 with the legacy marker. Local capture
 and codec checks pass; real Warcraft execution is still pending.
 
+## Detached fresh-load plan
+
+The new planner validates the whole profile into separate player-owned plan data,
+resolves permanent item IDs to reviewed runtime variants and checks equipment
+positions. It rejects unknown sections, IDs and metadata rather than dropping them.
+It leaves the accepted codec profile and gameplay state untouched. Eligibility and
+starting references are checked again immediately before creation.
+
+The first CU path is restricted to an empty level1 starter/Gaya, empty assigned
+house, matching saved/game difficulty and Speedrun mode, and levels within the
+current engine cap99. These prototype restrictions do not change the format's
+future level capacity. Closed-window, Hardcore and already-loaded states are
+rejected without consuming a load; failed validation can be retried.
+
 ## Remaining before CU
 
 Wire real capture, current-job/progression schemas and durable flags into export;

@@ -47,6 +47,35 @@ def capture_source(aliases):
     return text.replace('    // FRC_IDENTITY_INITIALIZATION','\n'.join(lines))
 
 
+def fresh_plan_bindings(registry, catalog):
+    """Reviewed permanent ID -> runtime rawcode and legal equipment positions."""
+    masks = {'Head': 1, 'Chest': 2, 'Gloves': 4, 'Boots': 8, 'Ring': 48,
+             'Primary': 192, 'Offhand': 128, 'Trinket': 256, 'Inventory': 0}
+    rows = []
+    for record in registry['items']:
+        identity, canonical = record['id'], record['rawcode']
+        gear = catalog.get(canonical, {})
+        runtime = gear.get('variant', canonical)
+        for holder in range(1, 6):
+            if holder != 3 or gear.get('slot', 'Inventory') != 'Inventory':
+                rows.append((holder, identity, runtime))
+        mask = masks[gear.get('slot', 'Inventory')]
+        if mask:
+            rows.append((6, identity, mask))
+        if mask & 128:
+            rows.append((7, identity, gear.get('offhand', runtime)))
+    return rows
+
+
+def fresh_plan_source(registry, catalog):
+    text = (HERE/'Forsaken-save-fresh-plan.j').read_text(encoding='utf-8')
+    lines = []
+    for parent, identity, value in fresh_plan_bindings(registry, catalog):
+        literal = "'%s'" % value if isinstance(value, str) else str(value)
+        lines.append('        call SaveInteger(FFP_Bindings,%d,%d,%s)' % (parent, identity, literal))
+    return text.replace('        // FFP_IDENTITY_INITIALIZATION', '\n'.join(lines))
+
+
 def modules(house=False,gear=False):
     house=house or gear
     result=[('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j')]

@@ -22,7 +22,8 @@ def identity(path):
     return dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False, include_player_target=False, include_cargo=False, include_inventory_profile=False, include_house=False, include_transport=False, include_capture=False):
+def check(map_path, common, blizzard, compiler, include_life=False, include_native=False, include_position=False, include_equipment=False, include_recovery=False, include_progression=False, include_heroes=False, include_session=False, include_units=False, include_references=False, include_body=False, include_ownership=False, include_prepared_heroes=False, include_activation=False, include_job_policy=False, include_gaya_policy=False, include_freelancer_policy=False, include_player_target=False, include_cargo=False, include_inventory_profile=False, include_house=False, include_transport=False, include_capture=False, include_fresh_plan=False):
+    include_capture = include_capture or include_fresh_plan
     include_inventory_profile = include_inventory_profile or include_house
     include_cargo = include_cargo or include_inventory_profile
     include_activation = include_activation or include_cargo
@@ -87,6 +88,8 @@ def check(map_path, common, blizzard, compiler, include_life=False, include_nati
         source_paths.append(HERE / 'Forsaken-save-capture.j')
     if include_transport:
         source_paths.append(HERE / 'Forsaken-save-transport.j')
+    if include_fresh_plan:
+        source_paths.append(HERE / 'Forsaken-save-fresh-plan.j')
     sources = [path.read_text(encoding='utf-8') for path in source_paths]
     archive = MPQ(str(map_path))
     runtime = archive.read('war3map.j').decode('utf-8').replace('\r\n', '\n')
@@ -170,8 +173,9 @@ def main():
     parser.add_argument('--house', action='store_true', help='include contained replacement house staging/cleanup')
     parser.add_argument('--transport', action='store_true', help='include fresh-load file transport without live-swap dependencies')
     parser.add_argument('--capture', action='store_true', help='include read-only real character capture without recovery dependencies')
+    parser.add_argument('--fresh-plan', action='store_true', help='include detached fresh-load eligibility and planning')
     args = parser.parse_args()
-    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy, args.player_target, args.cargo, args.inventory_profile, args.house, args.transport, args.capture)
+    output, report = check(args.map.resolve(), args.common.resolve(), args.blizzard.resolve(), args.compiler.resolve(), args.life, args.native, args.position, args.equipment, args.recovery, args.progression, args.heroes, args.session, args.units, args.references, args.body, args.ownership, args.prepared_heroes, args.activation, args.job_policy, args.gaya_policy, args.freelancer_policy, args.player_target, args.cargo, args.inventory_profile, args.house, args.transport, args.capture, args.fresh_plan)
     for row in report['checks']:
         print(('PASS ' if row['passed'] else 'FAIL ')+row['name'])
         if not row['passed']: print(row['output'])
