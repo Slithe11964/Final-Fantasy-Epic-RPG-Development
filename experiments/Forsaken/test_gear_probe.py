@@ -228,15 +228,15 @@ class GearProbeTests(unittest.TestCase):
 
     def test_return_preserves_exact_slot_or_ability_failure(self):
         self.reject_equip_call=3;self.e['FGT_Run'](0)
-        self.assertIn('first equipment return: placement target slot 3 raw=0',self.messages[-1])
+        self.assertIn('first equipment return: returned boots exact equipment slot or metadata',self.messages[-1])
         self.assertIn('equipment raw=0 item raw=f003',self.messages[-1])
         self.setUp();self.lose_return_passive=True;self.e['FGT_Run'](0)
-        self.assertIn('first equipment return: ability missing A0MU(speed)',self.messages[-1])
+        self.assertIn('first equipment return: ability returned direct lookup missing A0MU(speed)',self.messages[-1])
         self.assertIn('item IDs=fGmk(marker),',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 
-    def test_return_enumeration_must_settle_without_weakening_ability_check(self):
+    def test_empty_return_enumeration_uses_reviewed_direct_plan_only(self):
         self.delay_return_enum=True
         settled=[]
         def frame(seconds):
@@ -246,8 +246,7 @@ class GearProbeTests(unittest.TestCase):
         self.assertIn('Gear test: PASS:',self.messages[-1])
         self.assertEqual(settled,[0.5]);self.guarded_originals()
         self.setUp();self.delay_return_enum=True;self.e['FGT_Run'](0)
-        self.assertIn('first equipment return: ability count wanted=2 actual=0',self.messages[-1])
-        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.assertIn('Gear test: PASS:',self.messages[-1])
         self.guarded_originals()
 
     def test_return_wait_revalidates_metadata_before_continuing(self):
@@ -258,5 +257,20 @@ class GearProbeTests(unittest.TestCase):
         self.assertIn('boots equipment return containment after wait',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
+
+    def test_returned_fixture_rejects_readable_extras_and_wrong_plan(self):
+        for fault in ('extra','plan','marker'):
+            self.setUp();self.delay_return_enum=True
+            def frame(seconds):
+                if self.return_enum_pending and self.e['FSN_Count'][0]==2:
+                    item=self.e['FSN_Item'][0]
+                    if fault=='extra':
+                        self.return_enum_pending=False;item['abilities'].append('zzzz')
+                    elif fault=='plan':self.e['FSN_EffectId'][0]='zzzz'
+                    elif 'fGmk' in item['abilities']:item['abilities'].remove('fGmk')
+            self.e['TriggerSleepAction']=frame;self.e['FGT_Run'](0)
+            self.assertIn('FAIL at ',self.messages[-1])
+            self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+            self.guarded_originals()
 
 if __name__=='__main__':unittest.main()

@@ -25,6 +25,41 @@ function FGT_CheckStoredBoots takes integer pid,unit target returns boolean
     return true
 endfunction
 
+// Reviewed f003 only, after its initial strict preparation and a native equipment move.
+// Empty indexed enumeration after return is observed in CO/CP; direct getters remain.
+// Shared FSA/FSP/FSE validators retain their generic strict enumeration requirements.
+function FGT_CheckReturnedBoots takes integer pid,unit target returns boolean
+    local integer index=pid*57
+    local integer slot=0
+    if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
+        set FSN_LastError[pid]="returned boots temporary hero containment"
+        return false
+    endif
+    if FSN_Raw[index]!='f003' or FSN_PlacedItem[index]!=FSN_Item[index] or FSN_PlacedUnit[index]!=target or FSN_PlacedOwner[index]!=Player(pid) or FSN_PlacedHolder[index]!=3 or FSN_PlacedSlot[index]!=3 or not FSN_EffectsReady[index] or FSN_EffectsStored[index] or FSN_EffectCount[index]!=2 or FSN_EffectId[index*16]!='A0MU' or FSN_EffectRole[index*16]!=1 or FSN_EffectId[index*16+1]!='fGmk' or FSN_EffectRole[index*16+1]!=2 then
+        set FSN_LastError[pid]="returned boots verified plan or tracked placement"
+        return false
+    endif
+    if not IsItemOwned(FSN_Item[index]) or not FSA_PreparationContainment(pid,index) then
+        set FSN_LastError[pid]="returned boots exact equipment slot or metadata"
+        return false
+    endif
+    loop
+        exitwhen slot>=9
+        if slot!=3 and UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(slot))!=null then
+            set FSN_LastError[pid]="returned boots unexpected equipment slot="+I2S(slot)
+            return false
+        endif
+        set slot=slot+1
+    endloop
+    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null or BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
+        return FSA_ReadbackFailure(index,"returned direct lookup missing",'A0MU')
+    endif
+    if BlzGetItemAbilityByIndex(FSN_Item[index],0)!=null then
+        return FSA_Check(index)
+    endif
+    return true
+endfunction
+
 // Private place-then-prepare gate on the journaled, unpublished contained hero only.
 function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean stored returns boolean
     local integer index=pid*57+ordinal
@@ -103,7 +138,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
             set FSN_LastError[pid]="boots equipment return containment after wait"
             return false
         endif
-        if not FSP_Check(pid,first) then
+        if not FGT_CheckReturnedBoots(pid,target) then
             set failure=FSN_LastError[pid]
             call FSA_ReadbackFailure(first,"first equipment return",'A0MU')
             set FSN_LastError[pid]="boots first equipment return: "+failure+"; equipment raw="+I2S(GetItemTypeId(UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))))+" item raw="+I2S(GetItemTypeId(FSN_Item[first]))+"; "+FSN_LastError[pid]
@@ -288,7 +323,7 @@ function FGT_Run takes integer pid returns nothing
     set FSN_State[pid]=4
     call FHT_Trace(pid,"stored passive and whole inventory readback")
     set actual=GetUnitMoveSpeed(target)
-    if not FGT_CheckStoredBoots(pid,target) or not FSE_CheckEquipment(pid,target) or actual!=equipped then
+    if not FGT_CheckStoredBoots(pid,target) or not FGT_CheckReturnedBoots(pid,target) or actual!=equipped then
         set FSN_LastError[pid]="stored speed wanted="+R2S(equipped)+" actual="+R2S(actual)
         set target=null
         call FHT_Finish(pid,false,"stored passive or inventory readback")

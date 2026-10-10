@@ -184,3 +184,17 @@ a hypothesis pending the CP game result; general restoration remains unresolved.
 CP:21 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+CP reproduced the empty indexed list after settlement, with exact equipment/item
+identity, direct planned getters passing, unit speed ability present and speed440.
+Cleanup/originals/release passed. CQ adds a private f003-return validator requiring
+its original strict two-ID plan/roles, direct lookups, exact equipment identity,
+metadata and contained hero, with all other equipment slots empty. Readable lists
+still get the strict extra/duplicate check; an empty list uses the recorded plan
+and direct getters. Stored speed and final exact80 removal delta stay mandatory.
+This fixture-limited evidence cannot detect hidden extra abilities in an opaque
+list; generic FSA/FSP/FSE remain strict and full save/load remains disabled.
+
+CQ:22 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.
