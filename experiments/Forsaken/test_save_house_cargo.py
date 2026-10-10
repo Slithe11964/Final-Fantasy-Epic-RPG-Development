@@ -40,9 +40,9 @@ class HouseCargoTests(house.HouseTests):
 
     def test_house_placement_failure_retains_originals_and_retry(self):
         self.start([profile.record(self.gear_id('Boots'),5,5)]);self.assertTrue(self.e['FIP_StageNext'](0))
-        self.assertTrue(self.e['FIP_PrepareNext'](0,POLICY));self.w.reject_drop=True
+        self.assertTrue(self.e['FIP_PrepareNext'](0,POLICY));self.w.reject_add=self.w.adds+6
         item=self.e['FSN_Item'][0];self.w.refuse_delete.add(id(item))
-        self.assertFalse(self.e['FIP_PlaceNext'](0,SPACER,RING_FILLER,30));self.w.reject_drop=False
+        self.assertFalse(self.e['FIP_PlaceNext'](0,SPACER,RING_FILLER,30));self.w.reject_add=0
         self.assertFalse(self.e['FIP_Recover'](0));self.assertFalse(self.e['FHS_Recover'](0))
         self.w.refuse_delete.clear();self.release_profile()
 

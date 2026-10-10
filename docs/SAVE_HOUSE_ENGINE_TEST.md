@@ -1,7 +1,7 @@
-# Private house item-property diagnostic — CA
+# Private house placement diagnostic — CB
 
 Use the new Reforged diagnostic map:
-`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCA.w3x`.
+`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x`.
 BW/BX crashed outside the terrain. BY corrected that point and no longer crashed,
 but failed on the first staged item's allocation/properties. Its final STEP10 was
 trigger restoration after the failure, not completion of all item stages. Manual
@@ -14,11 +14,22 @@ maximum health if readback fails. It
 still reports any failed item check in `[native: ...]` and separately reports
 `cleanup`, `originals`, and `release`. It also allows one guarded next-frame cleanup
 readback, retaining unresolved handles. Strict property checks remain enforced.
-Full character save/load remains blocked. CB is next unused.
+CA passed all six item metadata and ability preparation stages, then failed the
+first placement at zero-based slot5 (the sixth temporary-house slot). Cleanup,
+original inventory readback and journal release all passed; final-saveverify PASS
+was user-confirmed. The real house had slots1-4 occupied and5-6 empty. It was not
+the destination: the test allocates its own separate initially empty house.
+
+CB reserves earlier empty quick slots with tracked temporary spacers before
+adding the staged item. It no longer calls UnitDropItemSlot for sparse placement;
+non-droppable flags stay intact. The original move call is a suspected failure
+point, not a confirmed engine cause. Placement errors now name target, spacer,
+holder, ability or containment readback. Full character save/load remains blocked.
+CC is next unused.
 
 ## When you return
 
-1. Start CA and select your character. You can load the same old save used for
+1. Start CB and select your character. You can load the same old save used for
    earlier tests, with some real items in the house if convenient.
 2. Stand still and run `-savecheck`. Wait for PASS.
 3. Run `-savehousecheck` and stand still. It displays numbered STEP checkpoints for about
@@ -39,7 +50,9 @@ The probe journals the original57 inventory positions and live storage reference
 It creates one separate house at the original house position, then contains it
 under neutral ownership, hidden, paused and invulnerable, and creates six
 zero-ability `fGap` temporary spacer items. It uses the actual native staging,
-metadata, ability preparation and house placement primitives. Sparse-first slot
+metadata, ability preparation and house placement primitives. Empty earlier slots
+are reserved by temporary spacers, which are removed and verified after insertion.
+Sparse-first slot
 order5/2/0/1/3/4 exercises exact quick-slot movement before filling the house.
 Charges include0/120/127; binding alternates; exact50.25 life words and different
 persistent flag masks are checked. No real inventory item is moved or replaced.
@@ -67,6 +80,12 @@ Timer recovery skips the waits. A native application crash cannot be recovered
 by a script watchdog; it requires a new game session.
 
 ## Evidence
+
+CB SHA256: `47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9`.
+Mandatory gates,96 repository tests,2,000 codec cases,49 focused checks and three
+affected cargo recovery checks PASS. Three dependency compiles and installed-library
+finished-map checks PASS.517 other archive members and original editor source
+preserved; nine private input hashes match. Human CB acceptance remains pending.
 
 CA SHA256: `f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff`.
 Mandatory gates,96 repository tests,2,000 codec cases and47 focused checks PASS.

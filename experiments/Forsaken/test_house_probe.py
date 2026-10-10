@@ -61,9 +61,10 @@ class HouseProbeTests(unittest.TestCase):
         self.w.clamp_life=75.
         self.e['FHT_Run'](0)
         self.assertIn('PASS:',self.messages[-1])
-        staged=[i for i in self.w.items if i is not self.original]
+        staged=[i for i in self.w.items if i is not self.original and float(i['life'])==50.25]
         self.assertEqual(len(staged),6)
         self.assertTrue(all(float(i['life'])==50.25 for i in staged))
+        self.assertTrue(all(i['raw']==0 for i in self.w.items if i is not self.original))
         self.guarded_originals()
 
     def test_deferred_house_removal_is_verified_without_manual_retry(self):
@@ -101,13 +102,14 @@ class HouseProbeTests(unittest.TestCase):
 
     def test_success_six_slots_and_repeated_cleanup(self):
         before=dict(self.original)
+        self.w.reject_drop=True
         self.e['FHT_Run'](0);self.assertIn('PASS: six exact house slots',self.messages[-1])
         self.assertEqual(dict(self.original),before);self.assertEqual(self.created[-1]['raw'],0)
         self.assertEqual(self.e['FSN_Count'][0],0);self.assertFalse(self.e['FSJ_Ready'][0]);self.guarded_originals()
         self.e['FHT_Run'](0);self.assertIn('PASS:',self.messages[-1]);self.guarded_originals()
 
     def test_failed_placement_restores_triggers_and_original_inventory(self):
-        self.w.reject_drop=True;self.e['FHT_Run'](0)
+        self.w.reject_add=1;self.e['FHT_Run'](0)
         self.assertIn('FAIL at house placement slot 5',self.messages[-1]);self.assertIn('cleanup verified',self.messages[-1])
         self.assertEqual(self.created[-1]['raw'],0);self.guarded_originals()
 

@@ -1,6 +1,31 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-CA private house-health diagnostic — 2026-10-09.
+CB private sparse house-placement diagnostic — 2026-10-09.
+Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
+SHA256: 47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9
+Scratch: build/SaveProbeCB-bmygx5co/FFERPG; stageCB-4o4n11yc.
+Mandatory gates,96 repository tests,2,000 codec cases and49 focused native/
+house/position checks PASS. Three affected cargo recovery checks PASS after
+replacing obsolete drop-failure simulations with final insertion rejections.
+Broad house/cargo run:39 unchanged checks PASS; two obsolete drop-failure
+assertions failed in the already-running pre-edit suite. Both corrected cases
+are included in the three successful targeted reruns; no failure remains open.
+Three dependency compiles PASS: build/save-codec-compile-8o6zr3yt/report.json.
+Finished CB map check against installed common.j/blizzard.j PASS.517 other
+archive members and original editor source preserved; nine input hashes match.
+CA human result: all six metadata/ability stages passed; FAIL house slot5 at
+STEP23; cleanup=yes,originals=yes,release=yes; final-saveverify PASS.
+User real house has slots1-4 occupied and5-6 empty. Probe destination is a
+separate initially empty temporary house; slot5 is zero-based sixth slot.
+CB fills earlier empty quick slots with tracked spacers before UnitAddItem,
+removes/verifies spacers, and never calls UnitDropItemSlot. Strict metadata
+and non-droppable flags remain. Previous move-native failure is suspected,
+not proven. Placement failures now report spacer/target/holder/containment.
+Human gate: fresh CB session, -savecheck PASS, -savehousecheck, -saveverify.
+Send exact final result. Full character saving/loading stays disabled.
+CC next unused. Earlier checkpoints below are historical.
+
+Historical CA private house-health diagnostic — 2026-10-09.
 Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCA.w3x
 SHA256: f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff
 Scratch: build/SaveProbeCA-fe1lepqn/FFERPG; stageCA-72ss2stw.

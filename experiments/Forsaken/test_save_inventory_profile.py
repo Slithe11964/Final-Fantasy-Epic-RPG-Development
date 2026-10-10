@@ -159,10 +159,10 @@ class InventoryProfileTests(unittest.TestCase):
     def test_failed_native_placement_retains_explicit_target_until_recovered(self):
         self.ready();code=self.begin([record(self.gear_id('Boots'),1,3)])
         self.assertTrue(self.e['FIP_StageNext'](0));self.assertTrue(self.e['FIP_PrepareNext'](0,POLICY))
-        self.w.reject_drop=True
+        self.w.reject_add=self.w.adds+4
         self.assertFalse(self.e['FIP_PlaceNext'](0,SPACER,RING_FILLER,30))
         self.assertEqual(self.e['FIP_State'][0],3);self.assertEqual(self.e['FIP_Code'][0],code)
-        self.w.reject_drop=False;self.close()
+        self.w.reject_add=0;self.close()
 
     def test_incomplete_calls_and_reentry_do_not_advance_counters(self):
         self.ready();self.begin([record(self.gear_id('Boots'))])

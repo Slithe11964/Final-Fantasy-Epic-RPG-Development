@@ -98,13 +98,13 @@ class CargoPlacementTests(unittest.TestCase):
             self.assertFalse(self.e['FCG_PrepareItem'](0,0,policy));self.close()
 
     def test_quick_bag_equipment_native_rejections_recover(self):
-        for position,fault in (((1,3),'drop'),((2,29),'add'),((3,0),'equip')):
+        for position,fault in (((1,3),'quick add'),((2,29),'add'),((3,0),'equip')):
             self.setUp();self.ready();self.plan([position]);self.allocate()
-            if fault=='drop':self.w.reject_drop=True
+            if fault=='quick add':self.w.reject_add=self.w.adds+4
             elif fault=='add':self.w.reject_add=self.w.adds+1
             else:self.w.reject_equip=self.w.equips+1
             self.assertFalse(self.place());self.assertEqual(self.e['FCG_State'][0],3)
-            self.w.reject_drop=False;self.w.reject_add=0;self.w.reject_equip=0;self.close()
+            self.w.reject_add=0;self.w.reject_equip=0;self.close()
 
     def test_failed_filler_deletion_retains_handle_and_retries_cleanup(self):
         self.ready();self.plan([(2,29)]);self.allocate()

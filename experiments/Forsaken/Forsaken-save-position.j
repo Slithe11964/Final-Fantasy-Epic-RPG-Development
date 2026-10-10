@@ -27,21 +27,30 @@ endfunction
 
 function FSP_Check takes integer pid,integer index returns boolean
     if FSN_PlacedItem[index]!=FSN_Item[index] or FSN_PlacedItem[index]==null or FSN_PlacedUnit[index]==null then
+        set FSN_LastError[pid]="placement tracked handles"
         return false
     endif
     if GetUnitTypeId(FSN_PlacedUnit[index])==0 or GetOwningPlayer(FSN_PlacedUnit[index])!=FSN_PlacedOwner[index] then
+        set FSN_LastError[pid]="placement holder type or owner"
         return false
     endif
     if FSN_PlacedHolder[index]==2 and UnitExtendedInventorySize(FSN_PlacedUnit[index])!=30 then
+        set FSN_LastError[pid]="placement bag capacity"
         return false
     endif
     if FSP_At(FSN_PlacedUnit[index],FSN_PlacedHolder[index],FSN_PlacedSlot[index])!=FSN_PlacedItem[index] then
+        set FSN_LastError[pid]="placement target slot "+I2S(FSN_PlacedSlot[index])+" raw="+I2S(GetItemTypeId(FSP_At(FSN_PlacedUnit[index],FSN_PlacedHolder[index],FSN_PlacedSlot[index])))
         return false
     endif
     if not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(FSN_PlacedHolder[index]==2) or not FSA_Check(index) then
+        set FSN_LastError[pid]="placement ability readback"
         return false
     endif
-    return IsItemOwned(FSN_PlacedItem[index]) and not IsItemVisible(FSN_PlacedItem[index]) and FSN_CheckMetadata(pid,index)
+    if not IsItemOwned(FSN_PlacedItem[index]) or IsItemVisible(FSN_PlacedItem[index]) then
+        set FSN_LastError[pid]="placement owned hidden containment"
+        return false
+    endif
+    return FSN_CheckMetadata(pid,index)
 endfunction
 
 function FSP_PlaceCore takes integer pid,integer ordinal,unit holder,integer kind,integer slot,integer spacerRaw returns boolean
@@ -82,16 +91,24 @@ function FSP_PlaceCore takes integer pid,integer ordinal,unit holder,integer kin
     if not FSN_Check(pid,index) or not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(kind==2) or not FSA_BatchReady(pid) then
         return FSN_Fail(pid)
     endif
-    // Fill earlier empty quick/bag positions so UnitAddItem reaches the exact
-    // requested bag slot. Never create a copy using UnitAddItemToSlotById.
+    // Reserve earlier empty positions so UnitAddItem reaches the exact slot.
+    // This also handles non-droppable quick-slot items without a move native.
+    // Never create a copy using UnitAddItemToSlotById.
     if kind==2 then
         set limit=6+slot
+    else
+        set limit=slot
+    endif
+    if limit>0 and spacerRaw==0 then
+        set FSN_LastError[pid]="placement missing spacer type"
+        return FSN_Fail(pid)
     endif
     loop
         exitwhen position>=limit
         if (position<6 and UnitItemInSlot(holder,position)==null) or (position>=6 and UnitItemInBagSlot(holder,position-6)==null) then
             set spacer=CreateItem(spacerRaw,GetUnitX(holder),GetUnitY(holder))
             if spacer==null then
+                set FSN_LastError[pid]="placement spacer allocation "+I2S(position)
                 return FSN_Fail(pid)
             endif
             set auxiliary=pid*36+FSN_AuxCount[pid]
@@ -99,11 +116,13 @@ function FSP_PlaceCore takes integer pid,integer ordinal,unit holder,integer kin
             set FSN_AuxCount[pid]=FSN_AuxCount[pid]+1
             call SetItemVisible(spacer,false)
             if GetItemTypeId(spacer)!=spacerRaw or IsItemVisible(spacer) then
+                set FSN_LastError[pid]="placement spacer containment "+I2S(position)
                 set spacer=null
                 return FSN_Fail(pid)
             endif
             call UnitAddItem(holder,spacer)
             if (position<6 and UnitItemInSlot(holder,position)!=spacer) or (position>=6 and UnitItemInBagSlot(holder,position-6)!=spacer) then
+                set FSN_LastError[pid]="placement spacer slot "+I2S(position)
                 set spacer=null
                 return FSN_Fail(pid)
             endif
@@ -113,9 +132,6 @@ function FSP_PlaceCore takes integer pid,integer ordinal,unit holder,integer kin
     set spacer=null
     set carried=FSN_Item[index]
     call UnitAddItem(holder,carried)
-    if kind!=2 and UnitItemInSlot(holder,slot)!=carried then
-        call UnitDropItemSlot(holder,carried,slot)
-    endif
     set FSN_PlacedItem[index]=carried
     set FSN_PlacedUnit[index]=holder
     set FSN_PlacedHolder[index]=kind
@@ -125,6 +141,7 @@ function FSP_PlaceCore takes integer pid,integer ordinal,unit holder,integer kin
         return FSN_Fail(pid)
     endif
     if not FSN_CleanupAux(pid) then
+        set FSN_LastError[pid]="placement spacer cleanup"
         return FSN_Fail(pid)
     endif
     // Removing fillers must not compact/move the requested item.

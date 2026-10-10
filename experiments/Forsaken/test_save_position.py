@@ -306,18 +306,34 @@ class PositionTests(unittest.TestCase):
         self.assertTrue(self.e['FSN_Abort'](0))
         self.assert_no_allocations()
 
-    def test_quick_slot_silent_move_failure_and_equipment_are_refused(self):
-        self.stage()
+    def test_non_droppable_sparse_quick_slot_needs_no_move_native(self):
+        kept=self.stage()
+        kept['droppable']=False
+        self.e['FSN_Flags'][0]=5
         self.w.reject_drop=True
-        self.assertFalse(self.place(1,5))
-        self.assert_no_allocations()
-        self.setUp()
+        self.assertTrue(self.place(1,5))
+        self.assertIs(self.hero['quick'][5],kept)
+        self.assertFalse(any(c[0]=='drop' for c in self.w.calls))
+        self.assertFalse(kept['droppable'])
+        self.assertEqual(self.e['FSN_AuxCount'][0],0)
+
+    def test_equipment_is_refused(self):
         ring=self.original(self.hero,'equip',4)
         self.stage()
         self.w.calls.clear()
         self.assertFalse(self.place(3,5))
         self.assertIs(self.hero['equip'][4],ring)
         self.assertFalse(any(c[0]=='add' for c in self.w.calls))
+
+    def test_silent_quick_slot_add_failures_report_and_cleanup(self):
+        for position in range(1,7):
+            self.setUp()
+            self.stage()
+            self.w.reject_add=position
+            self.assertFalse(self.place(5,5))
+            self.assertIn('placement',self.e['FSN_LastError'][0])
+            self.assert_no_allocations()
+            self.assertTrue(all(i['raw']==0 for i in self.w.items))
 
     def test_placed_readback_detects_external_move_or_metadata_change(self):
         for mutate in ['position','metadata']:

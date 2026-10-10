@@ -1,6 +1,7 @@
-Latest private diagnostic: CA; see SAVE_HOUSE_ENGINE_TEST.md. BZ failed exact
-item-life readback; cleanup/originals/release=yes. CA tests50.25 and reports
-wanted/actual/max health on failure. CB next unused.
+Latest private diagnostic: CB; see SAVE_HOUSE_ENGINE_TEST.md. CA passed item
+metadata, then failed sparse house slot5; cleanup/originals/release and saveverify
+passed. CB reserves earlier empty slots before insertion and reports precise
+placement failures. CC next unused.
 Reproduce a new private house diagnostic with build_save_probe.py --house-probe
 and a fresh stage. Published maps are never overwritten.
 
@@ -77,10 +78,10 @@ Get-FileHash -Algorithm SHA256 release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 # Read-only codec compile probes; use reviewed extracted library paths.
 & $ffPython experiments/Forsaken/check_save_jass.py --activation --job-policy --gaya-policy --freelancer-policy --player-target --cargo --inventory-profile --house --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x --common ../war3.w3mod/scripts/common.j --blizzard ../war3.w3mod/scripts/blizzard.j
 # Only when an actual new experimental map is needed; check BV is still unused.
-& $ffPython experiments/Forsaken/build_forsaken.py --stage CB --base release/FFERPG_0.9.7.3-r16-stageAS.w3x --classic release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
+& $ffPython experiments/Forsaken/build_forsaken.py --stage CC --base release/FFERPG_0.9.7.3-r16-stageAS.w3x --classic release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x
 & $ffPython experiments/Forsaken/save_registry.py --mapping release/Forsaken/gear-slots-BV.json
-& $ffPython experiments/Forsaken/audit_gear.py --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x --mapping release/Forsaken/gear-slots-BV.json --output build/ForsakenCB-gear-audit.md
-Get-FileHash -Algorithm SHA256 release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
+& $ffPython experiments/Forsaken/audit_gear.py --map release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCC.w3x --mapping release/Forsaken/gear-slots-BV.json --output build/ForsakenCC-gear-audit.md
+Get-FileHash -Algorithm SHA256 release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenCC.w3x
 ```
 
 For a later shared checkpoint replace both explicit inputs and choose a fresh
@@ -123,10 +124,10 @@ produce an updated classic save adapter.
 
 ## Outputs and required review
 
-For stage CB retain:
+For stage CC retain:
 
-- `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x`
-- `release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenCB.w3x` (unchanged input fallback)
+- `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCC.w3x`
+- `release/Forsaken/1.29.2/FFERPG_0.9.7.3-r16-ForsakenCC.w3x` (unchanged input fallback)
 - `release/Forsaken/checks-r16-stageBV.txt`, `build-r16-stageBV.json`
 - `release/Forsaken/gear-slots-BV.json`, `forsaken-manifest-BV.json`
 - Scratch path printed by the builder, full logs and additional object/gear audits.
