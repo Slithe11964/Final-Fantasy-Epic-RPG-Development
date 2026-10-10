@@ -12,6 +12,7 @@ class GearProbeTests(unittest.TestCase):
         house.HouseProbeTests.setUp(self)
         self.ignore_passive=False;self.reject_equip=False;self.base_speed=250.
         self.no_bonus=False;self.sticky_bonus=False
+        self.hide_equipped_lookup=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -37,7 +38,7 @@ class GearProbeTests(unittest.TestCase):
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
             GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if s<len(i['abilities']) else None,
-            BlzGetItemAbility=lambda i,r:Handle(raw=r) if r in i['abilities'] else None,
+            BlzGetItemAbility=lambda i,r:None if self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
             UnitEquipItem=equip)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in ('life','native','journal','effects','position','equipment')]
@@ -99,6 +100,15 @@ class GearProbeTests(unittest.TestCase):
         self.assertIn('FAIL at speed baseline',self.messages[-1])
         self.assertIn('outside45..442 actual=443.000',self.messages[-1])
         self.assertEqual(self.w.adds,0);self.guarded_originals()
+
+    def test_equipped_lookup_failure_keeps_enumeration_and_speed_evidence(self):
+        self.hide_equipped_lookup=True
+        self.e['FGT_Run'](0)
+        self.assertIn('ability missing A0MU(speed)',self.messages[-1])
+        self.assertIn('item IDs=A0MU(speed),fGmk(marker),',self.messages[-1])
+        self.assertIn('unit ability=no speed=330.000',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
     def test_builder_checks_actual_fixture_and_rejects_changed_item_policy(self):
         archive=MPQ(str(ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x'))

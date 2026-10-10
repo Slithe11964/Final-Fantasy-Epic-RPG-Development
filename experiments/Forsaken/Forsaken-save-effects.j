@@ -1,6 +1,42 @@
 library TForsakenSaveEffects requires TForsakenSaveNative
 // Only newly allocated, hidden items. Policy is reviewed runtime data, never save data.
 // Role 1 is a stored passive; role 2 is a retained active ability or harmless marker.
+function FSA_Label takes integer raw returns string
+    if raw=='A0MU' then
+        return "A0MU(speed)"
+    elseif raw=='fGmk' then
+        return "fGmk(marker)"
+    endif
+    return I2S(raw)
+endfunction
+
+// Capture before failed placement removes the owned item. Never accepts a mismatch.
+function FSA_ReadbackFailure takes integer index,string reason,integer raw returns boolean
+    local integer slot=0
+    local ability current
+    local unit holder=FSN_PlacedUnit[index]
+    local string detail=""
+    loop
+        exitwhen slot>=4
+        set current=BlzGetItemAbilityByIndex(FSN_Item[index],slot)
+        exitwhen current==null
+        set detail=detail+FSA_Label(BlzGetAbilityId(current))+","
+        set slot=slot+1
+    endloop
+    set current=null
+    if holder!=null and raw!=0 then
+        if BlzGetUnitAbility(holder,raw)!=null then
+            set detail=detail+" unit ability=yes"
+        else
+            set detail=detail+" unit ability=no"
+        endif
+        set detail=detail+" speed="+R2S(GetUnitMoveSpeed(holder))
+    endif
+    set holder=null
+    set FSN_LastError[index/57]="ability "+reason+" "+FSA_Label(raw)+"; item IDs="+detail
+    return false
+endfunction
+
 function FSA_Check takes integer index returns boolean
     local integer abilityIndex=0
     local integer count=0
@@ -15,10 +51,10 @@ function FSA_Check takes integer index returns boolean
         if not FSN_EffectsStored[index] or FSN_EffectRole[index*16+abilityIndex]==2 then
             set expected=expected+1
             if BlzGetItemAbility(FSN_Item[index],FSN_EffectId[index*16+abilityIndex])==null then
-                return false
+                return FSA_ReadbackFailure(index,"missing",FSN_EffectId[index*16+abilityIndex])
             endif
         elseif BlzGetItemAbility(FSN_Item[index],FSN_EffectId[index*16+abilityIndex])!=null then
-            return false
+            return FSA_ReadbackFailure(index,"stored passive still present",FSN_EffectId[index*16+abilityIndex])
         endif
         set abilityIndex=abilityIndex+1
     endloop
@@ -28,7 +64,7 @@ function FSA_Check takes integer index returns boolean
         exitwhen current==null
         if count>=16 then
             set current=null
-            return false
+            return FSA_ReadbackFailure(index,"enumeration exceeds16",0)
         endif
         set raw=BlzGetAbilityId(current)
         set abilityIndex=0
@@ -38,12 +74,15 @@ function FSA_Check takes integer index returns boolean
         endloop
         if abilityIndex>=FSN_EffectCount[index] then
             set current=null
-            return false
+            return FSA_ReadbackFailure(index,"unexpected",raw)
         endif
         set count=count+1
     endloop
     set current=null
-    return count==expected
+    if count!=expected then
+        return FSA_ReadbackFailure(index,"count wanted="+I2S(expected)+" actual="+I2S(count),0)
+    endif
+    return true
 endfunction
 
 function FSA_BatchReady takes integer pid returns boolean

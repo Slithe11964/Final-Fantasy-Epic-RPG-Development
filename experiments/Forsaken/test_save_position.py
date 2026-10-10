@@ -86,6 +86,7 @@ class InventoryWorld(World):
             UnitItemInEquipmentSlot=lambda u, s: self.at(u, 'equip', s),
             ConvertLoadoutSlot=lambda s: s, GetUnitX=lambda u: 0., GetUnitY=lambda u: 0.,
             UnitAddItem=self.add, UnitDropItemSlot=self.drop_slot)
+        env.update(BlzGetUnitAbility=lambda u,r:None,GetUnitMoveSpeed=lambda u:250.)
         # These storage tests model items with no abilities. Equipment tests supply
         # real classified ability lists and injected ability-native failures.
         env.update(BlzGetItemAbilityByIndex=lambda i,s:None,BlzGetItemAbility=lambda i,a:None,

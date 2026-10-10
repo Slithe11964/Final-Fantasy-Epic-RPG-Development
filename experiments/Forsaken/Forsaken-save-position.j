@@ -42,8 +42,11 @@ function FSP_Check takes integer pid,integer index returns boolean
         set FSN_LastError[pid]="placement target slot "+I2S(FSN_PlacedSlot[index])+" raw="+I2S(GetItemTypeId(FSP_At(FSN_PlacedUnit[index],FSN_PlacedHolder[index],FSN_PlacedSlot[index])))
         return false
     endif
-    if not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(FSN_PlacedHolder[index]==2) or not FSA_Check(index) then
-        set FSN_LastError[pid]="placement ability readback"
+    if not FSN_EffectsReady[index] or FSN_EffectsStored[index]!=(FSN_PlacedHolder[index]==2) then
+        set FSN_LastError[pid]="placement ability preparation mode"
+        return false
+    endif
+    if not FSA_Check(index) then
         return false
     endif
     if not IsItemOwned(FSN_PlacedItem[index]) or IsItemVisible(FSN_PlacedItem[index]) then

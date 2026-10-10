@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CD
+# Private real equipment and backpack diagnostic — CE
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -8,9 +8,13 @@ CC engine failed before boots staging: requested speed200 read back250; cleanup,
 originals and release passed. CD measures starting speed instead of setting it;
 the equipment delta80, unchanged stored delta and return to baseline remain strict.
 Native effect/equipment acceptance remains pending.
+CD passed measured baseline and real item preparation, then failed after Boots
+reached equipment slot3: placement ability readback; cleanup/originals/release=yes.
+CE keeps strict membership checks and snapshots the missing/unexpected ability,
+item enumeration, unit lookup and speed before the failed owned item is removed.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCD.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CD includes a separate
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCE.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CE includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -31,7 +35,7 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CD does not alter objects. Two temporary pairs
+existing item/ability definitions; CE does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
