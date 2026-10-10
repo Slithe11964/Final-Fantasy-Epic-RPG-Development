@@ -1,6 +1,32 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-CB Warcraft engine acceptance — 2026-10-09.
+CC private real Boots/equipment/backpack diagnostic — 2026-10-10.
+Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCC.w3x
+SHA256: 56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534
+Scratch: build/SaveProbeCC-9mxy6ijg/FFERPG; stageCC-i1bw1l9d.
+Mandatory gates,96 repository tests and2,000 codec cases PASS. Six new actual-
+source gear/builder checks and55 house/equipment/position regressions PASS.
+Finished-map runtime/editor checks against installed native libraries PASS;
+517 other archive members and original editor source preserved;11 private
+input hashes match. Shared source/baseline and BT/CB maps remain unchanged.
+New command -savegearcheck journals original57 slots, holds the shared guard/
+watchdog, creates a separate contained hero of the selected hero type at the
+original house point and adds fBag/fGer/ASpc. It never publishes hero references.
+Builder validates f003 Boots, A0MU speed80, fGmk zero-stat marker and native
+inventory abilities. Two temporary real Boots use life1, quantities0/120 and
+different binding/drop flags. One equips Boots slot3; the other has its passive
+removed, marker retained and is inserted at bag slot29 using tracked spacers.
+Speed must be200 ->280 ->280 ->200 after deletion. Bag/equipment foreign cargo
+blocks temporary hero disposal. Failure keeps readback details and cleanup retry.
+Human gate: fresh CC, old save if desired, -savecheck PASS, -savegearcheck, then
+-saveverify. Send final Gear test result or last STEP if crash. Cleanup uses
+-savehousecleanup. See docs/SAVE_GEAR_ENGINE_TEST.md.
+CC real effects/native equipment acceptance remains pending. CB house gate is
+confirmed. Rings/other effects/full profiles/controller/commit/file/restart/
+multiplayer remain open; full new-format character save/load stays disabled.
+CD next unused. Earlier checkpoints below are historical.
+
+Historical CB Warcraft engine acceptance — 2026-10-09.
 User reports -savecheck, -savehousecheck and final -saveverify all PASS.
 Screenshot reaches STEP29 trigger restoration and reports:
 "PASS: six exact house slots, quantities0/120/127, binding, life and flags;

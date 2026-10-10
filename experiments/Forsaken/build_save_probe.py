@@ -21,19 +21,35 @@ def identity(path):
     return dict(path=str(path.resolve()),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
+def validate_gear_fixture(archive,objects):
+    from objdata import read_objects,fields
+    shoes=objects.get('f003',{})
+    if shoes.get('iabi')!='A0MU,fGmk' or shoes.get('iequ')!='Boots' or shoes.get('icla')!='Equipment' or shoes.get('ihtp')!=1:
+        raise ValueError('unreviewed real boots fixture')
+    table=read_objects(archive.read('war3map.w3a'),'w3a')
+    abilities={o['id'] or o['base']:o for group in ('original','custom') for o in table[group]}
+    for raw,base,expected in [('A0MU','AIms',{('Imvb',1):80}),('fGmk','AIi1',{('Iagi',1):0,('Iint',1):0,('Istr',1):0}),('fBag','AInx',{('inv6',1):30}),('fGer','AEqu',{('equ1',1):0})]:
+        obj=abilities.get(raw,{})
+        data=fields(obj) if obj else {}
+        if obj.get('base')!=base or any(data.get(k)!=v for k,v in expected.items()):
+            raise ValueError('unreviewed gear ability fixture: '+raw)
+
+
 def probe_source(aliases):
     text=(HERE/'Forsaken-save-probe.j').read_text()
     lines=["    call SaveInteger(FSX_Map,0,'%s',%d)"%(raw,id) for raw,id in sorted(aliases.items())]
     return text.replace('    // FSX_IDENTITY_INITIALIZATION','\n'.join(lines))
 
 
-def modules(house=False):
+def modules(house=False,gear=False):
+    house=house or gear
     result=[('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j')]
     if house:
         result += [('ForsakenSaveNative','Forsaken-save-native.j'),('ForsakenSaveJournal','Forsaken-save-journal.j'),
                    ('ForsakenSaveEffects','Forsaken-save-effects.j'),('ForsakenSavePosition','Forsaken-save-position.j')]
     result.append(('ForsakenSaveProbe','Forsaken-save-probe.j'))
     if house:result.append(('ForsakenHouseProbe','Forsaken-house-probe.j'))
+    if gear:result += [('ForsakenSaveEquipment','Forsaken-save-equipment.j'),('ForsakenGearProbe','Forsaken-gear-probe.j')]
     return result
 
 
@@ -61,6 +77,7 @@ def house_probe_source(runtime):
 def module_source(module,file,aliases,runtime):
     if module=='ForsakenSaveProbe':return probe_source(aliases)
     if module=='ForsakenHouseProbe':return house_probe_source(runtime)
+    if module=='ForsakenGearProbe':return (HERE/file).read_text(encoding='utf-8')
     return (HERE/file).read_text(encoding='utf-8').replace('endlibrary',
         'function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
 
@@ -69,10 +86,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--stage',default='BU')
     p.add_argument('--house-probe',action='store_true',help='include reversible temporary native house storage tests')
+    p.add_argument('--gear-probe',action='store_true',help='include real boots equipment and extended bag tests on a contained hero')
     p.add_argument('--base',type=Path,default=ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x')
     p.add_argument('--mapping',type=Path,default=ROOT/'release/Forsaken/gear-slots-BS.json')
     p.add_argument('--resume-checked-build',type=Path,help='reuse a completed mandatory stage build after a publication/audit interruption')
     args=p.parse_args()
+    args.house_probe=args.house_probe or args.gear_probe
     if not re.fullmatch('[A-Z][A-Z0-9]*',args.stage): p.error('invalid stage')
     dest=ROOT/'release/Forsaken'
     names=['FFERPG_0.9.7.3-r16-Forsaken'+args.stage+'.w3x','checks-r16-stage'+args.stage+'.txt',
@@ -95,8 +114,10 @@ def main():
         gap=objects.get('fGap',{})
         if gap.get('iabi')!='' or gap.get('ipow')!=0 or gap.get('iuse')!=0:
             raise ValueError('fGap is not the reviewed zero-ability temporary spacer')
+        if args.gear_probe:
+            validate_gear_fixture(archive,objects)
         house_probe_source(runtime)
-    allow_new='^gg_trg_Forsaken_(Save|House)Probe$' if args.house_probe else '^gg_trg_Forsaken_SaveProbe$'
+    allow_new='^gg_trg_Forsaken_(Save|House|Gear)Probe$' if args.gear_probe else '^gg_trg_Forsaken_(Save|House)Probe$' if args.house_probe else '^gg_trg_Forsaken_SaveProbe$'
     alias_roots=dict(re.findall(r"SaveInteger\(ForsakenGearTypes,4,'(....)','(....)'\)",runtime))
     offhands=dict(re.findall(r"SaveInteger\(ForsakenGearTypes,6,'(....)','(....)'\)",runtime))
     canonical={r['rawcode']:r['id'] for r in registry['items']}
@@ -113,13 +134,13 @@ def main():
             raise ValueError('checked output hash changed')
         if hashlib.sha256((work/'release'/names[1]).read_bytes()).hexdigest()!=checked['checks_sha256']:
             raise ValueError('checked build log changed')
-        for module,file in modules(args.house_probe):
+        for module,file in modules(args.house_probe,args.gear_probe):
             expected=module_source(module,file,aliases,runtime)
             if (work/'src/triggers/11 Save diagnostics'/(module+'.j')).read_text()!=expected:
                 raise ValueError('resume source differs: '+module)
         for tool,values in [('check_map.py',[built,'--baseline',base,'--allow-new',allow_new]),('check_sources.py',[built])]:
             subprocess.run([sys.executable,str(work/'tools'/tool),*map(str,values)],cwd=work,check=True)
-        publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe)
+        publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe,args.gear_probe)
         return
     scratch=Path(tempfile.mkdtemp(prefix='SaveProbe'+args.stage+'-',dir=ROOT/'build'))
     work=scratch/'FFERPG'
@@ -139,7 +160,7 @@ def main():
         if result.returncode: raise ValueError('failed '+str(tool)+'; scratch retained at '+str(scratch))
     run(work/'tools/export_sources.py',base,work/'src')
     previous=base
-    for module,file in modules(args.house_probe):
+    for module,file in modules(args.house_probe,args.gear_probe):
         source=module_source(module,file,aliases,runtime)
         path=work/'src/triggers/11 Save diagnostics'/ (module+'.j')
         path.parent.mkdir(parents=True,exist_ok=True)
@@ -152,10 +173,10 @@ def main():
     run(work/'tools/build_stage.py',args.stage,'--base',previous)
     built=work/'release'/names[0]
     run(work/'tools/check_map.py',built,'--baseline',base,'--allow-new',allow_new)
-    publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe)
+    publish(base,built,args.mapping,aliases,work,names,dest,args.stage,args.house_probe,args.gear_probe)
 
 
-def publish(base,built,mapping,aliases,work,names,dest,stage,house=False):
+def publish(base,built,mapping,aliases,work,names,dest,stage,house=False,gear=False):
     original,out=MPQ(str(base)),MPQ(str(built))
     # MPQ member CRC metadata changes when scripts change; it is not gameplay content.
     changed={'war3map.j','war3map.wtg','war3map.wct','(attributes)'}
@@ -169,10 +190,13 @@ def publish(base,built,mapping,aliases,work,names,dest,stage,house=False):
         raise ValueError('original editor source changed')
     report=dict(stage=stage,scope='Private inventory/codec engine diagnostic; no character load, durable save export, files or multiplayer transport.',
                 base=identity(base),output=identity(built),mapping=identity(mapping),
-                sources={name:identity(HERE/name) for name in [file for _,file in modules(house)]+['build_save_probe.py']},
+                sources={name:identity(HERE/name) for name in [file for _,file in modules(house,gear)]+['build_save_probe.py']},
                 preserved_members=preserved,original_editor_source_preserved=True,aliases=len(aliases),
                 scratch=str(work),commands=['-savecheck','-saveverify']+(['-savehousecheck','-savehousecleanup'] if house else []),save_export_disabled=True,
-                house_probe=house)
+                house_probe=house,gear_probe=gear)
+    if gear:
+        report['commands'].append('-savegearcheck')
+        report['gear_fixture']={'raw':'f003','passive':'A0MU','marker':'fGmk','move_bonus':80,'life':1,'equipment_slot':3,'bag_slot':29}
     if house:
         generated=house_probe_source(original.read('war3map.j').decode('utf-8'))
         report['house_guard_sha256']=hashlib.sha256(generated.encode('utf-8')).hexdigest()

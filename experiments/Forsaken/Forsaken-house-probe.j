@@ -4,6 +4,7 @@ globals
     trigger gg_trg_Forsaken_HouseProbe=null
     boolean FHT_WatchdogRecovering=false
     boolean FHT_Busy=false
+    boolean FHT_GearMode=false
     integer FHT_Player=-1
     integer FHT_Checkpoint=0
     timer FHT_Watchdog=null
@@ -15,6 +16,10 @@ globals
 endglobals
 
 function FHT_Message takes integer pid,string message returns nothing
+    if FHT_GearMode then
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"Gear test: "+message)
+        return
+    endif
     call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"House test: "+message)
 endfunction
 
@@ -66,6 +71,22 @@ function FHT_Empty takes unit candidate returns boolean
     loop
         exitwhen slot>=6
         if UnitItemInSlot(candidate,slot)!=null then
+            return false
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=UnitExtendedInventorySize(candidate)
+        if UnitItemInBagSlot(candidate,slot)!=null then
+            return false
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=9
+        if UnitItemInEquipmentSlot(candidate,ConvertLoadoutSlot(slot))!=null then
             return false
         endif
         set slot=slot+1
@@ -176,7 +197,11 @@ function FHT_Finish takes integer pid,boolean passed,string step returns nothing
     set FHT_Player=-1
     set detail=" [native: "+nativeError+"; cleanup="+FHT_YesNo(clean)+"; originals="+FHT_YesNo(originals)+"; release="+FHT_YesNo(released)+"]"
     if passed and clean and originals and released then
-        call FHT_Message(pid,"PASS: six exact house slots, quantities0/120/127, binding, life and flags; temporary cleanup verified; original inventory unchanged.")
+        if FHT_GearMode then
+            call FHT_Message(pid,"PASS: real boots equipped and stored in bag slot30; equipment speed bonus verified; stored passive removed; cleanup restored baseline speed; original inventory unchanged.")
+        else
+            call FHT_Message(pid,"PASS: six exact house slots, quantities0/120/127, binding, life and flags; temporary cleanup verified; original inventory unchanged.")
+        endif
     elseif clean and originals and released and step=="cleanup retry" then
         call FHT_Message(pid,"PASS: temporary cleanup verified; original inventory unchanged.")
     elseif clean and originals and released then
@@ -224,6 +249,7 @@ function FHT_Run takes integer pid returns nothing
     endif
     set FHT_Busy=true
     set FHT_Checkpoint=0
+    set FHT_GearMode=false
     call FHT_Trace(pid,"original inventory journal")
     if not FSJ_Capture(pid,udg_PlayerHero[pid+1],udg_SpiritOfGaya[pid+1],udg_PlayerHouse[pid+1],true) then
         set FHT_Busy=false
