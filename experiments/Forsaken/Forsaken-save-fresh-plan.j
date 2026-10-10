@@ -3,6 +3,7 @@ library TForsakenSaveFreshPlan requires TForsakenSaveCapture
 globals
     hashtable FFP_Bindings=null
     hashtable FFP_Values=null
+    boolean array FFP_Locked
     boolean array FFP_Ready
     string array FFP_Error
     string array FFP_Code
@@ -24,6 +25,8 @@ endglobals
 function FFP_Clear takes integer pid returns nothing
     local integer i=0
     if not FSC_PlayerValid(pid) then
+        return
+    elseif FFP_Locked[pid] then
         return
     endif
     set FFP_Ready[pid]=false
@@ -64,7 +67,10 @@ function FFP_Eligible takes integer pid,boolean windowOpen returns boolean
         return false
     endif
     set FFP_Error[pid]=null
-    if not windowOpen then
+    if FFP_Locked[pid] then
+        set FFP_Error[pid]="a fresh-load attempt still owns objects"
+        return false
+    elseif not windowOpen then
         set FFP_Error[pid]="the load window has closed"
         return false
     elseif not udg_HardcoreOff then
@@ -175,6 +181,10 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
     local integer slotPower
     local boolean valid=true
     if not FSC_PlayerValid(pid) then
+        return false
+    endif
+    if FFP_Locked[pid] then
+        set FFP_Error[pid]="finish cleanup before another load attempt"
         return false
     endif
     call FFP_Clear(pid)

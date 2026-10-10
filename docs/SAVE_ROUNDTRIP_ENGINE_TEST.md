@@ -53,9 +53,22 @@ current engine cap99. These prototype restrictions do not change the format's
 future level capacity. Closed-window, Hardcore and already-loaded states are
 rejected without consuming a load; failed validation can be retried.
 
+## Attempt-owned objects
+
+The fresh path now creates the selected hero, Gaya, an inactive Freelancer when
+saved, and each item directly for the player. Item quantity, binding, exact life
+and persistent flags are checked against the detached plan. Every new handle is
+tracked immediately; the assigned house and starting character are not replaced.
+Allocation alone does not set HasLoadedCode or publish character references.
+
+Failed allocation cleans only tracked objects. A failed deletion retains its
+handle and locks the plan against reuse; cleanup can be retried. Cleanup refuses
+to delete a new unit carrying an unrelated item. Failure injection and compilation
+checks pass locally; these objects are not yet wired into a Warcraft test map.
+
 ## Remaining before CU
 
 Wire real capture, current-job/progression schemas and durable flags into export;
-implement fresh creation, attempt-only cleanup and post-load comparison. Keep
+finish progression setup, item placement and post-load comparison. Keep
 unsupported export states explicit. Then build CU and measure the same real code
 through restart and multiplayer; do not add separate temporary-hero test rounds.
