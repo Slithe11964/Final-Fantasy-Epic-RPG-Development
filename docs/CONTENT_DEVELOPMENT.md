@@ -165,7 +165,7 @@ Refresh references with `python tools/gen_docs.py` and `python tools/gen_depende
 The dependency index lists declared requires, including disabled editor modules; dynamic
 ExecuteFunc calls and startup event wiring still need review. Update OBJECTS/quest reference
 outputs if their data changed. Record the stage, map, checks and focused test checklist in
-STAGES.md/HANDOFF.md and update ../RESUME_PROMPT.txt, then commit the owned changes.
+STAGES.md (one row) and HANDOFF.md if the current state changed, then commit the owned changes.
 
 Play the whole new quest in Reforged with cinematics on and off and in a two-player game:
 availability only after its prerequisite; correct markers/log; boss hidden before acceptance;

@@ -18,7 +18,7 @@ ignored. Sources, compiler libraries, compatibility contracts and regression fix
 
 ## Development
 
-Read docs/HANDOFF.md, docs/STAGES.md, then docs/QUEST_ENGINE.md. Install Python 3 and use PowerShell;
+Read docs/HANDOFF.md first. Install Python 3 and use PowerShell;
 Windows pjass and both sets of script libraries are included. Editor saves require JassHelper/vJass.
 
 ```powershell
@@ -55,7 +55,5 @@ Record each build in STAGES.md and update HANDOFF.md. Preserve existing save ite
 
 ## Local archive
 
-Older maps, checks, scratch builds and superseded surveys are preserved outside this repo:
-`../_archive/FFERPG-before-r16-baseline-2026-10-06/`. Its manifest lists moved material. Previous
-documentation and the untouched user r16 are saved there too. Git retains source history.
-The archive is for local recovery and is not required for normal development.
+Older maps, scratch builds and the earlier `_archive` were moved to `../_delete/` on 2026-10-10 and
+can be deleted. Git keeps the full source and doc history; long logs are in `docs/history/`.
