@@ -3,8 +3,11 @@
 Bounds correction,2026-10-09: staging now rejects points outside the actual playable
 rectangle with128 clearance before any allocation. BW/BX's private probe used a
 point below terrain; BY uses the journaled original house location. Original houses
-are preplaced; the separate owned house is transaction/test scaffolding. Real-engine
-acceptance remains pending. See [SAVE_HOUSE_ENGINE_TEST.md](SAVE_HOUSE_ENGINE_TEST.md).
+are preplaced; the separate owned house is transaction/test scaffolding. CB synthetic
+house engine acceptance is confirmed: all six exact slots, quantities0/120/127,
+binding,50.25 life, flags and cleanup PASS; final-saveverify PASS. Full prepared
+inventory/profile transactions remain untested in Warcraft. See
+[SAVE_HOUSE_ENGINE_TEST.md](SAVE_HOUSE_ENGINE_TEST.md).
 
 2026-10-09, isolated transaction preparation; no full character load command.
 
@@ -45,7 +48,7 @@ Three final isolated compilation probes PASS:
 `build/save-codec-compile-kloyunqa/report.json`;24 source hashes/CRLF verified.
 These are mocked-native and compiler evidence, not Warcraft engine acceptance.
 
-The next required human gate is the BW synthetic house diagnostic documented in
+The synthetic house gate was accepted using CB, documented in
 SAVE_HOUSE_ENGINE_TEST.md. It exercises the same native staging, metadata, ability
 preparation, exact-house placement and shared house-shape readback using temporary
 zero-ability spacer items. It does not execute the full prepared hero/profile

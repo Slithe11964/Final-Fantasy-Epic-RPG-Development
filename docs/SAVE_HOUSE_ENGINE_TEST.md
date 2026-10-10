@@ -1,5 +1,11 @@
 # Private house placement diagnostic — CB
 
+**Human gate passed,2026-10-09.** User reports all three commands PASS. Screenshot
+shows STEP29 trigger restoration and PASS for six exact house slots,
+quantities0/120/127, binding, life and flags, verified temporary cleanup and
+unchanged original inventory. The following instructions are retained for repeat
+testing. This accepts the synthetic house diagnostic, not a full character load.
+
 Use the new Reforged diagnostic map:
 `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x`.
 BW/BX crashed outside the terrain. BY corrected that point and no longer crashed,
@@ -85,7 +91,7 @@ CB SHA256: `47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9`.
 Mandatory gates,96 repository tests,2,000 codec cases,49 focused checks and three
 affected cargo recovery checks PASS. Three dependency compiles and installed-library
 finished-map checks PASS.517 other archive members and original editor source
-preserved; nine private input hashes match. Human CB acceptance remains pending.
+preserved; nine private input hashes match. Human CB acceptance is confirmed above.
 
 CA SHA256: `f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff`.
 Mandatory gates,96 repository tests,2,000 codec cases and47 focused checks PASS.

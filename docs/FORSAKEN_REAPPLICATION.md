@@ -1,4 +1,6 @@
-Latest private diagnostic: CB; see SAVE_HOUSE_ENGINE_TEST.md. CA passed item
+Latest private diagnostic: CB; human house gate PASS, including six exact slots,
+metadata and temporary cleanup; -savecheck/-saveverify also user-confirmed PASS.
+See SAVE_HOUSE_ENGINE_TEST.md. CA passed item
 metadata, then failed sparse house slot5; cleanup/originals/release and saveverify
 passed. CB reserves earlier empty slots before insertion and reports precise
 placement failures. CC next unused.

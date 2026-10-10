@@ -1,6 +1,24 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-CB private sparse house-placement diagnostic — 2026-10-09.
+CB Warcraft engine acceptance — 2026-10-09.
+User reports -savecheck, -savehousecheck and final -saveverify all PASS.
+Screenshot reaches STEP29 trigger restoration and reports:
+"PASS: six exact house slots, quantities0/120/127, binding, life and flags;
+temporary cleanup verified; original inventory unchanged."
+Tested artifact: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
+SHA256: 47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9
+The synthetic six-item house gate is accepted for this user-tested session.
+This confirms50.25 native life readback and sparse placement with tracked spacers,
+including non-droppable flags; no real original items were moved or replaced.
+It does not prove the former UnitDropItemSlot cause or145.25 health cap.
+Next engine scope: prepared inventory with real classified item abilities,
+equipment effects and extended bag placement. Full profile/hero preparation,
+reversible live house references and activation/controller integration remain
+open, as do durable export/restart and multiplayer acceptance. Do not enable
+full new-format character save/load from this narrow engine result.
+CC remains next unused; no new map needed to record this acceptance.
+
+Historical CB private sparse house-placement diagnostic — 2026-10-09.
 Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
 SHA256: 47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9
 Scratch: build/SaveProbeCB-bmygx5co/FFERPG; stageCB-4o4n11yc.
