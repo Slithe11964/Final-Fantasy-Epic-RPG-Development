@@ -86,3 +86,6 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | CB | Forsaken: house storage diagnostic, **user-confirmed PASS** |
 | CC-CS | Forsaken: boots / equipment diagnostic development; see SAVE_GEAR_ENGINE_TEST.md |
 | CT | Forsaken: contained real-boots equipment/storage/speed/cleanup diagnostic, **user-confirmed PASS** on savecheck, savegearcheck and saveverify; full character saving remains disabled |
+| CU | Private file save/fresh-load prototype built, superseded before playtesting by CV with stored-item activation preparation. |
+| CV | Private fresh-load build added stored-item activation preparation, superseded before playtesting by CW with Freelancer skill-choice handling. |
+| CW | Private real-character file save/restart/fresh-load prototype ready for engine testing, with exact full-profile verification and retryable attempt cleanup. |

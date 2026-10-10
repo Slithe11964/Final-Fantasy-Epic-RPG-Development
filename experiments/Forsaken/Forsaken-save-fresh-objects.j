@@ -7,6 +7,8 @@ globals
     integer array FFN_UnitRaw
     item array FFN_Item
     integer array FFN_ItemRaw
+    item array FFN_Spacer
+    integer array FFN_SpacerCount
     integer array FFN_Count
 endglobals
 
@@ -28,6 +30,29 @@ function FFN_ClearRecords takes integer pid returns nothing
     set FFN_Count[pid]=0
 endfunction
 
+function FFN_CleanupSpacers takes integer pid returns boolean
+    local integer i=0
+    local integer index
+    local boolean clean=true
+    loop
+        exitwhen i>=FFN_SpacerCount[pid]
+        set index=pid*36+i
+        if FFN_Spacer[index]!=null then
+            call RemoveItem(FFN_Spacer[index])
+            if GetItemTypeId(FFN_Spacer[index])==0 then
+                set FFN_Spacer[index]=null
+            else
+                set clean=false
+            endif
+        endif
+        set i=i+1
+    endloop
+    if clean then
+        set FFN_SpacerCount[pid]=0
+    endif
+    return clean
+endfunction
+
 function FFN_Cleanup takes integer pid returns boolean
     local integer i=0
     local integer index
@@ -41,6 +66,7 @@ function FFN_Cleanup takes integer pid returns boolean
         return not FFP_Locked[pid]
     endif
     set FFN_State[pid]=3
+    set clean=FFN_CleanupSpacers(pid)
     loop
         exitwhen i>=FFN_Count[pid]
         set index=pid*57+i
@@ -223,7 +249,7 @@ function FFN_Allocate takes integer pid,boolean windowOpen returns boolean
     endif
     set FFP_Locked[pid]=true
     set FFN_State[pid]=1
-    set FFN_Error[pid]=null
+    set FFN_Error[pid]=""
     call FFN_ClearRecords(pid)
     set selected=LoadInteger(FFP_Values,pid*16+4,13)
     set variant=LoadInteger(FFP_Values,pid*16+4,14)

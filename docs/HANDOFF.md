@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageAS.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x` | User reports everything in AS works. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenCB.w3x` (house test, user PASS); `...CT` (boots/equipment test, user PASS) | Private diagnostics passed. Next: real fresh-character file save/restart/load prototype (CU); SAVE_SYSTEM_PLAN.md. Full new-format save/load stays off. |
+| New save system | `release/Forsaken/...ForsakenCW.w3x` (private file save/restart/fresh-load test) | Complete prototype built; engine acceptance pending. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md; public new-format saving stays off. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -33,6 +33,7 @@ Classic copy: `.\make_129.ps1 -Map release/<map>.w3x`. Details and failure handl
 - Forsaken gameplay build: `python experiments/Forsaken/build_forsaken.py --stage <X>`.
 - Save diagnostic build: `python experiments/Forsaken/build_save_probe.py --stage <X> --gear-probe`
   (or `--house-probe`). Default base is ForsakenBT.
+- Complete private round trip: `python experiments/Forsaken/build_save_roundtrip.py --stage <X>`.
 - World Editor: enable JassHelper/vJass, Save As a new file, then `python tools/export_sources.py`
   and review the source diff before committing.
 
@@ -50,7 +51,7 @@ Classic copy: `.\make_129.ps1 -Map release/<map>.w3x`. Details and failure handl
 
 ## Next
 
-1. Save system: build CU for one real file save/restart/fresh-character load and size/timing
+1. Save system: test CW with one real file save/restart/fresh-character load and size/timing
    measurements. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. New content on AS: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.
