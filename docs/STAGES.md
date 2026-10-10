@@ -84,4 +84,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | BT | Forsaken: labels-only patch of BS (Cat's Bell, Deathbringer); last gameplay checkpoint for the Forsaken gear branch |
 | BU-CA | Forsaken: private save-system diagnostics (`-savecheck`, `-savehousecheck`); see SAVE_ENGINE_TEST.md / SAVE_HOUSE_ENGINE_TEST.md |
 | CB | Forsaken: house storage diagnostic, **user-confirmed PASS** |
-| CC-CP+ | Forsaken: boots / equipment diagnostic (`-savegearcheck`), in progress; see SAVE_GEAR_ENGINE_TEST.md |
+| CC-CS | Forsaken: boots / equipment diagnostic development; see SAVE_GEAR_ENGINE_TEST.md |
+| CT | Forsaken: contained real-boots equipment/storage/speed/cleanup diagnostic, **user-confirmed PASS** on savecheck, savegearcheck and saveverify; full character saving remains disabled |

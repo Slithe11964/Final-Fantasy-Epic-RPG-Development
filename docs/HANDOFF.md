@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageAS.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x` | User reports everything in AS works. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenCB.w3x` (house test, user PASS); `...CP` and newer (boots/equipment test, in progress) | Private diagnostic maps. Plan: SAVE_SYSTEM_PLAN.md; current test: SAVE_GEAR_ENGINE_TEST.md. Full new-format save/load stays off. |
+| New save system | `release/Forsaken/...ForsakenCB.w3x` (house test, user PASS); `...CT` (boots/equipment test, user PASS) | Private diagnostic maps. Plan: SAVE_SYSTEM_PLAN.md; current test: SAVE_GEAR_ENGINE_TEST.md. Full new-format save/load stays off. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -50,7 +50,7 @@ Classic copy: `.\make_129.ps1 -Map release/<map>.w3x`. Details and failure handl
 
 ## Next
 
-1. Save system: finish the boots/equipment engine test (ChatGPT is on this), then the remaining
-   gates in SAVE_SYSTEM_PLAN.md.
+1. Save system: boots diagnostic passed on CT; continue wider equipment/passive restoration
+   and transaction integration gates in SAVE_SYSTEM_PLAN.md.
 2. New content on AS: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.

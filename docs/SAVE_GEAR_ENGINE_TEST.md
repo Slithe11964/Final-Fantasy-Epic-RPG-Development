@@ -233,3 +233,17 @@ fits the multiplier to the observed boots delta. Generic loader remains disabled
 CT:24 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+## Accepted engine checkpoint — 2026-10-10
+
+User confirms all three commands passed on CT: -savecheck, -savegearcheck and
+-saveverify. Screenshot confirms gear STEP17 PASS: real boots equipped and stored
+in bag slot30, equipment speed effect verified with the pre-item multiplier,
+stored passive removed, cleanup restored starting speed, original inventory
+unchanged. This accepts the contained f003 boots lifecycle, not general equipment
+restoration or a usable character save. Preserve CT as the passing test map.
+
+Next gates: wider equipment coverage (rings/offhand and retained active abilities),
+stored-to-equipped passive restoration, and integration with the transaction and
+original recovery controller. Restart, transport and multiplayer acceptance still
+remain before enabling full new-format saving/loading.

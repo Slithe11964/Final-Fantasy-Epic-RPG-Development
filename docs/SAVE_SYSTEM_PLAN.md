@@ -390,3 +390,9 @@ three compile probes PASS, build/save-codec-compile-zgse3g26/report.json.
 Gaya/Freelancer and remaining derived effects/native evidence/controller/item
 integration remain open. Future caps require separate actual-level/mastery-tier
 records before relaxing schema1 limits. No map build; full saves remain blocked.
+
+Engine milestone (2026-10-10): user confirms CT savecheck, savegearcheck and
+saveverify PASS. Contained f003 boots equipment/storage/passive/speed/cleanup
+lifecycle accepted; details in SAVE_GEAR_ENGINE_TEST.md. Wider gear, stored
+passive restoration and controller integration remain open; this does not enable
+full new-format character saving/loading.
