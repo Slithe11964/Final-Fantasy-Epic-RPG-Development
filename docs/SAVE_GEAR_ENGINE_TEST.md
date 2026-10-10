@@ -209,3 +209,14 @@ is not assumed. Full character saving and general restoration remain disabled.
 CR:23 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+CR passed passive/marker readbacks, but removing only A0MU changed440 to340,
+failing the exact80 same-slot control. Cleanup/originals/release passed. CS reads
+runtime Imvb level0 and unit ability level before storage, requires archived80,
+and adds before/after hero agility and default speed plus starting speed to a
+failed control. No gameplay setter or acceptance threshold changes. The source
+archive defines80; why the engine changes100 remains unresolved.
+
+CS:24 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.

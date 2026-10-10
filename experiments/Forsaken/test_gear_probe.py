@@ -16,7 +16,7 @@ class GearProbeTests(unittest.TestCase):
         self.lazy_abilities=False
         self.hide_held_abilities=False;self.duplicate_on_equip=False
         self.pickup_recalculation=0.
-        self.bonus_size=80
+        self.bonus_size=80;self.runtime_bonus=80
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
@@ -68,7 +68,7 @@ class GearProbeTests(unittest.TestCase):
         self.env=dict(self.e)
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
-            GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
+            GetUnitMoveSpeed=speed,GetHeroAgi=lambda u,b:50,GetUnitDefaultMoveSpeed=lambda u:self.base_speed,GetUnitAbilityLevel=lambda u,r:1,ConvertAbilityIntegerLevelField=lambda r:r,BlzGetAbilityIntegerLevelField=lambda a,f,l:self.runtime_bonus,IsUnitType=lambda u,t:u['raw']!='h006',
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and not self.return_enum_pending and s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
@@ -278,6 +278,12 @@ class GearProbeTests(unittest.TestCase):
         self.e['BlzItemRemoveAbility']=lambda item,raw: True if item['charges']==0 else remove(item,raw)
         self.e['FGT_Run'](0)
         self.assertIn('FAIL at same-slot passive speed',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
+
+    def test_runtime_bonus_mismatch_is_reported_before_storage(self):
+        self.runtime_bonus=100;self.e['FGT_Run'](0)
+        self.assertIn('runtime boots bonus wanted80 actual=100 level=1',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 

@@ -214,6 +214,10 @@ function FGT_Run takes integer pid returns nothing
     local real baseline
     local real actual
     local real equipped
+    local integer runtimeBonus
+    local integer runtimeLevel
+    local integer equippedAgi
+    local real equippedDefault
     if not FSC_PlayerValid(pid) or FHT_Busy then
         return
     endif
@@ -307,6 +311,16 @@ function FGT_Run takes integer pid returns nothing
     // Capture equipped speed; compare against same-slot passive suspension later.
     call FHT_Trace(pid,"equipped movement speed readback")
     set equipped=GetUnitMoveSpeed(target)
+    set runtimeLevel=GetUnitAbilityLevel(target,'A0MU')
+    set runtimeBonus=BlzGetAbilityIntegerLevelField(BlzGetItemAbility(FSN_Item[pid*57],'A0MU'),ConvertAbilityIntegerLevelField('Imvb'),0)
+    set equippedAgi=GetHeroAgi(target,true)
+    set equippedDefault=GetUnitDefaultMoveSpeed(target)
+    if runtimeBonus!=80 then
+        set FSN_LastError[pid]="runtime boots bonus wanted80 actual="+I2S(runtimeBonus)+" level="+I2S(runtimeLevel)+" speed="+R2S(equipped)+" default="+R2S(equippedDefault)+" agi="+I2S(equippedAgi)
+        set target=null
+        call FHT_Finish(pid,false,"runtime boots speed field")
+        return
+    endif
     if equipped<45. or equipped>522. then
         set FSN_LastError[pid]="equipped speed outside45..522 actual="+R2S(equipped)
         set target=null
@@ -339,7 +353,7 @@ function FGT_Run takes integer pid returns nothing
     endif
     set actual=GetUnitMoveSpeed(target)
     if not FGT_CheckReturnedBoots(pid,target,true) or not FGT_CheckStoredBoots(pid,target) or equipped!=actual+80. then
-        set FSN_LastError[pid]="passive speed control wanted="+R2S(equipped-80.)+" actual="+R2S(actual)+"; "+FSN_LastError[pid]
+        set FSN_LastError[pid]="passive speed control wanted="+R2S(equipped-80.)+" actual="+R2S(actual)+" bonus="+I2S(runtimeBonus)+" level="+I2S(runtimeLevel)+" agi="+I2S(equippedAgi)+"->"+I2S(GetHeroAgi(target,true))+" default="+R2S(equippedDefault)+"->"+R2S(GetUnitDefaultMoveSpeed(target))+" start="+R2S(baseline)+"; "+FSN_LastError[pid]
         set target=null
         call FHT_Finish(pid,false,"same-slot passive speed")
         return
