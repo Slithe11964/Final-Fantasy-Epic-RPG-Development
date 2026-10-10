@@ -48,6 +48,8 @@ globals
     integer array FSC_Opaque
     integer array FSC_Dormant
     integer array FSC_Spec
+    integer array FSC_Core
+    integer array FSC_JobLevel
     integer array FSC_Gaya
     boolean array FSC_HasEvidence
     boolean array FSC_MetadataComplete
@@ -195,7 +197,14 @@ function FSC_Clear takes integer ctx returns nothing
     loop
         exitwhen i>=16
         set FSC_Spec[ctx*16+i]=0
+        set FSC_Core[ctx*16+i]=0
         set FSC_Gaya[ctx*16+i]=0
+        set i=i+1
+    endloop
+    set i=0
+    loop
+        exitwhen i>=23
+        set FSC_JobLevel[ctx*23+i]=0
         set i=i+1
     endloop
     set i=0
@@ -434,7 +443,52 @@ function FSC_GayaMaximum takes integer identity returns integer
     return -1
 endfunction
 
-function FSC_Pairs takes integer ctx,integer sid returns nothing
+function FSC_MasteryValid takes integer level,integer tier returns boolean
+    return level>=0 and level<=999 and tier>=0 and tier<=3 and ((level<50 and tier==0) or (level>=50 and level<99 and tier==1) or (level>=99 and tier>=2))
+endfunction
+
+function FSC_Jobs2 takes integer ctx returns nothing
+    local integer count=FSC_Read(ctx)
+    local integer i=0
+    local integer identity
+    local integer level
+    local integer tier
+    call FlushChildHashtable(FSC_Seen,ctx*16+1)
+    if count>2048 then
+        set FSC_Ok[ctx]=false
+        return
+    endif
+    loop
+        exitwhen i>=count or not FSC_Ok[ctx]
+        set identity=FSC_Read(ctx)
+        set level=FSC_Read(ctx)
+        set tier=FSC_Read(ctx)
+        if identity<=0 or not FSC_MasteryValid(level,tier) or not FSC_Mark(ctx,1,identity) then
+            set FSC_Ok[ctx]=false
+            return
+        endif
+        if identity<=22 then
+            set FSC_JobLevel[ctx*23+identity]=level
+        endif
+        call SaveBoolean(FSC_Seen,ctx*16+8,identity,true)
+        set i=i+1
+    endloop
+endfunction
+
+function FSC_Core2Maximum takes integer identity returns integer
+    if identity==4 then
+        return 999
+    elseif identity==12 or identity==14 then
+        return 3
+    elseif identity==13 then
+        return 22
+    elseif identity==15 then
+        return 1
+    endif
+    return FSC_CoreMaximum(identity)
+endfunction
+
+function FSC_Pairs takes integer ctx,integer sid,integer schemaVersion returns nothing
     local integer count=FSC_Read(ctx)
     local integer i=0
     local integer identity
@@ -467,8 +521,11 @@ function FSC_Pairs takes integer ctx,integer sid returns nothing
             if identity==11 then
                 set FSC_Cheater[ctx]=value!=0
             endif
-            if value>FSC_CoreMaximum(identity) then
+            if (schemaVersion==1 and value>FSC_CoreMaximum(identity)) or (schemaVersion==2 and value>FSC_Core2Maximum(identity)) then
                 set FSC_Ok[ctx]=false
+            endif
+            if identity<=15 then
+                set FSC_Core[ctx*16+identity]=value
             endif
             call SaveBoolean(FSC_Seen,ctx*16+5,identity,true)
         elseif sid==5 then
@@ -515,7 +572,11 @@ function FSC_Evidence takes integer ctx returns nothing
 endfunction
 
 function FSC_ValidateSection takes integer ctx,integer sid,integer schemaVersion,boolean required,integer size returns nothing
-    if schemaVersion!=1 or sid>9 then
+    if schemaVersion==2 and sid==2 then
+        call FSC_Jobs2(ctx)
+    elseif schemaVersion==2 and sid==4 then
+        call FSC_Pairs(ctx,sid,schemaVersion)
+    elseif schemaVersion!=1 or sid>9 then
         if required then
             set FSC_Ok[ctx]=false
         else
@@ -534,7 +595,7 @@ function FSC_ValidateSection takes integer ctx,integer sid,integer schemaVersion
             endif
             set FSC_Opaque[ctx]=FSC_Opaque[ctx]+size
         endif
-        call FSC_Pairs(ctx,sid)
+        call FSC_Pairs(ctx,sid,schemaVersion)
     endif
     if FSC_Pos[ctx]!=FSC_End[ctx] or FSC_Opaque[ctx]>FSC_MAX_OPAQUE or FSC_Dormant[ctx]>256 then
         set FSC_Ok[ctx]=false
@@ -543,16 +604,30 @@ endfunction
 
 function FSC_Profile takes integer ctx returns boolean
     local integer i=1
+    local integer profileSchema=FSC_Spec[ctx*16+2]
+    local integer selected=FSC_Core[ctx*16+13]
+    local integer free=FSC_Core[ctx*16+4]
+    if profileSchema!=FSC_Spec[ctx*16+4] or (profileSchema!=1 and profileSchema!=2) or (profileSchema==2 and FSC_HasEvidence[ctx]) then
+        return false
+    endif
+    if profileSchema==2 then
+        if not FSC_MasteryValid(free,FSC_Core[ctx*16+12]) or ((free==0)!=(FSC_Core[ctx*16+14]==0)) then
+            return false
+        endif
+        if (selected==0 and free<1) or (selected!=0 and FSC_JobLevel[ctx*23+selected]<1) then
+            return false
+        endif
+    endif
     loop
         exitwhen i>9
-        if i!=3 and (i!=9 or FSC_HasEvidence[ctx]) and FSC_Spec[ctx*16+i]!=1 then
+        if i!=2 and i!=4 and i!=3 and (i!=9 or FSC_HasEvidence[ctx]) and FSC_Spec[ctx*16+i]!=1 then
             return false
         endif
         set i=i+1
     endloop
     set i=1
     loop
-        exitwhen i>11
+        exitwhen i>11+(4* (profileSchema-1))
         if (not FSC_HasEvidence[ctx] or i==1 or i==2 or i==4 or i==6 or i==7 or i==11) and not LoadBoolean(FSC_Seen,ctx*16+5,i) then
             return false
         endif
@@ -645,8 +720,8 @@ function FSC_Parse takes integer ctx,string encoded,integer expectedAccount,bool
         set FSC_Version[index]=schemaVersion
         set FSC_Required[index]=flags==1
         set FSC_Payload[index]=SubString(encoded,FSC_Pos[ctx],sectionEnd)
-        if sid<=9 and schemaVersion==1 and flags==1 then
-            set FSC_Spec[ctx*16+sid]=1
+        if sid<=9 and (schemaVersion==1 or (schemaVersion==2 and (sid==2 or sid==4))) and flags==1 then
+            set FSC_Spec[ctx*16+sid]=schemaVersion
         endif
         if sid==9 then
             set FSC_HasEvidence[ctx]=true

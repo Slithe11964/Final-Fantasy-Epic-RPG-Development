@@ -121,6 +121,8 @@ def plan(envelope, expected_account):
     if envelope.account_hash != expected_account:
         raise codec.Error('account mismatch')
     snapshot = progression.snapshot(envelope)
+    if snapshot['job_schema'] != 1:
+        raise codec.Error('schema2 requires fresh-load job policy; legacy staging is disabled')
     if snapshot['core']['cheater_flag']:
         raise codec.Error('cheat status requires separate reviewed load policy')
     jobs = tuple(normal_job(i, snapshot['jobs'][i]) for i in range(1, 23))

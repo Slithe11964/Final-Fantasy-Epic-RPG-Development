@@ -288,6 +288,14 @@ def read_inventory(text):
 
 
 def validate_section(section):
+    if section.version == 2 and section.id == 2:
+        from save_progression import read_jobs2
+        read_jobs2(section.payload)
+        return 0, 0
+    if section.version == 2 and section.id == 4:
+        from save_progression import validate_payload
+        validate_payload(section.id, section.payload, 2)
+        return 0, 0
     if section.version == 1 and section.id in range(4, 10):
         from save_progression import validate_payload
         validate_payload(section.id, section.payload)

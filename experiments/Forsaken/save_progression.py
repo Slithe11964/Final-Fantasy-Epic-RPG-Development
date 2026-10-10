@@ -13,6 +13,50 @@ CORE = {
 GAYA = {1: ('mastered', 1), 2: ('level', 100), 3: ('break_stun', 3),
         4: ('mana_transfer', 3), 5: ('mega_heal', 3), 6: ('tarugaya', 1),
         7: ('sukugaya', 1), 8: ('rakugaya', 1)}
+# Schema2 separates real levels from the old enhanced-mastery sentinel.
+CORE2 = dict(CORE)
+CORE2[4] = ('freelancer', 999)
+CORE2.update({12: ('freelancer_mastery', 3), 13: ('current_job', 22),
+              14: ('freelancer_variant', 3), 15: ('speedrun_mode', 1)})
+
+
+def mastery_valid(level, tier):
+    return (type(level) is int and type(tier) is int and 0 <= level <= 999 and
+            0 <= tier <= 3 and ((level < 50 and tier == 0) or
+            (50 <= level < 99 and tier == 1) or (level >= 99 and tier in (2, 3))))
+
+
+def jobs2(records):
+    if len(records) > codec.MAX_RECORDS:
+        raise codec.Error('too many job records')
+    ids = set()
+    payload = codec.uint(len(records))
+    for identity, level, tier in records:
+        if type(identity) is not int or identity <= 0 or identity in ids or not mastery_valid(level, tier):
+            raise codec.Error('invalid job identity, level or mastery tier')
+        ids.add(identity)
+        payload += codec.uint(identity)+codec.uint(level)+codec.uint(tier)
+    return payload
+
+
+def read_jobs2(text):
+    reader = codec.Reader(text)
+    count = reader.uint()
+    if count > codec.MAX_RECORDS:
+        raise codec.Error('too many job records')
+    records = [(reader.uint(), reader.uint(), reader.uint()) for _ in range(count)]
+    reader.finish()
+    if jobs2(records) != text:
+        raise codec.Error('invalid job records')
+    return records
+
+
+def legacy_job(saved):
+    if type(saved) is not int or not 0 <= saved <= 100:
+        raise codec.Error('invalid legacy job marker')
+    return (99, 3) if saved == 100 else (saved, 2 if saved == 99 else 1 if saved >= 50 else 0)
+
+
 MAX_EVIDENCE = 4096
 LEGACY_CHARS = codec.ALPHABET + '()'
 PROFILE_SECTIONS = {1, 2, 4, 5, 6, 7, 8}
@@ -63,12 +107,12 @@ def read_evidence(text):
     return code, bool(speedrun)
 
 
-def validate_payload(identity, text):
+def validate_payload(identity, text, version=1):
     if identity == 9:
         read_evidence(text)
         return
     if identity in (4, 5):
-        read_scalars(text, CORE if identity == 4 else GAYA)
+        read_scalars(text, (CORE2 if version == 2 else CORE) if identity == 4 else GAYA)
         return
     records = codec.read_pairs(text)
     if identity == 6 and any(i > 15 or value > 15 for i, value in records):
@@ -84,11 +128,20 @@ def snapshot(envelope):
     if not PROFILE_SECTIONS <= sections.keys():
         raise codec.Error('missing logical snapshot section')
     for identity in PROFILE_SECTIONS | ({9} if 9 in sections else set()):
-        if sections[identity].version != 1 or not sections[identity].required:
+        if sections[identity].version not in ((1, 2) if identity in (2, 4) else (1,)) or not sections[identity].required:
             raise codec.Error('logical snapshot section must use required schema1')
-    core = read_scalars(sections[4].payload, CORE)
+    modern = sections[2].version == 2
+    if modern != (sections[4].version == 2):
+        raise codec.Error('job and core schemas must agree')
+    if modern and 9 in sections:
+        raise codec.Error('migration evidence requires frozen schema1')
+    fields = CORE2 if modern else CORE
+    core = read_scalars(sections[4].payload, fields)
     gaya = read_scalars(sections[5].payload, GAYA)
-    jobs = dict(codec.read_pairs(sections[2].payload))
+    rows = read_jobs2(sections[2].payload) if modern else [(i, *legacy_job(v)) for i, v in codec.read_pairs(sections[2].payload)]
+    levels = {i: level for i, level, _ in rows}
+    tiers = {i: tier for i, _, tier in rows}
+    jobs = levels if modern else dict(codec.read_pairs(sections[2].payload))
     upgrades = dict(codec.read_pairs(sections[6].payload))
     if not {1, 2, 4, 6, 7, 11} <= {i for i, _ in codec.read_pairs(sections[4].payload)}:
         raise codec.Error('missing core progression field')
@@ -101,12 +154,22 @@ def snapshot(envelope):
         raise codec.Error('missing frozen upgrade/job ID')
     if 9 not in sections:
         # Newly captured snapshots must provide fields absent in older versions.
-        if set(core) != {name for name, _ in CORE.values()}:
+        if set(core) != {name for name, _ in fields.values()}:
             raise codec.Error('new capture requires all core fields')
         for record in codec.read_inventory(sections[1].payload)[0]:
             if not {1, 2} <= {m[0] for m in record[6]}:
                 raise codec.Error('new capture requires item life/flags')
-    return dict(account_hash=envelope.account_hash, core=core, gaya=gaya, jobs=jobs,
+    if modern:
+        free = core['freelancer']
+        if not mastery_valid(free, core['freelancer_mastery']):
+            raise codec.Error('inconsistent Freelancer level/mastery')
+        if (free == 0) != (core['freelancer_variant'] == 0):
+            raise codec.Error('missing or unexpected Freelancer variant')
+        selected = core['current_job']
+        if (selected == 0 and free < 1) or (selected != 0 and levels[selected] < 1):
+            raise codec.Error('active job has no saved level')
+    return dict(job_schema=sections[2].version, job_levels=levels, job_mastery=tiers,
+                account_hash=envelope.account_hash, core=core, gaya=gaya, jobs=jobs,
                 upgrades=upgrades, titles=[i for i, _ in codec.read_pairs(sections[7].payload)],
                 armory=[i for i, _ in codec.read_pairs(sections[8].payload)],
                 inventory=codec.read_inventory(sections[1].payload)[0],

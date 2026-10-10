@@ -41,6 +41,12 @@ def probe_source(aliases):
     return text.replace('    // FSX_IDENTITY_INITIALIZATION','\n'.join(lines))
 
 
+def capture_source(aliases):
+    text=(HERE/'Forsaken-save-capture.j').read_text(encoding='utf-8')
+    lines=["    call SaveInteger(FRC_Map,0,'%s',%d)"%(raw,id) for raw,id in sorted(aliases.items())]
+    return text.replace('    // FRC_IDENTITY_INITIALIZATION','\n'.join(lines))
+
+
 def modules(house=False,gear=False):
     house=house or gear
     result=[('ForsakenSaveCodec','Forsaken-save-codec.j'),('ForsakenSaveLife','Forsaken-save-life.j')]
@@ -76,6 +82,7 @@ def house_probe_source(runtime):
 
 def module_source(module,file,aliases,runtime):
     if module=='ForsakenSaveProbe':return probe_source(aliases)
+    if module=='ForsakenSaveCapture':return capture_source(aliases)
     if module=='ForsakenHouseProbe':return house_probe_source(runtime)
     if module=='ForsakenGearProbe':return (HERE/file).read_text(encoding='utf-8')
     return (HERE/file).read_text(encoding='utf-8').replace('endlibrary',
