@@ -20,7 +20,7 @@ class GearProbeTests(unittest.TestCase):
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
-        self.route_gear_to_bag=False;self.reject_equip_call=0;self.equip_calls=0;self.reject_unequip=False;self.lose_return_passive=False
+        self.route_gear_to_bag=False;self.reject_equip_call=0;self.equip_calls=0;self.reject_unequip=False;self.lose_return_passive=False;self.return_enum_pending=False;self.delay_return_enum=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -40,6 +40,7 @@ class GearProbeTests(unittest.TestCase):
                 unit['equip'][3]=item;item['owned']=True
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
                 if self.lose_return_passive and self.equip_calls==3:item['abilities'].remove('A0MU')
+                if self.delay_return_enum and self.equip_calls==3:self.return_enum_pending=True
             return True
         def unequip(unit,item):
             if not self.reject_unequip and not self.reject_detach:self.w.detach(item)
@@ -68,7 +69,7 @@ class GearProbeTests(unittest.TestCase):
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
             GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
-            BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and s<len(i['abilities']) else None,
+            BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and not self.return_enum_pending and s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
             UnitRemoveItem=detach,UnitAddItem=add,
@@ -232,6 +233,29 @@ class GearProbeTests(unittest.TestCase):
         self.setUp();self.lose_return_passive=True;self.e['FGT_Run'](0)
         self.assertIn('first equipment return: ability missing A0MU(speed)',self.messages[-1])
         self.assertIn('item IDs=fGmk(marker),',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
+
+    def test_return_enumeration_must_settle_without_weakening_ability_check(self):
+        self.delay_return_enum=True
+        settled=[]
+        def frame(seconds):
+            if self.return_enum_pending:
+                settled.append(seconds);self.return_enum_pending=False
+        self.e['TriggerSleepAction']=frame;self.e['FGT_Run'](0)
+        self.assertIn('Gear test: PASS:',self.messages[-1])
+        self.assertEqual(settled,[0.5]);self.guarded_originals()
+        self.setUp();self.delay_return_enum=True;self.e['FGT_Run'](0)
+        self.assertIn('first equipment return: ability count wanted=2 actual=0',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
+
+    def test_return_wait_revalidates_metadata_before_continuing(self):
+        def frame(seconds):
+            if self.equip_calls==3 and self.e['FSN_Count'][0]==2:
+                self.e['FSN_Item'][0]['charges']=99
+        self.e['TriggerSleepAction']=frame;self.e['FGT_Run'](0)
+        self.assertIn('boots equipment return containment after wait',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 

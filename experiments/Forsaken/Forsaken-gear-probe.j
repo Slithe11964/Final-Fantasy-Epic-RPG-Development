@@ -93,6 +93,16 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         endif
         call UnitAddItem(target,FSN_Item[first])
         call UnitEquipItem(target,FSN_Item[first])
+        // Re-equipped getters may lag the native move. Yield outside FSN operations.
+        call FHT_Trace(pid,"settled first equipment return")
+        if not FHT_Busy or FHT_Unit[pid]!=target or FSN_State[pid]!=1 or FSN_Count[pid]!=2 or FSN_Busy[pid] or FSN_Executing[pid] then
+            set FSN_LastError[pid]="boots equipment return interrupted"
+            return false
+        endif
+        if not FSN_Check(pid,index) or not FSN_CheckMetadata(pid,first) or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
+            set FSN_LastError[pid]="boots equipment return containment after wait"
+            return false
+        endif
         if not FSP_Check(pid,first) then
             set failure=FSN_LastError[pid]
             call FSA_ReadbackFailure(first,"first equipment return",'A0MU')

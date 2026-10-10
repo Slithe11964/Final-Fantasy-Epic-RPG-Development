@@ -172,3 +172,15 @@ cause is assumed and no acceptance check is relaxed.
 CO:19 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+CO engine confirms exact equipment/item raw1714434099 on return, both direct
+lookups present, unit speed ability present and speed440, but indexed ability
+enumeration empty. Cleanup/originals/release passed. CP yields one0.5-second
+checkpoint after re-equipping, then revalidates transaction state, both test
+allocations' containment/metadata and the same strict two-ability equipment plan.
+Permanent missing/empty enumeration still fails. Delayed getter refresh is only
+a hypothesis pending the CP game result; general restoration remains unresolved.
+
+CP:21 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.
