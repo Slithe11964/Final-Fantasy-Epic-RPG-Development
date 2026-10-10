@@ -146,3 +146,17 @@ limits are human engine gates, separate from simulated-source tests and compilat
 This is a narrow Boots/passive/last-bag-slot gate. Ring placement, other passive
 families, full derived-stat projection, prepared profile/hero transactions,
 successful commit, durable save/restart and multiplayer acceptance remain open.
+
+CM engine found the second pair in bag0, but the explicit move to quick0 failed.
+Cleanup, originals and release passed. CN temporarily detaches the first test
+pair, equips and strictly prepares the second pair, removes its speed passive,
+then detaches it and re-equips the first pair with its existing ability plan.
+The second pair then goes to bag29 using tracked fillers. Exact ability,
+metadata, placement, speed and cleanup checks remain; no quick-slot move or
+ability re-add is attempted. This is confined to the unpublished diagnostic hero.
+Generic preparation storage-mode guards remain unchanged. Engine acceptance,
+general stored-item restoration and full character save/load remain pending.
+
+CN:38 focused checks,96 repository tests,2,000 codec cases and mandatory build
+gates PASS. Installed-native compilation PASS;517 other archive members and
+original editor source preserved; published output and11 private input hashes match.

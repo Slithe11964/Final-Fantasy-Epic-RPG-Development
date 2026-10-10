@@ -5,7 +5,7 @@ globals
 endglobals
 
 // Bag getters may expose no abilities. Acceptance here is limited to this fixture:
-// both IDs were read and the passive removed in the active slot before transfer.
+// both IDs were read and the passive removed in the equipment slot before transfer.
 // The caller separately requires unchanged speed; shared FSA_Check stays strict.
 function FGT_CheckStoredBoots takes integer pid,unit target returns boolean
     local integer index=pid*57+1
@@ -31,8 +31,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
     local integer position=0
     local integer auxiliary
     local item spacer
-    local integer activeSlot=0
-    local integer pickupSlot=0
+    local integer first=pid*57
     if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
         set FSN_LastError[pid]="boots temporary hero containment"
         return false
@@ -48,56 +47,53 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         return false
     endif
     if stored then
-        loop
-            exitwhen activeSlot>=6 or UnitItemInSlot(target,activeSlot)==null
-            set activeSlot=activeSlot+1
-        endloop
-        if activeSlot>=6 then
-            set FSN_LastError[pid]="boots no empty active preparation slot"
+        // Only owned test allocations move; the first pair keeps its original plan.
+        if not FSP_Check(pid,first) then
+            set FSN_LastError[pid]="boots first equipment before swap"
             return false
         endif
-        // Read and suspend while active. Bag-only pickup exposed an empty plan in CJ.
-        call UnitAddItem(target,FSN_Item[index])
-        if UnitItemInSlot(target,activeSlot)!=FSN_Item[index] then
-            // Equipment pickup can route to the native bag despite free quick slots.
-            // Move only this tracked, droppable fixture already found on this hero.
-            loop
-                exitwhen pickupSlot>=30 or UnitItemInBagSlot(target,pickupSlot)==FSN_Item[index]
-                set pickupSlot=pickupSlot+1
-            endloop
-            if pickupSlot>=30 or not IsItemOwned(FSN_Item[index]) then
-                set FSN_LastError[pid]="boots active pickup not found in target bag"
-                return false
-            endif
-            call UnitDropItemSlot(target,FSN_Item[index],activeSlot)
-            if UnitItemInSlot(target,activeSlot)!=FSN_Item[index] then
-                set FSN_LastError[pid]="boots bag-to-active move wanted quick="+I2S(activeSlot)+" from bag="+I2S(pickupSlot)
-                return false
-            endif
+        call UnitUnequipItem(target,FSN_Item[first])
+        call UnitRemoveItem(target,FSN_Item[first])
+        call SetItemVisible(FSN_Item[first],false)
+        if UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null or not FSN_Check(pid,first) then
+            set FSN_LastError[pid]="boots first equipment detach"
+            return false
         endif
+        call UnitAddItem(target,FSN_Item[index])
+        call UnitEquipItem(target,FSN_Item[index])
         set FSN_PlacedItem[index]=FSN_Item[index]
         set FSN_PlacedUnit[index]=target
         set FSN_PlacedOwner[index]=Player(pid)
-        set FSN_PlacedHolder[index]=1
-        set FSN_PlacedSlot[index]=activeSlot
-        if not IsItemOwned(FSN_Item[index]) or UnitItemInSlot(target,activeSlot)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) then
-            set FSN_LastError[pid]="boots active pickup wanted slot="+I2S(activeSlot)
+        set FSN_PlacedHolder[index]=3
+        set FSN_PlacedSlot[index]=3
+        if not IsItemOwned(FSN_Item[index]) or not FSA_PreparationContainment(pid,index) then
+            set FSN_LastError[pid]="boots second equipment pickup"
             return false
         endif
-        if not FSA_Prepare(pid,ordinal,true,FHT_Policy) then
-            if FSN_LastError[pid]=="" then
-                set FSN_LastError[pid]="boots active preparation rejected slot="+I2S(activeSlot)
-            endif
+        if not FSA_Prepare(pid,ordinal,false,FHT_Policy) then
             return false
         endif
         if FSN_EffectCount[index]!=2 then
-            set FSN_LastError[pid]="boots active plan wanted2 actual="+I2S(FSN_EffectCount[index])
+            set FSN_LastError[pid]="boots second equipment plan wanted2 actual="+I2S(FSN_EffectCount[index])
             return false
         endif
+        // Diagnostic-only suspension after strict equipped preparation, under FHT guard.
+        set FSN_EffectsStored[index]=true
+        call BlzItemRemoveAbility(FSN_Item[index],'A0MU')
+        if not FSA_Check(index) or not FSA_PreparationContainment(pid,index) then
+            return false
+        endif
+        call UnitUnequipItem(target,FSN_Item[index])
         call UnitRemoveItem(target,FSN_Item[index])
         call SetItemVisible(FSN_Item[index],false)
-        if UnitItemInSlot(target,activeSlot)!=null or not FSN_Check(pid,index) then
-            set FSN_LastError[pid]="boots active detach"
+        if UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null or not FSN_Check(pid,index) then
+            set FSN_LastError[pid]="boots second equipment detach"
+            return false
+        endif
+        call UnitAddItem(target,FSN_Item[first])
+        call UnitEquipItem(target,FSN_Item[first])
+        if not FSP_Check(pid,first) then
+            set FSN_LastError[pid]="boots first equipment return"
             return false
         endif
     endif

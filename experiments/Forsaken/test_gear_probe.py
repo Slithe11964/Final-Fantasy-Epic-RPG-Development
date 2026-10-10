@@ -20,7 +20,7 @@ class GearProbeTests(unittest.TestCase):
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
-        self.route_gear_to_bag=False
+        self.route_gear_to_bag=False;self.reject_equip_call=0;self.equip_calls=0;self.reject_unequip=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -34,11 +34,14 @@ class GearProbeTests(unittest.TestCase):
             if not self.ignore_passive:item['abilities'].remove(raw)
             return True
         def equip(unit,item):
-            if not self.reject_equip:
+            self.equip_calls+=1
+            if not self.reject_equip and self.equip_calls!=self.reject_equip_call and unit['equip'][3] is None:
                 if not self.equipped_quick_alias:self.w.detach(item)
                 unit['equip'][3]=item;item['owned']=True
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
             return True
+        def unequip(unit,item):
+            if not self.reject_unequip and not self.reject_detach:self.w.detach(item)
         def exposed(item):
             bagged=any(i is item for u in self.w.units for i in u['bag'])
             return not self.hide_held_abilities and not (self.opaque_bag and bagged) and (not self.lazy_abilities or item['owned'])
@@ -68,7 +71,7 @@ class GearProbeTests(unittest.TestCase):
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
             UnitRemoveItem=detach,UnitAddItem=add,
-            UnitEquipItem=equip)
+            UnitEquipItem=equip,UnitUnequipItem=unequip)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in ('life','native','journal','effects','position','equipment')]
         self.e=engine(house.DECL+house.GLOBALS+'\n'.join(pieces)+probe_source({'fGap':1,'orig':2})+house_probe_source(house.RUNTIME)+SOURCE.with_name('Forsaken-gear-probe.j').read_text(),self.env)
         self.e['gg_trg_One']=Handle(enabled=True);self.e['gg_trg_Two']=Handle(enabled=False)
@@ -96,7 +99,7 @@ class GearProbeTests(unittest.TestCase):
                 self.guarded_originals()
 
     def test_silent_bag_insertion_failure_cleanup(self):
-        self.w.reject_add=38
+        self.w.reject_add=39
         self.e['FGT_Run'](0)
         self.assertIn('FAIL at stored boots bag slot29',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
@@ -206,15 +209,19 @@ class GearProbeTests(unittest.TestCase):
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 
-    def test_equipment_pickup_routed_to_bag_is_explicitly_moved_to_active_slot(self):
+    def test_bag_routed_pickup_prepares_in_equipment_without_quick_move(self):
         self.route_gear_to_bag=True;self.opaque_bag=True;self.lazy_abilities=True
+        self.w.reject_drop=True
         self.e['FGT_Run'](0)
         self.assertIn('Gear test: PASS:',self.messages[-1]);self.guarded_originals()
-        self.assertTrue(any(c[0]=='drop' for c in self.w.calls))
-        self.setUp();self.route_gear_to_bag=True;self.w.reject_drop=True
-        self.e['FGT_Run'](0)
-        self.assertIn('boots bag-to-active move wanted quick=0 from bag=0',self.messages[-1])
-        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
-        self.guarded_originals()
+        self.assertEqual(self.equip_calls,3)
+        self.assertFalse(any(c[0]=='drop' for c in self.w.calls))
+
+    def test_equipment_swap_failures_preserve_originals_and_cleanup(self):
+        for fault,value,label in [('reject_detach',True,'first equipment detach'),('reject_equip_call',2,'second equipment pickup'),('reject_equip_call',3,'first equipment return')]:
+            self.setUp();setattr(self,fault,value);self.e['FGT_Run'](0)
+            self.assertIn('boots '+label,self.messages[-1])
+            self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+            self.guarded_originals()
 
 if __name__=='__main__':unittest.main()
