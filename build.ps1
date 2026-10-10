@@ -3,7 +3,8 @@ param(
     [string]$Base,
     [string]$PythonPath,
     [string]$AllowNew,
-    [string]$AllowRemoved
+    [string]$AllowRemoved,
+    [switch]$FullChecks
 )
 $ErrorActionPreference = 'Stop'
 if (-not $PythonPath) {
@@ -16,5 +17,6 @@ $buildArgs = @((Join-Path $PSScriptRoot 'tools\build_stage.py'), $Stage)
 if ($Base) { $buildArgs += @('--base', $Base) }
 if ($AllowNew) { $buildArgs += @('--allow-new', $AllowNew) }
 if ($AllowRemoved) { $buildArgs += @('--allow-removed', $AllowRemoved) }
+if ($FullChecks) { $buildArgs += '--full-checks' }
 & $PythonPath @buildArgs
 exit $LASTEXITCODE

@@ -86,7 +86,7 @@ never refresh them. The once-only `--record-tested-baseline` commands refuse exi
 Do not delete/regenerate a contract to silence a failure. World Editor/JassHelper may introduce new
 optimized source/runtime pairs; review those differences before accepting a new baseline contract.
 
-After each build, record a new STAGES.md row and update HANDOFF.md and ../RESUME_PROMPT.txt. These docs
+After each build, add one STAGES.md row (one sentence) and update HANDOFF.md only if the current state changed. These docs
 are deliberately maintained by the developer rather than treating a passing build as user play-test
 confirmation. Run focused in-game tests for gameplay changes and preserve actual player save codes
 when extending the save format.

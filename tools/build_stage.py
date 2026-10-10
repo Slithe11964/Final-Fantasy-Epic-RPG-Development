@@ -65,6 +65,36 @@ def changes(base):
     return modified, wct_bytes != archive.read('war3map.wct')
 
 
+CACHE = Path.home() / '.cache' / 'fferpg-build' / 'passed.json'
+
+
+def tree_hash(*folders):
+    # Content hash of the inputs the regression tests read. build-config.json is excluded
+    # because the Forsaken probe builder rewrites its title/prefix in its scratch copy.
+    h = hashlib.sha256(platform.python_version().encode())
+    for folder in folders:
+        for f in sorted((ROOT / folder).rglob('*')):
+            if f.is_file() and '__pycache__' not in f.parts and f.name != 'build-config.json':
+                h.update(str(f.relative_to(ROOT)).replace('\\', '/').encode() + b'\0' + f.read_bytes())
+    return h.hexdigest()
+
+
+def cache_load():
+    try:
+        return set(json.loads(CACHE.read_text(encoding='utf-8')))
+    except (OSError, ValueError):
+        return set()
+
+
+def cache_add(key):
+    try:
+        keys = sorted(cache_load() | {key})[-200:]
+        CACHE.parent.mkdir(parents=True, exist_ok=True)
+        CACHE.write_text(json.dumps(keys), encoding='utf-8')
+    except OSError:
+        pass
+
+
 def git_state():
     def run(*args):
         result = subprocess.run(['git', *args], cwd=ROOT, capture_output=True, text=True)
@@ -85,6 +115,8 @@ def main():
     p.add_argument('--base', type=Path, help='explicit baseline; its hash is recorded')
     p.add_argument('--allow-new')
     p.add_argument('--allow-removed')
+    p.add_argument('--full-checks', action='store_true',
+                   help='rerun the regression tests and base-map checks even if these exact inputs already passed')
     a = p.parse_args()
     scratch, lock, owns_lock = None, None, False
     logs = []
@@ -123,12 +155,29 @@ def main():
 
         modules, editor_changed = changes(base)
         print('Changed enabled modules: ' + (', '.join(modules) or 'none'), flush=True)
-        run(ROOT / 'tools/check_quests.py', '--map', base)
-        run(ROOT / 'tools/check_save_compat.py', '--map', base)
-        run(ROOT / 'tools/check_content.py', '--map', base)
-        run(ROOT / 'tools/check_editor_sources.py', base)
-        run(ROOT / 'tools/tests/run_tests.py')
-        run(ROOT / 'tools/savecode.py', 'selftest')
+        # These checks depend only on the base map, tools, sources and baseline. When the same
+        # inputs already passed (usually the previous build), skip them; the output map is
+        # still fully checked below.
+        passed = set() if a.full_checks else cache_load()
+        inputs = tree_hash('tools', 'src', 'baseline')
+        base_key = 'base:' + sha(base) + ':' + inputs
+        tests_key = 'tests:' + inputs
+        if base_key in passed:
+            logs.append('Base-map checks skipped: this base already passed with identical tools/sources.\n')
+            print('Base-map checks already passed for these inputs (use --full-checks to rerun)', flush=True)
+        else:
+            run(ROOT / 'tools/check_quests.py', '--map', base)
+            run(ROOT / 'tools/check_save_compat.py', '--map', base)
+            run(ROOT / 'tools/check_content.py', '--map', base)
+            run(ROOT / 'tools/check_editor_sources.py', base)
+            cache_add(base_key)
+        if tests_key in passed:
+            logs.append('Regression tests and savecode selftest skipped: identical inputs already passed.\n')
+            print('Regression tests already passed for these inputs (use --full-checks to rerun)', flush=True)
+        else:
+            run(ROOT / 'tools/tests/run_tests.py')
+            run(ROOT / 'tools/savecode.py', 'selftest')
+            cache_add(tests_key)
         synced, ordered, ready = [scratch / name for name in ('synced.w3x', 'ordered.w3x', 'ready.w3x')]
         if modules:
             run(ROOT / 'tools/sync_module.py', base, synced, *modules)

@@ -63,7 +63,7 @@ abilities and changes only A0AR's spell list and A10C's button position on exist
 
 Tests execute collection/ownership guards, real title metadata and grants, local counters,
 all ten zone/inventory/earned-title combinations, loot tier rolls and existing save-bit round trips.
-The preservation audit is tools/tests/verify_chronicles_build.py.
+The preservation audit is tools/tests/verify_chronicles_build.py (removed 2026-10-10, kept in Git history).
 
 In both clients test page navigation/Cancel, all tooltip stages, hero/Gaya sequential collection,
 duplicates and two players, Keg Hunter save/load/recreation, and Knight/regional loot with and

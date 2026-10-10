@@ -92,7 +92,7 @@ The converter applies `tools/bazaar_legacy.py` to both runtime and editor source
 APIs and restoring the AE dialog while preserving the shared transaction. Its two unused event
 triggers remain as harmless classic placeholders to keep startup identities aligned.
 
-`tools/tests/verify_bazaar_build.py --stage AK` records preservation against AG: original objects,
+`tools/tests/verify_bazaar_build.py (removed 2026-10-10, kept in Git history) --stage AK` records preservation against AG: original objects,
 recipe data, results, charges and payment code are unchanged. Runtime changes are confined to
 Bazaar and the two requested Gaya range functions; the audit checks those exact numeric edits.
 The disabled DevCommands editor source adds -teleporters. Syncing retains the original pawn and bundle editor handlers. Generated maps/reports stay

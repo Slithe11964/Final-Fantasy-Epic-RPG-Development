@@ -215,7 +215,7 @@ before another charged item. Save in Speedrun and load normally: those foods mus
 Repeat with autosaves, old codes, both clients, multiplayer and World Editor Save As.
 
 The exact reviewed policy is tools/contracts/chocobo-food-save-extension.json. Tests execute the
-inventory source and validate bit alignment; tools/tests/verify_food_save_build.py audits AN against AM.
+inventory source and validate bit alignment; tools/tests/verify_food_save_build.py (removed 2026-10-10, kept in Git history) audits AN against AM.
 
 Stage AP uses the previously unused title59 force flag for completed Keg Hunter. Its dedicated
 bit already exists in the writer/reader, so no serializer or format changes are required. Old

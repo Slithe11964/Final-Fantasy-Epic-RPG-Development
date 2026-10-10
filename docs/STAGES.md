@@ -1,562 +1,87 @@
-# Stage log: the long autonomous run that started on 2026-10-02
+# Stage log
 
-CC private real Boots/equipment/backpack diagnostic — 2026-10-10.
-Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCC.w3x
-SHA256: 56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534
-Scratch: build/SaveProbeCC-9mxy6ijg/FFERPG; stageCC-i1bw1l9d.
-Mandatory gates,96 repository tests and2,000 codec cases PASS. Six new actual-
-source gear/builder checks and55 house/equipment/position regressions PASS.
-Finished-map runtime/editor checks against installed native libraries PASS;
-517 other archive members and original editor source preserved;11 private
-input hashes match. Shared source/baseline and BT/CB maps remain unchanged.
-New command -savegearcheck journals original57 slots, holds the shared guard/
-watchdog, creates a separate contained hero of the selected hero type at the
-original house point and adds fBag/fGer/ASpc. It never publishes hero references.
-Builder validates f003 Boots, A0MU speed80, fGmk zero-stat marker and native
-inventory abilities. Two temporary real Boots use life1, quantities0/120 and
-different binding/drop flags. One equips Boots slot3; the other has its passive
-removed, marker retained and is inserted at bag slot29 using tracked spacers.
-Speed must be200 ->280 ->280 ->200 after deletion. Bag/equipment foreign cargo
-blocks temporary hero disposal. Failure keeps readback details and cleanup retry.
-Human gate: fresh CC, old save if desired, -savecheck PASS, -savegearcheck, then
--saveverify. Send final Gear test result or last STEP if crash. Cleanup uses
--savehousecleanup. See docs/SAVE_GEAR_ENGINE_TEST.md.
-CC real effects/native equipment acceptance remains pending. CB house gate is
-confirmed. Rings/other effects/full profiles/controller/commit/file/restart/
-multiplayer remain open; full new-format character save/load stays disabled.
-CD next unused. Earlier checkpoints below are historical.
+One line per build. Full build notes up to 2026-10-10 are in
+[history/STAGES_LOG_2026-10.md](history/STAGES_LOG_2026-10.md); details for a feature belong in that feature's doc,
+not here. Maps kept in `release/`: stage AS (Reforged + 1.29.2) and Forsaken BT, CB, CP and newer.
+Older maps were moved out of the repo on 2026-10-10.
 
-Historical CB Warcraft engine acceptance — 2026-10-09.
-User reports -savecheck, -savehousecheck and final -saveverify all PASS.
-Screenshot reaches STEP29 trigger restoration and reports:
-"PASS: six exact house slots, quantities0/120/127, binding, life and flags;
-temporary cleanup verified; original inventory unchanged."
-Tested artifact: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
-SHA256: 47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9
-The synthetic six-item house gate is accepted for this user-tested session.
-This confirms50.25 native life readback and sparse placement with tracked spacers,
-including non-droppable flags; no real original items were moved or replaced.
-It does not prove the former UnitDropItemSlot cause or145.25 health cap.
-Next engine scope: prepared inventory with real classified item abilities,
-equipment effects and extended bag placement. Full profile/hero preparation,
-reversible live house references and activation/controller integration remain
-open, as do durable export/restart and multiplayer acceptance. Do not enable
-full new-format character save/load from this narrow engine result.
-CC remains next unused; no new map needed to record this acceptance.
+Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken builds with "Forsaken:".
 
-Historical CB private sparse house-placement diagnostic — 2026-10-09.
-Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCB.w3x
-SHA256: 47cf9fc3038f8c87e75be9a494bdd5fe1e647e6e92348db8f759fa6dd375d5f9
-Scratch: build/SaveProbeCB-bmygx5co/FFERPG; stageCB-4o4n11yc.
-Mandatory gates,96 repository tests,2,000 codec cases and49 focused native/
-house/position checks PASS. Three affected cargo recovery checks PASS after
-replacing obsolete drop-failure simulations with final insertion rejections.
-Broad house/cargo run:39 unchanged checks PASS; two obsolete drop-failure
-assertions failed in the already-running pre-edit suite. Both corrected cases
-are included in the three successful targeted reruns; no failure remains open.
-Three dependency compiles PASS: build/save-codec-compile-8o6zr3yt/report.json.
-Finished CB map check against installed common.j/blizzard.j PASS.517 other
-archive members and original editor source preserved; nine input hashes match.
-CA human result: all six metadata/ability stages passed; FAIL house slot5 at
-STEP23; cleanup=yes,originals=yes,release=yes; final-saveverify PASS.
-User real house has slots1-4 occupied and5-6 empty. Probe destination is a
-separate initially empty temporary house; slot5 is zero-based sixth slot.
-CB fills earlier empty quick slots with tracked spacers before UnitAddItem,
-removes/verifies spacers, and never calls UnitDropItemSlot. Strict metadata
-and non-droppable flags remain. Previous move-native failure is suspected,
-not proven. Placement failures now report spacer/target/holder/containment.
-Human gate: fresh CB session, -savecheck PASS, -savehousecheck, -saveverify.
-Send exact final result. Full character saving/loading stays disabled.
-CC next unused. Earlier checkpoints below are historical.
-
-Historical CA private house-health diagnostic — 2026-10-09.
-Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCA.w3x
-SHA256: f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff
-Scratch: build/SaveProbeCA-fe1lepqn/FFERPG; stageCA-72ss2stw.
-Mandatory build gates,96 repository tests,2,000 codec cases and47 focused
-house/native/placement tests PASS. Three dependency compile probes PASS:
-build/save-codec-compile-brgrvmnr/report.json. Finished map check against installed
-common.j/blizzard.j PASS.517 other archive members and original editor source
-preserved; all nine private source hashes match the publication report.
-BZ engine failed exact item-life readback with cleanup/originals/release=yes.
-Actual health and native capacity were not reported, so clamping is unconfirmed.
-CA uses50.25 (binary32 words16969/0) and adds wanted/actual/max to life failures.
-Human gate: fresh CA session, -savecheck PASS, -savehousecheck, then -saveverify.
-Send final House test result including native details if FAIL. If cleanup fails,
-run -savehousecleanup. Full new-format character save/load remains disabled.
-CB next unused. Earlier checkpoints below are historical.
-
-Historical BZ private item-property diagnostic: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBZ.w3x
-SHA256: b64570f7cf5818ab9059b6e951725a5c86a950ca229dc366ba1672a68c227b89
-Scratch: build/SaveProbeBZ-4xm7i_iz/FFERPG; stageBZ-ct7kzsux.
-Mandatory build gates,96 repository tests and2,000 codec cases PASS.
-46 focused probe/native/placement tests PASS after correcting diagnostic null-string
-formatting and running the compiler test outside the restricted sandbox.
-Three dependency compile probes PASS;20 input hashes/CRLF match.517 other archive
-members and original editor source preserved; all nine private input hashes match.
-Human gate: fresh BZ session, -savecheck PASS, -savehousecheck; send final result
-including [native: ...; cleanup=...; originals=...; release=...].
-BY engine: no crash, item0 metadata failed; manual cleanup then PASS/originals unchanged.
-Exact item failure remains unresolved. Full character load/save stays blocked; CA next unused.
-
-Post-BZ source correction: exact item-health readback failed for145.25. Clamping
-is a hypothesis, not confirmed: BZ did not show actual or maximum health. CA uses
-exact fractional50.25 (binary32 words16969/0) and reports wanted/actual/max if
-health readback fails. Strict checks and original-inventory protection remain.
-
-BY engine result and precise item failure diagnostics — 2026-10-09.
-BY no longer crashed. Human screenshot reached STEP10 trigger restoration but
-reported FAIL at item allocation / metadata0. This is NOT all six-item stages:
-STEP7 was first-item metadata,8 cleanup,9 originals,10 guard restoration.
-Human -savehousecleanup then PASSed all4 recovery steps: temporary cleanup
-verified and original inventory unchanged. Full house cargo acceptance remains open.
-BZ keeps strict item checks and records FSN_LastError before failure cleanup.
-Failure output names the property/native and separates cleanup/originals/release.
-When cleanup is unverified, one guarded deferred readback follows a half-second
-frame yield; unresolved handles remain retained. Timer recovery never sleeps.
-Tests cover constant droppable getter values, clamped life and deferred house
-removal. No getter workaround or weakened acceptance was introduced.
-Three compile probes PASS: build/save-codec-compile-q31pkmp6/report.json.
-BZ human gate is the final House test result, particularly [native: ...].
-Full character saving/loading stays blocked; CA next unused after BZ.
-
-BY build evidence: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBY.w3x
-SHA256: ff6ae8d961d131347fb4b65e430bef09bb8b02f74a01e78e48e271da5fd57b2d
-Scratch: build/SaveProbeBY-wfm0w4uf/FFERPG; stageBY-oo65vhfw.
-Mandatory build gates,96 repository tests,2,000 codec cases and60 focused
-house/probe/cargo/placement tests PASS. Three dependency compile probes PASS;
-all20 compiled input hashes/CRLF match.517 other archive members and original
-editor source preserved; all nine private map source hashes match.
-Human gate: BY, load/select hero, stand still, -savecheck PASS, -savehousecheck.
-Report PASS/FAIL or last visible STEP number; after PASS run -saveverify.
-
-House allocation bounds correction — 2026-10-09.
-User reports BX reached the third checkpoint then crashed. The third checkpoint
-is temporary house allocation. New local crash at18.52.37 repeats BW's same
-engine null-address access violation. User correctly notes original houses are
-preplaced; original Player.j assigns the eight h006 houses, not freshly creates them.
-The synthetic probe was independently allocating one to preserve real cargo.
-Confirmed terrain bounds from BT war3map.w3e: x[-4096,28672], y[-28672,4096].
-BW/BX used the playable minimum minus128, yielding(-4096,-28800): below terrain.
-BY uses the journaled original house's coordinates and checks playable bounds with
-128 clearance before allocation. FHS_Stage likewise replaces generic +/-32768
-validation with actual map bounds. No original house or item is moved by the probe.
-Checkpoints now show one large readable STEP number, clearing prior test text.
-This fixes a concrete invalid location; engine causality still awaits the BY test.
-Three isolated compile probes PASS: build/save-codec-compile-k8l7q5dc/report.json.
-Full character save/load stays blocked. BZ is the next unused stage after BY.
-
-BX private crash-localization map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBX.w3x
-SHA256: cf25d7cbc158399e59d5e3ee2323af91cb51961beb7aefe8ffc262aecf416c10
-Scratch: build/SaveProbeBX-u39appvh/FFERPG; mandatory stage scratch stageBX-2jbz45im.
-Mandatory build gates PASS,96 repository tests and2,000 codec cases PASS.
-43 focused diagnostic/projection/placement checks PASS. All nine reported source
-hashes match;517 other archive members and original editor source preserved.
-Human gate: open BX, select/load hero, stand still; -savecheck then -savehousecheck.
-Report the LAST visible TRACE checkpoint if it crashes, otherwise the result.
-After PASS use -saveverify. BY next unused. Crash is not yet fixed or localized.
-
-House engine crash investigation — 2026-10-09.
-BW FAILED the human engine gate: -savehousecheck crashed Warcraft III.
-User confirms the crash was immediate, before any House test message.
-Local Errors/2026-10-09 18.39.58 b69ccef0/Crash.txt reports an engine
-ACCESS_VIOLATION reading address0; War3Log.txt confirms the BW map.
-The log has no diagnostic/native name, so the failing operation is unknown.
-Do not repeat BW or treat automated PASS as engine acceptance.
-BX adds visible half-second checkpoints before journal, guard, allocation,
-containment, shape, staging, preparation, each placement and cleanup. Busy stays
-held across sleeps; timer recovery never sleeps. The watchdog is60 seconds to
-allow checkpoint rendering. This is localization instrumentation, not a proven fix.
-Full character save/load remains blocked. See SAVE_HOUSE_ENGINE_TEST.md.
-
-Historical BW automated build evidence (engine test later crashed) — 2026-10-09.
-Saved-profile/cargo preparation now covers57 exact positions with a separately
-owned contained house; neutral container ownership is checked separately from
-loading-player item ownership. House cargo recovers/releases before house disposal.
-Five new plus43 prior house/profile/cargo/placement tests PASS; ten private probe
-plus32 codec/probe/position regressions PASS. Three isolated compile probes PASS:
-build/save-codec-compile-kloyunqa/report.json;24 source hashes/CRLF match.
-
-Private BW map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBW.w3x
-SHA256: 1d4632eb00bbcceea619f8cd9904f1fe4faefbf3408d2f5b627dc22794594741
-Build scratch: build/SaveProbeBW-ojh6s931/FFERPG; reports in release/Forsaken:
-checks-r16-stageBW.txt, build-r16-stageBW.json, save-probe-BW.json.
-Mandatory build gates PASS,96 repository tests and2,000 codec cases PASS.
-Complete source/runtime agreement, installed-library playable/editor/startup checks
-PASS. All517 other archive members and original editor source preserved; all nine
-reported diagnostic source hashes match.2254 scalar trigger states plus bounded
-QuestStepTrigger/QuestStepPickupTrigger arrays are guarded/restored, with watchdog.
-BT/BU unchanged. BV was an intermediate private build; BW is the human test map.
-BX next unused. No new classic output; full character saving/loading stays blocked.
-
-HUMAN GATE: open BW, select a hero, run -savecheck and wait for PASS, then
--savehousecheck, then -saveverify. Repeat the house check once. Report the exact
-House test result; -savehousecleanup is available if cleanup needs attention.
-See SAVE_HOUSE_ENGINE_TEST.md. This synthetic test resolves native house ownership,
-non-droppable sparse slot movement, zero charges, life/flags and verified deletion.
-It is not full prepared-profile/controller acceptance. Continue only after that
-engine evidence; loaded house references, equipment effects, runtime policies,
-legacy integration and the complete controller/transport remain pending.
-
-Contained replacement house checkpoint, 2026-10-09 (isolated; no map build).
-A separately owned empty house now stages under neutral ownership, with hidden/
-paused/invulnerable/alive/storage readback, original inventory and complete
-prepared context rechecks. Owned provenance and pending disposal guards protect
-originals; failed deletion retains a retry handle. Unexpected cargo/publication
-refuses cleanup. See [SAVE_HOUSE.md](SAVE_HOUSE.md).
-11 new house checks plus66 inventory/cargo/unit/prepared/activation regressions
-PASS; three final compile probes PASS: build/save-codec-compile-2jn7cj2k/report.json.
-All24 compiled source hashes/CRLF match. Saved house cargo and live reference
-integration remain pending; BT/BU unchanged, BV unused, full saves/loads blocked.
-
-Saved inventory profile checkpoint, 2026-10-09 (isolated; no map build).
-The explicit target-code bridge freezes51 non-house positions and drives guarded
-creation/preparation/placement; full source retains dormant records. Registry,
-aliases, explicit defaults and metadata are checked before allocation. Saved or
-existing house contents and migration evidence refuse pending dedicated recovery.
-11 new tests plus25 codec/cargo regressions and three compile probes PASS:
-build/save-codec-compile-p1tf8tny/report.json;23 source hashes/CRLF match.
-See [SAVE_INVENTORY_PROFILE.md](SAVE_INVENTORY_PROFILE.md). Policy initialization,
-house, equipment effects, loaded activation/controller and engine acceptance
-remain pending. BT/BU unchanged; BV unused, full saves/loads blocked.
-
-Isolated checkpoint, 2026-10-09: guarded contained item creation/preparation and
-placement. Specific internal primitive permits retain original phase guards;
-shared lock holds through readback. Plan freezes in state5; partial/exact cargo
-audits and filler cleanup preserve retry. See SAVE_CARGO_PLACEMENT.md.
-12 new plus63 focused regressions and three compile probes PASS:
-build/save-codec-compile-ngp325p5/report.json; final source hashes/CRLF match.
-Profile adapter, house, equipment effects, loaded activation/controller/engine
-acceptance remain pending. No map build; BT/BU unchanged, BV unused, saves blocked.
-
-Isolated checkpoint, 2026-10-09: contained owned-cargo audit/recovery journal.
-Exact51 slots, metadata/abilities and complete owned batch auditing; sealed cargo
-accepted in ongoing contexts, fresh units remain empty. Pending disposal guard,
-locked deletion/readback, context-change and failed-deletion retry.
-12 new checks,122 focused regressions and three compile probes PASS:
-build/save-codec-compile-v7_1uxkv/report.json; compiled source hashes/CRLF match.
-See SAVE_CARGO.md. Native allocation/placement authorization, fillers, equipment
-effects, house and loaded activation/controller remain pending. No map build;
-BT/BU unchanged, BV unused; full saving/loading stays blocked.
-
-Isolated checkpoint, 2026-10-09: current-map read-only inventory target resolution.
-Actual BT objects/passive policy and BS mapping bind canonical IDs to exact slots;
-missing legacy/inherited defaults refuse, dormant records reserve positions.
-12 new plus53 focused regressions PASS, including all276 gear and57 positions.
-See SAVE_INVENTORY_PLAN.md. Native cargo/recovery integration, equipment effects
-and controller/engine acceptance remain pending. No JASS changes/compile rerun or
-map build; BT/BU unchanged, BV unused; full saves remain blocked.
-
-Isolated checkpoint, 2026-10-09: reversible Gaya research/skill-choice player target.
-Readback and original recovery retain failed writes; independent pending guard
-blocks disposal and activation recovery precedes player recovery. Ten new plus74
-focused regressions PASS; three compile probes PASS:
-build/save-codec-compile-f77nce38/report.json. See SAVE_PLAYER_TARGET.md. Availability
-verification and broader player/inventory/controller/engine acceptance remain open.
-No map build; BT/BU unchanged, BV unused; full saves remain blocked.
-
-Isolated checkpoint, 2026-10-09: H02L Freelancer level/mastery/attribute policy.
-Exact canonical stat parity across160 vectors; borrowed choices stay fresh
-session targets. Owned role22 core/mastery bridge refuses borrowed skills and
-invalid fresh context. Eight new plus61 focused regressions PASS; BT object/cap
-and three compile checks PASS, build/save-codec-compile-932yb14c/report.json.
-See SAVE_FREELANCER_POLICY.md. Other variants/player effects/controller/native
-acceptance still open. No map build; BT/BU unchanged, full saves remain blocked.
-
-Isolated checkpoint, 2026-10-09: accepted Gaya support/chant planning bridge.
-Preserves purchases and ownership; derives Spiritual Power plus separate player
-research/availability targets. Owned fresh role23 only, exact absolute rank retry;
-originals unchanged. 10 new and 51 focused regressions PASS; BT object bindings
-and three compile probes PASS, build/save-codec-compile-ytmg1kff/report.json.
-See SAVE_GAYA_POLICY.md. Player application/remaining effects/Freelancer/native
-evidence/inventory/controller still open. No map build; full saves remain blocked.
-
-Isolated checkpoint, 2026-10-09: accepted normal-job profile/preparation bridge.
-Preserves enhanced-mastery sentinel and base bonuses; below50 resets/refunds,
-50+ learns four rank11 skills/ultimate6. Unknown jobs and optional/evidence data
-remain preserved without materialization. 12 new and 53 focused regression checks
-PASS; standalone/BT runtime/editor compile PASS:
-build/save-codec-compile-zgse3g26/report.json. See SAVE_JOB_POLICY.md, including
-future cap150/headroom999 and the required separate level/mastery schema.
-XP/growth evidence, remaining effects/Gaya/Freelancer/controller/inventory still
-open. No map build or usable save/load; BT/BU unchanged, BV unused.
-
-Isolated checkpoint, 2026-10-09: reversible empty replacement-pair exposure.
-Original pair flag protection and replacement poses verify before exposure;
-containment/readback precedes all downstream disposal. Original flags recover
-through the body journal. 12 new plus all 308 checks PASS (320), including 18
-exposure/12 containment faults. Standalone/BT runtime/editor compile PASS:
-build/save-codec-compile-ths3v4mz/report.json. See SAVE_ACTIVATION.md.
-No map build or successful commit; BT/BU unchanged, BV unused, full saves blocked.
-
-Isolated checkpoint, 2026-10-09: owned replacement core/ability preparation.
-Exact progression/stat/rank readback; below-50 jobs reset skills/refund points,
-mastered jobs learn four rank-11 skills and ultimate rank 6. Independent guards,
-retry and target-plan discard precede ownership/reference/unit cleanup. No
-original mutation, activation/commit or map build. 14 new plus 294 prior checks
-PASS (308); standalone/BT runtime/editor compilation PASS:
-build/save-codec-compile-ze0vosm3/report.json. See SAVE_PREPARED_HEROES.md.
-BT/BU unchanged, BV unused; full saves blocked.
-
-Isolated checkpoint, 2026-10-09: contained replacement ownership preparation
-assigns active/Gaya owned targets to the player while retaining hidden/paused/
-invulnerable/empty state. Neutral ownership recovery/readback precedes reference
-reversal and cleanup. No activation/commit/map build. 13 new plus all 281 prior
-checks PASS (294); standalone/BT runtime/editor compile PASS:
-build/save-codec-compile-va2hotyc/report.json. See SAVE_OWNERSHIP_PREPARATION.md.
-BT/BU unchanged, BV unused; full saves blocked.
-
-Isolated checkpoint, 2026-10-09: original living hero body recovery captures
-health/mana, position/facing and hidden/paused/invulnerable flags on 25 reference
-positions. Alias deduplication, readback and independent guards retain failed
-recovery; no activation/commit/map build. 17 new tests plus all 264 earlier checks
-PASS (281), including 24 setter-fault positions and 200 writes at player 7/index
-199. Standalone/BT runtime/editor compilation PASS:
-build/save-codec-compile-0cy567c4/report.json. See SAVE_BODY_RECOVERY.md.
-BT/BU unchanged, BV unused; full saves blocked.
-
-Isolated checkpoint, 2026-10-09: reversible hero-reference journal captures 26
-positions, switches owned staged replacements and restores originals before
-cleanup. No activation/commit or map build. 15 new tests plus all 249 earlier
-checks PASS (264), including 52 write-fault cases; standalone/BT runtime/editor
-compilation PASS (build/save-codec-compile-2seobnrz/report.json).
-See SAVE_REFERENCE_SWITCH.md. BT/BU unchanged, BV unused; full saves blocked.
-
-BU, 2026-10-09 (private inventory/codec engine diagnostic): BT-based map with
--savecheck/-saveverify, incremental 57-position native capture/readback and codec
-round trip, invalid-input rejection and watchdog. No full character load or usable
-save export; original items/heroes/progression are not mutated. 10 new tests plus
-all 239 save-system checks PASS (249); mandatory map/editor/source/content/legacy/
-Armory/Bazaar gates, 96 repository tests and 2,000 legacy codec cases PASS.
-Canonical sources and BT unchanged; original archive content/editor source
-preserved. Reports beside BU record final hashes/scratch. Human engine testing
-pending; see SAVE_ENGINE_TEST.md. BV next; public saving remains blocked.
-
-Owned replacement-unit staging, 2026-10-09 (isolated modules/tools/docs): tracks
-up to 24 new job/Freelancer/Gaya heroes with native containment/empty-inventory
-readback. Originals and live references are preserved; cleanup refuses published
-or item-carrying units and retains failed deletion handles for retry. Independent
-unit guards survive other journal release. 20 new tests plus all 219 prior checks
-PASS (239 total); standalone/BT runtime/editor compilation PASS:
-build/save-codec-compile-5anxjlgn/report.json. See SAVE_UNIT_STAGING.md. No promotion/
-commit or engine execution acceptance; operation limits/scheduling remain open.
-No map build: BT unchanged, BU unused, saving blocked; cooldown refresh permitted.
-
-Session recovery, 2026-10-09 (isolated modules/tools/docs): talent typed presence/
-values, six selected skills, partial monographs and prior accepted codec state
-restore with exact readback. Read-only hero/table references refuse changes.
-Independent session guards block staging/codec publication until verified release;
-writer Abort allows owned cleanup/retry. 18 new tests plus all 201 prior checks
-PASS (219 total), including all 299 talent write faults and 24 release orders.
-Standalone/BT runtime/editor compilation PASS:
-build/save-codec-compile-jzm76o6b/report.json. See SAVE_SESSION_RECOVERY.md.
-No map build: BT unchanged, BU unused, saving blocked. Talents/partial monographs
-remain unsaved; cooldown refresh permitted. Full controller/engine gates remain.
-
-Original hero recovery, 2026-10-09 (isolated modules/tools/docs): same-unit job/
-Freelancer/Gaya XP, levels, ability ranks/instances, skill points and base attribute
-restoration, with total primary-stat verification before release. Actual cached
-owners retained; neutral inactive jobs supported. Added abilities can be removed;
-original unit/ability recreation refuses. 27 new tests plus all 174 prior checks
-PASS (201 total); standalone/BT runtime/editor compilation PASS:
-build/save-codec-compile-f7upkafj/report.json. See SAVE_HERO_RECOVERY.md for remaining
-session/effect/native acceptance and full controller gates. No map build: BT
-unchanged, BU unused, saving blocked; cooldown refresh remains permitted.
-
-Live progression journal, 2026-10-09 (isolated modules/tools/docs): actual scalar,
-currency/research/title/Armory/stored-job state capture/recovery with readback.
-Job heroes are read-only boundaries; unit/derived-state/full-session recovery
-remains open. Independent progression/item guards retain journals on failure;
-all 54 modeled native setter failures retry safely. 19 new and all 145 prior save
-tests PASS (164), plus 10 identity tests; standalone/
-BT runtime/editor compilation PASS, build/save-codec-compile-x01z46c2/report.json.
-See SAVE_PROGRESSION_JOURNAL.md. No map build: BT unchanged, BU unused, saving
-blocked; cooldown refresh remains permitted.
-
-Original-item recovery, 2026-10-09 (isolated modules/tools/docs): actual original
-handles quarantined/restored across 57 positions, with native ability-instance
-and known passive-table verification. Failed recovery retains journal/handles
-and blocks staging while allowing retry; only tracked replacements/fillers can
-be deleted. User permits cooldown refresh on character changes and rollback.
-20 new tests plus all 125 prior tests PASS (145 total); standalone/BT runtime/editor
-compilation PASS, build/save-codec-compile-3e9quhly/report.json. See
-SAVE_ORIGINAL_RECOVERY.md. Full session/progression/derived effects, gameplay
-guards, live policy/filler objects and engine acceptance remain open.
-No map build: BT unchanged, BU unused, exports blocked.
-
-Prepared abilities/equipment, 2026-10-09 (isolated modules/tools/docs): mandatory
-classified ability preparation and verified bag-passive removal; exact equipment
-placement with alternate-ring filler checks. Original equipment refuses; native
-quarantine/session rollback remain open. Inert ring object and production policy
-loader are not installed. 19 new tests plus all 106 previous tests PASS (125 total),
-including a full modeled 57-item batch; standalone/BT runtime/editor compilation
-PASS. Report: build/save-codec-compile-h6pyfqj1/report.json. BT unchanged,
-BU unused, saving blocked; no native-engine or full restoration acceptance claim.
-
-Original-item journal/storage placement, 2026-10-09 (isolated modules/tools/docs):
-read-only actual-handle/metadata journal for all 57 positions and exact placement
-for 48 storage positions, with owned filler cleanup/retry. Equipment placement
-refuses; native quarantine/full rollback and gameplay guard remain incomplete.
-19 new tests and all 87 previous tests PASS (106 total). Standalone/BT runtime/
-BT editor compilation PASS with extracted libraries. Report:
-build/save-codec-compile-8rx50iid/report.json. No map writes; BT unchanged,
-BU unused, saving blocked. Original flag behavior still requires engine acceptance.
-
-Native staging foundation, 2026-10-08 (isolated source/tools/docs): bounded
-per-player hidden item allocation, exact metadata readback, per-created-handle
-droppability probe and verified cleanup/retry. No original inventory mutation or
-promotion. 13 staging tests plus 74 previous tests PASS (87 total); standalone/
-BT runtime/editor compile probes PASS with extracted libraries. Report:
-build/save-codec-compile-26ozv4tt/report.json. Native game execution, capture,
-placement and complete rollback/publication remain open. BT unchanged, BU unused,
-saving blocked; no map built.
-
-Item-life/reference restore foundation, 2026-10-08 (isolated source/tools/docs):
-JASS binary32 real/word conversion and read-only life capture; reference inventory
-capture, staged restore controller and verified rollback/cleanup quarantine.
-5 life tests (6282 patterns),14 transaction tests (417 injected positions),13
-JASS codec,13 reference,16 migration and13 legacy tests PASS,74 total. Codec+life
-standalone/BT-runtime/BT-editor compile probes PASS; report:
-build/save-codec-compile-otuota82/report.json. Native flag capture/backend and
-engine execution gates remain open. No map changed; BU unused; saving blocked.
-
-Isolated JASS save checkpoint, 2026-10-08 (experimental source/tools/docs only):
-FSV envelope/schema1 sections1–9, per-player accepted/scratch/writer buffers,
-canonical re-encoding and bounded validation.13 JASS differential tests (150
-seeded envelopes+150 mutations),13 reference,16 migration and13 legacy tests
-PASS,55 total. Bundled/classic1.29.2 standalone compilation and standalone/BT
-runtime/BT editor probes against extracted local libraries PASS. Report:
-build/save-codec-compile-zl7pgdq8/report.json. No map writes/runtime integration;
-BU unused, saving blocked. Engine limits, real capture, adapters/transport remain.
-
-Logical save/migration checkpoint, 2026-10-08 (docs/tools only): core, Gaya,
-upgrades, titles, Armory and required legacy-provenance schemas; frozen policy1;
-eight synthetic E/F/G/H successor goldens and62-entry comparison reports;
-deterministic detached placement and explicit exclusions/default provenance.
-16 migration tests (250 seeded round trips and CLI validation),13 codec tests (1000 seeded),13
-legacy tests and10 identity tests PASS. Synthetic complete logical profile2803
-characters,6704 with full opaque budget. JASS/adapters/real-code/transport gates
-remain open. Gameplay/releases unchanged; saving blocked, BU unused.
-
-New save prototype, 2026-10-08 (docs/tools only): item metadata audit; bounded
-envelope/inventory/job codec with sparse57-slot layout, seven-bit quantities,
-exact binary32 life words and optional unknown-data preservation; three golden
-vectors and synthetic size profiles.13 tests including1000 seeded new-format
-round trips and13 legacy migration tests PASS. Complete progression/translation,
-JASS/runtime and transport work remains. Gameplay/releases unchanged; saving
-blocked; no map stage consumed, BU remains unused.
-
-Legacy save milestone, 2026-10-08 (docs/tools only): field ledger; detached strict
-E/F/G/H decoder; frozen charge/job/Armory layouts; eight pinned synthetic vectors;
-13 migration tests against source-reader and current/historical Armory writer
-control flow. V2 corrected to22 reordered jobs. Seven-bit quantities retained,
-normal gameplay<=120 and legacy121..127 lossless. NG− writer/reader mismatch
-recorded, not changed. Runtime saving remains blocked; no map; BU still unused.
-User retired NG− from the successor and kept gameplay quantities<=120. Codec
-selftest2,000 PASS;95 repository regressions passed initially, remaining
-build-overwrite test passed with workspace TEMP/TMP after sandbox temp denial.
-
-Save-system continuation, 2026-10-08 (docs/tools only; no stage consumed): durable
-plan and checkpoint reapplication guide; frozen 358-item/22-job identity registry
-and read-only alias preflight. 10 identity tests, 87 focused Forsaken tests PASS;
-retained BS mapping resolves 750 runtime identities. No map or canonical gameplay
-source changed, saving blocked, public Z/shared AS/latest BT preserved. Next stage
-BU remains unused; real legacy/native/multiplayer save acceptance outstanding.
-
-Each stage is saved separately, so it can be checked on its own and undone if needed:
-
-- a Git commit in this repo (or in `../MapToolkit`);
-- a map file, if the stage changed the map: `release/FFERPG_0.9.7.3-r16-stage<X>.w3x`;
-- its automated check results (`release/checks-r16-stage<X>.txt`).
-
-To undo a stage: open the previous stage's map, or `git revert <commit>`.
-
-Historical maps/reports now live in ../_archive/FFERPG-before-r16-baseline-2026-10-06/. The active Z pair is in baseline/.
-Each map in the table includes all earlier stages. A stage with no map changed only docs or
-tools, so the newest map listed above it is still current.
-
-| Stage | What | Commit | Map | Status |
-|---|---|---|---|---|
-| (start) | r15: phases 8â€“9 | 3d2e6c1 | `FFERPG_0.9.7.3-r15.w3x` | Checks pass; waiting for your play test |
-| A | `docs/BUGS.md`: suspected bugs found while writing the guides | see git log | (docs only) | Done |
-| B | Developer test commands: module `DevCommands` (folder 11), `docs/DEBUG_COMMANDS.md`; `check_map --allow-new` | see git log | `FFERPG_0.9.7.3-r16-stageB.w3x` | Checks pass (check 6 lists the 2 new triggers). **Needs play test:** type `-dev` in single player |
-| C | Save code tool `tools/savecode.py` (decode/encode/selftest), `-dumpitems` dev command, `tools/sync_module.py` (put a changed module into the playable script) | see git log | `FFERPG_0.9.7.3-r16-stageC.w3x` | Selftest passes. **Needs:** run `-dumpitems`, then decode one of your real codes and compare |
-| D | Object reference: `tools/objects.py` + `tools/objdata.py` (reads/writes object data, byte-exact round trip) â†’ `docs/OBJECTS.md`, `docs/objects/*.md/csv`, `src/items-guess.json` | see git log | (docs/tools only) | Done |
-| E | 1.29.2 converter `MapToolkit/tools/downgrade.py` (terrain, doodads, units, objects, map info, script). First 1.29.2 map built from stage C | see git log | `FFERPG_0.9.7.3-r16-stageE-1.29.2.w3x` (1.29.2 only) | Conversions checked against r7. **Needs:** play test in 1.29.2 (see LEGACY_129.md) |
-| F | Quest map: `tools/quest_map.py` â†’ `docs/QUESTS.md` (quest-log entries and links per quest/boss module) + `docs/quest-graph.mmd` | see git log | (docs only) | Done |
-| G | System guides: `CHOCOBOS.md`, `GAYA.md`, `SUMMONS_AND_SHADOWS.md`, `CRAFTING.md`, `HUNTS.md` | see git log | (docs only) | Done |
-| H | Map list fix: our built maps (since r13) had lost the 512-byte `HM3W` header, so 1.29.2's map list skipped them. New `MapToolkit/tools/add_header.py`; `downgrade.py` now adds the header itself (`--name`). Headers added to r15, r16-stageB/C and stageE (archive contents unchanged) | see git log | same files, re-headed | **Needs:** check the maps now show under Custom Game â†’ Download |
-| I | 1.29.2 crash on selecting the map: Reforged had moved all object names/tooltips into `war3map.wts` (37,926 strings, 5 MB) and 1.29.2 crashes reading it (found with test maps: a cut-down wts didn't crash). `downgrade.py` now puts object text back inline (the classic way) and keeps only the 47 strings still used by the script, map info and triggers | see git log | `FFERPG_0.9.7.3-r16-stageI-1.29.2.w3x` (1.29.2 only; replaces stageE) | **Needs:** select it in 1.29.2, then play test (LEGACY_129.md) |
-| J | 1.29.2: caster frozen after Fan of Knives. Reforged's editor had dropped ~23,000 object fields it treats as defaults (mostly ability values for levels above the base ability's levels, e.g. Channel's settings for levels 5â€“11). 1.29 doesn't supply them the same way. `downgrade.py --fill-from <older classic map>` copies them back from r7; object data now matches r7 field for field | see git log | `FFERPG_0.9.7.3-r16-stageJ-1.29.2.w3x` (replaces stageI) | **Needs:** cast Fan of Knives (and other Thief/Channel spells) in 1.29.2 |
-| K | Phase 16 tidy-up: shared `udg_Temp*` variables became locals in 509 functions (321 modules), proven private to each function (`tools/refactor/phase16_temps.py`, `verify_phase16.py`); 2 leaks fixed (Trickster Reveal, Demi Fiend summon). Remaining hand-offs listed in `docs/phase16-handoffs.csv`, see `docs/PHASE16.md`. Also `savecode.py checkname`/`rename` (move a code to a new account name; hash checked on a real code) | see git log | `FFERPG_0.9.7.3-r16-stageK.w3x` (Reforged) and `FFERPG_0.9.7.3-r16-stageK-1.29.2.w3x` | All checks pass; the 1.29.2 build loads in 1.29.2. Both builds now have distinct in-game names. **Needs:** a general play test (spells, bosses, quests, arena, save/load), since 509 functions changed |
-| L | Built from your editor save (FFETEST = stage K saved in World Editor, DevCommands switched off). Removed 4,029 word-for-word calculation comments on simple lines (`+5`, random rolls, single multiplications); 653 kept on real formulas (`tools/refactor/trim_calc_comments.py`; code tokens unchanged). Only the Trigger Editor text changed, so it plays exactly like your save. Rule added to CONTRIBUTING.md. 1.29.2 builds keep the Game Interface (crystal shard resource icon) again; `check_map` skips triggers disabled in the editor | see git log | `FFERPG_0.9.7.3-r16-stageL.w3x` (edit this one in World Editor) and `FFERPG_0.9.7.3-r16-stageL-1.29.2.w3x` (play in both games) | **Needs:** crystal shard icon back; play test the 1.29.2 file in both games |
-| M | Quest engine (`QuestEngine` module, `docs/QUEST_ENGINE.md`): quests as data, with talk / return / kill / deliver / custom steps. Kill Elmdor and Wolf Fangs converted (same dialogue, rewards and side effects). New tools: `tools/add_module.py` (add a module without an editor save); `sync_module.py` can drop removed functions/variables; `check_map --allow-removed` | see git log | `FFERPG_0.9.7.3-r16-stageM.w3x` and `-stageM-1.29.2.w3x` | **Needs:** play both quests start to finish (cinematics on and off). Wolf Fangs: Valera, after Cid gives "Find Mid". Kill Elmdor: Biggs, after Cid gives "Ao Madoushi" |
-| N | Quest engine batch 1: Arachnophobia, Harpy Hunt, Gnoll Hunt, Phoenix, Find Shimmerweed, Deliver Letter, Greed is Good and Elixir now run on the engine (same dialogue, rewards and side effects; 30 old step triggers gone). New engine steps and options: hunt (kill N with the hunt leaderboard), deliver without a counter, pickup note, minimap pings, camera, lines under another name or only if a quest is done; the "?" follows the next NPC. Modules `GreedIsGood` and `PortalStone` removed (new `tools/remove_module.py`). Built from stage L: `add_module QuestEngine --before TElixir,TGnollHunt,TQuestArachnophobia,TQuestDeliverLetter,TQuestGreedIsGood,TQuestHarpyHunt,TQuestKillElmdor,TQuestPhoenix,TQuestShimmerweed,TQuestWolfFangs`, then `sync_module` (15 modules), `remove_module GreedIsGood PortalStone`, header, `downgrade.py` | see git log | `FFERPG_0.9.7.3-r16-stageN.w3x` and `-stageN-1.29.2.w3x` | **Needs:** play the 8 quests (and Kill Elmdor / Wolf Fangs again) start to finish, cinematics on and off; test list in `docs/QUEST_ENGINE.md` |
-| O | 62 side quests on the quest engine (all side quests but Cartographer). Engine: reach step, quest colour, no-marker, `Quest_Start`, `Quest_SetLog`, `Quest_Fail`; hashtables created by the first quest (BUGS #7). New `tools/order_libraries.py` (puts libraries after the ones they call). Modules `AnnoyingMonster`, `Belongings` removed. Built from E1 (stage N fixed) with sync_module + remove_module + order_libraries | see git log | `FFERPG_0.9.7.3-r16-stageO.w3x` (Reforged) | Superseded by P |
-| P | Main story on the quest engine (Find Mid ... Advent of Ice Age, 18 quests incl. Necrophobe). Not converted: Cartographer, True Ice Age, Ao Madoushi | see git log | `FFERPG_0.9.7.3-r16-stageP.w3x` (Reforged; the 1.29.2-format build still shows BUGS #7 in Reforged) | **Needs:** play-test list `docs/QUEST_TESTS.md` |
-| Q | Kalm Siege I/II: Complete trigger disables itself (no repeated reward / "Quest Completed" when the siege timer runs out again). docs/HANDOFF.md | see git log | `FFERPG_0.9.7.3-r16-stageQ.w3x` (Reforged) | **Needs:** QUEST_TESTS.md; both sieges once |
-| R | Ao Madoushi (MainQuest[4]) on the quest engine with custom steps; both Hashmalum branches retain dialogue, rewards, timing, markers and announcement audiences. Changed Quest_AoMadoushi, Cid, Turks, AoMadoushi, Cine. Built from Q: sync_module -> order_libraries -> check_map -> add_header (stage N header template) | see git log | `FFERPG_0.9.7.3-r16-stageR.w3x` (Reforged) | All checks pass (1503 triggers, no startup reorder); preservation audit passes. User reports stage R works great; branch-specific checklist remains in QUEST_TESTS.md |
-| S | Last two quests converted: Cartographer repeat reports/first-talk completion and True Ice Age shared log/delayed announcement/retries. QuestEngine adds silent custom start, announce-once, main-log aliases and completion item. Existing dialogue/rewards/story timing retained. Built from R: sync_module -> order_libraries -> check_map -> add_header | see git log | `FFERPG_0.9.7.3-r16-stageS.w3x` (Reforged) | All map checks pass (1503 triggers, no startup reorder); 7 lifecycle/report tests and preservation audit pass. All 93 quests converted. **User reports S is working.** |
-| T | Readiness #2/3/4: one-command build, full enabled-body drift guard, quest/content/save checks, fixed G/H vectors, event/lifecycle tests and read-only inspector in disabled DevCommands. Built from S automatically; no enabled modules synced | see git log (T/U tools commit) | `FFERPG_0.9.7.3-r16-stageT.w3x` (Reforged) | All gates, 32 tests and 2,000 codec cases pass. Runtime unchanged from S; embedded disabled developer source updated. Superseded by U |
-| U | Final safeguard review: trace waits inside conditions/returns/nested arguments; recognize valid buff/base IDs; preserve inherited item types and require save-flag count to track appended items. Built from T with the same one-command pipeline | see git log (T/U tools commit) | `FFERPG_0.9.7.3-r16-stageU.w3x` (Reforged) | All gates and 35 tests pass; 2,000 codec cases pass. 1503 triggers, no startup reorder. T/U MPQ archives identical; runtime byte-identical to user-tested S. Of 521 listed S/U files only disabled editor source changed. Proof and hash manifests in release/. Bugs left unchanged by request |
-| V | Readiness #6 first pass: six functions in TrueIceAge/Cartographer own summoner/group/location/scan/reward scratch values and pass helper context explicitly. #7: worked content guide, current source references and declared library dependency index. Built from U with the full pipeline | see git log (stage V cleanup/guide commit) | `FFERPG_0.9.7.3-r16-stageV.w3x` (Reforged) | All gates, 38 tests and 2,000 codec cases pass; 1503 triggers, no startup reorder. Reversing only declared changes makes all 10,971 playable functions identical to U; other listed assets unchanged. **Needs focused play test:** QUEST_TESTS.md stage V. Larger shared-state handoffs remain; bugs deferred |
-| W | Repair World Editor folder/source pairing: appended QuestEngine shifted 118 editor source assignments. Canonical WTG/WCT order, strict pairing gate, name-based sync and add-module regression tests. Carries user-authored Intro.j text edits unchanged | see git log (stage W editor layout fix) | `FFERPG_0.9.7.3-r16-stageW.w3x` (Reforged) | All gates, 41 tests, 2,000 codec cases and isolated add_module smoke PASS. All 10,971 playable functions unchanged except user-edited welcome action; trigger properties/GUI actions/assets preserved. **Needs:** reopen W and World Editor Save As; keep any unsaved edits in old TEST copy |
-| X | Legacy appearance mitigation in downgrade shortcut: explicit empty inherited art on Chemist Pharmacology/Ninja Dual Wield; hide Gaya's flying selection circle/stem. Converter profile checks FF IDs and preserves authored spell art. Converted from W; no trigger modules changed, so no module sync/order step needed | see git log (legacy visual profile commits) | `1.29.2/FFERPG_0.9.7.3-r16-stageX.w3x` (classic format); Reforged master remains W | W check_map gates PASS; converted script compiles against 1.29.2; 3 profile tests PASS. Preservation audit: only 10 appearance fields differ from normal W conversion, script/startup and 509 other listed files identical. **Needs visual play test:** Chemist, Ninja, Gaya; job switches and cinematic transitions. BUGS #7 remains pending confirmation |
-| Y | Correct X selection workaround: restore all Gaya/unit UI geometry, keep explicit Chemist/Ninja passive art. Identify Warcraft 3.0 Air-to-Ground Indicators option as separate Gaya/crow line source; client preference enabled. Reconverted from W, no module changes | see git log (stage Y unit UI correction) | `1.29.2/FFERPG_0.9.7.3-r16-stageY.w3x`; master remains W | User confirms X moon fix; X circle suppression did not remove lines and a health/level panel jumped on clicks. Y compilation, 3 regression tests and 511-file preservation audit PASS: only 8 passive art additions vs normal conversion; unit data, script/startup and 510 other files identical. **Needs:** fresh Y health-panel test, disable Air-to-Ground Indicators for flying lines. No user preference edits |
-| Z | New paired r16 baseline: user quest-log/pathing edits and complete object data carried into W master; latest Intro source edits retained. Classic editor parsing and portable local header/converter tooling; obsolete builds/reports/surveys archived outside repository | see git log (paired baseline packaging) | baseline/Reforged/FFERPG_0.9.7.3-r16.w3x and baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x | Full gates, 47 regressions, 2,000 codec cases PASS. Classic compilation/check_map PASS, 1503 triggers/no reorder. Preservation manifest records input/object/text/pathing/editor checks. User confirms both baseline maps work great (2026-10-06); separate Editor Save As not confirmed |
-| AA | Verify pinned default build after baseline packaging, no enabled module changes | see git log (paired baseline packaging) | Archived verification build; active baseline remains Z pair | All development gates, 47 regressions and 2,000 codec cases PASS; baseline archive retained apart from display header. In-game tests pending |
-| AB | Armory discovery: 276 missing gear entries show question-mark icons with hover/click hints; nine entries per page and all categories visible. Existing title access, deposits, withdrawals and save/reward behavior retained. Additive object preparer, catalogue/source gate and seven focused regressions | see git log (armory discovery hints) | release/FFERPG_0.9.7.3-r16-stageAB.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAB.w3x | Full build gates, 53 build regressions and 2,000 codec cases PASS; final 54 tests/catalogue gate and classic check_map PASS. Preservation audit: Armory-only source/runtime changes, 278 added unit objects, original objects/assets preserved. **Needs:** docs/ARMORY.md both-client UI/pagination, storage/withdrawal, save/load, multiplayer and Editor Save As |
-| AC | Correct Mina and Halberd of Justice discovery hints using user-confirmed routes: Fairy Voodoo and level-99 Valfodr. Exact requested wording in hover tooltips/click messages; catalogue gate included in build | see git log (armory discovery hints) | release/FFERPG_0.9.7.3-r16-stageAC.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAC.w3x | All gates, 54 regressions, 2,000 codec cases, classic check_map/compilation and preservation audit PASS. **Needs:** ARMORY.md client UI/gameplay tests. Next stage AD |
-| AD | Remove armory page controls; all categories fit on one panel (maximum eleven gear entries plus Back). Stored and missing icons share fixed slots sorted by item level requirement; equal-level items retain authored order. Mina/Halberd hints retained | see git log (single-panel armory layout) | release/FFERPG_0.9.7.3-r16-stageAD.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAD.w3x | All gates, 54 regressions, 2,000 codec cases, classic compilation/check_map and preservation audit PASS. Only Armory script/editor source, 276 hint units and collectible proxy button positions differ from the public baseline. User confirms AD works excellently (client versions not specified); further both-client coverage in ARMORY.md. Next stage AE |
-| AE | Bazaar last-slot Recipes icon; browse all 56 anonymous recipes with ingredient counts turning green. Replace automatic material spending with selected recipe crafting: exactly one ingredient set and original gold/shard price, original results/charges, per-player browsers over the existing shared material pool | see git log (Bazaar recipe browser) | release/FFERPG_0.9.7.3-r16-stageAE.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAE.w3x | All gates, 60 regressions, 2,000 codec cases, classic compilation/check_map and preservation audit PASS. Two intentionally added startup triggers explicitly allowed. Against AD, Bazaar-only runtime/editor changes, one recipe button and shop Sell Units ability; recipe/item/armory data preserved. **Needs:** BAZAAR.md in-game layout/transactions/multiplayer/Editor Save As. Next stage AF |
-| AF | Bazaar five anonymous recipe choices per page; Next 5 wraps through all 56, Back returns to the same group. Compact details show two ingredients per page, wrap long names, separate counts and gold/shard prices. All green status and hidden rewards retained | see git log (Bazaar compact browsing) | release/FFERPG_0.9.7.3-r16-stageAF.w3x and release/1.29.2/FFERPG_0.9.7.3-r16-stageAF.w3x | All gates, 61 regressions, 2,000 codec cases, classic compilation/check_map and preservation audit PASS. Against AE only Bazaar script/editor source differs; objects, recipes, craft/payment behavior and armory unchanged. **User rejected AF UI; superseded by AG.** Automated checks passed; no play-test acceptance |
-| AG | Five complete Reforged Bazaar panels (three top, two below), scrollable ingredients and individual Craft buttons; Next/Previous groups of five. Classic conversion restores AE single-dialog UI. Local frame presentation and synchronized session/recipe crafting | see git log (five-panel Bazaar) | release/FFERPG_0.9.7.3-r16-stageAG.w3x (Reforged play/editor); release/1.29.2/FFERPG_0.9.7.3-r16-stageAG.w3x (classic/AE UI) | Full gates, 65 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Two intentionally added event triggers allowed; existing startup order preserved. Original recipe/price/result/charge/payment/item/armory data unchanged. **User rejected AG UI:** screenshot shows blank ingredient areas. Superseded by AH. User chose separate UI versions; mocked tests did not establish native rendering |
-| AH | Three tall Reforged Bazaar panels; replace blank TEXTAREA regions with ordinary TEXT frames, enlarge text, wrap names/separate counts and bound ingredient text to nine lines plus heading. More ingredients cycles long lists; Next/Previous groups of three. Classic retains AE dialog | see git log (readable three-panel Bazaar) | release/FFERPG_0.9.7.3-r16-stageAH.w3x (Reforged play/editor); release/1.29.2/FFERPG_0.9.7.3-r16-stageAH.w3x (classic/AE UI) | Full gates, 66 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Startup unchanged; original recipe/price/result/charge/payment/item/armory data unchanged. User confirms AH looks much better and ingredient text is visible (2026-10-07); asks for padding, more visible entries and larger font in AI. Remaining multiplayer/transactions/save-load/Editor Save As coverage not confirmed |
-| AI | Inset Bazaar ingredient and price text; larger .016 font, taller panels/body and eighteen ingredient lines per page (about six marks rather than three). Three-panel browsing and AE classic fallback retained | see git log (Bazaar text spacing and capacity) | release/FFERPG_0.9.7.3-r16-stageAI.w3x (Reforged play/editor); release/1.29.2/FFERPG_0.9.7.3-r16-stageAI.w3x (classic/AE UI) | Full gates, 66 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Against AH only Bazaar UI script/editor text changed; startup/transactions/objects unchanged. **Needs:** expanded ingredient text fits at enlarged font, inset spacing, paging/color, multiplayer/transactions/save-load/Editor Save As. AH text rendering is user-confirmed. Next stage AJ |
-| AJ | Move Bazaar Close above the panels, away from normal game controls, and set its frame level explicitly. Retain AI text padding, larger font, expanded marks and all six Omni Gem ingredients | see git log (Bazaar layout and top Close) | release/FFERPG_0.9.7.3-r16-stageAJ.w3x (Reforged play/editor); release/1.29.2/FFERPG_0.9.7.3-r16-stageAJ.w3x (classic/AE UI) | Full gates, 67 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Against AI only Bazaar frame initialization changes; startup/objects/transactions unchanged. New regression checks top Close bounds, immediate hide and synchronized cleanup. User confirms AJ looks great (2026-10-07); detailed multiplayer/save-load/Editor Save As coverage not itemized. Eight marks/page and Gaya/dev requests follow in AK |
-| AK | Eight marks per recipe-1 page with grouped heading; one More click reaches remaining eight. Dev -teleporters unlocks all travel points without duplicate effects (release module stays disabled). Gaya gather/follow thresholds +25%: hero 625, Gaya 375, follow axis 480 | see git log (eight marks and Gaya/dev travel) | release/FFERPG_0.9.7.3-r16-stageAK.w3x (Reforged play/editor); release/1.29.2/FFERPG_0.9.7.3-r16-stageAK.w3x (classic/AE UI) | Full gates, 69 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Original recipes/prices/results/charges/objects/startup/save format preserved. Gaya audit reverses only three numeric edits; dev source compiles disabled/enabled in editor-source gate. **Needs:** eight-mark paging, Gaya pickup/follow/transport, enabled dev copy -teleporters, multiplayer/save-load/Editor Save As. Next stage AL |
-| AL | House Armory tooltip adds local stored/total collection counter, refreshed after deposit/withdraw/load within one second. Add --refresh-hints to update existing question-mark tooltip objects and generated source from armory-hints.json | see git log (armory counter and hint editing) | release/FFERPG_0.9.7.3-r16-stageAL.w3x (Reforged); release/1.29.2/FFERPG_0.9.7.3-r16-stageAL.w3x (classic/AE Bazaar) | Full gates, 71 regressions, 2,000 codec cases, classic compilation/check_map and preservation PASS. Only Armory runtime/editor text changed; objects, storage/withdrawal/rewards/flags/startup/save format unchanged. Counter counts eligible stored entries (276 total), excluding special flags. **Needs:** hover refresh, deposit/withdraw/load, two-player isolation, both clients and Editor Save As. Next stage AM |
-| AM | Materia category beside Accessories: Aeroga, Demiga, Quakeraga and Wateraga storage, question marks/hints, 280-entry counter. Charged-item exception limited to these four IDs. Nine additive stock units; original item indexes/classes/objects unchanged. Append materia armory bits after legacy bitmap order with narrow reviewed serializer extension. Fresh/incremental object preparation supported. | see git log | `FFERPG_0.9.7.3-r16-stageAM.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAM.w3x` | All gates, 76 regressions, 2,000 codec cases, classic check_map and preservation PASS. Old-save source tests pass; new materia round trips pass. Needs each deposit/withdraw/hint, Back, old/new in-game save/load, both clients/multiplayer/Editor Save As. |
-| AN | All seven active chocobo nuts/greens append to inventory save IDs (352..358), preserving quantities. Speedrun saving omits them; loading consumes their charge fields and discards them without shifting following items. Existing mode/ownership/legacy restrictions retained. Separate exact serializer-policy extension; original contract untouched. | see git log | `FFERPG_0.9.7.3-r16-stageAN.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAN.w3x` | All gates, 82 regressions, 2,000 codec cases, classic check_map and preservation PASS. Objects/rewards/old inventory IDs/armory mapping unchanged; count remains280. Needs normal/Speedrun saves and loads with mixed food/gear across inventories, old codes, both clients/multiplayer/Editor Save As. |
-
-| AO | Harpy Hunt opens two seconds after accepting Kollin's Arachnophobia task; Caroline asks for help rather than citing completed membership. Blue girl stationary during all three town visits; existing 300-second timers retained. | see git log | `FFERPG_0.9.7.3-r16-stageAO.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAO.w3x` | All gates,84 regressions,2,000 codec cases,classic check_map and scoped preservation PASS. Objects/save format/targets/rewards/logs/startup unchanged. User reported blue girl absent after about130 seconds; cause not reproduced, inherited movement is a possible explanation. Needs five-minute untouched waiting/selection with intervening cinematics, concurrent hunts/rare unlocks, both clients/multiplayer/Editor Save As. Next AP. |
-
-| AP | Chronicles page2 moves Time Trial and adds Secrets/Keg Hunter. Local unlocked/maximum title counters;10 monographs collected sequentially through hero/Gaya unlock all their bonuses permanently via existing title59 save bit (partial progress session-only). Knight zone0 supported; Bazaar Recipes stock immediately replenished for reopening. | see git log | `FFERPG_0.9.7.3-r16-stageAP.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAP.w3x` | Full gates,93 regressions,2,000 codec cases,classic check_map,preservation PASS;1508 startup triggers,one allowed pickup trigger. Three additive abilities; existing ability changes limited to book list/Time Trial position. Save serializers/items/recipes/quests/rewards unchanged. Needs native paging/tooltips,10-book collection/player isolation,earned-title save/load/recreation and Knight loot, repeated Bazaar reopening,both clients/multiplayer/Editor Save As. Next AQ. |
-
-| AQ | Secrets Chronicle category and Keg Hunter remain hidden until completion; Chronicle category buttons show names without progress suffixes, while progress remains in descriptions. Keg Hunter uses the standard green title/effect wording. Next page uses a navigation icon and has no category preview description. | see git log | `FFERPG_0.9.7.3-r16-stageAQ.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAQ.w3x` | Full gates,94 regressions,2,000 codec cases,classic check_map and preservation PASS;1508 startup triggers,0 independent reorder. Existing gameplay, save data, loot, recipes and quest behavior unchanged. Needs native Secrets visibility/category wording, bridge travel report, multiplayer and Editor Save As confirmation. |
-
-| AR | Replace the Next page Chronicle icon with Warcraft's standard move-arrow icon (`BTNMove.blp`). | see git log | `FFERPG_0.9.7.3-r16-stageAR.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAR.w3x` | Full gates,94 regressions,2,000 codec cases,classic check_map and preservation PASS;1508 startup triggers,0 independent reorder. Chronicle behavior and all gameplay/save data unchanged. |
-
-| AS | Integrate user-placed Shipyard/ArenaDarkness travel regions from the editor-saved AR. Append destinations12/13 to preserve existing quest indexes. Resolve travel entry from the event region directly rather than querying membership at the boundary. | see git log | `FFERPG_0.9.7.3-r16-stageAS.w3x` and `1.29.2/FFERPG_0.9.7.3-r16-stageAS.w3x` | All Reforged gates,classic check_map,96 regressions,2,000 codec cases and editor preservation audit PASS. Native reported failure remains unconfirmed; test both new stops, ordinary hero movement, repeated visits, shared unlocks, both clients and multiplayer. Base preserves user's editor changes. Next AT. |
-| AT (Forsaken experiment) | Separate native 3.0 bag/equipment preview:276 Armory gear items assigned to loadout types,4 Materia unchanged; hero bag/equipment and Gaya bag; level/mastery validation on equip. Isolated sources/build in experiments/Forsaken; save exports blocked until bag/loadout serialization is designed. | see git log | `Forsaken/FFERPG_0.9.7.3-r16-ForsakenAT.w3x` and unchanged classic fallback under `Forsaken/1.29.2/` | Full Reforged gates,96 regressions,2,000 codec cases,4 experiment tests PASS. Classic fallback byte-identical to AS. User native test FAILED: missing backpack UI and NPC gear dropped. Superseded by AU. Custom procs,inventory queries/transfers,job changes,Dual Wield and expanded save/load remain pending. Normal development stays AS. |
-
-| AU (Forsaken experiment) | Replace global equipment-type edits with276 separate native variants; retain original NPC/preplaced gear. Visible fBpk Backpack carries stock AIni,AEqu; hero gear converts only after bag acceptance, preserving original on failure. Add -forsaken diagnostics. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAU.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,5 experiment tests and preservation audit PASS. User confirmed original items restored; native UI FAILED: backpack present in slot1, bag capacity0, click does not open panel. Superseded by AV. Saving remains blocked; normal development AS. |
-| AV (Forsaken experiment) | Explicit fBgi/fGer item abilities based on native AIni/AEqu; author Data F bag capacity30 and equipment level threshold0, include stock ASpc panel controller. Gaya gets configured fBag. Expand -forsaken ability diagnostics. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAV.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,5 experiment tests PASS. Original items/NPC payloads retained; saving blocked. User native test FAILED: Backpack slot1, capacity0, hero ability readings0, no panel. Item-attached ability readings alone are inconclusive; zero capacity confirmed. Superseded by AW; normal development AS. |
-| AW (Forsaken experiment) | Attach fBag,fGer,ASpc directly/permanently to the player hero to bypass item attachment. fGer uses unit-ability flag; stock ASpc gets explicit name/icon and hidden command-card position. Diagnostic reads direct abilities and legacy AInv. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAW.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,6 experiment tests PASS. Original items/world/NPC payloads preserved; source/runtime agreement0 new differences. User native test FAILED: capacity0, direct native bag/gear/UI levels0, legacy inventory1. Found map still selects Frozen Throne data1; superseded by AX. No legacy inventory removal; saving blocked; normal development AS. |
-| AX (Forsaken experiment) | Enable required Game Data Version2 (Forsaken Kingdom) in map metadata; earlier experiments incorrectly retained Frozen Throne1. Patch only four-byte selector with format39 HUD/fog-aware parsing. Retain AW native setup and all objects. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAX.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,6 experiment tests PASS. Versus AW only expansion selector and diagnostic stage text change; objects/world/NPC payloads identical. Classic exact AS. User native test FAILED: missing Backpack and carried gear disappearing without stats. Automatic conversion put variants in bag without equipping; hidden ASpc control and bag-aware Backpack supply also needed correction. Superseded by AY; saving blocked; normal development AS. |
-| AY (Forsaken experiment) | Stop automatic gear conversion; restore original-item pickup gates. Reveal ASpc Backpack button/B hotkey and supply physical Backpack only in a free visible slot, checking bag for duplicates. Explicit -forsaken-equip scans visible/bag gear; remove original only after accepted, successful native equip and IsItemEquipped confirmation, otherwise retain it. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAY.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,8 experiment tests PASS. Failed/rejected equip preserves originals; full/occupied inventory and existing bagged Backpack tests PASS. Manual chat registration verified for8 players. Original items/world/NPC payloads retained; visible controller and expansion2 audited; classic exact AS. User confirmed native panel and manual equip working. Saving blocked; normal development AS. |
-| AZ (Forsaken experiment) | Automatically fill empty native equipment slots using AY's safe conversion checks; both rings supported, occupied slots retained. Backpack is ability/B hotkey only, no physical item. Isolated Job overlay transfers equipped and bagged items after canonical six-slot handling, preserving handles/charges and recalculating new-job stats. Separate startup helper for optional manual rescan. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenAZ.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Full gates,96 regressions,2,000 codec cases,11 experiment tests and preservation audit PASS. Tests include full30-slot bag, both rings, job round trip, other-player isolation, occupied slots and failed conversion/transfer. Original items/world/NPC payloads retained; physical Backpack absent;0 new source/runtime differences; classic exact AS. Native AZ automatic bonuses/shared job inventory/ability-only controls need play test. Saving blocked; normal development AS; next BA. |
-| BA (Forsaken experiment) | Keep consumables in the native bag across jobs: transfer after clearing destination quick slots, temporarily suspend that empty AInv, move equipped/bagged items, restore AInv before canonical quick-item restoration. Snapshot bag contents to retain order. Gaya keeps original six slots. Add native ASde stat details and8 ATal trees showing6 cosmetic zero-stat FF job/mastery cells; visual preview only per user clarification. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBA.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/map/editor gates,96 regressions,2,000 codec cases,14 experiment tests and final preservation audit PASS;0 new source/runtime differences. Original item/ability fields and world/NPC payloads retained; stock AInv declaration has0 modifications. Tests simulate quick-slot priority, full30 bag, both rings, round trip/order/charges and player isolation, plus panel data/zero bonuses/local tooltips/no real skill grants/no Gaya setup. Native bag placement and stat/talent rendering still need play test. Saving blocked; normal development AS; next BB. |
-| BB (Forsaken experiment) | Preserve exact30-slot sparse bag positions using temporary ability-free spacers and synchronous cleanup. Show FF Magic Defense/raw and reduction% in native stat rows; isolated possession helper recognizes equipped variants, excludes bag gear, retains canonical calculation. Native talent shell plus4x3 clickable preview paths with direct-parent requirements,4 points per player/job and validated sync. No actual talent bonuses. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBB.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/map/editor/source gates,96 regressions,2,000 codec cases,18 experiment tests, final archive audit and additional installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Original objects/world/NPC retained, FDF/toc import entries retained, classic exact AS. Tests cover gaps/full bag/charges/job round trip, equipped-only defense,100=>66.67%, parent G requires C, duplicate/points/player/job isolation. Native UI/click acceptance pending. First unpublished attempt failed startup comparison; corrected by moving lookup initialization into the allowed experimental hook. Saving disabled; Gaya unchanged; normal development AS; next BC. |
-| BC (Forsaken experiment) | Keep accepted BB sparse bag transfer. Replace failed native stat/talent overlays with independently created FF panel beside actual native gear/bag; nine live labels including regeneration and Magic Defense/%. Read original/custom live ability levels and equipped/quick item abilities, exclude bag; Sorcerer A03360->120 during Burst. Twelve buttons3x4, mastery ranks1-4 unlock rows, one choice per row/direct-parent gate. B/mouse command4 toggle, Esc/X close, chat fallback. No actual talent bonuses. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBC.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/map/editor/source gates,96 regressions,2,000 codec cases,20 experiment tests, archive audit and extra installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Original objects/world/NPC/imports intact, classic exact AS; JASS CRLF. First unpublished attempt failed reserved effect/buff variable names; renamed. UI rendering/control alignment requires native acceptance. Regeneration models intrinsic/own/active gear, not external auras/instant restoration/scripted heal ticks. Saving disabled, Gaya unchanged, normal AS; next BD. |
-| BD (Forsaken experiment) | Accepted BC UI/bag retained. Remove basic attributes/maxHP/MP, widen/inset entire panel. Four local More stats pages: combat11 rows; elemental/non-elemental/proc defenses;12 elemental attack/spell bonuses;10 other damage/healing/power/guard/move bonuses. Read live active gear/passives/buffs; Haste/Slow cooldown, map armor coefficient, random-free block/resist queries; per-player regeneration cache. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBD.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/map/editor/source gates,96 regressions,2,000 codec cases,26 experiment tests, final archive audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Geometry, Haste/Slow priorities/stacking, blocking/Sword, healing, negative armor, active gear/bag exclusion, deterministic absorption tested. Original objects/world/NPC/imports intact; CRLF, classic exact AS. No gameplay/talent/save changes; conditional effects/skill exceptions separate from generic stats. Native readability/page/buff acceptance pending. First unpublished attempts stopped on function ordering/native slot signature/type and corrected. Next BE. |
-| BE (Forsaken experiment) | BD accepted. Remove automatic gear scan, add explicit synchronized Equip gear button. Open custom talents on native Backpack opening, independent X retains gear UI. Selection Inspect icon opens read-only9 gear/30 bag slots with item hover details plus target-owner talents and four stats pages; close independently, no purchases or item changes, invalid/fog targets close. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBE.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/editor/map/source gates,96 regressions,2,000 codec cases,33 experiment tests, archive audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Open/close edges, other hero validity/visibility, read-only item queries, no inspect purchases/equip,39 hover slots and explicit action registrations tested. Original objects/world/NPC/imports intact, CRLF, classic exact AS. First unpublished attempt failed reserved button local, renamed slotButton. Native open/frame/icon/second-player acceptance pending; saving blocked, Gaya unchanged; normal AS, next BF. |
-| BF (Forsaken experiment) | Remove Equip gear button/sync; automatically prepare original six-slot gear for native manual equipment, preserving position/charges/userdata/proficiency/owner; no auto-equip. Extend read-only inspection to visible NPCs/bosses, ordinary inventory fallback, own summary/live four-page stats with native armor defense and no borrowed player talents/cache. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBF.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/editor/map/source gates,96 regressions,2,000 codec cases,35 experiment tests, archive audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Conversion success/failure/state, no auto-equip, NPC validity/quick inventory/stat isolation/cooldown/read-only UI covered; original objects/world/imports intact, CRLF, classic exact AS. First unfinished attempt restarted to preserve item proficiency. Native manual drag/unequip/job transfer and solo NPC/boss inspection acceptance pending. Saving disabled, Gaya unchanged; normal AS, next BG. |
-| BG (Forsaken experiment) | Fix BF duplication by tracking actual replacement handles, accept quick/bag routing, delete rejection/retain original, no failed retry or pickup recursion, no auto-equip. Add276 gear slot tooltip lines in isolated objects. Inspect above top-right command cell; Talents/Stats toggle beside backpack. Fully hide board/title during backpack/inspection; manual Board toggle persists, refresh respects visibility. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBG.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/editor/map/source gates,96 regressions,2,000 codec cases,38 experiment tests, archive audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences.100 repeated scans success/redirect/reject, original state/proficiency/owner, tooltip placement/field isolation, local toggles/board preferences tested. NPC/world/imports intact, only original gear tooltip fields change, CRLF; classic exact AS. Prior unfinished BG build stopped to add user layout request. Native acceptance pending. BF failed in-game, do not use. Saving disabled, Gaya unchanged; normal AS, next BH. |
-| BH (Forsaken experiment) | Fix item/passive regeneration via prepared-map raw-ID/rank metadata;45HP helmet,60/120MP Sorcerer, inherited defaults, active equipment only. Direct frame callbacks, stable visible anchor, upper-right Talents/higher Inspect; remove Board button, retain automatic hiding. Heroes/bosses only;552 Armory stock/hint slot labels. Consolidated element rows, remove Staff/Rod/Inner Mana, Physical/Magical damage, live red penalty values and effective defense with status precedence. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBH.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All gates,96 regressions,2,000 codec cases,44 experiment tests, final archive/object audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Canonical/world/NPC/imports preserved except requested Armory tooltip fields. CRLF JASS; classic exact AS. Native acceptance pending. Saving disabled; normal AS, next BI. |
-| BI (Forsaken experiment) | Rearrange stats: flat guard page1, elemental labels and Physical/Magical damage page3 without Split values legend, HP regen page4. Add552 Armory basic hover-title slot labels alongside extended descriptions. Native-to-legacy carry bridge for explicit hero quick-slot drags, Gaya pickup/give and ground drops, with state preservation/rollback and carry markers respected by periodic preparation. Native starting gear retained; Gaya still six-slot only. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBI.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All gates,96 regressions,2,000 codec cases,51 experiment tests, archive/object audit and installed3.0.1.24342 compilation PASS;0 new source/runtime differences. Only requested Armory utip/utub on original units; world/imports/canonical AS intact. CRLF JASS; classic exact AS. Earlier BI run stopped before publication to preserve native starting gear. Native carry/UI acceptance pending; saving disabled, normal AS, next BJ. |
-| BJ (Forsaken experiment) | Fix Reforged skin tooltip overrides for Armory gear/missing entries and item gear descriptions; exclude Gaya H01D from Inspect before hero/boss checks. Preserve all other skin fields and BI inventory/stat behavior. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBJ.w3x and exact AS classic fallback under Forsaken/1.29.2/ | all build/editor/source/map checks, 96 regression tests, 2,000 codec cases, 53 experimental tests, final archive/object isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. The final skin audit verifies exactly 1,104 unit tooltip fields and 276 item extended tooltip fields changed, with every other skin field identical. CRLF JASS and byte-identical AS classic fallback verified. Scratch: build/ForsakenBJ-sku2xngk/FFERPG. Native tooltip/Inspect acceptance pending; normal AS, saving disabled, next BK. |
-| BK (Forsaken experiment) | Extended-only slot hints; manual corner Talents/no V markers; reorder stats and add live attack speed; active equipment-aware passive/proficiency checks; transactional Ninja offhand weapon preparation; Firefly Ring. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBK.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All gates, 96 regressions, 2,000 codec cases, 59 experiment tests, object/skin audit and installed-library compilation PASS; 0 new source/runtime differences. Native acceptance pending, saving disabled; superseded by BL for the subsequently requested attack-element highlight. |
-| BL (Forsaken experiment) | Includes BK UI/stats/gear-passive/dual-wield/Firefly changes. Live green Damage bonuses row follows the combat basic-attack element, enchant priority/expiration and Omni indicator. Native equipped ability queries for combat element properties, proficiency and elemental bonuses/resistance, excluding bag storage. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBL.w3x and exact AS classic fallback under Forsaken/1.29.2/ | all build/editor/source/map gates, 96 regressions, 2,000 codec cases, 61 experimental tests, final archive/object/skin isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Tests cover native weapon elements, enchantment priority/expiration, non-elemental reset, Omni and green-row refresh, as well as preceding inventory/UI/passive cases. World/imports and original gameplay object fields preserved except requested tooltips; CRLF JASS and exact AS classic fallback verified. Scratch: build/ForsakenBL-vvf5pf1l/FFERPG. Native acceptance pending; canonical AS preserved, saving disabled; next BM. |
-
-| BM (Forsaken experiment) | Internal spacer warning fix; shared offhand Two-Handed checks with visible swing bonuses; Monk Brawler state/scripted multiplier; Gaya Strength counted once with real Omni gear bonuses preserved; no talent letter labels. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBM.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Validation: all build/editor/source/map gates, 96 regression tests, 2,000 codec cases, 66 experimental tests, final archive/object/skin isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Tests cover spacer restrictions, Monk native shield/fist attack multipliers, Two-Handed offhand cancellation/restoration and speed, matching combat/display33% with aura/enchant/real Omni bonus, and no talent letter bindings. CRLF JASS and exact AS classic fallback verified. Scratch: build/ForsakenBM-dr4l_j5b/FFERPG. Fresh-game native acceptance pending. Next unused stage BN. |
-
-| BN (Forsaken experiment) | Native Equipment class attempted to prevent bagged stat effects (native testing failed; superseded by BO); preserve original script categories via metadata/defaults; hero gear routes out of six slots into bag (full bag safely drops); Gaya six-slot carry unchanged; source-aware equipped-only elemental scaling, clearing and display. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBN.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Validation: all build/editor/source/map gates, 96 regression tests, 2,000 codec cases, 71 experimental tests, final archive/object/skin isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Tests cover native Equipment classification and original category compatibility, Book of Flames through 100 equip/removal cycles, all elemental gear across six elements and physical/magical damage, safe six-slot routing/full-bag preservation and unchanged Gaya carrying. CRLF JASS and exact AS classic fallback verified. Scratch: build/ForsakenBN-f9f6lmy6/FFERPG. Native acceptance pending in a fresh BN game: compare INT with books equipped, bagged and held by Gaya, repeat Book of Flames removal, and check ordinary consumables and job bag order. Saving disabled. Next unused stage BO. |
-
-| BO (Forsaken experiment) | Suppress only stored passive abilities; preserve bag book spells/cooldowns; relocate regeneration/cooldowns, show conditional protections, explicit paired percentages; inspection Stats inset and shorter panels above HUD. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBO.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Validation: all build/editor/source/map gates, 96 regression tests, 2,000 codec cases, 74 experimental tests, final archive/object/skin isolation audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Test coverage includes 100 stored/equipped cycles, actual book/Firefly passive classifications, untouched Bolt/Fire ability and cooldown state, conditional protections, stat-page moves and panel border geometry. JASS CRLF and exact AS classic fallback verified. Scratch: build/ForsakenBO-jnou7c1o/FFERPG. Fresh-game native acceptance pending. Next BP. |
-
-| BP (Forsaken experiment) | Independent choices within each mastery-unlocked talent row; deferred same-handle/passive-free bag rebind after unequip; item-event ability rank/cooldown lookup; local visible-model-free water proxy for Depths/Wateraga. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBP.w3x and exact AS classic fallback under Forsaken/1.29.2/ | Validation: all stage source/editor/playable/map gates, 77 experimental tests, 96 regression tests, 2,000 codec cases, final object/skin/archive isolation audit and installed 3.0.1.24342 compilation PASS. Complete source/runtime agreement: 0 new differences. JASS CRLF and exact AS classic fallback verified. Scratch: build/ForsakenBP-205nu15d/FFERPG. Native acceptance required in a fresh BP game: equip Storms and Winds, unequip to bag, cast both and verify the original shared book cooldown; repeat through multiple cycles and job changes. Cast Depths and Wateraga at ground and units and confirm visible wave/damage; verify bagged passive stats remain off, equipped bonuses restore, sparse bag order/charges survive and Gaya carrying remains intact. Next unused stage BQ. |
-
-| BQ (Forsaken experiment) | Retain BP's independent talent rows and bagged active book abilities; replace the Depths/Wateraga proxy with a direct scripted Crushing Wave missile sweep preserving mana/rod-power, one hit per target and cleanup. Add build-time accuracy extraction for all original/Forsaken variant/offhand item IDs and show Accuracy rating on Damage bonuses; active equipped slots only. Catalogue audit covers 280 entries (276 gear, four unchanged Materia). | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBQ.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All source/editor/playable/map gates, 80 focused Forsaken tests, 96 regressions, 2,000 codec cases, armory/Bazaar checks, startup preservation and installed3.0.1.24342 compilation PASS. Native acceptance remains for Depths/Wateraga wave/damage, Storm Lance Accuracy rating and bagged stat exclusion; saving disabled. Next unused stage BR. |
-| BR (Forsaken experiment) | Correct doubled accuracy; share residual with combat; zero-stat marker for passive-only native gear; weapon/ammo/trinket stats and equipment hooks; compact talents, 16 stat rows and condensed Defenses; repeatable all-276 audit. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBR.w3x and exact AS classic fallback under Forsaken/1.29.2/ | All build/source/editor/map gates, 85 focused tests, 96 regressions, 2,000 codec cases, all-276 audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Native equip/effect/UI acceptance required. Saving disabled; normal development AS. Next unused stage BS. |
-| BS (Forsaken experiment) | Retry full-bag rejected gear on fresh pickup; aligned stat values and revised effect labels; dagger backstab, Storm Lance shock, Reflect Shield movement penalty; target-aware inspection summaries; unchanged proficiency-scaled ammunition math. | see git log | Forsaken/FFERPG_0.9.7.3-r16-ForsakenBS.w3x and exact AS classic fallback under Forsaken/1.29.2/ | 87 focused tests, 96 regressions, 2,000 codec cases, all build/editor/source/map gates, all-276 audit and installed 3.0.1.24342 compilation PASS; 0 new source/runtime differences. Scratch build/ForsakenBS-hz94mr9k/FFERPG. Native full-bag retry/UI/inspection acceptance required. Saving disabled; normal AS unchanged. Next unused stage BT. |
+| Stage | What |
+|---|---|
+| start | r15: phases 8-9 |
+| A | `docs/BUGS.md`: suspected bugs found while writing the guides |
+| B | Developer test commands: module `DevCommands` (folder 11), `docs/DEBUG_COMMANDS.md` |
+| C | Save code tool `tools/savecode.py` (decode/encode/selftest), `-dumpitems` dev command, `tools/sync_module.py` (put a changed module into the... |
+| D | Object reference: `tools/objects.py` + `tools/objdata.py` (reads/writes object data, byte-exact round trip) -> `docs/OBJECTS.md`,... |
+| E | 1.29.2 converter `MapToolkit/tools/downgrade.py` (terrain, doodads, units, objects, map info, script) |
+| F | Quest map: `tools/quest_map.py` -> `docs/QUESTS.md` (quest-log entries and links per quest/boss module) + `docs/quest-graph.mmd` |
+| G | System guides: `CHOCOBOS.md`, `GAYA.md`, `SUMMONS_AND_SHADOWS.md`, `CRAFTING.md`, `HUNTS.md` |
+| H | Map list fix: our built maps (since r13) had lost the 512-byte `HM3W` header, so 1.29.2's map list skipped them |
+| I | 1.29.2 crash on selecting the map: Reforged had moved all object names/tooltips into `war 3map.wts` (37, 926 strings, 5 MB) and 1.29.2 crashes... |
+| J | 1.29.2: caster frozen after Fan of Knives |
+| K | Phase 16 tidy-up: shared `udg_Temp*` variables became locals in 509 functions (321 modules), proven private to each function... |
+| L | Built from your editor save (FFETEST = stage K saved in World Editor, DevCommands switched off) |
+| M | Quest engine (`QuestEngine` module, `docs/QUEST_ENGINE.md`): quests as data, with talk / return / kill / deliver / custom steps |
+| N | Quest engine batch 1: Arachnophobia, Harpy Hunt, Gnoll Hunt, Phoenix, Find Shimmerweed, Deliver Letter, Greed is Good and Elixir now run on the... |
+| O | 62 side quests on the quest engine (all side quests but Cartographer) |
+| P | Main story on the quest engine (Find Mid  |
+| Q | Kalm Siege I/II: Complete trigger disables itself (no repeated reward / "Quest Completed" when the siege timer runs out again) |
+| R | Ao Madoushi (MainQuest[4]) on the quest engine with custom steps |
+| S | Last two quests converted: Cartographer repeat reports/first-talk completion and True Ice Age shared log/delayed announcement/retries |
+| T | Readiness #2/3/4: one-command build, full enabled-body drift guard, quest/content/save checks, fixed G/H vectors, event/lifecycle tests and... |
+| U | Final safeguard review: trace waits inside conditions/returns/nested arguments |
+| V | Readiness #6 first pass: six functions in TrueIceAge/Cartographer own summoner/group/location/scan/reward scratch values and pass helper context... |
+| W | Repair World Editor folder/source pairing: appended QuestEngine shifted 118 editor source assignments |
+| X | Legacy appearance mitigation in downgrade shortcut: explicit empty inherited art on Chemist Pharmacology/Ninja Dual Wield |
+| Y | Correct X selection workaround: restore all Gaya/unit UI geometry, keep explicit Chemist/Ninja passive art |
+| Z | New paired r16 baseline: user quest-log/pathing edits and complete object data carried into W master |
+| AA | Verify pinned default build after baseline packaging, no enabled module changes |
+| AB | Armory discovery: 276 missing gear entries show question-mark icons with hover/click hints |
+| AC | Correct Mina and Halberd of Justice discovery hints using user-confirmed routes: Fairy Voodoo and level-99 Valfodr |
+| AD | Remove armory page controls |
+| AE | Bazaar last-slot Recipes icon |
+| AF | Bazaar five anonymous recipe choices per page |
+| AG | Five complete Reforged Bazaar panels (three top, two below), scrollable ingredients and individual Craft buttons |
+| AH | Three tall Reforged Bazaar panels |
+| AI | Inset Bazaar ingredient and price text |
+| AJ | Move Bazaar Close above the panels, away from normal game controls, and set its frame level explicitly |
+| AK | Eight marks per recipe-1 page with grouped heading |
+| AL | House Armory tooltip adds local stored/total collection counter, refreshed after deposit/withdraw/load within one second |
+| AM | Materia category beside Accessories: Aeroga, Demiga, Quakeraga and Wateraga storage, question marks/hints, 280-entry counter |
+| AN | All seven active chocobo nuts/greens append to inventory save IDs (352..358), preserving quantities |
+| AO | Harpy Hunt opens two seconds after accepting Kollin's Arachnophobia task |
+| AP | Chronicles page 2 moves Time Trial and adds Secrets/Keg Hunter |
+| AQ | Secrets Chronicle category and Keg Hunter remain hidden until completion |
+| AR | Replace the Next page Chronicle icon with Warcraft's standard move-arrow icon (`BTNMove.blp`) |
+| AS | Integrate user-placed Shipyard/ArenaDarkness travel regions from the editor-saved AR |
+| AT | Forsaken: Separate native 3.0 bag/equipment preview: 276 Armory gear items assigned to loadout types, 4 Materia unchanged |
+| AU | Forsaken: Replace global equipment-type edits with 276 separate native variants |
+| AV | Forsaken: Explicit fBgi/fGer item abilities based on native AIni/AEqu |
+| AW | Forsaken: Attach fBag,fGer,ASpc directly/permanently to the player hero to bypass item attachment |
+| AX | Forsaken: Enable required Game Data Version 2 (Forsaken Kingdom) in map metadata |
+| AY | Forsaken: Stop automatic gear conversion |
+| AZ | Forsaken: Automatically fill empty native equipment slots using AY's safe conversion checks |
+| BA | Forsaken: Keep consumables in the native bag across jobs: transfer after clearing destination quick slots, temporarily suspend that empty AInv, move... |
+| BB | Forsaken: Preserve exact 30-slot sparse bag positions using temporary ability-free spacers and synchronous cleanup |
+| BC | Forsaken: Keep accepted BB sparse bag transfer |
+| BD | Forsaken: Accepted BC UI/bag retained |
+| BE | Forsaken: BD accepted |
+| BF | Forsaken: Remove Equip gear button/sync |
+| BG | Forsaken: Fix BF duplication by tracking actual replacement handles, accept quick/bag routing, delete rejection/retain original, no failed retry or pickup... |
+| BH | Forsaken: Fix item/passive regeneration via prepared-map raw-ID/rank metadata |
+| BI | Forsaken: Rearrange stats: flat guard page 1, elemental labels and Physical/Magical damage page 3 without Split values legend, HP regen page 4 |
+| BJ | Forsaken: Fix Reforged skin tooltip overrides for Armory gear/missing entries and item gear descriptions |
+| BK | Forsaken: Extended-only slot hints |
+| BL | Forsaken: Includes BK UI/stats/gear-passive/dual-wield/Firefly changes |
+| BM | Forsaken: Internal spacer warning fix |
+| BN | Forsaken: Native Equipment class attempted to prevent bagged stat effects (native testing failed) |
+| BO | Forsaken: Suppress only stored passive abilities |
+| BP | Forsaken: Independent choices within each mastery-unlocked talent row |
+| BQ | Forsaken: Retain BP's independent talent rows and bagged active book abilities |
+| BR | Forsaken: Correct doubled accuracy |
+| BS | Forsaken: Retry full-bag rejected gear on fresh pickup |
+| BT | Forsaken: labels-only patch of BS (Cat's Bell, Deathbringer); last gameplay checkpoint for the Forsaken gear branch |
+| BU-CA | Forsaken: private save-system diagnostics (`-savecheck`, `-savehousecheck`); see SAVE_ENGINE_TEST.md / SAVE_HOUSE_ENGINE_TEST.md |
+| CB | Forsaken: house storage diagnostic, **user-confirmed PASS** |
+| CC-CP+ | Forsaken: boots / equipment diagnostic (`-savegearcheck`), in progress; see SAVE_GEAR_ENGINE_TEST.md |

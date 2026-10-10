@@ -62,8 +62,8 @@ hint and evidence for its acquisition route. Use the hint refresh workflow below
 prepared map so hover tooltips and click messages update together while retaining Object Editor edits.
 check_armory.py is a build gate: missing proxy objects or catalogue/source mismatches block release.
 
-tools/tests/verify_armory_build.py records the earlier armory discovery audit against the public baseline.
-The current AM audit is tools/tests/verify_armory_materia_build.py against AL; it checks all existing
+tools/tests/verify_armory_build.py (removed 2026-10-10, kept in Git history) records the earlier armory discovery audit against the public baseline.
+The current AM audit is tools/tests/verify_armory_materia_build.py (removed 2026-10-10, kept in Git history) against AL; it checks all existing
 object fields, other modules, the nine new stock units and the reviewed bitmap extension.
 
 ## House icon collection counter - stages AL and AM
@@ -123,7 +123,7 @@ compatibility contract remains intact, with a separately reviewed exact serializ
 Test Back, each missing hint and original icon, all four deposits/withdrawals, duplicates,
 lower-tier rejection, N / 280 changes, older saves and new materia save/load in both clients.
 Use two players to check ownership and independent collections. Also verify World Editor Save As.
-tools/tests/verify_armory_materia_build.py audits the AM maps against AL.
+tools/tests/verify_armory_materia_build.py (removed 2026-10-10, kept in Git history) audits the AM maps against AL.
 
 Current sources also require Chronicle page/Secrets abilities. Use the complete fresh workflow
 in BUILDS.md, or an AP-or-later map for incremental work; older partial object examples above

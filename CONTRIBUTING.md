@@ -19,7 +19,7 @@ For edits to existing source modules, use `build.ps1` instead of manually assemb
 `.\build.ps1 -Stage AB`. It runs the complete development
 gates and records a new map/report/manifest without overwriting outputs. See docs/BUILDS.md for
 requirements and the handling of new modules, object data, header/global changes and historical drift.
-Keep .j sources in CRLF. After every build, add a STAGES.md row and update HANDOFF.md/RESUME_PROMPT.txt;
+Keep .j sources in CRLF. After every build, add one STAGES.md row (one sentence) and update HANDOFF.md only if the current state changed;
 play-test changed gameplay. Commit only the files belonging to your change.
 
 For World Editor changes:
