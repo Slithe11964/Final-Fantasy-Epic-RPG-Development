@@ -18,10 +18,13 @@ class GearProbeTests(unittest.TestCase):
         self.pickup_recalculation=0.
         self.bonus_size=80
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
+        self.equipped_quick_alias=False
+        self.unknown_ability=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
             if item is not None:item['abilities']=['A0MU','fGmk'] if raw=='f003' else []
+            if item is not None and raw=='f003' and self.unknown_ability:item['abilities'].append('zzzz')
             return item
         def add_ability(unit,raw):
             if raw=='fBag':unit['bag']=[None]*30
@@ -31,7 +34,8 @@ class GearProbeTests(unittest.TestCase):
             return True
         def equip(unit,item):
             if not self.reject_equip:
-                self.w.detach(item);unit['equip'][3]=item;item['owned']=True
+                if not self.equipped_quick_alias:self.w.detach(item)
+                unit['equip'][3]=item;item['owned']=True
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
             return True
         def exposed(item):
@@ -45,7 +49,8 @@ class GearProbeTests(unittest.TestCase):
             if self.regenerate_bag_passive and any(i is item for i in unit['bag']) and item['raw']=='f003' and 'A0MU' not in item['abilities']:item['abilities'].append('A0MU')
             return result
         def speed(unit):
-            bonus=sum(self.bonus_size for kind in ['quick','bag','equip'] for i in unit[kind] if i and 'A0MU' in i.get('abilities',[]))
+            active={id(i):i for kind in ['quick','bag','equip'] for i in unit[kind] if i}
+            bonus=sum(self.bonus_size for i in active.values() if 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
             if self.sticky_bonus and self.w.adds>0 and all(i['raw']==0 for i in self.w.items if i is not self.original):bonus=80
             return self.base_speed+(self.pickup_recalculation if self.w.adds>0 else 0.)+bonus
@@ -182,5 +187,17 @@ class GearProbeTests(unittest.TestCase):
             self.assertIn('FAIL at ',self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
+
+    def test_equipment_still_visible_in_quick_zero_uses_next_free_slot(self):
+        self.equipped_quick_alias=True;self.opaque_bag=True;self.lazy_abilities=True
+        self.e['FGT_Run'](0)
+        self.assertIn('Gear test: PASS:',self.messages[-1]);self.guarded_originals()
+
+    def test_unreviewed_preparation_ability_is_reported_before_cleanup(self):
+        self.unknown_ability=True
+        self.e['FGT_Run'](0)
+        self.assertIn('ability unreviewed role=0 zzzz',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
 if __name__=='__main__':unittest.main()

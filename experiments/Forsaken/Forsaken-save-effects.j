@@ -174,6 +174,7 @@ function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashta
         set raw=BlzGetAbilityId(current)
         set role=LoadInteger(policy,0,raw)
         if raw==0 or (role!=1 and role!=2) then
+            call FSA_ReadbackFailure(index,"unreviewed role="+I2S(role),raw)
             set current=null
             return FSN_Fail(pid)
         endif
@@ -181,6 +182,7 @@ function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashta
         loop
             exitwhen previous>=abilityIndex
             if FSN_EffectId[index*16+previous]==raw then
+                call FSA_ReadbackFailure(index,"duplicate during preparation",raw)
                 set current=null
                 return FSN_Fail(pid)
             endif

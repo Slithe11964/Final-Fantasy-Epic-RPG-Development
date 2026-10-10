@@ -10,6 +10,9 @@ endglobals
 function FGT_CheckStoredBoots takes integer pid,unit target returns boolean
     local integer index=pid*57+1
     if not FSN_EffectsReady[index] or not FSN_EffectsStored[index] or FSN_EffectCount[index]!=2 or FSN_PlacedUnit[index]!=target or FSN_PlacedHolder[index]!=2 or FSN_PlacedSlot[index]!=29 or not IsItemOwned(FSN_Item[index]) or UnitItemInBagSlot(target,29)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) then
+        if FSN_LastError[pid]=="" then
+            set FSN_LastError[pid]="stored boots tracked slot or prepared plan"
+        endif
         return false
     endif
     if BlzGetItemAbility(FSN_Item[index],'A0MU')!=null then
@@ -28,24 +31,45 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
     local integer position=0
     local integer auxiliary
     local item spacer
+    local integer activeSlot=0
     if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
+        set FSN_LastError[pid]="boots temporary hero containment"
         return false
     endif
     if FSN_State[pid]!=1 or FSN_Busy[pid] or FSN_Executing[pid] or FSN_AuxCount[pid]!=0 or ordinal<0 or ordinal>=FSN_Count[pid] or FSN_Raw[index]!='f003' or FSN_EffectsReady[index] or not FSN_Check(pid,index) then
+        if FSN_LastError[pid]=="" then
+            set FSN_LastError[pid]="boots staging state="+I2S(FSN_State[pid])
+        endif
         return false
     endif
-    if UnitExtendedInventorySize(target)!=30 or UnitItemInSlot(target,0)!=null or (stored and UnitItemInBagSlot(target,29)!=null) or (not stored and UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null) then
+    if UnitExtendedInventorySize(target)!=30 or (stored and UnitItemInBagSlot(target,29)!=null) or (not stored and (UnitItemInSlot(target,0)!=null or UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null)) then
+        set FSN_LastError[pid]="boots destination capacity or occupancy"
         return false
     endif
     if stored then
+        loop
+            exitwhen activeSlot>=6 or UnitItemInSlot(target,activeSlot)==null
+            set activeSlot=activeSlot+1
+        endloop
+        if activeSlot>=6 then
+            set FSN_LastError[pid]="boots no empty active preparation slot"
+            return false
+        endif
         // Read and suspend while active. Bag-only pickup exposed an empty plan in CJ.
         call UnitAddItem(target,FSN_Item[index])
         set FSN_PlacedItem[index]=FSN_Item[index]
         set FSN_PlacedUnit[index]=target
         set FSN_PlacedOwner[index]=Player(pid)
         set FSN_PlacedHolder[index]=1
-        set FSN_PlacedSlot[index]=0
-        if not IsItemOwned(FSN_Item[index]) or UnitItemInSlot(target,0)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) or not FSA_Prepare(pid,ordinal,true,FHT_Policy) then
+        set FSN_PlacedSlot[index]=activeSlot
+        if not IsItemOwned(FSN_Item[index]) or UnitItemInSlot(target,activeSlot)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) then
+            set FSN_LastError[pid]="boots active pickup wanted slot="+I2S(activeSlot)
+            return false
+        endif
+        if not FSA_Prepare(pid,ordinal,true,FHT_Policy) then
+            if FSN_LastError[pid]=="" then
+                set FSN_LastError[pid]="boots active preparation rejected slot="+I2S(activeSlot)
+            endif
             return false
         endif
         if FSN_EffectCount[index]!=2 then
@@ -54,7 +78,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         endif
         call UnitRemoveItem(target,FSN_Item[index])
         call SetItemVisible(FSN_Item[index],false)
-        if UnitItemInSlot(target,0)!=null or not FSN_Check(pid,index) then
+        if UnitItemInSlot(target,activeSlot)!=null or not FSN_Check(pid,index) then
             set FSN_LastError[pid]="boots active detach"
             return false
         endif
@@ -65,6 +89,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         if (position<6 and UnitItemInSlot(target,position)==null) or (position>=6 and UnitItemInBagSlot(target,position-6)==null) then
             set spacer=CreateItem('fGap',GetUnitX(target),GetUnitY(target))
             if spacer==null then
+                set FSN_LastError[pid]="boots spacer allocation position="+I2S(position)
                 return false
             endif
             set auxiliary=pid*36+FSN_AuxCount[pid]
@@ -73,6 +98,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
             call SetItemVisible(spacer,false)
             call UnitAddItem(target,spacer)
             if GetItemTypeId(spacer)!='fGap' or IsItemVisible(spacer) or (position<6 and UnitItemInSlot(target,position)!=spacer) or (position>=6 and UnitItemInBagSlot(target,position-6)!=spacer) then
+                set FSN_LastError[pid]="boots spacer readback position="+I2S(position)
                 set spacer=null
                 return false
             endif
@@ -105,7 +131,11 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         set FSN_LastError[pid]="boots held plan wanted2 actual="+I2S(FSN_EffectCount[index])
         return false
     endif
-    if (stored and not FGT_CheckStoredBoots(pid,target)) or (not stored and not FSP_Check(pid,index)) or not FSN_CleanupAux(pid) then
+    if (stored and not FGT_CheckStoredBoots(pid,target)) or (not stored and not FSP_Check(pid,index)) then
+        return false
+    endif
+    if not FSN_CleanupAux(pid) then
+        set FSN_LastError[pid]="boots spacer cleanup"
         return false
     endif
     if stored then

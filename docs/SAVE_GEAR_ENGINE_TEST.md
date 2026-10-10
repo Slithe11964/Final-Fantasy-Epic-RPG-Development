@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CK
+# Private real equipment and backpack diagnostic — CL
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -80,8 +80,19 @@ CK:34 focused checks,96 repository tests,2,000 codec cases and mandatory build
 gates PASS. Installed-library compilation PASS;517 other archive members and
 original editor source preserved; output and11 private source hashes match.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCK.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CK includes a separate
+CK engine failed stored bag29 with no recorded native reason; cleanup/originals/
+release=yes. CL selects the first empty quick slot for stored preparation instead
+of assuming quick0 is empty after equipment. A simulation with the equipped item
+also visible in quick0 passes via quick1; this alias is a hypothesis, not confirmed
+engine behavior. CL additionally records containment, staging, occupancy, active
+pickup/preparation, spacer and stored-plan failure reasons, and snapshots unknown
+or duplicate preparation ability IDs before owned-item cleanup.
+CL:36 focused checks,96 repository tests,2,000 codec cases and mandatory build
+gates PASS. Installed-library compilation PASS;517 other archive members and
+original editor source preserved; output and11 private source hashes match.
+
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCL.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CL includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -102,13 +113,13 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CK does not alter objects. Two temporary pairs
+existing item/ability definitions; CL does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
 hero's equipped speed must exceed its post-deletion empty speed by exactly80.
 Fresh and final empty readings must be45..442; equipped speed must be45..522.
-The other pair is prepared in quick0 before transfer to stored cargo: its speed
+The other pair is prepared in the first free quick slot before transfer to stored cargo: its speed
 passive is removed and its equipment marker verified while active. Earlier empty
 slots are reserved using tracked `fGap` spacers so it reaches bag slot29 (the
 30th slot). Spacers are removed and exact item positions/properties rechecked.
