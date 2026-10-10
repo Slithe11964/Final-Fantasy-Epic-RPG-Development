@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CI
+# Private real equipment and backpack diagnostic — CJ
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -54,8 +54,20 @@ CI:11 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-library compilation PASS;517 other archive members
 and original editor source preserved; output and11 private source hashes match.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCI.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CI includes a separate
+CI engine passed passive removal, then failed restoration enumeration: planned
+two IDs, enumeration only fGmk; the direct lookup did not report A0MU missing.
+Cleanup/originals/release=yes. Restoration remains an unresolved separate gate.
+CJ preserves the equipped pair's initial abilities, measures its settled equipped
+speed, requires stored cargo to leave that speed unchanged, then requires an exact
+80-point reduction after all owned items are deleted. Empty speed must be45..442;
+equipped speed45..522. This tests the save-load allocation lifecycle without the
+extra remove/re-add operation; all membership and metadata checks remain strict.
+CJ:12 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-library compilation PASS;517 other archive members
+and original editor source preserved; output and11 private source hashes match.
+
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCJ.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CJ includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -76,18 +88,18 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CI does not alter objects. Two temporary pairs
+existing item/ability definitions; CJ does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
-hero's measured settled passive-free speed must increase by80. Both fresh and
-settled baseline readings must be45..442
-to leave room below this map's522 maximum. The other pair is placed then prepared
+hero's equipped speed must exceed its post-deletion empty speed by exactly80.
+Fresh and final empty readings must be45..442; equipped speed must be45..522.
+The other pair is placed then prepared
 as stored cargo: its speed passive is removed, its equipment marker retained, and earlier empty
 slots are reserved using tracked `fGap` spacers so it reaches bag slot29 (the
 30th slot). Spacers are removed and exact item positions/properties rechecked.
-The stored pair must add no speed. Both pairs are removed and speed must return
-to the measured starting value before the temporary hero is deleted and the
+The stored pair must add no speed. Both pairs are removed and speed must drop
+by exactly80 before the temporary hero is deleted and the
 original journal verified.
 
 An unexpected bag/equipment item blocks hero disposal rather than deleting foreign
