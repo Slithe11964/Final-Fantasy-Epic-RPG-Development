@@ -119,7 +119,9 @@ function FSA_PreparationContainment takes integer pid,integer index returns bool
         set holder=null
         return false
     endif
-    if FSN_PlacedHolder[index]==2 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<UnitExtendedInventorySize(holder) then
+    if FSN_PlacedHolder[index]==1 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<6 then
+        set carried=UnitItemInSlot(holder,FSN_PlacedSlot[index])
+    elseif FSN_PlacedHolder[index]==2 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<UnitExtendedInventorySize(holder) then
         set carried=UnitItemInBagSlot(holder,FSN_PlacedSlot[index])
     elseif FSN_PlacedHolder[index]==3 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<9 then
         set carried=UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(FSN_PlacedSlot[index]))
@@ -158,7 +160,7 @@ function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashta
     if FSN_EffectsReady[index] or not FSA_PreparationContainment(pid,index) then
         return FSN_Fail(pid)
     endif
-    if IsItemOwned(FSN_Item[index]) and (FSN_PlacedOwner[index]!=Player(pid) or stored!=(FSN_PlacedHolder[index]==2)) then
+    if IsItemOwned(FSN_Item[index]) and (FSN_PlacedOwner[index]!=Player(pid) or (FSN_PlacedHolder[index]==2 and not stored) or (FSN_PlacedHolder[index]==3 and stored)) then
         return FSN_Fail(pid)
     endif
     // Snapshot all IDs before removals shift native enumeration indexes.

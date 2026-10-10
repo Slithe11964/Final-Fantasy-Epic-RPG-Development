@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CJ
+# Private real equipment and backpack diagnostic — CK
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -66,8 +66,22 @@ CJ:12 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-library compilation PASS;517 other archive members
 and original editor source preserved; output and11 private source hashes match.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCJ.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CJ includes a separate
+CJ engine passed equipment preparation and speed capture, then failed stored
+bag29 plan count0. Cleanup/originals/release=yes. CK prepares the stored fixture
+in quick0: enumerates both reviewed IDs, removes the passive and verifies the
+remaining marker, then removes that allocation from quick0 and inserts it into
+bag29 with tracked fillers. Its private stored fixture checker requires exact
+bag identity, ownership, metadata, ready/stored two-ID plan and no readable speed
+passive. If bag enumeration is readable it also requires shared FSA_Check;
+an empty enumeration uses the verified active-slot preparation history and the
+independent unchanged-speed check. Shared FSA_Check is not weakened. Bag-to-active
+restoration and generic opaque-bag verification remain separate open gates.
+CK:34 focused checks,96 repository tests,2,000 codec cases and mandatory build
+gates PASS. Installed-library compilation PASS;517 other archive members and
+original editor source preserved; output and11 private source hashes match.
+
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCK.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CK includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -88,14 +102,14 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CJ does not alter objects. Two temporary pairs
+existing item/ability definitions; CK does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
 hero's equipped speed must exceed its post-deletion empty speed by exactly80.
 Fresh and final empty readings must be45..442; equipped speed must be45..522.
-The other pair is placed then prepared
-as stored cargo: its speed passive is removed, its equipment marker retained, and earlier empty
+The other pair is prepared in quick0 before transfer to stored cargo: its speed
+passive is removed and its equipment marker verified while active. Earlier empty
 slots are reserved using tracked `fGap` spacers so it reaches bag slot29 (the
 30th slot). Spacers are removed and exact item positions/properties rechecked.
 The stored pair must add no speed. Both pairs are removed and speed must drop

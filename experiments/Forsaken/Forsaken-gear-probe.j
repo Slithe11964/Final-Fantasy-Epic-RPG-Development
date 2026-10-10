@@ -4,6 +4,24 @@ globals
     trigger gg_trg_Forsaken_GearProbe=null
 endglobals
 
+// Bag getters may expose no abilities. Acceptance here is limited to this fixture:
+// both IDs were read and the passive removed in the active slot before transfer.
+// The caller separately requires unchanged speed; shared FSA_Check stays strict.
+function FGT_CheckStoredBoots takes integer pid,unit target returns boolean
+    local integer index=pid*57+1
+    if not FSN_EffectsReady[index] or not FSN_EffectsStored[index] or FSN_EffectCount[index]!=2 or FSN_PlacedUnit[index]!=target or FSN_PlacedHolder[index]!=2 or FSN_PlacedSlot[index]!=29 or not IsItemOwned(FSN_Item[index]) or UnitItemInBagSlot(target,29)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) then
+        return false
+    endif
+    if BlzGetItemAbility(FSN_Item[index],'A0MU')!=null then
+        set FSN_LastError[pid]="stored boots readable speed passive"
+        return false
+    endif
+    if BlzGetItemAbilityByIndex(FSN_Item[index],0)!=null then
+        return FSA_Check(index)
+    endif
+    return true
+endfunction
+
 // Private place-then-prepare gate on the journaled, unpublished contained hero only.
 function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean stored returns boolean
     local integer index=pid*57+ordinal
@@ -16,8 +34,30 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
     if FSN_State[pid]!=1 or FSN_Busy[pid] or FSN_Executing[pid] or FSN_AuxCount[pid]!=0 or ordinal<0 or ordinal>=FSN_Count[pid] or FSN_Raw[index]!='f003' or FSN_EffectsReady[index] or not FSN_Check(pid,index) then
         return false
     endif
-    if UnitExtendedInventorySize(target)!=30 or (stored and UnitItemInBagSlot(target,29)!=null) or (not stored and (UnitItemInSlot(target,0)!=null or UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null)) then
+    if UnitExtendedInventorySize(target)!=30 or UnitItemInSlot(target,0)!=null or (stored and UnitItemInBagSlot(target,29)!=null) or (not stored and UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null) then
         return false
+    endif
+    if stored then
+        // Read and suspend while active. Bag-only pickup exposed an empty plan in CJ.
+        call UnitAddItem(target,FSN_Item[index])
+        set FSN_PlacedItem[index]=FSN_Item[index]
+        set FSN_PlacedUnit[index]=target
+        set FSN_PlacedOwner[index]=Player(pid)
+        set FSN_PlacedHolder[index]=1
+        set FSN_PlacedSlot[index]=0
+        if not IsItemOwned(FSN_Item[index]) or UnitItemInSlot(target,0)!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) or not FSA_Prepare(pid,ordinal,true,FHT_Policy) then
+            return false
+        endif
+        if FSN_EffectCount[index]!=2 then
+            set FSN_LastError[pid]="boots active plan wanted2 actual="+I2S(FSN_EffectCount[index])
+            return false
+        endif
+        call UnitRemoveItem(target,FSN_Item[index])
+        call SetItemVisible(FSN_Item[index],false)
+        if UnitItemInSlot(target,0)!=null or not FSN_Check(pid,index) then
+            set FSN_LastError[pid]="boots active detach"
+            return false
+        endif
     endif
     // Reserve earlier storage positions with the reviewed inert fixture.
     loop
@@ -54,19 +94,22 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         set FSN_PlacedHolder[index]=3
         set FSN_PlacedSlot[index]=3
     endif
-    if not FSA_PreparationContainment(pid,index) then
+    if not IsItemOwned(FSN_Item[index]) or FSP_At(target,FSN_PlacedHolder[index],FSN_PlacedSlot[index])!=FSN_Item[index] or not FSA_PreparationContainment(pid,index) then
         set FSN_LastError[pid]="boots held slot or metadata"
         return false
     endif
-    if not FSA_Prepare(pid,ordinal,stored,FHT_Policy) then
+    if not stored and not FSA_Prepare(pid,ordinal,false,FHT_Policy) then
         return false
     endif
     if FSN_EffectCount[index]!=2 then
         set FSN_LastError[pid]="boots held plan wanted2 actual="+I2S(FSN_EffectCount[index])
         return false
     endif
-    if not FSP_Check(pid,index) or not FSN_CleanupAux(pid) then
+    if (stored and not FGT_CheckStoredBoots(pid,target)) or (not stored and not FSP_Check(pid,index)) or not FSN_CleanupAux(pid) then
         return false
+    endif
+    if stored then
+        return FGT_CheckStoredBoots(pid,target)
     endif
     return FSP_Check(pid,index)
 endfunction
@@ -188,7 +231,7 @@ function FGT_Run takes integer pid returns nothing
     set FSN_State[pid]=4
     call FHT_Trace(pid,"stored passive and whole inventory readback")
     set actual=GetUnitMoveSpeed(target)
-    if not FSP_Verify(pid) or not FSE_CheckEquipment(pid,target) or BlzGetItemAbility(FSN_Item[pid*57+1],'A0MU')!=null or BlzGetItemAbility(FSN_Item[pid*57+1],'fGmk')==null or actual!=equipped then
+    if not FGT_CheckStoredBoots(pid,target) or not FSE_CheckEquipment(pid,target) or actual!=equipped then
         set FSN_LastError[pid]="stored speed wanted="+R2S(equipped)+" actual="+R2S(actual)
         set target=null
         call FHT_Finish(pid,false,"stored passive or inventory readback")

@@ -17,6 +17,7 @@ class GearProbeTests(unittest.TestCase):
         self.hide_held_abilities=False;self.duplicate_on_equip=False
         self.pickup_recalculation=0.
         self.bonus_size=80
+        self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -33,7 +34,16 @@ class GearProbeTests(unittest.TestCase):
                 self.w.detach(item);unit['equip'][3]=item;item['owned']=True
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
             return True
-        def exposed(item):return not self.hide_held_abilities and (not self.lazy_abilities or item['owned'])
+        def exposed(item):
+            bagged=any(i is item for u in self.w.units for i in u['bag'])
+            return not self.hide_held_abilities and not (self.opaque_bag and bagged) and (not self.lazy_abilities or item['owned'])
+        def detach(unit,item):
+            if not self.reject_detach:self.w.detach(item)
+        add_item=self.w.add
+        def add(unit,item):
+            result=add_item(unit,item)
+            if self.regenerate_bag_passive and any(i is item for i in unit['bag']) and item['raw']=='f003' and 'A0MU' not in item['abilities']:item['abilities'].append('A0MU')
+            return result
         def speed(unit):
             bonus=sum(self.bonus_size for kind in ['quick','bag','equip'] for i in unit[kind] if i and 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
@@ -46,6 +56,7 @@ class GearProbeTests(unittest.TestCase):
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
+            UnitRemoveItem=detach,UnitAddItem=add,
             UnitEquipItem=equip)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in ('life','native','journal','effects','position','equipment')]
         self.e=engine(house.DECL+house.GLOBALS+'\n'.join(pieces)+probe_source({'fGap':1,'orig':2})+house_probe_source(house.RUNTIME)+SOURCE.with_name('Forsaken-gear-probe.j').read_text(),self.env)
@@ -74,7 +85,7 @@ class GearProbeTests(unittest.TestCase):
                 self.guarded_originals()
 
     def test_silent_bag_insertion_failure_cleanup(self):
-        self.w.reject_add=37
+        self.w.reject_add=38
         self.e['FGT_Run'](0)
         self.assertIn('FAIL at stored boots bag slot29',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
@@ -156,6 +167,19 @@ class GearProbeTests(unittest.TestCase):
             self.setUp();self.bonus_size=bonus
             self.e['FGT_Run'](0)
             self.assertIn('FAIL at cleanup baseline speed',self.messages[-1])
+            self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+            self.guarded_originals()
+
+    def test_opaque_bag_after_verified_active_preparation(self):
+        self.lazy_abilities=True;self.opaque_bag=True
+        self.e['FGT_Run'](0)
+        self.assertIn('Gear test: PASS:',self.messages[-1]);self.guarded_originals()
+
+    def test_detach_failure_or_regenerated_opaque_bag_passive_cannot_pass(self):
+        for fault in ('reject_detach','regenerate_bag_passive'):
+            self.setUp();self.lazy_abilities=True;self.opaque_bag=True;setattr(self,fault,True)
+            self.e['FGT_Run'](0)
+            self.assertIn('FAIL at ',self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
 
