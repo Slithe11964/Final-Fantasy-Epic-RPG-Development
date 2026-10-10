@@ -13,6 +13,7 @@ class GearProbeTests(unittest.TestCase):
         self.ignore_passive=False;self.reject_equip=False;self.base_speed=250.
         self.no_bonus=False;self.sticky_bonus=False
         self.hide_equipped_lookup=False
+        self.lazy_abilities=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -37,7 +38,7 @@ class GearProbeTests(unittest.TestCase):
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
             GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
-            BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if s<len(i['abilities']) else None,
+            BlzGetItemAbilityByIndex=lambda i,s:None if self.lazy_abilities and not i['owned'] else Handle(raw=i['abilities'][s]) if s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
             UnitEquipItem=equip)
@@ -118,5 +119,13 @@ class GearProbeTests(unittest.TestCase):
         for field,value in [('iabi','A0MU,unknown'),('iequ','Ring'),('ihtp',50)]:
             changed={**objects,'f003':{**objects['f003'],field:value}}
             with self.assertRaises(ValueError):validate_gear_fixture(archive,changed)
+
+    def test_abilities_appearing_on_pickup_report_empty_preparation_plan(self):
+        self.lazy_abilities=True
+        self.e['FGT_Run'](0)
+        self.assertIn('ability unexpected A0MU(speed); plan count=0 IDs=;',self.messages[-1])
+        self.assertIn('item IDs=A0MU(speed),fGmk(marker),',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
 if __name__=='__main__':unittest.main()

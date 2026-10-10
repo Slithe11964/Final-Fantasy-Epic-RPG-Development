@@ -16,6 +16,13 @@ function FSA_ReadbackFailure takes integer index,string reason,integer raw retur
     local ability current
     local unit holder=FSN_PlacedUnit[index]
     local string detail=""
+    local string plan="count="+I2S(FSN_EffectCount[index])+" IDs="
+    loop
+        exitwhen slot>=FSN_EffectCount[index] or slot>=4
+        set plan=plan+FSA_Label(FSN_EffectId[index*16+slot])+","
+        set slot=slot+1
+    endloop
+    set slot=0
     loop
         exitwhen slot>=4
         set current=BlzGetItemAbilityByIndex(FSN_Item[index],slot)
@@ -33,7 +40,7 @@ function FSA_ReadbackFailure takes integer index,string reason,integer raw retur
         set detail=detail+" speed="+R2S(GetUnitMoveSpeed(holder))
     endif
     set holder=null
-    set FSN_LastError[index/57]="ability "+reason+" "+FSA_Label(raw)+"; item IDs="+detail
+    set FSN_LastError[index/57]="ability "+reason+" "+FSA_Label(raw)+"; plan "+plan+"; item IDs="+detail
     return false
 endfunction
 
