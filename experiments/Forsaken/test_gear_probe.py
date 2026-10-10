@@ -16,7 +16,7 @@ class GearProbeTests(unittest.TestCase):
         self.lazy_abilities=False
         self.hide_held_abilities=False;self.duplicate_on_equip=False
         self.pickup_recalculation=0.
-        self.bonus_size=80;self.runtime_bonus=80
+        self.bonus_size=80;self.runtime_bonus=80;self.speed_multiplier=1.
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
@@ -64,11 +64,11 @@ class GearProbeTests(unittest.TestCase):
             bonus=sum(self.bonus_size for i in active.values() if 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
             if self.sticky_bonus and self.w.adds>0 and all(i['raw']==0 for i in self.w.items if i is not self.original):bonus=80
-            return self.base_speed+(self.pickup_recalculation if active else 0.)+bonus
+            return self.base_speed+(self.pickup_recalculation if active else 0.)+bonus*self.speed_multiplier
         self.env=dict(self.e)
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
-            GetUnitMoveSpeed=speed,GetHeroAgi=lambda u,b:50,GetUnitDefaultMoveSpeed=lambda u:self.base_speed,GetUnitAbilityLevel=lambda u,r:1,ConvertAbilityIntegerLevelField=lambda r:r,BlzGetAbilityIntegerLevelField=lambda a,f,l:self.runtime_bonus,IsUnitType=lambda u,t:u['raw']!='h006',
+            GetUnitMoveSpeed=speed,RAbsBJ=abs,GetHeroAgi=lambda u,b:50,GetUnitDefaultMoveSpeed=lambda u:self.base_speed/self.speed_multiplier,GetUnitAbilityLevel=lambda u,r:1,ConvertAbilityIntegerLevelField=lambda r:r,BlzGetAbilityIntegerLevelField=lambda a,f,l:self.runtime_bonus,IsUnitType=lambda u,t:u['raw']!='h006',
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and not self.return_enum_pending and s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
@@ -166,13 +166,13 @@ class GearProbeTests(unittest.TestCase):
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
 
-    def test_pickup_speed_recalculation_is_separate_from_exact_boots_bonus(self):
-        self.base_speed=340.;self.pickup_recalculation=20.
+    def test_percentage_modifier_scales_reviewed_boots_bonus(self):
+        self.base_speed=340.;self.speed_multiplier=1.25
         self.lazy_abilities=True
         self.e['FGT_Run'](0)
         self.assertIn('Gear test: PASS:',self.messages[-1])
         self.guarded_originals()
-        self.setUp();self.base_speed=430.;self.pickup_recalculation=20.
+        self.setUp();self.base_speed=430.;self.speed_multiplier=1.25
         self.e['FGT_Run'](0)
         self.assertIn('FAIL at equipped speed',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])

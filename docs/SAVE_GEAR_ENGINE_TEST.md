@@ -220,3 +220,16 @@ archive defines80; why the engine changes100 remains unresolved.
 CS:24 focused probe tests,96 repository tests,2,000 codec cases and mandatory
 build gates PASS. Installed-native compilation PASS;517 other archive members
 and original editor source preserved; output and11 private input hashes match.
+
+CS engine reads runtime bonus80, ability level1, agility5 unchanged, default272
+unchanged, start340 and passive-free340. Thus the independent pre-item speed
+ratio340/272=1.25 predicts the observed80*1.25=100 bonus. The hero's innate spellbook
+includes S00K (SCae), whose archived Oae1 is0.25; the precise modifier source is not
+yet independently isolated. CT uses the measured pre-item/default ratio to scale
+the reviewed runtime80, with0.01 float tolerance, unchanged agility/default speed,
+unchanged stored speed and exact original cleanup baseline required. It never
+fits the multiplier to the observed boots delta. Generic loader remains disabled.
+
+CT:24 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.

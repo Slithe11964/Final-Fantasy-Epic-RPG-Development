@@ -218,6 +218,8 @@ function FGT_Run takes integer pid returns nothing
     local integer runtimeLevel
     local integer equippedAgi
     local real equippedDefault
+    local real expectedBonus
+    local real startingDefault
     if not FSC_PlayerValid(pid) or FHT_Busy then
         return
     endif
@@ -277,6 +279,7 @@ function FGT_Run takes integer pid returns nothing
         return
     endif
     set baseline=GetUnitMoveSpeed(target)
+    set startingDefault=GetUnitDefaultMoveSpeed(target)
     // Measure native speed rather than assuming a setter's requested value.
     // Keep room below this map's522 maximum for the reviewed80 bonus.
     if baseline<45. or baseline>442. then
@@ -321,6 +324,14 @@ function FGT_Run takes integer pid returns nothing
         call FHT_Finish(pid,false,"runtime boots speed field")
         return
     endif
+    if startingDefault<=0. or equippedDefault!=startingDefault then
+        set FSN_LastError[pid]="invalid default speed for boots control"
+        set target=null
+        call FHT_Finish(pid,false,"runtime boots speed field")
+        return
+    endif
+    // Measure the pre-item multiplier independently:272*1.25=340,80*1.25=100.
+    set expectedBonus=runtimeBonus*1.*baseline/startingDefault
     if equipped<45. or equipped>522. then
         set FSN_LastError[pid]="equipped speed outside45..522 actual="+R2S(equipped)
         set target=null
@@ -352,8 +363,8 @@ function FGT_Run takes integer pid returns nothing
         return
     endif
     set actual=GetUnitMoveSpeed(target)
-    if not FGT_CheckReturnedBoots(pid,target,true) or not FGT_CheckStoredBoots(pid,target) or equipped!=actual+80. then
-        set FSN_LastError[pid]="passive speed control wanted="+R2S(equipped-80.)+" actual="+R2S(actual)+" bonus="+I2S(runtimeBonus)+" level="+I2S(runtimeLevel)+" agi="+I2S(equippedAgi)+"->"+I2S(GetHeroAgi(target,true))+" default="+R2S(equippedDefault)+"->"+R2S(GetUnitDefaultMoveSpeed(target))+" start="+R2S(baseline)+"; "+FSN_LastError[pid]
+    if not FGT_CheckReturnedBoots(pid,target,true) or not FGT_CheckStoredBoots(pid,target) or RAbsBJ(equipped-actual-expectedBonus)>0.01 or GetHeroAgi(target,true)!=equippedAgi or GetUnitDefaultMoveSpeed(target)!=equippedDefault then
+        set FSN_LastError[pid]="passive speed control wanted="+R2S(equipped-expectedBonus)+" actual="+R2S(actual)+" scaled="+R2S(expectedBonus)+" bonus="+I2S(runtimeBonus)+" level="+I2S(runtimeLevel)+" agi="+I2S(equippedAgi)+"->"+I2S(GetHeroAgi(target,true))+" default="+R2S(equippedDefault)+"->"+R2S(GetUnitDefaultMoveSpeed(target))+" start="+R2S(baseline)+"; "+FSN_LastError[pid]
         set target=null
         call FHT_Finish(pid,false,"same-slot passive speed")
         return
