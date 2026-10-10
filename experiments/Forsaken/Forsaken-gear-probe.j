@@ -4,24 +4,71 @@ globals
     trigger gg_trg_Forsaken_GearProbe=null
 endglobals
 
-// The reviewed fixture can expose no abilities on a freshly created ground item.
-// Materialize only its object-verified IDs; preparation still checks exact membership.
-function FGT_InitializeBoots takes integer pid,integer ordinal returns boolean
+// Private place-then-prepare gate on the journaled, unpublished contained hero only.
+function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean stored returns boolean
     local integer index=pid*57+ordinal
-    if FSN_State[pid]!=1 or FSN_Busy[pid] or ordinal<0 or ordinal>=FSN_Count[pid] or FSN_Raw[index]!='f003' or not FSN_Check(pid,index) then
+    local integer position=0
+    local integer auxiliary
+    local item spacer
+    if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
         return false
     endif
-    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null then
-        call BlzItemAddAbility(FSN_Item[index],'A0MU')
-    endif
-    if BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
-        call BlzItemAddAbility(FSN_Item[index],'fGmk')
-    endif
-    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null or BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
-        set FSN_LastError[pid]="boots ability initialization readback"
+    if FSN_State[pid]!=1 or FSN_Busy[pid] or FSN_Executing[pid] or FSN_AuxCount[pid]!=0 or ordinal<0 or ordinal>=FSN_Count[pid] or FSN_Raw[index]!='f003' or FSN_EffectsReady[index] or not FSN_Check(pid,index) then
         return false
     endif
-    return FSN_Check(pid,index)
+    if UnitExtendedInventorySize(target)!=30 or (stored and UnitItemInBagSlot(target,29)!=null) or (not stored and (UnitItemInSlot(target,0)!=null or UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))!=null)) then
+        return false
+    endif
+    // Reserve earlier storage positions with the reviewed inert fixture.
+    loop
+        exitwhen not stored or position>=35
+        if (position<6 and UnitItemInSlot(target,position)==null) or (position>=6 and UnitItemInBagSlot(target,position-6)==null) then
+            set spacer=CreateItem('fGap',GetUnitX(target),GetUnitY(target))
+            if spacer==null then
+                return false
+            endif
+            set auxiliary=pid*36+FSN_AuxCount[pid]
+            set FSN_AuxItem[auxiliary]=spacer
+            set FSN_AuxCount[pid]=FSN_AuxCount[pid]+1
+            call SetItemVisible(spacer,false)
+            call UnitAddItem(target,spacer)
+            if GetItemTypeId(spacer)!='fGap' or IsItemVisible(spacer) or (position<6 and UnitItemInSlot(target,position)!=spacer) or (position>=6 and UnitItemInBagSlot(target,position-6)!=spacer) then
+                set spacer=null
+                return false
+            endif
+        endif
+        set position=position+1
+    endloop
+    set spacer=null
+    call UnitAddItem(target,FSN_Item[index])
+    if not stored then
+        call UnitEquipItem(target,FSN_Item[index])
+    endif
+    set FSN_PlacedItem[index]=FSN_Item[index]
+    set FSN_PlacedUnit[index]=target
+    set FSN_PlacedOwner[index]=Player(pid)
+    if stored then
+        set FSN_PlacedHolder[index]=2
+        set FSN_PlacedSlot[index]=29
+    else
+        set FSN_PlacedHolder[index]=3
+        set FSN_PlacedSlot[index]=3
+    endif
+    if not FSA_PreparationContainment(pid,index) then
+        set FSN_LastError[pid]="boots held slot or metadata"
+        return false
+    endif
+    if not FSA_Prepare(pid,ordinal,stored,FHT_Policy) then
+        return false
+    endif
+    if FSN_EffectCount[index]!=2 then
+        set FSN_LastError[pid]="boots held plan wanted2 actual="+I2S(FSN_EffectCount[index])
+        return false
+    endif
+    if not FSP_Check(pid,index) or not FSN_CleanupAux(pid) then
+        return false
+    endif
+    return FSP_Check(pid,index)
 endfunction
 
 function FGT_Run takes integer pid returns nothing
@@ -115,26 +162,8 @@ function FGT_Run takes integer pid returns nothing
     endif
     call SaveInteger(FHT_Policy,0,'A0MU',1)
     call SaveInteger(FHT_Policy,0,'fGmk',2)
-    call FHT_Trace(pid,"equipped and stored ability preparation")
-    if not FGT_InitializeBoots(pid,0) or not FGT_InitializeBoots(pid,1) then
-        set target=null
-        call FHT_Finish(pid,false,"real boots ability initialization")
-        return
-    endif
-    if not FSA_Prepare(pid,0,false,FHT_Policy) or not FSA_Prepare(pid,1,true,FHT_Policy) then
-        set FSN_LastError[pid]="real boots ability preparation"
-        set target=null
-        call FHT_Finish(pid,false,"real boots ability preparation")
-        return
-    endif
-    if FSN_EffectCount[pid*57]!=2 or FSN_EffectCount[pid*57+1]!=2 then
-        set FSN_LastError[pid]="boots plan wanted2 actual="+I2S(FSN_EffectCount[pid*57])+","+I2S(FSN_EffectCount[pid*57+1])
-        set target=null
-        call FHT_Finish(pid,false,"real boots ability plan")
-        return
-    endif
     call FHT_Trace(pid,"real boots equipment slot3")
-    if not FSE_Place(pid,0,target,3,0,0) then
+    if not FGT_PlaceBoots(pid,0,target,false) then
         set target=null
         call FHT_Finish(pid,false,"real boots equipment slot3")
         return
@@ -148,11 +177,12 @@ function FGT_Run takes integer pid returns nothing
         return
     endif
     call FHT_Trace(pid,"stored boots bag slot29")
-    if not FSP_Place(pid,1,target,2,29,'fGap') then
+    if not FGT_PlaceBoots(pid,1,target,true) then
         set target=null
         call FHT_Finish(pid,false,"stored boots bag slot29")
         return
     endif
+    set FSN_State[pid]=4
     call FHT_Trace(pid,"stored passive and whole inventory readback")
     set actual=GetUnitMoveSpeed(target)
     if not FSP_Verify(pid) or not FSE_CheckEquipment(pid,target) or BlzGetItemAbility(FSN_Item[pid*57+1],'A0MU')!=null or BlzGetItemAbility(FSN_Item[pid*57+1],'fGmk')==null or actual!=baseline+80. then

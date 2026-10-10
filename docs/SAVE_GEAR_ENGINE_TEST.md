@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CG
+# Private real equipment and backpack diagnostic — CH
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -31,9 +31,20 @@ fixture initialization gate, not a general save-loader implementation.
 CG:50 focused checks,96 repository tests,2,000 codec cases and mandatory build
 gates PASS. Installed-library compilation PASS;517 other archive members and
 original editor source preserved; output and11 private source hashes match.
+CG engine failed boots initialization readback on the ground; cleanup, originals
+and release passed. CH removes the attempted ground ability additions. Its private
+fixture placement helper puts owned allocations directly in Boots3/bag29 on the
+contained unpublished hero, then prepares readable held abilities. Shared effect
+preparation additionally accepts only exact tracked bag/equipment placement,
+matching owner and storage mode. Missing/extra/duplicate abilities still fail;
+both fixtures must record exactly two reviewed IDs. Existing pre-prepared placement
+primitives remain unchanged; this contained sequence awaits engine acceptance.
+CH:51 focused checks,96 repository tests,2,000 codec cases and mandatory build
+gates PASS. Installed-library compilation PASS;517 other archive members and
+original editor source preserved; output and11 private source hashes match.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCG.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CG includes a separate
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCH.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CH includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -54,13 +65,13 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CG does not alter objects. Two temporary pairs
+existing item/ability definitions; CH does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
 hero's measured starting speed must increase by80. Starting speed must be45..442
-to leave room below this map's522 maximum. The other pair is prepared as stored cargo:
-its speed passive is removed, its equipment marker retained, and earlier empty
+to leave room below this map's522 maximum. The other pair is placed then prepared
+as stored cargo: its speed passive is removed, its equipment marker retained, and earlier empty
 slots are reserved using tracked `fGap` spacers so it reaches bag slot29 (the
 30th slot). Spacers are removed and exact item positions/properties rechecked.
 The stored pair must add no speed. Both pairs are removed and speed must return

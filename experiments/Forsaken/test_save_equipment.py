@@ -303,5 +303,24 @@ class EquipmentTests(unittest.TestCase):
             for forbidden in ['initializer ', 'GetLocalPlayer', 'FSC_Decode(', 'FSC_Reset(', 'UnitResetCooldown(']:
                 self.assertNotIn(forbidden,path.read_text())
 
+    def test_held_preparation_requires_exact_tracked_slot_and_storage_mode(self):
+        for fault in ('none','untracked','wrong_slot','wrong_mode','visible','foreign_owner'):
+            self.setUp();self.assertTrue(self.e['FSN_Begin'](0))
+            item=self.stage(3)
+            self.w.add(self.hero,item);self.w.equip(self.hero,item)
+            self.e['FSN_PlacedItem'][0]=item
+            self.e['FSN_PlacedUnit'][0]=self.hero
+            self.e['FSN_PlacedOwner'][0]=0
+            self.e['FSN_PlacedHolder'][0]=3
+            self.e['FSN_PlacedSlot'][0]=3
+            if fault=='untracked':self.e['FSN_PlacedItem'][0]=None
+            if fault=='wrong_slot':self.e['FSN_PlacedSlot'][0]=2
+            if fault=='visible':item['visible']=True
+            if fault=='foreign_owner':self.hero['owner']=9;self.e['FSN_PlacedOwner'][0]=9
+            with self.subTest(fault=fault):
+                self.assertEqual(self.prepare(stored=fault=='wrong_mode'),fault=='none')
+                if fault=='none':self.assertEqual(self.e['FSN_EffectCount'][0],3)
+                self.assertTrue(self.e['FSN_Abort'](0))
+
 
 if __name__=='__main__': unittest.main()

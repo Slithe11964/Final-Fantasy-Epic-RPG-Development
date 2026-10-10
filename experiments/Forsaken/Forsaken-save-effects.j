@@ -106,6 +106,36 @@ function FSA_BatchReady takes integer pid returns boolean
     return true
 endfunction
 
+// Preparation may follow isolated placement when ground-item abilities are unreadable.
+// Only the transaction's tracked allocation in its exact tracked slot is accepted.
+function FSA_PreparationContainment takes integer pid,integer index returns boolean
+    local item carried
+    local unit holder=FSN_PlacedUnit[index]
+    if not IsItemOwned(FSN_Item[index]) then
+        set holder=null
+        return FSN_Check(pid,index)
+    endif
+    if holder==null or FSN_PlacedItem[index]!=FSN_Item[index] or GetUnitTypeId(holder)==0 or GetOwningPlayer(holder)!=FSN_PlacedOwner[index] or IsItemVisible(FSN_Item[index]) or not FSN_CheckMetadata(pid,index) then
+        set holder=null
+        return false
+    endif
+    if FSN_PlacedHolder[index]==2 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<UnitExtendedInventorySize(holder) then
+        set carried=UnitItemInBagSlot(holder,FSN_PlacedSlot[index])
+    elseif FSN_PlacedHolder[index]==3 and FSN_PlacedSlot[index]>=0 and FSN_PlacedSlot[index]<9 then
+        set carried=UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(FSN_PlacedSlot[index]))
+    else
+        set holder=null
+        return false
+    endif
+    set holder=null
+    if carried!=FSN_Item[index] then
+        set carried=null
+        return false
+    endif
+    set carried=null
+    return true
+endfunction
+
 function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashtable policy returns boolean
     local integer index
     local integer abilityIndex=0
@@ -125,7 +155,10 @@ function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashta
         return FSN_Fail(pid)
     endif
     set index=pid*57+ordinal
-    if FSN_EffectsReady[index] or not FSN_Check(pid,index) then
+    if FSN_EffectsReady[index] or not FSA_PreparationContainment(pid,index) then
+        return FSN_Fail(pid)
+    endif
+    if IsItemOwned(FSN_Item[index]) and (FSN_PlacedOwner[index]!=Player(pid) or stored!=(FSN_PlacedHolder[index]==2)) then
         return FSN_Fail(pid)
     endif
     // Snapshot all IDs before removals shift native enumeration indexes.
@@ -167,7 +200,7 @@ function FSA_PrepareCore takes integer pid,integer ordinal,boolean stored,hashta
         endif
         set abilityIndex=abilityIndex+1
     endloop
-    if not FSA_Check(index) or not FSN_Check(pid,index) then
+    if not FSA_Check(index) or not FSA_PreparationContainment(pid,index) then
         return FSN_Fail(pid)
     endif
     set FSN_Executing[pid]=false
