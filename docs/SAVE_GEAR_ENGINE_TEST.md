@@ -160,3 +160,15 @@ general stored-item restoration and full character save/load remain pending.
 CN:38 focused checks,96 repository tests,2,000 codec cases and mandatory build
 gates PASS. Installed-native compilation PASS;517 other archive members and
 original editor source preserved; published output and11 private input hashes match.
+
+CN engine passed second-pair equipment preparation, passive suspension and detach,
+then failed the first pair's equipment return. Cleanup/originals/release passed.
+CO retains that strict return gate and preserves its underlying failure rather
+than overwriting it, with actual equipment raw ID, item raw ID, prepared ability
+plan, current ability enumeration, unit lookup and speed captured before cleanup.
+This diagnostic distinguishes placement from ability or metadata loss; no native
+cause is assumed and no acceptance check is relaxed.
+
+CO:19 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-native compilation PASS;517 other archive members
+and original editor source preserved; output and11 private input hashes match.

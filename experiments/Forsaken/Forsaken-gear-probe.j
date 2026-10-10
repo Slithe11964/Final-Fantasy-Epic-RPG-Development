@@ -32,6 +32,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
     local integer auxiliary
     local item spacer
     local integer first=pid*57
+    local string failure
     if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
         set FSN_LastError[pid]="boots temporary hero containment"
         return false
@@ -93,7 +94,9 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         call UnitAddItem(target,FSN_Item[first])
         call UnitEquipItem(target,FSN_Item[first])
         if not FSP_Check(pid,first) then
-            set FSN_LastError[pid]="boots first equipment return"
+            set failure=FSN_LastError[pid]
+            call FSA_ReadbackFailure(first,"first equipment return",'A0MU')
+            set FSN_LastError[pid]="boots first equipment return: "+failure+"; equipment raw="+I2S(GetItemTypeId(UnitItemInEquipmentSlot(target,ConvertLoadoutSlot(3))))+" item raw="+I2S(GetItemTypeId(FSN_Item[first]))+"; "+FSN_LastError[pid]
             return false
         endif
     endif

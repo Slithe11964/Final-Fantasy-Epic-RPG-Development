@@ -20,7 +20,7 @@ class GearProbeTests(unittest.TestCase):
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
-        self.route_gear_to_bag=False;self.reject_equip_call=0;self.equip_calls=0;self.reject_unequip=False
+        self.route_gear_to_bag=False;self.reject_equip_call=0;self.equip_calls=0;self.reject_unequip=False;self.lose_return_passive=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -39,6 +39,7 @@ class GearProbeTests(unittest.TestCase):
                 if not self.equipped_quick_alias:self.w.detach(item)
                 unit['equip'][3]=item;item['owned']=True
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
+                if self.lose_return_passive and self.equip_calls==3:item['abilities'].remove('A0MU')
             return True
         def unequip(unit,item):
             if not self.reject_unequip and not self.reject_detach:self.w.detach(item)
@@ -223,5 +224,15 @@ class GearProbeTests(unittest.TestCase):
             self.assertIn('boots '+label,self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
+
+    def test_return_preserves_exact_slot_or_ability_failure(self):
+        self.reject_equip_call=3;self.e['FGT_Run'](0)
+        self.assertIn('first equipment return: placement target slot 3 raw=0',self.messages[-1])
+        self.assertIn('equipment raw=0 item raw=f003',self.messages[-1])
+        self.setUp();self.lose_return_passive=True;self.e['FGT_Run'](0)
+        self.assertIn('first equipment return: ability missing A0MU(speed)',self.messages[-1])
+        self.assertIn('item IDs=fGmk(marker),',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
 if __name__=='__main__':unittest.main()
