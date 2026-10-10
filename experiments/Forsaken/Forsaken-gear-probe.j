@@ -32,6 +32,7 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
     local integer auxiliary
     local item spacer
     local integer activeSlot=0
+    local integer pickupSlot=0
     if not FHT_Busy or FHT_Unit[pid]!=target or FHT_Referenced(target) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) then
         set FSN_LastError[pid]="boots temporary hero containment"
         return false
@@ -57,6 +58,23 @@ function FGT_PlaceBoots takes integer pid,integer ordinal,unit target,boolean st
         endif
         // Read and suspend while active. Bag-only pickup exposed an empty plan in CJ.
         call UnitAddItem(target,FSN_Item[index])
+        if UnitItemInSlot(target,activeSlot)!=FSN_Item[index] then
+            // Equipment pickup can route to the native bag despite free quick slots.
+            // Move only this tracked, droppable fixture already found on this hero.
+            loop
+                exitwhen pickupSlot>=30 or UnitItemInBagSlot(target,pickupSlot)==FSN_Item[index]
+                set pickupSlot=pickupSlot+1
+            endloop
+            if pickupSlot>=30 or not IsItemOwned(FSN_Item[index]) then
+                set FSN_LastError[pid]="boots active pickup not found in target bag"
+                return false
+            endif
+            call UnitDropItemSlot(target,FSN_Item[index],activeSlot)
+            if UnitItemInSlot(target,activeSlot)!=FSN_Item[index] then
+                set FSN_LastError[pid]="boots bag-to-active move wanted quick="+I2S(activeSlot)+" from bag="+I2S(pickupSlot)
+                return false
+            endif
+        endif
         set FSN_PlacedItem[index]=FSN_Item[index]
         set FSN_PlacedUnit[index]=target
         set FSN_PlacedOwner[index]=Player(pid)

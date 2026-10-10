@@ -20,6 +20,7 @@ class GearProbeTests(unittest.TestCase):
         self.opaque_bag=False;self.reject_detach=False;self.regenerate_bag_passive=False
         self.equipped_quick_alias=False
         self.unknown_ability=False
+        self.route_gear_to_bag=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -46,6 +47,11 @@ class GearProbeTests(unittest.TestCase):
         add_item=self.w.add
         def add(unit,item):
             result=add_item(unit,item)
+            if self.route_gear_to_bag and item['raw']=='f003' and item['owned']:
+                self.w.detach(item)
+                for slot,candidate in enumerate(unit['bag']):
+                    if candidate is None:
+                        unit['bag'][slot]=item;item['owned']=True;break
             if self.regenerate_bag_passive and any(i is item for i in unit['bag']) and item['raw']=='f003' and 'A0MU' not in item['abilities']:item['abilities'].append('A0MU')
             return result
         def speed(unit):
@@ -197,6 +203,17 @@ class GearProbeTests(unittest.TestCase):
         self.unknown_ability=True
         self.e['FGT_Run'](0)
         self.assertIn('ability unreviewed role=0 zzzz',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
+
+    def test_equipment_pickup_routed_to_bag_is_explicitly_moved_to_active_slot(self):
+        self.route_gear_to_bag=True;self.opaque_bag=True;self.lazy_abilities=True
+        self.e['FGT_Run'](0)
+        self.assertIn('Gear test: PASS:',self.messages[-1]);self.guarded_originals()
+        self.assertTrue(any(c[0]=='drop' for c in self.w.calls))
+        self.setUp();self.route_gear_to_bag=True;self.w.reject_drop=True
+        self.e['FGT_Run'](0)
+        self.assertIn('boots bag-to-active move wanted quick=0 from bag=0',self.messages[-1])
         self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
         self.guarded_originals()
 

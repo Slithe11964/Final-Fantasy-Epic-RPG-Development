@@ -1,4 +1,4 @@
-# Private real equipment and backpack diagnostic — CL
+# Private real equipment and backpack diagnostic — CM
 
 Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
@@ -91,8 +91,19 @@ CL:36 focused checks,96 repository tests,2,000 codec cases and mandatory build
 gates PASS. Installed-library compilation PASS;517 other archive members and
 original editor source preserved; output and11 private source hashes match.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCL.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CL includes a separate
+CL engine stopped at active pickup wanted quick0; cleanup/originals/release=yes.
+CM searches this hero's bag for the same owned allocation if pickup did not land
+in the empty active slot. It then uses UnitDropItemSlot on only this droppable
+fixture and requires exact quick-slot readback before preparing its abilities.
+If the item is absent from the bag, or the explicit move fails, it stops with a
+specific reason. This leaves all original items and shared placement primitives
+unchanged. Native pickup routing and quick-slot activation await engine acceptance.
+CM:17 focused probe tests,96 repository tests,2,000 codec cases and mandatory
+build gates PASS. Installed-library compilation PASS;517 other archive members
+and original editor source preserved; output and11 private source hashes match.
+
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCM.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CM includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -113,7 +124,7 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CL does not alter objects. Two temporary pairs
+existing item/ability definitions; CM does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
