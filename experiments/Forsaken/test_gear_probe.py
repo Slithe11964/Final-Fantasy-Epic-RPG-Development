@@ -15,6 +15,7 @@ class GearProbeTests(unittest.TestCase):
         self.hide_equipped_lookup=False
         self.lazy_abilities=False
         self.hide_held_abilities=False;self.duplicate_on_equip=False
+        self.pickup_recalculation=0.;self.reject_restore=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -32,11 +33,14 @@ class GearProbeTests(unittest.TestCase):
                 if self.duplicate_on_equip:item['abilities'].append('A0MU')
             return True
         def exposed(item):return not self.hide_held_abilities and (not self.lazy_abilities or item['owned'])
+        def restore(item,raw):
+            if not self.reject_restore and raw not in item['abilities']:item['abilities'].append(raw)
+            return not self.reject_restore
         def speed(unit):
             bonus=sum(80 for kind in ['quick','bag','equip'] for i in unit[kind] if i and 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
-            if self.sticky_bonus and self.w.adds>0:bonus=80
-            return self.base_speed+bonus
+            if self.sticky_bonus and self.w.adds>0 and all(i['raw']==0 for i in self.w.items if i is not self.original):bonus=80
+            return self.base_speed+(self.pickup_recalculation if self.w.adds>0 else 0.)+bonus
         self.env=dict(self.e)
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
@@ -44,6 +48,7 @@ class GearProbeTests(unittest.TestCase):
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
+            BlzItemAddAbility=restore,
             UnitEquipItem=equip)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in ('life','native','journal','effects','position','equipment')]
         self.e=engine(house.DECL+house.GLOBALS+'\n'.join(pieces)+probe_source({'fGap':1,'orig':2})+house_probe_source(house.RUNTIME)+SOURCE.with_name('Forsaken-gear-probe.j').read_text(),self.env)
@@ -64,7 +69,7 @@ class GearProbeTests(unittest.TestCase):
         self.guarded_originals()
 
     def test_native_effect_and_placement_failures_cleanup(self):
-        for fault,label in [('ignore_passive','stored boots bag slot29'),('reject_equip','equipment slot3'),('no_bonus','equipped speed'),('sticky_bonus','cleanup baseline speed')]:
+        for fault,label in [('ignore_passive','speed control passive removal'),('reject_equip','equipment slot3'),('no_bonus','equipped speed'),('sticky_bonus','cleanup baseline speed'),('reject_restore','speed control passive restoration')]:
             with self.subTest(fault=fault):
                 self.setUp();setattr(self,fault,True);self.e['FGT_Run'](0)
                 self.assertIn('FAIL at '+label if label in ('equipped speed','cleanup baseline speed') else label,self.messages[-1])
@@ -136,5 +141,17 @@ class GearProbeTests(unittest.TestCase):
             self.assertIn('FAIL at real boots '+label,self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
+
+    def test_pickup_speed_recalculation_is_separate_from_exact_boots_bonus(self):
+        self.base_speed=340.;self.pickup_recalculation=20.
+        self.lazy_abilities=True
+        self.e['FGT_Run'](0)
+        self.assertIn('Gear test: PASS:',self.messages[-1])
+        self.guarded_originals()
+        self.setUp();self.base_speed=430.;self.pickup_recalculation=20.
+        self.e['FGT_Run'](0)
+        self.assertIn('FAIL at settled speed baseline',self.messages[-1])
+        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.guarded_originals()
 
 if __name__=='__main__':unittest.main()

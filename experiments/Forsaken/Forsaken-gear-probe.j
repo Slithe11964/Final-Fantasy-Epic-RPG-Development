@@ -168,6 +168,31 @@ function FGT_Run takes integer pid returns nothing
         call FHT_Finish(pid,false,"real boots equipment slot3")
         return
     endif
+    // Establish a same-holder control after native pickup/equipment recalculation.
+    // The fresh allocation reading is not assumed to be the settled passive-free speed.
+    call FHT_Trace(pid,"equipped speed passive removal for control")
+    call BlzItemRemoveAbility(FSN_Item[pid*57],'A0MU')
+    set FSN_EffectsStored[pid*57]=true
+    if not FSA_Check(pid*57) or not FSA_PreparationContainment(pid,pid*57) then
+        set target=null
+        call FHT_Finish(pid,false,"speed control passive removal")
+        return
+    endif
+    call FHT_Trace(pid,"settled passive-free speed control")
+    set baseline=GetUnitMoveSpeed(target)
+    if baseline<45. or baseline>442. then
+        set FSN_LastError[pid]="settled baseline outside45..442 actual="+R2S(baseline)
+        set target=null
+        call FHT_Finish(pid,false,"settled speed baseline")
+        return
+    endif
+    call BlzItemAddAbility(FSN_Item[pid*57],'A0MU')
+    set FSN_EffectsStored[pid*57]=false
+    if not FSP_Check(pid,pid*57) then
+        set target=null
+        call FHT_Finish(pid,false,"speed control passive restoration")
+        return
+    endif
     call FHT_Trace(pid,"equipped movement speed readback")
     set actual=GetUnitMoveSpeed(target)
     if actual!=baseline+80. then
