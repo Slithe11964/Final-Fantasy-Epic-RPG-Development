@@ -18,14 +18,14 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | F | Quest map: `tools/quest_map.py` -> `docs/QUESTS.md` (quest-log entries and links per quest/boss module) + `docs/quest-graph.mmd` |
 | G | System guides: `CHOCOBOS.md`, `GAYA.md`, `SUMMONS_AND_SHADOWS.md`, `CRAFTING.md`, `HUNTS.md` |
 | H | Map list fix: our built maps (since r13) had lost the 512-byte `HM3W` header, so 1.29.2's map list skipped them |
-| I | 1.29.2 crash on selecting the map: Reforged had moved all object names/tooltips into `war 3map.wts` (37, 926 strings, 5 MB) and 1.29.2 crashes... |
+| I | 1.29.2 crash on selecting the map: Reforged had moved all object names/tooltips into `war3map.wts` (37,926 strings, 5 MB) and 1.29.2 crashes... |
 | J | 1.29.2: caster frozen after Fan of Knives |
 | K | Phase 16 tidy-up: shared `udg_Temp*` variables became locals in 509 functions (321 modules), proven private to each function... |
 | L | Built from your editor save (FFETEST = stage K saved in World Editor, DevCommands switched off) |
 | M | Quest engine (`QuestEngine` module, `docs/QUEST_ENGINE.md`): quests as data, with talk / return / kill / deliver / custom steps |
 | N | Quest engine batch 1: Arachnophobia, Harpy Hunt, Gnoll Hunt, Phoenix, Find Shimmerweed, Deliver Letter, Greed is Good and Elixir now run on the... |
 | O | 62 side quests on the quest engine (all side quests but Cartographer) |
-| P | Main story on the quest engine (Find Mid  |
+| P | Main story on the quest engine (Find Mid ... Advent of Ice Age, 18 quests incl. Necrophobe) |
 | Q | Kalm Siege I/II: Complete trigger disables itself (no repeated reward / "Quest Completed" when the siege timer runs out again) |
 | R | Ao Madoushi (MainQuest[4]) on the quest engine with custom steps |
 | S | Last two quests converted: Cartographer repeat reports/first-talk completion and True Ice Age shared log/delayed announcement/retries |
