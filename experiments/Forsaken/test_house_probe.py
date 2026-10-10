@@ -54,8 +54,17 @@ class HouseProbeTests(unittest.TestCase):
             self.assertIn(label,self.messages[-1])
             self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
             self.guarded_originals()
-        self.setUp();self.w.clamp_life=80.;self.e['FHT_Run'](0)
-        self.assertIn('item life words',self.messages[-1]);self.guarded_originals()
+        self.setUp();self.w.clamp_life=20.;self.e['FHT_Run'](0)
+        self.assertIn('wanted=50.250, actual=20.000, max=20',self.messages[-1]);self.guarded_originals()
+
+    def test_fractional_fixture_within_modeled_native_capacity(self):
+        self.w.clamp_life=75.
+        self.e['FHT_Run'](0)
+        self.assertIn('PASS:',self.messages[-1])
+        staged=[i for i in self.w.items if i is not self.original]
+        self.assertEqual(len(staged),6)
+        self.assertTrue(all(float(i['life'])==50.25 for i in staged))
+        self.guarded_originals()
 
     def test_deferred_house_removal_is_verified_without_manual_retry(self):
         pending=[]

@@ -92,7 +92,7 @@ function FSN_CheckMetadata takes integer pid,integer index returns boolean
     endif
     set carried=null
     if FSL_High[pid]!=FSN_High[index] or FSL_Low[pid]!=FSN_Low[index] then
-        set FSN_LastError[pid]="item life words"
+        set FSN_LastError[pid]="item life words: wanted="+R2S(FSL_Real(FSN_High[index],FSN_Low[index]))+", actual="+R2S(GetWidgetLife(FSN_Item[index]))+", max="+I2S(BlzGetItemIntegerField(FSN_Item[index],ITEM_IF_MAX_HIT_POINTS))
         return false
     endif
     return true

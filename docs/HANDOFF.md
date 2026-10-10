@@ -1,6 +1,23 @@
 # FF Epic RPG handoff - 2026-10-07, stage AS travel regions
 
-BZ private item-property diagnostic: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBZ.w3x
+CA private house-health diagnostic — 2026-10-09.
+Map: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCA.w3x
+SHA256: f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff
+Scratch: build/SaveProbeCA-fe1lepqn/FFERPG; stageCA-72ss2stw.
+Mandatory build gates,96 repository tests,2,000 codec cases and47 focused
+house/native/placement tests PASS. Three dependency compile probes PASS:
+build/save-codec-compile-brgrvmnr/report.json. Finished map check against installed
+common.j/blizzard.j PASS.517 other archive members and original editor source
+preserved; all nine private source hashes match the publication report.
+BZ engine failed exact item-life readback with cleanup/originals/release=yes.
+Actual health and native capacity were not reported, so clamping is unconfirmed.
+CA uses50.25 (binary32 words16969/0) and adds wanted/actual/max to life failures.
+Human gate: fresh CA session, -savecheck PASS, -savehousecheck, then -saveverify.
+Send final House test result including native details if FAIL. If cleanup fails,
+run -savehousecleanup. Full new-format character save/load remains disabled.
+CB next unused. Earlier checkpoints below are historical.
+
+Historical BZ private item-property diagnostic: release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBZ.w3x
 SHA256: b64570f7cf5818ab9059b6e951725a5c86a950ca229dc366ba1672a68c227b89
 Scratch: build/SaveProbeBZ-4xm7i_iz/FFERPG; stageBZ-ct7kzsux.
 Mandatory build gates,96 repository tests and2,000 codec cases PASS.
@@ -13,9 +30,10 @@ including [native: ...; cleanup=...; originals=...; release=...].
 BY engine: no crash, item0 metadata failed; manual cleanup then PASS/originals unchanged.
 Exact item failure remains unresolved. Full character load/save stays blocked; CA next unused.
 
-Post-BZ source correction: fGap's native health cap rejected the old 145.25 test
-value. The next build uses exact fractional 50.25. Map publication is pending the
-elevated compiler allowance; no existing map was overwritten.
+Post-BZ source correction: exact item-health readback failed for145.25. Clamping
+is a hypothesis, not confirmed: BZ did not show actual or maximum health. CA uses
+exact fractional50.25 (binary32 words16969/0) and reports wanted/actual/max if
+health readback fails. Strict checks and original-inventory protection remain.
 
 BY engine result and precise item failure diagnostics — 2026-10-09.
 BY no longer crashed. Human screenshot reached STEP10 trigger restoration but

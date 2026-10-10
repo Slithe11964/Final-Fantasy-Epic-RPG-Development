@@ -37,7 +37,7 @@ class World:
             self.callback()
         if field != self.silent:
             if field == 'life' and self.clamp_life is not None:
-                value = Real32(self.clamp_life)
+                value = Real32(min(float(value), self.clamp_life))
             item[field] = value
 
     def remove(self, item):
@@ -48,7 +48,7 @@ class World:
             item['raw'] = 0
 
     def natives(self):
-        return dict(I2R=Real32, R2I=lambda v: int(float(v)), Player=lambda pid: pid,
+        return dict(I2R=Real32, R2I=lambda v: int(float(v)), R2S=lambda v:format(float(v),'.3f'), I2S=str, Player=lambda pid: pid,
             CreateItem=self.create, RemoveItem=self.remove,
             GetItemTypeId=lambda i: i['raw'] if i else 0,
             GetItemCharges=lambda i: i['charges'], GetItemUserData=lambda i: i['binding'],
@@ -56,6 +56,8 @@ class World:
             IsItemVisible=lambda i: i['visible'], IsItemOwned=lambda i: i['owned'],
             IsItemInvulnerable=lambda i: i['invulnerable'], IsItemPawnable=lambda i: i['pawnable'],
             ITEM_BF_CAN_BE_DROPPED='drop',
+            ITEM_IF_MAX_HIT_POINTS='maxlife',
+            BlzGetItemIntegerField=lambda i,field: int(self.clamp_life if self.clamp_life is not None else 75),
             BlzGetItemBooleanField=lambda i, field: i['droppable'] if self.stale_drop is None else self.stale_drop,
             SetItemVisible=lambda i, v: self.set('visible', i, v),
             SetItemCharges=lambda i, v: self.set('charges', i, v),

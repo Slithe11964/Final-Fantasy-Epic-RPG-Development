@@ -1,22 +1,24 @@
-# Private house item-property diagnostic — BZ
+# Private house item-property diagnostic — CA
 
 Use the new Reforged diagnostic map:
-`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBZ.w3x`.
+`release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCA.w3x`.
 BW/BX crashed outside the terrain. BY corrected that point and no longer crashed,
 but failed on the first staged item's allocation/properties. Its final STEP10 was
 trigger restoration after the failure, not completion of all item stages. Manual
 cleanup then PASSed and verified original inventory unchanged.
 
-BZ identified the exact failed item check: the old 145.25 fixture exceeded fGap's
-native item-health capacity. The next diagnostic uses exact fractional 50.25 and
+BZ identified an exact item-health readback mismatch for the old 145.25 fixture.
+Clamping is a hypothesis; BZ did not report actual or maximum health. CA uses
+exact fractional 50.25 (binary32 words16969/0) and reports wanted, actual and
+maximum health if readback fails. It
 still reports any failed item check in `[native: ...]` and separately reports
 `cleanup`, `originals`, and `release`. It also allows one guarded next-frame cleanup
 readback, retaining unresolved handles. Strict property checks remain enforced.
-Full character save/load remains blocked. CA is next unused.
+Full character save/load remains blocked. CB is next unused.
 
 ## When you return
 
-1. Start BZ and select your character. You can load the same old save used for
+1. Start CA and select your character. You can load the same old save used for
    earlier tests, with some real items in the house if convenient.
 2. Stand still and run `-savecheck`. Wait for PASS.
 3. Run `-savehousecheck` and stand still. It displays numbered STEP checkpoints for about
@@ -65,6 +67,12 @@ Timer recovery skips the waits. A native application crash cannot be recovered
 by a script watchdog; it requires a new game session.
 
 ## Evidence
+
+CA SHA256: `f9c49e58ef71e4a084e93020c0769bd82686a0b7e2fd01587aeae5a5a7943fff`.
+Mandatory gates,96 repository tests,2,000 codec cases and47 focused checks PASS.
+Three dependency compiles and finished map compilation against installed native
+libraries PASS.517 other archive members and original editor source preserved;
+all nine private input hashes match. Human CA result remains pending.
 
 Eleven probe checks PASS, including busy ownership across checkpoint yields and
 non-yielding watchdog recovery. Existing inventory/projection/placement tests are
