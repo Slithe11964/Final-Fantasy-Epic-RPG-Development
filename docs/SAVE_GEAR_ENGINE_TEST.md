@@ -1,13 +1,16 @@
-# Private real equipment and backpack diagnostic — CC
+# Private real equipment and backpack diagnostic — CD
 
-SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
+Historical CC SHA256: `56757f112828cf8e313f6f1cb48338870dd5d4aca6aa4f9e392f5e0abc50a534`.
 Mandatory gates,96 repository tests,2,000 codec cases and61 focused checks PASS.
 Finished-map compilation against installed native libraries PASS.517 other archive
 members and original editor source preserved;11 private input hashes match.
-Real-engine CC acceptance remains pending.
+CC engine failed before boots staging: requested speed200 read back250; cleanup,
+originals and release passed. CD measures starting speed instead of setting it;
+the equipment delta80, unchanged stored delta and return to baseline remain strict.
+Native effect/equipment acceptance remains pending.
 
-Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCC.w3x` in a fresh Reforged game.
-CB's synthetic six-slot house test is user-confirmed PASS. CC adds a separate
+Use `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCD.w3x` in a fresh Reforged game.
+CB's synthetic six-slot house test is user-confirmed PASS. CD includes a separate
 `-savegearcheck` without replacing your hero, Gaya, house or any original item.
 Full new-format character saving/loading remains disabled.
 
@@ -28,16 +31,18 @@ for cleanup retry and restores original trigger states.
 
 The builder verifies real Sprint Shoes `f003` are Boots with exactly `A0MU,fGmk`,
 max health1, speed ability bonus80 and a zero-stat equipment marker. These are
-existing item/ability definitions; CC does not alter objects. Two temporary pairs
+existing item/ability definitions; CD does not alter objects. Two temporary pairs
 have exact life1, quantities0/120, different binding and droppable flags.
 
 One pair retains its passive and enters Boots slot3 (zero-based). The temporary
-hero's speed must change from200 to280. The other pair is prepared as stored cargo:
+hero's measured starting speed must increase by80. Starting speed must be45..442
+to leave room below this map's522 maximum. The other pair is prepared as stored cargo:
 its speed passive is removed, its equipment marker retained, and earlier empty
 slots are reserved using tracked `fGap` spacers so it reaches bag slot29 (the
 30th slot). Spacers are removed and exact item positions/properties rechecked.
 The stored pair must add no speed. Both pairs are removed and speed must return
-to200 before the temporary hero is deleted and the original journal verified.
+to the measured starting value before the temporary hero is deleted and the
+original journal verified.
 
 An unexpected bag/equipment item blocks hero disposal rather than deleting foreign
 cargo. Native failures remain failures; speed diagnostics show requested/actual

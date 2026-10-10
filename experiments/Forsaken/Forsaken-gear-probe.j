@@ -64,15 +64,16 @@ function FGT_Run takes integer pid returns nothing
     call UnitAddAbility(target,'fBag')
     call UnitAddAbility(target,'fGer')
     call UnitAddAbility(target,'ASpc')
-    call SetUnitMoveSpeed(target,200.)
     if not IsUnitType(target,UNIT_TYPE_HERO) or not IsUnitHidden(target) or not IsUnitPaused(target) or not BlzIsUnitInvulnerable(target) or GetOwningPlayer(target)!=Player(pid) or UnitInventorySize(target)!=6 or UnitExtendedInventorySize(target)!=30 or not FHT_Empty(target) then
         set target=null
         call FHT_Finish(pid,false,"temporary hero inventory shape")
         return
     endif
     set baseline=GetUnitMoveSpeed(target)
-    if baseline!=200. then
-        set FSN_LastError[pid]="speed baseline wanted=200 actual="+R2S(baseline)
+    // Measure native speed rather than assuming a setter's requested value.
+    // Keep room below this map's522 maximum for the reviewed80 bonus.
+    if baseline<45. or baseline>442. then
+        set FSN_LastError[pid]="speed baseline outside45..442 actual="+R2S(baseline)
         set target=null
         call FHT_Finish(pid,false,"speed baseline")
         return

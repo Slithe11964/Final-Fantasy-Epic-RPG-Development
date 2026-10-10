@@ -10,7 +10,7 @@ from objdata import read_objects,fields
 class GearProbeTests(unittest.TestCase):
     def setUp(self):
         house.HouseProbeTests.setUp(self)
-        self.ignore_passive=False;self.reject_equip=False;self.ignore_speed=False
+        self.ignore_passive=False;self.reject_equip=False;self.base_speed=250.
         self.no_bonus=False;self.sticky_bonus=False
         create_item=self.w.create
         def create(raw,x,y):
@@ -31,11 +31,10 @@ class GearProbeTests(unittest.TestCase):
             bonus=sum(80 for kind in ['quick','bag','equip'] for i in unit[kind] if i and 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
             if self.sticky_bonus and self.w.adds>0:bonus=80
-            return unit.get('speed',200.)+bonus
+            return self.base_speed+bonus
         self.env=dict(self.e)
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
-            SetUnitMoveSpeed=lambda u,v:None if self.ignore_speed else u.update(speed=v),
             GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
             BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if s<len(i['abilities']) else None,
             BlzGetItemAbility=lambda i,r:Handle(raw=r) if r in i['abilities'] else None,
@@ -91,6 +90,15 @@ class GearProbeTests(unittest.TestCase):
         self.e['FHT_Busy']=True;self.e['FGT_Run'](0);self.assertEqual(self.created,[])
         self.e['FHT_Busy']=False;self.e['FSX_Phase'][7]=1;self.e['FGT_Run'](0)
         self.assertEqual(self.created,[])
+
+    def test_measured_baseline_and_bonus_headroom(self):
+        for baseline in (175.,250.,440.):
+            self.setUp();self.base_speed=baseline;self.e['FGT_Run'](0)
+            self.assertIn('Gear test: PASS:',self.messages[-1]);self.guarded_originals()
+        self.setUp();self.base_speed=443.;self.e['FGT_Run'](0)
+        self.assertIn('FAIL at speed baseline',self.messages[-1])
+        self.assertIn('outside45..442 actual=443.000',self.messages[-1])
+        self.assertEqual(self.w.adds,0);self.guarded_originals()
 
     def test_builder_checks_actual_fixture_and_rejects_changed_item_policy(self):
         archive=MPQ(str(ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x'))
