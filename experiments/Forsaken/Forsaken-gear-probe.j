@@ -4,6 +4,26 @@ globals
     trigger gg_trg_Forsaken_GearProbe=null
 endglobals
 
+// The reviewed fixture can expose no abilities on a freshly created ground item.
+// Materialize only its object-verified IDs; preparation still checks exact membership.
+function FGT_InitializeBoots takes integer pid,integer ordinal returns boolean
+    local integer index=pid*57+ordinal
+    if FSN_State[pid]!=1 or FSN_Busy[pid] or ordinal<0 or ordinal>=FSN_Count[pid] or FSN_Raw[index]!='f003' or not FSN_Check(pid,index) then
+        return false
+    endif
+    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null then
+        call BlzItemAddAbility(FSN_Item[index],'A0MU')
+    endif
+    if BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
+        call BlzItemAddAbility(FSN_Item[index],'fGmk')
+    endif
+    if BlzGetItemAbility(FSN_Item[index],'A0MU')==null or BlzGetItemAbility(FSN_Item[index],'fGmk')==null then
+        set FSN_LastError[pid]="boots ability initialization readback"
+        return false
+    endif
+    return FSN_Check(pid,index)
+endfunction
+
 function FGT_Run takes integer pid returns nothing
     local integer other=0
     local unit target
@@ -96,10 +116,21 @@ function FGT_Run takes integer pid returns nothing
     call SaveInteger(FHT_Policy,0,'A0MU',1)
     call SaveInteger(FHT_Policy,0,'fGmk',2)
     call FHT_Trace(pid,"equipped and stored ability preparation")
+    if not FGT_InitializeBoots(pid,0) or not FGT_InitializeBoots(pid,1) then
+        set target=null
+        call FHT_Finish(pid,false,"real boots ability initialization")
+        return
+    endif
     if not FSA_Prepare(pid,0,false,FHT_Policy) or not FSA_Prepare(pid,1,true,FHT_Policy) then
         set FSN_LastError[pid]="real boots ability preparation"
         set target=null
         call FHT_Finish(pid,false,"real boots ability preparation")
+        return
+    endif
+    if FSN_EffectCount[pid*57]!=2 or FSN_EffectCount[pid*57+1]!=2 then
+        set FSN_LastError[pid]="boots plan wanted2 actual="+I2S(FSN_EffectCount[pid*57])+","+I2S(FSN_EffectCount[pid*57+1])
+        set target=null
+        call FHT_Finish(pid,false,"real boots ability plan")
         return
     endif
     call FHT_Trace(pid,"real boots equipment slot3")

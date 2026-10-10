@@ -14,6 +14,7 @@ class GearProbeTests(unittest.TestCase):
         self.no_bonus=False;self.sticky_bonus=False
         self.hide_equipped_lookup=False
         self.lazy_abilities=False
+        self.reject_initialization=False;self.added_abilities=[];self.duplicate_on_equip=False
         create_item=self.w.create
         def create(raw,x,y):
             item=create_item(raw,x,y)
@@ -28,7 +29,13 @@ class GearProbeTests(unittest.TestCase):
         def equip(unit,item):
             if not self.reject_equip:
                 self.w.detach(item);unit['equip'][3]=item;item['owned']=True
+                if self.duplicate_on_equip:item['abilities'].append('A0MU')
             return True
+        def add_item_ability(item,raw):
+            self.added_abilities.append(raw)
+            if not self.reject_initialization:item['initialized']=True
+            return not self.reject_initialization
+        def exposed(item):return not self.lazy_abilities or item['owned'] or item.get('initialized',False)
         def speed(unit):
             bonus=sum(80 for kind in ['quick','bag','equip'] for i in unit[kind] if i and 'A0MU' in i.get('abilities',[]))
             if self.no_bonus:bonus=0
@@ -38,9 +45,10 @@ class GearProbeTests(unittest.TestCase):
         self.env.update(CreateItem=create,UnitAddAbility=add_ability,
             SaveInteger=lambda t,p,k,v:t.__setitem__((p,k),v),
             GetUnitMoveSpeed=speed,IsUnitType=lambda u,t:u['raw']!='h006',
-            BlzGetItemAbilityByIndex=lambda i,s:None if self.lazy_abilities and not i['owned'] else Handle(raw=i['abilities'][s]) if s<len(i['abilities']) else None,
-            BlzGetItemAbility=lambda i,r:None if self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
+            BlzGetItemAbilityByIndex=lambda i,s:Handle(raw=i['abilities'][s]) if exposed(i) and s<len(i['abilities']) else None,
+            BlzGetItemAbility=lambda i,r:None if not exposed(i) or self.hide_equipped_lookup and i is self.created[-1]['equip'][3] else Handle(raw=r) if r in i['abilities'] else None,
             BlzGetAbilityId=lambda a:a['raw'],BlzItemRemoveAbility=remove_ability,
+            BlzItemAddAbility=add_item_ability,
             UnitEquipItem=equip)
         pieces=[SOURCE.with_name('Forsaken-save-'+m+'.j').read_text() for m in ('life','native','journal','effects','position','equipment')]
         self.e=engine(house.DECL+house.GLOBALS+'\n'.join(pieces)+probe_source({'fGap':1,'orig':2})+house_probe_source(house.RUNTIME)+SOURCE.with_name('Forsaken-gear-probe.j').read_text(),self.env)
@@ -58,6 +66,7 @@ class GearProbeTests(unittest.TestCase):
         self.assertEqual(self.e['FSN_AuxCount'][0],0)
         self.assertTrue(all(i['raw']==0 for i in self.w.items if i is not self.original))
         self.assertEqual(len(modules(gear=True)),10)
+        self.assertEqual(self.added_abilities,[])
         self.guarded_originals()
 
     def test_native_effect_and_placement_failures_cleanup(self):
@@ -120,12 +129,19 @@ class GearProbeTests(unittest.TestCase):
             changed={**objects,'f003':{**objects['f003'],field:value}}
             with self.assertRaises(ValueError):validate_gear_fixture(archive,changed)
 
-    def test_abilities_appearing_on_pickup_report_empty_preparation_plan(self):
+    def test_lazy_ground_abilities_are_initialized_before_plan_and_cleanup(self):
         self.lazy_abilities=True
         self.e['FGT_Run'](0)
-        self.assertIn('ability unexpected A0MU(speed); plan count=0 IDs=;',self.messages[-1])
-        self.assertIn('item IDs=A0MU(speed),fGmk(marker),',self.messages[-1])
-        self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+        self.assertIn('Gear test: PASS:',self.messages[-1])
+        self.assertEqual(self.added_abilities,['A0MU','A0MU'])
         self.guarded_originals()
+
+    def test_rejected_initialization_and_duplicate_equipped_ability_fail_safely(self):
+        for fault,label in [('reject_initialization','ability initialization'),('duplicate_on_equip','equipment slot3')]:
+            self.setUp();self.lazy_abilities=True;setattr(self,fault,True)
+            self.e['FGT_Run'](0)
+            self.assertIn('FAIL at real boots '+label,self.messages[-1])
+            self.assertIn('cleanup=yes; originals=yes; release=yes',self.messages[-1])
+            self.guarded_originals()
 
 if __name__=='__main__':unittest.main()
