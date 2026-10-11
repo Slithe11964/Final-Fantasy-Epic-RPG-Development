@@ -4,7 +4,8 @@ param(
     [string]$PythonPath,
     [string]$AllowNew,
     [string]$AllowRemoved,
-    [switch]$FullChecks
+    [switch]$FullChecks,
+    [switch]$NoClassic
 )
 $ErrorActionPreference = 'Stop'
 if (-not $PythonPath) {
@@ -18,5 +19,7 @@ if ($Base) { $buildArgs += @('--base', $Base) }
 if ($AllowNew) { $buildArgs += @('--allow-new', $AllowNew) }
 if ($AllowRemoved) { $buildArgs += @('--allow-removed', $AllowRemoved) }
 if ($FullChecks) { $buildArgs += '--full-checks' }
+# Every build also makes the matching 1.29.2 map unless -NoClassic is given.
+if (-not $NoClassic) { $buildArgs += '--with-classic' }
 & $PythonPath @buildArgs
 exit $LASTEXITCODE

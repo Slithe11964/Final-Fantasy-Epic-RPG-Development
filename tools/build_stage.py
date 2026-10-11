@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import os
 import platform
 import re
 import shutil
@@ -115,6 +116,8 @@ def main():
     p.add_argument('--base', type=Path, help='explicit baseline; its hash is recorded')
     p.add_argument('--allow-new')
     p.add_argument('--allow-removed')
+    p.add_argument('--with-classic', action='store_true',
+                   help='also convert the checked map to 1.29.2 (release/1.29.2/, same name); the build fails if it cannot')
     p.add_argument('--full-checks', action='store_true',
                    help='rerun the regression tests and base-map checks even if these exact inputs already passed')
     a = p.parse_args()
@@ -211,6 +214,17 @@ def main():
         before, after = ordered.read_bytes(), ready.read_bytes()
         if before[before.index(b'MPQ\x1a'):] != after[after.index(b'MPQ\x1a'):]:
             raise ValueError('header finalization changed the checked MPQ archive')
+        classic_final = classic_bytes = None
+        if a.with_classic:
+            # The 1.29.2 copy is part of the build: the script must compile against 1.29.2, so any
+            # Reforged-only native outside the known add-ons (frame panels) stops the build here.
+            classic_final = final.parent / '1.29.2' / final.name
+            refuse_existing((classic_final,))
+            template = ROOT / 'baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x'
+            os.environ['PATH'] = str(ROOT / 'tools/bin') + os.pathsep + os.environ.get('PATH', '')
+            run(ROOT / 'tools/downgrade.py', ready, scratch / 'classic.w3x', '--w3i-template', template,
+                '--fill-from', template, '--name', final.stem, '--fferpg-visuals')
+            classic_bytes = (scratch / 'classic.w3x').read_bytes()
         source_files = sorted((ROOT / 'src').rglob('*.j')) + [ROOT / 'src/trigger-list.json', ROOT / 'src/itemtable.txt', ROOT / 'src/armory-hints.json']
         tool_files = sorted((ROOT / 'tools').rglob('*.py')) + sorted((ROOT / 'tools/contracts').glob('*.json')) + [ROOT / 'tools/build-config.json', ROOT / 'build.ps1', header_tool, ROOT / 'tools/tests/fixtures/savecodes.json']
         native = {name: identity(check_map.find(name, None)) for name in ['pjass', 'common.j', 'blizzard.j']}
@@ -221,6 +235,8 @@ def main():
                                    'binary': identity(helper) if helper.is_file() else None}}
         manifest = {'stage': a.stage, 'built_utc': datetime.now(timezone.utc).isoformat(),
                     'base': identity(base), 'output': {'file': final.name, 'sha256': sha(ready)},
+                    'classic_output': ({'file': '1.29.2/' + final.name, 'sha256': hashlib.sha256(classic_bytes).hexdigest()}
+                                       if classic_bytes else None),
                     'archive_identical_to_base': archive_unchanged, 'modules_synced': modules,
                     'checks_sha256': hashlib.sha256(''.join(logs).encode()).hexdigest(),
                     'git': git_state(), 'versions': versions, 'native_inputs': native,
@@ -235,6 +251,11 @@ def main():
         with final.open('xb') as f:
             f.write(after)
         print('Published ' + str(final))
+        if classic_bytes:
+            classic_final.parent.mkdir(exist_ok=True)
+            with classic_final.open('xb') as f:
+                f.write(classic_bytes)
+            print('Published ' + str(classic_final))
         print('Checks: ' + str(report) + '\nManifest: ' + str(manifest_path))
         return 0
     except (ValueError, OSError) as exc:

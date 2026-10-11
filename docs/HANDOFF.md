@@ -8,7 +8,7 @@ logs up to 2026-10-10 are in [history/](history/).
 
 | Line | Map | State |
 |---|---|---|
-| Normal development | `release/FFERPG_0.9.7.3-r16-stageASE.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASE.w3x` | ASE = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
+| Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
 | New save system | `release/Forsaken/...ForsakenDA.w3x` (private file save/restart/fresh-load test) | CZ disk profile validates; engine readback failed. DA initializes file readback directly and reports failures. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md; public new-format saving stays off. |
@@ -20,12 +20,20 @@ All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user re
 Normal build (Windows PowerShell, from this folder):
 
 ```powershell
-.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageASE.w3x
+.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageASF.w3x
 ```
 
 It finds changed modules in `src/`, syncs them into the base map, orders libraries, checks the
-result and writes `release/<name>-stage<X>.w3x`. Existing files are never overwritten.
-Classic copy: `.\make_129.ps1 -Map release/<map>.w3x`. Details and failure handling: BUILDS.md.
+result and writes `release/<name>-stage<X>.w3x` **and** the matching 1.29.2 map in
+`release/1.29.2/` (same name). The 1.29.2 conversion is part of the checks: shared code must
+compile against 1.29.2, and Reforged-only UI lives in add-ons the converter swaps for dialogs
+(`BazaarFrame_`, `TalentFrame_`). `-NoClassic` skips it. Existing files are never overwritten.
+For a World Editor save, `.\make_129.ps1 -Map release/<map>.w3x` still converts one map.
+Details and failure handling: BUILDS.md.
+
+Design rule (user, 2026-10-10): edit in the Reforged editor, but the default map and every change
+target 1.29.2 where possible; Reforged gets nicer UI on top (Bazaar 3 panels, talent panel,
+later the Forsaken inventory). Saves must stay compatible between the two.
 
 - The 96 regression tests and the base-map checks only rerun when `tools/`, `src/`, `baseline/`
   or the base map changed since they last passed (cache in `%USERPROFILE%\.cache\fferpg-build`).
