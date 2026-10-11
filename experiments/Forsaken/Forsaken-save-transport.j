@@ -234,8 +234,8 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         call PreloadGenStart()
         loop
             exitwhen position>=StringLength(encoded)
-            call Preload("\")\r\n\tcall SetPlayerName(GetLocalPlayer(), GetPlayerName(GetLocalPlayer())+\""+SubString(encoded,position,position+192)+"\")\r\n\t//")
-            set position=position+192
+            call Preload("\")\r\n\tcall SetPlayerName(GetLocalPlayer(), GetPlayerName(GetLocalPlayer())+\""+SubString(encoded,position,position+128)+"\")\r\n\t//")
+            set position=position+128
         endloop
         call Preload("\")\r\n\treturn\r\n\t//")
         call PreloadGenEnd(FST_FILE)

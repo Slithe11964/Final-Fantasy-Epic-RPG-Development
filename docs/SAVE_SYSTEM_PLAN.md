@@ -2,9 +2,10 @@
 
 ## Current milestone
 
-Private CY provides the complete file save/restart/fresh-character load path
-on BT gameplay. CY fixes the inherited legacy Meta Fragment cap identified by CX;
-repeat export, then complete the round trip and size/timing measurements. Public
+Private CZ provides the complete file save/restart/fresh-character load path
+on BT gameplay. Meta Fragment validation is fixed; CZ shortens file-writing chunks
+after CY exposed engine truncation. Repeat export, then complete the round trip and
+size/timing measurements. Public
 new-format saving remains off. Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
 

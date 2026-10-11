@@ -41,6 +41,7 @@ class TransportTests(unittest.TestCase):
         def genend(path):
             chunks = []
             for line in self.preloads:
+                self.assertLessEqual(len(line), 255, "Preload truncates the generated JASS injection")
                 match = re.search(r'GetPlayerName\(GetLocalPlayer\(\)\)\+"([A-Za-z0-9$#]+)"', line)
                 if match: chunks.append(match[1])
             self.file = ''.join(chunks)

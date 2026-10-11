@@ -93,3 +93,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | CX | Private full-character round trip now reports capture validation details to identify the real export failure. |
 | ASC | Job talents (TALENTS.md): Talents button on every hero, Reforged panel / 1.29.2 dialog; Priest row 1 = Deprotect, Deshell, Blinding Light |
 | CY | Private full-character saving preserves Meta Fragment counts beyond the legacy bit limit, with fresh-load readback verified in modeled checks. |
+| CZ | Private full-character file export uses smaller chunks to avoid the engine truncation observed in CY. |
