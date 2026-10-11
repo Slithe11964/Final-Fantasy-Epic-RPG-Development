@@ -4,14 +4,14 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-10)
+## Where things stand (2026-10-11)
 
 | Line | Map | State |
 |---|---|---|
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDI.w3x` (private file save/restart/fresh-load test) | Exact file readback verified; DH confirmed inventory setup but still failed stored Tome pickup. DI checks temporary pickup across quick/bag/equipment, then exact final placement; reuse the DE export for fresh-load testing. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md; public new-format saving stays off. |
+| New save system | `release/Forsaken/...ForsakenDI.w3x` (private file save/restart/fresh-load test) | Real export/restart/fresh-load round trip passed with exact full-profile match in DI. Size/timings recorded in SAVE_FRESH_LOAD_TEST.md; real multiplayer delivery and visual gameplay checks remain. Public new-format saving stays off. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -59,7 +59,7 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save system: reuse the DE export in DI, complete fresh loading, then collect
-   save/restart/fresh-character load and size/timing measurements. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
+1. Save system: reuse the verified file in a real multiplayer DI game, confirm shared state
+   and record multiplayer delivery time. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.

@@ -4,14 +4,16 @@ Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDI.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-Warcraft verified exact file export/readback of a real 1,010-character profile.
-DH confirmed inventory capacity but still failed the stored offhand Tome's quick-slot
-pickup check. DI verifies temporary pickup by exact handle across quick, bag and
-equipment instead of assuming quick slot1. Final destination and metadata checks
-remain exact; a failed pickup distinguishes native rejection from missing readback.
-Complete loading remains unverified. Reuse the file exported in DE: restart Warcraft,
-start DI with the same settings, leave the starter untouched and enter `-newload`
-within fifteen minutes.
+Engine milestone (2026-10-11): exact export/readback followed by restart and
+**PASS: exact full profile after fresh load** in DI, using the same real profile.
+Code length:1,010 characters. Reported file read:~0 ms (game-timer resolution);
+transfer/validation:0.500 s; load/verify:3.148 s. These are one observed run;
+real multiplayer delivery remains unverified. Visual gameplay checks remain useful.
+
+Next: use the same file in a real multiplayer DI game with matching settings,
+leave the starter untouched and enter `-newload` within fifteen minutes.
+Confirm the result on both clients, inspect the loaded inventory and effects,
+and record the final timings. No new export or build is needed for this check.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
 every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
@@ -58,4 +60,4 @@ it before another load. An unsupported profile is rejected rather than partly lo
 Live-swap recovery modules are not imported. The private builder uses the checked BT
 regression expectations and trigger names from BT; newer gameplay modules and
 their tests stay outside this private build. Unrelated normal-map edits stay
-out of this gameplay checkpoint. Real engine acceptance is pending.
+out of this gameplay checkpoint. Exact fresh-load profile verification passed; multiplayer acceptance is pending.

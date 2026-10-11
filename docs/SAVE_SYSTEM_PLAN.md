@@ -2,14 +2,13 @@
 
 ## Current milestone
 
-Private DI provides the complete file save/restart/fresh-character load path
-on BT gameplay. Warcraft verified exact file export/readback of a real
-1,010-character profile. DH confirmed inventory setup but still failed an offhand Tome's quick-slot pickup
-check. DI verifies temporary pickup across quick/bag/equipment while preserving
-exact final slots and metadata; reuse the DE export for fresh-load testing.
-Complete the round trip and size/timing measurements before enabling public saves.
+Private DI completed the real file export/restart/fresh-load round trip on
+2026-10-11: Warcraft reported an exact full-profile match for the same
+1,010-character save. Observed transfer/validation:0.500 s; load/verify:3.148 s.
+The ~0 ms file-read result is limited by game-timer resolution.
+Next: real multiplayer delivery and shared-state verification using this file,
+plus visual checks of inventory and effects, before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
-House and boots diagnostics previously passed, but do not prove this complete path.
 
 ## Format and scope
 
