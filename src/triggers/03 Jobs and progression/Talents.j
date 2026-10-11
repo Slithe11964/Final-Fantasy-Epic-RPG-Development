@@ -471,10 +471,10 @@ endfunction
 
 function Talents_InitData takes nothing returns nothing
     local integer job=12 // Priest
-    set TalentRowLabel[1]="Start"
-    set TalentRowLabel[2]="Level 50"
-    set TalentRowLabel[3]="Level 99"
-    set TalentRowLabel[4]="Level 100"
+    set TalentRowLabel[1]="Beginner"
+    set TalentRowLabel[2]="Master"
+    set TalentRowLabel[3]="Ultimate"
+    set TalentRowLabel[4]="Legendary"
     set TalentName[Talent_Index(job,1,1)]="Deprotect"
     set TalentText[Talent_Index(job,1,1)]="Protect can be cast on an enemy."
     set TalentName[Talent_Index(job,1,2)]="Deshell"

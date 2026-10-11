@@ -96,3 +96,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | CZ | Private full-character file export uses smaller chunks to avoid the engine truncation observed in CY. |
 | ASD | Talents: compact 1.29.2 dialog, short Priest texts, Blinding Light 5 s on pass-through, Cure rebased on Channel so it can target any enemy, Shrine sells Reset Talents (1000 gold, current job) |
 | DA | Private save files initialize readback directly and report non-execution or returned length after CZ produced a valid disk profile. |
+| ASE | Talent rows named Beginner, Master, Ultimate, Legendary |
