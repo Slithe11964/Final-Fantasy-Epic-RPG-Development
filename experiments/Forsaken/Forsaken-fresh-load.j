@@ -2,6 +2,7 @@ library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTran
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
+    string array FFL_Error
     boolean array FFL_SnapshotTaken
     unit array FFL_OldHero
     unit array FFL_OldGaya
@@ -122,6 +123,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call SetPlayerTechResearched(owner,FRC_TechRaw(i),level)
         if GetPlayerTechCount(owner,FRC_TechRaw(i),true)!=level then
+            set FFL_Error[pid]="research "+I2S(i)+" wanted="+I2S(level)+" actual="+I2S(GetPlayerTechCount(owner,FRC_TechRaw(i),true))
             return false
         endif
         set i=i+1
@@ -136,6 +138,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call FFL_Membership(owner,udg_TitleForce[i],flag)
         if IsPlayerInForce(owner,udg_TitleForce[i])!=flag then
+            set FFL_Error[pid]="title membership "+I2S(i)
             return false
         endif
         set i=i+1
@@ -150,6 +153,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call FFL_Membership(owner,udg_SaveFlagForce[i],flag)
         if IsPlayerInForce(owner,udg_SaveFlagForce[i])!=flag then
+            set FFL_Error[pid]="Armory membership "+I2S(i)
             return false
         endif
         if flag and ArmoryMissingUnit[i]!=0 then
@@ -290,9 +294,11 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
                 set wanted=6
             endif
             if not FFL_Learn(hero,udg_JobSkill[jobIndex*5+i],wanted) then
+                set FFL_Error[pid]="job "+I2S(identity)+" skill "+I2S(i)+" wanted="+I2S(wanted)+" actual="+I2S(GetUnitAbilityLevel(hero,udg_JobSkill[jobIndex*5+i]))
                 return false
             endif
         elseif GetUnitAbilityLevel(hero,udg_JobSkill[jobIndex*5+i])!=0 then
+            set FFL_Error[pid]="unmastered job skill "+I2S(i)+" expected unlearned"
             return false
         endif
         set i=i+1
@@ -301,7 +307,11 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
         call UnitRemoveAbility(hero,'A1AJ')
         call UnitAddAbility(hero,'A1AI')
     endif
-    return GetHeroLevel(hero)==level and GetUnitAbilityLevel(hero,'A02F')==tier+1
+    if GetHeroLevel(hero)!=level or GetUnitAbilityLevel(hero,'A02F')!=tier+1 then
+        set FFL_Error[pid]="hero level wanted="+I2S(level)+" actual="+I2S(GetHeroLevel(hero))+" mastery wanted="+I2S(tier+1)+" actual="+I2S(GetUnitAbilityLevel(hero,'A02F'))
+        return false
+    endif
+    return true
 endfunction
 
 function FFL_PrepareGaya takes integer pid returns boolean
@@ -358,12 +368,14 @@ function FFL_PrepareGaya takes integer pid returns boolean
             endif
             call SetUnitAbilityLevel(gaya,raw,rank)
             if GetUnitAbilityLevel(gaya,raw)!=rank then
+                set FFL_Error[pid]="Gaya field "+I2S(i)+" wanted="+I2S(rank)+" actual="+I2S(GetUnitAbilityLevel(gaya,raw))
                 return false
             endif
         elseif rank>0 then
             call UnitAddAbility(gaya,raw)
             set bits=bits+R2I(Pow(2.,I2R(i-6)))
             if GetUnitAbilityLevel(gaya,raw)!=1 then
+                set FFL_Error[pid]="Gaya acquired ability field "+I2S(i)+" missing"
                 return false
             endif
         endif
@@ -442,15 +454,18 @@ function FFL_PrepareStored takes integer pid,integer ordinal returns boolean
     local integer equipmentSlot=LoadInteger(ForsakenGearTypes,1,canonical)
     call UnitAddItem(holder,carried)
     if UnitItemInSlot(holder,0)!=carried then
+        set FFL_Error[pid]=FFL_Error[pid]+" pickup readback"
         return false
     endif
     if canonical!=0 then
         call UnitEquipItem(holder,carried)
         if UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(equipmentSlot))!=carried then
+            set FFL_Error[pid]=FFL_Error[pid]+" equipment readback"
             return false
         endif
     endif
     if not FFL_StripStorage(carried) then
+        set FFL_Error[pid]=FFL_Error[pid]+" passive stripping"
         return false
     endif
     if canonical!=0 then
@@ -458,11 +473,16 @@ function FFL_PrepareStored takes integer pid,integer ordinal returns boolean
     endif
     call UnitRemoveItem(holder,carried)
     if IsItemOwned(carried) or UnitItemInSlot(holder,0)!=null then
+        set FFL_Error[pid]=FFL_Error[pid]+" detach readback"
         return false
     endif
     set holder=null
     set carried=null
-    return FFN_MetadataMatches(pid,ordinal)
+    if not FFN_MetadataMatches(pid,ordinal) then
+        set FFL_Error[pid]=FFL_Error[pid]+" metadata readback"
+        return false
+    endif
+    return true
 endfunction
 
 function FFL_Place takes integer pid,integer ordinal returns boolean
@@ -482,6 +502,7 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
         set holder=udg_PlayerHouse[pid+1]
     endif
     if FFL_At(holder,kind,slot)!=null then
+        set FFL_Error[pid]=FFL_Error[pid]+" destination occupied"
         return false
     endif
     if kind==2 then
@@ -491,6 +512,7 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
         if slot==5 and UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(4))==null then
             set spacer=FFL_NewSpacer(pid,FFP_Raw[index],holder)
             if spacer==null then
+                set FFL_Error[pid]=FFL_Error[pid]+" ring spacer allocation"
                 return false
             endif
             loop
@@ -499,12 +521,14 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
                 set raw=BlzGetAbilityId(entry)
                 call BlzItemRemoveAbility(spacer,raw)
                 if BlzGetItemAbility(spacer,raw)!=null then
+                    set FFL_Error[pid]=FFL_Error[pid]+" ring spacer passive removal"
                     return false
                 endif
             endloop
             call UnitAddItem(holder,spacer)
             call UnitEquipItem(holder,spacer)
             if UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(4))!=spacer then
+                set FFL_Error[pid]=FFL_Error[pid]+" ring spacer equipment readback"
                 return false
             endif
         endif
@@ -514,10 +538,12 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
         if (position<6 and UnitItemInSlot(holder,position)==null) or (position>=6 and UnitItemInBagSlot(holder,position-6)==null) then
             set spacer=FFL_NewSpacer(pid,'fGap',holder)
             if spacer==null then
+                set FFL_Error[pid]=FFL_Error[pid]+" gap spacer allocation"
                 return false
             endif
             call UnitAddItem(holder,spacer)
             if (position<6 and UnitItemInSlot(holder,position)!=spacer) or (position>=6 and UnitItemInBagSlot(holder,position-6)!=spacer) then
+                set FFL_Error[pid]=FFL_Error[pid]+" gap spacer pickup readback"
                 return false
             endif
         endif
@@ -527,7 +553,16 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
     if kind==3 then
         call UnitEquipItem(holder,carried)
     endif
-    if FFL_At(holder,kind,slot)!=carried or not FFN_CleanupSpacers(pid) or not FFN_MetadataMatches(pid,ordinal) then
+    if FFL_At(holder,kind,slot)!=carried then
+        set FFL_Error[pid]=FFL_Error[pid]+" destination readback"
+        return false
+    endif
+    if not FFN_CleanupSpacers(pid) then
+        set FFL_Error[pid]=FFL_Error[pid]+" spacer cleanup"
+        return false
+    endif
+    if not FFN_MetadataMatches(pid,ordinal) then
+        set FFL_Error[pid]=FFL_Error[pid]+" metadata readback"
         return false
     endif
     set holder=null
@@ -594,25 +629,34 @@ function FFL_Apply takes integer pid returns boolean
     endif
     call FFL_Snapshot(pid)
     call FFL_Guard(true)
+    set FFL_Error[pid]="allocation"
     set valid=FFN_Allocate(pid,FFL_WindowOpen)
     if valid then
         if selected>0 then
             set level=FFL_Val(pid,2,selected)
             set tier=FFL_Val(pid,10,selected)
         endif
+        set FFL_Error[pid]="hero progression"
         set valid=FFL_PrepareHero(pid,FFN_Unit[pid*3],selected,level,tier)
     endif
     if valid and FFN_Unit[pid*3+2]!=null then
+        set FFL_Error[pid]="Freelancer progression"
         set valid=FFL_PrepareHero(pid,FFN_Unit[pid*3+2],0,FFL_Val(pid,4,4),FFL_Val(pid,4,12))
     endif
     if valid then
-        set valid=FFL_PlayerState(pid,false) and FFL_PrepareGaya(pid)
+        set FFL_Error[pid]="player progression"
+        set valid=FFL_PlayerState(pid,false)
+    endif
+    if valid then
+        set FFL_Error[pid]="Gaya progression"
+        set valid=FFL_PrepareGaya(pid)
     endif
     // Prepare dormant bag effects before any final quick/equipment positions fill.
     loop
         exitwhen i>=FFP_Count[pid] or not valid
         set FFL_ItemKey[pid*57+i]=GetHandleId(FFN_Item[pid*57+i])
         if FFP_Holder[pid*57+i]==2 then
+            set FFL_Error[pid]="prepare bag slot "+I2S(FFP_Slot[pid*57+i]+1)+" item="+I2S(FFP_Raw[pid*57+i])
             set valid=FFL_PrepareStored(pid,i)
         endif
         set i=i+1
@@ -625,6 +669,7 @@ function FFL_Apply takes integer pid returns boolean
             exitwhen i>=FFP_Count[pid] or not valid
             if (placementPass==0 and FFP_Holder[pid*57+i]==3) or (placementPass==1 and FFP_Holder[pid*57+i]!=3) then
                 set FFL_ItemKey[pid*57+i]=GetHandleId(FFN_Item[pid*57+i])
+                set FFL_Error[pid]="place holder="+I2S(FFP_Holder[pid*57+i])+" slot="+I2S(FFP_Slot[pid*57+i]+1)+" item="+I2S(FFP_Raw[pid*57+i])
                 set valid=FFL_Place(pid,i)
             endif
             set i=i+1
@@ -643,7 +688,10 @@ function FFL_Apply takes integer pid returns boolean
     endif
     call FFL_Guard(false)
     if not valid then
-        call FFL_Fail(pid,"progression, metadata or item placement; "+FFN_Error[pid])
+        if FFN_Error[pid]!="" then
+            set FFL_Error[pid]=FFL_Error[pid]+"; "+FFN_Error[pid]
+        endif
+        call FFL_Fail(pid,FFL_Error[pid])
         return false
     endif
     if not FRC_Start(pid) then

@@ -2,10 +2,11 @@
 
 ## Current milestone
 
-Private DE provides the complete file save/restart/fresh-character load path
+Private DF provides the complete file save/restart/fresh-character load path
 on BT gameplay. Warcraft verified exact file export/readback of a real
-1,010-character profile. DE corrects captured difficulty tiers; re-export before
-the pending restart/fresh-load and multiplayer tests.
+1,010-character profile. DE reached creation but failed setup; manual cleanup
+removed created objects without consuming the load. DF reports the exact setup
+failure; reuse the DE export for the pending fresh-load test.
 Complete the round trip and size/timing measurements before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.

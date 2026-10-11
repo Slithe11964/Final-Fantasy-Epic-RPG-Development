@@ -81,6 +81,23 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_failed_skill_reports_job_rank_and_allows_retry(self):
+        self.e['SelectHeroSkill']=lambda hero, raw: None
+        self.assertFalse(self.apply())
+        self.assertIn('job 11 skill 1 wanted=11 actual=0',self.messages[-1])
+        self.assertIn('load unused; retry allowed',self.messages[-1])
+        self.assertEqual(self.e['FFL_Phase'][0],0)
+
+    def test_failed_research_reports_exact_readback_before_restore(self):
+        original=self.e['SetPlayerTechResearched']
+        def research(owner, raw, value):
+            if value==0:original(owner,raw,value)
+        self.e['SetPlayerTechResearched']=research
+        self.assertFalse(self.apply())
+        self.assertIn('research ',self.messages[-1])
+        self.assertIn('wanted=',self.messages[-1])
+        self.assertIn('actual=',self.messages[-1])
+
     def test_complete_readback_commit_and_one_load(self):
         self.assertTrue(self.apply(),self.messages);self.finish()
         self.assertTrue(self.e['FRC_Ready'][0],self.e['FRC_Error'][0])
