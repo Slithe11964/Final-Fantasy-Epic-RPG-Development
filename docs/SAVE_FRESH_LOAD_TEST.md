@@ -4,12 +4,11 @@ Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDD.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-DC wrote the complete file but did not report the readback result. DD replaces
-repeated alphabet scans with checked character lookup and prints progress after
-capture and before readback. This addresses suspected script-budget exhaustion;
-the engine result is still pending. File chunks use separate temporary player-name
-slots with checked headers, restoring every name after reading. Larger saves also
-need `Forsaken CU part N.txt` beside the main file.
+On 2026-10-11, DD exported a real Chemist profile and Warcraft read back all
+1,010 characters exactly. Restart/fresh-character loading is the next engine test.
+Checked character lookup replaced repeated alphabet scans. File chunks use separate
+temporary player-name slots with checked headers, restoring every name after reading.
+Larger saves also need `Forsaken CU part N.txt` beside the main file.
 
 ## One round trip
 

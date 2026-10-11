@@ -3,8 +3,8 @@
 ## Current milestone
 
 Private DD provides the complete file save/restart/fresh-character load path
-on BT gameplay. DC wrote the file but stopped before reporting readback. DD uses
-bounded character lookup and clearer export progress; engine acceptance is pending.
+on BT gameplay. Warcraft verified exact file export/readback of a real
+1,010-character profile; restart/fresh load and multiplayer acceptance remain pending.
 Complete the round trip and size/timing measurements before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
