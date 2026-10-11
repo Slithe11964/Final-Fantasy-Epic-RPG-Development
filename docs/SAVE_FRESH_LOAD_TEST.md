@@ -1,15 +1,16 @@
-# Private save/restart/fresh-load test - DG
+# Private save/restart/fresh-load test - DH
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDG.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDH.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
 Warcraft verified exact file export/readback of a real 1,010-character profile.
-DF identified the setup failure: Gaya ability rank3 was incorrectly used as
-purchase research level3, which Warcraft clamps to1. DG restores all three purchase
-flags as0/1 and restores their ability ranks separately, matching the legacy loader.
+DG passed Gaya setup, then failed pickup while preparing bag slot2. Fresh hero
+creation had omitted Forsaken backpack/equipment abilities normally added by the
+guarded gameplay handlers. DH adds those abilities directly to each created hero
+and verifies inventory capacity before placement; the Gaya flag/rank fix remains.
 Complete loading remains unverified. Reuse the file exported in DE: restart Warcraft,
-start DG with the same settings, leave the starter untouched and enter `-newload`
+start DH with the same settings, leave the starter untouched and enter `-newload`
 within fifteen minutes.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
@@ -17,12 +18,12 @@ every name after reading. Larger saves need `Forsaken CU part N.txt` beside the 
 
 ## One round trip
 
-1. Fully exit Warcraft, then start DG with the same account, difficulty and Speedrun setting as the character.
+1. Fully exit Warcraft, then start DH with the same account, difficulty and Speedrun setting as the character.
    Load your old character with `-loadf` or the usual legacy code command. Put gear in both
    equipment and the bag, and include quick-slot, Gaya and house items.
 2. Stand still and enter `-newsave`. Wait for **file written and read back exactly**.
    Record the reported character count; a capture failure leaves the file unverified.
-3. Fully exit Warcraft, restart DG with the same settings, and use `-newload`
+3. Fully exit Warcraft, restart DH with the same settings, and use `-newload`
    within the first fifteen minutes. Leave the starting character, Gaya and house
    untouched: no items, purchases, job changes or leveling before loading.
 4. Stand still until **PASS: exact full profile after fresh load** or an error.
@@ -39,7 +40,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DG game to
+After the restart round trip, use that same file in a real multiplayer DH game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 Single-player transfer and mocked checks do not establish multiplayer performance.
 

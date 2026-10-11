@@ -226,6 +226,17 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
     local integer intel=10
     local integer variant=FFL_Val(pid,4,14)
     local integer jobIndex=identity-1
+    // Normal Forsaken setup handlers are guarded during fresh creation.
+    call UnitAddAbility(hero,'fBag')
+    call UnitMakeAbilityPermanent(hero,true,'fBag')
+    call UnitAddAbility(hero,'fGer')
+    call UnitMakeAbilityPermanent(hero,true,'fGer')
+    call UnitAddAbility(hero,'ASpc')
+    call UnitMakeAbilityPermanent(hero,true,'ASpc')
+    if UnitInventorySize(hero)!=6 or UnitExtendedInventorySize(hero)!=30 or GetUnitAbilityLevel(hero,'fGer')==0 then
+        set FFL_Error[pid]="hero inventory setup quick="+I2S(UnitInventorySize(hero))+" bag="+I2S(UnitExtendedInventorySize(hero))+" equipment="+I2S(GetUnitAbilityLevel(hero,'fGer'))
+        return false
+    endif
     call SetUnitAbilityLevel(hero,'A02F',tier+1)
     call SetHeroLevel(hero,level,false)
     if tier==1 then

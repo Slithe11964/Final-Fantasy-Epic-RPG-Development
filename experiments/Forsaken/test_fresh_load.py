@@ -29,6 +29,7 @@ class FreshLoadTests(unittest.TestCase):
                             if v is i:del u[kind][k]
         def add(u,i):
             if self.fail_place:return False
+            if i['raw']=='f003' and not u['abilities'].get('fGer'):return False
             for kind,count in [('quick',6),('bag',30)]:
                 for slot in range(count):
                     if slot not in u.setdefault(kind,{}):u[kind][slot]=i;return True
@@ -58,6 +59,8 @@ class FreshLoadTests(unittest.TestCase):
             SetHeroLevel=setlevel,SelectHeroSkill=learn,SetUnitAbilityLevel=setability,
             GetHeroStr=lambda u,b:u['str'],GetHeroAgi=lambda u,b:u['agi'],GetHeroInt=lambda u,b:u['intel'],
             SetHeroStr=lambda u,v,b:u.__setitem__('str',v),SetHeroAgi=lambda u,v,b:u.__setitem__('agi',v),SetHeroInt=lambda u,v,b:u.__setitem__('intel',v),
+            UnitMakeAbilityPermanent=lambda *args:None,UnitInventorySize=lambda u:6,
+            UnitExtendedInventorySize=lambda u:30 if 'abilities' not in u or u['abilities'].get('fBag') else 0,
             UnitAddAbility=lambda u,r:u['abilities'].__setitem__(r,1),UnitRemoveAbility=lambda u,r:u['abilities'].pop(r,None),
             BlzGetItemAbilityByIndex=lambda i,n:i['abilities'][n] if n<len(i['abilities']) and any(v is i for u in self.f.units for kind in (('equipment',) if i['raw']=='f003' else ('quick','equipment')) for v in u[kind].values()) else None,
             BlzGetAbilityId=lambda a:a,BlzGetItemAbility=lambda i,r:r if r in i['abilities'] else None,
@@ -81,6 +84,13 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_inventory_setup_failure_precedes_item_pickup_and_allows_retry(self):
+        self.e['UnitExtendedInventorySize']=lambda hero:0 if 'abilities' in hero else 30
+        self.assertFalse(self.apply())
+        self.assertIn('hero inventory setup quick=6 bag=0',self.messages[-1])
+        self.assertIn('load unused; retry allowed',self.messages[-1])
+        self.assertEqual(self.e['FFL_Phase'][0],0)
+
     def test_gaya_rank_three_uses_single_level_purchase_research(self):
         from test_save_capture import raw
         original=self.e['SetPlayerTechResearched']
