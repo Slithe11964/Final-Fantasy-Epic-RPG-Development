@@ -32,21 +32,27 @@ class TransportTests(unittest.TestCase):
         self.preloads = []
         self.messages = []
         self.send_ok = True
+        self.tooltips = {}
+        self.generated = ""
         def preload(path):
             if self.file is not None:
-                self.names[self.local] = self.file
+                for slot,position in enumerate(range(0,len(self.file),160)):
+                    self.tooltips[self.e['FST_FileAbility'][slot]]=self.file[position:position+160]
         def send(prefix, packet):
             self.sent.append((prefix, packet))
             return self.send_ok
         def genend(path):
             chunks = []
+            self.generated='function PreloadFiles takes nothing returns nothing\n call PreloadStart()\n'+''.join(' call Preload( "'+line+'" )\n' for line in self.preloads)+' call PreloadEnd(0.)\nendfunction\n'
             for line in self.preloads:
                 self.assertLessEqual(len(line), 255, "Preload truncates the generated JASS injection")
-                match = re.search(r'SetPlayerName\(GetLocalPlayer\(\), (?:GetPlayerName\(GetLocalPlayer\(\)\)\+)?"([A-Za-z0-9$#]+)"', line)
+                match = re.search(r'BlzSetAbilityTooltip\([0-9]+, "([A-Za-z0-9$#]+)", 0\)', line)
                 if match: chunks.append(match[1])
             self.file = ''.join(chunks)
-        natives = dict(I2S=str, I2R=float, R2I=int, Player=lambda p: p, GetLocalPlayer=lambda: self.local,
+        natives = dict(I2S=lambda v: str(int.from_bytes(v.encode(),"big")) if isinstance(v,str) and len(v)==4 else str(v), I2R=float, R2I=int, Player=lambda p: p, GetLocalPlayer=lambda: self.local,
                        GetPlayerName=lambda p: self.names[p],
+                       BlzGetAbilityTooltip=lambda raw,level: self.tooltips.get(raw,"Original "+str(raw)),
+                       BlzSetAbilityTooltip=lambda raw,text,level: self.tooltips.__setitem__(raw,text),
                        SetPlayerName=lambda p, name: self.names.__setitem__(p, name),
                        TimerGetElapsed=lambda t: self.now, CreateTimer=object,
                        TimerStart=lambda *a: None, CreateTrigger=object,
@@ -198,13 +204,19 @@ class TransportTests(unittest.TestCase):
         encoded=self.file
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
         self.assertIn('read back exactly',self.messages[-1])
-        self.assertNotIn('GetPlayerName(GetLocalPlayer())+',self.preloads[0])
-        self.assertIn('GetPlayerName(GetLocalPlayer())+',self.preloads[1])
+        self.assertTrue(all('GetPlayerName' not in line for line in self.preloads))
+        self.assertTrue(all(value=='Original '+str(raw) for raw,value in self.tooltips.items()))
         self.assertEqual(self.names[0],'Player0')
         self.e['Preloader']=lambda path: None
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
         self.assertIn('file did not execute',self.messages[-1])
         self.assertEqual(self.names[0],'Player0')
+
+    def test_generated_file_contains_one_native_assignment_per_chunk(self):
+        self.assertTrue(self.e['FST_Write'](0,self.file,42))
+        self.assertEqual(self.generated.count('call BlzSetAbilityTooltip('),(len(self.file)+159)//160)
+        self.assertNotIn('call SetPlayerName(',self.generated)
+        (HERE.parents[1]/'build/save-file-DB.j').write_text(self.generated)
 
     def test_transfer_reading_includes_sync_latency_but_not_file_read(self):
         self.e['FST_Request'](0, 42)

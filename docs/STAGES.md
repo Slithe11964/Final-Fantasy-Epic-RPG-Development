@@ -98,3 +98,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DA | Private save files initialize readback directly and report non-execution or returned length after CZ produced a valid disk profile. |
 | ASE | Talent rows named Beginner, Master, Ultimate, Legendary |
 | ASF | Tooling: one build makes both the Reforged and the 1.29.2 map (same content as ASE) |
+| DB | Private file readback assembles separate temporary local fields and restores them, replacing DA’s player-name accumulation that returned only the final chunk. |

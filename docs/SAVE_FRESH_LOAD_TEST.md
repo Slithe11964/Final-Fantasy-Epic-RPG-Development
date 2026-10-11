@@ -1,14 +1,14 @@
-# Private save/restart/fresh-load test - DA
+# Private save/restart/fresh-load test - DB
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDA.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDB.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-Meta Fragment validation and file-line truncation are fixed. CZ's disk payload
-validates at 1,010 characters, but engine readback still failed; the user's legacy
-file load works. DA initializes the readback in the file's first chunk, avoids empty
-player-name setup, and distinguishes non-execution from length/content mismatch.
-Repeat `-newsave`; restart/loading follows only after exact readback succeeds.
+Meta Fragment validation and file-line truncation are fixed. DA's valid 1,010-character
+disk profile returned only its final 114-character chunk in Warcraft. DB writes chunks
+to separate local ability-tooltip fields, joins them after file execution, and restores
+all original tooltips immediately. The generated file itself compiles; engine acceptance
+is pending. Repeat `-newsave` before restarting/loading.
 
 ## One round trip
 
