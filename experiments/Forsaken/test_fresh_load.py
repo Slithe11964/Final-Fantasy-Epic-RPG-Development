@@ -39,8 +39,7 @@ class FreshLoadTests(unittest.TestCase):
                 for slot,v in list(u[kind].items()):
                     if v is i:del u[kind][slot]
         def equip(u,i):
-            for slot,v in list(u['quick'].items()):
-                if v is i:del u['quick'][slot]
+            detach(u,i)
             u['equipment'][3]=i;return True
         def setlevel(u,level,show):u['level']=level;u['points']=level
         def learn(u,raw):
@@ -84,6 +83,23 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_stored_gear_pickup_may_enter_bag_before_equipping(self):
+        original=self.e['UnitAddItem']
+        pickups=[]
+        def add(holder,carried):
+            if carried['raw']=='f003' and not pickups:
+                holder['bag'][0]=carried
+                pickups.append(carried)
+                return True
+            return original(holder,carried)
+        self.e['UnitAddItem']=add
+        self.assertTrue(self.apply(),self.messages)
+        self.assertEqual(len(pickups),1)
+        self.finish()
+        self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0],self.messages)
+
     def test_inventory_setup_failure_precedes_item_pickup_and_allows_retry(self):
         self.e['UnitExtendedInventorySize']=lambda hero:0 if 'abilities' in hero else 30
         self.assertFalse(self.apply())

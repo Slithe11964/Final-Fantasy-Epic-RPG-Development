@@ -105,3 +105,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DF | Fresh loading reports the exact failed setup step after DE reached creation and manual cleanup preserved retry eligibility. |
 | DG | Fresh loading restores Gaya purchase research as flags and ability ranks separately, fixing DF’s rank3 versus research1 failure. |
 | DH | Fresh creation directly enables and checks Forsaken hero backpack/equipment abilities after DG failed the first stored-item pickup. |
+| DI | Stored-item preparation verifies pickup across quick, bag and equipment while keeping exact final placement and distinguishing native rejection. |

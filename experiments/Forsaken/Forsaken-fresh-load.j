@@ -460,16 +460,49 @@ function FFL_StripStorage takes item carried returns boolean
     return true
 endfunction
 
+function FFL_Holds takes unit holder,item carried returns boolean
+    local integer slot=0
+    loop
+        exitwhen slot>=6
+        if UnitItemInSlot(holder,slot)==carried then
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=UnitExtendedInventorySize(holder)
+        if UnitItemInBagSlot(holder,slot)==carried then
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    set slot=0
+    loop
+        exitwhen slot>=9
+        if UnitItemInEquipmentSlot(holder,ConvertLoadoutSlot(slot))==carried then
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    return false
+endfunction
+
 // Newly created stored items first become readable in the real holder's active slots.
 function FFL_PrepareStored takes integer pid,integer ordinal returns boolean
     local integer index=pid*57+ordinal
     local unit holder=FFN_Unit[pid*3]
     local item carried=FFN_Item[index]
     local integer canonical=LoadInteger(ForsakenGearTypes,4,GetItemTypeId(carried))
+    local boolean accepted=false
     local integer equipmentSlot=LoadInteger(ForsakenGearTypes,1,canonical)
-    call UnitAddItem(holder,carried)
-    if UnitItemInSlot(holder,0)!=carried then
-        set FFL_Error[pid]=FFL_Error[pid]+" pickup readback"
+    set accepted=UnitAddItem(holder,carried)
+    if not FFL_Holds(holder,carried) then
+        if accepted then
+            set FFL_Error[pid]=FFL_Error[pid]+" pickup accepted but missing from quick/bag/equipment"
+        else
+            set FFL_Error[pid]=FFL_Error[pid]+" native pickup rejected"
+        endif
         return false
     endif
     if canonical!=0 then
@@ -487,7 +520,7 @@ function FFL_PrepareStored takes integer pid,integer ordinal returns boolean
         call UnitUnequipItem(holder,carried)
     endif
     call UnitRemoveItem(holder,carried)
-    if IsItemOwned(carried) or UnitItemInSlot(holder,0)!=null then
+    if IsItemOwned(carried) or FFL_Holds(holder,carried) then
         set FFL_Error[pid]=FFL_Error[pid]+" detach readback"
         return false
     endif

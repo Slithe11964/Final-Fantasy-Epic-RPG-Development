@@ -2,11 +2,11 @@
 
 ## Current milestone
 
-Private DH provides the complete file save/restart/fresh-character load path
+Private DI provides the complete file save/restart/fresh-character load path
 on BT gameplay. Warcraft verified exact file export/readback of a real
-1,010-character profile. DG passed Gaya setup but failed bag-item pickup. DH explicitly enables and checks
-Forsaken backpack/equipment on created heroes before placement; reuse the DE export
-for the pending fresh-load test.
+1,010-character profile. DH confirmed inventory setup but still failed an offhand Tome's quick-slot pickup
+check. DI verifies temporary pickup across quick/bag/equipment while preserving
+exact final slots and metadata; reuse the DE export for fresh-load testing.
 Complete the round trip and size/timing measurements before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
