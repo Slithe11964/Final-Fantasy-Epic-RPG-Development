@@ -599,7 +599,11 @@ def item_accuracy_initialization(base, mapping):
 
 def job_overlay(original):
     extra = (HERE / 'Forsaken-job.j').read_text(encoding='utf-8')
-    text = original.replace('endglobals','    item array ForsakenSharedBag\nendglobals',1)
+    # JassHelper needs the library owning the stored-item helpers declared explicitly.
+    first, rest = original.split('\n', 1)
+    if not re.search(r'\bTUnit\b', first):
+        first += ', TUnit' if ' requires ' in first else ' requires TUnit'
+    text = (first+'\n'+rest).replace('endglobals','    item array ForsakenSharedBag\nendglobals',1)
     text = text.replace('function Trig_Job_Change_Actions takes',
                             extra + '\n\nfunction Trig_Job_Change_Actions takes', 1)
     text = text.replace('    local group l_tempGroup\n    set udg_SelectedJobId',

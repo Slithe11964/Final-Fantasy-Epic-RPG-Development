@@ -61,3 +61,12 @@ Live-swap recovery modules are not imported. The private builder uses the checke
 regression expectations and trigger names from BT; newer gameplay modules and
 their tests stay outside this private build. Unrelated normal-map edits stay
 out of this gameplay checkpoint. Exact fresh-load profile verification passed; multiplayer acceptance is pending.
+
+## World Editor saving
+
+Forsaken's `Job` library must list `TUnit` in its `requires` line because the
+stored-item helpers belong to `TUnit`. The gameplay and round-trip builders now
+add this dependency. For the user's r17 editor save, the separate
+`release/Forsaken/FFERPG_0.9.7.3-r17-editor-fixed.w3x` preserves the saved Intro and
+scenario description, changing only this dependency. Open it in World Editor and
+save successfully before playing: its runtime still comes from the failed save.

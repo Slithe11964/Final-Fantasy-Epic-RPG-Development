@@ -1178,6 +1178,7 @@ class ForsakenTests(unittest.TestCase):
 
     def test_job_switch_moves_same_handles_bag_and_both_rings_and_round_trip(self):
         overlay=build.job_overlay((build.ROOT/'src/triggers/03 Jobs and progression/Job.j').read_text(encoding='utf-8'))
+        self.assertRegex(overlay.splitlines()[0],r'\bTUnit\b')
         fs=functions(overlay)
         action=fs['Trig_Job_Change_Actions']
         self.assertLess(action.index('set udg_PlayerHero'),action.index('call Forsaken_TransferSharedInventory'))

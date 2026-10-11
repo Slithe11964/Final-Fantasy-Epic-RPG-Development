@@ -68,6 +68,12 @@ def main():
         for path in (work/'src/triggers').rglob('*.j'):
             if path not in kept:
                 path.unlink()  # Export does not delete modules absent from the selected base.
+    job_path=work/'src/triggers/03 Jobs and progression/Job.j'
+    job_source=job_path.read_text()
+    first,rest=job_source.split('\n',1)
+    if not re.search(r'\bTUnit\b',first):
+        first+=', TUnit'
+        job_path.write_bytes((first+'\n'+rest).replace('\n','\r\n').encode())
     previous=base
     for module,file in MODULES:
         if module=='ForsakenSaveCapture':source=capture_source(aliases)
