@@ -1,23 +1,24 @@
-# Private save/restart/fresh-load test - DD
+# Private save/restart/fresh-load test - DE
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDD.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDE.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-On 2026-10-11, DD exported a real Chemist profile and Warcraft read back all
-1,010 characters exactly. Restart/fresh-character loading is the next engine test.
-Checked character lookup replaced repeated alphabet scans. File chunks use separate
-temporary player-name slots with checked headers, restoring every name after reading.
-Larger saves also need `Forsaken CU part N.txt` beside the main file.
+DD verified exact file export/readback of a real 1,010-character profile, then
+fresh loading rejected its incorrectly captured difficulty zero. DE uses the legacy
+writer's save tiers consistently: Simple=1, Easy/Normal/Hard=2, Inferno=3; Nightmare
+retains the character's saved tier. Export again in DE before the restart test.
+File chunks use separate temporary player-name slots with checked headers, restoring
+every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
 
 ## One round trip
 
-1. Fully exit Warcraft, then start DD with the same account, difficulty and Speedrun setting as the character.
+1. Fully exit Warcraft, then start DE with the same account, difficulty and Speedrun setting as the character.
    Load your old character with `-loadf` or the usual legacy code command. Put gear in both
    equipment and the bag, and include quick-slot, Gaya and house items.
 2. Stand still and enter `-newsave`. Wait for **file written and read back exactly**.
    Record the reported character count; a capture failure leaves the file unverified.
-3. Fully exit Warcraft, restart DD with the same settings, and use `-newload`
+3. Fully exit Warcraft, restart DE with the same settings, and use `-newload`
    within the first fifteen minutes. Leave the starting character, Gaya and house
    untouched: no items, purchases, job changes or leveling before loading.
 4. Stand still until **PASS: exact full profile after fresh load** or an error.
@@ -34,7 +35,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DD game to
+After the restart round trip, use that same file in a real multiplayer DE game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 Single-player transfer and mocked checks do not establish multiplayer performance.
 

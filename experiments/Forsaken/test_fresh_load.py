@@ -101,6 +101,21 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
         self.e['FFL_Tick']();self.assertTrue(self.e['udg_HasLoadedCode'][0])
 
+    def test_inferno_export_tier_survives_complete_fresh_load(self):
+        import save_vnext as codec
+        envelope = codec.decode(self.f.base.encoded)
+        sections = tuple(codec.Section(section.id, section.version, section.required,
+            codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(section.payload)]))
+            if section.id == 4 else section for section in envelope.sections)
+        self.f.base.encoded = codec.encode(codec.Envelope(envelope.account_hash, sections))
+        self.e['udg_Difficulty'] = 5
+        self.assertTrue(self.apply(), self.messages)
+        self.finish()
+        self.assertEqual(self.e['FRC_Result'][0], self.f.base.encoded)
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0])
+        self.assertEqual(self.e['udg_CodeDifficulty'][1], 3)
+
     def test_failed_placement_restores_state_and_can_retry(self):
         before=dict(self.f.base.fixture.level_table);techs=dict(self.f.base.fixture.techs)
         self.fail_place=True;self.assertFalse(self.apply());self.assertEqual(self.e['FFL_Phase'][0],0)

@@ -7,6 +7,7 @@ globals
     boolean array FFP_Ready
     string array FFP_Error
     string array FFP_Code
+    integer array FFP_GameDifficulty
     integer array FFP_Account
     integer array FFP_Count
     integer array FFP_Raw
@@ -35,6 +36,7 @@ function FFP_Clear takes integer pid returns nothing
     set FFP_Gaya[pid]=null
     set FFP_House[pid]=null
     set FFP_Account[pid]=0
+    set FFP_GameDifficulty[pid]=0
     set FFP_Count[pid]=0
     loop
         exitwhen i>=16
@@ -268,8 +270,11 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
         elseif LoadInteger(FFP_Values,pid*16+4,4)>99 then
             set FFP_Error[pid]="saved Freelancer exceeds the current engine cap99"
             set valid=false
-        elseif LoadInteger(FFP_Values,pid*16+4,1)!=udg_Difficulty then
-            set FFP_Error[pid]="CU requires matching saved and game difficulty"
+        elseif LoadInteger(FFP_Values,pid*16+4,1)>3 then
+            set FFP_Error[pid]="unsupported saved difficulty tier"
+            set valid=false
+        elseif udg_Difficulty!=6 and LoadInteger(FFP_Values,pid*16+4,1)!=FRC_Difficulty(pid) then
+            set FFP_Error[pid]="saved difficulty tier "+I2S(LoadInteger(FFP_Values,pid*16+4,1))+" does not match this game tier "+I2S(FRC_Difficulty(pid))+"; export again if this file was made before DE"
             set valid=false
         elseif (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
             set FFP_Error[pid]="saved Speedrun mode does not match this game"
@@ -288,6 +293,7 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
     set FFP_Starter[pid]=udg_PlayerHero[pid+1]
     set FFP_Gaya[pid]=udg_SpiritOfGaya[pid+1]
     set FFP_House[pid]=udg_PlayerHouse[pid+1]
+    set FFP_GameDifficulty[pid]=udg_Difficulty
     set FFP_Ready[pid]=true
     return true
 endfunction
@@ -302,7 +308,7 @@ function FFP_Recheck takes integer pid,boolean windowOpen returns boolean
     if not FFP_Eligible(pid,windowOpen) then
         call FFP_Clear(pid)
         return false
-    elseif FFP_Account[pid]!=FRC_Account(pid) or FFP_Starter[pid]!=udg_PlayerHero[pid+1] or FFP_Gaya[pid]!=udg_SpiritOfGaya[pid+1] or FFP_House[pid]!=udg_PlayerHouse[pid+1] or LoadInteger(FFP_Values,pid*16+4,1)!=udg_Difficulty or (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
+    elseif FFP_Account[pid]!=FRC_Account(pid) or FFP_Starter[pid]!=udg_PlayerHero[pid+1] or FFP_Gaya[pid]!=udg_SpiritOfGaya[pid+1] or FFP_House[pid]!=udg_PlayerHouse[pid+1] or FFP_GameDifficulty[pid]!=udg_Difficulty or (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
         set FFP_Error[pid]="player or game context changed before creation"
         call FFP_Clear(pid)
         return false

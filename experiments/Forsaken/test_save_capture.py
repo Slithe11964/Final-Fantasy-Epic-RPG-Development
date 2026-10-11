@@ -70,7 +70,7 @@ class CaptureTests(unittest.TestCase):
             udg_PlayerHero=self.players, udg_SpiritOfGaya=self.gayas, udg_PlayerHouse=self.houses,
             udg_FreelancerHero=self.frees, udg_JobHeroHash=self.job_table, udg_JobLevelHash=self.level_table,
             udg_JobUnitType=self.jobs, udg_PlayerName=self.names,
-            udg_CodeDifficulty=JassArray(lambda: 2), udg_NewGamePlusLevel=JassArray(lambda: 0),
+            udg_Difficulty=2, udg_CodeDifficulty=JassArray(lambda: 2), udg_NewGamePlusLevel=JassArray(lambda: 0),
             udg_MiracleStage=JassArray(lambda: 1), udg_MetaFragments=JassArray(lambda: 2),
             udg_SpeedrunLevel=JassArray(lambda: 3), udg_LegendaryGuardianForce={0}, udg_CheaterForce=set(),
             udg_TitleForce=self.title_forces, udg_SaveFlagForce=self.armory_forces,
@@ -99,6 +99,17 @@ class CaptureTests(unittest.TestCase):
             if self.e['FRC_Phase'][0] == 0: break
             self.tick()
         self.assertEqual(self.e['FRC_Phase'][0], 0)
+
+    def test_save_tier_matches_legacy_writer_for_all_game_difficulties(self):
+        self.start()
+        self.e['udg_CodeDifficulty'][1] = 0
+        for game, saved in [(1, 1), (2, 2), (3, 2), (4, 2), (5, 3), (6, 0)]:
+            self.e['udg_Difficulty'] = game
+            self.assertEqual(self.e['FRC_Difficulty'](0), saved)
+            core = codec.read_pairs(self.e['FRC_Section'](0, 4))
+            self.assertEqual(dict(core)[1], saved)
+        self.e['udg_CodeDifficulty'][1] = 3
+        self.assertEqual(self.e['FRC_Difficulty'](0), 3)
 
     def test_full_capture_exact_slots_metadata_actual_jobs_and_flags_read_only(self):
         before = copy.deepcopy((self.hero, self.gaya, self.free, self.house, self.level_table, self.techs))

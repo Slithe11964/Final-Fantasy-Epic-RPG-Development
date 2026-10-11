@@ -120,8 +120,23 @@ class FreshPlanTests(unittest.TestCase):
     def test_saved_mode_must_match_game(self):
         self.e['udg_SpeedrunMode'] = True; self.assertFalse(self.build())
         self.assertIn('Speedrun', self.e['FFP_Error'][0])
-        self.e['udg_SpeedrunMode'] = False; self.e['udg_Difficulty'] = 3
+        self.e['udg_SpeedrunMode'] = False; self.e['udg_Difficulty'] = 5
         self.assertFalse(self.build()); self.assertIn('difficulty', self.e['FFP_Error'][0])
+
+    def test_inferno_tier_matches_vote_index_and_failed_attempt_allows_retry(self):
+        inferno = self.change(4, lambda text: codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(text)]))
+        self.e['udg_Difficulty'] = 5
+        self.assertFalse(self.build())
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertTrue(self.build(inferno), self.e['FFP_Error'][0])
+        self.assertTrue(self.e['FFP_Recheck'](0, True))
+        self.e['udg_Difficulty'] = 4
+        self.assertFalse(self.e['FFP_Recheck'](0, True))
+        self.e['udg_Difficulty'] = 6
+        self.assertTrue(self.build(inferno))
+        for difficulty in (2, 3, 4):
+            self.e['udg_Difficulty'] = difficulty
+            self.assertTrue(self.build())
 
     def test_codec_accepted_profile_is_not_replaced_by_preflight(self):
         self.assertTrue(self.e['FSC_Decode'](0, self.encoded, self.e['FRC_Account'](0), True))

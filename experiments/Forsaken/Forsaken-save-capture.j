@@ -34,6 +34,18 @@ function FRC_Account takes integer pid returns integer
     return ModuloInteger(hashed,1048576)
 endfunction
 
+// Preserve the legacy save tiers rather than the separate difficulty vote indexes.
+function FRC_Difficulty takes integer pid returns integer
+    if udg_Difficulty==6 then
+        return udg_CodeDifficulty[pid+1]
+    elseif udg_Difficulty>=5 then
+        return 3
+    elseif udg_Difficulty<=1 then
+        return 1
+    endif
+    return 2
+endfunction
+
 function FRC_Pair takes integer identity,integer value returns string
     if identity<=0 or value<0 then
         return "!"
@@ -263,7 +275,7 @@ function FRC_Section takes integer pid,integer sid returns string
         if udg_MiracleStage[0]!=-1 then
             set miracle=udg_MiracleStage[0]
         endif
-        set body=FRC_Pair(1,udg_CodeDifficulty[pid+1])+FRC_Pair(2,GetPlayerState(owner,PLAYER_STATE_RESOURCE_GOLD))+FRC_Pair(3,GetPlayerState(owner,PLAYER_STATE_RESOURCE_LUMBER))+FRC_Pair(4,level)
+        set body=FRC_Pair(1,FRC_Difficulty(pid))+FRC_Pair(2,GetPlayerState(owner,PLAYER_STATE_RESOURCE_GOLD))+FRC_Pair(3,GetPlayerState(owner,PLAYER_STATE_RESOURCE_LUMBER))+FRC_Pair(4,level)
         set body=body+FRC_Pair(5,udg_NewGamePlusLevel[pid+1])+FRC_Pair(6,miracle)+FRC_Pair(7,udg_MetaFragments[pid+1]+1)+FRC_Pair(8,udg_SpeedrunLevel[pid+1])
         if IsPlayerInForce(owner,udg_LegendaryGuardianForce) then
             set body=body+FRC_Pair(9,1)
