@@ -90,3 +90,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | CV | Private fresh-load build added stored-item activation preparation, superseded before playtesting by CW with Freelancer skill-choice handling. |
 | CW | Private real-character file save/restart/fresh-load prototype ready for engine testing, with exact full-profile verification and retryable attempt cleanup. |
 | ASB | From your editor save ASA (bigger Shipyard region): Esc closes the Bazaar panels; Armory and Chronicle counters also try the 1.29.2 tooltip level so they can show in classic |
+| CX | Private full-character round trip now reports capture validation details to identify the real export failure. |

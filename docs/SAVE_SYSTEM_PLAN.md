@@ -2,8 +2,9 @@
 
 ## Current milestone
 
-Private CW provides the first complete file save/restart/fresh-character load path
-on BT gameplay. Engine testing and real size/timing measurements are next; public
+Private CX provides the complete file save/restart/fresh-character load path
+on BT gameplay with precise capture rejection messages. CW rejected the real export;
+identify that field, then complete the round trip and size/timing measurements. Public
 new-format saving remains off. Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
 

@@ -12,6 +12,10 @@ BT_TEST_FILES=('test_armory_catalog.py','test_bazaar_frames.py','test_chronicles
 
 def align_bt_tests(work):
     # Gameplay sources are exported from BT, so use its checked regression expectations.
+    names=subprocess.run(['git','ls-tree','--name-only',BT_TEST_REVISION+':tools/tests'],cwd=ROOT,capture_output=True,text=True,check=True).stdout.splitlines()
+    for path in (work/'tools/tests').glob('test_*.py'):
+        if path.name not in names:
+            path.unlink()  # This private BT workspace cannot test newer gameplay modules.
     for name in BT_TEST_FILES:
         result=subprocess.run(['git','show',BT_TEST_REVISION+':tools/tests/'+name],cwd=ROOT,capture_output=True,check=True)
         (work/'tools/tests'/name).write_bytes(result.stdout)
@@ -55,7 +59,15 @@ def main():
         result=subprocess.run([sys.executable,str(work/'tools'/tool),*map(str,values)],cwd=work,capture_output=True,text=True,errors='replace')
         logs.append(result.stdout+result.stderr);(scratch/'roundtrip-build.log').write_text('\n'.join(logs));print(result.stdout+result.stderr,flush=True)
         if result.returncode:raise ValueError('failed '+tool+'; retained '+str(scratch))
-    if not args.resume_work:run('export_sources.py',base,work/'src')
+    if not args.resume_work:
+        seed=subprocess.run(['git','show',BT_TEST_REVISION+':src/trigger-list.json'],cwd=ROOT,capture_output=True,check=True)
+        (work/'src/trigger-list.json').write_bytes(seed.stdout)
+        run('export_sources.py',base,work/'src')
+        entries=json.loads((work/'src/trigger-list.json').read_text())
+        kept={work/'src/triggers'/entry['folder']/(entry['name']+'.j') for entry in entries if entry.get('library')}
+        for path in (work/'src/triggers').rglob('*.j'):
+            if path not in kept:
+                path.unlink()  # Export does not delete modules absent from the selected base.
     previous=base
     for module,file in MODULES:
         if module=='ForsakenSaveCapture':source=capture_source(aliases)

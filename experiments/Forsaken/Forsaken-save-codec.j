@@ -2,6 +2,7 @@ library TForsakenSaveCodec
 // Isolated research codec. No triggers, gameplay writes, file IO or save routes.
 globals
     // Bounded scratch item projection; payloads remain authoritative.
+    string array FSC_Error
     integer array FSC_ItemCount
     integer array FSC_ItemOrdinal
     integer array FSC_ItemId
@@ -493,6 +494,7 @@ function FSC_Pairs takes integer ctx,integer sid,integer schemaVersion returns n
     local integer i=0
     local integer identity
     local integer value
+    local integer maximum
     call FlushChildHashtable(FSC_Seen,ctx*16+1)
     if count>2048 or (sid==3 and count>256) then
         set FSC_Ok[ctx]=false
@@ -511,6 +513,22 @@ function FSC_Pairs takes integer ctx,integer sid,integer schemaVersion returns n
         endif
         if not FSC_Mark(ctx,1,identity) then
             return
+        endif
+        set maximum=-1
+        if sid==4 then
+            set maximum=FSC_CoreMaximum(identity)
+            if schemaVersion==2 then
+                set maximum=FSC_Core2Maximum(identity)
+            endif
+        elseif sid==5 then
+            set maximum=FSC_GayaMaximum(identity)
+        elseif sid==6 then
+            set maximum=15
+        elseif sid==7 or sid==8 then
+            set maximum=1
+        endif
+        if maximum>=0 and value>maximum then
+            set FSC_Error[ctx]="section "+I2S(sid)+" field "+I2S(identity)+" value="+I2S(value)+" maximum="+I2S(maximum)
         endif
         if sid==2 then
             if value>100 then
@@ -607,13 +625,16 @@ function FSC_Profile takes integer ctx returns boolean
     local integer profileSchema=FSC_Spec[ctx*16+2]
     local integer selected=FSC_Core[ctx*16+13]
     local integer free=FSC_Core[ctx*16+4]
+    set FSC_Error[ctx]="profile section schema mismatch"
     if profileSchema!=FSC_Spec[ctx*16+4] or (profileSchema!=1 and profileSchema!=2) or (profileSchema==2 and FSC_HasEvidence[ctx]) then
         return false
     endif
     if profileSchema==2 then
+        set FSC_Error[ctx]="Freelancer level="+I2S(free)+" mastery="+I2S(FSC_Core[ctx*16+12])+" variant="+I2S(FSC_Core[ctx*16+14])
         if not FSC_MasteryValid(free,FSC_Core[ctx*16+12]) or ((free==0)!=(FSC_Core[ctx*16+14]==0)) then
             return false
         endif
+        set FSC_Error[ctx]="selected job="+I2S(selected)+" level="+I2S(FSC_JobLevel[ctx*23+selected])
         if (selected==0 and free<1) or (selected!=0 and FSC_JobLevel[ctx*23+selected]<1) then
             return false
         endif
@@ -621,6 +642,7 @@ function FSC_Profile takes integer ctx returns boolean
     loop
         exitwhen i>9
         if i!=2 and i!=4 and i!=3 and (i!=9 or FSC_HasEvidence[ctx]) and FSC_Spec[ctx*16+i]!=1 then
+            set FSC_Error[ctx]="missing required section "+I2S(i)
             return false
         endif
         set i=i+1
@@ -655,11 +677,13 @@ function FSC_Profile takes integer ctx returns boolean
         loop
             exitwhen i>8
             if FSC_Gaya[ctx*16+i]!=FSC_GayaMaximum(i) then
+                set FSC_Error[ctx]="mastered Gaya field "+I2S(i)+" value="+I2S(FSC_Gaya[ctx*16+i])+" wanted="+I2S(FSC_GayaMaximum(i))
                 return false
             endif
             set i=i+1
         endloop
     endif
+    set FSC_Error[ctx]="inventory metadata incomplete"
     return FSC_HasEvidence[ctx] or FSC_MetadataComplete[ctx]
 endfunction
 
@@ -727,6 +751,7 @@ function FSC_Parse takes integer ctx,string encoded,integer expectedAccount,bool
             set FSC_HasEvidence[ctx]=true
         endif
         set FSC_End[ctx]=sectionEnd
+        set FSC_Error[ctx]="section "+I2S(sid)+" record validation near offset "+I2S(FSC_Pos[ctx])
         call FSC_ValidateSection(ctx,sid,schemaVersion,flags==1,sectionSize)
         set FSC_End[ctx]=outerEnd
         set i=i+1
@@ -751,8 +776,11 @@ function FSC_Decode takes integer pid,string encoded,integer expectedAccount,boo
     endif
     call FSC_Clear(stage)
     call FSC_ClearSeen(stage)
+    set FSC_Error[stage]="profile envelope validation"
     set valid=FSC_Parse(stage,encoded,expectedAccount,requireProfile)
+    set FSC_Error[pid]=FSC_Error[stage]
     if valid then
+        set FSC_Error[pid]=""
         call FSC_Clear(active)
         set FSC_Account[active]=FSC_Account[stage]
         set FSC_Count[active]=FSC_Count[stage]

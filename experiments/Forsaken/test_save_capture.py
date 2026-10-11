@@ -201,6 +201,17 @@ class CaptureTests(unittest.TestCase):
         state = progression.snapshot(codec.decode(self.e['FRC_Result'][0]))
         self.assertEqual(state['core']['speedrun_mode'], 1)
 
+    def test_validation_failure_identifies_field_without_changing_character(self):
+        self.e['udg_SpeedrunLevel'][1] = 16
+        self.start(); self.finish()
+        self.assertFalse(self.e['FRC_Ready'][0])
+        self.assertIn('section 4 field 8 value=16 maximum=15', self.e['FRC_Error'][0])
+        self.assertIsNone(self.e['FRC_Result'][0])
+        self.e['udg_SpeedrunLevel'][1] = 3
+        self.start(); self.finish()
+        self.assertTrue(self.e['FRC_Ready'][0], self.e['FRC_Error'][0])
+        self.assertEqual(self.e['FSC_Error'][0], '')
+
     def test_account_hash_handles_minimum_signed_value(self):
         self.assertEqual(self.e['FRC_Account'](0), 123456789 % 1048576)
         self.names[1] = 'MIN'

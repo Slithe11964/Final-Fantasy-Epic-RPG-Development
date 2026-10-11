@@ -527,7 +527,7 @@ function FRC_Tick takes nothing returns nothing
         set encoded=FSC_Finish(pid,true)
         set FRC_WriterOwned[pid]=false
         if encoded==null then
-            call FRC_Stop(pid,"captured profile did not validate")
+            call FRC_Stop(pid,"captured profile did not validate: "+FSC_Error[pid])
             return
         endif
         set FRC_Result[pid]=encoded

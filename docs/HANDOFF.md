@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASB.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASB.w3x` | ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenCW.w3x` (private file save/restart/fresh-load test) | Complete prototype built; engine acceptance pending. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md; public new-format saving stays off. |
+| New save system | `release/Forsaken/...ForsakenCX.w3x` (private file save/restart/fresh-load test) | CW real export rejected; CX reports the field responsible. Engine acceptance pending. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md; public new-format saving stays off. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -51,7 +51,7 @@ Classic copy: `.\make_129.ps1 -Map release/<map>.w3x`. Details and failure handl
 
 ## Next
 
-1. Save system: test CW with one real file save/restart/fresh-character load and size/timing
-   measurements. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
+1. Save system: repeat CX export to identify the rejected field, then complete the real
+   save/restart/fresh-character load and size/timing measurements. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. New content on AS: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.
