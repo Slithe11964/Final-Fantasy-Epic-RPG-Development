@@ -6,8 +6,10 @@ Private DI completed the real file export/restart/fresh-load round trip on
 2026-10-11: Warcraft reported an exact full-profile match for the same
 1,010-character save. Observed transfer/validation:0.500 s; load/verify:3.148 s.
 The ~0 ms file-read result is limited by game-timer resolution.
-Next: real multiplayer delivery and shared-state verification using this file,
-plus visual checks of inventory and effects, before enabling public saves.
+Users also confirmed successful `-newsave`/`-newload` with different characters in
+a real multiplayer DI game. Multiplayer timings were not supplied.
+Next: collect multiplayer timings, verify loaded inventory/effects, and review
+failed-load retry and one-load/window enforcement before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 
 ## Format and scope

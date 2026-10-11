@@ -8,12 +8,13 @@ Engine milestone (2026-10-11): exact export/readback followed by restart and
 **PASS: exact full profile after fresh load** in DI, using the same real profile.
 Code length:1,010 characters. Reported file read:~0 ms (game-timer resolution);
 transfer/validation:0.500 s; load/verify:3.148 s. These are one observed run;
-real multiplayer delivery remains unverified. Visual gameplay checks remain useful.
+multiplayer timings were not supplied.
 
-Next: use the same file in a real multiplayer DI game with matching settings,
-leave the starter untouched and enter `-newload` within fifteen minutes.
-Confirm the result on both clients, inspect the loaded inventory and effects,
-and record the final timings. No new export or build is needed for this check.
+Multiplayer milestone (2026-10-11): users reported successful `-newsave` and
+`-newload` for different players' characters in a real DI multiplayer game.
+Next: record multiplayer code lengths/timings and visually check restored inventory
+and effects, then review failed-load retry and one-load/window enforcement.
+No new build is needed to collect these observations.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
 every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
@@ -44,7 +45,8 @@ ordered transfer/validation time, and complete load/readback time. File timing c
 show zero within one game frame; it is not a precise wall-clock IO measurement.
 After the restart round trip, use that same file in a real multiplayer DI game to
 measure multiplayer delivery and confirm that players see the same loaded state.
-Single-player transfer and mocked checks do not establish multiplayer performance.
+The successful multiplayer report establishes delivery for the tested characters;
+it does not provide multiplayer timing measurements.
 
 ## Implementation and failure handling
 
@@ -60,7 +62,8 @@ it before another load. An unsupported profile is rejected rather than partly lo
 Live-swap recovery modules are not imported. The private builder uses the checked BT
 regression expectations and trigger names from BT; newer gameplay modules and
 their tests stay outside this private build. Unrelated normal-map edits stay
-out of this gameplay checkpoint. Exact fresh-load profile verification passed; multiplayer acceptance is pending.
+out of this gameplay checkpoint. Exact fresh-load verification and user-reported multiplayer save/load passed;
+multiplayer timings and visual gameplay acceptance remain.
 
 ## World Editor saving
 
