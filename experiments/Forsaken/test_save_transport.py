@@ -34,7 +34,7 @@ class TransportTests(unittest.TestCase):
         self.send_ok = True
         def preload(path):
             if self.file is not None:
-                self.names[self.local] += self.file
+                self.names[self.local] = self.file
         def send(prefix, packet):
             self.sent.append((prefix, packet))
             return self.send_ok
@@ -42,7 +42,7 @@ class TransportTests(unittest.TestCase):
             chunks = []
             for line in self.preloads:
                 self.assertLessEqual(len(line), 255, "Preload truncates the generated JASS injection")
-                match = re.search(r'GetPlayerName\(GetLocalPlayer\(\)\)\+"([A-Za-z0-9$#]+)"', line)
+                match = re.search(r'SetPlayerName\(GetLocalPlayer\(\), (?:GetPlayerName\(GetLocalPlayer\(\)\)\+)?"([A-Za-z0-9$#]+)"', line)
                 if match: chunks.append(match[1])
             self.file = ''.join(chunks)
         natives = dict(I2S=str, I2R=float, R2I=int, Player=lambda p: p, GetLocalPlayer=lambda: self.local,
@@ -192,6 +192,19 @@ class TransportTests(unittest.TestCase):
         self.assertIn('readback failed', self.messages[-1])
         self.assertNotIn('read back exactly', self.messages[-1])
         self.assertEqual(self.names[0], 'Player0')
+
+    def test_file_initializes_readback_without_empty_player_name(self):
+        self.e['SetPlayerName'] = lambda p,name: self.names.__setitem__(p,name) if name else None
+        encoded=self.file
+        self.assertTrue(self.e['FST_Write'](0,encoded,42))
+        self.assertIn('read back exactly',self.messages[-1])
+        self.assertNotIn('GetPlayerName(GetLocalPlayer())+',self.preloads[0])
+        self.assertIn('GetPlayerName(GetLocalPlayer())+',self.preloads[1])
+        self.assertEqual(self.names[0],'Player0')
+        self.e['Preloader']=lambda path: None
+        self.assertTrue(self.e['FST_Write'](0,encoded,42))
+        self.assertIn('file did not execute',self.messages[-1])
+        self.assertEqual(self.names[0],'Player0')
 
     def test_transfer_reading_includes_sync_latency_but_not_file_read(self):
         self.e['FST_Request'](0, 42)

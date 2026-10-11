@@ -1,13 +1,14 @@
-# Private save/restart/fresh-load test - CZ
+# Private save/restart/fresh-load test - DA
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCZ.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDA.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-CX identified the inherited Meta Fragment cap; CY fixed that and reached file IO.
-CY's disk file lost characters because generated preload lines exceeded the engine
-limit. CZ uses shorter file-writing chunks. Repeat `-newsave` to replace the incomplete
-file; restart/loading follows only after exact file readback succeeds.
+Meta Fragment validation and file-line truncation are fixed. CZ's disk payload
+validates at 1,010 characters, but engine readback still failed; the user's legacy
+file load works. DA initializes the readback in the file's first chunk, avoids empty
+player-name setup, and distinguishes non-execution from length/content mismatch.
+Repeat `-newsave`; restart/loading follows only after exact readback succeeds.
 
 ## One round trip
 

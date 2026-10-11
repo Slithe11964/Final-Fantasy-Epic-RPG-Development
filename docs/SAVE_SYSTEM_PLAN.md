@@ -2,10 +2,10 @@
 
 ## Current milestone
 
-Private CZ provides the complete file save/restart/fresh-character load path
-on BT gameplay. Meta Fragment validation is fixed; CZ shortens file-writing chunks
-after CY exposed engine truncation. Repeat export, then complete the round trip and
-size/timing measurements. Public
+Private DA provides the complete file save/restart/fresh-character load path
+on BT gameplay. CZ writes a valid disk profile, but engine readback failed; DA uses
+self-initializing file contents and reports readback details. Repeat export, then
+complete the round trip and size/timing measurements. Public
 new-format saving remains off. Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
 

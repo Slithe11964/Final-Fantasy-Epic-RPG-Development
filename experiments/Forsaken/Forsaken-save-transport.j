@@ -94,7 +94,7 @@ function FST_Request takes integer pid,integer account returns boolean
     if GetLocalPlayer()==Player(pid) then
         set before=GetPlayerName(Player(pid))
         set started=TimerGetElapsed(FST_Clock)
-        call SetPlayerName(Player(pid),"")
+        call SetPlayerName(Player(pid),"FSCU_UNREAD")
         call Preloader(FST_FILE)
         set encoded=GetPlayerName(Player(pid))
         call SetPlayerName(Player(pid),before)
@@ -234,20 +234,26 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         call PreloadGenStart()
         loop
             exitwhen position>=StringLength(encoded)
+            if position==0 then
+                call Preload("\")\r\n\tcall SetPlayerName(GetLocalPlayer(), \""+SubString(encoded,position,position+128)+"\")\r\n\t//")
+            else
             call Preload("\")\r\n\tcall SetPlayerName(GetLocalPlayer(), GetPlayerName(GetLocalPlayer())+\""+SubString(encoded,position,position+128)+"\")\r\n\t//")
+            endif
             set position=position+128
         endloop
         call Preload("\")\r\n\treturn\r\n\t//")
         call PreloadGenEnd(FST_FILE)
         set before=GetPlayerName(Player(pid))
-        call SetPlayerName(Player(pid),"")
+        call SetPlayerName(Player(pid),"FSCU_UNREAD")
         call Preloader(FST_FILE)
         set readback=GetPlayerName(Player(pid))
         call SetPlayerName(Player(pid),before)
         if readback==encoded then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters).")
+        elseif readback=="FSCU_UNREAD" then
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: file did not execute; expected "+I2S(StringLength(encoded))+" characters. Export unverified.")
         else
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed; do not treat this export as verified.")
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: expected "+I2S(StringLength(encoded))+" characters, received "+I2S(StringLength(readback))+"; prefix ["+SubString(readback,0,4)+"]. Export unverified.")
         endif
     endif
     // Synchronized return means validated export attempted, not local readback success.
