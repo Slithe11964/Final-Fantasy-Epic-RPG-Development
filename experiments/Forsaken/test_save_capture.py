@@ -45,7 +45,7 @@ class CaptureTests(unittest.TestCase):
         def timer(): return object()
         def remove(table, parent, key): table.pop((parent, key), None)
         natives = dict(I2S=str, I2R=Real32, R2I=lambda v: int(float(v)),
-            StringHash=lambda s: -2147483648 if s == 'MIN' else -123456789,
+            StringHash=lambda s: ord(s.upper()) if len(s)==1 else (-2147483648 if s == 'MIN' else -123456789),
             Player=lambda p: p, LoadInteger=lambda t, a, b: t.get((a, b), 0),
             SaveInteger=lambda t, a, b, v: t.__setitem__((a, b), v),
             RemoveSavedInteger=remove, LoadUnitHandle=lambda t, a, b: t.get((a, b)),

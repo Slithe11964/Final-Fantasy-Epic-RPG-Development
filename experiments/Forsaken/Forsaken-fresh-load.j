@@ -701,7 +701,10 @@ function FFL_Tick takes nothing returns nothing
         if FFL_Phase[pid]==1 and FRC_Phase[pid]==0 then
             set FFL_Phase[pid]=0
             if FRC_Ready[pid] then
-                call FST_Write(pid,FRC_Result[pid],FRC_Account(pid))
+                call FFL_Message(pid,"capture verified; exporting the file")
+                if not FST_Write(pid,FRC_Result[pid],FRC_Account(pid)) then
+                    call FFL_Message(pid,"export refused: "+FSC_Error[pid])
+                endif
             else
                 call FFL_Message(pid,"export failed: "+FRC_Error[pid])
             endif

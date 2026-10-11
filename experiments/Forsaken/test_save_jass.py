@@ -36,8 +36,12 @@ class JassArray(defaultdict):
 
 def engine(extra_source='', extra_env=None):
     source = SOURCE.read_text(encoding='utf-8')+'\n'+extra_source
-    env = dict(StringLength=lambda s: len(s or ''), SubString=lambda s, a, b: (s or '')[a:b],
+    env = dict(I2S=str, StringLength=lambda s: len(s or ''), SubString=lambda s, a, b: (s or '')[a:b],
                ModuloInteger=lambda a, b: a % b, InitHashtable=dict,
+               StringCase=lambda s, upper: s.upper() if upper else s.lower(),
+               StringHash=lambda s: sum((i+1)*ord(c) for i,c in enumerate(s.upper())),
+               SaveInteger=lambda t, p, k, v: t.__setitem__((p, k), v),
+               LoadInteger=lambda t, p, k: t.get((p, k), 0),
                LoadBoolean=lambda t, p, k: t.get((p, k), False),
                SaveBoolean=lambda t, p, k, v: t.__setitem__((p, k), v))
     def flush(table, parent):
@@ -110,6 +114,28 @@ class JassCodecTests(unittest.TestCase):
         for s in envelope.sections:
             self.assertTrue(self.e['FSC_Add'](pid, s.id, s.version, s.required, s.payload))
         self.assertEqual(self.e['FSC_Finish'](pid, profile), codec.encode(envelope))
+
+    def test_alphabet_lookup_preserves_case_and_rejects_hash_collisions(self):
+        for value, char in enumerate(codec.ALPHABET):
+            self.assertEqual(self.e['FSC_Value'](char), value)
+        for char in ['', 'AA', '!', ' ', 'ÃƒÂ©']:
+            self.assertEqual(self.e['FSC_Value'](char), -1)
+        # An unexpected colliding key still has to match the alphabet character.
+        self.e['FSC_Characters'][(self.e['StringHash']('!'), 0)] = 1
+        self.assertEqual(self.e['FSC_Value']('!'), -1)
+
+    def test_long_alphabet_validation_uses_bounded_lookup_work(self):
+        env = engine()
+        env['FSC_InitCharacters']()
+        original = env['SubString']
+        calls = []
+        def substring(*args):
+            calls.append(args)
+            return original(*args)
+        env['SubString'] = substring
+        text = codec.ALPHABET * 256
+        self.assertTrue(env['FSC_AlphabetValid'](text))
+        self.assertEqual(len(calls), 2 * len(text))
 
     def test_integer_and_checksum_boundaries(self):
         for value in [0, 1, 31, 32, 1023, 65535, 1048575, codec.MAX_INT]:

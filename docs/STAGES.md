@@ -100,3 +100,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASF | Tooling: one build makes both the Reforged and the 1.29.2 map (same content as ASE) |
 | DB | Private file readback assembles separate temporary local fields and restores them, replacing DA’s player-name accumulation that returned only the final chunk. |
 | DC | Private file readback uses separate player-name slots with checked file parts and restores all names, replacing DB's unavailable tooltip fields. |
+| DD | Private export uses bounded character lookup and capture/write progress messages after DC stopped before reporting file readback. |

@@ -331,6 +331,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             call PreloadGenEnd(FST_FilePath(page))
             set page=page+1
         endloop
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written; checking exact readback.")
         set before=GetPlayerName(Player(pid))
         set readback=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
@@ -351,6 +352,8 @@ function FST_Init takes nothing returns nothing
     if FST_Clock!=null then
         return
     endif
+    // Allocate the lookup synchronously before any local file read.
+    call FSC_InitCharacters()
     set FST_Clock=CreateTimer()
     call TimerStart(FST_Clock,86400.,false,null)
     set FST_PumpTimer=CreateTimer()

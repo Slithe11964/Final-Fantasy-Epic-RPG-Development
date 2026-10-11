@@ -24,6 +24,7 @@ globals
     constant integer FSC_MAX_PAYLOAD=16384
     constant integer FSC_MAX_OPAQUE=4096
     hashtable FSC_Seen=null
+    hashtable FSC_Characters=null
     boolean array FSC_ActivationBlocked
     boolean array FSC_PreparedBlocked
     boolean array FSC_OwnershipBlocked
@@ -60,19 +61,43 @@ function FSC_PlayerValid takes integer pid returns boolean
     return pid>=0 and pid<8
 endfunction
 
-function FSC_Value takes string char returns integer
+// Separate case buckets also work when the native string hash ignores case.
+function FSC_InitCharacters takes nothing returns nothing
     local integer i=0
+    local integer bucket
+    local string symbol
+    if FSC_Characters!=null then
+        return
+    endif
+    set FSC_Characters=InitHashtable()
+    loop
+        exitwhen i>=64
+        set symbol=SubString(FSC_ALPHABET,i,i+1)
+        set bucket=0
+        if StringCase(symbol,false)!=symbol then
+            set bucket=1
+        endif
+        call SaveInteger(FSC_Characters,StringHash(symbol),bucket,i+1)
+        set i=i+1
+    endloop
+endfunction
+
+function FSC_Value takes string char returns integer
+    local integer bucket=0
+    local integer value
     if StringLength(char)!=1 then
         return -1
     endif
-    loop
-        exitwhen i>=64
-        if SubString(FSC_ALPHABET,i,i+1)==char then
-            return i
-        endif
-        set i=i+1
-    endloop
-    return -1
+    call FSC_InitCharacters()
+    if StringCase(char,false)!=char then
+        set bucket=1
+    endif
+    set value=LoadInteger(FSC_Characters,StringHash(char),bucket)-1
+    // A hash collision must never turn an invalid character into valid data.
+    if value<0 or SubString(FSC_ALPHABET,value,value+1)!=char then
+        return -1
+    endif
+    return value
 endfunction
 
 function FSC_AlphabetValid takes string text returns boolean
