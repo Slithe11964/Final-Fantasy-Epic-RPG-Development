@@ -1,4 +1,4 @@
-"""Replace FF's frame presentation with its AE dialog when targeting Warcraft 1.29.2.
+"""Replace FF's frame presentation (Bazaar, Talents) with dialogs when targeting Warcraft 1.29.2.
 
 Only the named BazaarFrame_ UI functions and frame globals are removed. The shared
 recipe transaction remains byte-for-byte unchanged. Runtime and editor text both use this.
@@ -47,8 +47,36 @@ def convert(text):
     return text.replace('\n', '\r\n') if crlf else text
 
 
+def convert_talents(text):
+    """Talents: drop the TalentFrame_ panel (frame APIs) and switch to the module's dialog."""
+    if 'TalentFrame_Init' not in text:
+        return text
+    crlf = '\r\n' in text
+    text = text.replace('\r\n', '\n')
+    text = re.sub(r'^\s*framehandle\s+(?:array\s+)?TalentFrame\w+[^\n]*\n', '', text, flags=re.M)
+    text, count = re.subn(r'(constant boolean TalentUseFrames\s*=\s*)true\b', r'\1false', text)
+    if count != 1:
+        raise ValueError('expected one TalentUseFrames constant')
+    for name, body in functions(text).items():
+        if not name.startswith('TalentFrame_'):
+            continue
+        header = re.search(r'^\s*(function[^\n]+)', body, re.M)[1]
+        if not header.endswith('returns nothing'):
+            raise ValueError('unexpected Talents UI signature: ' + header)
+        text, count = re.subn(r'^\s*function '+name+r'\s+takes.*?^\s*endfunction[^\n]*',
+                             lambda m: '\n'+header+'\nendfunction', text, flags=re.M|re.S)
+        if count != 1:
+            raise ValueError('expected one Talents function: ' + name)
+    return text.replace('\n', '\r\n') if crlf else text
+
+
+def convert_all(text):
+    return convert_talents(convert(text))
+
+
 def convert_wct(data):
     wct = read_wct(data)
-    wct['entries'] = [raw_of(convert(text_of(entry))) if 'BazaarFrame_Init' in text_of(entry) else entry
+    wct['entries'] = [raw_of(convert_all(text_of(entry)))
+                      if 'BazaarFrame_Init' in text_of(entry) or 'TalentFrame_Init' in text_of(entry) else entry
                       for entry in wct['entries']]
     return write_wct(wct)

@@ -24,6 +24,10 @@ globals
     real udg_MissileDistance
     unit udg_ArgUnit
     real udg_ArgRadius
+    // Free for spells to mark their own missiles (0 = none); reset for every new missile.
+    integer array MissileTag
+    // Travel and splash hits only run the hit hooks; they deal and heal nothing.
+    boolean array MissileNoDamage
 endglobals
 
 function Missile_RunOnLoop takes integer l_idx returns nothing
@@ -72,6 +76,8 @@ function Missile_Allocate takes nothing returns integer
     set udg_MissileHitEffect[l_idx]=null
     set udg_MissileHitOnce[l_idx]=false
     set udg_MissileHitGroup[l_idx]=CreateGroup()
+    set MissileTag[l_idx]=0
+    set MissileNoDamage[l_idx]=false
     set udg_MissileNext[l_idx]=-1
     return l_idx
 endfunction
@@ -180,6 +186,9 @@ endfunction
 function Missile_DamageUnit takes integer l_idx,unit t,real damageAmount,real rd returns nothing
     local damagetype l_dmgType
     local boolean l_noTarget=udg_MissileTarget[l_idx]==null
+    if MissileNoDamage[l_idx]then
+        return
+    endif
     if udg_MissileIsPure[l_idx]then
         set l_dmgType=DAMAGE_TYPE_UNIVERSAL
     elseif udg_MissileIsMagic[l_idx]then

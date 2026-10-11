@@ -352,8 +352,8 @@ DROP_LINE = re.compile(r'^\s*call\s+(BlzSetTerrainFogMaxLinearDensity|BlzSetTerr
                        r'DEPTH_OF_FIELD_\w+|ZABSOLUTE)\b.*$', re.M)
 
 def script_129(text):
-    from bazaar_legacy import convert
-    text = convert(text)
+    from bazaar_legacy import convert_all
+    text = convert_all(text)
     text = replace_calls(text, 'BlzCreateUnitWithSkin', lambda a: 'CreateUnit(%s)' % ','.join(a[:5]))
     text = replace_calls(text, 'SetTerrainFogExV', lambda a: 'SetTerrainFogEx(%s)' % ','.join(a[:4] + a[8:]))
     text, n = DROP_LINE.subn('', text)

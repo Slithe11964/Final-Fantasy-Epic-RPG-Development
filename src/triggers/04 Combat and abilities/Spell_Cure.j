@@ -1,5 +1,5 @@
-library TSpellCure requires TAbil, TCombatFormulas, TProf, TSpellHolyBlast
-function Trig_Spell_Cure_MissileLaunchHeal takes unit c,string l_missileFx,string fx,unit t,real rd,real s,real l_aoe,real l_splashHeal,real l_heal,boolean l_stopOnImpact returns nothing
+library TSpellCure requires TAbil, TCombatFormulas, TProf, TSpellHolyBlast, TTalents
+function Trig_Spell_Cure_MissileLaunchHeal takes unit c,string l_missileFx,string fx,unit t,real rd,real s,real l_aoe,real l_splashHeal,real l_heal,boolean l_stopOnImpact returns integer
     local integer d=Trig_Spell_HolyBlast_MissileCreate(c,l_missileFx,"",t,rd)
     set udg_MissileHitEffect[d]=fx
     set udg_MissileSpeed[d]=s
@@ -16,6 +16,7 @@ function Trig_Spell_Cure_MissileLaunchHeal takes unit c,string l_missileFx,strin
         set udg_MissileHealCredit[d]=GetPlayerId(GetOwningPlayer(c))+1
         set udg_HealingTotal[GetPlayerId(GetOwningPlayer(c))]=.0
     endif
+    return d
 endfunction
 
 function Trig_Spell_Cure_Conditions takes nothing returns boolean
@@ -27,7 +28,17 @@ function Trig_Spell_Cure_Actions takes nothing returns nothing
     local unit spellTarget=GetSpellTargetUnit()
     local integer manaCost=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(triggeringUnit,GetSpellAbilityId()))
     local real r=Trig_Spell_Cure_HealFormula(manaCost,GetHeroInt(triggeringUnit,true),Prof_StaffPower(triggeringUnit))
-    call Trig_Spell_Cure_MissileLaunchHeal(triggeringUnit,"Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl","Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl",spellTarget,.0,20.,128.,r*.25,r,true)
+    // Blinding Light (Priest talent): enemies the sphere passes blind; aimed at an enemy it heals no one.
+    local boolean blinding=GetSpellAbilityId()=='A00M' and Talent_Active(triggeringUnit,TALENT_JOB_PRIEST,1,3,'A00M') // 'A00M': ability "Cure"
+    local boolean hostile=blinding and IsUnitEnemy(spellTarget,GetOwningPlayer(triggeringUnit))
+    local integer d
+    if hostile then
+        set r=.0
+    endif
+    set d=Trig_Spell_Cure_MissileLaunchHeal(triggeringUnit,"Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl","Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl",spellTarget,.0,20.,128.,r*.25,r,true)
+    if blinding then
+        call Talent_MarkBlindingMissile(d,hostile)
+    endif
     set triggeringUnit=null
     set spellTarget=null
 endfunction
