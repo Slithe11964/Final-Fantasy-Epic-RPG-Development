@@ -2,9 +2,9 @@
 
 ## Current milestone
 
-Private DB provides the complete file save/restart/fresh-character load path
-on BT gameplay. DA returned only the final file chunk; DB reads separate temporary
-local fields and restores them after assembly. Repeat export, then complete the
+Private DC provides the complete file save/restart/fresh-character load path
+on BT gameplay. DA returned only the final file chunk; DB returned no tooltip chunks. DC reads
+separate player-name slots with checked file parts and restores every name. Repeat export, then complete the
 round trip and size/timing measurements. Public
 new-format saving remains off. Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.

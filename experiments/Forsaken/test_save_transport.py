@@ -27,32 +27,38 @@ class TransportTests(unittest.TestCase):
         self.now = 0.
         self.local = 0
         self.file = profile(large=True)
-        self.names = ['Player'+str(i) for i in range(8)]
+        self.names = ['Player'+str(i) for i in range(24)]
         self.sent = []
         self.preloads = []
         self.messages = []
         self.send_ok = True
-        self.tooltips = {}
+        self.files = {}
         self.generated = ""
         def preload(path):
-            if self.file is not None:
-                for slot,position in enumerate(range(0,len(self.file),160)):
-                    self.tooltips[self.e['FST_FileAbility'][slot]]=self.file[position:position+160]
+            if self.file is None: return
+            if self.files:
+                values=self.files.get(path,{})
+            else:
+                page=0 if path==self.e['FST_FILE'] else int(re.search(r'part (\d+)',path)[1])
+                pages=(len(self.file)+3679)//3680
+                values={slot:self.file[page*3680+slot*160:page*3680+(slot+1)*160] for slot in range(23) if page*3680+slot*160<len(self.file)}
+                values[23]=f'FSC1{len(self.file):05d}{codec.checksum(self.file):010d}{page}{pages}'
+            for slot,text in values.items(): self.names[slot]=text
         def send(prefix, packet):
             self.sent.append((prefix, packet))
             return self.send_ok
         def genend(path):
-            chunks = []
             self.generated='function PreloadFiles takes nothing returns nothing\n call PreloadStart()\n'+''.join(' call Preload( "'+line+'" )\n' for line in self.preloads)+' call PreloadEnd(0.)\nendfunction\n'
+            values={}
             for line in self.preloads:
                 self.assertLessEqual(len(line), 255, "Preload truncates the generated JASS injection")
-                match = re.search(r'BlzSetAbilityTooltip\([0-9]+, "([A-Za-z0-9$#]+)", 0\)', line)
-                if match: chunks.append(match[1])
-            self.file = ''.join(chunks)
+                match = re.search(r'SetPlayerName\(Player\((\d+)\), "([A-Za-z0-9$#]+)"\)', line)
+                if match: values[int(match[1])]=match[2]
+            self.files[path]=values
+            self.preloads.clear()
+            self.file=''.join(values[slot] for path,values in sorted(self.files.items(),key=lambda kv:0 if kv[0]==self.e['FST_FILE'] else int(re.search(r'part (\d+)',kv[0])[1])) for slot in sorted(values) if slot<23)
         natives = dict(I2S=lambda v: str(int.from_bytes(v.encode(),"big")) if isinstance(v,str) and len(v)==4 else str(v), I2R=float, R2I=int, Player=lambda p: p, GetLocalPlayer=lambda: self.local,
                        GetPlayerName=lambda p: self.names[p],
-                       BlzGetAbilityTooltip=lambda raw,level: self.tooltips.get(raw,"Original "+str(raw)),
-                       BlzSetAbilityTooltip=lambda raw,text,level: self.tooltips.__setitem__(raw,text),
                        SetPlayerName=lambda p, name: self.names.__setitem__(p, name),
                        TimerGetElapsed=lambda t: self.now, CreateTimer=object,
                        TimerStart=lambda *a: None, CreateTrigger=object,
@@ -147,7 +153,7 @@ class TransportTests(unittest.TestCase):
         self.e['FST_Request'](0, 42)
         self.e['FST_Pump']()
         self.assertEqual(self.sent, [])
-        self.assertEqual(self.names, ['Player'+str(i) for i in range(8)])
+        self.assertEqual(self.names, ['Player'+str(i) for i in range(24)])
         self.receive(self.packets())
         self.assertTrue(self.e['FST_Ready'][0])
 
@@ -180,7 +186,7 @@ class TransportTests(unittest.TestCase):
                 self.e['FST_Receive'](pid, packet)
             self.assertTrue(self.e['FST_Ready'][pid])
             self.assertEqual(self.e['FST_Result'][pid], encoded)
-        self.assertEqual(self.names, ['Player'+str(i) for i in range(8)])
+        self.assertEqual(self.names, ['Player'+str(i) for i in range(24)])
 
     def test_future_timestamp_and_oversized_local_file_rejected(self):
         self.e['FST_Request'](0, 42)
@@ -204,19 +210,31 @@ class TransportTests(unittest.TestCase):
         encoded=self.file
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
         self.assertIn('read back exactly',self.messages[-1])
-        self.assertTrue(all('GetPlayerName' not in line for line in self.preloads))
-        self.assertTrue(all(value=='Original '+str(raw) for raw,value in self.tooltips.items()))
+        self.assertNotIn('GetPlayerName',self.generated)
+        self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
         self.assertEqual(self.names[0],'Player0')
         self.e['Preloader']=lambda path: None
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
-        self.assertIn('file did not execute',self.messages[-1])
+        self.assertIn('header was not returned',self.messages[-1])
         self.assertEqual(self.names[0],'Player0')
 
     def test_generated_file_contains_one_native_assignment_per_chunk(self):
         self.assertTrue(self.e['FST_Write'](0,self.file,42))
-        self.assertEqual(self.generated.count('call BlzSetAbilityTooltip('),(len(self.file)+159)//160)
-        self.assertNotIn('call SetPlayerName(',self.generated)
-        (HERE.parents[1]/'build/save-file-DB.j').write_text(self.generated)
+        self.assertEqual(self.generated.count('call SetPlayerName('),(len(self.file)+159)//160+1)
+        self.assertNotIn('GetPlayerName',self.generated)
+        (HERE.parents[1]/'build/save-file-DC.j').write_text(self.generated)
+
+    def test_multi_page_file_restores_all_names_and_rejects_missing_part(self):
+        envelope=codec.decode(self.file)
+        encoded=codec.encode(codec.Envelope(envelope.account_hash,envelope.sections+(codec.Section(10,1,False,'A'*3000),)))
+        self.assertGreater(len(encoded),3680)
+        self.assertTrue(self.e['FST_Write'](0,encoded,42))
+        self.assertIn('read back exactly',self.messages[-1])
+        self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
+        self.files.pop(self.e['FST_FilePath'](1))
+        self.assertIsNone(self.e['FST_ReadFile'](0))
+        self.assertIn('page 1 header',self.e['FST_FileError'][0])
+        self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
 
     def test_transfer_reading_includes_sync_latency_but_not_file_read(self):
         self.e['FST_Request'](0, 42)

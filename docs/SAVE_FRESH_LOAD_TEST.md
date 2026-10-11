@@ -1,23 +1,24 @@
-# Private save/restart/fresh-load test - DB
+# Private save/restart/fresh-load test - DC
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDB.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDC.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-Meta Fragment validation and file-line truncation are fixed. DA's valid 1,010-character
-disk profile returned only its final 114-character chunk in Warcraft. DB writes chunks
-to separate local ability-tooltip fields, joins them after file execution, and restores
-all original tooltips immediately. The generated file itself compiles; engine acceptance
-is pending. Repeat `-newsave` before restarting/loading.
+Meta Fragment validation and file-line truncation are fixed. DA returned only the
+final chunk of a valid 1,010-character profile; DB returned no tooltip chunks.
+DC assigns each chunk to a separate player-name slot, assembles it after execution,
+and restores every name. Checked headers reject missing or mixed file parts.
+The generated file compiles; engine readback is pending. Larger saves also need
+`Forsaken CU part N.txt` beside the main file; this profile fits in one file.
 
 ## One round trip
 
-1. Start CZ with the same account, difficulty and Speedrun setting as the character.
+1. Fully exit Warcraft, then start DC with the same account, difficulty and Speedrun setting as the character.
    Load your old character with the usual legacy load command. Put gear in both
    equipment and the bag, and include quick-slot, Gaya and house items.
 2. Stand still and enter `-newsave`. Wait for **file written and read back exactly**.
    Record the reported character count; a capture failure leaves the file unverified.
-3. Fully exit Warcraft, restart CZ with the same settings, and use `-newload`
+3. Fully exit Warcraft, restart DC with the same settings, and use `-newload`
    within the first fifteen minutes. Leave the starting character, Gaya and house
    untouched: no items, purchases, job changes or leveling before loading.
 4. Stand still until **PASS: exact full profile after fresh load** or an error.
@@ -34,7 +35,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer CZ game to
+After the restart round trip, use that same file in a real multiplayer DC game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 Single-player transfer and mocked checks do not establish multiplayer performance.
 
