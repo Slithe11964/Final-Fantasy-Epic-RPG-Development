@@ -81,6 +81,32 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_gaya_rank_three_uses_single_level_purchase_research(self):
+        from test_save_capture import raw
+        original=self.e['SetPlayerTechResearched']
+        import save_vnext as codec
+        envelope=codec.decode(self.f.base.encoded)
+        sections=[codec.Section(section.id,section.version,section.required,
+            codec.pairs([(i,3 if 3<=i<=5 else v) for i,v in codec.read_pairs(section.payload)]))
+            if section.id==5 else section for section in envelope.sections]
+        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
+        self.e['FST_Result'][0]=self.f.base.encoded
+        purchases={raw('Resi'),raw('R00F'),raw('R00G')}
+        writes=[]
+        def capped(owner, research, value):
+            writes.append((research,value))
+            original(owner,research,min(value,1) if research in purchases else value)
+        self.e['SetPlayerTechResearched']=capped
+        self.assertTrue(self.apply(),self.messages)
+        for index, research in enumerate(('Resi','R00F','R00G'),start=3):
+            rank=self.e['FFL_Val'](0,5,index)
+            self.assertIn((raw(research),int(rank>0)),writes)
+            self.assertEqual(self.e['GetPlayerTechCount'](0,raw(research),True),int(rank>0))
+        self.assertEqual(self.e['FFN_Unit'][1]['abilities']['A0B4'],3)
+        self.finish()
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0],self.messages)
+
     def test_failed_skill_reports_job_rank_and_allows_retry(self):
         self.e['SelectHeroSkill']=lambda hero, raw: None
         self.assertFalse(self.apply())
@@ -91,7 +117,7 @@ class FreshLoadTests(unittest.TestCase):
     def test_failed_research_reports_exact_readback_before_restore(self):
         original=self.e['SetPlayerTechResearched']
         def research(owner, raw, value):
-            if value==0:original(owner,raw,value)
+            original(owner,raw,0)
         self.e['SetPlayerTechResearched']=research
         self.assertFalse(self.apply())
         self.assertIn('research ',self.messages[-1])

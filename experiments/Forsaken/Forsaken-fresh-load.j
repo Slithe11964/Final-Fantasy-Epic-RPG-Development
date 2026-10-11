@@ -119,7 +119,11 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         elseif i<15 then
             set level=FFL_Val(pid,6,i+1)
         else
-            set level=FFL_Val(pid,5,i-12)
+            // Gaya purchase research is a flag; the saved ability rank is restored separately.
+            set level=0
+            if FFL_Val(pid,5,i-12)>0 then
+                set level=1
+            endif
         endif
         call SetPlayerTechResearched(owner,FRC_TechRaw(i),level)
         if GetPlayerTechCount(owner,FRC_TechRaw(i),true)!=level then
