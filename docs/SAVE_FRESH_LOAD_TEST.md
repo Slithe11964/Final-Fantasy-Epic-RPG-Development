@@ -1,22 +1,22 @@
-# Private save/restart/fresh-load test - CX
+# Private save/restart/fresh-load test - CY
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCX.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenCY.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
-CW rejected the real capture before file export; the responsible field is not yet
-known. CX reports the rejected section/field/value or profile consistency check.
-First repeat `-newsave` on the same old character and send the complete result.
-Continue to restart/loading only after exact file readback succeeds.
+CX identified the export rejection: the new-format Meta Fragment field inherited
+legacy's three-bit cap. CY preserves the full counter (including seven fragments,
+encoded as eight); old-code decoding remains unchanged. Repeat `-newsave` on the
+old character, then continue only after exact file readback succeeds.
 
 ## One round trip
 
-1. Start CX with the same account, difficulty and Speedrun setting as the character.
+1. Start CY with the same account, difficulty and Speedrun setting as the character.
    Load your old character with the usual legacy load command. Put gear in both
    equipment and the bag, and include quick-slot, Gaya and house items.
 2. Stand still and enter `-newsave`. Wait for **file written and read back exactly**.
    Record the reported character count; a capture failure leaves the file unverified.
-3. Fully exit Warcraft, restart CX with the same settings, and use `-newload`
+3. Fully exit Warcraft, restart CY with the same settings, and use `-newload`
    within the first fifteen minutes. Leave the starting character, Gaya and house
    untouched: no items, purchases, job changes or leveling before loading.
 4. Stand still until **PASS: exact full profile after fresh load** or an error.
@@ -33,7 +33,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer CX game to
+After the restart round trip, use that same file in a real multiplayer CY game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 Single-player transfer and mocked checks do not establish multiplayer performance.
 

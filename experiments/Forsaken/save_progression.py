@@ -16,6 +16,7 @@ GAYA = {1: ('mastered', 1), 2: ('level', 100), 3: ('break_stun', 3),
 # Schema2 separates real levels from the old enhanced-mastery sentinel.
 CORE2 = dict(CORE)
 CORE2[4] = ('freelancer', 999)
+CORE2[7] = ('meta_fragments', codec.MAX_INT)
 CORE2.update({12: ('freelancer_mastery', 3), 13: ('current_job', 22),
               14: ('freelancer_variant', 3), 15: ('speedrun_mode', 1)})
 

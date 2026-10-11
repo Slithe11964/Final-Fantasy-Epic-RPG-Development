@@ -90,6 +90,17 @@ class FreshLoadTests(unittest.TestCase):
         hero=self.e['udg_PlayerHero'][1]
         self.assertEqual([hero['abilities']['skill'+str(50+i)] for i in range(1,6)],[11,11,11,11,6])
         self.assertEqual(hero['bag'][29]['abilities'],['fGmk'])
+    def test_meta_fragments_survive_fresh_load_above_legacy_limit(self):
+        import save_vnext as codec
+        envelope=codec.decode(self.f.base.encoded)
+        sections=[codec.Section(s.id,s.version,s.required,codec.pairs([(identity,8 if identity==7 else value) for identity,value in codec.read_pairs(s.payload)])) if s.id==4 else s for s in envelope.sections]
+        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
+        self.assertTrue(self.apply(),self.messages);self.finish()
+        self.assertEqual(self.e['udg_MetaFragments'][1],7)
+        self.assertTrue(self.e['FRC_Ready'][0],self.e['FRC_Error'][0])
+        self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
+        self.e['FFL_Tick']();self.assertTrue(self.e['udg_HasLoadedCode'][0])
+
     def test_failed_placement_restores_state_and_can_retry(self):
         before=dict(self.f.base.fixture.level_table);techs=dict(self.f.base.fixture.techs)
         self.fail_place=True;self.assertFalse(self.apply());self.assertEqual(self.e['FFL_Phase'][0],0)

@@ -2,9 +2,9 @@
 
 ## Current milestone
 
-Private CX provides the complete file save/restart/fresh-character load path
-on BT gameplay with precise capture rejection messages. CW rejected the real export;
-identify that field, then complete the round trip and size/timing measurements. Public
+Private CY provides the complete file save/restart/fresh-character load path
+on BT gameplay. CY fixes the inherited legacy Meta Fragment cap identified by CX;
+repeat export, then complete the round trip and size/timing measurements. Public
 new-format saving remains off. Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 House and boots diagnostics previously passed, but do not prove this complete path.
 

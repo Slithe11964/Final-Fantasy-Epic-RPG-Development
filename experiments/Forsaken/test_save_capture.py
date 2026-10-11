@@ -201,6 +201,15 @@ class CaptureTests(unittest.TestCase):
         state = progression.snapshot(codec.decode(self.e['FRC_Result'][0]))
         self.assertEqual(state['core']['speedrun_mode'], 1)
 
+    def test_meta_fragment_count_above_legacy_bit_limit_round_trips(self):
+        for count in (7, 8, 127, 2147483646):
+            with self.subTest(count=count):
+                self.e['udg_MetaFragments'][1] = count
+                self.start(); self.finish()
+                self.assertTrue(self.e['FRC_Ready'][0], self.e['FRC_Error'][0])
+                state = progression.snapshot(codec.decode(self.e['FRC_Result'][0]))
+                self.assertEqual(state['core']['meta_fragments'], count+1)
+
     def test_validation_failure_identifies_field_without_changing_character(self):
         self.e['udg_SpeedrunLevel'][1] = 16
         self.start(); self.finish()

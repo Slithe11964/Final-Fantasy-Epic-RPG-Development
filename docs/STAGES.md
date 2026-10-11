@@ -92,3 +92,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASB | From your editor save ASA (bigger Shipyard region): Esc closes the Bazaar panels; Armory and Chronicle counters also try the 1.29.2 tooltip level so they can show in classic |
 | CX | Private full-character round trip now reports capture validation details to identify the real export failure. |
 | ASC | Job talents (TALENTS.md): Talents button on every hero, Reforged panel / 1.29.2 dialog; Priest row 1 = Deprotect, Deshell, Blinding Light |
+| CY | Private full-character saving preserves Meta Fragment counts beyond the legacy bit limit, with fresh-load readback verified in modeled checks. |
