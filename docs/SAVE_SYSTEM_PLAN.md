@@ -8,8 +8,9 @@ Private DI completed the real file export/restart/fresh-load round trip on
 The ~0 ms file-read result is limited by game-timer resolution.
 Users also confirmed successful `-newsave`/`-newload` with different characters in
 a real multiplayer DI game. Multiplayer timings were not supplied.
-Next: collect multiplayer timings, verify loaded inventory/effects, and review
-failed-load retry and one-load/window enforcement before enabling public saves.
+Private DJ adds bounded cleanup confirmation and a real saved-profile retry check.
+Next: testers verify deliberate failure/retry, one-load/window enforcement, restored
+inventory/effects and multiplayer timings before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 
 ## Format and scope

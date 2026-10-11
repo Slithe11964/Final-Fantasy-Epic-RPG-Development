@@ -3,6 +3,9 @@ globals
     hashtable FFL_Before=null
     integer array FFL_Phase
     string array FFL_Error
+    string array FFL_FailureReason
+    integer array FFL_CleanupAttempts
+    boolean array FFL_RetryCheck
     boolean array FFL_SnapshotTaken
     unit array FFL_OldHero
     unit array FFL_OldGaya
@@ -656,10 +659,14 @@ function FFL_Restore takes integer pid returns boolean
 endfunction
 
 function FFL_Fail takes integer pid,string reason returns nothing
+    set FFL_FailureReason[pid]=reason
     if FFL_Restore(pid) then
         call FFL_Message(pid,"FAIL: "+reason+"; created objects cleaned, load unused; retry allowed.")
     else
-        call FFL_Message(pid,"FAIL: "+reason+"; cleanup incomplete. Use -newcleanup before retry.")
+        // Native removal readbacks may settle after this synchronous operation.
+        set FFL_CleanupAttempts[pid]=10
+        set FFL_Phase[pid]=5
+        call FFL_Message(pid,"FAIL: "+reason+"; verifying cleanup before retry")
     endif
 endfunction
 
@@ -724,6 +731,11 @@ function FFL_Apply takes integer pid returns boolean
         endloop
         set placementPass=placementPass+1
     endloop
+    if valid and FFL_RetryCheck[pid] then
+        set valid=false
+        set FFL_Error[pid]="retry check intentionally stopped after item placement"
+    endif
+    set FFL_RetryCheck[pid]=false
     if valid then
         set udg_PlayerHero[pid+1]=FFN_Unit[pid*3]
         set udg_SpiritOfGaya[pid+1]=FFN_Unit[pid*3+1]
@@ -816,6 +828,17 @@ function FFL_Tick takes nothing returns nothing
                 set FFL_Phase[pid]=0
                 call FFL_Message(pid,"file/transfer failed: "+FST_Error[pid])
             endif
+        elseif FFL_Phase[pid]==5 then
+            if FFL_Restore(pid) then
+                call FFL_Message(pid,"FAIL: "+FFL_FailureReason[pid]+"; created objects cleaned, load unused; retry allowed.")
+            else
+                set FFL_CleanupAttempts[pid]=FFL_CleanupAttempts[pid]-1
+                if FFL_CleanupAttempts[pid]>0 then
+                    set FFL_Phase[pid]=5
+                else
+                    call FFL_Message(pid,"FAIL: "+FFL_FailureReason[pid]+"; cleanup incomplete. Use -newcleanup before retry.")
+                endif
+            endif
         elseif FFL_Phase[pid]==3 and FRC_Phase[pid]==0 then
             if FRC_Ready[pid] and FRC_Result[pid]==FFP_Code[pid] then
                 call FFL_Commit(pid)
@@ -866,6 +889,7 @@ function FFL_Chat takes nothing returns nothing
         endif
     elseif FFP_Eligible(pid,FFL_WindowOpen) then
         if FST_Request(pid,FRC_Account(pid)) then
+            set FFL_RetryCheck[pid]=command=="-newretrycheck"
             set FFL_Phase[pid]=2
             set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
             call FFL_Message(pid,"reading file and transferring the complete profile")
@@ -892,6 +916,7 @@ function InitTrig_ForsakenFreshLoad takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newsave",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newload",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newcleanup",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newretrycheck",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Forsaken_FreshLoad,function FFL_Chat)

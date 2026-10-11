@@ -97,8 +97,15 @@ def main():
     members=set(original.read('(listfile)').decode().replace('\r','').splitlines())-changed
     if any(out.read(n)!=original.read(n) for n in members):raise ValueError('gameplay archive content changed')
     before,after=read_wct(original.read('war3map.wct')),read_wct(out.read('war3map.wct'))
-    if before['header']!=after['header'] or not all(e in after['entries'] for e in before['entries']):raise ValueError('original source changed')
-    report=dict(stage=args.stage,scope='Real file save/restart/fresh load prototype; no quests or live swap.',base=identity(base),output=identity(built),sources={module:identity(work/'src/triggers/11 Save prototype'/(module+'.j')) for module,_ in MODULES},commands=['-newsave','-newload','-newcleanup'],scratch=str(work),engine_measurements_pending=True,bt_regression_revision=BT_TEST_REVISION,bt_regression_files=list(BT_TEST_FILES))
+    expected=[]
+    for entry in before['entries']:
+        if entry.startswith(b'library TJob '):
+            first,rest=entry.split(b'\n',1)
+            if not re.search(rb'\bTUnit\b',first):
+                entry=first.rstrip(b'\r')+b', TUnit\r\n'+rest
+        expected.append(entry)
+    if before['header']!=after['header'] or not all(e in after['entries'] for e in expected):raise ValueError('original source changed beyond the Job dependency repair')
+    report=dict(stage=args.stage,scope='Real file save/restart/fresh load prototype; no quests or live swap.',base=identity(base),output=identity(built),sources={module:identity(work/'src/triggers/11 Save prototype'/(module+'.j')) for module,_ in MODULES},commands=['-newsave','-newload','-newcleanup','-newretrycheck'],scratch=str(work),engine_measurements_pending=True,bt_regression_revision=BT_TEST_REVISION,bt_regression_files=list(BT_TEST_FILES))
     for n in names[:3]:
         with (dest/n).open('xb') as stream:stream.write((work/'release'/n).read_bytes())
     with (dest/names[3]).open('x') as stream:json.dump(report,stream,indent=2)

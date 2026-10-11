@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DI
+# Private save/restart/fresh-load test - DJ
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDI.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDJ.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
@@ -12,26 +12,33 @@ multiplayer timings were not supplied.
 
 Multiplayer milestone (2026-10-11): users reported successful `-newsave` and
 `-newload` for different players' characters in a real DI multiplayer game.
-Next: record multiplayer code lengths/timings and visually check restored inventory
-and effects, then review failed-load retry and one-load/window enforcement.
-No new build is needed to collect these observations.
+DJ adds bounded cleanup confirmation on later game ticks and `-newretrycheck`,
+which deliberately fails after placing the real saved items, verifies cleanup and
+leaves the load unused. Persistent cleanup failures retain tracking and block retry.
+DI save files remain compatible. Engine acceptance of DJ cleanup remains pending.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
 every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
 
-## One round trip
+## Tester checklist
 
-1. Fully exit Warcraft, then start DI with the same account, difficulty and Speedrun setting as the character.
-   Load your old character with `-loadf` or the usual legacy code command. Put gear in both
-   equipment and the bag, and include quick-slot, Gaya and house items.
-2. Stand still and enter `-newsave`. Wait for **file written and read back exactly**.
-   Record the reported character count; a capture failure leaves the file unverified.
-3. Fully exit Warcraft, restart DI with the same settings, and use `-newload`
-   within the first fifteen minutes. Leave the starting character, Gaya and house
-   untouched: no items, purchases, job changes or leveling before loading.
-4. Stand still until **PASS: exact full profile after fresh load** or an error.
-   Send the final message and check job/level, equipped effects, bag positions,
-   quick slots, Gaya, house quantities and Chronicle/Armory flags visually.
+1. Existing verified DI files can be reused. For a new character, load it with the
+   legacy reader, enter `-newsave` while standing still, and wait for exact file
+   readback. Restart Warcraft before testing the new load.
+2. Start DJ with matching account, difficulty and Speedrun settings. Leave the
+   starting hero, Gaya and house untouched. Within fifteen minutes run
+   `-newretrycheck`: the intentional **FAIL** is expected. Wait for
+   **created objects cleaned, load unused; retry allowed**. If cleanup stays blocked,
+   use `-newcleanup` and send the error; do not treat that result as a pass.
+3. Run `-newload` in that same game and wait for **PASS: exact full profile**.
+   Run it again: another load must be rejected. Other players must still load normally.
+4. Check job/level, equipped effects, bag/quick positions, quantities and binding,
+   Gaya, house, Chronicle and Armory flags. Include different jobs and fuller inventories.
+5. Send the final message screenshot (code length and timings), job, settings,
+   player count, and any mismatch seen by either client. Stand still during verification.
+
+Optional window check: in a separate untouched game, wait past fifteen minutes;
+`-newload` must report that the window closed without creating anything.
 
 Below level50, normal-job skills reset and points are refunded. At level50+,
 regular skills become rank11 and the ultimate rank6. Freelancer's borrowed skills
@@ -43,7 +50,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DI game to
+After the restart round trip, use that same file in a real multiplayer DJ game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.
@@ -57,8 +64,8 @@ active slots so native abilities can be read and passives removed before storage
 Inventory handlers are excluded only during synchronous setup/cleanup.
 
 Failure removes only the attempt's creations and restores loader-written player
-state; HasLoadedCode stays false. If cleanup remains blocked, `-newcleanup` retries
-it before another load. An unsupported profile is rejected rather than partly loaded.
+state; HasLoadedCode stays false. Cleanup is rechecked briefly on later ticks.
+If it remains blocked, `-newcleanup` retries it before another load. An unsupported profile is rejected rather than partly loaded.
 Live-swap recovery modules are not imported. The private builder uses the checked BT
 regression expectations and trigger names from BT; newer gameplay modules and
 their tests stay outside this private build. Unrelated normal-map edits stay

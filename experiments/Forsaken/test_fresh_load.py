@@ -83,6 +83,49 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_intentional_real_placement_failure_leaves_load_unused_for_retry(self):
+        self.e['FFL_RetryCheck'][0]=True
+        self.assertFalse(self.apply())
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertEqual(self.f.base.house['quick'],{})
+        self.assertTrue(all(i['raw']==0 for i in self.f.items))
+        self.assertIn('intentionally stopped after item placement',self.messages[-1])
+        self.assertIn('retry allowed',self.messages[-1])
+        self.assertTrue(self.apply(),self.messages)
+        self.finish();self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0])
+
+    def test_later_tick_cleanup_unlocks_only_after_removal(self):
+        self.fail_place=True;self.f.block_item_removal=True
+        self.assertFalse(self.apply())
+        self.assertEqual(self.e['FFL_Phase'][0],5)
+        self.assertTrue(self.e['FFP_Locked'][0])
+        self.e['FFL_Tick']()
+        self.assertEqual(self.e['FFL_Phase'][0],5)
+        self.f.block_item_removal=False
+        self.e['FFL_Tick']()
+        self.assertEqual(self.e['FFL_Phase'][0],0)
+        self.assertFalse(self.e['FFP_Locked'][0])
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertIn('retry allowed',self.messages[-1])
+
+    def test_permanent_cleanup_failure_remains_blocked_after_bounded_retries(self):
+        self.fail_place=True;self.f.block_item_removal=True
+        self.assertFalse(self.apply())
+        for _ in range(10):self.e['FFL_Tick']()
+        self.assertEqual(self.e['FFL_Phase'][0],4)
+        self.assertTrue(self.e['FFP_Locked'][0])
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertIn('Use -newcleanup',self.messages[-1])
+
+    def test_closed_load_window_creates_nothing(self):
+        self.e['FFL_CloseWindow']()
+        self.assertFalse(self.e['FFP_Build'](0,self.f.base.encoded,self.e['FFL_WindowOpen']))
+        self.assertIn('window has closed',self.e['FFP_Error'][0])
+        self.assertEqual(self.f.units,[])
+        self.assertEqual(self.f.items,[])
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+
     def test_stored_gear_pickup_may_enter_bag_before_equipping(self):
         original=self.e['UnitAddItem']
         pickups=[]
@@ -194,7 +237,7 @@ class FreshLoadTests(unittest.TestCase):
         self.fail_place=False;self.assertTrue(self.apply())
     def test_failed_cleanup_keeps_journal_until_retry(self):
         self.fail_place=True;self.f.block_item_removal=True;self.assertFalse(self.apply())
-        self.assertEqual(self.e['FFL_Phase'][0],4);self.assertTrue(self.e['FFP_Locked'][0])
+        self.assertEqual(self.e['FFL_Phase'][0],5);self.assertTrue(self.e['FFP_Locked'][0])
         self.assertFalse(self.e['FFP_Build'](0,self.f.base.encoded,True))
         self.f.block_item_removal=False;self.assertTrue(self.e['FFL_Restore'](0));self.assertFalse(self.e['udg_HasLoadedCode'][0])
     def test_below_mastery_resets_skills_and_refunds_points(self):
@@ -219,7 +262,7 @@ class FreshLoadTests(unittest.TestCase):
     def test_failed_spacer_removal_keeps_attempt_tracking(self):
         remove=self.e['RemoveItem']
         self.e['RemoveItem']=lambda item:None if item['raw']=='fGap' else remove(item)
-        self.assertFalse(self.apply());self.assertEqual(self.e['FFL_Phase'][0],4)
+        self.assertFalse(self.apply());self.assertEqual(self.e['FFL_Phase'][0],5)
         self.assertGreater(self.e['FFN_SpacerCount'][0],0);self.assertTrue(self.e['FFP_Locked'][0])
         self.assertFalse(self.e['udg_HasLoadedCode'][0]);self.assertIs(self.e['udg_PlayerHero'][1],self.f.base.hero)
         self.e['RemoveItem']=remove;self.assertTrue(self.e['FFL_Restore'](0))
