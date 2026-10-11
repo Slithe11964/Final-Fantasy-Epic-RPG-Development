@@ -8,14 +8,16 @@ Module `src/triggers/03 Jobs and progression/Talents.j`; objects added by `tools
 - Four rows of three choices per job. Row 1 is open from the start, row 2 at mastery (level 50),
   row 3 at ultimate mastery (level 99), row 4 at legendary master (level 100). Rows follow the
   Mastery ability `A02F` (levels 1-4; legendary bonus levels 5-9 count as 4).
-- One choice per row. Picks last for the current game (not saved). A talent trainer in town will
-  reset them for a cost (not built yet).
+- One choice per row. Picks last for the current game (not saved). The Shrine of Individuality
+  (`n04U`) sells **Reset Talents** (`nTRt`, 1000 gold for testing, bottom-right slot): it clears the
+  current job's picks only and refunds the gold if there was nothing to reset. The Legendary Bonus
+  Menu moved one slot left to make room.
 - A talent only works while the hero's **current job** is the talent's job **and** the hero has the
   spell it changes: `Talent_Active(hero, job, row, choice, spell)`. A Freelancer or another job
   with the spell swapped in gets nothing; a mastered hero who swapped the spell out gets nothing.
-- Reforged shows a panel (point at a talent to read it; Esc or Close closes it). The 1.29.2
-  conversion (`tools/bazaar_legacy.py convert_talents`) removes the `TalentFrame_` functions and
-  uses a dialog: one row at a time, three choice buttons, Next row, Close.
+- The dialog (used by the 1.29.2 build) shows one row at a time: names and descriptions wrapped to
+  30 characters (dialogs do not wrap text), "Learn <name>" buttons, Next row, Close. Reforged has a
+  frame panel for now; the plan is to replace it with the Forsaken-style panel later.
 
 ## Adding talents for a job
 
@@ -31,11 +33,14 @@ Module `src/triggers/03 Jobs and progression/Talents.j`; objects added by `tools
 
 | Row | Choice | Talent | Effect |
 |---|---|---|---|
-| 1 | 1 | Deprotect | Protect (`A00G`) can target an enemy: dummy casts `tDpr` (Deprotect buff `B06J`, 15 s). |
-| 1 | 2 | Deshell | Shell (`A0TZ`) can target an enemy: dummy casts `tDsh` (Deshell buff `B06K`, 15 s). |
-| 1 | 3 | Blinding Light | Cure (`A00M`) sphere blinds each enemy it passes (`tBln`, Blind buff `B00P`, 15 s). Cast on an enemy, it heals no one (`MissileNoDamage`). |
+| 1 | 1 | Deprotect | "Protect can be cast on an enemy." Dummy casts `tDpr` (Deprotect buff `B06J`, 15 s). |
+| 1 | 2 | Deshell | "Shell can be cast on an enemy." Dummy casts `tDsh` (Deshell buff `B06K`, 15 s). |
+| 1 | 3 | Blinding Light | "Enemies Cure affects are blinded." The enemy Cure is cast on: `tBln` (Blind `B00P`, 15 s); enemies the sphere passes: `tBl5` (5 s). Cast on an enemy it heals no one (`MissileNoDamage`). |
 | 2-4 | | not written yet | |
 
-Protect and Shell now list enemies as targets; without the talent, `Talents_GuardCast` stops the
-cast before it costs anything. Cure could already target enemies (as Holy Light: likely undead
-only); Blinding Light does not change that.
+Protect, Shell and Cure list enemies as targets; without the talent, `Talents_GuardCast` stops the
+cast before it costs anything. Cure (`A00M`) used to be Holy Light-based, and Warcraft only lets
+Holy Light target allies or undead enemies, so `talents_catalog.py` rebases it on Channel with
+the same order string (`holybolt`), costs, cooldowns, range and text; its healing was already
+scripted (Spell_Cure). Every Channel field is set on all 11 levels (1.29.2 can freeze casters on
+Channel levels with missing fields).

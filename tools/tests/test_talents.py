@@ -9,7 +9,7 @@ from bazaar_legacy import convert_talents, convert_all
 
 SOURCE = Path(__file__).resolve().parents[2] / 'src/triggers/03 Jobs and progression/Talents.j'
 NAMES = ['Talent_Index', 'Talent_PickIndex', 'Talent_Rank', 'Talent_JobHasTalents', 'Talent_Has', 'Talent_Active',
-         'Talent_Choose', 'Talent_ResetJob', 'Talent_RowStatus', 'Talents_InitData']
+         'Talent_Choose', 'Talent_ResetJob', 'Talent_RowStatus', 'Talents_InitData', 'Talent_Wrap']
 PRIEST = 12
 
 
@@ -17,7 +17,8 @@ def runtime():
     world = {'mastery': defaultdict(lambda: 1), 'job': {}, 'messages': [], 'spells': defaultdict(lambda: {'A00G', 'A0TZ', 'A00M'})}
     heroes = {p: ('hero', p) for p in range(8)}
     env = {name: defaultdict(str) for name in ['TalentName', 'TalentText', 'TalentRowLabel']}
-    env.update(TalentPick=defaultdict(int), TALENT_ROWS=4, TALENT_ABILITY='tTal', udg_JobCount=22,
+    env.update(StringLength=len, SubString=lambda t, a, b: t[a:b], TALENT_LINE=30,
+               TalentPick=defaultdict(int), TALENT_ROWS=4, TALENT_ABILITY='tTal', udg_JobCount=22,
                bj_MAX_PLAYERS=24, world=world,
                Player_GetHero=lambda p: heroes.get(p),
                Job_GetIndex=lambda u: world['job'].get(u, PRIEST) if u else -1,
@@ -92,6 +93,18 @@ class TalentTests(unittest.TestCase):
         self.assertFalse(e['Talent_Has'](hero, 3, 2))
         e['world']['mastery'][hero] = 3
         self.assertTrue(e['Talent_Has'](hero, 3, 2))
+
+    def test_dialog_text_wraps_to_fit_the_classic_dialog(self):
+        e, _ = runtime()
+        text = 'Enemies the Cure sphere passes through, or the enemy you cast Cure on, are blinded.'
+        lines = e['Talent_Wrap'](text).split('|n')
+        self.assertTrue(all(len(line) <= 30 for line in lines))
+        self.assertEqual(' '.join(lines), text)
+        self.assertEqual(e['Talent_Wrap']('Shell can be cast on an enemy.'), 'Shell can be cast on an enemy.')
+        for row in range(1, 2):
+            for choice in range(1, 4):
+                name = e['TalentName'][e['Talent_Index'](PRIEST, row, choice)]
+                self.assertLessEqual(len('Learn ' + name), 30)
 
     def test_classic_conversion_removes_frames_and_uses_the_dialog(self):
         text = SOURCE.read_text(encoding='utf-8')

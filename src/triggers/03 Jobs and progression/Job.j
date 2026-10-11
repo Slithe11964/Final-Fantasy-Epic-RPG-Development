@@ -124,7 +124,7 @@ function Trig_Job_Change_IsJobShrine takes nothing returns boolean
 endfunction
 
 function Trig_Job_Change_Conditions takes nothing returns boolean
-    return(Trig_Job_Change_IsJobShrine())and(GetUnitTypeId(GetSoldUnit())!='n00W')and(GetUnitTypeId(GetSoldUnit())!='n07I')and(GetUnitTypeId(GetSoldUnit())!='n0KL') // 'n00W': unit "Help"; 'n07I': unit "Ability Menu"; 'n0KL': unit "Legendary Bonus Menu"
+    return(Trig_Job_Change_IsJobShrine())and(GetUnitTypeId(GetSoldUnit())!='n00W')and(GetUnitTypeId(GetSoldUnit())!='n07I')and(GetUnitTypeId(GetSoldUnit())!='n0KL')and(GetUnitTypeId(GetSoldUnit())!='nTRt') // 'n00W': unit "Help"; 'n07I': unit "Ability Menu"; 'n0KL': unit "Legendary Bonus Menu"; 'nTRt': unit "Reset Talents"
 endfunction
 
 function Trig_Job_Change_IsSameJob takes nothing returns boolean

@@ -1,13 +1,14 @@
 library TTalents requires TJob, TPlayerHero, TMissile
 // Job talents: four rows of three choices for each job. Row 1 is open from the start, row 2
 // at mastery (level 50), row 3 at ultimate mastery (level 99) and row 4 at legendary master
-// (level 100). One choice per row; picks last for the current game only. A talent works only
+// (level 100). The Shrine of Individuality sells a reset of the current job's picks. One choice per row; picks last for the current game only. A talent works only
 // while the hero's current job is the talent's job and the hero has the spell it changes.
 // Reforged shows a frame panel; the 1.29.2 conversion removes the TalentFrame_ functions and
 // uses the dialog below instead (TalentUseFrames becomes false).
 globals
     trigger gg_trg_Talents_Open=null
     trigger gg_trg_Talents_Guard=null
+    trigger gg_trg_Talents_Reset=null
     trigger gg_trg_Talents_Dialog=null
     trigger gg_trg_Talents_FrameClick=null
     trigger gg_trg_Talents_FrameSync=null
@@ -16,6 +17,10 @@ globals
     constant boolean TalentUseFrames=true
     constant integer TALENT_JOB_PRIEST=12
     constant integer TALENT_MISSILE_BLIND=1
+    constant integer TALENT_RESET_UNIT='nTRt'
+    constant integer TALENT_RESET_GOLD=1000
+    // Dialog lines longer than this run off the 1.29.2 dialog box.
+    constant integer TALENT_LINE=30
     group array TalentBlindGroup
     // Indexed job*12+(row-1)*3+(choice-1).
     string array TalentName
@@ -92,7 +97,11 @@ function Talents_MissileHit takes nothing returns boolean
     local unit u=udg_ArgUnit
     if MissileTag[d]==TALENT_MISSILE_BLIND and IsUnitEnemy(u,GetOwningPlayer(udg_MissileCaster[d])) and not IsUnitInGroup(u,TalentBlindGroup[d]) and GetWidgetLife(u)>.405 then
         call GroupAddUnit(TalentBlindGroup[d],u)
-        call Talent_DummyCast(udg_MissileCaster[d],u,'tBln',"curse")
+        if u==udg_MissileTarget[d] then
+            call Talent_DummyCast(udg_MissileCaster[d],u,'tBln',"curse") // 15 seconds
+        else
+            call Talent_DummyCast(udg_MissileCaster[d],u,'tBl5',"curse") // 5 seconds
+        endif
     endif
     set u=null
     return false
@@ -142,11 +151,45 @@ function Talent_RowStatus takes player p,integer job,integer row returns string
     return "|cffffcc00Choose one|r"
 endfunction
 
+// Breaks text into lines of at most TALENT_LINE characters at spaces (dialogs do not wrap).
+function Talent_Wrap takes string text returns string
+    local string out=""
+    local string line=""
+    local string word=""
+    local integer i=0
+    local integer n=StringLength(text)
+    local string c
+    loop
+        exitwhen i>n
+        if i<n then
+            set c=SubString(text,i,i+1)
+        else
+            set c=" "
+        endif
+        if c==" " then
+            if line=="" then
+                set line=word
+            elseif StringLength(line)+1+StringLength(word)<=TALENT_LINE then
+                set line=line+" "+word
+            else
+                set out=out+line+"|n"
+                set line=word
+            endif
+            set word=""
+        else
+            set word=word+c
+        endif
+        set i=i+1
+    endloop
+    return out+line
+endfunction
+
 function Talent_ShowDialog takes player p returns nothing
     local integer pid=GetPlayerId(p)
     local integer job=Job_GetIndex(Player_GetHero(p))
     local integer row=TalentDialogRow[pid]
     local integer choice=1
+    local integer named=0
     local string text
     call DialogClear(TalentDialog[pid])
     if not Talent_JobHasTalents(job) then
@@ -155,29 +198,53 @@ function Talent_ShowDialog takes player p returns nothing
         call DialogDisplay(p,TalentDialog[pid],true)
         return
     endif
-    set text=udg_JobName[job]+" talents|n"+TalentRowLabel[row]+" ("+I2S(row)+"/4): "+Talent_RowStatus(p,job,row)
+    set text="|cffffcc00"+udg_JobName[job]+" talents|r|nRow "+I2S(row)+" of 4: "+TalentRowLabel[row]+"|n"+Talent_RowStatus(p,job,row)
     loop
         exitwhen choice>3
-        if TalentName[Talent_Index(job,row,choice)]=="" then
-            set text=text+"|n|n"+I2S(choice)+". (not written yet)"
-        else
-            set text=text+"|n|n"+I2S(choice)+". "+TalentName[Talent_Index(job,row,choice)]+"|n"+TalentText[Talent_Index(job,row,choice)]
+        if TalentName[Talent_Index(job,row,choice)]!="" then
+            set named=named+1
+            set text=text+"|n|n|cffffcc00"+TalentName[Talent_Index(job,row,choice)]+"|r|n"+Talent_Wrap(TalentText[Talent_Index(job,row,choice)])
         endif
         set choice=choice+1
     endloop
+    if named==0 then
+        set text=text+"|n|nNo talents written|nfor this row yet."
+    endif
     call DialogSetMessage(TalentDialog[pid],text)
     set choice=1
     loop
         exitwhen choice>3
         set TalentDialogChoice[pid*3+choice-1]=null
         if row<=Talent_Rank(Player_GetHero(p)) and TalentPick[Talent_PickIndex(pid,job,row)]==0 and TalentName[Talent_Index(job,row,choice)]!="" then
-            set TalentDialogChoice[pid*3+choice-1]=DialogAddButton(TalentDialog[pid],I2S(choice)+". "+TalentName[Talent_Index(job,row,choice)],0)
+            set TalentDialogChoice[pid*3+choice-1]=DialogAddButton(TalentDialog[pid],"Learn "+TalentName[Talent_Index(job,row,choice)],0)
         endif
         set choice=choice+1
     endloop
     set TalentDialogNext[pid]=DialogAddButton(TalentDialog[pid],"Next row",0)
     call DialogAddButton(TalentDialog[pid],"Close",0)
     call DialogDisplay(p,TalentDialog[pid],true)
+endfunction
+
+// Shrine of Individuality "Reset Talents": clears the current job's picks only.
+function Talents_ResetSold takes nothing returns nothing
+    local unit sold=GetSoldUnit()
+    local player p=GetOwningPlayer(sold)
+    local integer job=Job_GetIndex(Player_GetHero(p))
+    if GetUnitTypeId(sold)==TALENT_RESET_UNIT then
+        call RemoveUnit(sold)
+        if Talent_ResetJob(p) then
+            call DisplayTimedTextToPlayer(p,0,0,8,"|cffffcc00Talents reset for "+udg_JobName[job]+".|r Other jobs keep theirs.")
+        else
+            call SetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)+TALENT_RESET_GOLD)
+            if job>=0 and job<udg_JobCount then
+                call DisplayTimedTextToPlayer(p,0,0,8,"No "+udg_JobName[job]+" talents to reset. Gold refunded.")
+            else
+                call DisplayTimedTextToPlayer(p,0,0,8,"This job has no talents. Gold refunded.")
+            endif
+        endif
+    endif
+    set sold=null
+    set p=null
 endfunction
 
 function Talents_DialogClick takes nothing returns nothing
@@ -366,7 +433,7 @@ function Talents_OnCast takes nothing returns nothing
     set target=null
 endfunction
 
-// Protect and Shell can target enemies only with their talent; otherwise the cast stops
+// Protect, Shell and Cure can target enemies only with their talent; otherwise the cast stops
 // before it costs anything.
 function Talents_GuardCast takes nothing returns nothing
     local integer id=GetSpellAbilityId()
@@ -375,8 +442,10 @@ function Talents_GuardCast takes nothing returns nothing
     local integer choice=1
     if id=='A0TZ' then // 'A0TZ': ability "Shell"
         set choice=2
+    elseif id=='A00M' then // 'A00M': ability "Cure"
+        set choice=3
     endif
-    if (id=='A00G' or id=='A0TZ') and target!=null and IsUnitEnemy(target,GetOwningPlayer(caster)) and not Talent_Active(caster,TALENT_JOB_PRIEST,1,choice,id) then
+    if (id=='A00G' or id=='A0TZ' or id=='A00M') and target!=null and IsUnitEnemy(target,GetOwningPlayer(caster)) and not Talent_Active(caster,TALENT_JOB_PRIEST,1,choice,id) then
         call IssueImmediateOrder(caster,"stop")
         call DisplayTimedTextToPlayer(GetOwningPlayer(caster),0,0,5,"|cffff0000Casting this on an enemy needs the Priest's "+TalentName[Talent_Index(TALENT_JOB_PRIEST,1,choice)]+" talent.|r")
     endif
@@ -403,15 +472,15 @@ endfunction
 function Talents_InitData takes nothing returns nothing
     local integer job=12 // Priest
     set TalentRowLabel[1]="Start"
-    set TalentRowLabel[2]="Mastery (level 50)"
-    set TalentRowLabel[3]="Ultimate mastery (level 99)"
-    set TalentRowLabel[4]="Legendary master (level 100)"
+    set TalentRowLabel[2]="Level 50"
+    set TalentRowLabel[3]="Level 99"
+    set TalentRowLabel[4]="Level 100"
     set TalentName[Talent_Index(job,1,1)]="Deprotect"
-    set TalentText[Talent_Index(job,1,1)]="Protect can be cast on an enemy: it gets Deprotect for 15 seconds instead (takes more physical damage)."
+    set TalentText[Talent_Index(job,1,1)]="Protect can be cast on an enemy."
     set TalentName[Talent_Index(job,1,2)]="Deshell"
-    set TalentText[Talent_Index(job,1,2)]="Shell can be cast on an enemy: it gets Deshell for 15 seconds instead (takes more magic damage)."
+    set TalentText[Talent_Index(job,1,2)]="Shell can be cast on an enemy."
     set TalentName[Talent_Index(job,1,3)]="Blinding Light"
-    set TalentText[Talent_Index(job,1,3)]="Enemies the Cure sphere passes through, or the enemy you cast Cure on, are blinded for 15 seconds. Cure cast on an enemy heals no one."
+    set TalentText[Talent_Index(job,1,3)]="Enemies Cure affects are blinded."
 endfunction
 
 // Missile hits are evaluated through udg_MissileDamageTrig; hook in once startup has made it.
@@ -448,6 +517,12 @@ function Register_Talents_Guard takes nothing returns nothing
     call TriggerAddAction(gg_trg_Talents_Guard,function Talents_GuardCast)
 endfunction
 
+function Register_Talents_Reset takes nothing returns nothing
+    set gg_trg_Talents_Reset=CreateTrigger()
+    call TriggerRegisterPlayerUnitEvent(gg_trg_Talents_Reset,Player(PLAYER_NEUTRAL_PASSIVE),EVENT_PLAYER_UNIT_SELL,null)
+    call TriggerAddAction(gg_trg_Talents_Reset,function Talents_ResetSold)
+endfunction
+
 function Register_Talents_Dialog takes nothing returns nothing
     set gg_trg_Talents_Dialog=CreateTrigger()
     call TriggerAddAction(gg_trg_Talents_Dialog,function Talents_DialogClick)
@@ -468,6 +543,7 @@ endfunction
 function RegisterTriggers_Talents takes nothing returns nothing
     call Register_Talents_Open()
     call Register_Talents_Guard()
+    call Register_Talents_Reset()
     call Register_Talents_Dialog()
     call Register_Talents_FrameClick()
     call Register_Talents_FrameSync()
