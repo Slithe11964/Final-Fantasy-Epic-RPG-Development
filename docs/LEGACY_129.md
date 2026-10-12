@@ -44,3 +44,24 @@ single-recipe dialog. Crafting data, prices, result charges and the shared mater
 are preserved. Classic releases use this dialog even when played in Reforged; use the Reforged
 release to see the three-panel interface. Continue development from the Reforged master. Two unused frame event
 triggers remain as classic startup placeholders. Test both presentations as described in BAZAAR.md.
+
+## Natives the new save system needs that 1.29.2 does not have
+
+Checked against the bundled `tools/versions/1.29.2/common.j`, which carries 94 Blz natives
+but none of these:
+
+| Native | Used by | 1.29.2 replacement |
+|---|---|---|
+| `BlzSendSyncData`, `BlzGetTriggerSyncData`, `BlzTriggerRegisterPlayerSyncEvent` | save transport, to share a locally read file with every player | game cache: `StoreInteger` + `SyncStoredInteger` + `GetStoredInteger`, all present |
+| `BlzGetItemBooleanField`, `BlzGetItemIntegerField` | capture, journal, native, probe | the map's own item tables (`udg_ItemSaveID` and the save item index) |
+| `UnitExtendedInventorySize` | capture, journal, probe | the Backpack equipment model, which replaces the 30-slot native bag |
+
+So the save system cannot run on 1.29.2 as built, and the gap is wider than the equipment
+layer alone. What already works on both: the save format itself (`ForsakenSaveCodec` is plain
+JASS), writing and reading files through `PreloadStart`/`Preloader`/`SetPlayerName`, and chat
+loading, because chat events are already synchronous and need no sync natives.
+
+Merge order that follows from this: the codec and session modules can join the normal build
+now; transport needs a second delivery backend built on the game cache; capture and the rest
+wait for the Backpack model.
+
