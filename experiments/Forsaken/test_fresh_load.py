@@ -83,6 +83,38 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(150):
             if self.e['FRC_Phase'][0]==0:break
             self.e['FRC_Tick']()
+    def test_gaya_and_house_gear_use_carryable_original_and_roundtrip(self):
+        import save_vnext as codec
+        import save_progression as progression
+        from build_save_probe import fresh_plan_bindings
+        catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
+        rows=fresh_plan_bindings(self.f.base.fixture.registry,catalog)
+        offhand=next(record for record in self.f.base.fixture.registry['items']
+            if catalog.get(record['rawcode'],{}).get('variant')=='f202')
+        canonical=offhand['rawcode'];identity=offhand['id']
+        self.assertIn((4,identity,canonical),rows)
+        self.assertIn((5,identity,canonical),rows)
+        envelope=codec.decode(self.f.base.encoded)
+        records=list(progression.snapshot(envelope)['inventory']);template=records[0]
+        records=[record for record in records if record[2] not in (4,5)]
+        records.extend([(46,identity,4,0,0,True,template[6]),
+                        (52,identity,5,0,0,True,template[6])])
+        sections=[codec.Section(section.id,section.version,section.required,codec.inventory(sorted(records)))
+            if section.id==1 else section for section in envelope.sections]
+        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
+        original=self.e['UnitAddItem']
+        def add(holder,carried):
+            if holder is self.f.base.house or holder is self.e['FFN_Unit'][1]:
+                if carried['raw']=='f202':return False
+            return original(holder,carried)
+        self.e['UnitAddItem']=add
+        self.e['FRC_Map'][(0,canonical)]=identity
+        self.assertTrue(self.apply(),self.messages)
+        self.assertEqual(self.e['FFN_Unit'][1]['quick'][0]['raw'],canonical)
+        self.assertEqual(self.f.base.house['quick'][0]['raw'],canonical)
+        self.finish()
+        self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
+
     def test_intentional_real_placement_failure_leaves_load_unused_for_retry(self):
         self.e['FFL_RetryCheck'][0]=True
         self.assertFalse(self.apply())

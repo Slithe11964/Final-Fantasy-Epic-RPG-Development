@@ -58,7 +58,9 @@ def fresh_plan_bindings(registry, catalog):
         runtime = gear.get('variant', canonical)
         for holder in range(1, 6):
             if holder != 3 or gear.get('slot', 'Inventory') != 'Inventory':
-                rows.append((holder, identity, runtime))
+                # Gaya and house use six-slot carryable originals; gameplay converts
+                # native equipment back to these forms when Gaya receives it.
+                rows.append((holder, identity, canonical if holder in (4, 5) else runtime))
         mask = masks[gear.get('slot', 'Inventory')]
         if mask:
             rows.append((6, identity, mask))

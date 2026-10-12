@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DJ
+# Private save/restart/fresh-load test - DK
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDJ.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDK.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
@@ -12,10 +12,15 @@ multiplayer timings were not supplied.
 
 Multiplayer milestone (2026-10-11): users reported successful `-newsave` and
 `-newload` for different players' characters in a real DI multiplayer game.
-DJ adds bounded cleanup confirmation on later game ticks and `-newretrycheck`,
-which deliberately fails after placing the real saved items, verifies cleanup and
-leaves the load unused. Persistent cleanup failures retain tracking and block retry.
-DI save files remain compatible. Engine acceptance of DJ cleanup remains pending.
+DJ engine testing confirmed later-tick cleanup removed the attempt's creations
+and left the load unused, but failed before the intentional stop when Gaya received
+a native equipment Tome. DK creates carryable originals for Gaya/house, matching
+Forsaken gameplay conversion; hero bag/equipment retains native variants.
+Permanent IDs and file format are unchanged. DK engine acceptance remains pending.
+
+`-newretrycheck` deliberately fails after all saved items are placed, then confirms
+cleanup without consuming the load. Persistent cleanup failures retain tracking
+and block retry. Existing verified files remain compatible.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
 every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
@@ -25,7 +30,7 @@ every name after reading. Larger saves need `Forsaken CU part N.txt` beside the 
 1. Existing verified DI files can be reused. For a new character, load it with the
    legacy reader, enter `-newsave` while standing still, and wait for exact file
    readback. Restart Warcraft before testing the new load.
-2. Start DJ with matching account, difficulty and Speedrun settings. Leave the
+2. Start DK with matching account, difficulty and Speedrun settings. Leave the
    starting hero, Gaya and house untouched. Within fifteen minutes run
    `-newretrycheck`: the intentional **FAIL** is expected. Wait for
    **created objects cleaned, load unused; retry allowed**. If cleanup stays blocked,
@@ -50,7 +55,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DJ game to
+After the restart round trip, use that same file in a real multiplayer DK game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.
