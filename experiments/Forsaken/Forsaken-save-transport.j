@@ -4,10 +4,13 @@ globals
     constant string FST_PREFIX="FSCU"
     constant string FST_FILE=".\\FFERPG\\Forsaken CU.txt"
     constant integer FST_LIMIT=17000
-    // One file page holds 23 player-name chunks. Test builds may shrink FST_CHUNK to split
-    // ordinary saves into several files (build_save_roundtrip.py --small-file-pages).
+    // One file page holds 23 player-name chunks. FST_CHUNK sizes the chunks this build writes;
+    // test builds may shrink it to split ordinary saves into several files
+    // (build_save_roundtrip.py --small-file-pages). Reading accepts any chunk size up to
+    // FST_MAXCHUNK, so files written by another build still load; length and checksum verify them.
     constant integer FST_CHUNK=160
     constant integer FST_PAGE=23*FST_CHUNK
+    constant integer FST_MAXCHUNK=160
     boolean array FST_AllowLegacy
     boolean array FST_Legacy
     boolean array FST_LegacySaveMessages
@@ -266,7 +269,7 @@ function FST_ReadFile takes integer pid returns string
                 set check=FST_Digits(SubString(marker,9,19))
                 set pages=FST_Digits(SubString(marker,20,21))
             endif
-            if size<4 or size>FST_LIMIT or check<0 or pages!=(size+FST_PAGE-1)/FST_PAGE or FST_Digits(SubString(marker,19,20))!=page or FST_Digits(SubString(marker,4,9))!=size or FST_Digits(SubString(marker,9,19))!=check or FST_Digits(SubString(marker,20,21))!=pages then
+            if size<4 or size>FST_LIMIT or check<0 or pages<1 or pages>size or size>pages*23*FST_MAXCHUNK or FST_Digits(SubString(marker,19,20))!=page or FST_Digits(SubString(marker,4,9))!=size or FST_Digits(SubString(marker,9,19))!=check or FST_Digits(SubString(marker,20,21))!=pages then
                 set FST_FileError[pid]="page "+I2S(page)+" header mismatch"
             endif
         endif
@@ -275,11 +278,11 @@ function FST_ReadFile takes integer pid returns string
             exitwhen slot>=23 or FST_FileError[pid]!="" or StringLength(result)>=size
             set value=GetPlayerName(Player(slot))
             set wanted=size-StringLength(result)
-            if wanted>FST_CHUNK then
-                set wanted=FST_CHUNK
+            if wanted>FST_MAXCHUNK then
+                set wanted=FST_MAXCHUNK
             endif
-            if StringLength(value)!=wanted or not FSC_AlphabetValid(value) then
-                set FST_FileError[pid]="page "+I2S(page)+" chunk "+I2S(slot)+" expected "+I2S(wanted)+" received "+I2S(StringLength(value))
+            if StringLength(value)<1 or StringLength(value)>wanted or not FSC_AlphabetValid(value) then
+                set FST_FileError[pid]="page "+I2S(page)+" chunk "+I2S(slot)+" expected 1 to "+I2S(wanted)+" received "+I2S(StringLength(value))
             else
                 set result=result+value
             endif

@@ -73,6 +73,10 @@ keep the complete set when copying saves. Missing parts refuse loading.
 - A load replaces the starter in place: the starter and its Gaya are hidden while
   the saved hero is created on the same spot, then removed on success (the new
   hero is selected) or shown again if the load fails.
+- Files load whatever page size wrote them: reading takes the chunk lengths from
+  the file instead of this build's constant, so a save from the normal build also
+  loads in the small-page test build and the other way round. Length and checksum
+  still verify the assembled code, and a missing or damaged part is still refused.
 - Loaded masteries count again: food used is set to the number of jobs at 99
   (Freelancer included), every saved title reruns its unlock effect (Shrine, dark
   jobs and their food cap, Legendary), and total job level is recalculated. Titles
@@ -87,8 +91,9 @@ except that each file page holds 920 characters. A normal endgame save then span
 several files. Build it with
 `python experiments/Forsaken/build_save_roundtrip.py --stage DV --small-file-pages`.
 Test: `-savef Multi`, restart, `-loadf Multi` must PASS; then move
-`Multi part 2.txt` out of the folder and `-loadf Multi` must refuse without
-creating anything. DV saves only load in DV; never ship a small-page build.
+`Multi part 1.txt` out of the folder and `-loadf Multi` must refuse without
+creating anything. Extra files are numbered from 1, so a two-file save is
+`Multi.txt` plus `Multi part 1.txt`. Never ship a small-page build.
 
 ## Chat-load helper
 

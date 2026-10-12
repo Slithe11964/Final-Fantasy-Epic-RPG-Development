@@ -238,6 +238,40 @@ class TransportTests(unittest.TestCase):
         self.assertIn('page 1 header',self.e['FST_FileError'][0])
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
 
+    def pages_with_chunk(self, code, chunk):
+        """Lay a code out as a build using this chunk size would have written it."""
+        page_size = 23 * chunk
+        pages = (len(code) + page_size - 1) // page_size
+        self.files.clear()
+        for page in range(pages):
+            body = code[page * page_size:(page + 1) * page_size]
+            values = {slot: body[slot * chunk:(slot + 1) * chunk] for slot in range(23) if slot * chunk < len(body)}
+            values[23] = f'FSC1{len(code):05d}{codec.checksum(code):010d}{page}{pages}'
+            self.files[self.e['FST_PlayerPath'](0, page)] = values
+        return pages
+
+    def test_files_written_by_another_page_size_still_load(self):
+        self.assertTrue(self.e['FST_SetFileStem'](0, 'Cross'))
+        code = self.file
+        for chunk in (40, 160, 23):
+            pages = self.pages_with_chunk(code, chunk)
+            self.assertEqual(self.e['FST_ReadFile'](0), code, f'chunk {chunk}')
+            self.assertEqual(self.names, ['Player' + str(i) for i in range(24)])
+        self.assertGreater(self.pages_with_chunk(code, 40), 1, 'small chunks must span several files')
+        self.files.pop(self.e['FST_PlayerPath'](0, 1))
+        self.assertIsNone(self.e['FST_ReadFile'](0))
+        self.assertEqual(self.names, ['Player' + str(i) for i in range(24)])
+
+    def test_corrupt_chunk_lengths_are_still_rejected(self):
+        self.assertTrue(self.e['FST_SetFileStem'](0, 'Cross'))
+        code = self.file
+        self.pages_with_chunk(code, 160)
+        path = self.e['FST_PlayerPath'](0, 0)
+        self.files[path][0] = self.files[path][0][:-1]  # a dropped character must not pass
+        self.assertIsNone(self.e['FST_ReadFile'](0))
+        self.assertNotEqual(self.e['FST_FileError'][0], '')
+        self.assertEqual(self.names, ['Player' + str(i) for i in range(24)])
+
     def test_legacy_file_is_detected_locally_and_dispatched_only_after_sync(self):
         code='HABCDEFGHIJK(ABCDE)'
         self.e['FST_AllowLegacy'][0]=True
