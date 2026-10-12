@@ -460,9 +460,13 @@ function Talents_GiveButton takes nothing returns nothing
     loop
         exitwhen i>=bj_MAX_PLAYERS
         set hero=Player_GetHero(Player(i))
-        if hero!=null and GetUnitAbilityLevel(hero,TALENT_ABILITY)==0 then
-            call UnitAddAbility(hero,TALENT_ABILITY)
-            call UnitMakeAbilityPermanent(hero,true,TALENT_ABILITY)
+        static if LIBRARY_TBackpack then
+            // The Backpack button owns that command slot; Talents opens from inside it.
+        else
+            if hero!=null and GetUnitAbilityLevel(hero,TALENT_ABILITY)==0 then
+                call UnitAddAbility(hero,TALENT_ABILITY)
+                call UnitMakeAbilityPermanent(hero,true,TALENT_ABILITY)
+            endif
         endif
         set i=i+1
     endloop
