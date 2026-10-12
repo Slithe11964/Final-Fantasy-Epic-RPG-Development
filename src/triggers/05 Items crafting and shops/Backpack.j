@@ -60,6 +60,37 @@ function Backpack_OpenHere takes player p returns nothing
     set hero=null
 endfunction
 
+// Tries the same selection call on Gaya, a unit the player selects every game. If Gaya is
+// refused too, selection is being blocked for everything and the holder is not at fault.
+function Backpack_SelectTest takes player p returns nothing
+    local unit gaya=udg_SpiritOfGaya[GetPlayerId(p)+1]
+    local unit holder=Backpack_Holder(GetPlayerId(p))
+    if gaya==null then
+        call DisplayTimedTextToPlayer(p,0.,0.,20.,"Backpack test: no Gaya to try")
+        return
+    endif
+    if GetLocalPlayer()==p then
+        call ClearSelection()
+        call SelectUnit(gaya,true)
+    endif
+    if GetLocalPlayer()==p then
+        if IsUnitSelected(gaya,p) then
+            call DisplayTimedTextToPlayer(p,0.,0.,20.,"Backpack test: Gaya selected, so the call works and the holder is the problem")
+        else
+            call DisplayTimedTextToPlayer(p,0.,0.,20.,"Backpack test: Gaya was refused too, so selection is blocked for everything")
+        endif
+    endif
+    // Second attempt on the holder without clearing first, in case the clear is the problem.
+    if GetLocalPlayer()==p then
+        call SelectUnit(holder,true)
+        if IsUnitSelected(holder,p) then
+            call DisplayTimedTextToPlayer(p,0.,0.,20.,"Backpack test: the holder selected when added to a selection")
+        endif
+    endif
+    set gaya=null
+    set holder=null
+endfunction
+
 // Says what the holder actually is, so a backpack that will not open explains itself.
 function Backpack_Report takes player p returns nothing
     local unit holder=Backpack_Holder(GetPlayerId(p))
@@ -169,6 +200,8 @@ function Backpack_OnCommand takes nothing returns nothing
     local item moving
     if command=="-bagwhere" then
         call Backpack_Report(p)
+    elseif command=="-bagtest" then
+        call Backpack_SelectTest(p)
     elseif command=="-bagnear" then
         call Backpack_OpenHere(p)
     elseif SubString(command,0,4)=="-bag" then
@@ -238,6 +271,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bag",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagwhere",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagnear",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagtest",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)
