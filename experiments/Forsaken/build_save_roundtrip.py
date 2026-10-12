@@ -104,9 +104,11 @@ def main():
         run('sync_module.py',scratch/'job-ready.w3x',presented_script,'Shrine')
     previous=presented_script
     allow='^gg_trg_Forsaken_FreshLoad$'
-    run('check_map.py',previous,'--baseline',base,'--allow-new',allow)
-    run('build_stage.py',args.stage,'--base',previous)
-    built=work/'release'/names[0];run('check_map.py',built,'--baseline',base,'--allow-new',allow)
+    built=work/'release'/names[0]
+    if not built.exists():  # a resumed build skips stages that already finished
+        run('check_map.py',previous,'--baseline',base,'--allow-new',allow)
+        run('build_stage.py',args.stage,'--base',previous)
+    run('check_map.py',built,'--baseline',base,'--allow-new',allow)
     original,out=MPQ(str(base)),MPQ(str(built));changed={'war3map.j','war3map.wtg','war3map.wct','(attributes)'}
     members=set(original.read('(listfile)').decode().replace('\r','').splitlines())-changed
     if any(out.read(n)!=original.read(n) for n in members):raise ValueError('gameplay archive content changed')
