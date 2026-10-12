@@ -16,6 +16,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / 'tools'))
 from mpq import MPQ, write_files
 from objdata import read_objects, write_objects, fields
+from map_presentation import prepare_map, sync_intro, settings
 from armory_catalog import set_field
 
 
@@ -774,10 +775,12 @@ def main():
     config_path = work/'tools/build-config.json'
     config = json.loads(config_path.read_text())
     config['prefix'] = 'FFERPG_0.9.7.3-r16-Forsaken'
-    config['title'] += ' Forsaken TEST - saving disabled'
+    config['title'] = settings()['name']+' Forsaken '+args.stage+' TEST - saving disabled'
     config_path.write_text(json.dumps(config, indent=2)+'\n')
     base = scratch/'objects.w3x'
-    mapping = prepare_objects(args.base.resolve(), base, scratch/'gear-slots.json')
+    presented=prepare_map(args.base.resolve(),scratch/'presentation-base.w3x',args.stage)
+    mapping = prepare_objects(presented, base, scratch/'gear-slots.json')
+    sync_intro(work)
     for module in ('Loot','Recharge','Summon_Scaling','ManaRefund','Haste','Oracle','Protect','Shell'):
         path=next((work/'src/triggers').rglob(module+'.j'))
         text=path.read_text(encoding='utf-8')
@@ -842,6 +845,9 @@ def main():
     for module in ('Abil','Cooldown','Spell_Water'):
         path=work/'src/triggers/04 Combat and abilities'/(module+'.j')
         path.write_bytes(cast_overlay(path.read_text(encoding='utf-8'),module).replace('\n','\r\n').encode('utf-8'))
+    presented_script=scratch/'presentation-ready.w3x'
+    run([sys.executable,work/'tools/sync_module.py',base,presented_script,'Intro'],cwd=work)
+    base=presented_script
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)
     run([sys.executable, work/'tools/build_stage.py', args.stage, '--base', base,

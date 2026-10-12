@@ -6,6 +6,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 from mpq import MPQ
 from wct import read_wct
 import save_registry
+from map_presentation import prepare_map, sync_intro, expected_source, settings
 
 BT_TEST_REVISION='0ef79c5'
 BT_TEST_FILES=('test_armory_catalog.py','test_bazaar_frames.py','test_chronicles_secrets.py')
@@ -52,8 +53,9 @@ def main():
         scratch=Path(tempfile.mkdtemp(prefix='SaveRoundtrip'+args.stage+'-',dir=ROOT/'build'));work=scratch/'FFERPG'
         for folder in ('src','tools','baseline'):shutil.copytree(ROOT/folder,work/folder,ignore=shutil.ignore_patterns('__pycache__'))
         shutil.copy2(ROOT/'build.ps1',work/'build.ps1')
+    base=prepare_map(base,scratch/'presentation-base.w3x',args.stage) if not args.resume_work else scratch/'presentation-base.w3x'
     align_bt_tests(work)
-    config=work/'tools/build-config.json';data=json.loads(config.read_text());data.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title='FF Epic RPG - '+args.stage+' private save/restart/load test');config.write_text(json.dumps(data,indent=2)+'\n')
+    config=work/'tools/build-config.json';data=json.loads(config.read_text());data.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title=settings()['name']+' Forsaken '+args.stage+' private save/restart/load test');config.write_text(json.dumps(data,indent=2)+'\n')
     logs=[]
     def run(tool,*values):
         result=subprocess.run([sys.executable,str(work/'tools'/tool),*map(str,values)],cwd=work,capture_output=True,text=True,errors='replace')
@@ -68,6 +70,7 @@ def main():
         for path in (work/'src/triggers').rglob('*.j'):
             if path not in kept:
                 path.unlink()  # Export does not delete modules absent from the selected base.
+    sync_intro(work)
     job_path=work/'src/triggers/03 Jobs and progression/Job.j'
     job_source=job_path.read_text()
     first,rest=job_source.split('\n',1)
@@ -89,6 +92,10 @@ def main():
         current=scratch/(module+'.w3x')
         if not args.resume_work:run('add_module.py',previous,current,'11 Save prototype',module)
         previous=current
+    presented_script=scratch/'presentation-ready.w3x'
+    if not presented_script.exists():
+        run('sync_module.py',previous,presented_script,'Intro')
+    previous=presented_script
     allow='^gg_trg_Forsaken_FreshLoad$'
     run('check_map.py',previous,'--baseline',base,'--allow-new',allow)
     run('build_stage.py',args.stage,'--base',previous)
@@ -103,7 +110,7 @@ def main():
             first,rest=entry.split(b'\n',1)
             if not re.search(rb'\bTUnit\b',first):
                 entry=first.rstrip(b'\r')+b', TUnit\r\n'+rest
-        expected.append(entry)
+        expected.append(expected_source(entry,work))
     if before['header']!=after['header'] or not all(e in after['entries'] for e in expected):raise ValueError('original source changed beyond the Job dependency repair')
     report=dict(stage=args.stage,scope='Real file save/restart/fresh load prototype; no quests or live swap.',base=identity(base),output=identity(built),sources={module:identity(work/'src/triggers/11 Save prototype'/(module+'.j')) for module,_ in MODULES},commands=['-newsave','-newload','-newcleanup','-newretrycheck'],scratch=str(work),engine_measurements_pending=True,bt_regression_revision=BT_TEST_REVISION,bt_regression_files=list(BT_TEST_FILES))
     for n in names[:3]:

@@ -8,10 +8,10 @@ Private DI completed the real file export/restart/fresh-load round trip on
 The ~0 ms file-read result is limited by game-timer resolution.
 Users also confirmed successful `-newsave`/`-newload` with different characters in
 a real multiplayer DI game. Multiplayer timings were not supplied.
-DJ confirmed cleanup/retry eligibility, but Gaya placement failed on native gear.
-Private DK restores carryable originals for Gaya/house; saved IDs stay unchanged.
-Next: testers verify DK deliberate failure/retry, one-load/window enforcement, restored
-inventory/effects and multiplayer timings before enabling public saves.
+DK confirmed intentional failure cleanup, successful retry with exact profile,
+and rejection of a second load. DL adds the approved r17 description and Intro.
+Next: broader inventory/effect checks, load-window enforcement and multiplayer
+timing observations before enabling public saves.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 
 ## Format and scope

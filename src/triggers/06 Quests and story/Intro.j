@@ -26,14 +26,14 @@ endfunction
 function Trig_Intro_WelcomeMessages_Actions takes nothing returns nothing
     call SetUserControlForceOn(GetPlayersAll())
     call Wait_Polled(10.)
-    call DisplayTimedTextToForce(udg_PlayingPlayers,40.,"|CFF20C000Welcome to Final Fantasy Epic RPG 0.9.7.3-r16\r\nOriginally created by ILYAS then Karifean\r\nAny suggestions, bug reports, or questions you can post in discord.gg/gYR4t3m3hK|r")
-    call Wait_Polled(10.)
-    call DisplayTimedTextToForce(udg_PlayingPlayers,30.,"|CFF20C000Try different Jobs up the stairs in town\r\nShops for starter gear is found in town, and you'll find much more through exploring and questing.\r\nJob base weapon and armor upgrades are found in your house.\r\nTo talk to people with a quest marker over their head just left-click them.|r")
-    call Wait_Polled(60.)
-    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"|cFF20C000Here's the new patch notes|r")
-    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"|cFF20C000\r\n- Fixed several bugs including some potential crashes since 3.0 came out.|r")
-    call Wait_Polled(60.)
-    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"|cFF20C000Credits for this version go to:\r\nElDarkRevenger\r\n\r\nEveryone who gave feedback, reported bugs, ideas, answered questions in discord at discord.gg/gYR4t3m3hK, or helped on the wiki fferpg.wikia.com.|r")
+    call DisplayTimedTextToForce(udg_PlayingPlayers,40.,"Welcome to Final Fantasy Epic RPG 0.9.7.3-r17\r\nOriginally created by ILYAS then Karifean and now Slithe\r\nAny suggestions, bug reports, or questions you can post in discord.gg/gYR4t3m3hK|r")
+    call Wait_Polled(30.)
+    call DisplayTimedTextToForce(udg_PlayingPlayers,30.,"-To begin this epic adventure talk to Cid who has the ! over his head.\r\n-Shops for starter gear is found in town, and you'll find much more through exploring and questing.\r\n-Jobs can be changed up the stairs in town.\r\n-Upgrades are found in your house and getting one to lvl 10 unlocks the armory.|r")
+    call Wait_Polled(75.)
+    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"Here's the patch notes|r")
+    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"\r\n- Fixed several bugs including some potential crashes since 3.0 came out.\r\n-Bazaar updates \r\n-Shipyard is back \r\n-Armory and Chronicle completion tracker, and armory hints.\r\n-A new secret chronicle|r")
+    call Wait_Polled(120.)
+    call DisplayTimedTextToForce(udg_PlayingPlayers,45.,"Credits for this version go to:\r\nSlithe and ElDarkRevenger\r\n\r\nAnd thank you to everyone who gave suggestions, reported bugs, or helped on fferpg.wikia.com.|r")
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

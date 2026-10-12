@@ -108,3 +108,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DI | Stored-item preparation verifies pickup across quick, bag and equipment while keeping exact final placement and distinguishing native rejection. |
 | DJ | Tester build adds bounded later-tick cleanup confirmation and a real-profile failure/retry check, retaining one-load and window restrictions. |
 | DK | Fresh loading creates carryable original gear for Gaya and house, fixing DJ’s native Tome placement failure while preserving permanent IDs. |
+| DL | Forsaken builders carry the approved r17 scenario description and current Intro into editor and playable sources, retaining DK’s verified loader. |

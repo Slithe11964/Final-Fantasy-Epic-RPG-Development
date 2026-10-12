@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDK.w3x` (private file save/restart/fresh-load test) | DI passed real export/restart/fresh-load and multiplayer save/load. DJ confirmed automatic cleanup and retry eligibility but failed Gaya gear placement. DK restores carryable originals for Gaya/house; tester checklist in SAVE_FRESH_LOAD_TEST.md. DK engine acceptance and multiplayer timings remain; public new-format saving stays off. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md. |
+| New save system | `release/Forsaken/...ForsakenDL.w3x` (private file save/restart/fresh-load test) | DI passed real export/restart/fresh-load and multiplayer save/load. DK passed deliberate failure cleanup, exact retry and second-load rejection. DL adds the user's r17 description and Intro; broader tester observations remain. Public new-format saving stays off. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -54,12 +54,14 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 - After a build: add one STAGES.md row, update this page only if "where things stand" changed,
   commit. Don't paste test counts, hashes or scratch paths into docs; the build writes them to
   `release/checks-*.txt` and `build-*.json` next to the map.
+- Future Forsaken builds use the r17 metadata in experiments/Forsaken/map-presentation.json
+  and the current src/triggers/06 Quests and story/Intro.j, including private test maps.
 - When a map is superseded, it can be moved out of `release/`; keep the current AS pair and any
   Forsaken map a doc names as the current test.
 
 ## Next
 
-1. Save system: test DK failure/retry, one-load/window enforcement and loaded inventory/effects;
+1. Save system: test DL load-window enforcement and loaded inventory/effects;
    collect multiplayer timings before public integration. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.

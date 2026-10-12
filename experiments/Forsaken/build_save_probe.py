@@ -47,6 +47,8 @@ def capture_source(aliases):
     return text.replace('    // FRC_IDENTITY_INITIALIZATION','\n'.join(lines))
 
 
+from map_presentation import prepare_map, sync_intro, expected_source, settings
+
 def fresh_plan_bindings(registry, catalog):
     """Reviewed permanent ID -> runtime rawcode and legal equipment positions."""
     masks = {'Head': 1, 'Chest': 2, 'Gloves': 4, 'Boots': 8, 'Ring': 48,
@@ -187,7 +189,8 @@ def main():
     shutil.copy2(ROOT/'build.ps1',work/'build.ps1')
     config_path=work/'tools/build-config.json'
     config=json.loads(config_path.read_text())
-    config.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title='FF Epic RPG - SAVE DIAGNOSTIC (character saving disabled)')
+    base=prepare_map(base,scratch/'presentation-base.w3x',args.stage)
+    config.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title=settings()['name']+' Forsaken '+args.stage+' save diagnostic')
     config_path.write_text(json.dumps(config,indent=2)+'\n')
     logs=[]
     def run(tool,*values):
@@ -197,6 +200,7 @@ def main():
         print(result.stdout+result.stderr,flush=True)
         if result.returncode: raise ValueError('failed '+str(tool)+'; scratch retained at '+str(scratch))
     run(work/'tools/export_sources.py',base,work/'src')
+    sync_intro(work)
     previous=base
     for module,file in modules(args.house_probe,args.gear_probe):
         source=module_source(module,file,aliases,runtime)
@@ -206,6 +210,9 @@ def main():
         current=scratch/(module+'.w3x')
         run(work/'tools/add_module.py',previous,current,'11 Save diagnostics',module)
         previous=current
+    presented_script=scratch/'presentation-ready.w3x'
+    run(work/'tools/sync_module.py',previous,presented_script,'Intro')
+    previous=presented_script
     run(work/'tools/check_map.py',previous,'--baseline',base,'--allow-new',allow_new)
     # Use the established stage builder for all compilation/source/compatibility/content gates.
     run(work/'tools/build_stage.py',args.stage,'--base',previous)
@@ -224,7 +231,7 @@ def publish(base,built,mapping,aliases,work,names,dest,stage,house=False,gear=Fa
     if any(out.read(name)!=original.read(name) for name in preserved): raise ValueError('original archive member changed unexpectedly')
     before=read_wct(original.read('war3map.wct'))
     after=read_wct(out.read('war3map.wct'))
-    if before['header']!=after['header'] or not all(raw in after['entries'] for raw in before['entries']):
+    if before['header']!=after['header'] or not all(expected_source(raw,work) in after['entries'] for raw in before['entries']):
         raise ValueError('original editor source changed')
     report=dict(stage=stage,scope='Private inventory/codec engine diagnostic; no character load, durable save export, files or multiplayer transport.',
                 base=identity(base),output=identity(built),mapping=identity(mapping),
