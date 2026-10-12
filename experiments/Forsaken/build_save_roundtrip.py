@@ -38,7 +38,9 @@ def load_source(runtime):
     return (HERE/'Forsaken-fresh-load.j').read_text().replace('    // FFL_TRIGGER_GUARD_INITIALIZATION','\n'.join(lines))
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--stage',default='CU');p.add_argument('--resume-work',type=Path);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--stage',default='CU');p.add_argument('--resume-work',type=Path)
+    p.add_argument('--small-file-pages',action='store_true',help='test build: 920-character file pages so ordinary saves span several files')
+    args=p.parse_args()
     if not re.fullmatch('[A-Z][A-Z0-9]*',args.stage):p.error('invalid stage')
     base=ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x'
     mapping=ROOT/'release/Forsaken/gear-slots-BS.json';catalog=json.loads(mapping.read_text())
@@ -83,6 +85,9 @@ def main():
         elif module=='ForsakenSaveFreshPlan':source=fresh_plan_source(registry,catalog)
         elif module=='ForsakenFreshLoad':source=load_source(runtime)
         else:source=(HERE/file).read_text()
+        if module=='ForsakenSaveTransport' and args.small_file_pages:
+            source=source.replace('constant integer FST_CHUNK=160','constant integer FST_CHUNK=40')
+            if 'FST_CHUNK=40' not in source:raise ValueError('transport chunk constant not found')
         if module!='ForsakenFreshLoad':source=source.replace('endlibrary','function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
         path=work/'src/triggers/11 Save prototype'/(module+'.j')
         if args.resume_work:

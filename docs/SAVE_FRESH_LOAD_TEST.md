@@ -1,6 +1,7 @@
-# Private save/restart/fresh-load test - DT
+# Private save/restart/fresh-load test - DU
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDT.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDU.w3x`.
+Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDV.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
 
@@ -64,6 +65,37 @@ File chunks use separate temporary player-name slots with checked headers, resto
 every name after reading. Larger saves need matching `<filename> part N.txt` files beside the main file;
 keep the complete set when copying saves. Missing parts refuse loading.
 
+## Changes in DU
+
+- Saving no longer needs the hero to stand still: `-save` and `-savef` read the
+  whole character within one game frame, so a later autosave can run during play.
+  Load verification still checks over a few seconds after the new units settle.
+- A load replaces the starter in place: the starter and its Gaya are hidden while
+  the saved hero is created on the same spot, then removed on success (the new
+  hero is selected) or shown again if the load fails.
+- Loaded masteries count again: food used is set to the number of jobs at 99
+  (Freelancer included), every saved title reruns its unlock effect (Shrine, dark
+  jobs and their food cap, Legendary), and total job level is recalculated. Titles
+  14 and 20 skip their unlock so the legacy NG+/NG- exporters stay off. Title
+  stats are not added again because the saved stats already include them.
+  Check: a save with all 23 jobs at 99 shows food 23/23 and total level 2277.
+
+## Multi-file test map (DV)
+
+Real profiles stay under one 3,680-character file page, so DV is the same as DU
+except that each file page holds 920 characters. A normal endgame save then spans
+several files. Build it with
+`python experiments/Forsaken/build_save_roundtrip.py --stage DV --small-file-pages`.
+Test: `-savef Multi`, restart, `-loadf Multi` must PASS; then move
+`Multi part 2.txt` out of the folder and `-loadf Multi` must refuse without
+creating anything. DV saves only load in DV; never ship a small-page build.
+
+## Chat-load helper
+
+`python experiments/Forsaken/save_test_helper.py chat "Last save.txt" --out lines.txt`
+turns a new-format save file into shuffled `-load FSVB:` lines with one duplicate,
+for testing chat loading without retyping screenshots.
+
 ## Shrine availability
 
 DT keeps the town Shrine of Individuality visible from startup. Before the mastery
@@ -88,7 +120,7 @@ in another game and switch to Freelancer and back.
 4. Check job/level, equipped effects, bag/quick positions, quantities and binding,
    Gaya, house, Chronicle and Armory flags. Include different jobs and fuller inventories.
 5. Send the final message screenshot (code length and timings), job, settings,
-   player count, and any mismatch seen by either client. Stand still during verification.
+   player count, and any mismatch seen by either client.
 
 Optional window check: in a separate untouched game, wait past fifteen minutes;
 `-newload` must report that the window closed without creating anything.

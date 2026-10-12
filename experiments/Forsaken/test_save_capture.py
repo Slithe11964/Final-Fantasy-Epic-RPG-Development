@@ -65,6 +65,9 @@ class CaptureTests(unittest.TestCase):
             BlzGetItemBooleanField=lambda i, field: bool(i['flags'] & 2),
             IsItemPawnable=lambda i: bool(i['flags'] & 4),
             CreateTimer=timer, TimerStart=lambda *args: None, PauseTimer=lambda *args: None,
+            CreateTrigger=lambda: {'conditions': []}, Condition=lambda f: f,
+            TriggerAddCondition=lambda t, c: t['conditions'].append(c),
+            TriggerEvaluate=lambda t: [c() for c in t['conditions']],
             DestroyTimer=self.destroyed.append, GetHandleId=id, GetExpiredTimer=lambda: self.elapsed,
             PLAYER_STATE_RESOURCE_GOLD=1, PLAYER_STATE_RESOURCE_LUMBER=2, ITEM_BF_CAN_BE_DROPPED=1,
             udg_PlayerHero=self.players, udg_SpiritOfGaya=self.gayas, udg_PlayerHouse=self.houses,
@@ -136,6 +139,16 @@ class CaptureTests(unittest.TestCase):
         self.assertEqual(before, (self.hero, self.gaya, self.free, self.house, self.level_table, self.techs))
         self.assertEqual(len(self.destroyed), 2)
         self.assertEqual(self.e['FRC_Timers'], {})
+
+    def test_save_capture_finishes_within_one_call_and_matches_timed_capture(self):
+        self.start()
+        self.finish()
+        timed = self.e['FRC_Result'][0]
+        self.assertTrue(timed)
+        self.assertTrue(self.e['FRC_StartNow'](0))
+        self.assertEqual(self.e['FRC_Phase'][0], 0)
+        self.assertTrue(self.e['FRC_Ready'][0])
+        self.assertEqual(self.e['FRC_Result'][0], timed)
 
     def test_change_during_capture_fails_and_retry_succeeds(self):
         self.start()

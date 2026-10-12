@@ -1,4 +1,4 @@
-library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine
+library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine, TTitle, TJobLevels
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
@@ -637,6 +637,9 @@ function FFL_Restore takes integer pid returns boolean
     if FFL_SnapshotTaken[pid] then
         set udg_PlayerHero[pid+1]=FFL_OldHero[pid]
         set udg_SpiritOfGaya[pid+1]=FFL_OldGaya[pid]
+        call ShowUnit(FFL_OldHero[pid],true)
+        call ShowUnit(FFL_OldGaya[pid],true)
+        call SelectUnitForPlayerSingle(FFL_OldHero[pid],Player(pid))
         set udg_FreelancerHero[pid+1]=null
         set restored=FFL_PlayerState(pid,true)
     endif
@@ -690,6 +693,10 @@ function FFL_Apply takes integer pid returns boolean
     endif
     call FFL_Snapshot(pid)
     call FFL_Guard(true)
+    // The loaded hero takes the starter's place: hide the starter and its Gaya first, so the new
+    // units appear exactly where they stood. A failed load shows them again (FFL_Restore).
+    call ShowUnit(FFL_OldHero[pid],false)
+    call ShowUnit(FFL_OldGaya[pid],false)
     set FFL_Error[pid]="allocation"
     set valid=FFN_Allocate(pid,FFL_WindowOpen)
     if valid then
@@ -768,6 +775,41 @@ function FFL_Apply takes integer pid returns boolean
     return true
 endfunction
 
+// The legacy loader re-runs each owned title's unlock effects and counts mastered jobs as food.
+// Title stats are not reapplied: the saved hero attributes already include them.
+function FFL_RestoreUnlocks takes integer pid returns nothing
+    local player owner=Player(pid)
+    local integer i=0
+    local integer mastered=0
+    loop
+        exitwhen i>=udg_JobCount
+        if Job_GetSavedLevel(owner,udg_JobUnitType[i])>=99 then
+            set mastered=mastered+1
+        endif
+        set i=i+1
+    endloop
+    if udg_FreelancerHero[pid+1]!=null and GetHeroLevel(udg_FreelancerHero[pid+1])>=99 then
+        set mastered=mastered+1
+    endif
+    call SetPlayerState(owner,PLAYER_STATE_RESOURCE_FOOD_USED,mastered)
+    set i=1
+    loop
+        exitwhen i>59
+        // 14 (High Guardian) and 20 (Lucifer's General) would enable the legacy New Game Plus/Minus
+        // exporters, which this save line keeps disabled; 14's job-total refresh is done below.
+        if i!=14 and i!=20 and IsPlayerInForce(owner,udg_TitleForce[i]) then
+            set udg_TempPlayer=owner
+            set udg_TempInteger=i
+            call ConditionalTriggerExecute(gg_trg_Title_UnlockEffects)
+        endif
+        set i=i+1
+    endloop
+    // Recount every player's total job level now; the periodic update skips Legendary Guardians.
+    call EnableTrigger(gg_trg_JobLevels_Init)
+    call StartTimerBJ(udg_JobLevelTimer,false,.01)
+    set owner=null
+endfunction
+
 function FFL_Commit takes integer pid returns nothing
     local integer i=0
     local integer selected=FFL_Val(pid,4,13)
@@ -775,6 +817,7 @@ function FFL_Commit takes integer pid returns nothing
     set udg_HasLoadedCode[pid]=true
     call RemoveUnit(FFL_OldHero[pid])
     call RemoveUnit(FFL_OldGaya[pid])
+    call SelectUnitForPlayerSingle(FFN_Unit[pid*3],Player(pid))
     if FFN_Unit[pid*3+2]!=null then
         // Inactive job heroes are neutral so they do not occupy player hero portraits.
         call SetUnitOwner(FFN_Unit[pid*3+2],Player(PLAYER_NEUTRAL_PASSIVE),true)
@@ -807,9 +850,7 @@ function FFL_Commit takes integer pid returns nothing
     set FFL_OldHero[pid]=null
     set FFL_OldGaya[pid]=null
     call FFL_Guard(false)
-    if IsPlayerInForce(Player(pid),udg_TitleForce[10]) and not udg_ShrineUnlocked then
-        call ConditionalTriggerExecute(gg_trg_Shrine_Unlock)
-    endif
+    call FFL_RestoreUnlocks(pid)
     call FFL_Message(pid,"PASS: exact full profile after fresh load. Code "+I2S(StringLength(FST_Result[pid]))+" characters; file read ~"+I2S(FST_FileMillis[pid])+" ms (game timer); transfer "+R2S(FST_TransferSeconds[pid])+" s; load/verify "+R2S(TimerGetElapsed(FST_Clock)-FFL_Started[pid])+" s.")
 endfunction
 
@@ -973,12 +1014,12 @@ function FFL_Chat takes nothing returns nothing
         set FST_LegacySaveMessages[pid]=lower=="-savef" or SubString(lower,0,7)=="-savef "
         if not udg_HardcoreOff then
             call FFL_Message(pid,"saving is disabled in Hardcore")
-        elseif FRC_Start(pid) then
+        elseif FRC_StartNow(pid) then
             set FFL_Phase[pid]=1
             if FST_LegacySaveMessages[pid] then
                 call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Trying to save in "+SubString(FST_PlayerPath(pid,0),2,StringLength(FST_PlayerPath(pid,0))))
             else
-                call FFL_Message(pid,"capturing the full character; stand still for three seconds")
+                call FFL_Message(pid,"capturing the full character")
             endif
         else
             call FFL_Message(pid,"could not start character capture")

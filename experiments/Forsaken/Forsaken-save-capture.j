@@ -21,6 +21,8 @@ globals
     unit array FRC_House
     timer array FRC_Timer
     timer array FRC_Watchdog
+    trigger FRC_StepTrigger=null
+    integer FRC_StepPid=0
 endglobals
 
 function FRC_Account takes integer pid returns integer
@@ -457,8 +459,7 @@ function FRC_Timeout takes nothing returns nothing
     call FRC_Stop(pid,"capture timed out; no character changed")
 endfunction
 
-function FRC_Tick takes nothing returns nothing
-    local integer pid=LoadInteger(FRC_Timers,GetHandleId(GetExpiredTimer()),0)-1
+function FRC_Step takes integer pid returns nothing
     local integer position=FRC_Position[pid]
     local integer index=pid*57+position
     local integer sid
@@ -551,6 +552,15 @@ function FRC_Tick takes nothing returns nothing
     set carried=null
 endfunction
 
+function FRC_Tick takes nothing returns nothing
+    call FRC_Step(LoadInteger(FRC_Timers,GetHandleId(GetExpiredTimer()),0)-1)
+endfunction
+
+function FRC_StepCondition takes nothing returns boolean
+    call FRC_Step(FRC_StepPid)
+    return false
+endfunction
+
 function FRC_Start takes integer pid returns boolean
     if not FSC_PlayerValid(pid) or FRC_Phase[pid]!=0 or FSC_Writing[pid] or FSC_Busy[pid] or FRC_Map==null or udg_PlayerHero[pid+1]==null or udg_SpiritOfGaya[pid+1]==null or udg_PlayerHouse[pid+1]==null then
         return false
@@ -578,12 +588,32 @@ function FRC_Start takes integer pid returns boolean
     return true
 endfunction
 
+// Saves capture the whole character within one game frame, so nothing (combat, pickups, XP)
+// can change it mid-capture and the player need not stand still. Each step runs in its own
+// evaluated thread to stay under the JASS operation limit. Load verification keeps the timed
+// FRC_Start: freshly created heroes need a few frames before every ability reads back.
+function FRC_StartNow takes integer pid returns boolean
+    local integer steps=0
+    if not FRC_Start(pid) then
+        return false
+    endif
+    set FRC_StepPid=pid
+    loop
+        exitwhen FRC_Phase[pid]==0 or steps>=400
+        call TriggerEvaluate(FRC_StepTrigger)
+        set steps=steps+1
+    endloop
+    return true
+endfunction
+
 function FRC_Init takes nothing returns nothing
     if FRC_Map!=null then
         return
     endif
     set FRC_Map=InitHashtable()
     set FRC_Timers=InitHashtable()
+    set FRC_StepTrigger=CreateTrigger()
+    call TriggerAddCondition(FRC_StepTrigger,Condition(function FRC_StepCondition))
     // FRC_IDENTITY_INITIALIZATION
 endfunction
 endlibrary

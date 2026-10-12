@@ -4,6 +4,10 @@ globals
     constant string FST_PREFIX="FSCU"
     constant string FST_FILE=".\\FFERPG\\Forsaken CU.txt"
     constant integer FST_LIMIT=17000
+    // One file page holds 23 player-name chunks. Test builds may shrink FST_CHUNK to split
+    // ordinary saves into several files (build_save_roundtrip.py --small-file-pages).
+    constant integer FST_CHUNK=160
+    constant integer FST_PAGE=23*FST_CHUNK
     boolean array FST_AllowLegacy
     boolean array FST_Legacy
     boolean array FST_LegacySaveMessages
@@ -262,7 +266,7 @@ function FST_ReadFile takes integer pid returns string
                 set check=FST_Digits(SubString(marker,9,19))
                 set pages=FST_Digits(SubString(marker,20,21))
             endif
-            if size<4 or size>FST_LIMIT or check<0 or pages!=(size+3679)/3680 or FST_Digits(SubString(marker,19,20))!=page or FST_Digits(SubString(marker,4,9))!=size or FST_Digits(SubString(marker,9,19))!=check or FST_Digits(SubString(marker,20,21))!=pages then
+            if size<4 or size>FST_LIMIT or check<0 or pages!=(size+FST_PAGE-1)/FST_PAGE or FST_Digits(SubString(marker,19,20))!=page or FST_Digits(SubString(marker,4,9))!=size or FST_Digits(SubString(marker,9,19))!=check or FST_Digits(SubString(marker,20,21))!=pages then
                 set FST_FileError[pid]="page "+I2S(page)+" header mismatch"
             endif
         endif
@@ -271,8 +275,8 @@ function FST_ReadFile takes integer pid returns string
             exitwhen slot>=23 or FST_FileError[pid]!="" or StringLength(result)>=size
             set value=GetPlayerName(Player(slot))
             set wanted=size-StringLength(result)
-            if wanted>160 then
-                set wanted=160
+            if wanted>FST_CHUNK then
+                set wanted=FST_CHUNK
             endif
             if StringLength(value)!=wanted or not FSC_AlphabetValid(value) then
                 set FST_FileError[pid]="page "+I2S(page)+" chunk "+I2S(slot)+" expected "+I2S(wanted)+" received "+I2S(StringLength(value))
@@ -474,7 +478,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         return false
     endif
     if GetLocalPlayer()==Player(pid) then
-        set pages=(StringLength(encoded)+3679)/3680
+        set pages=(StringLength(encoded)+FST_PAGE-1)/FST_PAGE
         loop
             exitwhen page>=pages
             call PreloadGenClear()
@@ -482,8 +486,8 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             set slot=0
             loop
                 exitwhen slot>=23 or position>=StringLength(encoded)
-                call Preload("\")\r\n\tcall SetPlayerName(Player("+I2S(slot)+"), \""+SubString(encoded,position,position+160)+"\")\r\n\t//")
-                set position=position+160
+                call Preload("\")\r\n\tcall SetPlayerName(Player("+I2S(slot)+"), \""+SubString(encoded,position,position+FST_CHUNK)+"\")\r\n\t//")
+                set position=position+FST_CHUNK
                 set slot=slot+1
             endloop
             set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(FST_TextChecksum(encoded),10)+FST_Fixed(page,1)+FST_Fixed(pages,1)

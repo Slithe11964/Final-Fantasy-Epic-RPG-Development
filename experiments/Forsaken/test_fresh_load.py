@@ -71,7 +71,12 @@ class FreshLoadTests(unittest.TestCase):
             Pow=lambda a,b:Real32(float(a)**float(b)),TimerGetElapsed=lambda t:Real32(1),
             DisplayTimedTextToPlayer=lambda p,x,y,d,m:self.messages.append(m),R2S=str,
             GetLocalPlayer=lambda:0,ClearTextMessages=lambda:None,PLAYER_NEUTRAL_PASSIVE=15,SetUnitOwner=lambda u,p,c:u.__setitem__('owner',p),
-            ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None)
+            ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None,
+            udg_JobCount=22,Job_GetSavedLevel=lambda p,raw:env['udg_JobLevelHash'].get((raw,p),0),PLAYER_STATE_RESOURCE_FOOD_USED='food',
+            gg_trg_Title_UnlockEffects='effects',gg_trg_JobLevels_Init='joblevels',udg_JobLevelTimer='jobtimer',
+            udg_TempPlayer=None,udg_TempInteger=0,EnableTrigger=lambda t:None,StartTimerBJ=lambda *a:None,ConditionalTriggerExecute=lambda t:None,
+            CreateTrigger=lambda:{'conditions':[]},Condition=lambda fn:fn,TriggerAddCondition=lambda tr,c:tr['conditions'].append(c),
+            TriggerEvaluate=lambda tr:[c() for c in tr['conditions']],SelectUnitForPlayerSingle=lambda u,p:None)
         catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
         source=(HERE/'Forsaken-save-life.j').read_text()+'\n'+capture_source(f.base.fixture.aliases)+'\n'+fresh_plan_source(f.base.fixture.registry,catalog)+'\n'+(HERE/'Forsaken-save-fresh-objects.j').read_text()+'\n'+(HERE/'Forsaken-save-transport.j').read_text()+'\n'+(HERE/'Forsaken-fresh-load.j').read_text()
         self.e=engine(source,env);self.e['FFP_Init']();self.e['FRC_Init']();self.e['FFL_Before']={}
@@ -274,12 +279,29 @@ class FreshLoadTests(unittest.TestCase):
         def unlock(trigger):
             self.assertTrue(e['udg_HasLoadedCode'][0])
             self.assertFalse(e['FFP_Locked'][0])
-            unlocks.append(trigger)
-        e.update(udg_ShrineUnlocked=False,gg_trg_Shrine_Unlock='unlock',ConditionalTriggerExecute=unlock)
+            unlocks.append((trigger,e['udg_TempInteger']))
+        e.update(udg_ShrineUnlocked=False,ConditionalTriggerExecute=unlock)
         e['FFL_Tick']()
-        self.assertEqual(unlocks,['unlock'])
+        # Every owned title's unlock effects run (Master = 10 opens the Shrine), as the legacy loader does.
+        self.assertIn(('effects',10),unlocks)
+        self.assertNotIn(('effects',14),unlocks)
         self.assertTrue(e['udg_HasLoadedCode'][0])
         self.assertEqual(e['FRC_Result'][0],self.f.base.encoded)
+
+    def test_starter_is_hidden_during_load_and_shown_again_on_failure(self):
+        starter=self.e['udg_PlayerHero'][1];gaya=self.e['udg_SpiritOfGaya'][1]
+        self.fail_place=True
+        self.assertFalse(self.apply())
+        for _ in range(5):self.e['FFL_Tick']()
+        self.assertIs(self.e['udg_PlayerHero'][1],starter)
+        self.assertTrue(starter.get('visible',True));self.assertTrue(gaya.get('visible',True))
+
+    def test_loaded_masteries_count_as_food_used(self):
+        self.assertTrue(self.apply(),self.messages);self.finish()
+        e=self.e
+        for i in range(22):e['udg_JobLevelHash'][(e['FRC_JobRaw'](i),0)]=99 if i<5 else 40
+        e['FFL_RestoreUnlocks'](0)
+        self.assertEqual(self.currency['food'],5+(1 if e['udg_FreelancerHero'][1] is not None and e['udg_FreelancerHero'][1]['level']>=99 else 0))
 
     def test_meta_fragments_survive_fresh_load_above_legacy_limit(self):
         import save_vnext as codec
@@ -349,7 +371,7 @@ class FreshLoadTests(unittest.TestCase):
     def test_normal_command_routing_preserves_legacy_imports(self):
         e=self.e;calls=[];command=['-save']
         e.update(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,GetEventPlayerChatString=lambda:command[0],
-                 FRC_Start=lambda pid:calls.append(('save',e['FST_FileStem'][pid])) or True,
+                 FRC_StartNow=lambda pid:calls.append(('save',e['FST_FileStem'][pid])) or True,
                  FST_Request=lambda pid,account:calls.append(('load',e['FST_FileStem'][pid])) or True)
         for text,kind,stem in [('-save','save','Last save'),('-savef','save','Last save'),
                 ('-savef Endgame','save','Endgame'),('-savef Forsaken Endgame','save','Forsaken Endgame'),
@@ -403,7 +425,7 @@ class FreshLoadTests(unittest.TestCase):
     def test_file_save_never_shows_or_replaces_screen_code_and_uses_legacy_path(self):
         e=self.e;calls=[]
         e.update(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,
-                 GetEventPlayerChatString=lambda:'-savef Endgame',FRC_Start=lambda pid:True)
+                 GetEventPlayerChatString=lambda:'-savef Endgame',FRC_StartNow=lambda pid:True)
         e['FFL_Chat']()
         self.assertEqual(self.messages,['Trying to save in FFERPG\\Endgame.txt'])
         e['FST_SavedCode'][0]='previous screenshot code'

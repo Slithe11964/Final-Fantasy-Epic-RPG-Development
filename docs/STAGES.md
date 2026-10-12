@@ -117,3 +117,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DR | Screenshot save pages restore legacy character colors, show prominent repeated page totals and next-page commands, and fit three complete parts while preserving existing codes. |
 | DS | File saves show legacy destination and verification messages without displaying or replacing screenshot codes; only normal save updates the colored code pages. |
 | DT | Town Shrine of Individuality stays visible, unmastered Freelancer purchases are silent, and mastered fresh loads restore the original shrine unlock and menus. |
+| DU | Saves capture in one frame (no standing still), loads replace the starter in place, and loaded masteries restore food used, title unlocks and total job level. |
+| DV | DU with 920-character file pages, for testing multi-file saves and missing-part rejection. Test only. |
