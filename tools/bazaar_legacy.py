@@ -74,9 +74,16 @@ def convert_all(text):
     return convert_talents(convert(text))
 
 
+def convert_editor_text(text):
+    """Every 1.29.2 source rewrite, for one trigger's editor text."""
+    from save_legacy import convert as convert_save
+    return convert_save(convert_all(text))
+
+
 def convert_wct(data):
     wct = read_wct(data)
-    wct['entries'] = [raw_of(convert_all(text_of(entry)))
-                      if 'BazaarFrame_Init' in text_of(entry) or 'TalentFrame_Init' in text_of(entry) else entry
+    wct['entries'] = [raw_of(convert_editor_text(text_of(entry)))
+                      if any(mark in text_of(entry) for mark in
+                             ('BazaarFrame_Init', 'TalentFrame_Init', 'FST_UseSyncNative')) else entry
                       for entry in wct['entries']]
     return write_wct(wct)

@@ -353,7 +353,9 @@ DROP_LINE = re.compile(r'^\s*call\s+(BlzSetTerrainFogMaxLinearDensity|BlzSetTerr
 
 def script_129(text):
     from bazaar_legacy import convert_all
+    from save_legacy import convert as convert_save
     text = convert_all(text)
+    text = convert_save(text)  # save transport: sync natives -> game cache
     text = replace_calls(text, 'BlzCreateUnitWithSkin', lambda a: 'CreateUnit(%s)' % ','.join(a[:5]))
     text = replace_calls(text, 'SetTerrainFogExV', lambda a: 'SetTerrainFogEx(%s)' % ','.join(a[:4] + a[8:]))
     text, n = DROP_LINE.subn('', text)
