@@ -65,3 +65,21 @@ Merge order that follows from this: the codec and session modules can join the n
 now; transport needs a second delivery backend built on the game cache; capture and the rest
 wait for the Backpack model.
 
+### Game-cache delivery, proved as far as it can be offline
+
+`experiments/Forsaken/Forsaken-save-cache.j` carries the transport's own packets as
+synchronised game-cache integers, five code characters to an integer in base 66 (the 64
+code characters plus the two legacy brackets). A packet's length key is written last, so a
+packet is never handed on half-arrived; every value is stored one above its real value
+because a missing key also reads as zero.
+
+Checked: it compiles against the bundled 1.29.2 `common.j` and `blizzard.j`, and a real
+1,701-character endgame save survives the round trip character for character, brackets and
+whole alphabet included (`test_save_cache.py`).
+
+Not checked, and only a real 1.29.2 multiplayer game can: how many `SyncStoredInteger`
+calls one frame tolerates. That save needs 389 keys. Sending one 192-character packet per
+pump tick means about 39 of them in a single frame and finishes in roughly half a second;
+shorter packets spread the same work thinner, so 64-character packets would be 14 keys a
+frame over about 1.4 seconds. Start short and raise it only if the game is happy.
+

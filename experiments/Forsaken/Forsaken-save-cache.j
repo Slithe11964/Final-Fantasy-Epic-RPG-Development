@@ -1,0 +1,112 @@
+library TForsakenSaveCache requires TForsakenSaveCodec
+// A 1.29.2 delivery path for save transport packets. Reforged shares a locally read
+// file through BlzSendSyncData, which 1.29.2 does not have; the game cache natives it
+// does have carry the same packets as synchronised integers.
+globals
+    constant string FSG_CACHE="FSCUcache"
+    constant integer FSG_GROUP=5          // alphabet characters packed into one integer
+    constant integer FSG_BASE=66          // the 64 code characters plus the two legacy brackets
+    gamecache FSG_Store=null
+    integer array FSG_Sent                // packets this player has published
+    integer array FSG_Seen                // packets this client has already handed on
+endglobals
+
+function FSG_Digit takes string letter returns integer
+    if letter=="(" then
+        return 64
+    elseif letter==")" then
+        return 65
+    endif
+    return FSC_Index(letter)
+endfunction
+
+function FSG_Letter takes integer digit returns string
+    if digit==64 then
+        return "("
+    elseif digit==65 then
+        return ")"
+    endif
+    return FSC_Letter(digit)
+endfunction
+
+function FSG_Label takes integer pid,integer packet,integer group returns string
+    return "p"+I2S(pid)+"_"+I2S(packet)+"_"+I2S(group)
+endfunction
+
+// Values are stored one above their real value because a missing key also reads as zero.
+function FSG_Put takes string label,integer value returns nothing
+    call StoreInteger(FSG_Store,FSG_CACHE,label,value+1)
+    call SyncStoredInteger(FSG_Store,FSG_CACHE,label)
+endfunction
+
+function FSG_Get takes string label returns integer
+    return GetStoredInteger(FSG_Store,FSG_CACHE,label)-1
+endfunction
+
+function FSG_Reset takes integer pid returns nothing
+    set FSG_Sent[pid]=0
+    set FSG_Seen[pid]=0
+endfunction
+
+// Publishes one transport packet. Only the player reading the file calls this.
+function FSG_Send takes integer pid,string packet returns boolean
+    local integer length=StringLength(packet)
+    local integer index=FSG_Sent[pid]
+    local integer group=0
+    local integer value
+    local integer taken
+    if FSG_Store==null or length<1 or length>255 then
+        return false
+    endif
+    loop
+        exitwhen group*FSG_GROUP>=length
+        set value=0
+        set taken=0
+        loop
+            exitwhen taken>=FSG_GROUP
+            set value=value*FSG_BASE
+            if group*FSG_GROUP+taken<length then
+                set value=value+FSG_Digit(SubString(packet,group*FSG_GROUP+taken,group*FSG_GROUP+taken+1))
+            endif
+            set taken=taken+1
+        endloop
+        call FSG_Put(FSG_Label(pid,index,group+1),value)
+        set group=group+1
+    endloop
+    call FSG_Put(FSG_Label(pid,index,0),length)   // the length key completes the packet
+    set FSG_Sent[pid]=index+1
+    call FSG_Put("p"+I2S(pid)+"_n",index+1)
+    return true
+endfunction
+
+// Rebuilds one packet once every one of its keys has arrived, or returns null.
+function FSG_Packet takes integer pid,integer index returns string
+    local integer length=FSG_Get(FSG_Label(pid,index,0))
+    local integer group=0
+    local integer value
+    local integer taken
+    local string packet=""
+    local string letters
+    if length<1 then
+        return null
+    endif
+    loop
+        exitwhen group*FSG_GROUP>=length
+        set value=FSG_Get(FSG_Label(pid,index,group+1))
+        if value<0 then
+            return null
+        endif
+        set letters=""
+        set taken=0
+        loop
+            exitwhen taken>=FSG_GROUP
+            set letters=FSG_Letter(value-(value/FSG_BASE)*FSG_BASE)+letters
+            set value=value/FSG_BASE
+            set taken=taken+1
+        endloop
+        set packet=packet+letters
+        set group=group+1
+    endloop
+    return SubString(packet,0,length)
+endfunction
+endlibrary

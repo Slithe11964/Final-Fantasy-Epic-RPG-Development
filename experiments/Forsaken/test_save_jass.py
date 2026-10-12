@@ -50,7 +50,7 @@ def engine(extra_source='', extra_env=None):
     env['FlushChildHashtable'] = flush
     env.update(extra_env or {})
     for name in functions(source): env[name] = lambda *args: None
-    defaults = dict(integer=0, real=0., string=None, boolean=False, hashtable=None, item=None, unit=None, player=None, ability=None, force=None, timer=None, trigger=None)
+    defaults = dict(integer=0, real=0., string=None, boolean=False, hashtable=None, item=None, unit=None, player=None, ability=None, force=None, timer=None, trigger=None, gamecache=None, group=None)
     blocks = '\n'.join(m[1] for m in re.finditer(r'\nglobals\n(.*?)\nendglobals', source, re.S))
     for line in strip_comments(blocks).splitlines():
         match = re.fullmatch(r'\s*(?:constant\s+)?(\w+)\s+(array\s+)?(\w+)(?:=(.*))?\s*', line)
