@@ -55,7 +55,7 @@ function Trig_Shrine_Create_Actions takes nothing returns nothing
     call CreateNUnitsAtLoc(1,'n0KM',Player(PLAYER_NEUTRAL_PASSIVE),l_tempPoint,bj_UNIT_FACING) // 'n0KM': unit "Shrine of Individuality"
     set udg_ShrineMenuUnit[19]=GetLastCreatedUnit()
     call RemoveLocation(l_tempPoint)
-    call ShowUnitHide(gg_unit_n04U_0204)
+    call ShowUnitShow(gg_unit_n04U_0204)
     set bj_forLoopAIndex=9
     set bj_forLoopAIndexEnd=17
     loop

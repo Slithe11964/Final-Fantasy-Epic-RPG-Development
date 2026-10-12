@@ -1,4 +1,4 @@
-library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad
+library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
@@ -807,6 +807,9 @@ function FFL_Commit takes integer pid returns nothing
     set FFL_OldHero[pid]=null
     set FFL_OldGaya[pid]=null
     call FFL_Guard(false)
+    if IsPlayerInForce(Player(pid),udg_TitleForce[10]) and not udg_ShrineUnlocked then
+        call ConditionalTriggerExecute(gg_trg_Shrine_Unlock)
+    endif
     call FFL_Message(pid,"PASS: exact full profile after fresh load. Code "+I2S(StringLength(FST_Result[pid]))+" characters; file read ~"+I2S(FST_FileMillis[pid])+" ms (game timer); transfer "+R2S(FST_TransferSeconds[pid])+" s; load/verify "+R2S(TimerGetElapsed(FST_Clock)-FFL_Started[pid])+" s.")
 endfunction
 

@@ -259,6 +259,28 @@ class FreshLoadTests(unittest.TestCase):
         self.assertIs(self.e['udg_FreelancerHero'][1],hero)
         self.assertEqual(hero['owner'],0)
 
+    def test_mastered_load_restores_shrine_unlock_after_commit(self):
+        import save_vnext as codec
+        envelope=codec.decode(self.f.base.encoded)
+        sections=[]
+        for section in envelope.sections:
+            if section.id==7:
+                flags=dict(codec.read_pairs(section.payload));flags[10]=1
+                section=codec.Section(section.id,section.version,section.required,codec.pairs(sorted(flags.items())))
+            sections.append(section)
+        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,tuple(sections)))
+        self.assertTrue(self.apply(),self.messages);self.finish()
+        e=self.e;unlocks=[]
+        def unlock(trigger):
+            self.assertTrue(e['udg_HasLoadedCode'][0])
+            self.assertFalse(e['FFP_Locked'][0])
+            unlocks.append(trigger)
+        e.update(udg_ShrineUnlocked=False,gg_trg_Shrine_Unlock='unlock',ConditionalTriggerExecute=unlock)
+        e['FFL_Tick']()
+        self.assertEqual(unlocks,['unlock'])
+        self.assertTrue(e['udg_HasLoadedCode'][0])
+        self.assertEqual(e['FRC_Result'][0],self.f.base.encoded)
+
     def test_meta_fragments_survive_fresh_load_above_legacy_limit(self):
         import save_vnext as codec
         envelope=codec.decode(self.f.base.encoded)

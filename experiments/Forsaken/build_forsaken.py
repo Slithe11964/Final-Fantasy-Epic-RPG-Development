@@ -846,7 +846,9 @@ def main():
         path=work/'src/triggers/04 Combat and abilities'/(module+'.j')
         path.write_bytes(cast_overlay(path.read_text(encoding='utf-8'),module).replace('\n','\r\n').encode('utf-8'))
     presented_script=scratch/'presentation-ready.w3x'
-    run([sys.executable,work/'tools/sync_module.py',base,presented_script,'Intro'],cwd=work)
+    run([sys.executable,work/'tools/sync_module.py',base,scratch/'intro-ready.w3x','Intro'],cwd=work)
+    run([sys.executable,work/'tools/sync_module.py',scratch/'intro-ready.w3x',scratch/'job-ready.w3x','Job'],cwd=work)
+    run([sys.executable,work/'tools/sync_module.py',scratch/'job-ready.w3x',presented_script,'Shrine'],cwd=work)
     base=presented_script
     print('Isolated sources:', work, flush=True)
     print('Mapped', sum(e['slot']!='Inventory' for e in mapping.values()), 'gear items; four Materia unchanged.', flush=True)

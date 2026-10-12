@@ -211,7 +211,9 @@ def main():
         run(work/'tools/add_module.py',previous,current,'11 Save diagnostics',module)
         previous=current
     presented_script=scratch/'presentation-ready.w3x'
-    run(work/'tools/sync_module.py',previous,presented_script,'Intro')
+    run(work/'tools/sync_module.py',previous,scratch/'intro-ready.w3x','Intro')
+    run(work/'tools/sync_module.py',scratch/'intro-ready.w3x',scratch/'job-ready.w3x','Job')
+    run(work/'tools/sync_module.py',scratch/'job-ready.w3x',presented_script,'Shrine')
     previous=presented_script
     run(work/'tools/check_map.py',previous,'--baseline',base,'--allow-new',allow_new)
     # Use the established stage builder for all compilation/source/compatibility/content gates.

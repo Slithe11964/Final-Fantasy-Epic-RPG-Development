@@ -116,3 +116,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DQ | Screen-only saves display numbered screenshot pages, chat loads assemble the complete validated profile, and exact-name file imports detect legacy or new format. |
 | DR | Screenshot save pages restore legacy character colors, show prominent repeated page totals and next-page commands, and fit three complete parts while preserving existing codes. |
 | DS | File saves show legacy destination and verification messages without displaying or replacing screenshot codes; only normal save updates the colored code pages. |
+| DT | Town Shrine of Individuality stays visible, unmastered Freelancer purchases are silent, and mastered fresh loads restore the original shrine unlock and menus. |

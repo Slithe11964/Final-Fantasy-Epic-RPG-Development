@@ -440,6 +440,9 @@ function Trig_Job_Change_Actions takes nothing returns nothing
     set udg_SelectedJobId=GetUnitTypeId(GetSoldUnit())
     set udg_TempPlayer=GetOwningPlayer(GetSoldUnit())
     call RemoveUnit(GetSoldUnit())
+    if Trig_Job_Change_IsFreelancerPick() and not IsPlayerInForce(udg_TempPlayer,udg_TitleForce[10]) then
+        return
+    endif
     if(Trig_Job_Change_IsSameJob())then
         set udg_TempForce=Force_OfPlayer(udg_TempPlayer)
         call DisplayTextToForce(udg_TempForce,"You are already using this job.")

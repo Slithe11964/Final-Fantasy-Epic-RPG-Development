@@ -94,7 +94,9 @@ def main():
         previous=current
     presented_script=scratch/'presentation-ready.w3x'
     if not presented_script.exists():
-        run('sync_module.py',previous,presented_script,'Intro')
+        run('sync_module.py',previous,scratch/'intro-ready.w3x','Intro')
+        run('sync_module.py',scratch/'intro-ready.w3x',scratch/'job-ready.w3x','Job')
+        run('sync_module.py',scratch/'job-ready.w3x',presented_script,'Shrine')
     previous=presented_script
     allow='^gg_trg_Forsaken_FreshLoad$'
     run('check_map.py',previous,'--baseline',base,'--allow-new',allow)

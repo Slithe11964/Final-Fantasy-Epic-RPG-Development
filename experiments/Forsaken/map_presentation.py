@@ -9,6 +9,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 INTRO = Path('src/triggers/06 Quests and story/Intro.j')
 DEVELOPER = Path('src/triggers/11 Developer tools/DevCommands.j')
+SHRINE = Path('src/triggers/03 Jobs and progression/Shrine.j')
+JOB = Path('src/triggers/03 Jobs and progression/Job.j')
 
 
 def settings():
@@ -34,10 +36,25 @@ def prepare_map(base, output, stage):
     return output
 
 
+def shrine_policy(source):
+    return source.replace('    call ShowUnitHide(gg_unit_n04U_0204)',
+                          '    call ShowUnitShow(gg_unit_n04U_0204)', 1)
+
+
+def job_policy(source):
+    before='    call RemoveUnit(GetSoldUnit())\n    if(Trig_Job_Change_IsSameJob())then'
+    after='    call RemoveUnit(GetSoldUnit())\n    if Trig_Job_Change_IsFreelancerPick() and not IsPlayerInForce(udg_TempPlayer,udg_TitleForce[10]) then\n        return\n    endif\n    if(Trig_Job_Change_IsSameJob())then'
+    return source.replace(before,after,1)
+
+
 def sync_intro(work):
     for source in (INTRO, DEVELOPER):
         text = (ROOT/source).read_text(encoding='utf-8')
         (work/source).write_bytes(text.replace('\n', '\r\n').encode('utf-8'))
+    # Apply only the user's shrine policy to the selected gameplay checkpoint.
+    for source,patch in ((SHRINE,shrine_policy),(JOB,job_policy)):
+        text=patch((work/source).read_text(encoding='utf-8'))
+        (work/source).write_bytes(text.replace('\n','\r\n').encode('utf-8'))
 
 
 def expected_source(entry, work):
@@ -45,4 +62,8 @@ def expected_source(entry, work):
         return raw_of((work/INTRO).read_text(encoding='utf-8').replace('\n', '\r\n'))
     if entry.startswith(b'library TDevCommands '):
         return raw_of((work/DEVELOPER).read_text(encoding='utf-8').replace('\n', '\r\n'))
+    if entry.startswith(b'library TShrine '):
+        return raw_of((work/SHRINE).read_text(encoding='utf-8').replace('\n','\r\n'))
+    if entry.startswith(b'library TJob '):
+        return raw_of((work/JOB).read_text(encoding='utf-8').replace('\n','\r\n'))
     return entry
