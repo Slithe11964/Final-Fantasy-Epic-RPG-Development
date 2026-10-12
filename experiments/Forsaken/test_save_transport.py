@@ -238,6 +238,31 @@ class TransportTests(unittest.TestCase):
         self.assertIn('page 1 header',self.e['FST_FileError'][0])
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
 
+    def test_legacy_file_is_detected_locally_and_dispatched_only_after_sync(self):
+        code='HABCDEFGHIJK(ABCDE)'
+        self.e['FST_AllowLegacy'][0]=True
+        self.e['FST_SetFileStem'](0,'Endgame')
+        self.files={self.e['FST_PlayerPath'](0,0):{0:code}}
+        self.assertTrue(self.e['FST_Request'](0,42))
+        self.assertFalse(self.e['FST_Ready'][0])
+        self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
+        for _ in range(10):self.e['FST_Pump']()
+        self.assertTrue(self.sent[0][1].startswith('L'))
+        self.receive([packet for _,packet in self.sent])
+        self.assertTrue(self.e['FST_Ready'][0],self.e['FST_Error'][0])
+        self.assertTrue(self.e['FST_Legacy'][0]);self.assertEqual(self.e['FST_Result'][0],code)
+
+    def test_code_display_pages_reassemble_without_file_io(self):
+        code=self.file;self.e['FST_SavedCode'][0]=code
+        total=(len(code)+79)//80;parts=[]
+        for page in range(1,(total+4)//5+1):
+            self.messages.clear();self.assertTrue(self.e['FST_ShowCode'](0,page))
+            lines=[m for m in self.messages if m.startswith('-load FSVB:')]
+            self.assertTrue(all(len(line)<=121 for line in lines))
+            parts.extend(line.split(':',4)[4] for line in lines)
+        self.assertEqual(''.join(parts),code)
+        self.assertEqual(self.files,{})
+
     def test_file_stems_are_bounded_and_player_specific(self):
         for stem in ('../legacy','x/y','x\\y','x.txt','', 'x'*65):
             self.assertFalse(self.e['FST_SetFileStem'](0,stem),stem)

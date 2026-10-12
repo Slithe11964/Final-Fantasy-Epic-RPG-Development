@@ -328,17 +328,17 @@ class FreshLoadTests(unittest.TestCase):
         e.update(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,GetEventPlayerChatString=lambda:command[0],
                  FRC_Start=lambda pid:calls.append(('save',e['FST_FileStem'][pid])) or True,
                  FST_Request=lambda pid,account:calls.append(('load',e['FST_FileStem'][pid])) or True)
-        for text,kind,stem in [('-save','save','Forsaken'),('-savef','save','Forsaken'),
-                ('-savef Endgame','save','Forsaken Endgame'),('-savef Forsaken Endgame','save','Forsaken Endgame'),
-                ('-savef   ','save','Forsaken'),('-load','load','Forsaken'),
-                ('-loadf','load','Forsaken'),('-loadf Forsaken Endgame','load','Forsaken Endgame'),
+        for text,kind,stem in [('-save','save','Last save'),('-savef','save','Last save'),
+                ('-savef Endgame','save','Endgame'),('-savef Forsaken Endgame','save','Forsaken Endgame'),
+                ('-savef   ','save','Last save'),('-load','load','Last save'),
+                ('-loadf','load','Last save'),('-loadf Forsaken Endgame','load','Forsaken Endgame'),
                 ('-newsave','save','Forsaken CU'),('-newload','load','Forsaken CU')]:
             command[0]=text;e['FFL_Phase'][0]=0;e['FFL_Chat']()
             self.assertEqual(calls[-1],(kind,stem),text)
-        for text in ('-loadf Last save','-load E12345','-loadf old-character'):
+        for text in ('-load E12345','-loada (ABCDEF)'):
             command[0]=text;e['FFL_Phase'][0]=0
             self.assertTrue(e['FFL_LegacyAllowed'](),text)
-        for text in ('-load','-loadf','-loadf Forsaken Endgame'):
+        for text in ('-load','-loadf','-loadf Endgame','-loadf Last save','-load FSVB:1:1:1:A'):
             command[0]=text
             self.assertFalse(e['FFL_LegacyAllowed'](),text)
         command[0]='-savefTypo';e['FFL_Phase'][0]=0;before=len(calls)
@@ -347,6 +347,35 @@ class FreshLoadTests(unittest.TestCase):
         command[0]='-savef ../legacy';e['FFL_Phase'][0]=0;before=len(calls)
         e['FFL_Chat']();self.assertEqual(len(calls),before)
         self.assertIn('filename must',self.messages[-1])
+
+    def test_numbered_chat_load_is_atomic_and_accepts_reordered_parts(self):
+        e=self.e;code=self.f.base.encoded;check=e['FSC_Checksum'](code)
+        total=(len(code)+79)//80
+        calls=[];e['FFL_Apply']=lambda pid:calls.append(pid)
+        for part in range(total,0,-1):
+            text=f'FSVB:{check}:{part}:{total}:'+code[(part-1)*80:part*80]
+            e['FFL_LoadChat'](0,text)
+            if part>1:
+                self.assertEqual(calls,[])
+                e['FFL_LoadChat'](0,text)
+                self.assertEqual(e['FFL_ChatCount'][0],total-part+1)
+        self.assertEqual(calls,[0]);self.assertEqual(e['FST_Result'][0],code)
+        self.assertFalse(e['udg_HasLoadedCode'][0])
+
+    def test_chat_rejects_corruption_without_consuming_load_and_save_needs_no_io(self):
+        e=self.e;calls=[];e['FFL_Apply']=lambda pid:calls.append(pid)
+        e['FFL_LoadChat'](0,'FSVB:123:1:1:FSVBAAAAAAAA')
+        self.assertEqual(calls,[]);self.assertFalse(e['udg_HasLoadedCode'][0])
+        self.assertIn('checksum failed',self.messages[-1])
+        e['FFL_LoadChat'](0,'FSVB:1:0:2:A')
+        self.assertIn('invalid numbered',self.messages[-1])
+        e['FFL_Phase'][0]=1;e['FFL_SaveFile'][0]=False
+        e['FRC_Ready'][0]=True;e['FRC_Result'][0]=self.f.base.encoded
+        e['FST_Write']=lambda *args:self.fail('screen save must never write a file')
+        e['FFL_Tick']()
+        lines=[m for m in self.messages if m.startswith('-load FSVB:')]
+        self.assertTrue(lines);self.assertTrue(all(len(line)<=121 for line in lines))
+        self.assertEqual(e['FST_SavedCode'][0],self.f.base.encoded)
 
     def test_save_actions_bind_once_after_forsaken_setup(self):
         e=self.e;calls=[]

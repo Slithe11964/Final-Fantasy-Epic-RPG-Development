@@ -4,6 +4,9 @@ globals
     constant string FST_PREFIX="FSCU"
     constant string FST_FILE=".\\FFERPG\\Forsaken CU.txt"
     constant integer FST_LIMIT=17000
+    boolean array FST_AllowLegacy
+    boolean array FST_Legacy
+    string array FST_SavedCode
     string array FST_FileStem
     string array FST_FileError
     string array FST_FileBefore
@@ -72,6 +75,7 @@ function FST_Fail takes integer pid,string reason returns nothing
     set FST_Error[pid]=reason
     set FST_Pending[pid]=false
     set FST_Receiving[pid]=false
+    set FST_Legacy[pid]=false
     set FST_Ready[pid]=false
     set FST_Buffer[pid]=null
     set FST_Result[pid]=null
@@ -119,6 +123,67 @@ function FST_PlayerPath takes integer pid,integer page returns string
     return ".\\FFERPG\\"+FST_FileStem[pid]+" part "+I2S(page)+".txt"
 endfunction
 
+function FST_TextChecksum takes string text returns integer
+    local integer a=1
+    local integer b=0
+    local integer i=0
+    local integer digit
+    loop
+        exitwhen i>=StringLength(text)
+        if SubString(text,i,i+1)=="(" then
+            set digit=64
+        elseif SubString(text,i,i+1)==")" then
+            set digit=65
+        else
+            set digit=FSC_Value(SubString(text,i,i+1))
+        endif
+        if digit<0 then
+            return -1
+        endif
+        set a=ModuloInteger(a+digit+1,32749)
+        set b=ModuloInteger(b+a,32749)
+        set i=i+1
+    endloop
+    return b*32768+a
+endfunction
+
+function FST_LegacyValid takes string encoded returns boolean
+    local integer i=0
+    local string ch
+    if encoded==null or StringLength(encoded)<11 or StringLength(encoded)>FST_LIMIT or (SubString(encoded,0,1)!="E" and SubString(encoded,0,1)!="F" and SubString(encoded,0,1)!="G" and SubString(encoded,0,1)!="H") then
+        return false
+    endif
+    loop
+        exitwhen i>=StringLength(encoded)
+        set ch=SubString(encoded,i,i+1)
+        if ch!="(" and ch!=")" and not FSC_AlphabetValid(ch) then
+            return false
+        endif
+        set i=i+1
+    endloop
+    return true
+endfunction
+
+function FST_ShowCode takes integer pid,integer page returns boolean
+    local string encoded=FST_SavedCode[pid]
+    local integer total=(StringLength(encoded)+79)/80
+    local integer pages=(total+4)/5
+    local integer part=(page-1)*5
+    local integer last=part+5
+    if encoded==null or page<1 or page>pages then
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save code: use -save first, then -savepage NUMBER for an available page.")
+        return false
+    endif
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"Save code page "+I2S(page)+"/"+I2S(pages)+". Screenshot every page; paste each complete -load line in a fresh game.")
+    loop
+        exitwhen part>=total or part>=last
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"-load FSVB:"+I2S(FST_TextChecksum(encoded))+":"+I2S(part+1)+":"+I2S(total)+":"+SubString(encoded,part*80,(part+1)*80))
+        set part=part+1
+    endloop
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"View any page with -savepage NUMBER. All parts are required, including Armory; no files are needed.")
+    return true
+endfunction
+
 // Local player names are temporary chunk fields; no native reads inside the file.
 function FST_ReadFile takes integer pid returns string
     local integer slot=0
@@ -130,6 +195,7 @@ function FST_ReadFile takes integer pid returns string
     local string marker
     local string value
     local string result=""
+    local boolean legacy=false
     set FST_FileError[pid]=""
     loop
         exitwhen slot>=24
@@ -146,7 +212,11 @@ function FST_ReadFile takes integer pid returns string
         endloop
         call Preloader(FST_PlayerPath(pid,page))
         set marker=GetPlayerName(Player(23))
-        if StringLength(marker)!=21 or SubString(marker,0,4)!="FSC1" then
+        if page==0 and marker=="FSCU_UNREAD" and FST_AllowLegacy[pid] and GetPlayerName(Player(pid))!="FSCU_UNREAD" then
+            set result=GetPlayerName(Player(pid))
+            set legacy=true
+            set size=StringLength(result)
+        elseif StringLength(marker)!=21 or SubString(marker,0,4)!="FSC1" then
             set FST_FileError[pid]="page "+I2S(page)+" header was not returned"
         else
             if page==0 then
@@ -185,7 +255,14 @@ function FST_ReadFile takes integer pid returns string
     if FST_FileError[pid]!="" then
         return null
     endif
-    if StringLength(result)!=size or FSC_Checksum(result)!=check then
+    if legacy then
+        if not FST_LegacyValid(result) then
+            set FST_FileError[pid]="legacy file returned invalid code text"
+            return null
+        endif
+        return result
+    endif
+    if StringLength(result)!=size or FST_TextChecksum(result)!=check then
         set FST_FileError[pid]="assembled length or checksum mismatch"
         return null
     endif
@@ -215,7 +292,7 @@ function FST_Request takes integer pid,integer account returns boolean
         set encoded=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
         set FST_LocalMillis[pid]=R2I((TimerGetElapsed(FST_Clock)-started)*1000.)
-        if encoded==null or StringLength(encoded)<4 or StringLength(encoded)>FST_LIMIT or SubString(encoded,0,4)!="FSVB" or not FSC_AlphabetValid(encoded) then
+        if encoded==null or StringLength(encoded)<4 or StringLength(encoded)>FST_LIMIT or (not (SubString(encoded,0,4)=="FSVB" and FSC_AlphabetValid(encoded)) and not (FST_AllowLegacy[pid] and FST_LegacyValid(encoded))) then
             set FST_LocalCode[pid]=null
             set FST_LocalPhase[pid]=4
         else
@@ -242,7 +319,12 @@ function FST_Receive takes integer pid,string packet returns nothing
         return
     endif
     set kind=SubString(packet,0,1)
-    if kind=="B" then
+    if kind=="B" or kind=="L" then
+        set FST_Legacy[pid]=kind=="L"
+        if FST_Legacy[pid] and not FST_AllowLegacy[pid] then
+            call FST_Fail(pid,"legacy import was not requested")
+            return
+        endif
         if FST_Receiving[pid] or StringLength(packet)!=37 then
             call FST_Fail(pid,"duplicate or malformed file header")
             return
@@ -267,18 +349,18 @@ function FST_Receive takes integer pid,string packet returns nothing
         if size>192 then
             set size=192
         endif
-        if not FST_Receiving[pid] or sequence!=FST_Sequence[pid] or size<=0 or StringLength(chunk)!=size or not FSC_AlphabetValid(chunk) then
+        if not FST_Receiving[pid] or sequence!=FST_Sequence[pid] or size<=0 or StringLength(chunk)!=size or (not FST_Legacy[pid] and not FSC_AlphabetValid(chunk)) then
             call FST_Fail(pid,"missing, repeated or invalid encoded chunk")
             return
         endif
         set FST_Buffer[pid]=FST_Buffer[pid]+chunk
         set FST_Sequence[pid]=sequence+1
     elseif kind=="E" then
-        if StringLength(packet)!=7 or not FST_Receiving[pid] or StringLength(FST_Buffer[pid])!=FST_Length[pid] or FSC_Checksum(FST_Buffer[pid])!=FST_Check[pid] then
+        if StringLength(packet)!=7 or not FST_Receiving[pid] or StringLength(FST_Buffer[pid])!=FST_Length[pid] or FST_TextChecksum(FST_Buffer[pid])!=FST_Check[pid] then
             call FST_Fail(pid,"incomplete or corrupted file transfer")
             return
         endif
-        if not FSC_Decode(pid,FST_Buffer[pid],FST_Account[pid],true) then
+        if (FST_Legacy[pid] and not FST_LegacyValid(FST_Buffer[pid])) or (not FST_Legacy[pid] and not FSC_Decode(pid,FST_Buffer[pid],FST_Account[pid],true)) then
             call FST_Fail(pid,"file profile failed validation")
             return
         endif
@@ -313,7 +395,11 @@ function FST_Pump takes nothing returns nothing
                 set request=FST_Fixed(FST_RequestId[pid],6)
                 set packet=null
                 if FST_LocalPhase[pid]==1 then
-                    set packet="B"+request+FST_Fixed(StringLength(FST_LocalCode[pid]),5)+FST_Fixed(FSC_Checksum(FST_LocalCode[pid]),10)+FST_Fixed(FST_LocalMillis[pid],6)+FST_Fixed(R2I(TimerGetElapsed(FST_Clock)*1000.),9)
+                    set packet="B"
+                    if SubString(FST_LocalCode[pid],0,4)!="FSVB" then
+                        set packet="L"
+                    endif
+                    set packet=packet+request+FST_Fixed(StringLength(FST_LocalCode[pid]),5)+FST_Fixed(FST_TextChecksum(FST_LocalCode[pid]),10)+FST_Fixed(FST_LocalMillis[pid],6)+FST_Fixed(R2I(TimerGetElapsed(FST_Clock)*1000.),9)
                     set FST_LocalPhase[pid]=2
                 elseif FST_LocalPhase[pid]==2 then
                     set sequence=FST_LocalSequence[pid]
@@ -362,7 +448,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
                 set position=position+160
                 set slot=slot+1
             endloop
-            set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(FSC_Checksum(encoded),10)+FST_Fixed(page,1)+FST_Fixed(pages,1)
+            set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(FST_TextChecksum(encoded),10)+FST_Fixed(page,1)+FST_Fixed(pages,1)
             call Preload("\")\r\n\tcall SetPlayerName(Player(23), \""+marker+"\")\r\n\treturn\r\n\t//")
             call PreloadGenEnd(FST_PlayerPath(pid,page))
             set page=page+1

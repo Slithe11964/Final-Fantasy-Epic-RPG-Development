@@ -1,26 +1,37 @@
-# Private save/restart/fresh-load test - DP
+# Private save/restart/fresh-load test - DQ
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDP.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDQ.w3x`.
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
 
 | Command | File or behavior |
 |---|---|
-| `-save` or `-savef` | Write and verify `FFERPG/Forsaken.txt`. |
-| `-savef Endgame` | Write `FFERPG/Forsaken Endgame.txt`. |
-| `-load` or `-loadf` | Fresh-load `Forsaken.txt`. |
-| `-loadf Forsaken Endgame` | Fresh-load that named new-format file. |
-| `-loadf Last save` / `-load OLD_CODE` | Existing legacy file/code import. |
-| `-newsave` / `-newload` | Retained aliases using the verified `Forsaken CU.txt`. |
+| `-save` | Capture and display numbered code lines; no file writes. |
+| `-savepage 2` | Display another page of the last captured code. |
+| `-load FSVB:...` | Paste each displayed numbered line in a fresh game, in any order. |
+| `-savef Endgame` | Display the code and write exactly `FFERPG/Endgame.txt`. |
+| `-savef` | Display the code and write `FFERPG/Last save.txt`. |
+| `-loadf Endgame` | Detect and import either a legacy or new-format file. |
+| `-loadf` / bare `-load` | Detect/import `Last save.txt`. |
+| `-load OLD_CODE` / `-loada (ARMORY)` | Retained legacy chat import. |
+| `-newsave` / `-newload` | Retained aliases using `Forsaken CU.txt`. |
 
-New filenames reserve the Forsaken prefix and accept letters, digits, spaces,
-underscores and hyphens, up to64 characters including the prefix. NG Plus/Minus
-commands and autosave remain disabled in this private line.
+Screenshot every numbered code page; use `-savepage NUMBER` to display it again.
+Each page shows five lines, with80 code characters per line and a checksum/part
+label. Paste each complete displayed command; duplicates are harmless and order
+is flexible. No objects are created until every part and the full account-bound
+profile validate. New codes include Armory in the same assembly. Legacy `-loada`
+remains for legacy codes. A mistyped part can be replaced; checksum failure asks
+for all parts again without using the load. File read/write failure does not
+prevent viewing or manually loading the displayed code.
 
-DP fixes the extra unclickable hero portrait: after verified loading, the inactive
+Named files use exactly the requested name, with letters, digits, spaces,
+underscores and hyphens, up to64 characters. Keep all matching part files together.
+NG Plus/Minus commands and autosave remain disabled in this private line.
+
+DP's extra-portrait fix was confirmed by the user: after verified loading, the inactive
 Freelancer becomes Neutral Passive, matching legacy job storage. The active hero
-and Gaya remain player-owned. Retest the existing CU file with `-newload`, confirm
-only those two portraits, then switch to Freelancer and back.
+and Gaya remain player-owned; the inactive Freelancer stays available for jobs.
 
 Engine acceptance: real file export/restart/fresh load and different players'
 multiplayer loading passed. Intentional failure cleanup allowed retry, a second
@@ -31,7 +42,7 @@ Observed single or unspecified-mode examples:1,010 characters transferred in
 0.500 s and loaded/verified in3.148 s;1,300 characters took0.602 s and3.250 s.
 File read showed~0 ms at game-timer resolution; multiplayer timings remain pending.
 
-DP carries the updated DevCommands editor module: `-allitems` creates copies of
+DQ carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor
 single-player development copy and save before use; release maps keep it disabled.
@@ -48,15 +59,16 @@ keep the complete set when copying saves. Missing parts refuse loading.
 
 ## Tester checklist
 
-1. In DP, import an existing character using `-loadf Last save` (or your actual
-   legacy filename) or a pasted legacy code. Run `-save` while standing still;
-   wait for exact file readback. Also run `-savef Endgame` for a named copy.
-2. Restart Warcraft. Start DP with matching account, difficulty and Speedrun
-   settings. Leave the starter, Gaya and house untouched. Within fifteen minutes
-   run `-load`; expect **PASS: exact full profile**. A second `-load` must refuse.
-3. In another fresh game, run `-loadf Forsaken Endgame` and expect the same match.
-   Existing CU files still use `-newload`; the previous intentional retry check
-   remains `-newretrycheck` followed by `-newload` after verified cleanup.
+1. Import your old character in DQ using `-loadf YOUR_NAME` or the legacy chat
+   code. Run `-save`, screenshot every page using `-savepage NUMBER`, and confirm
+   this works without allowing file writes. Run `-savef Endgame` to test file export.
+2. Restart Warcraft. Start DQ with matching account/difficulty/Speedrun settings
+   and an untouched starter. Within fifteen minutes paste the numbered `-load`
+   lines, including a duplicate and some out of order; expect exact-profile PASS
+   only after all parts arrive. A second load must refuse.
+3. In separate fresh games, test `-loadf Endgame` for the new file and `-loadf`
+   with your legacy filename for an old file. No Forsaken prefix is added. Existing
+   CU files still use `-newload`; `-newretrycheck` still verifies cleanup/retry.
 4. Check job/level, equipped effects, bag/quick positions, quantities and binding,
    Gaya, house, Chronicle and Armory flags. Include different jobs and fuller inventories.
 5. Send the final message screenshot (code length and timings), job, settings,
@@ -75,7 +87,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DP game to
+After the restart round trip, use that same file in a real multiplayer DQ game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.

@@ -1,4 +1,4 @@
-library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport
+library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
@@ -11,6 +11,11 @@ globals
     unit array FFL_OldGaya
     integer array FFL_ItemKey
     real array FFL_Started
+    boolean array FFL_SaveFile
+    string array FFL_ChatPart
+    integer array FFL_ChatCheck
+    integer array FFL_ChatTotal
+    integer array FFL_ChatCount
     boolean FFL_CommandsBound=false
     boolean FFL_WindowOpen=true
     timer FFL_Poll=null
@@ -807,7 +812,7 @@ endfunction
 
 function FFL_RoutesFile takes string command returns boolean
     local string lower=StringCase(command,false)
-    return lower=="-load" or lower=="-loadf" or lower=="-loadf forsaken" or SubString(lower,0,16)=="-loadf forsaken "
+    return lower=="-load" or lower=="-loadf" or SubString(lower,0,7)=="-loadf " or SubString(lower,0,11)=="-load fsvb:" or SubString(command,0,10)=="-load FSVB"
 endfunction
 
 function FFL_Trim takes string value returns string
@@ -824,17 +829,108 @@ function FFL_Trim takes string value returns string
     return SubString(value,first,last)
 endfunction
 
+function FFL_LoadChat takes integer pid,string text returns nothing
+    local integer i=5
+    local integer first=5
+    local integer field=0
+    local integer check=-1
+    local integer part=-1
+    local integer total=-1
+    local string chunk
+    local string encoded=""
+    if not FFP_Eligible(pid,FFL_WindowOpen) then
+        call FFL_Message(pid,FFP_Error[pid])
+        return
+    endif
+    if SubString(text,0,5)=="FSVB:" then
+        loop
+            exitwhen i>=StringLength(text) or field>=3
+            if SubString(text,i,i+1)==":" then
+                if field==0 then
+                    set check=FST_Digits(SubString(text,first,i))
+                elseif field==1 then
+                    set part=FST_Digits(SubString(text,first,i))
+                else
+                    set total=FST_Digits(SubString(text,first,i))
+                endif
+                set field=field+1
+                set first=i+1
+            endif
+            set i=i+1
+        endloop
+        set chunk=SubString(text,first,StringLength(text))
+        if field!=3 or check<0 or total<1 or total>213 or part<1 or part>total or StringLength(chunk)<1 or StringLength(chunk)>80 or (part<total and StringLength(chunk)!=80) or not FSC_AlphabetValid(chunk) then
+            call FFL_Message(pid,"invalid numbered code part; paste the complete -load line")
+            return
+        endif
+        if FFL_ChatCheck[pid]!=check or FFL_ChatTotal[pid]!=total then
+            set i=1
+            loop
+                exitwhen i>213
+                set FFL_ChatPart[pid*256+i]=null
+                set i=i+1
+            endloop
+            set FFL_ChatCheck[pid]=check
+            set FFL_ChatTotal[pid]=total
+            set FFL_ChatCount[pid]=0
+        endif
+        if FFL_ChatPart[pid*256+part]!=null and FFL_ChatPart[pid*256+part]!=chunk then
+            set FFL_ChatPart[pid*256+part]=chunk
+        elseif FFL_ChatPart[pid*256+part]==null then
+            set FFL_ChatPart[pid*256+part]=chunk
+            set FFL_ChatCount[pid]=FFL_ChatCount[pid]+1
+        endif
+        if FFL_ChatCount[pid]<total then
+            call FFL_Message(pid,"received code part "+I2S(part)+"; "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored. Character unchanged until all parts validate.")
+            return
+        endif
+        set i=1
+        loop
+            exitwhen i>total
+            set encoded=encoded+FFL_ChatPart[pid*256+i]
+            set i=i+1
+        endloop
+        if StringLength(encoded)>FST_LIMIT or FSC_Checksum(encoded)!=check then
+            set FFL_ChatTotal[pid]=0
+            call FFL_Message(pid,"assembled code checksum failed; paste all parts again")
+            return
+        endif
+    else
+        set encoded=text
+    endif
+    if FFP_Build(pid,encoded,FFL_WindowOpen) then
+        set FST_Result[pid]=encoded
+        set FST_FileMillis[pid]=0
+        set FST_TransferSeconds[pid]=0.
+        set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
+        call FFL_Apply(pid)
+    else
+        set FFL_ChatTotal[pid]=0
+        call FFL_Message(pid,"load rejected before creation: "+FFP_Error[pid])
+    endif
+endfunction
+
 function FFL_Chat takes nothing returns nothing
     local integer pid=GetPlayerId(GetTriggerPlayer())
     local string command=GetEventPlayerChatString()
     local string lower=StringCase(command,false)
     local string stem="Forsaken CU"
     local boolean saving=command=="-newsave" or lower=="-save" or lower=="-savef" or SubString(lower,0,7)=="-savef "
+    if SubString(lower,0,5)=="-load" and lower!="-load" and SubString(lower,0,6)!="-load " and lower!="-loadf" and SubString(lower,0,7)!="-loadf " then
+        return
+    endif
+    if SubString(lower,0,6)=="-load " and SubString(command,0,10)!="-load FSVB" then
+        return
+    endif
     if SubString(lower,0,6)=="-loadf" and not FFL_RoutesFile(command) then
         return
     endif
     if SubString(lower,0,6)=="-savef" and not saving then
         call FFL_Message(pid,"use -savef or -savef NAME")
+        return
+    endif
+    if SubString(lower,0,10)=="-savepage " then
+        call FST_ShowCode(pid,FST_Digits(FFL_Trim(SubString(command,10,StringLength(command)))))
         return
     endif
     if command=="-newcleanup" then
@@ -848,18 +944,20 @@ function FFL_Chat takes nothing returns nothing
         call FFL_Message(pid,"another save/load is in progress")
         return
     endif
+    if SubString(command,0,10)=="-load FSVB" then
+        call FFL_LoadChat(pid,FFL_Trim(SubString(command,6,StringLength(command))))
+        return
+    endif
     if saving and lower!="-newsave" then
-        set stem="Forsaken"
+        set stem="Last save"
         if SubString(lower,0,7)=="-savef " then
             set stem=FFL_Trim(SubString(command,7,StringLength(command)))
             if stem=="" then
-                set stem="Forsaken"
-            elseif StringCase(stem,false)!="forsaken" and SubString(StringCase(stem,false),0,9)!="forsaken " then
-                set stem="Forsaken "+stem
+                set stem="Last save"
             endif
         endif
     elseif lower=="-load" or lower=="-loadf" then
-        set stem="Forsaken"
+        set stem="Last save"
     elseif FFL_RoutesFile(command) then
         set stem=FFL_Trim(SubString(command,7,StringLength(command)))
     endif
@@ -868,6 +966,7 @@ function FFL_Chat takes nothing returns nothing
         return
     endif
     if saving then
+        set FFL_SaveFile[pid]=lower!="-save"
         if not udg_HardcoreOff then
             call FFL_Message(pid,"saving is disabled in Hardcore")
         elseif FRC_Start(pid) then
@@ -877,6 +976,7 @@ function FFL_Chat takes nothing returns nothing
             call FFL_Message(pid,"could not start character capture")
         endif
     elseif FFP_Eligible(pid,FFL_WindowOpen) then
+        set FST_AllowLegacy[pid]=SubString(lower,0,6)=="-loadf" or lower=="-load"
         if FST_Request(pid,FRC_Account(pid)) then
             set FFL_RetryCheck[pid]=command=="-newretrycheck"
             set FFL_Phase[pid]=2
@@ -906,16 +1006,23 @@ function FFL_Tick takes nothing returns nothing
         if FFL_Phase[pid]==1 and FRC_Phase[pid]==0 then
             set FFL_Phase[pid]=0
             if FRC_Ready[pid] then
-                call FFL_Message(pid,"capture verified; exporting the file")
-                if not FST_Write(pid,FRC_Result[pid],FRC_Account(pid)) then
-                    call FFL_Message(pid,"export refused: "+FSC_Error[pid])
+                set FST_SavedCode[pid]=FRC_Result[pid]
+                call FST_ShowCode(pid,1)
+                if FFL_SaveFile[pid] then
+                    call FFL_Message(pid,"capture verified; exporting the file")
+                    if not FST_Write(pid,FRC_Result[pid],FRC_Account(pid)) then
+                        call FFL_Message(pid,"export refused: "+FSC_Error[pid])
+                    endif
                 endif
             else
                 call FFL_Message(pid,"export failed: "+FRC_Error[pid])
             endif
         elseif FFL_Phase[pid]==2 and not FST_Pending[pid] then
             if FST_Ready[pid] then
-                if FFP_Build(pid,FST_Result[pid],FFL_WindowOpen) then
+                if FST_Legacy[pid] then
+                    set FFL_Phase[pid]=0
+                    call Trig_Cmd_Load_Code_LoadCodeDispatch(FST_Result[pid],Player(pid))
+                elseif FFP_Build(pid,FST_Result[pid],FFL_WindowOpen) then
                     call FFL_Apply(pid)
                 else
                     set FFL_Phase[pid]=0
@@ -979,8 +1086,8 @@ function InitTrig_ForsakenFreshLoad takes nothing returns nothing
     set gg_trg_Forsaken_FreshLoad=CreateTrigger()
     loop
         exitwhen pid>=8
-        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-load",true)
-        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-loadf",false)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-load",false)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-savepage ",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newsave",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newload",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newcleanup",true)

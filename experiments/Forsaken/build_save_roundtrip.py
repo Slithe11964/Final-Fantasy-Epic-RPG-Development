@@ -112,7 +112,7 @@ def main():
                 entry=first.rstrip(b'\r')+b', TUnit\r\n'+rest
         expected.append(expected_source(entry,work))
     if before['header']!=after['header'] or not all(e in after['entries'] for e in expected):raise ValueError('original source changed beyond the Job dependency repair')
-    report=dict(stage=args.stage,scope='Real file save/restart/fresh load prototype; no quests or live swap.',base=identity(base),output=identity(built),sources={module:identity(work/'src/triggers/11 Save prototype'/(module+'.j')) for module,_ in MODULES},commands=['-save','-savef NAME','-load','-loadf Forsaken NAME','-newsave','-newload','-newcleanup','-newretrycheck'],scratch=str(work),engine_measurements_pending=True,bt_regression_revision=BT_TEST_REVISION,bt_regression_files=list(BT_TEST_FILES))
+    report=dict(stage=args.stage,scope='Real file save/restart/fresh load prototype; no quests or live swap.',base=identity(base),output=identity(built),sources={module:identity(work/'src/triggers/11 Save prototype'/(module+'.j')) for module,_ in MODULES},commands=['-save','-savepage NUMBER','-savef NAME','-load FSVB:CHECK:PART:TOTAL:CHUNK','-loadf NAME','-newsave','-newload','-newcleanup','-newretrycheck'],scratch=str(work),engine_measurements_pending=True,bt_regression_revision=BT_TEST_REVISION,bt_regression_files=list(BT_TEST_FILES))
     for n in names[:3]:
         with (dest/n).open('xb') as stream:stream.write((work/'release'/n).read_bytes())
     with (dest/names[3]).open('x') as stream:json.dump(report,stream,indent=2)
