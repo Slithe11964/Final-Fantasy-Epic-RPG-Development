@@ -19,6 +19,18 @@ Reforged panel later, so one save code suits both.
 Objects come from `tools/backpack_catalog.py`, run against the base map before the build,
 the same way the Talents button was added.
 
+## Object data: use only what the map proves
+
+ASG was withdrawn because its holder unit set fields that do not exist (`uspd`) and a real
+field with the wrong type (`ussc` as an integer where this map writes a real). Warcraft reads
+the object file as a stream, so one bad entry corrupted everything after it: unit tooltips
+showed raw text, an inventory item vanished, and the Backpack button drew as a green square
+and did nothing. The icon path and the order string were wrong too - an icon the game cannot
+find draws green, and `battlestations` is not a no-target order a Channel ability can use.
+
+Every field, type, icon path and order string now comes from one the map already uses, and
+`tools/tests/test_backpack_catalog.py` fails the build if that stops being true.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag

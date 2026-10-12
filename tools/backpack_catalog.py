@@ -22,8 +22,15 @@ DUMMY = 'h02S'          # Simple Casting Dummy: already model-less and out of th
 INVENTORY = 'AInv'      # the six-slot unit inventory
 
 BACKPACK_TEXT = ('Opens your gear. Equipment sits in its own pages, so your own six slots stay '
-                 'free for potions and books. Press B again or Escape to come back.')
+                 'free for potions and books. Use Back to hero to return.')
 RETURN_TEXT = 'Returns to your hero.'
+# Icons and order strings are taken from ones this map already uses, because an icon path the
+# game cannot find draws as a green square and an order string that is not a real no-target
+# order leaves the button doing nothing. Each ability on a unit needs its own order.
+BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeBrown.blp'
+RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
+BACKPACK_ORDER = 'cannibalize'
+RETURN_ORDER = 'avatar'
 
 
 def setf(obj, field, ftype, value, level=0, data=0):
@@ -52,15 +59,15 @@ def prepare_abilities(table):
     if existing & {BACKPACK, RETURN}:
         raise ValueError('Backpack objects already exist in this map.')
     orders = {m['value'] for o in table['custom'] for m in o['sets'][0]['mods'] if m['field'] == 'Ncl6'}
-    for order in ('battlestations', 'bearform'):
+    for order in (BACKPACK_ORDER, RETURN_ORDER):
         if order in orders:
             raise ValueError('order string %s is already used' % order)
     table['custom'].append(button(objects, BACKPACK, 'Backpack', 'B',
-                                  r'ReplaceableTextures\CommandButtons\BTNSatchelofSpices.blp',
-                                  'Backpac|cffffcc00k|r', BACKPACK_TEXT, 0, 1, 'battlestations'))
+                                  BACKPACK_ICON, 'Backpac|cffffcc00k|r', BACKPACK_TEXT,
+                                  0, 1, BACKPACK_ORDER))
     table['custom'].append(button(objects, RETURN, 'Back to hero', 'B',
-                                  r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp',
-                                  '|cffffcc00B|rack to hero', RETURN_TEXT, 3, 2, 'bearform'))
+                                  RETURN_ICON, '|cffffcc00B|rack to hero', RETURN_TEXT,
+                                  3, 2, RETURN_ORDER))
     return table
 
 
@@ -72,13 +79,14 @@ def prepare_holder(units):
         raise ValueError('the dummy unit %s is missing from this map' % DUMMY)
     unit = copy.deepcopy(objects[DUMMY])
     unit['id'] = HOLDER
-    # Locust would make the holder unselectable, which is the one thing it must be.
+    # The dummy already has no model, no food cost and no collision, so only these change.
+    # Locust is dropped: being selectable by its owner is the one thing the holder must be.
+    # Every field below is one this map already sets on units, with the type it uses there;
+    # an invented field or the wrong type corrupts the whole object file.
     abilities = ','.join([INVENTORY, 'Avul', 'Aeth', RETURN, TALENTS])
     for field, ftype, value in [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'),
-                                ('uabi', 3, abilities), ('umvs', 0, 0), ('umvt', 3, '_'),
-                                ('uspd', 0, 0), ('usid', 0, 0), ('ussc', 0, 0),
-                                ('ufoo', 0, 0), ('ucam', 0, 0), ('upoi', 0, 0),
-                                ('uhpm', 0, 100), ('ubdg', 0, 0)]:
+                                ('uabi', 3, abilities), ('uico', 3, BACKPACK_ICON),
+                                ('umvs', 0, 0), ('umvt', 3, ''), ('upoi', 0, 0)]:
         setf(unit, field, ftype, value)
     units['custom'].append(unit)
     return units

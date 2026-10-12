@@ -119,4 +119,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DT | Town Shrine of Individuality stays visible, unmastered Freelancer purchases are silent, and mastered fresh loads restore the original shrine unlock and menus. |
 | DW | Saves capture in one frame (no standing still), loads replace the starter in place, loaded masteries restore food used, title unlocks and total job level, and files load whatever page size wrote them. |
 | DX | DW with 920-character file pages, for testing multi-file saves and missing-part rejection. Test only. |
-| ASG | Backpack button (B) opens a six-slot holder for gear, Talents moves onto the holder, and a full hero inventory sends pickups to the backpack. |
+| ASG | Backpack holder, withdrawn: invented object fields corrupted the object data. |
+| ASH | ASG with the Backpack objects rebuilt from fields, icons and order strings the map itself already uses. |
