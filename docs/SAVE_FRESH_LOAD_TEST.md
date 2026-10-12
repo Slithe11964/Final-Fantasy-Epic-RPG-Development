@@ -22,6 +22,12 @@ DL retained the verified loader with the user's r17 description and Intro. A use
 reported an exact full-profile PASS with all Forsaken equipment slots occupied:
 code1,300 characters, transfer0.602 s, load/verify3.250 s; session mode unspecified.
 
+Broader engine acceptance (2026-10-12): user reported successful endgame loading
+with all jobs level99, many recipes, a different selected job and a save of about
+2,000 characters. Inventory positions matched exactly across the reported runs.
+Normal and Inferno were tested successfully; loading after fifteen minutes was
+correctly rejected. Timings for the endgame profile were not supplied.
+
 DM carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor

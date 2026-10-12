@@ -10,8 +10,12 @@ Users also confirmed successful `-newsave`/`-newload` with different characters 
 a real multiplayer DI game. Multiplayer timings were not supplied.
 DK confirmed intentional failure cleanup, successful retry with exact profile,
 and rejection of a second load. DL adds the approved r17 description and Intro.
-Next: broader inventory/effect checks, load-window enforcement and multiplayer
-timing observations before enabling public saves.
+Broader engine tests passed on Normal and Inferno, with exact inventory positions,
+all jobs level99, many recipes, a different selected job and about2,000 characters.
+The fifteen-minute load cutoff also passed.
+Next: prepare Forsaken integration and normal save/load commands, retaining legacy
+imports and fresh-load safeguards; verify malformed/account/difficulty rejection,
+multifile profiles and remaining multiplayer size/timing coverage before release.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 
 ## Format and scope
