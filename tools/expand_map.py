@@ -94,7 +94,6 @@ def expand_w3e(data, size):
         raise ValueError('the new size must be at least as large as the current map')
     # A point well inside the map is the template for water level and the version-12 byte.
     reference = data[head + (height // 2 * width + width // 2) * POINT:][:POINT]
-    edge = data[head:][:POINT]  # the map's own corner point, for the new outer border
     out = bytearray(data[:head])
     struct.pack_into('<II', out, head - 16, new, new)
     east = quarter_seeds('east', width, new, 0, height)
@@ -108,9 +107,6 @@ def expand_w3e(data, size):
             kept = b''
         made = bytearray()
         for col in range(len(kept) // POINT, new):
-            if row == new - 1 or col == new - 1:
-                made += edge  # the map's own border point, reused for the new outer edge
-                continue
             seeds = far if row >= height and col >= width else north if row >= height else east
             texture, point_height = point_terrain(col, row, seeds)
             made += generated_point(reference, texture, point_height)
