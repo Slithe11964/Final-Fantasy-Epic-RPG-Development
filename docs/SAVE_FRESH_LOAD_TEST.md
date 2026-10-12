@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DO
+# Private save/restart/fresh-load test - DP
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDO.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDP.w3x`.
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
 
@@ -17,6 +17,11 @@ New filenames reserve the Forsaken prefix and accept letters, digits, spaces,
 underscores and hyphens, up to64 characters including the prefix. NG Plus/Minus
 commands and autosave remain disabled in this private line.
 
+DP fixes the extra unclickable hero portrait: after verified loading, the inactive
+Freelancer becomes Neutral Passive, matching legacy job storage. The active hero
+and Gaya remain player-owned. Retest the existing CU file with `-newload`, confirm
+only those two portraits, then switch to Freelancer and back.
+
 Engine acceptance: real file export/restart/fresh load and different players'
 multiplayer loading passed. Intentional failure cleanup allowed retry, a second
 load refused, and the fifteen-minute cutoff worked. Normal/Inferno, all equipment
@@ -26,7 +31,7 @@ Observed single or unspecified-mode examples:1,010 characters transferred in
 0.500 s and loaded/verified in3.148 s;1,300 characters took0.602 s and3.250 s.
 File read showed~0 ms at game-timer resolution; multiplayer timings remain pending.
 
-DO carries the updated DevCommands editor module: `-allitems` creates copies of
+DP carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor
 single-player development copy and save before use; release maps keep it disabled.
@@ -43,10 +48,10 @@ keep the complete set when copying saves. Missing parts refuse loading.
 
 ## Tester checklist
 
-1. In DO, import an existing character using `-loadf Last save` (or your actual
+1. In DP, import an existing character using `-loadf Last save` (or your actual
    legacy filename) or a pasted legacy code. Run `-save` while standing still;
    wait for exact file readback. Also run `-savef Endgame` for a named copy.
-2. Restart Warcraft. Start DO with matching account, difficulty and Speedrun
+2. Restart Warcraft. Start DP with matching account, difficulty and Speedrun
    settings. Leave the starter, Gaya and house untouched. Within fifteen minutes
    run `-load`; expect **PASS: exact full profile**. A second `-load` must refuse.
 3. In another fresh game, run `-loadf Forsaken Endgame` and expect the same match.
@@ -70,7 +75,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DO game to
+After the restart round trip, use that same file in a real multiplayer DP game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.

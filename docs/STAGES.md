@@ -112,3 +112,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DM | Updated developer editor module adds all saveable item copies and missing Chronicle awards, including Time Trial progress, while retaining single-player gating. |
 | DN | Private Forsaken integration routes normal and named save/load commands to the verified new format while retaining legacy imports and r17 presentation. |
 | DO | Morning tester build adds a usage guard for malformed save commands while retaining DN normal/named file routing, legacy imports and fresh-load safeguards. |
+| DP | Fresh load transfers the inactive Freelancer to Neutral Passive after verification, removing its player portrait while retaining saved progression and job switching. |

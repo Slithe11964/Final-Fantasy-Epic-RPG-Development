@@ -771,6 +771,8 @@ function FFL_Commit takes integer pid returns nothing
     call RemoveUnit(FFL_OldHero[pid])
     call RemoveUnit(FFL_OldGaya[pid])
     if FFN_Unit[pid*3+2]!=null then
+        // Inactive job heroes are neutral so they do not occupy player hero portraits.
+        call SetUnitOwner(FFN_Unit[pid*3+2],Player(PLAYER_NEUTRAL_PASSIVE),true)
         call ShowUnit(FFN_Unit[pid*3+2],false)
     endif
     if selected==11 and GetHeroLevel(FFN_Unit[pid*3])>=50 then

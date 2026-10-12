@@ -69,7 +69,8 @@ class FreshLoadTests(unittest.TestCase):
             ForsakenBagPassiveTypes={(0,'A0MU'):True},ForsakenBagAbilities={},
             Pow=lambda a,b:Real32(float(a)**float(b)),TimerGetElapsed=lambda t:Real32(1),
             DisplayTimedTextToPlayer=lambda p,x,y,d,m:self.messages.append(m),R2S=str,
-            ShowUnit=lambda *a:None,SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None)
+            PLAYER_NEUTRAL_PASSIVE=15,SetUnitOwner=lambda u,p,c:u.__setitem__('owner',p),
+            ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None)
         catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
         source=(HERE/'Forsaken-save-life.j').read_text()+'\n'+capture_source(f.base.fixture.aliases)+'\n'+fresh_plan_source(f.base.fixture.registry,catalog)+'\n'+(HERE/'Forsaken-save-fresh-objects.j').read_text()+'\n'+(HERE/'Forsaken-save-transport.j').read_text()+'\n'+(HERE/'Forsaken-fresh-load.j').read_text()
         self.e=engine(source,env);self.e['FFP_Init']();self.e['FRC_Init']();self.e['FFL_Before']={}
@@ -234,6 +235,29 @@ class FreshLoadTests(unittest.TestCase):
         hero=self.e['udg_PlayerHero'][1]
         self.assertEqual([hero['abilities']['skill'+str(50+i)] for i in range(1,6)],[11,11,11,11,6])
         self.assertEqual(hero['bag'][29]['abilities'],['fGmk'])
+        free=self.e['udg_FreelancerHero'][1]
+        self.assertEqual(free['owner'],15)
+        self.assertFalse(free['visible'])
+        self.assertEqual(hero['owner'],0)
+        self.assertEqual(self.e['udg_SpiritOfGaya'][1]['owner'],0)
+        self.assertTrue(self.e['FRC_Start'](0))
+        self.finish()
+        self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
+    def test_active_freelancer_remains_player_owned(self):
+        import save_vnext as codec
+        envelope=codec.decode(self.f.base.encoded)
+        sections=tuple(codec.Section(section.id,section.version,section.required,
+            codec.pairs([(i,0 if i==13 else v) for i,v in codec.read_pairs(section.payload)]))
+            if section.id==4 else section for section in envelope.sections)
+        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
+        self.assertTrue(self.apply(),self.messages);self.finish()
+        self.assertTrue(self.e['FRC_Ready'][0],self.e['FRC_Error'][0])
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0],self.messages)
+        hero=self.e['udg_PlayerHero'][1]
+        self.assertIs(self.e['udg_FreelancerHero'][1],hero)
+        self.assertEqual(hero['owner'],0)
+
     def test_meta_fragments_survive_fresh_load_above_legacy_limit(self):
         import save_vnext as codec
         envelope=codec.decode(self.f.base.encoded)

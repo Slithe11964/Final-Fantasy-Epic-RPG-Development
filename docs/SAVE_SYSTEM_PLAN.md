@@ -13,7 +13,7 @@ and rejection of a second load. DL adds the approved r17 description and Intro.
 Broader engine tests passed on Normal and Inferno, with exact inventory positions,
 all jobs level99, many recipes, a different selected job and about2,000 characters.
 The fifteen-minute load cutoff also passed.
-DO connects normal save/load commands to the new format in the private Forsaken
+DP connects normal save/load commands to the new format in the private Forsaken
 line, retaining named legacy imports and fresh-load safeguards. Command routing,
 account/difficulty rejection and named multifile integrity have modeled checks;
 next is real-client command acceptance and remaining multiplayer size/timing
@@ -58,7 +58,7 @@ and contained replacement-house/activation pipelines; they are not dependencies.
 
 ## Next
 
-Test DO using normal and named commands after restart, including legacy import.
+Test DP using normal and named commands after restart, including legacy import.
 Collect multiplayer transfer time for the same larger profile and confirm missing
 or damaged files reject without consuming the load. Keep all parts of multifile
 saves together; real-client multifile acceptance remains pending.
