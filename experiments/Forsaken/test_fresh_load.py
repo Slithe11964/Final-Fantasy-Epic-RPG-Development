@@ -407,6 +407,27 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(calls,[0]);self.assertEqual(e['FST_Result'][0],code)
         self.assertFalse(e['udg_HasLoadedCode'][0])
 
+    def test_loadstatus_lists_the_parts_still_missing(self):
+        e=self.e;code=self.f.base.encoded;check=e['FSC_Checksum'](code)
+        total=(len(code)+79)//80
+        self.assertGreater(total,3,'needs a multi-part code')
+        messages=[];e['FFL_Message']=lambda pid,text:messages.append(text)
+        e['FFL_LoadStatus'](0)
+        self.assertIn('no chat load in progress',messages[-1])
+        skipped={2,total-1}
+        for part in range(1,total+1):
+            if part in skipped: continue
+            e['FFL_LoadChat'](0,f'FSVB:{check}:{part}:{total}:'+code[(part-1)*80:part*80])
+        e['FFL_LoadStatus'](0)
+        self.assertIn(f'{total-len(skipped)}/{total} stored',messages[-1])
+        for part in sorted(skipped):
+            self.assertIn(str(part),messages[-1])
+        e['FFL_Apply']=lambda pid:None
+        for part in sorted(skipped):
+            e['FFL_LoadChat'](0,f'FSVB:{check}:{part}:{total}:'+code[(part-1)*80:part*80])
+        e['FFL_LoadStatus'](0)
+        self.assertIn(f'all {total} parts stored',messages[-1])
+
     def test_chat_rejects_corruption_without_consuming_load_and_save_needs_no_io(self):
         e=self.e;calls=[];e['FFL_Apply']=lambda pid:calls.append(pid)
         e['FFL_LoadChat'](0,'FSVB:123:1:1:FSVBAAAAAAAA')

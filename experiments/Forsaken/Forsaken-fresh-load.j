@@ -954,12 +954,52 @@ function FFL_LoadChat takes integer pid,string text returns nothing
     endif
 endfunction
 
+// Lists the parts a chat load is still waiting for, so a stalled paste can be finished
+// without sending every line again.
+function FFL_LoadStatus takes integer pid returns nothing
+    local integer total=FFL_ChatTotal[pid]
+    local integer i=1
+    local integer listed=0
+    local integer missing=0
+    local string parts=""
+    if total<1 then
+        call FFL_Message(pid,"no chat load in progress; paste the first -load line")
+        return
+    endif
+    loop
+        exitwhen i>total
+        if FFL_ChatPart[pid*256+i]==null then
+            set missing=missing+1
+            if listed<20 then
+                if parts!="" then
+                    set parts=parts+", "
+                endif
+                set parts=parts+I2S(i)
+                set listed=listed+1
+            endif
+        endif
+        set i=i+1
+    endloop
+    if missing==0 then
+        call FFL_Message(pid,"chat load: all "+I2S(total)+" parts stored")
+        return
+    endif
+    if missing>listed then
+        set parts=parts+" and "+I2S(missing-listed)+" more"
+    endif
+    call FFL_Message(pid,"chat load: "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored; still need part "+parts)
+endfunction
+
 function FFL_Chat takes nothing returns nothing
     local integer pid=GetPlayerId(GetTriggerPlayer())
     local string command=GetEventPlayerChatString()
     local string lower=StringCase(command,false)
     local string stem="Forsaken CU"
     local boolean saving=command=="-newsave" or lower=="-save" or lower=="-savef" or SubString(lower,0,7)=="-savef "
+    if lower=="-loadstatus" then
+        call FFL_LoadStatus(pid)
+        return
+    endif
     if SubString(lower,0,5)=="-load" and lower!="-load" and SubString(lower,0,6)!="-load " and lower!="-loadf" and SubString(lower,0,7)!="-loadf " then
         return
     endif
