@@ -11,6 +11,7 @@ globals
     unit array FFL_OldGaya
     integer array FFL_ItemKey
     real array FFL_Started
+    boolean FFL_CommandsBound=false
     boolean FFL_WindowOpen=true
     timer FFL_Poll=null
     timer FFL_Window=null
@@ -802,8 +803,102 @@ function FFL_Commit takes integer pid returns nothing
     call FFL_Message(pid,"PASS: exact full profile after fresh load. Code "+I2S(StringLength(FST_Result[pid]))+" characters; file read ~"+I2S(FST_FileMillis[pid])+" ms (game timer); transfer "+R2S(FST_TransferSeconds[pid])+" s; load/verify "+R2S(TimerGetElapsed(FST_Clock)-FFL_Started[pid])+" s.")
 endfunction
 
+function FFL_RoutesFile takes string command returns boolean
+    local string lower=StringCase(command,false)
+    return lower=="-load" or lower=="-loadf" or lower=="-loadf forsaken" or SubString(lower,0,16)=="-loadf forsaken "
+endfunction
+
+function FFL_Trim takes string value returns string
+    local integer first=0
+    local integer last=StringLength(value)
+    loop
+        exitwhen first>=last or SubString(value,first,first+1)!=" "
+        set first=first+1
+    endloop
+    loop
+        exitwhen last<=first or SubString(value,last-1,last)!=" "
+        set last=last-1
+    endloop
+    return SubString(value,first,last)
+endfunction
+
+function FFL_Chat takes nothing returns nothing
+    local integer pid=GetPlayerId(GetTriggerPlayer())
+    local string command=GetEventPlayerChatString()
+    local string lower=StringCase(command,false)
+    local string stem="Forsaken CU"
+    local boolean saving=command=="-newsave" or lower=="-save" or lower=="-savef" or SubString(lower,0,7)=="-savef "
+    if SubString(lower,0,6)=="-loadf" and not FFL_RoutesFile(command) then
+        return
+    endif
+    if SubString(lower,0,6)=="-savef" and not saving then
+        call FFL_Message(pid,"use -savef or -savef NAME")
+        return
+    endif
+    if command=="-newcleanup" then
+        if FFL_Phase[pid]==4 then
+            call FFL_Fail(pid,"cleanup requested")
+        else
+            call FFL_Message(pid,"no failed load requires cleanup")
+        endif
+        return
+    elseif FFL_Phase[pid]!=0 or FFP_Locked[pid] then
+        call FFL_Message(pid,"another save/load is in progress")
+        return
+    endif
+    if saving and lower!="-newsave" then
+        set stem="Forsaken"
+        if SubString(lower,0,7)=="-savef " then
+            set stem=FFL_Trim(SubString(command,7,StringLength(command)))
+            if stem=="" then
+                set stem="Forsaken"
+            elseif StringCase(stem,false)!="forsaken" and SubString(StringCase(stem,false),0,9)!="forsaken " then
+                set stem="Forsaken "+stem
+            endif
+        endif
+    elseif lower=="-load" or lower=="-loadf" then
+        set stem="Forsaken"
+    elseif FFL_RoutesFile(command) then
+        set stem=FFL_Trim(SubString(command,7,StringLength(command)))
+    endif
+    if not FST_SetFileStem(pid,stem) then
+        call FFL_Message(pid,"filename must use letters, numbers, spaces, underscores or hyphens (up to 64 characters)")
+        return
+    endif
+    if saving then
+        if not udg_HardcoreOff then
+            call FFL_Message(pid,"saving is disabled in Hardcore")
+        elseif FRC_Start(pid) then
+            set FFL_Phase[pid]=1
+            call FFL_Message(pid,"capturing the full character; stand still for three seconds")
+        else
+            call FFL_Message(pid,"could not start character capture")
+        endif
+    elseif FFP_Eligible(pid,FFL_WindowOpen) then
+        if FST_Request(pid,FRC_Account(pid)) then
+            set FFL_RetryCheck[pid]=command=="-newretrycheck"
+            set FFL_Phase[pid]=2
+            set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
+            call FFL_Message(pid,"reading file and transferring the complete profile")
+        endif
+    else
+        call FFL_Message(pid,FFP_Error[pid])
+    endif
+endfunction
+
+function FFL_BindCommands takes nothing returns nothing
+    if not FFL_CommandsBound and ForsakenSaveBlocked and udg_SaveCommandTrig!=null and udg_SaveToFileTrig!=null then
+        call TriggerClearActions(udg_SaveCommandTrig)
+        call TriggerAddAction(udg_SaveCommandTrig,function FFL_Chat)
+        call TriggerClearActions(udg_SaveToFileTrig)
+        call TriggerAddAction(udg_SaveToFileTrig,function FFL_Chat)
+        set FFL_CommandsBound=true
+    endif
+endfunction
+
 function FFL_Tick takes nothing returns nothing
     local integer pid=0
+    call FFL_BindCommands()
     loop
         exitwhen pid>=8
         if FFL_Phase[pid]==1 and FRC_Phase[pid]==0 then
@@ -856,7 +951,7 @@ endfunction
 
 function FFL_LegacyAllowed takes nothing returns boolean
     local integer pid=GetPlayerId(GetTriggerPlayer())
-    return not FFP_Locked[pid] and FFL_Phase[pid]==0
+    return not FFP_Locked[pid] and FFL_Phase[pid]==0 and not FFL_RoutesFile(GetEventPlayerChatString())
 endfunction
 
 function FFL_LegacyGuard takes nothing returns nothing
@@ -866,38 +961,7 @@ function FFL_LegacyGuard takes nothing returns nothing
     call DestroyTimer(GetExpiredTimer())
 endfunction
 
-function FFL_Chat takes nothing returns nothing
-    local integer pid=GetPlayerId(GetTriggerPlayer())
-    local string command=GetEventPlayerChatString()
-    if command=="-newcleanup" then
-        if FFL_Phase[pid]==4 then
-            call FFL_Fail(pid,"cleanup requested")
-        else
-            call FFL_Message(pid,"no failed load requires cleanup")
-        endif
-        return
-    elseif FFL_Phase[pid]!=0 or FFP_Locked[pid] then
-        call FFL_Message(pid,"another save/load is in progress")
-        return
-    endif
-    if command=="-newsave" then
-        if FRC_Start(pid) then
-            set FFL_Phase[pid]=1
-            call FFL_Message(pid,"capturing the full character; stand still for three seconds")
-        else
-            call FFL_Message(pid,"could not start character capture")
-        endif
-    elseif FFP_Eligible(pid,FFL_WindowOpen) then
-        if FST_Request(pid,FRC_Account(pid)) then
-            set FFL_RetryCheck[pid]=command=="-newretrycheck"
-            set FFL_Phase[pid]=2
-            set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
-            call FFL_Message(pid,"reading file and transferring the complete profile")
-        endif
-    else
-        call FFL_Message(pid,FFP_Error[pid])
-    endif
-endfunction
+
 
 function InitTrig_ForsakenFreshLoad takes nothing returns nothing
     local integer pid=0
@@ -913,6 +977,8 @@ function InitTrig_ForsakenFreshLoad takes nothing returns nothing
     set gg_trg_Forsaken_FreshLoad=CreateTrigger()
     loop
         exitwhen pid>=8
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-load",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-loadf",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newsave",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newload",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Forsaken_FreshLoad,Player(pid),"-newcleanup",true)

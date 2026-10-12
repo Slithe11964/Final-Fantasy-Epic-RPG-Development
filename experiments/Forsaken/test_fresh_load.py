@@ -50,7 +50,7 @@ class FreshLoadTests(unittest.TestCase):
         self.fail_place=False;self.messages=[];self.currency={1:123456,2:42}
         skills=JassArray(lambda:None)
         for i in range(1,111):skills[i]='skill'+str(i)
-        env.update(GetHandleId=lambda h:id(h)%2147483647,CreateUnit=unit,CreateItem=item,RemoveItem=remove_item,UnitAddItem=add,UnitEquipItem=equip,UnitUnequipItem=detach,UnitRemoveItem=detach,IsItemOwned=lambda i:any(v is i for u in self.f.units for kind in ('quick','bag','equipment') for v in u[kind].values()),ForsakenGearTypes={(4,'f003'):'I00B',(1,'I00B'):3},
+        env.update(ForsakenSaveBlocked=False,udg_SaveCommandTrig=None,udg_SaveToFileTrig=None,udg_HardcoreOff=True,GetHandleId=lambda h:id(h)%2147483647,CreateUnit=unit,CreateItem=item,RemoveItem=remove_item,UnitAddItem=add,UnitEquipItem=equip,UnitUnequipItem=detach,UnitRemoveItem=detach,IsItemOwned=lambda i:any(v is i for u in self.f.units for kind in ('quick','bag','equipment') for v in u[kind].values()),ForsakenGearTypes={(4,'f003'):'I00B',(1,'I00B'):3},
             SaveUnitHandle=lambda t,a,b,v:t.__setitem__((a,b),v),RemoveSavedHandle=lambda t,a,b:t.pop((a,b),None),
             SetPlayerTechResearched=lambda p,r,v:f.base.fixture.techs.__setitem__((p,r),v),
             ForceAddPlayer=lambda force,p:force.add(p),ForceRemovePlayer=lambda force,p:force.discard(p),
@@ -299,4 +299,38 @@ class FreshLoadTests(unittest.TestCase):
         self.assertFalse(self.e['udg_HasLoadedCode'][0]);self.assertIs(self.e['udg_PlayerHero'][1],self.f.base.hero)
         self.e['RemoveItem']=remove;self.assertTrue(self.e['FFL_Restore'](0))
         self.assertEqual(self.e['FFN_SpacerCount'][0],0);self.assertFalse(self.e['FFP_Locked'][0])
+    def test_normal_command_routing_preserves_legacy_imports(self):
+        e=self.e;calls=[];command=['-save']
+        e.update(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,GetEventPlayerChatString=lambda:command[0],
+                 FRC_Start=lambda pid:calls.append(('save',e['FST_FileStem'][pid])) or True,
+                 FST_Request=lambda pid,account:calls.append(('load',e['FST_FileStem'][pid])) or True)
+        for text,kind,stem in [('-save','save','Forsaken'),('-savef','save','Forsaken'),
+                ('-savef Endgame','save','Forsaken Endgame'),('-savef Forsaken Endgame','save','Forsaken Endgame'),
+                ('-savef   ','save','Forsaken'),('-load','load','Forsaken'),
+                ('-loadf','load','Forsaken'),('-loadf Forsaken Endgame','load','Forsaken Endgame'),
+                ('-newsave','save','Forsaken CU'),('-newload','load','Forsaken CU')]:
+            command[0]=text;e['FFL_Phase'][0]=0;e['FFL_Chat']()
+            self.assertEqual(calls[-1],(kind,stem),text)
+        for text in ('-loadf Last save','-load E12345','-loadf old-character'):
+            command[0]=text;e['FFL_Phase'][0]=0
+            self.assertTrue(e['FFL_LegacyAllowed'](),text)
+        for text in ('-load','-loadf','-loadf Forsaken Endgame'):
+            command[0]=text
+            self.assertFalse(e['FFL_LegacyAllowed'](),text)
+        command[0]='-savefTypo';e['FFL_Phase'][0]=0;before=len(calls)
+        e['FFL_Chat']();self.assertEqual(len(calls),before)
+        self.assertIn('use -savef',self.messages[-1])
+        command[0]='-savef ../legacy';e['FFL_Phase'][0]=0;before=len(calls)
+        e['FFL_Chat']();self.assertEqual(len(calls),before)
+        self.assertIn('filename must',self.messages[-1])
+
+    def test_save_actions_bind_once_after_forsaken_setup(self):
+        e=self.e;calls=[]
+        e.update(udg_SaveCommandTrig='save',udg_SaveToFileTrig='file',
+                 TriggerClearActions=lambda t:calls.append(('clear',t)),
+                 TriggerAddAction=lambda t,f:calls.append(('add',t)))
+        e['FFL_BindCommands']();self.assertEqual(calls,[])
+        e['ForsakenSaveBlocked']=True;e['FFL_BindCommands']();e['FFL_BindCommands']()
+        self.assertEqual(calls,[('clear','save'),('add','save'),('clear','file'),('add','file')])
+
 if __name__=='__main__':unittest.main()

@@ -13,9 +13,11 @@ and rejection of a second load. DL adds the approved r17 description and Intro.
 Broader engine tests passed on Normal and Inferno, with exact inventory positions,
 all jobs level99, many recipes, a different selected job and about2,000 characters.
 The fifteen-minute load cutoff also passed.
-Next: prepare Forsaken integration and normal save/load commands, retaining legacy
-imports and fresh-load safeguards; verify malformed/account/difficulty rejection,
-multifile profiles and remaining multiplayer size/timing coverage before release.
+DO connects normal save/load commands to the new format in the private Forsaken
+line, retaining named legacy imports and fresh-load safeguards. Command routing,
+account/difficulty rejection and named multifile integrity have modeled checks;
+next is real-client command acceptance and remaining multiplayer size/timing
+coverage before public release.
 Instructions: [SAVE_FRESH_LOAD_TEST.md](SAVE_FRESH_LOAD_TEST.md).
 
 ## Format and scope
@@ -56,9 +58,10 @@ and contained replacement-house/activation pipelines; they are not dependencies.
 
 ## Next
 
-Run the real restart round trip, then measure that same code's actual length,
-file-read estimate and multiplayer transfer/validation time on real clients.
-Use the result to decide format/transport changes before further diagnostics.
+Test DO using normal and named commands after restart, including legacy import.
+Collect multiplayer transfer time for the same larger profile and confirm missing
+or damaged files reject without consuming the load. Keep all parts of multifile
+saves together; real-client multifile acceptance remains pending.
 If an engine diagnostic is needed, batch alternatives into one map and one summary.
 Then finish legacy/durable-state edge cases and multiplayer failure/retry coverage,
 enable public Reforged saving, and implement classic's inaccessible storage later.

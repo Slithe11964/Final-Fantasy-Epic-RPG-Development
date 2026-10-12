@@ -1,34 +1,32 @@
-# Private save/restart/fresh-load test - DM
+# Private save/restart/fresh-load test - DO
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDM.w3x`.
-Built on BT gameplay; legacy export remains disabled. Private commands use
-`Forsaken CU.txt`, separate from legacy saves.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDO.w3x`.
+Built on BT gameplay; normal commands now use the new format in this private
+Forsaken test. Legacy imports remain available; public maps are unchanged.
 
-Engine milestone (2026-10-11): exact export/readback followed by restart and
-**PASS: exact full profile after fresh load** in DI, using the same real profile.
-Code length:1,010 characters. Reported file read:~0 ms (game-timer resolution);
-transfer/validation:0.500 s; load/verify:3.148 s. These are one observed run;
-multiplayer timings were not supplied.
+| Command | File or behavior |
+|---|---|
+| `-save` or `-savef` | Write and verify `FFERPG/Forsaken.txt`. |
+| `-savef Endgame` | Write `FFERPG/Forsaken Endgame.txt`. |
+| `-load` or `-loadf` | Fresh-load `Forsaken.txt`. |
+| `-loadf Forsaken Endgame` | Fresh-load that named new-format file. |
+| `-loadf Last save` / `-load OLD_CODE` | Existing legacy file/code import. |
+| `-newsave` / `-newload` | Retained aliases using the verified `Forsaken CU.txt`. |
 
-Multiplayer milestone (2026-10-11): users reported successful `-newsave` and
-`-newload` for different players' characters in a real DI multiplayer game.
-DK engine milestone: intentional failure after full item placement cleaned up
-without using the load; retry produced an exact full-profile PASS; a second load
-was rejected. Observed code:1,111 characters; transfer/validation:0.360 s;
-load/verify:3.086 s; file read:~0 ms (game-timer resolution). Session mode was not
-specified, so these timings are not labeled multiplayer measurements.
+New filenames reserve the Forsaken prefix and accept letters, digits, spaces,
+underscores and hyphens, up to64 characters including the prefix. NG Plus/Minus
+commands and autosave remain disabled in this private line.
 
-DL retained the verified loader with the user's r17 description and Intro. A user
-reported an exact full-profile PASS with all Forsaken equipment slots occupied:
-code1,300 characters, transfer0.602 s, load/verify3.250 s; session mode unspecified.
+Engine acceptance: real file export/restart/fresh load and different players'
+multiplayer loading passed. Intentional failure cleanup allowed retry, a second
+load refused, and the fifteen-minute cutoff worked. Normal/Inferno, all equipment
+slots and endgame profiles with all jobs99, recipes and a different selected job
+matched exactly; the largest reported profile was about2,000 characters.
+Observed single or unspecified-mode examples:1,010 characters transferred in
+0.500 s and loaded/verified in3.148 s;1,300 characters took0.602 s and3.250 s.
+File read showed~0 ms at game-timer resolution; multiplayer timings remain pending.
 
-Broader engine acceptance (2026-10-12): user reported successful endgame loading
-with all jobs level99, many recipes, a different selected job and a save of about
-2,000 characters. Inventory positions matched exactly across the reported runs.
-Normal and Inferno were tested successfully; loading after fifteen minutes was
-correctly rejected. Timings for the endgame profile were not supplied.
-
-DM carries the updated DevCommands editor module: `-allitems` creates copies of
+DO carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor
 single-player development copy and save before use; release maps keep it disabled.
@@ -40,20 +38,20 @@ cleanup without consuming the load. Persistent cleanup failures retain tracking
 and block retry. Existing verified files remain compatible.
 
 File chunks use separate temporary player-name slots with checked headers, restoring
-every name after reading. Larger saves need `Forsaken CU part N.txt` beside the main file.
+every name after reading. Larger saves need matching `<filename> part N.txt` files beside the main file;
+keep the complete set when copying saves. Missing parts refuse loading.
 
 ## Tester checklist
 
-1. Existing verified DI files can be reused. For a new character, load it with the
-   legacy reader, enter `-newsave` while standing still, and wait for exact file
-   readback. Restart Warcraft before testing the new load.
-2. Start DM with matching account, difficulty and Speedrun settings. Leave the
-   starting hero, Gaya and house untouched. Within fifteen minutes run
-   `-newretrycheck`: the intentional **FAIL** is expected. Wait for
-   **created objects cleaned, load unused; retry allowed**. If cleanup stays blocked,
-   use `-newcleanup` and send the error; do not treat that result as a pass.
-3. Run `-newload` in that same game and wait for **PASS: exact full profile**.
-   Run it again: another load must be rejected. Other players must still load normally.
+1. In DO, import an existing character using `-loadf Last save` (or your actual
+   legacy filename) or a pasted legacy code. Run `-save` while standing still;
+   wait for exact file readback. Also run `-savef Endgame` for a named copy.
+2. Restart Warcraft. Start DO with matching account, difficulty and Speedrun
+   settings. Leave the starter, Gaya and house untouched. Within fifteen minutes
+   run `-load`; expect **PASS: exact full profile**. A second `-load` must refuse.
+3. In another fresh game, run `-loadf Forsaken Endgame` and expect the same match.
+   Existing CU files still use `-newload`; the previous intentional retry check
+   remains `-newretrycheck` followed by `-newload` after verified cleanup.
 4. Check job/level, equipped effects, bag/quick positions, quantities and binding,
    Gaya, house, Chronicle and Armory flags. Include different jobs and fuller inventories.
 5. Send the final message screenshot (code length and timings), job, settings,
@@ -72,7 +70,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DM game to
+After the restart round trip, use that same file in a real multiplayer DO game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.

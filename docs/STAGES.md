@@ -110,3 +110,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DK | Fresh loading creates carryable original gear for Gaya and house, fixing DJ’s native Tome placement failure while preserving permanent IDs. |
 | DL | Forsaken builders carry the approved r17 scenario description and current Intro into editor and playable sources, retaining DK’s verified loader. |
 | DM | Updated developer editor module adds all saveable item copies and missing Chronicle awards, including Time Trial progress, while retaining single-player gating. |
+| DN | Private Forsaken integration routes normal and named save/load commands to the verified new format while retaining legacy imports and r17 presentation. |
+| DO | Morning tester build adds a usage guard for malformed save commands while retaining DN normal/named file routing, legacy imports and fresh-load safeguards. |

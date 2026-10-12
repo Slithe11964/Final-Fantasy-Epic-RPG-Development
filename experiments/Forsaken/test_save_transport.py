@@ -39,7 +39,7 @@ class TransportTests(unittest.TestCase):
             if self.files:
                 values=self.files.get(path,{})
             else:
-                page=0 if path==self.e['FST_FILE'] else int(re.search(r'part (\d+)',path)[1])
+                page=0 if ' part ' not in path else int(re.search(r'part (\d+)',path)[1])
                 pages=(len(self.file)+3679)//3680
                 values={slot:self.file[page*3680+slot*160:page*3680+(slot+1)*160] for slot in range(23) if page*3680+slot*160<len(self.file)}
                 values[23]=f'FSC1{len(self.file):05d}{codec.checksum(self.file):010d}{page}{pages}'
@@ -56,7 +56,7 @@ class TransportTests(unittest.TestCase):
                 if match: values[int(match[1])]=match[2]
             self.files[path]=values
             self.preloads.clear()
-            self.file=''.join(values[slot] for path,values in sorted(self.files.items(),key=lambda kv:0 if kv[0]==self.e['FST_FILE'] else int(re.search(r'part (\d+)',kv[0])[1])) for slot in sorted(values) if slot<23)
+            self.file=''.join(values[slot] for path,values in sorted(self.files.items(),key=lambda kv:0 if ' part ' not in kv[0] else int(re.search(r'part (\d+)',kv[0])[1])) for slot in sorted(values) if slot<23)
         natives = dict(I2S=lambda v: str(int.from_bytes(v.encode(),"big")) if isinstance(v,str) and len(v)==4 else str(v), I2R=float, R2I=int, Player=lambda p: p, GetLocalPlayer=lambda: self.local,
                        GetPlayerName=lambda p: self.names[p],
                        SetPlayerName=lambda p, name: self.names.__setitem__(p, name),
@@ -225,16 +225,26 @@ class TransportTests(unittest.TestCase):
         (HERE.parents[1]/'build/save-file-DC.j').write_text(self.generated)
 
     def test_multi_page_file_restores_all_names_and_rejects_missing_part(self):
+        self.assertTrue(self.e['FST_SetFileStem'](0,'Forsaken Endgame'))
         envelope=codec.decode(self.file)
         encoded=codec.encode(codec.Envelope(envelope.account_hash,envelope.sections+(codec.Section(10,1,False,'A'*3000),)))
         self.assertGreater(len(encoded),3680)
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
         self.assertIn('read back exactly',self.messages[-1])
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
-        self.files.pop(self.e['FST_FilePath'](1))
+        self.assertIn('.\\FFERPG\\Forsaken Endgame.txt',self.files)
+        self.files.pop(self.e['FST_PlayerPath'](0,1))
         self.assertIsNone(self.e['FST_ReadFile'](0))
         self.assertIn('page 1 header',self.e['FST_FileError'][0])
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
+
+    def test_file_stems_are_bounded_and_player_specific(self):
+        for stem in ('../legacy','x/y','x\\y','x.txt','', 'x'*65):
+            self.assertFalse(self.e['FST_SetFileStem'](0,stem),stem)
+        self.assertTrue(self.e['FST_SetFileStem'](0,'Forsaken Endgame_1'))
+        self.assertTrue(self.e['FST_SetFileStem'](1,'Forsaken Other'))
+        self.assertNotEqual(self.e['FST_PlayerPath'](0,0),self.e['FST_PlayerPath'](1,0))
+        self.assertEqual(self.e['FST_PlayerPath'](2,0),self.e['FST_FILE'])
 
     def test_transfer_reading_includes_sync_latency_but_not_file_read(self):
         self.e['FST_Request'](0, 42)

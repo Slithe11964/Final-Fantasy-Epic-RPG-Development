@@ -4,6 +4,7 @@ globals
     constant string FST_PREFIX="FSCU"
     constant string FST_FILE=".\\FFERPG\\Forsaken CU.txt"
     constant integer FST_LIMIT=17000
+    string array FST_FileStem
     string array FST_FileError
     string array FST_FileBefore
     timer FST_Clock=null
@@ -83,6 +84,41 @@ function FST_FilePath takes integer page returns string
     return ".\\FFERPG\\Forsaken CU part "+I2S(page)+".txt"
 endfunction
 
+function FST_SetFileStem takes integer pid,string stem returns boolean
+    local integer i=0
+    local integer j
+    local string allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 _-"
+    local string character
+    if StringLength(stem)<1 or StringLength(stem)>64 then
+        return false
+    endif
+    loop
+        exitwhen i>=StringLength(stem)
+        set character=SubString(stem,i,i+1)
+        set j=0
+        loop
+            exitwhen j>=StringLength(allowed) or SubString(allowed,j,j+1)==character
+            set j=j+1
+        endloop
+        if j>=StringLength(allowed) then
+            return false
+        endif
+        set i=i+1
+    endloop
+    set FST_FileStem[pid]=stem
+    return true
+endfunction
+
+function FST_PlayerPath takes integer pid,integer page returns string
+    if FST_FileStem[pid]==null or FST_FileStem[pid]=="" then
+        return FST_FilePath(page)
+    endif
+    if page==0 then
+        return ".\\FFERPG\\"+FST_FileStem[pid]+".txt"
+    endif
+    return ".\\FFERPG\\"+FST_FileStem[pid]+" part "+I2S(page)+".txt"
+endfunction
+
 // Local player names are temporary chunk fields; no native reads inside the file.
 function FST_ReadFile takes integer pid returns string
     local integer slot=0
@@ -108,7 +144,7 @@ function FST_ReadFile takes integer pid returns string
             call SetPlayerName(Player(slot),"FSCU_UNREAD")
             set slot=slot+1
         endloop
-        call Preloader(FST_FilePath(page))
+        call Preloader(FST_PlayerPath(pid,page))
         set marker=GetPlayerName(Player(23))
         if StringLength(marker)!=21 or SubString(marker,0,4)!="FSC1" then
             set FST_FileError[pid]="page "+I2S(page)+" header was not returned"
@@ -328,7 +364,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             endloop
             set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(FSC_Checksum(encoded),10)+FST_Fixed(page,1)+FST_Fixed(pages,1)
             call Preload("\")\r\n\tcall SetPlayerName(Player(23), \""+marker+"\")\r\n\treturn\r\n\t//")
-            call PreloadGenEnd(FST_FilePath(page))
+            call PreloadGenEnd(FST_PlayerPath(pid,page))
             set page=page+1
         endloop
         call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written; checking exact readback.")
@@ -336,7 +372,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         set readback=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
         if readback==encoded then
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters).")
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters). File: "+FST_PlayerPath(pid,0))
         elseif readback==null or readback=="" then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: "+FST_FileError[pid]+"; expected "+I2S(StringLength(encoded))+" characters. Export unverified.")
         else

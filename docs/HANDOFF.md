@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDM.w3x` (private file save/restart/fresh-load test) | Real round-trip and multiplayer loading passed; cleanup/retry, one-load and fifteen-minute cutoff passed. Endgame profiles (~2,000 characters, all jobs99, recipes, alternate job) loaded on Normal/Inferno with exact slots. DM retains r17 presentation and developer editor helpers. Next: Forsaken integration and remaining rejection/multifile coverage. Public new-format saving stays off. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md. |
+| New save system | `release/Forsaken/...ForsakenDO.w3x` (private file save/restart/fresh-load test) | Real round-trip and multiplayer loading passed; cleanup/retry, one-load and fifteen-minute cutoff passed. Endgame profiles (~2,000 characters, all jobs99, recipes, alternate job) loaded on Normal/Inferno with exact slots. DO retains r17 presentation and developer editor helpers, and connects normal/named save/load commands to the new format with legacy imports. Next: real-client command and multifile acceptance, plus multiplayer timings. Public new-format saving stays off. CB house and CT boots tests passed. See SAVE_FRESH_LOAD_TEST.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -61,7 +61,7 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save system: prepare Forsaken integration and normal save/load commands, verify rejection
-   and multifile cases, and collect remaining multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
+1. Save system: test DO normal/named commands and legacy imports after restart, then verify
+   multifile rejection on real clients and collect multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.
