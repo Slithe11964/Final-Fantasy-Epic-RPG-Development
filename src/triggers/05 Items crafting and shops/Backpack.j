@@ -22,7 +22,7 @@ function Backpack_Holder takes integer pid returns unit
     if BackpackHolder[pid]==null then
         set BackpackHolder[pid]=CreateUnit(Player(pid),BACKPACK_HOLDER,BACKPACK_PARK_X,BACKPACK_PARK_Y,270.)
         call SetUnitInvulnerable(BackpackHolder[pid],true)
-        call PauseUnit(BackpackHolder[pid],true)
+        // Not paused: the holder has no move speed, and a paused unit is awkward to select.
     endif
     return BackpackHolder[pid]
 endfunction
@@ -30,10 +30,32 @@ endfunction
 function Backpack_Open takes player p returns nothing
     local integer pid=GetPlayerId(p)
     local unit holder=Backpack_Holder(pid)
+    if holder==null or GetUnitTypeId(holder)!=BACKPACK_HOLDER then
+        call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: the holder could not be created")
+        set holder=null
+        return
+    endif
     if GetLocalPlayer()==p then
         call ClearSelection()
         call SelectUnit(holder,true)
     endif
+    set holder=null
+endfunction
+
+// Says what the holder actually is, so a backpack that will not open explains itself.
+function Backpack_Report takes player p returns nothing
+    local unit holder=Backpack_Holder(GetPlayerId(p))
+    local string state="missing"
+    if holder!=null then
+        set state="type "+I2S(GetUnitTypeId(holder))+" at "+I2S(R2I(GetUnitX(holder)))+","+I2S(R2I(GetUnitY(holder)))+" life "+I2S(R2I(GetWidgetLife(holder)))
+        if IsUnitHidden(holder) then
+            set state=state+" (hidden)"
+        endif
+        if GetOwningPlayer(holder)!=p then
+            set state=state+" (not yours)"
+        endif
+    endif
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Backpack holder: "+state)
     set holder=null
 endfunction
 
@@ -127,7 +149,9 @@ function Backpack_OnCommand takes nothing returns nothing
     local unit hero=Player_GetHero(p)
     local unit holder=Backpack_Holder(pid)
     local item moving
-    if SubString(command,0,4)=="-bag" then
+    if command=="-bagwhere" then
+        call Backpack_Report(p)
+    elseif SubString(command,0,4)=="-bag" then
         call Backpack_Open(p)
     elseif hero==null or slot<0 or slot>=BACKPACK_SLOTS then
         call DisplayTimedTextToPlayer(p,0.,0.,8.,"Use -take 1 to 6 or -put 1 to 6")
@@ -192,6 +216,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-take ",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-put ",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bag",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagwhere",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)

@@ -40,6 +40,12 @@ against the Talents one.
 `-bag` opens the holder without using the button, so the two halves can be told apart if
 this happens again.
 
+ASI opened nothing and cleared the selection instead: the holder was copied from the map's
+casting dummy, whose model is `nothing.mdl`. A unit with no model has nothing for the UI to
+select, so `SelectUnit` had nothing to act on while `ClearSelection` had already run. The
+holder now carries a real model, drops the summoned classification and is no longer paused.
+`-bagwhere` prints what the holder actually is.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag

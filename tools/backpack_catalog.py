@@ -29,6 +29,7 @@ RETURN_TEXT = 'Returns to your hero.'
 # order leaves the button doing nothing. Each ability on a unit needs its own order.
 BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeBrown.blp'
 RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
+HOLDER_MODEL = 'units\\nightelf\\Wisp\\Wisp.mdl'
 BACKPACK_ORDER = 'cannibalize'
 RETURN_ORDER = 'avatar'
 
@@ -86,13 +87,16 @@ def prepare_holder(units):
         raise ValueError('the dummy unit %s is missing from this map' % DUMMY)
     unit = copy.deepcopy(objects[DUMMY])
     unit['id'] = HOLDER
-    # The dummy already has no model, no food cost and no collision, so only these change.
-    # Locust is dropped: being selectable by its owner is the one thing the holder must be.
-    # Every field below is one this map already sets on units, with the type it uses there;
-    # an invented field or the wrong type corrupts the whole object file.
-    abilities = ','.join([INVENTORY, 'Avul', 'Aeth', RETURN, TALENTS])
+    # The dummy brings no food cost and no collision. Three of its traits have to go: Locust
+    # and the missing model both stop a unit being selected, which is the one thing the holder
+    # must allow, and "summoned" invites dispel effects. It is parked far from play, so the
+    # model it does get is never seen. Every field below is one this map already sets on
+    # units, with the type it uses there; an invented field or the wrong type corrupts the
+    # whole object file.
+    abilities = ','.join([INVENTORY, 'Avul', RETURN, TALENTS])
     for field, ftype, value in [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'),
                                 ('uabi', 3, abilities), ('uico', 3, BACKPACK_ICON),
+                                ('umdl', 3, HOLDER_MODEL), ('utyp', 3, ''),
                                 ('umvs', 0, 0), ('umvt', 3, ''), ('upoi', 0, 0)]:
         setf(unit, field, ftype, value)
     units['custom'].append(unit)
