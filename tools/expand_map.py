@@ -29,16 +29,40 @@ BASE_LAYER = 2       # the cliff layer the existing land sits on
 
 # Each new area gets its own palette of ground texture indexes, so the eras read as
 # different lands. Water textures are left out: they need a matching water level.
-# texture index, cliff layer and the doodad scattered through that kind of region
+# Region kinds per area: ground texture, cliff layer, whether it floods, and the
+# doodads scattered through it with their relative weights. Mixed palettes and uneven
+# weights are what stop generated land reading as a single flat field.
+TREES_GREEN = ((b'LTlt', 6), (b'ATtr', 4), (b'ZTtw', 2), (b'YTpc', 2), (b'ZPsh', 3), (b'ZPfw', 2))
+TREES_DARK = ((b'ATtr', 6), (b'ITtw', 3), (b'YTpb', 2), (b'ZPsh', 2), (b'LTrc', 1))
+ROCKS_BARREN = ((b'LRrk', 5), (b'IRrs', 4), (b'WTst', 3), (b'YTct', 2), (b'APms', 2), (b'DOlc', 2))
+ROCKS_HIGH = ((b'IRrs', 5), (b'LRrk', 3), (b'AObd', 3), (b'YOtf', 2), (b'LPrs', 2))
+SCRUB = ((b'ZPfw', 5), (b'ZPsh', 4), (b'YTfc', 3), (b'LPwh', 2), (b'ZPms', 2), (b'CPlp', 1))
+
+# (texture, cliff layer, floods, doodads, density) - density is doodads per 100 tiles.
 REGIONS = {
-    'west': ((3, 2, b'ATtr'), (4, 3, b'LTlt'), (0, 2, None), (7, 1, b'YTpc')),
-    'north': ((7, 2, b'ATtr'), (6, 3, b'LTlt'), (1, 1, b'LRrk'), (2, 4, b'LRrk')),
-    'rest': ((2, 3, b'LRrk'), (9, 4, b'LRrk'), (1, 2, None), (0, 1, b'YTpc')),
+    'west': (
+        (3, 3, False, TREES_GREEN, 46), (4, 5, False, TREES_DARK, 52),
+        (3, 1, False, SCRUB, 18), (0, 2, True, SCRUB, 10),
+        (7, 4, False, TREES_GREEN, 38), (0, 0, False, ROCKS_BARREN, 22),
+    ),
+    'north': (
+        (7, 4, False, TREES_DARK, 50), (6, 6, False, ROCKS_HIGH, 30),
+        (1, 2, False, ROCKS_BARREN, 26), (2, 5, False, ROCKS_HIGH, 34),
+        (7, 1, True, SCRUB, 10), (6, 3, False, TREES_GREEN, 44),
+    ),
+    'rest': (
+        (2, 4, False, ROCKS_HIGH, 32), (9, 6, False, ROCKS_BARREN, 24),
+        (1, 2, False, SCRUB, 16), (0, 1, True, SCRUB, 8),
+        (2, 3, False, TREES_DARK, 40), (9, 5, False, ROCKS_HIGH, 28),
+    ),
 }
 CITY_TEXTURE = 0        # packed dirt for the two town sites in each area
-CITY_RADIUS = 16        # tiles; flat ground inside, so buildings can be placed
-REGIONS_PER_AREA = 14
+CITY_RADIUS = 23        # tiles; flat ground inside, so buildings can be placed
 BASE_HEIGHT = 0x2000    # the flat base level the editor calls height 0
+WATER_LEVEL = 0x2000    # the map's own water level
+WATER_FLAG = 0x4        # the tilepoint flag that floods a point
+LAKE_FLOOR = 0x1D00     # ground height under water, so lakes have depth
+HEIGHT_SWING = 620      # how far rolling ground moves either side of the base
 
 
 def read_w3e(data):
@@ -77,52 +101,72 @@ def placement(old_tiles, new_tiles, ox, oy):
     return pad_x, pad_y, origin
 
 
-def area_seeds(name, x0, x1, y0, y1):
-    """Region centres for one area, with the first two marked as city sites.
+def warp(col, row):
+    """Bend coordinates before measuring region distance, so borders meander."""
+    return (col + 17.0 * math.sin(row / 16.0) + 8.0 * math.sin(row / 5.5),
+            row + 17.0 * math.cos(col / 18.0) + 8.0 * math.cos(col / 6.5))
 
-    The layout comes from the area's own bounds rather than randomly, so rebuilding
-    the map twice gives the same land.
-    """
+
+def noise(col, row, scale, phase=0.0):
+    """A cheap smooth field in roughly -1..1."""
+    return (math.sin(col / scale + phase) * math.cos(row / (scale * 0.87) + phase)
+            + 0.5 * math.sin((col + row) / (scale * 0.5) + phase))
+
+
+def area_seeds(name, x0, x1, y0, y1):
+    """Region centres on a jittered grid, so regions are patches rather than bands."""
     kinds = REGIONS[name]
+    width, height = max(x1 - x0, 1), max(y1 - y0, 1)
+    columns = max(2, int(round(math.sqrt(len(kinds) * 2.2 * width / height))))
+    rows = max(2, int(round(len(kinds) * 2.2 / columns)))
     seeds = []
-    for i in range(REGIONS_PER_AREA):
-        # Two interleaved golden-ratio sequences scatter the centres without clumping.
-        fx = (i * 0.618034) % 1.0
-        fy = (i * 0.381966 + 0.21) % 1.0
-        texture, layer, doodad = kinds[i % len(kinds)]
-        city = i < 2
-        seeds.append((x0 + fx * (x1 - x0), y0 + fy * (y1 - y0),
-                      CITY_TEXTURE if city else texture, BASE_LAYER if city else layer,
-                      None if city else doodad, city))
+    for index in range(columns * rows):
+        gx, gy = index % columns, index // columns
+        # Jitter each grid cell by a fixed fraction, keeping the layout repeatable.
+        jx = 0.5 + 0.34 * math.sin(index * 2.399)
+        jy = 0.5 + 0.34 * math.cos(index * 1.618)
+        x = x0 + (gx + jx) * width / columns
+        y = y0 + (gy + jy) * height / rows
+        texture, layer, floods, doodads, density = kinds[(gx * 3 + gy * 5 + index) % len(kinds)]
+        city = index in (1, columns * rows - 2)
+        seeds.append(dict(x=x, y=y, texture=CITY_TEXTURE if city else texture,
+                          layer=2 if city else layer, floods=False if city else floods,
+                          doodads=() if city else doodads,
+                          density=0 if city else density, city=city))
     return seeds
 
 
 def nearest_region(col, row, seeds):
+    wx, wy = warp(col, row)
     best, best_d = seeds[0], None
     for seed in seeds:
-        d = (col - seed[0]) ** 2 + (row - seed[1]) ** 2
+        d = (wx - seed['x']) ** 2 + (wy - seed['y']) ** 2
         if best_d is None or d < best_d:
             best, best_d = seed, d
     return best, best_d
 
 
 def point_terrain(col, row, seeds):
-    """The texture, cliff layer and ground height for one new tilepoint."""
-    best, best_d = nearest_region(col, row, seeds)
-    if best[5] and best_d <= CITY_RADIUS ** 2:
-        return CITY_TEXTURE, BASE_LAYER, BASE_HEIGHT  # town sites are flat and on the base layer
-    # Two wavelengths: broad swells plus smaller undulation, so ground is never a plane.
-    rise = (math.sin(col / 31.0) * math.cos(row / 27.0)
-            + 0.45 * math.sin((col + row) / 9.0)
-            + 0.25 * math.cos((col - row) / 14.0))
-    return best[2], best[3], int(BASE_HEIGHT + rise * 420)
+    """Texture, cliff layer, ground height and flags for one new tilepoint."""
+    seed, distance = nearest_region(col, row, seeds)
+    if seed['city'] and distance <= CITY_RADIUS ** 2:
+        return CITY_TEXTURE, 2, BASE_HEIGHT, 0   # town sites are flat and unflooded
+    rolling = noise(col, row, 34.0) + 0.5 * noise(col, row, 11.0, 1.7)
+    height = int(BASE_HEIGHT + rolling * HEIGHT_SWING)
+    if seed['floods']:
+        # Lakes keep their high ground as islands; everything lower floods.
+        if rolling < 0.35:
+            return seed['texture'], 1, LAKE_FLOOR + int(rolling * 60), WATER_FLAG
+        return seed['texture'], 2, BASE_HEIGHT + int(rolling * 180), 0
+    return seed['texture'], seed['layer'], height, 0
 
 
-def generated_point(reference, texture, layer, height, cliff):
-    """A new tilepoint: the reference's water level, with our own surface."""
+def generated_point(reference, texture, layer, height, cliff, flags):
+    """A new tilepoint: the map's water level, with our own surface."""
     point = bytearray(reference)
     struct.pack_into('<H', point, 0, height)
-    point[4] = texture & 0x0F  # low nibble is the ground texture, high nibble the flags
+    struct.pack_into('<H', point, 2, WATER_LEVEL)
+    point[4] = ((flags & 0xF) << 4) | (texture & 0x0F)
     point[5] = 0               # no texture variation
     point[6] = 0               # the added version-12 byte
     point[7] = ((cliff & 0xF) << 4) | (layer & 0xF)
@@ -151,11 +195,13 @@ def expand_w3e(data, new_tiles):
     # First pass: work out every new point's surface. Cliff faces need to know their
     # neighbours' layers, so the layers have to exist before the bytes are written.
     kept = lambda c, r: pad_y <= r < top and pad_x <= c < pad_x + width
-    surface = {}
+    surface, area_of = {}, {}
     for row in range(new):
         for col in range(new):
             if not kept(col, row):
-                surface[(col, row)] = point_terrain(col, row, seeds_for(col, row))
+                name = 'north' if row >= top else 'west' if col < pad_x else 'rest'
+                surface[(col, row)] = point_terrain(col, row, areas[name])
+                area_of[(col, row)] = name
 
     def layer_at(col, row):
         if (col, row) in surface:
@@ -172,13 +218,14 @@ def expand_w3e(data, new_tiles):
                 source = head + ((row - pad_y) * width + (col - pad_x)) * POINT
                 made += data[source:source + POINT]
                 continue
-            texture, layer, point_height = surface[(col, row)]
-            neighbours = [layer_at(col + dx, row + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+            texture, layer, point_height, flags = surface[(col, row)]
+            neighbours = [layer_at(col + dx, row + dy)
+                          for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))]
             cliff = 0 if any(n is not None and n != layer for n in neighbours) else CLIFF_NONE
-            made += generated_point(reference, texture, layer, point_height, cliff)
+            made += generated_point(reference, texture, layer, point_height, cliff, flags)
         out_rows.append(bytes(made))
     out += b''.join(out_rows)
-    return bytes(out), old_tiles, ox, oy, pad_x, pad_y, origin, areas, surface
+    return bytes(out), old_tiles, ox, oy, pad_x, pad_y, origin, areas, surface, area_of
 
 
 def place_grid(data, head, old_side, new_side, pad_x, pad_y, fill):
@@ -215,6 +262,48 @@ def expand_w3i(data, old_tiles, new_tiles, ox, oy, origin):
 
 DOODAD_ENTRY = 74        # bytes in an ordinary doodad record (no item sets, no Reforged block)
 NEW_EDITOR_ID = 20000    # editor ids for generated doodads start well past the existing ones
+# New towns are stamped from a village that already exists on the map, so they are laid
+# out in its style instead of from invented building lists.
+TOWN_SOURCE = (21504.0, -23552.0)
+TOWN_RADIUS = 2600.0
+
+
+def town_template(data, centre, radius):
+    """Every doodad around an existing village, as offsets from its centre."""
+    count = struct.unpack_from('<i', data, 12)[0]
+    off, parts = 16, []
+    for _ in range(count):
+        start = off
+        x, y = struct.unpack_from('<2f', data, off + 8)
+        off += 36 + 8 + 6
+        sets = struct.unpack_from('<i', data, off)[0]
+        off += 4
+        for _ in range(sets):
+            off += 4 + 8 * struct.unpack_from('<i', data, off)[0]
+        off += 4 + 4
+        off += 12 + 36 * struct.unpack_from('<i', data, off + 8)[0]
+        if off - start == DOODAD_ENTRY and abs(x - centre[0]) < radius and abs(y - centre[1]) < radius:
+            parts.append((x - centre[0], y - centre[1], data[start:off]))
+    return parts
+
+
+def stamp_town(template, world_x, world_y, angle, surface, origin, editor_id, out):
+    """Copy a village template to a new place, turned by angle."""
+    cos, sin = math.cos(angle), math.sin(angle)
+    placed = 0
+    for dx, dy, raw in template:
+        x = world_x + dx * cos - dy * sin
+        y = world_y + dx * sin + dy * cos
+        key = (int((x - origin) / TILE), int((y - origin) / TILE))
+        if key not in surface or surface[key][3] & WATER_FLAG:
+            continue  # stays on generated, dry land
+        entry = bytearray(raw)
+        struct.pack_into('<2f', entry, 8, x, y)
+        struct.pack_into('<f', entry, 20, struct.unpack_from('<f', entry, 20)[0] + angle)
+        struct.pack_into('<i', entry, 58, editor_id + placed)
+        out += entry
+        placed += 1
+    return placed
 
 
 def doodad_templates(data, wanted):
@@ -236,55 +325,80 @@ def doodad_templates(data, wanted):
     return found, off
 
 
-def scatter_doodads(data, areas, surface, origin, density):
-    """Add trees and rocks through the generated regions, clustered near their centres."""
+def scatter_doodads(data, areas, surface, area_of, origin, density_scale):
+    """Fill the generated regions with clumped woodland, rock fields and scrub.
 
-    wanted = {seed[4] for seeds in areas.values() for seed in seeds if seed[4]}
+    Doodads are placed by walking the generated land rather than by scattering around
+    region centres: that keeps each region's own palette and density, and a clumping
+    field opens clearings and lanes between the thickets instead of an even sprinkle.
+    """
+    wanted = {kind for seeds in areas.values() for seed in seeds for kind, _ in seed['doodads']}
     templates, tail_off = doodad_templates(data, wanted)
     missing = wanted - set(templates)
     if missing:
-        raise ValueError('no template in this map for doodad ' + ', '.join(m.decode() for m in missing))
+        raise ValueError('no template in this map for doodad '
+                         + ', '.join(m.decode('latin-1') for m in sorted(missing)))
     count = struct.unpack_from('<i', data, 12)[0]
     tail = data[tail_off:]  # the special-doodads section, kept as it is
     made = bytearray()
-    added = 0
     editor_id = NEW_EDITOR_ID
-    state = 12345
+    state = 2463534242
+
     def rnd():
         # A small deterministic generator, so the same map always produces the same land.
         nonlocal state
-        state = (state * 1103515245 + 12345) & 0x7FFFFFFF
-        return state / 0x7FFFFFFF
+        state ^= (state << 13) & 0xFFFFFFFF
+        state ^= state >> 17
+        state ^= (state << 5) & 0xFFFFFFFF
+        return state / 0xFFFFFFFF
+
+    towns = town_template(data, TOWN_SOURCE, TOWN_RADIUS)
+    town_number = 0
     for seeds in areas.values():
         for seed in seeds:
-            if not seed[4]:
+            if not seed['city']:
                 continue
-            for _ in range(density):
-                # Cluster around the region centre: most doodads near it, a tail further out.
-                angle = rnd() * math.tau
-                spread = CITY_RADIUS * 2.5 * (rnd() ** 0.5) * 2.0
-                col = seed[0] + math.cos(angle) * spread
-                row = seed[1] + math.sin(angle) * spread
-                key = (int(col), int(row))
-                if key not in surface:
-                    continue  # outside the generated land, or on top of the existing map
-                here, _ = nearest_region(col, row, seeds)
-                if here is not seed:
-                    continue  # keep each kind inside its own region
-                # Keep every doodad inside the world box, even at the outermost tile.
-                world_x = min(max(origin + col * TILE, origin + TILE), -origin - TILE)
-                world_y = min(max(origin + row * TILE, origin + TILE), -origin - TILE)
-                entry = bytearray(templates[seed[4]])
-                struct.pack_into('<3f', entry, 8, world_x, world_y,
-                                 struct.unpack_from('<f', entry, 16)[0])
-                struct.pack_into('<f', entry, 20, rnd() * math.tau)
-                struct.pack_into('<i', entry, 58, editor_id)
-                editor_id += 1
-                made += entry
-                added += 1
+            town_number += 1
+            editor_id += stamp_town(towns, origin + seed['x'] * TILE, origin + seed['y'] * TILE,
+                                    town_number * 1.1, surface, origin, editor_id, made)
+
+    for (col, row), (_, _, _, flags) in surface.items():
+        if flags & WATER_FLAG:
+            continue  # nothing stands in the lakes
+        seed, _ = nearest_region(col, row, areas[area_of[(col, row)]])
+        if not seed['doodads'] or seed['city']:
+            continue
+        # Thickets and clearings: only the raised part of the clumping field is planted.
+        clump = noise(col, row, 9.0, 0.4) + 0.6 * noise(col, row, 3.3, 2.1)
+        chance = seed['density'] / 100.0 * max(0.0, clump + 0.55) * density_scale
+        if rnd() >= chance:
+            continue
+        kind = pick_weighted(seed['doodads'], rnd())
+        jitter_x = (rnd() - 0.5) * TILE
+        jitter_y = (rnd() - 0.5) * TILE
+        world_x = min(max(origin + col * TILE + jitter_x, origin + TILE), -origin - TILE)
+        world_y = min(max(origin + row * TILE + jitter_y, origin + TILE), -origin - TILE)
+        entry = bytearray(templates[kind])
+        struct.pack_into('<2f', entry, 8, world_x, world_y)
+        struct.pack_into('<f', entry, 20, rnd() * math.tau)
+        scale = 0.85 + rnd() * 0.45
+        struct.pack_into('<3f', entry, 24, scale, scale, scale)
+        struct.pack_into('<i', entry, 58, editor_id)
+        editor_id += 1
+        made += entry
     out = bytearray(data[:tail_off])
-    struct.pack_into('<i', out, 12, count + added)
-    return bytes(out[:tail_off]) + bytes(made) + tail, added
+    struct.pack_into('<i', out, 12, count + editor_id - NEW_EDITOR_ID)
+    return bytes(out) + bytes(made) + tail, editor_id - NEW_EDITOR_ID
+
+
+def pick_weighted(choices, roll):
+    total = sum(weight for _, weight in choices)
+    cut = roll * total
+    for kind, weight in choices:
+        cut -= weight
+        if cut <= 0:
+            return kind
+    return choices[-1][0]
 
 
 def main():
@@ -293,14 +407,15 @@ def main():
     p.add_argument('source')
     p.add_argument('output')
     p.add_argument('--size', type=int, default=480, help='new size in tiles (max 480)')
-    p.add_argument('--doodads', type=int, default=900,
-                   help='doodads scattered per generated region (0 leaves the new land bare)')
+    p.add_argument('--doodads', type=int, default=100,
+                   help='doodad density as a percentage of the regions\' own settings')
     a = p.parse_args()
     if not 32 <= a.size <= 480:
         p.error('size must be between 32 and 480 tiles')
 
     src = MPQ(a.source)
-    w3e, old_tiles, ox, oy, pad_x, pad_y, origin, areas, surface = expand_w3e(src.read('war3map.w3e'), a.size)
+    (w3e, old_tiles, ox, oy, pad_x, pad_y, origin,
+     areas, surface, area_of) = expand_w3e(src.read('war3map.w3e'), a.size)
 
     wpm = src.read('war3map.wpm')
     magic, version, cells_w, cells_h = struct.unpack_from('<4sIII', wpm, 0)
@@ -328,7 +443,7 @@ def main():
     added = 0
     if a.doodads:
         files['war3map.doo'], added = scatter_doodads(src.read('war3map.doo'), areas, surface,
-                                                      origin, a.doodads)
+                                                      area_of, origin, a.doodads / 100.0)
     replace_files(a.source, a.output, files)
     print(f'{old_tiles}x{old_tiles} -> {a.size}x{a.size} tiles; world box now '
           f'{origin:.0f}..{-origin:.0f} on both axes')
