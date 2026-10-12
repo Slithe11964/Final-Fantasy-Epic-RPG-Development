@@ -76,7 +76,12 @@ class FreshLoadTests(unittest.TestCase):
             gg_trg_Title_UnlockEffects='effects',gg_trg_JobLevels_Init='joblevels',udg_JobLevelTimer='jobtimer',
             udg_TempPlayer=None,udg_TempInteger=0,EnableTrigger=lambda t:None,StartTimerBJ=lambda *a:None,ConditionalTriggerExecute=lambda t:None,
             CreateTrigger=lambda:{'conditions':[]},Condition=lambda fn:fn,TriggerAddCondition=lambda tr,c:tr['conditions'].append(c),
-            TriggerEvaluate=lambda tr:[c() for c in tr['conditions']],SelectUnitForPlayerSingle=lambda u,p:None)
+            TriggerEvaluate=lambda tr:[c() for c in tr['conditions']],SelectUnitForPlayerSingle=lambda u,p:None,
+            CreateGroup=lambda:[],DestroyGroup=lambda g:None,
+            GroupEnumUnitsOfPlayer=lambda g,p,f:g.extend([u for u in self.f.units if u.get('owner')==p]),
+            FirstOfGroup=lambda g:g[0] if g else None,GroupRemoveUnit=lambda g,u:g.remove(u),
+            IsUnitType=lambda u,kind:u.get('hero',True) if kind=='hero' else False,
+            IsUnitHidden=lambda u:not u.get('visible',True),UNIT_TYPE_HERO='hero')
         catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
         source=(HERE/'Forsaken-save-life.j').read_text()+'\n'+capture_source(f.base.fixture.aliases)+'\n'+fresh_plan_source(f.base.fixture.registry,catalog)+'\n'+(HERE/'Forsaken-save-fresh-objects.j').read_text()+'\n'+(HERE/'Forsaken-save-transport.j').read_text()+'\n'+(HERE/'Forsaken-fresh-load.j').read_text()
         self.e=engine(source,env);self.e['FFP_Init']();self.e['FRC_Init']();self.e['FFL_Before']={}
@@ -295,6 +300,21 @@ class FreshLoadTests(unittest.TestCase):
         for _ in range(5):self.e['FFL_Tick']()
         self.assertIs(self.e['udg_PlayerHero'][1],starter)
         self.assertTrue(starter.get('visible',True));self.assertTrue(gaya.get('visible',True))
+
+    def test_leftover_player_heroes_are_retired_on_commit(self):
+        spare = {'owner': 0, 'visible': True, 'hero': True, 'raw': 'H005',
+                 'abilities': {}, 'quick': {}, 'equipment': {}, 'bag': {}, 'level': 42}
+        self.f.units.append(spare)
+        self.assertTrue(self.apply(), self.messages); self.finish()
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0])
+        self.assertEqual(spare['owner'], 15, 'a leftover hero should be released to neutral')
+        self.assertFalse(spare['visible'], 'a leftover hero should be hidden')
+        hero = self.e['udg_PlayerHero'][1]
+        self.assertEqual(hero['owner'], 0)
+        self.assertTrue(hero.get('visible', True))
+        self.assertEqual(self.e['udg_SpiritOfGaya'][1]['owner'], 0)
+        self.assertTrue(self.e['udg_SpiritOfGaya'][1].get('visible', True))
 
     def test_loaded_masteries_count_as_food_used(self):
         self.assertTrue(self.apply(),self.messages);self.finish()

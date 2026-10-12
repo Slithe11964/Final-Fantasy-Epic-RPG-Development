@@ -810,6 +810,31 @@ function FFL_RestoreUnlocks takes integer pid returns nothing
     set owner=null
 endfunction
 
+// A loaded profile replaces the whole character, so any other hero the player still
+// owns is left over from before the load. Hiding and releasing them keeps the loaded
+// hero alone beside Gaya instead of standing next to spare job bodies.
+function FFL_RetireSpareHeroes takes integer pid returns nothing
+    local group spare=CreateGroup()
+    local unit hero=FFN_Unit[pid*3]
+    local unit gaya=FFN_Unit[pid*3+1]
+    local unit found
+    call GroupEnumUnitsOfPlayer(spare,Player(pid),null)
+    loop
+        set found=FirstOfGroup(spare)
+        exitwhen found==null
+        call GroupRemoveUnit(spare,found)
+        if found!=hero and found!=gaya and IsUnitType(found,UNIT_TYPE_HERO) and not IsUnitHidden(found) then
+            call SetUnitOwner(found,Player(PLAYER_NEUTRAL_PASSIVE),true)
+            call ShowUnit(found,false)
+        endif
+    endloop
+    call DestroyGroup(spare)
+    set spare=null
+    set hero=null
+    set gaya=null
+    set found=null
+endfunction
+
 function FFL_Commit takes integer pid returns nothing
     local integer i=0
     local integer selected=FFL_Val(pid,4,13)
@@ -823,6 +848,7 @@ function FFL_Commit takes integer pid returns nothing
         call SetUnitOwner(FFN_Unit[pid*3+2],Player(PLAYER_NEUTRAL_PASSIVE),true)
         call ShowUnit(FFN_Unit[pid*3+2],false)
     endif
+    call FFL_RetireSpareHeroes(pid)
     if selected==11 and GetHeroLevel(FFN_Unit[pid*3])>=50 then
         set i=1
         loop
