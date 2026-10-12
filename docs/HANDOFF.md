@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDU.w3x` (private test; DV = multi-file test copy) | Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. DU: no standing still to save, loads replace the starter in place, loaded masteries restore food/titles/total level. Screenshot colors/layout confirmed. DT retains r17 presentation and file-only legacy save messages; the town shrine is always visible, unmastered Freelancer attempts are silent, and mastered loads restore shrine menus. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
+| New save system | `release/Forsaken/...ForsakenDW.w3x` (private test; DX = multi-file test copy) | Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. DW: no standing still to save, loads replace the starter in place, loaded masteries restore food/titles/total level, and save files load whatever page size wrote them. Screenshot colors/layout confirmed. DW retains r17 presentation and file-only legacy save messages; the town shrine is always visible, unmastered Freelancer attempts are silent, and mastered loads restore shrine menus. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -61,7 +61,7 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save system: test DU mastery/food restore, in-place load and chat loading (save_test_helper.py); verify
-   multi-file loading and missing-part rejection in DV and collect multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
+1. Save system: test DW mastery/food restore, in-place load and chat loading (save_test_helper.py); verify
+   multi-file loading and missing-part rejection in DX and collect multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.

@@ -1,7 +1,7 @@
-# Private save/restart/fresh-load test - DU
+# Private save/restart/fresh-load test - DW
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDU.w3x`.
-Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDV.w3x` (see below).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDW.w3x`.
+Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
 
@@ -50,7 +50,7 @@ Observed single or unspecified-mode examples:1,010 characters transferred in
 0.500 s and loaded/verified in3.148 s;1,300 characters took0.602 s and3.250 s.
 File read showed~0 ms at game-timer resolution; multiplayer timings remain pending.
 
-DT carries the updated DevCommands editor module: `-allitems` creates copies of
+DW carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor
 single-player development copy and save before use; release maps keep it disabled.
@@ -65,7 +65,7 @@ File chunks use separate temporary player-name slots with checked headers, resto
 every name after reading. Larger saves need matching `<filename> part N.txt` files beside the main file;
 keep the complete set when copying saves. Missing parts refuse loading.
 
-## Changes in DU
+## Changes in DW
 
 - Saving no longer needs the hero to stand still: `-save` and `-savef` read the
   whole character within one game frame, so a later autosave can run during play.
@@ -84,12 +84,12 @@ keep the complete set when copying saves. Missing parts refuse loading.
   stats are not added again because the saved stats already include them.
   Check: a save with all 23 jobs at 99 shows food 23/23 and total level 2277.
 
-## Multi-file test map (DV)
+## Multi-file test map (DX)
 
-Real profiles stay under one 3,680-character file page, so DV is the same as DU
+Real profiles stay under one 3,680-character file page, so DX is the same as DW
 except that each file page holds 920 characters. A normal endgame save then spans
 several files. Build it with
-`python experiments/Forsaken/build_save_roundtrip.py --stage DV --small-file-pages`.
+`python experiments/Forsaken/build_save_roundtrip.py --stage DX --small-file-pages`.
 Test: `-savef Multi`, restart, `-loadf Multi` must PASS; then move
 `Multi part 1.txt` out of the folder and `-loadf Multi` must refuse without
 creating anything. Extra files are numbered from 1, so a two-file save is
@@ -103,7 +103,7 @@ for testing chat loading without retyping screenshots.
 
 ## Shrine availability
 
-DT keeps the town Shrine of Individuality visible from startup. Before the mastery
+DW keeps the town Shrine of Individuality visible from startup. Before the mastery
 title is earned, a Freelancer purchase silently removes the selection token and
 leaves the hero unchanged. Successful loads with the saved mastery title also run
 the original shrine unlock, restoring its ability menus. Existing saves need no
@@ -112,10 +112,10 @@ in another game and switch to Freelancer and back.
 
 ## Tester checklist
 
-1. Import your old character in DT using `-loadf YOUR_NAME` or the legacy chat
+1. Import your old character in DW using `-loadf YOUR_NAME` or the legacy chat
    code. Run `-save`, screenshot every page using `-savepage NUMBER`, and confirm
    this works without allowing file writes. Run `-savef Endgame` to test file export.
-2. Restart Warcraft. Start DT with matching account/difficulty/Speedrun settings
+2. Restart Warcraft. Start DW with matching account/difficulty/Speedrun settings
    and an untouched starter. Within fifteen minutes paste the numbered `-load`
    lines, including a duplicate and some out of order; expect exact-profile PASS
    only after all parts arrive. A second load must refuse.
@@ -140,7 +140,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DT game to
+After the restart round trip, use that same file in a real multiplayer DW game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.
