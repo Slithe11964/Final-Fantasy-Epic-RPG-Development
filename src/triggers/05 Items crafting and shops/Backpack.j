@@ -39,7 +39,25 @@ function Backpack_Open takes player p returns nothing
         call ClearSelection()
         call SelectUnit(holder,true)
     endif
+    // Selection is local, so only this player's own client can judge whether it took.
+    if GetLocalPlayer()==p and not IsUnitSelected(holder,p) then
+        call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: the game refused to select the holder")
+    endif
     set holder=null
+endfunction
+
+// Brings the holder to the hero before opening, to tell a placement problem apart from a
+// problem with the holder itself.
+function Backpack_OpenHere takes player p returns nothing
+    local unit holder=Backpack_Holder(GetPlayerId(p))
+    local unit hero=Player_GetHero(p)
+    if holder!=null and hero!=null then
+        call SetUnitPosition(holder,GetUnitX(hero)+128.,GetUnitY(hero))
+        call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: holder moved beside your hero")
+    endif
+    call Backpack_Open(p)
+    set holder=null
+    set hero=null
 endfunction
 
 // Says what the holder actually is, so a backpack that will not open explains itself.
@@ -151,6 +169,8 @@ function Backpack_OnCommand takes nothing returns nothing
     local item moving
     if command=="-bagwhere" then
         call Backpack_Report(p)
+    elseif command=="-bagnear" then
+        call Backpack_OpenHere(p)
     elseif SubString(command,0,4)=="-bag" then
         call Backpack_Open(p)
     elseif hero==null or slot<0 or slot>=BACKPACK_SLOTS then
@@ -217,6 +237,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-put ",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bag",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagwhere",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagnear",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)
