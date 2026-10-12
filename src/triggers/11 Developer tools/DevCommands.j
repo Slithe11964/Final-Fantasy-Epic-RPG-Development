@@ -120,6 +120,72 @@ function DevCommands_DumpItems takes player p returns nothing
     call DevCommands_Say(p,I2S(n)+" items written to CustomMapData\\FFERPG\\itemtable.txt")
 endfunction
 
+function DevCommands_AllItems takes player p,unit hero returns nothing
+    local integer i=1
+    local integer raw
+    local integer count=0
+    local integer failed=0
+    local real x=GetUnitX(hero)-640.
+    local real y=GetUnitY(hero)-128.
+    local item created
+    local hashtable seen=InitHashtable()
+    loop
+        exitwhen i>udg_SaveFlagCount
+        set raw=udg_ItemIdTable[i]
+        if raw!=0 and not LoadBoolean(seen,0,raw) then
+            call SaveBoolean(seen,0,raw,true)
+            set created=CreateItem(raw,x+I2R(ModuloInteger(count,20))*64.,y-I2R(count/20)*64.)
+            if created!=null then
+                call SetItemPlayer(created,p,false)
+                set count=count+1
+            else
+                set failed=failed+1
+            endif
+        endif
+        set i=i+1
+    endloop
+    call FlushParentHashtable(seen)
+    set seen=null
+    set created=null
+    call DevCommands_Say(p,"Created "+I2S(count)+" different saveable items on the ground near your hero; "+I2S(failed)+" creation failures.")
+endfunction
+
+function DevCommands_AllChronicles takes player p returns nothing
+    local integer i=1
+    local integer count=0
+    local integer pid=GetPlayerId(p)+1
+    local boolean missing
+    local player previousPlayer=udg_TempPlayer
+    local integer previousInteger=udg_TempInteger
+    static if LIBRARY_TTitle then
+        loop
+            exitwhen i>100
+            set missing=not IsPlayerInForce(p,udg_TitleForce[i])
+            if udg_TitleChronicleIndex[i]==11 then
+                set missing=udg_SpeedrunLevel[pid]<i-udg_SpeedrunTitleBase
+            endif
+            if udg_TitleName[i]!="" and udg_TitleChronicleIndex[i]>0 and missing then
+                if udg_TitleChronicleIndex[i]==11 then
+                    set udg_SpeedrunLevel[pid]=i-udg_SpeedrunTitleBase
+                endif
+                set udg_TempPlayer=p
+                set udg_TempInteger=i
+                call TriggerExecute(gg_trg_Title_Grant)
+                if IsPlayerInForce(p,udg_TitleForce[i]) then
+                    set count=count+1
+                endif
+            endif
+            set i=i+1
+        endloop
+        call DevCommands_Say(p,"Granted "+I2S(count)+" missing Chronicle titles; existing titles kept.")
+    else
+        call DevCommands_Say(p,"the Title module is switched off")
+    endif
+    set udg_TempPlayer=previousPlayer
+    set udg_TempInteger=previousInteger
+    set previousPlayer=null
+endfunction
+
 function DevCommands_QuestState takes player p,integer l_number returns nothing
     local integer q=1
     local string l_state
@@ -198,6 +264,7 @@ function DevCommands_Help takes player p returns nothing
     call DevCommands_Say(p,"-kill (selected units), -tp X Y (or -tp: camera), -pos")
     call DevCommands_Say(p,"-time H (0-24), -reveal (toggle), -spawns on/off, -title N")
     call DevCommands_Say(p,"-teleporters (unlock all travel destinations)")
+    call DevCommands_Say(p,"-allitems (copies of all saveable items), -allchronicles (grant missing Chronicles)")
     call DevCommands_Say(p,"-dumpitems (item table file for tools/savecode.py)")
     call DevCommands_Say(p,"-queststate [N] (active/available quests, or one engine quest number)")
 endfunction
@@ -260,6 +327,10 @@ function Trig_DevCommands_Chat_Actions takes nothing returns nothing
     elseif cmd=="-cd" then
         call UnitResetCooldown(h)
         call DevCommands_Say(p,"cooldowns reset")
+    elseif cmd=="-allitems" then
+        call DevCommands_AllItems(p,h)
+    elseif cmd=="-allchronicles" then
+        call DevCommands_AllChronicles(p)
     elseif cmd=="-item" then
         set i=DevCommands_RawCode(a1)
         if i==0 then

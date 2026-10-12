@@ -8,6 +8,7 @@ from wct import raw_of
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 INTRO = Path('src/triggers/06 Quests and story/Intro.j')
+DEVELOPER = Path('src/triggers/11 Developer tools/DevCommands.j')
 
 
 def settings():
@@ -34,11 +35,14 @@ def prepare_map(base, output, stage):
 
 
 def sync_intro(work):
-    text = (ROOT/INTRO).read_text(encoding='utf-8')
-    (work/INTRO).write_bytes(text.replace('\n', '\r\n').encode('utf-8'))
+    for source in (INTRO, DEVELOPER):
+        text = (ROOT/source).read_text(encoding='utf-8')
+        (work/source).write_bytes(text.replace('\n', '\r\n').encode('utf-8'))
 
 
 def expected_source(entry, work):
     if entry.startswith(b'library TIntro '):
         return raw_of((work/INTRO).read_text(encoding='utf-8').replace('\n', '\r\n'))
+    if entry.startswith(b'library TDevCommands '):
+        return raw_of((work/DEVELOPER).read_text(encoding='utf-8').replace('\n', '\r\n'))
     return entry

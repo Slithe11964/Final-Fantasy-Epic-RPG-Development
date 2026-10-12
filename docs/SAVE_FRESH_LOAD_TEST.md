@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DL
+# Private save/restart/fresh-load test - DM
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDL.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDM.w3x`.
 Built on BT gameplay; legacy export remains disabled. Private commands use
 `Forsaken CU.txt`, separate from legacy saves.
 
@@ -18,10 +18,16 @@ was rejected. Observed code:1,111 characters; transfer/validation:0.360 s;
 load/verify:3.086 s; file read:~0 ms (game-timer resolution). Session mode was not
 specified, so these timings are not labeled multiplayer measurements.
 
-DL carries the verified loader with the user's r17 scenario description and current
-Intro text. Future Forsaken gameplay, probe and round-trip builds use that presentation.
-Permanent IDs and file format are unchanged. Broader inventory/effect, load-window
-and multiplayer timing observations remain useful.
+DL retained the verified loader with the user's r17 description and Intro. A user
+reported an exact full-profile PASS with all Forsaken equipment slots occupied:
+code1,300 characters, transfer0.602 s, load/verify3.250 s; session mode unspecified.
+
+DM carries the updated DevCommands editor module: `-allitems` creates copies of
+all distinct saveable item types; `-allchronicles` awards missing Chronicles,
+including Time Trial progress. Enable DevCommands in a separate World Editor
+single-player development copy and save before use; release maps keep it disabled.
+Use these helpers after a successful load or to prepare a character before export,
+not on the untouched starter that will receive a load.
 
 `-newretrycheck` deliberately fails after all saved items are placed, then confirms
 cleanup without consuming the load. Persistent cleanup failures retain tracking
@@ -35,7 +41,7 @@ every name after reading. Larger saves need `Forsaken CU part N.txt` beside the 
 1. Existing verified DI files can be reused. For a new character, load it with the
    legacy reader, enter `-newsave` while standing still, and wait for exact file
    readback. Restart Warcraft before testing the new load.
-2. Start DL with matching account, difficulty and Speedrun settings. Leave the
+2. Start DM with matching account, difficulty and Speedrun settings. Leave the
    starting hero, Gaya and house untouched. Within fifteen minutes run
    `-newretrycheck`: the intentional **FAIL** is expected. Wait for
    **created objects cleaned, load unused; retry allowed**. If cleanup stays blocked,
@@ -60,7 +66,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DL game to
+After the restart round trip, use that same file in a real multiplayer DM game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.

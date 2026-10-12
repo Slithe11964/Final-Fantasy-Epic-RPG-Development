@@ -18,6 +18,8 @@ automatically, and `tools/disable_check.py` confirms this.
 | `-god` | Toggle invulnerability for the hero. |
 | `-cd` | Reset the hero's cooldowns. |
 | `-item XXXX` | Create the item with that rawcode at the hero, e.g. `-item I01Z` (Crystal Shard). Rawcodes are in the Object Editor (Ctrl+D shows them), or in comments next to IDs in the code. |
+| `-allitems` | Create one copy of each distinct saveable item type in a grid near the hero, owned by you. Existing items stay in place; pick up the copies you need. Repeating creates another set. |
+| `-allchronicles` | Grant every missing named Chronicle title through the normal award path, including effects, saved flags and Time Trial progress. Repeating does not grant owned titles again. |
 | `-unit XXXX [N]` | Create N (1–20) enemy units of that type around the hero, e.g. to test damage. |
 | `-kill` | Kill your selected units (not your own heroes). |
 | `-tp X Y` | Move the hero to map coordinates. `-tp` alone moves it to the centre of the camera. |
