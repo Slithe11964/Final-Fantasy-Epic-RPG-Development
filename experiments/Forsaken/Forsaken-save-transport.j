@@ -1,7 +1,11 @@
-library TForsakenSaveTransport requires TForsakenSaveCodec
+library TForsakenSaveTransport requires TForsakenSaveCodec, TForsakenSaveCache
 // File IO remains local; only ordered sync packets reach detached validation.
 globals
     constant string FST_PREFIX="FSCU"
+    // Reforged shares packets through the sync natives; the 1.29.2 build flips this
+    // constant to false and carries the same packets in the game cache instead.
+    constant boolean FST_UseSyncNative=true
+    boolean FST_SyncSent=false
     constant string FST_FILE=".\\FFERPG\\Forsaken CU.txt"
     constant integer FST_LIMIT=17000
     // One file page holds 23 player-name chunks. FST_CHUNK sizes the chunks this build writes;
@@ -422,8 +426,30 @@ function FST_Receive takes integer pid,string packet returns nothing
     endif
 endfunction
 
-function FST_OnSync takes nothing returns nothing
+// The sync natives live only in these wrappers: the 1.29.2 conversion empties them.
+function FSTSync_OnSync takes nothing returns nothing
     call FST_Receive(GetPlayerId(GetTriggerPlayer()),BlzGetTriggerSyncData())
+endfunction
+
+function FSTSync_Send takes string packet returns nothing
+    set FST_SyncSent=BlzSendSyncData(FST_PREFIX,packet)
+endfunction
+
+function FSTSync_Register takes trigger whichTrigger,integer pid returns nothing
+    call BlzTriggerRegisterPlayerSyncEvent(whichTrigger,Player(pid),FST_PREFIX,false)
+endfunction
+
+// Hands any packets that arrived through the game cache to the same reader.
+function FST_Drain takes integer pid returns nothing
+    local integer waiting=FSG_Waiting(pid)
+    local string packet
+    loop
+        exitwhen FSG_Seen[pid]>=waiting
+        set packet=FSG_Packet(pid,FSG_Seen[pid])
+        exitwhen packet==null
+        set FSG_Seen[pid]=FSG_Seen[pid]+1
+        call FST_Receive(pid,packet)
+    endloop
 endfunction
 
 function FST_Pump takes nothing returns nothing
@@ -434,6 +460,9 @@ function FST_Pump takes nothing returns nothing
     loop
         exitwhen pid>=8
         if FST_Pending[pid] then
+            if not FST_UseSyncNative then
+                call FST_Drain(pid)
+            endif
             if TimerGetElapsed(FST_Clock)-FST_Start[pid]>45. then
                 call FST_Fail(pid,"file transfer timed out; retry while load window is open")
             elseif GetLocalPlayer()==Player(pid) then
@@ -459,9 +488,16 @@ function FST_Pump takes nothing returns nothing
                     set packet="X"+request
                     set FST_LocalPhase[pid]=0
                 endif
-                if packet!=null and not BlzSendSyncData(FST_PREFIX,packet) then
-                    // Report failure through sync on the next tick, or time out.
-                    set FST_LocalPhase[pid]=4
+                if packet!=null then
+                    if FST_UseSyncNative then
+                        call FSTSync_Send(packet)
+                    else
+                        set FST_SyncSent=FSG_Send(pid,packet)
+                    endif
+                    if not FST_SyncSent then
+                        // Report failure on the next tick, or time out.
+                        set FST_LocalPhase[pid]=4
+                    endif
                 endif
             endif
         endif
@@ -534,11 +570,15 @@ function FST_Init takes nothing returns nothing
     set FST_PumpTimer=CreateTimer()
     call TimerStart(FST_PumpTimer,0.05,true,function FST_Pump)
     set FST_Sync=CreateTrigger()
-    loop
-        exitwhen pid>=8
-        call BlzTriggerRegisterPlayerSyncEvent(FST_Sync,Player(pid),FST_PREFIX,false)
-        set pid=pid+1
-    endloop
-    call TriggerAddAction(FST_Sync,function FST_OnSync)
+    if FST_UseSyncNative then
+        loop
+            exitwhen pid>=8
+            call FSTSync_Register(FST_Sync,pid)
+            set pid=pid+1
+        endloop
+        call TriggerAddAction(FST_Sync,function FSTSync_OnSync)
+    else
+        call FSG_Init()
+    endif
 endfunction
 endlibrary

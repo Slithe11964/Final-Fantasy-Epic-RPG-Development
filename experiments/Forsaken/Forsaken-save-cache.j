@@ -17,7 +17,7 @@ function FSG_Digit takes string letter returns integer
     elseif letter==")" then
         return 65
     endif
-    return FSC_Index(letter)
+    return FSC_Value(letter)
 endfunction
 
 function FSG_Letter takes integer digit returns string
@@ -26,7 +26,7 @@ function FSG_Letter takes integer digit returns string
     elseif digit==65 then
         return ")"
     endif
-    return FSC_Letter(digit)
+    return SubString(FSC_ALPHABET,digit,digit+1)
 endfunction
 
 function FSG_Label takes integer pid,integer packet,integer group returns string
@@ -108,5 +108,21 @@ function FSG_Packet takes integer pid,integer index returns string
         set group=group+1
     endloop
     return SubString(packet,0,length)
+endfunction
+// How many packets this player has published, as far as this client can see.
+function FSG_Waiting takes integer pid returns integer
+    return GetStoredInteger(FSG_Store,FSG_CACHE,"p"+I2S(pid)+"_n")-1
+endfunction
+
+function FSG_Init takes nothing returns nothing
+    local integer pid=0
+    if FSG_Store==null then
+        set FSG_Store=InitGameCache(FSG_CACHE)
+    endif
+    loop
+        exitwhen pid>=8
+        call FSG_Reset(pid)
+        set pid=pid+1
+    endloop
 endfunction
 endlibrary

@@ -68,7 +68,16 @@ class TransportTests(unittest.TestCase):
                        PreloadGenStart=lambda: None, Preload=self.preloads.append,
                        PreloadGenEnd=genend,
                        DisplayTimedTextToPlayer=lambda *a: self.messages.append(a[-1]))
-        self.e = engine((HERE/'Forsaken-save-transport.j').read_text(), natives)
+        # The cache delivery module ships with the transport, so load both and give the
+        # game cache natives a dictionary to live in.
+        self.cache, self.synced = {}, {}
+        natives.update(InitGameCache=lambda name: self.cache,
+                       StoreInteger=lambda c, mission, key, value: c.__setitem__((mission, key), value),
+                       SyncStoredInteger=lambda c, mission, key: self.synced.__setitem__(
+                           (mission, key), c[(mission, key)]),
+                       GetStoredInteger=lambda c, mission, key: self.synced.get((mission, key), 0))
+        self.e = engine((HERE/'Forsaken-save-cache.j').read_text() + '\n'
+                        + (HERE/'Forsaken-save-transport.j').read_text(), natives)
         self.e['FST_Init']()
 
     def packets(self, code=None, request=1, sent_millis=0):
@@ -270,6 +279,25 @@ class TransportTests(unittest.TestCase):
         self.files[path][0] = self.files[path][0][:-1]  # a dropped character must not pass
         self.assertIsNone(self.e['FST_ReadFile'](0))
         self.assertNotEqual(self.e['FST_FileError'][0], '')
+        self.assertEqual(self.names, ['Player' + str(i) for i in range(24)])
+
+    def test_the_game_cache_path_delivers_a_whole_file_without_the_sync_natives(self):
+        """The 1.29.2 delivery path, driven through the transport's own pump."""
+        e = self.e
+        e['FST_UseSyncNative'] = False     # what tools/save_legacy.py writes for 1.29.2
+        e['FSG_Init']()
+        self.sent.clear()
+        self.assertTrue(e['FST_SetFileStem'](0, 'Cache'))
+        self.assertTrue(e['FST_Request'](0, 42))
+        for _ in range(400):
+            e['FST_Pump']()
+            if e['FST_Ready'][0] or e['FST_Error'][0]:
+                break
+        self.assertEqual(e['FST_Error'][0], '', 'the cache path must not fail')
+        self.assertTrue(e['FST_Ready'][0], 'the file should have arrived')
+        self.assertEqual(e['FST_Result'][0], self.file, 'delivered byte for byte')
+        self.assertEqual(self.sent, [], 'no sync packet should be sent on this path')
+        self.assertGreater(len(self.synced), 100, 'the save travelled as cache keys')
         self.assertEqual(self.names, ['Player' + str(i) for i in range(24)])
 
     def test_legacy_file_is_detected_locally_and_dispatched_only_after_sync(self):

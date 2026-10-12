@@ -77,6 +77,15 @@ Checked: it compiles against the bundled 1.29.2 `common.j` and `blizzard.j`, and
 1,701-character endgame save survives the round trip character for character, brackets and
 whole alphabet included (`test_save_cache.py`).
 
+The transport now chooses its path from one constant. The three sync natives live only
+in its `FSTSync_` wrappers; `tools/save_legacy.py` empties those and flips
+`FST_UseSyncNative` to false, and refuses the conversion if any of the three survives
+anywhere else. Both stacks compile: codec, cache and transport parse against the Reforged
+libraries as they are, and against the 1.29.2 libraries after conversion. A whole save
+file also travels end to end through the transport's own pump on the cache path, with no
+sync packet sent (`test_save_transport.py`), and the converter has its own gate in
+`tools/tests/test_save_legacy.py`.
+
 Not checked, and only a real 1.29.2 multiplayer game can: how many `SyncStoredInteger`
 calls one frame tolerates. That save needs 389 keys. Sending one 192-character packet per
 pump tick means about 39 of them in a single frame and finishes in roughly half a second;
