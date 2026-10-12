@@ -31,6 +31,15 @@ find draws green, and `battlestations` is not a no-target order a Channel abilit
 Every field, type, icon path and order string now comes from one the map already uses, and
 `tools/tests/test_backpack_catalog.py` fails the build if that stops being true.
 
+Then ASH's button still did nothing: Channel keeps its order string in a numbered data
+column, and the helper wrote it at column 0 instead of the column 6 the working Talents
+button uses, which leaves the ability with no order at all. `setf` now treats the data
+column as part of a field's identity, and a test compares the new buttons' order column
+against the Talents one.
+
+`-bag` opens the holder without using the button, so the two halves can be told apart if
+this happens again.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag

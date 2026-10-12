@@ -62,15 +62,25 @@ function Backpack_FreeSlot takes integer pid returns integer
     return -1
 endfunction
 
-function Backpack_Store takes integer pid,item carried returns boolean
+// Moves the item itself rather than making a fresh one, so charges and state survive.
+// 1.29.2 has no native that puts an existing item straight into a chosen slot, so the item
+// leaves its carrier and the holder takes it into its first free slot.
+function Backpack_Store takes integer pid,unit carrier,item carried returns boolean
     local unit holder
-    local integer slot=Backpack_FreeSlot(pid)
-    if carried==null or slot<0 then
+    if carried==null or Backpack_FreeSlot(pid)<0 then
         return false
     endif
     set holder=Backpack_Holder(pid)
-    call UnitAddItemToSlotById(holder,GetItemTypeId(carried),slot)
-    call RemoveItem(carried)
+    if carrier!=null then
+        call UnitRemoveItem(carrier,carried)
+    endif
+    if not UnitAddItem(holder,carried) then
+        if carrier!=null then
+            call UnitAddItem(carrier,carried)
+        endif
+        set holder=null
+        return false
+    endif
     set holder=null
     return true
 endfunction
@@ -100,7 +110,7 @@ function Backpack_OnPickup takes nothing returns nothing
         set slot=slot+1
     endloop
     if hero==Player_GetHero(GetOwningPlayer(hero)) and used>=BACKPACK_SLOTS then
-        if Backpack_Store(pid,carried) then
+        if Backpack_Store(pid,hero,carried) then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Bagged: "+GetItemName(carried)+" (B to open the backpack)")
         endif
     endif
@@ -117,7 +127,9 @@ function Backpack_OnCommand takes nothing returns nothing
     local unit hero=Player_GetHero(p)
     local unit holder=Backpack_Holder(pid)
     local item moving
-    if hero==null or slot<0 or slot>=BACKPACK_SLOTS then
+    if SubString(command,0,4)=="-bag" then
+        call Backpack_Open(p)
+    elseif hero==null or slot<0 or slot>=BACKPACK_SLOTS then
         call DisplayTimedTextToPlayer(p,0.,0.,8.,"Use -take 1 to 6 or -put 1 to 6")
     elseif SubString(command,0,5)=="-take" then
         set moving=UnitItemInSlot(holder,slot)
@@ -132,7 +144,7 @@ function Backpack_OnCommand takes nothing returns nothing
         set moving=UnitItemInSlot(hero,slot)
         if moving==null then
             call DisplayTimedTextToPlayer(p,0.,0.,8.,"That hero slot is empty")
-        elseif Backpack_Store(pid,moving) then
+        elseif Backpack_Store(pid,hero,moving) then
             call DisplayTimedTextToPlayer(p,0.,0.,8.,"Bagged that item")
         else
             call DisplayTimedTextToPlayer(p,0.,0.,8.,"The backpack is full")
@@ -179,6 +191,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         exitwhen pid>=bj_MAX_PLAYERS
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-take ",false)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-put ",false)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bag",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)

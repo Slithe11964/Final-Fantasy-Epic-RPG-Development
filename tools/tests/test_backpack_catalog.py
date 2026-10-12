@@ -76,6 +76,21 @@ class BackpackCatalogTests(unittest.TestCase):
             self.assertIn(name, {n.replace('disbtn', 'btn') for n in lowered},
                           icon + ' is not an icon this map already shows')
 
+    def test_the_order_string_sits_in_the_same_column_as_the_working_button(self):
+        """Channel keeps its order string in a data column; the wrong one leaves no order."""
+        abilities, _ = self.added()
+        def order_mods(raw):
+            obj = next(o for o in abilities['custom'] if o['id'] == raw)
+            return [(m['level'], m['data'], m['value']) for group in obj['sets']
+                    for m in group['mods'] if m['field'] == 'Ncl6']
+        working = order_mods(catalog.TALENTS)
+        self.assertEqual(len(working), 1, 'expected one order string on the Talents button')
+        for raw in NEW_ABILITIES:
+            mine = order_mods(raw)
+            self.assertEqual(len(mine), 1, raw + ' must carry exactly one order string')
+            self.assertEqual((mine[0][0], mine[0][1]), (working[0][0], working[0][1]),
+                             raw + ' puts its order string in a different column from Talents')
+
     def test_each_new_ability_has_its_own_unused_order(self):
         abilities = read_objects(self.archive.read('war3map.w3a'), 'w3a')
         orders = {mod['value'] for obj in abilities['custom'] for group in obj['sets']

@@ -121,3 +121,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DX | DW with 920-character file pages, for testing multi-file saves and missing-part rejection. Test only. |
 | ASG | Backpack holder, withdrawn: invented object fields corrupted the object data. |
 | ASH | ASG with the Backpack objects rebuilt from fields, icons and order strings the map itself already uses. |
+| ASI | Backpack order string moved to the column Channel reads, the bagged item keeps its own instance and charges, and -bag opens the holder without the button. |

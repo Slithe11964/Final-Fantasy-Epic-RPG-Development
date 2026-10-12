@@ -33,9 +33,16 @@ BACKPACK_ORDER = 'cannibalize'
 RETURN_ORDER = 'avatar'
 
 
+# Channel's Ncl1..Ncl6 are distinguished by their data column, not just their field id, so
+# the data index is part of a field's identity here. Writing the order string at data 0
+# instead of data 6 leaves the ability with no order at all, and the button does nothing.
+ORDER_DATA = 6
+
+
 def setf(obj, field, ftype, value, level=0, data=0):
     mods = obj['sets'][0]['mods']
-    mods[:] = [m for m in mods if not (m['field'] == field and m['level'] == level)]
+    mods[:] = [m for m in mods
+               if not (m['field'] == field and m['level'] == level and m['data'] == data)]
     mods.append(dict(field=field, type=ftype, level=level, data=data, value=value, end=0))
 
 
@@ -45,9 +52,9 @@ def button(objects, raw, name, hotkey, icon, tip, text, px, py, order):
     obj['id'] = raw
     for field, ftype, value, level in [('anam', 3, name, 0), ('aart', 3, icon, 0), ('ahky', 3, hotkey, 0),
                                        ('abpx', 0, px, 0), ('abpy', 0, py, 0),
-                                       ('atp1', 3, tip, 1), ('aub1', 3, text, 1),
-                                       ('Ncl6', 3, order, 1)]:
+                                       ('atp1', 3, tip, 1), ('aub1', 3, text, 1)]:
         setf(obj, field, ftype, value, level)
+    setf(obj, 'Ncl6', 3, order, 1, ORDER_DATA)
     return obj
 
 
