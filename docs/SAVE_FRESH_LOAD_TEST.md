@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DR
+# Private save/restart/fresh-load test - DS
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDR.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDS.w3x`.
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
 
@@ -9,8 +9,8 @@ Forsaken test. Legacy imports remain available; public maps are unchanged.
 | `-save` | Capture and display numbered code lines; no file writes. |
 | `-savepage 2` | Display another page of the last captured code. |
 | `-load FSVB:...` | Paste each displayed numbered line in a fresh game, in any order. |
-| `-savef Endgame` | Display the code and write exactly `FFERPG/Endgame.txt`. |
-| `-savef` | Display the code and write `FFERPG/Last save.txt`. |
+| `-savef Endgame` | File only: write exactly `FFERPG/Endgame.txt`. |
+| `-savef` | File only: write `FFERPG/Last save.txt`. |
 | `-loadf Endgame` | Detect and import either a legacy or new-format file. |
 | `-loadf` / bare `-load` | Detect/import `Last save.txt`. |
 | `-load OLD_CODE` / `-loada (ARMORY)` | Retained legacy chat import. |
@@ -21,14 +21,16 @@ Each page shows three complete command parts, with80 code characters per part.
 Yellow PAGE X OF Y banners appear above and below the commands, state the total
 screenshots required and show the exact next `-savepage` command. Viewing a page
 clears only that player's previous on-screen messages to avoid mixed pages.
-Legacy colors are preserved: uppercase gray, lowercase yellow, digits blue,
+The user confirmed DR's screenshot layout and colors. Legacy colors are preserved: uppercase gray, lowercase yellow, digits blue,
 symbols green. Colors are display-only; the original parts and screenshots remain
 load-compatible. A26-part code now needs9 screenshots so every part fits. Paste each complete displayed command; duplicates are harmless and order
 is flexible. No objects are created until every part and the full account-bound
 profile validate. New codes include Armory in the same assembly. Legacy `-loada`
 remains for legacy codes. A mistyped part can be replaced; checksum failure asks
-for all parts again without using the load. File read/write failure does not
-prevent viewing or manually loading the displayed code.
+for all parts again without using the load. Only `-save` captures/displays screenshot pages; file saves leave that cached code
+unchanged. `-savef` uses the legacy path message, then "Saved successfully" only
+after exact readback, or the legacy unverified-file warning on failure. If file
+access fails, use `-save` for a separate file-free capture and manual load.
 
 Named files use exactly the requested name, with letters, digits, spaces,
 underscores and hyphens, up to64 characters. Keep all matching part files together.
@@ -47,7 +49,7 @@ Observed single or unspecified-mode examples:1,010 characters transferred in
 0.500 s and loaded/verified in3.148 s;1,300 characters took0.602 s and3.250 s.
 File read showed~0 ms at game-timer resolution; multiplayer timings remain pending.
 
-DR carries the updated DevCommands editor module: `-allitems` creates copies of
+DS carries the updated DevCommands editor module: `-allitems` creates copies of
 all distinct saveable item types; `-allchronicles` awards missing Chronicles,
 including Time Trial progress. Enable DevCommands in a separate World Editor
 single-player development copy and save before use; release maps keep it disabled.
@@ -64,10 +66,10 @@ keep the complete set when copying saves. Missing parts refuse loading.
 
 ## Tester checklist
 
-1. Import your old character in DR using `-loadf YOUR_NAME` or the legacy chat
+1. Import your old character in DS using `-loadf YOUR_NAME` or the legacy chat
    code. Run `-save`, screenshot every page using `-savepage NUMBER`, and confirm
    this works without allowing file writes. Run `-savef Endgame` to test file export.
-2. Restart Warcraft. Start DR with matching account/difficulty/Speedrun settings
+2. Restart Warcraft. Start DS with matching account/difficulty/Speedrun settings
    and an untouched starter. Within fifteen minutes paste the numbered `-load`
    lines, including a duplicate and some out of order; expect exact-profile PASS
    only after all parts arrive. A second load must refuse.
@@ -92,7 +94,7 @@ The current gameplay cap is99; the format's future150/999 space does not raise i
 The final message reports the same code's length, file-read game-timer estimate,
 ordered transfer/validation time, and complete load/readback time. File timing can
 show zero within one game frame; it is not a precise wall-clock IO measurement.
-After the restart round trip, use that same file in a real multiplayer DR game to
+After the restart round trip, use that same file in a real multiplayer DS game to
 measure multiplayer delivery and confirm that players see the same loaded state.
 The successful multiplayer report establishes delivery for the tested characters;
 it does not provide multiplayer timing measurements.

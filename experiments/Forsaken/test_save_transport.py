@@ -276,6 +276,14 @@ class TransportTests(unittest.TestCase):
         self.local=1;self.assertTrue(self.e['FST_ShowCode'](1,1));self.assertEqual(clears,[1])
         self.assertTrue(any('-savepage 2' in m for m in self.messages))
 
+    def test_normal_file_save_uses_legacy_success_and_unverified_wording(self):
+        self.e['FST_LegacySaveMessages'][0]=True
+        self.assertTrue(self.e['FST_Write'](0,self.file,42))
+        self.assertEqual(self.messages,['Saved successfully'])
+        self.messages.clear();self.e['FST_ReadFile']=lambda pid:None
+        self.assertTrue(self.e['FST_Write'](0,self.file,42))
+        self.assertEqual(self.messages,['Saved but could not verify if successful. Check saves folder manually.'])
+
     def test_file_stems_are_bounded_and_player_specific(self):
         for stem in ('../legacy','x/y','x\\y','x.txt','', 'x'*65):
             self.assertFalse(self.e['FST_SetFileStem'](0,stem),stem)

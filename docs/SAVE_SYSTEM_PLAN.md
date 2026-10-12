@@ -59,7 +59,7 @@ and contained replacement-house/activation pipelines; they are not dependencies.
 
 ## Next
 
-Test DR using file-free screenshot/chat codes and exact-name legacy/new files.
+Test DS using file-free screenshot/chat codes and exact-name legacy/new files.
 Collect multiplayer transfer time for the same larger profile and confirm missing
 or damaged files reject without consuming the load. Keep all parts of multifile
 saves together; real-client multifile acceptance remains pending.

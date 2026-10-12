@@ -6,6 +6,7 @@ globals
     constant integer FST_LIMIT=17000
     boolean array FST_AllowLegacy
     boolean array FST_Legacy
+    boolean array FST_LegacySaveMessages
     string array FST_SavedCode
     string array FST_FileStem
     string array FST_FileError
@@ -490,12 +491,20 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             call PreloadGenEnd(FST_PlayerPath(pid,page))
             set page=page+1
         endloop
-        call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written; checking exact readback.")
+        if not FST_LegacySaveMessages[pid] then
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written; checking exact readback.")
+        endif
         set before=GetPlayerName(Player(pid))
         set readback=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
         if readback==encoded then
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters). File: "+FST_PlayerPath(pid,0))
+            if FST_LegacySaveMessages[pid] then
+                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved successfully")
+            else
+                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters). File: "+FST_PlayerPath(pid,0))
+            endif
+        elseif FST_LegacySaveMessages[pid] then
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved but could not verify if successful. Check saves folder manually.")
         elseif readback==null or readback=="" then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: "+FST_FileError[pid]+"; expected "+I2S(StringLength(encoded))+" characters. Export unverified.")
         else

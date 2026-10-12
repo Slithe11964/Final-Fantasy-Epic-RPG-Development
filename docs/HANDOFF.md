@@ -11,7 +11,7 @@ logs up to 2026-10-10 are in [history/](history/).
 | Normal development | `release/FFERPG_0.9.7.3-r16-stageASF.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASF.w3x` | ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDR.w3x` (private test) | Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. DR retains r17 presentation and adds legacy-colored screenshot pages with prominent page totals and three parts per page. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
+| New save system | `release/Forsaken/...ForsakenDS.w3x` (private test) | Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. Screenshot colors/layout confirmed. DS retains r17 presentation; only -save displays codes, while -savef uses legacy file-status messages. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -61,7 +61,7 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save system: test DR screenshot readability/chat loading and exact-name legacy/new file imports; verify
+1. Save system: test DS file-only save messages, chat loading and exact-name legacy/new file imports; verify
    multifile rejection on real clients and collect multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
 2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 3. Optional cleanup of shared temp variables: PHASE16.md.

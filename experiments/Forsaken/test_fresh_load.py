@@ -378,6 +378,21 @@ class FreshLoadTests(unittest.TestCase):
         self.assertTrue(lines);self.assertTrue(all(len(line)<=121 for line in lines))
         self.assertEqual(e['FST_SavedCode'][0],self.f.base.encoded)
 
+    def test_file_save_never_shows_or_replaces_screen_code_and_uses_legacy_path(self):
+        e=self.e;calls=[]
+        e.update(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,
+                 GetEventPlayerChatString=lambda:'-savef Endgame',FRC_Start=lambda pid:True)
+        e['FFL_Chat']()
+        self.assertEqual(self.messages,['Trying to save in FFERPG\\Endgame.txt'])
+        e['FST_SavedCode'][0]='previous screenshot code'
+        e['FRC_Ready'][0]=True;e['FRC_Result'][0]=self.f.base.encoded
+        e['FST_ShowCode']=lambda *args:self.fail('file save must not display code pages')
+        e['FST_Write']=lambda pid,code,account:calls.append((pid,code)) or True
+        e['FFL_Tick']()
+        self.assertEqual(calls,[(0,self.f.base.encoded)])
+        self.assertEqual(e['FST_SavedCode'][0],'previous screenshot code')
+        self.assertEqual(self.messages,['Trying to save in FFERPG\\Endgame.txt'])
+
     def test_save_actions_bind_once_after_forsaken_setup(self):
         e=self.e;calls=[]
         e.update(udg_SaveCommandTrig='save',udg_SaveToFileTrig='file',

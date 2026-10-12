@@ -967,11 +967,16 @@ function FFL_Chat takes nothing returns nothing
     endif
     if saving then
         set FFL_SaveFile[pid]=lower!="-save"
+        set FST_LegacySaveMessages[pid]=lower=="-savef" or SubString(lower,0,7)=="-savef "
         if not udg_HardcoreOff then
             call FFL_Message(pid,"saving is disabled in Hardcore")
         elseif FRC_Start(pid) then
             set FFL_Phase[pid]=1
-            call FFL_Message(pid,"capturing the full character; stand still for three seconds")
+            if FST_LegacySaveMessages[pid] then
+                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Trying to save in "+SubString(FST_PlayerPath(pid,0),2,StringLength(FST_PlayerPath(pid,0))))
+            else
+                call FFL_Message(pid,"capturing the full character; stand still for three seconds")
+            endif
         else
             call FFL_Message(pid,"could not start character capture")
         endif
@@ -1006,13 +1011,16 @@ function FFL_Tick takes nothing returns nothing
         if FFL_Phase[pid]==1 and FRC_Phase[pid]==0 then
             set FFL_Phase[pid]=0
             if FRC_Ready[pid] then
-                set FST_SavedCode[pid]=FRC_Result[pid]
-                call FST_ShowCode(pid,1)
                 if FFL_SaveFile[pid] then
-                    call FFL_Message(pid,"capture verified; exporting the file")
+                    if not FST_LegacySaveMessages[pid] then
+                        call FFL_Message(pid,"capture verified; exporting the file")
+                    endif
                     if not FST_Write(pid,FRC_Result[pid],FRC_Account(pid)) then
                         call FFL_Message(pid,"export refused: "+FSC_Error[pid])
                     endif
+                else
+                    set FST_SavedCode[pid]=FRC_Result[pid]
+                    call FST_ShowCode(pid,1)
                 endif
             else
                 call FFL_Message(pid,"export failed: "+FRC_Error[pid])
