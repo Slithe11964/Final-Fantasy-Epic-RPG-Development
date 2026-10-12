@@ -63,7 +63,7 @@ class TransportTests(unittest.TestCase):
                        TimerGetElapsed=lambda t: self.now, CreateTimer=object,
                        TimerStart=lambda *a: None, CreateTrigger=object,
                        BlzTriggerRegisterPlayerSyncEvent=lambda *a: None,
-                       TriggerAddAction=lambda *a: None, BlzSendSyncData=send,
+                       TriggerAddAction=lambda *a: None, ClearTextMessages=lambda:None, BlzSendSyncData=send,
                        Preloader=preload, PreloadGenClear=lambda: self.preloads.clear(),
                        PreloadGenStart=lambda: None, Preload=self.preloads.append,
                        PreloadGenEnd=genend,
@@ -255,13 +255,26 @@ class TransportTests(unittest.TestCase):
     def test_code_display_pages_reassemble_without_file_io(self):
         code=self.file;self.e['FST_SavedCode'][0]=code
         total=(len(code)+79)//80;parts=[]
-        for page in range(1,(total+4)//5+1):
+        for page in range(1,(total+2)//3+1):
             self.messages.clear();self.assertTrue(self.e['FST_ShowCode'](0,page))
-            lines=[m for m in self.messages if m.startswith('-load FSVB:')]
+            lines=[re.sub(r'\|c[0-9a-fA-F]{8}|\|r','',m) for m in self.messages if m.startswith('-load FSVB:')]
             self.assertTrue(all(len(line)<=121 for line in lines))
+            self.assertLessEqual(len(lines),3)
+            self.assertIn(f'PAGE {page} OF {(total+2)//3}',self.messages[0])
+            self.assertTrue(any(f'Capture ALL {(total+2)//3} pages' in m for m in self.messages))
             parts.extend(line.split(':',4)[4] for line in lines)
         self.assertEqual(''.join(parts),code)
         self.assertEqual(self.files,{})
+
+    def test_display_uses_legacy_colors_without_changing_code_or_other_players_screen(self):
+        expected='|c00C8C8C8O|c00E6E700o|c000068DE0|c00C8C8C8I|c00E6E700l|c000068DE1|c0016D116$#|r'
+        self.assertEqual(self.e['FST_ColorCode']('Oo0Il1$#'),expected)
+        self.assertLess(len(self.e['FST_ColorCode']('A1'*40))+40,1000)
+        clears=[];self.e['ClearTextMessages']=lambda:clears.append(self.local)
+        self.e['FST_SavedCode'][1]=self.file
+        self.assertTrue(self.e['FST_ShowCode'](1,1));self.assertEqual(clears,[])
+        self.local=1;self.assertTrue(self.e['FST_ShowCode'](1,1));self.assertEqual(clears,[1])
+        self.assertTrue(any('-savepage 2' in m for m in self.messages))
 
     def test_file_stems_are_bounded_and_player_specific(self):
         for stem in ('../legacy','x/y','x\\y','x.txt','', 'x'*65):

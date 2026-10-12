@@ -1,5 +1,6 @@
 """Execute the complete fresh loader with modeled natives; real engine test is CU."""
 import unittest
+import re
 from pathlib import Path
 import test_save_fresh_objects
 from test_save_jass import engine, JassArray
@@ -69,7 +70,7 @@ class FreshLoadTests(unittest.TestCase):
             ForsakenBagPassiveTypes={(0,'A0MU'):True},ForsakenBagAbilities={},
             Pow=lambda a,b:Real32(float(a)**float(b)),TimerGetElapsed=lambda t:Real32(1),
             DisplayTimedTextToPlayer=lambda p,x,y,d,m:self.messages.append(m),R2S=str,
-            PLAYER_NEUTRAL_PASSIVE=15,SetUnitOwner=lambda u,p,c:u.__setitem__('owner',p),
+            GetLocalPlayer=lambda:0,ClearTextMessages=lambda:None,PLAYER_NEUTRAL_PASSIVE=15,SetUnitOwner=lambda u,p,c:u.__setitem__('owner',p),
             ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None)
         catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
         source=(HERE/'Forsaken-save-life.j').read_text()+'\n'+capture_source(f.base.fixture.aliases)+'\n'+fresh_plan_source(f.base.fixture.registry,catalog)+'\n'+(HERE/'Forsaken-save-fresh-objects.j').read_text()+'\n'+(HERE/'Forsaken-save-transport.j').read_text()+'\n'+(HERE/'Forsaken-fresh-load.j').read_text()
@@ -373,7 +374,7 @@ class FreshLoadTests(unittest.TestCase):
         e['FRC_Ready'][0]=True;e['FRC_Result'][0]=self.f.base.encoded
         e['FST_Write']=lambda *args:self.fail('screen save must never write a file')
         e['FFL_Tick']()
-        lines=[m for m in self.messages if m.startswith('-load FSVB:')]
+        lines=[re.sub(r'\|c[0-9a-fA-F]{8}|\|r','',m) for m in self.messages if m.startswith('-load FSVB:')]
         self.assertTrue(lines);self.assertTrue(all(len(line)<=121 for line in lines))
         self.assertEqual(e['FST_SavedCode'][0],self.f.base.encoded)
 

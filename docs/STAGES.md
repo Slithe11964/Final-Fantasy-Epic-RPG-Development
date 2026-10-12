@@ -114,3 +114,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | DO | Morning tester build adds a usage guard for malformed save commands while retaining DN normal/named file routing, legacy imports and fresh-load safeguards. |
 | DP | Fresh load transfers the inactive Freelancer to Neutral Passive after verification, removing its player portrait while retaining saved progression and job switching. |
 | DQ | Screen-only saves display numbered screenshot pages, chat loads assemble the complete validated profile, and exact-name file imports detect legacy or new format. |
+| DR | Screenshot save pages restore legacy character colors, show prominent repeated page totals and next-page commands, and fit three complete parts while preserving existing codes. |

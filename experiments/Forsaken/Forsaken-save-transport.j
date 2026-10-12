@@ -164,23 +164,60 @@ function FST_LegacyValid takes string encoded returns boolean
     return true
 endfunction
 
+function FST_ColorCode takes string text returns string
+    local integer i=0
+    local integer value
+    local string color
+    local string previous=""
+    local string result=""
+    loop
+        exitwhen i>=StringLength(text)
+        set value=FSC_Value(SubString(text,i,i+1))
+        if value<26 then
+            set color="|c00C8C8C8"
+        elseif value<52 then
+            set color="|c00E6E700"
+        elseif value<62 then
+            set color="|c000068DE"
+        else
+            set color="|c0016D116"
+        endif
+        // Change color only when the character category changes; keep native text bounded.
+        if color!=previous then
+            set result=result+color
+            set previous=color
+        endif
+        set result=result+SubString(text,i,i+1)
+        set i=i+1
+    endloop
+    return result+"|r"
+endfunction
+
 function FST_ShowCode takes integer pid,integer page returns boolean
     local string encoded=FST_SavedCode[pid]
     local integer total=(StringLength(encoded)+79)/80
-    local integer pages=(total+4)/5
-    local integer part=(page-1)*5
-    local integer last=part+5
+    local integer pages=(total+2)/3
+    local integer part=(page-1)*3
+    local integer last=part+3
     if encoded==null or page<1 or page>pages then
         call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save code: use -save first, then -savepage NUMBER for an available page.")
         return false
     endif
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"Save code page "+I2S(page)+"/"+I2S(pages)+". Screenshot every page; paste each complete -load line in a fresh game.")
+    if GetLocalPlayer()==Player(pid) then
+        call ClearTextMessages()
+    endif
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"|cFFFFCC00SAVE CODE - PAGE "+I2S(page)+" OF "+I2S(pages)+"|r")
     loop
         exitwhen part>=total or part>=last
-        call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"-load FSVB:"+I2S(FST_TextChecksum(encoded))+":"+I2S(part+1)+":"+I2S(total)+":"+SubString(encoded,part*80,(part+1)*80))
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"-load FSVB:"+I2S(FST_TextChecksum(encoded))+":"+I2S(part+1)+":"+I2S(total)+":"+FST_ColorCode(SubString(encoded,part*80,(part+1)*80)))
         set part=part+1
     endloop
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"View any page with -savepage NUMBER. All parts are required, including Armory; no files are needed.")
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"|cFFFFCC00SCREENSHOT PAGE "+I2S(page)+" OF "+I2S(pages)+" - Capture ALL "+I2S(pages)+" pages.|r")
+    if page<pages then
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"Next: -savepage "+I2S(page+1)+". Paste all numbered -load lines in a fresh game.")
+    else
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,120.,"FINAL PAGE. Review: -savepage NUMBER. Paste all numbered -load lines in a fresh game.")
+    endif
     return true
 endfunction
 
