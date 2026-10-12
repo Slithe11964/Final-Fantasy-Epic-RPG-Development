@@ -46,6 +46,18 @@ select, so `SelectUnit` had nothing to act on while `ClearSelection` had already
 holder now carries a real model, drops the summoned classification and is no longer paused.
 `-bagwhere` prints what the holder actually is.
 
+A control test settled the last of it: the same selection call takes Gaya but is refused for
+the holder, beside the hero as well as in its corner. So the call is fine and the unit was
+not selectable. It had been copied from the map's casting dummy, a unit built to be
+invisible and unselectable - Locust, no model, no sight, no collision, hero defense type -
+and removing two of those traits was not enough. The holder is now built from the stock
+footman with eleven fields changed, inheriting none of that.
+
+Because the inventory view only ever shows the selected unit, there is no second grid to
+fall back on in 1.29.2. If the game still refuses the holder, the backpack opens as a dialog
+listing each stored item with a Take button. Less pleasant than a grid, but it works without
+depending on selection at all.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag

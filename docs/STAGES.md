@@ -123,3 +123,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASH | ASG with the Backpack objects rebuilt from fields, icons and order strings the map itself already uses. |
 | ASI | Backpack order string moved to the column Channel reads, the bagged item keeps its own instance and charges, and -bag opens the holder without the button. |
 | ASJ | Backpack holder gets a real model, loses Locust-like traits and the pause, so it can be selected; -bagwhere reports the holder. |
+| ASM | Backpack holder rebuilt from the stock footman, and a dialog list of stored items when the game will not select it. |

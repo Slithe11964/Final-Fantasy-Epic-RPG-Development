@@ -18,7 +18,7 @@ BACKPACK = 'tBag'
 RETURN = 'tBhr'
 HOLDER = 'tBpk'
 TALENTS = 'tTal'
-DUMMY = 'h02S'          # Simple Casting Dummy: already model-less and out of the way
+HOLDER_BASE = 'hfoo'    # the stock footman: an ordinary, selectable unit
 INVENTORY = 'AInv'      # the six-slot unit inventory
 
 BACKPACK_TEXT = ('Opens your gear. Equipment sits in its own pages, so your own six slots stay '
@@ -80,26 +80,23 @@ def prepare_abilities(table):
 
 
 def prepare_holder(units):
-    objects = {o['id']: o for o in units['custom']}
-    if HOLDER in objects:
+    """A plain unit with an inventory, built from the stock footman.
+
+    The map's casting dummy was the wrong parent: it is engineered to be invisible and
+    unselectable (Locust, no model, no sight, no collision, hero defense type), and the
+    game refused to select a holder that inherited those traits even standing beside the
+    hero. This starts from a normal selectable unit and changes only what it must.
+    """
+    if HOLDER in {o['id'] for o in units['custom']}:
         raise ValueError(HOLDER + ' already exists.')
-    if DUMMY not in objects:
-        raise ValueError('the dummy unit %s is missing from this map' % DUMMY)
-    unit = copy.deepcopy(objects[DUMMY])
-    unit['id'] = HOLDER
-    # The dummy brings no food cost and no collision. Three of its traits have to go: Locust
-    # and the missing model both stop a unit being selected, which is the one thing the holder
-    # must allow, and "summoned" invites dispel effects. It is parked far from play, so the
-    # model it does get is never seen. Every field below is one this map already sets on
-    # units, with the type it uses there; an invented field or the wrong type corrupts the
-    # whole object file.
     abilities = ','.join([INVENTORY, 'Avul', RETURN, TALENTS])
-    for field, ftype, value in [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'),
-                                ('uabi', 3, abilities), ('uico', 3, BACKPACK_ICON),
-                                ('umdl', 3, HOLDER_MODEL), ('utyp', 3, ''),
-                                ('umvs', 0, 0), ('umvt', 3, ''), ('upoi', 0, 0)]:
-        setf(unit, field, ftype, value)
-    units['custom'].append(unit)
+    # (field, type, value); every type is one this map already writes for that field.
+    fields = [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'), ('uabi', 3, abilities),
+              ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),
+              ('umvs', 0, 0), ('umvt', 3, ''), ('ufoo', 0, 0), ('upoi', 0, 0),
+              ('ucbs', 2, 0.0), ('uhpm', 0, 1000)]
+    mods = [dict(field=f, type=ty, level=0, data=0, value=v, end=0) for f, ty, v in fields]
+    units['custom'].append(dict(base=HOLDER_BASE, id=HOLDER, sets=[dict(flag=0, mods=mods)]))
     return units
 
 

@@ -8,6 +8,7 @@ globals
     trigger gg_trg_Backpack_Cast=null
     trigger gg_trg_Backpack_Pickup=null
     trigger gg_trg_Backpack_Commands=null
+    trigger gg_trg_Backpack_Dialog=null
     constant integer BACKPACK_ABILITY='tBag'
     constant integer BACKPACK_RETURN='tBhr'
     constant integer BACKPACK_HOLDER='tBpk'
@@ -16,6 +17,10 @@ globals
     constant real BACKPACK_PARK_X=27648.
     constant real BACKPACK_PARK_Y=-27648.
     unit array BackpackHolder
+    // Fallback list, used when the game will not select the holder: one button per stored
+    // item, indexed (player id)*8+slot, plus a Close button.
+    dialog array BackpackDialog
+    button array BackpackButton
 endglobals
 
 function Backpack_Holder takes integer pid returns unit
@@ -25,6 +30,39 @@ function Backpack_Holder takes integer pid returns unit
         // Not paused: the holder has no move speed, and a paused unit is awkward to select.
     endif
     return BackpackHolder[pid]
+endfunction
+
+// A list of what is stored, for when the inventory view cannot be reached.
+function Backpack_ShowList takes player p returns nothing
+    local integer pid=GetPlayerId(p)
+    local unit holder=Backpack_Holder(pid)
+    local integer slot=0
+    local integer stored=0
+    local item carried
+    if BackpackDialog[pid]==null then
+        set BackpackDialog[pid]=DialogCreate()
+        call TriggerRegisterDialogEvent(gg_trg_Backpack_Dialog,BackpackDialog[pid])
+    endif
+    call DialogClear(BackpackDialog[pid])
+    loop
+        exitwhen slot>=BACKPACK_SLOTS
+        set carried=UnitItemInSlot(holder,slot)
+        set BackpackButton[pid*8+slot]=null
+        if carried!=null then
+            set BackpackButton[pid*8+slot]=DialogAddButton(BackpackDialog[pid],"Take "+GetItemName(carried),0)
+            set stored=stored+1
+        endif
+        set slot=slot+1
+    endloop
+    if stored==0 then
+        call DialogSetMessage(BackpackDialog[pid],"Backpack (empty)")
+    else
+        call DialogSetMessage(BackpackDialog[pid],"Backpack")
+    endif
+    call DialogAddButton(BackpackDialog[pid],"Close",0)
+    call DialogDisplay(p,BackpackDialog[pid],true)
+    set holder=null
+    set carried=null
 endfunction
 
 function Backpack_Open takes player p returns nothing
@@ -41,7 +79,8 @@ function Backpack_Open takes player p returns nothing
     endif
     // Selection is local, so only this player's own client can judge whether it took.
     if GetLocalPlayer()==p and not IsUnitSelected(holder,p) then
-        call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: the game refused to select the holder")
+        // The inventory view only ever shows the selected unit, so fall back to a list.
+        call Backpack_ShowList(p)
     endif
     set holder=null
 endfunction
@@ -89,6 +128,35 @@ function Backpack_SelectTest takes player p returns nothing
     endif
     set gaya=null
     set holder=null
+endfunction
+
+function Backpack_OnDialog takes nothing returns nothing
+    local player p=GetTriggerPlayer()
+    local integer pid=GetPlayerId(p)
+    local unit hero=Player_GetHero(p)
+    local unit holder=Backpack_Holder(pid)
+    local integer slot=0
+    local item carried
+    loop
+        exitwhen slot>=BACKPACK_SLOTS
+        if BackpackButton[pid*8+slot]==GetClickedButton() then
+            set carried=UnitItemInSlot(holder,slot)
+            if carried!=null and hero!=null then
+                call UnitRemoveItem(holder,carried)
+                if UnitAddItem(hero,carried) then
+                    call DisplayTimedTextToPlayer(p,0.,0.,8.,"Took "+GetItemName(carried))
+                else
+                    call UnitAddItem(holder,carried)
+                    call DisplayTimedTextToPlayer(p,0.,0.,8.,"Your own slots are full")
+                endif
+            endif
+        endif
+        set slot=slot+1
+    endloop
+    set p=null
+    set hero=null
+    set holder=null
+    set carried=null
 endfunction
 
 // Says what the holder actually is, so a backpack that will not open explains itself.
@@ -249,6 +317,11 @@ function Backpack_GiveButton takes nothing returns nothing
     set hero=null
 endfunction
 
+function Register_Backpack_Dialog takes nothing returns nothing
+    set gg_trg_Backpack_Dialog=CreateTrigger()
+    call TriggerAddAction(gg_trg_Backpack_Dialog,function Backpack_OnDialog)
+endfunction
+
 function Register_Backpack_Cast takes nothing returns nothing
     set gg_trg_Backpack_Cast=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)
@@ -279,6 +352,7 @@ function Register_Backpack_Commands takes nothing returns nothing
 endfunction
 
 function RegisterTriggers_Backpack takes nothing returns nothing
+    call Register_Backpack_Dialog()
     call Register_Backpack_Cast()
     call Register_Backpack_Pickup()
     call Register_Backpack_Commands()
