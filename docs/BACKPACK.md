@@ -94,3 +94,49 @@ Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket
 pages, click to equip, the shared "what is equipped" lookup that the 115 item checks in 46
 triggers will use, and stats applied by script. Saving keeps using the legacy system in
 1.29.2 until the model is settled; Reforged keeps the new save line unchanged.
+
+## Standing beside the hero (stage ASR)
+
+The holder used to wait in the map's corner, which quietly broke three things at once: an
+inventory drops an item at the unit holding it, so items dropped from the backpack landed in
+the corner; an item can only be dragged between two units standing close together, so nothing
+could move between hero and holder; and with no way to move items at all, the equipment slots
+could not be used.
+
+The open page's holder now stands 96 units from the hero and follows it once a second, and the
+other pages stay hidden where they are, so six wisps do not gather around the hero. Closing the
+backpack hides the holder again. `-grab` takes the nearest loose item into the page being looked
+at, which is how an item moves between pages: drop it, turn the page, grab it.
+
+## Equipment pages (stage ASS)
+
+`tools/gear_slots.py` generates `GearSlots.j` from the map's own object data: each armory item's
+category comes from its armory unit's point-value field, exactly as the reviewed Forsaken gear
+work classified all 276 equipment items, and the loose categories split by name. It writes two
+things per item: the slot kind, and the item's passive abilities.
+
+| Page | Holds | Rule |
+|---|---|---|
+| 1 | Weapon, offhand, helm, chest, gloves, boots | one of each kind |
+| 2 | Ring, ring, trinket | two rings, one trinket |
+| 3 to 7 | The bag | no rules |
+
+An item arriving on an equipment page is checked: anything that is not equipment, belongs on the
+other equipment page, or doubles up on a piece already worn goes to the bag with a message
+saying why. Position within the page does not matter, so no slot has to be kept clear.
+
+Worn gear is carried by the holder, and in 1.29.2 an item's abilities only work on the unit
+carrying it, so the hero is granted each worn item's passive bonuses by script - 760 bonuses
+across 274 of the 276 items. Active item abilities are left alone: they need the item in hand.
+A bonus the hero already has from elsewhere is not granted, and so is never taken away either.
+A job change or a load replaces the hero unit, so the bonuses are granted again to whoever the
+hero is then.
+
+`-gear` lists what is worn and how many bonuses that comes to.
+
+## Still to build
+
+Click to equip straight from the hero's own slots, the level and mastery requirements on worn
+gear, and `Gear_HasItem` in place of the 115 item checks in 46 triggers, so worn gear still
+counts for quests and abilities. Saving keeps using the legacy system in 1.29.2 until the model
+is settled; Reforged keeps the new save line unchanged.

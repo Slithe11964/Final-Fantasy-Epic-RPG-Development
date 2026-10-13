@@ -4,11 +4,11 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-12)
+## Where things stand (2026-10-13)
 
 | Line | Map | State |
 |---|---|---|
-| Normal development | `release/FFERPG_0.9.7.3-r16-stageASO.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASO.w3x` | ASO = ASF + the Backpack holder (BACKPACK.md); awaiting the first 1.29.2 check. ASG is withdrawn. ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
+| Normal development | `release/FFERPG_0.9.7.3-r16-stageASS.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageASS.w3x` | ASS = ASF + the Backpack and its equipment pages (BACKPACK.md). The holder, its seven pages and the Talents button on its card are confirmed in 1.29.2; the equipment rules and worn bonuses await their first check. ASG is withdrawn. ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 | Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
 | New save system | `release/Forsaken/...ForsakenDW.w3x` (private test; DX = multi-file test copy) | Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. DW: no standing still to save, loads replace the starter in place, loaded masteries restore food/titles/total level, and save files load whatever page size wrote them. Screenshot colors/layout confirmed. DW retains r17 presentation and file-only legacy save messages; the town shrine is always visible, unmastered Freelancer attempts are silent, and mastered loads restore shrine menus. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
@@ -61,7 +61,8 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save system: test DW mastery/food restore, in-place load and chat loading (save_test_helper.py); verify
+1. Backpack: check the equipment pages in 1.29.2 (`-gear`), then move the map's item checks onto `Gear_HasItem` so worn gear still counts, and only then adapt the save system to the gear model (BACKPACK.md).
+2. Save system: test DW mastery/food restore, in-place load and chat loading (save_test_helper.py); verify
    multi-file loading and missing-part rejection in DX and collect multiplayer size/timing observations. No live-swap rollback or quest/era saving; see SAVE_SYSTEM_PLAN.md.
-2. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
-3. Optional cleanup of shared temp variables: PHASE16.md.
+3. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
+4. Optional cleanup of shared temp variables: PHASE16.md.

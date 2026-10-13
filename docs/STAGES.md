@@ -127,3 +127,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASN | Blinding Light blinds an enemy it is aimed at, Reset Talents moves to the shrine bottom-left, and the backpack holder keeps only its own buttons. |
 | ASO | Reset Talents returns to the slot it shipped in after moving it broke the shop, and -blindcheck counts what the blinding sphere hook sees. |
 | ASQ | Backpack gains seven pages with Next and Previous buttons, pickups fill bag pages only, and -blindcheck reports whether the sphere hook is registered at all. |
+| ASR | The backpack page stands beside the hero and follows it, so items drop within reach and can be dragged between hero and holder; -grab takes the nearest item off the ground into the open page. |
+| ASS | Equipment pages enforce one item per slot kind from the reviewed gear table, wrong or doubled pieces go to the bag, worn items grant their passive bonuses to the hero, and -gear lists what is worn. |
