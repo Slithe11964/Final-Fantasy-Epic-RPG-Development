@@ -22,9 +22,10 @@ globals
     // Where a holder waits before its player has a hero to stand beside.
     constant real BACKPACK_PARK_X=27648.
     constant real BACKPACK_PARK_Y=-27648.
-    // The holder stands this far from the hero: close enough that items dropped from it land
-    // within reach, far enough that both units can still be clicked apart.
-    constant real BACKPACK_OFFSET=96.
+    // The map's own undroppable filler item, used to block the slots 1.29.2 would otherwise
+    // hand out for free: Reforged gives nine equipment slots, so page 2 keeps three.
+    constant integer BACKPACK_FILLER='I0ZB'
+    constant integer BACKPACK_RING_SLOTS=3
     // How far from the hero -grab looks for an item lying on the ground.
     constant real BACKPACK_GRAB_RANGE=300.
     // Indexed (player id)*8+page, page counted from 0.
@@ -53,28 +54,45 @@ endglobals
 function Backpack_PageHolder takes integer pid,integer page returns unit
     local integer key=pid*8+page
     local unit hero
+    local integer slot
     local real x=BACKPACK_PARK_X+page*128.
     local real y=BACKPACK_PARK_Y
     if BackpackHolder[key]==null then
         set hero=Player_GetHero(Player(pid))
         if hero!=null then
-            set x=GetUnitX(hero)+BACKPACK_OFFSET
+            set x=GetUnitX(hero)
             set y=GetUnitY(hero)
         endif
         set BackpackHolder[key]=CreateUnit(Player(pid),BACKPACK_HOLDER,x,y,270.)
         call SetUnitInvulnerable(BackpackHolder[key],true)
-        // Hidden until its page is opened, so six wisps do not stand around the hero.
+        // Fully transparent: the holder stands where the hero stands, so items leave and
+        // arrive at the hero's feet, but there is no second unit to look at or click by
+        // accident. It stays selectable, which is what shows its six slots.
+        call SetUnitVertexColor(BackpackHolder[key],255,255,255,0)
+        call SetUnitAcquireRange(BackpackHolder[key],.0)
+        // Hidden until its page is opened, so seven holders do not share the hero's spot.
         call ShowUnit(BackpackHolder[key],false)
         // Not paused: the holder has no move speed, and a paused unit is awkward to select.
+        if page==1 then
+            // Rings and trinket: three slots, and the other three are blocked by an item
+            // that cannot be moved, so 1.29.2 offers no more space than Reforged.
+            set slot=BACKPACK_RING_SLOTS
+            loop
+                exitwhen slot>=BACKPACK_SLOTS
+                call UnitAddItemToSlotById(BackpackHolder[key],BACKPACK_FILLER,slot)
+                set slot=slot+1
+            endloop
+        endif
     endif
     set hero=null
     return BackpackHolder[key]
 endfunction
 
-// The holder has to stand beside the hero to be useful: an item leaves an inventory at the
-// unit holding it, so a holder parked in the map's corner can only drop items into the
-// corner, and an item can only be dragged between two units that are close together. Only
-// the page being looked at is shown; the rest stay hidden where they are.
+// The holder has to stand where the hero stands to be useful: an item leaves an inventory at
+// the unit holding it, so a holder parked in the map's corner can only drop items into the
+// corner, and an item can only be dragged between two units that are close together. Standing
+// on the hero rather than beside it also means every direction is equally in reach. Only the
+// page being looked at is shown; the rest stay hidden where they are.
 function Backpack_Anchor takes integer pid returns nothing
     local unit hero=Player_GetHero(Player(pid))
     local unit holder
@@ -92,7 +110,10 @@ function Backpack_Anchor takes integer pid returns nothing
     endloop
     set holder=Backpack_PageHolder(pid,BackpackPage[pid])
     call ShowUnit(holder,true)
-    call SetUnitPosition(holder,GetUnitX(hero)+BACKPACK_OFFSET,GetUnitY(hero))
+    // Set outright rather than with SetUnitPosition, which would shift it to the nearest
+    // free spot and leave the holder a little way off.
+    call SetUnitX(holder,GetUnitX(hero))
+    call SetUnitY(holder,GetUnitY(hero))
     set hero=null
     set holder=null
 endfunction
@@ -177,6 +198,7 @@ function Backpack_OpenHere takes player p returns nothing
         call SetUnitPosition(holder,GetUnitX(hero)+128.,GetUnitY(hero))
         call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: holder moved beside your hero")
     endif
+    set BackpackShown[GetPlayerId(p)]=true
     call Backpack_Open(p)
     set holder=null
     set hero=null
@@ -275,22 +297,6 @@ function Backpack_Close takes player p returns nothing
     set holder=null
 endfunction
 
-// Items already in the backpack keep their slot; the first empty one takes a new item.
-function Backpack_FreeSlot takes integer pid returns integer
-    local unit holder=Backpack_Holder(pid)
-    local integer slot=0
-    loop
-        exitwhen slot>=BACKPACK_SLOTS
-        if UnitItemInSlot(holder,slot)==null then
-            set holder=null
-            return slot
-        endif
-        set slot=slot+1
-    endloop
-    set holder=null
-    return -1
-endfunction
-
 // Moves the item itself rather than making a fresh one, so charges and state survive.
 // 1.29.2 has no native that puts an existing item straight into a chosen slot, so the item
 // leaves its carrier and a bag page takes it into its first free slot. Equipment pages are
@@ -298,11 +304,22 @@ endfunction
 // Puts an item on one named page, used when the player chooses the page themselves.
 function Backpack_StoreOn takes integer pid,integer page,unit carrier,item carried returns boolean
     local unit holder
+    local integer slot
+    local integer used
     if carried==null or page<0 or page>=BACKPACK_PAGES then
         return false
     endif
     set holder=Backpack_PageHolder(pid,page)
-    if UnitItemInSlot(holder,BACKPACK_SLOTS-1)!=null then
+    set slot=0
+    set used=0
+    loop
+        exitwhen slot>=BACKPACK_SLOTS
+        if UnitItemInSlot(holder,slot)!=null then
+            set used=used+1
+        endif
+        set slot=slot+1
+    endloop
+    if used>=BACKPACK_SLOTS then
         set holder=null
         return false
     endif
@@ -488,7 +505,9 @@ function Backpack_CheckPage takes integer pid,integer page returns nothing
     loop
         exitwhen slot>=BACKPACK_SLOTS
         set worn=UnitItemInSlot(holder,slot)
-        if worn!=null then
+        if worn!=null and GetItemTypeId(worn)==BACKPACK_FILLER then
+            // A blocked slot: nothing to judge.
+        elseif worn!=null then
             set kind=Gear_KindOf(GetItemTypeId(worn))
             if kind<=0 then
                 call DisplayTimedTextToPlayer(p,0.,0.,8.,GetItemName(worn)+" is not equipment, so it goes in the bag")
@@ -593,6 +612,7 @@ endfunction
 function Backpack_GearReport takes player p returns nothing
     local integer pid=GetPlayerId(p)
     local integer kind=GEAR_PRIMARY
+    local integer held
     local item worn
     local string line=""
     loop
@@ -607,7 +627,16 @@ function Backpack_GearReport takes player p returns nothing
         set line="nothing equipped"
     endif
     call DisplayTimedTextToPlayer(p,0.,0.,20.,"Gear - "+line)
-    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Bonuses granted: "+I2S(BackpackGrantedCount[pid]))
+    set kind=0
+    set held=0
+    loop
+        exitwhen kind>=BackpackGrantedCount[pid]
+        if BackpackBonusHero[pid]!=null and GetUnitAbilityLevel(BackpackBonusHero[pid],BackpackGranted[pid*64+kind])>0 then
+            set held=held+1
+        endif
+        set kind=kind+1
+    endloop
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Bonuses granted to your hero: "+I2S(held)+" of "+I2S(BackpackGrantedCount[pid])+" (the gear sits in the backpack; the bonuses are on the hero)")
     set worn=null
 endfunction
 
@@ -679,7 +708,13 @@ function Backpack_OnPickup takes nothing returns nothing
         endif
         set slot=slot+1
     endloop
-    if hero==Player_GetHero(GetOwningPlayer(hero)) and used>=BACKPACK_SLOTS then
+    if hero!=Player_GetHero(GetOwningPlayer(hero)) then
+        // Someone else's unit picked it up; the backpack has no business with it.
+    elseif BackpackShown[pid] and Backpack_StoreOn(pid,BackpackPage[pid],hero,carried) then
+        // While a page is open, what the hero picks up lands on that page, where the player
+        // can see it, rather than in the first bag page with room.
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Picked up "+GetItemName(carried)+" into "+Backpack_PageName(BackpackPage[pid]))
+    elseif used>=BACKPACK_SLOTS then
         if Backpack_Store(pid,hero,carried) then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Bagged: "+GetItemName(carried)+" (B to open the backpack)")
         endif

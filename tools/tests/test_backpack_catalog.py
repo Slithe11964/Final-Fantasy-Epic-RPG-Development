@@ -99,6 +99,19 @@ class BackpackCatalogTests(unittest.TestCase):
         for order in (catalog.BACKPACK_ORDER, catalog.RETURN_ORDER):
             self.assertNotIn(order, orders, order + ' is already an order in this map')
 
+    def test_the_holder_is_quiet_and_answers_at_once(self):
+        """No attacks and no acquisition range, so it is never busy fighting when a page
+        button is clicked, and no cast point, so the page turns the moment it is asked."""
+        quiet = dict((field, value) for field, _type, value in catalog.holder_fields())
+        self.assertEqual(quiet['uaen'], 0)
+        self.assertEqual(quiet['uacq'], 0.0)
+        self.assertEqual(quiet['ucpt'], 0.0)
+
+    def test_updating_a_map_that_already_has_the_holder_keeps_one_entry(self):
+        units = read_objects(self.archive.read('war3map.w3u'), 'w3u')
+        catalog.prepare_holder(units)
+        catalog.update_holder(units)
+        self.assertEqual(sum(1 for o in units['custom'] if o['id'] == catalog.HOLDER), 1)
 
 if __name__ == '__main__':
     unittest.main()

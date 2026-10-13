@@ -91,6 +91,22 @@ def prepare_abilities(table):
     return table
 
 
+def holder_fields():
+    """(field, type, value) for the holder; every type is one this map already writes.
+
+    Invulnerability is set in code instead, so it adds no command button. No attacks and no
+    acquisition range, because a holder that goes hunting is busy attacking when the player
+    clicks a page button, and no cast point, because the footman's third of a second of
+    cast animation is felt as a page that turns late or not at all.
+    """
+    abilities = ','.join([INVENTORY, PREV, NEXT, RETURN, TALENTS])
+    return [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'), ('uabi', 3, abilities),
+            ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),
+            ('umvs', 0, 0), ('umvt', 3, ''), ('ufoo', 0, 0), ('upoi', 0, 0),
+            ('ucbs', 2, 0.0), ('uhpm', 0, 1000),
+            ('uaen', 0, 0), ('uacq', 2, 0.0), ('ucpt', 2, 0.0)]
+
+
 def prepare_holder(units):
     """A plain unit with an inventory, built from the stock footman.
 
@@ -101,15 +117,18 @@ def prepare_holder(units):
     """
     if HOLDER in {o['id'] for o in units['custom']}:
         raise ValueError(HOLDER + ' already exists.')
-    # Invulnerability is set on the unit in code instead, so it adds no command button.
-    abilities = ','.join([INVENTORY, PREV, NEXT, RETURN, TALENTS])
-    # (field, type, value); every type is one this map already writes for that field.
-    fields = [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'), ('uabi', 3, abilities),
-              ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),
-              ('umvs', 0, 0), ('umvt', 3, ''), ('ufoo', 0, 0), ('upoi', 0, 0),
-              ('ucbs', 2, 0.0), ('uhpm', 0, 1000)]
-    mods = [dict(field=f, type=ty, level=0, data=0, value=v, end=0) for f, ty, v in fields]
+    mods = [dict(field=f, type=ty, level=0, data=0, value=v, end=0) for f, ty, v in holder_fields()]
     units['custom'].append(dict(base=HOLDER_BASE, id=HOLDER, sets=[dict(flag=0, mods=mods)]))
+    return units
+
+
+def update_holder(units):
+    """Bring a holder this map already carries up to date, leaving its other fields alone."""
+    holder = next((o for o in units['custom'] if o['id'] == HOLDER), None)
+    if holder is None:
+        return prepare_holder(units)
+    for field, ftype, value in holder_fields():
+        setf(holder, field, ftype, value)
     return units
 
 
@@ -157,15 +176,18 @@ def main():
     units = read_objects(archive.read('war3map.w3u'), 'w3u')
     raw_skin = archive.read('war3mapSkin.w3u')
     skin = read_objects(raw_skin, 'w3u') if raw_skin else None
-    prepare_abilities(table)
-    prepare_holder(units)
+    if {BACKPACK, RETURN, NEXT, PREV} <= {o['id'] for o in table['custom']}:
+        print('Backpack buttons already present; leaving them as they are.')
+    else:
+        prepare_abilities(table)
+    update_holder(units)
     place_reset_button(units, skin)
     files = {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
              'war3map.w3u': write_objects(units, units['version'], 'w3u')}
     if skin is not None:
         files['war3mapSkin.w3u'] = write_objects(skin, skin['version'], 'w3u')
     write_files(str(args.base), str(args.out), files)
-    print('Added the Backpack button, the Back-to-hero button and the Backpack holder unit.')
+    print('Backpack objects written: buttons, holder (no attacks, no cast point) and Reset Talents.')
 
 
 if __name__ == '__main__':
