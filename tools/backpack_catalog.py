@@ -89,7 +89,8 @@ def prepare_holder(units):
     """
     if HOLDER in {o['id'] for o in units['custom']}:
         raise ValueError(HOLDER + ' already exists.')
-    abilities = ','.join([INVENTORY, 'Avul', RETURN, TALENTS])
+    # Invulnerability is set on the unit in code instead, so it adds no command button.
+    abilities = ','.join([INVENTORY, RETURN, TALENTS])
     # (field, type, value); every type is one this map already writes for that field.
     fields = [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'), ('uabi', 3, abilities),
               ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),
@@ -97,6 +98,20 @@ def prepare_holder(units):
               ('ucbs', 2, 0.0), ('uhpm', 0, 1000)]
     mods = [dict(field=f, type=ty, level=0, data=0, value=v, end=0) for f, ty, v in fields]
     units['custom'].append(dict(base=HOLDER_BASE, id=HOLDER, sets=[dict(flag=0, mods=mods)]))
+    return units
+
+
+# The Shrine's Reset Talents button shipped in the bottom-right slot; the bottom-left is
+# where it belongs and that row is otherwise empty.
+RESET_UNIT = 'nTRt'
+
+
+def move_reset_button(units):
+    reset = next((o for o in units['custom'] if o['id'] == RESET_UNIT), None)
+    if reset is None:
+        return units
+    setf(reset, 'ubpx', 0, 0)
+    setf(reset, 'ubpy', 0, 2)
     return units
 
 
@@ -112,6 +127,7 @@ def main():
     units = read_objects(archive.read('war3map.w3u'), 'w3u')
     prepare_abilities(table)
     prepare_holder(units)
+    move_reset_button(units)
     write_files(str(args.base), str(args.out),
                 {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
                  'war3map.w3u': write_objects(units, units['version'], 'w3u')})

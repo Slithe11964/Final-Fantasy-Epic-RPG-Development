@@ -44,3 +44,11 @@ Holy Light target allies or undead enemies, so `talents_catalog.py` rebases it o
 the same order string (`holybolt`), costs, cooldowns, range and text; its healing was already
 scripted (Spell_Cure). Every Channel field is set on all 11 levels (1.29.2 can freeze casters on
 Channel levels with missing fields).
+
+## Blinding Light aimed at an enemy
+
+Aimed straight at an enemy the Cure sphere is set to heal no one, and the missile only runs
+its impact hooks when it carries a non-zero amount, so the blind never landed on the unit it
+was aimed at. The blind is applied at the cast instead. Enemies the sphere merely passes are
+still blinded on contact, for the shorter time. This was never a 1.29.2 difference: the
+functions involved are byte-identical in both builds.

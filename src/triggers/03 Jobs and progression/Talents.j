@@ -82,6 +82,13 @@ function Talent_DummyCast takes unit caster,unit target,integer abil,string orde
     set d=null
 endfunction
 
+// Blinding Light aimed straight at an enemy: the sphere is set to heal no one, and the
+// missile only runs its impact hooks when it carries a non-zero amount, so the blind has
+// to be applied at the cast. Enemies the sphere merely passes are still blinded on contact.
+function Talent_BlindTarget takes unit caster,unit target returns nothing
+    call Talent_DummyCast(caster,target,'tBln',"curse") // 15 seconds
+endfunction
+
 // Blinding Light: the Cure sphere blinds each enemy it passes, once per sphere.
 function Talent_MarkBlindingMissile takes integer d,boolean healsNoOne returns nothing
     if TalentBlindGroup[d]==null then

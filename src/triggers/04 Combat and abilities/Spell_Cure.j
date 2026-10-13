@@ -38,6 +38,9 @@ function Trig_Spell_Cure_Actions takes nothing returns nothing
     set d=Trig_Spell_Cure_MissileLaunchHeal(triggeringUnit,"Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl","Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl",spellTarget,.0,20.,128.,r*.25,r,true)
     if blinding then
         call Talent_MarkBlindingMissile(d,hostile)
+        if hostile then
+            call Talent_BlindTarget(triggeringUnit,spellTarget)
+        endif
     endif
     set triggeringUnit=null
     set spellTarget=null
