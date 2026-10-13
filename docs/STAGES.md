@@ -130,3 +130,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASR | The backpack page stands beside the hero and follows it, so items drop within reach and can be dragged between hero and holder; -grab takes the nearest item off the ground into the open page. |
 | ASS | Equipment pages enforce one item per slot kind from the reviewed gear table, wrong or doubled pieces go to the bag, worn items grant their passive bonuses to the hero, and -gear lists what is worn. |
 | AST | Blinding Light registers on the missile system's own hit hook instead of a second condition on the damage trigger, which was never reached, and -blindcheck counts how often a missile touches a unit. |
+| ASU | The backpack holder stands invisibly on the hero, pickups land on the open page, the holder has no attacks or cast point so pages turn at once, and page 2 blocks its three surplus slots so both versions offer the same space. |

@@ -88,13 +88,6 @@ Seven holders per player, one per page, each with its own six slots:
 Next page and Previous page sit on every holder's card and wrap around. A picked-up item
 always lands on a bag page, never in an equipment slot.
 
-## Still to build
-
-Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag
-pages, click to equip, the shared "what is equipped" lookup that the 115 item checks in 46
-triggers will use, and stats applied by script. Saving keeps using the legacy system in
-1.29.2 until the model is settled; Reforged keeps the new save line unchanged.
-
 ## Standing beside the hero (stage ASR)
 
 The holder used to wait in the map's corner, which quietly broke three things at once: an
@@ -133,6 +126,33 @@ A job change or a load replaces the hero unit, so the bonuses are granted again 
 hero is then.
 
 `-gear` lists what is worn and how many bonuses that comes to.
+
+## On the hero, invisible, and the same size as Reforged (stage ASU)
+
+The holder now stands exactly where the hero stands, set with `SetUnitX`/`SetUnitY` rather
+than `SetUnitPosition`, which would shift it to the nearest free spot. It is fully
+transparent (`SetUnitVertexColor` with zero alpha), so there is no second unit to look at or
+click by accident, and it keeps its model and so stays selectable - selection is what shows
+its six slots. Standing on the hero rather than beside it also means items are equally in
+reach in every direction.
+
+While a page is open, anything the hero picks up lands on that page, which is what `-grab`
+did by hand. `-grab` stays for an item already lying on the ground. With the page closed,
+pickups behave as they always did: the hero's own slots, then a bag page when those are full.
+
+Page buttons answered late or not at all. The holder is built from the footman, which brings a
+third of a second of cast animation and an attack: a holder that goes hunting is busy fighting
+when the button is clicked. It now has no attacks, no acquisition range and no cast point.
+
+| Slots | Reforged | 1.29.2 |
+|---|---|---|
+| Quick slots on the hero | 6 | 6 |
+| Equipment | 9 | 6 on page 1 + 3 on page 2 |
+| Bag | 30 | 5 pages of 6 |
+
+Page 2 has six slots like any unit inventory, so its three surplus slots are filled with the
+map's own `I0ZB` "Fix slot filler", an item that cannot be dropped, moved out or sold. Both
+versions therefore offer exactly the same amount of space.
 
 ## Still to build
 
