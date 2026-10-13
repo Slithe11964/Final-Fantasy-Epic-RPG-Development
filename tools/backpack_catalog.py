@@ -31,9 +31,9 @@ RETURN_TEXT = 'Returns to your hero.'
 # Icons and order strings are taken from ones this map already uses, because an icon path the
 # game cannot find draws as a green square and an order string that is not a real no-target
 # order leaves the button doing nothing. Each ability on a unit needs its own order.
-# A loot sack, rather than the book the button started with: the icons this map can show
-# hold no purpose-made bag, and this is the closest thing to one.
-BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNSalamanderLoot.blp'
+# Neither the map's 192 imported icons nor the stock set it draws from holds a purpose-made
+# bag, so this is the closest container: the chest this map already shows on a unit.
+BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNChestOfGold.blp'
 RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
 # The wisp was the wrong model to hide behind: it glows whatever its vertex alpha says, and
 # its sparkle sat on the hero. The footman is plain geometry, which transparency does hide.
@@ -138,10 +138,17 @@ def holder_fields():
             ('umvs', 0, 0), ('umvt', 3, ''), ('ufoo', 0, 0), ('upoi', 0, 0),
             ('ucbs', 2, 0.0), ('uhpm', 0, 1000),
             ('uaen', 0, 0), ('uacq', 2, 0.0), ('ucpt', 2, 0.0),
+            # A pool it never spends on its own: the backpack is given the hero's mana when a
+            # page opens, so an item cast from a page costs the hero what it would have cost
+            # anyway, and the engine still refuses a cast the hero cannot pay for.
+            ('umpm', 0, 1000000), ('umpi', 0, 0), ('umpr', 2, 0.0),
             # A speck rather than a wisp: the holder stands on the hero and should not be
             # seen. Transparency alone was not enough - the wisp's model glows whatever its
             # vertex alpha says - so it is scaled down as well.
-            ('ussc', 1, 0.01)]
+            ('ussc', 1, 0.01),
+            # Mana to spend: an item cast from a page is cast by the holder, so the hero's
+            # mana is copied here for the cast and what it cost is taken off the hero after.
+            ('umpm', 0, 1000000), ('umpi', 0, 0), ('umpr', 2, 0.0)]
 
 
 def prepare_holder(units):

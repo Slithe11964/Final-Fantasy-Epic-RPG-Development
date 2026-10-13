@@ -68,11 +68,12 @@ class BackpackCatalogTests(unittest.TestCase):
         self.assertEqual(unvouched, [])
 
     def test_the_icons_are_paths_the_map_already_loads(self):
-        paths = {mod['value'] for kind, name in (('w3a', 'war3map.w3a'), ('w3t', 'war3map.w3t'))
+        paths = {mod['value'] for kind, name in (('w3a', 'war3map.w3a'), ('w3t', 'war3map.w3t'),
+                                                ('w3u', 'war3map.w3u'))
                  if self.archive.read(name)
                  for obj in read_objects(self.archive.read(name), kind)['custom']
                  for group in obj['sets'] for mod in group['mods']
-                 if mod['field'] in ('aart', 'iico') and mod['value']}
+                 if mod['field'] in ('aart', 'iico', 'uico') and mod['value']}
         lowered = {p.lower().rsplit('\\', 1)[-1] for p in paths}
         for icon in (catalog.BACKPACK_ICON, catalog.RETURN_ICON):
             name = icon.lower().rsplit('\\', 1)[-1]
@@ -137,6 +138,8 @@ class BackpackCatalogTests(unittest.TestCase):
         self.assertEqual(quiet['uaen'], 0)
         self.assertEqual(quiet['uacq'], 0.0)
         self.assertEqual(quiet['ucpt'], 0.0)
+        # Mana of its own to spend on the hero's behalf.
+        self.assertGreater(quiet['umpm'], 0)
 
     def test_updating_a_map_that_already_has_the_holder_keeps_one_entry(self):
         units = read_objects(self.archive.read('war3map.w3u'), 'w3u')

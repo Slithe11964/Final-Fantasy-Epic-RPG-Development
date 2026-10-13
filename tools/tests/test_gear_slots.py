@@ -27,7 +27,7 @@ class GearSlotTable(unittest.TestCase):
                          'run tools/gear_slots.py against the newest release map')
 
     def test_every_kind_is_known(self):
-        kinds = {kind for _, _, kind, _ in gear_slots.classify(latest_map())}
+        kinds = {kind for _, _, kind, _, _ in gear_slots.classify(latest_map())}
         self.assertTrue(kinds <= set(gear_slots.KINDS), kinds)
         self.assertEqual(set(gear_slots.LABELS), set(gear_slots.KINDS))
 
@@ -41,7 +41,8 @@ class GearSlotTable(unittest.TestCase):
     def test_backpack_uses_the_generated_names(self):
         source = (ROOT / 'src/triggers/05 Items crafting and shops/Backpack.j').read_text(encoding='utf-8')
         for name in ('GEAR_PRIMARY', 'GEAR_BOOTS', 'GEAR_RING', 'GEAR_TRINKET',
-                     'Gear_KindOf', 'Gear_BonusCount', 'Gear_Bonus(', 'GearSlots_Init'):
+                     'Gear_KindOf', 'Gear_BonusCount', 'Gear_Bonus(', 'Gear_IsGearAbility',
+                     'GearSlots_Init'):
             self.assertIn(name, source, name)
 
 

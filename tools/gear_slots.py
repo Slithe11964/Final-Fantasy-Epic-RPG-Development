@@ -36,6 +36,14 @@ PASSIVE_CODES = frozenset(('AEev', 'AHab', 'AIab', 'AIas', 'AIat', 'AIde',
                            'AUau', 'AUav', 'Aasl', 'Atru', 'Arel'))
 BASE_CODES = ROOT / 'experiments/Forsaken/ability-base-codes.json'
 
+# Where each kind of entry lives in the generated hashtable: a slot kind and a bonus count
+# are keyed by item, the gear-ability marker by ability, and the bonuses themselves run from
+# BONUS_KEY upwards, one key per position.
+SLOT_KEY = 1
+COUNT_KEY = 2
+CAST_KEY = 3
+BONUS_KEY = 10
+
 # Slot kinds, in the order the equipment pages lay them out, with what a player sees them
 # called. Equipment page 1 is laid out in this order, so slot 0 is the weapon.
 KINDS = ['Primary', 'Offhand', 'Head', 'Chest', 'Gloves', 'Boots', 'Ring', 'Trinket']
@@ -99,9 +107,10 @@ def classify(base):
             raise ValueError('no armory category for ' + entry['name'])
         slot = slot_for(entry['name'], int(unit['upoi']))
         if slot:
-            carried = items.get(entry['item'], {}).get('iabi', '')
-            bonuses = [a for a in carried.split(',') if a in passive]
-            out.append((entry['item'], entry['name'], slot, bonuses))
+            carried = [a for a in items.get(entry['item'], {}).get('iabi', '').split(',') if a]
+            bonuses = [a for a in carried if a in passive]
+            actives = [a for a in carried if a not in passive]
+            out.append((entry['item'], entry['name'], slot, bonuses, actives))
     return out
 
 
@@ -143,17 +152,29 @@ def render(rows):
               'endfunction',
               '',
               'function Gear_Bonus takes integer itemType,integer index returns integer',
-              '    return LoadInteger(GearSlotTable,3+index,itemType)',
+              '    return LoadInteger(GearSlotTable,%d+index,itemType)' % BONUS_KEY,
+              'endfunction',
+              '',
+              '// True for an ability that belongs to a piece of equipment, so that casting one',
+              '// can put the rest of the gear on the same cooldown.',
+              'function Gear_IsGearAbility takes integer ability returns boolean',
+              '    if GearSlotTable==null then',
+              '        return false',
+              '    endif',
+              '    return LoadInteger(GearSlotTable,%d,ability)==1' % CAST_KEY,
               'endfunction',
               '',
               'function GearSlots_Init takes nothing returns nothing',
               '    set GearSlotTable=InitHashtable()']
-    for raw, name, kind, bonuses in rows:
+    actives = sorted({a for _, _, _, _, casts in rows for a in casts})
+    for raw, name, kind, bonuses, _casts in rows:
         lines.append("    call SaveInteger(GearSlotTable,1,'%s',GEAR_%s) // %s" % (raw, kind.upper(), name))
         if bonuses:
             lines.append("    call SaveInteger(GearSlotTable,2,'%s',%d)" % (raw, len(bonuses)))
             for index, ability in enumerate(bonuses):
-                lines.append("    call SaveInteger(GearSlotTable,%d,'%s','%s')" % (3 + index, raw, ability))
+                lines.append("    call SaveInteger(GearSlotTable,%d,'%s','%s')" % (BONUS_KEY + index, raw, ability))
+    for ability in actives:
+        lines.append("    call SaveInteger(GearSlotTable,%d,'%s',1)" % (CAST_KEY, ability))
     lines += ['endfunction',
               '',
               '// No startup registration of its own: the backpack fills the table before it',
@@ -173,12 +194,13 @@ def main():
     rows = classify(args.base)
     OUT.write_bytes(render(rows).encode('utf-8'))
     counts = {}
-    for _, _, kind, _bonuses in rows:
+    for _, _, kind, _bonuses, _casts in rows:
         counts[kind] = counts.get(kind, 0) + 1
     print('Wrote', OUT.name, 'with', len(rows), 'equipment items:',
           ', '.join('%s %d' % (k, counts[k]) for k in KINDS if k in counts),
-          '- and', sum(len(b) for _, _, _, b in rows), 'passive bonuses on',
-          sum(1 for _, _, _, b in rows if b), 'of them')
+          '- and', sum(len(b) for _, _, _, b, _c in rows), 'passive bonuses on',
+          sum(1 for _, _, _, b, _c in rows if b), 'of them, plus',
+          len({a for _, _, _, _, c in rows for a in c}), 'abilities they cast')
 
 
 if __name__ == '__main__':

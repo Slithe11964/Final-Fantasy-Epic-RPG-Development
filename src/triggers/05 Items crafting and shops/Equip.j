@@ -4,7 +4,13 @@ globals
     trigger gg_trg_Equip_Restrictions=null
 endglobals
 
+// The backpack owns equipment in 1.29.2: the hero's own six slots are carrying space that
+// pays out nothing, so the one-of-each rules that used to police them do not apply there.
+// Without the backpack the original rules stand.
 function Trig_Equip_Restrictions_Conditions takes nothing returns boolean
+    static if LIBRARY_TBackpack then
+        return false
+    endif
     return((GetManipulatedItem()!=null)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CHARGED)and(GetItemType(GetManipulatedItem())!=ITEM_TYPE_CAMPAIGN)and(GetUnitTypeId(GetManipulatingUnit())!='H01D')and(IsUnitType(GetManipulatingUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_ActivePlayers)))!=null // 'H01D': unit "Spirit of Gaya"
 endfunction
 

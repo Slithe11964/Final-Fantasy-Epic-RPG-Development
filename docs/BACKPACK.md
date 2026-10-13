@@ -214,6 +214,27 @@ nothing that needed clicking has moved.
 The Backpack button also wears a loot sack now instead of a book. The icons this map can show
 hold no purpose-made bag; `BTNSalamanderLoot` is the closest.
 
+## Quick slots, mana and shared cooldowns (stage ASY)
+
+**The hero's six slots are carrying space.** The map's one-of-each equip rules only ever
+policed those slots, and they stand down whenever the backpack is present, so anything can sit
+there. Nothing worn there pays out either: an item gives its abilities to whoever holds it, so
+the passives of gear in a quick slot are taken off the hero again on every backpack pass. What
+an item *casts* is left alone, so a wand or a materia in a quick slot still works, and a bonus
+the worn gear is granting stays.
+
+**Items cast from a page spend the hero's mana.** An item casts from whoever carries it, so a
+wand on a bag page was spending the holder's pool. The holder has a pool it never spends on
+its own and is given the hero's mana whenever a page opens or turns; what a cast took out is
+then taken off the hero. The engine still refuses a cast the hero cannot pay for, because the
+mirrored pool is what it checks.
+
+**One cooldown for gear, one for consumables.** The map already shares a timer between
+consumables, started when the hero casts one; a page casting one now starts the same timer,
+and gear that casts shares a timer of its own. 1.29.2 cannot start a cooldown on another
+unit's ability, so both are enforced the way the map already refuses a talentless Cure: the
+cast is stopped as it starts and the player is told how long is left.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn

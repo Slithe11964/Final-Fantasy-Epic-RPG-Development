@@ -1,4 +1,4 @@
-library TBackpack requires TPlayerHero, TTalents, TGearSlots
+library TBackpack requires TPlayerHero, TTalents, TGearSlots, TItemCooldown
 // Gear storage for 1.29.2, which has neither a frame UI nor an extended inventory native.
 // A holder unit carries six inventory slots and the player's selection switches to it, so the
 // hero's own six slots stay free for potions and books. The holder is parked away from play;
@@ -10,6 +10,7 @@ globals
     trigger gg_trg_Backpack_Commands=null
     trigger gg_trg_Backpack_Dialog=null
     trigger gg_trg_Backpack_Drop=null
+    trigger gg_trg_Backpack_Guard=null
     constant integer BACKPACK_ABILITY='tBag'
     constant integer BACKPACK_RETURN='tBhr'
     constant integer BACKPACK_HOLDER='tBpk'
@@ -43,6 +44,14 @@ globals
     timer array BackpackDefer
     item array BackpackPendingItem
     integer array BackpackPendingPage
+    // The mana the holder was last given, so that what a cast spent can be taken off the
+    // hero instead. An item casts from whoever carries it, and worn gear is carried by the
+    // holder, so without this the backpack would pay for your wands out of its own pool.
+    real array BackpackMirroredMana
+    boolean array BackpackSettleMana
+    // Gear that casts shares one cooldown across the pages and the hero's own slots, the
+    // way the map already shares one between consumables.
+    timer array BackpackGearCooldown
     // How many of each slot kind a page already holds, rebuilt on every check.
     integer array BackpackKindSeen
     // Working values for the item search, which runs through a filter function.
@@ -93,6 +102,35 @@ function Backpack_PageHolder takes integer pid,integer page returns unit
     return BackpackHolder[key]
 endfunction
 
+// Gives the holder the hero's mana, so an item cast from a page costs what it would cost
+// the hero and is refused when the hero cannot pay.
+function Backpack_MirrorMana takes integer pid returns nothing
+    local unit hero=Player_GetHero(Player(pid))
+    local unit holder=BackpackHolder[pid*8+BackpackPage[pid]]
+    if hero!=null and holder!=null then
+        set BackpackMirroredMana[pid]=GetUnitState(hero,UNIT_STATE_MANA)
+        call SetUnitState(holder,UNIT_STATE_MANA,BackpackMirroredMana[pid])
+    endif
+    set hero=null
+    set holder=null
+endfunction
+
+// Takes what the holder just spent out of the hero, then mirrors again.
+function Backpack_SettleMana takes integer pid returns nothing
+    local unit hero=Player_GetHero(Player(pid))
+    local unit holder=BackpackHolder[pid*8+BackpackPage[pid]]
+    local real spent
+    if hero!=null and holder!=null then
+        set spent=BackpackMirroredMana[pid]-GetUnitState(holder,UNIT_STATE_MANA)
+        if spent>.0 then
+            call SetUnitState(hero,UNIT_STATE_MANA,GetUnitState(hero,UNIT_STATE_MANA)-spent)
+        endif
+    endif
+    set hero=null
+    set holder=null
+    call Backpack_MirrorMana(pid)
+endfunction
+
 // The holder has to stand where the hero stands to be useful: an item leaves an inventory at
 // the unit holding it, so a holder parked in the map's corner can only drop items into the
 // corner, and an item can only be dragged between two units that are close together. Standing
@@ -121,6 +159,7 @@ function Backpack_Anchor takes integer pid returns nothing
     call SetUnitPosition(holder,GetUnitX(hero),GetUnitY(hero))
     set hero=null
     set holder=null
+    call Backpack_MirrorMana(pid)
 endfunction
 
 // The page the player is looking at, or page 0 before they open anything.
@@ -496,6 +535,57 @@ function Backpack_ApplyBonuses takes integer pid returns nothing
     set worn=null
 endfunction
 
+// True for a bonus the hero is being given for the gear it wears.
+function Backpack_IsGrantedBonus takes integer pid,integer ability returns boolean
+    local integer i=0
+    loop
+        exitwhen i>=BackpackGrantedCount[pid]
+        if BackpackGranted[pid*64+i]==ability then
+            return true
+        endif
+        set i=i+1
+    endloop
+    return false
+endfunction
+
+// The hero's own six slots are carrying space, not a second set of equipment slots: anything
+// can sit there, and nothing worn there pays out. An item in an inventory gives its abilities
+// to whoever holds it, so the passives of gear in those slots are taken off again here. What
+// the gear casts is left alone, so a wand in a quick slot still works, and a bonus the worn
+// gear is already granting stays.
+function Backpack_StripQuickSlots takes integer pid returns nothing
+    local unit hero=Player_GetHero(Player(pid))
+    local item carried
+    local integer slot=0
+    local integer itype
+    local integer count
+    local integer index
+    local integer ability
+    if hero==null then
+        return
+    endif
+    loop
+        exitwhen slot>=BACKPACK_SLOTS
+        set carried=UnitItemInSlot(hero,slot)
+        if carried!=null then
+            set itype=GetItemTypeId(carried)
+            set count=Gear_BonusCount(itype)
+            set index=0
+            loop
+                exitwhen index>=count
+                set ability=Gear_Bonus(itype,index)
+                if ability!=0 and not Backpack_IsGrantedBonus(pid,ability) then
+                    call UnitRemoveAbility(hero,ability)
+                endif
+                set index=index+1
+            endloop
+        endif
+        set slot=slot+1
+    endloop
+    set hero=null
+    set carried=null
+endfunction
+
 // Keeps an equipment page honest: anything that is not equipment, belongs on the other
 // equipment page, or doubles up on a piece already worn goes to the bag.
 function Backpack_CheckPage takes integer pid,integer page returns nothing
@@ -685,6 +775,11 @@ function Backpack_RunDeferred takes nothing returns nothing
             endif
             call Backpack_CheckPage(pid,0)
             call Backpack_CheckPage(pid,1)
+            call Backpack_StripQuickSlots(pid)
+            if BackpackSettleMana[pid] then
+                set BackpackSettleMana[pid]=false
+                call Backpack_SettleMana(pid)
+            endif
             set pending=null
             set hero=null
             set which=null
@@ -715,8 +810,64 @@ function Backpack_Turn takes player p,integer step returns nothing
     call Backpack_Open(p)
 endfunction
 
+// A cast from a holder: whatever mana it spent comes off the hero, and if it was a piece of
+// gear the shared gear cooldown starts.
+function Backpack_OnItemCast takes nothing returns nothing
+    local unit caster=GetTriggerUnit()
+    local integer pid=GetPlayerId(GetOwningPlayer(caster))
+    local integer id=GetSpellAbilityId()
+    local real cooldown
+    if caster==Player_GetHero(Player(pid)) or Backpack_PageOf(pid,caster)>=0 then
+        if Backpack_PageOf(pid,caster)>=0 then
+            set BackpackSettleMana[pid]=true
+            call Backpack_QueueWork(pid)
+        endif
+        if Gear_IsGearAbility(id) then
+            if BackpackGearCooldown[pid]==null then
+                set BackpackGearCooldown[pid]=CreateTimer()
+            endif
+            set cooldown=BlzGetAbilityCooldown(id,0)
+            if cooldown>TimerGetRemaining(BackpackGearCooldown[pid]) then
+                call TimerStart(BackpackGearCooldown[pid],cooldown,false,null)
+            endif
+        endif
+    endif
+    set caster=null
+endfunction
+
+// Refuses a cast that the shared cooldowns say is not ready yet. The map already stops a
+// cast this way when a talent is missing, so the same approach serves here.
+function Backpack_GuardCast takes nothing returns nothing
+    local unit caster=GetTriggerUnit()
+    local player p=GetOwningPlayer(caster)
+    local integer pid=GetPlayerId(p)
+    local integer id=GetSpellAbilityId()
+    local boolean mine=caster==Player_GetHero(p) or Backpack_PageOf(pid,caster)>=0
+    local real left=.0
+    if mine and Gear_IsGearAbility(id) and BackpackGearCooldown[pid]!=null then
+        set left=TimerGetRemaining(BackpackGearCooldown[pid])
+        if left>.01 then
+            call IssueImmediateOrder(caster,"stop")
+            call DisplayTimedTextToPlayer(p,0.,0.,5.,"|cffff0000Your gear is still recovering ("+I2S(R2I(left+.99))+"s).|r")
+        endif
+    elseif mine and Trig_Item_Cooldown_Start_IsItemAbility() then
+        set left=TimerGetRemaining(udg_SpellCooldownTimer[pid+1])
+        if left>.01 then
+            call IssueImmediateOrder(caster,"stop")
+            call DisplayTimedTextToPlayer(p,0.,0.,5.,"|cffff0000Another item is still recovering ("+I2S(R2I(left+.99))+"s).|r")
+        endif
+    endif
+    set caster=null
+    set p=null
+endfunction
+
 function Backpack_OnCast takes nothing returns nothing
     local integer id=GetSpellAbilityId()
+    call Backpack_OnItemCast()
+    if Trig_Item_Cooldown_Start_IsItemAbility() and Backpack_PageOf(GetPlayerId(GetTriggerPlayer()),GetTriggerUnit())>=0 then
+        // Item_Cooldown starts this for the hero only; a page casting one shares it too.
+        call TimerStart(udg_SpellCooldownTimer[GetPlayerId(GetTriggerPlayer())+1],BlzGetAbilityCooldown(id,0),false,null)
+    endif
     if id==BACKPACK_ABILITY then
         call Backpack_Open(GetTriggerPlayer())
     elseif id==BACKPACK_RETURN then
@@ -881,6 +1032,12 @@ function Register_Backpack_Pickup takes nothing returns nothing
     call TriggerAddAction(gg_trg_Backpack_Pickup,function Backpack_OnPickup)
 endfunction
 
+function Register_Backpack_Guard takes nothing returns nothing
+    set gg_trg_Backpack_Guard=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Guard,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddAction(gg_trg_Backpack_Guard,function Backpack_GuardCast)
+endfunction
+
 function Register_Backpack_Drop takes nothing returns nothing
     set gg_trg_Backpack_Drop=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Drop,EVENT_PLAYER_UNIT_DROP_ITEM)
@@ -914,6 +1071,7 @@ function RegisterTriggers_Backpack takes nothing returns nothing
     call Register_Backpack_Cast()
     call Register_Backpack_Pickup()
     call Register_Backpack_Drop()
+    call Register_Backpack_Guard()
     call Register_Backpack_Commands()
 endfunction
 
