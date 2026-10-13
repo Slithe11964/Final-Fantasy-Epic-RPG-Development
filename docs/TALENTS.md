@@ -61,3 +61,12 @@ handler. The missile system now offers a hook of its own, `MissileHitHook`, whic
 after the damage handler, and the talent registers there. `-blindcheck` also reports how many
 times a missile has touched a unit at all, so a hook that still sees nothing can be told apart
 from a missile that touches nothing.
+
+With the hook running, the count read sixteen touches, sixteen of them a blinding sphere, and
+nobody blinded. The sphere's own area is 128 and belongs to its healing splash, which is a
+fraction of what a player watches it fly past, and most of those touches are the caster
+standing where the sphere was launched. Blinding Light no longer waits to be told what the
+sphere touched: a sweep follows each blinding sphere twenty times a second and blinds the
+enemies within 250 of it. `-blindcheck` reports how many units the sweep looked at and which
+test turned each one down - not an enemy, already blinded, or dead - so a sphere that blinds
+nobody says why.

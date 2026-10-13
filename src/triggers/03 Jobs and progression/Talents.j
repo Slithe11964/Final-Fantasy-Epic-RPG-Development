@@ -22,12 +22,29 @@ globals
     // Dialog lines longer than this run off the 1.29.2 dialog box.
     constant integer TALENT_LINE=30
     group array TalentBlindGroup
+    // How far from the sphere an enemy is counted as passed. The missile's own area is for
+    // its healing splash and is far too small to be what "enemies it passes" means.
+    constant real TALENT_BLIND_RADIUS=250.
+    // How long a sphere is followed before it is given up on, in sweeps of a twentieth of a
+    // second. A Cure sphere reaches anything on the screen well inside this.
+    constant integer TALENT_BLIND_SWEEPS=80
+    // Spheres being followed, and how many sweeps each has left.
+    integer array TalentBlindMissile
+    integer array TalentBlindLeft
+    integer TalentBlindCount=0
+    timer TalentBlindTimer=null
+    group TalentBlindEnum=null
     // Counters for -blindcheck: how often the missile hook ran for a blinding sphere and
-    // how many enemies it blinded on the way.
+    // how many enemies it blinded on the way, and for the ones it passed over, which test
+    // turned them down.
     integer TalentBlindHits=0
     integer TalentBlindRuns=0
     boolean TalentBlindHooked=false
     integer TalentBlindMarks=0
+    integer TalentBlindNotEnemy=0
+    integer TalentBlindRepeat=0
+    integer TalentBlindDead=0
+    integer TalentBlindSwept=0
     // Indexed job*12+(row-1)*3+(choice-1).
     string array TalentName
     string array TalentText
@@ -95,6 +112,98 @@ function Talent_BlindTarget takes unit caster,unit target returns nothing
     call Talent_DummyCast(caster,target,'tBln',"curse") // 15 seconds
 endfunction
 
+// Blinds one unit a sphere has reached, if it is an enemy it has not already blinded.
+// Counts which test turned a unit down, so a sphere that blinds nobody can be read.
+function Talent_BlindPassed takes integer d,unit u returns nothing
+    if u==null or udg_MissileCaster[d]==null then
+        return
+    endif
+    // The sphere sweeps up everything standing near it, which includes the missile dummies
+    // and anything a spell cannot touch.
+    if GetUnitTypeId(u)=='h020' or IsUnitType(u,UNIT_TYPE_STRUCTURE) or IsUnitType(u,UNIT_TYPE_MAGIC_IMMUNE) then
+        return
+    endif
+    if not IsUnitEnemy(u,GetOwningPlayer(udg_MissileCaster[d])) then
+        set TalentBlindNotEnemy=TalentBlindNotEnemy+1
+        return
+    endif
+    if IsUnitInGroup(u,TalentBlindGroup[d]) then
+        set TalentBlindRepeat=TalentBlindRepeat+1
+        return
+    endif
+    if GetWidgetLife(u)<=.405 then
+        set TalentBlindDead=TalentBlindDead+1
+        return
+    endif
+    call GroupAddUnit(TalentBlindGroup[d],u)
+    set TalentBlindMarks=TalentBlindMarks+1
+    if u==udg_MissileTarget[d] then
+        call Talent_DummyCast(udg_MissileCaster[d],u,'tBln',"curse") // 15 seconds
+    else
+        call Talent_DummyCast(udg_MissileCaster[d],u,'tBl5',"curse") // 5 seconds
+    endif
+endfunction
+
+// Follows a sphere and blinds the enemies it passes. The sphere's own area belongs to its
+// healing splash and is a fraction of what a player sees it fly past, so this does not wait
+// to be told what the sphere touched: it looks around the sphere itself, twenty times a
+// second, until the sphere is spent.
+function Talent_BlindSweep takes nothing returns nothing
+    local integer at=0
+    local integer d
+    local unit u
+    loop
+        exitwhen at>=TalentBlindCount
+        set d=TalentBlindMissile[at]
+        set TalentBlindLeft[at]=TalentBlindLeft[at]-1
+        if MissileTag[d]!=TALENT_MISSILE_BLIND or TalentBlindLeft[at]<=0 then
+            // Done with this one: the last entry takes its place.
+            set TalentBlindCount=TalentBlindCount-1
+            set TalentBlindMissile[at]=TalentBlindMissile[TalentBlindCount]
+            set TalentBlindLeft[at]=TalentBlindLeft[TalentBlindCount]
+        else
+            call GroupEnumUnitsInRange(TalentBlindEnum,udg_MissileX[d],udg_MissileY[d],TALENT_BLIND_RADIUS,null)
+            loop
+                set u=FirstOfGroup(TalentBlindEnum)
+                exitwhen u==null
+                call GroupRemoveUnit(TalentBlindEnum,u)
+                set TalentBlindSwept=TalentBlindSwept+1
+                call Talent_BlindPassed(d,u)
+            endloop
+            set at=at+1
+        endif
+    endloop
+    if TalentBlindCount<=0 then
+        call PauseTimer(TalentBlindTimer)
+    endif
+    set u=null
+endfunction
+
+// Starts following one sphere, and the sweep itself if it is not already running.
+function Talent_FollowBlindingMissile takes integer d returns nothing
+    local integer at=0
+    if TalentBlindEnum==null then
+        set TalentBlindEnum=CreateGroup()
+    endif
+    if TalentBlindTimer==null then
+        set TalentBlindTimer=CreateTimer()
+    endif
+    loop
+        exitwhen at>=TalentBlindCount
+        if TalentBlindMissile[at]==d then
+            set TalentBlindLeft[at]=TALENT_BLIND_SWEEPS
+            return
+        endif
+        set at=at+1
+    endloop
+    set TalentBlindMissile[TalentBlindCount]=d
+    set TalentBlindLeft[TalentBlindCount]=TALENT_BLIND_SWEEPS
+    set TalentBlindCount=TalentBlindCount+1
+    if TalentBlindCount==1 then
+        call TimerStart(TalentBlindTimer,.05,true,function Talent_BlindSweep)
+    endif
+endfunction
+
 // Blinding Light: the Cure sphere blinds each enemy it passes, once per sphere.
 function Talent_MarkBlindingMissile takes integer d,boolean healsNoOne returns nothing
     if TalentBlindGroup[d]==null then
@@ -103,7 +212,9 @@ function Talent_MarkBlindingMissile takes integer d,boolean healsNoOne returns n
     call GroupClear(TalentBlindGroup[d])
     set MissileTag[d]=TALENT_MISSILE_BLIND
     set MissileNoDamage[d]=healsNoOne
+    call Talent_FollowBlindingMissile(d)
 endfunction
+
 
 function Talents_MissileHit takes nothing returns boolean
     local integer d=udg_ArgIndex
@@ -111,15 +222,7 @@ function Talents_MissileHit takes nothing returns boolean
     set TalentBlindRuns=TalentBlindRuns+1
     if MissileTag[d]==TALENT_MISSILE_BLIND then
         set TalentBlindHits=TalentBlindHits+1
-    endif
-    if MissileTag[d]==TALENT_MISSILE_BLIND and IsUnitEnemy(u,GetOwningPlayer(udg_MissileCaster[d])) and not IsUnitInGroup(u,TalentBlindGroup[d]) and GetWidgetLife(u)>.405 then
-        call GroupAddUnit(TalentBlindGroup[d],u)
-        set TalentBlindMarks=TalentBlindMarks+1
-        if u==udg_MissileTarget[d] then
-            call Talent_DummyCast(udg_MissileCaster[d],u,'tBln',"curse") // 15 seconds
-        else
-            call Talent_DummyCast(udg_MissileCaster[d],u,'tBl5',"curse") // 5 seconds
-        endif
+        call Talent_BlindPassed(d,u)
     endif
     set u=null
     return false
@@ -251,6 +354,7 @@ function Talents_BlindCheck takes player p returns nothing
     endif
     call DisplayTimedTextToPlayer(p,0.,0.,20.,"Blinding Light: hook registered "+hooked+"; it ran "+I2S(TalentBlindRuns)+" times for any missile, "+I2S(TalentBlindHits)+" for a blinding one, and blinded "+I2S(TalentBlindMarks)+" in flight")
     call DisplayTimedTextToPlayer(p,0.,0.,20.,"Missiles have touched a unit "+I2S(MissileHitRuns)+" times, so the hook should have run that often")
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Sphere sweep looked at "+I2S(TalentBlindSwept)+" units; turned down "+I2S(TalentBlindNotEnemy)+" as not enemies, "+I2S(TalentBlindRepeat)+" already blinded, "+I2S(TalentBlindDead)+" dead")
 endfunction
 
 function Talents_ResetSold takes nothing returns nothing

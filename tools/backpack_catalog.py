@@ -31,7 +31,9 @@ RETURN_TEXT = 'Returns to your hero.'
 # Icons and order strings are taken from ones this map already uses, because an icon path the
 # game cannot find draws as a green square and an order string that is not a real no-target
 # order leaves the button doing nothing. Each ability on a unit needs its own order.
-BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeBrown.blp'
+# A loot sack, rather than the book the button started with: the icons this map can show
+# hold no purpose-made bag, and this is the closest thing to one.
+BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNSalamanderLoot.blp'
 RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
 # The wisp was the wrong model to hide behind: it glows whatever its vertex alpha says, and
 # its sparkle sat on the hero. The footman is plain geometry, which transparency does hide.
@@ -244,7 +246,11 @@ def main():
     raw_item_skin = archive.read('war3mapSkin.w3t')
     item_skin = read_objects(raw_item_skin, 'w3t') if raw_item_skin else None
     if {BACKPACK, RETURN, NEXT, PREV} <= {o['id'] for o in table['custom']}:
-        print('Backpack buttons already present; leaving them as they are.')
+        # Already there: refresh only what this script decides, which is the icon.
+        button = next(o for o in table['custom'] if o['id'] == BACKPACK)
+        dedupe(button)
+        setf(button, 'aart', 3, BACKPACK_ICON)
+        print('Backpack buttons already present; icon refreshed.')
     else:
         prepare_abilities(table)
     update_holder(units)

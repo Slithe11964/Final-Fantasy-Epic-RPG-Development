@@ -198,6 +198,22 @@ The wisp also had to go. Zero alpha does not hide a model that glows, and scalin
 its sparkle on the hero. The holder now uses the footman model it is built from - plain
 geometry, which transparency does hide.
 
+## Bonuses off the command card (stage ASX)
+
+Granting a worn item's passives to the hero broke the hero's own card: an ability added to a
+unit takes a command-card button, and these abilities inherit their position from the stock
+ability they are built on, so a bonus landed on top of a job button. The job showed its
+abilities for a moment, then a granted bonus replaced one and the card read "Tool tip
+missing!" over an evasion with no value.
+
+A button position outside the card is not drawn, so `tools/gear_catalog.py` moves all 430
+abilities the backpack can grant to (0, -11) in both ability tables. Items are unaffected -
+an item in an inventory never used the command card - and these are all passive bonuses, so
+nothing that needed clicking has moved.
+
+The Backpack button also wears a loot sack now instead of a book. The icons this map can show
+hold no purpose-made bag; `BTNSalamanderLoot` is the closest.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn
