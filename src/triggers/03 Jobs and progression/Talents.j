@@ -22,6 +22,10 @@ globals
     // Dialog lines longer than this run off the 1.29.2 dialog box.
     constant integer TALENT_LINE=30
     group array TalentBlindGroup
+    // Counters for -blindcheck: how often the missile hook ran for a blinding sphere and
+    // how many enemies it blinded on the way.
+    integer TalentBlindHits=0
+    integer TalentBlindMarks=0
     // Indexed job*12+(row-1)*3+(choice-1).
     string array TalentName
     string array TalentText
@@ -102,8 +106,12 @@ endfunction
 function Talents_MissileHit takes nothing returns boolean
     local integer d=udg_ArgIndex
     local unit u=udg_ArgUnit
+    if MissileTag[d]==TALENT_MISSILE_BLIND then
+        set TalentBlindHits=TalentBlindHits+1
+    endif
     if MissileTag[d]==TALENT_MISSILE_BLIND and IsUnitEnemy(u,GetOwningPlayer(udg_MissileCaster[d])) and not IsUnitInGroup(u,TalentBlindGroup[d]) and GetWidgetLife(u)>.405 then
         call GroupAddUnit(TalentBlindGroup[d],u)
+        set TalentBlindMarks=TalentBlindMarks+1
         if u==udg_MissileTarget[d] then
             call Talent_DummyCast(udg_MissileCaster[d],u,'tBln',"curse") // 15 seconds
         else
@@ -233,6 +241,10 @@ function Talent_ShowDialog takes player p returns nothing
 endfunction
 
 // Shrine of Individuality "Reset Talents": clears the current job's picks only.
+function Talents_BlindCheck takes player p returns nothing
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Blinding Light: the sphere hook ran "+I2S(TalentBlindHits)+" times and blinded "+I2S(TalentBlindMarks)+" enemies in flight")
+endfunction
+
 function Talents_ResetSold takes nothing returns nothing
     local unit sold=GetSoldUnit()
     local player p=GetOwningPlayer(sold)

@@ -89,7 +89,7 @@ def prepare_units(table, skin):
     for field, ftype, value in [('unam', 3, 'Reset Talents'), ('utip', 3, 'Reset Talents (current job)'),
                                 ('utub', 3, RESET_TEXT), ('ugol', 0, 1000), ('ulum', 0, 0),
                                 ('uico', 3, r'ReplaceableTextures\CommandButtons\BTNTomeOfRetraining.blp'),
-                                ('ubpx', 0, 0), ('ubpy', 0, 2), ('usma', 0, 1), ('upoi', 0, 0)]:
+                                ('ubpx', 0, 3), ('ubpy', 0, 2), ('usma', 0, 1), ('upoi', 0, 0)]:
         setf(unit, field, ftype, value)
     table['custom'].append(unit)
     shrine = objects['n04U']

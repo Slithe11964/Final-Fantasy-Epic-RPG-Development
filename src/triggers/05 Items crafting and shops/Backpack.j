@@ -1,4 +1,4 @@
-library TBackpack requires TPlayerHero
+library TBackpack requires TPlayerHero, TTalents
 // Gear storage for 1.29.2, which has neither a frame UI nor an extended inventory native.
 // A holder unit carries six inventory slots and the player's selection switches to it, so the
 // hero's own six slots stay free for potions and books. The holder is parked away from play;
@@ -266,7 +266,9 @@ function Backpack_OnCommand takes nothing returns nothing
     local unit hero=Player_GetHero(p)
     local unit holder=Backpack_Holder(pid)
     local item moving
-    if command=="-bagwhere" then
+    if command=="-blindcheck" then
+        call Talents_BlindCheck(p)
+    elseif command=="-bagwhere" then
         call Backpack_Report(p)
     elseif command=="-bagtest" then
         call Backpack_SelectTest(p)
@@ -345,6 +347,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagwhere",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagnear",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-bagtest",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-blindcheck",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)

@@ -101,18 +101,9 @@ def prepare_holder(units):
     return units
 
 
-# The Shrine's Reset Talents button shipped in the bottom-right slot; the bottom-left is
-# where it belongs and that row is otherwise empty.
-RESET_UNIT = 'nTRt'
-
-
-def move_reset_button(units):
-    reset = next((o for o in units['custom'] if o['id'] == RESET_UNIT), None)
-    if reset is None:
-        return units
-    setf(reset, 'ubpx', 0, 0)
-    setf(reset, 'ubpy', 0, 2)
-    return units
+# Moving the Shrine's Reset Talents button by its Button Position fields did not move it and
+# left the shop showing one button's tooltip over another's action, so it stays where it
+# shipped until the shop's real layout rule is known.
 
 
 def main():
@@ -127,7 +118,6 @@ def main():
     units = read_objects(archive.read('war3map.w3u'), 'w3u')
     prepare_abilities(table)
     prepare_holder(units)
-    move_reset_button(units)
     write_files(str(args.base), str(args.out),
                 {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
                  'war3map.w3u': write_objects(units, units['version'], 'w3u')})
