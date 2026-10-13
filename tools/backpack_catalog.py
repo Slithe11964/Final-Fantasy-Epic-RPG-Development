@@ -101,9 +101,36 @@ def prepare_holder(units):
     return units
 
 
-# Moving the Shrine's Reset Talents button by its Button Position fields did not move it and
-# left the shop showing one button's tooltip over another's action, so it stays where it
-# shipped until the shop's real layout rule is known.
+# Reset Talents belongs under the left column of the Shrine's card. It was copied from the
+# Ability Menu, and Reforged keeps a second object table (war3mapSkin.w3u) that it reads
+# display data from: with no entry of its own there, Reset Talents fell back to the Ability
+# Menu's name, tooltip and position. Both tables get the same values here.
+RESET_UNIT = 'nTRt'
+RESET_NAME = 'Reset Talents'
+RESET_TIP = 'Reset Talents (current job)'
+RESET_TEXT = ('Resets the talents of your |cffffcc00current job only|r. Other jobs keep their talents. '
+              'If this job has no talents picked, the gold is refunded.')
+RESET_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeOfRetraining.blp'
+RESET_SLOT = (0, 2)
+
+
+def place_reset_button(units, skin):
+    reset = next((o for o in units['custom'] if o['id'] == RESET_UNIT), None)
+    if reset is None:
+        return
+    fields = [('unam', 3, RESET_NAME), ('utip', 3, RESET_TIP), ('utub', 3, RESET_TEXT),
+              ('uico', 3, RESET_ICON), ('ugol', 0, 1000),
+              ('ubpx', 0, RESET_SLOT[0]), ('ubpy', 0, RESET_SLOT[1])]
+    for field, ftype, value in fields:
+        setf(reset, field, ftype, value)
+    if skin is None:
+        return
+    entry = next((o for o in skin['custom'] if o['id'] == RESET_UNIT), None)
+    if entry is None:
+        entry = dict(base=reset['base'], id=RESET_UNIT, sets=[dict(flag=0, mods=[])])
+        skin['custom'].append(entry)
+    for field, ftype, value in fields:
+        setf(entry, field, ftype, value)
 
 
 def main():
@@ -116,11 +143,16 @@ def main():
     archive = MPQ(str(args.base))
     table = read_objects(archive.read('war3map.w3a'), 'w3a')
     units = read_objects(archive.read('war3map.w3u'), 'w3u')
+    raw_skin = archive.read('war3mapSkin.w3u')
+    skin = read_objects(raw_skin, 'w3u') if raw_skin else None
     prepare_abilities(table)
     prepare_holder(units)
-    write_files(str(args.base), str(args.out),
-                {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
-                 'war3map.w3u': write_objects(units, units['version'], 'w3u')})
+    place_reset_button(units, skin)
+    files = {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
+             'war3map.w3u': write_objects(units, units['version'], 'w3u')}
+    if skin is not None:
+        files['war3mapSkin.w3u'] = write_objects(skin, skin['version'], 'w3u')
+    write_files(str(args.base), str(args.out), files)
     print('Added the Backpack button, the Back-to-hero button and the Backpack holder unit.')
 
 
