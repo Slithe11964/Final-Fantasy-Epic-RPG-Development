@@ -154,6 +154,28 @@ Page 2 has six slots like any unit inventory, so its three surplus slots are fil
 map's own `I0ZB` "Fix slot filler", an item that cannot be dropped, moved out or sold. Both
 versions therefore offer exactly the same amount of space.
 
+## What the first play of the pages found (stage ASV)
+
+Three things came out of playing ASU, and each had a cause worth writing down.
+
+The wisp stayed where it was while the backpack worked from the hero's feet. ASU moved the
+holder with `SetUnitX`/`SetUnitY`, and a unit whose movement type is none keeps its model
+where it was when only its coordinates are set. `SetUnitPosition` moves the unit itself, so
+it is back.
+
+Zero vertex alpha did not hide the wisp: its model glows whatever its alpha says. The holder
+is now scaled to a hundredth as well, which is invisible whatever the model does.
+
+A tome bought from the armory crashed 1.29.2. A power-up is used up the instant it is picked
+up, so by the time the pickup event runs the item is gone, and the backpack was moving it
+into the open page. Power-ups are now left alone everywhere: on pickup, when storing and in
+the ground search.
+
+The blocked slots wore the icon of the item the map's filler was built from, which read as a
+gem sitting in the slot. They now use `tBlk` "Locked slot", the same immovable item with a red
+cancel icon and a tooltip saying why it is there. 1.29.2 cannot remove an inventory slot, so
+blocking it is as close as the version allows.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn

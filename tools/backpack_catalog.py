@@ -17,6 +17,11 @@ from objdata import read_objects, write_objects
 BACKPACK = 'tBag'
 RETURN = 'tBhr'
 HOLDER = 'tBpk'
+LOCKED = 'tBlk'          # fills the slots 1.29.2 would otherwise hand out for free
+LOCKED_SOURCE = 'I0ZB'   # the map's own "Fix slot filler": an item that cannot be moved
+LOCKED_ICON = r'ReplaceableTextures\CommandButtons\BTNCancel.blp'
+LOCKED_TEXT = ('Reforged gives nine equipment slots, so 1.29.2 gives nine as well. '
+               'This slot is not one of them and cannot be used.')
 TALENTS = 'tTal'
 HOLDER_BASE = 'hfoo'    # the stock footman: an ordinary, selectable unit
 INVENTORY = 'AInv'      # the six-slot unit inventory
@@ -104,7 +109,11 @@ def holder_fields():
             ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),
             ('umvs', 0, 0), ('umvt', 3, ''), ('ufoo', 0, 0), ('upoi', 0, 0),
             ('ucbs', 2, 0.0), ('uhpm', 0, 1000),
-            ('uaen', 0, 0), ('uacq', 2, 0.0), ('ucpt', 2, 0.0)]
+            ('uaen', 0, 0), ('uacq', 2, 0.0), ('ucpt', 2, 0.0),
+            # A speck rather than a wisp: the holder stands on the hero and should not be
+            # seen. Transparency alone was not enough - the wisp's model glows whatever its
+            # vertex alpha says - so it is scaled down as well.
+            ('ussc', 1, 0.01)]
 
 
 def prepare_holder(units):
@@ -145,6 +154,31 @@ RESET_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeOfRetraining.blp'
 RESET_SLOT = (0, 2)
 
 
+def prepare_locked_item(items, skin):
+    """A slot blocker with a clear icon, copied from the map's own immovable filler item.
+
+    The filler the map already had wears the icon of the item it was built from, which reads
+    as a gem sitting in the slot. This is the same object with a name, a tooltip and a red
+    cancel icon, so a blocked slot looks blocked.
+    """
+    source = next((o for o in items['custom'] if o['id'] == LOCKED_SOURCE), None)
+    if source is None:
+        raise ValueError('the map no longer carries ' + LOCKED_SOURCE)
+    for table in (items, skin):
+        if table is None:
+            continue
+        entry = next((o for o in table['custom'] if o['id'] == LOCKED), None)
+        if entry is None:
+            entry = copy.deepcopy(source)
+            entry['id'] = LOCKED
+            table['custom'].append(entry)
+        for field, ftype, value in [('unam', 3, 'Locked slot'), ('utip', 3, 'Locked slot'),
+                                    ('utub', 3, LOCKED_TEXT), ('ides', 3, LOCKED_TEXT),
+                                    ('iico', 3, LOCKED_ICON)]:
+            setf(entry, field, ftype, value)
+    return items
+
+
 def place_reset_button(units, skin):
     reset = next((o for o in units['custom'] if o['id'] == RESET_UNIT), None)
     if reset is None:
@@ -174,18 +208,25 @@ def main():
     archive = MPQ(str(args.base))
     table = read_objects(archive.read('war3map.w3a'), 'w3a')
     units = read_objects(archive.read('war3map.w3u'), 'w3u')
+    items = read_objects(archive.read('war3map.w3t'), 'w3t')
     raw_skin = archive.read('war3mapSkin.w3u')
     skin = read_objects(raw_skin, 'w3u') if raw_skin else None
+    raw_item_skin = archive.read('war3mapSkin.w3t')
+    item_skin = read_objects(raw_item_skin, 'w3t') if raw_item_skin else None
     if {BACKPACK, RETURN, NEXT, PREV} <= {o['id'] for o in table['custom']}:
         print('Backpack buttons already present; leaving them as they are.')
     else:
         prepare_abilities(table)
     update_holder(units)
+    prepare_locked_item(items, item_skin)
     place_reset_button(units, skin)
     files = {'war3map.w3a': write_objects(table, table['version'], 'w3a'),
-             'war3map.w3u': write_objects(units, units['version'], 'w3u')}
+             'war3map.w3u': write_objects(units, units['version'], 'w3u'),
+             'war3map.w3t': write_objects(items, items['version'], 'w3t')}
     if skin is not None:
         files['war3mapSkin.w3u'] = write_objects(skin, skin['version'], 'w3u')
+    if item_skin is not None:
+        files['war3mapSkin.w3t'] = write_objects(item_skin, item_skin['version'], 'w3t')
     write_files(str(args.base), str(args.out), files)
     print('Backpack objects written: buttons, holder (no attacks, no cast point) and Reset Talents.')
 

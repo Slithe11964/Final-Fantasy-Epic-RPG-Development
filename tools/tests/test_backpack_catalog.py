@@ -20,7 +20,7 @@ NEW_ABILITIES = {catalog.BACKPACK, catalog.RETURN}
 def vouched(archive):
     """Every (file, field) -> the types this map writes it with."""
     known = {}
-    for kind, name in (('w3u', 'war3map.w3u'), ('w3a', 'war3map.w3a')):
+    for kind, name in (('w3u', 'war3map.w3u'), ('w3a', 'war3map.w3a'), ('w3t', 'war3map.w3t')):
         for obj in read_objects(archive.read(name), kind)['custom']:
             for group in obj['sets']:
                 for mod in group['mods']:
@@ -43,14 +43,17 @@ class BackpackCatalogTests(unittest.TestCase):
     def added(self):
         abilities = read_objects(self.archive.read('war3map.w3a'), 'w3a')
         units = read_objects(self.archive.read('war3map.w3u'), 'w3u')
+        items = read_objects(self.archive.read('war3map.w3t'), 'w3t')
         catalog.prepare_abilities(abilities)
         catalog.prepare_holder(units)
-        return abilities, units
+        catalog.prepare_locked_item(items, None)
+        return abilities, units, items
 
     def test_every_field_and_type_is_one_the_map_already_uses(self):
-        abilities, units = self.added()
+        abilities, units, items = self.added()
         unvouched = []
-        for kind, table, ids in (('w3a', abilities, NEW_ABILITIES), ('w3u', units, {catalog.HOLDER})):
+        for kind, table, ids in (('w3a', abilities, NEW_ABILITIES), ('w3u', units, {catalog.HOLDER}),
+                                 ('w3t', items, {catalog.LOCKED})):
             for obj in table['custom']:
                 if obj['id'] not in ids:
                     continue
@@ -78,7 +81,7 @@ class BackpackCatalogTests(unittest.TestCase):
 
     def test_the_order_string_sits_in_the_same_column_as_the_working_button(self):
         """Channel keeps its order string in a data column; the wrong one leaves no order."""
-        abilities, _ = self.added()
+        abilities, _units, _items = self.added()
         def order_mods(raw):
             obj = next(o for o in abilities['custom'] if o['id'] == raw)
             return [(m['level'], m['data'], m['value']) for group in obj['sets']
@@ -98,6 +101,17 @@ class BackpackCatalogTests(unittest.TestCase):
         self.assertNotEqual(catalog.BACKPACK_ORDER, catalog.RETURN_ORDER)
         for order in (catalog.BACKPACK_ORDER, catalog.RETURN_ORDER):
             self.assertNotIn(order, orders, order + ' is already an order in this map')
+
+    def test_the_locked_slot_item_cannot_be_moved_and_says_what_it_is(self):
+        """A blocked slot only stays blocked while the item in it cannot leave."""
+        items = read_objects(self.archive.read('war3map.w3t'), 'w3t')
+        catalog.prepare_locked_item(items, None)
+        locked = next(o for o in items['custom'] if o['id'] == catalog.LOCKED)
+        values = dict((m['field'], m['value']) for m in locked['sets'][0]['mods'])
+        for field in ('idrp', 'idro', 'ipaw', 'isel', 'iusa'):
+            self.assertEqual(values[field], 0, field)
+        self.assertEqual(values['unam'], 'Locked slot')
+        self.assertIn('BTNCancel', values['iico'])
 
     def test_the_holder_is_quiet_and_answers_at_once(self):
         """No attacks and no acquisition range, so it is never busy fighting when a page

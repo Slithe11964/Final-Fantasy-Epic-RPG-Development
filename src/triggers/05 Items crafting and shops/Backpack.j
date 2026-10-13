@@ -22,9 +22,9 @@ globals
     // Where a holder waits before its player has a hero to stand beside.
     constant real BACKPACK_PARK_X=27648.
     constant real BACKPACK_PARK_Y=-27648.
-    // The map's own undroppable filler item, used to block the slots 1.29.2 would otherwise
-    // hand out for free: Reforged gives nine equipment slots, so page 2 keeps three.
-    constant integer BACKPACK_FILLER='I0ZB'
+    // An item that cannot be moved, dropped or sold, used to block the slots 1.29.2 would
+    // otherwise hand out for free: Reforged gives nine equipment slots, so page 2 keeps three.
+    constant integer BACKPACK_LOCKED='tBlk'
     constant integer BACKPACK_RING_SLOTS=3
     // How far from the hero -grab looks for an item lying on the ground.
     constant real BACKPACK_GRAB_RANGE=300.
@@ -79,7 +79,7 @@ function Backpack_PageHolder takes integer pid,integer page returns unit
             set slot=BACKPACK_RING_SLOTS
             loop
                 exitwhen slot>=BACKPACK_SLOTS
-                call UnitAddItemToSlotById(BackpackHolder[key],BACKPACK_FILLER,slot)
+                call UnitAddItemToSlotById(BackpackHolder[key],BACKPACK_LOCKED,slot)
                 set slot=slot+1
             endloop
         endif
@@ -110,10 +110,10 @@ function Backpack_Anchor takes integer pid returns nothing
     endloop
     set holder=Backpack_PageHolder(pid,BackpackPage[pid])
     call ShowUnit(holder,true)
-    // Set outright rather than with SetUnitPosition, which would shift it to the nearest
-    // free spot and leave the holder a little way off.
-    call SetUnitX(holder,GetUnitX(hero))
-    call SetUnitY(holder,GetUnitY(hero))
+    // SetUnitPosition, not SetUnitX/SetUnitY: a unit whose movement type is none keeps its
+    // model where it was when only its coordinates are set, so the holder worked from the
+    // hero's spot while the wisp stayed behind in plain sight.
+    call SetUnitPosition(holder,GetUnitX(hero),GetUnitY(hero))
     set hero=null
     set holder=null
 endfunction
@@ -309,6 +309,11 @@ function Backpack_StoreOn takes integer pid,integer page,unit carrier,item carri
     if carried==null or page<0 or page>=BACKPACK_PAGES then
         return false
     endif
+    // A tome or other power-up is used up the moment it is picked up: by now the item is
+    // gone, and moving it crashes the game. GetItemTypeId is 0 for an item already removed.
+    if IsItemPowerup(carried) or GetItemTypeId(carried)==0 then
+        return false
+    endif
     set holder=Backpack_PageHolder(pid,page)
     set slot=0
     set used=0
@@ -358,7 +363,7 @@ function Backpack_WeighItem takes nothing returns nothing
     local real dx
     local real dy
     local real distance
-    if not IsItemVisible(found) or IsItemOwned(found) then
+    if not IsItemVisible(found) or IsItemOwned(found) or IsItemPowerup(found) then
         set found=null
         return
     endif
@@ -505,7 +510,7 @@ function Backpack_CheckPage takes integer pid,integer page returns nothing
     loop
         exitwhen slot>=BACKPACK_SLOTS
         set worn=UnitItemInSlot(holder,slot)
-        if worn!=null and GetItemTypeId(worn)==BACKPACK_FILLER then
+        if worn!=null and GetItemTypeId(worn)==BACKPACK_LOCKED then
             // A blocked slot: nothing to judge.
         elseif worn!=null then
             set kind=Gear_KindOf(GetItemTypeId(worn))
@@ -695,6 +700,13 @@ function Backpack_OnPickup takes nothing returns nothing
     local item carried=GetManipulatedItem()
     local integer used=0
     local integer slot=0
+    if carried!=null and (IsItemPowerup(carried) or GetItemTypeId(carried)==0) then
+        // Tomes and other power-ups are used up as they are picked up; there is nothing
+        // left to put anywhere, and reaching for it crashes 1.29.2.
+        set hero=null
+        set carried=null
+        return
+    endif
     if GetUnitTypeId(hero)==BACKPACK_HOLDER then
         call Backpack_OnHolderChange()
         set hero=null
