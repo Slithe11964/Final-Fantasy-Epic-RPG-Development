@@ -13,23 +13,45 @@ globals
     constant integer BACKPACK_RETURN='tBhr'
     constant integer BACKPACK_HOLDER='tBpk'
     constant integer BACKPACK_SLOTS=6
+    constant integer BACKPACK_NEXT='tBnx'
+    constant integer BACKPACK_PREV='tBpv'
+    // Page 1 holds worn equipment, page 2 the rings and trinket, pages 3 to 7 the bag.
+    constant integer BACKPACK_PAGES=7
+    constant integer BACKPACK_EQUIPMENT_PAGES=2
     // Far enough from play that the holder is never walked into or seen.
     constant real BACKPACK_PARK_X=27648.
     constant real BACKPACK_PARK_Y=-27648.
+    // Indexed (player id)*8+page, page counted from 0.
     unit array BackpackHolder
+    integer array BackpackPage
     // Fallback list, used when the game will not select the holder: one button per stored
     // item, indexed (player id)*8+slot, plus a Close button.
     dialog array BackpackDialog
     button array BackpackButton
 endglobals
 
-function Backpack_Holder takes integer pid returns unit
-    if BackpackHolder[pid]==null then
-        set BackpackHolder[pid]=CreateUnit(Player(pid),BACKPACK_HOLDER,BACKPACK_PARK_X,BACKPACK_PARK_Y,270.)
-        call SetUnitInvulnerable(BackpackHolder[pid],true)
+function Backpack_PageHolder takes integer pid,integer page returns unit
+    local integer key=pid*8+page
+    if BackpackHolder[key]==null then
+        set BackpackHolder[key]=CreateUnit(Player(pid),BACKPACK_HOLDER,BACKPACK_PARK_X+page*128.,BACKPACK_PARK_Y,270.)
+        call SetUnitInvulnerable(BackpackHolder[key],true)
         // Not paused: the holder has no move speed, and a paused unit is awkward to select.
     endif
-    return BackpackHolder[pid]
+    return BackpackHolder[key]
+endfunction
+
+// The page the player is looking at, or page 0 before they open anything.
+function Backpack_Holder takes integer pid returns unit
+    return Backpack_PageHolder(pid,BackpackPage[pid])
+endfunction
+
+function Backpack_PageName takes integer page returns string
+    if page==0 then
+        return "Equipment"
+    elseif page==1 then
+        return "Rings and trinket"
+    endif
+    return "Bag "+I2S(page-BACKPACK_EQUIPMENT_PAGES+1)+" of "+I2S(BACKPACK_PAGES-BACKPACK_EQUIPMENT_PAGES)
 endfunction
 
 // A list of what is stored, for when the inventory view cannot be reached.
@@ -68,6 +90,7 @@ endfunction
 function Backpack_Open takes player p returns nothing
     local integer pid=GetPlayerId(p)
     local unit holder=Backpack_Holder(pid)
+    call DisplayTimedTextToPlayer(p,0.,0.,6.,"Backpack - "+Backpack_PageName(BackpackPage[pid]))
     if holder==null or GetUnitTypeId(holder)!=BACKPACK_HOLDER then
         call DisplayTimedTextToPlayer(p,0.,0.,12.,"Backpack: the holder could not be created")
         set holder=null
@@ -203,25 +226,45 @@ endfunction
 
 // Moves the item itself rather than making a fresh one, so charges and state survive.
 // 1.29.2 has no native that puts an existing item straight into a chosen slot, so the item
-// leaves its carrier and the holder takes it into its first free slot.
+// leaves its carrier and a bag page takes it into its first free slot. Equipment pages are
+// skipped: a picked-up item is never worn by accident.
 function Backpack_Store takes integer pid,unit carrier,item carried returns boolean
+    local integer page=BACKPACK_EQUIPMENT_PAGES
     local unit holder
-    if carried==null or Backpack_FreeSlot(pid)<0 then
+    if carried==null then
         return false
     endif
-    set holder=Backpack_Holder(pid)
-    if carrier!=null then
-        call UnitRemoveItem(carrier,carried)
-    endif
-    if not UnitAddItem(holder,carried) then
-        if carrier!=null then
-            call UnitAddItem(carrier,carried)
+    loop
+        exitwhen page>=BACKPACK_PAGES
+        set holder=Backpack_PageHolder(pid,page)
+        if UnitItemInSlot(holder,BACKPACK_SLOTS-1)==null then
+            if carrier!=null then
+                call UnitRemoveItem(carrier,carried)
+            endif
+            if UnitAddItem(holder,carried) then
+                set holder=null
+                return true
+            endif
+            if carrier!=null then
+                call UnitAddItem(carrier,carried)
+            endif
         endif
-        set holder=null
-        return false
-    endif
+        set page=page+1
+    endloop
     set holder=null
-    return true
+    return false
+endfunction
+
+// Pages wrap around, so one button reaches every page.
+function Backpack_Turn takes player p,integer step returns nothing
+    local integer pid=GetPlayerId(p)
+    set BackpackPage[pid]=BackpackPage[pid]+step
+    if BackpackPage[pid]<0 then
+        set BackpackPage[pid]=BACKPACK_PAGES-1
+    elseif BackpackPage[pid]>=BACKPACK_PAGES then
+        set BackpackPage[pid]=0
+    endif
+    call Backpack_Open(p)
 endfunction
 
 function Backpack_OnCast takes nothing returns nothing
@@ -230,6 +273,10 @@ function Backpack_OnCast takes nothing returns nothing
         call Backpack_Open(GetTriggerPlayer())
     elseif id==BACKPACK_RETURN then
         call Backpack_Close(GetTriggerPlayer())
+    elseif id==BACKPACK_NEXT then
+        call Backpack_Turn(GetTriggerPlayer(),1)
+    elseif id==BACKPACK_PREV then
+        call Backpack_Turn(GetTriggerPlayer(),-1)
     endif
 endfunction
 

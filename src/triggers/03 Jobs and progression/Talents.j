@@ -25,6 +25,8 @@ globals
     // Counters for -blindcheck: how often the missile hook ran for a blinding sphere and
     // how many enemies it blinded on the way.
     integer TalentBlindHits=0
+    integer TalentBlindRuns=0
+    boolean TalentBlindHooked=false
     integer TalentBlindMarks=0
     // Indexed job*12+(row-1)*3+(choice-1).
     string array TalentName
@@ -106,6 +108,7 @@ endfunction
 function Talents_MissileHit takes nothing returns boolean
     local integer d=udg_ArgIndex
     local unit u=udg_ArgUnit
+    set TalentBlindRuns=TalentBlindRuns+1
     if MissileTag[d]==TALENT_MISSILE_BLIND then
         set TalentBlindHits=TalentBlindHits+1
     endif
@@ -242,7 +245,11 @@ endfunction
 
 // Shrine of Individuality "Reset Talents": clears the current job's picks only.
 function Talents_BlindCheck takes player p returns nothing
-    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Blinding Light: the sphere hook ran "+I2S(TalentBlindHits)+" times and blinded "+I2S(TalentBlindMarks)+" enemies in flight")
+    local string hooked="no"
+    if TalentBlindHooked then
+        set hooked="yes"
+    endif
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Blinding Light: hook registered "+hooked+"; it ran "+I2S(TalentBlindRuns)+" times for any missile, "+I2S(TalentBlindHits)+" for a blinding one, and blinded "+I2S(TalentBlindMarks)+" in flight")
 endfunction
 
 function Talents_ResetSold takes nothing returns nothing
@@ -509,6 +516,7 @@ endfunction
 // Missile hits are evaluated through udg_MissileDamageTrig; hook in once startup has made it.
 function Talents_HookMissiles takes nothing returns nothing
     call TriggerAddCondition(udg_MissileDamageTrig,Condition(function Talents_MissileHit))
+    set TalentBlindHooked=udg_MissileDamageTrig!=null
     call DestroyTimer(GetExpiredTimer())
 endfunction
 

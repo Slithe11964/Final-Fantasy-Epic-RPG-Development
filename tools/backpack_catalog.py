@@ -30,8 +30,14 @@ RETURN_TEXT = 'Returns to your hero.'
 BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeBrown.blp'
 RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
 HOLDER_MODEL = 'units\\nightelf\\Wisp\\Wisp.mdl'
+NEXT = 'tBnx'
+PREV = 'tBpv'
+NEXT_ICON = r'ReplaceableTextures\CommandButtons\BTNPiercingArrows.blp'
+PREV_ICON = r'ReplaceableTextures\CommandButtons\BTNWpArtemisArrows.blp'
 BACKPACK_ORDER = 'cannibalize'
 RETURN_ORDER = 'avatar'
+NEXT_ORDER = 'divineshield'
+PREV_ORDER = 'windwalk'
 
 
 # Channel's Ncl1..Ncl6 are distinguished by their data column, not just their field id, so
@@ -64,10 +70,10 @@ def prepare_abilities(table):
     if TALENTS not in objects:
         raise ValueError('the Talents button is missing; run tools/talents_catalog.py first')
     existing = {o['id'] for o in table['custom']}
-    if existing & {BACKPACK, RETURN}:
+    if existing & {BACKPACK, RETURN, NEXT, PREV}:
         raise ValueError('Backpack objects already exist in this map.')
     orders = {m['value'] for o in table['custom'] for m in o['sets'][0]['mods'] if m['field'] == 'Ncl6'}
-    for order in (BACKPACK_ORDER, RETURN_ORDER):
+    for order in (BACKPACK_ORDER, RETURN_ORDER, NEXT_ORDER, PREV_ORDER):
         if order in orders:
             raise ValueError('order string %s is already used' % order)
     table['custom'].append(button(objects, BACKPACK, 'Backpack', 'B',
@@ -76,6 +82,12 @@ def prepare_abilities(table):
     table['custom'].append(button(objects, RETURN, 'Back to hero', 'B',
                                   RETURN_ICON, '|cffffcc00B|rack to hero', RETURN_TEXT,
                                   3, 2, RETURN_ORDER))
+    table['custom'].append(button(objects, NEXT, 'Next page', 'E', NEXT_ICON,
+                                  'N|cffffcc00e|rxt page', 'Shows the next page of your gear.',
+                                  2, 2, NEXT_ORDER))
+    table['custom'].append(button(objects, PREV, 'Previous page', 'Q', PREV_ICON,
+                                  'Pr|cffffcc00e|rvious page', 'Shows the previous page of your gear.',
+                                  1, 2, PREV_ORDER))
     return table
 
 
@@ -90,7 +102,7 @@ def prepare_holder(units):
     if HOLDER in {o['id'] for o in units['custom']}:
         raise ValueError(HOLDER + ' already exists.')
     # Invulnerability is set on the unit in code instead, so it adds no command button.
-    abilities = ','.join([INVENTORY, RETURN, TALENTS])
+    abilities = ','.join([INVENTORY, PREV, NEXT, RETURN, TALENTS])
     # (field, type, value); every type is one this map already writes for that field.
     fields = [('unam', 3, 'Backpack'), ('utip', 3, 'Backpack'), ('uabi', 3, abilities),
               ('uico', 3, BACKPACK_ICON), ('umdl', 3, HOLDER_MODEL),

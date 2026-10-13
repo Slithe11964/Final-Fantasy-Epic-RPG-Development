@@ -126,3 +126,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASM | Backpack holder rebuilt from the stock footman, and a dialog list of stored items when the game will not select it. |
 | ASN | Blinding Light blinds an enemy it is aimed at, Reset Talents moves to the shrine bottom-left, and the backpack holder keeps only its own buttons. |
 | ASO | Reset Talents returns to the slot it shipped in after moving it broke the shop, and -blindcheck counts what the blinding sphere hook sees. |
+| ASQ | Backpack gains seven pages with Next and Previous buttons, pickups fill bag pages only, and -blindcheck reports whether the sphere hook is registered at all. |

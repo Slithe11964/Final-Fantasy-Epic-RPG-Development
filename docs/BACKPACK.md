@@ -75,6 +75,19 @@ Note on the icon test: it checks that an icon path appears somewhere in the map,
 not prove the file exists. A path used hundreds of times is good evidence; a path used once
 is not.
 
+## Pages (stage ASQ)
+
+Seven holders per player, one per page, each with its own six slots:
+
+| Page | Holds |
+|---|---|
+| 1 | Weapon, offhand, head, chest, gloves, boots |
+| 2 | Ring, ring, trinket |
+| 3 to 7 | The thirty-slot bag |
+
+Next page and Previous page sit on every holder's card and wrap around. A picked-up item
+always lands on a bag page, never in an equipment slot.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag
