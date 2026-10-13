@@ -58,6 +58,23 @@ fall back on in 1.29.2. If the game still refuses the holder, the backpack opens
 listing each stored item with a Take button. Less pleasant than a grid, but it works without
 depending on selection at all.
 
+## Confirmed working in 1.29.2 (stage ASM)
+
+The Backpack button opens the holder, its six inventory slots show, and the Talents button
+on the holder's card works. So a second inventory really is reachable in 1.29.2 through a
+holder unit, and the dialog fallback stays unused for now - worth keeping, since it costs
+nothing and covers a client that refuses the selection.
+
+Open and cosmetic: the holder's command card still shows buttons inherited from the footman
+it is built from, and one slot draws as a red question mark. `BTNSelectHeroOn` is not the
+cause - the map uses that icon 283 times elsewhere - so it is most likely the Invulnerable
+ability, which has no command icon. The holder's ability list wants trimming to just
+Inventory, Back to hero and Talents.
+
+Note on the icon test: it checks that an icon path appears somewhere in the map, which does
+not prove the file exists. A path used hundreds of times is good evidence; a path used once
+is not.
+
 ## Still to build
 
 Equipment pages (weapon, offhand, head, chest, gloves, boots, two rings, trinket), the bag
