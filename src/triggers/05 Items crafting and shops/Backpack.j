@@ -38,6 +38,11 @@ globals
     integer array BackpackGranted
     integer array BackpackGrantedCount
     unit array BackpackBonusHero
+    // Taking an item out of a unit inside the very event that announced it crashes 1.29.2,
+    // so the work is queued here and done a moment later, outside the event.
+    timer array BackpackDefer
+    item array BackpackPendingItem
+    integer array BackpackPendingPage
     // How many of each slot kind a page already holds, rebuilt on every check.
     integer array BackpackKindSeen
     // Working values for the item search, which runs through a filter function.
@@ -645,6 +650,59 @@ function Backpack_GearReport takes player p returns nothing
     set worn=null
 endfunction
 
+// Runs a moment after the event that asked for it: puts away whatever the hero picked up,
+// then checks the equipment pages and grants what is worn. Everything that moves an item
+// lives here, where no item event is in progress.
+function Backpack_RunDeferred takes nothing returns nothing
+    local timer which=GetExpiredTimer()
+    local integer pid=0
+    local item pending
+    local unit hero
+    local integer kind
+    local boolean stored
+    loop
+        exitwhen pid>=bj_MAX_PLAYERS
+        if BackpackDefer[pid]==which then
+            set pending=BackpackPendingItem[pid]
+            set BackpackPendingItem[pid]=null
+            set hero=Player_GetHero(Player(pid))
+            if pending!=null and GetItemTypeId(pending)!=0 and hero!=null and UnitHasItem(hero,pending) then
+                // A page the player chose takes the item; a full hero falls back to any bag
+                // page with room.
+                if BackpackPendingPage[pid]>=BACKPACK_EQUIPMENT_PAGES then
+                    set stored=Backpack_Store(pid,hero,pending)
+                else
+                    set stored=Backpack_StoreOn(pid,BackpackPendingPage[pid],hero,pending)
+                endif
+                if stored then
+                    set kind=Gear_KindOf(GetItemTypeId(pending))
+                    if BackpackPendingPage[pid]<BACKPACK_EQUIPMENT_PAGES and kind>0 then
+                        call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Equipped "+GetItemName(pending)+" ("+Gear_KindName(kind)+")")
+                    else
+                        call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,GetItemName(pending)+" went into the bag")
+                    endif
+                endif
+            endif
+            call Backpack_CheckPage(pid,0)
+            call Backpack_CheckPage(pid,1)
+            set pending=null
+            set hero=null
+            set which=null
+            return
+        endif
+        set pid=pid+1
+    endloop
+    set which=null
+endfunction
+
+// Asks for that pass. Starting the timer again simply moves the moment it runs.
+function Backpack_QueueWork takes integer pid returns nothing
+    if BackpackDefer[pid]==null then
+        set BackpackDefer[pid]=CreateTimer()
+    endif
+    call TimerStart(BackpackDefer[pid],0.,false,function Backpack_RunDeferred)
+endfunction
+
 // Pages wrap around, so one button reaches every page.
 function Backpack_Turn takes player p,integer step returns nothing
     local integer pid=GetPlayerId(p)
@@ -676,22 +734,14 @@ endfunction
 function Backpack_OnHolderChange takes nothing returns nothing
     local unit which=GetTriggerUnit()
     local integer pid=GetPlayerId(GetOwningPlayer(which))
-    local integer page
-    local item moved
     if GetUnitTypeId(which)!=BACKPACK_HOLDER then
         set which=null
         return
     endif
-    set page=Backpack_PageOf(pid,which)
-    if page>=0 then
-        call Backpack_CheckPage(pid,page)
-        set moved=GetManipulatedItem()
-        if page<BACKPACK_EQUIPMENT_PAGES and moved!=null and UnitHasItem(which,moved) then
-            call DisplayTimedTextToPlayer(GetOwningPlayer(which),0.,0.,6.,"Equipped "+GetItemName(moved)+" ("+Gear_KindName(Gear_KindOf(GetItemTypeId(moved)))+")")
-        endif
+    if Backpack_PageOf(pid,which)>=0 then
+        call Backpack_QueueWork(pid)
     endif
     set which=null
-    set moved=null
 endfunction
 
 function Backpack_OnPickup takes nothing returns nothing
@@ -722,14 +772,17 @@ function Backpack_OnPickup takes nothing returns nothing
     endloop
     if hero!=Player_GetHero(GetOwningPlayer(hero)) then
         // Someone else's unit picked it up; the backpack has no business with it.
-    elseif BackpackShown[pid] and Backpack_StoreOn(pid,BackpackPage[pid],hero,carried) then
+    elseif BackpackShown[pid] then
         // While a page is open, what the hero picks up lands on that page, where the player
-        // can see it, rather than in the first bag page with room.
-        call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Picked up "+GetItemName(carried)+" into "+Backpack_PageName(BackpackPage[pid]))
+        // can see it, rather than in the first bag page with room. The move itself waits
+        // for the deferred pass.
+        set BackpackPendingItem[pid]=carried
+        set BackpackPendingPage[pid]=BackpackPage[pid]
+        call Backpack_QueueWork(pid)
     elseif used>=BACKPACK_SLOTS then
-        if Backpack_Store(pid,hero,carried) then
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Bagged: "+GetItemName(carried)+" (B to open the backpack)")
-        endif
+        set BackpackPendingItem[pid]=carried
+        set BackpackPendingPage[pid]=BACKPACK_EQUIPMENT_PAGES
+        call Backpack_QueueWork(pid)
     endif
     set hero=null
     set carried=null

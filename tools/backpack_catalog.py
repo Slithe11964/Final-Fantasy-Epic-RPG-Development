@@ -20,8 +20,7 @@ HOLDER = 'tBpk'
 LOCKED = 'tBlk'          # fills the slots 1.29.2 would otherwise hand out for free
 LOCKED_SOURCE = 'I0ZB'   # the map's own "Fix slot filler": an item that cannot be moved
 LOCKED_ICON = r'ReplaceableTextures\CommandButtons\BTNCancel.blp'
-LOCKED_TEXT = ('Reforged gives nine equipment slots, so 1.29.2 gives nine as well. '
-               'This slot is not one of them and cannot be used.')
+LOCKED_TEXT = 'This slot does not exist in Reforged, so 1.29.2 does not give it either.'
 TALENTS = 'tTal'
 HOLDER_BASE = 'hfoo'    # the stock footman: an ordinary, selectable unit
 INVENTORY = 'AInv'      # the six-slot unit inventory
@@ -34,7 +33,9 @@ RETURN_TEXT = 'Returns to your hero.'
 # order leaves the button doing nothing. Each ability on a unit needs its own order.
 BACKPACK_ICON = r'ReplaceableTextures\CommandButtons\BTNTomeBrown.blp'
 RETURN_ICON = r'ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp'
-HOLDER_MODEL = 'units\\nightelf\\Wisp\\Wisp.mdl'
+# The wisp was the wrong model to hide behind: it glows whatever its vertex alpha says, and
+# its sparkle sat on the hero. The footman is plain geometry, which transparency does hide.
+HOLDER_MODEL = 'units\\human\\Footman\\Footman.mdl'
 NEXT = 'tBnx'
 PREV = 'tBpv'
 NEXT_ICON = r'ReplaceableTextures\CommandButtons\BTNPiercingArrows.blp'
@@ -51,11 +52,36 @@ PREV_ORDER = 'windwalk'
 ORDER_DATA = 6
 
 
+def dedupe(obj):
+    """Keep one entry per field, the last written.
+
+    Unit and item tables carry no level or data numbers, so a field written twice is simply
+    there twice and the game reads the first one: an object edited by a second run of this
+    script kept its old name and tooltip while growing a duplicate of every other field.
+    """
+    seen = {}
+    for mod in obj['sets'][0]['mods']:
+        seen[(mod['field'], mod['level'] or 0, mod['data'] or 0)] = mod
+    obj['sets'][0]['mods'][:] = list(seen.values())
+    return obj
+
+
 def setf(obj, field, ftype, value, level=0, data=0):
+    """Replace a field, matching however this table numbers its entries.
+
+    A unit or item entry has no level or data of its own and reads as None where an ability
+    entry reads as 0, so the two have to be compared as equal or nothing is ever replaced.
+    """
     mods = obj['sets'][0]['mods']
-    mods[:] = [m for m in mods
-               if not (m['field'] == field and m['level'] == level and m['data'] == data)]
-    mods.append(dict(field=field, type=ftype, level=level, data=data, value=value, end=0))
+    def place(mod):
+        return (mod['field'], mod['level'] or 0, mod['data'] or 0)
+    target = (field, level or 0, data or 0)
+    old = next((m for m in mods if place(m) == target), None)
+    mods[:] = [m for m in mods if place(m) != target]
+    mods.append(dict(field=field, type=ftype,
+                     level=old['level'] if old else level,
+                     data=old['data'] if old else data,
+                     value=value, end=0))
 
 
 def button(objects, raw, name, hotkey, icon, tip, text, px, py, order):
@@ -136,6 +162,7 @@ def update_holder(units):
     holder = next((o for o in units['custom'] if o['id'] == HOLDER), None)
     if holder is None:
         return prepare_holder(units)
+    dedupe(holder)
     for field, ftype, value in holder_fields():
         setf(holder, field, ftype, value)
     return units
@@ -172,7 +199,8 @@ def prepare_locked_item(items, skin):
             entry = copy.deepcopy(source)
             entry['id'] = LOCKED
             table['custom'].append(entry)
-        for field, ftype, value in [('unam', 3, 'Locked slot'), ('utip', 3, 'Locked slot'),
+        dedupe(entry)
+        for field, ftype, value in [('unam', 3, 'Blocked'), ('utip', 3, 'Blocked'),
                                     ('utub', 3, LOCKED_TEXT), ('ides', 3, LOCKED_TEXT),
                                     ('iico', 3, LOCKED_ICON)]:
             setf(entry, field, ftype, value)
@@ -183,6 +211,7 @@ def place_reset_button(units, skin):
     reset = next((o for o in units['custom'] if o['id'] == RESET_UNIT), None)
     if reset is None:
         return
+    dedupe(reset)
     fields = [('unam', 3, RESET_NAME), ('utip', 3, RESET_TIP), ('utub', 3, RESET_TEXT),
               ('uico', 3, RESET_ICON), ('ugol', 0, 1000),
               ('ubpx', 0, RESET_SLOT[0]), ('ubpy', 0, RESET_SLOT[1])]
@@ -194,6 +223,7 @@ def place_reset_button(units, skin):
     if entry is None:
         entry = dict(base=reset['base'], id=RESET_UNIT, sets=[dict(flag=0, mods=[])])
         skin['custom'].append(entry)
+    dedupe(entry)
     for field, ftype, value in fields:
         setf(entry, field, ftype, value)
 

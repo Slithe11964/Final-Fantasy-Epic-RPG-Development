@@ -176,6 +176,28 @@ gem sitting in the slot. They now use `tBlk` "Locked slot", the same immovable i
 cancel icon and a tooltip saying why it is there. 1.29.2 cannot remove an inventory slot, so
 blocking it is as close as the version allows.
 
+## Two defects behind the crashes (stage ASW)
+
+**Every field was written twice.** A unit or item entry carries no level or data numbers, so
+it reads back as `None` where an ability entry reads `0`; the helper that replaces a field
+compared the two as different, kept the old entry and appended a new one. The game reads the
+first, which is why the blocked slot still called itself "Fix slot filler" under its new
+tooltip, and why the holder had fourteen duplicated fields after two runs. The helper now
+compares them as equal and writes back in the shape the table uses, and every object this
+script owns is de-duplicated on the way through. A test fails the build if any of them writes
+a field twice.
+
+**Moving an item inside the event that announced it crashes 1.29.2.** Picking something up
+with a page open had the backpack take the item out of the hero and hand it to the holder
+while the game was still in the middle of the pickup. Power-ups made it certain, because the
+item is destroyed by then, but it was never safe for anything. Every item move now waits for
+a zero-second timer and runs outside the event: what the hero picked up goes to the open page,
+then the equipment pages are checked and the worn bonuses granted.
+
+The wisp also had to go. Zero alpha does not hide a model that glows, and scaling it down left
+its sparkle on the hero. The holder now uses the footman model it is built from - plain
+geometry, which transparency does hide.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn

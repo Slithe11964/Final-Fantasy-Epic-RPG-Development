@@ -102,6 +102,23 @@ class BackpackCatalogTests(unittest.TestCase):
         for order in (catalog.BACKPACK_ORDER, catalog.RETURN_ORDER):
             self.assertNotIn(order, orders, order + ' is already an order in this map')
 
+    def test_no_object_carries_the_same_field_twice(self):
+        """Unit and item entries have no level or data numbers, so a field written twice is
+        simply there twice and the game reads the first one: the blocked slot kept the name of
+        the item it was copied from while every other field quietly grew a duplicate."""
+        abilities, units, items = self.added()
+        catalog.update_holder(units)
+        catalog.prepare_locked_item(items, None)
+        for table, ids in ((units, {catalog.HOLDER}), (items, {catalog.LOCKED}),
+                           (abilities, NEW_ABILITIES)):
+            for obj in table['custom']:
+                if obj['id'] not in ids:
+                    continue
+                places = [(m['field'], m['level'] or 0, m['data'] or 0)
+                          for m in obj['sets'][0]['mods']]
+                self.assertEqual(len(places), len(set(places)),
+                                 obj['id'] + ' writes a field twice')
+
     def test_the_locked_slot_item_cannot_be_moved_and_says_what_it_is(self):
         """A blocked slot only stays blocked while the item in it cannot leave."""
         items = read_objects(self.archive.read('war3map.w3t'), 'w3t')
@@ -110,7 +127,7 @@ class BackpackCatalogTests(unittest.TestCase):
         values = dict((m['field'], m['value']) for m in locked['sets'][0]['mods'])
         for field in ('idrp', 'idro', 'ipaw', 'isel', 'iusa'):
             self.assertEqual(values[field], 0, field)
-        self.assertEqual(values['unam'], 'Locked slot')
+        self.assertEqual(values['unam'], 'Blocked')
         self.assertIn('BTNCancel', values['iico'])
 
     def test_the_holder_is_quiet_and_answers_at_once(self):
