@@ -250,6 +250,7 @@ function Talents_BlindCheck takes player p returns nothing
         set hooked="yes"
     endif
     call DisplayTimedTextToPlayer(p,0.,0.,20.,"Blinding Light: hook registered "+hooked+"; it ran "+I2S(TalentBlindRuns)+" times for any missile, "+I2S(TalentBlindHits)+" for a blinding one, and blinded "+I2S(TalentBlindMarks)+" in flight")
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Missiles have touched a unit "+I2S(MissileHitRuns)+" times, so the hook should have run that often")
 endfunction
 
 function Talents_ResetSold takes nothing returns nothing
@@ -515,8 +516,11 @@ endfunction
 
 // Missile hits are evaluated through udg_MissileDamageTrig; hook in once startup has made it.
 function Talents_HookMissiles takes nothing returns nothing
-    call TriggerAddCondition(udg_MissileDamageTrig,Condition(function Talents_MissileHit))
-    set TalentBlindHooked=udg_MissileDamageTrig!=null
+    if MissileHitHook==null then
+        set MissileHitHook=CreateTrigger()
+    endif
+    call TriggerAddCondition(MissileHitHook,Condition(function Talents_MissileHit))
+    set TalentBlindHooked=MissileHitHook!=null
     call DestroyTimer(GetExpiredTimer())
 endfunction
 

@@ -28,6 +28,12 @@ globals
     integer array MissileTag
     // Travel and splash hits only run the hit hooks; they deal and heal nothing.
     boolean array MissileNoDamage
+    // A module that wants to see every unit a missile touches adds its condition here rather
+    // than to udg_MissileDamageTrig, whose condition list belongs to the map's own damage
+    // handler: a second condition on that trigger is never reached.
+    trigger MissileHitHook=null
+    // How many times a missile has touched a unit, for diagnosing a hook that sees nothing.
+    integer MissileHitRuns=0
 endglobals
 
 function Missile_RunOnLoop takes integer l_idx returns nothing
@@ -40,7 +46,11 @@ function Missile_RunOnHit takes integer l_idx,unit t,real damageAmount,real rd r
     set udg_ArgUnit=t
     set udg_ArgReal=damageAmount
     set udg_ArgRadius=rd
+    set MissileHitRuns=MissileHitRuns+1
     call TriggerEvaluate(udg_MissileDamageTrig)
+    if MissileHitHook!=null then
+        call TriggerEvaluate(MissileHitHook)
+    endif
 endfunction
 
 function Missile_Allocate takes nothing returns integer

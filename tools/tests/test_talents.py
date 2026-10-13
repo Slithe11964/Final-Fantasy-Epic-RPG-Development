@@ -116,6 +116,16 @@ class TalentTests(unittest.TestCase):
                          'function X takes nothing returns nothing\nendfunction\n')
         self.assertTrue(classic.endswith('endlibrary\r\n') or classic.rstrip().endswith('endlibrary'))
 
+    def test_blinding_light_uses_the_missile_hook_not_the_damage_trigger(self):
+        """A second condition on udg_MissileDamageTrig is never reached, because the map's own
+        damage handler owns that condition list, so the missile system offers its own hook."""
+        missile = (SOURCE.parent.parent / '01 Shared helpers/Missile.j').read_text(encoding='utf-8')
+        self.assertIn('trigger MissileHitHook=null', missile)
+        self.assertIn('call TriggerEvaluate(MissileHitHook)', missile)
+        talents = SOURCE.read_text(encoding='utf-8')
+        self.assertIn('call TriggerAddCondition(MissileHitHook,Condition(function Talents_MissileHit))', talents)
+        self.assertNotIn('TriggerAddCondition(udg_MissileDamageTrig', talents)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -52,3 +52,12 @@ its impact hooks when it carries a non-zero amount, so the blind never landed on
 was aimed at. The blind is applied at the cast instead. Enemies the sphere merely passes are
 still blinded on contact, for the shorter time. This was never a 1.29.2 difference: the
 functions involved are byte-identical in both builds.
+
+Enemies the sphere passed were still not blinded, and `-blindcheck` reported the hook as
+registered but never run. It had been added as a second condition on `udg_MissileDamageTrig`,
+the trigger the missile system evaluates for every unit a missile touches - and a second
+condition there is never reached, because that condition list belongs to the map's own damage
+handler. The missile system now offers a hook of its own, `MissileHitHook`, which it evaluates
+after the damage handler, and the talent registers there. `-blindcheck` also reports how many
+times a missile has touched a unit at all, so a hook that still sees nothing can be told apart
+from a missile that touches nothing.
