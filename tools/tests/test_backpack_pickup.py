@@ -54,7 +54,8 @@ class PickupTests(unittest.TestCase):
             BackpackDefer={0:'clock0',1:'clock1'},GetExpiredTimer=lambda:self.clock,
             Backpack_QueueWork=lambda pid:None,Backpack_OnHolderChange=lambda:None,
             Backpack_CheckPage=lambda pid,page:self.checks.append((pid,page)),Backpack_StripQuickSlots=lambda pid:None,
-            BackpackCdAbility={0:0,1:0},BackpackSettleMana={0:False,1:False})
+            BackpackCdAbility={0:0,1:0},BackpackSettleMana={0:False,1:False},
+            Backpack_WearBlock=lambda pid,i:None)
         names=['Backpack_StoreOn','Backpack_Store','Backpack_PageLimit','Backpack_TryEquipPickup',
             'Backpack_QueueEquipPickup','Backpack_OnPickup','Backpack_RunDeferred','Backpack_OnCommand']
         with patch.object(harness,'SELECTED',[]):self.e=harness.load_engine(SOURCE.read_text(),names,env)

@@ -54,8 +54,8 @@ remembers the position, so the check after a load reads back exactly.
 - The account check uses the player name with any BattleTag number removed. A save loads only
   for a player whose 1.29.2 name matches that Reforged name.
 - Difficulty tier and Speedrun mode must match the game, as in Reforged.
-- Reforged lets a weapon be worn in the offhand. 1.29.2 cannot dual-wield, so after such a load
-  the page check moves that weapon to the bag (if the bag has room) and says so.
+- A weapon worn in the offhand (Dual Wield) loads as the second weapon on page 1. The page
+  check then applies the wearing rules (BACKPACK.md): without Dual Wield it moves to the bag.
 - Both versions use the same CustomMapData\FFERPG folder. If 1.29.2 cannot read a file, enable
   "Allow Local Files" (the `Allow Local Files.txt` helper in that folder does it); chat codes never
   need it.

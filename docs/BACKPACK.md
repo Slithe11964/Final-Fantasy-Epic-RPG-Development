@@ -301,8 +301,26 @@ Check: a quest item handed in from a bag page, magic defense and proficiency fro
 (and none from the same gear in the bag), two-handed with and without an offhand, and Necklace of
 the Necromancer dropping on death from page 2.
 
+## Wearing rules (stage ATI)
+
+The original Equip trigger's rules now apply when gear goes on an equipment page; the bag and
+quick slots still carry anything.
+
+- An item's life is the Spirit of Gaya level it needs. Life 145 marks job gear, which needs a
+  Legendary Master of the job its item level names (1 Squire or Chemist, 2 Knight, 3 Archer,
+  0 Monk, 4 Thief or Ninja, 5 Lancer, 6 Geomancer, 7 Samurai, 8 Holy Swordsman or Dark Knight,
+  11 Mediator). Refused gear goes to the bag with the original message, or to the hero's feet
+  when the bag is full. Pickups never auto-equip gear the player may not wear yet.
+- Dual Wield (Ninja) allows two weapons on page 1, never more than two hand items. A job without
+  Dual Wield moves the second weapon to the bag. Two weapons save as weapon and offhand, the way
+  Reforged dual-wields.
+- Wearing gear ends the speedrun's No Gear accolade, as picking gear up did.
+
+Rules live in `Backpack_WearBlock` and `Backpack_CheckPage`; tests in
+`tools/tests/test_backpack_wear_rules.py`. Check: a helm above the Gaya level, job gear without
+and with the master, two weapons as Ninja and after changing job.
+
 ## Still to build
 
-Click to equip gear already in the hero's own slots, and the level and mastery requirements on
-worn gear. Since ATG the 1.29.2 map saves the backpack with the Reforged
+Click to equip gear already in the hero's own slots. Since ATG the 1.29.2 map saves the backpack with the Reforged
 FSVB code (SAVE_129.md); Reforged keeps its own save unchanged.

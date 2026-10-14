@@ -118,6 +118,7 @@ def load_engine(extra_source='', extra_names=(), extra_env=None):
             code.append('    ' * level + line)
             if line.endswith(':'):
                 level += 1
+                code.append('    ' * level + 'pass')  # a JASS block may hold only a comment
         exec('\n'.join(code), env)
     return env
 

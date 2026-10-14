@@ -6,7 +6,8 @@ endglobals
 
 // The backpack owns equipment in 1.29.2: the hero's own six slots are carrying space that
 // pays out nothing, so the one-of-each rules that used to police them do not apply there.
-// Without the backpack the original rules stand.
+// The same rules, with these level and mastery requirements, now apply when gear goes on an
+// equipment page (Backpack_CheckPage, Backpack_WearBlock). Without the backpack they stand here.
 function Trig_Equip_Restrictions_Conditions takes nothing returns boolean
     static if LIBRARY_TBackpack then
         return false

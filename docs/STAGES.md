@@ -143,3 +143,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ForsakenDY | Built on DW with unchanged normal save paging, restored loaded Chronicle categories, active Priest talents and three-second hero/Gaya house portals. |
 | ForsakenDZ | Fixed Priest talent reset deleting the hero, moved Reset to bottom-left and Legendary Bonus to bottom-right, and restored earned/unspent milestone points on the DW save base. |
 | ATH | The map's item checks see the backpack: quests, keys and hand-ins find items anywhere in it, while magic defense, proficiency, two-handed, bare-handed and cursed-gear rules read only the two equipment pages. |
+| ATI | Equipment pages enforce the original Equip rules: Spirit of Gaya level and Legendary Master requirements (refused gear goes to the bag, or the ground when full), two weapons only with Dual Wield, and wearing gear ends the No Gear speedrun accolade. |

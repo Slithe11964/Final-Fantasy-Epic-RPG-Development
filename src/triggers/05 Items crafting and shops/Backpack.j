@@ -1,4 +1,4 @@
-library TBackpack requires TAbil, TPlayerHero, TTalents, TGearSlots, TItemCooldown
+library TBackpack requires TAbil, TPlayerHero, TTalents, TGearSlots, TItemCooldown, TJob
 // Gear storage for 1.29.2, which has neither a frame UI nor an extended inventory native.
 // A holder unit carries six inventory slots and the player's selection switches to it, so the
 // hero's own six slots stay free for potions and books. The holder is parked away from play;
@@ -453,6 +453,76 @@ function Backpack_PageLimit takes integer page,integer kind returns integer
     return 0
 endfunction
 
+// The level and mastery rule the original Equip trigger applied to gear the hero put on, now
+// applied to gear put on an equipment page (the bag and quick slots carry anything). An item's
+// life holds the Spirit of Gaya level it needs. Life 145 marks a job's gear, which a Legendary
+// Master of that job (job level 100) unlocks instead; the item level says which job.
+// Returns the original refusal message, or null when the player may wear the item.
+function Backpack_WearBlock takes integer pid,item worn returns string
+    local player p=Player(pid)
+    local integer level=GetItemLevel(worn)
+    local string job=" "
+    local string name=GetItemName(worn)+" "+udg_PlayerName[pid+1]
+    if not IsPlayerInForce(p,udg_PlayingPlayers) or GetWidgetLife(worn)<=I2R(GetHeroLevel(udg_SpiritOfGaya[pid+1])) then
+        set p=null
+        return null
+    endif
+    if GetWidgetLife(worn)!=145. then
+        set p=null
+        return "In order to equip "+name+" your Spirit of Gaya must be at least Level "+I2S(R2I(GetWidgetLife(worn)))
+    endif
+    if level==1 then
+        if Job_GetSavedLevel(p,'H000')<'d' and Job_GetSavedLevel(p,'H002')<'d' then // Squire, Chemist
+            set job="Squire or Chemist"
+        endif
+    elseif level==2 then
+        if Job_GetSavedLevel(p,'H003')<'d' then // Knight
+            set job="Knight"
+        endif
+    elseif level==3 then
+        if Job_GetSavedLevel(p,'H001')<'d' then // Archer
+            set job="Archer"
+        endif
+    elseif level==0 then
+        if Job_GetSavedLevel(p,'H00A')<'d' then // Monk
+            set job="Monk"
+        endif
+    elseif level==4 then
+        if Job_GetSavedLevel(p,'H00B')<'d' and Job_GetSavedLevel(p,'H00F')<'d' then // Thief, Ninja
+            set job="Thief or Ninja"
+        endif
+    elseif level==5 then
+        if Job_GetSavedLevel(p,'H00C')<'d' then // Lancer
+            set job="Lancer"
+        endif
+    elseif level==6 then
+        if Job_GetSavedLevel(p,'H00D')<'d' then // Geomancer
+            set job="Geomancer"
+        endif
+    elseif level==7 then
+        if Job_GetSavedLevel(p,'H00E')<'d' then // Samurai
+            set job="Samurai"
+        endif
+    elseif level==8 then
+        if Job_GetSavedLevel(p,'H00M')<'d' and Job_GetSavedLevel(p,'H02X')<'d' then // Holy Swordsman, Dark Knight
+            if udg_DarkJobsUnlocked then
+                set job="Holy Swordsman or Dark Knight"
+            else
+                set job="Holy Swordsman"
+            endif
+        endif
+    elseif level==11 then
+        if Job_GetSavedLevel(p,'H00G')<'d' then // Mediator
+            set job="Mediator"
+        endif
+    endif
+    set p=null
+    if job==" " then
+        return null
+    endif
+    return "In order to equip "+name+" you must have a Legendary Master "+job
+endfunction
+
 // Fill only an empty slot kind; never replace an existing piece or recreate the item.
 function Backpack_TryEquipPickup takes integer pid,unit carrier,item carried returns boolean
     local integer kind=Gear_KindOf(GetItemTypeId(carried))
@@ -462,6 +532,10 @@ function Backpack_TryEquipPickup takes integer pid,unit carrier,item carried ret
     local unit holder
     local item worn
     if carried==null or kind<=0 or IsItemPowerup(carried) then
+        return false
+    endif
+    // Gear the player may not wear yet is carried in the bag instead.
+    if Backpack_WearBlock(pid,carried)!=null then
         return false
     endif
     loop
@@ -624,6 +698,22 @@ function Backpack_StripQuickSlots takes integer pid returns nothing
     set carried=null
 endfunction
 
+// Takes gear the player may not wear off an equipment page: into the bag, or to the hero's feet
+// when the bag is full, as the original rule dropped it.
+function Backpack_Refuse takes integer pid,unit holder,item worn,string reason returns nothing
+    local unit hero=Player_GetHero(Player(pid))
+    if Backpack_Store(pid,holder,worn) then
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,10.,reason+". It went into the bag.")
+    else
+        call UnitRemoveItem(holder,worn)
+        if hero!=null then
+            call SetItemPosition(worn,GetUnitX(hero),GetUnitY(hero))
+        endif
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,10.,reason+". The bag is full, so it was dropped.")
+    endif
+    set hero=null
+endfunction
+
 // Keeps an equipment page honest: anything that is not equipment, belongs on the other
 // equipment page, or doubles up on a piece already worn goes to the bag.
 function Backpack_CheckPage takes integer pid,integer page returns nothing
@@ -632,6 +722,10 @@ function Backpack_CheckPage takes integer pid,integer page returns nothing
     local item worn
     local integer slot=0
     local integer kind=0
+    local integer limit
+    local string reason
+    // Dual Wield (Ninja) lets the hands hold two weapons, as it let the hero carry two before.
+    local boolean dual=GetUnitAbilityLevel(Player_GetHero(p),'A0HP')>0 // 'A0HP': ability "Dual Wield"
     if page>=BACKPACK_EQUIPMENT_PAGES or holder==null then
         return
     endif
@@ -647,17 +741,31 @@ function Backpack_CheckPage takes integer pid,integer page returns nothing
             // A blocked slot: nothing to judge.
         elseif worn!=null then
             set kind=Gear_KindOf(GetItemTypeId(worn))
+            set limit=Backpack_PageLimit(page,kind)
+            if page==0 and kind==GEAR_PRIMARY and dual then
+                set limit=2
+            endif
             if kind<=0 then
                 call DisplayTimedTextToPlayer(p,0.,0.,8.,GetItemName(worn)+" is not equipment, so it goes in the bag")
                 call Backpack_Store(pid,holder,worn)
             elseif Backpack_PageLimit(page,kind)==0 then
                 call DisplayTimedTextToPlayer(p,0.,0.,8.,GetItemName(worn)+" is a "+Gear_KindName(kind)+", which belongs on the other equipment page")
                 call Backpack_Store(pid,holder,worn)
-            elseif BackpackKindSeen[kind]>=Backpack_PageLimit(page,kind) then
+            elseif BackpackKindSeen[kind]>=limit then
                 call DisplayTimedTextToPlayer(p,0.,0.,8.,"You are already wearing a "+Gear_KindName(kind)+", so "+GetItemName(worn)+" goes in the bag")
                 call Backpack_Store(pid,holder,worn)
+            elseif (kind==GEAR_PRIMARY or kind==GEAR_OFFHAND) and BackpackKindSeen[GEAR_PRIMARY]+BackpackKindSeen[GEAR_OFFHAND]>=2 then
+                call DisplayTimedTextToPlayer(p,0.,0.,8.,"You are already using gear for both of your hands, so "+GetItemName(worn)+" goes in the bag")
+                call Backpack_Store(pid,holder,worn)
             else
-                set BackpackKindSeen[kind]=BackpackKindSeen[kind]+1
+                set reason=Backpack_WearBlock(pid,worn)
+                if reason!=null then
+                    call Backpack_Refuse(pid,holder,worn,reason)
+                else
+                    set BackpackKindSeen[kind]=BackpackKindSeen[kind]+1
+                    // Wearing gear ends the speedrun's No Gear accolade, as picking gear up did.
+                    set udg_SpeedrunFlag[4]=true
+                endif
             endif
         endif
         set slot=slot+1
@@ -679,6 +787,22 @@ function Backpack_PageOf takes integer pid,unit which returns integer
         set page=page+1
     endloop
     return -1
+endfunction
+
+// How many weapons the weapon page holds: two only while the hero has Dual Wield.
+function Gear_WornWeapons takes integer pid returns integer
+    local unit holder=BackpackHolder[pid*8]
+    local integer slot=0
+    local integer count=0
+    loop
+        exitwhen holder==null or slot>=BACKPACK_SLOTS
+        if Gear_KindOf(GetItemTypeId(UnitItemInSlot(holder,slot)))==GEAR_PRIMARY then
+            set count=count+1
+        endif
+        set slot=slot+1
+    endloop
+    set holder=null
+    return count
 endfunction
 
 // What a player is wearing in a given slot kind, for the item checks spread through the map.
@@ -1372,6 +1496,10 @@ function Backpack_GiveButton takes nothing returns nothing
         // it, so they are granted again to whoever the hero is now.
         if hero!=null and BackpackBonusHero[i]!=hero and BackpackGrantedCount[i]>0 then
             call Backpack_ApplyBonuses(i)
+        endif
+        // A job without Dual Wield cannot keep a second weapon in its hands.
+        if hero!=null and GetUnitAbilityLevel(hero,'A0HP')==0 and Gear_WornWeapons(i)>1 then // 'A0HP': ability "Dual Wield"
+            call Backpack_CheckPage(i,0)
         endif
         set i=i+1
     endloop

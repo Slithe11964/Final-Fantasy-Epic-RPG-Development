@@ -298,8 +298,9 @@ function SaveSlots_Place takes integer pid,integer kind,integer position,item it
     return true
 endfunction
 
-// After a load is committed: the hero puts on what the pages hold. A weapon that Reforged wore
-// in the offhand cannot be dual-wielded on page 1 here, so the page check moves it to the bag.
+// After a load is committed: the hero puts on what the pages hold. The page check applies the
+// same rules as any other change: a second weapon stays only for a hero with Dual Wield, and
+// gear the player may not wear yet moves to the bag.
 function SaveSlots_AfterLoad takes integer pid returns nothing
     local integer page=0
     loop
