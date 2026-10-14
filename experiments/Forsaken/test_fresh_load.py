@@ -375,8 +375,16 @@ class FreshLoadTests(unittest.TestCase):
     def test_failed_cleanup_keeps_journal_until_retry(self):
         self.fail_place=True;self.f.block_item_removal=True;self.assertFalse(self.apply())
         self.assertEqual(self.e['FFL_Phase'][0],5);self.assertTrue(self.e['FFP_Locked'][0])
+        self.assertTrue(any(parent<16 for parent,child in self.e['FFL_Before']))
         self.assertFalse(self.e['FFP_Build'](0,self.f.base.encoded,True))
         self.f.block_item_removal=False;self.assertTrue(self.e['FFL_Restore'](0));self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertFalse(any(parent<16 for parent,child in self.e['FFL_Before']))
+
+    def test_commit_releases_removed_starter_snapshot_without_touching_other_players(self):
+        self.e['FFL_Before'][19,0]='another player snapshot'
+        self.assertTrue(self.apply());self.finish();self.e['FFL_Tick']()
+        self.assertFalse(any(parent<16 for parent,child in self.e['FFL_Before']))
+        self.assertEqual(self.e['FFL_Before'][19,0],'another player snapshot')
     def test_below_mastery_resets_skills_and_refunds_points(self):
         self.assertTrue(self.e['FFP_Build'](0,self.f.base.encoded,True));self.assertTrue(self.e['FFN_Allocate'](0,True))
         hero=self.e['FFN_Unit'][0];self.assertTrue(self.e['FFL_PrepareHero'](0,hero,11,25,0))

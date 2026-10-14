@@ -20,7 +20,7 @@ SOURCE = ROOT / 'src/triggers/05 Items crafting and shops/Armory.j'
 def runtime():
     source = SOURCE.read_text(encoding='utf-8')
     env = mocks(source)
-    for name in ['ArmoryMissingUnit', 'ArmoryCategory']:
+    for name in ['ArmoryMissingUnit', 'ArmoryCategory', 'ArmoryCategoryAbility']:
         env[name] = defaultdict(int)
     env['ArmoryHint'] = defaultdict(str)
     shop = {'owner': 1}
@@ -36,7 +36,7 @@ def runtime():
                udg_SaveFlagUnitID=defaultdict(int, {i: f'u{i}' for i in range(1, 12)}),
                udg_SaveFlagForce=flags, udg_SaveFlagCount=351, udg_ArmoryStockMax=540)
     names = ['Armory_InitHints', 'Armory_InCategory', 'Armory_ClearStock', 'Armory_ShowCategory',
-             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions']
+             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions', 'Armory_CategoryFromAbility']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(source, names, env)
     e['Armory_InitHints']()
@@ -56,7 +56,7 @@ class ArmoryTests(unittest.TestCase):
         e['Armory_InitHints']()
         e.update(ArmoryTooltipBase='', ArmoryTooltipShown='', ArmoryTooltipLevel=0,
                  ArmoryProgressStored=defaultdict(int),ArmoryProgressTotal=defaultdict(int),
-                 ArmoryMenuBase=defaultdict(str),ArmoryMenuShown=defaultdict(str),
+                 ArmoryMenuBase=defaultdict(str),ArmoryMenuShown=defaultdict(str),ArmoryCategoryAbility=defaultdict(int),
                  udg_ArmoryParentCategory=defaultdict(int),GetObjectName=lambda raw:str(raw))
         with patch.object(harness, 'SELECTED', []):
             e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), ['Armory_CollectionText', 'Armory_RefreshCounter', 'Armory_CountProgress', 'Armory_ProgressLine'], e)

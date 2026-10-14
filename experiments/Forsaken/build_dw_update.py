@@ -18,6 +18,7 @@ from wct import read_wct
 from editor_layout import trigger_items
 from jtok import functions
 import talents_catalog
+import armory_menu_catalog
 from build_save_roundtrip import align_bt_tests, load_source
 from build_save_probe import capture_source, fresh_plan_source
 import save_registry
@@ -131,7 +132,9 @@ def prepare_objects(base,out):
     files={name:write_objects(table,table['version'],ext) for name,table,ext in
            [('war3map.w3a',a,'w3a'),('war3mapSkin.w3a',sa,'w3a'),('war3map.w3u',u,'w3u'),('war3mapSkin.w3u',su,'w3u')]}
     replace_files(str(base),str(out),files)
-    return out
+    menu=out.with_name('menu-'+out.name)
+    armory_menu_catalog.prepare(out,menu)
+    return menu
 
 
 def main():
@@ -183,6 +186,8 @@ def main():
             if path not in kept:path.unlink()
         align_bt_tests(work)
         shutil.copy2(ROOT/'tools/tests/test_talents.py',work/'tools/tests/test_talents.py')
+        for fixture in ('test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py'):
+            shutil.copy2(ROOT/'tools/tests'/fixture,work/'tools/tests'/fixture)
         config=work/'tools/build-config.json';data=json.loads(config.read_text())
         data.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title=settings()['name']+' Forsaken '+args.stage+' private Chronicle/Priest test')
         config.write_text(json.dumps(data,indent=2)+'\n')
@@ -219,6 +224,8 @@ def main():
         write(path('Save'),saved)
         for module,folder in [('Missile','01 Shared helpers'),('Spell_Cure','04 Combat and abilities')]:
             write(path(module),(ROOT/'src/triggers'/folder/(module+'.j')).read_text())
+        for module in ('Armory','Bazaar'):
+            write(path(module),(ROOT/'src/triggers/05 Items crafting and shops'/(module+'.j')).read_text())
         write(path('Equip'),patch_equip(path('Equip').read_text()))
         write(path('Job'),patch_job(path('Job').read_text()))
         boot=path('MapBootstrap').read_text()
@@ -229,7 +236,7 @@ def main():
         runtime=MPQ(str(cached)).read('war3map.j').decode()
         write(path('ForsakenFreshLoad'),load_source(runtime))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','MapBootstrap','ForsakenFreshLoad',
             'ForsakenSaveCapture','ForsakenSaveFreshPlan','ForsakenSaveTransport')
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'

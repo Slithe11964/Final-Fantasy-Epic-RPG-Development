@@ -2787,6 +2787,15 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
     return true
 endfunction
 
+function FFL_ReleaseSnapshot takes integer pid returns nothing
+    local integer section=0
+    loop
+        exitwhen section>=16
+        call FlushChildHashtable(FFL_Before,pid*16+section)
+        set section=section+1
+    endloop
+endfunction
+
 function FFL_Restore takes integer pid returns boolean
     local integer i=0
     local boolean restored=true
@@ -2813,6 +2822,7 @@ function FFL_Restore takes integer pid returns boolean
     endloop
     call FFL_Guard(false)
     if restored and cleaned then
+        call FFL_ReleaseSnapshot(pid)
         set FFL_Phase[pid]=0
         set FFL_SnapshotTaken[pid]=false
         set FFL_OldHero[pid]=null
@@ -3077,6 +3087,7 @@ function FFL_Commit takes integer pid returns nothing
     set FFL_SnapshotTaken[pid]=false
     set FFL_OldHero[pid]=null
     set FFL_OldGaya[pid]=null
+    call FFL_ReleaseSnapshot(pid)
     call FFL_Guard(false)
     call FFL_RestoreUnlocks(pid)
     call SaveSlots_AfterLoad(pid)

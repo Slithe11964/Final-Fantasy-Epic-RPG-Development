@@ -14,7 +14,7 @@ DIALOG = '''function Bazaar_ShowRecipe takes player p returns nothing
     call DialogSetMessage(BazaarDialog[id],Bazaar_RecipeText(recipe))
     set BazaarPrevious[id]=DialogAddButton(BazaarDialog[id],"Previous recipe",0)
     set BazaarNext[id]=DialogAddButton(BazaarDialog[id],"Next recipe",0)
-    set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Craft this recipe",0)
+    set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Prepare this recipe",0)
     call DialogAddButton(BazaarDialog[id],"Close",0)
     call DialogDisplay(p,BazaarDialog[id],true)
 endfunction'''

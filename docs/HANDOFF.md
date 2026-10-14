@@ -8,11 +8,11 @@ logs up to 2026-10-10 are in [history/](history/).
 
 | Line | Map | State |
 |---|---|---|
-| Reforged gameplay | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEB.w3x` | EB keeps the DW/DZ native inventory and routes autosave through the read-only file-save pipeline; eligible fresh loads announce/enable New Game Plus. Autosave acceptance pending. Classic Backpack/SaveSlots modules are rejected by the builder. Retest `-loadf dev` and cross-version saves. ATM Reforged is superseded for gameplay. |
-| 1.29.2 development | `release/1.29.2/FFERPG_0.9.7.3-r16-stageATO.w3x` | ATO fixes legacy autosave routing, adds the New Game Plus load notice, Secrets tooltip/summary total, and Armory category/subcategory totals. Classic Chronicle counters otherwise confirmed. ATN added explicit classic collection-tooltip levels, `-armory`/`-chronicle` category and collection totals, and `-equipment` for all nine slots; in-game check pending. ATM preserves imported difficulty tiers through Nightmare saves. Backpack pages, cross-page cooldowns, water projectiles, item checks and wearing rules remain (BACKPACK.md, SAVE_129.md). The corresponding `release/...stageATO.w3x` is an authoring intermediate for classic conversion, not the Reforged gameplay map. |
+| Reforged gameplay | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEC.w3x` | EC keeps native inventory, adds individual Armory category tooltips, Bazaar prepare/purchase and snapshot release; gameplay/Warcraft saved-game checks pending. EB routes autosave through the read-only file-save pipeline; eligible fresh loads announce/enable New Game Plus. Autosave acceptance pending. Classic Backpack/SaveSlots modules are rejected by the builder. Retest `-loadf dev` and cross-version saves. ATM Reforged is superseded for gameplay. |
+| 1.29.2 development | `release/1.29.2/FFERPG_0.9.7.3-r16-stageATP.w3x` | ATP adds individual category ability tooltips (root total only, plain Close), Bazaar prepare/purchase with reward reveal and recipe-ready notices, and releases completed import snapshots for the ATO native saved-game crash retest. ATO fixed legacy autosave routing, adds the New Game Plus load notice, Secrets tooltip/summary total, and Armory category/subcategory totals. Classic Chronicle counters otherwise confirmed. ATN added explicit classic collection-tooltip levels, `-armory`/`-chronicle` category and collection totals, and `-equipment` for all nine slots; in-game check pending. ATM preserves imported difficulty tiers through Nightmare saves. Backpack pages, cross-page cooldowns, water projectiles, item checks and wearing rules remain (BACKPACK.md, SAVE_129.md). The corresponding `release/...stageATP.w3x` is an authoring intermediate for classic conversion, not the Reforged gameplay map. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
 
-| New save system | Forsaken EB (Reforged) and ATO (1.29.2) | Shared FSVB format and permanent IDs; native Reforged equipment maps to classic equipment pages. Retest this pair in game. DW/DZ round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Priest reset, Chronicle restoration and three-second portals remain. DX is the separate multi-file test. See SAVE_FRESH_LOAD_TEST.md and SAVE_129.md. |
+| New save system | Forsaken EC (Reforged) and ATP (1.29.2) | Shared FSVB format and permanent IDs; native Reforged equipment maps to classic equipment pages. Retest this pair in game. DW/DZ round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Priest reset, Chronicle restoration and three-second portals remain. DX is the separate multi-file test. See SAVE_FRESH_LOAD_TEST.md and SAVE_129.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
@@ -21,7 +21,7 @@ All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user re
 1.29.2 authoring build (Windows PowerShell, from this folder):
 
 ```powershell
-.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageATO.w3x
+.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageATP.w3x
 ```
 
 It finds changed modules in `src/`, syncs them into the base map, orders libraries, checks the
@@ -65,8 +65,8 @@ its builder rejects classic inventory modules.
 
 ## Next
 
-1. Save (EB/ATO): retest autosave with a populated backpack and reload the autosave file; check the New Game Plus notice on an eligible endgame load. Difficulty: save an Easy-origin character in Nightmare, then confirm Easy accepts it and Inferno rejects it; resave an Inferno-origin character in Nightmare and confirm it loads anywhere. Test both clients. After any change to the experiments/Forsaken save modules, rerun `python tools/save_port.py <built map>`.
-2. Classic ATO: check Secrets 1/1 and its summary name, house Armory category totals, and the open Armory menu Back tooltip for subcategories.
-3. Forsaken: load a DW save in EB and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
+1. Save (EC/ATP): test a new Warcraft saved game after importing a character (ATO crashed); retest autosave with a populated backpack and reload the autosave file; check the New Game Plus notice on an eligible endgame load. Difficulty: save an Easy-origin character in Nightmare, then confirm Easy accepts it and Inferno rejects it; resave an Inferno-origin character in Nightmare and confirm it loads anywhere. Test both clients. After any change to the experiments/Forsaken save modules, rerun `python tools/save_port.py <built map>`.
+2. Armory ATP/EC: root total only, each category button has its own progress and opens the right page; Close/Back has no counts. Bazaar: prepare consumes parts, purchase pays and delivers, rewards reveal and recipe-ready text returns.
+3. Forsaken: load a DW save in EC and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
 4. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 5. Optional cleanup of shared temp variables: PHASE16.md.

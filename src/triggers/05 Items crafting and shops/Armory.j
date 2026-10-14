@@ -16,6 +16,7 @@ globals
     string ArmoryTooltipBase=""
     string ArmoryTooltipShown=""
     integer ArmoryTooltipLevel=0
+    integer array ArmoryCategoryAbility
     string array ArmoryMenuBase
     string array ArmoryMenuShown
     integer array ArmoryProgressTotal
@@ -994,11 +995,22 @@ function Armory_ShowCategory takes unit shop,integer category returns nothing
     local integer playerIndex=GetConvertedPlayerId(p)
     local integer i=1
     local integer stockId
+    local integer child=1
     call Armory_ClearStock(shop)
+    loop
+        exitwhen child>40
+        if ArmoryCategoryAbility[child]!=0 then
+            call UnitRemoveAbility(shop,ArmoryCategoryAbility[child])
+            if udg_ArmoryParentCategory[child]==category then
+                call UnitAddAbility(shop,ArmoryCategoryAbility[child])
+            endif
+        endif
+        set child=child+1
+    endloop
     set ArmoryCategory[playerIndex]=category
     loop
         exitwhen i>udg_ArmoryStockMax
-        if Armory_InCategory(i,category) then
+        if i<=udg_SaveFlagCount and Armory_InCategory(i,category) then
             set stockId=udg_SaveFlagUnitID[i]
             if ArmoryMissingUnit[i]!=0 and not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
                 set stockId=ArmoryMissingUnit[i]
@@ -1066,33 +1078,19 @@ function Armory_RefreshCounter takes nothing returns nothing
     local integer child
     local string tooltip=ArmoryTooltipBase+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
     call Armory_CountProgress(p)
-    loop
-        exitwhen category>8
-        set tooltip=tooltip+"|n"+Armory_ProgressLine(category)
-        set category=category+1
-    endloop
     if tooltip!=ArmoryTooltipShown then
         call BlzSetAbilityExtendedTooltip('A0MW',tooltip,ArmoryTooltipLevel)
         set ArmoryTooltipShown=tooltip
     endif
-    set category=0
+    set category=1
     loop
         exitwhen category>40
-        set tooltip=ArmoryMenuBase[category]+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
-        if category>0 then
-            set tooltip=tooltip+"|n"+Armory_ProgressLine(category)
-        endif
-        set child=1
-        loop
-            exitwhen child>40
-            if udg_SaveFlagUnitID[500+child]!=0 and udg_ArmoryParentCategory[child]==category then
-                set tooltip=tooltip+"|n"+Armory_ProgressLine(child)
+        if ArmoryCategoryAbility[category]!=0 then
+            set tooltip=ArmoryMenuBase[category]+"|n|n|cffffcc00Collection:|r "+I2S(ArmoryProgressStored[category])+" / "+I2S(ArmoryProgressTotal[category])
+            if tooltip!=ArmoryMenuShown[category] then
+                call BlzSetAbilityExtendedTooltip(ArmoryCategoryAbility[category],tooltip,ArmoryTooltipLevel)
+                set ArmoryMenuShown[category]=tooltip
             endif
-            set child=child+1
-        endloop
-        if tooltip!=ArmoryMenuShown[category] then
-            call BlzSetAbilityExtendedTooltip('A0MX',tooltip,category+ArmoryTooltipLevel)
-            set ArmoryMenuShown[category]=tooltip
         endif
         set category=category+1
     endloop
@@ -1107,9 +1105,50 @@ function Armory_InitCounter takes nothing returns nothing
         set ArmoryTooltipLevel=1
     endif
     set ArmoryTooltipBase=BlzGetAbilityExtendedTooltip('A0MW',ArmoryTooltipLevel)
+    set ArmoryCategoryAbility[1]='aR01'
+    set ArmoryCategoryAbility[2]='aR02'
+    set ArmoryCategoryAbility[3]='aR03'
+    set ArmoryCategoryAbility[4]='aR04'
+    set ArmoryCategoryAbility[5]='aR05'
+    set ArmoryCategoryAbility[6]='aR06'
+    set ArmoryCategoryAbility[7]='aR07'
+    set ArmoryCategoryAbility[8]='aR08'
+    set ArmoryCategoryAbility[11]='aR11'
+    set ArmoryCategoryAbility[12]='aR12'
+    set ArmoryCategoryAbility[13]='aR13'
+    set ArmoryCategoryAbility[14]='aR14'
+    set ArmoryCategoryAbility[15]='aR15'
+    set ArmoryCategoryAbility[16]='aR16'
+    set ArmoryCategoryAbility[17]='aR17'
+    set ArmoryCategoryAbility[18]='aR18'
+    set ArmoryCategoryAbility[19]='aR19'
+    set ArmoryCategoryAbility[20]='aR20'
+    set ArmoryCategoryAbility[21]='aR21'
+    set ArmoryCategoryAbility[22]='aR22'
+    set ArmoryCategoryAbility[23]='aR23'
+    set ArmoryCategoryAbility[24]='aR24'
+    set ArmoryCategoryAbility[25]='aR25'
+    set ArmoryCategoryAbility[26]='aR26'
+    set ArmoryCategoryAbility[27]='aR27'
+    set ArmoryCategoryAbility[28]='aR28'
+    set ArmoryCategoryAbility[29]='aR29'
+    set ArmoryCategoryAbility[30]='aR30'
+    set ArmoryCategoryAbility[31]='aR31'
+    set ArmoryCategoryAbility[32]='aR32'
+    set ArmoryCategoryAbility[33]='aR33'
+    set ArmoryCategoryAbility[34]='aR34'
+    set ArmoryCategoryAbility[35]='aR35'
+    set ArmoryCategoryAbility[36]='aR36'
+    set ArmoryCategoryAbility[37]='aR37'
+    set ArmoryCategoryAbility[38]='aR38'
+    set ArmoryCategoryAbility[39]='aR39'
+    set ArmoryCategoryAbility[40]='aR40'
+    set category=1
     loop
         exitwhen category>40
-        set ArmoryMenuBase[category]=BlzGetAbilityExtendedTooltip('A0MX',category+ArmoryTooltipLevel)
+        if ArmoryCategoryAbility[category]!=0 then
+            set ArmoryMenuBase[category]=BlzGetAbilityExtendedTooltip(ArmoryCategoryAbility[category],ArmoryTooltipLevel)
+        endif
         set category=category+1
     endloop
     call Armory_RefreshCounter()
@@ -1633,8 +1672,20 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
     endif
 endfunction
 
+function Armory_CategoryFromAbility takes integer abilityId returns integer
+    local integer category=1
+    loop
+        exitwhen category>40
+        if ArmoryCategoryAbility[category]!=0 and ArmoryCategoryAbility[category]==abilityId then
+            return category
+        endif
+        set category=category+1
+    endloop
+    return 0
+endfunction
+
 function Trig_Armory_Back_Conditions takes nothing returns boolean
-    return(GetSpellAbilityId()=='A0MX') // 'A0MX': ability "Cancel"
+    return(GetSpellAbilityId()=='A0MX') or Armory_CategoryFromAbility(GetSpellAbilityId())>0 // 'A0MX': ability "Cancel"
 endfunction
 
 function Trig_Armory_Back_MatchesBackCategory takes nothing returns boolean
@@ -1647,7 +1698,10 @@ endfunction
 
 function Trig_Armory_Back_Actions takes nothing returns nothing
     local integer playerIndex=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
-    if(Trig_Armory_Back_IsTopLevel())then
+    local integer category=Armory_CategoryFromAbility(GetSpellAbilityId())
+    if category>0 then
+        call Armory_ShowCategory(GetTriggerUnit(),category)
+    elseif Trig_Armory_Back_IsTopLevel() then
         call SelectUnitForPlayerSingle(udg_PlayerHouse[playerIndex],GetOwningPlayer(GetTriggerUnit()))
         call ShowUnitHide(GetTriggerUnit())
         call KillUnit(GetTriggerUnit())

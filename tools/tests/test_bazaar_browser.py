@@ -32,6 +32,7 @@ def runtime():
     pool = defaultdict(int)
     money = defaultdict(lambda: 1000000)
     created, messages = [], []
+    stock={};notices=[]
     buttons = []
     def add_button(dialog, label, hotkey):
         buttons.append((dialog, label))
@@ -46,6 +47,13 @@ def runtime():
                PLAYER_STATE_RESOURCE_GOLD='gold', PLAYER_STATE_RESOURCE_LUMBER='shards',
                GetPlayerId=lambda p: p, Player=lambda p: p,
                LoadInteger=lambda table, parent, child: table.get((parent, child), 0),
+               SaveInteger=lambda table,parent,child,value:table.__setitem__((parent,child),value),
+               AddItemToStock=lambda shop,raw,current,maximum:stock.__setitem__(raw,current),
+               RemoveItemFromStock=lambda shop,raw:stock.pop(raw,None),
+               CreateTextTagUnitBJ=lambda *args:notices.append(args[0]),GetLastCreatedTextTag=lambda:1,
+               SetTextTagPermanent=lambda *args:None,SetTextTagLifespan=lambda *args:None,
+               SetTextTagFadepoint=lambda *args:None,SetTextTagVelocityBJ=lambda *args:None,
+               stock=stock,notices=notices,
                I2S=str, GetObjectName=lambda raw: 'Ingredient '+raw,
                StringLength=len, SubString=lambda text, start, end: text[start:end], IMinBJ=min,
                GetOwningPlayer=lambda unit: unit['owner'],
@@ -59,7 +67,7 @@ def runtime():
                UnitAddItem=lambda buyer, item: True,
                DisplayTimedTextToPlayer=lambda *args: messages.append(args[-1]),
                DialogAddButton=add_button, BazaarUseFrames=False)
-    names = ['Bazaar_InitBrowserData', 'Bazaar_MaterialsReady', 'Bazaar_WrapText', 'Bazaar_PlainName', 'Bazaar_RecipeText',
+    names = ['Bazaar_InitBrowserData', 'Bazaar_MaterialsReady', 'Bazaar_WrapText', 'Bazaar_PlainName', 'Bazaar_RewardName', 'Bazaar_RecipeText',
              'Bazaar_CraftRecipe', 'Bazaar_ShowRecipe', 'Bazaar_CloseBrowser',
              'Bazaar_RefreshBrowsers', 'Trig_Bazaar_BrowseRecipes_Actions',
              'Trig_Bazaar_UpdateStock_Actions']
@@ -98,7 +106,7 @@ class BazaarBrowserTests(unittest.TestCase):
             self.assertEqual(e['BazaarGoldCost'][int(key)], gold)
             self.assertEqual(e['BazaarShardCost'][int(key)], shards)
 
-    def test_every_recipe_consumes_only_one_set_and_preserves_results_and_charges(self):
+    def test_preparing_each_recipe_consumes_parts_but_defers_payment_and_delivery(self):
         e, data, pool, money, created = runtime()
         for recipe in range(1, 57):
             with self.subTest(recipe=recipe):
@@ -113,16 +121,11 @@ class BazaarBrowserTests(unittest.TestCase):
                 for material, amount in ingredients(data, recipe):
                     before[material] -= amount
                 self.assertEqual(pool, before)
-                self.assertEqual(money[0, 'gold'], 1000000-e['BazaarGoldCost'][recipe])
-                self.assertEqual(money[0, 'shards'], 1000000-e['BazaarShardCost'][recipe])
-                start = 4+2*data[recipe, 1]
-                expected = []
-                for slot in range(start, start+2*data[recipe, 2], 2):
-                    item = {'raw': e['udg_BazaarResultItem'][data[recipe, slot]]}
-                    if data.get((recipe, slot+1), 0) >= 1:
-                        item['charges'] = data[recipe, slot+1]
-                    expected.append(item)
-                self.assertEqual(created, expected)
+                self.assertEqual(money[0, 'gold'], 1000000)
+                self.assertEqual(money[0, 'shards'], 1000000)
+                self.assertEqual(created, [])
+                self.assertEqual(e['stock'][e['udg_BazaarGoodItem'][recipe]],1)
+                self.assertNotIn('???', e['Bazaar_RecipeText'](recipe))
 
     def test_browsing_colors_counts_hides_rewards_and_spends_nothing(self):
         e, data, pool, money, created = runtime()
@@ -150,9 +153,35 @@ class BazaarBrowserTests(unittest.TestCase):
         self.assertEqual(len(created), result_count)
         self.assertTrue(all(amount >= 0 for amount in pool.values()))
 
+    def test_new_recipe_notice_only_when_parts_cross_into_ready_state(self):
+        e,data,pool,money,created=runtime()
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        self.assertEqual(e['notices'],[])
+        for material,amount in ingredients(data,7):pool[material]=amount
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        self.assertEqual(len(e['notices']),1)
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        self.assertEqual(len(e['notices']),1)
+        self.assertTrue(e['Bazaar_CraftRecipe'](0,7,{'owner':0},{'raw':'n030'}))
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        for material,amount in ingredients(data,7):pool[material]=amount
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        self.assertEqual(len(e['notices']),2)
+
+    def test_prepared_stock_survives_refresh_and_accumulates_without_delivery(self):
+        e,data,pool,money,created=runtime()
+        for material,amount in ingredients(data,7):pool[material]=amount*2
+        shop={'raw':'n030'}
+        self.assertTrue(e['Bazaar_CraftRecipe'](0,7,{'owner':0},shop))
+        self.assertTrue(e['Bazaar_CraftRecipe'](1,7,{'owner':1},shop))
+        e['Trig_Bazaar_UpdateStock_Actions']()
+        self.assertEqual(e['stock'][e['udg_BazaarGoodItem'][7]],2)
+        self.assertEqual(created,[])
+        self.assertTrue(e['BazaarRewardRevealed'][7])
+
     def test_failed_payment_and_invalid_buyer_preserve_parts(self):
         e, data, pool, money, created = runtime()
-        for failure in ['parts', 'gold', 'shards', 'owner', 'distance', 'dead']:
+        for failure in ['parts', 'owner', 'distance', 'dead']:
             with self.subTest(failure=failure):
                 pool.clear()
                 money.clear()

@@ -128,3 +128,11 @@ tools/tests/verify_armory_materia_build.py (removed 2026-10-10, kept in Git hist
 Current sources also require Chronicle page/Secrets abilities. Use the complete fresh workflow
 in BUILDS.md, or an AP-or-later map for incremental work; older partial object examples above
 need the Chronicle preparer before a current-source build.
+
+## ATP / Forsaken EC category tooltips
+
+The house Armory tooltip shows only the total collection. Category navigation uses
+ability buttons with the original icons and descriptions, so each button shows
+its own live completion in both clients (Physical Weapons, Tools, and so on).
+Close/Back tooltips remain plain. Gear stock and withdrawals are unchanged.
+For a base without these buttons, run `tools/armory_menu_catalog.py BASE OUT` first.

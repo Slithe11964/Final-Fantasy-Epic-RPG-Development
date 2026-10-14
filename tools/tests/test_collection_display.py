@@ -72,6 +72,7 @@ class CollectionDisplayTests(unittest.TestCase):
             GetObjectName=lambda raw:{1:'Physical weapons',11:'Tools',12:'Swords'}.get(raw,'Category'),
             ArmoryProgressTotal=defaultdict(int),ArmoryProgressStored=defaultdict(int),
             ArmoryMenuBase=defaultdict(str),ArmoryMenuShown=defaultdict(str),
+            ArmoryCategoryAbility=defaultdict(int,{1:"aR01",11:"aR11",12:"aR12"}),
             ArmoryTooltipBase='House Armory',ArmoryTooltipShown='',ArmoryTooltipLevel=1,
             Armory_CollectionText=lambda p:'2 / 3',BlzSetAbilityExtendedTooltip=lambda *args:writes.append(args))
         source=(ROOT/'src/triggers/05 Items crafting and shops/Armory.j').read_text(encoding='utf-8')
@@ -79,11 +80,11 @@ class CollectionDisplayTests(unittest.TestCase):
             e=harness.load_engine(source,['Armory_CountProgress','Armory_ProgressLine','Armory_RefreshCounter'],env)
         e['Armory_RefreshCounter']()
         root=next(t for a,t,l in writes if a=='A0MW')
-        physical=next(t for a,t,l in writes if a=='A0MX' and l==2)
-        tools=next(t for a,t,l in writes if a=='A0MX' and l==12)
-        self.assertIn('Physical weapons: 2 / 3',root)
-        self.assertIn('Tools: 1 / 2',physical)
-        self.assertIn('Swords: 1 / 1',physical)
-        self.assertIn('Tools: 1 / 2',tools)
+        physical=next(t for a,t,l in writes if a=='aR01' and l==1)
+        tools=next(t for a,t,l in writes if a=='aR11' and l==1)
+        self.assertNotIn('Physical weapons',root)
+        self.assertIn('Collection:|r 2 / 3',physical)
+        self.assertIn('Collection:|r 1 / 2',tools)
+        self.assertFalse(any(a=='A0MX' for a,t,l in writes))
 
 if __name__=='__main__':unittest.main()

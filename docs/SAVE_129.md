@@ -1,7 +1,7 @@
 # The new save in the normal maps
 
 From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
-Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EB; the normal
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EC; the normal
 Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
@@ -103,3 +103,11 @@ and items survive, then load the autosave file. Successful eligible loads announ
 Secrets now shows its completion total and `-chronicle` calls that category Secrets.
 The house Armory tooltip lists main categories; each open menu's Back tooltip
 lists that category and its children, such as Physical Weapons and Tools.
+
+## Warcraft menu saves (ATP)
+
+ATO crashed on loading a Warcraft saved game after importing a character. ATP
+releases the import snapshot after commit or completed rollback, including removed
+starter-unit references. Model checks preserve pending rollback data and other
+players' snapshots. Crash resolution is unconfirmed: import into ATP, create a new
+Warcraft saved game, restart, and load that checkpoint.

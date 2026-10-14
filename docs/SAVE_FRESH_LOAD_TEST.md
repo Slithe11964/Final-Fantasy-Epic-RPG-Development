@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EB
+# Private save/restart/fresh-load test - EC
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEB.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEC.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -190,3 +190,6 @@ wrong paged-inventory line and is superseded for Reforged gameplay.
 EB routes autosave through the full read-only file-save pipeline and announces
 New Game Plus after an eligible successful load. Test autosave with gear and
 bag items, then load `autosave` in a fresh game. Reforged stays on native equipment.
+
+EC releases completed import snapshots and uses the new Armory category buttons
+and Bazaar prepare/purchase flow. Native Warcraft saved-game acceptance remains pending.

@@ -102,3 +102,11 @@ Stage AP explicitly resets the Recipes unit stock immediately after each purchas
 the user report that the browser would not reopen after its first Close. UI/session/transactions
 are preserved; the new regression exercises three open/Close cycles and stale sync rejection.
 Retest in both clients with hero/Gaya buyers and multiplayer; native acceptance is pending.
+
+## ATP / Forsaken EC prepare and purchase
+
+Prepare consumes one set of shared sold parts and stocks one bundle in the Bazaar;
+it spends no gold/shards and gives no inventory items. Purchase pays the original
+shop price and delivers the original results and charges. Prepared stock survives
+refreshes. The recipe reveals its reward names after its first preparation this game.
+A floating notice appears when sold parts make a previously unavailable recipe ready.

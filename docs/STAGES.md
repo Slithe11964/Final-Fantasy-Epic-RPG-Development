@@ -152,3 +152,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATN | Added explicit classic collection-tooltip levels, category and total summaries through -armory/-chronicle, and all nine equipment slots through -equipment for 1.29.2. |
 | ATO | Fixed classic autosave to use the full file-save pipeline, added Secrets and Armory category/subcategory progress, and restored the eligible New Game Plus load notice. |
 | ForsakenEB | Kept native Reforged inventory while routing autosave through the full file-save pipeline and restoring the eligible New Game Plus load notice. |
+| ATP | Added per-category Armory ability tooltips, restored Bazaar prepare/purchase and recipe notices, and released import snapshots for the classic Warcraft saved-game crash retest. |
+| ForsakenEC | Kept native inventory while adding per-category Armory tooltips, Bazaar prepare/purchase and recipe notices, and completed import snapshot cleanup. |

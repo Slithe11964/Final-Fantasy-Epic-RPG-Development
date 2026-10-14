@@ -1,5 +1,7 @@
 library TBazaar
 globals
+    boolean array BazaarRewardRevealed
+    boolean array BazaarReadyReported
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Bazaar_Init=null
     trigger gg_trg_Bazaar_Recipes=null
@@ -219,8 +221,26 @@ function Bazaar_PlainName takes string text returns string
     return result
 endfunction
 
+function Bazaar_RewardName takes integer recipe returns string
+    local integer slot=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)
+    local integer last=slot+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
+    local string name=""
+    if not BazaarRewardRevealed[recipe] then
+        return "???"
+    endif
+    loop
+        exitwhen slot>=last
+        if name!="" then
+            set name=name+", "
+        endif
+        set name=name+GetObjectName(udg_BazaarResultItem[LoadInteger(udg_BazaarRecipeHash,recipe,slot)])
+        set slot=slot+2
+    endloop
+    return name
+endfunction
+
 function Bazaar_RecipeText takes integer recipe returns string
-    local string text="Recipe "+I2S(recipe)+" / "+I2S(udg_BazaarGoodCount)+"|nReward: ???|n|nSold parts (shared):"
+    local string text="Recipe "+I2S(recipe)+" / "+I2S(udg_BazaarGoodCount)+"|nReward: "+Bazaar_RewardName(recipe)+"|n|nSold parts (shared):"
     local string color
     local integer slot=3
     local integer material
@@ -340,11 +360,11 @@ function BazaarFrame_Show takes player p returns nothing
             set recipe=first+slot
             call BlzFrameSetVisible(BazaarFrameCard[slot],recipe<=udg_BazaarGoodCount)
             if recipe<=udg_BazaarGoodCount then
-                call BlzFrameSetText(BazaarFrameTitle[slot],"Recipe "+I2S(recipe)+"|nReward: ???")
+                call BlzFrameSetText(BazaarFrameTitle[slot],"Recipe "+I2S(recipe)+"|nReward: "+Bazaar_RewardName(recipe))
                 call BlzFrameSetText(BazaarFrameParts[slot],Bazaar_IngredientPageText(recipe,BazaarFramePartPage[slot]))
                 call BlzFrameSetVisible(BazaarFrameMore[slot],Bazaar_IngredientPageText(recipe,1)!="")
                 call BlzFrameSetText(BazaarFramePrice[slot],"Gold: "+I2S(BazaarGoldCost[recipe])+"|nCrystal shards: "+I2S(BazaarShardCost[recipe]))
-                call BlzFrameSetText(BazaarFrameCraft[slot],"Craft recipe "+I2S(recipe))
+                call BlzFrameSetText(BazaarFrameCraft[slot],"Prepare recipe "+I2S(recipe))
             endif
             set slot=slot+1
         endloop
@@ -368,7 +388,7 @@ function Bazaar_ShowRecipe takes player p returns nothing
     call DialogSetMessage(BazaarDialog[id],Bazaar_RecipeText(recipe))
     set BazaarPrevious[id]=DialogAddButton(BazaarDialog[id],"Previous recipe",0)
     set BazaarNext[id]=DialogAddButton(BazaarDialog[id],"Next recipe",0)
-    set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Craft this recipe",0)
+    set BazaarCraft[id]=DialogAddButton(BazaarDialog[id],"Prepare this recipe",0)
     call DialogAddButton(BazaarDialog[id],"Close",0)
     call DialogDisplay(p,BazaarDialog[id],true)
 endfunction
@@ -400,7 +420,8 @@ function Bazaar_CraftRecipe takes player p,integer recipe,unit buyer,unit shop r
     local integer amount
     local real dx
     local real dy
-    local item result
+    local integer stockKey
+    local integer count
     if recipe<1 or recipe>udg_BazaarGoodCount then
         return false
     endif
@@ -410,15 +431,11 @@ function Bazaar_CraftRecipe takes player p,integer recipe,unit buyer,unit shop r
     set dx=GetUnitX(buyer)-GetUnitX(shop)
     set dy=GetUnitY(buyer)-GetUnitY(shop)
     if dx*dx+dy*dy>600.*600. then
-        call DisplayTimedTextToPlayer(p,0,0,10,"Bring your buyer back to the bazaar to craft.")
+        call DisplayTimedTextToPlayer(p,0,0,10,"Bring your buyer back to the bazaar to prepare a recipe.")
         return false
     endif
     if not Bazaar_MaterialsReady(recipe) then
         call DisplayTimedTextToPlayer(p,0,0,10,"Not enough sold parts for this recipe.")
-        return false
-    endif
-    if GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)<BazaarGoldCost[recipe] or GetPlayerState(p,PLAYER_STATE_RESOURCE_LUMBER)<BazaarShardCost[recipe] then
-        call DisplayTimedTextToPlayer(p,0,0,10,"Not enough gold or crystal shards for this recipe.")
         return false
     endif
     set last=2+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)
@@ -428,23 +445,13 @@ function Bazaar_CraftRecipe takes player p,integer recipe,unit buyer,unit shop r
         set udg_MaterialOwnedCount[material]=udg_MaterialOwnedCount[material]-LoadInteger(udg_BazaarRecipeHash,recipe,slot)
         set slot=slot+2
     endloop
-    call SetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(p,PLAYER_STATE_RESOURCE_GOLD)-BazaarGoldCost[recipe])
-    call SetPlayerState(p,PLAYER_STATE_RESOURCE_LUMBER,GetPlayerState(p,PLAYER_STATE_RESOURCE_LUMBER)-BazaarShardCost[recipe])
-    // Recipe data stores ingredient count, result count, then quantity/type pairs for each.
-    set slot=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)
-    set last=3+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
-    loop
-        exitwhen slot>last
-        set result=CreateItem(udg_BazaarResultItem[LoadInteger(udg_BazaarRecipeHash,recipe,slot)],GetUnitX(buyer),GetUnitY(buyer))
-        set amount=LoadInteger(udg_BazaarRecipeHash,recipe,slot+1)
-        if amount>=1 and GetItemType(result)==ITEM_TYPE_CHARGED then
-            call SetItemCharges(result,amount)
-        endif
-        call UnitAddItem(buyer,result)
-        set slot=slot+2
-    endloop
-    call DisplayTimedTextToPlayer(p,0,0,10,"Recipe crafted. Your buyer received the bazaar goods.")
-    set result=null
+    set stockKey=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
+    set count=LoadInteger(udg_BazaarRecipeHash,recipe,stockKey)+1
+    call SaveInteger(udg_BazaarRecipeHash,recipe,stockKey,count)
+    set BazaarRewardRevealed[recipe]=true
+    call AddItemToStock(shop,udg_BazaarGoodItem[recipe],count,count)
+    call StartTimerBJ(udg_BazaarUpdateTimer,false,.01)
+    call DisplayTimedTextToPlayer(p,0,0,10,"Recipe prepared. Purchase "+Bazaar_RewardName(recipe)+" from the bazaar shop.")
     return true
 endfunction
 
@@ -1585,11 +1592,32 @@ endfunction
 
 function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
     local integer recipe=1
+    local integer key
+    local integer count
+    local boolean ready
+    local boolean announce=false
     loop
         exitwhen recipe>udg_BazaarGoodCount
+        set key=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
+        set count=LoadInteger(udg_BazaarRecipeHash,recipe,key)
         call RemoveItemFromStock(udg_BazaarShopUnit,udg_BazaarGoodItem[recipe])
+        if count>0 then
+            call AddItemToStock(udg_BazaarShopUnit,udg_BazaarGoodItem[recipe],count,count)
+        endif
+        set ready=Bazaar_MaterialsReady(recipe)
+        if ready and not BazaarReadyReported[recipe] then
+            set announce=true
+        endif
+        set BazaarReadyReported[recipe]=ready
         set recipe=recipe+1
     endloop
+    if announce then
+        call CreateTextTagUnitBJ("A new bazaar recipe is available!",udg_BazaarShopUnit,0.,10.,100.,100.,20.,0.)
+        call SetTextTagPermanent(GetLastCreatedTextTag(),false)
+        call SetTextTagLifespan(GetLastCreatedTextTag(),4.)
+        call SetTextTagFadepoint(GetLastCreatedTextTag(),3.)
+        call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64.,90.)
+    endif
     call Bazaar_RefreshBrowsers()
     call StartTimerBJ(udg_BazaarUpdateTimer,false,30)
 endfunction
