@@ -1,4 +1,4 @@
-library TBackpack requires TPlayerHero, TTalents, TGearSlots, TItemCooldown
+library TBackpack requires TAbil, TPlayerHero, TTalents, TGearSlots, TItemCooldown
 // Gear storage for 1.29.2, which has neither a frame UI nor an extended inventory native.
 // A holder unit carries six inventory slots and the player's selection switches to it, so the
 // hero's own six slots stay free for potions and books. The holder is parked away from play;
@@ -11,6 +11,7 @@ globals
     trigger gg_trg_Backpack_Dialog=null
     trigger gg_trg_Backpack_Drop=null
     trigger gg_trg_Backpack_Guard=null
+    trigger gg_trg_Backpack_Orders=null
     constant integer BACKPACK_ABILITY='tBag'
     constant integer BACKPACK_RETURN='tBhr'
     constant integer BACKPACK_HOLDER='tBpk'
@@ -52,6 +53,10 @@ globals
     // Gear that casts shares one cooldown across the pages and the hero's own slots, the
     // way the map already shares one between consumables.
     timer array BackpackGearCooldown
+    // The last pooled spell cast, kept until the game has started its cooldown and the same
+    // wait can be read off the unit that cast it.
+    unit array BackpackCdCaster
+    integer array BackpackCdAbility
     // How many of each slot kind a page already holds, rebuilt on every check.
     integer array BackpackKindSeen
     // Working values for the item search, which runs through a filter function.
@@ -495,7 +500,7 @@ function Backpack_ApplyBonuses takes integer pid returns nothing
     local integer itype
     local integer count
     local integer index
-    local integer ability
+    local integer spellId
     call Backpack_ClearBonuses(pid)
     if hero==null then
         return
@@ -515,11 +520,11 @@ function Backpack_ApplyBonuses takes integer pid returns nothing
                     set index=0
                     loop
                         exitwhen index>=count or BackpackGrantedCount[pid]>=64
-                        set ability=Gear_Bonus(itype,index)
-                        if ability!=0 and GetUnitAbilityLevel(hero,ability)==0 then
-                            call UnitAddAbility(hero,ability)
-                            call UnitMakeAbilityPermanent(hero,true,ability)
-                            set BackpackGranted[pid*64+BackpackGrantedCount[pid]]=ability
+                        set spellId=Gear_Bonus(itype,index)
+                        if spellId!=0 and GetUnitAbilityLevel(hero,spellId)==0 then
+                            call UnitAddAbility(hero,spellId)
+                            call UnitMakeAbilityPermanent(hero,true,spellId)
+                            set BackpackGranted[pid*64+BackpackGrantedCount[pid]]=spellId
                             set BackpackGrantedCount[pid]=BackpackGrantedCount[pid]+1
                         endif
                         set index=index+1
@@ -536,11 +541,11 @@ function Backpack_ApplyBonuses takes integer pid returns nothing
 endfunction
 
 // True for a bonus the hero is being given for the gear it wears.
-function Backpack_IsGrantedBonus takes integer pid,integer ability returns boolean
+function Backpack_IsGrantedBonus takes integer pid,integer spellId returns boolean
     local integer i=0
     loop
         exitwhen i>=BackpackGrantedCount[pid]
-        if BackpackGranted[pid*64+i]==ability then
+        if BackpackGranted[pid*64+i]==spellId then
             return true
         endif
         set i=i+1
@@ -560,7 +565,7 @@ function Backpack_StripQuickSlots takes integer pid returns nothing
     local integer itype
     local integer count
     local integer index
-    local integer ability
+    local integer spellId
     if hero==null then
         return
     endif
@@ -573,9 +578,9 @@ function Backpack_StripQuickSlots takes integer pid returns nothing
             set index=0
             loop
                 exitwhen index>=count
-                set ability=Gear_Bonus(itype,index)
-                if ability!=0 and not Backpack_IsGrantedBonus(pid,ability) then
-                    call UnitRemoveAbility(hero,ability)
+                set spellId=Gear_Bonus(itype,index)
+                if spellId!=0 and not Backpack_IsGrantedBonus(pid,spellId) then
+                    call UnitRemoveAbility(hero,spellId)
                 endif
                 set index=index+1
             endloop
@@ -740,6 +745,96 @@ function Backpack_GearReport takes player p returns nothing
     set worn=null
 endfunction
 
+// Which shared cooldown a spell belongs to: 1 for gear - weapons, elemental books and buff
+// tomes - 2 for food and potions, 0 for anything that keeps a cooldown of its own. Both are
+// shared by the hero's own six slots and every backpack page, because the game keeps a
+// cooldown per unit and each page is a unit of its own.
+function Backpack_PoolOf takes integer spellId returns integer
+    if spellId==0 then
+        return 0
+    elseif Item_Cooldown_IsConsumable(spellId) then
+        return 2
+    elseif Gear_IsGearAbility(spellId) then
+        return 1
+    endif
+    return 0
+endfunction
+
+// Gear has a timer of its own; food and potions use the map's existing shared timer, which
+// Item_Cooldown already starts when the hero drinks or eats.
+function Backpack_PoolTimer takes integer pid,integer pool returns timer
+    if pool==1 then
+        if BackpackGearCooldown[pid]==null then
+            set BackpackGearCooldown[pid]=CreateTimer()
+        endif
+        return BackpackGearCooldown[pid]
+    endif
+    return udg_SpellCooldownTimer[pid+1]
+endfunction
+
+function Backpack_PoolLeft takes integer pid,integer pool returns real
+    if pool<=0 then
+        return .0
+    endif
+    return TimerGetRemaining(Backpack_PoolTimer(pid,pool))
+endfunction
+
+// Starts a pool, or leaves it alone when it already has longer to run.
+function Backpack_StartPool takes integer pid,integer pool,real seconds returns nothing
+    if pool>0 and seconds>Backpack_PoolLeft(pid,pool) then
+        call TimerStart(Backpack_PoolTimer(pid,pool),seconds,false,null)
+    endif
+endfunction
+
+// The cooldown a cast left behind, read off the unit that cast it once the game has started
+// it: the real figure, whatever the spell's level and whichever game is running. The table
+// value is only a fallback, and is asked for at the level number this game uses - 1.29.2 and
+// Reforged count levels differently, which Abil_GetLevel accounts for.
+function Backpack_CooldownAfterCast takes unit caster,integer spellId returns real
+    local real left=BlzGetUnitAbilityCooldownRemaining(caster,spellId)
+    if left>.0 then
+        return left
+    endif
+    if GetUnitAbilityLevel(caster,spellId)<1 then
+        // A consumed last charge may have removed the item ability before this readback.
+        return BlzGetAbilityCooldown(spellId,udg_AbilityLevelIndex)
+    endif
+    return BlzGetAbilityCooldown(spellId,Abil_GetLevel(caster,spellId))
+endfunction
+
+// Refuses a use while its shared cooldown runs, and says why. True when it refused.
+function Backpack_RefusePool takes unit caster,integer pool returns boolean
+    local player p=GetOwningPlayer(caster)
+    local integer pid=GetPlayerId(p)
+    local real left
+    if pool<=0 or not (caster==Player_GetHero(p) or Backpack_PageOf(pid,caster)>=0) then
+        set p=null
+        return false
+    endif
+    set left=Backpack_PoolLeft(pid,pool)
+    if left<=.01 then
+        set p=null
+        return false
+    endif
+    // Paused for an instant so the stop takes the place of the order before it does anything:
+    // no mana spent, no cooldown started, no charge used.
+    call PauseUnit(caster,true)
+    call IssueImmediateOrder(caster,"stop")
+    call PauseUnit(caster,false)
+    if pool==1 then
+        call DisplayTimedTextToPlayer(p,0.,0.,4.,"|cffff0000Your gear is recovering ("+I2S(R2I(left+.99))+"s).|r")
+    else
+        call DisplayTimedTextToPlayer(p,0.,0.,4.,"|cffff0000Your food and potions are recovering ("+I2S(R2I(left+.99))+"s).|r")
+    endif
+    set p=null
+    return true
+endfunction
+
+function Backpack_CooldownReport takes player p returns nothing
+    local integer pid=GetPlayerId(p)
+    call DisplayTimedTextToPlayer(p,0.,0.,20.,"Gear recovering: "+I2S(R2I(Backpack_PoolLeft(pid,1)+.99))+"s - food and potions recovering: "+I2S(R2I(Backpack_PoolLeft(pid,2)+.99))+"s")
+endfunction
+
 // Runs a moment after the event that asked for it: puts away whatever the hero picked up,
 // then checks the equipment pages and grants what is worn. Everything that moves an item
 // lives here, where no item event is in progress.
@@ -776,6 +871,11 @@ function Backpack_RunDeferred takes nothing returns nothing
             call Backpack_CheckPage(pid,0)
             call Backpack_CheckPage(pid,1)
             call Backpack_StripQuickSlots(pid)
+            if BackpackCdAbility[pid]!=0 then
+                call Backpack_StartPool(pid,Backpack_PoolOf(BackpackCdAbility[pid]),Backpack_CooldownAfterCast(BackpackCdCaster[pid],BackpackCdAbility[pid]))
+                set BackpackCdAbility[pid]=0
+                set BackpackCdCaster[pid]=null
+            endif
             if BackpackSettleMana[pid] then
                 set BackpackSettleMana[pid]=false
                 call Backpack_SettleMana(pid)
@@ -816,20 +916,19 @@ function Backpack_OnItemCast takes nothing returns nothing
     local unit caster=GetTriggerUnit()
     local integer pid=GetPlayerId(GetOwningPlayer(caster))
     local integer id=GetSpellAbilityId()
-    local real cooldown
     if caster==Player_GetHero(Player(pid)) or Backpack_PageOf(pid,caster)>=0 then
         if Backpack_PageOf(pid,caster)>=0 then
             set BackpackSettleMana[pid]=true
             call Backpack_QueueWork(pid)
         endif
-        if Gear_IsGearAbility(id) then
-            if BackpackGearCooldown[pid]==null then
-                set BackpackGearCooldown[pid]=CreateTimer()
-            endif
-            set cooldown=BlzGetAbilityCooldown(id,0)
-            if cooldown>TimerGetRemaining(BackpackGearCooldown[pid]) then
-                call TimerStart(BackpackGearCooldown[pid],cooldown,false,null)
-            endif
+        if Backpack_PoolOf(id)>0 then
+            // Reserve the pool now so another page cannot cast before the deferred readback.
+            call Backpack_StartPool(pid,Backpack_PoolOf(id),Backpack_CooldownAfterCast(caster,id))
+            // The game starts the cooldown on the unit that cast; the deferred pass reads it
+            // and holds every other copy, on the hero and on every page, for as long.
+            set BackpackCdCaster[pid]=caster
+            set BackpackCdAbility[pid]=id
+            call Backpack_QueueWork(pid)
         endif
     endif
     set caster=null
@@ -837,37 +936,40 @@ endfunction
 
 // Refuses a cast that the shared cooldowns say is not ready yet. The map already stops a
 // cast this way when a talent is missing, so the same approach serves here.
+// A second line behind the order check, for a spell that reaches its channel some other way.
+// The channel comes before mana or cooldown are taken; the cast event, used before, comes
+// too late for an instant item spell to be stopped.
 function Backpack_GuardCast takes nothing returns nothing
-    local unit caster=GetTriggerUnit()
-    local player p=GetOwningPlayer(caster)
-    local integer pid=GetPlayerId(p)
-    local integer id=GetSpellAbilityId()
-    local boolean mine=caster==Player_GetHero(p) or Backpack_PageOf(pid,caster)>=0
-    local real left=.0
-    if mine and Gear_IsGearAbility(id) and BackpackGearCooldown[pid]!=null then
-        set left=TimerGetRemaining(BackpackGearCooldown[pid])
-        if left>.01 then
-            call IssueImmediateOrder(caster,"stop")
-            call DisplayTimedTextToPlayer(p,0.,0.,5.,"|cffff0000Your gear is still recovering ("+I2S(R2I(left+.99))+"s).|r")
-        endif
-    elseif mine and Trig_Item_Cooldown_Start_IsItemAbility() then
-        set left=TimerGetRemaining(udg_SpellCooldownTimer[pid+1])
-        if left>.01 then
-            call IssueImmediateOrder(caster,"stop")
-            call DisplayTimedTextToPlayer(p,0.,0.,5.,"|cffff0000Another item is still recovering ("+I2S(R2I(left+.99))+"s).|r")
-        endif
+    call Backpack_RefusePool(GetTriggerUnit(),Backpack_PoolOf(GetSpellAbilityId()))
+endfunction
+
+// Clicking an item orders "use the item in slot N", one order id per slot. It is judged here,
+// before the item does anything, by the item itself rather than by a spell already under way.
+function Backpack_OnOrder takes nothing returns nothing
+    local integer order=GetIssuedOrderId()
+    local unit u
+    local item used
+    local integer pool
+    if order<852008 or order>852013 then
+        return
     endif
-    set caster=null
-    set p=null
+    set u=GetTriggerUnit()
+    set used=UnitItemInSlot(u,order-852008)
+    if used!=null then
+        set pool=Backpack_PoolOf(Gear_CastOf(GetItemTypeId(used)))
+        if pool==0 and Gear_CastOf(GetItemTypeId(used))==0 and GetItemType(used)==ITEM_TYPE_CHARGED then
+            // A stock potion the map writes no abilities for: charged items are consumables.
+            set pool=2
+        endif
+        call Backpack_RefusePool(u,pool)
+    endif
+    set u=null
+    set used=null
 endfunction
 
 function Backpack_OnCast takes nothing returns nothing
     local integer id=GetSpellAbilityId()
     call Backpack_OnItemCast()
-    if Trig_Item_Cooldown_Start_IsItemAbility() and Backpack_PageOf(GetPlayerId(GetTriggerPlayer()),GetTriggerUnit())>=0 then
-        // Item_Cooldown starts this for the hero only; a page casting one shares it too.
-        call TimerStart(udg_SpellCooldownTimer[GetPlayerId(GetTriggerPlayer())+1],BlzGetAbilityCooldown(id,0),false,null)
-    endif
     if id==BACKPACK_ABILITY then
         call Backpack_Open(GetTriggerPlayer())
     elseif id==BACKPACK_RETURN then
@@ -954,6 +1056,8 @@ function Backpack_OnCommand takes nothing returns nothing
         call Backpack_Grab(p)
     elseif command=="-gear" then
         call Backpack_GearReport(p)
+    elseif command=="-cdcheck" then
+        call Backpack_CooldownReport(p)
     elseif command=="-bagwhere" then
         call Backpack_Report(p)
     elseif command=="-bagtest" then
@@ -1034,8 +1138,16 @@ endfunction
 
 function Register_Backpack_Guard takes nothing returns nothing
     set gg_trg_Backpack_Guard=CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Guard,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Guard,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
     call TriggerAddAction(gg_trg_Backpack_Guard,function Backpack_GuardCast)
+endfunction
+
+function Register_Backpack_Orders takes nothing returns nothing
+    set gg_trg_Backpack_Orders=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Orders,EVENT_PLAYER_UNIT_ISSUED_ORDER)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Orders,EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Backpack_Orders,EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
+    call TriggerAddAction(gg_trg_Backpack_Orders,function Backpack_OnOrder)
 endfunction
 
 function Register_Backpack_Drop takes nothing returns nothing
@@ -1058,6 +1170,7 @@ function Register_Backpack_Commands takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-blindcheck",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-grab",true)
         call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-gear",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_Backpack_Commands,Player(pid),"-cdcheck",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_Backpack_Commands,function Backpack_OnCommand)
@@ -1072,6 +1185,7 @@ function RegisterTriggers_Backpack takes nothing returns nothing
     call Register_Backpack_Pickup()
     call Register_Backpack_Drop()
     call Register_Backpack_Guard()
+    call Register_Backpack_Orders()
     call Register_Backpack_Commands()
 endfunction
 

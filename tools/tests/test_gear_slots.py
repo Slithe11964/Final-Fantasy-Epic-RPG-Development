@@ -22,7 +22,7 @@ class GearSlotTable(unittest.TestCase):
             self.skipTest('no release map to generate from')
         rows = gear_slots.classify(base)
         self.assertEqual(len(rows), 276, 'the reviewed gear set is 276 items')
-        self.assertEqual(gear_slots.render(rows).encode('utf-8'),
+        self.assertEqual(gear_slots.render(rows, gear_slots.item_casts(base)).encode('utf-8'),
                          gear_slots.OUT.read_bytes(),
                          'run tools/gear_slots.py against the newest release map')
 
@@ -30,6 +30,15 @@ class GearSlotTable(unittest.TestCase):
         kinds = {kind for _, _, kind, _, _ in gear_slots.classify(latest_map())}
         self.assertTrue(kinds <= set(gear_slots.KINDS), kinds)
         self.assertEqual(set(gear_slots.LABELS), set(gear_slots.KINDS))
+
+    def test_items_that_cast_name_their_spell(self):
+        """Clicking an item is judged by the spell it casts, so the items the shared cooldowns
+        are about must each name one."""
+        casts = gear_slots.item_casts(latest_map())
+        self.assertEqual(casts.get('I025'), 'A0Q2')   # Wateraga Materia
+        self.assertEqual(casts.get('I05X'), 'A08X')   # Book of Depths
+        self.assertEqual(casts.get('I0HX'), 'A0FW')   # Tome of Life
+        self.assertEqual(casts.get('I0HY'), 'A07D')   # Tome of the Tortoise
 
     def test_worn_kinds_come_before_rings(self):
         """Equipment page 1 is laid out in kind order, so the six worn pieces must be 1 to 6

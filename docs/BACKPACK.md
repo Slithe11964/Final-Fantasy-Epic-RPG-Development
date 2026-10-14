@@ -235,6 +235,24 @@ and gear that casts shares a timer of its own. 1.29.2 cannot start a cooldown on
 unit's ability, so both are enforced the way the map already refuses a talentless Cure: the
 cast is stopped as it starts and the player is told how long is left.
 
+## Classic water casts and page-wide cooldowns (stage ATC)
+
+Wateraga Materia and Book of Depths now cast through an active, transparent proxy
+rather than hiding the proxy before issuing its water-wave order. A page cast uses
+the real hero for damage attribution, Intelligence and rod proficiency.
+
+Books, buff tomes, materia and magical weapons share one player-wide timer; food
+and potions share another. Both cover the hero's slots and every equipment/bag page.
+The used item's actual cooldown starts the pool immediately; deferred readback
+confirms it without shortening an existing timer. Consuming the last charge uses
+the client's first ability-level index if the item ability has already disappeared.
+Item orders and channel starts refuse an early use before its effect or charge.
+
+In 1.29.2, test each water item from the hero and a bag page. After casting a book,
+try a wand or buff tome on another page; after food, try a potion on another page.
+Only its own group should be blocked, using the first item's cooldown. Also check
+last-charge use, no mana/charge loss on refusal, and independent players in a lobby.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn
