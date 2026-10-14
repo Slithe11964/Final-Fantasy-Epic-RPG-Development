@@ -12,6 +12,20 @@ from objdata import read_objects, write_objects, fields
 
 NEW_IDS = {'cPg2', 'cSec', 'cKeg'}
 NEXT_PAGE_ICON = r'ReplaceableTextures\CommandButtons\BTNMove.blp'
+# Written the way every other Chronicle entry is: level 1 is the entry before anything is
+# earned, level 2 the earned title in green with its rewards as a list, without a full stop.
+KEG_LOCKED = 'No titles attained.'
+KEG_EARNED = '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas'
+
+
+# The Secrets book reads like the other Chronicle entries: the title in green, then its reward.
+SECRETS_TEXT = KEG_EARNED
+
+
+def keg_text(obj):
+    for level, text in ((1, KEG_LOCKED), (2, KEG_EARNED)):
+        set_field(obj, 'atp1', 'Keg Hunter', level)
+        set_field(obj, 'aub1', text, level)
 
 
 def set_field(obj, key, value, level=0, data=0):
@@ -35,10 +49,8 @@ def prepare(table):
         # The replay-arrow icon makes the page control read as navigation instead of a locked entry.
         set_field(objects['cPg2'], 'aart', NEXT_PAGE_ICON)
         set_field(objects['cPg2'], 'aub1', '', 1)
-        for level in (1, 2):
-            set_field(objects['cKeg'], 'atp1', 'Keg Hunter', level)
-            set_field(objects['cKeg'], 'aub1',
-                      '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas.', level)
+        keg_text(objects['cKeg'])
+        set_field(objects['cSec'], 'aub1', SECRETS_TEXT, 1)
         return result
     root = objects['A0AR']
     spells = fields(root)[('spb1', 1)].split(',')
@@ -60,17 +72,14 @@ def prepare(table):
                 '')
     secret = book('cSec', 'Secrets', ['cKeg'], (1, 0), 'breathoffire',
                   r'ReplaceableTextures\CommandButtons\BTNTome.blp',
-                  'Hidden accomplishments. Discover all ten monographs to become a Keg Hunter.')
+                  SECRETS_TEXT)
     keg = copy.deepcopy(objects['A10C'])
     keg['id'] = 'cKeg'
     keg['sets'][0]['mods'] = [m for m in keg['sets'][0]['mods'] if m['level'] <= 2]
     for key, value in [('anam', 'Keg Hunter'), ('alev', 2), ('abpx', 0), ('abpy', 0),
                        ('aart', r'ReplaceableTextures\CommandButtons\BTNBarrel.blp')]:
         set_field(keg, key, value)
-    for level in (1, 2):
-        set_field(keg, 'atp1', 'Keg Hunter', level)
-        set_field(keg, 'aub1',
-                  '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas.', level)
+    keg_text(keg)
     set_field(root, 'spb1', ','.join(spells[:-1] + ['cPg2']), 1, 1)
     set_field(objects['A10C'], 'abpx', 0)
     set_field(objects['A10C'], 'abpy', 0)
@@ -87,8 +96,21 @@ def main():
         parser.error('Output already exists; choose a new path.')
     archive = MPQ(str(args.base))
     table = read_objects(archive.read('war3map.w3a'), 'w3a')
+    files = {'war3map.w3a': write_objects(prepare(table), table['version'], 'w3a')}
+    # Reforged shows an ability's text from war3mapSkin.w3a when it has an entry there, so
+    # the same words go into that table too, or Reforged keeps showing the old ones.
+    raw_skin = archive.read('war3mapSkin.w3a')
+    if raw_skin:
+        skin = read_objects(raw_skin, 'w3a')
+        entries = {o['id']: o for o in skin['custom'] if o['id'] in ('cKeg', 'cSec')}
+        if 'cKeg' in entries:
+            keg_text(entries['cKeg'])
+        if 'cSec' in entries:
+            set_field(entries['cSec'], 'aub1', SECRETS_TEXT, 1)
+        if entries:
+            files['war3mapSkin.w3a'] = write_objects(skin, skin['version'], 'w3a')
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    write_files(str(args.base), str(args.out), {'war3map.w3a': write_objects(prepare(table), table['version'], 'w3a')})
+    write_files(str(args.base), str(args.out), files)
     print('Prepared Chronicles: ten original entries + Next page; Time Trial and Secrets on page two; Keg Hunter inside Secrets.')
 
 

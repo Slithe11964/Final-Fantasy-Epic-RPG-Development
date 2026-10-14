@@ -285,5 +285,5 @@ Water wave visibility/damage and shared cooldowns are confirmed in 1.29.2.
 
 Click to equip gear already in the hero's own slots, the level and mastery requirements on worn
 gear, and `Gear_HasItem` in place of the 115 item checks in 46 triggers, so worn gear still
-counts for quests and abilities. Saving keeps using the legacy system in 1.29.2 until the model
-is settled; Reforged keeps the new save line unchanged.
+counts for quests and abilities. Since ATG the 1.29.2 map saves the backpack with the Reforged
+FSVB code (SAVE_129.md); Reforged keeps its own save unchanged.

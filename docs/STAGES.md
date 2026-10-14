@@ -139,3 +139,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATD | Adds one water-engine check that compares normal, delayed, detector-free and stock proxy casts and reports real spell events, while preserving the confirmed cross-page cooldowns. |
 | ATE | Replaces rejected native water-proxy casts with the Forsaken scripted cone wave and classic moving effects, keeping the original damage formula and confirmed shared cooldowns. |
 | ATF | Ground pickups fill empty matching equipment kinds before regular bag routing, preserving occupied gear, original items and deferred bonus refresh. |
+| ATG | The 1.29.2 map saves with the Reforged FSVB code: the new save modules are ported unchanged except bag and equipment lookups, which read the backpack pages (SAVE_129.md); old codes still load. Keg Hunter and Secrets read like the other Chronicles. |

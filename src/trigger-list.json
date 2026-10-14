@@ -4423,5 +4423,59 @@
   "name": "DevCommands",
   "folder": "11 Developer tools",
   "library": "TDevCommands"
+ },
+ {
+  "index": 737,
+  "name": "SaveSlots",
+  "folder": "12 Save system",
+  "library": "TSaveSlots"
+ },
+ {
+  "index": 738,
+  "name": "ForsakenSaveCodec",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveCodec"
+ },
+ {
+  "index": 739,
+  "name": "ForsakenSaveLife",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveLife"
+ },
+ {
+  "index": 740,
+  "name": "ForsakenSaveCapture",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveCapture"
+ },
+ {
+  "index": 741,
+  "name": "ForsakenSaveCache",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveCache"
+ },
+ {
+  "index": 742,
+  "name": "ForsakenSaveTransport",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveTransport"
+ },
+ {
+  "index": 743,
+  "name": "ForsakenSaveFreshPlan",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveFreshPlan"
+ },
+ {
+  "index": 744,
+  "name": "ForsakenSaveFreshObjects",
+  "folder": "12 Save system",
+  "library": "TForsakenSaveFreshObjects"
+ },
+ {
+  "index": 745,
+  "name": "ForsakenFreshLoad",
+  "folder": "12 Save system",
+  "library": "TForsakenFreshLoad"
  }
 ]
