@@ -253,6 +253,16 @@ try a wand or buff tome on another page; after food, try a potion on another pag
 Only its own group should be blocked, using the first item's cooldown. Also check
 last-charge use, no mana/charge loss on refusal, and independent players in a lobby.
 
+## Water engine check (stage ATD)
+
+Cross-page magic and consumable cooldowns are confirmed in 1.29.2; the ATC water
+change did not restore the projectile. ATD keeps those cooldowns unchanged and
+adds `-watercheck`: normal, delayed, physical-detector-free and stock native wave
+casts run together with no damage. The summary distinguishes accepted orders
+from actual spell effects and reports the normal water item's channel/effect path.
+Try both water items first, then run the command facing open ground and capture
+the summary, noting which of the four waves appeared.
+
 ## Still to build
 
 Click to equip straight from the hero's own slots, the level and mastery requirements on worn

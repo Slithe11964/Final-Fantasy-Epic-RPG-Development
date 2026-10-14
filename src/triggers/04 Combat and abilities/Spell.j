@@ -101,6 +101,7 @@ function RegisterTriggers_Spell_Part6 takes nothing returns nothing
     endif
     static if LIBRARY_TSpellWater then
         call Register_Spell_Water()
+        call Register_Spell_Water_Check()
     endif
     static if LIBRARY_TSpellQuake then
         call Register_Spell_Quake()

@@ -30,7 +30,7 @@ class WaterBackpackTests(unittest.TestCase):
             SaveUnitHandleBJ=lambda value,key,handle,table:table.__setitem__(key,value),
             SaveRealBJ=lambda value,key,handle,table:table.__setitem__(key,value),
             SaveIntegerBJ=lambda value,key,handle,table:table.__setitem__(key,value),
-            udg_ProxyDamageHash=data,GetSpellAbilityId=lambda:ability,Abil_GetLevel=lambda u,a:1,
+            WaterOrders=[0]*8,udg_ProxyDamageHash=data,GetSpellAbilityId=lambda:ability,Abil_GetLevel=lambda u,a:1,
             BlzGetAbilityManaCost=mana,UNIT_TYPE_HERO=1,IsUnitType=lambda u,t:u['hero'],
             bj_HEROSTAT_INT=1,GetHeroStatBJ=lambda stat,u,b:75 if u is hero else 0,
             Prof_RodPower=lambda u:1.5 if u is hero else 1.,I2R=float,
@@ -52,5 +52,19 @@ class WaterBackpackTests(unittest.TestCase):
                 for target in (False,True):
                     with self.subTest(ability=ability,page=page,target=target):
                         self.run_cast(page,target,ability)
+
+    def test_diagnostic_requires_proxy_effect_not_channel(self):
+        for event in (1,2):
+            saved=[]
+            env=dict(GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:0,
+                GetSpellAbilityId=lambda:'A0PZ',GetTriggerEventId=lambda:event,
+                EVENT_PLAYER_UNIT_SPELL_CHANNEL=1,EVENT_PLAYER_UNIT_SPELL_EFFECT=2,
+                Trig_Spell_Water_IsWaterSpell=lambda:False,WaterProxyEffects=[0]*8,
+                WaterCheckData={},GetTriggerUnit=lambda:42,GetHandleId=lambda u:u,
+                LoadInteger=lambda *a:2,SaveBoolean=lambda *a:saved.append(a))
+            with patch.object(harness,'SELECTED',[]):
+                e=harness.load_engine(SOURCE.read_text(),['Water_Observe'],env)
+            e['Water_Observe']()
+            self.assertEqual(len(saved),1 if event==2 else 0)
 
 if __name__=='__main__':unittest.main()
