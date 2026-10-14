@@ -10,9 +10,6 @@ slots where an item is: 1.29.2 has no such natives, so those questions go to TSa
 its positions and the files it writes are otherwise exactly the Reforged ones, so a code or file
 saved in either version loads in the other.
 
-Player messages are also reworded (MESSAGES): the Reforged build is a test and reports test
-details and timings, while the normal maps only say whether a save or load worked and why not.
-
 RUNTIME_MAP is a built map of the normal line (any recent stage); the loader switches off every
 trigger it names while it creates the loaded character, the same as the Reforged build does.
 With --check nothing is written; the tool fails if the files in src differ from what it makes.
@@ -152,69 +149,17 @@ PATCHES = {
          'library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TSaveSlots,', 1),
         (PREPARE_HERO_OLD, PREPARE_HERO_NEW, 1),
         ('            call FlushChildHashtable(ForsakenBagAbilities,FFL_ItemKey[pid*57+i])\n', '', 1),
-        ('ForsakenSaveBlocked', 'SAVE_NEW_FORMAT', 1),
+        ('ForsakenSaveBlocked', 'SAVE_ENABLED', 1),
         ('    call FFL_Guard(false)\n    call FFL_RestoreUnlocks(pid)\n',
          '    call FFL_Guard(false)\n    call FFL_RestoreUnlocks(pid)\n    call SaveSlots_AfterLoad(pid)\n', 1),
         ('function InitTrig_ForsakenFreshLoad takes nothing returns nothing\n    local integer pid=0\n',
          'function InitTrig_ForsakenFreshLoad takes nothing returns nothing\n    local integer pid=0\n'
-         '    if not SAVE_NEW_FORMAT then\n        return\n    endif\n', 1),
+         '    if not SAVE_ENABLED then\n        return\n    endif\n', 1),
     ],
 }
-# What players read. The Reforged build was a test, so its messages carry test wording and
-# timings; the normal maps only say whether a save or load worked and, if not, why. Every
-# message is matched exactly, like the rest of the port.
-MESSAGES = {
-    'ForsakenFreshLoad': [
-        ('"Save prototype: "+message', 'message', 1),
-        ('"FAIL: "+reason+"; created objects cleaned, load unused; retry allowed."',
-         '"Load failed: "+reason+". Nothing was changed; you can load again."', 1),
-        ('"FAIL: "+reason+"; verifying cleanup before retry"', '"Load failed: "+reason+". Cleaning up, please wait."', 1),
-        ('"FAIL: "+FFP_Error[pid]', '"Load failed: "+FFP_Error[pid]', 1),
-        ('"PASS: exact full profile after fresh load. Code "+I2S(StringLength(FST_Result[pid]))+" characters; file read ~"+I2S(FST_FileMillis[pid])+" ms (game timer); transfer "+R2S(FST_TransferSeconds[pid])+" s; load/verify "+R2S(TimerGetElapsed(FST_Clock)-FFL_Started[pid])+" s."',
-         '"|cff00ff00Load complete.|r"', 1),
-        ('call FFL_Message(pid,FFP_Error[pid])', 'call FFL_Message(pid,"Load not possible: "+FFP_Error[pid])', 2),
-        ('"invalid numbered code part; paste the complete -load line"', '"That load line is incomplete. Paste the whole -load line."', 1),
-        ('"received code part "+I2S(part)+"; "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored. Character unchanged until all parts validate."',
-         '"Load: part "+I2S(part)+" received ("+I2S(FFL_ChatCount[pid])+" of "+I2S(total)+"). Type -loadstatus to see which parts are missing."', 1),
-        ('"assembled code checksum failed; paste all parts again"', '"Load failed: the parts do not fit together. Paste all of them again."', 1),
-        ('"load rejected before creation: "+FFP_Error[pid]', '"Load failed: "+FFP_Error[pid]', 2),
-        ('"no chat load in progress; paste the first -load line"', '"No load in progress. Paste the first -load line."', 1),
-        ('"chat load: all "+I2S(total)+" parts stored"', '"Load: all "+I2S(total)+" parts received."', 1),
-        ('"chat load: "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored; still need part "+parts',
-         '"Load: "+I2S(FFL_ChatCount[pid])+" of "+I2S(total)+" parts received. Still missing part "+parts', 1),
-        ('"no failed load requires cleanup"', '"Nothing to clean up."', 1),
-        ('"another save/load is in progress"', '"Another save or load is still running."', 1),
-        ('"filename must use letters', '"File names must use letters', 1),
-        ('"saving is disabled in Hardcore"', '"Saving is disabled in Hardcore."', 1),
-        ('"capturing the full character"', '"Saving..."', 1),
-        ('"could not start character capture"', '"Save failed: the character could not be read. Try again in a moment."', 1),
-        ('"reading file and transferring the complete profile"', '"Loading..."', 1),
-        ('"capture verified; exporting the file"', '"Writing the save file..."', 1),
-        ('"export refused: "+FSC_Error[pid]', '"Save failed: "+FSC_Error[pid]', 1),
-        ('"export failed: "+FRC_Error[pid]', '"Save failed: "+FRC_Error[pid]', 1),
-        ('"file/transfer failed: "+FST_Error[pid]', '"Load failed: "+FST_Error[pid]', 1),
-        ('"FAIL: "+FFL_FailureReason[pid]+"; created objects cleaned, load unused; retry allowed."',
-         '"Load failed: "+FFL_FailureReason[pid]+". Nothing was changed; you can load again."', 1),
-        ('"FAIL: "+FFL_FailureReason[pid]+"; cleanup incomplete. Use -newcleanup before retry."',
-         '"Load failed: "+FFL_FailureReason[pid]+". Type -newcleanup, then load again."', 1),
-    ],
-    'ForsakenSaveTransport': [
-        ('"Save prototype: file written; checking exact readback."', '"Save file written; checking it..."', 1),
-        ('"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters). File: "+FST_PlayerPath(pid,0)',
-         '"|cff00ff00Saved.|r File: "+FST_PlayerPath(pid,0)', 1),
-        ('"Save prototype: file readback failed: "+FST_FileError[pid]+"; expected "+I2S(StringLength(encoded))+" characters. Export unverified."',
-         '"Saved, but the file could not be checked ("+FST_FileError[pid]+"). Save again to be sure."', 1),
-        ('"Save prototype: file readback failed: expected "+I2S(StringLength(encoded))+" characters, received "+I2S(StringLength(readback))+"; prefix ["+SubString(readback,0,4)+"]. Export unverified."',
-         '"Saved, but the file did not read back the same. Save again to be sure."', 1),
-    ],
-    'ForsakenSaveFreshPlan': [
-        ('"CU requires the untouched starting character and Gaya"', '"load at the start of a game, before leveling the hero or Gaya"', 1),
-        ('"CU requires fresh job progress"', '"load at the start of a game, before changing or leveling jobs"', 1),
-        ('"saved job exceeds the current engine cap99"', '"a saved job is above level 99"', 1),
-        ('"saved Freelancer exceeds the current engine cap99"', '"the saved Freelancer is above level 99"', 1),
-        ('"; export again if this file was made before DE"', '""', 1),
-    ],
-}
+# Rewording of player messages for the normal maps only. Empty since stage ATL: the plain wording
+# now lives in the Reforged sources themselves, so both lines say the same thing.
+MESSAGES = {}
 
 FUNCTIONS = {
     'ForsakenFreshLoad': [
@@ -308,7 +253,7 @@ def generate(runtime_map):
         text = port(module, text)
         first, rest = text.split('\n', 1)
         notice = ('// Generated by tools/save_port.py from experiments/Forsaken/%s (the Reforged save).\n'
-                  '// Edit that file and run the tool again; only slot lookups and player messages differ.\n' % file)
+                  '// Edit that file and run the tool again; only the bag and equipment lookups differ.\n' % file)
         out[module] = first + '\n' + notice + rest
     return out
 

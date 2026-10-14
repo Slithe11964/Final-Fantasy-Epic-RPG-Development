@@ -98,7 +98,7 @@ function FFP_Eligible takes integer pid,boolean windowOpen returns boolean
         set FFP_Error[pid]="starting objects are not assigned to this player"
         return false
     elseif GetHeroLevel(hero)!=1 or GetHeroLevel(gaya)!=1 or udg_FreelancerHero[pid+1]!=null or UnitExtendedInventorySize(hero)!=30 then
-        set FFP_Error[pid]="CU requires the untouched starting character and Gaya"
+        set FFP_Error[pid]="load at the start of a game, before leveling the hero or Gaya"
         return false
     endif
     loop
@@ -113,7 +113,7 @@ function FFP_Eligible takes integer pid,boolean windowOpen returns boolean
     loop
         exitwhen i>=22
         if udg_JobUnitType[i]!=FRC_JobRaw(i) or LoadInteger(udg_JobLevelHash,FRC_JobRaw(i),pid)>1 or (LoadUnitHandle(udg_JobHeroHash,FRC_JobRaw(i),pid)!=null and LoadUnitHandle(udg_JobHeroHash,FRC_JobRaw(i),pid)!=hero) then
-            set FFP_Error[pid]="CU requires fresh job progress"
+            set FFP_Error[pid]="load at the start of a game, before changing or leveling jobs"
             return false
         endif
         set i=i+1
@@ -160,7 +160,7 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
         if sid==2 then
             set tier=FSC_Read(ctx)
             if value>99 then
-                set FFP_Error[pid]="saved job exceeds the current engine cap99"
+                set FFP_Error[pid]="a saved job is above level 99"
                 return false
             endif
             call SaveInteger(FFP_Values,pid*16+10,identity,tier)
@@ -268,13 +268,15 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
             set FFP_Error[pid]="saved Gaya level is not supported"
             set valid=false
         elseif LoadInteger(FFP_Values,pid*16+4,4)>99 then
-            set FFP_Error[pid]="saved Freelancer exceeds the current engine cap99"
+            set FFP_Error[pid]="the saved Freelancer is above level 99"
             set valid=false
         elseif LoadInteger(FFP_Values,pid*16+4,1)>3 then
             set FFP_Error[pid]="unsupported saved difficulty tier"
             set valid=false
-        elseif udg_Difficulty!=6 and LoadInteger(FFP_Values,pid*16+4,1)!=FRC_Difficulty(pid) then
-            set FFP_Error[pid]="saved difficulty tier "+I2S(LoadInteger(FFP_Values,pid*16+4,1))+" does not match this game tier "+I2S(FRC_Difficulty(pid))+"; export again if this file was made before DE"
+        elseif udg_Difficulty==5 and LoadInteger(FFP_Values,pid*16+4,1)<3 then
+            // Simple to Hard saves load in Simple to Hard; Inferno saves load anywhere;
+            // Nightmare loads any save. Only an Inferno game refuses a save made below Inferno.
+            set FFP_Error[pid]="a save made below Inferno cannot be loaded in an Inferno game"
             set valid=false
         elseif (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
             set FFP_Error[pid]="saved Speedrun mode does not match this game"

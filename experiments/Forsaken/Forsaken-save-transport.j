@@ -535,7 +535,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             set page=page+1
         endloop
         if not FST_LegacySaveMessages[pid] then
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written; checking exact readback.")
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save file written; checking it...")
         endif
         set before=GetPlayerName(Player(pid))
         set readback=FST_ReadFile(pid)
@@ -544,14 +544,14 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
             if FST_LegacySaveMessages[pid] then
                 call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved successfully")
             else
-                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file written and read back exactly ("+I2S(StringLength(encoded))+" characters). File: "+FST_PlayerPath(pid,0))
+                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"|cff00ff00Saved.|r File: "+FST_PlayerPath(pid,0))
             endif
         elseif FST_LegacySaveMessages[pid] then
             call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved but could not verify if successful. Check saves folder manually.")
         elseif readback==null or readback=="" then
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: "+FST_FileError[pid]+"; expected "+I2S(StringLength(encoded))+" characters. Export unverified.")
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved, but the file could not be checked ("+FST_FileError[pid]+"). Save again to be sure.")
         else
-            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: file readback failed: expected "+I2S(StringLength(encoded))+" characters, received "+I2S(StringLength(readback))+"; prefix ["+SubString(readback,0,4)+"]. Export unverified.")
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved, but the file did not read back the same. Save again to be sure.")
         endif
     endif
     // Synchronized return means validated export attempted, not local readback success.

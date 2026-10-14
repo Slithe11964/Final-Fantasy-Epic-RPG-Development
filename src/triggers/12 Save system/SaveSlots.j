@@ -13,8 +13,11 @@ library TSaveSlots requires TBackpack, TGearSlots, TPlayerHero
 //          page 2 holds the two rings and the trinket.
 //   45-50  Spirit of Gaya, 51-56 house
 globals
-    // Off in the Reforged map, which keeps its own save. tools/save_legacy.py switches it on
-    // when the 1.29.2 map is made, so there -save writes the new code and -load reads both.
+    // On in both versions since stage ATL: -save writes the new code and -load reads new and old.
+    // Set false to go back to the old save (the save modules then stay inactive).
+    constant boolean SAVE_ENABLED=true
+    // Retired at stage ATL (it switched the new save on for 1.29.2 only); nothing reads it. A
+    // module build cannot change an existing variable, so it stays until a World Editor save.
     constant boolean SAVE_NEW_FORMAT=false
     constant integer SAVE_BAG_SIZE=30
     constant integer SAVE_LOADOUT_SLOTS=9

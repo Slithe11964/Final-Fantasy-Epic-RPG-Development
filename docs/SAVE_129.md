@@ -1,10 +1,10 @@
-# The new save in the 1.29.2 map
+# The new save in the normal maps
 
-From stage ATG the 1.29.2 map saves with the new FSVB code that the Reforged save line
-(experiments/Forsaken, maps `release/Forsaken/...DW/DX`) uses. Nothing about that save changes:
-the codes, the files and the way it works are the Reforged ones. The 1.29.2 map is connected to it.
+From stage ATG the 1.29.2 map, and from stage ATL the Reforged map too, save with the new FSVB
+code that the Reforged save line (experiments/Forsaken) uses. Codes and files are the same in
+every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
-## Commands in 1.29.2
+## Commands
 
 | Command | What it does |
 |---|---|
@@ -15,8 +15,19 @@ the codes, the files and the way it works are the Reforged ones. The 1.29.2 map 
 | `-load <old code>` | Old codes still load through the old loader |
 | `-newcleanup` | Clears a failed load that could not tidy up by itself, so you can load again |
 
-Messages say only whether a save or load worked and, if not, why (ATK). The Reforged Forsaken
-maps keep their test wording and timings; `tools/save_port.py` rewords them for the normal maps.
+Messages say only whether a save or load worked and, if not, why. Since ATL the wording lives in
+the Reforged save sources themselves, so the Forsaken maps say the same once rebuilt.
+
+## Difficulty
+
+| Game | Loads saves made in |
+|---|---|
+| Simple, Easy, Normal, Hard | Simple to Hard, and Inferno |
+| Inferno | Inferno only |
+| Nightmare | any difficulty |
+
+A character loaded below its save's difficulty saves at the new game's difficulty from then on
+(an Inferno save loaded in Easy becomes an Easy save). Old-format codes follow the same rule.
 
 The Reforged map is unchanged: its normal line keeps the old save, and the private Forsaken maps
 keep the new one.

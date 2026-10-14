@@ -98,7 +98,7 @@ class FreshPlanTests(unittest.TestCase):
         def jobs(text, level=100):
             return codec.uint(22)+''.join(codec.uint(i)+codec.uint(level)+codec.uint(2) for i in range(1, 23))
         self.assertFalse(self.build(self.change(2, jobs)))
-        self.assertIn('cap99', self.e['FFP_Error'][0])
+        self.assertIn('above level 99', self.e['FFP_Error'][0])
         def extra(text): return codec.uint(23)+text[1:]+codec.uint(23)+codec.uint(1)+codec.uint(0)
         self.assertFalse(self.build(self.change(2, extra)))
         self.assertTrue(self.build())
@@ -121,7 +121,7 @@ class FreshPlanTests(unittest.TestCase):
         self.e['udg_SpeedrunMode'] = True; self.assertFalse(self.build())
         self.assertIn('Speedrun', self.e['FFP_Error'][0])
         self.e['udg_SpeedrunMode'] = False; self.e['udg_Difficulty'] = 5
-        self.assertFalse(self.build()); self.assertIn('difficulty', self.e['FFP_Error'][0])
+        self.assertFalse(self.build()); self.assertIn('Inferno', self.e['FFP_Error'][0])
 
     def test_inferno_tier_matches_vote_index_and_failed_attempt_allows_retry(self):
         inferno = self.change(4, lambda text: codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(text)]))
@@ -137,6 +137,17 @@ class FreshPlanTests(unittest.TestCase):
         for difficulty in (2, 3, 4):
             self.e['udg_Difficulty'] = difficulty
             self.assertTrue(self.build())
+
+    def test_difficulty_rules(self):
+        # Simple-Hard saves load in Simple-Hard; Inferno saves load anywhere; Nightmare loads
+        # any save; an Inferno game refuses only saves made below Inferno.
+        def tier(value):
+            return self.change(4, lambda text: codec.pairs([(i, value if i == 1 else v) for i, v in codec.read_pairs(text)]))
+        for saved in (1, 2, 3):
+            for game in (1, 2, 3, 4, 5, 6):
+                self.e['udg_Difficulty'] = game
+                expected = not (game == 5 and saved < 3)
+                self.assertEqual(self.build(tier(saved)), expected, (saved, game, self.e['FFP_Error'][0]))
 
     def test_codec_accepted_profile_is_not_replaced_by_preflight(self):
         self.assertTrue(self.e['FSC_Decode'](0, self.encoded, self.e['FRC_Account'](0), True))

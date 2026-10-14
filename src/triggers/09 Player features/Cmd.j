@@ -275,12 +275,10 @@ function Trig_Cmd_Load_Code_OpenCode takes player p,string l_code returns intege
     set i=Trig_Cmd_Load_Code_ReadValue(l,2)
     if udg_Difficulty==6 then
         set udg_CodeDifficulty[GetPlayerId(p)+1]=i
-    elseif(udg_Difficulty>1 and i>0 and((udg_Difficulty==5 and i<3)or i<2))then
-        if udg_Difficulty==5 then
-            call DisplayTimedTextToPlayer(p,0,0,30,"|cFFFF0000You cannot load a code from a lower difficulty level in Inferno mode!|r")
-        else
-            call DisplayTimedTextToPlayer(p,0,0,30,"|cFFFF0000You cannot load a code from Simple mode on higher difficulties!|r")
-        endif
+    elseif(udg_Difficulty==5 and i>0 and i<3)then
+        // Simple to Hard codes load in Simple to Hard; Inferno codes load anywhere; Nightmare
+        // loads any code. Only an Inferno game refuses a code made below Inferno.
+        call DisplayTimedTextToPlayer(p,0,0,30,"|cFFFF0000You cannot load a code from a lower difficulty level in Inferno mode!|r")
         call Trig_Cmd_Load_Code_FreeReader(l)
         return 0
     endif

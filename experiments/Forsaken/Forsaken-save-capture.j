@@ -7,6 +7,8 @@ globals
     integer array FRC_Position
     integer array FRC_Count
     integer array FRC_AccountHash
+    // The tier of a save being loaded, so the check after the load reads it back; 0 otherwise.
+    integer array FRC_LoadTier
     string array FRC_Body
     string array FRC_Result
     string array FRC_Record
@@ -38,7 +40,9 @@ endfunction
 
 // Preserve the legacy save tiers rather than the separate difficulty vote indexes.
 function FRC_Difficulty takes integer pid returns integer
-    if udg_Difficulty==6 then
+    if FRC_LoadTier[pid]>0 then
+        return FRC_LoadTier[pid]
+    elseif udg_Difficulty==6 then
         return udg_CodeDifficulty[pid+1]
     elseif udg_Difficulty>=5 then
         return 3

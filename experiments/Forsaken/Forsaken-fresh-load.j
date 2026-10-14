@@ -41,7 +41,7 @@ function FFL_Guard takes boolean block returns nothing
 endfunction
 
 function FFL_Message takes integer pid,string message returns nothing
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Save prototype: "+message)
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,message)
 endfunction
 
 function FFL_Val takes integer pid,integer sectionId,integer identity returns integer
@@ -176,8 +176,12 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
     endloop
     if restore then
         set udg_CodeDifficulty[pid+1]=LoadInteger(FFL_Before,pid*16+4,1)
+        set FRC_LoadTier[pid]=0
     else
         set udg_CodeDifficulty[pid+1]=FFL_Val(pid,4,1)
+        // Until the load is committed, the check reads back the save's own tier, which may be
+        // higher than this game's (an Inferno save loaded in Easy).
+        set FRC_LoadTier[pid]=FFL_Val(pid,4,1)
     endif
     if restore then
         set udg_NewGamePlusLevel[pid+1]=LoadInteger(FFL_Before,pid*16+4,5)
@@ -670,12 +674,12 @@ endfunction
 function FFL_Fail takes integer pid,string reason returns nothing
     set FFL_FailureReason[pid]=reason
     if FFL_Restore(pid) then
-        call FFL_Message(pid,"FAIL: "+reason+"; created objects cleaned, load unused; retry allowed.")
+        call FFL_Message(pid,"Load failed: "+reason+". Nothing was changed; you can load again.")
     else
         // Native removal readbacks may settle after this synchronous operation.
         set FFL_CleanupAttempts[pid]=10
         set FFL_Phase[pid]=5
-        call FFL_Message(pid,"FAIL: "+reason+"; verifying cleanup before retry")
+        call FFL_Message(pid,"Load failed: "+reason+". Cleaning up, please wait.")
     endif
 endfunction
 
@@ -688,7 +692,7 @@ function FFL_Apply takes integer pid returns boolean
     local integer placementPass=0
     if not FFP_Recheck(pid,FFL_WindowOpen) then
         set FFL_Phase[pid]=0
-        call FFL_Message(pid,"FAIL: "+FFP_Error[pid])
+        call FFL_Message(pid,"Load failed: "+FFP_Error[pid])
         return false
     endif
     call FFL_Snapshot(pid)
@@ -903,6 +907,8 @@ function FFL_Commit takes integer pid returns nothing
     endloop
     call FFN_ClearRecords(pid)
     set FFN_State[pid]=0
+    // From here on this character saves at this game's tier.
+    set FRC_LoadTier[pid]=0
     set FFP_Locked[pid]=false
     call FFP_Clear(pid)
     set FFL_Phase[pid]=0
@@ -911,7 +917,7 @@ function FFL_Commit takes integer pid returns nothing
     set FFL_OldGaya[pid]=null
     call FFL_Guard(false)
     call FFL_RestoreUnlocks(pid)
-    call FFL_Message(pid,"PASS: exact full profile after fresh load. Code "+I2S(StringLength(FST_Result[pid]))+" characters; file read ~"+I2S(FST_FileMillis[pid])+" ms (game timer); transfer "+R2S(FST_TransferSeconds[pid])+" s; load/verify "+R2S(TimerGetElapsed(FST_Clock)-FFL_Started[pid])+" s.")
+    call FFL_Message(pid,"|cff00ff00Load complete.|r")
 endfunction
 
 function FFL_RoutesFile takes string command returns boolean
@@ -943,7 +949,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
     local string chunk
     local string encoded=""
     if not FFP_Eligible(pid,FFL_WindowOpen) then
-        call FFL_Message(pid,FFP_Error[pid])
+        call FFL_Message(pid,"Load not possible: "+FFP_Error[pid])
         return
     endif
     if SubString(text,0,5)=="FSVB:" then
@@ -964,7 +970,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
         endloop
         set chunk=SubString(text,first,StringLength(text))
         if field!=3 or check<0 or total<1 or total>213 or part<1 or part>total or StringLength(chunk)<1 or StringLength(chunk)>80 or (part<total and StringLength(chunk)!=80) or not FSC_AlphabetValid(chunk) then
-            call FFL_Message(pid,"invalid numbered code part; paste the complete -load line")
+            call FFL_Message(pid,"That load line is incomplete. Paste the whole -load line.")
             return
         endif
         if FFL_ChatCheck[pid]!=check or FFL_ChatTotal[pid]!=total then
@@ -985,7 +991,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
             set FFL_ChatCount[pid]=FFL_ChatCount[pid]+1
         endif
         if FFL_ChatCount[pid]<total then
-            call FFL_Message(pid,"received code part "+I2S(part)+"; "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored. Character unchanged until all parts validate.")
+            call FFL_Message(pid,"Load: part "+I2S(part)+" received ("+I2S(FFL_ChatCount[pid])+" of "+I2S(total)+"). Type -loadstatus to see which parts are missing.")
             return
         endif
         set i=1
@@ -996,7 +1002,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
         endloop
         if StringLength(encoded)>FST_LIMIT or FSC_Checksum(encoded)!=check then
             set FFL_ChatTotal[pid]=0
-            call FFL_Message(pid,"assembled code checksum failed; paste all parts again")
+            call FFL_Message(pid,"Load failed: the parts do not fit together. Paste all of them again.")
             return
         endif
     else
@@ -1010,7 +1016,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
         call FFL_Apply(pid)
     else
         set FFL_ChatTotal[pid]=0
-        call FFL_Message(pid,"load rejected before creation: "+FFP_Error[pid])
+        call FFL_Message(pid,"Load failed: "+FFP_Error[pid])
     endif
 endfunction
 
@@ -1023,7 +1029,7 @@ function FFL_LoadStatus takes integer pid returns nothing
     local integer missing=0
     local string parts=""
     if total<1 then
-        call FFL_Message(pid,"no chat load in progress; paste the first -load line")
+        call FFL_Message(pid,"No load in progress. Paste the first -load line.")
         return
     endif
     loop
@@ -1041,13 +1047,13 @@ function FFL_LoadStatus takes integer pid returns nothing
         set i=i+1
     endloop
     if missing==0 then
-        call FFL_Message(pid,"chat load: all "+I2S(total)+" parts stored")
+        call FFL_Message(pid,"Load: all "+I2S(total)+" parts received.")
         return
     endif
     if missing>listed then
         set parts=parts+" and "+I2S(missing-listed)+" more"
     endif
-    call FFL_Message(pid,"chat load: "+I2S(FFL_ChatCount[pid])+"/"+I2S(total)+" stored; still need part "+parts)
+    call FFL_Message(pid,"Load: "+I2S(FFL_ChatCount[pid])+" of "+I2S(total)+" parts received. Still missing part "+parts)
 endfunction
 
 function FFL_Chat takes nothing returns nothing
@@ -1081,11 +1087,11 @@ function FFL_Chat takes nothing returns nothing
         if FFL_Phase[pid]==4 then
             call FFL_Fail(pid,"cleanup requested")
         else
-            call FFL_Message(pid,"no failed load requires cleanup")
+            call FFL_Message(pid,"Nothing to clean up.")
         endif
         return
     elseif FFL_Phase[pid]!=0 or FFP_Locked[pid] then
-        call FFL_Message(pid,"another save/load is in progress")
+        call FFL_Message(pid,"Another save or load is still running.")
         return
     endif
     if SubString(command,0,10)=="-load FSVB" then
@@ -1106,23 +1112,23 @@ function FFL_Chat takes nothing returns nothing
         set stem=FFL_Trim(SubString(command,7,StringLength(command)))
     endif
     if not FST_SetFileStem(pid,stem) then
-        call FFL_Message(pid,"filename must use letters, numbers, spaces, underscores or hyphens (up to 64 characters)")
+        call FFL_Message(pid,"File names must use letters, numbers, spaces, underscores or hyphens (up to 64 characters)")
         return
     endif
     if saving then
         set FFL_SaveFile[pid]=lower!="-save"
         set FST_LegacySaveMessages[pid]=lower=="-savef" or SubString(lower,0,7)=="-savef "
         if not udg_HardcoreOff then
-            call FFL_Message(pid,"saving is disabled in Hardcore")
+            call FFL_Message(pid,"Saving is disabled in Hardcore.")
         elseif FRC_StartNow(pid) then
             set FFL_Phase[pid]=1
             if FST_LegacySaveMessages[pid] then
                 call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Trying to save in "+SubString(FST_PlayerPath(pid,0),2,StringLength(FST_PlayerPath(pid,0))))
             else
-                call FFL_Message(pid,"capturing the full character")
+                call FFL_Message(pid,"Saving...")
             endif
         else
-            call FFL_Message(pid,"could not start character capture")
+            call FFL_Message(pid,"Save failed: the character could not be read. Try again in a moment.")
         endif
     elseif FFP_Eligible(pid,FFL_WindowOpen) then
         set FST_AllowLegacy[pid]=SubString(lower,0,6)=="-loadf" or lower=="-load"
@@ -1130,10 +1136,10 @@ function FFL_Chat takes nothing returns nothing
             set FFL_RetryCheck[pid]=command=="-newretrycheck"
             set FFL_Phase[pid]=2
             set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
-            call FFL_Message(pid,"reading file and transferring the complete profile")
+            call FFL_Message(pid,"Loading...")
         endif
     else
-        call FFL_Message(pid,FFP_Error[pid])
+        call FFL_Message(pid,"Load not possible: "+FFP_Error[pid])
     endif
 endfunction
 
@@ -1157,17 +1163,17 @@ function FFL_Tick takes nothing returns nothing
             if FRC_Ready[pid] then
                 if FFL_SaveFile[pid] then
                     if not FST_LegacySaveMessages[pid] then
-                        call FFL_Message(pid,"capture verified; exporting the file")
+                        call FFL_Message(pid,"Writing the save file...")
                     endif
                     if not FST_Write(pid,FRC_Result[pid],FRC_Account(pid)) then
-                        call FFL_Message(pid,"export refused: "+FSC_Error[pid])
+                        call FFL_Message(pid,"Save failed: "+FSC_Error[pid])
                     endif
                 else
                     set FST_SavedCode[pid]=FRC_Result[pid]
                     call FST_ShowCode(pid,1)
                 endif
             else
-                call FFL_Message(pid,"export failed: "+FRC_Error[pid])
+                call FFL_Message(pid,"Save failed: "+FRC_Error[pid])
             endif
         elseif FFL_Phase[pid]==2 and not FST_Pending[pid] then
             if FST_Ready[pid] then
@@ -1178,21 +1184,21 @@ function FFL_Tick takes nothing returns nothing
                     call FFL_Apply(pid)
                 else
                     set FFL_Phase[pid]=0
-                    call FFL_Message(pid,"load rejected before creation: "+FFP_Error[pid])
+                    call FFL_Message(pid,"Load failed: "+FFP_Error[pid])
                 endif
             else
                 set FFL_Phase[pid]=0
-                call FFL_Message(pid,"file/transfer failed: "+FST_Error[pid])
+                call FFL_Message(pid,"Load failed: "+FST_Error[pid])
             endif
         elseif FFL_Phase[pid]==5 then
             if FFL_Restore(pid) then
-                call FFL_Message(pid,"FAIL: "+FFL_FailureReason[pid]+"; created objects cleaned, load unused; retry allowed.")
+                call FFL_Message(pid,"Load failed: "+FFL_FailureReason[pid]+". Nothing was changed; you can load again.")
             else
                 set FFL_CleanupAttempts[pid]=FFL_CleanupAttempts[pid]-1
                 if FFL_CleanupAttempts[pid]>0 then
                     set FFL_Phase[pid]=5
                 else
-                    call FFL_Message(pid,"FAIL: "+FFL_FailureReason[pid]+"; cleanup incomplete. Use -newcleanup before retry.")
+                    call FFL_Message(pid,"Load failed: "+FFL_FailureReason[pid]+". Type -newcleanup, then load again.")
                 endif
             endif
         elseif FFL_Phase[pid]==3 and FRC_Phase[pid]==0 then

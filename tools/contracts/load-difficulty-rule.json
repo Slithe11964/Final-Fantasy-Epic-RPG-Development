@@ -1,0 +1,11 @@
+{
+ "stage": "ATL",
+ "purpose": "Old-format codes follow the same difficulty rule as the new save: Simple to Hard codes load in Simple to Hard, Inferno codes load anywhere, Nightmare loads any code, and only an Inferno game refuses a code made below Inferno. The code format is unchanged; only the check after reading the difficulty field differs.",
+ "serializers": {
+  "Trig_Cmd_Load_Code_OpenCode": {
+   "legacy": "fb765b4cc49322c98f34aaf17efe7d1e7ba9c7993853c76909f93ae629e144ea",
+   "extended": "4c34a4398206968a8f5374a6ee044f8b33577fae85db57ee07073df33652fc27"
+  }
+ },
+ "verification": "Restore the removed Simple-mode branch to reproduce the legacy fingerprint. Bytes read, their order and the G/H vectors are unchanged."
+}

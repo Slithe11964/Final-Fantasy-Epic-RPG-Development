@@ -171,7 +171,7 @@ class TransportTests(unittest.TestCase):
         self.assertTrue(self.e['FST_Write'](0, code, 42))
         self.assertEqual(self.file, code)
         self.assertEqual(self.names[0], 'Player0')
-        self.assertIn('read back exactly', self.messages[-1])
+        self.assertIn('Saved.', self.messages[-1])
         before = list(self.preloads)
         self.assertFalse(self.e['FST_Write'](0, code, 43))
         self.assertEqual(self.preloads, before)
@@ -210,15 +210,15 @@ class TransportTests(unittest.TestCase):
     def test_file_readback_failure_is_reported_and_never_claimed_verified(self):
         self.e['Preloader'] = lambda path: None
         self.assertTrue(self.e['FST_Write'](0, self.file, 42))
-        self.assertIn('readback failed', self.messages[-1])
-        self.assertNotIn('read back exactly', self.messages[-1])
+        self.assertIn('could not be checked', self.messages[-1])
+        self.assertNotIn('Saved.', self.messages[-1])
         self.assertEqual(self.names[0], 'Player0')
 
     def test_file_initializes_readback_without_empty_player_name(self):
         self.e['SetPlayerName'] = lambda p,name: self.names.__setitem__(p,name) if name else None
         encoded=self.file
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
-        self.assertIn('read back exactly',self.messages[-1])
+        self.assertIn('Saved.',self.messages[-1])
         self.assertNotIn('GetPlayerName',self.generated)
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
         self.assertEqual(self.names[0],'Player0')
@@ -239,7 +239,7 @@ class TransportTests(unittest.TestCase):
         encoded=codec.encode(codec.Envelope(envelope.account_hash,envelope.sections+(codec.Section(10,1,False,'A'*3000),)))
         self.assertGreater(len(encoded),3680)
         self.assertTrue(self.e['FST_Write'](0,encoded,42))
-        self.assertIn('read back exactly',self.messages[-1])
+        self.assertIn('Saved.',self.messages[-1])
         self.assertEqual(self.names,['Player'+str(i) for i in range(24)])
         self.assertIn('.\\FFERPG\\Forsaken Endgame.txt',self.files)
         self.files.pop(self.e['FST_PlayerPath'](0,1))

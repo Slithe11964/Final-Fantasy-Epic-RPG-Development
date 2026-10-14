@@ -65,7 +65,7 @@ class SavePortTests(unittest.TestCase):
         self.assertIn('if not SaveSlots_Ready(pid) then', capture)
         load = text(FOLDER / 'ForsakenFreshLoad.j')
         self.assertIn('call SaveSlots_AfterLoad(pid)', load)
-        self.assertIn('if not SAVE_NEW_FORMAT then\n        return\n    endif', load)
+        self.assertIn('if not SAVE_ENABLED then\n        return\n    endif', load)
 
     def test_every_gear_item_has_a_permanent_identity_and_bindings(self):
         plan = text(FOLDER / 'ForsakenSaveFreshPlan.j')
@@ -80,11 +80,11 @@ class SavePortTests(unittest.TestCase):
         # 1.29.2 has no Reforged gear variants: every binding names the item itself.
         self.assertNotRegex(plan, r"'[fg]\d{3}'")
 
-    def test_the_switch_is_off_until_the_classic_conversion(self):
+    def test_both_versions_use_the_new_save(self):
         slots = text(FOLDER / 'SaveSlots.j')
-        self.assertIn('constant boolean SAVE_NEW_FORMAT=false', slots)
+        self.assertIn('constant boolean SAVE_ENABLED=true', slots)
         joined = slots + text(FOLDER / 'ForsakenSaveTransport.j')
-        self.assertIn('constant boolean SAVE_NEW_FORMAT=true', convert(joined))
+        self.assertIn('constant boolean SAVE_ENABLED=true', convert(joined))
 
     def test_equipment_positions_follow_reforged_order(self):
         # Helm, chest, gloves, boots, ring, ring, weapon, offhand, trinket -> page, slot.

@@ -4,17 +4,12 @@
 Those three natives are confined to the FSTSync_ wrappers, so the conversion empties those
 functions and flips FST_UseSyncNative, leaving the transport to carry the same packets
 through the game cache. Every other line of the save system is untouched.
-
-The same conversion switches on SAVE_NEW_FORMAT (src/triggers/12 Save system/SaveSlots.j), so the
-1.29.2 map saves the new code that Reforged uses and still loads old codes, while the Reforged
-map keeps its own save.
 """
 import re
 
 from jtok import functions, strip_comments
 
 SWITCH = re.compile(r'(constant boolean FST_UseSyncNative\s*=\s*)true\b')
-NEW_FORMAT = re.compile(r'(constant boolean SAVE_NEW_FORMAT\s*=\s*)false\b')
 
 
 def convert(text):
@@ -25,10 +20,6 @@ def convert(text):
     text, count = SWITCH.subn(r'\1false', text)
     if count != 1:
         raise ValueError('expected one FST_UseSyncNative constant, found %d' % count)
-    if 'SAVE_NEW_FORMAT' in text:
-        text, count = NEW_FORMAT.subn(r'\1true', text)
-        if count != 1:
-            raise ValueError('expected one SAVE_NEW_FORMAT constant, found %d' % count)
     emptied = 0
     for name, body in functions(text).items():
         if not name.startswith('FSTSync_'):

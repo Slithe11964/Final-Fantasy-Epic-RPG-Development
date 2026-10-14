@@ -51,7 +51,7 @@ class FreshLoadTests(unittest.TestCase):
         self.fail_place=False;self.messages=[];self.currency={1:123456,2:42}
         skills=JassArray(lambda:None)
         for i in range(1,111):skills[i]='skill'+str(i)
-        env.update(ForsakenSaveBlocked=False,udg_SaveCommandTrig=None,udg_SaveToFileTrig=None,udg_HardcoreOff=True,GetHandleId=lambda h:id(h)%2147483647,CreateUnit=unit,CreateItem=item,RemoveItem=remove_item,UnitAddItem=add,UnitEquipItem=equip,UnitUnequipItem=detach,UnitRemoveItem=detach,IsItemOwned=lambda i:any(v is i for u in self.f.units for kind in ('quick','bag','equipment') for v in u[kind].values()),ForsakenGearTypes={(4,'f003'):'I00B',(1,'I00B'):3},
+        env.update(Chronicles_RestoreSecrets=lambda p:None,ForsakenSaveBlocked=False,udg_SaveCommandTrig=None,udg_SaveToFileTrig=None,udg_HardcoreOff=True,GetHandleId=lambda h:id(h)%2147483647,CreateUnit=unit,CreateItem=item,RemoveItem=remove_item,UnitAddItem=add,UnitEquipItem=equip,UnitUnequipItem=detach,UnitRemoveItem=detach,IsItemOwned=lambda i:any(v is i for u in self.f.units for kind in ('quick','bag','equipment') for v in u[kind].values()),ForsakenGearTypes={(4,'f003'):'I00B',(1,'I00B'):3},
             SaveUnitHandle=lambda t,a,b,v:t.__setitem__((a,b),v),RemoveSavedHandle=lambda t,a,b:t.pop((a,b),None),
             SetPlayerTechResearched=lambda p,r,v:f.base.fixture.techs.__setitem__((p,r),v),
             ForceAddPlayer=lambda force,p:force.add(p),ForceRemovePlayer=lambda force,p:force.discard(p),
@@ -134,7 +134,7 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(self.f.base.house['quick'],{})
         self.assertTrue(all(i['raw']==0 for i in self.f.items))
         self.assertIn('intentionally stopped after item placement',self.messages[-1])
-        self.assertIn('retry allowed',self.messages[-1])
+        self.assertIn('you can load again',self.messages[-1])
         self.assertTrue(self.apply(),self.messages)
         self.finish();self.e['FFL_Tick']()
         self.assertTrue(self.e['udg_HasLoadedCode'][0])
@@ -151,7 +151,7 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(self.e['FFL_Phase'][0],0)
         self.assertFalse(self.e['FFP_Locked'][0])
         self.assertFalse(self.e['udg_HasLoadedCode'][0])
-        self.assertIn('retry allowed',self.messages[-1])
+        self.assertIn('you can load again',self.messages[-1])
 
     def test_permanent_cleanup_failure_remains_blocked_after_bounded_retries(self):
         self.fail_place=True;self.f.block_item_removal=True
@@ -160,7 +160,7 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(self.e['FFL_Phase'][0],4)
         self.assertTrue(self.e['FFP_Locked'][0])
         self.assertFalse(self.e['udg_HasLoadedCode'][0])
-        self.assertIn('Use -newcleanup',self.messages[-1])
+        self.assertIn('Type -newcleanup',self.messages[-1])
 
     def test_closed_load_window_creates_nothing(self):
         self.e['FFL_CloseWindow']()
@@ -191,7 +191,7 @@ class FreshLoadTests(unittest.TestCase):
         self.e['UnitExtendedInventorySize']=lambda hero:0 if 'abilities' in hero else 30
         self.assertFalse(self.apply())
         self.assertIn('hero inventory setup quick=6 bag=0',self.messages[-1])
-        self.assertIn('load unused; retry allowed',self.messages[-1])
+        self.assertIn('you can load again',self.messages[-1])
         self.assertEqual(self.e['FFL_Phase'][0],0)
 
     def test_gaya_rank_three_uses_single_level_purchase_research(self):
@@ -224,7 +224,7 @@ class FreshLoadTests(unittest.TestCase):
         self.e['SelectHeroSkill']=lambda hero, raw: None
         self.assertFalse(self.apply())
         self.assertIn('job 11 skill 1 wanted=11 actual=0',self.messages[-1])
-        self.assertIn('load unused; retry allowed',self.messages[-1])
+        self.assertIn('you can load again',self.messages[-1])
         self.assertEqual(self.e['FFL_Phase'][0],0)
 
     def test_failed_research_reports_exact_readback_before_restore(self):
@@ -349,6 +349,22 @@ class FreshLoadTests(unittest.TestCase):
         self.assertTrue(self.e['udg_HasLoadedCode'][0])
         self.assertEqual(self.e['udg_CodeDifficulty'][1], 3)
 
+    def test_inferno_save_loads_in_easy_and_then_saves_at_easy(self):
+        import save_vnext as codec
+        envelope = codec.decode(self.f.base.encoded)
+        sections = tuple(codec.Section(section.id, section.version, section.required,
+            codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(section.payload)]))
+            if section.id == 4 else section for section in envelope.sections)
+        self.f.base.encoded = codec.encode(codec.Envelope(envelope.account_hash, sections))
+        self.e['udg_Difficulty'] = 2
+        self.assertTrue(self.apply(), self.messages)
+        self.finish()
+        self.assertEqual(self.e['FRC_Result'][0], self.f.base.encoded)
+        self.e['FFL_Tick']()
+        self.assertTrue(self.e['udg_HasLoadedCode'][0])
+        self.assertEqual(self.e['FRC_LoadTier'][0], 0)
+        self.assertEqual(self.e['FRC_Difficulty'](0), 2)
+
     def test_failed_placement_restores_state_and_can_retry(self):
         before=dict(self.f.base.fixture.level_table);techs=dict(self.f.base.fixture.techs)
         self.fail_place=True;self.assertFalse(self.apply());self.assertEqual(self.e['FFL_Phase'][0],0)
@@ -411,7 +427,7 @@ class FreshLoadTests(unittest.TestCase):
         self.assertIn('use -savef',self.messages[-1])
         command[0]='-savef ../legacy';e['FFL_Phase'][0]=0;before=len(calls)
         e['FFL_Chat']();self.assertEqual(len(calls),before)
-        self.assertIn('filename must',self.messages[-1])
+        self.assertIn('File names must',self.messages[-1])
 
     def test_numbered_chat_load_is_atomic_and_accepts_reordered_parts(self):
         e=self.e;code=self.f.base.encoded;check=e['FSC_Checksum'](code)
@@ -433,28 +449,28 @@ class FreshLoadTests(unittest.TestCase):
         self.assertGreater(total,3,'needs a multi-part code')
         messages=[];e['FFL_Message']=lambda pid,text:messages.append(text)
         e['FFL_LoadStatus'](0)
-        self.assertIn('no chat load in progress',messages[-1])
+        self.assertIn('No load in progress',messages[-1])
         skipped={2,total-1}
         for part in range(1,total+1):
             if part in skipped: continue
             e['FFL_LoadChat'](0,f'FSVB:{check}:{part}:{total}:'+code[(part-1)*80:part*80])
         e['FFL_LoadStatus'](0)
-        self.assertIn(f'{total-len(skipped)}/{total} stored',messages[-1])
+        self.assertIn(f'{total-len(skipped)} of {total} parts received',messages[-1])
         for part in sorted(skipped):
             self.assertIn(str(part),messages[-1])
         e['FFL_Apply']=lambda pid:None
         for part in sorted(skipped):
             e['FFL_LoadChat'](0,f'FSVB:{check}:{part}:{total}:'+code[(part-1)*80:part*80])
         e['FFL_LoadStatus'](0)
-        self.assertIn(f'all {total} parts stored',messages[-1])
+        self.assertIn(f'all {total} parts received',messages[-1])
 
     def test_chat_rejects_corruption_without_consuming_load_and_save_needs_no_io(self):
         e=self.e;calls=[];e['FFL_Apply']=lambda pid:calls.append(pid)
         e['FFL_LoadChat'](0,'FSVB:123:1:1:FSVBAAAAAAAA')
         self.assertEqual(calls,[]);self.assertFalse(e['udg_HasLoadedCode'][0])
-        self.assertIn('checksum failed',self.messages[-1])
+        self.assertIn('do not fit together',self.messages[-1])
         e['FFL_LoadChat'](0,'FSVB:1:0:2:A')
-        self.assertIn('invalid numbered',self.messages[-1])
+        self.assertIn('load line is incomplete',self.messages[-1])
         e['FFL_Phase'][0]=1;e['FFL_SaveFile'][0]=False
         e['FRC_Ready'][0]=True;e['FRC_Result'][0]=self.f.base.encoded
         e['FST_Write']=lambda *args:self.fail('screen save must never write a file')
