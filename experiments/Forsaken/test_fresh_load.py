@@ -71,7 +71,7 @@ class FreshLoadTests(unittest.TestCase):
             Pow=lambda a,b:Real32(float(a)**float(b)),TimerGetElapsed=lambda t:Real32(1),
             DisplayTimedTextToPlayer=lambda p,x,y,d,m:self.messages.append(m),R2S=str,
             GetLocalPlayer=lambda:0,ClearTextMessages=lambda:None,PLAYER_NEUTRAL_PASSIVE=15,SetUnitOwner=lambda u,p,c:u.__setitem__('owner',p),
-            ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None,
+            PauseUnit=lambda u,paused:u.__setitem__('paused',paused),ShowUnit=lambda u,visible:u.__setitem__('visible',visible),SetPlayerAbilityAvailable=lambda *a:None,SetUnitInvulnerable=lambda *a:None,
             udg_JobCount=22,Job_GetSavedLevel=lambda p,raw:env['udg_JobLevelHash'].get((raw,p),0),PLAYER_STATE_RESOURCE_FOOD_USED='food',
             gg_trg_Title_UnlockEffects='effects',gg_trg_JobLevels_Init='joblevels',udg_JobLevelTimer='jobtimer',
             udg_TempPlayer=None,udg_TempInteger=0,EnableTrigger=lambda t:None,StartTimerBJ=lambda *a:None,ConditionalTriggerExecute=lambda t:None,
@@ -380,7 +380,21 @@ class FreshLoadTests(unittest.TestCase):
         self.f.block_item_removal=False;self.assertTrue(self.e['FFL_Restore'](0));self.assertFalse(self.e['udg_HasLoadedCode'][0])
         self.assertFalse(any(parent<16 for parent,child in self.e['FFL_Before']))
 
-    def test_commit_releases_removed_starter_snapshot_without_touching_other_players(self):
+    def test_committed_starters_remain_valid_but_cannot_act_or_show_hero_icons(self):
+        old_hero=self.e['udg_PlayerHero'][1]
+        old_gaya=self.e['udg_SpiritOfGaya'][1]
+        self.assertTrue(self.apply(),self.messages)
+        self.finish()
+        self.e['FFL_Tick']()
+        for retired in [old_hero,old_gaya]:
+            self.assertNotEqual(retired['raw'],0)
+            self.assertEqual(retired['owner'],15)
+            self.assertTrue(retired['paused'])
+            self.assertFalse(retired['visible'])
+        self.assertIsNot(self.e['udg_PlayerHero'][1],old_hero)
+        self.assertTrue(self.e['udg_HasLoadedCode'][0])
+
+    def test_commit_releases_retired_starter_snapshot_without_touching_other_players(self):
         self.e['FFL_Before'][19,0]='another player snapshot'
         self.assertTrue(self.apply());self.finish();self.e['FFL_Tick']()
         self.assertFalse(any(parent<16 for parent,child in self.e['FFL_Before']))

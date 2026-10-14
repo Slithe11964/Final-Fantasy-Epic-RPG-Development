@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EC
+# Private save/restart/fresh-load test - EE
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEC.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEE.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -193,3 +193,13 @@ bag items, then load `autosave` in a fresh game. Reforged stays on native equipm
 
 EC releases completed import snapshots and uses the new Armory category buttons
 and Bazaar prepare/purchase flow. Native Warcraft saved-game acceptance remains pending.
+
+## Warcraft menu checkpoint retest (ATR / EE)
+
+Import with -loadf, verify the character and its inventory, then create a NEW
+Warcraft menu saved game from this build. Fully exit Warcraft, restart it, and load
+that checkpoint. ATR/EE retain the replaced starter bodies as paused, hidden neutral
+units so residual references remain valid; the actual engine crash fix is pending
+this test. Earlier checkpoint files embed the earlier map and cannot test the change.
+Classic same-session reload has also exhausted memory with a fresh character, so
+use a full restart to isolate the imported-character failure.

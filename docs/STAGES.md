@@ -156,3 +156,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ForsakenEC | Kept native inventory while adding per-category Armory tooltips, Bazaar prepare/purchase and recipe notices, and completed import snapshot cleanup. |
 | ATQ | Moved recipe-ready notices to the merchant receiving sold parts; Warcraft menu-load crash after import remains unresolved. |
 | ForsakenED | Kept native inventory and moved recipe-ready notices to the merchant receiving sold parts. |
+| ATR | Retained replaced starter bodies as hidden, paused neutral units for the classic imported-character Warcraft checkpoint crash retest; same-session memory failure remains separate. |
+| ForsakenEE | Retained replaced starter bodies as hidden, paused neutral units for the Reforged imported-character checkpoint crash retest; native inventory and save format preserved. |

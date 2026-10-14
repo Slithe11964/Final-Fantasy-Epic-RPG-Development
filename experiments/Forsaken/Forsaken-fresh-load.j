@@ -892,13 +892,25 @@ function FFL_NotifyNewGamePlus takes integer pid returns nothing
     set owner=null
 endfunction
 
+// Keep starter agents alive for Warcraft checkpoints. Removing the unit does not
+// necessarily release every engine reference held by its old abilities or events.
+// A retired starter is neutral, paused and hidden; it cannot act or add a hero icon.
+function FFL_RetireStarter takes unit starter returns nothing
+    if starter!=null then
+        call PauseUnit(starter,true)
+        call SetUnitInvulnerable(starter,true)
+        call SetUnitOwner(starter,Player(PLAYER_NEUTRAL_PASSIVE),true)
+        call ShowUnit(starter,false)
+    endif
+endfunction
+
 function FFL_Commit takes integer pid returns nothing
     local integer i=0
     local integer selected=FFL_Val(pid,4,13)
     call FFL_Guard(true)
     set udg_HasLoadedCode[pid]=true
-    call RemoveUnit(FFL_OldHero[pid])
-    call RemoveUnit(FFL_OldGaya[pid])
+    call FFL_RetireStarter(FFL_OldHero[pid])
+    call FFL_RetireStarter(FFL_OldGaya[pid])
     call SelectUnitForPlayerSingle(FFN_Unit[pid*3],Player(pid))
     if FFN_Unit[pid*3+2]!=null then
         // Inactive job heroes are neutral so they do not occupy player hero portraits.
