@@ -137,3 +137,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ASY | The hero's six slots become carrying space that pays out nothing, items cast from a page spend the hero's mana, gear and consumables each share one cooldown across the pages and the hero, and the Backpack button wears a chest. |
 | ATC | Classic water casts use an active transparent proxy, and item magic plus food/potions each share their own item-duration cooldown across all backpack pages and hero slots. |
 | ATD | Adds one water-engine check that compares normal, delayed, detector-free and stock proxy casts and reports real spell events, while preserving the confirmed cross-page cooldowns. |
+| ATE | Replaces rejected native water-proxy casts with the Forsaken scripted cone wave and classic moving effects, keeping the original damage formula and confirmed shared cooldowns. |

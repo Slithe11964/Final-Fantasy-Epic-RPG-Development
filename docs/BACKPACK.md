@@ -253,15 +253,19 @@ try a wand or buff tome on another page; after food, try a potion on another pag
 Only its own group should be blocked, using the first item's cooldown. Also check
 last-charge use, no mana/charge loss on refusal, and independent players in a lobby.
 
-## Water engine check (stage ATD)
+## Scripted water wave (stage ATE)
 
-Cross-page magic and consumable cooldowns are confirmed in 1.29.2; the ATC water
-change did not restore the projectile. ATD keeps those cooldowns unchanged and
-adds `-watercheck`: normal, delayed, physical-detector-free and stock native wave
-casts run together with no damage. The summary distinguishes accepted orders
-from actual spell effects and reports the normal water item's channel/effect path.
-Try both water items first, then run the command facing open ground and capture
-the summary, noting which of the four waves appeared.
+Cross-page magic and consumable cooldowns are confirmed in 1.29.2. ATD showed a
+real water item effect but every native proxy order was rejected, including stock.
+ATE adapts the Forsaken scripted wave with a classic unit-attached moving effect:
+800 travel, widening from 100 to 300 radius, and one water-magic hit per enemy.
+Mana cost, Intelligence and rod power retain the original damage formula; backpack
+casts use the hero, while hero and Gaya casts retain their own source.
+
+Test Wateraga Materia and Book of Depths from hero, backpack and Gaya at ground
+and enemies: check visible travel and damage through a group. `-watercheck` shows
+cast/wave/hit activity and launches one visual-only wave. Timers, carrier, effects
+and hit groups are released when a wave ends; the confirmed cooldowns are unchanged.
 
 ## Still to build
 

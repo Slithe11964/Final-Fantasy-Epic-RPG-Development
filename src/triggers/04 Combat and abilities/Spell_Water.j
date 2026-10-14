@@ -4,10 +4,10 @@ globals
     trigger gg_trg_Spell_Water_Observe
     integer array WaterChannels
     integer array WaterEffects
-    integer array WaterOrders
-    integer array WaterProxyEffects
-    boolean array WaterCheckBusy
-    hashtable WaterCheckData=InitHashtable()
+    hashtable WaterWaves=InitHashtable()
+    integer array WaterStarted
+    integer array WaterHitCount
+    integer array WaterActive
 endglobals
 function Trig_Spell_Water_IsWaterSpell takes nothing returns boolean
     return(GetSpellAbilityId()=='A08X')or(GetSpellAbilityId()=='A0Q0')or(GetSpellAbilityId()=='A0Q1')or(GetSpellAbilityId()=='A0Q2')or(GetSpellAbilityId()=='A0SM')or(GetSpellAbilityId()=='A0TP')or(GetSpellAbilityId()=='A0SA')or(GetSpellAbilityId()=='A150') // 'A08X': ability "Water"; 'A0Q0': ability "Water"; 'A0Q1': ability "Watera"; 'A0Q2': ability "Wateraga"; 'A0SM': ability "Water"; 'A0TP': ability "Water"; 'A0SA': ability "Water"; 'A150': ability "Water"
@@ -25,168 +25,161 @@ function Trig_Spell_Water_IsCasterHero takes nothing returns boolean
     return(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))!=null
 endfunction
 
+// Match ACcv: 800 travel, 100 starting radius, 300 final radius, 1100 speed.
+// Sweep the entire step rather than just sampling its endpoint; each unit hits once.
+function Water_Touches takes real along,real across,real collision,real previous,real distance returns boolean
+    local real width=100.+200.*RMaxBJ(0.,RMinBJ(800.,along))/800.
+    return along+collision>=previous and along-collision<=distance and along+collision>=0. and along-collision<=800. and RAbsBJ(across)<=width+collision
+endfunction
+
+function Water_Tick takes nothing returns nothing
+    local timer clock=GetExpiredTimer()
+    local integer key=GetHandleId(clock)
+    local unit caster=LoadUnitHandle(WaterWaves,key,0)
+    local real originX=LoadReal(WaterWaves,key,1)
+    local real originY=LoadReal(WaterWaves,key,2)
+    local real directionX=LoadReal(WaterWaves,key,3)
+    local real directionY=LoadReal(WaterWaves,key,4)
+    local real previous=LoadReal(WaterWaves,key,5)
+    local real distance=RMinBJ(800.,previous+33.)
+    local real amount=LoadReal(WaterWaves,key,6)
+    local real x=originX+directionX*distance
+    local real y=originY+directionY*distance
+    local real dx
+    local real dy
+    local unit target
+    local effect wave=LoadEffectHandle(WaterWaves,key,7)
+    local group hits=LoadGroupHandle(WaterWaves,key,8)
+    local group candidates=LoadGroupHandle(WaterWaves,key,9)
+    local unit carrier=LoadUnitHandle(WaterWaves,key,10)
+    local integer pid=LoadInteger(WaterWaves,key,11)
+    call SetUnitX(carrier,x)
+    call SetUnitY(carrier,y)
+    // Full cone radius plus one step and large unit collision bounds.
+    call GroupEnumUnitsInRange(candidates,x,y,600.,null)
+    loop
+        set target=FirstOfGroup(candidates)
+        exitwhen target==null
+        call GroupRemoveUnit(candidates,target)
+        if target!=caster and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitHidden(target) and not BlzIsUnitInvulnerable(target) and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) and not IsUnitInGroup(target,hits) then
+            set dx=GetUnitX(target)-originX
+            set dy=GetUnitY(target)-originY
+            if Water_Touches(dx*directionX+dy*directionY,-dx*directionY+dy*directionX,BlzGetUnitCollisionSize(target),previous,distance) then
+                call GroupAddUnit(hits,target)
+                if amount>0. and GetUnitTypeId(caster)!=0 then
+                    set udg_DamageElement=4
+                    set udg_IsPhysicalAttack=false
+                    set WaterHitCount[pid]=WaterHitCount[pid]+1
+                    call UnitDamageTarget(caster,target,amount,true,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC,null)
+                endif
+            endif
+        endif
+    endloop
+    if distance>=800. or caster==null or GetUnitTypeId(caster)==0 then
+        call DestroyEffect(wave)
+        call RemoveUnit(carrier)
+        set WaterActive[pid]=WaterActive[pid]-1
+        call DestroyGroup(hits)
+        call DestroyGroup(candidates)
+        call FlushChildHashtable(WaterWaves,key)
+        call DestroyTimer(clock)
+    else
+        call SaveReal(WaterWaves,key,5,distance)
+    endif
+    set caster=null
+    set target=null
+    set wave=null
+    set hits=null
+    set candidates=null
+    set carrier=null
+    set clock=null
+endfunction
+
+function Water_Launch takes unit caster,real x,real y,real angle,real amount returns nothing
+    local timer clock=CreateTimer()
+    local integer key=GetHandleId(clock)
+    local integer pid=GetPlayerId(GetOwningPlayer(caster))
+    local unit carrier=CreateUnit(GetOwningPlayer(caster),'h020',x,y,angle*bj_RADTODEG) // Dummy Missile
+    local effect wave=AddSpecialEffectTarget("Abilities\\Spells\\Other\\CrushingWave\\CrushingWaveMissile.mdl",carrier,"chest")
+    call SetUnitFlyHeight(carrier,40.,0.)
+    call SaveUnitHandle(WaterWaves,key,0,caster)
+    call SaveReal(WaterWaves,key,1,x)
+    call SaveReal(WaterWaves,key,2,y)
+    call SaveReal(WaterWaves,key,3,Cos(angle))
+    call SaveReal(WaterWaves,key,4,Sin(angle))
+    call SaveReal(WaterWaves,key,5,0.)
+    call SaveReal(WaterWaves,key,6,amount)
+    call SaveEffectHandle(WaterWaves,key,7,wave)
+    call SaveGroupHandle(WaterWaves,key,8,CreateGroup())
+    call SaveGroupHandle(WaterWaves,key,9,CreateGroup())
+    call SaveUnitHandle(WaterWaves,key,10,carrier)
+    call SaveInteger(WaterWaves,key,11,pid)
+    set WaterActive[pid]=WaterActive[pid]+1
+    call TimerStart(clock,.03,true,function Water_Tick)
+    set carrier=null
+    set wave=null
+    set clock=null
+endfunction
+
 function Trig_Spell_Water_Actions takes nothing returns nothing
-    local integer l_tempHandleId
-    local integer l_tempInteger
-    local location l_tempPoint
-    local real l_tempReal
-    local unit proxy
-    local unit source=GetTriggerUnit()
-    local integer pid=GetPlayerId(GetOwningPlayer(source))
-    set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),l_tempPoint,l_tempPoint) // 'h01B': unit "Proxy Dummy"
-    set proxy=GetLastCreatedUnit()
-    call RemoveLocation(l_tempPoint)
-    if Backpack_PageOf(pid,source)>=0 then
+    local unit caster=GetTriggerUnit()
+    local unit source=caster
+    local unit target=GetSpellTargetUnit()
+    local integer pid=GetPlayerId(GetOwningPlayer(caster))
+    local location point
+    local real x=GetUnitX(caster)
+    local real y=GetUnitY(caster)
+    local real targetX
+    local real targetY
+    local real angle
+    local integer power=BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(caster,GetSpellAbilityId()))*5
+    if Backpack_PageOf(pid,caster)>=0 then
         set source=Player_GetHero(Player(pid))
     endif
-    if(Trig_Spell_Water_IsPointCast())then
-        set l_tempPoint=GetSpellTargetLoc()
+    if target==null then
+        set point=GetSpellTargetLoc()
+        set targetX=GetLocationX(point)
+        set targetY=GetLocationY(point)
+        call RemoveLocation(point)
     else
-        set l_tempPoint=GetUnitLoc(GetSpellTargetUnit())
+        set targetX=GetUnitX(target)
+        set targetY=GetUnitY(target)
     endif
-    call SetUnitFacingToFaceLocTimed(proxy,l_tempPoint,0)
-    set l_tempHandleId=GetHandleIdBJ(proxy)
-    call SaveUnitHandleBJ(source,0,l_tempHandleId,udg_ProxyDamageHash)
-    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))*5)
+    if targetX==x and targetY==y then
+        set angle=GetUnitFacing(caster)*bj_DEGTORAD
+    else
+        set angle=Atan2(targetY-y,targetX-x)
+    endif
     if IsUnitType(source,UNIT_TYPE_HERO) then
-        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,source,true)*6))
+        set power=power+GetHeroInt(source,true)*6
     endif
-    set l_tempReal=Prof_RodPower(source)
-    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    // Keep the proxy active for classic casting; hide its model rather than the unit.
-    call SetUnitVertexColor(proxy,255,255,255,0)
-    call UnitApplyTimedLifeBJ(6.,'BTLF',proxy) // 'BTLF': object name not found in map data
-    call UnitAddAbilityBJ('A0M4',proxy) // 'A0M4': ability "Water-elemental Damage"
-    call UnitAddAbilityBJ('A0PZ',proxy) // 'A0PZ': ability "Water"
-    if IssuePointOrderLocBJ(proxy,"carrionswarm",l_tempPoint) then
-        set WaterOrders[pid]=WaterOrders[pid]+1
-    endif
-    call RemoveLocation(l_tempPoint)
-    set l_tempPoint=null
-    set proxy=null
+    set WaterStarted[pid]=WaterStarted[pid]+1
+    call Water_Launch(source,x,y,angle,I2R(power)*Prof_RodPower(source))
+    set caster=null
     set source=null
+    set target=null
+    set point=null
 endfunction
 
 // Observe the actual engine events, separately from the damage action.
 function Water_Observe takes nothing returns nothing
     local integer pid=GetPlayerId(GetTriggerPlayer())
-    local integer id=GetSpellAbilityId()
-    local integer variant
     if Trig_Spell_Water_IsWaterSpell() then
         if GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_CHANNEL then
             set WaterChannels[pid]=WaterChannels[pid]+1
         else
             set WaterEffects[pid]=WaterEffects[pid]+1
         endif
-    elseif (id=='A0PZ' or id=='ACcv') and GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_EFFECT then
-        set WaterProxyEffects[pid]=WaterProxyEffects[pid]+1
-        set variant=LoadInteger(WaterCheckData,GetHandleId(GetTriggerUnit()),0)
-        if variant>0 then
-            call SaveBoolean(WaterCheckData,pid,variant+10,true)
-        endif
     endif
-endfunction
-
-function Water_CheckReport takes nothing returns nothing
-    local timer clock=GetExpiredTimer()
-    local integer pid=LoadInteger(WaterCheckData,GetHandleId(clock),0)
-    local integer i=1
-    local string line="Water check: "
-    local unit proxy
-    loop
-        exitwhen i>4
-        set line=line+I2S(i)+" order="
-        if LoadBoolean(WaterCheckData,pid,i) then
-            set line=line+"yes"
-        else
-            set line=line+"no"
-        endif
-        set line=line+" effect="
-        if LoadBoolean(WaterCheckData,pid,i+10) then
-            set line=line+"yes; "
-        else
-            set line=line+"no; "
-        endif
-        set proxy=LoadUnitHandle(WaterCheckData,pid,i+20)
-        call FlushChildHashtable(WaterCheckData,GetHandleId(proxy))
-        call RemoveSavedHandle(WaterCheckData,pid,i+20)
-        set i=i+1
-    endloop
-    set WaterCheckBusy[pid]=false
-    set proxy=null
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,line)
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"Item casts: channel="+I2S(WaterChannels[pid])+" effect="+I2S(WaterEffects[pid])+" accepted proxy orders="+I2S(WaterOrders[pid])+". Screenshot these results and note which waves appeared.")
-    call FlushChildHashtable(WaterCheckData,GetHandleId(clock))
-    call DestroyTimer(clock)
-    set clock=null
-endfunction
-
-function Water_CheckDelayed takes nothing returns nothing
-    local timer clock=GetExpiredTimer()
-    local unit proxy=LoadUnitHandle(WaterCheckData,GetHandleId(clock),1)
-    local integer pid=GetPlayerId(GetOwningPlayer(proxy))
-    call SaveBoolean(WaterCheckData,pid,2,IssuePointOrder(proxy,"carrionswarm",LoadReal(WaterCheckData,GetHandleId(clock),2),LoadReal(WaterCheckData,GetHandleId(clock),3)))
-    call FlushChildHashtable(WaterCheckData,GetHandleId(clock))
-    call DestroyTimer(clock)
-    set proxy=null
-    set clock=null
 endfunction
 
 function Water_Check takes nothing returns nothing
     local integer pid=GetPlayerId(GetTriggerPlayer())
     local unit hero=Player_GetHero(Player(pid))
-    local unit proxy
-    local timer clock
-    local real x
-    local real y
-    local real angle
-    local integer i=1
-    if hero==null or WaterCheckBusy[pid] then
-        return
+    call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"Water: item channel="+I2S(WaterChannels[pid])+" effect="+I2S(WaterEffects[pid])+" waves="+I2S(WaterStarted[pid])+" hits="+I2S(WaterHitCount[pid])+" active="+I2S(WaterActive[pid])+". Launching one visual-only wave in front of your hero.")
+    if hero!=null then
+        call Water_Launch(hero,GetUnitX(hero),GetUnitY(hero),GetUnitFacing(hero)*bj_DEGTORAD,0.)
     endif
-    set WaterCheckBusy[pid]=true
-    set x=GetUnitX(hero)
-    set y=GetUnitY(hero)
-    call DisplayTimedTextToPlayer(Player(pid),0.,0.,60.,"Water variants: 1 normal; 2 delayed; 3 without physical detector; 4 stock swarm. Waves fan out in front of your hero; results follow in two seconds.")
-    loop
-        exitwhen i>4
-        call SaveBoolean(WaterCheckData,pid,i,false)
-        call SaveBoolean(WaterCheckData,pid,i+10,false)
-        set angle=(GetUnitFacing(hero)-60.+40.*I2R(i-1))*bj_DEGTORAD
-        set proxy=CreateUnit(Player(pid),'h01B',x,y,angle*bj_RADTODEG)
-        call SaveUnitHandle(WaterCheckData,pid,i+20,proxy)
-        call SaveInteger(WaterCheckData,GetHandleId(proxy),0,i)
-        // Diagnostic waves have no damage; they still use the normal proxy damage path.
-        call SaveUnitHandle(udg_ProxyDamageHash,GetHandleId(proxy),0,hero)
-        call SaveReal(udg_ProxyDamageHash,GetHandleId(proxy),1,0.)
-        call SaveInteger(udg_ProxyDamageHash,GetHandleId(proxy),2,3)
-        call UnitApplyTimedLife(proxy,'BTLF',6.)
-        if i==3 then
-            call UnitRemoveAbility(proxy,'A0PB')
-        endif
-        if i==4 then
-            call UnitAddAbility(proxy,'ACcv')
-        else
-            call UnitAddAbility(proxy,'A0PZ')
-        endif
-        if i==2 then
-            set clock=CreateTimer()
-            call SaveUnitHandle(WaterCheckData,GetHandleId(clock),1,proxy)
-            call SaveReal(WaterCheckData,GetHandleId(clock),2,x+600.*Cos(angle))
-            call SaveReal(WaterCheckData,GetHandleId(clock),3,y+600.*Sin(angle))
-            call TimerStart(clock,.05,false,function Water_CheckDelayed)
-        else
-            call SaveBoolean(WaterCheckData,pid,i,IssuePointOrder(proxy,"carrionswarm",x+600.*Cos(angle),y+600.*Sin(angle)))
-        endif
-        set i=i+1
-    endloop
-    set clock=CreateTimer()
-    call SaveInteger(WaterCheckData,GetHandleId(clock),0,pid)
-    call TimerStart(clock,2.,false,function Water_CheckReport)
-    set clock=null
-    set proxy=null
     set hero=null
 endfunction
 
