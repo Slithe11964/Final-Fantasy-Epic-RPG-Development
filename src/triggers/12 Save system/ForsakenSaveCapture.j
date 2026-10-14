@@ -40,11 +40,11 @@ function FRC_Account takes integer pid returns integer
     return ModuloInteger(hashed,1048576)
 endfunction
 
-// Preserve the legacy save tiers rather than the separate difficulty vote indexes.
+// Nightmare retains the loaded save tier; it must not promote a lower-tier import to Inferno.
 function FRC_Difficulty takes integer pid returns integer
     if FRC_LoadTier[pid]>0 then
         return FRC_LoadTier[pid]
-    elseif udg_Difficulty==6 then
+    elseif udg_Difficulty==6 and udg_CodeDifficulty[pid+1]>0 then
         return udg_CodeDifficulty[pid+1]
     elseif udg_Difficulty>=5 then
         return 3

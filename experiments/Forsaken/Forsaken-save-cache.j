@@ -29,8 +29,8 @@ function FSG_Letter takes integer digit returns string
     return SubString(FSC_ALPHABET,digit,digit+1)
 endfunction
 
-function FSG_Label takes integer pid,integer packet,integer group returns string
-    return "p"+I2S(pid)+"_"+I2S(packet)+"_"+I2S(group)
+function FSG_Label takes integer pid,integer packet,integer segment returns string
+    return "p"+I2S(pid)+"_"+I2S(packet)+"_"+I2S(segment)
 endfunction
 
 // Values are stored one above their real value because a missing key also reads as zero.
@@ -52,26 +52,26 @@ endfunction
 function FSG_Send takes integer pid,string packet returns boolean
     local integer length=StringLength(packet)
     local integer index=FSG_Sent[pid]
-    local integer group=0
+    local integer segment=0
     local integer value
     local integer taken
     if FSG_Store==null or length<1 or length>255 then
         return false
     endif
     loop
-        exitwhen group*FSG_GROUP>=length
+        exitwhen segment*FSG_GROUP>=length
         set value=0
         set taken=0
         loop
             exitwhen taken>=FSG_GROUP
             set value=value*FSG_BASE
-            if group*FSG_GROUP+taken<length then
-                set value=value+FSG_Digit(SubString(packet,group*FSG_GROUP+taken,group*FSG_GROUP+taken+1))
+            if segment*FSG_GROUP+taken<length then
+                set value=value+FSG_Digit(SubString(packet,segment*FSG_GROUP+taken,segment*FSG_GROUP+taken+1))
             endif
             set taken=taken+1
         endloop
-        call FSG_Put(FSG_Label(pid,index,group+1),value)
-        set group=group+1
+        call FSG_Put(FSG_Label(pid,index,segment+1),value)
+        set segment=segment+1
     endloop
     call FSG_Put(FSG_Label(pid,index,0),length)   // the length key completes the packet
     set FSG_Sent[pid]=index+1
@@ -82,7 +82,7 @@ endfunction
 // Rebuilds one packet once every one of its keys has arrived, or returns null.
 function FSG_Packet takes integer pid,integer index returns string
     local integer length=FSG_Get(FSG_Label(pid,index,0))
-    local integer group=0
+    local integer segment=0
     local integer value
     local integer taken
     local string packet=""
@@ -91,8 +91,8 @@ function FSG_Packet takes integer pid,integer index returns string
         return null
     endif
     loop
-        exitwhen group*FSG_GROUP>=length
-        set value=FSG_Get(FSG_Label(pid,index,group+1))
+        exitwhen segment*FSG_GROUP>=length
+        set value=FSG_Get(FSG_Label(pid,index,segment+1))
         if value<0 then
             return null
         endif
@@ -105,7 +105,7 @@ function FSG_Packet takes integer pid,integer index returns string
             set taken=taken+1
         endloop
         set packet=packet+letters
-        set group=group+1
+        set segment=segment+1
     endloop
     return SubString(packet,0,length)
 endfunction

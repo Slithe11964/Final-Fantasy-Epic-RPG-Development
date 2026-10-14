@@ -1,6 +1,6 @@
 {
  "stage": "ATL",
- "purpose": "Old-format codes follow the same difficulty rule as the new save: Simple to Hard codes load in Simple to Hard, Inferno codes load anywhere, Nightmare loads any code, and only an Inferno game refuses a code made below Inferno. The code format is unchanged; only the check after reading the difficulty field differs.",
+ "purpose": "Old-format codes follow the same difficulty rule as the new save: Simple to Hard codes load in Simple to Hard, Inferno codes load anywhere, Nightmare loads any code, and only an Inferno game refuses a code made below Inferno. The code format is unchanged; only the check after reading the difficulty field differs. Resaving in Nightmare preserves the imported difficulty tier, so a Simple-to-Hard origin never gains Inferno access through Nightmare; an Inferno origin keeps access everywhere.",
  "serializers": {
   "Trig_Cmd_Load_Code_OpenCode": {
    "legacy": "fb765b4cc49322c98f34aaf17efe7d1e7ba9c7993853c76909f93ae629e144ea",

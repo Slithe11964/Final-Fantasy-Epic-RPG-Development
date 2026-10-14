@@ -106,13 +106,17 @@ class CaptureTests(unittest.TestCase):
     def test_save_tier_matches_legacy_writer_for_all_game_difficulties(self):
         self.start()
         self.e['udg_CodeDifficulty'][1] = 0
-        for game, saved in [(1, 1), (2, 2), (3, 2), (4, 2), (5, 3), (6, 0)]:
+        for game, saved in [(1, 1), (2, 2), (3, 2), (4, 2), (5, 3), (6, 3)]:
             self.e['udg_Difficulty'] = game
             self.assertEqual(self.e['FRC_Difficulty'](0), saved)
             core = codec.read_pairs(self.e['FRC_Section'](0, 4))
             self.assertEqual(dict(core)[1], saved)
-        self.e['udg_CodeDifficulty'][1] = 3
-        self.assertEqual(self.e['FRC_Difficulty'](0), 3)
+        # Nightmare preserves imported tiers, including repeated saves and a legacy import.
+        for saved in (1, 2, 3):
+            self.e['udg_CodeDifficulty'][1] = saved
+            self.assertEqual(self.e['FRC_Difficulty'](0), saved)
+            core = dict(codec.read_pairs(self.e['FRC_Section'](0, 4)))
+            self.assertEqual(core[1], saved)
 
     def test_full_capture_exact_slots_metadata_actual_jobs_and_flags_read_only(self):
         before = copy.deepcopy((self.hero, self.gaya, self.free, self.house, self.level_table, self.techs))

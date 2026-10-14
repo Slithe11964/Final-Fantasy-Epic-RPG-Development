@@ -26,11 +26,11 @@ the Reforged save sources themselves, so the Forsaken maps say the same once reb
 | Inferno | Inferno only |
 | Nightmare | any difficulty |
 
-A character loaded below its save's difficulty saves at the new game's difficulty from then on
-(an Inferno save loaded in Easy becomes an Easy save). Old-format codes follow the same rule.
-
-The Reforged map is unchanged: its normal line keeps the old save, and the private Forsaken maps
-keep the new one.
+Nightmare preserves the imported save tier when saving again: Easy to Nightmare to Easy
+works, but Easy to Nightmare to Inferno fails. Inferno to Nightmare saves remain loadable
+anywhere. A fresh Nightmare character has top-tier eligibility. Outside Nightmare, saves
+use the current game's tier (Inferno loaded and saved in Easy becomes an Easy-tier save).
+Old-format imports retain their original tier in Nightmare too.
 
 ## How it is connected
 
@@ -68,7 +68,7 @@ remembers the position, so the check after a load reads back exactly.
   CustomMapData shows every item has a place on the pages above.
 - The account check uses the player name with any BattleTag number removed. A save loads only
   for a player whose 1.29.2 name matches that Reforged name.
-- Difficulty tier and Speedrun mode must match the game, as in Reforged.
+- Difficulty follows the table above; Speedrun mode must match the game, as in Reforged.
 - A weapon worn in the offhand (Dual Wield) loads as the second weapon on page 1. The page
   check then applies the wearing rules (BACKPACK.md): without Dual Wield it moves to the bag.
 - Both versions use the same CustomMapData\FFERPG folder. If 1.29.2 cannot read a file, enable

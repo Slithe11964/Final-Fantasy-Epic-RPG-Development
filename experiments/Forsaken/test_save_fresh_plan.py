@@ -149,6 +149,24 @@ class FreshPlanTests(unittest.TestCase):
                 expected = not (game == 5 and saved < 3)
                 self.assertEqual(self.build(tier(saved)), expected, (saved, game, self.e['FFP_Error'][0]))
 
+    def test_nightmare_resave_preserves_imported_access_after_commit(self):
+        for origin in (1, 2, 3):
+            encoded = self.change(4, lambda text: codec.pairs([(i, origin if i == 1 else v) for i, v in codec.read_pairs(text)]))
+            self.e['udg_Difficulty'] = 6
+            self.assertTrue(self.build(encoded))
+            # A committed load leaves the code's tier on the player, not the temporary override.
+            self.e['udg_CodeDifficulty'][1] = origin
+            self.e['FRC_LoadTier'][0] = 0
+            for _ in range(2):
+                saved = self.e['FRC_Difficulty'](0)
+                self.assertEqual(saved, origin)
+                encoded = self.change(4, lambda text: codec.pairs([(i, saved if i == 1 else v) for i, v in codec.read_pairs(text)]))
+                self.assertTrue(self.build(encoded))
+                self.e['udg_CodeDifficulty'][1] = saved
+            for game in (1, 2, 3, 4, 5, 6):
+                self.e['udg_Difficulty'] = game
+                self.assertEqual(self.build(encoded), game != 5 or origin == 3, (origin, game))
+
     def test_codec_accepted_profile_is_not_replaced_by_preflight(self):
         self.assertTrue(self.e['FSC_Decode'](0, self.encoded, self.e['FRC_Account'](0), True))
         before = self.e['FSC_Reencode'](0)
