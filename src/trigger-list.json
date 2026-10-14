@@ -4400,80 +4400,86 @@
  },
  {
   "index": 733,
+  "name": "HeroStats",
+  "folder": "09 Player features",
+  "library": "THeroStats"
+ },
+ {
+  "index": 734,
   "name": "MapBootstrap",
   "folder": "10 Startup coordinator",
   "library": "TMapBootstrap"
  },
  {
-  "index": 734,
+  "index": 735,
   "name": "MainDeprotected",
   "folder": "10 Startup coordinator",
   "library": null,
   "note": "GUI trigger: Map Initialization event that runs main_old (the startup sequence). Keep it."
  },
  {
-  "index": 735,
+  "index": 736,
   "name": "PreplacedUnitRefs",
   "folder": "",
   "library": null,
   "note": "Disabled GUI trigger that references pre-placed units so World Editor generates their gg_unit_ variables. Keep it disabled; do not delete."
  },
  {
-  "index": 736,
+  "index": 737,
   "name": "DevCommands",
   "folder": "11 Developer tools",
   "library": "TDevCommands"
  },
  {
-  "index": 737,
+  "index": 738,
   "name": "SaveSlots",
   "folder": "12 Save system",
   "library": "TSaveSlots"
  },
  {
-  "index": 738,
+  "index": 739,
   "name": "ForsakenSaveCodec",
   "folder": "12 Save system",
   "library": "TForsakenSaveCodec"
  },
  {
-  "index": 739,
+  "index": 740,
   "name": "ForsakenSaveLife",
   "folder": "12 Save system",
   "library": "TForsakenSaveLife"
  },
  {
-  "index": 740,
+  "index": 741,
   "name": "ForsakenSaveCapture",
   "folder": "12 Save system",
   "library": "TForsakenSaveCapture"
  },
  {
-  "index": 741,
+  "index": 742,
   "name": "ForsakenSaveCache",
   "folder": "12 Save system",
   "library": "TForsakenSaveCache"
  },
  {
-  "index": 742,
+  "index": 743,
   "name": "ForsakenSaveTransport",
   "folder": "12 Save system",
   "library": "TForsakenSaveTransport"
  },
  {
-  "index": 743,
+  "index": 744,
   "name": "ForsakenSaveFreshPlan",
   "folder": "12 Save system",
   "library": "TForsakenSaveFreshPlan"
  },
  {
-  "index": 744,
+  "index": 745,
   "name": "ForsakenSaveFreshObjects",
   "folder": "12 Save system",
   "library": "TForsakenSaveFreshObjects"
  },
  {
-  "index": 745,
+  "index": 746,
   "name": "ForsakenFreshLoad",
   "folder": "12 Save system",
   "library": "TForsakenFreshLoad"

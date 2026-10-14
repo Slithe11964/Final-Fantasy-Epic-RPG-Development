@@ -13,6 +13,10 @@ the codes, the files and the way it works are the Reforged ones. The 1.29.2 map 
 | `-load` / `-loadf NAME` | Loads `Last save.txt` / `NAME.txt`, new format or old |
 | `-load FSVB:...` | Loads the code from its numbered chat lines, in any order; `-loadstatus` lists missing parts |
 | `-load <old code>` | Old codes still load through the old loader |
+| `-newcleanup` | Clears a failed load that could not tidy up by itself, so you can load again |
+
+Messages say only whether a save or load worked and, if not, why (ATK). The Reforged Forsaken
+maps keep their test wording and timings; `tools/save_port.py` rewords them for the normal maps.
 
 The Reforged map is unchanged: its normal line keeps the old save, and the private Forsaken maps
 keep the new one.

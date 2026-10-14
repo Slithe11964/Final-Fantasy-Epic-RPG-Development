@@ -29,8 +29,9 @@ refund, elements, block, crit, accuracy and the rest) already work in the normal
 
 - Native bag/equipment, item variants (`f###`, `g###`), passive suspension, spacer items: the
   backpack pages do this job, and 1.29.2 has no such natives.
-- Stat pages, other-player inspection and the Forsaken talent panel: Reforged frame UI. The normal
-  map has its own talent dialog; stat pages could come later as text (for example a `-stats` command).
+- Other-player inspection and the Forsaken talent panel: Reforged frame UI. The normal map has its
+  own talent dialog. The stat pages are in the normal map as text since ATK: `-stats`, `-stats 2`..`4`
+  (src/triggers/09 Player features/HeroStats.j), without regeneration, which 1.29.2 cannot read.
 - Shared inventory transfer on job change: the backpack belongs to the player, not the job hero.
 
 ## Normal map ahead of DZ

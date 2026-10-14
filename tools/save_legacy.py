@@ -11,7 +11,7 @@ map keeps its own save.
 """
 import re
 
-from jtok import functions
+from jtok import functions, strip_comments
 
 SWITCH = re.compile(r'(constant boolean FST_UseSyncNative\s*=\s*)true\b')
 NEW_FORMAT = re.compile(r'(constant boolean SAVE_NEW_FORMAT\s*=\s*)false\b')
@@ -44,6 +44,6 @@ def convert(text):
     if emptied < 3:
         raise ValueError('expected the three sync wrappers, emptied %d' % emptied)
     for native in ('BlzSendSyncData', 'BlzGetTriggerSyncData', 'BlzTriggerRegisterPlayerSyncEvent'):
-        if native in text:
+        if native in strip_comments(text):  # a comment may still name it
             raise ValueError('a 1.29.2 native that does not exist survived the conversion: ' + native)
     return text.replace('\n', '\r\n') if crlf else text

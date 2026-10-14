@@ -11,8 +11,8 @@ from jtok import strip_comments
 
 ROOT = Path(__file__).resolve().parents[2]
 FOLDER = ROOT / 'src/triggers/12 Save system'
-# Modules that carry no slot lookups: everything but the generated notice and the empty
-# InitTrig function must match the Reforged file, so the code and file format cannot drift.
+# Modules that carry no slot lookups: everything but the generated notice, the empty InitTrig
+# function and reworded player messages must match the Reforged file, so the format cannot drift.
 UNCHANGED = ('ForsakenSaveCodec', 'ForsakenSaveLife', 'ForsakenSaveCache', 'ForsakenSaveTransport')
 
 
@@ -36,7 +36,11 @@ class SavePortTests(unittest.TestCase):
         files = dict(save_port.MODULES)
         for module in UNCHANGED:
             ported = strip_port(module, text(FOLDER / (module + '.j')))
-            self.assertEqual(ported, text(save_port.FORSAKEN / files[module]), module)
+            expected = text(save_port.FORSAKEN / files[module])
+            # Only player messages may be reworded; they are not part of the code or file.
+            for before, after, _ in save_port.MESSAGES.get(module, []):
+                expected = expected.replace(before, after)
+            self.assertEqual(ported, expected, module)
 
     def test_no_reforged_only_natives_remain(self):
         for module, _ in save_port.MODULES:
@@ -45,6 +49,14 @@ class SavePortTests(unittest.TestCase):
                 body = convert(body)  # its sync natives are removed by the 1.29.2 conversion
             self.assertIsNone(save_port.FORBIDDEN.search(body), module)
             self.assertNotRegex(strip_comments(body), r'\bBlz\w+', module)
+
+    def test_players_see_no_test_wording_or_timings(self):
+        for module, _ in save_port.MODULES:
+            body = text(FOLDER / (module + '.j'))
+            self.assertNotIn('Save prototype', body, module)
+            self.assertNotIn('"PASS:', body, module)
+            self.assertNotIn('"FAIL:', body, module)
+            self.assertNotIn(' ms (game timer)', body, module)
 
     def test_slot_lookups_go_to_the_backpack(self):
         capture = text(FOLDER / 'ForsakenSaveCapture.j')
