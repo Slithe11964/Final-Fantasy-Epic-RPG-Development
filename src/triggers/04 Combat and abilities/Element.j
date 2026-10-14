@@ -1,4 +1,4 @@
-library TElement requires TProf
+library TElement requires TProf, TBackpack
 globals
     // Variables only this module uses.
     integer array udg_ElementDamageAbil
@@ -157,14 +157,14 @@ function Element_GetOfUnit takes unit u,boolean l_isPhysical returns integer
             return 5
         elseif(GetUnitAbilityLevel(u,'A0LI')>0)then // 'A0LI': ability "Wind-elemental Attack"
             return 6
-        elseif(Prof_GetLevel(u,'R002')>0)then // 'R002': upgrade "Bow"
+        elseif(Gear_WieldsWeaponLevel(u,3))then // a bow in hand (item level 3)
             if(GetUnitAbilityLevel(u,'A0YI')>0)then // 'A0YI': ability "Bow: Ice-elemental Attack"
                 return 2
             elseif(GetUnitAbilityLevel(u,'A0YG')>0)then // 'A0YG': ability "Bow: Thunder-elemental Attack"
                 return 3
             elseif(GetUnitAbilityLevel(u,'A0YH')>0)then // 'A0YH': ability "Bow: Wind-elemental Attack"
                 return 6
-            elseif(Prof_GetLevel(u,'R00M')>0)then // 'R00M': upgrade "Gun"
+            elseif(Gear_WieldsWeaponLevel(u,11))then // a gun in hand (item level 11)
                 if(GetUnitAbilityLevel(u,'A0YD')>0)then // 'A0YD': ability "Gun: Fire-elemental Attack"
                     return 1
                 elseif(GetUnitAbilityLevel(u,'A0YF')>0)then // 'A0YF': ability "Gun: Water-elemental Attack"
@@ -173,7 +173,7 @@ function Element_GetOfUnit takes unit u,boolean l_isPhysical returns integer
                     return 5
                 endif
             endif
-        elseif(Prof_GetLevel(u,'R00M')>0)then // 'R00M': upgrade "Gun"
+        elseif(Gear_WieldsWeaponLevel(u,11))then // a gun in hand (item level 11)
             if(GetUnitAbilityLevel(u,'A0YD')>0)then // 'A0YD': ability "Gun: Fire-elemental Attack"
                 return 1
             elseif(GetUnitAbilityLevel(u,'A0YF')>0)then // 'A0YF': ability "Gun: Water-elemental Attack"

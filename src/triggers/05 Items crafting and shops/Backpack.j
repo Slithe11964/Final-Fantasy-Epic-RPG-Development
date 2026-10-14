@@ -967,6 +967,24 @@ function Gear_WornInSlot takes unit u,integer index returns item
     return UnitItemInSlot(u,index)
 endfunction
 
+// True when the unit wields a weapon of this item level (3 bow, 11 gun, ...), so ammunition
+// elements follow the weapon in hand rather than any proficiency the hero has trained.
+function Gear_WieldsWeaponLevel takes unit u,integer level returns boolean
+    local integer i=0
+    local item weapon
+    loop
+        exitwhen i>=GEAR_WORN_SLOTS
+        set weapon=Gear_WornInSlot(u,i)
+        if weapon!=null and GetItemType(weapon)==ITEM_TYPE_PERMANENT and GetItemLevel(weapon)==level then
+            set weapon=null
+            return true
+        endif
+        set i=i+1
+    endloop
+    set weapon=null
+    return false
+endfunction
+
 // Use in place of UnitHasItemOfTypeBJ when wearing the item is what counts.
 function Gear_Wears takes unit u,integer itemType returns boolean
     return Gear_WornOfType(u,itemType)!=null

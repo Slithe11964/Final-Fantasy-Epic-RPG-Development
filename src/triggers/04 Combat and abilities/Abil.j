@@ -52,6 +52,11 @@ endfunction
 
 function Abil_GetLevel takes unit u,integer l_abilId returns integer
     local integer l_level=GetUnitAbilityLevel(u,l_abilId)
+    // An item spell cast from a unit that does not list the ability (a backpack page, or the
+    // hero casting an item it holds) still has rank 1 while its spell is being cast.
+    if l_level<=0 and l_abilId!=0 and GetSpellAbilityId()==l_abilId then
+        set l_level=1
+    endif
     if udg_AbilityLevelShift then
         return l_level-1
     else

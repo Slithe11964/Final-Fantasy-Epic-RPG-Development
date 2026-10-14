@@ -773,6 +773,13 @@ function Trig_Damage_Engine_GetAccuracy takes unit u returns real
     if(GetUnitAbilityLevel(u,'A02D')>0)then // 'A02D': ability "Rabite's Foot"
         set l_acc=l_acc+120.
     endif
+    // These spears promise accuracy in their tooltip that nothing above gives; worn, they add it.
+    if Gear_Wears(u,'I033') then // 'I033': item "Trident"
+        set l_acc=l_acc+32.
+    endif
+    if Gear_Wears(u,'I0D1') then // 'I0D1': item "Storm Lance"
+        set l_acc=l_acc+55.
+    endif
     return l_acc
 endfunction
 
@@ -2074,6 +2081,16 @@ function Trig_Damage_Engine_Step10_EvasionAndBlocking takes integer c returns no
 endfunction
 
 // Step 11 - Remember the attacker's last element and apply its element damage bonus.
+// The element's own bonus plus the Omni bonus. Gaya Strength already counts towards both, so its
+// duplicate half (a third, halved) comes off when the element is not Omni itself.
+function Damage_ElementDamageBonus takes unit u,integer element,boolean physical returns real
+    local real bonus=Trig_Damage_Engine_GetElementBonus(u,element,physical)+Trig_Damage_Engine_GetElementBonus(u,7,physical)
+    if element!=7 and(GetUnitAbilityLevel(u,'A0PN')>0 or GetUnitAbilityLevel(u,'B08Z')>0)then // 'A0PN': Gaya Strength
+        set bonus=bonus-.33333*.5
+    endif
+    return bonus
+endfunction
+
 function Trig_Damage_Engine_Step11_ElementBonus takes integer c returns nothing
     local real l_amount=DmgCtx_Amount[c]
     local unit u=DmgCtx_Source[c]
@@ -2089,7 +2106,7 @@ function Trig_Damage_Engine_Step11_ElementBonus takes integer c returns nothing
             call UnitAddAbility(u,'A0PO') // 'A0PO': ability "Latest Used Element"
         endif
         call SetUnitAbilityLevel(u,'A0PO',l_element+1) // 'A0PO': ability "Latest Used Element"
-        set l_val=1.+Trig_Damage_Engine_GetElementBonus(u,l_element,l_physical)+Trig_Damage_Engine_GetElementBonus(u,7,l_physical)
+        set l_val=1.+Damage_ElementDamageBonus(u,l_element,l_physical)
         if(GetUnitAbilityLevel(u,'A1A4')>0)then // 'A1A4': ability "Non-elemental Damage"
             set l_element=0
         elseif(GetUnitAbilityLevel(t,udg_ElementAilmentBuff[l_element])>0 or GetUnitAbilityLevel(t,udg_ElementAilmentBuff2[l_element])>0)then
