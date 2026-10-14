@@ -45,6 +45,10 @@ globals
     timer array BackpackDefer
     item array BackpackPendingItem
     integer array BackpackPendingPage
+    // A burst of pickups keeps every candidate; internal inventory moves are not pickups.
+    item array BackpackEquipPending
+    unit array BackpackEquipCarrier
+    boolean array BackpackMoving
     // The mana the holder was last given, so that what a cast spent can be taken off the
     // hero instead. An item casts from whoever carries it, and worn gear is carried by the
     // holder, so without this the backpack would pay for your wands out of its own pool.
@@ -349,7 +353,7 @@ endfunction
 // Moves the item itself rather than making a fresh one, so charges and state survive.
 // 1.29.2 has no native that puts an existing item straight into a chosen slot, so the item
 // leaves its carrier and a bag page takes it into its first free slot. Equipment pages are
-// skipped: a picked-up item is never worn by accident.
+// routed separately when a real pickup can fill an empty gear kind.
 // Puts an item on one named page, used when the player chooses the page themselves.
 function Backpack_StoreOn takes integer pid,integer page,unit carrier,item carried returns boolean
     local unit holder
@@ -377,22 +381,25 @@ function Backpack_StoreOn takes integer pid,integer page,unit carrier,item carri
         set holder=null
         return false
     endif
+    set BackpackMoving[pid]=true
     if carrier!=null then
         call UnitRemoveItem(carrier,carried)
     endif
     call SetItemPosition(carried,GetUnitX(holder),GetUnitY(holder))
     if UnitAddItem(holder,carried) then
+        set BackpackMoving[pid]=false
         set holder=null
         return true
     endif
     if carrier!=null then
         call UnitAddItem(carrier,carried)
     endif
+    set BackpackMoving[pid]=false
     set holder=null
     return false
 endfunction
 
-// A picked-up item goes to the first bag page with room, never to an equipment page.
+// Storage fallback and rejected equipment go to the first regular bag page with room.
 function Backpack_Store takes integer pid,unit carrier,item carried returns boolean
     local integer page=BACKPACK_EQUIPMENT_PAGES
     loop
@@ -426,32 +433,6 @@ function Backpack_WeighItem takes nothing returns nothing
     set found=null
 endfunction
 
-// Takes the nearest item on the ground into the page being looked at. With a page open the
-// hero can drop an item and pick it back up on another page, which is how an item moves
-// between pages until click-to-equip lands.
-function Backpack_Grab takes player p returns nothing
-    local integer pid=GetPlayerId(p)
-    local unit hero=Player_GetHero(p)
-    local real range=BACKPACK_GRAB_RANGE
-    if hero==null then
-        return
-    endif
-    set BackpackFound=null
-    set BackpackFoundBest=0.
-    set BackpackFoundX=GetUnitX(hero)
-    set BackpackFoundY=GetUnitY(hero)
-    call EnumItemsInRect(Rect(BackpackFoundX-range,BackpackFoundY-range,BackpackFoundX+range,BackpackFoundY+range),null,function Backpack_WeighItem)
-    if BackpackFound==null then
-        call DisplayTimedTextToPlayer(p,0.,0.,8.,"Nothing lying nearby to pick up")
-    elseif Backpack_StoreOn(pid,BackpackPage[pid],null,BackpackFound) then
-        call DisplayTimedTextToPlayer(p,0.,0.,8.,"Picked up "+GetItemName(BackpackFound)+" into "+Backpack_PageName(BackpackPage[pid]))
-    else
-        call DisplayTimedTextToPlayer(p,0.,0.,8.,Backpack_PageName(BackpackPage[pid])+" is full")
-    endif
-    set BackpackFound=null
-    set hero=null
-endfunction
-
 // How many of a slot kind a page may hold. Equipment page 1 holds one each of the six worn
 // pieces, in the kind order, so its slots read weapon, offhand, helm, chest, gloves, boots.
 // Page 2 holds two rings and a trinket. A bag page has no rules at all.
@@ -469,6 +450,56 @@ function Backpack_PageLimit takes integer page,integer kind returns integer
     endif
     return 0
 endfunction
+
+// Fill only an empty slot kind; never replace an existing piece or recreate the item.
+function Backpack_TryEquipPickup takes integer pid,unit carrier,item carried returns boolean
+    local integer kind=Gear_KindOf(GetItemTypeId(carried))
+    local integer page=0
+    local integer slot
+    local integer count
+    local unit holder
+    local item worn
+    if carried==null or kind<=0 or IsItemPowerup(carried) then
+        return false
+    endif
+    loop
+        exitwhen page>=BACKPACK_EQUIPMENT_PAGES
+        if Backpack_PageLimit(page,kind)>0 then
+            set holder=Backpack_PageHolder(pid,page)
+            set count=0
+            set slot=0
+            loop
+                exitwhen slot>=BACKPACK_SLOTS
+                set worn=UnitItemInSlot(holder,slot)
+                if worn!=null and worn!=carried and Gear_KindOf(GetItemTypeId(worn))==kind then
+                    set count=count+1
+                endif
+                set slot=slot+1
+            endloop
+            if count<Backpack_PageLimit(page,kind) then
+                if UnitHasItem(holder,carried) then
+                    set holder=null
+                    set worn=null
+                    return true
+                endif
+                if Backpack_StoreOn(pid,page,carrier,carried) then
+                    call DisplayTimedTextToPlayer(Player(pid),0.,0.,8.,"Equipped "+GetItemName(carried)+" ("+Gear_KindName(kind)+")")
+                    set holder=null
+                    set worn=null
+                    return true
+                endif
+            endif
+        endif
+        set page=page+1
+    endloop
+    set holder=null
+    set worn=null
+    return false
+endfunction
+
+
+
+
 
 // Takes back every bonus this player's gear was granted. The hero is remembered from when
 // they were granted, because a job change or a load replaces the hero unit.
@@ -845,9 +876,26 @@ function Backpack_RunDeferred takes nothing returns nothing
     local unit hero
     local integer kind
     local boolean stored
+    local integer index
+    local unit carrier
     loop
         exitwhen pid>=bj_MAX_PLAYERS
         if BackpackDefer[pid]==which then
+            set index=pid*64
+            loop
+                exitwhen index>=pid*64+64
+                set pending=BackpackEquipPending[index]
+                set carrier=BackpackEquipCarrier[index]
+                set BackpackEquipPending[index]=null
+                set BackpackEquipCarrier[index]=null
+                if pending!=null and GetItemTypeId(pending)!=0 and UnitHasItem(carrier,pending) then
+                    if carrier==Player_GetHero(Player(pid)) or Backpack_PageOf(pid,carrier)>=0 then
+                        set stored=Backpack_TryEquipPickup(pid,carrier,pending)
+                    endif
+                endif
+                set index=index+1
+            endloop
+            set carrier=null
             set pending=BackpackPendingItem[pid]
             set BackpackPendingItem[pid]=null
             set hero=Player_GetHero(Player(pid))
@@ -981,6 +1029,61 @@ function Backpack_OnCast takes nothing returns nothing
     endif
 endfunction
 
+// Ground pickups fill missing equipment first, then use the open page.
+function Backpack_Grab takes player p returns nothing
+    local integer pid=GetPlayerId(p)
+    local unit hero=Player_GetHero(p)
+    local real range=BACKPACK_GRAB_RANGE
+    if hero==null then
+        return
+    endif
+    set BackpackFound=null
+    set BackpackFoundBest=0.
+    set BackpackFoundX=GetUnitX(hero)
+    set BackpackFoundY=GetUnitY(hero)
+    call EnumItemsInRect(Rect(BackpackFoundX-range,BackpackFoundY-range,BackpackFoundX+range,BackpackFoundY+range),null,function Backpack_WeighItem)
+    if BackpackFound==null then
+        call DisplayTimedTextToPlayer(p,0.,0.,8.,"Nothing lying nearby to pick up")
+    elseif Backpack_TryEquipPickup(pid,null,BackpackFound) then
+        call Backpack_QueueWork(pid)
+    elseif Backpack_StoreOn(pid,BackpackPage[pid],null,BackpackFound) then
+        call DisplayTimedTextToPlayer(p,0.,0.,8.,"Picked up "+GetItemName(BackpackFound)+" into "+Backpack_PageName(BackpackPage[pid]))
+    else
+        call DisplayTimedTextToPlayer(p,0.,0.,8.,Backpack_PageName(BackpackPage[pid])+" is full")
+    endif
+    set BackpackFound=null
+    set hero=null
+endfunction
+
+// At most 48 slots on the hero and holders can own candidates; spare entries also
+// absorb pickups whose item was dropped or consumed again before the deferred pass.
+function Backpack_QueueEquipPickup takes integer pid,unit carrier,item carried returns nothing
+    local integer index=pid*64
+    local integer free=-1
+    if carried==null or Gear_KindOf(GetItemTypeId(carried))<=0 then
+        return
+    endif
+    loop
+        exitwhen index>=pid*64+64
+        if BackpackEquipPending[index]==carried then
+            set BackpackEquipCarrier[index]=carrier
+            call Backpack_QueueWork(pid)
+            return
+        endif
+        if free<0 then
+            if BackpackEquipPending[index]==null or not UnitHasItem(BackpackEquipCarrier[index],BackpackEquipPending[index]) then
+                set free=index
+            endif
+        endif
+        set index=index+1
+    endloop
+    if free>=0 then
+        set BackpackEquipPending[free]=carried
+        set BackpackEquipCarrier[free]=carrier
+        call Backpack_QueueWork(pid)
+    endif
+endfunction
+
 // A picked-up item goes to the backpack when the hero's own slots are full, so a full
 // inventory never stops a drop being collected.
 // An item landing on or leaving a holder is the moment gear is equipped or taken off.
@@ -1010,6 +1113,15 @@ function Backpack_OnPickup takes nothing returns nothing
         set carried=null
         return
     endif
+    if BackpackMoving[pid] then
+        call Backpack_OnHolderChange()
+        set hero=null
+        set carried=null
+        return
+    endif
+    if hero==Player_GetHero(GetOwningPlayer(hero)) or Backpack_PageOf(pid,hero)>=0 then
+        call Backpack_QueueEquipPickup(pid,hero,carried)
+    endif
     if GetUnitTypeId(hero)==BACKPACK_HOLDER then
         call Backpack_OnHolderChange()
         set hero=null
@@ -1025,6 +1137,9 @@ function Backpack_OnPickup takes nothing returns nothing
     endloop
     if hero!=Player_GetHero(GetOwningPlayer(hero)) then
         // Someone else's unit picked it up; the backpack has no business with it.
+        set hero=null
+        set carried=null
+        return
     elseif BackpackShown[pid] then
         // While a page is open, what the hero picks up lands on that page, where the player
         // can see it, rather than in the first bag page with room. The move itself waits
@@ -1072,10 +1187,14 @@ function Backpack_OnCommand takes nothing returns nothing
         set moving=UnitItemInSlot(holder,slot)
         if moving==null then
             call DisplayTimedTextToPlayer(p,0.,0.,8.,"That backpack slot is empty")
-        elseif UnitAddItem(hero,moving) then
-            call DisplayTimedTextToPlayer(p,0.,0.,8.,"Took "+GetItemName(moving))
         else
-            call DisplayTimedTextToPlayer(p,0.,0.,8.,"Your own slots are full")
+            set BackpackMoving[pid]=true
+            if UnitAddItem(hero,moving) then
+                call DisplayTimedTextToPlayer(p,0.,0.,8.,"Took "+GetItemName(moving))
+            else
+                call DisplayTimedTextToPlayer(p,0.,0.,8.,"Your own slots are full")
+            endif
+            set BackpackMoving[pid]=false
         endif
     else
         set moving=UnitItemInSlot(hero,slot)
@@ -1087,6 +1206,7 @@ function Backpack_OnCommand takes nothing returns nothing
             call DisplayTimedTextToPlayer(p,0.,0.,8.,Backpack_PageName(BackpackPage[pid])+" is full")
         endif
     endif
+    call Backpack_QueueWork(pid)
     set p=null
     set hero=null
     set holder=null

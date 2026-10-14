@@ -138,3 +138,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATC | Classic water casts use an active transparent proxy, and item magic plus food/potions each share their own item-duration cooldown across all backpack pages and hero slots. |
 | ATD | Adds one water-engine check that compares normal, delayed, detector-free and stock proxy casts and reports real spell events, while preserving the confirmed cross-page cooldowns. |
 | ATE | Replaces rejected native water-proxy casts with the Forsaken scripted cone wave and classic moving effects, keeping the original damage formula and confirmed shared cooldowns. |
+| ATF | Ground pickups fill empty matching equipment kinds before regular bag routing, preserving occupied gear, original items and deferred bonus refresh. |

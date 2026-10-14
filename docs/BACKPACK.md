@@ -267,9 +267,23 @@ and enemies: check visible travel and damage through a group. `-watercheck` show
 cast/wave/hit activity and launches one visual-only wave. Timers, carrier, effects
 and hit groups are released when a wave ends; the confirmed cooldowns are unchanged.
 
+## Pickup equips missing gear (stage ATF)
+
+A real pickup fills an empty matching equipment kind before regular bag routing:
+weapon/offhand/helm/chest/gloves/boots on Equipment, two rings and one trinket on
+the second equipment page. Occupied kinds are never replaced. This works from the
+hero or an open bag holder, including dropping loaded gear and picking it up again.
+Moves wait until the pickup event ends, keep the original handles and charges, and
+refresh worn bonuses. Internal storage moves and `-take` do not auto-equip again;
+`-grab` also prefers an empty matching equipment kind.
+
+Check Book of Depths, chest, helmet, trinket and weapon pickups with empty gear
+slots, then pick up duplicates and verify existing gear stays equipped.
+Water wave visibility/damage and shared cooldowns are confirmed in 1.29.2.
+
 ## Still to build
 
-Click to equip straight from the hero's own slots, the level and mastery requirements on worn
+Click to equip gear already in the hero's own slots, the level and mastery requirements on worn
 gear, and `Gear_HasItem` in place of the 115 item checks in 46 triggers, so worn gear still
 counts for quests and abilities. Saving keeps using the legacy system in 1.29.2 until the model
 is settled; Reforged keeps the new save line unchanged.
