@@ -1,15 +1,16 @@
 # Forsaken line vs the normal map
 
-The Forsaken maps (`release/Forsaken/...DZ` is the latest) are the Reforged equipment experiment:
+The Forsaken maps (`release/Forsaken/...EA` is the latest) are the Reforged equipment experiment:
 native 30-slot bag and nine equipment slots, stat and inspection panels, and the new save.
-The normal map (Reforged and 1.29.2) uses the backpack pages instead. This page records what was
+Reforged gameplay must use the native Forsaken branch. Only 1.29.2 uses the backpack pages;
+the normal Reforged outputs are authoring intermediates for classic conversion. This page records what was
 compared at stage ATJ against Forsaken DZ, and where each difference stands.
 
 ## Merged into the normal map
 
 | From | Change | Where |
 |---|---|---|
-| Save DW-DZ | FSVB save, files and loader (1.29.2 only; Reforged keeps its old save) | SAVE_129.md |
+| Save DW-DZ | FSVB save, files and loader (both gameplay branches use FSVB) | SAVE_129.md |
 | BL-BR | Every item check that read equipped gear reads worn gear (equipment pages) | BACKPACK.md (ATH) |
 | BN-BR | Level and Legendary Master rules, Dual Wield, one of each piece | BACKPACK.md (ATI) |
 | BM | Gaya Strength no longer counts twice toward an element plus Omni | Damage.j `Damage_ElementDamageBonus` |

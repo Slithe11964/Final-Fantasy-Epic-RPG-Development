@@ -1,7 +1,8 @@
 # The new save in the normal maps
 
-From stage ATG the 1.29.2 map, and from stage ATL the Reforged map too, save with the new FSVB
-code that the Reforged save line (experiments/Forsaken) uses. Codes and files are the same in
+From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EA; the normal
+Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
 ## Commands
@@ -84,3 +85,11 @@ remembers the position, so the check after a load reads back exactly.
 
 Still to check: an old code with `-load <code>` in ATG, and a Reforged save where a weapon is worn
 in the offhand.
+
+## Classic collection display (ATN)
+
+Chronicle and Armory tooltips now use explicit one-based classic levels. Check their
+collection totals in game. `-chronicle` lists every Chronicle category and the total;
+`-armory` lists top-level Armory categories and the total stored collection.
+`-equipment` lists all nine equipment slots, including empty slots; gear is managed
+through the two equipment pages. Reforged retains the native Forsaken UI.

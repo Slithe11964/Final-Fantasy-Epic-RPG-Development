@@ -9,7 +9,7 @@ import save_registry
 from map_presentation import prepare_map, sync_intro, expected_source, settings
 
 BT_TEST_REVISION='0ef79c5'
-BT_TEST_FILES=('test_armory_catalog.py','test_bazaar_frames.py','test_chronicles_secrets.py')
+BT_TEST_FILES=('test_armory_catalog.py','test_bazaar_frames.py','test_chronicles_secrets.py','test_quest_events.py')
 
 def align_bt_tests(work):
     # Gameplay sources are exported from BT, so use its checked regression expectations.

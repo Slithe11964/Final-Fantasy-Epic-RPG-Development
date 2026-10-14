@@ -1,4 +1,4 @@
-library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero
+library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots
 // -stats: the hero's combat numbers as text, four pages, in both versions. Reforged's Forsaken
 // map shows the same numbers in its stat panel; the calculations below come from it (Forsaken
 // DZ), reading worn gear from the backpack's equipment pages instead of native equipment slots.
@@ -1298,9 +1298,118 @@ function Stats_Show takes player p,integer page returns nothing
     set hero=null
 endfunction
 
+function Stats_ArmoryCategoryProgress takes player p,integer category returns string
+    local integer i=1
+    local integer root
+    local integer stored=0
+    local integer total=0
+    loop
+        exitwhen i>udg_SaveFlagCount
+        if ArmoryMissingUnit[i]!=0 then
+            set root=GetUnitPointValueByType(udg_SaveFlagUnitID[i])
+            loop
+                exitwhen root<=0 or udg_ArmoryParentCategory[root]==0
+                set root=udg_ArmoryParentCategory[root]
+            endloop
+            if root==category then
+                set total=total+1
+                if IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+                    set stored=stored+1
+                endif
+            endif
+        endif
+        set i=i+1
+    endloop
+    return I2S(stored)+" / "+I2S(total)
+endfunction
+
+function Stats_Collections takes player p,boolean chronicles returns nothing
+    local integer category=1
+    local integer limit=8
+    local string label
+    local string progress
+    if GetLocalPlayer()==p then
+        call ClearTextMessages()
+    endif
+    if chronicles then
+        set limit=12
+        call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,0))
+    else
+        call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cffffcc00Armory collection:|r "+Armory_CollectionText(p))
+    endif
+    loop
+        exitwhen category>limit
+        if chronicles then
+            set label=ChroniclesNameBase[category*64]
+            set progress=Chronicles_Progress(p,category)
+        else
+            set label=GetObjectName(udg_SaveFlagUnitID[500+category])
+            set progress=Stats_ArmoryCategoryProgress(p,category)
+        endif
+        call DisplayTimedTextToPlayer(p,0.,0.,30.,label+": "+progress)
+        set category=category+1
+    endloop
+endfunction
+
+function Stats_EquipmentName takes integer slot returns string
+    if slot==0 then
+        return "Helm"
+    elseif slot==1 then
+        return "Chest"
+    elseif slot==2 then
+        return "Gloves"
+    elseif slot==3 then
+        return "Boots"
+    elseif slot==4 then
+        return "Ring 1"
+    elseif slot==5 then
+        return "Ring 2"
+    elseif slot==6 then
+        return "Weapon"
+    elseif slot==7 then
+        return "Offhand"
+    endif
+    return "Trinket"
+endfunction
+
+function Stats_Equipment takes player p returns nothing
+    local unit hero=Player_GetHero(p)
+    local integer slot=0
+    local item worn
+    local string name
+    if hero==null then
+        call DisplayTimedTextToPlayer(p,0.,0.,10.,"You need a hero to see its equipment.")
+        return
+    endif
+    if GetLocalPlayer()==p then
+        call ClearTextMessages()
+    endif
+    call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cffffcc00Equipment: all nine slots|r")
+    loop
+        exitwhen slot>=9
+        set worn=SaveSlots_Equip(hero,slot)
+        set name="Empty"
+        if worn!=null then
+            set name=GetItemName(worn)
+        endif
+        call DisplayTimedTextToPlayer(p,0.,0.,30.,Stats_EquipmentName(slot)+": "+name)
+        set slot=slot+1
+    endloop
+    call DisplayTimedTextToPlayer(p,0.,0.,30.,"Open Backpack: equipment page 1 holds weapon, offhand, helm, chest, gloves and boots; page 2 holds rings and trinket.")
+    set worn=null
+    set hero=null
+endfunction
+
 function Stats_OnCommand takes nothing returns nothing
     local string text=StringCase(GetEventPlayerChatString(),false)
     local integer page=0
+    if text=="-armory" or text=="-chronicle" then
+        call Stats_Collections(GetTriggerPlayer(),text=="-chronicle")
+        return
+    elseif text=="-equipment" then
+        call Stats_Equipment(GetTriggerPlayer())
+        return
+    endif
     if text!="-stats" and SubString(text,0,7)!="-stats " then
         return
     endif
@@ -1325,6 +1434,9 @@ function InitTrig_HeroStats takes nothing returns nothing
     loop
         exitwhen pid>=bj_MAX_PLAYERS
         call TriggerRegisterPlayerChatEvent(gg_trg_HeroStats_Command,Player(pid),"-stats",false)
+        call TriggerRegisterPlayerChatEvent(gg_trg_HeroStats_Command,Player(pid),"-armory",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_HeroStats_Command,Player(pid),"-chronicle",true)
+        call TriggerRegisterPlayerChatEvent(gg_trg_HeroStats_Command,Player(pid),"-equipment",true)
         set pid=pid+1
     endloop
     call TriggerAddAction(gg_trg_HeroStats_Command,function Stats_OnCommand)

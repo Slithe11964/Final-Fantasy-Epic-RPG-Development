@@ -71,7 +71,12 @@ def convert_talents(text):
 
 
 def convert_all(text):
-    return convert_talents(convert(text))
+    text=convert_talents(convert(text))
+    # Classic tooltip setters use one-based levels even when a level-zero getter returns text.
+    for raw in ('A0AR','A0MW'):
+        text=text.replace("if StringLength(BlzGetAbilityExtendedTooltip('%s',0))==0 then" % raw,
+                          'if true then')
+    return text
 
 
 def convert_editor_text(text):
@@ -84,6 +89,7 @@ def convert_wct(data):
     wct = read_wct(data)
     wct['entries'] = [raw_of(convert_editor_text(text_of(entry)))
                       if any(mark in text_of(entry) for mark in
-                             ('BazaarFrame_Init', 'TalentFrame_Init', 'FST_UseSyncNative')) else entry
+                             ('BazaarFrame_Init', 'TalentFrame_Init', 'FST_UseSyncNative',
+                              'ChroniclesTooltipOffset', 'ArmoryTooltipLevel')) else entry
                       for entry in wct['entries']]
     return write_wct(wct)

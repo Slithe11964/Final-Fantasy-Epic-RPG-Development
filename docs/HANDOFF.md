@@ -8,19 +8,20 @@ logs up to 2026-10-10 are in [history/](history/).
 
 | Line | Map | State |
 |---|---|---|
-| Normal development | `release/FFERPG_0.9.7.3-r16-stageATM.w3x` (Reforged, edit this one) and `release/1.29.2/FFERPG_0.9.7.3-r16-stageATM.w3x` | ATM = ATL + Nightmare resaves preserving the imported tier (lower-tier imports stay barred from Inferno), fresh Nightmare saves using the top tier, and a reserved-name compile fix in the save cache; in-game check pending. ATL = ATK + the new save on in Reforged too and the difficulty rule for loading (SAVE_129.md); in-game check pending. ATH-ATK confirmed in game (item checks, wearing rules, Forsaken merges, `-stats`, messages). ATK = ATJ + `-stats` text pages and plain save/load messages. ATJ = ATI + the Forsaken DZ gameplay changes the normal map lacked; what stays Reforged-only is listed in FORSAKEN_PARITY.md (in-game check pending). Build ATJ-style bases with `tools/forsaken_parity.py` before the next stage only if starting again from an older map. ATI = ATH + Gaya level/Legendary Master requirements and Dual Wield on the equipment pages (BACKPACK.md; in-game check pending). ATH = ATG + item checks across the map read the backpack: carried items anywhere, worn effects from the equipment pages (BACKPACK.md; in-game check pending). ATG = ATF + the 1.29.2 map saving and loading the Reforged FSVB code from the backpack pages (SAVE_129.md; Reforged DW to 1.29.2 and 1.29.2 to DW confirmed in game) + Keg Hunter/Secrets text. ATF prioritizes empty matching equipment kinds on pickups from hero/bag pages; engine acceptance pending (BACKPACK.md). ATE scripted water visibility/damage and cross-page cooldowns are confirmed in 1.29.2. ATC = ASY + the classic water-proxy and cross-page cooldown fixes (BACKPACK.md). Wateraga and Book of Depths are confirmed working. ASY = ASF + the Backpack with its equipment pages (BACKPACK.md) + Blinding Light on the missile system's own hit hook (TALENTS.md). The holder, its seven pages and the Talents button on its card are confirmed in 1.29.2; equipping, the worn bonuses and the matching slot counts are confirmed in 1.29.2; the pass-through blind awaits its first check. ASG is withdrawn. ASF (same content as ASE) = ASB + job talents (TALENTS.md). ASB = user's editor save ASA (`baseline/Reforged/...stageASA.w3x`, not tracked) + Esc closes Bazaar + classic tooltip-level fix. ASA's object tables and script were taken from AS (identical content; the editor save only re-optimized them) except the enlarged Shipyard region. Base for the next normal build. |
+| Reforged gameplay | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEA.w3x` | Restores the DW/DZ native bag and equipment UI, with current save messages and Nightmare tier rules. Classic Backpack/SaveSlots modules are rejected by the builder. Retest `-loadf dev` and cross-version saves. ATM Reforged is superseded for gameplay. |
+| 1.29.2 development | `release/1.29.2/FFERPG_0.9.7.3-r16-stageATN.w3x` | ATN adds explicit classic collection-tooltip levels, `-armory`/`-chronicle` category and collection totals, and `-equipment` for all nine slots; in-game check pending. ATM preserves imported difficulty tiers through Nightmare saves. Backpack pages, cross-page cooldowns, water projectiles, item checks and wearing rules remain (BACKPACK.md, SAVE_129.md). The corresponding `release/...stageATN.w3x` is an authoring intermediate for classic conversion, not the Reforged gameplay map. |
 | Public baseline | `baseline/Reforged/` and `baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x` (stage Z) | Tracked in Git; confirmed working 2026-10-06. |
-| Forsaken gear (native 3.0 bag/equipment) | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenBT.w3x` | Last gameplay checkpoint. Saving is disabled in Forsaken maps. See experiments/Forsaken/README.md. |
-| New save system | `release/Forsaken/...ForsakenDZ.w3x` (built on DW; DX remains the separate multi-file test) | DZ fixes Priest reset being mistaken for a job purchase, moves Reset bottom-left and Legendary Bonus bottom-right, and displays earned/unspent talent points at 1/50/99/legendary 100; reset acceptance pending. DY Chronicle visibility, Priest wiring and three-second portals remain. DW save modules and normal file paging are preserved. Real round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Inactive Freelancer portrait fixed. DW: no standing still to save, loads replace the starter in place, loaded masteries restore food/titles/total level, and save files load whatever page size wrote them. Screenshot colors/layout confirmed. DW retains r17 presentation and file-only legacy save messages; the town shrine is always visible, unmastered Freelancer attempts are silent, and mastered loads restore shrine menus. Screen saves, numbered chat loads and exact-name legacy/new file detection await real-client acceptance; multiplayer timings remain pending. Public saving stays off. See SAVE_FRESH_LOAD_TEST.md. |
+
+| New save system | Forsaken EA (Reforged) and ATN (1.29.2) | Shared FSVB format and permanent IDs; native Reforged equipment maps to classic equipment pages. Retest this pair in game. DW/DZ round-trip, multiplayer delivery, endgame slots, cleanup/retry, one-load and fifteen-minute cutoff passed. Priest reset, Chronicle restoration and three-second portals remain. DX is the separate multi-file test. See SAVE_FRESH_LOAD_TEST.md and SAVE_129.md. |
 
 All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user request (BUGS.md).
 
 ## Building
 
-Normal build (Windows PowerShell, from this folder):
+1.29.2 authoring build (Windows PowerShell, from this folder):
 
 ```powershell
-.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageASF.w3x
+.\build.ps1 -Stage <next unused> -Base release/FFERPG_0.9.7.3-r16-stageATN.w3x
 ```
 
 It finds changed modules in `src/`, syncs them into the base map, orders libraries, checks the
@@ -33,7 +34,10 @@ Details and failure handling: BUILDS.md.
 
 Design rule (user, 2026-10-10): edit in the Reforged editor, but the default map and every change
 target 1.29.2 where possible; Reforged gets nicer UI on top (Bazaar 3 panels, talent panel,
-later the Forsaken inventory). Saves must stay compatible between the two.
+the native Forsaken inventory). Saves must stay compatible between the two. Reforged gameplay
+uses the Forsaken branch; paged Backpack/SaveSlots modules belong only to the classic line.
+Build the native Reforged update with `python experiments/Forsaken/build_dw_update.py --stage <next>`;
+its builder rejects classic inventory modules.
 
 - The 96 regression tests and the base-map checks only rerun when `tools/`, `src/`, `baseline/`
   or the base map changed since they last passed (cache in `%USERPROFILE%\.cache\fferpg-build`).
@@ -61,8 +65,8 @@ later the Forsaken inventory). Saves must stay compatible between the two.
 
 ## Next
 
-1. Save (ATM): save an Easy-origin character in Nightmare, then confirm Easy accepts it and Inferno rejects it; resave an Inferno-origin character in Nightmare and confirm it loads anywhere. Test both clients. After any change to the experiments/Forsaken save modules, rerun `python tools/save_port.py <built map>`.
-2. The Forsaken test maps get the plain save wording and the difficulty rule only when rebuilt with all save modules; `build_dw_update.py` currently refreshes only the loader.
-3. Forsaken: load a DW save in DZ and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
+1. Save (EA/ATN): save an Easy-origin character in Nightmare, then confirm Easy accepts it and Inferno rejects it; resave an Inferno-origin character in Nightmare and confirm it loads anywhere. Test both clients. After any change to the experiments/Forsaken save modules, rerun `python tools/save_port.py <built map>`.
+2. Classic ATN: check collection totals on the Chronicle/Armory tooltips and compare `-chronicle`, `-armory` and `-equipment`.
+3. Forsaken: load a DW save in EA and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
 4. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.
 5. Optional cleanup of shared temp variables: PHASE16.md.

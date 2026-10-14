@@ -148,3 +148,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATK | `-stats` shows the Forsaken stat pages as text (damage, defenses, resistances, other bonuses); save and load messages drop the prototype wording and timings and say only whether it worked and why not. |
 | ATL | The new save is on in the Reforged map too; save/load wording is plain in the Reforged sources; difficulty rule: Simple-Hard saves load in Simple-Hard, Inferno saves anywhere, Nightmare loads any save, Inferno refuses saves made below it (new and old codes). |
 | ATM | Preserved imported save eligibility through Nightmare resaves in both clients and fixed the reserved parameter name in the shared save-cache helper. |
+| ForsakenEA | Restored the native Reforged Forsaken inventory from DW/DZ with current save messages and Nightmare tier rules, rejecting classic backpack modules. |
+| ATN | Added explicit classic collection-tooltip levels, category and total summaries through -armory/-chronicle, and all nine equipment slots through -equipment for 1.29.2. |

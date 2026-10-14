@@ -19,6 +19,8 @@ from editor_layout import trigger_items
 from jtok import functions
 import talents_catalog
 from build_save_roundtrip import align_bt_tests, load_source
+from build_save_probe import capture_source, fresh_plan_source
+import save_registry
 from map_presentation import prepare_map, settings
 
 
@@ -134,7 +136,7 @@ def prepare_objects(base,out):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--stage',default='DZ')
+    ap.add_argument('--stage',default='EA')
     ap.add_argument('--resume-work',type=Path)
     args=ap.parse_args()
     if not re.fullmatch('[A-Z][A-Z0-9]*',args.stage):ap.error('invalid stage')
@@ -190,6 +192,23 @@ def main():
         talent.parent.mkdir(parents=True,exist_ok=True);write(talent,priest_source())
         added=scratch/'talents.w3x'
         run('add_module.py',prepared,added,'03 Jobs and progression','Talents')
+        cache=work/'src/triggers/11 Save prototype/ForsakenSaveCache.j'
+        write(cache,(HERE/'Forsaken-save-cache.j').read_text().replace('endlibrary','function InitTrig_ForsakenSaveCache takes nothing returns nothing\nendfunction\nendlibrary'))
+        cached=scratch/'cache.w3x'
+        run('add_module.py',added,cached,'11 Save prototype','ForsakenSaveCache')
+        catalog=json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text())
+        registry,aliases=save_registry.check(catalog)
+        for module,source in [('ForsakenSaveCapture',capture_source(aliases)),
+                              ('ForsakenSaveFreshPlan',fresh_plan_source(registry,catalog)),
+                              ('ForsakenSaveTransport',(HERE/'Forsaken-save-transport.j').read_text())]:
+            write(path(module),source.replace('endlibrary','function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary'))
+        cmd=path('Cmd').read_text()
+        current=(ROOT/'src/triggers/09 Player features/Cmd.j').read_text()
+        pattern=r'^function Trig_Cmd_Load_Code_OpenCode takes\b.*?^endfunction'
+        replacement=re.search(pattern,current,re.M|re.S).group()
+        cmd,count=re.subn(pattern,lambda _:replacement,cmd,count=1,flags=re.M|re.S)
+        if count!=1:raise ValueError('legacy load difficulty function changed')
+        write(path('Cmd'),cmd)
         for module,folder in [('Missile','01 Shared helpers'),('Spell_Cure','04 Combat and abilities')]:
             write(path(module),(ROOT/'src/triggers'/folder/(module+'.j')).read_text())
         write(path('Equip'),patch_equip(path('Equip').read_text()))
@@ -199,10 +218,11 @@ def main():
         start=boot.index('function Startup_RegisterTriggers');end=boot.index('endfunction',start)
         boot=boot[:end]+'    call ExecuteFunc("RegisterTriggers_Talents")\n'+boot[end:]
         write(path('MapBootstrap'),boot)
-        runtime=MPQ(str(added)).read('war3map.j').decode()
+        runtime=MPQ(str(cached)).read('war3map.j').decode()
         write(path('ForsakenFreshLoad'),load_source(runtime))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',added,synced,'Missile','Spell_Cure','Equip','Job','MapBootstrap','ForsakenFreshLoad')
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','MapBootstrap','ForsakenFreshLoad',
+            'ForsakenSaveCapture','ForsakenSaveFreshPlan','ForsakenSaveTransport')
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'
     built=work/'release'/name
@@ -217,10 +237,16 @@ def main():
     after=read_wct(out.read('war3map.wct'))['entries']
     for entry in before:
         if any(entry.startswith(('library T'+lib+' ').encode()) for lib in
-               ('ForsakenSaveCodec','ForsakenSaveLife','ForsakenSaveCapture','ForsakenSaveTransport','ForsakenSaveFreshPlan','ForsakenSaveFreshObjects')):
+               ('ForsakenSaveCodec','ForsakenSaveLife','ForsakenSaveFreshObjects')):
             if entry not in after:raise ValueError('DW save module changed unexpectedly')
     transport=next(e.decode() for e in after if e.startswith(b'library TForsakenSaveTransport '))
     if 'constant integer FST_CHUNK=160' not in transport:raise ValueError('DW normal file paging changed')
+    editor=b'\n'.join(after)
+    if b'library TBackpack ' in editor or b'library TSaveSlots ' in editor:
+        raise ValueError('classic backpack modules must never enter the Reforged Forsaken build')
+    runtime=out.read('war3map.j').decode()
+    if 'UnitItemInEquipmentSlot(' not in runtime or 'UnitItemInBagSlot(' not in runtime:
+        raise ValueError('native Forsaken inventory missing')
     for n in names:
         with (dest/n).open('xb') as stream:stream.write((work/'release'/n).read_bytes())
     print('FORSAKEN TEST MAP:',dest/name)

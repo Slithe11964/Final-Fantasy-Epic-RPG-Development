@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DZ
+# Private save/restart/fresh-load test - EA
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDZ.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEA.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -171,7 +171,7 @@ add this dependency. For the user's r17 editor save, the separate
 scenario description, changing only this dependency. Open it in World Editor and
 save successfully before playing: its runtime still comes from the failed save.
 
-## DZ gameplay update
+## EA Reforged inventory and save update
 
 Load an existing DW save and check the restored earned Chronicle icons. On Priest,
 choose Deprotect, Deshell or Blinding Light in the Forsaken tree and test its spell
@@ -181,3 +181,8 @@ Reset is bottom-left; Legendary Bonus is bottom-right. Points accrue at levels
 1, 50, 99 and legendary 100, including points reserved for later talent rows. Hero and Gaya
 House Portal now take three seconds, and both descriptions agree. Their costs and
 cooldowns stay unchanged. Build with `python experiments/Forsaken/build_dw_update.py --stage <next>`.
+
+EA keeps the native Forsaken bag/equipment UI and excludes the classic Backpack/SaveSlots
+modules. It refreshes the save capture, load difficulty checks and file transport with plain
+messages and Nightmare origin-tier preservation. Retest `-loadf dev`; ATM Reforged was the
+wrong paged-inventory line and is superseded for Reforged gameplay.
