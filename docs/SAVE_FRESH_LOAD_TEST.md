@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EA
+# Private save/restart/fresh-load test - EB
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEA.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEB.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -186,3 +186,7 @@ EA keeps the native Forsaken bag/equipment UI and excludes the classic Backpack/
 modules. It refreshes the save capture, load difficulty checks and file transport with plain
 messages and Nightmare origin-tier preservation. Retest `-loadf dev`; ATM Reforged was the
 wrong paged-inventory line and is superseded for Reforged gameplay.
+
+EB routes autosave through the full read-only file-save pipeline and announces
+New Game Plus after an eligible successful load. Test autosave with gear and
+bag items, then load `autosave` in a fresh game. Reforged stays on native equipment.

@@ -1,0 +1,11 @@
+{
+ "stage": "ATO/ForsakenEB",
+ "purpose": "Route enabled new-system autosaves through the same read-only capture and file export as -savef; preserve legacy behavior only when the new save is disabled. No payload fields or item/job identities change.",
+ "serializers": {
+  "Save_Autosave": {
+   "legacy": "f6835d95b81ef0fa7c1bcd4737a353a23750ff74fcf22ac18a12894c336b368c",
+   "extended": "84450adb2609271b9fca60b9fe10ad2303d8cdc1bf21cdbf3de57fe730f46e9d"
+  }
+ },
+ "verification": "Autosave driver dispatches through FFL_Autosave and the shared FFL_BeginSave path. Busy, locked, Hardcore and opted-out players are skipped; the legacy writer is not called in the enabled new system."
+}

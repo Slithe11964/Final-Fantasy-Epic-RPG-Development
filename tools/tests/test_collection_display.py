@@ -49,4 +49,41 @@ class CollectionDisplayTests(unittest.TestCase):
             self.assertIn(name+': Empty',rows)
         self.assertTrue(all(p==0 for p,s in shown))
 
+    def test_chronicle_summary_names_secrets_instead_of_keg_hunter(self):
+        shown=[]
+        env=dict(GetLocalPlayer=lambda:0,ClearTextMessages=lambda:None,
+            DisplayTimedTextToPlayer=lambda p,x,y,t,s:shown.append(s),I2S=str,
+            Chronicles_Progress=lambda p,c:'1 / 1' if c==12 else '0 / 0',
+            ChroniclesNameBase=defaultdict(lambda:'Category',{12*64:'Keg Hunter'}))
+        with patch.object(harness,'SELECTED',[]):
+            e=harness.load_engine(SOURCE.read_text(encoding='utf-8'),['Stats_Collections'],env)
+        e['Stats_Collections'](0,True)
+        self.assertIn('Secrets: 1 / 1',shown)
+        self.assertFalse(any('Keg Hunter' in s for s in shown))
+
+    def test_armory_tooltip_contains_parent_and_subcategory_progress(self):
+        writes=[]
+        env=dict(udg_SaveFlagCount=3,ArmoryMissingUnit=defaultdict(int,{1:101,2:102,3:103}),
+            udg_SaveFlagUnitID=defaultdict(int,{1:1,2:2,3:3,501:1,511:11,512:12}),
+            udg_ArmoryParentCategory=defaultdict(int,{11:1,12:1}),
+            udg_SaveFlagForce=defaultdict(set,{1:{0},2:set(),3:{0}}),
+            GetUnitPointValueByType=lambda raw:{1:11,2:11,3:12}[raw],
+            IsPlayerInForce=lambda p,f:p in f,I2S=str,GetLocalPlayer=lambda:0,
+            GetObjectName=lambda raw:{1:'Physical weapons',11:'Tools',12:'Swords'}.get(raw,'Category'),
+            ArmoryProgressTotal=defaultdict(int),ArmoryProgressStored=defaultdict(int),
+            ArmoryMenuBase=defaultdict(str),ArmoryMenuShown=defaultdict(str),
+            ArmoryTooltipBase='House Armory',ArmoryTooltipShown='',ArmoryTooltipLevel=1,
+            Armory_CollectionText=lambda p:'2 / 3',BlzSetAbilityExtendedTooltip=lambda *args:writes.append(args))
+        source=(ROOT/'src/triggers/05 Items crafting and shops/Armory.j').read_text(encoding='utf-8')
+        with patch.object(harness,'SELECTED',[]):
+            e=harness.load_engine(source,['Armory_CountProgress','Armory_ProgressLine','Armory_RefreshCounter'],env)
+        e['Armory_RefreshCounter']()
+        root=next(t for a,t,l in writes if a=='A0MW')
+        physical=next(t for a,t,l in writes if a=='A0MX' and l==2)
+        tools=next(t for a,t,l in writes if a=='A0MX' and l==12)
+        self.assertIn('Physical weapons: 2 / 3',root)
+        self.assertIn('Tools: 1 / 2',physical)
+        self.assertIn('Swords: 1 / 1',physical)
+        self.assertIn('Tools: 1 / 2',tools)
+
 if __name__=='__main__':unittest.main()

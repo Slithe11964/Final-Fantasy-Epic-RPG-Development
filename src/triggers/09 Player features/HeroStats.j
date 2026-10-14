@@ -1341,6 +1341,9 @@ function Stats_Collections takes player p,boolean chronicles returns nothing
         exitwhen category>limit
         if chronicles then
             set label=ChroniclesNameBase[category*64]
+            if category==12 then
+                set label="Secrets"
+            endif
             set progress=Chronicles_Progress(p,category)
         else
             set label=GetObjectName(udg_SaveFlagUnitID[500+category])

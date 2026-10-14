@@ -209,6 +209,14 @@ def main():
         cmd,count=re.subn(pattern,lambda _:replacement,cmd,count=1,flags=re.M|re.S)
         if count!=1:raise ValueError('legacy load difficulty function changed')
         write(path('Cmd'),cmd)
+        saved=path('Save').read_text()
+        saved=saved.replace('globals\n','globals\n    boolean Save_UseNewAutosave=false\n    integer Save_AutosavePid=0\n',1)
+        current=(ROOT/'src/triggers/09 Player features/Save.j').read_text()
+        pattern=r'^function Save_Autosave takes\b.*?^endfunction'
+        replacement=re.search(pattern,current,re.M|re.S).group()
+        saved,count=re.subn(pattern,lambda _:replacement,saved,count=1,flags=re.M|re.S)
+        if count!=1:raise ValueError('autosave function changed')
+        write(path('Save'),saved)
         for module,folder in [('Missile','01 Shared helpers'),('Spell_Cure','04 Combat and abilities')]:
             write(path(module),(ROOT/'src/triggers'/folder/(module+'.j')).read_text())
         write(path('Equip'),patch_equip(path('Equip').read_text()))
@@ -221,7 +229,7 @@ def main():
         runtime=MPQ(str(cached)).read('war3map.j').decode()
         write(path('ForsakenFreshLoad'),load_source(runtime))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','MapBootstrap','ForsakenFreshLoad',
             'ForsakenSaveCapture','ForsakenSaveFreshPlan','ForsakenSaveTransport')
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'

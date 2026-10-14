@@ -54,9 +54,12 @@ class ArmoryTests(unittest.TestCase):
         e, shop, stock, flags = runtime()
         e['ArmoryMissingUnit'] = defaultdict(int)
         e['Armory_InitHints']()
-        e.update(ArmoryTooltipBase='', ArmoryTooltipShown='', ArmoryTooltipLevel=0)
+        e.update(ArmoryTooltipBase='', ArmoryTooltipShown='', ArmoryTooltipLevel=0,
+                 ArmoryProgressStored=defaultdict(int),ArmoryProgressTotal=defaultdict(int),
+                 ArmoryMenuBase=defaultdict(str),ArmoryMenuShown=defaultdict(str),
+                 udg_ArmoryParentCategory=defaultdict(int),GetObjectName=lambda raw:str(raw))
         with patch.object(harness, 'SELECTED', []):
-            e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), ['Armory_CollectionText', 'Armory_RefreshCounter'], e)
+            e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), ['Armory_CollectionText', 'Armory_RefreshCounter', 'Armory_CountProgress', 'Armory_ProgressLine'], e)
         e['I2S'] = str
         flags[12].add(1)
         flags[13].add(1)
@@ -69,7 +72,7 @@ class ArmoryTests(unittest.TestCase):
         self.assertEqual(e['Armory_CollectionText'](1), '1 / 280')
         updates = []
         e.update(ArmoryTooltipBase='Original armory description.', ArmoryTooltipShown='',
-                 GetLocalPlayer=lambda: 1, BlzSetAbilityExtendedTooltip=lambda *args: updates.append(args))
+                 GetLocalPlayer=lambda: 1, BlzSetAbilityExtendedTooltip=lambda *args: updates.append(args) if args[0]=='A0MW' else None)
         before = copy.deepcopy(flags)
         e['Armory_RefreshCounter']()
         e['Armory_RefreshCounter']()

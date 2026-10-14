@@ -19,6 +19,7 @@ FIXTURES = ROOT / 'tools/tests/fixtures/savecodes.json'
 MATERIA_EXTENSION = ROOT / 'tools/contracts/armory-materia-extension.json'
 FOOD_EXTENSION = ROOT / 'tools/contracts/chocobo-food-save-extension.json'
 DIFFICULTY_RULE = ROOT / 'tools/contracts/load-difficulty-rule.json'
+AUTOSAVE_ROUTE = ROOT / 'tools/contracts/save-autosave-route.json'
 
 
 def assignments(texts, array, repeated=False):
@@ -72,7 +73,8 @@ def compare(current, contract):
     extension = json.loads(MATERIA_EXTENSION.read_text(encoding='utf-8'))
     food = json.loads(FOOD_EXTENSION.read_text(encoding='utf-8'))
     difficulty = json.loads(DIFFICULTY_RULE.read_text(encoding='utf-8'))
-    approved_serializers = {**extension['serializers'], **food['serializers'], **difficulty['serializers']}
+    autosave = json.loads(AUTOSAVE_ROUTE.read_text(encoding='utf-8'))
+    approved_serializers = {**extension['serializers'], **food['serializers'], **difficulty['serializers'], **autosave['serializers']}
     items = current['items']
     numeric = sorted(int(k) for k in items)
     if not numeric or numeric != list(range(1, max(numeric) + 1)):

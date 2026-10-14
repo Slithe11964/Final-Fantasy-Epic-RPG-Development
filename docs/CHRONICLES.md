@@ -76,3 +76,6 @@ and World Editor Save As remain in-game checks.
 DY restores category visibility from the loaded title flags and Chronicle levels
 at commit, without granting titles or bonuses again. Keg Hunter keeps its existing
 Secrets refresh. Load an existing DW save and check earned categories on both pages.
+
+ATO: the Secrets tooltip includes its unlocked total; `-chronicle` labels the
+Secrets category correctly. Other classic Chronicle counters are confirmed.

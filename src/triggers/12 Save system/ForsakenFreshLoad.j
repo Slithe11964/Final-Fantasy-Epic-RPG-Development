@@ -2985,8 +2985,8 @@ function FFL_RestoreUnlocks takes integer pid returns nothing
     set i=1
     loop
         exitwhen i>59
-        // 14 (High Guardian) and 20 (Lucifer's General) would enable the legacy New Game Plus/Minus
-        // exporters, which this save line keeps disabled; 14's job-total refresh is done below.
+        // High Guardian's job-total refresh is done below; the commit restores its eligible
+        // New Game Plus command and notice. Do not replay either title's full unlock messages.
         if i!=14 and i!=20 and IsPlayerInForce(owner,udg_TitleForce[i]) then
             set udg_TempPlayer=owner
             set udg_TempInteger=i
@@ -3024,6 +3024,15 @@ function FFL_RetireSpareHeroes takes integer pid returns nothing
     set hero=null
     set gaya=null
     set found=null
+endfunction
+
+function FFL_NotifyNewGamePlus takes integer pid returns nothing
+    local player owner=Player(pid)
+    if IsPlayerInForce(owner,udg_TitleForce[14]) and udg_NewGamePlusLevel[pid+1]<10 and not IsPlayerInForce(owner,udg_CheaterForce) then
+        call EnableTrigger(udg_NewGamePlusTrig)
+        call FFL_Message(pid,"|cffffcc00New Game Plus is available.|r Type -newgameplus to create a fresh-start code with increased job stat growth.")
+    endif
+    set owner=null
 endfunction
 
 function FFL_Commit takes integer pid returns nothing
@@ -3072,6 +3081,7 @@ function FFL_Commit takes integer pid returns nothing
     call FFL_RestoreUnlocks(pid)
     call SaveSlots_AfterLoad(pid)
     call FFL_Message(pid,"|cff00ff00Load complete.|r")
+    call FFL_NotifyNewGamePlus(pid)
 endfunction
 
 function FFL_RoutesFile takes string command returns boolean
@@ -3210,6 +3220,38 @@ function FFL_LoadStatus takes integer pid returns nothing
     call FFL_Message(pid,"Load: "+I2S(FFL_ChatCount[pid])+" of "+I2S(total)+" parts received. Still missing part "+parts)
 endfunction
 
+function FFL_BeginSave takes integer pid,boolean file,boolean legacy returns boolean
+    if FFL_Phase[pid]!=0 or FFP_Locked[pid] then
+        return false
+    endif
+    set FFL_SaveFile[pid]=file
+    set FST_LegacySaveMessages[pid]=legacy
+    if not udg_HardcoreOff then
+        call FFL_Message(pid,"Saving is disabled in Hardcore.")
+        return false
+    elseif FRC_StartNow(pid) then
+        set FFL_Phase[pid]=1
+        if legacy then
+            call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Trying to save in "+SubString(FST_PlayerPath(pid,0),2,StringLength(FST_PlayerPath(pid,0))))
+        else
+            call FFL_Message(pid,"Saving...")
+        endif
+        return true
+    endif
+    call FFL_Message(pid,"Save failed: the character could not be read. Try again in a moment.")
+    return false
+endfunction
+
+function FFL_Autosave takes nothing returns nothing
+    local integer pid=Save_AutosavePid
+    if not FSC_PlayerValid(pid) or FFL_Phase[pid]!=0 or FFP_Locked[pid] or not udg_HardcoreOff then
+        return
+    endif
+    if FST_SetFileStem(pid,"autosave") then
+        call FFL_BeginSave(pid,true,true)
+    endif
+endfunction
+
 function FFL_Chat takes nothing returns nothing
     local integer pid=GetPlayerId(GetTriggerPlayer())
     local string command=GetEventPlayerChatString()
@@ -3270,20 +3312,7 @@ function FFL_Chat takes nothing returns nothing
         return
     endif
     if saving then
-        set FFL_SaveFile[pid]=lower!="-save"
-        set FST_LegacySaveMessages[pid]=lower=="-savef" or SubString(lower,0,7)=="-savef "
-        if not udg_HardcoreOff then
-            call FFL_Message(pid,"Saving is disabled in Hardcore.")
-        elseif FRC_StartNow(pid) then
-            set FFL_Phase[pid]=1
-            if FST_LegacySaveMessages[pid] then
-                call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Trying to save in "+SubString(FST_PlayerPath(pid,0),2,StringLength(FST_PlayerPath(pid,0))))
-            else
-                call FFL_Message(pid,"Saving...")
-            endif
-        else
-            call FFL_Message(pid,"Save failed: the character could not be read. Try again in a moment.")
-        endif
+        call FFL_BeginSave(pid,lower!="-save",lower=="-savef" or SubString(lower,0,7)=="-savef ")
     elseif FFP_Eligible(pid,FFL_WindowOpen) then
         set FST_AllowLegacy[pid]=SubString(lower,0,6)=="-loadf" or lower=="-load"
         if FST_Request(pid,FRC_Account(pid)) then
@@ -3389,6 +3418,7 @@ function InitTrig_ForsakenFreshLoad takes nothing returns nothing
     if not SAVE_ENABLED then
         return
     endif
+    set Save_UseNewAutosave=true
     call FRC_Init()
     call FFP_Init()
     call FST_Init()

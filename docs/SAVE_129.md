@@ -1,7 +1,7 @@
 # The new save in the normal maps
 
 From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
-Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EA; the normal
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EB; the normal
 Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
@@ -93,3 +93,13 @@ collection totals in game. `-chronicle` lists every Chronicle category and the t
 `-armory` lists top-level Armory categories and the total stored collection.
 `-equipment` lists all nine equipment slots, including empty slots; gear is managed
 through the two equipment pages. Reforged retains the native Forsaken UI.
+
+## ATO autosave and collection details
+
+Autosave uses the same read-only full capture/file export as `-savef autosave`, and
+skips busy or locked loads/saves and Hardcore games. Retest that all backpack pages
+and items survive, then load the autosave file. Successful eligible loads announce
+`-newgameplus` and enable its existing command, without granting new eligibility.
+Secrets now shows its completion total and `-chronicle` calls that category Secrets.
+The house Armory tooltip lists main categories; each open menu's Back tooltip
+lists that category and its children, such as Physical Weapons and Tools.

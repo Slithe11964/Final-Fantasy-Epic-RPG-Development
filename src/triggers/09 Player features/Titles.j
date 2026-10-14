@@ -173,7 +173,7 @@ function Chronicles_RefreshTooltips takes nothing returns nothing
         endif
         set category=category+1
     endloop
-    set tooltip=ChroniclesSecretsBase
+    set tooltip=ChroniclesSecretsBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,12)
     if tooltip!=ChroniclesSecretsShown then
         call BlzSetAbilityExtendedTooltip('cSec',tooltip,ChroniclesTooltipOffset)
         call BlzSetAbilityTooltip('cSec',"Secrets",ChroniclesTooltipOffset)

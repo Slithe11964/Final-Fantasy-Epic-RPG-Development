@@ -16,6 +16,10 @@ globals
     string ArmoryTooltipBase=""
     string ArmoryTooltipShown=""
     integer ArmoryTooltipLevel=0
+    string array ArmoryMenuBase
+    string array ArmoryMenuShown
+    integer array ArmoryProgressTotal
+    integer array ArmoryProgressStored
     string array ArmoryHint
     integer array ArmoryCategory
 endglobals
@@ -1024,23 +1028,90 @@ function Armory_CollectionText takes player p returns string
     return I2S(stored)+" / "+I2S(total)
 endfunction
 
+function Armory_CountProgress takes player p returns nothing
+    local integer i=0
+    local integer category
+    loop
+        exitwhen i>40
+        set ArmoryProgressTotal[i]=0
+        set ArmoryProgressStored[i]=0
+        set i=i+1
+    endloop
+    set i=1
+    loop
+        exitwhen i>udg_SaveFlagCount
+        if ArmoryMissingUnit[i]!=0 then
+            set category=GetUnitPointValueByType(udg_SaveFlagUnitID[i])
+            loop
+                exitwhen category<0 or category>40
+                set ArmoryProgressTotal[category]=ArmoryProgressTotal[category]+1
+                if IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+                    set ArmoryProgressStored[category]=ArmoryProgressStored[category]+1
+                endif
+                exitwhen category==0
+                set category=udg_ArmoryParentCategory[category]
+            endloop
+        endif
+        set i=i+1
+    endloop
+endfunction
+
+function Armory_ProgressLine takes integer category returns string
+    return GetObjectName(udg_SaveFlagUnitID[500+category])+": "+I2S(ArmoryProgressStored[category])+" / "+I2S(ArmoryProgressTotal[category])
+endfunction
+
 function Armory_RefreshCounter takes nothing returns nothing
     local player p=GetLocalPlayer()
+    local integer category=1
+    local integer child
     local string tooltip=ArmoryTooltipBase+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
+    call Armory_CountProgress(p)
+    loop
+        exitwhen category>8
+        set tooltip=tooltip+"|n"+Armory_ProgressLine(category)
+        set category=category+1
+    endloop
     if tooltip!=ArmoryTooltipShown then
         call BlzSetAbilityExtendedTooltip('A0MW',tooltip,ArmoryTooltipLevel)
         set ArmoryTooltipShown=tooltip
     endif
+    set category=0
+    loop
+        exitwhen category>40
+        set tooltip=ArmoryMenuBase[category]+"|n|n|cffffcc00Armory collection:|r "+Armory_CollectionText(p)
+        if category>0 then
+            set tooltip=tooltip+"|n"+Armory_ProgressLine(category)
+        endif
+        set child=1
+        loop
+            exitwhen child>40
+            if udg_SaveFlagUnitID[500+child]!=0 and udg_ArmoryParentCategory[child]==category then
+                set tooltip=tooltip+"|n"+Armory_ProgressLine(child)
+            endif
+            set child=child+1
+        endloop
+        if tooltip!=ArmoryMenuShown[category] then
+            call BlzSetAbilityExtendedTooltip('A0MX',tooltip,category+ArmoryTooltipLevel)
+            set ArmoryMenuShown[category]=tooltip
+        endif
+        set category=category+1
+    endloop
     set p=null
 endfunction
 
 function Armory_InitCounter takes nothing returns nothing
+    local integer category=0
     // Tooltip natives index levels from 0 in Reforged; if level 0 reads empty (seen in 1.29.2),
     // the game counts from 1, so read and write the tooltip one index higher.
     if StringLength(BlzGetAbilityExtendedTooltip('A0MW',0))==0 then
         set ArmoryTooltipLevel=1
     endif
     set ArmoryTooltipBase=BlzGetAbilityExtendedTooltip('A0MW',ArmoryTooltipLevel)
+    loop
+        exitwhen category>40
+        set ArmoryMenuBase[category]=BlzGetAbilityExtendedTooltip('A0MX',category+ArmoryTooltipLevel)
+        set category=category+1
+    endloop
     call Armory_RefreshCounter()
     call TimerStart(CreateTimer(),1.,true,function Armory_RefreshCounter)
 endfunction

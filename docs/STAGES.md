@@ -150,3 +150,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATM | Preserved imported save eligibility through Nightmare resaves in both clients and fixed the reserved parameter name in the shared save-cache helper. |
 | ForsakenEA | Restored the native Reforged Forsaken inventory from DW/DZ with current save messages and Nightmare tier rules, rejecting classic backpack modules. |
 | ATN | Added explicit classic collection-tooltip levels, category and total summaries through -armory/-chronicle, and all nine equipment slots through -equipment for 1.29.2. |
+| ATO | Fixed classic autosave to use the full file-save pipeline, added Secrets and Armory category/subcategory progress, and restored the eligible New Game Plus load notice. |
+| ForsakenEB | Kept native Reforged inventory while routing autosave through the full file-save pipeline and restoring the eligible New Game Plus load notice. |

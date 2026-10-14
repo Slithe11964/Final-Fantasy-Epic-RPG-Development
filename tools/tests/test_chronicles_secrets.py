@@ -193,7 +193,7 @@ class ChronicleTests(unittest.TestCase):
         e['ChroniclesSecretsBase'] = 'Secrets description'
         e['Chronicles_RefreshTooltips']()
         self.assertIn(('name', 'cSec', 'Secrets', 0), e['writes'])
-        self.assertNotIn('Chronicles unlocked:', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))
+        self.assertIn('Chronicles unlocked:|r 1 / 1', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))
 
 
 class MonographLootTests(unittest.TestCase):

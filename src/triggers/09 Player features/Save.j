@@ -1,5 +1,7 @@
 library TSave requires TCmd, TJob, TPlayerHero, TUtil
 globals
+    boolean Save_UseNewAutosave=false
+    integer Save_AutosavePid=0
     // Variables only this module uses.
     boolean udg_IsAutosave
     constant integer udg_MaxChatCodeLength=$79 // $79 = 121
@@ -1062,9 +1064,14 @@ endfunction
 
 function Save_Autosave takes nothing returns nothing
     if(IsPlayerInForce(Player(udg_AutosaveNextPlayer),udg_PlayingPlayers)and IsPlayerInForce(Player(udg_AutosaveNextPlayer),udg_AutosaveForce))then
-        set udg_IsAutosave=TRUE
-        call Save_WriteCode(Player(udg_AutosaveNextPlayer),true,"autosave")
-        set udg_IsAutosave=FALSE
+        if Save_UseNewAutosave then
+            set Save_AutosavePid=udg_AutosaveNextPlayer
+            call ExecuteFunc("FFL_Autosave")
+        else
+            set udg_IsAutosave=TRUE
+            call Save_WriteCode(Player(udg_AutosaveNextPlayer),true,"autosave")
+            set udg_IsAutosave=FALSE
+        endif
     endif
     if(udg_AutosaveNextPlayer+1>=udg_AutosavePlayerCount)then
         set udg_AutosaveNextPlayer=0
