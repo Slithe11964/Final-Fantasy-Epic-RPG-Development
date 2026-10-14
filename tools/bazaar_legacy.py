@@ -54,7 +54,7 @@ def convert_talents(text):
     crlf = '\r\n' in text
     text = text.replace('\r\n', '\n')
     text = re.sub(r'^\s*framehandle\s+(?:array\s+)?TalentFrame\w+[^\n]*\n', '', text, flags=re.M)
-    text, count = re.subn(r'(constant boolean TalentUseFrames\s*=\s*)true\b', r'\1false', text)
+    text, count = re.subn(r'(constant boolean TalentUseFrames\s*=\s*)(?:true|false)\b', r'\1false', text)
     if count != 1:
         raise ValueError('expected one TalentUseFrames constant')
     for name, body in functions(text).items():

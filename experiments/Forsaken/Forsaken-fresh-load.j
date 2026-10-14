@@ -1,4 +1,4 @@
-library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine, TTitle, TJobLevels
+library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine, TTitle, TJobLevels, TTitles
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
@@ -777,6 +777,39 @@ endfunction
 
 // The legacy loader re-runs each owned title's unlock effects and counts mastered jobs as food.
 // Title stats are not reapplied: the saved hero attributes already include them.
+// Title flags and Chronicle levels are restored without replaying Title_Grant.
+// Restore its display availability separately, after the new character is committed.
+function FFL_RestoreChronicles takes integer pid returns nothing
+    local player owner=Player(pid)
+    local unit gaya=udg_SpiritOfGaya[pid+1]
+    local integer category=1
+    local integer title=1
+    local boolean any=false
+    loop
+        exitwhen category>12
+        if GetUnitAbilityLevel(gaya,udg_ChronicleAbility[category])>1 then
+            set any=true
+        endif
+        call SetPlayerAbilityAvailable(owner,udg_ChronicleAbility[category],GetUnitAbilityLevel(gaya,udg_ChronicleAbility[category])>1)
+        set category=category+1
+    endloop
+    loop
+        exitwhen title>59
+        if IsPlayerInForce(owner,udg_TitleForce[title]) then
+            set any=true
+            set category=udg_TitleChronicleIndex[title]
+            if category>0 then
+                call SetPlayerAbilityAvailable(owner,udg_ChronicleAbility[category],true)
+            endif
+        endif
+        set title=title+1
+    endloop
+    call SetPlayerAbilityAvailable(owner,'A0AR',any)
+    call Chronicles_RestoreSecrets(owner)
+    set gaya=null
+    set owner=null
+endfunction
+
 function FFL_RestoreUnlocks takes integer pid returns nothing
     local player owner=Player(pid)
     local integer i=0
@@ -807,6 +840,7 @@ function FFL_RestoreUnlocks takes integer pid returns nothing
     // Recount every player's total job level now; the periodic update skips Legendary Guardians.
     call EnableTrigger(gg_trg_JobLevels_Init)
     call StartTimerBJ(udg_JobLevelTimer,false,.01)
+    call FFL_RestoreChronicles(pid)
     set owner=null
 endfunction
 

@@ -70,3 +70,11 @@ sphere touched: a sweep follows each blinding sphere twenty times a second and b
 enemies within 250 of it. `-blindcheck` reports how many units the sweep looked at and which
 test turned each one down - not an enemy, already blinded, or dead - so a sphere that blinds
 nobody says why.
+
+## Forsaken Priest (DY)
+
+The Forsaken tree's Priest choices use the same Deprotect, Deshell and Blinding
+Light picks and spell effects as the normal talent module, including the Cure
+missile blind hook. Only the implemented first row is selectable; later Priest
+rows remain unavailable. Shrine Reset Talents clears the current job's real picks.
+Picks remain per game. Other jobs retain their existing preview behavior.

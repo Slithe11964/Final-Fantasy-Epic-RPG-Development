@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DW
+# Private save/restart/fresh-load test - DY
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDW.w3x`.
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDY.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -170,3 +170,11 @@ add this dependency. For the user's r17 editor save, the separate
 `release/Forsaken/FFERPG_0.9.7.3-r17-editor-fixed.w3x` preserves the saved Intro and
 scenario description, changing only this dependency. Open it in World Editor and
 save successfully before playing: its runtime still comes from the failed save.
+
+## DY gameplay update
+
+Load an existing DW save and check the restored earned Chronicle icons. On Priest,
+choose Deprotect, Deshell or Blinding Light in the Forsaken tree and test its spell
+against enemies; use Shrine Reset Talents to try the other choices. Hero and Gaya
+House Portal now take three seconds, and both descriptions agree. Their costs and
+cooldowns stay unchanged. Build with `python experiments/Forsaken/build_dw_update.py --stage <next>`.

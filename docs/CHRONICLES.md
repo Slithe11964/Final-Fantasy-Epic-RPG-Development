@@ -70,3 +70,9 @@ duplicates and two players, Keg Hunter save/load/recreation, and Knight/regional
 without books. Test Bazaar open/Close/reopen repeatedly and from different buyers/shops; AP
 explicitly replenishes the Recipes stock entry after every click. Multiplayer/native rendering
 and World Editor Save As remain in-game checks.
+
+## Forsaken fresh loads (DY)
+
+DY restores category visibility from the loaded title flags and Chronicle levels
+at commit, without granting titles or bonuses again. Keg Hunter keeps its existing
+Secrets refresh. Load an existing DW save and check earned categories on both pages.
