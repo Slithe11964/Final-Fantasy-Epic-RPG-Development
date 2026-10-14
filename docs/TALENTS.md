@@ -71,10 +71,13 @@ enemies within 250 of it. `-blindcheck` reports how many units the sweep looked 
 test turned each one down - not an enemy, already blinded, or dead - so a sphere that blinds
 nobody says why.
 
-## Forsaken Priest (DY)
+## Forsaken Priest (DZ)
 
 The Forsaken tree's Priest choices use the same Deprotect, Deshell and Blinding
 Light picks and spell effects as the normal talent module, including the Cure
 missile blind hook. Only the implemented first row is selectable; later Priest
-rows remain unavailable. Shrine Reset Talents clears the current job's real picks.
+rows remain unavailable. Earned points follow levels 1, 50, 99 and legendary 100;
+the panel shows unspent and total points. Shrine Reset Talents clears only the
+current job's picks, preserving the hero and gear. Reset sits bottom-left, with
+Legendary Bonus restored to bottom-right.
 Picks remain per game. Other jobs retain their existing preview behavior.

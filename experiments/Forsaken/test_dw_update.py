@@ -12,6 +12,46 @@ from mpq import MPQ
 from objdata import read_objects
 
 class DWUpdateTests(unittest.TestCase):
+    def test_reset_purchase_never_changes_job_and_removes_only_sold_token(self):
+        from wct import read_wct
+        base=build.ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDW.w3x'
+        entries=read_wct(MPQ(str(base)).read('war3map.wct'))['entries']
+        job=build.patch_job(next(e.decode() for e in entries if e.startswith(b'library TJob ')))
+        sold=['nTRt'];removed=[];picks=defaultdict(int,{48:1})
+        env=dict(Trig_Job_Change_IsJobShrine=lambda:True,GetSoldUnit=lambda:sold[0],
+            GetUnitTypeId=lambda u:u,GetOwningPlayer=lambda u:0,Player_GetHero=lambda p:'priest',
+            Job_GetIndex=lambda h:12,RemoveUnit=lambda u:removed.append(u),GetPlayerId=lambda p:p,
+            TALENT_RESET_UNIT='nTRt',TALENT_ROWS=4,udg_JobCount=22,udg_JobName={12:'Priest'},
+            TalentPick=picks,Talent_PickIndex=lambda p,j,r:p*100+j*4+r-1,
+            DisplayTimedTextToPlayer=lambda *args:None)
+        with patch.object(harness,'SELECTED',[]):
+            e=harness.load_engine(job+'\n'+build.priest_source(),
+                ['Trig_Job_Change_Conditions','Talents_ResetSold','Talent_ResetJob'],env)
+        self.assertFalse(e['Trig_Job_Change_Conditions']())
+        e['Talents_ResetSold']()
+        self.assertEqual(removed,['nTRt']);self.assertEqual(picks[48],0)
+        for token in ('n00W','n07I','n0KL'):
+            sold[0]=token;self.assertFalse(e['Trig_Job_Change_Conditions']())
+        sold[0]='H02L';self.assertTrue(e['Trig_Job_Change_Conditions']())
+
+    def test_priest_points_at_each_milestone_and_after_reset(self):
+        rank=[1];picks=defaultdict(int)
+        source=build.patch_equip('library TEquip requires TJob\n'+(build.HERE/'Forsaken-panels.j').read_text())+'\n'+build.priest_source()
+        env=dict(TALENT_ROWS=4,TALENT_JOB_PRIEST=12,udg_JobCount=22,IMinBJ=min,IMaxBJ=max,
+            GetUnitAbilityLevel=lambda u,a:rank[0],TalentPick=picks,GetPlayerId=lambda p:p,
+            Talent_PickIndex=lambda p,j,r:p*100+j*4+r-1,Player_GetHero=lambda p:'hero',Job_GetIndex=lambda h:12)
+        with patch.object(harness,'SELECTED',[]):
+            e=harness.load_engine(source,['Talent_Rank','Forsaken_PriestPoints','Talent_ResetJob'],env)
+        # Mastery ranks 1..4 represent level 1, 50, 99 and legendary 100.
+        for milestone,r in ((1,1),(50,2),(99,3),(100,4)):
+            rank[0]=r
+            self.assertEqual(e['Talent_Rank']('hero'),r,msg=str(milestone))
+            self.assertEqual(e['Forsaken_PriestPoints'](0,r),r)
+            picks[48]=2
+            self.assertEqual(e['Forsaken_PriestPoints'](0,r),r-1)
+            self.assertTrue(e['Talent_ResetJob'](0))
+            self.assertEqual(e['Forsaken_PriestPoints'](0,r),r)
+
     def test_forsaken_dialog_mode_can_still_convert_without_frames(self):
         from bazaar_legacy import convert_talents
         text=convert_talents(build.priest_source())
@@ -73,5 +113,11 @@ class DWUpdateTests(unittest.TestCase):
                 self.assertIn('3 seconds',text);self.assertNotIn('6 seconds',text)
             self.assertEqual(objs['A00M']['base'],'ANcl')
             self.assertTrue(all(raw in objs for raw in ('tDpr','tDsh','tBln','tBl5')))
+            for member in ('war3map.w3u','war3mapSkin.w3u'):
+                units=read_objects(archive.read(member),'w3u')
+                for obj in units['custom']:
+                    if obj['id'] in ('nTRt','n0KL'):
+                        fields={m['field']:m['value'] for m in obj['sets'][0]['mods']}
+                        self.assertEqual((fields['ubpx'],fields['ubpy']),(0 if obj['id']=='nTRt' else 3,2))
 
 if __name__=='__main__':unittest.main()

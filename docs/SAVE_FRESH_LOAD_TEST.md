@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - DY
+# Private save/restart/fresh-load test - DZ
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDY.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDZ.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -171,10 +171,13 @@ add this dependency. For the user's r17 editor save, the separate
 scenario description, changing only this dependency. Open it in World Editor and
 save successfully before playing: its runtime still comes from the failed save.
 
-## DY gameplay update
+## DZ gameplay update
 
 Load an existing DW save and check the restored earned Chronicle icons. On Priest,
 choose Deprotect, Deshell or Blinding Light in the Forsaken tree and test its spell
-against enemies; use Shrine Reset Talents to try the other choices. Hero and Gaya
+against enemies; use Shrine Reset Talents to try the other choices. Confirm reset
+keeps the hero, job and gear, refunds the spent point, and leaves other jobs alone.
+Reset is bottom-left; Legendary Bonus is bottom-right. Points accrue at levels
+1, 50, 99 and legendary 100, including points reserved for later talent rows. Hero and Gaya
 House Portal now take three seconds, and both descriptions agree. Their costs and
 cooldowns stay unchanged. Build with `python experiments/Forsaken/build_dw_update.py --stage <next>`.

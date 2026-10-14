@@ -30,9 +30,30 @@ def priest_source():
     return source
 
 
+def patch_job(source):
+    old="and(GetUnitTypeId(GetSoldUnit())!='n0KL')"
+    if source.count(old)!=1:raise ValueError('job purchase guard changed')
+    return source.replace(old,old+"and(GetUnitTypeId(GetSoldUnit())!='nTRt')",1)
+
+
 def patch_equip(source):
     first,rest=source.split('\n',1)
     source=first+', TTalents\n'+rest
+    helper="""function Forsaken_PriestPoints takes integer pid,integer rank returns integer
+    local integer row=1
+    local integer points=rank
+    loop
+        exitwhen row>rank
+        if TalentPick[Talent_PickIndex(pid,TALENT_JOB_PRIEST,row)]!=0 then
+            set points=points-1
+        endif
+        set row=row+1
+    endloop
+    return points
+endfunction
+
+"""
+    source=source.replace('function Forsaken_TalentCanPurchase',helper+'function Forsaken_TalentCanPurchase',1)
     start=source.index('function Forsaken_TalentCanPurchase')
     end=source.index('endfunction',start)
     source=source[:start]+source[start:end].replace('    if node<0', """    if ModuloInteger(key,100)==TALENT_JOB_PRIEST then
@@ -47,7 +68,7 @@ def patch_equip(source):
         call SaveBoolean(ForsakenTalentState,key,node,true)""",1)
     old='            call BlzFrameSetText(ForsakenTalentPoints,"Choices: "+I2S(rank-LoadInteger(ForsakenTalentState,key,20))+" / "+mastery+"|nPreview: no bonuses")'
     new="""            if job==TALENT_JOB_PRIEST then
-                call BlzFrameSetText(ForsakenTalentPoints,"Priest talents / "+mastery+"|nChoose Deprotect, Deshell or Blinding Light")
+                call BlzFrameSetText(ForsakenTalentPoints,"Points: "+I2S(Forsaken_PriestPoints(playerIndex,rank))+" / "+I2S(rank)+" earned|nLevels 1, 50, 99, 100")
             else
 """+old+'\n            endif'
     if old not in source:raise ValueError('talent heading changed')
@@ -89,6 +110,11 @@ def prepare_objects(base,out):
     talents_catalog.rebase_cure(a,sa)
     talents_catalog.prepare(a)
     talents_catalog.prepare_units(u,su)
+    for table in (u,su):
+        for obj in table['custom']:
+            if obj['id'] in ('nTRt','n0KL'):
+                talents_catalog.setf(obj,'ubpx',0,0 if obj['id']=='nTRt' else 3)
+                talents_catalog.setf(obj,'ubpy',0,2)
     for table in (a,sa):
         objects={o['id']:o for o in table['custom']}
         for raw in ('A0P3','A04J'):
@@ -108,7 +134,7 @@ def prepare_objects(base,out):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--stage',default='DY')
+    ap.add_argument('--stage',default='DZ')
     ap.add_argument('--resume-work',type=Path)
     args=ap.parse_args()
     if not re.fullmatch('[A-Z][A-Z0-9]*',args.stage):ap.error('invalid stage')
@@ -167,6 +193,7 @@ def main():
         for module,folder in [('Missile','01 Shared helpers'),('Spell_Cure','04 Combat and abilities')]:
             write(path(module),(ROOT/'src/triggers'/folder/(module+'.j')).read_text())
         write(path('Equip'),patch_equip(path('Equip').read_text()))
+        write(path('Job'),patch_job(path('Job').read_text()))
         boot=path('MapBootstrap').read_text()
         first,rest=boot.split('\n',1);boot=first+', optional TTalents\n'+rest
         start=boot.index('function Startup_RegisterTriggers');end=boot.index('endfunction',start)
@@ -175,7 +202,7 @@ def main():
         runtime=MPQ(str(added)).read('war3map.j').decode()
         write(path('ForsakenFreshLoad'),load_source(runtime))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',added,synced,'Missile','Spell_Cure','Equip','MapBootstrap','ForsakenFreshLoad')
+        run('sync_module.py',added,synced,'Missile','Spell_Cure','Equip','Job','MapBootstrap','ForsakenFreshLoad')
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'
     built=work/'release'/name
