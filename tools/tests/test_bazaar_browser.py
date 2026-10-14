@@ -32,7 +32,7 @@ def runtime():
     pool = defaultdict(int)
     money = defaultdict(lambda: 1000000)
     created, messages = [], []
-    stock={};notices=[]
+    stock={};notices=[];notice_merchants=[]
     buttons = []
     def add_button(dialog, label, hotkey):
         buttons.append((dialog, label))
@@ -42,7 +42,7 @@ def runtime():
         created.append(item)
         return item
     env.update(udg_BazaarRecipeHash=data, udg_MaterialOwnedCount=pool,
-               udg_BazaarGoodCount=56, bj_MAX_PLAYERS=12,
+               udg_BazaarGoodCount=56, bj_MAX_PLAYERS=12,bj_forLoopAIndex=0,bj_forLoopAIndexEnd=0,
                UNIT_TYPE_DEAD='dead', ITEM_TYPE_CHARGED='charged',
                PLAYER_STATE_RESOURCE_GOLD='gold', PLAYER_STATE_RESOURCE_LUMBER='shards',
                GetPlayerId=lambda p: p, Player=lambda p: p,
@@ -50,10 +50,10 @@ def runtime():
                SaveInteger=lambda table,parent,child,value:table.__setitem__((parent,child),value),
                AddItemToStock=lambda shop,raw,current,maximum:stock.__setitem__(raw,current),
                RemoveItemFromStock=lambda shop,raw:stock.pop(raw,None),
-               CreateTextTagUnitBJ=lambda *args:notices.append(args[0]),GetLastCreatedTextTag=lambda:1,
+               CreateTextTagUnitBJ=lambda *args:(notices.append(args[0]),notice_merchants.append(args[1])),GetLastCreatedTextTag=lambda:1,
                SetTextTagPermanent=lambda *args:None,SetTextTagLifespan=lambda *args:None,
                SetTextTagFadepoint=lambda *args:None,SetTextTagVelocityBJ=lambda *args:None,
-               stock=stock,notices=notices,
+               stock=stock,notices=notices,notice_merchants=notice_merchants,BazaarNoticeMerchant=None,
                I2S=str, GetObjectName=lambda raw: 'Ingredient '+raw,
                StringLength=len, SubString=lambda text, start, end: text[start:end], IMinBJ=min,
                GetOwningPlayer=lambda unit: unit['owner'],
@@ -70,7 +70,8 @@ def runtime():
     names = ['Bazaar_InitBrowserData', 'Bazaar_MaterialsReady', 'Bazaar_WrapText', 'Bazaar_PlainName', 'Bazaar_RewardName', 'Bazaar_RecipeText',
              'Bazaar_CraftRecipe', 'Bazaar_ShowRecipe', 'Bazaar_CloseBrowser',
              'Bazaar_RefreshBrowsers', 'Trig_Bazaar_BrowseRecipes_Actions',
-             'Trig_Bazaar_UpdateStock_Actions']
+             'Trig_Bazaar_UpdateStock_Actions', 'Trig_Bazaar_PawnMaterial_Actions',
+             'Trig_Bazaar_PawnMaterial_IsMaterial', 'Trig_Bazaar_PawnMaterial_HasCharges']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(source, names, env)
     e['Bazaar_InitBrowserData']()
@@ -167,6 +168,32 @@ class BazaarBrowserTests(unittest.TestCase):
         for material,amount in ingredients(data,7):pool[material]=amount
         e['Trig_Bazaar_UpdateStock_Actions']()
         self.assertEqual(len(e['notices']),2)
+
+    def test_recipe_notice_follows_the_parts_merchant_and_clears_after_update(self):
+        for raw in ['merchant', 'n030']:
+            with self.subTest(raw=raw):
+                e,data,pool,_,_=runtime()
+                merchant={'raw':raw}
+                bazaar={'raw':'n030'}
+                e['udg_BazaarShopUnit']=bazaar
+                parts=ingredients(data,7)
+                for material,amount in parts:pool[material]=amount
+                material,amount=parts[-1]
+                pool[material]=0
+                e.update(udg_MaterialTypeCount=max(e['udg_DropItemIdTable']),
+                         GetSoldItem=lambda: {'raw':e['udg_DropItemIdTable'][material],'charges':amount},
+                         GetBuyingUnit=lambda:merchant,
+                         GetForLoopIndexA=lambda:e['bj_forLoopAIndex'],
+                         GetItemTypeId=lambda item:item['raw'],
+                         GetItemCharges=lambda item:item['charges'])
+                e['Trig_Bazaar_PawnMaterial_Actions']()
+                # Other shop activity must not redirect the pending parts notice.
+                e['udg_LastBazaarShop']=bazaar
+                e['Trig_Bazaar_UpdateStock_Actions']()
+                self.assertEqual(e['notice_merchants'],[merchant])
+                self.assertIsNone(e['BazaarNoticeMerchant'])
+                e['Trig_Bazaar_UpdateStock_Actions']()
+                self.assertEqual(e['notice_merchants'],[merchant])
 
     def test_prepared_stock_survives_refresh_and_accumulates_without_delivery(self):
         e,data,pool,money,created=runtime()

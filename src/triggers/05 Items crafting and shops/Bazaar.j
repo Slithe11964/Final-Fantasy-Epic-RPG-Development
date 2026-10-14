@@ -2,6 +2,7 @@ library TBazaar
 globals
     boolean array BazaarRewardRevealed
     boolean array BazaarReadyReported
+    unit BazaarNoticeMerchant=null
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Bazaar_Init=null
     trigger gg_trg_Bazaar_Recipes=null
@@ -1544,6 +1545,7 @@ function Trig_Bazaar_PawnMaterial_Actions takes nothing returns nothing
     loop
         exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
         if(Trig_Bazaar_PawnMaterial_IsMaterial())then
+            set BazaarNoticeMerchant=GetBuyingUnit()
             if(Trig_Bazaar_PawnMaterial_HasCharges())then
                 set udg_MaterialOwnedCount[GetForLoopIndexA()]=(udg_MaterialOwnedCount[GetForLoopIndexA()]+GetItemCharges(GetSoldItem()))
             else
@@ -1596,6 +1598,7 @@ function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
     local integer count
     local boolean ready
     local boolean announce=false
+    local unit merchant=BazaarNoticeMerchant
     loop
         exitwhen recipe>udg_BazaarGoodCount
         set key=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
@@ -1612,12 +1615,17 @@ function Trig_Bazaar_UpdateStock_Actions takes nothing returns nothing
         set recipe=recipe+1
     endloop
     if announce then
-        call CreateTextTagUnitBJ("A new bazaar recipe is available!",udg_BazaarShopUnit,0.,10.,100.,100.,20.,0.)
+        if merchant==null or GetUnitTypeId(merchant)==0 then
+            set merchant=udg_BazaarShopUnit
+        endif
+        call CreateTextTagUnitBJ("A new bazaar recipe is available!",merchant,0.,10.,100.,100.,20.,0.)
         call SetTextTagPermanent(GetLastCreatedTextTag(),false)
         call SetTextTagLifespan(GetLastCreatedTextTag(),4.)
         call SetTextTagFadepoint(GetLastCreatedTextTag(),3.)
         call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64.,90.)
     endif
+    set BazaarNoticeMerchant=null
+    set merchant=null
     call Bazaar_RefreshBrowsers()
     call StartTimerBJ(udg_BazaarUpdateTimer,false,30)
 endfunction

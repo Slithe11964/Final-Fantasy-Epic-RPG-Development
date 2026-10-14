@@ -110,3 +110,7 @@ it spends no gold/shards and gives no inventory items. Purchase pays the origina
 shop price and delivers the original results and charges. Prepared stock survives
 refreshes. The recipe reveals its reward names after its first preparation this game.
 A floating notice appears when sold parts make a previously unavailable recipe ready.
+
+ATQ / Forsaken ED anchor that notice to the merchant receiving the sold monster
+parts, including the Bazaar itself. The sale anchor is separate from shop purchase
+context and is cleared after stock refresh.

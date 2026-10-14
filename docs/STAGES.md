@@ -154,3 +154,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ForsakenEB | Kept native Reforged inventory while routing autosave through the full file-save pipeline and restoring the eligible New Game Plus load notice. |
 | ATP | Added per-category Armory ability tooltips, restored Bazaar prepare/purchase and recipe notices, and released import snapshots for the classic Warcraft saved-game crash retest. |
 | ForsakenEC | Kept native inventory while adding per-category Armory tooltips, Bazaar prepare/purchase and recipe notices, and completed import snapshot cleanup. |
+| ATQ | Moved recipe-ready notices to the merchant receiving sold parts; Warcraft menu-load crash after import remains unresolved. |
+| ForsakenED | Kept native inventory and moved recipe-ready notices to the merchant receiving sold parts. |
