@@ -62,9 +62,10 @@ remembers the position, so the check after a load reads back exactly.
 - 1.29.2 cannot read an item's "can be dropped" flag. Every saved item is droppable by default;
   the loader remembers any it makes undroppable.
 
-## To check in game (1.29.2)
+## Confirmed in game (2026-10-14)
 
-1. `-save` a character with gear on both equipment pages, items on several bag pages, Gaya and
-   house items; `-load` it in a new game. Gear should be worn with its bonuses.
-2. Load a Reforged DW save file (same name) in 1.29.2, and a 1.29.2 save in Reforged DW.
-3. An old code with `-load <code>` still loads.
+- A Reforged DW save loads in 1.29.2 (ATG).
+- A save made in a new 1.29.2 game (ATG) loads in Reforged DW.
+
+Still to check: an old code with `-load <code>` in ATG, and a Reforged save where a weapon is worn
+in the offhand.
