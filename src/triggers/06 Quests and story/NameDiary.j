@@ -1,4 +1,4 @@
-library TNameDiary requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
+library TNameDiary requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_NameDiary_Prepare=null
@@ -365,7 +365,7 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
 endfunction
 
 function Trig_NameDiary_Reward_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0IA'))and(udg_InCinematicMode==false) // 'I0IA': item "Name Diary"
+    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(Gear_HasCarried(GetTriggerUnit(),'I0IA'))and(udg_InCinematicMode==false) // 'I0IA': item "Name Diary"
 endfunction
 
 function Trig_NameDiary_Reward_IsDialogueOn takes nothing returns boolean
@@ -378,7 +378,7 @@ function Trig_NameDiary_Reward_Actions takes nothing returns nothing
     call DestroyTrigger(gg_trg_NameDiary_Chronicle)
     call DisableTrigger(gg_trg_NameDiary_Ping)
     call DestroyTrigger(gg_trg_NameDiary_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0IA')) // 'I0IA': item "Name Diary"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0IA')) // 'I0IA': item "Name Diary"
     call DestroyEffectBJ(udg_SpecialEffect[80])
     if(Trig_NameDiary_Reward_IsDialogueOn())then
         call Cine_Enter()

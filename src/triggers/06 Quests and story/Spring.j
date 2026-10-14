@@ -1,4 +1,4 @@
-library TSpring requires TCam, TCine, TForce, TJob, TLoc, TWait
+library TSpring requires TCam, TCine, TForce, TJob, TLoc, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Spring_Of_Life_Ritual=null
@@ -41,7 +41,7 @@ function Trig_Spring_Of_Life_Ritual_Cond_RitualCineOn takes nothing returns bool
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_HasSpareCrystal takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7'))>=2) // 'I0B7': item "Grand Crystal"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0B7'))>=2) // 'I0B7': item "Grand Crystal"
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_NotHardMode takes nothing returns boolean
@@ -57,7 +57,7 @@ function Trig_Spring_Of_Life_Ritual_Cond_PromotionPending takes nothing returns 
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_LacksGrandCrystal takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0B7')==false) // 'I0B7': item "Grand Crystal"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0B7')==false) // 'I0B7': item "Grand Crystal"
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_NotUltimateMaster takes nothing returns boolean
@@ -97,7 +97,7 @@ function Trig_Spring_Of_Life_Ritual_Cond_AllJobsMastered takes nothing returns b
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_RitualReady takes nothing returns boolean
-    return(GetUnitAbilityLevelSwapped('A02F',GetTriggerUnit())==3)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[udg_TempInteger]))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_QuestForce[udg_TempInteger]))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0B7')) // 'A02F': ability "Mastery"; 'I0B7': item "Grand Crystal"
+    return(GetUnitAbilityLevelSwapped('A02F',GetTriggerUnit())==3)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[udg_TempInteger]))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_QuestForce[udg_TempInteger]))and(Gear_HasCarried(GetTriggerUnit(),'I0B7')) // 'A02F': ability "Mastery"; 'I0B7': item "Grand Crystal"
 endfunction
 
 function Trig_Spring_Of_Life_Ritual_Cond_EligibleHero takes nothing returns boolean
@@ -200,9 +200,9 @@ function Trig_Spring_Of_Life_Ritual_Actions takes nothing returns nothing
             call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_JobMasterForce[udg_TempInteger])
             call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_QuestForce[udg_TempInteger])
             if(Trig_Spring_Of_Life_Ritual_Cond_HasSpareCrystal())then
-                call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7'))-1)) // 'I0B7': item "Grand Crystal"
+                call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0B7'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0B7'))-1)) // 'I0B7': item "Grand Crystal"
             else
-                call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0B7')) // 'I0B7': item "Grand Crystal"
+                call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0B7')) // 'I0B7': item "Grand Crystal"
             endif
             call SetUnitAbilityLevelSwapped('A02F',GetTriggerUnit(),4) // 'A02F': ability "Mastery"
             set udg_TotalJobLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_TotalJobLevel[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+1)

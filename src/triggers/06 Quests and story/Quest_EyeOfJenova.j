@@ -1,4 +1,4 @@
-library TQuestEyeOfJenova requires TQuestEngine, TCine, TForce, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestEyeOfJenova requires TQuestEngine, TCine, TForce, TMusic, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Main quest "Eye of Jenova" (udg_MainQuest[5]), written for the quest engine (QuestEngine module,
 // docs/QUEST_ENGINE.md). Ao Madoushi asks for the Eye of Jenova, held by the undead creature in Kalm's
 // Battle Arena; the party brings it to him. Both steps are custom: Quest_AoMadoushi starts the quest
@@ -68,7 +68,7 @@ function Trig_Quest_EyeOfJenova_PickUp_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_EyeOfJenova_Deliver_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'gmfr'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'gmfr': item "Eye of Jenova"
+    return((Gear_HasCarried(GetTriggerUnit(),'gmfr'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'gmfr': item "Eye of Jenova"
 endfunction
 
 function Trig_Quest_EyeOfJenova_Deliver_CameraOnHandover takes nothing returns nothing
@@ -88,7 +88,7 @@ function Trig_Quest_EyeOfJenova_Deliver_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_Ping_EyeOfJenova)
     call DestroyTrigger(gg_trg_Ping_EyeOfJenova)
     call DestroyEffectBJ(udg_SpecialEffect[21])
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'gmfr')) // 'gmfr': item "Eye of Jenova"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'gmfr')) // 'gmfr': item "Eye of Jenova"
     call GroupRemoveUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
     call SetUnitPositionLoc(gg_unit_Othr_0106,udg_AoMadoushiLoc)
     call SetUnitFacingTimed(gg_unit_Othr_0106,udg_AoMadoushiFacing,0)

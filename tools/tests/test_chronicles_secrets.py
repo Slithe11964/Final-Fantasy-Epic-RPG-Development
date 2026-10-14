@@ -73,6 +73,10 @@ def runtime():
              BlzSetAbilityExtendedTooltip=lambda *args: live['writes'].append(('body', *args)),
              GetKillingUnit=lambda: live['killer'], GetKillingUnitBJ=lambda: live['killer'],
              GetUnitUserData=lambda u: live['zone'], GetRandomInt=lambda *args: 1,
+             # The backpack (TBackpack): no pages in these tests, so carrying means the unit's own slots.
+             Gear_HasCarried=lambda u, raw: raw in live['inventory'][u],
+             BACKPACK_PAGES=7, BACKPACK_SLOTS=6, BackpackHolder=defaultdict(lambda: None),
+             ModuloInteger=lambda a, b: a % b,
              ForForce=lambda *args: None)
     live = execute(source, names, e)
     live['Trig_Titles_Init_Actions']()

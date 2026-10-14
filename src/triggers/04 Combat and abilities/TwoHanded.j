@@ -1,4 +1,4 @@
-library TTwoHanded
+library TTwoHanded requires TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TwoHanded_Check=null
@@ -9,7 +9,7 @@ function Trig_TwoHanded_Check_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_TwoHanded_Check_SlotCancelsBonus takes nothing returns boolean
-    return(udg_TempBoolean)or(GetItemType(UnitItemInSlotBJ(GetAttacker(),udg_SlotIndex))==ITEM_TYPE_POWERUP)
+    return(udg_TempBoolean)or(GetItemType(Gear_WornInSlot(GetAttacker(),udg_SlotIndex-1))==ITEM_TYPE_POWERUP)
 endfunction
 
 function Trig_TwoHanded_Check_CancelsBonus takes nothing returns boolean
@@ -17,11 +17,11 @@ function Trig_TwoHanded_Check_CancelsBonus takes nothing returns boolean
 endfunction
 
 function Trig_TwoHanded_Check_ItemIsGear takes nothing returns boolean
-    return(GetItemType(UnitItemInSlotBJ(GetAttacker(),udg_SlotIndex))==ITEM_TYPE_PERMANENT)or(GetItemType(UnitItemInSlotBJ(GetAttacker(),udg_SlotIndex))==ITEM_TYPE_POWERUP)
+    return(GetItemType(Gear_WornInSlot(GetAttacker(),udg_SlotIndex-1))==ITEM_TYPE_PERMANENT)or(GetItemType(Gear_WornInSlot(GetAttacker(),udg_SlotIndex-1))==ITEM_TYPE_POWERUP)
 endfunction
 
 function Trig_TwoHanded_Check_SlotHasGear takes nothing returns boolean
-    return(UnitItemInSlotBJ(GetAttacker(),udg_SlotIndex)!=null)and(Trig_TwoHanded_Check_ItemIsGear())
+    return(Gear_WornInSlot(GetAttacker(),udg_SlotIndex-1)!=null)and(Trig_TwoHanded_Check_ItemIsGear())
 endfunction
 
 function Trig_TwoHanded_Check_TwoHandedActive takes nothing returns boolean
@@ -32,7 +32,7 @@ function Trig_TwoHanded_Check_Actions takes nothing returns nothing
     set udg_TempBoolean=false
     set udg_SlotIndex=1
     loop
-        exitwhen udg_SlotIndex>6
+        exitwhen udg_SlotIndex>GEAR_WORN_SLOTS
         if(Trig_TwoHanded_Check_SlotHasGear())then
             if(Trig_TwoHanded_Check_CancelsBonus())then
                 set udg_TempBoolean=false

@@ -1,15 +1,15 @@
-library TTropicalEssence requires TQuestEngine, TCam, TCine, TPlayerHero, TText
+library TTropicalEssence requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_TropicalEssence_TurnIn=null
 endglobals
 
 function Trig_TropicalEssence_TurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I06N'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06N': item "Tropical Essence"
+    return((Gear_HasCarried(GetTriggerUnit(),'I06N'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06N': item "Tropical Essence"
 endfunction
 
 function Trig_TropicalEssence_TurnIn_Cond_ItemHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N'))>=2) // 'I06N': item "Tropical Essence"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06N'))>=2) // 'I06N': item "Tropical Essence"
 endfunction
 
 function Trig_TropicalEssence_TurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -19,9 +19,9 @@ endfunction
 function Trig_TropicalEssence_TurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_TropicalEssence_TurnIn_Cond_ItemHasCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N'))-1)) // 'I06N': item "Tropical Essence"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I06N'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06N'))-1)) // 'I06N': item "Tropical Essence"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06N')) // 'I06N': item "Tropical Essence"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I06N')) // 'I06N': item "Tropical Essence"
     endif
     if(Trig_TropicalEssence_TurnIn_Cond_ShowDialogue())then
         call DestroyEffectBJ(udg_SpecialEffect[62])

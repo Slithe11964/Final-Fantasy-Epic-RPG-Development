@@ -1,4 +1,4 @@
-library TGate requires TCam, TCine, TForce, TMusic, TPlayerHero, TText, TWait
+library TGate requires TCam, TCine, TForce, TMusic, TPlayerHero, TText, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Gate_Codeword_Demesne=null
@@ -157,7 +157,7 @@ function Trig_Gate_Codeword_Demesne_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Gate_WinterKey_Unlock_Cond_HasKeyOrNotSpirit takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0IM'))or(GetUnitTypeId(GetTriggerUnit())!='H01D') // 'I0IM': item "Winter Key"; 'H01D': unit "Spirit of Gaya"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0IM'))or(GetUnitTypeId(GetTriggerUnit())!='H01D') // 'I0IM': item "Winter Key"; 'H01D': unit "Spirit of Gaya"
 endfunction
 
 function Trig_Gate_WinterKey_Unlock_Conditions takes nothing returns boolean
@@ -189,7 +189,7 @@ function Trig_Gate_WinterKey_Unlock_Enum_ClearRubble_E takes nothing returns not
 endfunction
 
 function Trig_Gate_WinterKey_Unlock_Cond_HasWinterKey takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0IM')) // 'I0IM': item "Winter Key"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0IM')) // 'I0IM': item "Winter Key"
 endfunction
 
 function Trig_Gate_WinterKey_Unlock_Actions takes nothing returns nothing
@@ -197,7 +197,7 @@ function Trig_Gate_WinterKey_Unlock_Actions takes nothing returns nothing
         call DisableTrigger(GetTriggeringTrigger())
         call Music_SetTrack(19)
         set udg_ShadowForcedSpawn=46
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0IM')) // 'I0IM': item "Winter Key"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0IM')) // 'I0IM': item "Winter Key"
         call DisplayTextToForce(GetPlayersAll(),(udg_PlayerName[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+" used the Winter Key to unlock the south gate to the Icy Realm."))
         if(Trig_Gate_WinterKey_Unlock_Cond_QuestActive())then
             call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Confront Hashmalum.")

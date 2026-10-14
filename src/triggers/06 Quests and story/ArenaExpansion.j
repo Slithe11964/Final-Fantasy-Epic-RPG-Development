@@ -1,4 +1,4 @@
-library TArenaExpansion requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TArenaExpansion requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Side quest "Arena Expansion", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Limma needs a Shadow Stone and Dimension Dust to build the arena's Reality Marble. The talk and the Shadow
 // Stone hand-in are engine steps; gathering the dust (only after Dimensional Boundary) and the final
@@ -160,7 +160,7 @@ function Trig_ArenaExpansion_PingDust_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ArenaExpansion_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I05R'))and(IsUnitHiddenBJ(gg_unit_e008_0132)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I05R': item "Dimension Dust"
+    return((Gear_HasCarried(GetTriggerUnit(),'I05R'))and(IsUnitHiddenBJ(gg_unit_e008_0132)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I05R': item "Dimension Dust"
 endfunction
 
 function Trig_ArenaExpansion_Complete_Cond_ShowDialogue takes nothing returns boolean
@@ -174,7 +174,7 @@ endfunction
 function Trig_ArenaExpansion_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_ArenaExpansion_PingDust)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I05R')) // 'I05R': item "Dimension Dust"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I05R')) // 'I05R': item "Dimension Dust"
     call DestroyEffectBJ(udg_SpecialEffect[60])
     if(Trig_ArenaExpansion_Complete_Cond_ShowDialogue())then
         call Cine_Enter()

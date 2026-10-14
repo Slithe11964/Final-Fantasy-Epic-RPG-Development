@@ -1,4 +1,4 @@
-library TProf requires TPlayerHero
+library TProf requires TPlayerHero, TBackpack
 globals
     // Variables only this module uses.
     constant integer udg_ProfIdUnarmed=$D // $D = 13
@@ -109,7 +109,7 @@ function Prof_GetLevel takes unit u,integer upgradeId returns integer
             set l_slotType=ITEM_TYPE_PERMANENT
         endif
         loop
-            set l_itm=UnitItemInSlot(u,i)
+            set l_itm=Gear_WornInSlot(u,i)
             if(l_itm!=null and(GetItemType(l_itm)==l_slotType and GetItemLevel(l_itm)==proficiencyIndex))then
                 set storedItemLife=R2I(GetItemLifeBJ(l_itm))
                 if(storedItemLife>=30)then
@@ -127,7 +127,7 @@ function Prof_GetLevel takes unit u,integer upgradeId returns integer
                 endif
             endif
             set i=i+1
-            exitwhen i>=bj_MAX_INVENTORY
+            exitwhen i>=GEAR_WORN_SLOTS
         endloop
         set l_itm=null
     endif

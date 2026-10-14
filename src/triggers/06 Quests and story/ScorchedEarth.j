@@ -1,4 +1,4 @@
-library TScorchedEarth requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TText, TWait
+library TScorchedEarth requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TText, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_ScorchedEarth_Omen=null
@@ -113,7 +113,7 @@ function Trig_ScorchedEarth_HeatFade_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ScorchedEarth_Barrier_Cond_CanEnterTop takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BY'))or(GetUnitTypeId(GetTriggerUnit())!='H01D') // 'I0BY': item "Hell Gate's Flame"; 'H01D': unit "Spirit of Gaya"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0BY'))or(GetUnitTypeId(GetTriggerUnit())!='H01D') // 'I0BY': item "Hell Gate's Flame"; 'H01D': unit "Spirit of Gaya"
 endfunction
 
 function Trig_ScorchedEarth_Barrier_Conditions takes nothing returns boolean
@@ -121,11 +121,11 @@ function Trig_ScorchedEarth_Barrier_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_ScorchedEarth_Barrier_Cond_FlameHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY'))>=2) // 'I0BY': item "Hell Gate's Flame"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0BY'))>=2) // 'I0BY': item "Hell Gate's Flame"
 endfunction
 
 function Trig_ScorchedEarth_Barrier_Cond_HasHellFlame takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"
 endfunction
 
 // A hero walks into the barrier to the mountain's top: with a Hell Gate's Flame it is erased (quest
@@ -134,9 +134,9 @@ function Trig_ScorchedEarth_Barrier_Actions takes nothing returns nothing
     if(Trig_ScorchedEarth_Barrier_Cond_HasHellFlame())then
         call DisableTrigger(GetTriggeringTrigger())
         if(Trig_ScorchedEarth_Barrier_Cond_FlameHasCharges())then
-            call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY'))-1)) // 'I0BY': item "Hell Gate's Flame"
+            call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0BY'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0BY'))-1)) // 'I0BY': item "Hell Gate's Flame"
         else
-            call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"
+            call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0BY')) // 'I0BY': item "Hell Gate's Flame"
         endif
         call KillDestructable(gg_dest_Dofv_0001)
         call DisplayTimedTextToForce(udg_PlayingPlayers,10.,(udg_PlayerName[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+" used a Hell Gate's Flame to erase the barrier to the top of the Infernal Mountain."))

@@ -1,4 +1,4 @@
-library TQuestLostMemories requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestLostMemories requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_LostMemories_Start=null
@@ -54,11 +54,11 @@ function Trig_Quest_LostMemories_Start_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Quest_LostMemories_Start_Cond_HasFadedRing_NoTalk takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(GetTriggerPlayer()),'I0DS')) // 'I0DS': item "Memento Ring"
+    return(Gear_HasCarried(Player_GetHero(GetTriggerPlayer()),'I0DS')) // 'I0DS': item "Memento Ring"
 endfunction
 
 function Trig_Quest_LostMemories_Start_Cond_HasFadedRing takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(GetTriggerPlayer()),'I0DS')) // 'I0DS': item "Memento Ring"
+    return(Gear_HasCarried(Player_GetHero(GetTriggerPlayer()),'I0DS')) // 'I0DS': item "Memento Ring"
 endfunction
 
 function Trig_Quest_LostMemories_Start_Cond_ShowDialog takes nothing returns boolean
@@ -175,7 +175,7 @@ function Trig_Quest_LostMemories_RingFade_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_LostMemories_Fail_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0DQ'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0DQ': item "Memento Ring"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0DQ'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0DQ': item "Memento Ring"
 endfunction
 
 function Trig_Quest_LostMemories_Fail_Cond_ShowDialog takes nothing returns boolean
@@ -185,7 +185,7 @@ endfunction
 function Trig_Quest_LostMemories_Fail_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[66])
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DQ')) // 'I0DQ': item "Memento Ring"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0DQ')) // 'I0DQ': item "Memento Ring"
     if(Trig_Quest_LostMemories_Fail_Cond_ShowDialog())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_e00V_0009,0)

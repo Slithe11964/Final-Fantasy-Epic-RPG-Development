@@ -1,4 +1,4 @@
-library TKesha requires TCam, TCine, TForce, TReward, TText
+library TKesha requires TCam, TCine, TForce, TReward, TText, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Kesha_Stones_Spawn=null
@@ -48,15 +48,15 @@ function Trig_Kesha_Stones_Spawn_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Kesha_Return_Stones_Conditions takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I03Y'))and(udg_InCinematicMode==false) // 'I03Y': item "Exotic Stone"
+    return(Gear_HasCarried(GetTriggerUnit(),'I03Y'))and(udg_InCinematicMode==false) // 'I03Y': item "Exotic Stone"
 endfunction
 
 function Trig_Kesha_Return_Stones_Cond_StoneNoCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03Y'))==0) // 'I03Y': item "Exotic Stone"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I03Y'))==0) // 'I03Y': item "Exotic Stone"
 endfunction
 
 function Trig_Kesha_Return_Stones_Cond_MoreStonesCarried takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I03Y'))and(udg_ExoticStonesReturned<5) // 'I03Y': item "Exotic Stone"
+    return(Gear_HasCarried(GetTriggerUnit(),'I03Y'))and(udg_ExoticStonesReturned<5) // 'I03Y': item "Exotic Stone"
 endfunction
 
 function Trig_Kesha_Return_Stones_Cond_SubEnabled_Gold takes nothing returns boolean
@@ -83,9 +83,9 @@ function Trig_Kesha_Return_Stones_Actions takes nothing returns nothing
     if(Trig_Kesha_Return_Stones_Cond_StoneNoCharges())then
         set udg_ExoticStonesReturned=(udg_ExoticStonesReturned+1)
     else
-        set udg_ExoticStonesReturned=(udg_ExoticStonesReturned+GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03Y'))) // 'I03Y': item "Exotic Stone"
+        set udg_ExoticStonesReturned=(udg_ExoticStonesReturned+GetItemCharges(Gear_Carried(GetTriggerUnit(),'I03Y'))) // 'I03Y': item "Exotic Stone"
     endif
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03Y')) // 'I03Y': item "Exotic Stone"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I03Y')) // 'I03Y': item "Exotic Stone"
     if(Trig_Kesha_Return_Stones_Cond_MoreStonesCarried())then
         call TriggerExecute(GetTriggeringTrigger())
         return

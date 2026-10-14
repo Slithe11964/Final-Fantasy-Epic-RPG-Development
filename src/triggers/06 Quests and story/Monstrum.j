@@ -1,4 +1,4 @@
-library TMonstrum requires TLoc, TPlayerHero, TWait
+library TMonstrum requires TLoc, TPlayerHero, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Monstrum_Ambush_Arm=null
@@ -74,7 +74,7 @@ function Trig_Monstrum_Summon_KillTentacle takes nothing returns nothing
 endfunction
 
 function Trig_Monstrum_Summon_HeroHasCharm takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(GetOwningPlayer(GetKillingUnitBJ())),'I0BO'))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))],'I0BO')) // 'I0BO': item "Grattheos Charm"
+    return(Gear_HasCarried(Player_GetHero(GetOwningPlayer(GetKillingUnitBJ())),'I0BO'))or(Gear_HasCarried(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))],'I0BO')) // 'I0BO': item "Grattheos Charm"
 endfunction
 
 function Trig_Monstrum_Summon_MonstrumNotSpawned takes nothing returns boolean

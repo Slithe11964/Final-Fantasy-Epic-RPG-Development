@@ -1,4 +1,4 @@
-library TForge requires TCam, TCine, TPlayerHero, TText, optional TQuestArcanium
+library TForge requires TCam, TCine, TPlayerHero, TText, optional TQuestArcanium, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Forge_Bali_Init=null
@@ -528,7 +528,7 @@ function Trig_Forge_Bali_Craft_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Forge_Bali_PsypherTalk_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0A8'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_Hmbr_0140)==false)and(udg_InCinematicMode==false))!=null // 'I0A8': item "Celestial Psypher"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0A8'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_Hmbr_0140)==false)and(udg_InCinematicMode==false))!=null // 'I0A8': item "Celestial Psypher"
 endfunction
 
 function Trig_Forge_Bali_PsypherTalk_Cond_CinematicsEnabled takes nothing returns boolean

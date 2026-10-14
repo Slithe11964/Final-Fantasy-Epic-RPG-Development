@@ -1,4 +1,4 @@
-library TDragonEgg requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit
+library TDragonEgg requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TUnit, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DragonEgg_Start=null
@@ -121,7 +121,7 @@ function Trig_DragonEgg_Fail_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DragonEgg_Reward_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0I0'))and(IsUnitVisible(gg_unit_e016_0019,GetOwningPlayer(GetTriggerUnit())))and(udg_InCinematicMode==false) // 'I0I0': item "Dragon Egg"
+    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(Gear_HasCarried(GetTriggerUnit(),'I0I0'))and(IsUnitVisible(gg_unit_e016_0019,GetOwningPlayer(GetTriggerUnit())))and(udg_InCinematicMode==false) // 'I0I0': item "Dragon Egg"
 endfunction
 
 function Trig_DragonEgg_Reward_IsDialogueOn takes nothing returns boolean
@@ -132,7 +132,7 @@ function Trig_DragonEgg_Reward_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_DragonEgg_Ping)
     call DestroyTrigger(gg_trg_DragonEgg_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0I0')) // 'I0I0': item "Dragon Egg"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0I0')) // 'I0I0': item "Dragon Egg"
     call DestroyEffectBJ(udg_SpecialEffect[79])
     if(Trig_DragonEgg_Reward_IsDialogueOn())then
         call PauseUnitBJ(true,gg_unit_e016_0019)

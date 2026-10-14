@@ -1,11 +1,11 @@
-library TFrogHead requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait
+library TFrogHead requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_FrogHead_TurnIn=null
 endglobals
 
 function Trig_FrogHead_TurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I07I'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I07I': item "Qu's Frog Head"
+    return((Gear_HasCarried(GetTriggerUnit(),'I07I'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I07I': item "Qu's Frog Head"
 endfunction
 
 function Trig_FrogHead_TurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -15,7 +15,7 @@ endfunction
 function Trig_FrogHead_TurnIn_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I07I')) // 'I07I': item "Qu's Frog Head"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I07I')) // 'I07I': item "Qu's Frog Head"
     call DestroyEffectBJ(udg_SpecialEffect[62])
     if(Trig_FrogHead_TurnIn_Cond_ShowDialogue())then
         call Cine_Enter()

@@ -1,4 +1,4 @@
-library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait
+library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait, TBackpack
 globals
     // Per-hit context for Trig_Damage_Engine_CalcDamage (one slot per nested call, see DmgCtx_Depth).
     integer DmgCtx_Depth=0
@@ -62,7 +62,7 @@ function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing
     local item l_it
     set udg_TwoHandedItem=null
     loop
-        set l_it=UnitItemInSlot(u,i)
+        set l_it=Gear_WornInSlot(u,i)
         if(l_it!=null and(GetItemType(l_it)==ITEM_TYPE_PERMANENT or GetItemType(l_it)==ITEM_TYPE_POWERUP))then
             if(udg_TwoHandedItem!=null or GetItemType(l_it)==ITEM_TYPE_POWERUP)then
                 set udg_TwoHandedItem=null
@@ -73,7 +73,7 @@ function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing
             endif
         endif
         set i=i+1
-        exitwhen i>=bj_MAX_INVENTORY
+        exitwhen i>=GEAR_WORN_SLOTS
     endloop
     set l_it=null
 endfunction
@@ -107,13 +107,13 @@ function Trig_Damage_Engine_ProficiencyMult takes unit u returns real
         endif
         set i=0
         loop
-            set l_it=UnitItemInSlot(u,i)
+            set l_it=Gear_WornInSlot(u,i)
             if(l_it!=null and GetItemType(l_it)==ITEM_TYPE_PERMANENT)then
                 // ((l_varied) plus (((GetItemLifeBJ(l_it)) with its decimal part removed) divided by (10))) plus (1).
                 set l_varied=l_varied+(R2I(GetItemLifeBJ(l_it))/ $A)+1 // $A = 10
             endif
             set i=i+1
-            exitwhen i>=bj_MAX_INVENTORY
+            exitwhen i>=GEAR_WORN_SLOTS
         endloop
         set l_it=null
         if(l_varied>l_prof)then

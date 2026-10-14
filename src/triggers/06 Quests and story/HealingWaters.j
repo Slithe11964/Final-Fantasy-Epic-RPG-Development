@@ -1,4 +1,4 @@
-library THealingWaters requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library THealingWaters requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Side quest "Healing Waters", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Zalmo asks for a vial of water from the Fountain of Restoration to cure a sick boy. Start (talk to
 // Zalmo) calls Quest_Start; Cure (pure water) or CureBlood (the red water) plays the healing cinematic
@@ -110,7 +110,7 @@ function Trig_HealingWaters_PingVial_Actions takes nothing returns nothing
 endfunction
 
 function Trig_HealingWaters_DefiledVial_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0JL'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0JL': item "Filled Vial"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0JL'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0JL': item "Filled Vial"
 endfunction
 
 function Trig_HealingWaters_DefiledVial_Cond_ShowRejectTalk takes nothing returns boolean
@@ -133,12 +133,12 @@ function Trig_HealingWaters_DefiledVial_Actions takes nothing returns nothing
     endif
     set udg_QuestItem[18]=UnitAddItemByIdSwapped('bzbe',GetTriggerUnit()) // 'bzbe': editor label "Empty Vial"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0JL')) // 'I0JL': item "Filled Vial"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0JL')) // 'I0JL': item "Filled Vial"
     call UnitAddItemSwapped(udg_QuestItem[18],GetTriggerUnit())
 endfunction
 
 function Trig_HealingWaters_Cure_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'bzbf'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'bzbf': item "Filled Vial"
+    return((Gear_HasCarried(GetTriggerUnit(),'bzbf'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'bzbf': item "Filled Vial"
 endfunction
 
 function Trig_HealingWaters_Cure_Cond_ShowCureScene takes nothing returns boolean
@@ -150,7 +150,7 @@ function Trig_HealingWaters_Cure_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_HealingWaters_PingVial)
     call DisableTrigger(gg_trg_HealingWaters_CureBlood)
     call DisableTrigger(gg_trg_HealingWaters_DefiledVial)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'bzbf')) // 'bzbf': item "Filled Vial"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'bzbf')) // 'bzbf': item "Filled Vial"
     call DestroyEffectBJ(udg_SpecialEffect[34])
     if(Trig_HealingWaters_Cure_Cond_ShowCureScene())then
         call Cine_Enter()
@@ -214,7 +214,7 @@ function Trig_HealingWaters_Cure_Actions takes nothing returns nothing
 endfunction
 
 function Trig_HealingWaters_CureBlood_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0JM'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0JM': item "Filled Vial"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0JM'))and(IsUnitHiddenBJ(gg_unit_H00T_0185)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0JM': item "Filled Vial"
 endfunction
 
 function Trig_HealingWaters_CureBlood_Cond_ShowBloodCureScene takes nothing returns boolean
@@ -226,7 +226,7 @@ function Trig_HealingWaters_CureBlood_Actions takes nothing returns nothing
     call DisableTrigger(gg_trg_HealingWaters_PingVial)
     call DisableTrigger(gg_trg_HealingWaters_Cure)
     call DisableTrigger(gg_trg_HealingWaters_DefiledVial)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0JM')) // 'I0JM': item "Filled Vial"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0JM')) // 'I0JM': item "Filled Vial"
     call DestroyEffectBJ(udg_SpecialEffect[34])
     if(Trig_HealingWaters_CureBlood_Cond_ShowBloodCureScene())then
         call Cine_Enter()

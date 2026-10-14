@@ -1,4 +1,4 @@
-library THydraEgg requires TQuestEngine, TCam, TCine, TForce, TLoc, TPlayerHero, TReward, TText, TWait
+library THydraEgg requires TQuestEngine, TCam, TCine, TForce, TLoc, TPlayerHero, TReward, TText, TWait, TBackpack
 // Side quest "Hydra Egg", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Captain Jack wants a Hydra Egg to raise a Hydra and take revenge on the Naga. Available from the start
 // (MapBootstrap runs gg_trg_HydraEgg_Prepare). After the talk, hydras may drop the egg (gg_trg_HydraEgg_Drop);
@@ -112,7 +112,7 @@ function Trig_HydraEgg_Ping_Actions takes nothing returns nothing
 endfunction
 
 function Trig_HydraEgg_Deliver_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'thle'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'thle': item "Hydra Egg"
+    return((Gear_HasCarried(GetTriggerUnit(),'thle'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'thle': item "Hydra Egg"
 endfunction
 
 function Trig_HydraEgg_Deliver_Cond_ShowThanksTalk takes nothing returns boolean
@@ -130,7 +130,7 @@ function Trig_HydraEgg_Deliver_Actions takes nothing returns nothing
     local location l_tempPoint2
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_HydraEgg_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'thle')) // 'thle': item "Hydra Egg"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'thle')) // 'thle': item "Hydra Egg"
     if(Trig_HydraEgg_Deliver_Cond_ShowThanksTalk())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_Hapm_0179,0)

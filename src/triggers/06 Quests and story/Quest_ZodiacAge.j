@@ -1,4 +1,4 @@
-library TQuestZodiacAge requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TWait
+library TQuestZodiacAge requires TQuestEngine, TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TWait, TBackpack
 // Main quest "End of Zodiac Age" (udg_MainQuest[18]), run by the quest engine (QuestEngine module,
 // docs/QUEST_ENGINE.md). Celeborn and Galadriel tell the party that Hashmalum, leader of the Zodiac
 // Braves, hides beyond the Great Wall; the party must find a way into the Icy Realm (the gate, Celeborn,
@@ -379,7 +379,7 @@ function Trig_Quest_ZodiacAge_GetPendant_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_ZodiacAge_ShowPendant_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0I9')) // 'I0I9': item "Shimmering Pendant"
+    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(Gear_HasCarried(GetTriggerUnit(),'I0I9')) // 'I0I9': item "Shimmering Pendant"
 endfunction
 
 function Trig_Quest_ZodiacAge_ShowPendant_Cond_CinematicsEnabled takes nothing returns boolean

@@ -1,4 +1,4 @@
-library TQuestEngine requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, optional TQuestCount
+library TQuestEngine requires TCam, TCine, TPlayerHero, TReward, TText, TUnit, optional TQuestCount, TBackpack
 // Quest engine: a quest is a list of steps written as data (see docs/QUEST_ENGINE.md).
 //
 // Defining a quest (usually inside the quest's own module, the first time it becomes available):
@@ -351,7 +351,7 @@ function QuestEngine_StepCondition takes nothing returns boolean
         return IsUnitHidden(QuestStepUnit[s])==false and QuestEngine_IsQuestHero(GetTriggerUnit())
     elseif l_type==QUEST_STEP_DELIVER then
         // the Spirit of Gaya may hand in items too
-        return IsUnitHidden(QuestStepUnit[s])==false and QuestEngine_IsHero(GetTriggerUnit()) and UnitHasItemOfTypeBJ(GetTriggerUnit(),QuestStepItem[s])
+        return IsUnitHidden(QuestStepUnit[s])==false and QuestEngine_IsHero(GetTriggerUnit()) and Gear_HasCarried(GetTriggerUnit(),QuestStepItem[s])
     elseif l_type==QUEST_STEP_REACH then
         return QuestEngine_IsQuestHero(GetTriggerUnit())
     elseif l_type==QUEST_STEP_HUNT then
@@ -559,7 +559,7 @@ function QuestEngine_StepAction takes nothing returns nothing
             call LeaderboardDisplayBJ(false,udg_HuntLeaderboard)
         endif
     elseif QuestStepType[s]==QUEST_STEP_DELIVER then
-        set l_item=GetItemOfTypeFromUnitBJ(u,QuestStepItem[s])
+        set l_item=Gear_Carried(u,QuestStepItem[s])
         set l_given=IMinBJ(QuestStepNeeded[s]-QuestStepDelivered[s],IMaxBJ(GetItemCharges(l_item),1))
         if GetItemCharges(l_item)>l_given then
             call SetItemCharges(l_item,GetItemCharges(l_item)-l_given)

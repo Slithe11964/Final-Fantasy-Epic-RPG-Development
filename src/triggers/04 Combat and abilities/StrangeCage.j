@@ -1,18 +1,18 @@
-library TStrangeCage requires TUnit
+library TStrangeCage requires TUnit, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_StrangeCage_Unlock=null
 endglobals
 
 function Trig_StrangeCage_Unlock_Conditions takes nothing returns boolean
-    return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(UnitHasItemOfTypeBJ(GetTriggerUnit(),'kygh')))!=null // 'kygh': item "Strange Key"
+    return((IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(Gear_HasCarried(GetTriggerUnit(),'kygh')))!=null // 'kygh': item "Strange Key"
 endfunction
 
 function Trig_StrangeCage_Unlock_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_StrangeKey_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'kygh')) // 'kygh': item "Strange Key"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'kygh')) // 'kygh': item "Strange Key"
     set l_tempPoint=GetUnitLoc(gg_unit_nwc1_0187)
     call AddSpecialEffectLocBJ(l_tempPoint,"Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())

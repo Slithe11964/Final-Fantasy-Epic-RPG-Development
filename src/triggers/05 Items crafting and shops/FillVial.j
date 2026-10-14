@@ -1,4 +1,4 @@
-library TFillVial requires TForce
+library TFillVial requires TForce, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_FillVial_Cast=null
@@ -56,7 +56,7 @@ function Trig_FillVial_Cast_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set udg_QuestItem[18]=GetLastCreatedItem()
         call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'bzbe')) // 'bzbe': editor label "Empty Vial"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'bzbe')) // 'bzbe': editor label "Empty Vial"
         call UnitAddItemSwapped(udg_QuestItem[18],GetTriggerUnit())
     else
         call DisplayTimedTextToForce(l_tempForce,10.,"|cffff0000You must target a fountain with this item!|r")

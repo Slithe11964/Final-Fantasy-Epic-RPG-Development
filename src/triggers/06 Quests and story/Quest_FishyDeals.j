@@ -1,4 +1,4 @@
-library TQuestFishyDeals requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText
+library TQuestFishyDeals requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TBackpack
 // Side quest "Fishy Deals", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Ruksel, former owner of the Fishing Pole, wants a fishy meal: a Fish Soup or, for more gold, a Nebra Bread.
 // Made available by Fishing_Setup (the Fishing Pole is found), which calls QuestFishyDeals_Available.
@@ -40,7 +40,7 @@ function QuestFishyDeals_Available takes nothing returns nothing
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_HasFishMeal takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0KI'))or(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0KM')) // 'I0KI': item "Fish Soup"; 'I0KM': item "Nebra Bread"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0KI'))or(Gear_HasCarried(GetTriggerUnit(),'I0KM')) // 'I0KI': item "Fish Soup"; 'I0KM': item "Nebra Bread"
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Conditions takes nothing returns boolean
@@ -48,7 +48,7 @@ function Trig_Quest_FishyDeals_Complete_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_SoupHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI'))>1) // 'I0KI': item "Fish Soup"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KI'))>1) // 'I0KI': item "Fish Soup"
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnSoup takes nothing returns boolean
@@ -56,7 +56,7 @@ function Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnSoup takes nothing retu
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_BreadHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'))>1) // 'I0KM': item "Nebra Bread"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KM'))>1) // 'I0KM': item "Nebra Bread"
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnBread takes nothing returns boolean
@@ -64,7 +64,7 @@ function Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnBread takes nothing ret
 endfunction
 
 function Trig_Quest_FishyDeals_Complete_Cond_HasNebraBread takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
 endfunction
 
 // Step 2: a hero brought Ruksel a meal (the Nebra Bread first if he has both); one charge is handed in.
@@ -72,9 +72,9 @@ function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_FishyDeals_Complete_Cond_HasNebraBread())then
         if(Trig_Quest_FishyDeals_Complete_Cond_BreadHasCharges())then
-            call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM'))-1)) // 'I0KM': item "Nebra Bread"
+            call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KM'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KM'))-1)) // 'I0KM': item "Nebra Bread"
         else
-            call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
+            call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0KM')) // 'I0KM': item "Nebra Bread"
         endif
         if(Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnBread())then
             call Cine_Enter()
@@ -92,9 +92,9 @@ function Trig_Quest_FishyDeals_Complete_Actions takes nothing returns nothing
         endif
     else
         if(Trig_Quest_FishyDeals_Complete_Cond_SoupHasCharges())then
-            call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI'))-1)) // 'I0KI': item "Fish Soup"
+            call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KI'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0KI'))-1)) // 'I0KI': item "Fish Soup"
         else
-            call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KI')) // 'I0KI': item "Fish Soup"
+            call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0KI')) // 'I0KI': item "Fish Soup"
         endif
         if(Trig_Quest_FishyDeals_Complete_Cond_CinematicsOnSoup())then
             call Cine_Enter()

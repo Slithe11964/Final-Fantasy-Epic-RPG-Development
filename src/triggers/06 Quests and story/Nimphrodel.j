@@ -1,4 +1,4 @@
-library TNimphrodel requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TNimphrodel requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TBackpack
 // Side quest "Save Nimphrodel", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Kenarius believes his daughter Nimphrodel was kidnapped by centaurs. All steps are this module's
 // cinematics: Start (talk to Kenarius) calls Quest_Start; Meet (Nimphrodel) and Undomiel (her sister)
@@ -179,7 +179,7 @@ function Trig_Nimphrodel_Undomiel_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Nimphrodel_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I02B'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I02B': item "Crystal Ball"
+    return((Gear_HasCarried(GetTriggerUnit(),'I02B'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I02B': item "Crystal Ball"
 endfunction
 
 function Trig_Nimphrodel_Complete_Cond_ShowUndomielReward takes nothing returns boolean
@@ -189,7 +189,7 @@ endfunction
 function Trig_Nimphrodel_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_CrystalBall_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02B')) // 'I02B': item "Crystal Ball"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I02B')) // 'I02B': item "Crystal Ball"
     call DestroyEffectBJ(udg_SpecialEffect[39])
     if(Trig_Nimphrodel_Complete_Cond_ShowUndomielReward())then
         call Cine_Enter()

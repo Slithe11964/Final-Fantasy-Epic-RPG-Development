@@ -1,11 +1,11 @@
-library TQuestPhantomDiary requires TCam, TCine, TPlayerHero, TText
+library TQuestPhantomDiary requires TCam, TCine, TPlayerHero, TText, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_PhantomDiary_ShowAlberich=null
 endglobals
 
 function Trig_Quest_PhantomDiary_ShowAlberich_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BR'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_h037_0257)==false)and(udg_InCinematicMode==false))!=null // 'I0BR': item "Phantom Diary Page 3"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0BR'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_h037_0257)==false)and(udg_InCinematicMode==false))!=null // 'I0BR': item "Phantom Diary Page 3"
 endfunction
 
 function Trig_Quest_PhantomDiary_ShowAlberich_Cond_CinematicsEnabled takes nothing returns boolean

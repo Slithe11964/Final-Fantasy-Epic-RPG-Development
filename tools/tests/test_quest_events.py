@@ -54,8 +54,9 @@ class QuestEventTests(unittest.TestCase):
                'IsPlayerInForce': lambda p, force: p in force,
                'IsUnitHidden': lambda u: u.get('hidden', False),
                'Unit_PlayersNearby': lambda *args: self.nearby,
-               'UnitHasItemOfTypeBJ': lambda u, kind: item_of(u, kind) is not None,
-               'GetItemOfTypeFromUnitBJ': item_of, 'GetItemCharges': lambda i: i['charges'],
+               # TBackpack's lookups: a hero's items, wherever it carries them.
+               'Gear_HasCarried': lambda u, kind: item_of(u, kind) is not None,
+               'Gear_Carried': item_of, 'GetItemCharges': lambda i: i['charges'],
                'SetItemCharges': set_charges, 'RemoveItem': remove_item,
                'IMinBJ': min, 'IMaxBJ': max, 'I2S': str,
                'CreateQuestItemBJ': lambda log, text: {'item_text': text},

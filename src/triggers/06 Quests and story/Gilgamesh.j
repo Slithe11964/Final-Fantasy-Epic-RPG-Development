@@ -1,4 +1,4 @@
-library TGilgamesh requires TCam, TCine, TLoc, TMusic, TPlayerHero, TText, TWait
+library TGilgamesh requires TCam, TCine, TLoc, TMusic, TPlayerHero, TText, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Gilgamesh_Gift=null
@@ -15,7 +15,7 @@ function Trig_Gilgamesh_Gift_Conditions takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Gift_HasRyuujin takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0C7'))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[udg_TempInteger],'I0C7')) // 'I0C7': item "Ryuujin no Ken"
+    return(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0C7'))or(Gear_HasCarried(udg_SpiritOfGaya[udg_TempInteger],'I0C7')) // 'I0C7': item "Ryuujin no Ken"
 endfunction
 
 function Trig_Gilgamesh_Gift_OwnsRyuujin takes nothing returns boolean
@@ -27,7 +27,7 @@ function Trig_Gilgamesh_Gift_IsGiftStage1 takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Gift_HasGenjiShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0BU'))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[udg_TempInteger],'I0BU')) // 'I0BU': item "Genji Shield"
+    return(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0BU'))or(Gear_HasCarried(udg_SpiritOfGaya[udg_TempInteger],'I0BU')) // 'I0BU': item "Genji Shield"
 endfunction
 
 function Trig_Gilgamesh_Gift_OwnsGenjiShield takes nothing returns boolean
@@ -39,7 +39,7 @@ function Trig_Gilgamesh_Gift_IsGiftStage2 takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Gift_HasGenjiMask takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0AA'))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[udg_TempInteger],'I0AA')) // 'I0AA': item "Genji Mask"
+    return(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0AA'))or(Gear_HasCarried(udg_SpiritOfGaya[udg_TempInteger],'I0AA')) // 'I0AA': item "Genji Mask"
 endfunction
 
 function Trig_Gilgamesh_Gift_OwnsGenjiMask takes nothing returns boolean
@@ -51,11 +51,11 @@ function Trig_Gilgamesh_Gift_IsGiftStage3 takes nothing returns boolean
 endfunction
 
 function Trig_Gilgamesh_Gift_NeedsGenjiGloves takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0BU'))and(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0AA'))and(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I01Y'))and(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0B0')==false) // 'I0BU': item "Genji Shield"; 'I0AA': item "Genji Mask"; 'I01Y': item "Genji Armor"; 'I0B0': item "Genji Gloves"
+    return(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0BU'))and(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0AA'))and(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I01Y'))and(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I0B0')==false) // 'I0BU': item "Genji Shield"; 'I0AA': item "Genji Mask"; 'I01Y': item "Genji Armor"; 'I0B0': item "Genji Gloves"
 endfunction
 
 function Trig_Gilgamesh_Gift_HasGenjiArmor takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I01Y'))or(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[udg_TempInteger],'I01Y')) // 'I01Y': item "Genji Armor"
+    return(Gear_HasCarried(Player_GetHero(ConvertedPlayer(udg_TempInteger)),'I01Y'))or(Gear_HasCarried(udg_SpiritOfGaya[udg_TempInteger],'I01Y')) // 'I01Y': item "Genji Armor"
 endfunction
 
 function Trig_Gilgamesh_Gift_OwnsGenjiArmor takes nothing returns boolean
@@ -222,7 +222,7 @@ function Trig_Gilgamesh_Phase2_Actions takes nothing returns nothing
         call Wait_Polled(1.)
         call PauseUnitBJ(false,gg_unit_N03D_0165)
     endif
-    call RemoveItem(GetItemOfTypeFromUnitBJ(gg_unit_N03D_0165,'I0A3')) // 'I0A3': item "Excalipoor"
+    call RemoveItem(Gear_Carried(gg_unit_N03D_0165,'I0A3')) // 'I0A3': item "Excalipoor"
     call UnitAddItemByIdSwapped('I011',gg_unit_N03D_0165) // 'I011': item "Excalibur"
     call SetHeroLevelBJ(gg_unit_N03D_0165,60,false)
     call SetUnitInvulnerable(gg_unit_N03D_0165,false)

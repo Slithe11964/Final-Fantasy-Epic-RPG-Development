@@ -1,15 +1,15 @@
-library TRevive requires TForce
+library TRevive requires TForce, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Revive_Item_Cleanup=null
 endglobals
 
 function Trig_Revive_Item_Cleanup_ShieldReqUnmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetEnumUnit(),'I065'))and(BlzGetUnitMaxHP(GetEnumUnit())<$2710) // 'I065': item "Ensanguined Shield"; $2710 = 10000
+    return(Gear_Wears(GetEnumUnit(),'I065'))and(BlzGetUnitMaxHP(GetEnumUnit())<$2710) // 'I065': item "Ensanguined Shield"; $2710 = 10000
 endfunction
 
 function Trig_Revive_Item_Cleanup_SkullReqUnmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetEnumUnit(),'I0GD'))and(BlzGetUnitMaxHP(GetEnumUnit())<$3E8) // 'I0GD': item "Death Skull X"; $3E8 = 1000
+    return(Gear_Wears(GetEnumUnit(),'I0GD'))and(BlzGetUnitMaxHP(GetEnumUnit())<$3E8) // 'I0GD': item "Death Skull X"; $3E8 = 1000
 endfunction
 
 function Trig_Revive_Item_Cleanup_MaxHPOutOfRange takes nothing returns boolean
@@ -17,11 +17,11 @@ function Trig_Revive_Item_Cleanup_MaxHPOutOfRange takes nothing returns boolean
 endfunction
 
 function Trig_Revive_Item_Cleanup_HasNecklace takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetEnumUnit(),'I04L')) // 'I04L': item "Necklace of the Necromancer"
+    return(Gear_Wears(GetEnumUnit(),'I04L')) // 'I04L': item "Necklace of the Necromancer"
 endfunction
 
 function Trig_Revive_Item_Cleanup_HasJackboots takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetEnumUnit(),'I0FD')) // 'I0FD': item "Jackboots"
+    return(Gear_Wears(GetEnumUnit(),'I0FD')) // 'I0FD': item "Jackboots"
 endfunction
 
 function Trig_Revive_Item_Cleanup_MaxHPInvalid takes nothing returns boolean
@@ -30,13 +30,13 @@ endfunction
 
 function Trig_Revive_Item_Cleanup_DropIllegalItems takes nothing returns nothing
     if(Trig_Revive_Item_Cleanup_ShieldReqUnmet())then
-        call UnitRemoveItemSwapped(GetItemOfTypeFromUnitBJ(GetEnumUnit(),'I065'),GetEnumUnit()) // 'I065': item "Ensanguined Shield"
+        call Gear_DropFrom(Gear_WornOfType(GetEnumUnit(),'I065'),GetEnumUnit()) // 'I065': item "Ensanguined Shield"
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetEnumUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"The Ensanguined Shield has been dropped from your inventory.")
         call DestroyForce(udg_TempForce)
     endif
     if(Trig_Revive_Item_Cleanup_SkullReqUnmet())then
-        call UnitRemoveItemSwapped(GetItemOfTypeFromUnitBJ(GetEnumUnit(),'I0GD'),GetEnumUnit()) // 'I0GD': item "Death Skull X"
+        call Gear_DropFrom(Gear_WornOfType(GetEnumUnit(),'I0GD'),GetEnumUnit()) // 'I0GD': item "Death Skull X"
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetEnumUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,"The Death Skull X has been dropped from your inventory.")
         call DestroyForce(udg_TempForce)
@@ -44,11 +44,11 @@ function Trig_Revive_Item_Cleanup_DropIllegalItems takes nothing returns nothing
     if(Trig_Revive_Item_Cleanup_MaxHPInvalid())then
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetEnumUnit()))
         if(Trig_Revive_Item_Cleanup_HasNecklace())then
-            call UnitRemoveItemSwapped(GetItemOfTypeFromUnitBJ(GetEnumUnit(),'I04L'),GetEnumUnit()) // 'I04L': item "Necklace of the Necromancer"
+            call Gear_DropFrom(Gear_WornOfType(GetEnumUnit(),'I04L'),GetEnumUnit()) // 'I04L': item "Necklace of the Necromancer"
             call DisplayTimedTextToForce(udg_TempForce,10.,"The Necklace of the Necromancer has been dropped from your inventory.")
         endif
         if(Trig_Revive_Item_Cleanup_HasJackboots())then
-            call UnitRemoveItemSwapped(GetItemOfTypeFromUnitBJ(GetEnumUnit(),'I0FD'),GetEnumUnit()) // 'I0FD': item "Jackboots"
+            call Gear_DropFrom(Gear_WornOfType(GetEnumUnit(),'I0FD'),GetEnumUnit()) // 'I0FD': item "Jackboots"
             call DisplayTimedTextToForce(udg_TempForce,10.,"The Jackboots have been dropped from your inventory.")
         endif
         call DestroyForce(udg_TempForce)

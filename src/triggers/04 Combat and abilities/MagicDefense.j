@@ -1,4 +1,4 @@
-library TMagicDefense
+library TMagicDefense requires TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_MagicDefense_Calc=null
@@ -13,159 +13,159 @@ function Trig_MagicDefense_Calc_Has_StaffUpgrade takes nothing returns boolean
 endfunction
 
 function Trig_MagicDefense_Calc_Has_Nirvana takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I08N')) // 'I08N': item "Nirvana"
+    return(Gear_Wears(udg_CurrentHero,'I08N')) // 'I08N': item "Nirvana"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_GravityStaff takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0BM')) // 'I0BM': item "Gravity Staff"
+    return(Gear_Wears(udg_CurrentHero,'I0BM')) // 'I0BM': item "Gravity Staff"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_LifeStaff takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0CS')) // 'I0CS': item "Life Staff"
+    return(Gear_Wears(udg_CurrentHero,'I0CS')) // 'I0CS': item "Life Staff"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_SiphoningStaff takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0KW')) // 'I0KW': item "Siphoning Staff"
+    return(Gear_Wears(udg_CurrentHero,'I0KW')) // 'I0KW': item "Siphoning Staff"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_DarkStaff takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0JW')) // 'I0JW': item "Dark Staff"
+    return(Gear_Wears(udg_CurrentHero,'I0JW')) // 'I0JW': item "Dark Staff"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_StaffOfLight takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0HW')) // 'I0HW': item "Staff of Light"
+    return(Gear_Wears(udg_CurrentHero,'I0HW')) // 'I0HW': item "Staff of Light"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_MagusRod takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0E6')) // 'I0E6': item "Magus Rod A"
+    return(Gear_Wears(udg_CurrentHero,'I0E6')) // 'I0E6': item "Magus Rod A"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_InvertShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0FK')) // 'I0FK': item "Invert Shield"
+    return(Gear_Wears(udg_CurrentHero,'I0FK')) // 'I0FK': item "Invert Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_PaladinShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0H0')) // 'I0H0': item "Paladin Shield"
+    return(Gear_Wears(udg_CurrentHero,'I0H0')) // 'I0H0': item "Paladin Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_Absorber takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I018')) // 'I018': item "Absorber"
+    return(Gear_Wears(udg_CurrentHero,'I018')) // 'I018': item "Absorber"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_FrostShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I03A')) // 'I03A': item "Frost Shield"
+    return(Gear_Wears(udg_CurrentHero,'I03A')) // 'I03A': item "Frost Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_EnchantedShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I017')) // 'I017': item "Enchanted Shield"
+    return(Gear_Wears(udg_CurrentHero,'I017')) // 'I017': item "Enchanted Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_ShimmeringShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0LN')) // 'I0LN': item "Shimmering Shield"
+    return(Gear_Wears(udg_CurrentHero,'I0LN')) // 'I0LN': item "Shimmering Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_ReflectShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I04J')) // 'I04J': item "Reflect Shield"
+    return(Gear_Wears(udg_CurrentHero,'I04J')) // 'I04J': item "Reflect Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_UnholyShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I02T')) // 'I02T': item "Unholy Shield"
+    return(Gear_Wears(udg_CurrentHero,'I02T')) // 'I02T': item "Unholy Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_AegisShield takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I015')) // 'I015': item "Aegis Shield"
+    return(Gear_Wears(udg_CurrentHero,'I015')) // 'I015': item "Aegis Shield"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_HelmOfDivineJudgement takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0D4')) // 'I0D4': item "Helm of Divine Judgement"
+    return(Gear_Wears(udg_CurrentHero,'I0D4')) // 'I0D4': item "Helm of Divine Judgement"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_ZodiacHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I06A')) // 'I06A': item "Zodiac Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I06A')) // 'I06A': item "Zodiac Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_GenjiMask takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0AA')) // 'I0AA': item "Genji Mask"
+    return(Gear_Wears(udg_CurrentHero,'I0AA')) // 'I0AA': item "Genji Mask"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_SerpentHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0FB')) // 'I0FB': item "Serpent Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I0FB')) // 'I0FB': item "Serpent Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_GrandHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I01L')) // 'I01L': item "Grand Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I01L')) // 'I01L': item "Grand Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_BarbarianHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I02Z')) // 'I02Z': item "Barbarian's Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I02Z')) // 'I02Z': item "Barbarian's Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_ShimmeringHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0LO')) // 'I0LO': item "Shimmering Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I0LO')) // 'I0LO': item "Shimmering Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_PlatinumHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I01K')) // 'I01K': item "Platinum Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I01K')) // 'I01K': item "Platinum Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_MithrilHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I01I')) // 'I01I': item "Mithril Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I01I')) // 'I01I': item "Mithril Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_IronHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I01H')) // 'I01H': item "Iron Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I01H')) // 'I01H': item "Iron Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_Circlet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I069')) // 'I069': item "Circlet"
+    return(Gear_Wears(udg_CurrentHero,'I069')) // 'I069': item "Circlet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_DiamondHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I01J')) // 'I01J': item "Diamond Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I01J')) // 'I01J': item "Diamond Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_HelmOfTheNecromancer takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I02U')) // 'I02U': item "Helm of the Necromancer"
+    return(Gear_Wears(udg_CurrentHero,'I02U')) // 'I02U': item "Helm of the Necromancer"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_IceHat takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0L1')) // 'I0L1': item "Ice Hat"
+    return(Gear_Wears(udg_CurrentHero,'I0L1')) // 'I0L1': item "Ice Hat"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_GreenHat takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0L2')) // 'I0L2': item "Green Hat"
+    return(Gear_Wears(udg_CurrentHero,'I0L2')) // 'I0L2': item "Green Hat"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_GlimmeringHat takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0L4')) // 'I0L4': item "Glimmering Hat"
+    return(Gear_Wears(udg_CurrentHero,'I0L4')) // 'I0L4': item "Glimmering Hat"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_EarthHat takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0L3')) // 'I0L3': item "Earth Hat"
+    return(Gear_Wears(udg_CurrentHero,'I0L3')) // 'I0L3': item "Earth Hat"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_EnchantedHelmet takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I0FC')) // 'I0FC': item "Enchanted Helmet"
+    return(Gear_Wears(udg_CurrentHero,'I0FC')) // 'I0FC': item "Enchanted Helmet"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_HelmOfTheMagi takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I026')) // 'I026': item "Helm of the Magi"
+    return(Gear_Wears(udg_CurrentHero,'I026')) // 'I026': item "Helm of the Magi"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_HeadgearOfTheDamned takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I02R')) // 'I02R': item "Headgear of the Damned"
+    return(Gear_Wears(udg_CurrentHero,'I02R')) // 'I02R': item "Headgear of the Damned"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_IronDuke takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I08F')) // 'I08F': item "Iron Duke"
+    return(Gear_Wears(udg_CurrentHero,'I08F')) // 'I08F': item "Iron Duke"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_Griever takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I00H')) // 'I00H': item "Griever"
+    return(Gear_Wears(udg_CurrentHero,'I00H')) // 'I00H': item "Griever"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_TouphRing takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(udg_CurrentHero,'I00B')) // 'I00B': item "Touph Ring"
+    return(Gear_Wears(udg_CurrentHero,'I00B')) // 'I00B': item "Touph Ring"
 endfunction
 
 function Trig_MagicDefense_Calc_Has_RakugayaAura takes nothing returns boolean

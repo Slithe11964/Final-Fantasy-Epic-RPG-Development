@@ -28,6 +28,8 @@ globals
     // otherwise hand out for free: Reforged gives nine equipment slots, so page 2 keeps three.
     constant integer BACKPACK_LOCKED='tBlk'
     constant integer BACKPACK_RING_SLOTS=3
+    // How many worn-gear slots Gear_WornInSlot counts through: both equipment pages.
+    constant integer GEAR_WORN_SLOTS=12
     // How far from the hero -grab looks for an item lying on the ground.
     constant real BACKPACK_GRAB_RANGE=300.
     // Indexed (player id)*8+page, page counted from 0.
@@ -743,6 +745,143 @@ function Gear_HasItem takes unit hero,integer itemType returns boolean
     set holder=null
     return false
 endfunction
+
+// Item checks used across the map. A player's hero carries its six quick slots and the whole
+// backpack, but wears only what is on the two equipment pages: quick slots and the bag give no
+// bonus. Any other unit (the Spirit of Gaya, a boss, a holder) carries and wears its own slots.
+function Gear_IsPlayerHero takes unit u returns boolean
+    local player p
+    if u==null then
+        return false
+    endif
+    set p=GetOwningPlayer(u)
+    if GetPlayerId(p)>=bj_MAX_PLAYERS then
+        set p=null
+        return false
+    endif
+    if Player_GetHero(p)!=u then
+        set p=null
+        return false
+    endif
+    set p=null
+    return true
+endfunction
+
+function Gear_FindOnPages takes integer pid,integer firstPage,integer lastPage,integer itemType returns item
+    local integer page=firstPage
+    local integer slot
+    local unit holder
+    local item found
+    loop
+        exitwhen page>=lastPage
+        set holder=BackpackHolder[pid*8+page]
+        if holder!=null then
+            set slot=0
+            loop
+                exitwhen slot>=BACKPACK_SLOTS
+                set found=UnitItemInSlot(holder,slot)
+                if found!=null and GetItemTypeId(found)==itemType then
+                    set holder=null
+                    return found
+                endif
+                set slot=slot+1
+            endloop
+        endif
+        set page=page+1
+    endloop
+    set holder=null
+    return null
+endfunction
+
+// An item of a type that a unit has with it, for quests, keys and hand-ins. Use in place of
+// GetItemOfTypeFromUnitBJ; null when there is none.
+function Gear_Carried takes unit u,integer itemType returns item
+    local item found=GetItemOfTypeFromUnitBJ(u,itemType)
+    if found==null and Gear_IsPlayerHero(u) then
+        set found=Gear_FindOnPages(GetPlayerId(GetOwningPlayer(u)),0,BACKPACK_PAGES,itemType)
+    endif
+    return found
+endfunction
+
+// Use in place of UnitHasItemOfTypeBJ when having the item is what counts.
+function Gear_HasCarried takes unit u,integer itemType returns boolean
+    return Gear_Carried(u,itemType)!=null
+endfunction
+
+// The worn piece of an item type, for effects that come from wearing it.
+function Gear_WornOfType takes unit u,integer itemType returns item
+    if Gear_IsPlayerHero(u) then
+        return Gear_FindOnPages(GetPlayerId(GetOwningPlayer(u)),0,BACKPACK_EQUIPMENT_PAGES,itemType)
+    endif
+    return GetItemOfTypeFromUnitBJ(u,itemType)
+endfunction
+
+// The item in one worn-gear slot, for loops that used to run over the hero's six slots to find
+// its weapon, armour or offhand. A player's hero counts slots 0-11 over the two equipment pages;
+// any other unit counts its own six. Loop to GEAR_WORN_SLOTS instead of bj_MAX_INVENTORY.
+function Gear_WornInSlot takes unit u,integer index returns item
+    local unit holder
+    local item found
+    if Gear_IsPlayerHero(u) then
+        if index<0 or index>=BACKPACK_EQUIPMENT_PAGES*BACKPACK_SLOTS then
+            return null
+        endif
+        set holder=BackpackHolder[GetPlayerId(GetOwningPlayer(u))*8+index/BACKPACK_SLOTS]
+        if holder==null then
+            return null
+        endif
+        set found=UnitItemInSlot(holder,ModuloInteger(index,BACKPACK_SLOTS))
+        set holder=null
+        if found!=null and GetItemTypeId(found)==BACKPACK_LOCKED then
+            return null
+        endif
+        return found
+    endif
+    if index<0 or index>=bj_MAX_INVENTORY then
+        return null
+    endif
+    return UnitItemInSlot(u,index)
+endfunction
+
+// Use in place of UnitHasItemOfTypeBJ when wearing the item is what counts.
+function Gear_Wears takes unit u,integer itemType returns boolean
+    return Gear_WornOfType(u,itemType)!=null
+endfunction
+
+// Takes an item from whoever holds it for this unit, its own slots or a backpack page, and leaves
+// it at the unit's feet. Use in place of UnitRemoveItemSwapped; GetLastRemovedItem still works.
+function Gear_DropFrom takes item it,unit u returns nothing
+    local integer pid
+    local integer page=0
+    local unit holder
+    set bj_lastRemovedItem=it
+    if it==null or u==null then
+        return
+    endif
+    if UnitHasItem(u,it) then
+        call UnitRemoveItem(u,it)
+        return
+    endif
+    set pid=GetPlayerId(GetOwningPlayer(u))
+    if pid>=bj_MAX_PLAYERS then
+        return
+    endif
+    loop
+        exitwhen page>=BACKPACK_PAGES
+        set holder=BackpackHolder[pid*8+page]
+        if holder!=null and UnitHasItem(holder,it) then
+            call UnitRemoveItem(holder,it)
+            call SetItemPosition(it,GetUnitX(u),GetUnitY(u))
+            // The page lost a piece it may have been wearing: take its bonus off the hero.
+            call Backpack_ApplyBonuses(pid)
+            set holder=null
+            return
+        endif
+        set page=page+1
+    endloop
+    set holder=null
+endfunction
+
 
 // Lists what is worn and how many bonuses that comes to, so a test can be read off screen.
 function Backpack_GearReport takes player p returns nothing

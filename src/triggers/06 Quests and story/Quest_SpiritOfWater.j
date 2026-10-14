@@ -1,4 +1,4 @@
-library TQuestSpiritOfWater requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestSpiritOfWater requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TBackpack
 // Side quest "Spirit of Water", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Priscilla the Summoner needs a Water Gem, then Tiara of the Deep from Vodyan the Sea Giant, to summon a
 // mighty Eidolon. All steps are custom and stay in this module's triggers (Priscilla says more to a
@@ -75,11 +75,11 @@ function Trig_Quest_SpiritOfWater_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_SpiritOfWater_WaterGem_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0FT'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FT': item "Water Gem"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0FT'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FT': item "Water Gem"
 endfunction
 
 function Trig_Quest_SpiritOfWater_WaterGem_Cond_ExtraCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT'))>=2) // 'I0FT': item "Water Gem"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FT'))>=2) // 'I0FT': item "Water Gem"
 endfunction
 
 function Trig_Quest_SpiritOfWater_WaterGem_Cond_CinematicsEnabled takes nothing returns boolean
@@ -90,9 +90,9 @@ endfunction
 function Trig_Quest_SpiritOfWater_WaterGem_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_SpiritOfWater_WaterGem_Cond_ExtraCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT'))-1)) // 'I0FT': item "Water Gem"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FT'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FT'))-1)) // 'I0FT': item "Water Gem"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FT')) // 'I0FT': item "Water Gem"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0FT')) // 'I0FT': item "Water Gem"
     endif
     if(Trig_Quest_SpiritOfWater_WaterGem_Cond_CinematicsEnabled())then
         call DestroyEffectBJ(udg_SpecialEffect[47])
@@ -115,7 +115,7 @@ function Trig_Quest_SpiritOfWater_WaterGem_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_SpiritOfWater_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I038'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I038': item "Tiara of the Deep"
+    return((Gear_HasCarried(GetTriggerUnit(),'I038'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I038': item "Tiara of the Deep"
 endfunction
 
 function Trig_Quest_SpiritOfWater_Complete_Cond_CinematicsEnabled takes nothing returns boolean
@@ -130,7 +130,7 @@ endfunction
 function Trig_Quest_SpiritOfWater_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Tiara_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I038')) // 'I038': item "Tiara of the Deep"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I038')) // 'I038': item "Tiara of the Deep"
     call DestroyEffectBJ(udg_SpecialEffect[47])
     if(Trig_Quest_SpiritOfWater_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()

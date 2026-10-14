@@ -1,4 +1,4 @@
-library TQuestFireGolem requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TWait
+library TQuestFireGolem requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TWait, TBackpack
 // Side quest "Fire Golem's Heart", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Alma wants the heart of the Fire Golem in the mountains north-west of Kalm to hatch the Phoenix Egg.
 // Steps: talk to Alma (data), kill the Fire Golem (data), bring the heart to Alma (this module's
@@ -127,7 +127,7 @@ function Trig_Quest_FireGolem_HeartTaken_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_FireGolem_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'jpnt'))and(IsUnitHiddenBJ(gg_unit_Hjai_0093)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'jpnt': item "Fire Golem's Heart"
+    return((Gear_HasCarried(GetTriggerUnit(),'jpnt'))and(IsUnitHiddenBJ(gg_unit_Hjai_0093)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'jpnt': item "Fire Golem's Heart"
 endfunction
 
 function Trig_Quest_FireGolem_Complete_Cond_TowerOwned_Text takes nothing returns boolean
@@ -153,7 +153,7 @@ endfunction
 function Trig_Quest_FireGolem_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Quest_FireGolem_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'jpnt')) // 'jpnt': item "Fire Golem's Heart"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'jpnt')) // 'jpnt': item "Fire Golem's Heart"
     if(Trig_Quest_FireGolem_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()
         call ForForce(udg_PlayingPlayers,function Trig_Quest_FireGolem_Complete_Enum_ApplyCamera)

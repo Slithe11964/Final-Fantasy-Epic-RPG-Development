@@ -1,4 +1,4 @@
-library TBernkastel requires TCam, TCine, TMusic, TPlayerHero, TText, TUnit
+library TBernkastel requires TCam, TCine, TMusic, TPlayerHero, TText, TUnit, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Bernkastel_State_Reset=null
@@ -161,11 +161,11 @@ function Trig_Bernkastel_Hint_Talk_Cond_HasResets takes nothing returns boolean
 endfunction
 
 function Trig_Bernkastel_Hint_Talk_Cond_InfernoHintReady takes nothing returns boolean
-    return(IsPlayerInForce(GetTriggerPlayer(),udg_TitleForce[29]))and(IsPlayerInForce(GetTriggerPlayer(),udg_SaveFlagForce[351])==false)and(UnitHasItemOfTypeBJ(Player_GetHero(GetTriggerPlayer()),'I0GF')==false)and(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetTriggerPlayer())],'I0GF')==false) // 'I0GF': item "Yatagarasu"
+    return(IsPlayerInForce(GetTriggerPlayer(),udg_TitleForce[29]))and(IsPlayerInForce(GetTriggerPlayer(),udg_SaveFlagForce[351])==false)and(Gear_HasCarried(Player_GetHero(GetTriggerPlayer()),'I0GF')==false)and(Gear_HasCarried(udg_SpiritOfGaya[GetConvertedPlayerId(GetTriggerPlayer())],'I0GF')==false) // 'I0GF': item "Yatagarasu"
 endfunction
 
 function Trig_Bernkastel_Hint_Talk_Cond_CursedBladeHintReady takes nothing returns boolean
-    return(IsPlayerInForce(GetTriggerPlayer(),udg_SaveFlagForce[345])==false)and(UnitHasItemOfTypeBJ(Player_GetHero(GetTriggerPlayer()),'I03O')==false)and(UnitHasItemOfTypeBJ(udg_SpiritOfGaya[GetConvertedPlayerId(GetTriggerPlayer())],'I03O')==false) // 'I03O': item "Wyrmhero Blade"
+    return(IsPlayerInForce(GetTriggerPlayer(),udg_SaveFlagForce[345])==false)and(Gear_HasCarried(Player_GetHero(GetTriggerPlayer()),'I03O')==false)and(Gear_HasCarried(udg_SpiritOfGaya[GetConvertedPlayerId(GetTriggerPlayer())],'I03O')==false) // 'I03O': item "Wyrmhero Blade"
 endfunction
 
 function Trig_Bernkastel_Hint_Talk_Cond_JudgeHintReady takes nothing returns boolean

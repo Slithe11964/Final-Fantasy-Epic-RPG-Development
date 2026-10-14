@@ -1,4 +1,4 @@
-library TUnit requires TFilter, TGroup
+library TUnit requires TFilter, TGroup, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Unit_ApplyUpgradeBonuses=null
@@ -8,13 +8,13 @@ function Unit_HasNoEquipment takes unit u returns boolean
     local integer i=0
     local item l_slotItem
     loop
-        set l_slotItem=UnitItemInSlot(u,i)
+        set l_slotItem=Gear_WornInSlot(u,i)
         if(l_slotItem!=null and(GetItemType(l_slotItem)==ITEM_TYPE_PERMANENT or GetItemType(l_slotItem)==ITEM_TYPE_POWERUP)and GetItemLevel(l_slotItem)>0)then
             set l_slotItem=null
             return false
         endif
         set i=i+1
-        exitwhen i>=bj_MAX_INVENTORY
+        exitwhen i>=GEAR_WORN_SLOTS
     endloop
     set l_slotItem=null
     return true

@@ -1,11 +1,11 @@
-library TLionHeart
+library TLionHeart requires TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_LionHeart_LowLifeBonus=null
 endglobals
 
 function Trig_LionHeart_LowLifeBonus_Conditions takes nothing returns boolean
-    return((IsUnitIllusionBJ(GetAttacker())==false)and(IsUnitType(GetAttacker(),UNIT_TYPE_HERO))and(UnitHasItemOfTypeBJ(GetAttacker(),'I066'))and(GetUnitStateSwap(UNIT_STATE_MANA,GetAttacker())>=.0)and(GetUnitLifePercent(GetAttacker())<=30.))!=null // 'I066': item "Lion Heart"
+    return((IsUnitIllusionBJ(GetAttacker())==false)and(IsUnitType(GetAttacker(),UNIT_TYPE_HERO))and(Gear_Wears(GetAttacker(),'I066'))and(GetUnitStateSwap(UNIT_STATE_MANA,GetAttacker())>=.0)and(GetUnitLifePercent(GetAttacker())<=30.))!=null // 'I066': item "Lion Heart"
 endfunction
 
 function Trig_LionHeart_LowLifeBonus_Actions takes nothing returns nothing

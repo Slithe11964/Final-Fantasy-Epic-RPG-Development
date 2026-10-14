@@ -1,4 +1,4 @@
-library TMithrilGolem requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TMithrilGolem requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Side quest "Mithril Golem's Heart", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Alma needs the heart of the last Mithril Golem to animate the golem she built. Five minutes after Fire
 // Golem's Heart, Prepare calls for the party. Start (talk to Alma) calls Quest_Start; a Strange Key drops
@@ -140,7 +140,7 @@ function Trig_MithrilGolem_Death_Actions takes nothing returns nothing
 endfunction
 
 function Trig_MithrilGolem_Activate_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I022'))and(IsUnitHiddenBJ(gg_unit_Hjai_0093)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I022': item "Mithril Golem's Heart"
+    return((Gear_HasCarried(GetTriggerUnit(),'I022'))and(IsUnitHiddenBJ(gg_unit_Hjai_0093)==false)and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I022': item "Mithril Golem's Heart"
 endfunction
 
 function Trig_MithrilGolem_Activate_ApplyRitualCam takes nothing returns nothing
@@ -162,7 +162,7 @@ endfunction
 function Trig_MithrilGolem_Activate_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_GolemHeart_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I022')) // 'I022': item "Mithril Golem's Heart"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I022')) // 'I022': item "Mithril Golem's Heart"
     call DestroyEffectBJ(udg_SpecialEffect[24])
     if(Trig_MithrilGolem_Activate_Cond_ShowActivation())then
         call Cine_Enter()

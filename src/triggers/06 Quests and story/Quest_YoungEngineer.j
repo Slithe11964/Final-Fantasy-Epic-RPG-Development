@@ -1,4 +1,4 @@
-library TQuestYoungEngineer requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TWait
+library TQuestYoungEngineer requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TWait, TBackpack
 // Side quest "Young Engineer", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Mid asks the party to test his prototype crossbow (module Quest_Crossbow) and get advice from the dwarves
 // in the Barrens (module Quest_Engineer), then turns the prototype into the Auto-Crossbow. Made available by
@@ -147,7 +147,7 @@ function Trig_Quest_YoungEngineer_Complete_Conditions takes nothing returns bool
 endfunction
 
 function Trig_Quest_YoungEngineer_Complete_Cond_HasAdvice takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I042')) // 'I042': item "Engineering Advice"
+    return(Gear_HasCarried(GetTriggerUnit(),'I042')) // 'I042': item "Engineering Advice"
 endfunction
 
 function Trig_Quest_YoungEngineer_Complete_Cond_CrossbowExists takes nothing returns boolean
@@ -155,7 +155,7 @@ function Trig_Quest_YoungEngineer_Complete_Cond_CrossbowExists takes nothing ret
 endfunction
 
 function Trig_Quest_YoungEngineer_Complete_Cond_CrossbowHeldOrGone takes nothing returns boolean
-    return(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0BQ'))or(udg_QuestItem[28]==null) // 'I0BQ': item "Prototype Crossbow"
+    return(Gear_HasCarried(GetTriggerUnit(),'I0BQ'))or(udg_QuestItem[28]==null) // 'I0BQ': item "Prototype Crossbow"
 endfunction
 
 function Trig_Quest_YoungEngineer_Complete_Cond_CrossbowSettled takes nothing returns boolean
@@ -194,7 +194,7 @@ endfunction
 // both tasks are done, Mid finishes the Auto-Crossbow.
 function Trig_Quest_YoungEngineer_Complete_Actions takes nothing returns nothing
     if(Trig_Quest_YoungEngineer_Complete_Cond_HasAdvice())then
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I042')) // 'I042': item "Engineering Advice"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I042')) // 'I042': item "Engineering Advice"
         call QuestItemSetCompletedBJ(udg_QuestReq[$A],true) // $A = 10
     endif
     if(Trig_Quest_YoungEngineer_Complete_Cond_TestStepOpen())then

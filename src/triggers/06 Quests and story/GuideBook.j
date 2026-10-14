@@ -1,4 +1,4 @@
-library TGuideBook requires TQuestEngine, TCam, TCine, TPlayerHero, TText
+library TGuideBook requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_GuideBook_Search1=null
@@ -217,7 +217,7 @@ function Trig_GuideBook_Search6_Actions takes nothing returns nothing
 endfunction
 
 function Trig_GuideBook_TurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I06B'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06B': item "Guide Book"
+    return((Gear_HasCarried(GetTriggerUnit(),'I06B'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06B': item "Guide Book"
 endfunction
 
 function Trig_GuideBook_TurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -226,7 +226,7 @@ endfunction
 
 function Trig_GuideBook_TurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06B')) // 'I06B': item "Guide Book"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I06B')) // 'I06B': item "Guide Book"
     if(Trig_GuideBook_TurnIn_Cond_ShowDialogue())then
         call DestroyEffectBJ(udg_SpecialEffect[62])
         call Cine_Enter()

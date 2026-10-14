@@ -1,4 +1,4 @@
-library TQuestOreSupplies requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit
+library TQuestOreSupplies requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TBackpack
 // Side quest "Ore Supplies", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Loki, smith at the Forge in the Barrens, needs 5 Mine Minerals to keep the forge running.
 // Both steps stay in this module's own triggers, because what Loki says depends on how far the dwarves
@@ -76,11 +76,11 @@ function Trig_Quest_OreSupplies_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_OreSupplies_Deliver_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I074'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_H00P_0260)==false)and(udg_InCinematicMode==false))!=null // 'I074': item "Mine Mineral"
+    return((Gear_HasCarried(GetTriggerUnit(),'I074'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_H00P_0260)==false)and(udg_InCinematicMode==false))!=null // 'I074': item "Mine Mineral"
 endfunction
 
 function Trig_Quest_OreSupplies_Deliver_HasSpareCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))>udg_TempInteger) // 'I074': item "Mine Mineral"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I074'))>udg_TempInteger) // 'I074': item "Mine Mineral"
 endfunction
 
 function Trig_Quest_OreSupplies_Deliver_MineralsMissing takes nothing returns boolean
@@ -107,11 +107,11 @@ endfunction
 // starts reforging gear.
 function Trig_Quest_OreSupplies_Deliver_Actions takes nothing returns nothing
     local location l_tempPoint
-    set udg_TempInteger=IMinBJ(udg_OreSuppliesRemaining,GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))) // 'I074': item "Mine Mineral"
+    set udg_TempInteger=IMinBJ(udg_OreSuppliesRemaining,GetItemCharges(Gear_Carried(GetTriggerUnit(),'I074'))) // 'I074': item "Mine Mineral"
     if(Trig_Quest_OreSupplies_Deliver_HasSpareCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074'))-udg_TempInteger)) // 'I074': item "Mine Mineral"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I074'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I074'))-udg_TempInteger)) // 'I074': item "Mine Mineral"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I074')) // 'I074': item "Mine Mineral"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I074')) // 'I074': item "Mine Mineral"
     endif
     set udg_OreSuppliesRemaining=(udg_OreSuppliesRemaining-udg_TempInteger)
     // (5) minus (udg_OreSuppliesRemaining).

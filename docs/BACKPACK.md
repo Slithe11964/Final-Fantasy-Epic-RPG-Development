@@ -281,9 +281,28 @@ Check Book of Depths, chest, helmet, trinket and weapon pickups with empty gear
 slots, then pick up duplicates and verify existing gear stays equipped.
 Water wave visibility/damage and shared cooldowns are confirmed in 1.29.2.
 
+## Item checks see the backpack (stage ATH)
+
+A player's hero carries its six quick slots and all seven pages, but wears only the two equipment
+pages; quick slots and the bag give no bonus. Item checks across the map follow that:
+
+| Use | Function | Where |
+|---|---|---|
+| Having an item: quests, keys, hand-ins, Holy Ankh, monographs | `Gear_HasCarried` / `Gear_Carried` | hero slots and every page |
+| Wearing gear: magic defense, Lion Heart, cursed gear dropped on death or revive | `Gear_Wears` / `Gear_WornOfType` | equipment pages |
+| Loops over worn gear: proficiency, weapon damage, two-handed, bare-handed (Striker) | `Gear_WornInSlot(u,i)` to `GEAR_WORN_SLOTS` | equipment pages |
+| Taking worn or carried gear off | `Gear_DropFrom` | wherever it is; bonuses refresh |
+
+Any other unit (Gaya, bosses, a page holder) still uses its own six slots. The automatic potion
+drinks only from the hero's own slots, and boss scripts keep the native lookups.
+`tools/tests/test_gear_queries.py` fails if a new check skips the backpack.
+
+Check: a quest item handed in from a bag page, magic defense and proficiency from worn gear
+(and none from the same gear in the bag), two-handed with and without an offhand, and Necklace of
+the Necromancer dropping on death from page 2.
+
 ## Still to build
 
-Click to equip gear already in the hero's own slots, the level and mastery requirements on worn
-gear, and `Gear_HasItem` in place of the 115 item checks in 46 triggers, so worn gear still
-counts for quests and abilities. Since ATG the 1.29.2 map saves the backpack with the Reforged
+Click to equip gear already in the hero's own slots, and the level and mastery requirements on
+worn gear. Since ATG the 1.29.2 map saves the backpack with the Reforged
 FSVB code (SAVE_129.md); Reforged keeps its own save unchanged.

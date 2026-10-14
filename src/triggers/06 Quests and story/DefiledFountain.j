@@ -1,4 +1,4 @@
-library TDefiledFountain requires TCam, TCine, TForce, TPlayerHero, TText, TUnit
+library TDefiledFountain requires TCam, TCine, TForce, TPlayerHero, TText, TUnit, TBackpack
 // The first half of the side quest "Defiled Fountain": Feanor's talk, the Satyr's Hoof and the
 // Thunderbloom Bulb. The quest itself is defined for the quest engine in module Quest_Fountain, which
 // comes after the engine in the script, so this module reaches it through ExecuteFunc.
@@ -63,11 +63,11 @@ function Trig_DefiledFountain_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DefiledFountain_Hoof_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0DX'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0DX': item "Satyr's Hoof"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0DX'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0DX': item "Satyr's Hoof"
 endfunction
 
 function Trig_DefiledFountain_Hoof_Cond_HasSpareHoof takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX'))>=2) // 'I0DX': item "Satyr's Hoof"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0DX'))>=2) // 'I0DX': item "Satyr's Hoof"
 endfunction
 
 function Trig_DefiledFountain_Hoof_Cond_ShowHoofTalk takes nothing returns boolean
@@ -77,9 +77,9 @@ endfunction
 function Trig_DefiledFountain_Hoof_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_DefiledFountain_Hoof_Cond_HasSpareHoof())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX'))-1)) // 'I0DX': item "Satyr's Hoof"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0DX'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0DX'))-1)) // 'I0DX': item "Satyr's Hoof"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0DX')) // 'I0DX': item "Satyr's Hoof"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0DX')) // 'I0DX': item "Satyr's Hoof"
     endif
     if(Trig_DefiledFountain_Hoof_Cond_ShowHoofTalk())then
         call DestroyEffectBJ(udg_SpecialEffect[42])

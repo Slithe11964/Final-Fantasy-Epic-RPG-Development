@@ -1,4 +1,4 @@
-library TWirts requires TAbil, TForce, TProf
+library TWirts requires TAbil, TForce, TProf, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Wirts_Leg_Club=null
@@ -52,7 +52,7 @@ function Trig_Wirts_Leg_Club_Actions takes nothing returns nothing
                         call SetItemCharges(GetSpellTargetItem(),(GetItemCharges(GetSpellTargetItem())-1))
                     endif
                 endif
-                set udg_WirtsLegItem=GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FP') // 'I0FP': item "Wirt's Leg"
+                set udg_WirtsLegItem=Gear_Carried(GetTriggerUnit(),'I0FP') // 'I0FP': item "Wirt's Leg"
                 call ConditionalTriggerExecute(gg_trg_CowPortal_Open)
             else
                 call RemoveLocation(udg_TempPoint)

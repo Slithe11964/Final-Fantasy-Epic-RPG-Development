@@ -1,4 +1,4 @@
-library THauntedTree requires TQuestEngine
+library THauntedTree requires TQuestEngine, TBackpack
 // Side quest "Haunted Tree", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Oaka IV of the Icy Realm asks the party to exorcise the ghost haunting the Holy Tree; a hero carrying the
 // Shimmering Pendant captures it. Made available by Valigarmanda, which runs gg_trg_HauntedTree_Prepare.
@@ -103,7 +103,7 @@ function Trig_HauntedTree_GhostRoam_Actions takes nothing returns nothing
 endfunction
 
 function Trig_HauntedTree_CaptureSpirit_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0I9'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0I9': item "Shimmering Pendant"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0I9'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0I9': item "Shimmering Pendant"
 endfunction
 
 // Step 2: a hero with the Shimmering Pendant reached the tree and captures the ghost in it.
@@ -111,7 +111,7 @@ function Trig_HauntedTree_CaptureSpirit_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_HauntedTree_GhostRoam)
     call DestroyTrigger(gg_trg_HauntedTree_GhostRoam)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0I9')) // 'I0I9': item "Shimmering Pendant"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0I9')) // 'I0I9': item "Shimmering Pendant"
     call UnitAddItemByIdSwapped('I08S',GetTriggerUnit()) // 'I08S': item "Spirit Pendant"
     call KillUnit(gg_unit_u017_0107)
     call AddSpecialEffectTargetUnitBJ("chest",GetTriggerUnit(),"Abilities\\Spells\\Undead\\Possession\\PossessionMissile.mdl")

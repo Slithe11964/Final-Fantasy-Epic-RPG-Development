@@ -1,4 +1,4 @@
-library TQuestKingOfSea requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText
+library TQuestKingOfSea requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TBackpack
 // Side quest "King of the Sea", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Fishing up the Nebra King (NebraKing module) starts it; kill him and show his head to Anabel. The
 // hand-in stays a module trigger (enabled by Nebra Angler; its dialogue depends on how often he fled).
@@ -70,7 +70,7 @@ function QuestKingOfSea_Escaped takes nothing returns nothing
 endfunction
 
 function Trig_Quest_KingOfSea_Reward_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0GR'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null // 'I0GR': item "Nebra King Head"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0GR'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null // 'I0GR': item "Nebra King Head"
 endfunction
 
 function Trig_Quest_KingOfSea_Reward_Cond_FledManyTimes takes nothing returns boolean
@@ -91,7 +91,7 @@ endfunction
 
 function Trig_Quest_KingOfSea_Reward_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0GR')) // 'I0GR': item "Nebra King Head"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0GR')) // 'I0GR': item "Nebra King Head"
     if(Trig_Quest_KingOfSea_Reward_Cond_ShowDialog())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_n0AV_0247,0)

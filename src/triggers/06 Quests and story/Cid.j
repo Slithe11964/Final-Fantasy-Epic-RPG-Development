@@ -1,4 +1,4 @@
-library TCid requires TQuestEngine, TBerserk, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TCid requires TQuestEngine, TBerserk, TCine, TGroup, TMusic, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Cid and Mid in Kalm, and the first three main quests, written for the quest engine (QuestEngine module,
 // docs/QUEST_ENGINE.md):
 //   "Find Mid"       (udg_MainQuest[1]) Cid asks the party to find his nephew Mid (or the party frees Mid
@@ -279,7 +279,7 @@ function Trig_Cid_Talk_MidReturned_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Cid_Berserk_Start_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'sehr'))and(IsUnitHiddenBJ(gg_unit_Hpb1_0013)==false)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null // 'sehr': item "Mysterious Artifact"
+    return((Gear_HasCarried(GetTriggerUnit(),'sehr'))and(IsUnitHiddenBJ(gg_unit_Hpb1_0013)==false)and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(udg_InCinematicMode==false))!=null // 'sehr': item "Mysterious Artifact"
 endfunction
 
 function Trig_Cid_Berserk_Start_ApplyCamera takes nothing returns nothing
@@ -308,7 +308,7 @@ function Trig_Cid_Berserk_Start_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Artifact_Ping)
     call DisableTrigger(gg_trg_Artifact_Carrier)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'sehr')) // 'sehr': item "Mysterious Artifact"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'sehr')) // 'sehr': item "Mysterious Artifact"
     call DestroyEffectBJ(udg_SpecialEffect[19])
     set udg_CidQuestStage=5
     call SetUnitFacingTimed(gg_unit_Hpb1_0013,260.,0)

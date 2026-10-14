@@ -1,4 +1,4 @@
-library TDeathSeeker requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait
+library TDeathSeeker requires TQuestEngine, TCam, TCine, TPlayerHero, TText, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_DeathSeeker_Give=null
@@ -41,11 +41,11 @@ function Trig_DeathSeeker_Give_Actions takes nothing returns nothing
 endfunction
 
 function Trig_DeathSeeker_TurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I067'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I067': item "Death Seeker"
+    return((Gear_HasCarried(GetTriggerUnit(),'I067'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I067': item "Death Seeker"
 endfunction
 
 function Trig_DeathSeeker_TurnIn_Cond_ItemHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067'))>=2) // 'I067': item "Death Seeker"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I067'))>=2) // 'I067': item "Death Seeker"
 endfunction
 
 function Trig_DeathSeeker_TurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -55,9 +55,9 @@ endfunction
 function Trig_DeathSeeker_TurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_DeathSeeker_TurnIn_Cond_ItemHasCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067'))-1)) // 'I067': item "Death Seeker"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I067'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I067'))-1)) // 'I067': item "Death Seeker"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I067')) // 'I067': item "Death Seeker"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I067')) // 'I067': item "Death Seeker"
     endif
     if(Trig_DeathSeeker_TurnIn_Cond_ShowDialogue())then
         call DestroyEffectBJ(udg_SpecialEffect[62])

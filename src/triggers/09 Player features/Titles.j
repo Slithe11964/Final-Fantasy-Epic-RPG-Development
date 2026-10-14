@@ -1,4 +1,4 @@
-library TTitles requires TJob, TPlayerHero, TTitle
+library TTitles requires TJob, TPlayerHero, TTitle, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Titles_Init=null
@@ -91,6 +91,15 @@ function Chronicles_CheckInventory takes player p returns nothing
         exitwhen i>=6
         call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(hero,i)))
         call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(spirit,i)))
+        set i=i+1
+    endloop
+    // Monographs carried in the backpack count too.
+    set i=0
+    loop
+        exitwhen i>=BACKPACK_PAGES*BACKPACK_SLOTS
+        if BackpackHolder[GetPlayerId(p)*8+i/BACKPACK_SLOTS]!=null then
+            call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(BackpackHolder[GetPlayerId(p)*8+i/BACKPACK_SLOTS],ModuloInteger(i,BACKPACK_SLOTS))))
+        endif
         set i=i+1
     endloop
     set hero=null

@@ -1,4 +1,4 @@
-library TShinrasPlan requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait
+library TShinrasPlan requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TUnit, TWait, TBackpack
 // Side quest "Shinra's Plan", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Shinra, an Al Bhed child, asks for Theurgic Water, a Unique Ice Shard and Aire Tam Enib Moc, then vanishes.
 // All steps are custom and stay in this module's triggers (hand-ins within 250 of Shinra, a line that
@@ -90,11 +90,11 @@ function Trig_ShinrasPlan_Start_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ShinrasPlan_WaterTurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I06T'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06T': item "Theurgic Water"
+    return((Gear_HasCarried(GetTriggerUnit(),'I06T'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06T': item "Theurgic Water"
 endfunction
 
 function Trig_ShinrasPlan_WaterTurnIn_Cond_ItemHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T'))>=2) // 'I06T': item "Theurgic Water"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06T'))>=2) // 'I06T': item "Theurgic Water"
 endfunction
 
 function Trig_ShinrasPlan_WaterTurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -105,9 +105,9 @@ endfunction
 function Trig_ShinrasPlan_WaterTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_WaterTurnIn_Cond_ItemHasCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T'))-1)) // 'I06T': item "Theurgic Water"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I06T'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06T'))-1)) // 'I06T': item "Theurgic Water"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06T')) // 'I06T': item "Theurgic Water"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I06T')) // 'I06T': item "Theurgic Water"
     endif
     if(Trig_ShinrasPlan_WaterTurnIn_Cond_ShowDialogue())then
         call DestroyEffectBJ(udg_SpecialEffect[62])
@@ -126,11 +126,11 @@ function Trig_ShinrasPlan_WaterTurnIn_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ShinrasPlan_ShardTurnIn_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I06X'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06X': item "Unique Ice Shard"
+    return((Gear_HasCarried(GetTriggerUnit(),'I06X'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I06X': item "Unique Ice Shard"
 endfunction
 
 function Trig_ShinrasPlan_ShardTurnIn_Cond_ItemHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X'))>=2) // 'I06X': item "Unique Ice Shard"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06X'))>=2) // 'I06X': item "Unique Ice Shard"
 endfunction
 
 function Trig_ShinrasPlan_ShardTurnIn_Cond_ShowDialogue takes nothing returns boolean
@@ -141,9 +141,9 @@ endfunction
 function Trig_ShinrasPlan_ShardTurnIn_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_ShardTurnIn_Cond_ItemHasCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X'))-1)) // 'I06X': item "Unique Ice Shard"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I06X'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I06X'))-1)) // 'I06X': item "Unique Ice Shard"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I06X')) // 'I06X': item "Unique Ice Shard"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I06X')) // 'I06X': item "Unique Ice Shard"
     endif
     if(Trig_ShinrasPlan_ShardTurnIn_Cond_ShowDialogue())then
         call DestroyEffectBJ(udg_SpecialEffect[62])
@@ -164,11 +164,11 @@ function Trig_ShinrasPlan_ShardTurnIn_Actions takes nothing returns nothing
 endfunction
 
 function Trig_ShinrasPlan_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I062'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I062': item "Aire Tam Enib Moc"
+    return((Gear_HasCarried(GetTriggerUnit(),'I062'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I062': item "Aire Tam Enib Moc"
 endfunction
 
 function Trig_ShinrasPlan_Complete_Cond_ItemHasCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062'))>=2) // 'I062': item "Aire Tam Enib Moc"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I062'))>=2) // 'I062': item "Aire Tam Enib Moc"
 endfunction
 
 function Trig_ShinrasPlan_Complete_Cond_ShowDialogue takes nothing returns boolean
@@ -179,9 +179,9 @@ endfunction
 function Trig_ShinrasPlan_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_ShinrasPlan_Complete_Cond_ItemHasCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062'))-1)) // 'I062': item "Aire Tam Enib Moc"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I062'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I062'))-1)) // 'I062': item "Aire Tam Enib Moc"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I062')) // 'I062': item "Aire Tam Enib Moc"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I062')) // 'I062': item "Aire Tam Enib Moc"
     endif
     call DestroyEffectBJ(udg_SpecialEffect[62])
     if(Trig_ShinrasPlan_Complete_Cond_ShowDialogue())then

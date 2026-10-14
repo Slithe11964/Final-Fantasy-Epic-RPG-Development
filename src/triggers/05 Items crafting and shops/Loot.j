@@ -1,4 +1,4 @@
-library TLoot requires TForce, TItemShared, TPlayerHero
+library TLoot requires TForce, TItemShared, TPlayerHero, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Loot_MonsterDrop=null
@@ -2128,7 +2128,7 @@ function Loot_HasMonographBonus takes player p,integer zone returns boolean
     if zone<0 or zone>9 then
         return false
     endif
-    return IsPlayerInForce(p,udg_TitleForce[59]) or Trig_Loot_MonsterDrop_HasItemOfType(Player_GetHero(p),udg_MonographItem[zone]) or Trig_Loot_MonsterDrop_HasItemOfType(udg_SpiritOfGaya[GetPlayerId(p)+1],udg_MonographItem[zone])
+    return IsPlayerInForce(p,udg_TitleForce[59]) or Gear_HasCarried(Player_GetHero(p),udg_MonographItem[zone]) or Trig_Loot_MonsterDrop_HasItemOfType(udg_SpiritOfGaya[GetPlayerId(p)+1],udg_MonographItem[zone])
 endfunction
 
 function Trig_Loot_MonsterDrop_Cond_MonographBonus takes nothing returns boolean

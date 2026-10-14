@@ -1,4 +1,4 @@
-library TBook requires TForce
+library TBook requires TForce, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Book_TransformGem=null
@@ -77,7 +77,7 @@ function Trig_Book_TransformGem_Actions takes nothing returns nothing
         else
             call RemoveItem(GetSpellTargetItem())
         endif
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0BN')) // 'I0BN': item "Book of Elements"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0BN')) // 'I0BN': item "Book of Elements"
         call UnitAddItemByIdSwapped(udg_TempItemId,GetTriggerUnit())
         set udg_TempItemId='tkno' // 'tkno': object name not found in map data
     endif

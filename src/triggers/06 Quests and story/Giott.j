@@ -1,4 +1,4 @@
-library TGiott requires TCam, TCine, TPlayerHero, TText, TUnit, TWait
+library TGiott requires TCam, TCine, TPlayerHero, TText, TUnit, TWait, TBackpack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Giott_FirstTalk=null
@@ -36,7 +36,7 @@ function Trig_Giott_FirstTalk_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Giott_Letter_Deliver_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0KP'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_h00R_0256)==false)and(udg_InCinematicMode==false))!=null // 'I0KP': item "Letter from Mid"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0KP'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_h00R_0256)==false)and(udg_InCinematicMode==false))!=null // 'I0KP': item "Letter from Mid"
 endfunction
 
 function Trig_Giott_Letter_Deliver_IsFirstMeeting takes nothing returns boolean
@@ -66,7 +66,7 @@ endfunction
 function Trig_Giott_Letter_Deliver_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisableTrigger(gg_trg_Mid_Letter_Ping)
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0KP')) // 'I0KP': item "Letter from Mid"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0KP')) // 'I0KP': item "Letter from Mid"
     call DestroyEffectBJ(udg_SpecialEffect[87])
     if(Trig_Giott_Letter_Deliver_PlayHandoverScene())then
         call Cine_Enter()

@@ -1,4 +1,4 @@
-library TQuestFountain requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TWait
+library TQuestFountain requires TQuestEngine, TCam, TCine, TPlayerHero, TReward, TText, TWait, TBackpack
 // Side quest "Defiled Fountain", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Feanor needs reagents to cleanse the Fountain of Restoration. All steps are cinematics in modules
 // DefiledFountain and Quest_Fountain: Feanor's talk (DefiledFountain, QuestFountain_Started), the Satyr's
@@ -47,11 +47,11 @@ function QuestFountain_BulbTaken takes nothing returns nothing
 endfunction
 
 function Trig_Quest_Fountain_Bulb_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I0FN'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FN': item "Thunderbloom Bulb"
+    return((Gear_HasCarried(GetTriggerUnit(),'I0FN'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I0FN': item "Thunderbloom Bulb"
 endfunction
 
 function Trig_Quest_Fountain_Bulb_Cond_ExtraCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN'))>=2) // 'I0FN': item "Thunderbloom Bulb"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FN'))>=2) // 'I0FN': item "Thunderbloom Bulb"
 endfunction
 
 function Trig_Quest_Fountain_Bulb_Cond_CinematicsEnabled takes nothing returns boolean
@@ -61,9 +61,9 @@ endfunction
 function Trig_Quest_Fountain_Bulb_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if(Trig_Quest_Fountain_Bulb_Cond_ExtraCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN'))-1)) // 'I0FN': item "Thunderbloom Bulb"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FN'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I0FN'))-1)) // 'I0FN': item "Thunderbloom Bulb"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I0FN')) // 'I0FN': item "Thunderbloom Bulb"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0FN')) // 'I0FN': item "Thunderbloom Bulb"
     endif
     call DisableTrigger(gg_trg_DefiledFountain_PingBulb)
     call DestroyTrigger(gg_trg_DefiledFountain_PingBulb)
@@ -103,11 +103,11 @@ function Trig_Quest_Fountain_Bulb_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_Fountain_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'I02G'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I02G': item "Scroll of Rejuvenation"
+    return((Gear_HasCarried(GetTriggerUnit(),'I02G'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(udg_InCinematicMode==false))!=null // 'I02G': item "Scroll of Rejuvenation"
 endfunction
 
 function Trig_Quest_Fountain_Complete_Cond_ExtraCharges takes nothing returns boolean
-    return(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G'))>=2) // 'I02G': item "Scroll of Rejuvenation"
+    return(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I02G'))>=2) // 'I02G': item "Scroll of Rejuvenation"
 endfunction
 
 function Trig_Quest_Fountain_Complete_Cond_CinematicsEnabled takes nothing returns boolean
@@ -118,9 +118,9 @@ function Trig_Quest_Fountain_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DestroyEffectBJ(udg_SpecialEffect[42])
     if(Trig_Quest_Fountain_Complete_Cond_ExtraCharges())then
-        call SetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G'),(GetItemCharges(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G'))-1)) // 'I02G': item "Scroll of Rejuvenation"
+        call SetItemCharges(Gear_Carried(GetTriggerUnit(),'I02G'),(GetItemCharges(Gear_Carried(GetTriggerUnit(),'I02G'))-1)) // 'I02G': item "Scroll of Rejuvenation"
     else
-        call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I02G')) // 'I02G': item "Scroll of Rejuvenation"
+        call RemoveItem(Gear_Carried(GetTriggerUnit(),'I02G')) // 'I02G': item "Scroll of Rejuvenation"
     endif
     if(Trig_Quest_Fountain_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()

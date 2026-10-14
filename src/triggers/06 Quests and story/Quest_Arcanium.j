@@ -1,4 +1,4 @@
-library TQuestArcanium requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText
+library TQuestArcanium requires TQuestEngine, TCam, TCine, TForce, TPlayerHero, TReward, TText, TBackpack
 // Side quest "Arcanium", written for the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // Bali, smith at the Forge in the Barrens, asks the party to sneak into the collapsed northern mine for a
 // nugget of Arcanium so he can forge Ziegfried's gear. Made available by Forge (QuestArcanium_Available).
@@ -73,7 +73,7 @@ function Trig_Quest_Arcanium_Taken_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Quest_Arcanium_Complete_Conditions takes nothing returns boolean
-    return((UnitHasItemOfTypeBJ(GetTriggerUnit(),'mgtk'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_Hmbr_0140)==false)and(udg_InCinematicMode==false))!=null // 'mgtk': item "Arcanium"
+    return((Gear_HasCarried(GetTriggerUnit(),'mgtk'))and(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(IsUnitHiddenBJ(gg_unit_Hmbr_0140)==false)and(udg_InCinematicMode==false))!=null // 'mgtk': item "Arcanium"
 endfunction
 
 function Trig_Quest_Arcanium_Complete_Cond_CinematicsEnabled takes nothing returns boolean
@@ -88,7 +88,7 @@ endfunction
 // starts merging gems; Ziegfried leaves for the mine if the dwarves were already rescued.
 function Trig_Quest_Arcanium_Complete_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'mgtk')) // 'mgtk': item "Arcanium"
+    call RemoveItem(Gear_Carried(GetTriggerUnit(),'mgtk')) // 'mgtk': item "Arcanium"
     if(Trig_Quest_Arcanium_Complete_Cond_CinematicsEnabled())then
         call Cine_Enter()
         call Cam_PanToUnit(gg_unit_Hmbr_0140,0)
