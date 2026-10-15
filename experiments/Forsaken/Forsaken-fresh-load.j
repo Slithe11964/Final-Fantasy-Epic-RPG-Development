@@ -230,6 +230,17 @@ function FFL_Learn takes unit hero,integer raw,integer wanted returns boolean
     return GetUnitAbilityLevel(hero,raw)==wanted
 endfunction
 
+// SetHeroLevel must not be called with an already reached level: Warcraft can
+// promote a newly created level-one hero instead of keeping it at level one.
+function FFL_SetHeroLevel takes unit hero,integer level returns nothing
+    local integer current=GetHeroLevel(hero)
+    if current<level then
+        call SetHeroLevel(hero,level,false)
+    elseif current>level then
+        call UnitStripHeroLevel(hero,current-level)
+    endif
+endfunction
+
 function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer level,integer tier returns boolean
     local integer bonus=0
     local integer i=1
@@ -251,7 +262,7 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
         return false
     endif
     call SetUnitAbilityLevel(hero,'A02F',tier+1)
-    call SetHeroLevel(hero,level,false)
+    call FFL_SetHeroLevel(hero,level)
     if tier==1 then
         set bonus=20
     elseif tier==2 then
@@ -348,7 +359,7 @@ function FFL_PrepareGaya takes integer pid returns boolean
     local integer raw
     local integer rank
     local integer bits=0
-    call SetHeroLevel(gaya,FFL_Val(pid,5,2),false)
+    call FFL_SetHeroLevel(gaya,FFL_Val(pid,5,2))
     set rank=1
     if FFL_Val(pid,7,7)==1 then
         set rank=rank+1

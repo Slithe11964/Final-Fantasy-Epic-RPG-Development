@@ -380,6 +380,24 @@ class FreshLoadTests(unittest.TestCase):
         self.f.block_item_removal=False;self.assertTrue(self.e['FFL_Restore'](0));self.assertFalse(self.e['udg_HasLoadedCode'][0])
         self.assertFalse(any(parent<16 for parent,child in self.e['FFL_Before']))
 
+    def test_level_one_import_does_not_call_the_native_level_promotion(self):
+        calls=[]
+        def promote(hero,level,show):
+            calls.append(level)
+            hero['level']=2 if level==1 else level
+        self.e['SetHeroLevel']=promote
+        hero={'level':1}
+        self.e['FFL_SetHeroLevel'](hero,1)
+        self.assertEqual(hero['level'],1)
+        self.assertEqual(calls,[])
+        self.e['FFL_SetHeroLevel'](hero,50)
+        self.assertEqual(hero['level'],50)
+        self.assertEqual(calls,[50])
+        self.e['UnitStripHeroLevel']=lambda unit,amount:unit.update(level=unit['level']-amount)
+        self.e['FFL_SetHeroLevel'](hero,1)
+        self.assertEqual(hero['level'],1)
+        self.assertEqual(calls,[50])
+
     def test_committed_starters_remain_valid_but_cannot_act_or_show_hero_icons(self):
         old_hero=self.e['udg_PlayerHero'][1]
         old_gaya=self.e['udg_SpiritOfGaya'][1]

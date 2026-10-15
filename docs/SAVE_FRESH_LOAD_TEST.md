@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EE
+# Private save/restart/fresh-load test - EF
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEE.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEF.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -203,3 +203,8 @@ units so residual references remain valid; the actual engine crash fix is pendin
 this test. Earlier checkpoint files embed the earlier map and cannot test the change.
 Classic same-session reload has also exhausted memory with a fresh character, so
 use a full restart to isolate the imported-character failure.
+
+ATS / EF guard level restoration for the Tiny test: a saved level-one job or Gaya
+should remain level one. ATR failed that import with actual level two. Retry
+-loadf Tiny in ATS before making the menu checkpoint; the large-character
+checkpoint failure remains unresolved, including with ATR starter retirement.

@@ -1,7 +1,7 @@
 # The new save in the normal maps
 
 From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
-Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EE; the normal
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EF; the normal
 Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
@@ -119,7 +119,19 @@ so the classic backpack/cache alone cannot explain that failure.
 ATR / Forsaken EE retain the replaced starter hero and Gaya as paused, hidden
 Neutral Passive units instead of deleting their agents. This follows the older
 loader's practice of retaining inactive job bodies and keeps residual engine references
-resolvable. Exact imported-profile and cleanup/retry model checks pass, but a new
-Warcraft checkpoint and a full restart are required to confirm the fix. Existing
+resolvable. ATR still failed after a full restart: Warcraft first reported an unavailable or
+corrupted saved game, then crashed. Retaining starter bodies did not resolve it.
+The checkpoint container decompresses completely. The later exception is in the
+hero bar while accessing Gaya's hero component; it may be cleanup following the
+initial rejection, so it does not establish the original failure. Reforged EE
+acceptance is still pending. Existing
 crashing checkpoints are not repaired by changing the map. The classic same-session
 memory failure remains a separate issue; its executable is not large-address-aware.
+
+The Tiny control file is a short new-format save. Its ATR import failed because
+the level-one hero read back as level two, before the menu-save test could run.
+ATS / Forsaken EF avoid calling SetHeroLevel for an already reached level and uses
+UnitStripHeroLevel if a newly created unit is above the saved level. Both the
+selected job and Gaya use that helper. Retest Tiny import, then create a new menu
+checkpoint, fully restart Warcraft and load it. The large imported-character
+checkpoint failure remains unresolved.

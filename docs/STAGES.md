@@ -158,3 +158,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ForsakenED | Kept native inventory and moved recipe-ready notices to the merchant receiving sold parts. |
 | ATR | Retained replaced starter bodies as hidden, paused neutral units for the classic imported-character Warcraft checkpoint crash retest; same-session memory failure remains separate. |
 | ForsakenEE | Retained replaced starter bodies as hidden, paused neutral units for the Reforged imported-character checkpoint crash retest; native inventory and save format preserved. |
+| ATS | Guarded hero/Gaya level restoration to correct level-one Tiny import promotion; native checkpoint failure remains unresolved. |
+| ForsakenEF | Applied the same guarded level restoration while preserving native inventory and the shared save format. |
