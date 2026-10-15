@@ -6,6 +6,12 @@ globals
     // Allocate on every client before local file IO; never allocate handles locally.
     hashtable FSS_Store=InitHashtable()
     integer FSS_Next=0
+    string FSS_ScanText=""
+    integer FSS_ScanMode=0
+    integer FSS_ScanA=1
+    integer FSS_ScanB=0
+    boolean FSS_ScanValid=false
+    boolean FSS_ScanDone=false
 endglobals
 
 function FSS_Id takes string text returns integer

@@ -138,27 +138,7 @@ function FST_PlayerPath takes integer pid,integer page returns string
 endfunction
 
 function FST_TextChecksum takes string text returns integer
-    local integer a=1
-    local integer b=0
-    local integer i=0
-    local integer digit
-    loop
-        exitwhen (i >= FSS_Length(text))
-        if (FSS_Equals(FSS_SubString(text,i,(i + 1)),"(")) then
-            set digit=64
-        elseif (FSS_Equals(FSS_SubString(text,i,(i + 1)),")")) then
-            set digit=65
-        else
-            set digit=FSC_Value(FSS_SubString(text,i,(i + 1)))
-        endif
-        if (digit < 0) then
-            return (- 1)
-        endif
-        set a=ModuloInteger(((a + digit) + 1),32749)
-        set b=ModuloInteger((b + a),32749)
-        set i=(i + 1)
-    endloop
-    return ((b * 32768) + a)
+    return FSS_Scan(text,2)
 endfunction
 
 function FST_LegacyValid takes string encoded returns boolean
@@ -445,13 +425,15 @@ endfunction
 function FST_Drain takes integer pid returns nothing
     local integer waiting=FSG_Waiting(pid)
     local string packet
-    loop
-        exitwhen (FSG_Seen[pid] >= waiting)
-        set packet=FSG_Packet(pid,FSG_Seen[pid])
-        exitwhen (FSS_Equals(packet,null))
+    // One packet per player/tick bounds catch-up work when cache keys arrive together.
+    if (FSG_Seen[pid] >= waiting) then
+        return
+    endif
+    set packet=FSG_Packet(pid,FSG_Seen[pid])
+    if (not FSS_Equals(packet,null)) then
         set FSG_Seen[pid]=(FSG_Seen[pid] + 1)
         call FST_Receive(pid,packet)
-    endloop
+    endif
 endfunction
 
 function FST_Pump takes nothing returns nothing
@@ -462,12 +444,14 @@ function FST_Pump takes nothing returns nothing
     loop
         exitwhen (pid >= 8)
         if FST_Pending[pid] then
-            if (not FST_UseSyncNative) then
-                call FST_Drain(pid)
-            endif
             if ((TimerGetElapsed(FST_Clock) - FST_Start[pid]) > 45.) then
                 call FST_Fail(pid,"file transfer timed out; retry while load window is open")
-            elseif (GetLocalPlayer() == Player(pid)) then
+            else
+                if (not FST_UseSyncNative) then
+                    call FST_Drain(pid)
+                endif
+            endif
+            if (FST_Pending[pid] and (GetLocalPlayer() == Player(pid))) then
                 set request=FST_Fixed(FST_RequestId[pid],6)
                 set packet=null
                 if (FST_LocalPhase[pid] == 1) then

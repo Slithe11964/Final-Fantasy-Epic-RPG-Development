@@ -114,6 +114,40 @@ endlibrary
         self.assertTrue(env['udg_HasLoadedCode'][0], fixture.messages)
         self.assertTrue(all(len(v) <= 960 for v in env['FSS_Store'].values() if isinstance(v, str)))
 
+    def test_large_decode_has_bounded_work_in_each_execution_thread(self):
+        # This models a work ceiling, not the engine's exact bytecode counter.
+        # ATT's whole-profile scan exceeded this ceiling in the caller thread.
+        env = self.e
+        value = fragments(env, profile(large=True))
+        budgets = [0]
+        executions = []
+        def dispatch(name):
+            budgets.append(0)
+            try:
+                env[name]()
+            finally:
+                executions.append((name, budgets.pop()))
+        def trace(frame, event, argument):
+            if event == 'line' and frame.f_code.co_filename == '<string>':
+                budgets[-1] += 1
+                self.assertLess(budgets[-1], 25000, frame.f_code.co_name)
+            return trace
+        env['ExecuteFunc'] = dispatch
+        sys.settrace(trace)
+        try:
+            self.assertTrue(env['FSC_Decode'](0, value, 42, True))
+        finally:
+            sys.settrace(None)
+        self.assertGreater(len(executions), 10)
+        self.assertTrue(any(name == 'FSS_ScanChunk' for name, _ in executions))
+
+    def test_interrupted_scan_or_reader_fails_closed_and_releases_busy(self):
+        value = fragments(self.e, profile(large=True))
+        for target in ('FSS_ScanChunk', 'FSS_Call_FSC_Read_Run', 'FSS_Call_FSC_ValidateSection_Run'):
+            self.e['ExecuteFunc'] = lambda name: None if name == target else self.e[name]()
+            self.assertFalse(self.e['FSC_Decode'](0, value, 42, True), target)
+            self.assertFalse(self.e['FSC_Busy'][0], target)
+
 
 class BoundedTransportTests(transport.TransportTests):
     """Reuse native IO fixtures with transformed production modules."""

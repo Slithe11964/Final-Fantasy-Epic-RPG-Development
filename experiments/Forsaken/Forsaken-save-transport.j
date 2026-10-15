@@ -443,13 +443,15 @@ endfunction
 function FST_Drain takes integer pid returns nothing
     local integer waiting=FSG_Waiting(pid)
     local string packet
-    loop
-        exitwhen FSG_Seen[pid]>=waiting
-        set packet=FSG_Packet(pid,FSG_Seen[pid])
-        exitwhen packet==null
+    // One packet per player/tick bounds catch-up work when cache keys arrive together.
+    if FSG_Seen[pid]>=waiting then
+        return
+    endif
+    set packet=FSG_Packet(pid,FSG_Seen[pid])
+    if packet!=null then
         set FSG_Seen[pid]=FSG_Seen[pid]+1
         call FST_Receive(pid,packet)
-    endloop
+    endif
 endfunction
 
 function FST_Pump takes nothing returns nothing
@@ -460,12 +462,14 @@ function FST_Pump takes nothing returns nothing
     loop
         exitwhen pid>=8
         if FST_Pending[pid] then
-            if not FST_UseSyncNative then
-                call FST_Drain(pid)
-            endif
             if TimerGetElapsed(FST_Clock)-FST_Start[pid]>45. then
                 call FST_Fail(pid,"file transfer timed out; retry while load window is open")
-            elseif GetLocalPlayer()==Player(pid) then
+            else
+                if not FST_UseSyncNative then
+                    call FST_Drain(pid)
+                endif
+            endif
+            if FST_Pending[pid] and GetLocalPlayer()==Player(pid) then
                 set request=FST_Fixed(FST_RequestId[pid],6)
                 set packet=null
                 if FST_LocalPhase[pid]==1 then

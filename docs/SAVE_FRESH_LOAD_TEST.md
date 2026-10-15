@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EG
+# Private save/restart/fresh-load test - EI
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEG.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEI.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -226,3 +226,16 @@ file with -loadf dev and check its inventory. Make a NEW Warcraft menu saved gam
 fully exit Warcraft, restart, then load that new saved game. Earlier menu saved
 games contain the old map and cannot test this change. Also check that -savef,
 autosave and screenshot codes still round-trip between the two clients.
+
+## Import stall retest (ATU / EI)
+
+ATT stayed on Loading for over a minute when importing dev in classic. ATU / EI
+keep bounded strings but split alphabet/checksum scans into short execution steps;
+varints and sections have separate execution budgets and completion checks. A
+stopped validation times out and rolls back instead of remaining busy. EH is
+superseded by EI before tester acceptance to include final writer cleanup.
+
+First start a fresh ATU (classic) or EI (native Reforged) game and use -loadf dev.
+Confirm the import finishes and inventory matches. Then create a NEW Warcraft menu
+save, fully exit/restart Warcraft, and load it. Import and native checkpoint
+acceptance are pending. The automated work-ceiling test is not an engine emulator.

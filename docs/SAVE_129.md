@@ -1,7 +1,7 @@
 # The new save in the normal maps
 
 From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
-Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EG; the normal
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EI; the normal
 Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
@@ -174,3 +174,20 @@ Validation: run `python experiments/Forsaken/test_save_strings.py` for the bound
 runtime codec, file, screenshot, both delivery paths and full load/recapture models.
 The normal build gates also compile runtime/editor sources, check legacy save
 compatibility and enforce source/runtime agreement.
+
+## Bounded validation work after ATT
+
+The user reported -loadf dev stayed on Loading for over a minute in 1.29.2 ATT.
+The earlier model verified data but did not model Warcraft's per-thread execution
+budget. ATU / Forsaken EI scan only 128 native characters per ExecuteFunc
+child thread; individual varints and sections also have isolated execution budgets.
+Completion flags make an interrupted child fail validation instead of leaving a
+partial result accepted. Game-cache packets are already short, so their original
+native string operations are retained. Cache catch-up drains one packet per player
+per tick, and the transfer deadline is checked before decoding any waiting packet.
+
+The loader also imposes a validation deadline. An interrupted preflight clears its
+scratch state and allows another attempt. If character creation had started, it
+uses the existing verified rollback; an owned capture writer is released as well.
+The work-ceiling model is a regression check, not an emulator of Warcraft's exact
+bytecode counter. In-game import and a new native checkpoint still need acceptance.

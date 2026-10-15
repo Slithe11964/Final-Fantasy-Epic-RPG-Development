@@ -7,6 +7,21 @@ globals
     // Allocate on every client before local file IO; never allocate handles locally.
     hashtable FSS_Store=InitHashtable()
     integer FSS_Next=0
+    string FSS_ScanText=""
+    integer FSS_ScanMode=0
+    integer FSS_ScanA=1
+    integer FSS_ScanB=0
+    boolean FSS_ScanValid=false
+    boolean FSS_ScanDone=false
+    integer FSS_Call_FSC_ValidateSection_ctx
+    integer FSS_Call_FSC_ValidateSection_sid
+    integer FSS_Call_FSC_ValidateSection_schemaVersion
+    boolean FSS_Call_FSC_ValidateSection_required
+    integer FSS_Call_FSC_ValidateSection_size
+    boolean FSS_Call_FSC_ValidateSection_Done=false
+    integer FSS_Call_FSC_Read_ctx
+    boolean FSS_Call_FSC_Read_Done=false
+    integer FSS_Call_FSC_Read_Result=0
     // Bounded scratch item projection; payloads remain authoritative.
     string array FSC_Error
     integer array FSC_ItemCount
@@ -265,17 +280,64 @@ function FSC_Value takes string char returns integer
     return value
 endfunction
 
-function FSC_AlphabetValid takes string text returns boolean
+// Included after FSC_Value. Each child thread scans at most 128 native characters.
+// ExecuteFunc gives the child a fresh execution budget without allocating handles.
+function FSS_ScanChunk takes nothing returns nothing
     local integer i=0
-    local integer size=FSS_Length(text)
+    local integer digit
+    local string letter
     loop
-        exitwhen (i >= size)
-        if (FSC_Value(FSS_SubString(text,i,(i + 1))) < 0) then
-            return false
+        exitwhen i>=StringLength(FSS_ScanText)
+        set letter=SubString(FSS_ScanText,i,i+1)
+        if FSS_ScanMode==2 and letter=="(" then
+            set digit=64
+        elseif FSS_ScanMode==2 and letter==")" then
+            set digit=65
+        else
+            set digit=FSC_Value(letter)
         endif
-        set i=(i + 1)
+        if digit<0 then
+            set FSS_ScanValid=false
+            set FSS_ScanDone=true
+            return
+        endif
+        if FSS_ScanMode>0 then
+            set FSS_ScanA=ModuloInteger(FSS_ScanA+digit+1,32749)
+            set FSS_ScanB=ModuloInteger(FSS_ScanB+FSS_ScanA,32749)
+        endif
+        set i=i+1
     endloop
-    return true
+    set FSS_ScanDone=true
+endfunction
+
+// Mode 0 validates the alphabet; 1 is the FSVB checksum; 2 includes legacy brackets.
+function FSS_Scan takes string text,integer mode returns integer
+    local integer length=FSS_Length(text)
+    local integer position=0
+    set FSS_ScanMode=mode
+    set FSS_ScanA=1
+    set FSS_ScanB=0
+    set FSS_ScanValid=true
+    loop
+        exitwhen position>=length
+        set FSS_ScanText=FSS_SubString(text,position,position+128)
+        set FSS_ScanDone=false
+        call ExecuteFunc("FSS_ScanChunk")
+        if not FSS_ScanDone or not FSS_ScanValid then
+            return -1
+        endif
+        set position=position+128
+    endloop
+    set FSS_ScanText=""
+    if mode==0 then
+        return 1
+    endif
+    return FSS_ScanB*32768+FSS_ScanA
+endfunction
+
+
+function FSC_AlphabetValid takes string text returns boolean
+    return FSS_Scan(text,0)==1
 endfunction
 
 function FSC_Uint takes integer value returns string
@@ -296,7 +358,7 @@ function FSC_Uint takes integer value returns string
     return result
 endfunction
 
-function FSC_Read takes integer ctx returns integer
+function FSS_Call_FSC_Read_Impl takes integer ctx returns integer
     local integer value=0
     local integer factor=1
     local integer index=0
@@ -336,23 +398,24 @@ function FSC_Read takes integer ctx returns integer
     return 0
 endfunction
 
+function FSS_Call_FSC_Read_Run takes nothing returns nothing
+    set FSS_Call_FSC_Read_Result=FSS_Call_FSC_Read_Impl(FSS_Call_FSC_Read_ctx)
+    set FSS_Call_FSC_Read_Done=true
+endfunction
+
+function FSC_Read takes integer ctx returns integer
+    set FSS_Call_FSC_Read_ctx=ctx
+    set FSS_Call_FSC_Read_Result=0
+    set FSS_Call_FSC_Read_Done=false
+    call ExecuteFunc("FSS_Call_FSC_Read_Run")
+    if not FSS_Call_FSC_Read_Done then
+        set FSC_Ok[ctx]=false
+    endif
+    return FSS_Call_FSC_Read_Result
+endfunction
+
 function FSC_Checksum takes string text returns integer
-    local integer a=1
-    local integer b=0
-    local integer i=0
-    local integer size=FSS_Length(text)
-    local integer digit
-    loop
-        exitwhen (i >= size)
-        set digit=FSC_Value(FSS_SubString(text,i,(i + 1)))
-        if (digit < 0) then
-            return (- 1)
-        endif
-        set a=ModuloInteger(((a + digit) + 1),32749)
-        set b=ModuloInteger((b + a),32749)
-        set i=(i + 1)
-    endloop
-    return ((b * 32768) + a)
+    return FSS_Scan(text,1)
 endfunction
 
 function FSC_Mark takes integer ctx,integer scope,integer identity returns boolean
@@ -781,7 +844,7 @@ function FSC_Evidence takes integer ctx returns nothing
     endloop
 endfunction
 
-function FSC_ValidateSection takes integer ctx,integer sid,integer schemaVersion,boolean required,integer size returns nothing
+function FSS_Call_FSC_ValidateSection_Impl takes integer ctx,integer sid,integer schemaVersion,boolean required,integer size returns nothing
     if ((schemaVersion == 2) and (sid == 2)) then
         call FSC_Jobs2(ctx)
     elseif ((schemaVersion == 2) and (sid == 4)) then
@@ -808,6 +871,24 @@ function FSC_ValidateSection takes integer ctx,integer sid,integer schemaVersion
         call FSC_Pairs(ctx,sid,schemaVersion)
     endif
     if (((FSC_Pos[ctx] != FSC_End[ctx]) or (FSC_Opaque[ctx] > FSC_MAX_OPAQUE)) or (FSC_Dormant[ctx] > 256)) then
+        set FSC_Ok[ctx]=false
+    endif
+endfunction
+
+function FSS_Call_FSC_ValidateSection_Run takes nothing returns nothing
+    call FSS_Call_FSC_ValidateSection_Impl(FSS_Call_FSC_ValidateSection_ctx,FSS_Call_FSC_ValidateSection_sid,FSS_Call_FSC_ValidateSection_schemaVersion,FSS_Call_FSC_ValidateSection_required,FSS_Call_FSC_ValidateSection_size)
+    set FSS_Call_FSC_ValidateSection_Done=true
+endfunction
+
+function FSC_ValidateSection takes integer ctx,integer sid,integer schemaVersion,boolean required,integer size returns nothing
+    set FSS_Call_FSC_ValidateSection_ctx=ctx
+    set FSS_Call_FSC_ValidateSection_sid=sid
+    set FSS_Call_FSC_ValidateSection_schemaVersion=schemaVersion
+    set FSS_Call_FSC_ValidateSection_required=required
+    set FSS_Call_FSC_ValidateSection_size=size
+    set FSS_Call_FSC_ValidateSection_Done=false
+    call ExecuteFunc("FSS_Call_FSC_ValidateSection_Run")
+    if not FSS_Call_FSC_ValidateSection_Done then
         set FSC_Ok[ctx]=false
     endif
 endfunction

@@ -163,3 +163,6 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATS-StringProbe | Separate classic diagnostic: one command creates a long runtime string without importing or changing a character; gameplay objects match ATS. |
 | ATT | Bounded new-format save runtime strings for the classic native-checkpoint failure; byte-identical codes/files and paged inventory retained. Endgame Warcraft menu reload awaits acceptance. |
 | ForsakenEG | Matching bounded new-format save storage on DW native inventory; code/file format preserved. Endgame Warcraft menu reload awaits acceptance. |
+| ATU | Split bounded-code validation into limited execution steps, drain one cache packet per player/tick, and recover timed-out imports through verified cleanup after ATT stalled. In-game acceptance pending. |
+| ForsakenEH | Initial matching bounded-validation build on native inventory; superseded by EI before tester acceptance to include final owned-writer timeout cleanup. |
+| ForsakenEI | Final native-inventory match for ATU: isolated validation execution steps and verified timeout rollback, including owned capture-writer cleanup. Import and native checkpoint acceptance pending. |

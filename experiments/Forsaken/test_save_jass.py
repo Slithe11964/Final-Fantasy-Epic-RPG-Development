@@ -66,7 +66,10 @@ def engine(extra_source='', extra_env=None, bounded=False):
         kind, array, name, value = match.groups()
         default = defaults[kind]
         env[name] = JassArray(lambda d=default: d) if array else eval(expression(value), env) if value else default
-    return execute(source, list(functions(source)), env)
+    result = execute(source, list(functions(source)), env)
+    if bounded:
+        result['ExecuteFunc'] = lambda name: result[name]()
+    return result
 
 
 def unchecked(sections, account=42, body=None, count=None):

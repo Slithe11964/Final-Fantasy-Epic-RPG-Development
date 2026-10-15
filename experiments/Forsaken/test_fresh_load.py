@@ -10,6 +10,38 @@ import json
 HERE=Path(__file__).resolve().parent
 
 class FreshLoadTests(unittest.TestCase):
+    def test_stopped_validation_times_out_without_changing_character(self):
+        self.e['FFL_Phase'][0]=2
+        self.e['FFL_Started'][0]=0
+        self.e['FST_Pending'][0]=True
+        self.e['FSC_Busy'][0]=True
+        self.e['TimerGetElapsed']=lambda timer:61.
+        self.e['FFL_Tick']()
+        self.assertEqual(self.e['FFL_Phase'][0],0)
+        self.assertFalse(self.e['FST_Pending'][0])
+        self.assertFalse(self.e['FSC_Busy'][0])
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertEqual(self.f.units,[])
+        self.assertIn('validation timed out',self.messages[-1])
+
+    def test_stopped_creation_times_out_and_restores_starter(self):
+        starter=self.e['udg_PlayerHero'][1]
+        gaya=self.e['udg_SpiritOfGaya'][1]
+        self.assertTrue(self.apply())
+        self.e['FFL_Phase'][0]=2
+        self.e['FFL_Started'][0]=0
+        self.e['FRC_WriterOwned'][0]=True
+        self.e['FSC_Writing'][0]=True
+        self.e['TimerGetElapsed']=lambda timer:61.
+        self.e['FFL_Tick']()
+        self.assertEqual(self.e['FFL_Phase'][0],0)
+        self.assertIs(self.e['udg_PlayerHero'][1],starter)
+        self.assertIs(self.e['udg_SpiritOfGaya'][1],gaya)
+        self.assertFalse(self.e['udg_HasLoadedCode'][0])
+        self.assertFalse(self.e['FSC_Writing'][0])
+        self.assertTrue(all(item['raw']==0 for item in self.f.items))
+        self.assertIn('validation timed out',self.messages[-1])
+
     def setUp(self):
         self.f=test_save_fresh_objects.FreshObjectsTests();self.f.setUp();f=self.f;env=dict(f.e)
         create=env['CreateUnit'];make=env['CreateItem'];remove=env['RemoveItem']

@@ -13,8 +13,40 @@ from jtok import tokens, strip_comments
 ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT / 'experiments/Forsaken'
 HELPER = HERE / 'SaveStrings.j'
+SCAN = HERE / 'SaveScan.j'
 PRIORITY = {'or': 1, 'and': 2, '==': 3, '!=': 3, '<': 3, '>': 3,
             '<=': 3, '>=': 3, '+': 4, '-': 4, '*': 5, '/': 5}
+
+
+def isolate_reader(source, name):
+    """Reset the VM budget per varint/section and fail closed if execution stops."""
+    pattern = re.compile(r'^function '+name+r' takes (.*?) returns (\w+)\n.*?^endfunction', re.M | re.S)
+    found = pattern.search(source)
+    if not found:
+        return source
+    parameters = [part.strip().split() for part in found[1].split(',')]
+    prefix = 'FSS_Call_'+name
+    declarations = ''.join('    '+kind+' '+prefix+'_'+arg+'\n' for kind, arg in parameters)
+    declarations += '    boolean '+prefix+'_Done=false\n'
+    if found[2] != 'nothing':
+        declarations += '    '+found[2]+' '+prefix+'_Result=0\n'
+    source = source.replace('globals\n', 'globals\n'+declarations, 1)
+    implementation = found[0].replace('function '+name+' takes', 'function '+prefix+'_Impl takes', 1)
+    arguments = ','.join(prefix+'_'+arg for _, arg in parameters)
+    operation = ('call ' if found[2] == 'nothing' else 'set '+prefix+'_Result=')
+    worker = ('\n\nfunction '+prefix+'_Run takes nothing returns nothing\n    '+operation+
+              prefix+'_Impl('+arguments+')\n    set '+prefix+'_Done=true\nendfunction\n\n')
+    wrapper = found[0].split('\n', 1)[0]+'\n'
+    for _, arg in parameters:
+        wrapper += '    set '+prefix+'_'+arg+'='+arg+'\n'
+    if found[2] != 'nothing':
+        wrapper += '    set '+prefix+'_Result=0\n'
+    wrapper += ('    set '+prefix+'_Done=false\n    call ExecuteFunc("'+prefix+'_Run")\n'
+                '    if not '+prefix+'_Done then\n        set FSC_Ok[ctx]=false\n    endif\n')
+    if found[2] != 'nothing':
+        wrapper += '    return '+prefix+'_Result\n'
+    wrapper += 'endfunction'
+    return pattern.sub(lambda _: implementation+worker+wrapper, source, count=1)
 
 
 @lru_cache(None)
@@ -133,7 +165,8 @@ def lower_module(source, helpers=None):
             in_function = True
             # These primitives only process a single character or a bounded integer.
             # Keeping their native operations avoids extra calls for every decoded digit.
-            native_only = code.split()[1] in ('FSC_InitCharacters', 'FSC_Value', 'FSC_Uint')
+            name = code.split()[1]
+            native_only = name in ('FSC_InitCharacters', 'FSC_Value', 'FSC_Uint') or name.startswith('FSG_')
             variables = dict(globals_)
             for kind, name in re.findall(r'\b(string|integer|real|boolean|unit|item|player)\s+(\w+)', code.split(' returns ')[0]):
                 variables[name] = kind
@@ -163,6 +196,15 @@ def lower_module(source, helpers=None):
         comment = line[len(line.rstrip()):]  # trailing whitespace has no semantics
         output.append(indent + lowered + comment)
     result = '\n'.join(output) + '\n'
+    # Whole-code scans must not spend the caller's budget walking fragmented text.
+    for name, replacement in [('FSC_AlphabetValid', 'return FSS_Scan(text,0)==1'),
+                              ('FSC_Checksum', 'return FSS_Scan(text,1)'),
+                              ('FST_TextChecksum', 'return FSS_Scan(text,2)')]:
+        pattern = r'(^function '+name+r' takes[^\n]+\n).*?^endfunction'
+        result = re.sub(pattern, lambda m: m[1]+'    '+replacement+'\nendfunction', result,
+                        flags=re.M | re.S)
+    for name in ('FSC_Read', 'FSC_ValidateSection'):
+        result = isolate_reader(result, name)
     result = result.replace('Trig_Cmd_Load_Code_LoadCodeDispatch(FST_Result[pid],',
                             'Trig_Cmd_Load_Code_LoadCodeDispatch(FSS_LegacyText(FST_Result[pid]),')
     if helpers is None:
@@ -177,4 +219,7 @@ def lower_module(source, helpers=None):
         result = result.replace('globals\n', 'globals\n'+block[1], 1)
         functions = helper[block.end():].rstrip()+'\n\n'
         result = result.replace('endglobals\n', 'endglobals\n'+functions+'\n', 1)
+        value = re.search(r'^function FSC_Value takes\b.*?^endfunction', result, re.M | re.S)
+        if value:
+            result = result[:value.end()]+'\n\n'+SCAN.read_text(encoding='utf-8').replace('\r\n','\n')+result[value.end():]
     return result

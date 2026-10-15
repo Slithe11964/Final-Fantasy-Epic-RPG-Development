@@ -3370,12 +3370,40 @@ function FFL_BindCommands takes nothing returns nothing
     endif
 endfunction
 
+// A stopped script thread must not leave the import permanently busy.
+function FFL_LoadTimeout takes integer pid returns nothing
+    call FST_Fail(pid,"load validation timed out")
+    if (FSC_Seen != null) then
+        call FSC_ClearSeen((pid + 9))
+        call FSC_ClearSeen((pid + 25))
+    endif
+    call FSC_Clear((pid + 9))
+    call FSC_Clear((pid + 25))
+    set FSC_Busy[pid]=false
+    if FRC_WriterOwned[pid] then
+        call FSC_Abort(pid)
+        set FRC_WriterOwned[pid]=false
+    endif
+    if (FRC_Phase[pid] != 0) then
+        call FRC_Stop(pid,"load validation timed out")
+    endif
+    if FFL_SnapshotTaken[pid] then
+        call FFL_Fail(pid,"load validation timed out")
+    else
+        call FFP_Clear(pid)
+        set FFL_Phase[pid]=0
+        call FFL_Message(pid,"Load failed: validation timed out. Nothing was changed; you can load again.")
+    endif
+endfunction
+
 function FFL_Tick takes nothing returns nothing
     local integer pid=0
     call FFL_BindCommands()
     loop
         exitwhen (pid >= 8)
-        if ((FFL_Phase[pid] == 1) and (FRC_Phase[pid] == 0)) then
+        if ((FFL_Phase[pid] == 2) and ((TimerGetElapsed(FST_Clock) - FFL_Started[pid]) > 60.)) then
+            call FFL_LoadTimeout(pid)
+        elseif ((FFL_Phase[pid] == 1) and (FRC_Phase[pid] == 0)) then
             set FFL_Phase[pid]=0
             if FRC_Ready[pid] then
                 if FFL_SaveFile[pid] then
