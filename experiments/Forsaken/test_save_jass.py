@@ -34,13 +34,19 @@ class JassArray(defaultdict):
         super().__setitem__(index, value)
 
 
-def engine(extra_source='', extra_env=None):
+def engine(extra_source='', extra_env=None, bounded=False):
     source = SOURCE.read_text(encoding='utf-8')+'\n'+extra_source
+    if bounded:
+        from save_strings import lower_module
+        source = lower_module(source, helpers=True)
     env = dict(I2S=str, StringLength=lambda s: len(s or ''), SubString=lambda s, a, b: (s or '')[a:b],
+               S2I=lambda s: int(s) if s.lstrip('-').isdigit() else 0,
                ModuloInteger=lambda a, b: a % b, InitHashtable=dict,
                StringCase=lambda s, upper: s.upper() if upper else s.lower(),
                StringHash=lambda s: sum((i+1)*ord(c) for i,c in enumerate(s.upper())),
                SaveInteger=lambda t, p, k, v: t.__setitem__((p, k), v),
+               SaveStr=lambda t, p, k, v: t.__setitem__((p, k), v),
+               LoadStr=lambda t, p, k: t.get((p, k), None),
                LoadInteger=lambda t, p, k: t.get((p, k), 0),
                LoadBoolean=lambda t, p, k: t.get((p, k), False),
                SaveBoolean=lambda t, p, k, v: t.__setitem__((p, k), v))

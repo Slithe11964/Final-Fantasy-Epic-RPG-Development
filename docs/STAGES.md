@@ -161,3 +161,5 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATS | Guarded hero/Gaya level restoration to correct level-one Tiny import promotion; native checkpoint failure remains unresolved. |
 | ForsakenEF | Applied the same guarded level restoration while preserving native inventory and the shared save format. |
 | ATS-StringProbe | Separate classic diagnostic: one command creates a long runtime string without importing or changing a character; gameplay objects match ATS. |
+| ATT | Bounded new-format save runtime strings for the classic native-checkpoint failure; byte-identical codes/files and paged inventory retained. Endgame Warcraft menu reload awaits acceptance. |
+| ForsakenEG | Matching bounded new-format save storage on DW native inventory; code/file format preserved. Endgame Warcraft menu reload awaits acceptance. |

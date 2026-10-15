@@ -1,7 +1,7 @@
 # The new save in the normal maps
 
 From stage ATG the 1.29.2 map saves with the same FSVB code as the native Reforged
-Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EF; the normal
+Forsaken line (experiments/Forsaken). Reforged gameplay uses Forsaken EG; the normal
 Reforged outputs are only authoring intermediates for the 1.29.2 conversion. Codes and files are the same in
 every map, so a save made in one loads in the others. `SAVE_ENABLED` in SaveSlots.j switches it.
 
@@ -146,6 +146,31 @@ the normal module list. The builder checks playable/editor compilation, startup,
 archive preservation and identical converted gameplay object data against ATS.
 
 Tiny's file is short; failed endgame checkpoints contain much longer dynamic code
-strings. A 1 KB buffer exists in the classic script-restoration code, but its role
-in this failure is not established. The controlled probe must pass or fail before
-using string length as the basis for a save-system rewrite.
+strings. The user reproduced the unavailable/corrupted-save error and subsequent
+crash with the fresh-character probe. The diagnostic container decompresses
+completely and contains the intended long test string. This isolates long runtime strings from
+imported items, job state and inventory handles. A 1 KB buffer in the classic
+script-restoration path supports that diagnosis; it does not establish every
+client's exact internal limit.
+
+ATT / Forsaken EG keep new-format codes in immutable fragments of
+at most 960 characters, including intermediate concatenations and substrings.
+The logical codec remains the format specification; tools/save_strings.py lowers
+its runtime/editor copies for both clients. The independent reference vectors,
+file bytes, transfer packets, screenshot parts and permanent IDs stay unchanged.
+The fragment table is allocated globally before local file IO, so reading a file
+does not create a client-local handle. Numeric expressions keep their meaning.
+Long-profile codec, file, delivery, screenshot and full load/recapture models pass;
+Warcraft menu checkpoint acceptance still requires a new in-game test.
+
+Legacy E/F/G/H imports keep their original dispatcher. Old preload files can
+already contain a whole native code string; that legacy path retains its native
+checkpoint limitation. This candidate targets new-format FSVB files, including
+the tested endgame file. Earlier failed Warcraft saved games embed the old map
+and cannot test the fix. Start a new game on the candidate, import an FSVB file,
+create a new menu save, fully exit Warcraft, then restart and load that new save.
+
+Validation: run `python experiments/Forsaken/test_save_strings.py` for the bounded
+runtime codec, file, screenshot, both delivery paths and full load/recapture models.
+The normal build gates also compile runtime/editor sources, check legacy save
+compatibility and enforce source/runtime agreement.

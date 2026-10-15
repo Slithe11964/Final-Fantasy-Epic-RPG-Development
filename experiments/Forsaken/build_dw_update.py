@@ -22,6 +22,7 @@ import armory_menu_catalog
 from build_save_roundtrip import align_bt_tests, load_source
 from build_save_probe import capture_source, fresh_plan_source
 import save_registry
+from save_strings import lower_module
 from map_presentation import prepare_map, settings
 
 
@@ -235,9 +236,21 @@ def main():
         write(path('MapBootstrap'),boot)
         runtime=MPQ(str(cached)).read('war3map.j').decode()
         write(path('ForsakenFreshLoad'),load_source(runtime))
+        # Generate bounded runtime storage from the same logical codec and permanent IDs.
+        # This changes only internal representation; file chunks and screenshot parts stay exact.
+        for module, file in [('ForsakenSaveCodec','Forsaken-save-codec.j'),
+                             ('ForsakenSaveLife','Forsaken-save-life.j'),
+                             ('ForsakenSaveFreshObjects','Forsaken-save-fresh-objects.j')]:
+            source=(HERE/file).read_text().replace('endlibrary','function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
+            write(path(module),source)
+        save_modules=('ForsakenSaveCodec','ForsakenSaveLife','ForsakenSaveCapture','ForsakenSaveCache',
+                      'ForsakenSaveTransport','ForsakenSaveFreshPlan','ForsakenSaveFreshObjects','ForsakenFreshLoad')
+        for module in save_modules:
+            target=cache if module=='ForsakenSaveCache' else path(module)
+            write(target,lower_module(target.read_text()))
         synced=scratch/'sources.w3x'
         run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','MapBootstrap','ForsakenFreshLoad',
-            'ForsakenSaveCapture','ForsakenSaveFreshPlan','ForsakenSaveTransport')
+            *save_modules[:-1])
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'
     built=work/'release'/name
@@ -247,13 +260,17 @@ def main():
     allowed={'war3map.w3i','war3map.j','war3map.wtg','war3map.wct','war3map.w3a','war3mapSkin.w3a','war3map.w3u','war3mapSkin.w3u','(attributes)'}
     for member in original.read('(listfile)').decode().replace('\r','').splitlines():
         if member not in allowed and original.read(member)!=out.read(member):raise ValueError('unrelated archive member changed: '+member)
-    # Keep DW's codec and normal file paging byte-for-byte, apart from the loader fix.
+    # Check the exact lowering of the canonical modules; file paging remains DW's.
     before=read_wct(original.read('war3map.wct'))['entries']
     after=read_wct(out.read('war3map.wct'))['entries']
-    for entry in before:
-        if any(entry.startswith(('library T'+lib+' ').encode()) for lib in
-               ('ForsakenSaveCodec','ForsakenSaveLife','ForsakenSaveFreshObjects')):
-            if entry not in after:raise ValueError('DW save module changed unexpectedly')
+    for module, file in [('ForsakenSaveCodec','Forsaken-save-codec.j'),
+                         ('ForsakenSaveLife','Forsaken-save-life.j'),
+                         ('ForsakenSaveFreshObjects','Forsaken-save-fresh-objects.j')]:
+        source=(HERE/file).read_text().replace('endlibrary','function InitTrig_'+module+' takes nothing returns nothing\nendfunction\nendlibrary')
+        expected=lower_module(source).strip()
+        actual=next(e.decode().replace('\r\n','\n').rstrip('\x00').strip() for e in after
+                    if e.startswith(('library T'+module).encode()))
+        if actual!=expected:raise ValueError('unexpected bounded save module: '+module)
     transport=next(e.decode() for e in after if e.startswith(b'library TForsakenSaveTransport '))
     if 'constant integer FST_CHUNK=160' not in transport:raise ValueError('DW normal file paging changed')
     editor=b'\n'.join(after)

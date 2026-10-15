@@ -6,6 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import save_port
+from save_strings import lower_module
 from save_legacy import convert
 from jtok import strip_comments
 
@@ -40,7 +41,7 @@ class SavePortTests(unittest.TestCase):
             # Only player messages may be reworded; they are not part of the code or file.
             for before, after, _ in save_port.MESSAGES.get(module, []):
                 expected = expected.replace(before, after)
-            self.assertEqual(ported, expected, module)
+            self.assertEqual(ported, lower_module(expected), module)
 
     def test_no_reforged_only_natives_remain(self):
         for module, _ in save_port.MODULES:
@@ -60,12 +61,12 @@ class SavePortTests(unittest.TestCase):
 
     def test_slot_lookups_go_to_the_backpack(self):
         capture = text(FOLDER / 'ForsakenSaveCapture.j')
-        self.assertIn('return SaveSlots_Bag(FRC_Hero[pid],position-6)', capture)
-        self.assertIn('return SaveSlots_Equip(FRC_Hero[pid],position-36)', capture)
-        self.assertIn('if not SaveSlots_Ready(pid) then', capture)
+        self.assertIn('return SaveSlots_Bag(FRC_Hero[pid],(position - 6))', capture)
+        self.assertIn('return SaveSlots_Equip(FRC_Hero[pid],(position - 36))', capture)
+        self.assertIn('if (not SaveSlots_Ready(pid)) then', capture)
         load = text(FOLDER / 'ForsakenFreshLoad.j')
         self.assertIn('call SaveSlots_AfterLoad(pid)', load)
-        self.assertIn('if not SAVE_ENABLED then\n        return\n    endif', load)
+        self.assertIn('if (not SAVE_ENABLED) then\n        return\n    endif', load)
 
     def test_every_gear_item_has_a_permanent_identity_and_bindings(self):
         plan = text(FOLDER / 'ForsakenSaveFreshPlan.j')

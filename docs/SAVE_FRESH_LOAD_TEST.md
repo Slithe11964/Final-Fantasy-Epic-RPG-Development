@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EF
+# Private save/restart/fresh-load test - EG
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEF.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEG.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -212,3 +212,17 @@ checkpoint failure remains unresolved, including with ATR starter retirement.
 Confirmed by the user: Tiny import and Warcraft menu save/load both work in
 1.29.2 ATS and Reforged EF. Endgame checkpoint loading is still unresolved.
 The separate ATS-StringProbe isolates long runtime strings; see SAVE_129.md.
+
+## Bounded runtime storage retest (ATT / EG)
+
+The fresh-character long-string diagnostic failed. ATT / EG therefore keep new
+FSVB code strings in bounded internal fragments without changing the code/file
+format. Both builds pass compilation and preservation checks; native Warcraft
+checkpoint acceptance is pending. See SAVE_129.md for the diagnostic and legacy
+file limitation.
+
+Start a new map in ATT (classic) or EG (native Reforged), import the endgame FSVB
+file with -loadf dev and check its inventory. Make a NEW Warcraft menu saved game,
+fully exit Warcraft, restart, then load that new saved game. Earlier menu saved
+games contain the old map and cannot test this change. Also check that -savef,
+autosave and screenshot codes still round-trip between the two clients.
