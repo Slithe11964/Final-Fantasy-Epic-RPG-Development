@@ -6,24 +6,36 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-15)
 
-Read-only stability/performance audit: [PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md).
-Confirmed projectile-group leakage, retained save intermediates and repeated native
-frame searches; no runtime changes or new build from this audit.
+The user reproduced a Forsaken PAIR007 multiplayer desync during `-loadf dev`.
+The seven-player report/replay narrows this attempt to private preparation/first
+send: the command is present without a subsequent FSCU packet for that request.
+PAIR010 is the current candidate; both profiles passed all build gates. It removes
+shared scanner/ExecuteFunc calls from private import/readback/header preparation;
+all content validation runs on synchronized receivers, and export checksums run
+before private writing. FSVB/file bytes and both inventory interfaces are retained.
+The canonical transport and paired runtime refresh carry this into future master
+builds without rewriting the master. Details/tests: [SAVE_129.md](SAVE_129.md).
 
-User acceptance after PAIR004: the large imported-character Warcraft menu checkpoint
-worked in Forsaken/Reforged but still crashed in 1.29.2 Simple after quests and a
-complete restart. A Forsaken multiplayer long import desynchronized during Loading.
-The new local/shared fragment-storage candidate is documented in SAVE_129.md;
-multiplayer engine acceptance and the classic checkpoint fix remain pending.
-Current test pair: `release/pairs/PAIR007/`. Both build profiles pass their gates.
-The playable files were subsequently moved to Documents/Warcraft III/Maps/Download/TEST
-as `FFERPG-PAIR007-Forsaken.w3x` and `FFERPG-PAIR007-1.29.2.w3x`; their hashes match
-the retained pair report. The release pair directory contains reports/check logs.
-PAIR007 isolates local file fragments from synchronized decoding and refreshes the
-runtime helper when building the unchanged editor master. Existing FSVB files remain
-compatible. Retest long imports with two native clients. For classic checkpoint
-isolation, a separately named `CheckpointNoItems.txt` is installed in CustomMapData;
-see SAVE_129.md. PAIR005/PAIR006 stopped at gates and were not published as pairs.
+The checked maps were copied into Documents/Warcraft III/Maps/Download/TEST as
+FFERPG-PAIR010-Forsaken.w3x and FFERPG-PAIR010-1.29.2.w3x, with matching hashes.
+Native multiplayer engine acceptance remains pending. Test a fresh multiplayer
+PAIR010 game with `-loadf dev`, noting the last loading progress message on failure.
+PAIR008/PAIR009 stopped at classic source-agreement gates and did not publish pairs.
+PAIR007's two files were moved by the user to Documents/Warcraft III/Maps/Download/TEST;
+its release directory retains reports/check logs. Do not use PAIR007 as proof of a
+multiplayer fix.
+
+The large imported-character Warcraft menu checkpoint passed in PAIR004 Reforged
+but still crashed in 1.29.2 Simple after quests and a complete restart. That classic
+checkpoint fix remains unresolved; CheckpointNoItems.txt is installed separately
+for isolation (SAVE_129.md). Earlier failed checkpoints embed the old map.
+
+[PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md) records confirmed projectile-group
+leakage, retained save intermediates, repeated native frame searches and collection
+polling. User order: accept the desync fix first, then release hit tracking at
+projectile completion, reclaim save temporaries, cache UI handles on open/recreation,
+and invalidate collection counters only on membership/import changes. Those
+performance changes are not included in this candidate.
 
 | Line | Map | State |
 |---|---|---|

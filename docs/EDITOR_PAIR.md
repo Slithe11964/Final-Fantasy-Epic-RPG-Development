@@ -14,9 +14,13 @@ from actual runtime declarations. Semantic save-codec edits and structural equip
 slot migrations require explicit review.
 
 The builder also refreshes the reviewed bounded-string runtime helper and local
-file-reader adapter from `tools/save_strings.py` / `SaveStrings.j`. Local file
-assembly uses its own storage; shared validation uses deterministic shared IDs.
-This runtime safeguard changes neither the serialized codec nor the pinned master.
+file-IO boundary from `tools/save_strings.py`, `SaveStrings.j` and the canonical
+`Forsaken-save-transport.j`. Local file assembly uses its own storage; shared
+validation uses deterministic shared IDs. Reading/packet preparation does not enter
+the shared scanner; checksum and profile validation run on synchronized receivers.
+Export checksums run before private writing. Native/classic sync adapters stay
+profile-specific. These runtime safeguards change neither the serialized codec
+nor the pinned master.
 
 Each profile gets a private source export and the normal compiler/content/regression
 gates. Native regression fixtures match the native implementation rather than

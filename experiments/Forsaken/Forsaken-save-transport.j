@@ -46,6 +46,11 @@ globals
     integer array FST_LocalPhase
     integer array FST_LocalSequence
     integer array FST_LocalMillis
+    integer array FST_LocalCheck
+    boolean array FST_LocalLegacy
+    integer array FST_LocalHashPosition
+    integer array FST_LocalHashA
+    integer array FST_LocalHashB
 endglobals
 
 function FST_Digits takes string text returns integer
@@ -246,6 +251,8 @@ function FST_ReadFile takes integer pid returns string
     local string result=""
     local boolean legacy=false
     set FST_FileError[pid]=""
+    set FST_LocalCheck[pid]=0
+    set FST_LocalLegacy[pid]=false
     loop
         exitwhen slot>=24
         set FST_FileBefore[slot]=GetPlayerName(Player(slot))
@@ -285,7 +292,7 @@ function FST_ReadFile takes integer pid returns string
             if wanted>FST_MAXCHUNK then
                 set wanted=FST_MAXCHUNK
             endif
-            if StringLength(value)<1 or StringLength(value)>wanted or not FSC_AlphabetValid(value) then
+            if StringLength(value)<1 or StringLength(value)>wanted then
                 set FST_FileError[pid]="page "+I2S(page)+" chunk "+I2S(slot)+" expected 1 to "+I2S(wanted)+" received "+I2S(StringLength(value))
             else
                 set result=result+value
@@ -304,17 +311,13 @@ function FST_ReadFile takes integer pid returns string
     if FST_FileError[pid]!="" then
         return null
     endif
-    if legacy then
-        if not FST_LegacyValid(result) then
-            set FST_FileError[pid]="legacy file returned invalid code text"
-            return null
-        endif
-        return result
-    endif
-    if StringLength(result)!=size or FST_TextChecksum(result)!=check then
-        set FST_FileError[pid]="assembled length or checksum mismatch"
+    // Only framing is inspected privately. Content validation runs on every receiver.
+    if StringLength(result)!=size then
+        set FST_FileError[pid]="assembled length mismatch"
         return null
     endif
+    set FST_LocalCheck[pid]=check
+    set FST_LocalLegacy[pid]=legacy
     return result
 endfunction
 
@@ -341,16 +344,55 @@ function FST_Request takes integer pid,integer account returns boolean
         set encoded=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
         set FST_LocalMillis[pid]=R2I((TimerGetElapsed(FST_Clock)-started)*1000.)
-        if encoded==null or StringLength(encoded)<4 or StringLength(encoded)>FST_LIMIT or (not (SubString(encoded,0,4)=="FSVB" and FSC_AlphabetValid(encoded)) and not (FST_AllowLegacy[pid] and FST_LegacyValid(encoded))) then
+        if encoded==null or StringLength(encoded)<4 or StringLength(encoded)>FST_LIMIT then
             set FST_LocalCode[pid]=null
             set FST_LocalPhase[pid]=4
         else
             set FST_LocalCode[pid]=encoded
             set FST_LocalPhase[pid]=1
+            if FST_LocalLegacy[pid] then
+                // Legacy files have no checksum header. Prepare it in bounded local steps;
+                // do not enter the shared scanner or ExecuteFunc from private IO.
+                set FST_LocalPhase[pid]=5
+                set FST_LocalHashPosition[pid]=0
+                set FST_LocalHashA[pid]=1
+                set FST_LocalHashB[pid]=0
+            endif
             set FST_LocalSequence[pid]=0
         endif
     endif
     return true
+endfunction
+
+// Only the owning client's sender calls this. No shared scan scratch or child threads.
+function FST_LocalLegacyHash takes integer pid returns nothing
+    local integer position=FST_LocalHashPosition[pid]
+    local integer last=position+128
+    local integer digit
+    local string letter
+    loop
+        exitwhen position>=last or position>=StringLength(FST_LocalCode[pid])
+        set letter=SubString(FST_LocalCode[pid],position,position+1)
+        if letter=="(" then
+            set digit=64
+        elseif letter==")" then
+            set digit=65
+        else
+            set digit=FSC_Value(letter)
+        endif
+        if digit<0 then
+            set FST_LocalPhase[pid]=4
+            return
+        endif
+        set FST_LocalHashA[pid]=ModuloInteger(FST_LocalHashA[pid]+digit+1,32749)
+        set FST_LocalHashB[pid]=ModuloInteger(FST_LocalHashB[pid]+FST_LocalHashA[pid],32749)
+        set position=position+1
+    endloop
+    set FST_LocalHashPosition[pid]=position
+    if position>=StringLength(FST_LocalCode[pid]) then
+        set FST_LocalCheck[pid]=FST_LocalHashB[pid]*32768+FST_LocalHashA[pid]
+        set FST_LocalPhase[pid]=1
+    endif
 endfunction
 
 // Accepts only the currently requested sender's complete, ordered envelope.
@@ -391,6 +433,7 @@ function FST_Receive takes integer pid,string packet returns nothing
         set FST_Buffer[pid]=""
         set FST_ReceiveStart[pid]=TimerGetElapsed(FST_Clock)
         set FST_Receiving[pid]=true
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,15.,"Loading: file found; transferring data...")
     elseif kind=="D" then
         set sequence=FST_Digits(SubString(packet,7,10))
         set chunk=SubString(packet,10,StringLength(packet))
@@ -409,6 +452,7 @@ function FST_Receive takes integer pid,string packet returns nothing
             call FST_Fail(pid,"incomplete or corrupted file transfer")
             return
         endif
+        call DisplayTimedTextToPlayer(Player(pid),0.,0.,15.,"Loading: file received; checking profile...")
         if (FST_Legacy[pid] and not FST_LegacyValid(FST_Buffer[pid])) or (not FST_Legacy[pid] and not FSC_Decode(pid,FST_Buffer[pid],FST_Account[pid],true)) then
             call FST_Fail(pid,"file profile failed validation")
             return
@@ -472,12 +516,14 @@ function FST_Pump takes nothing returns nothing
             if FST_Pending[pid] and GetLocalPlayer()==Player(pid) then
                 set request=FST_Fixed(FST_RequestId[pid],6)
                 set packet=null
-                if FST_LocalPhase[pid]==1 then
+                if FST_LocalPhase[pid]==5 then
+                    call FST_LocalLegacyHash(pid)
+                elseif FST_LocalPhase[pid]==1 then
                     set packet="B"
-                    if SubString(FST_LocalCode[pid],0,4)!="FSVB" then
+                    if FST_LocalLegacy[pid] then
                         set packet="L"
                     endif
-                    set packet=packet+request+FST_Fixed(StringLength(FST_LocalCode[pid]),5)+FST_Fixed(FST_TextChecksum(FST_LocalCode[pid]),10)+FST_Fixed(FST_LocalMillis[pid],6)+FST_Fixed(R2I(TimerGetElapsed(FST_Clock)*1000.),9)
+                    set packet=packet+request+FST_Fixed(StringLength(FST_LocalCode[pid]),5)+FST_Fixed(FST_LocalCheck[pid],10)+FST_Fixed(FST_LocalMillis[pid],6)+FST_Fixed(R2I(TimerGetElapsed(FST_Clock)*1000.),9)
                     set FST_LocalPhase[pid]=2
                 elseif FST_LocalPhase[pid]==2 then
                     set sequence=FST_LocalSequence[pid]
@@ -511,6 +557,7 @@ endfunction
 
 function FST_Write takes integer pid,string encoded,integer account returns boolean
     local integer position=0
+    local integer checksum=0
     local integer page=0
     local integer pages
     local integer slot
@@ -520,6 +567,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
     if not FSC_PlayerValid(pid) or FST_Pending[pid] or encoded==null or StringLength(encoded)>FST_LIMIT or not FSC_Decode(pid,encoded,account,true) then
         return false
     endif
+    set checksum=FST_TextChecksum(encoded)
     if GetLocalPlayer()==Player(pid) then
         set pages=(StringLength(encoded)+FST_PAGE-1)/FST_PAGE
         loop
@@ -533,7 +581,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
                 set position=position+FST_CHUNK
                 set slot=slot+1
             endloop
-            set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(FST_TextChecksum(encoded),10)+FST_Fixed(page,1)+FST_Fixed(pages,1)
+            set marker="FSC1"+FST_Fixed(StringLength(encoded),5)+FST_Fixed(checksum,10)+FST_Fixed(page,1)+FST_Fixed(pages,1)
             call Preload("\")\r\n\tcall SetPlayerName(Player(23), \""+marker+"\")\r\n\treturn\r\n\t//")
             call PreloadGenEnd(FST_PlayerPath(pid,page))
             set page=page+1

@@ -90,6 +90,16 @@ endlibrary
         self.assertIn('return FSS_Concat(b,I2S(c))', lowered)
         self.assertEqual(lower_module(lowered), lowered)
 
+    def test_refresh_old_editor_transport_keeps_exact_canonical_layout(self):
+        from save_strings import refresh_runtime
+        canonical=lower_module((HERE/'Forsaken-save-transport.j').read_text())
+        old=re.sub(r"// Only the owning client's sender calls this[^\n]*\nfunction FST_LocalLegacyHash takes.*?^endfunction\n\n",'',canonical,flags=re.M|re.S)
+        for name in ('FST_LocalCheck','FST_LocalLegacy','FST_LocalHashPosition','FST_LocalHashA','FST_LocalHashB'):
+            old=re.sub(r'^    (?:integer|boolean) array '+name+r'\n','',old,flags=re.M)
+        refreshed=refresh_runtime(old)
+        self.assertEqual(refreshed,canonical)
+        self.assertEqual(refresh_runtime(refreshed),canonical)
+
     def test_long_profile_places_items_and_exactly_recaptures_after_load(self):
         import test_fresh_load
         original = test_fresh_load.engine
@@ -234,6 +244,65 @@ class BoundedTransportTests(transport.TransportTests):
                 self.assertTrue(client.e['FST_Ready'][pid],client.e['FST_Error'][pid])
                 self.assertEqual(materialize(client.e,client.e['FST_Result'][pid]),sender.file)
 
+    def test_private_file_read_and_sender_never_enter_shared_scan_threads(self):
+        calls=[]
+        self.e['ExecuteFunc']=lambda name: calls.append(name)
+        scan={k:self.e[k] for k in self.e if k.startswith('FSS_Scan') and not callable(self.e[k])}
+        self.assertTrue(self.e['FST_Request'](0,42))
+        for _ in range(200):
+            self.e['FST_Pump']()
+            if self.e['FST_LocalPhase'][0]==0:break
+        self.assertTrue(self.sent)
+        self.assertTrue(self.sent[0][1].startswith('B'))
+        self.assertEqual(calls,[])
+        self.assertEqual(scan,{k:self.e[k] for k in scan})
+        self.assertEqual(self.e['FSS_Store'],{})
+        # The observer performs all validation from the synchronized packet bytes.
+        other=BoundedTransportTests();other.setUp();other.local=1
+        self.assertTrue(other.e['FST_Request'](0,42))
+        for _,packet in self.sent:other.e['FST_Receive'](0,packet)
+        self.assertTrue(other.e['FST_Ready'][0],other.e['FST_Error'][0])
+        self.assertEqual(materialize(other.e,other.e['FST_Result'][0]),self.file)
+
+    def test_long_legacy_sender_uses_private_bounded_checksum_steps(self):
+        code='H'+'ABC(DEF)'*200
+        self.e['FST_AllowLegacy'][0]=True
+        self.files={self.e['FST_PlayerPath'](0,0):{0:code}}
+        calls=[]
+        self.e['ExecuteFunc']=lambda name:calls.append(name)
+        self.assertTrue(self.e['FST_Request'](0,42))
+        self.assertEqual(self.e['FST_LocalPhase'][0],5)
+        previous=0
+        for _ in range(200):
+            self.e['FST_Pump']()
+            current=self.e['FST_LocalHashPosition'][0]
+            self.assertLessEqual(current-previous,128)
+            previous=current
+            if self.e['FST_LocalPhase'][0]==0:break
+        self.assertEqual(calls,[])
+        self.assertTrue(self.sent[0][1].startswith('L'))
+        other=BoundedTransportTests();other.setUp();other.local=1
+        other.e['FST_AllowLegacy'][0]=True
+        self.assertTrue(other.e['FST_Request'](0,42))
+        for _,packet in self.sent:other.e['FST_Receive'](0,packet)
+        self.assertTrue(other.e['FST_Ready'][0],other.e['FST_Error'][0])
+        self.assertEqual(materialize(other.e,other.e['FST_Result'][0]),code)
+
+    def test_corrupt_private_contents_are_rejected_after_synchronization(self):
+        original=self.e['Preloader']
+        def damaged(path):
+            original(path)
+            self.names[0]='!'+self.names[0][1:]
+        self.e['Preloader']=damaged
+        self.assertTrue(self.e['FST_Request'](0,42))
+        self.assertEqual(self.e['FST_LocalPhase'][0],1)
+        for _ in range(200):
+            self.e['FST_Pump']()
+            if self.e['FST_LocalPhase'][0]==0:break
+        self.receive([packet for _,packet in self.sent])
+        self.assertFalse(self.e['FST_Ready'][0])
+        self.assertTrue(self.e['FST_Error'][0])
+
     def test_local_write_readback_leaves_shared_virtual_ids_unchanged(self):
         other=BoundedTransportTests();other.setUp();other.local=1
         text=profile(large=True);value=fragments(self.e,text)
@@ -243,6 +312,8 @@ class BoundedTransportTests(transport.TransportTests):
         self.assertTrue(other.e['FST_Write'](0,remote,42))
         self.assertEqual(self.e['FSS_Store'],other.e['FSS_Store'])
         self.assertEqual(self.e['FSS_Next'],other.e['FSS_Next'])
+        for key in ('FSS_ScanText','FSS_ScanMode','FSS_ScanA','FSS_ScanB','FSS_ScanValid','FSS_ScanDone'):
+            self.assertEqual(self.e[key],other.e[key],key)
         self.assertEqual(self.file,text)
 
 

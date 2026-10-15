@@ -38,6 +38,25 @@ def refresh_runtime(source):
         body=''.join(line+'\n' for line in body.splitlines() if not any(
             re.match(r'\s*(?:constant\s+)?\w+\s+'+name+r'\s*(?:=|$)',line) for name in names))
         source=source[:globals_.start(1)]+block[1]+body+source[globals_.end(1):]
+    if 'function FST_Request takes' in source:
+        # Refresh reviewed transport functions even when an editor master still
+        # embeds an older runtime. Native/classic sync adapters remain untouched.
+        canonical=(HERE/'Forsaken-save-transport.j').read_text(encoding='utf-8')
+        lowered=lower_module(canonical,helpers=False,refresh=False)
+        for name in ('FST_ReadFile','FST_Request','FST_LocalLegacyHash','FST_Pump','FST_Write','FST_Receive'):
+            pattern=r'^function '+name+r' takes[^\n]*\n.*?^endfunction'
+            replacement=re.search(pattern,lowered,re.M|re.S)[0]
+            if re.search(pattern,source,re.M|re.S):
+                source=re.sub(pattern,lambda _:replacement,source,flags=re.M|re.S)
+            else:
+                anchor="// Accepts only the currently requested sender's complete, ordered envelope.\nfunction FST_Receive takes"
+                if anchor not in source:raise ValueError('unrecognized transport receive boundary')
+                source=source.replace(anchor,'// Only the owning client\'s sender calls this. No shared scan scratch or child threads.\n'+replacement+'\n\n'+anchor,1)
+        for declaration in ('integer array FST_LocalCheck','boolean array FST_LocalLegacy',
+                            'integer array FST_LocalHashPosition','integer array FST_LocalHashA',
+                            'integer array FST_LocalHashB'):
+            if not re.search(r'^\s*'+declaration+r'\s*$',source,re.M):
+                source=source.replace('endglobals','    '+declaration+'\nendglobals',1)
     # The reader is only called by the owning client's file-IO branches. Give
     # its concatenations an explicit local arena, without a mode flag that could
     # leak into shared validation if the VM interrupts a thread.
@@ -172,10 +191,10 @@ class Expression:
         return value
 
 
-def lower_module(source, helpers=None):
+def lower_module(source, helpers=None, refresh=True):
     source = source.replace('\r\n', '\n')
     if 'function FSS_Id takes' in source:
-        return refresh_runtime(source)
+        return refresh_runtime(source) if refresh else source
     _, globals_ = types()
     variables = dict(globals_)
     # Include generated/classic-only functions and declarations in type inference.
@@ -251,4 +270,4 @@ def lower_module(source, helpers=None):
         value = re.search(r'^function FSC_Value takes\b.*?^endfunction', result, re.M | re.S)
         if value:
             result = result[:value.end()]+'\n\n'+SCAN.read_text(encoding='utf-8').replace('\r\n','\n')+result[value.end():]
-    return refresh_runtime(result)
+    return refresh_runtime(result) if refresh else result

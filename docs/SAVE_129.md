@@ -235,3 +235,52 @@ the original dev.txt is unchanged. In a fresh classic game, use
 `-loadf CheckpointNoItems`, make a new menu checkpoint, fully exit/restart, then
 load it. Compare with a regular dev checkpoint made on the same candidate. Missing
 carried/equipped gear is intentional in this diagnostic, not a load regression.
+
+## PAIR007 multiplayer rejection and private IO boundary follow-up
+
+The user reproduced a Forsaken PAIR007 desync with `-loadf dev`. The retained
+2026-10-15 16.22.42 report identifies PAIR007, seven human players and turn 2018.
+The associated replay contains the command but no following FSCU save-transfer
+packet for that request. An earlier player's missing-file attempt did record its
+FSCU X packet. This narrows the observed failure to private preparation/first send;
+it does not identify an engine instruction or prove a unique root cause.
+
+PAIR007 separated fragment IDs but still called FSS_Scan/ExecuteFunc from local
+file alphabet checks, checksums, request validation and first-header preparation.
+Those calls changed the same scan globals used by synchronized decoding. PAIR010
+removes those private calls. The reader checks only bounded file framing/length,
+retains the file header checksum as local metadata, and sends native packet text.
+Alphabet, complete checksum, account, schema and profile checks run on every
+receiver before the character can be changed. Export checksums are calculated on
+every client before entering local file writing/readback. Legacy files have no
+header checksum, so their sender computes it in bounded 128-character steps using
+only private accumulator arrays; final legacy validation remains synchronized.
+
+The canonical transport and paired-builder runtime refresh carry this change into
+both profiles without modifying the user's editor master or native/classic sync
+adapters. FSVB, file contents, filenames and wire framing are unchanged. Progress
+messages identify synchronized transfer start and profile validation. The private
+reader intentionally no longer serves as a content validator on its own.
+
+Regression coverage checks that private read/send never calls ExecuteFunc or
+changes shared scanner/fragment state; the observer alone can validate the packet
+sequence, corrupt file content is rejected after synchronization, and concurrent
+senders and export/readback retain identical shared state. Model passes are not
+multiplayer engine acceptance. Retest `-loadf dev` in a fresh multiplayer PAIR010;
+report the last loading message if it fails. PAIR008/PAIR009 stopped at classic source-agreement gates and are internal intermediates,
+not the recommended candidate. Classic imported-character checkpoints remain a
+separate unresolved engine test.
+
+After multiplayer acceptance, apply the performance-audit fixes in separate
+reviewable steps: release projectile hit tracking after impact/expiry; reclaim
+save intermediates without dropping active sessions/screenshot codes; cache UI
+handles with panel-open/load invalidation; and cache collection counters with
+invalidation on addition/removal/import. The user's requested order is desync
+first, then these improvements. None of those gameplay/performance changes is
+included in the private-IO candidate.
+
+PAIR010 validation: native 110 tests, classic 202 tests (8 skipped), all compiler,
+content, source agreement, startup, save compatibility and conversion gates passed.
+The separate focused suites passed: bounded/local IO 16, transport 23, paired
+builder 19, save port 7. Both published files were copied to the Warcraft TEST
+folder and hashes verified. Multiplayer engine confirmation is still pending.

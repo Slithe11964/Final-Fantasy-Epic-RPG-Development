@@ -168,3 +168,13 @@ Tiny and endgame imports, multiple clients, repeated imports after rollback,
 Warcraft menu save/load after a complete restart, and an extended combat session.
 Keep classic checkpoint investigation separate from unproven performance theories;
 the pending CheckpointNoItems comparison is documented in SAVE_129.md.
+
+## Follow-up requested by the user
+
+PAIR007 multiplayer still desynchronized on `-loadf dev`. Address that first;
+see SAVE_129.md for the private-IO boundary candidate and replay evidence.
+Subsequent requested behavior: projectile hit tracking ends after impact or
+expiry; UI frame searches use a cache refreshed on opening/recreation; collection
+counts update when collection membership changes (including import), otherwise
+retain the last totals. Save scratch cleanup must preserve live sessions. These
+performance changes await multiplayer acceptance of the desync candidate.
