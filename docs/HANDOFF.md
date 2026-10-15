@@ -6,6 +6,10 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-15)
 
+Read-only stability/performance audit: [PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md).
+Confirmed projectile-group leakage, retained save intermediates and repeated native
+frame searches; no runtime changes or new build from this audit.
+
 User acceptance after PAIR004: the large imported-character Warcraft menu checkpoint
 worked in Forsaken/Reforged but still crashed in 1.29.2 Simple after quests and a
 complete restart. A Forsaken multiplayer long import desynchronized during Loading.
