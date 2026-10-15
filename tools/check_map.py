@@ -25,9 +25,37 @@ from wct import read_wct, text_of
 from vjass_lite import flatten, GLOBALS_RE
 from jtok import tokens, functions, strip_comments
 import startup_audit
+from collections import Counter
 
 ROOT = os.path.dirname(HERE)
 DEFAULT_TOOLS = [os.path.join(ROOT, 'tools', 'bin'), os.path.join(ROOT, '..', 'Builder24', 'tools', 'JassHelper')]
+
+UI_REBINDS = {
+    'BazaarFrame_Rebuild': ('Register_Bazaar_FrameClick','Register_Bazaar_FrameSync'),
+    'Forsaken_RebuildPanels': ('Register_Forsaken_TalentClick','Register_Forsaken_TalentSync',
+                              'Register_Forsaken_PanelAccess'),
+}
+
+
+def registration_calls(code):
+    """Count startup calls separately from the explicit saved-game UI rebinds."""
+    calls=Counter(re.findall(r'\bcall\s+(\w+)\s*\(',code))
+    errors=[]
+    bodies=functions(code)
+    for caller,targets in UI_REBINDS.items():
+        if caller not in bodies:
+            continue
+        body=bodies[caller]
+        # The classic converter replaces the entire frame-only function with an empty stub.
+        if len(body.strip().splitlines())==2:
+            continue
+        for target in targets:
+            count=len(re.findall(r'\bcall\s+'+target+r'\s*\(',body))
+            if count!=1:
+                errors.append(caller+' must rebind '+target+' exactly once')
+            else:
+                calls[target]-=1
+    return calls,errors
 
 def find(name, explicit):
     if explicit:
@@ -125,8 +153,8 @@ def main():
     defined = set(names)
     execs = re.findall(r'ExecuteFunc\s*\(\s*"(\w+)"\s*\)', code)
     errs += ['ExecuteFunc target does not exist: ' + n for n in sorted(set(execs) - defined)]
-    from collections import Counter
-    calls = Counter(re.findall(r'\bcall\s+(\w+)\s*\(', code))
+    calls,rebind_errors = registration_calls(code)
+    errs += rebind_errors
     ex = Counter(execs)
     for n in sorted(defined):
         if n.startswith('RegisterTriggers_') or n.startswith('RegisterR11_') or n.startswith('RegisterLegacy_'):

@@ -19,6 +19,7 @@ from editor_layout import trigger_items
 from jtok import functions
 import talents_catalog
 import armory_menu_catalog
+import ui_recovery
 from build_save_roundtrip import align_bt_tests, load_source
 from build_save_probe import capture_source, fresh_plan_source
 import save_registry
@@ -121,6 +122,10 @@ def prepare_objects(base,out):
                 talents_catalog.setf(obj,'ubpy',0,2)
     for table in (a,sa):
         objects={o['id']:o for o in table['custom']}
+        if 'cSec' not in objects:
+            raise ValueError('Secrets object missing from DW')
+        talents_catalog.setf(objects['cSec'],'atp1',3,'Secrets',1)
+        talents_catalog.setf(objects['cSec'],'aub1',3,ui_recovery.SECRETS,1)
         for raw in ('A0P3','A04J'):
             if raw not in objects:continue
             obj=objects[raw]
@@ -202,6 +207,11 @@ def main():
         write(cache,(HERE/'Forsaken-save-cache.j').read_text().replace('endlibrary','function InitTrig_ForsakenSaveCache takes nothing returns nothing\nendfunction\nendlibrary'))
         cached=scratch/'cache.w3x'
         run('add_module.py',added,cached,'11 Save prototype','ForsakenSaveCache')
+        recovery=work/'src/triggers/05 Items crafting and shops/ForsakenUIRecovery.j'
+        write(recovery,(HERE/'Forsaken-ui-recovery.j').read_text())
+        recovered=scratch/'recovery.w3x'
+        run('add_module.py',cached,recovered,'05 Items crafting and shops','ForsakenUIRecovery')
+        cached=recovered
         catalog=json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text())
         registry,aliases=save_registry.check(catalog)
         for module,source in [('ForsakenSaveCapture',capture_source(aliases)),
@@ -227,7 +237,8 @@ def main():
             write(path(module),(ROOT/'src/triggers'/folder/(module+'.j')).read_text())
         for module in ('Armory','Bazaar'):
             write(path(module),(ROOT/'src/triggers/05 Items crafting and shops'/(module+'.j')).read_text())
-        write(path('Equip'),patch_equip(path('Equip').read_text()))
+        write(path('Equip'),ui_recovery.panel_source(patch_equip(path('Equip').read_text())))
+        write(path('Titles'),ui_recovery.secrets_source(path('Titles').read_text()))
         write(path('Job'),patch_job(path('Job').read_text()))
         boot=path('MapBootstrap').read_text()
         first,rest=boot.split('\n',1);boot=first+', optional TTalents\n'+rest
@@ -249,13 +260,25 @@ def main():
             target=cache if module=='ForsakenSaveCache' else path(module)
             write(target,lower_module(target.read_text()))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','MapBootstrap','ForsakenFreshLoad',
             *save_modules[:-1])
         run('order_libraries.py',synced,scratch/'ordered.w3x')
-    allow='^gg_trg_Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)$'
+    # The pinned DW fixture executes named functions explicitly; include the new text helper.
+    fixture=work/'tools/tests/test_chronicles_secrets.py'
+    text=fixture.read_text()
+    if "names.append('Forsaken_SecretsProgress')" not in text:
+        anchor='    live = execute(source, names, e)'
+        if text.count(anchor)!=1:raise ValueError('Chronicle fixture function selection changed')
+        text=text.replace(anchor,"    if 'function Forsaken_SecretsProgress takes' in source:\n        names.append('Forsaken_SecretsProgress')\n"+anchor,1)
+        fixture.write_text(text)
+    allow='^gg_trg_(Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)|Forsaken_UIRecovery)$'
     built=work/'release'/name
     if not built.exists():run('build_stage.py',args.stage,'--base',scratch/'ordered.w3x','--allow-new',allow)
-    run('check_map.py',built,'--baseline',base,'--allow-new',allow)
+    auditbase=scratch/'approved-ui-startup.j'
+    auditbase.write_text(ui_recovery.startup_baseline(
+        MPQ(str(base)).read('war3map.j').decode().replace('\r\n','\n'),
+        MPQ(str(built)).read('war3map.j').decode().replace('\r\n','\n')))
+    run('check_map.py',built,'--baseline',auditbase,'--allow-new',allow)
     original,out=MPQ(str(base)),MPQ(str(built))
     allowed={'war3map.w3i','war3map.j','war3map.wtg','war3map.wct','war3map.w3a','war3mapSkin.w3a','war3map.w3u','war3mapSkin.w3u','(attributes)'}
     for member in original.read('(listfile)').decode().replace('\r','').splitlines():

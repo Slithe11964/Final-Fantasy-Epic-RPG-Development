@@ -114,3 +114,13 @@ A floating notice appears when sold parts make a previously unavailable recipe r
 ATQ / Forsaken ED anchor that notice to the merchant receiving the sold monster
 parts, including the Bazaar itself. The sale anchor is separate from shop purchase
 context and is cleared after stock refresh.
+
+## Native saved-game presentation (Forsaken EK)
+
+Warcraft menu saved games need the custom frame presentation rebound after load.
+EK registers a native game-loaded hook and defers rebuilding until UI restoration
+has finished. The Bazaar recreates its three cards and click/sync/Esc handlers,
+closes stale browser sessions and retains recipes, materials and prepared stock.
+The classic converter leaves the frame recovery function empty and retains dialogs.
+Test fresh-game Browse Recipes, Close/reopen and prepare/purchase, then repeat after
+a NEW Warcraft menu save/restart/load made in EK. Native rendering is pending.

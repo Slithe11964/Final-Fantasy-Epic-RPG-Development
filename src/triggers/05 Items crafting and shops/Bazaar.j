@@ -51,6 +51,7 @@ globals
     framehandle BazaarFramePrevious=null
     framehandle BazaarFrameNext=null
     framehandle BazaarFrameClose=null
+    trigger BazaarFrameEscape=null
 endglobals
 
 function Bazaar_InitBrowserData takes nothing returns nothing
@@ -560,21 +561,20 @@ function BazaarFrame_Init takes nothing returns nothing
     local integer id=0
     local real x
     local real y
-    local trigger escape
     loop
         exitwhen id>=bj_MAX_PLAYERS
         call BlzTriggerRegisterPlayerSyncEvent(gg_trg_Bazaar_FrameSync,Player(id),"FFERPGBZR",false)
         set id=id+1
     endloop
     // Esc (the cinematic-skip key) closes this player's recipe panels.
-    set escape=CreateTrigger()
+    set BazaarFrameEscape=CreateTrigger()
     set id=0
     loop
         exitwhen id>=bj_MAX_PLAYERS
-        call TriggerRegisterPlayerEvent(escape,Player(id),EVENT_PLAYER_END_CINEMATIC)
+        call TriggerRegisterPlayerEvent(BazaarFrameEscape,Player(id),EVENT_PLAYER_END_CINEMATIC)
         set id=id+1
     endloop
-    call TriggerAddAction(escape,function BazaarFrame_OnEscape)
+    call TriggerAddAction(BazaarFrameEscape,function BazaarFrame_OnEscape)
     set BazaarFrameRoot=BlzCreateFrameByType("FRAME","BazaarRecipeWindow",origin,"",0)
     call BlzFrameSetAbsPoint(BazaarFrameRoot,FRAMEPOINT_CENTER,.4,.3)
     call BlzFrameSetSize(BazaarFrameRoot,.79,.57)
@@ -639,7 +639,31 @@ function BazaarFrame_Init takes nothing returns nothing
     call BlzTriggerRegisterFrameEvent(gg_trg_Bazaar_FrameClick,BazaarFrameClose,FRAMEEVENT_CONTROL_CLICK)
     call BlzFrameSetVisible(BazaarFrameRoot,false)
     set origin=null
-    set escape=null
+endfunction
+
+function BazaarFrame_Rebuild takes nothing returns nothing
+    local integer id=0
+    if gg_trg_Bazaar_FrameClick!=null then
+        call DestroyTrigger(gg_trg_Bazaar_FrameClick)
+    endif
+    if gg_trg_Bazaar_FrameSync!=null then
+        call DestroyTrigger(gg_trg_Bazaar_FrameSync)
+    endif
+    if BazaarFrameEscape!=null then
+        call DestroyTrigger(BazaarFrameEscape)
+    endif
+    call Register_Bazaar_FrameClick()
+    call Register_Bazaar_FrameSync()
+    loop
+        exitwhen id>=bj_MAX_PLAYERS
+        set BazaarBrowserOpen[id]=false
+        set BazaarBuyer[id]=null
+        set BazaarShop[id]=null
+        set BazaarSession[id]=BazaarSession[id]+1
+        set id=id+1
+    endloop
+    // Recreate frame handles and event registrations, retaining recipes, parts and stock.
+    call BazaarFrame_Init()
 endfunction
 
 function Trig_Bazaar_OpenRecipes_Conditions takes nothing returns boolean

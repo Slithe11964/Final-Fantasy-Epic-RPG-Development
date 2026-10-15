@@ -19,7 +19,7 @@ def frame_runtime():
         return handle
     def prop(handle, key, value):
         frames[handle][key] = value
-    e.update(BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,
+    e.update(BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,BazaarFrameEscape=None,
              BazaarFrameNext=None, BazaarFramePrevious=None, BazaarFrameClose=None,
              GetLocalPlayer=lambda: 0, GetTriggerPlayer=lambda: 0,
              S2I=int, I2R=float, ModuloInteger=lambda a, b: a % b,
@@ -41,7 +41,8 @@ def frame_runtime():
                      'EVENT_PLAYER_END_CINEMATIC']:
         e[constant] = constant
     names = ['Bazaar_AllIngredients', 'Bazaar_MarkPageText', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',
-             'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_OnEscape', 'BazaarFrame_Init']
+             'BazaarFrame_OnClick', 'BazaarFrame_OnSync', 'BazaarFrame_OnEscape', 'BazaarFrame_Init',
+             'Register_Bazaar_FrameClick', 'Register_Bazaar_FrameSync', 'BazaarFrame_Rebuild']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(SOURCE.read_text(encoding='utf-8'), names, e)
     e['BazaarFrame_Init']()
@@ -56,6 +57,27 @@ def frame_runtime():
 
 
 class BazaarFrameTests(unittest.TestCase):
+    def test_saved_game_frame_loss_rebuilds_browser_without_changing_recipes_or_materials(self):
+        e,data,pool,money,created,frames,packets=frame_runtime()
+        before=copy.deepcopy((data,pool,money))
+        destroyed=[]
+        e['DestroyTrigger']=destroyed.append
+        e['gg_trg_Bazaar_FrameClick']={'old':'click'}
+        e['gg_trg_Bazaar_FrameSync']={'old':'sync'}
+        frames.clear()
+        e['BazaarFrame_Rebuild']()
+        self.assertEqual(len(destroyed),3)
+        self.assertFalse(e['BazaarBrowserOpen'][0])
+        self.assertEqual(e['BazaarSession'][0],4)
+        e['BazaarBrowserOpen'][0]=True
+        e['BazaarFrame_Show'](0)
+        self.assertTrue(frames[e['BazaarFrameRoot']]['visible'])
+        self.assertTrue(all(frames[e['BazaarFrameCard'][i]]['visible'] for i in range(3)))
+        self.assertEqual(data,before[0])
+        self.assertEqual({k:v for k,v in pool.items() if v},{k:v for k,v in before[1].items() if v})
+        self.assertEqual(money,before[2])
+        self.assertFalse(created or packets)
+
     def test_three_panels_cover_all_recipes_in_eighteen_next_clicks(self):
         e, data, pool, money, created, frames, packets = frame_runtime()
         e['GetObjectName'] = lambda raw: 'A very long ingredient name '+raw

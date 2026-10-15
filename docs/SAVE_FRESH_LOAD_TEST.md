@@ -1,6 +1,6 @@
-# Private save/restart/fresh-load test - EI
+# Private save/restart/fresh-load test - EK
 
-Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEI.w3x` (built on DW with normal save-file paging).
+Map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEK.w3x` (built on DW with normal save-file paging).
 Multi-file test map: `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenDX.w3x` (see below).
 Built on BT gameplay; normal commands now use the new format in this private
 Forsaken test. Legacy imports remain available; public maps are unchanged.
@@ -239,3 +239,19 @@ First start a fresh ATU (classic) or EI (native Reforged) game and use -loadf de
 Confirm the import finishes and inventory matches. Then create a NEW Warcraft menu
 save, fully exit/restart Warcraft, and load it. Import and native checkpoint
 acceptance are pending. The automated work-ceiling test is not an engine emulator.
+
+## Native UI acceptance (EK)
+
+EI was reported with the older Secrets text, an unresponsive Browse Recipes action
+and a missing Stats/Talents toggle. Whether this happened in a fresh game or only
+after a Warcraft menu load has not been confirmed. EK refreshes Secrets in both
+object tables and the native runtime, defers initial panel setup and restores custom
+frames/event bindings after a menu load. It retains the saved talent-choice table.
+The fallback toggle remains accessible if the native equipment frame name is absent,
+without hiding the scoreboard. Startup comparison approves only the explicit UI
+registration deltas; all other registration/order checks remain enforced.
+
+Start fresh on EK, use the character file, and check Secrets, Bazaar and the gear
+panel's Talents button. Prepare/purchase must retain the existing costs and stock.
+Make a NEW Warcraft menu save on EK, exit/restart/load it, and recheck the UI and
+saved talent selections. Existing EI menu saves embed EI's earlier presentation.

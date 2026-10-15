@@ -166,3 +166,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ATU | Split bounded-code validation into limited execution steps, drain one cache packet per player/tick, and recover timed-out imports through verified cleanup after ATT stalled. In-game acceptance pending. |
 | ForsakenEH | Initial matching bounded-validation build on native inventory; superseded by EI before tester acceptance to include final owned-writer timeout cleanup. |
 | ForsakenEI | Final native-inventory match for ATU: isolated validation execution steps and verified timeout rollback, including owned capture-writer cleanup. Import and native checkpoint acceptance pending. |
+| ForsakenEK | Secrets wording/count updated in native base and skin; Bazaar and Stats/Talents frames rebuild after Warcraft menu loads, with safe fresh-game initialization and fallback button access. Native inventory and save format retained; in-game acceptance pending. |
