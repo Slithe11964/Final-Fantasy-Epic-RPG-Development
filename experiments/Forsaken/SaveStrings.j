@@ -164,4 +164,3 @@ function FSS_LegacyText takes string text returns string
     endloop
     return result
 endfunction
-

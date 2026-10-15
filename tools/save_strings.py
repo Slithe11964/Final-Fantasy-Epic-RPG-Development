@@ -175,6 +175,6 @@ def lower_module(source, helpers=None):
             first, rest = result.split('\n', 1)
             result = first+'\nglobals\nendglobals\n'+rest
         result = result.replace('globals\n', 'globals\n'+block[1], 1)
-        functions = helper[block.end():]
+        functions = helper[block.end():].rstrip()+'\n\n'
         result = result.replace('endglobals\n', 'endglobals\n'+functions+'\n', 1)
     return result
