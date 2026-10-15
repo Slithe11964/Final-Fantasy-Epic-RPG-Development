@@ -113,3 +113,9 @@ all hero bag positions, both scroll users, all 22 curse recipes, equipped/Gaya
 items, duplicate items, full bags, missing items, failed creation/placement,
 range/ownership and busy-inventory cases. Native event timing and restrictions
 still require in-game acceptance in EN.
+
+Classic ATV uses the matching owner-scoped curse search over the hero, all seven
+backpack/equipment pages and Gaya. Equipment replacements recheck the existing
+kind/level/mastery rules, falling back to a normal bag if needed. Failed placement
+keeps the original and scroll; successful changes refresh worn bonuses. In-game
+classic curse acceptance remains pending.
