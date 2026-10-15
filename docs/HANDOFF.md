@@ -6,6 +6,21 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-15)
 
+User acceptance after PAIR004: the large imported-character Warcraft menu checkpoint
+worked in Forsaken/Reforged but still crashed in 1.29.2 Simple after quests and a
+complete restart. A Forsaken multiplayer long import desynchronized during Loading.
+The new local/shared fragment-storage candidate is documented in SAVE_129.md;
+multiplayer engine acceptance and the classic checkpoint fix remain pending.
+Current test pair: `release/pairs/PAIR007/`. Both build profiles pass their gates.
+The playable files were subsequently moved to Documents/Warcraft III/Maps/Download/TEST
+as `FFERPG-PAIR007-Forsaken.w3x` and `FFERPG-PAIR007-1.29.2.w3x`; their hashes match
+the retained pair report. The release pair directory contains reports/check logs.
+PAIR007 isolates local file fragments from synchronized decoding and refreshes the
+runtime helper when building the unchanged editor master. Existing FSVB files remain
+compatible. Retest long imports with two native clients. For classic checkpoint
+isolation, a separately named `CheckpointNoItems.txt` is installed in CustomMapData;
+see SAVE_129.md. PAIR005/PAIR006 stopped at gates and were not published as pairs.
+
 | Line | Map | State |
 |---|---|---|
 | Reforged gameplay | `release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEN.w3x` | EN lets hero/Gaya curse scrolls find matching gear across their native quick, bag and equipment slots; inventory failure keeps the original and scroll. Curse acceptance pending. EM unlocks Phoenix and Annoying Monster directly when Ao Madoushi starts; in-game quest acceptance pending. EL uses the standard gold Secrets category counter and removes the outdated Simple load warning. EK recreates Bazaar/Stats/Talents frames after Warcraft menu loads, defers initial panel setup and supplies fallback button access. UI acceptance pending; fresh-versus-saved-game clarification is still unanswered. EI validation work/timeout rollback remain; preserves DW native inventory and the FSVB format. Import and Warcraft menu checkpoint acceptance pending. EH is superseded before tester acceptance. EF Tiny import/checkpoint cycle passed. Classic Backpack/SaveSlots modules are rejected by the builder. Gameplay features and prior acceptance are recorded in SAVE_FRESH_LOAD_TEST.md and SAVE_129.md. |

@@ -73,3 +73,6 @@ presented as a working classic copy.
 This workflow is tested with automated merges and compiler checks. Actual World
 Editor Save As behavior and gameplay in both clients still need user acceptance.
 The initial checked pair is in `release/pairs/PAIR004/`.
+The latest save-storage test pair is `release/pairs/PAIR007/`; its local-file
+isolation fix is applied automatically by the paired builder. Multiplayer acceptance
+is pending, and the classic Warcraft-menu checkpoint crash remains unresolved.

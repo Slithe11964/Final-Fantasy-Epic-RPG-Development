@@ -248,7 +248,7 @@ function FST_ReadFile takes integer pid returns string
             set legacy=true
             set size=FSS_Length(result)
         elseif ((FSS_Length(marker) != 21) or (not FSS_Equals(FSS_SubString(marker,0,4),"FSC1"))) then
-            set FST_FileError[pid]=FSS_Concat(FSS_Concat("page ",I2S(page))," header was not returned")
+            set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header was not returned")
         else
             if (page == 0) then
                 set size=FST_Digits(FSS_SubString(marker,4,9))
@@ -256,7 +256,7 @@ function FST_ReadFile takes integer pid returns string
                 set pages=FST_Digits(FSS_SubString(marker,20,21))
             endif
             if ((((((((((size < 4) or (size > FST_LIMIT)) or (check < 0)) or (pages < 1)) or (pages > size)) or (size > ((pages * 23) * FST_MAXCHUNK))) or (FST_Digits(FSS_SubString(marker,19,20)) != page)) or (FST_Digits(FSS_SubString(marker,4,9)) != size)) or (FST_Digits(FSS_SubString(marker,9,19)) != check)) or (FST_Digits(FSS_SubString(marker,20,21)) != pages)) then
-                set FST_FileError[pid]=FSS_Concat(FSS_Concat("page ",I2S(page))," header mismatch")
+                set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header mismatch")
             endif
         endif
         set slot=0
@@ -268,9 +268,9 @@ function FST_ReadFile takes integer pid returns string
                 set wanted=FST_MAXCHUNK
             endif
             if (((FSS_Length(value) < 1) or (FSS_Length(value) > wanted)) or (not FSC_AlphabetValid(value))) then
-                set FST_FileError[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("page ",I2S(page))," chunk "),I2S(slot))," expected 1 to "),I2S(wanted))," received "),I2S(FSS_Length(value)))
+                set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," chunk "),I2S(slot))," expected 1 to "),I2S(wanted))," received "),I2S(FSS_Length(value)))
             else
-                set result=FSS_Concat(result,value)
+                set result=FSS_LocalConcat(result,value)
             endif
             set slot=(slot + 1)
         endloop

@@ -18,6 +18,35 @@ PRIORITY = {'or': 1, 'and': 2, '==': 3, '!=': 3, '<': 3, '>': 3,
             '<=': 3, '>=': 3, '+': 4, '-': 4, '*': 5, '/': 5}
 
 
+def refresh_runtime(source):
+    """Apply reviewed storage/IO safeguards to already lowered editor references."""
+    source=source.replace('\r\n','\n')
+    if 'function FSS_Id takes' in source:
+        helper=HELPER.read_text(encoding='utf-8').replace('\r\n','\n')
+        block=re.search(r'^globals\n(.*?)^endglobals\n',helper,re.M|re.S)
+        start=re.search(r'^function (?:FSS_Table|FSS_EnterLocal|FSS_Id) takes',source,re.M)
+        end=re.search(r'^function FSS_LegacyText takes.*?^endfunction',source,re.M|re.S)
+        if not start or not end:raise ValueError('unrecognized save string helper layout')
+        source=source[:start.start()]+helper[block.end():].strip()+'\n\n'+source[end.end():].lstrip('\n')
+        globals_=re.search(r'^globals\n(.*?)^endglobals',source,re.M|re.S)
+        # Keep the exact canonical helper prefix, including declaration order.
+        # Existing editor references may contain the older prefix and newly
+        # introduced helper globals must not be stranded at its block's end.
+        body=re.sub(r'^    constant integer FSS_CHUNK[^\n]*\n.*?^    boolean FSS_ScanDone[^\n]*\n',
+                    '',globals_[1],count=1,flags=re.M|re.S)
+        names=set(re.findall(r'^\s*(?:constant\s+)?\w+\s+(\w+)',block[1],re.M))
+        body=''.join(line+'\n' for line in body.splitlines() if not any(
+            re.match(r'\s*(?:constant\s+)?\w+\s+'+name+r'\s*(?:=|$)',line) for name in names))
+        source=source[:globals_.start(1)]+block[1]+body+source[globals_.end(1):]
+    # The reader is only called by the owning client's file-IO branches. Give
+    # its concatenations an explicit local arena, without a mode flag that could
+    # leak into shared validation if the VM interrupts a thread.
+    pattern=r'(^function FST_ReadFile takes[^\n]+\n).*?^endfunction'
+    source=re.sub(pattern,lambda m:re.sub(r'\bFSS_Concat\(', 'FSS_LocalConcat(',m[0]),
+                  source,flags=re.M|re.S)
+    return source
+
+
 def isolate_reader(source, name):
     """Reset the VM budget per varint/section and fail closed if execution stops."""
     pattern = re.compile(r'^function '+name+r' takes (.*?) returns (\w+)\n.*?^endfunction', re.M | re.S)
@@ -146,7 +175,7 @@ class Expression:
 def lower_module(source, helpers=None):
     source = source.replace('\r\n', '\n')
     if 'function FSS_Id takes' in source:
-        return source  # already lowered generated module
+        return refresh_runtime(source)
     _, globals_ = types()
     variables = dict(globals_)
     # Include generated/classic-only functions and declarations in type inference.
@@ -222,4 +251,4 @@ def lower_module(source, helpers=None):
         value = re.search(r'^function FSC_Value takes\b.*?^endfunction', result, re.M | re.S)
         if value:
             result = result[:value.end()]+'\n\n'+SCAN.read_text(encoding='utf-8').replace('\r\n','\n')+result[value.end():]
-    return result
+    return refresh_runtime(result)

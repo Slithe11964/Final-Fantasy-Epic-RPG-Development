@@ -35,6 +35,16 @@ def fields(data,raw):
 
 
 class EditorPairTests(unittest.TestCase):
+    def test_refreshed_save_helper_has_the_canonical_global_layout(self):
+        from save_strings import lower_module,refresh_runtime
+        canonical=lower_module(source().replace('TExample','TForsakenSaveCodec'),helpers=True)
+        relocated=canonical
+        fields=['    hashtable FSS_LocalStore=InitHashtable()\n','    integer FSS_LocalNext=0\n']
+        for field in fields:relocated=relocated.replace(field,'')
+        relocated=relocated.replace('endglobals',''.join(fields)+'endglobals',1)
+        self.assertEqual(refresh_runtime(relocated),canonical)
+        self.assertEqual(refresh_runtime(canonical),canonical)
+
     def test_classic_fallback_preserves_explicit_field_reset(self):
         base=table({'igol':50,'ilev':2})
         edited=table({'ilev':2})

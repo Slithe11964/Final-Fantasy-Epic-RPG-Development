@@ -5,7 +5,10 @@ globals
     constant integer FSS_CHUNK=960
     // Allocate on every client before local file IO; never allocate handles locally.
     hashtable FSS_Store=InitHashtable()
+    // Both handles are allocated synchronously; local IO never advances shared IDs.
+    hashtable FSS_LocalStore=InitHashtable()
     integer FSS_Next=0
+    integer FSS_LocalNext=0
     string FSS_ScanText=""
     integer FSS_ScanMode=0
     integer FSS_ScanA=1
@@ -14,13 +17,20 @@ globals
     boolean FSS_ScanDone=false
 endglobals
 
+function FSS_Table takes string text returns hashtable
+    if SubString(text,0,4)=="!FL:" then
+        return FSS_LocalStore
+    endif
+    return FSS_Store
+endfunction
+
 function FSS_Id takes string text returns integer
     local integer id
-    if SubString(text,0,4)!="!FS:" then
+    if SubString(text,0,4)!="!FS:" and SubString(text,0,4)!="!FL:" then
         return 0
     endif
     set id=S2I(SubString(text,4,StringLength(text)))
-    if id<1 or LoadInteger(FSS_Store,id,0)<1 then
+    if id<1 or LoadInteger(FSS_Table(text),id,0)<1 then
         return 0
     endif
     return id
@@ -29,9 +39,15 @@ endfunction
 function FSS_Length takes string text returns integer
     local integer id=FSS_Id(text)
     if id>0 then
-        return LoadInteger(FSS_Store,id,0)
+        return LoadInteger(FSS_Table(text),id,0)
     endif
     return StringLength(text)
+endfunction
+
+function FSS_NewLocal takes integer length returns string
+    set FSS_LocalNext=FSS_LocalNext+1
+    call SaveInteger(FSS_LocalStore,FSS_LocalNext,0,length)
+    return "!FL:"+I2S(FSS_LocalNext)
 endfunction
 
 function FSS_New takes integer length returns string
@@ -56,7 +72,7 @@ function FSS_Raw takes string text,integer first,integer last returns string
         if take>last then
             set take=last
         endif
-        set result=result+SubString(LoadStr(FSS_Store,id,part+1),first-part*FSS_CHUNK,take-part*FSS_CHUNK)
+        set result=result+SubString(LoadStr(FSS_Table(text),id,part+1),first-part*FSS_CHUNK,take-part*FSS_CHUNK)
         set first=take
     endloop
     return result
@@ -75,7 +91,7 @@ function FSS_SubString takes string text,integer first,integer last returns stri
     if id==0 then
         return SubString(text,first,last)
     endif
-    set length=LoadInteger(FSS_Store,id,0)
+    set length=LoadInteger(FSS_Table(text),id,0)
     if last>length then
         set last=length
     endif
@@ -85,26 +101,30 @@ function FSS_SubString takes string text,integer first,integer last returns stri
     if last-first<=FSS_CHUNK then
         set part=first/FSS_CHUNK
         if last<=(part+1)*FSS_CHUNK then
-            return SubString(LoadStr(FSS_Store,id,part+1),first-part*FSS_CHUNK,last-part*FSS_CHUNK)
+            return SubString(LoadStr(FSS_Table(text),id,part+1),first-part*FSS_CHUNK,last-part*FSS_CHUNK)
         endif
         return FSS_Raw(text,first,last)
     endif
-    set result=FSS_New(last-first)
-    set id=FSS_Next
+    if SubString(text,0,4)=="!FL:" then
+        set result=FSS_NewLocal(last-first)
+    else
+        set result=FSS_New(last-first)
+    endif
+    set id=FSS_Id(result)
     loop
         exitwhen first>=last
         set take=first+FSS_CHUNK
         if take>last then
             set take=last
         endif
-        call SaveStr(FSS_Store,id,position+1,FSS_Raw(text,first,take))
+        call SaveStr(FSS_Table(result),id,position+1,FSS_Raw(text,first,take))
         set position=position+1
         set first=take
     endloop
     return result
 endfunction
 
-function FSS_Concat takes string left,string right returns string
+function FSS_ConcatMode takes string left,string right,boolean localText returns string
     local integer split=FSS_Length(left)
     local integer length=split+FSS_Length(right)
     local integer position=0
@@ -115,8 +135,12 @@ function FSS_Concat takes string left,string right returns string
     if length<=FSS_CHUNK then
         return left+right
     endif
-    set result=FSS_New(length)
-    set id=FSS_Next
+    if localText then
+        set result=FSS_NewLocal(length)
+    else
+        set result=FSS_New(length)
+    endif
+    set id=FSS_Id(result)
     loop
         exitwhen position>=length
         set last=position+FSS_CHUNK
@@ -130,10 +154,18 @@ function FSS_Concat takes string left,string right returns string
         else
             set fragment=FSS_Raw(left,position,split)+FSS_Raw(right,0,last-split)
         endif
-        call SaveStr(FSS_Store,id,position/FSS_CHUNK+1,fragment)
+        call SaveStr(FSS_Table(result),id,position/FSS_CHUNK+1,fragment)
         set position=last
     endloop
     return result
+endfunction
+
+function FSS_Concat takes string left,string right returns string
+    return FSS_ConcatMode(left,right,false)
+endfunction
+
+function FSS_LocalConcat takes string left,string right returns string
+    return FSS_ConcatMode(left,right,true)
 endfunction
 
 function FSS_Equals takes string left,string right returns boolean

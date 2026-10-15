@@ -467,6 +467,9 @@ def derived_native_objects(base,edited,modules):
 def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=None):
     base,edited,profile=map(View,(base_path,edited_path,profile_path))
     modules=modules_for(base,edited,profile)
+    from save_strings import refresh_runtime
+    modules={lib:refresh_runtime(s) if 'function FSS_Id takes' in s or lib=='TForsakenSaveTransport' else s
+             for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or

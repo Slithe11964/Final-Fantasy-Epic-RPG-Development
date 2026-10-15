@@ -21,7 +21,7 @@ def materialize(env, value):
     if not identity:
         return value
     length = env['FSS_Length'](value)
-    return ''.join(env['FSS_Store'][(identity, i + 1)]
+    return ''.join(env['FSS_Table'](value)[(identity, i + 1)]
                    for i in range((length + 959) // 960))
 
 
@@ -203,6 +203,47 @@ class BoundedTransportTests(transport.TransportTests):
         self.assertEqual(materialize(self.e, self.e['FST_Result'][0]), self.file)
         self.assertEqual(self.sent, [])
         self.assertGreater(len(self.synced), 100)
+
+    def test_two_clients_local_reads_do_not_change_shared_fragment_state(self):
+        other=BoundedTransportTests();other.setUp();other.local=1
+        clients=(self,other)
+        decoded=codec.decode(other.file)
+        other.file=codec.encode(codec.Envelope(decoded.account_hash,tuple(
+            codec.Section(s.id,s.version,s.required,codec.pairs([(i,99) for i in range(1,43)]))
+            if s.id==2 else s for s in decoded.sections)))
+        for pid in (0,1):
+            for client in clients:self.assertTrue(client.e['FST_Request'](pid,42))
+        self.assertGreater(self.e['FSS_LocalNext'],0)
+        self.assertGreater(other.e['FSS_LocalNext'],0)
+        for client in clients:
+            self.assertEqual(client.e['FSS_Next'],0)
+            self.assertEqual(client.e['FSS_Store'],{})
+        seen=[0,0]
+        for tick in range(400):
+            for client in clients:client.e['FST_Pump']()
+            for pid,sender in enumerate(clients):
+                for _,packet in sender.sent[seen[pid]:]:
+                    self.assertFalse(packet.startswith(('!FS:','!FL:')))
+                    for client in clients:client.e['FST_Receive'](pid,packet)
+                seen[pid]=len(sender.sent)
+            self.assertEqual(self.e['FSS_Next'],other.e['FSS_Next'])
+            self.assertEqual(self.e['FSS_Store'],other.e['FSS_Store'])
+            if all(c.e['FST_Ready'][0] and c.e['FST_Ready'][1] for c in clients):break
+        for pid,sender in enumerate(clients):
+            for client in clients:
+                self.assertTrue(client.e['FST_Ready'][pid],client.e['FST_Error'][pid])
+                self.assertEqual(materialize(client.e,client.e['FST_Result'][pid]),sender.file)
+
+    def test_local_write_readback_leaves_shared_virtual_ids_unchanged(self):
+        other=BoundedTransportTests();other.setUp();other.local=1
+        text=profile(large=True);value=fragments(self.e,text)
+        remote=fragments(other.e,text)
+        # Each client does shared preflight; only the owner does file IO/readback.
+        self.assertTrue(self.e['FST_Write'](0,value,42))
+        self.assertTrue(other.e['FST_Write'](0,remote,42))
+        self.assertEqual(self.e['FSS_Store'],other.e['FSS_Store'])
+        self.assertEqual(self.e['FSS_Next'],other.e['FSS_Next'])
+        self.assertEqual(self.file,text)
 
 
 # Do not inherit tests that deliberately compare logical buffers to native strings.

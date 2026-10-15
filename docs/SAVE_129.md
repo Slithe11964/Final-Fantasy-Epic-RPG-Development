@@ -106,6 +106,15 @@ lists that category and its children, such as Physical Weapons and Tools.
 
 ## Warcraft menu saves
 
+PAIR004 classic failed a new Simple checkpoint after `-loadf dev`, several quests,
+and a complete client restart. The same test passed in Forsaken/Reforged. The
+local 2026-10-15 report and checkpoint were inspected read-only: all compressed
+checkpoint blocks decompress, and its observed FSVB fragments are bounded at 960
+characters. The exception is a null agent lookup in an engine callback; that
+does not prove which restore step first failed. Do not claim the paired workflow
+or bounded storage has resolved classic endgame checkpoints. The original save
+and crash files remain unchanged.
+
 Warcraft menu load crashed after a -loadf import in both ATO and ATP. Releasing
 completed import snapshots in ATP did not resolve it. The new crash repeats the
 same engine call stack. The failing ATP checkpoint was located through the dump
@@ -191,3 +200,38 @@ scratch state and allows another attempt. If character creation had started, it
 uses the existing verified rollback; an owned capture writer is released as well.
 The work-ceiling model is a regression check, not an emulator of Warcraft's exact
 bytecode counter. In-game import and a new native checkpoint still need acceptance.
+
+## Multiplayer local-file storage
+
+The user reported long-save imports desynchronizing Forsaken/Reforged clients
+during Loading. The earlier bounded-string implementation allocated local file
+assembly into the same `FSS_Store` / `FSS_Next` used by synchronized decode. Only
+the owner reads the file, so subsequent shared virtual IDs and table contents
+could differ between clients. This is a synchronization risk; a model cannot prove
+it is the only engine desync cause.
+The PAIR004 implementation reproduces a shared counter of 5 on the file owner
+versus 0 on an observer after the same requested long import in the two-client model.
+
+The candidate uses an independently preallocated local table/counter and `!FL:`
+references for file assembly. Shared decode retains `!FS:` references. Allocation
+mode is explicit in local concatenation and follows the input for substrings;
+there is no temporary global mode flag to leak if a VM thread is interrupted.
+Only native packet text crosses the wire. FSVB bytes, file names, item/job IDs,
+packet framing and checksums remain unchanged. The paired builder refreshes this
+reviewed runtime support in existing editor references without changing the master.
+
+The two-client model imports different long profiles concurrently and checks
+identical shared fragment IDs/table state after every delivery. Export/readback
+also preserves the same shared state on owner and observer. These tests pass;
+multiplayer engine acceptance and the separate classic checkpoint fix remain pending.
+
+For classic checkpoint isolation, `release/diagnostics/CheckpointNoItems.txt`
+is a separately named copy of the user's dev file with only inventory section 1
+replaced by an empty inventory. All other sections and account binding are retained;
+the reference codec, actual JASS validator and detached load planner accept it. The copy remains over the
+fragment threshold, so it still exercises bounded strings. Its report records the
+source hash. It is also installed under the same name in CustomMapData/FFERPG;
+the original dev.txt is unchanged. In a fresh classic game, use
+`-loadf CheckpointNoItems`, make a new menu checkpoint, fully exit/restart, then
+load it. Compare with a regular dev checkpoint made on the same candidate. Missing
+carried/equipped gear is intentional in this diagnostic, not a load regression.

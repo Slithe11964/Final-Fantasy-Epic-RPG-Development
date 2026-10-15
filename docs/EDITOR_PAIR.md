@@ -13,6 +13,11 @@ replacing the native equipment module. The fresh-load trigger guard is refreshed
 from actual runtime declarations. Semantic save-codec edits and structural equipment
 slot migrations require explicit review.
 
+The builder also refreshes the reviewed bounded-string runtime helper and local
+file-reader adapter from `tools/save_strings.py` / `SaveStrings.j`. Local file
+assembly uses its own storage; shared validation uses deterministic shared IDs.
+This runtime safeguard changes neither the serialized codec nor the pinned master.
+
 Each profile gets a private source export and the normal compiler/content/regression
 gates. Native regression fixtures match the native implementation rather than
 asserting the classic backpack layout. Classic conversion compiles against the old
