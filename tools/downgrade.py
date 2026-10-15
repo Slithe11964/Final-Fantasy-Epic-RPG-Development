@@ -320,6 +320,50 @@ def w3i_v25(template, reforged):
     out += t.d[t.o:]                                   # forces, upgrades, tech, random groups, item tables
     return bytes(out)
 
+
+def w3i_editor_v25(data):
+    """Preserve the edited scenario's compatible fields, rather than a template's.
+
+    Format gates follow War3Net's MapInfo/PlayerData binary layout; newer HUD,
+    height-fog, zoom and HD-water extensions have no v25 representation.
+    """
+    r=R(data);version=r.i()
+    if version not in (25,28,31,32,33,39):
+        raise ValueError('unsupported editor scenario version: '+str(version))
+    if version==25:return data
+    out=bytearray(struct.pack('<i',25))+r.raw(8)
+    if version>=28:r.raw(16)
+    for _ in range(4):out+=r.z()+b'\0'
+    out+=r.raw(32+16+8)                  # Bounds, margins, playable dimensions.
+    flags=r.i()
+    out+=struct.pack('<i',flags & ~0x700000)+r.raw(1+4)
+    if version>=39:r.raw(4)              # Global race HUD.
+    for _ in range(4):out+=r.z()+b'\0'    # Loading screen.
+    out+=r.raw(4)                        # Game dataset.
+    for _ in range(4):out+=r.z()+b'\0'    # Prologue.
+    out+=r.raw(20)                       # Classic linear fog fields.
+    if version>=39:r.raw(24)
+    out+=r.raw(4)+r.z()+b'\0'+r.raw(5)    # Weather, sound, light, water color.
+    if version>=28:
+        if r.i()!=0:raise ValueError('Lua scenarios cannot be converted to 1.29.2')
+    if version>=31:r.raw(8)              # Graphics modes, native game-data version.
+    if version>=32:r.raw(8)
+    if version>=33:r.raw(4)
+    if version>=39:r.raw(40)
+    players=r.i()
+    if not 0<=players<=32:raise ValueError('invalid player count in edited scenario')
+    out+=struct.pack('<i',players)
+    for _ in range(players):
+        out+=r.raw(12)                   # ID, controller, race.
+        if version>=39:r.raw(4)
+        out+=r.raw(4)+r.z()+b'\0'+r.raw(16)
+        if version>=31:r.raw(8)
+    if r.o+4>len(data):raise ValueError('edited scenario is missing force data')
+    forces=struct.unpack_from('<i',data,r.o)[0]
+    if not 0<=forces<=32:raise ValueError('invalid force count in edited scenario')
+    out+=data[r.o:]                      # Forces, upgrades, tech and random tables.
+    return bytes(out)
+
 # ---------------------------------------------------------------- script
 def split_args(s):
     depth, cur, out = 0, '', []
@@ -390,6 +434,8 @@ def main():
     ap.add_argument('map'); ap.add_argument('out')
     ap.add_argument('--w3i-template', required=True)
     ap.add_argument('--name', help='map name shown in the map list (default: the template map\'s)')
+    ap.add_argument('--preserve-scenario-name', action='store_true', help='keep the editor scenario name even when giving the map-list header a build label')
+    ap.add_argument('--editor-scenario', action='store_true', help='preserve compatible scenario settings/players/forces from the edited map')
     ap.add_argument('--fill-from', help='an older map saved by a classic-format editor (e.g. 1.32 or older): object '
                     'fields Reforged left out are copied from it. Strongly recommended')
     ap.add_argument('--no-editor-files', action='store_true', help='leave out trigger/region/camera editor files (play-only map)')
@@ -411,7 +457,9 @@ def main():
     if a.fferpg_visuals:
         fferpg_visuals(files)
         report.append('FF Epic RPG: explicit dummy-passive art; unit selection/UI settings preserved')
-    files['war3map.w3i'] = w3i_v25(MPQ(a.w3i_template).read('war3map.w3i'), m.read('war3map.w3i')); report.append('map info -> v25')
+    files['war3map.w3i'] = (w3i_editor_v25(m.read('war3map.w3i')) if a.editor_scenario else
+                           w3i_v25(MPQ(a.w3i_template).read('war3map.w3i'), m.read('war3map.w3i')))
+    report.append('map info -> v25'+(' (edited scenario settings retained)' if a.editor_scenario else ''))
     text = m.read('war3map.j').decode('utf-8')
     if 'function BazaarFrame_Init ' in text:
         report.append('FF Epic RPG: Bazaar frame panels -> AE single-recipe dialog (runtime and editor)')
@@ -453,7 +501,7 @@ def main():
             if d:
                 used |= {int(i) for i in re.findall(rb'TRIGSTR_(\d+)', d)}
         kept = {k: v for k, v in strings.items() if k in used}
-        if a.name:   # the map list and lobby show the map info's name: make it the --name too
+        if a.name and not a.preserve_scenario_name:   # Older workflows also rename the scenario.
             w3i = files['war3map.w3i']
             mm = re.match(rb'TRIGSTR_(\d+)\0', w3i[12:])
             if mm and int(mm.group(1)) in kept:

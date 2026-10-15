@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "editor_reference": {
+    "path": "release/FFERPG_0.9.7.3-r16-stageATV.w3x",
+    "sha256": "5b81b34ec25add40a1a0092c201b0f8b9bede5bb20b6010caf4c72a2949a6b99"
+  },
+  "native_reference": {
+    "path": "release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEN.w3x",
+    "sha256": "fbb37c0c4db56f1b4ee4047fcd209d8a8e5059bcc71436a0b23fb39a03c82fa2"
+  }
+}

@@ -18,6 +18,19 @@ All 93 quests run on QuestEngine (QUEST_ENGINE.md). Bugs are deferred by user re
 
 ## Building
 
+User editing workflow: [editor/README.md](../editor/README.md). Open/save the shared
+Reforged-format `editor/FFERPG-Editor-Master.w3x`, then run `.\build-pair.ps1`.
+The checked initial pair is `release/pairs/PAIR004/` (native 110 tests, classic 201
+tests with 8 skipped, compiler/content/startup/save gates passed). Actual World
+Editor Save As and gameplay acceptance remain pending.
+The pinned authoring reference is ATV and the pinned native reference is EN;
+`editor/pair-config.json` verifies their hashes. Keep these ignored binary files
+with the master when backing up. Outputs publish together in `release/pairs/`.
+Root `src/`, the master and reference maps are never rewritten by the paired builder.
+The master uses classic/shared inventory while authoring; only the native output
+contains the native Forsaken inventory and panels. Do not use a generated map as
+a replacement master. Compatibility conflicts stop with retained private build logs.
+
 1.29.2 authoring build (Windows PowerShell, from this folder):
 
 ```powershell

@@ -573,7 +573,7 @@ def item_accuracy_initialization(base, mapping):
     def parse(value):
         if not value or value.startswith('TRIGSTR_'):
             return 0
-        plain = re.sub(r'\|c[0-9a-fA-F]{8}|\|r', '', value)
+        plain = re.sub(r'\|c[0-9a-fA-F]{8}|\|r', '', value).replace('|n', '\n')
         total = 0
         for pattern in (
                 r'\baccuracy(?:\s+rating)?\s*(?:by|:|\+)\s*\+?(\d+)',

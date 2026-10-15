@@ -223,7 +223,9 @@ def main():
             template = ROOT / 'baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x'
             os.environ['PATH'] = str(ROOT / 'tools/bin') + os.pathsep + os.environ.get('PATH', '')
             run(ROOT / 'tools/downgrade.py', ready, scratch / 'classic.w3x', '--w3i-template', template,
-                '--fill-from', template, '--name', final.stem, '--fferpg-visuals')
+                '--fill-from', config.get('classic_fill_from',template), '--name', config.get('classic_title',final.stem), '--fferpg-visuals',
+                *(['--preserve-scenario-name'] if config.get('preserve_scenario_name') else []),
+                *(['--editor-scenario'] if config.get('editor_scenario') else []))
             classic_bytes = (scratch / 'classic.w3x').read_bytes()
         source_files = sorted((ROOT / 'src').rglob('*.j')) + [ROOT / 'src/trigger-list.json', ROOT / 'src/itemtable.txt', ROOT / 'src/armory-hints.json']
         tool_files = sorted((ROOT / 'tools').rglob('*.py')) + sorted((ROOT / 'tools/contracts').glob('*.json')) + [ROOT / 'tools/build-config.json', ROOT / 'build.ps1', header_tool, ROOT / 'tools/tests/fixtures/savecodes.json']

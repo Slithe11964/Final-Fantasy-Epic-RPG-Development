@@ -33,7 +33,8 @@ def load_source(runtime):
         # Fixed ranges avoid collisions and cover every currently allocated quest step.
         span=(8192-len(triggers))//2
         lines+=['    loop','        exitwhen slot>=(QuestCount+1)*QUEST_MAX_STEPS or slot>='+str(span),'        call FFL_OneGuard(QuestStepTrigger[slot],%d+slot,block)'%len(triggers),'        call FFL_OneGuard(QuestStepPickupTrigger[slot],%d+slot,block)'%(len(triggers)+span),'        set slot=slot+1','    endloop']
-        quest_max=max(map(int,re.findall(r'QuestCount=(\d+)',runtime)) or [93])
+        quest_max=max([int(v) for v in re.findall(r'\bQuestCount\s*=\s*(\d+)',runtime)]+
+                      [93,len(re.findall(r'\bQuest_Define\s*\(',runtime))])
         if (quest_max+1)*16>span: raise ValueError('guard capacity insufficient')
     return (HERE/'Forsaken-fresh-load.j').read_text().replace('    // FFL_TRIGGER_GUARD_INITIALIZATION','\n'.join(lines))
 

@@ -1,5 +1,11 @@
 # Repeatable source builds
 
+For daily World Editor editing, use the [single-master paired workflow](../editor/README.md):
+edit `editor/FFERPG-Editor-Master.w3x`, save in Reforged, then run `.\build-pair.ps1`.
+It produces the native Forsaken/Reforged map and the 1.29.2 map together, retaining
+their separate inventory and UI implementations. The source-maintenance commands
+below remain available for project development; they are not the daily editor workflow.
+
 Run from the FFERPG repository in PowerShell:
 
 ```powershell
