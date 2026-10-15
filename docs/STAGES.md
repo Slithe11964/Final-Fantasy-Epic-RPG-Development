@@ -160,3 +160,4 @@ Add a new row after each build: `| <stage> | <one sentence> |`. Mark Forsaken bu
 | ForsakenEE | Retained replaced starter bodies as hidden, paused neutral units for the Reforged imported-character checkpoint crash retest; native inventory and save format preserved. |
 | ATS | Guarded hero/Gaya level restoration to correct level-one Tiny import promotion; native checkpoint failure remains unresolved. |
 | ForsakenEF | Applied the same guarded level restoration while preserving native inventory and the shared save format. |
+| ATS-StringProbe | Separate classic diagnostic: one command creates a long runtime string without importing or changing a character; gameplay objects match ATS. |

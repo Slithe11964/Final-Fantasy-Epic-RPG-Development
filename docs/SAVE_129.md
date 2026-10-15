@@ -130,8 +130,22 @@ memory failure remains a separate issue; its executable is not large-address-awa
 
 The Tiny control file is a short new-format save. Its ATR import failed because
 the level-one hero read back as level two, before the menu-save test could run.
-ATS / Forsaken EF avoid calling SetHeroLevel for an already reached level and uses
+ATS / Forsaken EF avoid calling SetHeroLevel for an already reached level and use
 UnitStripHeroLevel if a newly created unit is above the saved level. Both the
-selected job and Gaya use that helper. Retest Tiny import, then create a new menu
-checkpoint, fully restart Warcraft and load it. The large imported-character
-checkpoint failure remains unresolved.
+selected job and Gaya use that helper. The user confirmed Tiny import and the
+Warcraft menu save/load cycle in both 1.29.2 ATS and Reforged EF. The large
+imported-character checkpoint failure remains unresolved.
+
+## Runtime string isolation probe
+
+ATS-StringProbe is a separate diagnostic, not the next gameplay build. Start a fresh
+character without importing, type -checkpointstrings once, then create a new menu
+save, fully exit Warcraft, restart and load it. The command builds one 1,500-character
+string; no hero, inventory or progression state changes. Its source stays outside
+the normal module list. The builder checks playable/editor compilation, startup,
+archive preservation and identical converted gameplay object data against ATS.
+
+Tiny's file is short; failed endgame checkpoints contain much longer dynamic code
+strings. A 1 KB buffer exists in the classic script-restoration code, but its role
+in this failure is not established. The controlled probe must pass or fail before
+using string length as the basis for a save-system rewrite.

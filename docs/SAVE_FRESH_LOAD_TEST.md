@@ -208,3 +208,7 @@ ATS / EF guard level restoration for the Tiny test: a saved level-one job or Gay
 should remain level one. ATR failed that import with actual level two. Retry
 -loadf Tiny in ATS before making the menu checkpoint; the large-character
 checkpoint failure remains unresolved, including with ATR starter retirement.
+
+Confirmed by the user: Tiny import and Warcraft menu save/load both work in
+1.29.2 ATS and Reforged EF. Endgame checkpoint loading is still unresolved.
+The separate ATS-StringProbe isolates long runtime strings; see SAVE_129.md.
