@@ -379,10 +379,6 @@ function Trig_Vote_Difficulty_Result_Actions takes nothing returns nothing
     endif
     if(Trig_Vote_Difficulty_Result_IsSimple())then
         call DisplayTimedTextToForce(GetPlayersAll(),15.,"|cff00ff00Simple|r: Enemies have heavily reduced damage, defense and attack speed.")
-        if(Trig_Vote_Difficulty_Result_SaveLoadEnabled())then
-            call DisplayTimedTextToForce(GetPlayersAll(),15.," ")
-            call DisplayTimedTextToForce(GetPlayersAll(),15.,"Saves from Simple mode cannot be loaded in other difficulties besides Nightmare.")
-        endif
         set udg_DifficultyScale=2.
         set udg_EnemyHpPerPlayer=50.
         set udg_ExpRate=.5

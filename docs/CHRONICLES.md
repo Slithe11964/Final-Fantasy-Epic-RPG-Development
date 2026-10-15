@@ -80,8 +80,9 @@ Secrets refresh. Load an existing DW save and check earned categories on both pa
 ATO: the Secrets tooltip includes its unlocked total; `-chronicle` labels the
 Secrets category correctly. Other classic Chronicle counters are confirmed.
 
-Forsaken EK refreshes the native Secrets book from the DW baseline too. Both base
-and skin use Secrets as the title, green Keg Hunter, the requested rare-drop line,
-and a runtime Chronicles Unlocked: 1/1 footer when title 59 is owned (0/1 otherwise).
-The title bit, unlock rules and rare-drop reward are unchanged. Native rendering
-still needs an in-game check.
+Forsaken EL keeps Secrets as the title, green Keg Hunter and the requested rare-drop
+line in the native book. Its footer uses the same gold Chronicles unlocked label
+and Chronicles_Progress(player,12) as the other categories: owned Secrets entries
+over all Secrets entries (currently 1 / 1 when complete). It is not a hardcoded
+title-59 counter. Unlock rules and the rare-drop reward are unchanged. Native
+rendering still needs an in-game check.

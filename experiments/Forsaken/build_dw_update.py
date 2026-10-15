@@ -239,6 +239,7 @@ def main():
             write(path(module),(ROOT/'src/triggers/05 Items crafting and shops'/(module+'.j')).read_text())
         write(path('Equip'),ui_recovery.panel_source(patch_equip(path('Equip').read_text())))
         write(path('Titles'),ui_recovery.secrets_source(path('Titles').read_text()))
+        write(path('Vote'),ui_recovery.simple_notice_source(path('Vote').read_text()))
         write(path('Job'),patch_job(path('Job').read_text()))
         boot=path('MapBootstrap').read_text()
         first,rest=boot.split('\n',1);boot=first+', optional TTalents\n'+rest
@@ -260,17 +261,18 @@ def main():
             target=cache if module=='ForsakenSaveCache' else path(module)
             write(target,lower_module(target.read_text()))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','Vote','MapBootstrap','ForsakenFreshLoad',
             *save_modules[:-1])
         run('order_libraries.py',synced,scratch/'ordered.w3x')
-    # The pinned DW fixture executes named functions explicitly; include the new text helper.
+    # The pinned DW test predates the requested Secrets collection footer.
     fixture=work/'tools/tests/test_chronicles_secrets.py'
     text=fixture.read_text()
-    if "names.append('Forsaken_SecretsProgress')" not in text:
-        anchor='    live = execute(source, names, e)'
-        if text.count(anchor)!=1:raise ValueError('Chronicle fixture function selection changed')
-        text=text.replace(anchor,"    if 'function Forsaken_SecretsProgress takes' in source:\n        names.append('Forsaken_SecretsProgress')\n"+anchor,1)
-        fixture.write_text(text)
+    old="        self.assertNotIn('Chronicles unlocked:', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))"
+    new="        self.assertIn(('body', 'cSec', 'Secrets description|n|n|cffffcc00Chronicles unlocked:|r 1 / 1', 0), e['writes'])"
+    if old in text:
+        fixture.write_text(text.replace(old,new,1))
+    elif new not in text:
+        raise ValueError('Chronicle fixture footer expectation changed')
     allow='^gg_trg_(Talents_(Open|Guard|Reset|Dialog|FrameClick|FrameSync)|Forsaken_UIRecovery)$'
     built=work/'release'/name
     if not built.exists():run('build_stage.py',args.stage,'--base',scratch/'ordered.w3x','--allow-new',allow)

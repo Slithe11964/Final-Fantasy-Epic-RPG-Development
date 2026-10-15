@@ -76,10 +76,19 @@ class RecoveryTests(unittest.TestCase):
         env['udg_TitleForce'][59].add(0)
         env['ChroniclesSecretsBase']=ui_recovery.SECRETS
         source=ui_recovery.secrets_source(module('Titles'))
-        env=execute(source,['Forsaken_SecretsProgress','Chronicles_RefreshTooltips'],env)
+        env=execute(source,['Chronicles_Progress','Chronicles_RefreshTooltips'],env)
         env['Chronicles_RefreshTooltips']()
         self.assertIn(('name','cSec','Secrets',0),env['writes'])
-        self.assertIn(('body','cSec',ui_recovery.SECRETS+'|n|nChronicles Unlocked: 1/1',0),env['writes'])
+        footer=ui_recovery.SECRETS+'|n|n|cffffcc00Chronicles unlocked:|r '
+        self.assertIn(('body','cSec',footer+'1 / 1',0),env['writes'])
+        # Secrets must follow its collection, including future entries, rather than title 59 alone.
+        env['udg_TitleName'][65]='Another secret'
+        env['udg_TitleChronicleIndex'][65]=12
+        env['Chronicles_RefreshTooltips']()
+        self.assertIn(('body','cSec',footer+'1 / 2',0),env['writes'])
+        env['udg_TitleForce'][65].add(0)
+        env['Chronicles_RefreshTooltips']()
+        self.assertIn(('body','cSec',footer+'2 / 2',0),env['writes'])
 
 
 if __name__=='__main__':unittest.main()

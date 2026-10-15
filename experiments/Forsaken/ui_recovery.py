@@ -28,19 +28,21 @@ def startup_baseline(original, candidate):
 
 
 def secrets_source(source):
-    helper = '''function Forsaken_SecretsProgress takes player p returns string
-    if IsPlayerInForce(p,udg_TitleForce[59]) then
-        return "1/1"
-    endif
-    return "0/1"
-endfunction
-
-'''
-    source = source.replace('function Chronicles_RefreshTooltips takes', helper+'function Chronicles_RefreshTooltips takes', 1)
     old = '    set tooltip=ChroniclesSecretsBase\n'
     if source.count(old) != 1:
         raise ValueError('DW Secrets tooltip changed')
-    return source.replace(old, '    set tooltip=ChroniclesSecretsBase+"|n|nChronicles Unlocked: "+Forsaken_SecretsProgress(p)\n', 1)
+    return source.replace(old, '    set tooltip=ChroniclesSecretsBase+"|n|n|cffffcc00Chronicles unlocked:|r "+Chronicles_Progress(p,12)\n', 1)
+
+
+def simple_notice_source(source):
+    old = '''        if(Trig_Vote_Difficulty_Result_SaveLoadEnabled())then
+            call DisplayTimedTextToForce(GetPlayersAll(),15.," ")
+            call DisplayTimedTextToForce(GetPlayersAll(),15.,"Saves from Simple mode cannot be loaded in other difficulties besides Nightmare.")
+        endif
+'''
+    if source.count(old) != 1:
+        raise ValueError('Simple difficulty notice changed')
+    return source.replace(old, '', 1)
 
 
 def panel_source(source):
