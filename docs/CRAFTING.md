@@ -91,3 +91,25 @@ Item numbering is explained in [LOOT.md](LOOT.md).
 - **One shared forge:** Bali's two slots are shared by all players.
 - **Material indexes are stored elsewhere:** `MonsterData` drop slots and hunt contracts use
   them. Add new materials at the end only.
+
+## Native Forsaken curses (EN)
+
+The Forsaken builder overlays experiments/Forsaken/Forsaken-curse.j on DW
+Curse. The old recipe lookup checked only the scroll user's six visible slots
+and original item IDs. Curse scrolls now search the owning hero first, then Gaya:
+quick slots, the unit's entire extended bag and all nine equipment slots. Native
+f/g equipment aliases resolve through ForsakenGearTypes to the unchanged recipe
+IDs. House storage and other players are excluded.
+
+Either the hero or Gaya can use the scroll within 300 range of Lady Curse. A curse
+replaces one matching item on its holder; only successful placement consumes the
+scroll. Conversion callbacks are suspended while replacing the handle and native
+effects/panels refresh afterward. Failed placement restores the original instead
+of deleting it. Existing curse recipes/results are unchanged; ordinary multi-item
+crafting remains on its original path. The shared classic Curse source is unchanged.
+
+The focused model executes the actual native Curse module and recipe table with
+all hero bag positions, both scroll users, all 22 curse recipes, equipped/Gaya
+items, duplicate items, full bags, missing items, failed creation/placement,
+range/ownership and busy-inventory cases. Native event timing and restrictions
+still require in-game acceptance in EN.

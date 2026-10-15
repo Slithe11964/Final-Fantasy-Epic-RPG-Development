@@ -240,6 +240,7 @@ def main():
         write(path('Equip'),ui_recovery.panel_source(patch_equip(path('Equip').read_text())))
         write(path('Titles'),ui_recovery.secrets_source(path('Titles').read_text()))
         write(path('Vote'),ui_recovery.simple_notice_source(path('Vote').read_text()))
+        write(path('Curse'),(HERE/'Forsaken-curse.j').read_text())
         for module in ('Quest_AoMadoushi','Quest_Phoenix'):
             write(path(module),(ROOT/'src/triggers/06 Quests and story'/(module+'.j')).read_text())
         write(path('Job'),patch_job(path('Job').read_text()))
@@ -263,7 +264,7 @@ def main():
             target=cache if module=='ForsakenSaveCache' else path(module)
             write(target,lower_module(target.read_text()))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','Vote','Quest_AoMadoushi','Quest_Phoenix','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','Vote','Curse','Quest_AoMadoushi','Quest_Phoenix','MapBootstrap','ForsakenFreshLoad',
             *save_modules[:-1])
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     # The pinned DW test predates the requested Secrets collection footer.
