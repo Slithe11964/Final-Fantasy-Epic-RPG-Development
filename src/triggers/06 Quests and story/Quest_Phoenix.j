@@ -54,11 +54,15 @@ function QuestPhoenix_Define takes nothing returns nothing
     call Quest_OnDone(q,"QuestPhoenix_Done")
 endfunction
 
-function Trig_Quest_Phoenix_Available_Actions takes nothing returns nothing
+function QuestPhoenix_Available takes nothing returns nothing
     if QUEST_PHOENIX==0 then
         call QuestPhoenix_Define()
     endif
     call Quest_MakeAvailable(QUEST_PHOENIX)
+endfunction
+
+function Trig_Quest_Phoenix_Available_Actions takes nothing returns nothing
+    call QuestPhoenix_Available()
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 

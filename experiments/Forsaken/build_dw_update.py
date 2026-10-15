@@ -192,7 +192,7 @@ def main():
             if path not in kept:path.unlink()
         align_bt_tests(work)
         shutil.copy2(ROOT/'tools/tests/test_talents.py',work/'tools/tests/test_talents.py')
-        for fixture in ('test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py'):
+        for fixture in ('test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py','test_quest_unlocks.py'):
             shutil.copy2(ROOT/'tools/tests'/fixture,work/'tools/tests'/fixture)
         config=work/'tools/build-config.json';data=json.loads(config.read_text())
         data.update(prefix='FFERPG_0.9.7.3-r16-Forsaken',title=settings()['name']+' Forsaken '+args.stage+' private Chronicle/Priest test')
@@ -240,6 +240,8 @@ def main():
         write(path('Equip'),ui_recovery.panel_source(patch_equip(path('Equip').read_text())))
         write(path('Titles'),ui_recovery.secrets_source(path('Titles').read_text()))
         write(path('Vote'),ui_recovery.simple_notice_source(path('Vote').read_text()))
+        for module in ('Quest_AoMadoushi','Quest_Phoenix'):
+            write(path(module),(ROOT/'src/triggers/06 Quests and story'/(module+'.j')).read_text())
         write(path('Job'),patch_job(path('Job').read_text()))
         boot=path('MapBootstrap').read_text()
         first,rest=boot.split('\n',1);boot=first+', optional TTalents\n'+rest
@@ -261,7 +263,7 @@ def main():
             target=cache if module=='ForsakenSaveCache' else path(module)
             write(target,lower_module(target.read_text()))
         synced=scratch/'sources.w3x'
-        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','Vote','MapBootstrap','ForsakenFreshLoad',
+        run('sync_module.py',cached,synced,'Missile','Spell_Cure','Equip','Job','Cmd','Save','Armory','Bazaar','Titles','Vote','Quest_AoMadoushi','Quest_Phoenix','MapBootstrap','ForsakenFreshLoad',
             *save_modules[:-1])
         run('order_libraries.py',synced,scratch/'ordered.w3x')
     # The pinned DW test predates the requested Secrets collection footer.

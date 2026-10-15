@@ -1,4 +1,4 @@
-library TQuestAoMadoushi requires TQuestEngine, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait
+library TQuestAoMadoushi requires TQuestEngine, TCine, TMusic, TPlayerHero, TReward, TText, TUnit, TWait, TQuestPhoenix, TQuestAnnoyingMonster
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_AoMadoushi_Talk=null
@@ -31,6 +31,9 @@ function QuestAoMadoushi_Start takes nothing returns nothing
         call QuestAoMadoushi_Define()
     endif
     call Quest_Start(QUEST_AO_MADOUSHI,null,null)
+    // These side quests are available once Cid sends the party to Ao Madoushi.
+    call QuestPhoenix_Available()
+    call QuestAnnoyingMonster_Available()
 endfunction
 
 function QuestAoMadoushi_FluteTaken takes nothing returns nothing

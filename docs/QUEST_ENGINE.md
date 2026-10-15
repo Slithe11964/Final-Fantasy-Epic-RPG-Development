@@ -194,3 +194,13 @@ Play each with cinematics on, and at least one with cinematics off (reward still
 
 For worked new quest/boss/item/reward examples, read CONTENT_DEVELOPMENT.md.
 Stage V also tests Cartographer scan context and True Ice Age speaker ownership across waits.
+
+## Ao Madoushi side offers (Forsaken EM)
+
+Phoenix and Annoying Monster previously depended solely on the exact six-count
+milestone. Starting Ao Madoushi now also calls their idempotent availability
+functions, making the stated prerequisite reliable independently of that counter.
+Phoenix keeps its old milestone wrapper, but the callable availability function
+does not destroy the caller trigger. Active/completed quest states and rewards
+are retained. Native in-game acceptance is pending. The shared sources contain
+the same fix for the next classic build.
