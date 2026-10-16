@@ -1,5 +1,21 @@
 # Edit once, build both maps
 
+Quick steps (Windows):
+
+1. Open `editor\FFERPG-Editor-Master.w3x` in World Editor, make your changes, press Ctrl+S
+   and wait until the save and script compile finish. Close World Editor.
+2. Open File Explorer at `C:\Users\jaked\WarcraftMapExtractor\FFERPG`, click the address bar,
+   type `powershell` and press Enter.
+3. Run, choosing the next unused name (see `release\pairs`):
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\build-pair.ps1 -Stage PAIR020
+   ```
+
+4. Wait for `Both playable maps are ready` (several minutes). If it prints
+   `PAIR BUILD STOPPED`, read the reason under "When a build stops" below.
+5. Copy both maps from `release\pairs\PAIR020\` into your Warcraft III Maps folder and test.
+
 Open `FFERPG-Editor-Master.w3x` in your configured Warcraft Reforged World Editor.
 This is a Reforged-format authoring map. Its current starting point includes the
 ATV classic gameplay fixes and approved r17 introduction/scenario text.

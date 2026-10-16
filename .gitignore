@@ -18,6 +18,6 @@ release/Forsaken/*
 !release/Forsaken/gear-slots-BS.json
 !release/pairs/
 release/pairs/*
-!release/pairs/PAIR018/
+!release/pairs/PAIR019/
 # The map authors edit in World Editor
 !editor/FFERPG-Editor-Master.w3x

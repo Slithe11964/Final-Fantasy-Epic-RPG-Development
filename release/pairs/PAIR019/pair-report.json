@@ -1,7 +1,7 @@
 {
-  "stage": "PAIR018",
+  "stage": "PAIR019",
   "editor_input": "/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/mnt/WarcraftMapExtractor/FFERPG/editor/FFERPG-Editor-Master.w3x",
-  "editor_input_sha256": "a844c0f2d844792842c5521eb3c17b4b97a814590b2e90e5871b3581c0954363",
+  "editor_input_sha256": "ae4b422d24c8a5bc5f67250b7ff290b00873cdf1031f7be12071a4e1876e1276",
   "references": {
     "schema": 1,
     "editor_reference": {
@@ -17,12 +17,12 @@
   "scenario_name": "FFERPG_0.9.7.4",
   "outputs": {
     "Forsaken": {
-      "file": "FFERPG-PAIR018-Forsaken.w3x",
-      "sha256": "56ad194edca56bce2d5e9a9a30df21dac94179f722a6cc71d04efc1b2dddfb21"
+      "file": "FFERPG-PAIR019-Forsaken.w3x",
+      "sha256": "c3254a92c184caf0f60421f6bd7f7476792f7c79805cfa50c2ad5917e98504e9"
     },
     "Classic": {
-      "file": "FFERPG-PAIR018-1.29.2.w3x",
-      "sha256": "58c974477209df06e7b41434da2f9852025ea9c8732fd3ceb7d8ad42da38f2bd"
+      "file": "FFERPG-PAIR019-1.29.2.w3x",
+      "sha256": "0a0e14c7eb3e2a987b07463e33c0dba221cf4830a1b7607bc9933a3a3be179a7"
     }
   },
   "profiles": {
@@ -156,7 +156,7 @@
         "TTropicalEssence",
         "TWarp"
       ],
-      "world_authority": "/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/edited-master.w3x",
+      "world_authority": "/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/PAIR019/edited-master.w3x",
       "native": true,
       "cleared_marker_art": [
         "A1FC",
@@ -297,7 +297,7 @@
         "TTravel",
         "TWarp"
       ],
-      "world_authority": "/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/edited-master.w3x",
+      "world_authority": "/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/PAIR019/edited-master.w3x",
       "native": false,
       "cleared_marker_art": [
         "A1FC",

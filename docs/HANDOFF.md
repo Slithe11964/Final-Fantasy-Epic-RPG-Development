@@ -6,7 +6,8 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-16)
 
-PAIR018 is the public release candidate: the user's editor master (0.9.7.4 patch notes in
+PAIR019 is the public release candidate: PAIR018 with the scenario name set to 0.9.7.4.
+PAIR018: the user's editor master (0.9.7.4 patch notes in
 Intro and the quest log, Reminder links, quest and map edits) plus PAIR017's backpack fix.
 Its object data matches PAIR017's. Not copied to TEST; outputs are in release/pairs/PAIR018.
 The master was saved by a newer World Editor (no HM3W header, fields moved into skin tables,
