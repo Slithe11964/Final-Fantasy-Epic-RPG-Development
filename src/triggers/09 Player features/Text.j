@@ -65,7 +65,7 @@ function Text_Say takes unit l_speaker,string l_msg,boolean l_forced returns not
 endfunction
 
 function Text_IntToString takes integer i returns string
-    if(i<8192)then
+    if(i>=0 and i<8192)then
         if(udg_IntStringCache[i]==null)then
             set udg_IntStringCache[i]=I2S(i)
         endif

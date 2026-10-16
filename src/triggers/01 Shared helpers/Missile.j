@@ -58,6 +58,9 @@ function Missile_Allocate takes nothing returns integer
     if(l_idx!=0)then
         set udg_MissileFreeHead=udg_MissileNext[l_idx]
     else
+        if udg_MissileCount>=8190 then
+            return 0
+        endif
         set udg_MissileCount=udg_MissileCount+1
         set l_idx=udg_MissileCount
     endif
@@ -98,8 +101,16 @@ function Missile_Free takes integer l_idx returns nothing
     elseif(udg_MissileNext[l_idx]!=-1)then
         return
     endif
+    set udg_MissileNext[l_idx]=-2
     set udg_ArgIndex=l_idx
     call TriggerEvaluate(udg_MissileImpactTrig)
+    call DestroyGroup(udg_MissileHitGroup[l_idx])
+    set udg_MissileHitGroup[l_idx]=null
+    set udg_MissileCaster[l_idx]=null
+    set udg_MissileTarget[l_idx]=null
+    set gg_unit_h020_0269[l_idx]=null
+    set udg_MissileModelEffect[l_idx]=null
+    set udg_MissileTrailEffect[l_idx]=null
     set udg_MissileNext[l_idx]=udg_MissileFreeHead
     set udg_MissileFreeHead=l_idx
 endfunction
@@ -131,6 +142,7 @@ function Missile_Update takes nothing returns nothing
             if udg_MissileCollisionRange[d]>.0 then
                 call Missile_RunOnLoop(d)
             endif
+            if udg_MissileNext[d]==-1 then
             if udg_MissileAoE[d]>.0 then
                 call GroupEnumUnitsInRange(udg_MissileEnumGroup,udg_MissileX[d],udg_MissileY[d],udg_MissileAoE[d],udg_MissileFilter)
                 loop
@@ -152,6 +164,7 @@ function Missile_Update takes nothing returns nothing
                     call Missile_Free(d)
                 endif
             endif
+            endif // Stop travel after an impact removes this projectile.
         else
             call Missile_Free(d)
         endif
@@ -163,6 +176,9 @@ function Missile_Update takes nothing returns nothing
 endfunction
 
 function Missile_Register takes integer l_idx returns nothing
+    if l_idx<=0 or udg_MissileNext[l_idx]!=-1 then
+        return
+    endif
     if udg_MissileActiveCount==0 then
         call TimerStart(udg_MissileTimer,.03,true,function Missile_Update)
     endif
@@ -173,12 +189,18 @@ endfunction
 
 function Missile_Create takes real rd returns integer
     local integer d=Missile_Allocate()
+    if d==0 then
+        return 0
+    endif
     set udg_MissileCollisionRange[d]=rd
     return d
 endfunction
 
 function Missile_CreateWithEffects takes unit c,string l_modelPath,string l_extraModelPath,real a,real rd returns integer
     local integer d=Missile_Create(rd)
+    if d==0 then
+        return 0
+    endif
     set udg_MissileCaster[d]=c
     set udg_MissileX[d]=GetUnitX(c)
     set udg_MissileY[d]=GetUnitY(c)

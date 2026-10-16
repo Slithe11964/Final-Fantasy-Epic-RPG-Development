@@ -19,6 +19,9 @@ function Knock_Allocate takes nothing returns integer
     if(l_idx!=0)then
         set udg_KnockFreeHead=udg_KnockNext[l_idx]
     else
+        if udg_KnockCount>=8190 then
+            return 0
+        endif
         set udg_KnockCount=udg_KnockCount+1
         set l_idx=udg_KnockCount
     endif
@@ -35,8 +38,11 @@ function Knock_Free takes integer l_idx returns nothing
     elseif(udg_KnockNext[l_idx]!=-1)then
         return
     endif
+    set udg_KnockNext[l_idx]=-2
     set udg_ArgIndex=l_idx
     call TriggerEvaluate(udg_KnockRemoveTrig)
+    set udg_KnockUnit[l_idx]=null
+    set udg_KnockSource[l_idx]=null
     set udg_KnockNext[l_idx]=udg_KnockFreeHead
     set udg_KnockFreeHead=l_idx
 endfunction
@@ -95,6 +101,9 @@ function Knock_Update takes nothing returns nothing
 endfunction
 
 function Knock_Register takes integer l_idx returns nothing
+    if l_idx<=0 or udg_KnockNext[l_idx]!=-1 then
+        return
+    endif
     if udg_KnockActiveCount==0 then
         call TimerStart(udg_KnockTimer,.03,true,function Knock_Update)
     endif
@@ -105,6 +114,9 @@ endfunction
 
 function Knock_Create takes unit t,string fx returns integer
     local integer d=Knock_Allocate()
+    if d==0 then
+        return 0
+    endif
     set udg_KnockUnit[d]=t
     set udg_KnockX[d]=GetUnitX(udg_KnockUnit[d])
     set udg_KnockY[d]=GetUnitY(udg_KnockUnit[d])
@@ -116,6 +128,9 @@ endfunction
 function Knock_Launch takes unit c,unit t,real s,string fx,boolean sf,real damageAmount returns integer
     local integer d=Knock_Create(t,fx)
     local real a=Atan2(udg_KnockY[d]-GetUnitY(c),udg_KnockX[d]-GetUnitX(c))
+    if d==0 then
+        return 0
+    endif
     set udg_KnockSpeed[d]=s
     if sf then
         // Scale the starting knockback speed by default movement speed minus 0.4 per Agility.

@@ -8,6 +8,13 @@ globals
     hashtable FSS_Store=InitHashtable()
     // Both handles are allocated synchronously; local IO never advances shared IDs.
     hashtable FSS_LocalStore=InitHashtable()
+    hashtable FSS_Roots=InitHashtable()
+    hashtable FSS_LocalRoots=InitHashtable()
+    integer FSS_QueueHead=0
+    integer FSS_QueueTail=0
+    integer FSS_LocalQueueHead=0
+    integer FSS_LocalQueueTail=0
+    timer FSS_Collector=null
     integer FSS_Next=0
     integer FSS_LocalNext=0
     string FSS_ScanText=""
@@ -108,15 +115,122 @@ function FSS_Length takes string text returns integer
     return StringLength(text)
 endfunction
 
+// Objects only contain native fragments, so roots need no recursive graph walk.
+// Queue reclamation for a later timer turn; callers may still hold local aliases.
+function FSS_Queue takes integer id,boolean privateText returns nothing
+    local hashtable data=FSS_Store
+    local integer tail=FSS_QueueTail
+    if privateText then
+        set data=FSS_LocalStore
+        set tail=FSS_LocalQueueTail
+    endif
+    if LoadInteger(data,id,-3)!=0 then
+        return
+    endif
+    call SaveInteger(data,id,-3,1)
+    call SaveInteger(data,id,-2,0)
+    if tail!=0 then
+        call SaveInteger(data,tail,-2,id)
+    endif
+    if privateText then
+        if FSS_LocalQueueHead==0 then
+            set FSS_LocalQueueHead=id
+        endif
+        set FSS_LocalQueueTail=id
+    else
+        if FSS_QueueHead==0 then
+            set FSS_QueueHead=id
+        endif
+        set FSS_QueueTail=id
+    endif
+endfunction
+
+// Generated assignments pin persistent save strings. Private IO never touches shared roots.
+function FSS_SetRoot takes string value,integer key,integer index,boolean privateText returns string
+    local hashtable roots=FSS_Roots
+    local hashtable data=FSS_Store
+    local integer old
+    local integer id=0
+    if privateText then
+        set roots=FSS_LocalRoots
+        set data=FSS_LocalStore
+        if SubString(value,0,4)=="!FL:" then
+            set id=FSS_Id(value)
+        endif
+    elseif SubString(value,0,4)=="!FS:" then
+        set id=FSS_Id(value)
+    endif
+    set old=LoadInteger(roots,key,index)
+    if old!=id then
+        if old>0 then
+            call SaveInteger(data,old,-1,LoadInteger(data,old,-1)-1)
+            call FSS_Queue(old,privateText)
+        endif
+        if id>0 then
+            call SaveInteger(data,id,-1,LoadInteger(data,id,-1)+1)
+        endif
+        call SaveInteger(roots,key,index,id)
+    endif
+    return value
+endfunction
+
+function FSS_CollectArena takes boolean privateText returns nothing
+    local hashtable data=FSS_Store
+    local integer head=FSS_QueueHead
+    local integer next
+    local integer count=0
+    if privateText then
+        set data=FSS_LocalStore
+        set head=FSS_LocalQueueHead
+    endif
+    loop
+        exitwhen head==0 or count>=128
+        set next=LoadInteger(data,head,-2)
+        if LoadInteger(data,head,-1)==0 then
+            call FlushChildHashtable(data,head)
+        else
+            call SaveInteger(data,head,-3,0)
+            call SaveInteger(data,head,-2,0)
+        endif
+        set head=next
+        set count=count+1
+    endloop
+    if privateText then
+        set FSS_LocalQueueHead=head
+        if head==0 then
+            set FSS_LocalQueueTail=0
+        endif
+    else
+        set FSS_QueueHead=head
+        if head==0 then
+            set FSS_QueueTail=0
+        endif
+    endif
+endfunction
+
+function FSS_Collect takes nothing returns nothing
+    call FSS_CollectArena(false)
+    call FSS_CollectArena(true)
+endfunction
+
+function FSS_InitCollector takes nothing returns nothing
+    if FSS_Collector==null then
+        set FSS_Collector=CreateTimer()
+        call TimerStart(FSS_Collector,.25,true,function FSS_Collect)
+    endif
+endfunction
+
 function FSS_NewLocal takes integer length returns string
     set FSS_LocalNext=FSS_LocalNext+1
     call SaveInteger(FSS_LocalStore,FSS_LocalNext,0,length)
+    call FSS_Queue(FSS_LocalNext,true)
     return "!FL:"+I2S(FSS_LocalNext)
 endfunction
 
 function FSS_New takes integer length returns string
     set FSS_Next=FSS_Next+1
     call SaveInteger(FSS_Store,FSS_Next,0,length)
+    call FSS_Queue(FSS_Next,false)
     return "!FS:"+I2S(FSS_Next)
 endfunction
 
@@ -350,7 +464,7 @@ function FSS_Scan takes string text,integer mode returns integer
     set FSS_ScanValid=true
     loop
         exitwhen position>=length
-        set FSS_ScanText=FSS_SubString(text,position,position+128)
+        set FSS_ScanText=FSS_SetRoot(FSS_SubString(text,position,position+128),79674589,0,false)
         set FSS_ScanDone=false
         call ExecuteFunc("FSS_ScanChunk")
         if not FSS_ScanDone or not FSS_ScanValid then
@@ -358,7 +472,7 @@ function FSS_Scan takes string text,integer mode returns integer
         endif
         set position=position+128
     endloop
-    set FSS_ScanText=""
+    set FSS_ScanText=FSS_SetRoot("",79674589,0,false)
     if mode==0 then
         return 1
     endif
@@ -474,7 +588,7 @@ function FSC_Clear takes integer ctx returns nothing
         set FSC_Id[ctx*32+i]=0
         set FSC_Version[ctx*32+i]=0
         set FSC_Required[ctx*32+i]=false
-        set FSC_Payload[ctx*32+i]=null
+        set FSC_Payload[ctx*32+i]=FSS_SetRoot(null,2092764500,ctx*32+i,false)
         set i=(i + 1)
     endloop
     set i=0
@@ -511,7 +625,7 @@ function FSC_Clear takes integer ctx returns nothing
     set FSC_Cheater[ctx]=false
     set FSC_Count[ctx]=0
     set FSC_Account[ctx]=0
-    set FSC_Text[ctx]=null
+    set FSC_Text[ctx]=FSS_SetRoot(null,295637012,ctx,false)
     set FSC_Pos[ctx]=0
     set FSC_End[ctx]=0
     set FSC_Ok[ctx]=true
@@ -813,7 +927,7 @@ function FSC_Pairs takes integer ctx,integer sid,integer schemaVersion returns n
             set maximum=1
         endif
         if ((maximum >= 0) and (value > maximum)) then
-            set FSC_Error[ctx]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("section ",I2S(sid))," field "),I2S(identity))," value="),I2S(value))," maximum="),I2S(maximum))
+            set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("section ",I2S(sid))," field "),I2S(identity))," value="),I2S(value))," maximum="),I2S(maximum)),1110256552,ctx,false)
         endif
         if (sid == 2) then
             if (value > 100) then
@@ -928,16 +1042,16 @@ function FSC_Profile takes integer ctx returns boolean
     local integer profileSchema=FSC_Spec[((ctx * 16) + 2)]
     local integer selected=FSC_Core[((ctx * 16) + 13)]
     local integer free=FSC_Core[((ctx * 16) + 4)]
-    set FSC_Error[ctx]="profile section schema mismatch"
+    set FSC_Error[ctx]=FSS_SetRoot("profile section schema mismatch",1110256552,ctx,false)
     if (((profileSchema != FSC_Spec[((ctx * 16) + 4)]) or (((profileSchema != 1) and (profileSchema != 2)))) or (((profileSchema == 2) and FSC_HasEvidence[ctx]))) then
         return false
     endif
     if (profileSchema == 2) then
-        set FSC_Error[ctx]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("Freelancer level=",I2S(free))," mastery="),I2S(FSC_Core[((ctx * 16) + 12)]))," variant="),I2S(FSC_Core[((ctx * 16) + 14)]))
+        set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("Freelancer level=",I2S(free))," mastery="),I2S(FSC_Core[((ctx * 16) + 12)]))," variant="),I2S(FSC_Core[((ctx * 16) + 14)])),1110256552,ctx,false)
         if ((not FSC_MasteryValid(free,FSC_Core[((ctx * 16) + 12)])) or ((((free == 0)) != ((FSC_Core[((ctx * 16) + 14)] == 0))))) then
             return false
         endif
-        set FSC_Error[ctx]=FSS_Concat(FSS_Concat(FSS_Concat("selected job=",I2S(selected))," level="),I2S(FSC_JobLevel[((ctx * 23) + selected)]))
+        set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat("selected job=",I2S(selected))," level="),I2S(FSC_JobLevel[((ctx * 23) + selected)])),1110256552,ctx,false)
         if ((((selected == 0) and (free < 1))) or (((selected != 0) and (FSC_JobLevel[((ctx * 23) + selected)] < 1)))) then
             return false
         endif
@@ -945,7 +1059,7 @@ function FSC_Profile takes integer ctx returns boolean
     loop
         exitwhen (i > 9)
         if (((((i != 2) and (i != 4)) and (i != 3)) and (((i != 9) or FSC_HasEvidence[ctx]))) and (FSC_Spec[((ctx * 16) + i)] != 1)) then
-            set FSC_Error[ctx]=FSS_Concat("missing required section ",I2S(i))
+            set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat("missing required section ",I2S(i)),1110256552,ctx,false)
             return false
         endif
         set i=(i + 1)
@@ -980,13 +1094,13 @@ function FSC_Profile takes integer ctx returns boolean
         loop
             exitwhen (i > 8)
             if (FSC_Gaya[((ctx * 16) + i)] != FSC_GayaMaximum(i)) then
-                set FSC_Error[ctx]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("mastered Gaya field ",I2S(i))," value="),I2S(FSC_Gaya[((ctx * 16) + i)]))," wanted="),I2S(FSC_GayaMaximum(i)))
+                set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("mastered Gaya field ",I2S(i))," value="),I2S(FSC_Gaya[((ctx * 16) + i)]))," wanted="),I2S(FSC_GayaMaximum(i))),1110256552,ctx,false)
                 return false
             endif
             set i=(i + 1)
         endloop
     endif
-    set FSC_Error[ctx]="inventory metadata incomplete"
+    set FSC_Error[ctx]=FSS_SetRoot("inventory metadata incomplete",1110256552,ctx,false)
     return (FSC_HasEvidence[ctx] or FSC_MetadataComplete[ctx])
 endfunction
 
@@ -1008,7 +1122,7 @@ function FSC_Parse takes integer ctx,string encoded,integer expectedAccount,bool
     if (((FSS_Length(encoded) > (FSC_MAX_PAYLOAD + 64)) or (not FSC_AlphabetValid(encoded))) or (not FSS_Equals(FSS_SubString(encoded,0,3),"FSV"))) then
         return false
     endif
-    set FSC_Text[ctx]=encoded
+    set FSC_Text[ctx]=FSS_SetRoot(encoded,295637012,ctx,false)
     set FSC_Pos[ctx]=3
     set FSC_End[ctx]=FSS_Length(encoded)
     if (FSC_Read(ctx) != 1) then
@@ -1046,7 +1160,7 @@ function FSC_Parse takes integer ctx,string encoded,integer expectedAccount,bool
         set FSC_Id[index]=sid
         set FSC_Version[index]=schemaVersion
         set FSC_Required[index]=(flags == 1)
-        set FSC_Payload[index]=FSS_SubString(encoded,FSC_Pos[ctx],sectionEnd)
+        set FSC_Payload[index]=FSS_SetRoot(FSS_SubString(encoded,FSC_Pos[ctx],sectionEnd),2092764500,index,false)
         if (((sid <= 9) and (((schemaVersion == 1) or (((schemaVersion == 2) and (((sid == 2) or (sid == 4)))))))) and (flags == 1)) then
             set FSC_Spec[ctx*16+sid]=schemaVersion
         endif
@@ -1054,7 +1168,7 @@ function FSC_Parse takes integer ctx,string encoded,integer expectedAccount,bool
             set FSC_HasEvidence[ctx]=true
         endif
         set FSC_End[ctx]=sectionEnd
-        set FSC_Error[ctx]=FSS_Concat(FSS_Concat(FSS_Concat("section ",I2S(sid))," record validation near offset "),I2S(FSC_Pos[ctx]))
+        set FSC_Error[ctx]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat("section ",I2S(sid))," record validation near offset "),I2S(FSC_Pos[ctx])),1110256552,ctx,false)
         call FSC_ValidateSection(ctx,sid,schemaVersion,(flags == 1),sectionSize)
         set FSC_End[ctx]=outerEnd
         set i=(i + 1)
@@ -1079,11 +1193,11 @@ function FSC_Decode takes integer pid,string encoded,integer expectedAccount,boo
     endif
     call FSC_Clear(stage)
     call FSC_ClearSeen(stage)
-    set FSC_Error[stage]="profile envelope validation"
+    set FSC_Error[stage]=FSS_SetRoot("profile envelope validation",1110256552,stage,false)
     set valid=FSC_Parse(stage,encoded,expectedAccount,requireProfile)
-    set FSC_Error[pid]=FSC_Error[stage]
+    set FSC_Error[pid]=FSS_SetRoot(FSC_Error[stage],1110256552,pid,false)
     if valid then
-        set FSC_Error[pid]=""
+        set FSC_Error[pid]=FSS_SetRoot("",1110256552,pid,false)
         call FSC_Clear(active)
         set FSC_Account[active]=FSC_Account[stage]
         set FSC_Count[active]=FSC_Count[stage]
@@ -1092,10 +1206,10 @@ function FSC_Decode takes integer pid,string encoded,integer expectedAccount,boo
             set FSC_Id[active*32+i]=FSC_Id[((stage * 32) + i)]
             set FSC_Version[active*32+i]=FSC_Version[((stage * 32) + i)]
             set FSC_Required[active*32+i]=FSC_Required[((stage * 32) + i)]
-            set FSC_Payload[active*32+i]=FSC_Payload[((stage * 32) + i)]
+            set FSC_Payload[active*32+i]=FSS_SetRoot(FSC_Payload[((stage * 32) + i)],2092764500,active*32+i,false)
             set i=(i + 1)
         endloop
-        set FSC_Code[pid]=encoded
+        set FSC_Code[pid]=FSS_SetRoot(encoded,1560381259,pid,false)
     endif
     call FSC_ClearSeen(stage)
     call FSC_Clear(stage)
@@ -1172,7 +1286,7 @@ function FSC_Add takes integer pid,integer sid,integer schemaVersion,boolean req
     set FSC_Id[index]=sid
     set FSC_Version[index]=schemaVersion
     set FSC_Required[index]=required
-    set FSC_Payload[index]=payload
+    set FSC_Payload[index]=FSS_SetRoot(payload,2092764500,index,false)
     set FSC_Count[ctx]=(FSC_Count[ctx] + 1)
     set FSC_BuildSize[pid]=(FSC_BuildSize[pid] + size)
     return true
@@ -1225,7 +1339,7 @@ function FSC_Reset takes integer pid returns boolean
     call FSC_Abort(pid)
     call FSC_Clear((pid + 1))
     call FSC_Clear((pid + 9))
-    set FSC_Code[pid]=null
+    set FSC_Code[pid]=FSS_SetRoot(null,1560381259,pid,false)
     return true
 endfunction
 function InitTrig_ForsakenSaveCodec takes nothing returns nothing

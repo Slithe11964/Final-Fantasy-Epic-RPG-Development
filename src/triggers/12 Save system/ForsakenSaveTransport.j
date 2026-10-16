@@ -91,13 +91,13 @@ function FST_Fixed takes integer value,integer width returns string
 endfunction
 
 function FST_Fail takes integer pid,string reason returns nothing
-    set FST_Error[pid]=reason
+    set FST_Error[pid]=FSS_SetRoot(reason,1616153064,pid,false)
     set FST_Pending[pid]=false
     set FST_Receiving[pid]=false
     set FST_Legacy[pid]=false
     set FST_Ready[pid]=false
-    set FST_Buffer[pid]=null
-    set FST_Result[pid]=null
+    set FST_Buffer[pid]=FSS_SetRoot(null,942952999,pid,false)
+    set FST_Result[pid]=FSS_SetRoot(null,436495302,pid,false)
 endfunction
 
 function FST_FilePath takes integer page returns string
@@ -128,7 +128,7 @@ function FST_SetFileStem takes integer pid,string stem returns boolean
         endif
         set i=(i + 1)
     endloop
-    set FST_FileStem[pid]=stem
+    set FST_FileStem[pid]=FSS_SetRoot(stem,640864328,pid,false)
     return true
 endfunction
 
@@ -232,12 +232,12 @@ function FST_ReadFile takes integer pid returns string
     local string value
     local string result=""
     local boolean legacy=false
-    set FST_FileError[pid]=""
+    set FST_FileError[pid]=FSS_SetRoot("",1975316070,pid,true)
     set FST_LocalCheck[pid]=0
     set FST_LocalLegacy[pid]=false
     loop
         exitwhen (slot >= 24)
-        set FST_FileBefore[slot]=GetPlayerName(Player(slot))
+        set FST_FileBefore[slot]=FSS_SetRoot(GetPlayerName(Player(slot)),1530968379,slot,true)
         set slot=(slot + 1)
     endloop
     loop
@@ -255,7 +255,7 @@ function FST_ReadFile takes integer pid returns string
             set legacy=true
             set size=FSS_Length(result)
         elseif ((FSS_Length(marker) != 21) or (not FSS_Equals(FSS_SubString(marker,0,4),"FSC1"))) then
-            set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header was not returned")
+            set FST_FileError[pid]=FSS_SetRoot(FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header was not returned"),1975316070,pid,true)
         else
             if (page == 0) then
                 set size=FST_Digits(FSS_SubString(marker,4,9))
@@ -263,7 +263,7 @@ function FST_ReadFile takes integer pid returns string
                 set pages=FST_Digits(FSS_SubString(marker,20,21))
             endif
             if ((((((((((size < 4) or (size > FST_LIMIT)) or (check < 0)) or (pages < 1)) or (pages > size)) or (size > ((pages * 23) * FST_MAXCHUNK))) or (FST_Digits(FSS_SubString(marker,19,20)) != page)) or (FST_Digits(FSS_SubString(marker,4,9)) != size)) or (FST_Digits(FSS_SubString(marker,9,19)) != check)) or (FST_Digits(FSS_SubString(marker,20,21)) != pages)) then
-                set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header mismatch")
+                set FST_FileError[pid]=FSS_SetRoot(FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," header mismatch"),1975316070,pid,true)
             endif
         endif
         set slot=0
@@ -275,7 +275,7 @@ function FST_ReadFile takes integer pid returns string
                 set wanted=FST_MAXCHUNK
             endif
             if ((FSS_Length(value) < 1) or (FSS_Length(value) > wanted)) then
-                set FST_FileError[pid]=FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," chunk "),I2S(slot))," expected 1 to "),I2S(wanted))," received "),I2S(FSS_Length(value)))
+                set FST_FileError[pid]=FSS_SetRoot(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat(FSS_LocalConcat("page ",I2S(page))," chunk "),I2S(slot))," expected 1 to "),I2S(wanted))," received "),I2S(FSS_Length(value))),1975316070,pid,true)
             else
                 set result=FSS_LocalConcat(result,value)
             endif
@@ -287,7 +287,7 @@ function FST_ReadFile takes integer pid returns string
     loop
         exitwhen (slot >= 24)
         call SetPlayerName(Player(slot),FST_FileBefore[slot])
-        set FST_FileBefore[slot]=null
+        set FST_FileBefore[slot]=FSS_SetRoot(null,1530968379,slot,true)
         set slot=(slot + 1)
     endloop
     if (not FSS_Equals(FST_FileError[pid],"")) then
@@ -295,7 +295,7 @@ function FST_ReadFile takes integer pid returns string
     endif
     // Only framing is inspected privately. Content validation runs on every receiver.
     if (FSS_Length(result) != size) then
-        set FST_FileError[pid]="assembled length mismatch"
+        set FST_FileError[pid]=FSS_SetRoot("assembled length mismatch",1975316070,pid,true)
         return null
     endif
     set FST_LocalCheck[pid]=check
@@ -316,9 +316,9 @@ function FST_Request takes integer pid,integer account returns boolean
     set FST_Pending[pid]=true
     set FST_Receiving[pid]=false
     set FST_Ready[pid]=false
-    set FST_Error[pid]=""
-    set FST_Result[pid]=null
-    set FST_Buffer[pid]=""
+    set FST_Error[pid]=FSS_SetRoot("",1616153064,pid,false)
+    set FST_Result[pid]=FSS_SetRoot(null,436495302,pid,false)
+    set FST_Buffer[pid]=FSS_SetRoot("",942952999,pid,false)
     set FST_Start[pid]=TimerGetElapsed(FST_Clock)
     if (GetLocalPlayer() == Player(pid)) then
         set before=GetPlayerName(Player(pid))
@@ -327,10 +327,10 @@ function FST_Request takes integer pid,integer account returns boolean
         call SetPlayerName(Player(pid),before)
         set FST_LocalMillis[pid]=R2I((((TimerGetElapsed(FST_Clock) - started)) * 1000.))
         if (((FSS_Equals(encoded,null)) or (FSS_Length(encoded) < 4)) or (FSS_Length(encoded) > FST_LIMIT)) then
-            set FST_LocalCode[pid]=null
+            set FST_LocalCode[pid]=FSS_SetRoot(null,1002168606,pid,true)
             set FST_LocalPhase[pid]=4
         else
-            set FST_LocalCode[pid]=encoded
+            set FST_LocalCode[pid]=FSS_SetRoot(encoded,1002168606,pid,true)
             set FST_LocalPhase[pid]=1
             if FST_LocalLegacy[pid] then
                 // Legacy files have no checksum header. Prepare it in bounded local steps;
@@ -412,7 +412,7 @@ function FST_Receive takes integer pid,string packet returns nothing
         endif
         set FST_Length[pid]=size
         set FST_Sequence[pid]=0
-        set FST_Buffer[pid]=""
+        set FST_Buffer[pid]=FSS_SetRoot("",942952999,pid,false)
         set FST_ReceiveStart[pid]=TimerGetElapsed(FST_Clock)
         set FST_Receiving[pid]=true
         call DisplayTimedTextToPlayer(Player(pid),0.,0.,15.,"Loading: file found; transferring data...")
@@ -427,7 +427,7 @@ function FST_Receive takes integer pid,string packet returns nothing
             call FST_Fail(pid,"missing, repeated or invalid encoded chunk")
             return
         endif
-        set FST_Buffer[pid]=FSS_Concat(FST_Buffer[pid],chunk)
+        set FST_Buffer[pid]=FSS_SetRoot(FSS_Concat(FST_Buffer[pid],chunk),942952999,pid,false)
         set FST_Sequence[pid]=(sequence + 1)
     elseif (FSS_Equals(kind,"E")) then
         if ((((FSS_Length(packet) != 7) or (not FST_Receiving[pid])) or (FSS_Length(FST_Buffer[pid]) != FST_Length[pid])) or (FST_TextChecksum(FST_Buffer[pid]) != FST_Check[pid])) then
@@ -439,8 +439,8 @@ function FST_Receive takes integer pid,string packet returns nothing
             call FST_Fail(pid,"file profile failed validation")
             return
         endif
-        set FST_Result[pid]=FST_Buffer[pid]
-        set FST_Buffer[pid]=null
+        set FST_Result[pid]=FSS_SetRoot(FST_Buffer[pid],436495302,pid,false)
+        set FST_Buffer[pid]=FSS_SetRoot(null,942952999,pid,false)
         set FST_TransferSeconds[pid]=(TimerGetElapsed(FST_Clock) - (I2R(FST_SendMillis[pid]) / 1000.))
         set FST_Pending[pid]=false
         set FST_Receiving[pid]=false
@@ -512,6 +512,7 @@ function FST_Pump takes nothing returns nothing
                     if ((sequence * 192) >= FSS_Length(FST_LocalCode[pid])) then
                         set packet=FSS_Concat("E",request)
                         set FST_LocalPhase[pid]=0
+                        set FST_LocalCode[pid]=FSS_SetRoot(null,1002168606,pid,true)
                     else
                         set packet=FSS_Concat(FSS_Concat(FSS_Concat("D",request),FST_Fixed(sequence,3)),FSS_SubString(FST_LocalCode[pid],(sequence * 192),(((sequence + 1)) * 192)))
                         set FST_LocalSequence[pid]=(sequence + 1)
@@ -519,6 +520,7 @@ function FST_Pump takes nothing returns nothing
                 elseif (FST_LocalPhase[pid] == 4) then
                     set packet=FSS_Concat("X",request)
                     set FST_LocalPhase[pid]=0
+                    set FST_LocalCode[pid]=FSS_SetRoot(null,1002168606,pid,true)
                 endif
                 if (not FSS_Equals(packet,null)) then
                     if FST_UseSyncNative then
@@ -574,7 +576,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         set before=GetPlayerName(Player(pid))
         set readback=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
-        if (FSS_Equals(readback,encoded)) then
+        if ((FSS_Equals(readback,encoded)) and (FST_LocalCheck[pid] == checksum)) then
             if FST_LegacySaveMessages[pid] then
                 call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved successfully")
             else
@@ -599,6 +601,7 @@ function FST_Init takes nothing returns nothing
     endif
     // Allocate the lookup synchronously before any local file read.
     call FSC_InitCharacters()
+    call FSS_InitCollector()
     set FST_Clock=CreateTimer()
     call TimerStart(FST_Clock,86400.,false,null)
     set FST_PumpTimer=CreateTimer()

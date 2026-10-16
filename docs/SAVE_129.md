@@ -284,3 +284,28 @@ content, source agreement, startup, save compatibility and conversion gates pass
 The separate focused suites passed: bounded/local IO 16, transport 23, paired
 builder 19, save port 7. Both published files were copied to the Warcraft TEST
 folder and hashes verified. Multiplayer engine confirmation is still pending.
+
+
+### PAIR010 acceptance and PAIR011 cleanup
+
+The user confirmed PAIR010 Forsaken multiplayer loading no longer desynchronizes.
+A later three-player quest session froze after about four quests. PAIR011 adds
+bounded save-fragment reclamation alongside the separate projectile/UI/collection
+maintenance described in PERFORMANCE_AUDIT.md; multiplayer freezing acceptance is
+still pending. No save format, item/job IDs or profile compatibility rules change.
+
+Persistent virtual strings are rooted across module boundaries, including active
+plans, result buffers and retained screenshot/file codes. New or unrooted fragments
+are queued for later collection; each timer turn processes a fixed maximum per
+arena. Shared and private roots, counters and queues remain separate, and no local
+collector creates handles or enters shared validation. Collection runs between
+non-yielding event stacks so temporary local aliases remain valid during a call.
+Repeated round trips and interleaved concurrent senders run with collection enabled.
+The sender releases its private code after its final packet; export readback checks
+both body equality and the expected checksum header. Compiler/content/source/save
+compatibility gates still apply to both output profiles.
+
+The classic large-import Warcraft-menu checkpoint failure is not yet resolved.
+Use new Warcraft checkpoints for engine retesting; existing checkpoints embed their
+original map code. A successful import or small-profile checkpoint does not establish
+large-profile checkpoint compatibility.

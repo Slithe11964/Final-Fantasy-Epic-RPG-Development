@@ -1,4 +1,4 @@
-library TTitles requires TJob, TPlayerHero, TTitle, TBackpack
+library TTitles requires TJob, TPlayerHero, TTitle, TBackpack, TForce
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Titles_Init=null
@@ -16,6 +16,12 @@ globals
     string ChroniclesSecretsBase=""
     integer ChroniclesTooltipOffset=0
     string ChroniclesSecretsShown=""
+    integer array ChroniclesCachedInventory
+    integer array ChroniclesCachedTitles
+    integer array ChroniclesCachedSpeed
+    unit array ChroniclesCachedHero
+    unit array ChroniclesCachedSpirit
+    trigger gg_trg_CollectionInventory=null
 endglobals
 
 function Chronicles_MonographIndex takes integer raw returns integer
@@ -189,13 +195,35 @@ endfunction
 
 function Chronicles_Tick takes nothing returns nothing
     local integer i=0
+    local boolean refresh=false
+    local player owner
+    local unit hero
+    local unit spirit
     loop
         exitwhen i>=8
-        call Chronicles_CheckInventory(Player(i))
-        call Chronicles_RestoreSecrets(Player(i))
+        set owner=Player(i)
+        set hero=Player_GetHero(owner)
+        set spirit=udg_SpiritOfGaya[i+1]
+        if ChroniclesCachedInventory[i]!=CollectionInventoryRevision[i] or ChroniclesCachedTitles[i]!=CollectionTitleRevision[i] or ChroniclesCachedSpeed[i]!=udg_SpeedrunLevel[i+1] or ChroniclesCachedHero[i]!=hero or ChroniclesCachedSpirit[i]!=spirit then
+            call Chronicles_CheckInventory(owner)
+            call Chronicles_RestoreSecrets(owner)
+            set ChroniclesCachedInventory[i]=CollectionInventoryRevision[i]
+            set ChroniclesCachedTitles[i]=CollectionTitleRevision[i]
+            set ChroniclesCachedSpeed[i]=udg_SpeedrunLevel[i+1]
+            set ChroniclesCachedHero[i]=hero
+            set ChroniclesCachedSpirit[i]=spirit
+            if GetLocalPlayer()==owner then
+                set refresh=true
+            endif
+        endif
         set i=i+1
     endloop
-    call Chronicles_RefreshTooltips()
+    if refresh then
+        call Chronicles_RefreshTooltips()
+    endif
+    set owner=null
+    set hero=null
+    set spirit=null
 endfunction
 
 function Chronicles_Init takes nothing returns nothing
@@ -233,7 +261,18 @@ function Chronicles_Init takes nothing returns nothing
     endloop
     set ChroniclesRootBase=BlzGetAbilityExtendedTooltip('A0AR',ChroniclesTooltipOffset)
     set ChroniclesSecretsBase=BlzGetAbilityExtendedTooltip('cSec',ChroniclesTooltipOffset)
+    set category=1
+    loop
+        exitwhen category>65
+        call Collection_Watch(udg_TitleForce[category],2)
+        set category=category+1
+    endloop
+    set gg_trg_CollectionInventory=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_CollectionInventory,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_CollectionInventory,EVENT_PLAYER_UNIT_DROP_ITEM)
+    call TriggerAddAction(gg_trg_CollectionInventory,function Collection_InventoryChanged)
     call Chronicles_Tick()
+    call Chronicles_RefreshTooltips()
     call TimerStart(CreateTimer(),1.,true,function Chronicles_Tick)
 endfunction
 
@@ -687,77 +726,77 @@ endfunction
 
 function Trig_Titles_CheckAll_Actions takes nothing returns nothing
     if(Trig_Titles_CheckAll_Warlord_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[1])
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[1])
         if(Trig_Titles_CheckAll_Warchief_Met())then
-            call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[2])
+            call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[2])
             if(Trig_Titles_CheckAll_Wargod_Met())then
-                call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[3])
+                call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[3])
             endif
         endif
     endif
     if(Trig_Titles_CheckAll_Magus_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[4])
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[4])
         if(Trig_Titles_CheckAll_Sage_Met())then
-            call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[5])
+            call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[5])
             if(Trig_Titles_CheckAll_MageMaster_Met())then
-                call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[6])
+                call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[6])
             endif
         endif
     endif
     if(Trig_Titles_CheckAll_GayaApprentice_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[7])
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[7])
         if(Trig_Titles_CheckAll_GayaHero_Met())then
-            call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[8])
+            call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[8])
             if(Trig_Titles_CheckAll_GayaChampion_Met())then
-                call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[9])
+                call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[9])
             endif
         endif
     endif
     if(Trig_Titles_CheckAll_GayaMaster_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[52])
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[52])
     endif
     if(Trig_Titles_CheckAll_Master_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$A]) // $A = 10
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$A]) // $A = 10
         if(Trig_Titles_CheckAll_UltimateMaster_Met())then
-            call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$B]) // $B = 11
+            call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$B]) // $B = 11
             if(Trig_Titles_CheckAll_Grandmaster_Met())then
-                call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$C]) // $C = 12
+                call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$C]) // $C = 12
                 if(Trig_Titles_CheckAll_Grindmaster_Met())then
-                    call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$D]) // $D = 13
+                    call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$D]) // $D = 13
                     if(Trig_Titles_CheckAll_HighGuardian_Met())then
-                        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$E]) // $E = 14
+                        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[$E]) // $E = 14
                     endif
                 endif
             endif
             if(Trig_Titles_CheckAll_AllJobsAt100())then
                 if(Trig_Titles_CheckAll_Squire_At100())then
-                    call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[44])
+                    call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[44])
                     if(Trig_Titles_CheckAll_UltimateWarrior_Met())then
-                        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[45])
+                        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[45])
                     endif
                 else
                     if(Trig_Titles_CheckAll_AnyPhysJobAt100())then
-                        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[44])
+                        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[44])
                     endif
                 endif
                 if(Trig_Titles_CheckAll_Chemist_At100())then
-                    call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[46])
+                    call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[46])
                     if(Trig_Titles_CheckAll_UltimateMage_Met())then
-                        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[47])
+                        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[47])
                     endif
                 else
                     if(Trig_Titles_CheckAll_AnyMageJobAt100())then
-                        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[46])
+                        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[46])
                     endif
                 endif
                 if(Trig_Titles_CheckAll_LegendaryGuardian_Met())then
-                    call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[48])
+                    call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[48])
                 endif
             endif
         endif
     endif
     if(Trig_Titles_CheckAll_Weaponsmith_Met())then
-        call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[35])
+        call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[35])
     endif
     if(Trig_Titles_CheckAll_Endless_Applies())then
         call UnitAddAbilityBJ('A10E',Player_GetHero(udg_TempPlayer)) // 'A10E': ability "Endless"
@@ -773,7 +812,7 @@ function Trig_Titles_CheckAll_Actions takes nothing returns nothing
         set udg_TempInteger=(udg_SpeedrunTitleBase+1)
         loop
             exitwhen udg_TempInteger>(udg_SpeedrunTitleBase+udg_SpeedrunLevel[GetConvertedPlayerId(udg_TempPlayer)])
-            call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[udg_TempInteger])
+            call Collection_ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[udg_TempInteger])
             call ConditionalTriggerExecute(gg_trg_Title_Grant)
             set udg_TempInteger=udg_TempInteger+1
         endloop

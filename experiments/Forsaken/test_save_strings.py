@@ -59,6 +59,32 @@ class StringTests(unittest.TestCase):
         self.assertEqual(self.e['FSS_Concat']('', ''), '')
         self.assertEqual(self.e['FSS_Length'](None), 0)
 
+    def test_collector_reclaims_intermediates_and_keeps_persistent_profile(self):
+        e=self.e;text=profile(large=True)
+        for _ in range(12):
+            value=fragments(e,text)
+            self.assertTrue(e['FSC_Decode'](0,value,42,True))
+            for tick in range(30):e['FSS_Collect']()
+            self.assertEqual(materialize(e,e['FSC_Code'][0]),text)
+            self.assertEqual(materialize(e,e['FSC_Reencode'](0)),text)
+        for tick in range(50):e['FSS_Collect']()
+        live=len(e['FSS_Store'])
+        for _ in range(12):
+            value=fragments(e,text)
+            self.assertTrue(e['FSC_Decode'](0,value,42,True))
+            for tick in range(30):e['FSS_Collect']()
+        self.assertLessEqual(len(e['FSS_Store']),live+25)
+
+    def test_collector_defers_local_alias_reclamation_until_event_finishes(self):
+        e=self.e
+        value=fragments(e,'A'*2053)
+        e['FSS_SetRoot'](value,123,0,False)
+        e['FSS_Collect']()
+        e['FSS_SetRoot'](None,123,0,False)
+        self.assertEqual(materialize(e,value),'A'*2053)
+        e['FSS_Collect']()
+        self.assertEqual(e['FSS_Id'](value),0)
+
     def test_golden_and_endgame_decode_encode_exactly(self):
         cases = [c['code'] for c in json.loads((HERE/'migration-fixtures.json').read_text())['cases']]
         cases += [profile(large=True), codec.encode(codec.Envelope(42, (
@@ -89,6 +115,31 @@ endlibrary
         self.assertIn('local integer c=(a + 2)', lowered)
         self.assertIn('return FSS_Concat(b,I2S(c))', lowered)
         self.assertEqual(lower_module(lowered), lowered)
+
+    def test_cross_module_global_assignments_keep_live_fragments(self):
+        from save_strings import pin_persistent_strings
+        source='''function CrossModule takes string payload returns nothing
+    set FST_Result[0]=payload
+    set FST_SavedCode[0]=payload
+    set FSC_Text[0]=payload
+endfunction
+function ClearCrossModule takes nothing returns nothing
+    set FST_Result[0]=null
+    set FST_SavedCode[0]=null
+    set FSC_Text[0]=null
+endfunction
+'''
+        pinned=pin_persistent_strings(source)
+        self.assertEqual(pinned.count('=FSS_SetRoot('),6)
+        from test_armory_materia import execute
+        e=engine('\nglobals\n    string array FST_Result\n    string array FST_SavedCode\nendglobals\n'+pinned,bounded=True)
+        text='A'*2053
+        value=fragments(e,text);e['CrossModule'](value)
+        for _ in range(40):e['FSS_Collect']()
+        self.assertEqual(materialize(e,e['FST_SavedCode'][0]),text)
+        e['ClearCrossModule']()
+        for _ in range(40):e['FSS_Collect']()
+        self.assertEqual(e['FSS_Id'](value),0)
 
     def test_refresh_old_editor_transport_keeps_exact_canonical_layout(self):
         from save_strings import refresh_runtime
@@ -179,6 +230,16 @@ class BoundedTransportTests(transport.TransportTests):
         self.assertEqual(self.file, text)
         self.assertTrue(all(len(v) <= 960 for v in self.e['FSS_Store'].values() if isinstance(v, str)))
 
+    def test_export_rejects_mismatched_readback_header_without_local_scan(self):
+        original=self.e['Preloader']
+        def bad_header(path):
+            original(path)
+            marker=self.names[23]
+            self.names[23]=marker[:9]+'0000000001'+marker[19:]
+        self.e['Preloader']=bad_header
+        self.assertTrue(self.e['FST_Write'](0,fragments(self.e,self.file),42))
+        self.assertFalse(any('Saved.|r' in message or message=='Saved successfully' for message in self.messages))
+
     def test_bounded_transfer_and_screenshot_parts(self):
         self.assertTrue(self.e['FST_Request'](0, 42))
         self.receive(self.packets())
@@ -230,7 +291,9 @@ class BoundedTransportTests(transport.TransportTests):
             self.assertEqual(client.e['FSS_Store'],{})
         seen=[0,0]
         for tick in range(400):
-            for client in clients:client.e['FST_Pump']()
+            for client in clients:
+                client.e['FST_Pump']()
+                client.e['FSS_Collect']()
             for pid,sender in enumerate(clients):
                 for _,packet in sender.sent[seen[pid]:]:
                     self.assertFalse(packet.startswith(('!FS:','!FL:')))

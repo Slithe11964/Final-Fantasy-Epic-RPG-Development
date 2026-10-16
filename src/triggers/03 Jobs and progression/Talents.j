@@ -215,7 +215,6 @@ function Talent_MarkBlindingMissile takes integer d,boolean healsNoOne returns n
     call Talent_FollowBlindingMissile(d)
 endfunction
 
-
 function Talents_MissileHit takes nothing returns boolean
     local integer d=udg_ArgIndex
     local unit u=udg_ArgUnit
@@ -470,8 +469,8 @@ endfunction
 function TalentFrame_OnSync takes nothing returns nothing
     local player p=GetTriggerPlayer()
     local integer node=S2I(BlzGetTriggerSyncData())
+    call Talent_Choose(p,node/3,ModuloInteger(node,3)+1)
     if TalentOpen[GetPlayerId(p)] then
-        call Talent_Choose(p,node/3,ModuloInteger(node,3)+1)
         call TalentFrame_Show(p)
     endif
     set p=null

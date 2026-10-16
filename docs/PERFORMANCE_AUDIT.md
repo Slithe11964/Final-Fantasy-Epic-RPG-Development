@@ -178,3 +178,48 @@ expiry; UI frame searches use a cache refreshed on opening/recreation; collectio
 counts update when collection membership changes (including import), otherwise
 retain the last totals. Save scratch cleanup must preserve live sessions. These
 performance changes await multiplayer acceptance of the desync candidate.
+
+## PAIR011 implementation follow-up
+
+The user confirmed that PAIR010 no longer desynchronized during Forsaken imports.
+Three players subsequently experienced freezing while questing, after about four
+quests; another player had imported a medium-progress profile. No engine trace
+identifies the freezing instruction. PAIR011 addresses the concrete audit findings;
+acceptance still requires an extended multiplayer quest/combat session.
+
+Finished missiles now release their hit groups after the final impact callback,
+clear retained handles and stop further travel work after removal. Missile and
+knockback pools reject exhausted allocations before creating objects; reentrant
+cleanup cannot free a slot twice. Existing combat timer/iteration timing is retained.
+
+Save strings use separate shared/private root tables and deferred reclamation queues.
+Each collector turn examines a bounded number of objects, preserving persistent
+codes, active transfers, validation plans and screenshot pages. Dropped roots are
+reclaimed between non-yielding event stacks. Private file IO retains PAIR010's
+isolation from shared scanner state. The private send buffer is released after its
+final packet, and export readback also checks the stored checksum header.
+
+Native frame searches are cached, requested by panel interaction, retried sparingly
+while an open panel lacks handles, and invalidated after Warcraft checkpoint loads.
+Visible stats redraw at a bounded rate and repeated ability reads are cached within
+one render pass. Pure display redraws do not run gameplay magic-defense calculations.
+Armory and Chronicle membership changes invalidate cached totals; unchanged idle
+ticks do not rescan the collection. Inventory changes and replacement heroes also
+invalidate Chronicle reconciliation. A latent alternative talent sync path now
+checks gameplay eligibility independently of private panel-open state.
+
+The paired builder applies reviewed maintenance to both outputs from the unchanged
+editor master, retaining each inventory interface and the shared save format.
+Regression coverage exercises repeated/concurrent save operations with collection,
+projectile cleanup/reentrancy/exhaustion, collection invalidation and native UI caching.
+No startup-time or FPS improvement is claimed without engine measurements. The
+classic large-import Warcraft-menu checkpoint issue remains a separate open issue.
+
+
+PAIR011 engine acceptance: use a fresh multiplayer session with the same three-player
+mix of endgame and medium imports. Complete more than four quests and spend time in
+projectile-heavy combat. Check that Armory/Chronicle counts change after gains or
+removals, and that native inventory, inspection, stats and talents still open and
+update. Check screenshot-page navigation after a normal save and file export/import.
+Record whether a freeze affects one client or all clients and its last activity.
+This test cannot be replaced by the modeled cleanup/caching regressions.

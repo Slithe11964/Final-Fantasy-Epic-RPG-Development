@@ -106,7 +106,7 @@ def main():
         snapshot=scratch/'edited-master.w3x';shutil.copy2(source,snapshot)
         report=dict(stage=args.stage,editor_input=str(source),editor_input_sha256=sha(snapshot),references=config,
                     scenario_name=scenario_name(snapshot),outputs={},profiles={},
-                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py')})
+                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','save_strings.py')})
         aliases={raw:[v for v in (entry.get('variant'),entry.get('offhand')) if v]
                  for raw,entry in json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text(encoding='utf-8')).items()}
         print('Working copy:',scratch,flush=True)

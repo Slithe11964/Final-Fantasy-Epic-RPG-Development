@@ -530,6 +530,7 @@ function FST_Pump takes nothing returns nothing
                     if sequence*192>=StringLength(FST_LocalCode[pid]) then
                         set packet="E"+request
                         set FST_LocalPhase[pid]=0
+                        set FST_LocalCode[pid]=null
                     else
                         set packet="D"+request+FST_Fixed(sequence,3)+SubString(FST_LocalCode[pid],sequence*192,(sequence+1)*192)
                         set FST_LocalSequence[pid]=sequence+1
@@ -537,6 +538,7 @@ function FST_Pump takes nothing returns nothing
                 elseif FST_LocalPhase[pid]==4 then
                     set packet="X"+request
                     set FST_LocalPhase[pid]=0
+                    set FST_LocalCode[pid]=null
                 endif
                 if packet!=null then
                     if FST_UseSyncNative then
@@ -592,7 +594,7 @@ function FST_Write takes integer pid,string encoded,integer account returns bool
         set before=GetPlayerName(Player(pid))
         set readback=FST_ReadFile(pid)
         call SetPlayerName(Player(pid),before)
-        if readback==encoded then
+        if readback==encoded and FST_LocalCheck[pid]==checksum then
             if FST_LegacySaveMessages[pid] then
                 call DisplayTimedTextToPlayer(Player(pid),0.,0.,30.,"Saved successfully")
             else

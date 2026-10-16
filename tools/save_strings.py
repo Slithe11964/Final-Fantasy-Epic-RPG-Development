@@ -8,6 +8,7 @@ never changed. Unknown string-producing calls fail the build instead of guessing
 from functools import lru_cache
 from pathlib import Path
 import re
+import zlib
 from jtok import tokens, strip_comments
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,42 @@ HELPER = HERE / 'SaveStrings.j'
 SCAN = HERE / 'SaveScan.j'
 PRIORITY = {'or': 1, 'and': 2, '==': 3, '!=': 3, '<': 3, '>': 3,
             '<=': 3, '>=': 3, '+': 4, '-': 4, '*': 5, '/': 5}
+
+
+_ROOT_NAMES={}
+
+@lru_cache(maxsize=1)
+def persistent_globals():
+    # Modules also assign each other's globals (plans, results and saved codes).
+    declarations='\n'.join(path.read_text(encoding='utf-8') for path in
+        sorted(HERE.glob('Forsaken-save-*.j'))+[HERE/'Forsaken-fresh-load.j'])
+    names=set()
+    for block in re.finditer(r'^globals\n(.*?)^endglobals',declarations,re.M|re.S):
+        names.update(re.findall(r'^\s*string\s+(?:array\s+)?(\w+)\b',block[1],re.M))
+    return names
+
+def pin_persistent_strings(source):
+    """Track global virtual strings; collection runs only between non-yielding events."""
+    variables=set(persistent_globals())
+    for block in re.finditer(r'^globals\n(.*?)^endglobals',source,re.M|re.S):
+        for m in re.finditer(r'^\s*string\s+(array\s+)?(\w+)\b',block[1],re.M):
+            variables.add(m[2])
+    output=[]
+    locals_=set()
+    for line in source.splitlines():
+        if re.match(r'^function ',line):locals_=set()
+        local=re.match(r'\s*local\s+\w+\s+(\w+)\b',line)
+        if local:locals_.add(local[1])
+        m=re.match(r'^(\s*set\s+)(\w+)(\[[^\n]*?\])?\s*=(.*)$',line)
+        if m and m[2] in variables and m[2] not in locals_ and not m[4].lstrip().startswith('FSS_SetRoot('):
+            name=m[2];key=zlib.crc32(name.encode('ascii'))&0x7fffffff
+            if key in _ROOT_NAMES and _ROOT_NAMES[key]!=name:raise ValueError('save root-key collision')
+            _ROOT_NAMES[key]=name
+            index=m[3][1:-1] if m[3] else '0'
+            private=name.startswith(('FST_Local','FST_File')) and name!='FST_FileStem'
+            line=m[1]+name+(m[3] or '')+'=FSS_SetRoot('+m[4].strip()+','+str(key)+','+index+','+str(private).lower()+')'
+        output.append(line)
+    return '\n'.join(output)+'\n'
 
 
 def refresh_runtime(source):
@@ -63,7 +100,10 @@ def refresh_runtime(source):
     pattern=r'(^function FST_ReadFile takes[^\n]+\n).*?^endfunction'
     source=re.sub(pattern,lambda m:re.sub(r'\bFSS_Concat\(', 'FSS_LocalConcat(',m[0]),
                   source,flags=re.M|re.S)
-    return source
+    if 'function FST_Init takes' in source and 'call FSS_InitCollector()' not in source:
+        source=source.replace('    call FSC_InitCharacters()','    call FSC_InitCharacters()\n    call FSS_InitCollector()',1)
+    from performance_runtime import track_collection_mutations
+    return pin_persistent_strings(track_collection_mutations(source))
 
 
 def isolate_reader(source, name):

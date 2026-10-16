@@ -21,6 +21,12 @@ def mocks(source):
     for name in set(functions(source)) | {n for n, _ in invocations(source)}:
         if re.fullmatch(r'[A-Za-z_]\w*', name) and not keyword.iskeyword(name) and name != 'elseif' and not name.startswith('Quest_'):
             env[name] = lambda *args: None
+    for cache_name in ('CollectionArmoryRevision','CollectionTitleRevision','CollectionInventoryRevision',
+                       'ChroniclesCachedInventory','ChroniclesCachedTitles','ChroniclesCachedSpeed'):
+        env.setdefault(cache_name,defaultdict(int))
+    for cache_name in ('ChroniclesCachedHero','ChroniclesCachedSpirit'):
+        env.setdefault(cache_name,defaultdict(lambda:None))
+    env.setdefault('ArmoryCounterRevision',-1)
     return env
 
 

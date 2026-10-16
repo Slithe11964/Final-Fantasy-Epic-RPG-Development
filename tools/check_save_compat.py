@@ -52,7 +52,7 @@ def snapshot(map_path):
     for module in ['Save', 'Cmd', 'Code']:
         for name, body in functions(texts[module]).items():
             if name.startswith(('Save_', 'Code_', 'Trig_Cmd_Load_Code_')):
-                serializers[name] = fingerprint(body)
+                serializers[name] = fingerprint(re.sub(r'\bCollection_(Force(?:AddPlayer|RemovePlayer)(?:Simple)?|ForceClear)\b',r'\1',body))
     table = savecode.load_items(str(ROOT / 'src/itemtable.txt'))
     ids, fields, extra = object_ids(map_path); errors += extra
     for index, rawcode in items.items():

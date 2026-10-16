@@ -77,6 +77,10 @@ def load_engine(extra_source='', extra_names=(), extra_env=None):
     env['ExecuteFunc'] = lambda name: env[name]()
     env.update(extra_env or {})
 
+    # Runtime collection observers add presentation invalidation around these natives.
+    for collection_native in ('ForceAddPlayer','ForceRemovePlayer','ForceAddPlayerSimple','ForceRemovePlayerSimple','ForceClear'):
+        exec('def Collection_'+collection_native+'(*args): return '+collection_native+'(*args)',env)
+
     for name in SELECTED + list(extra_names):
         body = strip_comments(functions(source)[name]).strip().splitlines()
         match = re.match(r'function \w+ takes (.*?) returns \w+', body[0])

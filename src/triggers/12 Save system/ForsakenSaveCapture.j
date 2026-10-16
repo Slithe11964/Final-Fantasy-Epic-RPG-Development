@@ -244,13 +244,13 @@ function FRC_Section takes integer pid,integer sid returns string
         loop
             exitwhen (i >= 22)
             if (udg_JobUnitType[i] != FRC_JobRaw(i)) then
-                set FRC_Error[pid]="job registry differs from the frozen bindings"
+                set FRC_Error[pid]=FSS_SetRoot("job registry differs from the frozen bindings",243739446,pid,false)
                 return null
             endif
             set level=FRC_Level(pid,FRC_JobRaw(i))
             set tier=FRC_Tier(pid,FRC_JobRaw(i))
             if (not FSC_MasteryValid(level,tier)) then
-                set FRC_Error[pid]="unsupported job level or mastery"
+                set FRC_Error[pid]=FSS_SetRoot("unsupported job level or mastery",243739446,pid,false)
                 return null
             endif
             set body=FSS_Concat(FSS_Concat(FSS_Concat(body,FSC_Uint((i + 1))),FSC_Uint(level)),FSC_Uint(tier))
@@ -259,7 +259,7 @@ function FRC_Section takes integer pid,integer sid returns string
         return FSS_Concat(FSC_Uint(22),body)
     elseif (sid == 4) then
         if ((udg_NewGamePlusLevel[(pid + 1)] < 0) or (udg_NewGamePlusLevel[(pid + 1)] > 10)) then
-            set FRC_Error[pid]="unsupported New Game mode; no export created"
+            set FRC_Error[pid]=FSS_SetRoot("unsupported New Game mode; no export created",243739446,pid,false)
             return null
         endif
         set level=0
@@ -277,7 +277,7 @@ function FRC_Section takes integer pid,integer sid returns string
         endif
         set selected=FRC_Selected(pid)
         if (((selected < 0) or (variant < 0)) or (not FSC_MasteryValid(level,tier))) then
-            set FRC_Error[pid]="unreviewed active job or Freelancer variant"
+            set FRC_Error[pid]=FSS_SetRoot("unreviewed active job or Freelancer variant",243739446,pid,false)
             return null
         endif
         if (udg_MiracleStage[0] != (- 1)) then
@@ -304,7 +304,7 @@ function FRC_Section takes integer pid,integer sid returns string
     elseif (sid == 5) then
         set level=GetHeroLevel(gaya)
         if ((level < 1) or (level > 99)) then
-            set FRC_Error[pid]="unreviewed Gaya level"
+            set FRC_Error[pid]=FSS_SetRoot("unreviewed Gaya level",243739446,pid,false)
             return null
         endif
         set body=FSS_Concat(FRC_Pair(1,0),FRC_Pair(2,level))
@@ -333,7 +333,7 @@ function FRC_Section takes integer pid,integer sid returns string
         return FSS_Concat(FSC_Uint(count),body)
     elseif (sid == 8) then
         if ((udg_SaveFlagCount != 358) or (udg_ArmoryCodeSegment[pid] != 0)) then
-            set FRC_Error[pid]="unreviewed or unfinished Armory state"
+            set FRC_Error[pid]=FSS_SetRoot("unreviewed or unfinished Armory state",243739446,pid,false)
             return null
         endif
         set i=1
@@ -382,23 +382,23 @@ function FRC_Read takes integer pid,integer position,item carried returns string
     endif
     set id=LoadInteger(FRC_Map,0,GetItemTypeId(carried))
     if (id == 0) then
-        set FRC_Error[pid]=FSS_Concat(FSS_Concat("unknown item at position ",I2S(position)),"; nothing omitted.")
+        set FRC_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("unknown item at position ",I2S(position)),"; nothing omitted."),243739446,pid,false)
         return null
     endif
     set quantity=GetItemCharges(carried)
     if ((quantity < 0) or (quantity > 127)) then
-        set FRC_Error[pid]=FSS_Concat(FSS_Concat("quantity outside 0..127 at position ",I2S(position)),".")
+        set FRC_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("quantity outside 0..127 at position ",I2S(position)),"."),243739446,pid,false)
         return null
     endif
     if (GetItemUserData(carried) == (pid + 1)) then
         set bound="B"
     elseif (GetItemUserData(carried) != 0) then
-        set FRC_Error[pid]=FSS_Concat(FSS_Concat("foreign binding at position ",I2S(position)),".")
+        set FRC_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("foreign binding at position ",I2S(position)),"."),243739446,pid,false)
         return null
     endif
     set life=FSL_CaptureLife(pid,carried)
     if (FSS_Equals(life,null)) then
-        set FRC_Error[pid]="item life could not be captured exactly."
+        set FRC_Error[pid]=FSS_SetRoot("item life could not be captured exactly.",243739446,pid,false)
         return null
     endif
     if IsItemInvulnerable(carried) then
@@ -442,16 +442,16 @@ function FRC_Stop takes integer pid,string reason returns nothing
     call DestroyTimer(FRC_Watchdog[pid])
     set FRC_Timer[pid]=null
     set FRC_Watchdog[pid]=null
-    set FRC_Error[pid]=reason
+    set FRC_Error[pid]=FSS_SetRoot(reason,243739446,pid,false)
     set FRC_Phase[pid]=0
     set FRC_Hero[pid]=null
     set FRC_Gaya[pid]=null
     set FRC_House[pid]=null
-    set FRC_Body[pid]=null
+    set FRC_Body[pid]=FSS_SetRoot(null,1472968661,pid,false)
     loop
         exitwhen (i >= 57)
         set FRC_Handle[pid*57+i]=null
-        set FRC_Record[pid*57+i]=null
+        set FRC_Record[pid*57+i]=FSS_SetRoot(null,1935610165,pid*57+i,false)
         set i=(i + 1)
     endloop
 endfunction
@@ -487,8 +487,8 @@ function FRC_Step takes integer pid returns nothing
         if (FRC_Phase[pid] == 1) then
             set FRC_Handle[index]=carried
             set FRC_Raw[index]=GetItemTypeId(carried)
-            set FRC_Record[index]=payload
-            set FRC_Body[pid]=FSS_Concat(FRC_Body[pid],payload)
+            set FRC_Record[index]=FSS_SetRoot(payload,1935610165,index,false)
+            set FRC_Body[pid]=FSS_SetRoot(FSS_Concat(FRC_Body[pid],payload),1472968661,pid,false)
             if (carried != null) then
                 set FRC_Count[pid]=(FRC_Count[pid] + 1)
             endif
@@ -511,7 +511,7 @@ function FRC_Step takes integer pid returns nothing
             return
         endif
         if (FRC_Phase[pid] == 1) then
-            set FRC_Payload[pid*16+sid]=payload
+            set FRC_Payload[pid*16+sid]=FSS_SetRoot(payload,327116394,pid*16+sid,false)
         elseif (not FSS_Equals(payload,FRC_Payload[((pid * 16) + sid)])) then
             call FRC_Stop(pid,"progression or durable flags changed during capture")
             return
@@ -549,7 +549,7 @@ function FRC_Step takes integer pid returns nothing
             call FRC_Stop(pid,FSS_Concat("captured profile did not validate: ",FSC_Error[pid]))
             return
         endif
-        set FRC_Result[pid]=encoded
+        set FRC_Result[pid]=FSS_SetRoot(encoded,2063683511,pid,false)
         set FRC_Ready[pid]=true
         call FRC_Stop(pid,"")
         return
@@ -579,11 +579,11 @@ function FRC_Start takes integer pid returns boolean
     set FRC_House[pid]=udg_PlayerHouse[(pid + 1)]
     set FRC_AccountHash[pid]=FRC_Account(pid)
     set FRC_Ready[pid]=false
-    set FRC_Result[pid]=null
-    set FRC_Error[pid]=""
+    set FRC_Result[pid]=FSS_SetRoot(null,2063683511,pid,false)
+    set FRC_Error[pid]=FSS_SetRoot("",243739446,pid,false)
     set FRC_Position[pid]=0
     set FRC_Count[pid]=0
-    set FRC_Body[pid]=""
+    set FRC_Body[pid]=FSS_SetRoot("",1472968661,pid,false)
     set FRC_Phase[pid]=1
     set FRC_Timer[pid]=CreateTimer()
     set FRC_Watchdog[pid]=CreateTimer()

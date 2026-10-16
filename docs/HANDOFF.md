@@ -9,33 +9,33 @@ logs up to 2026-10-10 are in [history/](history/).
 The user reproduced a Forsaken PAIR007 multiplayer desync during `-loadf dev`.
 The seven-player report/replay narrows this attempt to private preparation/first
 send: the command is present without a subsequent FSCU packet for that request.
-PAIR010 is the current candidate; both profiles passed all build gates. It removes
-shared scanner/ExecuteFunc calls from private import/readback/header preparation;
-all content validation runs on synchronized receivers, and export checksums run
-before private writing. FSVB/file bytes and both inventory interfaces are retained.
-The canonical transport and paired runtime refresh carry this into future master
-builds without rewriting the master. Details/tests: [SAVE_129.md](SAVE_129.md).
+The user confirmed PAIR010 Forsaken multiplayer import no longer desynchronizes.
+That private-IO separation remains: synchronized receivers validate content, export
+checksums run before private writing, and file bytes/inventory interfaces are retained.
 
-The checked maps were copied into Documents/Warcraft III/Maps/Download/TEST as
-FFERPG-PAIR010-Forsaken.w3x and FFERPG-PAIR010-1.29.2.w3x, with matching hashes.
-Native multiplayer engine acceptance remains pending. Test a fresh multiplayer
-PAIR010 game with `-loadf dev`, noting the last loading progress message on failure.
-PAIR008/PAIR009 stopped at classic source-agreement gates and did not publish pairs.
-PAIR007's two files were moved by the user to Documents/Warcraft III/Maps/Download/TEST;
-its release directory retains reports/check logs. Do not use PAIR007 as proof of a
-multiplayer fix.
+PAIR011 is the checked performance follow-up, installed in the Warcraft TEST folder
+as FFERPG-PAIR011-Forsaken.w3x and FFERPG-PAIR011-1.29.2.w3x (hash verified). It reclaims unrooted save
+fragments through bounded shared/private queues, releases finished projectile hit
+groups, guards exhausted motion pools, caches native UI searches/render reads and
+invalidates Armory/Chronicle totals on changes. Cross-module save assignments retain
+roots, preserving active work and screenshot pages. The canonical source and paired
+runtime maintenance carry these changes into future editor-master builds without
+rewriting the master. See PERFORMANCE_AUDIT.md and SAVE_129.md.
+
+The freeze report was after loading, with three players questing and about four
+quests completed; another player had a medium-progress import. These changes repair
+concrete audit findings but do not identify the engine's freezing instruction.
+Extended multiplayer quest/combat acceptance remains required. PAIR008/PAIR009 and
+the interrupted first PAIR011 attempt did not publish output pairs.
 
 The large imported-character Warcraft menu checkpoint passed in PAIR004 Reforged
 but still crashed in 1.29.2 Simple after quests and a complete restart. That classic
 checkpoint fix remains unresolved; CheckpointNoItems.txt is installed separately
 for isolation (SAVE_129.md). Earlier failed checkpoints embed the old map.
 
-[PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md) records confirmed projectile-group
-leakage, retained save intermediates, repeated native frame searches and collection
-polling. User order: accept the desync fix first, then release hit tracking at
-projectile completion, reclaim save temporaries, cache UI handles on open/recreation,
-and invalidate collection counters only on membership/import changes. Those
-performance changes are not included in this candidate.
+[PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md) distinguishes confirmed resource/work
+issues from unmeasured startup opportunities. Preserve combat timer timing and
+preloads unless profiling supports another change.
 
 | Line | Map | State |
 |---|---|---|
@@ -109,7 +109,7 @@ its builder rejects classic inventory modules.
 
 ## Next
 
-1. Native UI (EK): start a fresh game, import the character file, verify Secrets text/count, three-panel Bazaar prepare/purchase and Stats/Talents; make a NEW Warcraft menu save, restart/load it, then verify those panels again and confirm talent choices persist. Saved games made in EI embed the old code. Save (ATU/EK): first confirm -loadf dev completes in a fresh game (ATT hung in classic). Then create a NEW Warcraft menu save, fully exit/restart and load it. Earlier menu saves embed the old map. The isolated long-string probe failed; bounded storage is the current candidate, not yet confirmed in-game. Run `python experiments/Forsaken/test_save_strings.py` after changing its lowering/helper. Legacy whole-code preload files retain their previous checkpoint limitation. Also retest autosave with a populated backpack and reload the autosave file; check the New Game Plus notice on an eligible endgame load. Difficulty: save an Easy-origin character in Nightmare, then confirm Easy accepts it and Inferno rejects it; resave an Inferno-origin character in Nightmare and confirm it loads anywhere. Test both clients. After any change to the experiments/Forsaken save modules, rerun `python tools/save_port.py <built map>`.
+1. PAIR011: start a fresh multiplayer game with the same endgame/medium imports; complete more than four quests and exercise projectile combat. Check inventory, inspection, stats/talents and collection updates after gains/removals. Confirm normal save screenshot pages remain available and file saves still import. Report whether a freeze affects one or every client and the last activity. PAIR010 loading desync acceptance passed; PAIR011 freezing acceptance is pending. The 1.29.2 large-import Warcraft-menu checkpoint issue remains unresolved; compare the separately installed CheckpointNoItems diagnostic and test only newly created checkpoints. Tiny checkpoint success does not prove the endgame case. Future edits remain in the editor master; the paired builder applies reviewed maintenance to both profiles.
 2. Armory ATP/EC: root total only, each category button has its own progress and opens the right page; Close/Back has no counts. Bazaar: prepare consumes parts, purchase pays and delivers, rewards reveal and recipe-ready text returns.
 3. Forsaken: load a DW save in EC and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
 4. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.

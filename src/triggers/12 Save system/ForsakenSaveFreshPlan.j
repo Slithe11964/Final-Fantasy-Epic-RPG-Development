@@ -33,7 +33,7 @@ function FFP_Clear takes integer pid returns nothing
         return
     endif
     set FFP_Ready[pid]=false
-    set FFP_Code[pid]=null
+    set FFP_Code[pid]=FSS_SetRoot(null,1839547415,pid,false)
     set FFP_Starter[pid]=null
     set FFP_Gaya[pid]=null
     set FFP_House[pid]=null
@@ -70,43 +70,43 @@ function FFP_Eligible takes integer pid,boolean windowOpen returns boolean
     if (not FSC_PlayerValid(pid)) then
         return false
     endif
-    set FFP_Error[pid]=null
+    set FFP_Error[pid]=FSS_SetRoot(null,541102772,pid,false)
     if FFP_Locked[pid] then
-        set FFP_Error[pid]="a fresh-load attempt still owns objects"
+        set FFP_Error[pid]=FSS_SetRoot("a fresh-load attempt still owns objects",541102772,pid,false)
         return false
     elseif (not windowOpen) then
-        set FFP_Error[pid]="the load window has closed"
+        set FFP_Error[pid]=FSS_SetRoot("the load window has closed",541102772,pid,false)
         return false
     elseif (not udg_HardcoreOff) then
-        set FFP_Error[pid]="loading is disabled in Hardcore"
+        set FFP_Error[pid]=FSS_SetRoot("loading is disabled in Hardcore",541102772,pid,false)
         return false
     elseif udg_HasLoadedCode[pid] then
-        set FFP_Error[pid]="a character has already loaded this game"
+        set FFP_Error[pid]=FSS_SetRoot("a character has already loaded this game",541102772,pid,false)
         return false
     elseif (not IsPlayerInForce(Player(pid),udg_PlayingPlayers)) then
-        set FFP_Error[pid]="player is no longer active"
+        set FFP_Error[pid]=FSS_SetRoot("player is no longer active",541102772,pid,false)
         return false
     elseif ((FSC_Busy[pid] or FSC_Writing[pid]) or (FRC_Phase[pid] != 0)) then
-        set FFP_Error[pid]="save work is still in progress"
+        set FFP_Error[pid]=FSS_SetRoot("save work is still in progress",541102772,pid,false)
         return false
     endif
     set hero=udg_PlayerHero[(pid + 1)]
     set gaya=udg_SpiritOfGaya[(pid + 1)]
     set house=udg_PlayerHouse[(pid + 1)]
     if ((((((hero == null) or (gaya == null)) or (house == null)) or (GetUnitTypeId(hero) == 0)) or (GetUnitTypeId(gaya) == 0)) or (GetUnitTypeId(house) == 0)) then
-        set FFP_Error[pid]="starting character, Gaya or assigned house is missing"
+        set FFP_Error[pid]=FSS_SetRoot("starting character, Gaya or assigned house is missing",541102772,pid,false)
         return false
     elseif (((GetOwningPlayer(hero) != Player(pid)) or (GetOwningPlayer(gaya) != Player(pid))) or (GetOwningPlayer(house) != Player(pid))) then
-        set FFP_Error[pid]="starting objects are not assigned to this player"
+        set FFP_Error[pid]=FSS_SetRoot("starting objects are not assigned to this player",541102772,pid,false)
         return false
     elseif ((((GetHeroLevel(hero) != 1) or (GetHeroLevel(gaya) != 1)) or (udg_FreelancerHero[(pid + 1)] != null)) or (SaveSlots_BagSize(hero) != 30)) then
-        set FFP_Error[pid]="load at the start of a game, before leveling the hero or Gaya"
+        set FFP_Error[pid]=FSS_SetRoot("load at the start of a game, before leveling the hero or Gaya",541102772,pid,false)
         return false
     endif
     loop
         exitwhen (i >= 57)
         if (((((((i < 6) and (UnitItemInSlot(hero,i) != null))) or ((((i >= 6) and (i < 36)) and (SaveSlots_Bag(hero,(i - 6)) != null)))) or ((((i >= 36) and (i < 45)) and (SaveSlots_Equip(hero,(i - 36)) != null)))) or ((((i >= 45) and (i < 51)) and (UnitItemInSlot(gaya,(i - 45)) != null)))) or (((i >= 51) and (UnitItemInSlot(house,(i - 51)) != null)))) then
-            set FFP_Error[pid]="starting inventory or house is occupied; no items replaced"
+            set FFP_Error[pid]=FSS_SetRoot("starting inventory or house is occupied; no items replaced",541102772,pid,false)
             return false
         endif
         set i=(i + 1)
@@ -115,7 +115,7 @@ function FFP_Eligible takes integer pid,boolean windowOpen returns boolean
     loop
         exitwhen (i >= 22)
         if (((udg_JobUnitType[i] != FRC_JobRaw(i)) or (LoadInteger(udg_JobLevelHash,FRC_JobRaw(i),pid) > 1)) or (((LoadUnitHandle(udg_JobHeroHash,FRC_JobRaw(i),pid) != null) and (LoadUnitHandle(udg_JobHeroHash,FRC_JobRaw(i),pid) != hero)))) then
-            set FFP_Error[pid]="load at the start of a game, before changing or leveling jobs"
+            set FFP_Error[pid]=FSS_SetRoot("load at the start of a game, before changing or leveling jobs",541102772,pid,false)
             return false
         endif
         set i=(i + 1)
@@ -133,7 +133,7 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
     local integer value
     local integer tier
     local integer maximum=0
-    set FSC_Text[ctx]=payload
+    set FSC_Text[ctx]=FSS_SetRoot(payload,295637012,ctx,false)
     set FSC_Pos[ctx]=0
     set FSC_End[ctx]=FSS_Length(payload)
     set FSC_Ok[ctx]=true
@@ -162,7 +162,7 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
         if (sid == 2) then
             set tier=FSC_Read(ctx)
             if (value > 99) then
-                set FFP_Error[pid]="a saved job is above level 99"
+                set FFP_Error[pid]=FSS_SetRoot("a saved job is above level 99",541102772,pid,false)
                 return false
             endif
             call SaveInteger(FFP_Values,((pid * 16) + 10),identity,tier)
@@ -188,14 +188,14 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
         return false
     endif
     if FFP_Locked[pid] then
-        set FFP_Error[pid]="finish cleanup before another load attempt"
+        set FFP_Error[pid]=FSS_SetRoot("finish cleanup before another load attempt",541102772,pid,false)
         return false
     endif
     call FFP_Clear(pid)
     if (not FFP_Eligible(pid,windowOpen)) then
         return false
     elseif ((FFP_Bindings == null) or (FFP_Values == null)) then
-        set FFP_Error[pid]="fresh-load bindings are not initialized"
+        set FFP_Error[pid]=FSS_SetRoot("fresh-load bindings are not initialized",541102772,pid,false)
         return false
     endif
     if (FSC_Seen == null) then
@@ -228,7 +228,7 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
             set targetIndex=((pid * 57) + i)
             set raw=LoadInteger(FFP_Bindings,FSC_ItemHolder[sourceIndex],FSC_ItemId[sourceIndex])
             if ((((raw == 0) or (FSC_ItemQuantity[sourceIndex] < 0)) or (not FSC_ItemComplete[sourceIndex])) or FSC_ItemDormant[sourceIndex]) then
-                set FFP_Error[pid]="unknown item, incomplete metadata or unsupported stored data"
+                set FFP_Error[pid]=FSS_SetRoot("unknown item, incomplete metadata or unsupported stored data",541102772,pid,false)
                 set valid=false
             elseif (FSC_ItemHolder[sourceIndex] == 3) then
                 set slotPower=1
@@ -239,7 +239,7 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
                     set sid=(sid + 1)
                 endloop
                 if (ModuloInteger((LoadInteger(FFP_Bindings,6,FSC_ItemId[sourceIndex]) / slotPower),2) != 1) then
-                    set FFP_Error[pid]="item cannot occupy the saved equipment slot"
+                    set FFP_Error[pid]=FSS_SetRoot("item cannot occupy the saved equipment slot",541102772,pid,false)
                     set valid=false
                 endif
                 if (FSC_ItemSlot[sourceIndex] == 7) then
@@ -267,32 +267,32 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
     set FSC_Busy[pid]=false
     if valid then
         if (LoadInteger(FFP_Values,((pid * 16) + 5),2) < 1) then
-            set FFP_Error[pid]="saved Gaya level is not supported"
+            set FFP_Error[pid]=FSS_SetRoot("saved Gaya level is not supported",541102772,pid,false)
             set valid=false
         elseif (LoadInteger(FFP_Values,((pid * 16) + 4),4) > 99) then
-            set FFP_Error[pid]="the saved Freelancer is above level 99"
+            set FFP_Error[pid]=FSS_SetRoot("the saved Freelancer is above level 99",541102772,pid,false)
             set valid=false
         elseif (LoadInteger(FFP_Values,((pid * 16) + 4),1) > 3) then
-            set FFP_Error[pid]="unsupported saved difficulty tier"
+            set FFP_Error[pid]=FSS_SetRoot("unsupported saved difficulty tier",541102772,pid,false)
             set valid=false
         elseif ((udg_Difficulty == 5) and (LoadInteger(FFP_Values,((pid * 16) + 4),1) < 3)) then
             // Simple to Hard saves load in Simple to Hard; Inferno saves load anywhere;
             // Nightmare loads any save. Only an Inferno game refuses a save made below Inferno.
-            set FFP_Error[pid]="a save made below Inferno cannot be loaded in an Inferno game"
+            set FFP_Error[pid]=FSS_SetRoot("a save made below Inferno cannot be loaded in an Inferno game",541102772,pid,false)
             set valid=false
         elseif (((LoadInteger(FFP_Values,((pid * 16) + 4),15) == 1)) != udg_SpeedrunMode) then
-            set FFP_Error[pid]="saved Speedrun mode does not match this game"
+            set FFP_Error[pid]=FSS_SetRoot("saved Speedrun mode does not match this game",541102772,pid,false)
             set valid=false
         endif
     endif
     if (not valid) then
         if (FSS_Equals(FFP_Error[pid],null)) then
-            set FFP_Error[pid]="unsupported or invalid fresh-load profile"
+            set FFP_Error[pid]=FSS_SetRoot("unsupported or invalid fresh-load profile",541102772,pid,false)
         endif
         call FFP_Clear(pid)
         return false
     endif
-    set FFP_Code[pid]=encoded
+    set FFP_Code[pid]=FSS_SetRoot(encoded,1839547415,pid,false)
     set FFP_Account[pid]=FRC_Account(pid)
     set FFP_Starter[pid]=udg_PlayerHero[(pid + 1)]
     set FFP_Gaya[pid]=udg_SpiritOfGaya[(pid + 1)]
@@ -306,14 +306,14 @@ function FFP_Recheck takes integer pid,boolean windowOpen returns boolean
     if (not FSC_PlayerValid(pid)) then
         return false
     elseif (not FFP_Ready[pid]) then
-        set FFP_Error[pid]="no validated fresh-load plan"
+        set FFP_Error[pid]=FSS_SetRoot("no validated fresh-load plan",541102772,pid,false)
         return false
     endif
     if (not FFP_Eligible(pid,windowOpen)) then
         call FFP_Clear(pid)
         return false
     elseif ((((((FFP_Account[pid] != FRC_Account(pid)) or (FFP_Starter[pid] != udg_PlayerHero[(pid + 1)])) or (FFP_Gaya[pid] != udg_SpiritOfGaya[(pid + 1)])) or (FFP_House[pid] != udg_PlayerHouse[(pid + 1)])) or (FFP_GameDifficulty[pid] != udg_Difficulty)) or (((LoadInteger(FFP_Values,((pid * 16) + 4),15) == 1)) != udg_SpeedrunMode)) then
-        set FFP_Error[pid]="player or game context changed before creation"
+        set FFP_Error[pid]=FSS_SetRoot("player or game context changed before creation",541102772,pid,false)
         call FFP_Clear(pid)
         return false
     endif

@@ -51,3 +51,13 @@ checks item text, derived accuracy lookups, pathing, shared intro text and an im
 in both profiles. User acceptance must still exercise an actual editor save and
 play both outputs. The unresolved endgame Warcraft-menu checkpoint issue remains
 separate; this build workflow does not claim to repair it.
+
+
+Reviewed performance maintenance is also applied automatically to both outputs:
+projectile lifetime guards, deferred rooted save-fragment reclamation and collection
+change tracking. Native output additionally caches its panel handles and display
+reads. These changes live in tools/performance_runtime.py and the canonical save
+helpers; editing the master does not require manually repeating them per profile.
+The master and pinned references are not rewritten. Pair provenance includes the
+maintenance and save-string transform hashes. Future changes to their anchors fail
+closed if the edited source no longer matches the reviewed transformation.

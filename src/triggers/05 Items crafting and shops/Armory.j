@@ -23,6 +23,7 @@ globals
     integer array ArmoryProgressStored
     string array ArmoryHint
     integer array ArmoryCategory
+    integer ArmoryCounterRevision=-1
 endglobals
 
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
@@ -1097,6 +1098,14 @@ function Armory_RefreshCounter takes nothing returns nothing
     set p=null
 endfunction
 
+function Armory_PollCounter takes nothing returns nothing
+    local integer revision=CollectionArmoryRevision[GetPlayerId(GetLocalPlayer())]
+    if revision!=ArmoryCounterRevision then
+        call Armory_RefreshCounter()
+        set ArmoryCounterRevision=revision
+    endif
+endfunction
+
 function Armory_InitCounter takes nothing returns nothing
     local integer category=0
     // Tooltip natives index levels from 0 in Reforged; if level 0 reads empty (seen in 1.29.2),
@@ -1151,8 +1160,14 @@ function Armory_InitCounter takes nothing returns nothing
         endif
         set category=category+1
     endloop
-    call Armory_RefreshCounter()
-    call TimerStart(CreateTimer(),1.,true,function Armory_RefreshCounter)
+    set category=1
+    loop
+        exitwhen category>udg_SaveFlagCount
+        call Collection_Watch(udg_SaveFlagForce[category],1)
+        set category=category+1
+    endloop
+    call Armory_PollCounter()
+    call TimerStart(CreateTimer(),1.,true,function Armory_PollCounter)
 endfunction
 
 function Trig_Armory_Init_Actions takes nothing returns nothing
@@ -1255,20 +1270,20 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_ArmoryParentCategory[38]=3
     set udg_ArmoryParentCategory[39]=6
     set udg_ArmoryParentCategory[40]=3
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['i'])
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['j'])
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$93]) // $93 = 147
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$99]) // $99 = 153
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$A9]) // $A9 = 169
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$AF]) // $AF = 175
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BC]) // $BC = 188
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$D2]) // $D2 = 210
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['i'])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['j'])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$93]) // $93 = 147
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$99]) // $99 = 153
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$A9]) // $A9 = 169
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$AF]) // $AF = 175
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BC]) // $BC = 188
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$D2]) // $D2 = 210
     set udg_SaveFlagUnitID[$C]='n0D8' // $C = 12; 'n0D8': unit "Champion's Belt"
     set udg_SaveFlagUnitID[$D]='n0D9' // $D = 13; 'n0D9': unit "Griever"
     set udg_SaveFlagUnitID[$E]='n0DA' // $E = 14; 'n0DA': unit "Touph Ring"
     set udg_SaveFlagUnitID[17]='n0DB' // 'n0DB': unit "Sprint Shoes"
     set udg_SaveFlagUnitID[18]='n0DC' // 'n0DC': unit "Chimes of Piercing"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[18])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[18])
     set udg_SaveFlagUnitID[19]='n0DD' // 'n0DD': unit "Armguard"
     set udg_SaveFlagUnitID[20]='n0DE' // 'n0DE': unit "Blue Amulet"
     set udg_SaveFlagUnitID[21]='n0DF' // 'n0DF': unit "Germinas Boots"
@@ -1278,7 +1293,7 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[25]='n0DJ' // 'n0DJ': unit "Steel Gorget"
     set udg_SaveFlagUnitID[26]='n0DK' // 'n0DK': unit "Totem of Power"
     set udg_SaveFlagUnitID[27]='n0DL' // 'n0DL': unit "Cat's Bell"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[27])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[27])
     set udg_SaveFlagUnitID[55]='n0DM' // 'n0DM': unit "Heady Pipe"
     set udg_SaveFlagUnitID[79]='n0DN' // 'n0DN': unit "Necklace of the Sorcerer"
     set udg_SaveFlagUnitID[87]='n0DO' // 'n0DO': unit "Crusher's Belt"
@@ -1292,7 +1307,7 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[$98]='n0DW' // $98 = 152; 'n0DW': unit "Iron Duke"
     set udg_SaveFlagUnitID[$9D]='n0DX' // $9D = 157; 'n0DX': unit "Hidden Hero Medicine"
     set udg_SaveFlagUnitID[$A6]='n0DY' // $A6 = 166; 'n0DY': unit "Summoner's Horn"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$A6]) // $A6 = 166
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$A6]) // $A6 = 166
     set udg_SaveFlagUnitID[$A7]='n0DZ' // $A7 = 167; 'n0DZ': unit "Silver Glasses"
     set udg_SaveFlagUnitID[$A8]='n0E0' // $A8 = 168; 'n0E0': unit "Speed Bracers"
     set udg_SaveFlagUnitID[$B4]='n0E1' // $B4 = 180; 'n0E1': unit "Setzer's Coin"
@@ -1309,12 +1324,12 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[94]='n0EC' // 'n0EC': unit "Force of Nature"
     set udg_SaveFlagUnitID[$EB]='n0EE' // $EB = 235; 'n0EE': unit "Death Skull X"
     set udg_SaveFlagUnitID[$EC]='n0EF' // $EC = 236; 'n0EF': unit "Stopwatch"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$EC]) // $EC = 236
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$EC]) // $EC = 236
     set udg_SaveFlagUnitID[$FC]='n0EG' // $FC = 252; 'n0EG': unit "Prominent Cloak"
     set udg_SaveFlagUnitID[$B6]='n0EH' // $B6 = 182; 'n0EH': unit "Hunter's Cloak"
     set udg_SaveFlagUnitID['h']='n0EI' // 'n0EI': unit "White Materia"
     set udg_SaveFlagUnitID[271]='n0JQ' // 'n0JQ': unit "Rabite's Foot"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[271])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[271])
     set udg_SaveFlagUnitID[273]='n0JT' // 'n0JT': unit "Bag of Tricks"
     set udg_SaveFlagUnitID[275]='n0JW' // 'n0JW': unit "Flag of Competition"
     set udg_SaveFlagUnitID[276]='n0JX' // 'n0JX': unit "Golden Skull"
@@ -1358,7 +1373,7 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID['y']='n0HH' // 'n0HH': unit "Shadow Bow"
     set udg_SaveFlagUnitID['z']='n0HI' // 'n0HI': unit "Death Claw"
     set udg_SaveFlagUnitID['{']='n0HJ' // 'n0HJ': unit "Ancient Axe"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['{'])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce['{'])
     set udg_SaveFlagUnitID['|']='n0HK' // 'n0HK': unit "Demon Claw"
     set udg_SaveFlagUnitID[$8E]='n0HL' // $8E = 142; 'n0HL': unit "Lion Heart"
     set udg_SaveFlagUnitID[$8F]='n0GZ' // $8F = 143; 'n0GZ': unit "Excalibur II"
@@ -1486,12 +1501,12 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[301]='n0LA' // 'n0LA': unit "Artemis Arrows"
     set udg_SaveFlagUnitID[313]='n0LO' // 'n0LO': unit "Shimmering Shield"
     set udg_SaveFlagUnitID[323]='n0M4' // 'n0M4': unit "Pulsar Shot"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BE]) // $BE = 190
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BF]) // $BF = 191
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C0]) // $C0 = 192
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C3]) // $C3 = 195
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C4]) // $C4 = 196
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C5]) // $C5 = 197
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BE]) // $BE = 190
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$BF]) // $BF = 191
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C0]) // $C0 = 192
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C3]) // $C3 = 195
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C4]) // $C4 = 196
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[$C5]) // $C5 = 197
     set udg_SaveFlagUnitID[$BE]='n0M6' // $BE = 190; 'n0M6': unit "Book of Flames"
     set udg_SaveFlagUnitID[$BF]='n0FH' // $BF = 191; 'n0FH': unit "Book of Glaciers"
     set udg_SaveFlagUnitID[$C0]='n0EX' // $C0 = 192; 'n0EX': unit "Book of Storms"
@@ -1530,7 +1545,7 @@ function Trig_Armory_Init_Actions takes nothing returns nothing
     set udg_SaveFlagUnitID[60]='n0EP' // 'n0EP': unit "Elven Mail"
     set udg_SaveFlagUnitID[61]='n0EQ' // 'n0EQ': unit "Mithril Mail"
     set udg_SaveFlagUnitID[62]='n0ER' // 'n0ER': unit "Shimmering Mail"
-    call ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[62])
+    call Collection_ForceAddPlayerSimple(Player(9),udg_SaveFlagForce[62])
     set udg_SaveFlagUnitID[63]='n0ES' // 'n0ES': unit "Platinum Mail"
     set udg_SaveFlagUnitID[64]='n0ET' // 'n0ET': unit "Wizard's Robe"
     set udg_SaveFlagUnitID[65]='n0EU' // 'n0EU': unit "Magician's Robe"
@@ -1575,7 +1590,7 @@ function Trig_Armory_Open_Actions takes nothing returns nothing
         call RemoveLocation(udg_TempPoint)
         set udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
         call Armory_ShowCategory(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],0)
-        call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
+        call Collection_ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
     endif
     call SelectUnitForPlayerSingle(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
 endfunction
@@ -1654,7 +1669,7 @@ function Trig_Armory_Select_Actions takes nothing returns nothing
                     endif
                     call RemoveLocation(udg_TempPoint2)
                     call RemoveLocation(udg_TempPoint)
-                    call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[BlzGetUnitMaxMana(GetSoldUnit())])
+                    call Collection_ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[BlzGetUnitMaxMana(GetSoldUnit())])
                     call Armory_ShowCategory(GetTriggerUnit(),ArmoryCategory[playerIndex])
                 endif
             endif
@@ -1716,7 +1731,7 @@ endfunction
 
 function Trig_Armory_Closed_Actions takes nothing returns nothing
     set udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=null
-    call ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
+    call Collection_ForceRemovePlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
 endfunction
 
 function Trig_Armory_Store_Item_ItemIsMine takes nothing returns boolean
@@ -1798,7 +1813,7 @@ endfunction
 function Trig_Armory_Store_Item_Actions takes nothing returns nothing
     set udg_ItemIndex=LoadInteger(udg_ItemSaveID,0,GetItemTypeId(GetManipulatedItem()))
     if(Trig_Armory_Store_Item_NewArmoryEntry())then
-        call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[udg_ItemIndex])
+        call Collection_ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[udg_ItemIndex])
         set udg_TempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
         call DisplayTimedTextToForce(udg_TempForce,10.,("The "+(GetItemName(GetManipulatedItem())+"|r has been added to your armory.")))
         call DestroyForce(udg_TempForce)
@@ -1808,7 +1823,7 @@ function Trig_Armory_Store_Item_Actions takes nothing returns nothing
             call UnitApplyTimedLifeBJ(.01,'BTLF',udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]) // 'BTLF': object name not found in map data
         endif
         if(Trig_Armory_Store_Item_IsCelestialItem())then
-            call ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[507])
+            call Collection_ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[507])
         endif
         set udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_ArmoryItemCount[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+1)
         call Trig_Armory_Store_Item_CancelCodeLoad(GetOwningPlayer(GetTriggerUnit()))

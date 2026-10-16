@@ -133,7 +133,7 @@ function FFN_Cleanup takes integer pid returns boolean
     endloop
     set candidate=null
     if (not clean) then
-        set FFN_Error[pid]="cleanup incomplete; owned handles retained, retry blocked"
+        set FFN_Error[pid]=FSS_SetRoot("cleanup incomplete; owned handles retained, retry blocked",396457255,pid,false)
         return false
     endif
     call FFN_ClearRecords(pid)
@@ -144,9 +144,9 @@ function FFN_Cleanup takes integer pid returns boolean
 endfunction
 
 function FFN_Fail takes integer pid,string reason returns boolean
-    set FFN_Error[pid]=reason
+    set FFN_Error[pid]=FSS_SetRoot(reason,396457255,pid,false)
     if (not FFN_Cleanup(pid)) then
-        set FFN_Error[pid]=FSS_Concat(reason,"; cleanup incomplete, retry blocked")
+        set FFN_Error[pid]=FSS_SetRoot(FSS_Concat(reason,"; cleanup incomplete, retry blocked"),396457255,pid,false)
     endif
     return false
 endfunction
@@ -243,15 +243,15 @@ function FFN_Allocate takes integer pid,boolean windowOpen returns boolean
     if (not FSC_PlayerValid(pid)) then
         return false
     elseif ((FFN_State[pid] != 0) or FFP_Locked[pid]) then
-        set FFN_Error[pid]="finish cleanup before another load attempt"
+        set FFN_Error[pid]=FSS_SetRoot("finish cleanup before another load attempt",396457255,pid,false)
         return false
     elseif (not FFP_Recheck(pid,windowOpen)) then
-        set FFN_Error[pid]=FFP_Error[pid]
+        set FFN_Error[pid]=FSS_SetRoot(FFP_Error[pid],396457255,pid,false)
         return false
     endif
     set FFP_Locked[pid]=true
     set FFN_State[pid]=1
-    set FFN_Error[pid]=""
+    set FFN_Error[pid]=FSS_SetRoot("",396457255,pid,false)
     call FFN_ClearRecords(pid)
     set selected=LoadInteger(FFP_Values,((pid * 16) + 4),13)
     set variant=LoadInteger(FFP_Values,((pid * 16) + 4),14)

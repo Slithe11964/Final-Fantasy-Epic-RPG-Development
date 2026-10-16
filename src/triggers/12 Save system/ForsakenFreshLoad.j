@@ -2327,9 +2327,9 @@ endfunction
 
 function FFL_Membership takes player owner,force target,boolean wanted returns nothing
     if wanted then
-        call ForceAddPlayer(target,owner)
+        call Collection_ForceAddPlayer(target,owner)
     else
-        call ForceRemovePlayer(target,owner)
+        call Collection_ForceRemovePlayer(target,owner)
     endif
 endfunction
 
@@ -2413,7 +2413,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call SetPlayerTechResearched(owner,FRC_TechRaw(i),level)
         if (GetPlayerTechCount(owner,FRC_TechRaw(i),true) != level) then
-            set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("research ",I2S(i))," wanted="),I2S(level))," actual="),I2S(GetPlayerTechCount(owner,FRC_TechRaw(i),true)))
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("research ",I2S(i))," wanted="),I2S(level))," actual="),I2S(GetPlayerTechCount(owner,FRC_TechRaw(i),true))),4088846,pid,false)
             return false
         endif
         set i=(i + 1)
@@ -2428,7 +2428,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call FFL_Membership(owner,udg_TitleForce[i],flag)
         if (IsPlayerInForce(owner,udg_TitleForce[i]) != flag) then
-            set FFL_Error[pid]=FSS_Concat("title membership ",I2S(i))
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat("title membership ",I2S(i)),4088846,pid,false)
             return false
         endif
         set i=(i + 1)
@@ -2443,7 +2443,7 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
         endif
         call FFL_Membership(owner,udg_SaveFlagForce[i],flag)
         if (IsPlayerInForce(owner,udg_SaveFlagForce[i]) != flag) then
-            set FFL_Error[pid]=FSS_Concat("Armory membership ",I2S(i))
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat("Armory membership ",I2S(i)),4088846,pid,false)
             return false
         endif
         if (flag and (ArmoryMissingUnit[i] != 0)) then
@@ -2530,7 +2530,7 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
     // 1.29.2: the bag and worn gear are the backpack pages (TSaveSlots), so the hero needs no
     // bag or equipment ability; the Backpack button is given to every player hero by TBackpack.
     if ((UnitInventorySize(hero) != 6) or (SaveSlots_BagSize(hero) != 30)) then
-        set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat("hero inventory setup quick=",I2S(UnitInventorySize(hero)))," bag="),I2S(SaveSlots_BagSize(hero)))
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat("hero inventory setup quick=",I2S(UnitInventorySize(hero)))," bag="),I2S(SaveSlots_BagSize(hero))),4088846,pid,false)
         return false
     endif
     call SetUnitAbilityLevel(hero,'A02F',(tier + 1))
@@ -2605,11 +2605,11 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
                 set wanted=6
             endif
             if (not FFL_Learn(hero,udg_JobSkill[((jobIndex * 5) + i)],wanted)) then
-                set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("job ",I2S(identity))," skill "),I2S(i))," wanted="),I2S(wanted))," actual="),I2S(GetUnitAbilityLevel(hero,udg_JobSkill[((jobIndex * 5) + i)])))
+                set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("job ",I2S(identity))," skill "),I2S(i))," wanted="),I2S(wanted))," actual="),I2S(GetUnitAbilityLevel(hero,udg_JobSkill[((jobIndex * 5) + i)]))),4088846,pid,false)
                 return false
             endif
         elseif (GetUnitAbilityLevel(hero,udg_JobSkill[((jobIndex * 5) + i)]) != 0) then
-            set FFL_Error[pid]=FSS_Concat(FSS_Concat("unmastered job skill ",I2S(i))," expected unlearned")
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("unmastered job skill ",I2S(i))," expected unlearned"),4088846,pid,false)
             return false
         endif
         set i=(i + 1)
@@ -2619,7 +2619,7 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
         call UnitAddAbility(hero,'A1AI')
     endif
     if ((GetHeroLevel(hero) != level) or (GetUnitAbilityLevel(hero,'A02F') != (tier + 1))) then
-        set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("hero level wanted=",I2S(level))," actual="),I2S(GetHeroLevel(hero)))," mastery wanted="),I2S((tier + 1)))," actual="),I2S(GetUnitAbilityLevel(hero,'A02F')))
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("hero level wanted=",I2S(level))," actual="),I2S(GetHeroLevel(hero)))," mastery wanted="),I2S((tier + 1)))," actual="),I2S(GetUnitAbilityLevel(hero,'A02F'))),4088846,pid,false)
         return false
     endif
     return true
@@ -2679,14 +2679,14 @@ function FFL_PrepareGaya takes integer pid returns boolean
             endif
             call SetUnitAbilityLevel(gaya,raw,rank)
             if (GetUnitAbilityLevel(gaya,raw) != rank) then
-                set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("Gaya field ",I2S(i))," wanted="),I2S(rank))," actual="),I2S(GetUnitAbilityLevel(gaya,raw)))
+                set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("Gaya field ",I2S(i))," wanted="),I2S(rank))," actual="),I2S(GetUnitAbilityLevel(gaya,raw))),4088846,pid,false)
                 return false
             endif
         elseif (rank > 0) then
             call UnitAddAbility(gaya,raw)
             set bits=(bits + R2I(Pow(2.,I2R((i - 6)))))
             if (GetUnitAbilityLevel(gaya,raw) != 1) then
-                set FFL_Error[pid]=FSS_Concat(FSS_Concat("Gaya acquired ability field ",I2S(i))," missing")
+                set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("Gaya acquired ability field ",I2S(i))," missing"),4088846,pid,false)
                 return false
             endif
         endif
@@ -2757,7 +2757,7 @@ endfunction
 // through the hero to suspend its bag bonuses; the backpack needs no such step.
 function FFL_PrepareStored takes integer pid,integer ordinal returns boolean
     if (not FFN_MetadataMatches(pid,ordinal)) then
-        set FFL_Error[pid]=FSS_Concat(FFL_Error[pid]," metadata readback")
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FFL_Error[pid]," metadata readback"),4088846,pid,false)
         return false
     endif
     return true
@@ -2778,7 +2778,7 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
         set holder=udg_PlayerHouse[(pid + 1)]
     endif
     if (FFL_At(holder,kind,slot) != null) then
-        set FFL_Error[pid]=FSS_Concat(FFL_Error[pid]," destination occupied")
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FFL_Error[pid]," destination occupied"),4088846,pid,false)
         return false
     endif
     if ((kind == 2) or (kind == 3)) then
@@ -2787,11 +2787,11 @@ function FFL_Place takes integer pid,integer ordinal returns boolean
         set placed=SaveSlots_PlaceOn(holder,slot,carried)
     endif
     if ((not placed) or (FFL_At(holder,kind,slot) != carried)) then
-        set FFL_Error[pid]=FSS_Concat(FFL_Error[pid]," destination readback")
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FFL_Error[pid]," destination readback"),4088846,pid,false)
         return false
     endif
     if (not FFN_MetadataMatches(pid,ordinal)) then
-        set FFL_Error[pid]=FSS_Concat(FFL_Error[pid]," metadata readback")
+        set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FFL_Error[pid]," metadata readback"),4088846,pid,false)
         return false
     endif
     set holder=null
@@ -2847,7 +2847,7 @@ function FFL_Restore takes integer pid returns boolean
 endfunction
 
 function FFL_Fail takes integer pid,string reason returns nothing
-    set FFL_FailureReason[pid]=reason
+    set FFL_FailureReason[pid]=FSS_SetRoot(reason,2116512851,pid,false)
     if FFL_Restore(pid) then
         call FFL_Message(pid,FSS_Concat(FSS_Concat("Load failed: ",reason),". Nothing was changed; you can load again."))
     else
@@ -2876,26 +2876,26 @@ function FFL_Apply takes integer pid returns boolean
     // units appear exactly where they stood. A failed load shows them again (FFL_Restore).
     call ShowUnit(FFL_OldHero[pid],false)
     call ShowUnit(FFL_OldGaya[pid],false)
-    set FFL_Error[pid]="allocation"
+    set FFL_Error[pid]=FSS_SetRoot("allocation",4088846,pid,false)
     set valid=FFN_Allocate(pid,FFL_WindowOpen)
     if valid then
         if (selected > 0) then
             set level=FFL_Val(pid,2,selected)
             set tier=FFL_Val(pid,10,selected)
         endif
-        set FFL_Error[pid]="hero progression"
+        set FFL_Error[pid]=FSS_SetRoot("hero progression",4088846,pid,false)
         set valid=FFL_PrepareHero(pid,FFN_Unit[(pid * 3)],selected,level,tier)
     endif
     if (valid and (FFN_Unit[((pid * 3) + 2)] != null)) then
-        set FFL_Error[pid]="Freelancer progression"
+        set FFL_Error[pid]=FSS_SetRoot("Freelancer progression",4088846,pid,false)
         set valid=FFL_PrepareHero(pid,FFN_Unit[((pid * 3) + 2)],0,FFL_Val(pid,4,4),FFL_Val(pid,4,12))
     endif
     if valid then
-        set FFL_Error[pid]="player progression"
+        set FFL_Error[pid]=FSS_SetRoot("player progression",4088846,pid,false)
         set valid=FFL_PlayerState(pid,false)
     endif
     if valid then
-        set FFL_Error[pid]="Gaya progression"
+        set FFL_Error[pid]=FSS_SetRoot("Gaya progression",4088846,pid,false)
         set valid=FFL_PrepareGaya(pid)
     endif
     // Prepare dormant bag effects before any final quick/equipment positions fill.
@@ -2903,7 +2903,7 @@ function FFL_Apply takes integer pid returns boolean
         exitwhen ((i >= FFP_Count[pid]) or (not valid))
         set FFL_ItemKey[pid*57+i]=GetHandleId(FFN_Item[((pid * 57) + i)])
         if (FFP_Holder[((pid * 57) + i)] == 2) then
-            set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat("prepare bag slot ",I2S((FFP_Slot[((pid * 57) + i)] + 1)))," item="),I2S(FFP_Raw[((pid * 57) + i)]))
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat("prepare bag slot ",I2S((FFP_Slot[((pid * 57) + i)] + 1)))," item="),I2S(FFP_Raw[((pid * 57) + i)])),4088846,pid,false)
             set valid=FFL_PrepareStored(pid,i)
         endif
         set i=(i + 1)
@@ -2916,7 +2916,7 @@ function FFL_Apply takes integer pid returns boolean
             exitwhen ((i >= FFP_Count[pid]) or (not valid))
             if ((((placementPass == 0) and (FFP_Holder[((pid * 57) + i)] == 3))) or (((placementPass == 1) and (FFP_Holder[((pid * 57) + i)] != 3)))) then
                 set FFL_ItemKey[pid*57+i]=GetHandleId(FFN_Item[((pid * 57) + i)])
-                set FFL_Error[pid]=FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("place holder=",I2S(FFP_Holder[((pid * 57) + i)]))," slot="),I2S((FFP_Slot[((pid * 57) + i)] + 1)))," item="),I2S(FFP_Raw[((pid * 57) + i)]))
+                set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat(FSS_Concat("place holder=",I2S(FFP_Holder[((pid * 57) + i)]))," slot="),I2S((FFP_Slot[((pid * 57) + i)] + 1)))," item="),I2S(FFP_Raw[((pid * 57) + i)])),4088846,pid,false)
                 set valid=FFL_Place(pid,i)
             endif
             set i=(i + 1)
@@ -2925,7 +2925,7 @@ function FFL_Apply takes integer pid returns boolean
     endloop
     if (valid and FFL_RetryCheck[pid]) then
         set valid=false
-        set FFL_Error[pid]="retry check intentionally stopped after item placement"
+        set FFL_Error[pid]=FSS_SetRoot("retry check intentionally stopped after item placement",4088846,pid,false)
     endif
     set FFL_RetryCheck[pid]=false
     if valid then
@@ -2941,7 +2941,7 @@ function FFL_Apply takes integer pid returns boolean
     call FFL_Guard(false)
     if (not valid) then
         if (not FSS_Equals(FFN_Error[pid],"")) then
-            set FFL_Error[pid]=FSS_Concat(FSS_Concat(FFL_Error[pid],"; "),FFN_Error[pid])
+            set FFL_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat(FFL_Error[pid],"; "),FFN_Error[pid]),4088846,pid,false)
         endif
         call FFL_Fail(pid,FFL_Error[pid])
         return false
@@ -3176,7 +3176,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
             set i=1
             loop
                 exitwhen (i > 213)
-                set FFL_ChatPart[pid*256+i]=null
+                set FFL_ChatPart[pid*256+i]=FSS_SetRoot(null,735261634,pid*256+i,false)
                 set i=(i + 1)
             endloop
             set FFL_ChatCheck[pid]=check
@@ -3184,9 +3184,9 @@ function FFL_LoadChat takes integer pid,string text returns nothing
             set FFL_ChatCount[pid]=0
         endif
         if ((not FSS_Equals(FFL_ChatPart[((pid * 256) + part)],null)) and (not FSS_Equals(FFL_ChatPart[((pid * 256) + part)],chunk))) then
-            set FFL_ChatPart[pid*256+part]=chunk
+            set FFL_ChatPart[pid*256+part]=FSS_SetRoot(chunk,735261634,pid*256+part,false)
         elseif (FSS_Equals(FFL_ChatPart[((pid * 256) + part)],null)) then
-            set FFL_ChatPart[pid*256+part]=chunk
+            set FFL_ChatPart[pid*256+part]=FSS_SetRoot(chunk,735261634,pid*256+part,false)
             set FFL_ChatCount[pid]=(FFL_ChatCount[pid] + 1)
         endif
         if (FFL_ChatCount[pid] < total) then
@@ -3208,7 +3208,7 @@ function FFL_LoadChat takes integer pid,string text returns nothing
         set encoded=text
     endif
     if FFP_Build(pid,encoded,FFL_WindowOpen) then
-        set FST_Result[pid]=encoded
+        set FST_Result[pid]=FSS_SetRoot(encoded,436495302,pid,false)
         set FST_FileMillis[pid]=0
         set FST_TransferSeconds[pid]=0.
         set FFL_Started[pid]=TimerGetElapsed(FST_Clock)
@@ -3415,7 +3415,7 @@ function FFL_Tick takes nothing returns nothing
                         call FFL_Message(pid,FSS_Concat("Save failed: ",FSC_Error[pid]))
                     endif
                 else
-                    set FST_SavedCode[pid]=FRC_Result[pid]
+                    set FST_SavedCode[pid]=FSS_SetRoot(FRC_Result[pid],1129301042,pid,false)
                     call FST_ShowCode(pid,1)
                 endif
             else
