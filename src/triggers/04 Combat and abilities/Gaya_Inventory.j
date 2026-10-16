@@ -1,4 +1,4 @@
-library TGayaInventory requires TPlayerHero
+library TGayaInventory requires TPlayerHero, TItemStack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Gaya_ShopPurchase=null
@@ -114,33 +114,37 @@ endfunction
 
 function Trig_Gaya_GatherItems_CollectItemToHouse takes nothing returns nothing
     local integer i=GetPlayerId(GetTriggerPlayer())+1
-    local real ux
-    local real uy
-    if not IsItemVisible(GetEnumItem())then
+    local item picked=GetEnumItem()
+    if not IsItemVisible(picked) or IsItemOwned(picked) or IsItemPowerup(picked) or (GetItemUserData(picked)>0 and GetItemUserData(picked)!=i) then
+        set picked=null
         return
     endif
-    if IsItemOwned(GetEnumItem())then
-        return
+    if ItemStack_Eligible(picked) then
+        call ItemStack_MergeUnit(udg_PlayerHouse[i],picked)
+        if GetItemTypeId(picked)!=0 then
+            call ItemStack_MergeGround(picked,udg_PlayerStartRect[i],i)
+        endif
     endif
-    if IsItemPowerup(GetEnumItem())then
-        return
+    if GetItemTypeId(picked)!=0 then
+        call SetItemPosition(picked,GetRandomReal(GetRectMinX(udg_PlayerStartRect[i]),GetRectMaxX(udg_PlayerStartRect[i])),GetRandomReal(GetRectMinY(udg_PlayerStartRect[i]),GetRectMaxY(udg_PlayerStartRect[i])))
+        call UnitAddItem(udg_PlayerHouse[i],picked)
     endif
-    if(GetItemUserData(GetEnumItem())>0 and GetItemUserData(GetEnumItem())!=i)then
-        return
-    endif
-    set ux=GetRandomReal(GetRectMinX(udg_PlayerStartRect[i]),GetRectMaxX(udg_PlayerStartRect[i]))
-    set uy=GetRandomReal(GetRectMinY(udg_PlayerStartRect[i]),GetRectMaxY(udg_PlayerStartRect[i]))
-    call SetItemPosition(GetEnumItem(),ux,uy)
-    call UnitAddItem(udg_PlayerHouse[i],GetEnumItem())
+    set picked=null
 endfunction
 
 function Trig_Gaya_GatherItems_GatherItemsAround takes unit u,real l_radius returns nothing
     local real ux=GetUnitX(u)
     local real uy=GetUnitY(u)
-    call EnumItemsInRect(Rect(ux-l_radius,uy-l_radius,ux+l_radius,uy+l_radius),null,function Trig_Gaya_GatherItems_CollectItemToHouse)
+    local rect area=Rect(ux-l_radius,uy-l_radius,ux+l_radius,uy+l_radius)
+    call EnumItemsInRect(area,null,function Trig_Gaya_GatherItems_CollectItemToHouse)
+    call RemoveRect(area)
+    set area=null
 endfunction
 
 function Trig_Gaya_GatherItems_Actions takes nothing returns nothing
+    call ItemStack_ConsolidateUnit(Player_GetHero(GetOwningPlayer(GetTriggerUnit())))
+    call ItemStack_ConsolidateUnit(udg_SpiritOfGaya[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1])
+    call ItemStack_ConsolidateUnit(udg_PlayerHouse[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1])
     call Trig_Gaya_GatherItems_GatherItemsAround(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),625.)
     call Trig_Gaya_GatherItems_GatherItemsAround(GetTriggerUnit(),375.)
 endfunction

@@ -24,6 +24,7 @@ class TravelEntryTests(unittest.TestCase):
                      IsUnitInRegion=lambda *args: False,
                      GetOwningPlayer=lambda u: 0,
                      DialogDisplay=lambda *args: shown.append(args),
+                     Travel_Show=lambda p,page:shown.append((p,'menu',True)),
                      ForForce=lambda *args: None,
                      AddSpecialEffect=lambda *args: effects.append(args) or 'effect',
                      Trig_Quest_52_Scorching_TravelDialog_Rebuild=lambda: rebuilt.append(True),

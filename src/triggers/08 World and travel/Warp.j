@@ -4,7 +4,7 @@ function Warp_CondIsHero takes nothing returns boolean
 endfunction
 
 function Warp_HideDialog takes nothing returns nothing
-    call DialogDisplay(GetEnumPlayer(),udg_WarpDialog,false)
+    call Travel_Hide(GetEnumPlayer())
 endfunction
 
 function Warp_OnEnterPoint takes nothing returns nothing
@@ -20,7 +20,7 @@ function Warp_OnEnterPoint takes nothing returns nothing
                 set udg_WarpEffect[i]=AddSpecialEffect("Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTo.mdl",udg_TravelX[i],udg_TravelY[i])
                 call Trig_Quest_52_Scorching_TravelDialog_Rebuild()
             endif
-            call DialogDisplay(GetOwningPlayer(triggeringUnit),udg_WarpDialog,true)
+            call Travel_Show(GetOwningPlayer(triggeringUnit),0)
             call IssueImmediateOrderById(triggeringUnit,$D0019) // $D0019 = 851993
             set triggeringUnit=null
             return

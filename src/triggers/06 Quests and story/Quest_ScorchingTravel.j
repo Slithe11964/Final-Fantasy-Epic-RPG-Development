@@ -1,21 +1,11 @@
-library TQuestScorchingTravel requires TGroup
+library TQuestScorchingTravel requires TGroup, TTravel
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_52_Scorching=null
 endglobals
 
 function Trig_Quest_52_Scorching_TravelDialog_Rebuild takes nothing returns nothing
-    local integer i=0
-    call DialogClear(udg_WarpDialog)
-    call DialogSetMessage(udg_WarpDialog,"Choose destination:")
-    loop
-        exitwhen i>udg_TravelCount
-        if udg_WarpUnlocked[i] then
-            set udg_TravelButton[i]=null
-            set udg_TravelButton[i]=DialogAddButton(udg_WarpDialog,udg_TravelName[i],udg_TravelHotkey[i])
-        endif
-        set i=i+1
-    endloop
+    call Travel_Refresh()
 endfunction
 
 function Trig_Quest_52_Scorching_TravelDialog_Disable takes nothing returns nothing

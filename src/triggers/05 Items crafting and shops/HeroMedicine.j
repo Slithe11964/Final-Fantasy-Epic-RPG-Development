@@ -1,4 +1,4 @@
-library THeroMedicine requires TMedicine, TPlayerHero
+library THeroMedicine requires TMedicine, TPlayerHero, TItemStack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_HeroMedicine_Refill=null
@@ -10,7 +10,7 @@ function Trig_HeroMedicine_Refill_Cond_CooldownReady takes nothing returns boole
 endfunction
 
 function Trig_HeroMedicine_Refill_Cond_HasMedicine takes nothing returns boolean
-    return(GetUnitAbilityLevelSwapped('A0FF',Player_GetHero(GetEnumPlayer()))>0) // 'A0FF': ability "Hidden Hero Medicine"
+    return Carry_Worn(Player_GetHero(GetEnumPlayer()),'I0A7')
 endfunction
 
 function Trig_HeroMedicine_Refill_GiveDrinkToPlayer takes nothing returns nothing
@@ -27,13 +27,7 @@ function Trig_HeroMedicine_Refill_Cond_NoneWithMedicine takes nothing returns bo
 endfunction
 
 function Trig_HeroMedicine_Refill_Actions takes nothing returns nothing
-    set udg_TempBoolean=false
     call ForForce(udg_PlayingPlayers,function Trig_HeroMedicine_Refill_GiveDrinkToPlayer)
-    if(Trig_HeroMedicine_Refill_Cond_NoneWithMedicine())then
-        call DisableTrigger(GetTriggeringTrigger())
-        call DisableTrigger(gg_trg_HeroMedicine_Pickup)
-        call EnableTrigger(gg_trg_Hero_Medicine_Pickup)
-    endif
 endfunction
 
 function Trig_HeroMedicine_Pickup_Conditions takes nothing returns boolean
@@ -52,14 +46,12 @@ endfunction
 
 function Register_HeroMedicine_Refill takes nothing returns nothing
     set gg_trg_HeroMedicine_Refill=CreateTrigger()
-    call DisableTrigger(gg_trg_HeroMedicine_Refill)
     call TriggerRegisterTimerEventPeriodic(gg_trg_HeroMedicine_Refill,6.)
     call TriggerAddAction(gg_trg_HeroMedicine_Refill,function Trig_HeroMedicine_Refill_Actions)
 endfunction
 
 function Register_HeroMedicine_Pickup takes nothing returns nothing
     set gg_trg_HeroMedicine_Pickup=CreateTrigger()
-    call DisableTrigger(gg_trg_HeroMedicine_Pickup)
     call TriggerRegisterAnyUnitEventBJ(gg_trg_HeroMedicine_Pickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
     call TriggerAddCondition(gg_trg_HeroMedicine_Pickup,Condition(function Trig_HeroMedicine_Pickup_Conditions))
     call TriggerAddAction(gg_trg_HeroMedicine_Pickup,function Trig_HeroMedicine_Pickup_Actions)

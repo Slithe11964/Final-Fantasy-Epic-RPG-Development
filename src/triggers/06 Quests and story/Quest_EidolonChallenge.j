@@ -66,7 +66,7 @@ function QuestEidolonChallenge_Define takes nothing returns nothing
     // 2. Defeat the four Eidolons (counted by the Count trigger below)
     call Quest_Custom(q,"Come back to the Brothers for a reward.")
     // 3. Talk to the Brothers again
-    call Quest_Talk(q,gg_unit_Ocb2_0147,"")
+    call Quest_Return(q,gg_unit_Ocb2_0147,"")
     call Quest_Say(q,null,"Good news, we succeded in defeating Titan, Typhon, Pandemona and Leviathan.")
     call Quest_Say(q,gg_unit_Ocb2_0147,"Yeah, we know, they're right here.")
     call Quest_Say(q,null,"Oh, right.")

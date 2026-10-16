@@ -4,7 +4,18 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-15)
+## Where things stand (2026-10-16)
+
+PAIR012 is the checked gameplay follow-up, installed in the Warcraft TEST folder
+as FFERPG-PAIR012-Forsaken.w3x and FFERPG-PAIR012-1.29.2.w3x (hash verified): proximity turn-in for Eidolon
+Challenge; separate per-player travel dialogs with ten destinations per page and
+unchanged unlock IDs; native quest searches across all carried slots; charged-item
+stacking across the full inventory; Gather consolidation of existing hero/Gaya/house
+stacks and matching house-ground items; equipped-only Hero Medicine refill and
+Sleipnir stale-marker/aura cleanup. Both inventory interfaces and the shared save
+format are retained. See BACKPACK.md for behavior and engine acceptance checks.
+The first private PAIR012 attempt stopped at an outdated native quest test fixture;
+the corrected fixture passes against both profiles. No incomplete pair was published.
 
 The user reproduced a Forsaken PAIR007 multiplayer desync during `-loadf dev`.
 The seven-player report/replay narrows this attempt to private preparation/first
@@ -109,7 +120,7 @@ its builder rejects classic inventory modules.
 
 ## Next
 
-1. PAIR011: start a fresh multiplayer game with the same endgame/medium imports; complete more than four quests and exercise projectile combat. Check inventory, inspection, stats/talents and collection updates after gains/removals. Confirm normal save screenshot pages remain available and file saves still import. Report whether a freeze affects one or every client and the last activity. PAIR010 loading desync acceptance passed; PAIR011 freezing acceptance is pending. The 1.29.2 large-import Warcraft-menu checkpoint issue remains unresolved; compare the separately installed CheckpointNoItems diagnostic and test only newly created checkpoints. Tiny checkpoint success does not prove the endgame case. Future edits remain in the editor master; the paired builder applies reviewed maintenance to both profiles.
+1. PAIR012: test the inventory/travel/equipment cases in BACKPACK.md, then start a fresh multiplayer game with the same endgame/medium imports; complete more than four quests and exercise projectile combat. Check inventory, inspection, stats/talents and collection updates after gains/removals. Confirm normal save screenshot pages remain available and file saves still import. Report whether a freeze affects one or every client and the last activity. PAIR010 loading desync acceptance passed; PAIR011 freezing acceptance is pending. The 1.29.2 large-import Warcraft-menu checkpoint issue remains unresolved; compare the separately installed CheckpointNoItems diagnostic and test only newly created checkpoints. Tiny checkpoint success does not prove the endgame case. Future edits remain in the editor master; the paired builder applies reviewed maintenance to both profiles.
 2. Armory ATP/EC: root total only, each category button has its own progress and opens the right page; Close/Back has no counts. Bazaar: prepare consumes parts, purchase pays and delivers, rewards reveal and recipe-ready text returns.
 3. Forsaken: load a DW save in EC and reset Priest talents: the hero/job/gear must remain, the point returns, and the Shrine positions and milestone totals match. DX remains the separate multi-file test; multiplayer timings remain pending. See SAVE_FRESH_LOAD_TEST.md.
 4. Talents: user is writing each job's list (Priest first); Shrine sells Reset Talents. New content on ASC: CONTENT_DEVELOPMENT.md has worked quest/boss/item examples.

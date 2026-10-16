@@ -469,7 +469,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     modules=modules_for(base,edited,profile)
     from save_strings import refresh_runtime
     from performance_runtime import refresh as refresh_performance
-    modules={lib:refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s)
+    from gameplay_runtime import refresh as refresh_gameplay
+    modules={lib:refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native)
              for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in

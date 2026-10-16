@@ -324,3 +324,45 @@ and with the master, two weapons as Ninja and after changing job.
 
 Click to equip gear already in the hero's own slots. Since ATG the 1.29.2 map saves the backpack with the Reforged
 FSVB code (SAVE_129.md); Reforged keeps its own save unchanged.
+
+
+## Paired inventory and quest follow-up (PAIR012)
+
+Forsaken quest lookups previously retained quick-slot-only native calls. Reviewed
+paired maintenance now adapts quest/story possession checks and hand-in lookups to
+all carried slots, including the native extended bag and equipped gear. Native gear
+variants resolve to their original item types. Classic retains its existing all-page
+Gear lookups. The new shared Carry adapter also supports stack and equipment checks;
+its storage implementation is selected at compile time for each profile.
+
+Pickup stacking scans every slot belonging to the receiving unit, rather than only
+six quick slots. Matching charged items retain the existing 99-charge cap, overflow
+and player binding. Gather Items first consolidates existing stacks in the hero, Gaya and house
+inventories, then keeps its house destination for ground items and combines matching
+stacks in the house ground area. It does not take another
+player's bound items or merge different item types. Temporary gathering rectangles
+are released after enumeration.
+
+Hidden Hero Medicine checks worn equipment, including its native variant, on the
+existing six-second refill timer. The refill and drink handler start enabled so
+native equip/import paths do not depend on picking up the original item ID first.
+Carrying the medicine without equipping it does not generate drinks; normal timed
+Hero Drink effects already applied retain their existing duration. Consumable cooldown
+rejection is unchanged. Sleipnir's item-only cooldown/movement/aura markers now use
+native equipped-source checks, and the normal equipment reconciliation removes
+leftover native markers and its aura buff after the equipment source disappears.
+The classic equipment-page ability lifecycle is retained.
+
+The shared Eidolon Challenge final step uses the quest engine's proximity Return
+step, preserving the initial conversation, reward and recruitment/rematch behavior.
+Travel dialogs show at most ten unlocked destinations per page, with independent
+buttons/pages per player and unchanged destination IDs. Full unlock order is Kalm,
+Guardia, Barrens, Northern, Shipyard, Central, Farm, Loth, Naga, Dark Dragon; then Icy,
+Elysium and Arena. Navigation rebuilds clear stale destination buttons and check the
+current unlock flag before teleporting.
+
+Acceptance: in a fresh game, test full travel unlocks and both pages with two players;
+walk up to Minotaur after the fourth Eidolon; hand in an item kept only in the final
+bag slot; pick up Mine Mineral stacks of 2, 2 and 1; gather separate ground stacks;
+and equip/unequip Medicine and Sleipnir. Compilation and mocked-control-flow tests
+are separate from Warcraft gameplay acceptance. Existing save formats are retained.

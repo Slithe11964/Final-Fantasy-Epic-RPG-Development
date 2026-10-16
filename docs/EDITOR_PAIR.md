@@ -61,3 +61,11 @@ helpers; editing the master does not require manually repeating them per profile
 The master and pinned references are not rewritten. Pair provenance includes the
 maintenance and save-string transform hashes. Future changes to their anchors fail
 closed if the edited source no longer matches the reviewed transformation.
+
+
+Shared quest/travel/inventory maintenance is carried by tools/gameplay_runtime.py
+and the reviewed CarrySupport/TravelPages fragments. It applies to both outputs
+from the editor master. Native quest searches and Sleipnir cleanup use native storage;
+classic compiles only its own backpack adapter. The added file is included in pair
+provenance. Item IDs, save layouts and the pinned authoring/native references remain
+unchanged. Keep using the same editor master and paired build command.

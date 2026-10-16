@@ -56,7 +56,9 @@ class QuestEventTests(unittest.TestCase):
                'Unit_PlayersNearby': lambda *args: self.nearby,
                # TBackpack's lookups: a hero's items, wherever it carries them.
                'Gear_HasCarried': lambda u, kind: item_of(u, kind) is not None,
-               'Gear_Carried': item_of, 'GetItemCharges': lambda i: i['charges'],
+               'Gear_Carried': item_of,
+               'Carry_Has': lambda u,kind:item_of(u,kind) is not None,
+               'Carry_Find': item_of, 'GetItemCharges': lambda i: i['charges'],
                'SetItemCharges': set_charges, 'RemoveItem': remove_item,
                'IMinBJ': min, 'IMaxBJ': max, 'I2S': str,
                'CreateQuestItemBJ': lambda log, text: {'item_text': text},
