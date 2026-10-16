@@ -1,0 +1,1514 @@
+{
+  "I00D": {
+    "name": "Champion's Belt",
+    "slot": "Trinket",
+    "variant": "f000"
+  },
+  "I00H": {
+    "name": "Griever",
+    "slot": "Trinket",
+    "variant": "f001"
+  },
+  "I00B": {
+    "name": "Touph Ring",
+    "slot": "Ring",
+    "variant": "f002"
+  },
+  "I00E": {
+    "name": "Sprint Shoes",
+    "slot": "Boots",
+    "variant": "f003"
+  },
+  "I00J": {
+    "name": "Chimes of Piercing",
+    "slot": "Trinket",
+    "variant": "f004"
+  },
+  "I00G": {
+    "name": "Armguard",
+    "slot": "Gloves",
+    "variant": "f005"
+  },
+  "I00K": {
+    "name": "Blue Amulet",
+    "slot": "Trinket",
+    "variant": "f006"
+  },
+  "I00I": {
+    "name": "Germinas Boots",
+    "slot": "Boots",
+    "variant": "f007"
+  },
+  "I00P": {
+    "name": "Greater Totem of Power",
+    "slot": "Trinket",
+    "variant": "f008"
+  },
+  "I00F": {
+    "name": "Jade Collar",
+    "slot": "Trinket",
+    "variant": "f009"
+  },
+  "I00C": {
+    "name": "Blazer Gloves",
+    "slot": "Gloves",
+    "variant": "f010"
+  },
+  "I00Q": {
+    "name": "Steel Gorget",
+    "slot": "Trinket",
+    "variant": "f011"
+  },
+  "I00L": {
+    "name": "Totem of Power",
+    "slot": "Trinket",
+    "variant": "f012"
+  },
+  "I00R": {
+    "name": "Cat's Bell",
+    "slot": "Trinket",
+    "variant": "f013"
+  },
+  "I01X": {
+    "name": "Heady Pipe",
+    "slot": "Trinket",
+    "variant": "f014"
+  },
+  "I02W": {
+    "name": "Necklace of the Sorcerer",
+    "slot": "Trinket",
+    "variant": "f015"
+  },
+  "I031": {
+    "name": "Crusher's Belt",
+    "slot": "Trinket",
+    "variant": "f016"
+  },
+  "I037": {
+    "name": "Magic Gloves",
+    "slot": "Gloves",
+    "variant": "f017"
+  },
+  "I039": {
+    "name": "Death Skull",
+    "slot": "Trinket",
+    "variant": "f018"
+  },
+  "I03I": {
+    "name": "Growth Egg",
+    "slot": "Trinket",
+    "variant": "f019"
+  },
+  "I04M": {
+    "name": "Stalwart Belt",
+    "slot": "Trinket",
+    "variant": "f020"
+  },
+  "I04L": {
+    "name": "Necklace of the Necromancer",
+    "slot": "Trinket",
+    "variant": "f021"
+  },
+  "I04D": {
+    "name": "Leather Gorget",
+    "slot": "Trinket",
+    "variant": "f022"
+  },
+  "I063": {
+    "name": "Charming Banner",
+    "slot": "Trinket",
+    "variant": "f023"
+  },
+  "I08F": {
+    "name": "Iron Duke",
+    "slot": "Trinket",
+    "variant": "f024"
+  },
+  "I0A7": {
+    "name": "Hidden Hero Medicine",
+    "slot": "Trinket",
+    "variant": "f025"
+  },
+  "I0CN": {
+    "name": "Summoner's Horn",
+    "slot": "Trinket",
+    "variant": "f026"
+  },
+  "I0CO": {
+    "name": "Silver Glasses",
+    "slot": "Trinket",
+    "variant": "f027"
+  },
+  "I0CP": {
+    "name": "Speed Bracers",
+    "slot": "Gloves",
+    "variant": "f028"
+  },
+  "I0D0": {
+    "name": "Setzer's Coin",
+    "slot": "Trinket",
+    "variant": "f029"
+  },
+  "I0DL": {
+    "name": "Turtleshell Choker",
+    "slot": "Trinket",
+    "variant": "f030"
+  },
+  "I0DR": {
+    "name": "Cameo Belt",
+    "slot": "Trinket",
+    "variant": "f031"
+  },
+  "I0DS": {
+    "name": "Memento Ring",
+    "slot": "Ring",
+    "variant": "f032"
+  },
+  "I0FD": {
+    "name": "Jackboots",
+    "slot": "Boots",
+    "variant": "f033"
+  },
+  "I0FW": {
+    "name": "Orb of Fire",
+    "slot": "Trinket",
+    "variant": "f034"
+  },
+  "I0FX": {
+    "name": "Orb of Frost",
+    "slot": "Trinket",
+    "variant": "f035"
+  },
+  "I0FY": {
+    "name": "Orb of Lightning",
+    "slot": "Trinket",
+    "variant": "f036"
+  },
+  "I0FZ": {
+    "name": "Orb of Water",
+    "slot": "Trinket",
+    "variant": "f037"
+  },
+  "I0G0": {
+    "name": "Orb of Earth",
+    "slot": "Trinket",
+    "variant": "f038"
+  },
+  "I0G1": {
+    "name": "Orb of Wind",
+    "slot": "Trinket",
+    "variant": "f039"
+  },
+  "I0G6": {
+    "name": "Force of Nature",
+    "slot": "Trinket",
+    "variant": "f040"
+  },
+  "I0GD": {
+    "name": "Death Skull X",
+    "slot": "Trinket",
+    "variant": "f041"
+  },
+  "I0GJ": {
+    "name": "Stopwatch",
+    "slot": "Trinket",
+    "variant": "f042"
+  },
+  "I0HT": {
+    "name": "Prominent Cloak",
+    "slot": "Trinket",
+    "variant": "f043"
+  },
+  "I0IB": {
+    "name": "Hunter's Cloak",
+    "slot": "Trinket",
+    "variant": "f044"
+  },
+  "I0EC": {
+    "name": "White Materia",
+    "slot": "Trinket",
+    "variant": "f045"
+  },
+  "I0JX": {
+    "name": "Rabite's Foot",
+    "slot": "Trinket",
+    "variant": "f046"
+  },
+  "I0K1": {
+    "name": "Bag of Tricks",
+    "slot": "Trinket",
+    "variant": "f047"
+  },
+  "I0K2": {
+    "name": "Flag of Competition",
+    "slot": "Trinket",
+    "variant": "f048"
+  },
+  "I0K3": {
+    "name": "Golden Skull",
+    "slot": "Trinket",
+    "variant": "f049"
+  },
+  "I0K4": {
+    "name": "Crystal Skull",
+    "slot": "Trinket",
+    "variant": "f050"
+  },
+  "I0KA": {
+    "name": "Firefly",
+    "slot": "Ring",
+    "variant": "f051"
+  },
+  "I0KC": {
+    "name": "Rosetta Stone",
+    "slot": "Trinket",
+    "variant": "f052"
+  },
+  "I0KB": {
+    "name": "Hero's Badge",
+    "slot": "Trinket",
+    "variant": "f053"
+  },
+  "I0KD": {
+    "name": "Ring of Rejuvenation",
+    "slot": "Ring",
+    "variant": "f054"
+  },
+  "I0A9": {
+    "name": "Blank Orb",
+    "slot": "Trinket",
+    "variant": "f055"
+  },
+  "I04A": {
+    "name": "Sleipnir",
+    "slot": "Trinket",
+    "variant": "f056"
+  },
+  "I0B0": {
+    "name": "Genji Gloves",
+    "slot": "Gloves",
+    "variant": "f057"
+  },
+  "I0C8": {
+    "name": "Orb of Cetra",
+    "slot": "Trinket",
+    "variant": "f058"
+  },
+  "I0GF": {
+    "name": "Yatagarasu",
+    "slot": "Trinket",
+    "variant": "f059"
+  },
+  "I00N": {
+    "name": "Kotetsu",
+    "slot": "Primary",
+    "variant": "f060",
+    "offhand": "g060"
+  },
+  "I00M": {
+    "name": "Poison Spear",
+    "slot": "Primary",
+    "variant": "f061",
+    "offhand": "g061"
+  },
+  "I00S": {
+    "name": "Ultimate Weapon",
+    "slot": "Primary",
+    "variant": "f062",
+    "offhand": "g062"
+  },
+  "I00U": {
+    "name": "Long Sword",
+    "slot": "Primary",
+    "variant": "f063",
+    "offhand": "g063"
+  },
+  "I00V": {
+    "name": "Mithril Sword",
+    "slot": "Primary",
+    "variant": "f064",
+    "offhand": "g064"
+  },
+  "I00W": {
+    "name": "Ancient Sword",
+    "slot": "Primary",
+    "variant": "f065",
+    "offhand": "g065"
+  },
+  "I00Z": {
+    "name": "Rune Blade",
+    "slot": "Primary",
+    "variant": "f066",
+    "offhand": "g066"
+  },
+  "I010": {
+    "name": "Save the Queen",
+    "slot": "Primary",
+    "variant": "f067",
+    "offhand": "g067"
+  },
+  "I011": {
+    "name": "Excalibur",
+    "slot": "Primary",
+    "variant": "f068",
+    "offhand": "g068"
+  },
+  "I019": {
+    "name": "Masamune",
+    "slot": "Primary",
+    "variant": "f069",
+    "offhand": "g069"
+  },
+  "I01A": {
+    "name": "Battle Axe",
+    "slot": "Primary",
+    "variant": "f070",
+    "offhand": "g070"
+  },
+  "I01B": {
+    "name": "Mithril Axe",
+    "slot": "Primary",
+    "variant": "f071",
+    "offhand": "g071"
+  },
+  "I01C": {
+    "name": "Giant Axe",
+    "slot": "Primary",
+    "variant": "f072",
+    "offhand": "g072"
+  },
+  "I01D": {
+    "name": "Poison Wand",
+    "slot": "Primary",
+    "variant": "f073",
+    "offhand": "g073"
+  },
+  "I01E": {
+    "name": "Fire Wand",
+    "slot": "Primary",
+    "variant": "f074",
+    "offhand": "g074"
+  },
+  "I01F": {
+    "name": "Thunder Wand",
+    "slot": "Primary",
+    "variant": "f075",
+    "offhand": "g075"
+  },
+  "I01G": {
+    "name": "Ice Wand",
+    "slot": "Primary",
+    "variant": "f076",
+    "offhand": "g076"
+  },
+  "I02C": {
+    "name": "Dragon Wand",
+    "slot": "Primary",
+    "variant": "f077",
+    "offhand": "g077"
+  },
+  "I02P": {
+    "name": "Dark Claw",
+    "slot": "Primary",
+    "variant": "f078",
+    "offhand": "g078"
+  },
+  "I02Q": {
+    "name": "Unholy Claw",
+    "slot": "Primary",
+    "variant": "f079",
+    "offhand": "g079"
+  },
+  "I02S": {
+    "name": "Cursed Wand",
+    "slot": "Primary",
+    "variant": "f080",
+    "offhand": "g080"
+  },
+  "I02Y": {
+    "name": "Crusher's Mace",
+    "slot": "Primary",
+    "variant": "f081",
+    "offhand": "g081"
+  },
+  "I033": {
+    "name": "Trident",
+    "slot": "Primary",
+    "variant": "f082",
+    "offhand": "g082"
+  },
+  "I035": {
+    "name": "Platinum Dagger",
+    "slot": "Primary",
+    "variant": "f083",
+    "offhand": "g083"
+  },
+  "I036": {
+    "name": "Dark Bow",
+    "slot": "Primary",
+    "variant": "f084",
+    "offhand": "g084"
+  },
+  "I00O": {
+    "name": "Fel Axe",
+    "slot": "Primary",
+    "variant": "f085",
+    "offhand": "g085"
+  },
+  "I04E": {
+    "name": "Doom Mace",
+    "slot": "Primary",
+    "variant": "f086",
+    "offhand": "g086"
+  },
+  "I04F": {
+    "name": "Shadow Bow",
+    "slot": "Primary",
+    "variant": "f087",
+    "offhand": "g087"
+  },
+  "I04G": {
+    "name": "Death Claw",
+    "slot": "Primary",
+    "variant": "f088",
+    "offhand": "g088"
+  },
+  "I04H": {
+    "name": "Ancient Axe",
+    "slot": "Primary",
+    "variant": "f089",
+    "offhand": "g089"
+  },
+  "I04I": {
+    "name": "Demon Claw",
+    "slot": "Primary",
+    "variant": "f090",
+    "offhand": "g090"
+  },
+  "I066": {
+    "name": "Lion Heart",
+    "slot": "Primary",
+    "variant": "f091",
+    "offhand": "g091"
+  },
+  "I07M": {
+    "name": "Excalibur II",
+    "slot": "Primary",
+    "variant": "f092",
+    "offhand": "g092"
+  },
+  "I07Z": {
+    "name": "Zodiac Spear",
+    "slot": "Primary",
+    "variant": "f093",
+    "offhand": "g093"
+  },
+  "I080": {
+    "name": "Artemis Bow",
+    "slot": "Primary",
+    "variant": "f094",
+    "offhand": "g094"
+  },
+  "I081": {
+    "name": "Tournesol",
+    "slot": "Primary",
+    "variant": "f095",
+    "offhand": "g095"
+  },
+  "I08N": {
+    "name": "Nirvana",
+    "slot": "Primary",
+    "variant": "f096",
+    "offhand": "g096"
+  },
+  "I0CS": {
+    "name": "Life Staff",
+    "slot": "Primary",
+    "variant": "f097",
+    "offhand": "g097"
+  },
+  "I0CT": {
+    "name": "Main Gauche",
+    "slot": "Primary",
+    "variant": "f098",
+    "offhand": "g098"
+  },
+  "I0CU": {
+    "name": "Assassin's Dagger",
+    "slot": "Primary",
+    "variant": "f099",
+    "offhand": "g099"
+  },
+  "I0DH": {
+    "name": "Strange Vision",
+    "slot": "Primary",
+    "variant": "f100",
+    "offhand": "g100"
+  },
+  "I0DG": {
+    "name": "Gladiator's Blade",
+    "slot": "Primary",
+    "variant": "f101",
+    "offhand": "g101"
+  },
+  "I0DM": {
+    "name": "Masamune C",
+    "slot": "Primary",
+    "variant": "f102",
+    "offhand": "g102"
+  },
+  "I02F": {
+    "name": "Fire Wand K",
+    "slot": "Primary",
+    "variant": "f103",
+    "offhand": "g103"
+  },
+  "I0DY": {
+    "name": "Ice Wand U",
+    "slot": "Primary",
+    "variant": "f104",
+    "offhand": "g104"
+  },
+  "I0DZ": {
+    "name": "Thunder Wand J",
+    "slot": "Primary",
+    "variant": "f105",
+    "offhand": "g105"
+  },
+  "I0E6": {
+    "name": "Magus Rod A",
+    "slot": "Primary",
+    "variant": "f106",
+    "offhand": "g106"
+  },
+  "I0E8": {
+    "name": "Magus Rod",
+    "slot": "Primary",
+    "variant": "f107",
+    "offhand": "g107"
+  },
+  "I0F2": {
+    "name": "Icebrand",
+    "slot": "Primary",
+    "variant": "f108",
+    "offhand": "g108"
+  },
+  "I0F3": {
+    "name": "Mjolnir",
+    "slot": "Primary",
+    "variant": "f109",
+    "offhand": "g109"
+  },
+  "I0F4": {
+    "name": "Longbow",
+    "slot": "Primary",
+    "variant": "f110",
+    "offhand": "g110"
+  },
+  "I0F5": {
+    "name": "Dagger",
+    "slot": "Primary",
+    "variant": "f111",
+    "offhand": "g111"
+  },
+  "I0F6": {
+    "name": "Wildfire Spear",
+    "slot": "Primary",
+    "variant": "f112",
+    "offhand": "g112"
+  },
+  "I0FO": {
+    "name": "Short Lance",
+    "slot": "Primary",
+    "variant": "f113",
+    "offhand": "g113"
+  },
+  "I0FP": {
+    "name": "Wirt's Leg",
+    "slot": "Primary",
+    "variant": "f114",
+    "offhand": "g114"
+  },
+  "I0EW": {
+    "name": "Demon Axe",
+    "slot": "Primary",
+    "variant": "f115",
+    "offhand": "g115"
+  },
+  "I0F7": {
+    "name": "Muramasa",
+    "slot": "Primary",
+    "variant": "f116",
+    "offhand": "g116"
+  },
+  "I0GA": {
+    "name": "Final Wand",
+    "slot": "Primary",
+    "variant": "f117",
+    "offhand": "g117"
+  },
+  "I0F8": {
+    "name": "Ame-no-Murakumo",
+    "slot": "Primary",
+    "variant": "f118",
+    "offhand": "g118"
+  },
+  "I0EY": {
+    "name": "Fishing Pole",
+    "slot": "Primary",
+    "variant": "f119",
+    "offhand": "g119"
+  },
+  "I0EZ": {
+    "name": "Muramata",
+    "slot": "Primary",
+    "variant": "f120",
+    "offhand": "g120"
+  },
+  "I0GB": {
+    "name": "Matamune",
+    "slot": "Primary",
+    "variant": "f121",
+    "offhand": "g121"
+  },
+  "I0GC": {
+    "name": "Lu Shang",
+    "slot": "Primary",
+    "variant": "f122",
+    "offhand": "g122"
+  },
+  "I0H1": {
+    "name": "Mina",
+    "slot": "Primary",
+    "variant": "f123",
+    "offhand": "g123"
+  },
+  "I0HU": {
+    "name": "Angbar",
+    "slot": "Primary",
+    "variant": "f124",
+    "offhand": "g124"
+  },
+  "I0ER": {
+    "name": "Caladbolg",
+    "slot": "Primary",
+    "variant": "f125",
+    "offhand": "g125"
+  },
+  "I0BW": {
+    "name": "Phantom Bow",
+    "slot": "Primary",
+    "variant": "f126",
+    "offhand": "g126"
+  },
+  "I0C0": {
+    "name": "Vega",
+    "slot": "Primary",
+    "variant": "f127",
+    "offhand": "g127"
+  },
+  "I0C1": {
+    "name": "Aldebaran",
+    "slot": "Primary",
+    "variant": "f128",
+    "offhand": "g128"
+  },
+  "I0C2": {
+    "name": "Arcturus",
+    "slot": "Primary",
+    "variant": "f129",
+    "offhand": "g129"
+  },
+  "I0C3": {
+    "name": "Formalhaut",
+    "slot": "Primary",
+    "variant": "f130",
+    "offhand": "g130"
+  },
+  "I0HW": {
+    "name": "Staff of Light",
+    "slot": "Primary",
+    "variant": "f131",
+    "offhand": "g131"
+  },
+  "I0EQ": {
+    "name": "Deathbringer",
+    "slot": "Primary",
+    "variant": "f132",
+    "offhand": "g132"
+  },
+  "I0JU": {
+    "name": "Scourge Wand",
+    "slot": "Primary",
+    "variant": "f133",
+    "offhand": "g133"
+  },
+  "I0JW": {
+    "name": "Dark Staff",
+    "slot": "Primary",
+    "variant": "f134",
+    "offhand": "g134"
+  },
+  "I0JY": {
+    "name": "Heroic Lance",
+    "slot": "Primary",
+    "variant": "f135",
+    "offhand": "g135"
+  },
+  "I0K8": {
+    "name": "Buddha Fist",
+    "slot": "Primary",
+    "variant": "f136",
+    "offhand": "g136"
+  },
+  "I0G5": {
+    "name": "Masakados",
+    "slot": "Primary",
+    "variant": "f137",
+    "offhand": "g137"
+  },
+  "I0KW": {
+    "name": "Siphoning Staff",
+    "slot": "Primary",
+    "variant": "f138",
+    "offhand": "g138"
+  },
+  "I0L0": {
+    "name": "Aeon Scepter",
+    "slot": "Primary",
+    "variant": "f139",
+    "offhand": "g139"
+  },
+  "I0L6": {
+    "name": "Shimmering Spear",
+    "slot": "Primary",
+    "variant": "f140",
+    "offhand": "g140"
+  },
+  "I0L7": {
+    "name": "Shimmering Sword",
+    "slot": "Primary",
+    "variant": "f141",
+    "offhand": "g141"
+  },
+  "I0L8": {
+    "name": "Shimmering Axe",
+    "slot": "Primary",
+    "variant": "f142",
+    "offhand": "g142"
+  },
+  "I0L9": {
+    "name": "Shimmering Katana",
+    "slot": "Primary",
+    "variant": "f143",
+    "offhand": "g143"
+  },
+  "I0KX": {
+    "name": "Wand of the Wind",
+    "slot": "Primary",
+    "variant": "f144",
+    "offhand": "g144"
+  },
+  "I0KY": {
+    "name": "Serpent Rod",
+    "slot": "Primary",
+    "variant": "f145",
+    "offhand": "g145"
+  },
+  "I0KZ": {
+    "name": "Gaya's Rod",
+    "slot": "Primary",
+    "variant": "f146",
+    "offhand": "g146"
+  },
+  "I0LQ": {
+    "name": "Chunchunmaru",
+    "slot": "Primary",
+    "variant": "f147",
+    "offhand": "g147"
+  },
+  "I05S": {
+    "name": "Holy Lance",
+    "slot": "Primary",
+    "variant": "f148",
+    "offhand": "g148"
+  },
+  "I05T": {
+    "name": "Kiku-Ichimonji",
+    "slot": "Primary",
+    "variant": "f149",
+    "offhand": "g149"
+  },
+  "I061": {
+    "name": "Auto-Crossbow",
+    "slot": "Primary",
+    "variant": "f150",
+    "offhand": "g150"
+  },
+  "I060": {
+    "name": "Halberd of Justice",
+    "slot": "Primary",
+    "variant": "f151",
+    "offhand": "g151"
+  },
+  "I0BH": {
+    "name": "Knuckles",
+    "slot": "Primary",
+    "variant": "f152",
+    "offhand": "g152"
+  },
+  "I0BI": {
+    "name": "Pickaxe",
+    "slot": "Primary",
+    "variant": "f153",
+    "offhand": "g153"
+  },
+  "I0BJ": {
+    "name": "Miner's Pickaxe",
+    "slot": "Primary",
+    "variant": "f154",
+    "offhand": "g154"
+  },
+  "I0BM": {
+    "name": "Gravity Staff",
+    "slot": "Primary",
+    "variant": "f155",
+    "offhand": "g155"
+  },
+  "I0C5": {
+    "name": "Rock Punch",
+    "slot": "Primary",
+    "variant": "f156",
+    "offhand": "g156"
+  },
+  "I0C6": {
+    "name": "Edgar's Drill",
+    "slot": "Primary",
+    "variant": "f157",
+    "offhand": "g157"
+  },
+  "I0C7": {
+    "name": "Ryuujin no Ken",
+    "slot": "Primary",
+    "variant": "f158",
+    "offhand": "g158"
+  },
+  "I0C9": {
+    "name": "Beast Claw",
+    "slot": "Primary",
+    "variant": "f159",
+    "offhand": "g159"
+  },
+  "I0BP": {
+    "name": "Executioner Sword",
+    "slot": "Primary",
+    "variant": "f160",
+    "offhand": "g160"
+  },
+  "I0LP": {
+    "name": "True Ice Axe",
+    "slot": "Primary",
+    "variant": "f161",
+    "offhand": "g161"
+  },
+  "I03D": {
+    "name": "Gladius",
+    "slot": "Primary",
+    "variant": "f162",
+    "offhand": "g162"
+  },
+  "I03O": {
+    "name": "Wyrmhero Blade",
+    "slot": "Primary",
+    "variant": "f163",
+    "offhand": "g163"
+  },
+  "I0BT": {
+    "name": "Brotherhood",
+    "slot": "Primary",
+    "variant": "f164",
+    "offhand": "g164"
+  },
+  "I0D1": {
+    "name": "Storm Lance",
+    "slot": "Primary",
+    "variant": "f165",
+    "offhand": "g165"
+  },
+  "I0LJ": {
+    "name": "Chainsaw",
+    "slot": "Primary",
+    "variant": "f166",
+    "offhand": "g166"
+  },
+  "I0LE": {
+    "name": "Durandal",
+    "slot": "Primary",
+    "variant": "f167",
+    "offhand": "g167"
+  },
+  "I0LA": {
+    "name": "Sagittarius",
+    "slot": "Primary",
+    "variant": "f168",
+    "offhand": "g168"
+  },
+  "I0LH": {
+    "name": "Exeter",
+    "slot": "Primary",
+    "variant": "f169",
+    "offhand": "g169"
+  },
+  "I0LC": {
+    "name": "Ehrgeiz",
+    "slot": "Primary",
+    "variant": "f170",
+    "offhand": "g170"
+  },
+  "I0LG": {
+    "name": "Zwill Crossblade",
+    "slot": "Primary",
+    "variant": "f171",
+    "offhand": "g171"
+  },
+  "I0LD": {
+    "name": "Scorpio",
+    "slot": "Primary",
+    "variant": "f172",
+    "offhand": "g172"
+  },
+  "I0LI": {
+    "name": "Zanmatou",
+    "slot": "Primary",
+    "variant": "f173",
+    "offhand": "g173"
+  },
+  "I0LB": {
+    "name": "Longinus",
+    "slot": "Primary",
+    "variant": "f174",
+    "offhand": "g174"
+  },
+  "I0LF": {
+    "name": "Ragnarok",
+    "slot": "Primary",
+    "variant": "f175",
+    "offhand": "g175"
+  },
+  "I012": {
+    "name": "Round Shield",
+    "slot": "Offhand",
+    "variant": "f176"
+  },
+  "I013": {
+    "name": "Iron Shield",
+    "slot": "Offhand",
+    "variant": "f177"
+  },
+  "I014": {
+    "name": "Mithril Shield",
+    "slot": "Offhand",
+    "variant": "f178"
+  },
+  "I015": {
+    "name": "Aegis Shield",
+    "slot": "Offhand",
+    "variant": "f179"
+  },
+  "I016": {
+    "name": "Platinum Shield",
+    "slot": "Offhand",
+    "variant": "f180"
+  },
+  "I017": {
+    "name": "Enchanted Shield",
+    "slot": "Offhand",
+    "variant": "f181"
+  },
+  "I018": {
+    "name": "Absorber",
+    "slot": "Offhand",
+    "variant": "f182"
+  },
+  "I02T": {
+    "name": "Unholy Shield",
+    "slot": "Offhand",
+    "variant": "f183"
+  },
+  "I04J": {
+    "name": "Reflect Shield",
+    "slot": "Offhand",
+    "variant": "f184"
+  },
+  "I064": {
+    "name": "Zodiac Escutcheon",
+    "slot": "Offhand",
+    "variant": "f185"
+  },
+  "I065": {
+    "name": "Ensanguined Shield",
+    "slot": "Offhand",
+    "variant": "f186"
+  },
+  "I0BU": {
+    "name": "Genji Shield",
+    "slot": "Offhand",
+    "variant": "f187"
+  },
+  "I0E3": {
+    "name": "Interceptor Guard",
+    "slot": "Offhand",
+    "variant": "f188"
+  },
+  "I0FA": {
+    "name": "Flame Shield",
+    "slot": "Offhand",
+    "variant": "f189"
+  },
+  "I03A": {
+    "name": "Frost Shield",
+    "slot": "Offhand",
+    "variant": "f190"
+  },
+  "I0HN": {
+    "name": "Onion Arrows",
+    "slot": "Offhand",
+    "variant": "f191"
+  },
+  "I0HP": {
+    "name": "Icecloud Arrows",
+    "slot": "Offhand",
+    "variant": "f192"
+  },
+  "I0HQ": {
+    "name": "Shock Arrows",
+    "slot": "Offhand",
+    "variant": "f193"
+  },
+  "I0HR": {
+    "name": "Tempest Arrows",
+    "slot": "Offhand",
+    "variant": "f194"
+  },
+  "I0HO": {
+    "name": "Killer Arrows",
+    "slot": "Offhand",
+    "variant": "f195"
+  },
+  "I0HH": {
+    "name": "Onion Shot",
+    "slot": "Offhand",
+    "variant": "f196"
+  },
+  "I0HI": {
+    "name": "Piercing Shot",
+    "slot": "Offhand",
+    "variant": "f197"
+  },
+  "I0HK": {
+    "name": "Rock Shot",
+    "slot": "Offhand",
+    "variant": "f198"
+  },
+  "I0HJ": {
+    "name": "Scattershot",
+    "slot": "Offhand",
+    "variant": "f199"
+  },
+  "I0HL": {
+    "name": "Molotov Shot",
+    "slot": "Offhand",
+    "variant": "f200"
+  },
+  "I0HM": {
+    "name": "Bubble Shot",
+    "slot": "Offhand",
+    "variant": "f201"
+  },
+  "I0I8": {
+    "name": "Tome of Agility",
+    "slot": "Offhand",
+    "variant": "f202"
+  },
+  "I0I5": {
+    "name": "Tome of Crippling",
+    "slot": "Offhand",
+    "variant": "f203"
+  },
+  "I0I2": {
+    "name": "Tome of Strength",
+    "slot": "Offhand",
+    "variant": "f204"
+  },
+  "I0I6": {
+    "name": "Tome of the Breaker",
+    "slot": "Offhand",
+    "variant": "f205"
+  },
+  "I0I1": {
+    "name": "Tome of Banishment",
+    "slot": "Offhand",
+    "variant": "f206"
+  },
+  "I0I4": {
+    "name": "Tome of Heresy",
+    "slot": "Offhand",
+    "variant": "f207"
+  },
+  "I0HX": {
+    "name": "Tome of Life",
+    "slot": "Offhand",
+    "variant": "f208"
+  },
+  "I0I7": {
+    "name": "Tome of Phantasm",
+    "slot": "Offhand",
+    "variant": "f209"
+  },
+  "I0HZ": {
+    "name": "Tome of Time",
+    "slot": "Offhand",
+    "variant": "f210"
+  },
+  "I0I3": {
+    "name": "Holy Book of Galbados",
+    "slot": "Offhand",
+    "variant": "f211"
+  },
+  "I0HY": {
+    "name": "Tome of the Tortoise",
+    "slot": "Offhand",
+    "variant": "f212"
+  },
+  "I0H0": {
+    "name": "Paladin Shield",
+    "slot": "Offhand",
+    "variant": "f213"
+  },
+  "I0LK": {
+    "name": "Artemis Arrows",
+    "slot": "Offhand",
+    "variant": "f214"
+  },
+  "I0LN": {
+    "name": "Shimmering Shield",
+    "slot": "Offhand",
+    "variant": "f215"
+  },
+  "I0B8": {
+    "name": "Pulsar Shot",
+    "slot": "Offhand",
+    "variant": "f216"
+  },
+  "I05U": {
+    "name": "Book of Flames",
+    "slot": "Offhand",
+    "variant": "f217"
+  },
+  "I05V": {
+    "name": "Book of Glaciers",
+    "slot": "Offhand",
+    "variant": "f218"
+  },
+  "I05W": {
+    "name": "Book of Storms",
+    "slot": "Offhand",
+    "variant": "f219"
+  },
+  "I05X": {
+    "name": "Book of Depths",
+    "slot": "Offhand",
+    "variant": "f220"
+  },
+  "I05Y": {
+    "name": "Book of Tremors",
+    "slot": "Offhand",
+    "variant": "f221"
+  },
+  "I05Z": {
+    "name": "Book of Winds",
+    "slot": "Offhand",
+    "variant": "f222"
+  },
+  "I0BC": {
+    "name": "Canister Shot",
+    "slot": "Offhand",
+    "variant": "f223"
+  },
+  "I0BF": {
+    "name": "Slither Shield",
+    "slot": "Offhand",
+    "variant": "f224"
+  },
+  "I086": {
+    "name": "Akashic Records",
+    "slot": "Offhand",
+    "variant": "f225"
+  },
+  "I0FK": {
+    "name": "Invert Shield",
+    "slot": "Offhand",
+    "variant": "f226"
+  },
+  "I01H": {
+    "name": "Iron Helmet",
+    "slot": "Head",
+    "variant": "f227"
+  },
+  "I01I": {
+    "name": "Mithril Helmet",
+    "slot": "Head",
+    "variant": "f228"
+  },
+  "I01J": {
+    "name": "Diamond Helmet",
+    "slot": "Head",
+    "variant": "f229"
+  },
+  "I01K": {
+    "name": "Platinum Helmet",
+    "slot": "Head",
+    "variant": "f230"
+  },
+  "I026": {
+    "name": "Helm of the Magi",
+    "slot": "Head",
+    "variant": "f231"
+  },
+  "I01L": {
+    "name": "Grand Helmet",
+    "slot": "Head",
+    "variant": "f232"
+  },
+  "I02R": {
+    "name": "Headgear of the Damned",
+    "slot": "Head",
+    "variant": "f233"
+  },
+  "I02U": {
+    "name": "Helm of the Necromancer",
+    "slot": "Head",
+    "variant": "f234"
+  },
+  "I02Z": {
+    "name": "Barbarian's Helmet",
+    "slot": "Head",
+    "variant": "f235"
+  },
+  "I04C": {
+    "name": "Berserker's Helmet",
+    "slot": "Head",
+    "variant": "f236"
+  },
+  "I06A": {
+    "name": "Zodiac Helmet",
+    "slot": "Head",
+    "variant": "f237"
+  },
+  "I069": {
+    "name": "Circlet",
+    "slot": "Head",
+    "variant": "f238"
+  },
+  "I0AA": {
+    "name": "Genji Mask",
+    "slot": "Head",
+    "variant": "f239"
+  },
+  "I0D4": {
+    "name": "Helm of Divine Judgement",
+    "slot": "Head",
+    "variant": "f240"
+  },
+  "I0FB": {
+    "name": "Serpent Helmet",
+    "slot": "Head",
+    "variant": "f241"
+  },
+  "I0FC": {
+    "name": "Enchanted Helmet",
+    "slot": "Head",
+    "variant": "f242"
+  },
+  "I0L4": {
+    "name": "Glimmering Hat",
+    "slot": "Head",
+    "variant": "f243"
+  },
+  "I0L1": {
+    "name": "Ice Hat",
+    "slot": "Head",
+    "variant": "f244"
+  },
+  "I0L2": {
+    "name": "Green Hat",
+    "slot": "Head",
+    "variant": "f245"
+  },
+  "I0L3": {
+    "name": "Earth Hat",
+    "slot": "Head",
+    "variant": "f246"
+  },
+  "I0LO": {
+    "name": "Shimmering Helmet",
+    "slot": "Head",
+    "variant": "f247"
+  },
+  "I01M": {
+    "name": "Studded Leather Armor",
+    "slot": "Chest",
+    "variant": "f248"
+  },
+  "I01N": {
+    "name": "Reinforced Leather Armor",
+    "slot": "Chest",
+    "variant": "f249"
+  },
+  "I01O": {
+    "name": "Storm Wyrm Hide Armor",
+    "slot": "Chest",
+    "variant": "f250"
+  },
+  "I01P": {
+    "name": "Grandmasterwork Leather",
+    "slot": "Chest",
+    "variant": "f251"
+  },
+  "I01Q": {
+    "name": "Elven Mail",
+    "slot": "Chest",
+    "variant": "f252"
+  },
+  "I01R": {
+    "name": "Mithril Mail",
+    "slot": "Chest",
+    "variant": "f253"
+  },
+  "I01S": {
+    "name": "Shimmering Mail",
+    "slot": "Chest",
+    "variant": "f254"
+  },
+  "I01T": {
+    "name": "Platinum Mail",
+    "slot": "Chest",
+    "variant": "f255"
+  },
+  "I01U": {
+    "name": "Wizard's Robe",
+    "slot": "Chest",
+    "variant": "f256"
+  },
+  "I01V": {
+    "name": "Magician's Robe",
+    "slot": "Chest",
+    "variant": "f257"
+  },
+  "I01W": {
+    "name": "Sorcerer's Robe",
+    "slot": "Chest",
+    "variant": "f258"
+  },
+  "I01Y": {
+    "name": "Genji Armor",
+    "slot": "Chest",
+    "variant": "f259"
+  },
+  "I030": {
+    "name": "Fur Armor",
+    "slot": "Chest",
+    "variant": "f260"
+  },
+  "I05G": {
+    "name": "Gaia Gear",
+    "slot": "Chest",
+    "variant": "f261"
+  },
+  "I07X": {
+    "name": "Robe of Lords",
+    "slot": "Chest",
+    "variant": "f262"
+  },
+  "I0A6": {
+    "name": "Adamant Armor",
+    "slot": "Chest",
+    "variant": "f263"
+  },
+  "I0E5": {
+    "name": "Maximillian",
+    "slot": "Chest",
+    "variant": "f264"
+  },
+  "I0F9": {
+    "name": "Windbreaker",
+    "slot": "Chest",
+    "variant": "f265"
+  },
+  "I0GZ": {
+    "name": "Nebra Suit",
+    "slot": "Chest",
+    "variant": "f266"
+  },
+  "I0BX": {
+    "name": "Grand Armor",
+    "slot": "Chest",
+    "variant": "f267"
+  },
+  "I0K9": {
+    "name": "Vishnu Vest",
+    "slot": "Chest",
+    "variant": "f268"
+  },
+  "I0KQ": {
+    "name": "Glimmering Robe",
+    "slot": "Chest",
+    "variant": "f269"
+  },
+  "I0KS": {
+    "name": "Light Robe",
+    "slot": "Chest",
+    "variant": "f270"
+  },
+  "I0KR": {
+    "name": "Red Robe",
+    "slot": "Chest",
+    "variant": "f271"
+  },
+  "I0KT": {
+    "name": "Azure Robe",
+    "slot": "Chest",
+    "variant": "f272"
+  },
+  "I0LM": {
+    "name": "Shimmering Cloth",
+    "slot": "Chest",
+    "variant": "f273"
+  },
+  "I0BG": {
+    "name": "Mirage Vest",
+    "slot": "Chest",
+    "variant": "f274"
+  },
+  "I0D2": {
+    "name": "White Robe",
+    "slot": "Chest",
+    "variant": "f275"
+  },
+  "I025": {
+    "name": "Wateraga Materia",
+    "slot": "Inventory"
+  },
+  "I03F": {
+    "name": "Quakeraga Materia",
+    "slot": "Inventory"
+  },
+  "I03N": {
+    "name": "Demiga Materia",
+    "slot": "Inventory"
+  },
+  "I07P": {
+    "name": "Aeroga Materia",
+    "slot": "Inventory"
+  }
+}

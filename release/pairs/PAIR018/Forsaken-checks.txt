@@ -1,0 +1,45 @@
+Base-map checks skipped: this base already passed with identical tools/sources.
+Regression tests and savecode selftest skipped: identical inputs already passed.
+No source changes: copied the tested baseline without resyncing historical differences.
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/editor_layout.py /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/synced.w3x /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/editor-layout.w3x
+PASS editor layout: 744 paired triggers in folder order; source bytes preserved
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/order_libraries.py /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/editor-layout.w3x /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+0 libraries changed place
+Ordering changed no code; retained the exact tested MPQ archive.
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_map.py /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x --baseline /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken-ordered.w3x
+note: 1 disabled trigger(s) left out of the source checks: DevCommands
+PASS 0 editor folder/source pairing
+PASS 1 playable script compiles (pjass)
+PASS 2 trigger-editor source compiles (vjass_lite + pjass)
+PASS 3 startup wiring
+PASS 4 source matches playable script (startup functions)
+PASS 4b globals match playable script
+PASS 5 native save/load text safety
+PASS 6 startup sequence matches baseline
+     1518 triggers checked, 0 independent trigger pairs reordered
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_sources.py /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+PASS complete source/runtime agreement: 11338 enabled library functions; 0 new differences
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_quests.py --map /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+97 definition functions; 466 dialogue declarations (branch counts are conservative)
+Custom event progress and mutually exclusive/shared log slots remain module-owned; no live state is inferred.
+PASS quest definitions, references, dependencies and non-waiting hooks
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_save_compat.py --map /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+PASS save compatibility: 358 items, 22 jobs, preserved readers/writer/armory flags and fixed G/H fixtures
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_content.py --map /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+PASS object IDs and typed literal references: 1387 calls, 5 preserved unresolved locations
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_armory.py --map /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+PASS armory catalogue: hints, zero cost, single panel and ascending required level
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/check_bazaar.py --map /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x
+PASS Bazaar browser: last slot, all recipes, ingredients and unchanged prices
+
+$ /usr/bin/python3 /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/tools/add_header.py /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ordered.w3x /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ready.w3x --from /sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken-ordered.w3x --name "FFERPG_0.9.7.4 - Forsaken stagePAIR018 (Reforged)"
+/sessions/rcw-01ewe2d9v9xwx82kaoplcmdh/pairwork/EditorPairStepsPAIR018/Forsaken/FFERPG/build/stagePAIR018-qoxw37kc/ready.w3x: "FFERPG_0.9.7.4 - Forsaken stagePAIR018 (Reforged)" flags=61032 players=8

@@ -1,5 +1,10 @@
 # FF Epic RPG
 
+**To edit the map:** open `editor/FFERPG-Editor-Master.w3x` in the Reforged World Editor, save,
+then run `.\build-pair.ps1` (or `editor/Build Both Maps.ps1`). It builds a Reforged map and a
+1.29.2 map together under `release/pairs/`; see [editor/README.md](editor/README.md). The latest
+public pair is `release/pairs/PAIR018/`. Start with [docs/HANDOFF.md](docs/HANDOFF.md).
+
 Warcraft III RPG sources and development tools. The starting point for new development is the
 paired 0.9.7.3-r16 baseline, assembled in stage Z on 2026-10-06.
 
@@ -55,5 +60,6 @@ Record each build in STAGES.md and update HANDOFF.md. Preserve existing save ite
 
 ## Local archive
 
-Older maps, scratch builds and the earlier `_archive` were moved to `../_delete/` on 2026-10-10 and
-can be deleted. Git keeps the full source and doc history; long logs are in `docs/history/`.
+Superseded maps and build scratch go to `../_delete/` for the owner to delete (last on
+2026-10-16, after PAIR018). Kept: the editor master, the two pinned references, PAIR016-018,
+and the few older maps that experiment tests read. Git keeps the full source and doc history; long logs are in `docs/history/`.

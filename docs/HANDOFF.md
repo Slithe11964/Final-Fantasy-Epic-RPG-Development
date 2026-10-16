@@ -23,11 +23,9 @@ classic 239 with 10 expected skips), including five local UI regressions. In-gam
 backpack drop/use acceptance is pending. The saved editor master is snapshotted by
 the builder; user edits made after the snapshot belong to the next build.
 
-Cleanup moved 186 obsolete build entries (77,239 files, about 17.26 GB) into
-../_delete/2026-10-16-obsolete-builds with a verified move manifest. This folder is
-for the user to delete. Required sources/tools/maps and crash diagnostics remain;
-PAIR016 and current/new build scratch remain. Historical old build-log locations
-now point into the manifest. See CLEANUP.md; do not assume experiments are unused.
+After PAIR018 all build scratch, old crash checkpoints and superseded release maps
+(3.7 GB) moved to ../_delete/2026-10-16-after-PAIR018 with a manifest, for the user to
+delete. Kept: pinned references, PAIR016-018, and older maps experiment tests read.
 
 PAIR016 is the checked job behavior/stat pair, installed in the Warcraft TEST folder
 as FFERPG-PAIR016-Forsaken.w3x and FFERPG-PAIR016-1.29.2.w3x (hash verified).

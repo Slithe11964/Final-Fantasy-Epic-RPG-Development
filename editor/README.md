@@ -39,9 +39,10 @@ The build report records the exact editor-input hash and both output hashes.
 The master owns terrain, doodads, placed units, pathing, regions, cameras, sounds,
 scenario properties, edited object fields, imported files and shared trigger edits.
 Compatible scenario settings include bounds, dimensions, player/team settings,
-loading/prologue text, fog and weather. Object fields you deliberately reset to
-default are excluded from the classic fallback data, so conversion does not put
-their previous custom values back. Stock defaults can differ between clients.
+loading/prologue text, fog and weather. Newer World Editor saves drop fields whose
+value equals a default and move display fields into the skin tables; the builder
+undoes both, so a dropped field keeps its previous value. To reset a field, type
+the default value in explicitly. Stock defaults can differ between clients.
 The native profile retains its own inventory/UI modules and object fields. Item edits
 also update the corresponding native equipment variants and generated item lookups.
 World Editor string-table references are resolved before merging object edits.

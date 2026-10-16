@@ -10,3 +10,14 @@ build/
 !baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x
 release/*
 !release/.gitkeep
+# Inputs every pair build needs, and the latest public pair
+!release/FFERPG_0.9.7.3-r16-stageATV.w3x
+!release/Forsaken/
+release/Forsaken/*
+!release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEN.w3x
+!release/Forsaken/gear-slots-BS.json
+!release/pairs/
+release/pairs/*
+!release/pairs/PAIR018/
+# The map authors edit in World Editor
+!editor/FFERPG-Editor-Master.w3x
