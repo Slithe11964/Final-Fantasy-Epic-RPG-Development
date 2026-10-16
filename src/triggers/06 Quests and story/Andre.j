@@ -47,6 +47,29 @@ function Trig_Andre_Elysium_Reveal_Cond_NoGhostYet takes nothing returns boolean
     return(udg_HardcoreOff==false)
 endfunction
 
+// Recreate the crossing only after Andre unlocks Elysium. The original bridge
+// stops on the unwalkable western cliff cells; extend its ends onto both banks.
+function Andre_OpenBridge takes nothing returns nothing
+    local real x=-640.
+    local real y
+    if gg_dest_DTsb_0068==null then
+        set gg_dest_DTsb_0068=CreateDestructableZ('DTsb',0.,-9632.,-128.,90.,1.125,0)
+    endif
+    call ShowDestructable(gg_dest_DTsb_0068,true)
+    call SetDestructableInvulnerable(gg_dest_DTsb_0068,true)
+    call SetDestructableAnimation(gg_dest_DTsb_0068,"stand")
+    loop
+        exitwhen x>640.
+        set y=-9728.
+        loop
+            exitwhen y> -9536.
+            call SetTerrainPathable(x,y,PATHING_TYPE_WALKABILITY,true)
+            set y=y+32.
+        endloop
+        set x=x+32.
+    endloop
+endfunction
+
 function Trig_Andre_Elysium_Reveal_Actions takes nothing returns nothing
     if(Trig_Andre_Elysium_Reveal_Cond_NoUltimateMastery())then
         set udg_TempForce=Force_OfPlayer(GetTriggerPlayer())
@@ -99,7 +122,7 @@ function Trig_Andre_Elysium_Reveal_Actions takes nothing returns nothing
     set udg_TempPoint=GetRectCenter(gg_rct_675)
     call SetUnitPositionLocFacingBJ(gg_unit_H00O_0259,udg_TempPoint,90.)
     call RemoveLocation(udg_TempPoint)
-    call ShowDestructableBJ(true,gg_dest_DTsb_0068)
+    call Andre_OpenBridge()
     call EnumDestructablesInRectAll(gg_rct_669,function Trig_Andre_Elysium_Reveal_ClearDest_Rct669)
     call EnumDestructablesInRectAll(gg_rct_670,function Trig_Andre_Elysium_Reveal_ClearDest_Rct670)
     call ShowUnitShow(gg_unit_n0M2_0264)

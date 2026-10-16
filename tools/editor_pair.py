@@ -525,6 +525,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
             raise Conflict('classic inventory modules entered the native build')
         if 'UnitItemInBagSlot(' not in rt or 'Forsaken_RebuildPanels' not in functions(rt):
             raise Conflict('native inventory/panel recovery was lost')
+    from world_visuals import clear_marker_art
+    ability_data=replacements.get('war3map.w3a') or profile.object_bytes('war3map.w3a')
+    replacements['war3map.w3a'],marker_art=clear_marker_art(ability_data)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header
@@ -532,4 +535,4 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     data=Path(out_path).read_bytes()
     Path(out_path).write_bytes(build_header(name,flags,players)+data[data.index(b'MPQ\x1a'):])
     return dict(changed_files=sorted(changed),changed_modules=sorted(lib for lib,s in modules.items() if profile.modules.get(lib)!=s),
-                world_authority=str(edited_path),native=native)
+                world_authority=str(edited_path),native=native,cleared_marker_art=marker_art)

@@ -92,3 +92,30 @@ pump tick means about 39 of them in a single frame and finishes in roughly half 
 shorter packets spread the same work thinner, so 64-character packets would be 14 keys a
 frame over about 1.4 seconds. Start short and raise it only if the game is happy.
 
+
+
+## PAIR013 passive-art and Elysium crossing follow-up
+
+The user reports PAIR012 gameplay fixes working, then reports inherited moon art on
+Dark Knight, The Reaper and the two Arena circles. Paired output maintenance now
+explicitly clears missing caster/target/effect/special attachment fields on custom
+Amgl dummy passives in both profiles, extending the earlier Chemist/Ninja approach.
+Authored art remains intact; ability icons, gameplay fields, unit models, selection
+settings and UI geometry are retained. Relevant markers include A0KV (Dark Knight),
+A1FC (The Reaper), A0VR (the entrance) and the Arena's Amgl-based hint passives.
+
+The Elysium crossing is DTsb at (0,-9632). The PAIR012 static pathing map marks the
+western shore approach unwalkable at the original model endpoint. Inspection of
+the installed legacy model also shows low bridge-end geometry relative to its
+original -190.2 spawn elevation. The candidate creates a longer, raised bridge at
+unlock, restores its stand animation, makes it invulnerable and enables walking
+only across a narrow road between the banks. Before unlock, the startup
+bridge is removed so it cannot provide a hidden crossing. The mastery and dialogue
+requirements are retained, with the same post-dialogue unlock point for both text
+modes. Runtime maintenance applies to both profiles from the unchanged master.
+
+Tests cover inherited-art clearing/custom-art preservation, locked-state removal,
+mastery rejection, a single bridge on repeat opening and the bounded walking cells.
+Engine acceptance must check visibility and walking in both directions after Andre's
+unlock, plus a pre-unlock rejection, in a fresh PAIR013 game. Earlier Warcraft menu
+checkpoints embed their previous map code.

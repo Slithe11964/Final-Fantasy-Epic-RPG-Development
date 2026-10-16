@@ -69,3 +69,9 @@ from the editor master. Native quest searches and Sleipnir cleanup use native st
 classic compiles only its own backpack adapter. The added file is included in pair
 provenance. Item IDs, save layouts and the pinned authoring/native references remain
 unchanged. Keep using the same editor master and paired build command.
+
+
+The paired runtime also carries the reviewed Elysium crossing repair. Object
+maintenance in tools/world_visuals.py suppresses inherited attachment art on custom
+Amgl dummy passives in both output profiles, preserving explicitly authored art.
+The pair report lists changed marker abilities and records the maintenance tool hash.

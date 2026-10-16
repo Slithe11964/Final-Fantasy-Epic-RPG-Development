@@ -75,6 +75,19 @@ endfunction""")
             body=functions(source)[name]
             body=re.sub(r'^    call DisableTrigger\([^\n]*\)\n','',body,flags=re.M)
             source=put(source,name,body)
+    if 'Trig_Elysium_Prepare_Actions' in fs:
+        body=functions(source)['Trig_Elysium_Prepare_Actions']
+        body=body.replace('    call ShowDestructableBJ(false,gg_dest_DTsb_0068)',
+            '    call RemoveDestructable(gg_dest_DTsb_0068)\n    set gg_dest_DTsb_0068=null')
+        source=put(source,'Trig_Elysium_Prepare_Actions',body)
+    if 'Trig_Andre_Elysium_Reveal_Actions' in fs:
+        if 'Andre_OpenBridge' not in fs:
+            helper=(HERE/'ElysiumBridge.j').read_text()
+            at=source.index('function Trig_Andre_Elysium_Reveal_Actions')
+            source=source[:at]+helper+'\n'+source[at:]
+        body=functions(source)['Trig_Andre_Elysium_Reveal_Actions']
+        body=body.replace('    call ShowDestructableBJ(true,gg_dest_DTsb_0068)','    call Andre_OpenBridge()')
+        source=put(source,'Trig_Andre_Elysium_Reveal_Actions',body)
     if 'Travel_InitDestinations' in fs:
         template=(HERE/'TravelPages.j').read_text()
         if 'dialog array TravelDialog' not in source:

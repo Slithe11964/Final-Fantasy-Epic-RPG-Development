@@ -25,7 +25,8 @@ endfunction
 
 function Trig_Elysium_Prepare_Actions takes nothing returns nothing
     set udg_NpcUnit[22]=gg_unit_H00O_0259
-    call ShowDestructableBJ(false,gg_dest_DTsb_0068)
+    call RemoveDestructable(gg_dest_DTsb_0068)
+    set gg_dest_DTsb_0068=null
     set udg_DarkShopGroup=Group_UnitsInRectOfPlayer(gg_rct_671,Player(9))
     call ForGroupBJ(udg_DarkShopGroup,function Trig_Elysium_Prepare_MakeLegendarySpirit)
     call ShowUnitHide(gg_unit_n0M2_0264)
