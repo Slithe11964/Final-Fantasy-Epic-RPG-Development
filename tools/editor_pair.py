@@ -23,6 +23,69 @@ class Conflict(ValueError):
     pass
 
 
+def relayout(reference_path,edited_path,out_path):
+    """Put each object field in the table (base or skin) the reference keeps it in.
+
+    Reforged World Editor may move display fields between war3map.* and war3mapSkin.*
+    on save. The game reads the skin value over the base value, so the combined field
+    set is what the author made; laying it out like the reference keeps the merge from
+    mistaking a move for a deleted field. World Editor also drops fields it treats as
+    defaults; those keep the reference value, so to reset a field give it an explicit value.
+    Returns the number of field placements changed."""
+    ref,edited=MPQ(str(reference_path)),MPQ(str(edited_path))
+    changes={};moved=0;ref_strings=wts_read(ref.read('war3map.wts'))
+    for ext in ('w3u','w3t','w3a','w3b','w3d','w3h','w3q'):
+        main,skin='war3map.'+ext,'war3mapSkin.'+ext
+        if not (edited.read(main) and edited.read(skin) and ref.read(main) and ref.read(skin)):continue
+        ref_tables=[read_objects(ref.read(n),ext) for n in (main,skin)]
+        for table in ref_tables:inline_strings(table,ref_strings)  # reference string ids mean nothing here
+        rp,rs=map(object_index,ref_tables)
+        plain_t,skin_t=read_objects(edited.read(main),ext),read_objects(edited.read(skin),ext)
+        pi,si=object_index(plain_t),object_index(skin_t)
+        for key in pi.keys()|si.keys():
+            if key not in rp and key not in rs:continue
+            pm=mods(pi[key]) if key in pi else {}
+            sm=mods(si[key]) if key in si else {}
+            combined=dict(pm);combined.update(sm)
+            in_skin=mods(rs[key]) if key in rs else {};in_plain=mods(rp[key]) if key in rp else {}
+            # World Editor also drops fields it considers defaults; keep the reference value.
+            for fk,m in list(in_plain.items())+list(in_skin.items()):
+                if fk not in combined:combined[fk]=copy.deepcopy(m)
+            def entries(obj):
+                return [((st['flag'],m['field'],m.get('level'),m.get('data')),m) for st in obj['sets'] for m in st['mods']] if obj else []
+            # Reference order (repeats included) first, so an untouched object reads like the reference.
+            def like(ref_entries):
+                # Only the last of a repeated field is read; earlier repeats keep the reference entry.
+                last={fk:i for i,(fk,_) in enumerate(ref_entries)}
+                return [(fk,combined[fk] if i==last[fk] else copy.deepcopy(m)) for i,(fk,m) in enumerate(ref_entries)]
+            new_p=like(entries(rp.get(key)))
+            new_s=like(entries(rs.get(key)))
+            for fk,m in combined.items():
+                if fk in in_plain or fk in in_skin:continue
+                if fk in sm:new_s.append((fk,m))
+                if fk in pm or fk not in sm:new_p.append((fk,m))
+            if new_p==entries(pi.get(key)) and new_s==entries(si.get(key)):continue
+            moved+=len({k for k,_ in new_s}^set(sm))+len({k for k,_ in new_p}^set(pm))
+            for table,index,wanted in ((plain_t,pi,new_p),(skin_t,si,new_s)):
+                if key not in index:
+                    if not wanted:continue
+                    src=pi.get(key) or si[key]
+                    obj=dict(src,sets=[]);table[key[0]].append(obj);index[key]=obj
+                obj=index[key]
+                flags=list(dict.fromkeys([st['flag'] for st in obj['sets']]+[k[0] for k,_ in wanted]))
+                obj['sets']=[dict(flag=f,mods=[copy.deepcopy(m) for k,m in wanted if k[0]==f]) for f in flags]
+        changes[main]=write_objects(plain_t,plain_t['version'],ext)
+        changes[skin]=write_objects(skin_t,skin_t['version'],ext)
+    write_files(str(edited_path),str(out_path),changes)
+    from add_header import read_header,build_header
+    # Newer World Editor saves can omit the HM3W header; the reference supplies one then.
+    has_header=Path(edited_path).read_bytes()[:4]==b'HM3W'
+    name,flags,players=read_header(str(edited_path if has_header else reference_path))
+    data=Path(out_path).read_bytes()
+    Path(out_path).write_bytes(build_header(name,flags,players)+data[data.index(b'MPQ\x1a'):])
+    return moved
+
+
 def exclude_resets(base_data,edited_data,fallback_data,ext):
     """Do not resurrect explicit Reset to Default edits through classic fallback."""
     if not base_data or not fallback_data:return fallback_data,0

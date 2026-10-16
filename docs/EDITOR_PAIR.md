@@ -88,3 +88,11 @@ panel across drop/use/unequip UI refreshes. Its short restore window is local
 presentation state only; it never controls shared inventory operations. B, Escape,
 selection changes and checkpoint panel rebuilding cancel the window. Classic keeps
 its own paged inventory. The maintenance tool is recorded in pair provenance.
+
+## Newer World Editor saves
+
+A newer World Editor may save the master without the HM3W header, move display fields between
+war3map.* and war3mapSkin.* tables, and drop fields whose value it treats as a default. The
+builder (editor_pair.relayout) places every field in the table the editor reference uses, keeps
+the reference's value for a dropped field, and takes the header from the reference when the save
+has none. To reset a field to its default, give it the default value explicitly.

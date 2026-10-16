@@ -6,6 +6,12 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-16)
 
+PAIR018 is the public release candidate: the user's editor master (0.9.7.4 patch notes in
+Intro and the quest log, Reminder links, quest and map edits) plus PAIR017's backpack fix.
+Its object data matches PAIR017's. Not copied to TEST; outputs are in release/pairs/PAIR018.
+The master was saved by a newer World Editor (no HM3W header, fields moved into skin tables,
+default-valued fields dropped); build_pair.py now normalizes that, see EDITOR_PAIR.md.
+
 PAIR017 is the checked backpack-visibility pair, installed in TEST as
 FFERPG-PAIR017-Forsaken.w3x and FFERPG-PAIR017-1.29.2.w3x (hash verified).
 The user reports PAIR016 working well and is preparing a public release. Dropping

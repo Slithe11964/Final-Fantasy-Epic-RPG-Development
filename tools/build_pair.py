@@ -15,7 +15,7 @@ import subprocess
 import sys
 import tempfile
 
-from editor_pair import prepare, View, Conflict, classic_fallback
+from editor_pair import prepare, View, Conflict, classic_fallback, relayout
 from mpq import MPQ
 from editor_layout import trigger_items
 from export_sources import export
@@ -103,8 +103,11 @@ def main():
     if final.exists():raise FileExistsError('stage output already exists: '+str(final))
     with stage_lock(args.stage):
         scratch=Path(tempfile.mkdtemp(prefix='EditorPair'+args.stage+'-',dir=ROOT/'build'))
-        snapshot=scratch/'edited-master.w3x';shutil.copy2(source,snapshot)
-        report=dict(stage=args.stage,editor_input=str(source),editor_input_sha256=sha(snapshot),references=config,
+        saved=scratch/'saved-master.w3x';shutil.copy2(source,saved)
+        # World Editor can move fields between base and skin tables; merge what the author made.
+        snapshot=scratch/'edited-master.w3x';moved=relayout(editor,saved,snapshot)
+        report=dict(stage=args.stage,editor_input=str(source),editor_input_sha256=sha(saved),references=config,
+                    relaid_object_fields=moved,
                     scenario_name=scenario_name(snapshot),outputs={},profiles={},
                     tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','gameplay_runtime.py','world_visuals.py','job_runtime.py','job_objects.py','inventory_ui.py','save_strings.py')})
         aliases={raw:[v for v in (entry.get('variant'),entry.get('offhand')) if v]
