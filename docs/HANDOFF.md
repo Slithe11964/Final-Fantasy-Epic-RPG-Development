@@ -6,6 +6,19 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-16)
 
+PAIR016 is the checked job behavior/stat pair, installed in the Warcraft TEST folder
+as FFERPG-PAIR016-Forsaken.w3x and FFERPG-PAIR016-1.29.2.w3x (hash verified).
+It covers Necromancer/Skeleton Champion moon markers, mana healing, 90-second
+Undying, Aim, channeled Myriad/Meteor proxies, full-bag Chemist consumers and
+rank-aware stat rows for Archer, Rage, Dark Knight, Wizard, Calculator and Prophet.
+Divine Shield retains the user-approved 2-to-5 blocked damage per mana efficiency,
+with clean two-caster handoff. Exact row allocation preserves space for gear bonuses.
+All gates passed: native 134 tests; classic 234 tests with 10 expected skips. Ten
+focused JASS/object regressions pass; final archives and editor-master hash verified.
+PAIR014/015 were checked internal candidates and were not installed in TEST.
+See JOB_EFFECTS.md for behavior and required engine acceptance. In-game casting,
+revival, icons and panel presentation still need user testing; mocks are not engine proof.
+
 PAIR013 is the checked passive-art/bridge pair, installed in the Warcraft TEST folder
 as FFERPG-PAIR013-Forsaken.w3x and FFERPG-PAIR013-1.29.2.w3x (hash verified). The user reports PAIR012 fixes working.
 Custom Amgl dummy passives now explicitly suppress inherited attachment art while

@@ -40,7 +40,6 @@ function Trig_Meteor_Cast_Actions takes nothing returns nothing
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     // Divide the spell's mana cost by 50 and drop the remainder to get this count.
     set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 50)
@@ -48,6 +47,7 @@ function Trig_Meteor_Cast_Actions takes nothing returns nothing
     set udg_MeteorDummyIndex=ModuloInteger((udg_MeteorDummyIndex+1),4)
     call UnitAddAbilityBJ(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit())
     call SetUnitAbilityLevelSwapped(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit(),l_tempInteger)
+    call SetUnitState(GetLastCreatedUnit(),UNIT_STATE_MANA,GetUnitState(GetLastCreatedUnit(),UNIT_STATE_MAX_MANA))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
     call RemoveLocation(udg_TempPoint)
 endfunction

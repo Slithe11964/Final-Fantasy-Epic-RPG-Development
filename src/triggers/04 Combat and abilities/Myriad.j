@@ -36,10 +36,10 @@ function Trig_Myriad_Arrows_Actions takes nothing returns nothing
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(2,2,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,3,l_tempHandleId,udg_ProxyDamageHash)
-    call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(12.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0X4',GetLastCreatedUnit()) // 'A0X4': ability "Myriad Arrows"
     call SetUnitAbilityLevelSwapped('A0X4',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())) // 'A0X4': ability "Myriad Arrows"
+    call SetUnitState(GetLastCreatedUnit(),UNIT_STATE_MANA,GetUnitState(GetLastCreatedUnit(),UNIT_STATE_MAX_MANA))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
     call RemoveLocation(udg_TempPoint)
 endfunction

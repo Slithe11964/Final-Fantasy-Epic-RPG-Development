@@ -1,4 +1,4 @@
-library TChemist requires TAbil, TFix, TForce, TMedicine, TProf, TWait
+library TChemist requires TAbil, TFix, TForce, TMedicine, TProf, TWait, TItemStack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Chemist_TakeItem=null
@@ -24,25 +24,23 @@ function Trig_Chemist_TakeItem_Cond_IsChemistItem takes nothing returns boolean
 endfunction
 
 function Trig_Chemist_TakeItem_Actions takes nothing returns nothing
-    local integer l_tempInteger
-    local integer l_tempItemId
-    set l_tempItemId='tkno' // 'tkno': object name not found in map data
-    set l_tempInteger=1
+    local integer slot=0
+    local integer size=Carry_Size(udg_CurrentHero)
+    set udg_TempItemId='tkno'
+    set udg_ChemistItem=null
     loop
-        exitwhen l_tempInteger>6
-        set udg_ChemistItem=UnitItemInSlotBJ(udg_CurrentHero,l_tempInteger)
-        if(Trig_Chemist_TakeItem_Cond_IsChemistItem())then
-            set l_tempItemId=GetItemTypeId(udg_ChemistItem)
-            if(Trig_Chemist_TakeItem_Cond_HasSpareCharges())then
-                call SetItemCharges(udg_ChemistItem,(GetItemCharges(udg_ChemistItem)-1))
+        exitwhen slot>=size
+        set udg_ChemistItem=Carry_At(udg_CurrentHero,slot)
+        if Trig_Chemist_TakeItem_Cond_IsChemistItem() then
+            set udg_TempItemId=Carry_Type(udg_ChemistItem)
+            if GetItemCharges(udg_ChemistItem)>1 then
+                call SetItemCharges(udg_ChemistItem,GetItemCharges(udg_ChemistItem)-1)
             else
-                if(Trig_Chemist_TakeItem_Cond_LastCharge())then
-                    call Fix_ChemistItem_RemoveLater(udg_ChemistItem)
-                endif
+                call Fix_ChemistItem_RemoveLater(udg_ChemistItem)
             endif
             return
         endif
-        set l_tempInteger=l_tempInteger+1
+        set slot=slot+1
     endloop
 endfunction
 
@@ -137,7 +135,7 @@ function Trig_Chemist_Pharmacology_Actions takes nothing returns nothing
     set udg_DispelTarget=udg_TempUnit2
     call ConditionalTriggerExecute(gg_trg_Remove_Debuffs)
     if(Trig_Chemist_Pharmacology_Cond_IsHeroDrink())then
-        call Medicine_ApplyTimed(GetSpellTargetUnit(),true)
+        call Medicine_ApplyTimed(udg_TempUnit2,true)
     else
         if(Trig_Chemist_Pharmacology_Cond_HealsNegated())then
             call AddSpecialEffectTargetUnitBJ("overhead",udg_TempUnit2,"Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl")
@@ -355,8 +353,9 @@ function Trig_Chemist_NoxiousMixture_Actions takes nothing returns nothing
     local unit l_dummy
     local effect l_fx
     set udg_CurrentHero=triggeringUnit
-    set l_tempItemId='tkno' // 'tkno': object name not found in map data
+    set udg_TempItemId='tkno' // 'tkno': object name not found in map data
     call ConditionalTriggerExecute(gg_trg_Chemist_TakeItem)
+    set l_tempItemId=udg_TempItemId
     if(l_tempItemId=='tkno')then // 'tkno': object name not found in map data
         call DisplayTimedTextToPlayer(owningPlayer,0,0,10.,"|cffff0000You have no Chemist's item to toss!|r")
         set triggeringUnit=null

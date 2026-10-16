@@ -252,6 +252,8 @@ function Trig_Prophet_DivineShield_ExpireLink takes nothing returns nothing
     local unit l_ward=LoadUnitHandle(udg_DivineShieldHash,GetHandleId(expiredTimer),7)
     call SaveBoolean(udg_DivineShieldHash,GetHandleId(u),0,false)
     call SaveBoolean(udg_DivineShieldHash,GetHandleId(l_ward),3,false)
+    call UnitRemoveAbility(l_ward,'B051')
+    call FlushChildHashtable(udg_DivineShieldHash,GetHandleId(expiredTimer))
     call DestroyTimer(expiredTimer)
     set u=null
     set l_ward=null
@@ -267,6 +269,9 @@ function Trig_Prophet_DivineShield_Actions takes nothing returns nothing
     local boolean l_hasLink=LoadBoolean(udg_DivineShieldHash,GetHandleId(triggeringUnit),0)
     local integer abilityLevel=GetUnitAbilityLevel(triggeringUnit,'A0RY') // 'A0RY': ability "Divine Shield"
     local real l_share=.0
+    if l_ward==null then
+        set l_ward=triggeringUnit
+    endif
     if(abilityLevel==$B)then // $B = 11
         set l_share=5.
     else
@@ -278,14 +283,16 @@ function Trig_Prophet_DivineShield_Actions takes nothing returns nothing
         call SaveBoolean(udg_DivineShieldHash,GetHandleId(l_prevUnit),3,false)
         call PauseTimer(l_prevTimer)
         call DestroyTimer(l_prevTimer)
+        call FlushChildHashtable(udg_DivineShieldHash,GetHandleId(l_prevTimer))
         call UnitRemoveAbility(l_prevUnit,'B051') // 'B051': buff "Divine Shield"
     endif
     if(LoadBoolean(udg_DivineShieldHash,GetHandleId(l_ward),3))then
         set l_prevUnit=LoadUnitHandle(udg_DivineShieldHash,GetHandleId(l_ward),4)
         set l_prevTimer=LoadTimerHandle(udg_DivineShieldHash,GetHandleId(l_prevUnit),2)
-        call SaveBoolean(udg_DivineShieldHash,GetHandleId(l_prevUnit),3,false)
+        call SaveBoolean(udg_DivineShieldHash,GetHandleId(l_prevUnit),0,false)
         call PauseTimer(l_prevTimer)
         call DestroyTimer(l_prevTimer)
+        call FlushChildHashtable(udg_DivineShieldHash,GetHandleId(l_prevTimer))
         call UnitRemoveAbility(l_ward,'B051') // 'B051': buff "Divine Shield"
     endif
     call SaveBoolean(udg_DivineShieldHash,GetHandleId(triggeringUnit),0,true)

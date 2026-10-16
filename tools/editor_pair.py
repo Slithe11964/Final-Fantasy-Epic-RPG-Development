@@ -470,7 +470,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from save_strings import refresh_runtime
     from performance_runtime import refresh as refresh_performance
     from gameplay_runtime import refresh as refresh_gameplay
-    modules={lib:refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native)
+    from job_runtime import refresh as refresh_jobs
+    modules={lib:refresh_jobs(refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native),native=native)
              for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
@@ -528,6 +529,10 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from world_visuals import clear_marker_art
     ability_data=replacements.get('war3map.w3a') or profile.object_bytes('war3map.w3a')
     replacements['war3map.w3a'],marker_art=clear_marker_art(ability_data)
+    from job_objects import refresh as refresh_job_objects
+    for name in ('war3map.w3a','war3mapSkin.w3a'):
+        data=replacements.get(name) or profile.object_bytes(name)
+        if data:replacements[name]=refresh_job_objects(data)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

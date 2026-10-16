@@ -75,3 +75,10 @@ The paired runtime also carries the reviewed Elysium crossing repair. Object
 maintenance in tools/world_visuals.py suppresses inherited attachment art on custom
 Amgl dummy passives in both output profiles, preserving explicitly authored art.
 The pair report lists changed marker abilities and records the maintenance tool hash.
+
+Job behavior/stat maintenance is applied by tools/job_runtime.py and
+tools/job_objects.py to both profiles after their source/object merge. Native stat
+frames keep their cached display adapter; classic keeps its text pages. Effect
+snapshots are written on synchronized spell events and read by either UI. The job
+object pass updates both main and skin records, including Undying's cooldown text
+and the inert Necromancer/Skeleton Champion marker bases. See JOB_EFFECTS.md.

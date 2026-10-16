@@ -1257,13 +1257,12 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
                     call SetTextTagVisibility(tt,false)
                 endif
                 set tt=null
-            elseif(GetUnitAbilityLevel(triggeringUnit,'A14S')>0 and not IsUnitInGroup(triggeringUnit,udg_UndyingGroup))then // 'A14S': ability "Endure"
+            elseif(GetUnitAbilityLevel(triggeringUnit,'A14T')>0 and not IsUnitInGroup(triggeringUnit,udg_UndyingGroup))then // 'A14S': ability "Endure"
                 call BattleLog_ShowUnit("endures death through |cffffcc00Undying|r.",triggeringUnit)
                 call BlzSetEventDamage(.0)
                 call Berserk_Remove(triggeringUnit)
                 call SetUnitState(triggeringUnit,UNIT_STATE_LIFE,GetUnitState(triggeringUnit,UNIT_STATE_MAX_LIFE)*.25)
-                call BlzUnitDisableAbility(triggeringUnit,'A14T',true,false) // 'A14T': ability "Undying"
-                call GroupAddUnit(udg_UndyingGroup,triggeringUnit)
+                call JobFX_UndyingStart(triggeringUnit)
                 call DestroyEffect(AddSpecialEffectTarget("Objects\\Spawnmodels\\Undead\\UndeadDissipate\\UndeadDissipate.mdl",triggeringUnit,"origin"))
                 set tt=CreateTextTag()
                 call SetTextTagText(tt,"|cffffcc00UNDYING",.028)
@@ -1277,9 +1276,6 @@ function Trig_Damage_Engine_PostDamageEffects takes nothing returns nothing
                     call SetTextTagVisibility(tt,false)
                 endif
                 set tt=null
-                call Wait_Polled(30.)
-                call BlzUnitDisableAbility(triggeringUnit,'A14T',false,false) // 'A14T': ability "Undying"
-                call GroupRemoveUnit(udg_UndyingGroup,triggeringUnit)
                 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdl",triggeringUnit,"origin"))
             endif
         endif
@@ -1330,7 +1326,7 @@ function Trig_Damage_Engine_Step02_HealingUndead takes integer c returns nothing
     local boolean l_heal=DmgCtx_Heal[c]
     local boolean l_healUndead=DmgCtx_HealUndead[c]
     local boolean l_pure=DmgCtx_Pure[c]
-    if(l_heal and not l_healUndead and(IsUnitType(t,UNIT_TYPE_UNDEAD)or GetUnitAbilityLevel(t,'B05T')>0))then // 'B05T': buff tooltip "Zombie"
+    if(l_heal and not DmgCtx_ManaDamage[c] and not l_healUndead and(IsUnitType(t,UNIT_TYPE_UNDEAD)or GetUnitAbilityLevel(t,'B05T')>0))then // 'B05T': buff tooltip "Zombie"
         set l_heal=false
         if(not l_pure)then
             // Multiply the current amount by 1.5: 100 becomes 150, before any later adjustments.
@@ -2789,23 +2785,8 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
                 call Text_FloatingDamage(t,false,2,.0,false,2)
             endif
         endif
-        if(l_amount>.0 and GetUnitAbilityLevel(t,'B051')>0 and not l_heal and LoadBoolean(udg_DivineShieldHash,th,3))then // 'B051': buff "Divine Shield"
-            set l_dummy=LoadUnitHandle(udg_DivineShieldHash,th,4)
-            if(GetUnitAbilityLevel(l_dummy,'Avul')>0)then // 'Avul': standard ability reference "Invulnerable"
-                call UnitRemoveAbility(t,'B051') // 'B051': buff "Divine Shield"
-            else
-                set l_val=(l_amount/(LoadReal(udg_DivineShieldHash,th,5)*2.))
-                set l_val2=GetUnitState(l_dummy,UNIT_STATE_MANA)
-                if(l_val>l_val2)then
-                    set l_val=l_val2
-                    call UnitRemoveAbility(t,'B051') // 'B051': buff "Divine Shield"
-                endif
-                if(l_val>=1)then
-                    set l_amount=l_amount-(l_val*LoadReal(udg_DivineShieldHash,th,5))
-                    call SetUnitState(l_dummy,UNIT_STATE_MANA,l_val2-l_val)
-                    call Text_FloatingDamage(l_dummy,false,0,l_val,true,0)
-                endif
-            endif
+        if(l_amount>.0 and GetUnitAbilityLevel(t,'B051')>0 and not l_heal and not l_manaDamage and LoadBoolean(udg_DivineShieldHash,th,3))then
+            set l_amount=JobFX_Shield(t,l_amount)
         endif
         if(GetUnitAbilityLevel(u,'B04B')<=0 and(GetUnitAbilityLevel(u,'A0V3')>0 or(GetUnitAbilityLevel(u,'BUav')>0 and l_physical))and not l_heal and l_amount>=2.)then // 'B04B': buff tooltip "Drain Attack"; 'A0V3': ability "Vampiric Power"; 'BUav': buff tooltip "Vampiric Strike"
             call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\VampiricAura\\VampiricAuraTarget.mdl",u,"origin"))

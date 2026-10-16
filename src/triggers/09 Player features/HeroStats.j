@@ -1,4 +1,4 @@
-library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots
+library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots, TAbil
 // -stats: the hero's combat numbers as text, four pages, in both versions. Reforged's Forsaken
 // map shows the same numbers in its stat panel; the calculations below come from it (Forsaken
 // DZ), reading worn gear from the backpack's equipment pages instead of native equipment slots.
@@ -580,6 +580,15 @@ function Stats_StatAttackSpeed takes unit hero returns real
     if GetUnitAbilityLevel(hero,'A0GP')>0 and IsUnitType(hero,UNIT_TYPE_MELEE_ATTACKER) and Stats_TwoHandedWeapon(hero)!=null then
         set speed=speed+240
     endif
+    if GetUnitAbilityLevel(hero,'B01F')>0 then
+        set speed=speed-R2I(30.+6.*I2R(IMaxBJ(1,GetUnitAbilityLevel(hero,'A14B'))-1))
+    endif
+    if GetUnitAbilityLevel(hero,'B00K')>0 or GetUnitAbilityLevel(hero,'B07P')>0 then
+        set speed=speed+R2I(JobFX_RageSpeed(hero))
+    endif
+    if GetUnitAbilityLevel(hero,'B082')>0 then
+        set speed=speed+R2I(JobFX_DarkSpeed(hero))
+    endif
     return I2R(IMaxBJ(40,IMinBJ(1000,speed)))
 endfunction
 
@@ -698,6 +707,20 @@ function Stats_StatOutgoing takes unit hero,boolean physical returns real
     endif
     if GetUnitAbilityLevel(hero,'A134')>0 then
         set mult=mult*1.65
+    endif
+    // JobFX outgoing modifiers match the physical-hit and final-drain steps.
+    if GetUnitAbilityLevel(hero,'B00K')>0 or GetUnitAbilityLevel(hero,'B07P')>0 then
+        set mult=mult*1.1
+    endif
+    if physical and GetUnitAbilityLevel(hero,'B01F')>0 then
+        set mult=mult*1.2
+    endif
+    if physical and GetUnitAbilityLevel(hero,'B04B')>0 and GetUnitAbilityLevel(hero,'A0R2')>0 then
+        if GetUnitAbilityLevel(hero,'A0R2')>=11 then
+            set mult=mult*.75
+        else
+            set mult=mult*(.58+.02*I2R(GetUnitAbilityLevel(hero,'A0R2')))
+        endif
     endif
     return (mult-1.)*100.
 endfunction
@@ -1142,6 +1165,102 @@ endfunction
 
 // Fills the rows of one page (0 damage bonuses, 1 defenses, 2 resistances, 3 other bonuses) and
 // returns its title. Same rows as the Forsaken stat panel, without regeneration.
+// Effect rows use the active buff and source rank, independently of panel visibility.
+function Stats_RenderJob takes unit hero,integer page,integer row returns integer
+    local integer rank
+    local real amount
+    if page==0 then
+        if GetUnitAbilityLevel(hero,'B01F')>0 then
+            call Stats_Row(row,"Aim tech damage","+20% | +"+I2S(GetUnitAbilityLevel(hero,'A0RH')*50))
+            set row=row+1
+            call Stats_Row(row,"Aim attack speed","-"+R2SW(30.+6.*I2R(IMaxBJ(1,GetUnitAbilityLevel(hero,'A14B'))-1),1,0)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B00K')>0 or GetUnitAbilityLevel(hero,'B07P')>0 then
+            call Stats_Row(row,"Rage attack speed","+"+R2SW(JobFX_RageSpeed(hero),1,0)+"%")
+            set row=row+1
+            call Stats_Row(row,"Rage damage","+10%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B082')>0 then
+            call Stats_Row(row,"Dark Power attack speed","+"+R2SW(JobFX_DarkSpeed(hero),1,0)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B04B')>0 then
+            set rank=GetUnitAbilityLevel(hero,'A0R2')
+            set amount=42.-2.*I2R(rank)
+            if rank>=11 then
+                set amount=25.
+            endif
+            call Stats_Row(row,"Drain Attack damage","-"+R2SW(amount,1,0)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'A16K')>0 and GetUnitState(hero,UNIT_STATE_MAX_MANA)>0. and GetUnitState(hero,UNIT_STATE_MANA)>=GetUnitState(hero,UNIT_STATE_MAX_MANA) then
+            call Stats_Row(row,"Next spell is stronger","+50%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B06N')>0 then
+            call Stats_Row(row,"Mind Charge spell potency","+100%")
+            set row=row+1
+        endif
+    elseif page==1 then
+        if GetUnitAbilityLevel(hero,'B01F')>0 then
+            set amount=30.
+            if GetUnitAbilityLevel(hero,'A0RH')>=11 then
+                set amount=20.
+            endif
+            call Stats_Row(row,"Aim damage taken","+"+R2SW(amount,1,0)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B00K')>0 or GetUnitAbilityLevel(hero,'B07P')>0 then
+            call Stats_Row(row,"Rage damage taken","+60%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B082')>0 then
+            set amount=90.*(1.-GetUnitState(hero,UNIT_STATE_LIFE)/GetUnitState(hero,UNIT_STATE_MAX_LIFE))
+            call Stats_Row(row,"Dark Power damage reduction",R2SW(amount,1,2)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B04B')>0 then
+            call Stats_Row(row,"Lifesteal","+50%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B06N')>0 then
+            call Stats_Row(row,"Mind Charge armor","-30")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B051')>0 and LoadBoolean(udg_DivineShieldHash,GetHandleId(hero),3) then
+            call Stats_Row(row,"Damage taken from mana","50%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B052')>0 then
+            call Stats_Row(row,"Infinity damage reduction","100%")
+            set row=row+1
+        endif
+    elseif page==3 then
+        if GetUnitAbilityLevel(hero,'B082')>0 then
+            set rank=JobFX_Rank(hero,'B082','A1AA')
+            set amount=I2R((rank+3)*10)
+            if rank>=6 then
+                set amount=100.
+            endif
+            call Stats_Row(row,"Mana gain on hit","+"+R2SW(amount,1,0))
+            set row=row+1
+            call Stats_Row(row,"Dark Power move speed","+50%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B01A')>0 then
+            call Stats_Row(row,"Mana Regen","10% / second")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B00X')>0 then
+            call Stats_Row(row,"Blessing health regen","+100%")
+            set row=row+1
+        endif
+    endif
+    return row
+endfunction
+
 function Stats_Fill takes unit hero,integer page returns string
     local integer i=0
     local integer element=Element_GetOfUnit(hero,true)
@@ -1176,6 +1295,7 @@ function Stats_Fill takes unit hero,integer page returns string
         if GetUnitAbilityLevel(hero,'A0T9')>0 and GetUnitState(hero,UNIT_STATE_LIFE)<=.3*GetUnitState(hero,UNIT_STATE_MAX_LIFE) then
             call Stats_Row(8,"Damage taken","Halved")
         endif
+        call Stats_RenderJob(hero,1,9)
     elseif page==2 then
         set title="Resistances"
         set i=0
@@ -1242,6 +1362,7 @@ function Stats_Fill takes unit hero,integer page returns string
             call Stats_Row(i,"|cff00ff00Basic attack element|r","Omni")
             set i=i+1
         endif
+        set i=Stats_RenderJob(hero,0,i)
         call Stats_RenderGearDamage(hero,i)
     else
         set title="Other bonuses"
@@ -1250,7 +1371,7 @@ function Stats_Fill takes unit hero,integer page returns string
         call Stats_Row(2,"Healing received",Stats_StatPenalty(Stats_StatPercent(Stats_StatHealingReceived(hero)),GetUnitAbilityLevel(hero,'B070')>0))
         call Stats_Row(3,"Cooldown reduction",Stats_StatPenalty(Stats_StatPercent(Stats_StatCooldown(hero)),(GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0) and GetUnitAbilityLevel(hero,'B08T')==0 and GetUnitAbilityLevel(hero,'B00F')==0 and GetUnitAbilityLevel(hero,'B07F')==0 and GetUnitAbilityLevel(hero,'A0GJ')==0))
         call Stats_Row(4,"Move speed",Stats_StatPenalty(R2SW(GetUnitMoveSpeed(hero),1,0),GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0 or GetUnitAbilityLevel(hero,'B05M')>0 or GetUnitAbilityLevel(hero,'B05N')>0))
-        call Stats_RenderGearOther(hero,5)
+        call Stats_RenderGearOther(hero,Stats_RenderJob(hero,3,5))
     endif
     set twoHandedWeapon=null
     return title

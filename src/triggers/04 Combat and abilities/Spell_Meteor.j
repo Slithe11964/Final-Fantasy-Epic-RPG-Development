@@ -35,9 +35,9 @@ function Trig_Spell_Meteor_Wide_Actions takes nothing returns nothing
     set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    call ShowUnitHide(GetLastCreatedUnit())
     call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0W0',GetLastCreatedUnit()) // 'A0W0': ability "Wide Meteor"
+    call SetUnitState(GetLastCreatedUnit(),UNIT_STATE_MANA,GetUnitState(GetLastCreatedUnit(),UNIT_STATE_MAX_MANA))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
     call RemoveLocation(udg_TempPoint)
 endfunction
