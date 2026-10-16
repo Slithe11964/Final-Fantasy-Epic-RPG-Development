@@ -72,7 +72,8 @@ presented as a working classic copy.
 
 This workflow is tested with automated merges and compiler checks. Actual World
 Editor Save As behavior and gameplay in both clients still need user acceptance.
-The initial checked pair is in `release/pairs/PAIR004/`.
-The latest save-storage test pair is `release/pairs/PAIR007/`; its local-file
-isolation fix is applied automatically by the paired builder. Multiplayer acceptance
-is pending, and the classic Warcraft-menu checkpoint crash remains unresolved.
+The user-accepted job/stat pair is `release/pairs/PAIR016/`. Reviewed save-storage,
+multiplayer synchronization, performance and gameplay fixes carry forward through
+the paired builder. Keep using this master, rather than importing a generated
+Forsaken or legacy output back into it. The separate classic Warcraft-menu
+checkpoint crash with large imported characters remains unresolved.

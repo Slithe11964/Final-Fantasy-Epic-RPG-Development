@@ -75,7 +75,7 @@ def native_tests(work):
     sys.path.insert(0,str(ROOT/'experiments/Forsaken'))
     from build_save_roundtrip import align_bt_tests
     align_bt_tests(work)
-    for name in ('test_talents.py','test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py','test_quest_unlocks.py','test_gameplay_inventory.py','test_quest_events.py','test_world_access.py','test_job_effects.py'):
+    for name in ('test_talents.py','test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py','test_quest_unlocks.py','test_gameplay_inventory.py','test_quest_events.py','test_world_access.py','test_job_effects.py','test_backpack_visibility.py'):
         shutil.copy2(ROOT/'tools/tests'/name,work/'tools/tests'/name)
     fixture=work/'tools/tests/test_chronicles_secrets.py'
     old="        self.assertNotIn('Chronicles unlocked:', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))"
@@ -106,7 +106,7 @@ def main():
         snapshot=scratch/'edited-master.w3x';shutil.copy2(source,snapshot)
         report=dict(stage=args.stage,editor_input=str(source),editor_input_sha256=sha(snapshot),references=config,
                     scenario_name=scenario_name(snapshot),outputs={},profiles={},
-                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','gameplay_runtime.py','world_visuals.py','job_runtime.py','job_objects.py','save_strings.py')})
+                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','gameplay_runtime.py','world_visuals.py','job_runtime.py','job_objects.py','inventory_ui.py','save_strings.py')})
         aliases={raw:[v for v in (entry.get('variant'),entry.get('offhand')) if v]
                  for raw,entry in json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text(encoding='utf-8')).items()}
         print('Working copy:',scratch,flush=True)

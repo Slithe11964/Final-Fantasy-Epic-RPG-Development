@@ -1,5 +1,13 @@
 # Backpack and equipment (1.29.2 first)
 
+Forsaken PAIR017 adds a native-only visibility repair: if the hero's backpack was
+open before dropping, using or unequipping an item, a brief local restore window
+keeps it visible through the engine's inventory refresh. An already closed panel
+stays closed. B/Escape, changing selection, and checkpoint panel rebuilding cancel
+the restore. The state never branches shared inventory, item or unit operations.
+Five focused tests cover restoration, expiry, explicit key closing, player isolation
+and idempotent paired integration. Actual drop/use presentation needs engine testing.
+
 1.29.2 has no frame UI and no extended inventory native, so gear lives in holder units: a
 holder carries six inventory slots and the player's selection switches to it, leaving the
 hero's own six slots for potions, books and active items. The same data will drive the

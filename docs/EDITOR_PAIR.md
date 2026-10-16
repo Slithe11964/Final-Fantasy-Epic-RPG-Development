@@ -82,3 +82,9 @@ frames keep their cached display adapter; classic keeps its text pages. Effect
 snapshots are written on synchronized spell events and read by either UI. The job
 object pass updates both main and skin records, including Undying's cooldown text
 and the inert Necromancer/Skeleton Champion marker bases. See JOB_EFFECTS.md.
+
+Native backpack visibility maintenance in tools/inventory_ui.py preserves an open
+panel across drop/use/unequip UI refreshes. Its short restore window is local
+presentation state only; it never controls shared inventory operations. B, Escape,
+selection changes and checkpoint panel rebuilding cancel the window. Classic keeps
+its own paged inventory. The maintenance tool is recorded in pair provenance.

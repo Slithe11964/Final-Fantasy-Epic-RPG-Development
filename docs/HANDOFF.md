@@ -6,6 +6,23 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-16)
 
+PAIR017 is the checked backpack-visibility pair, installed in TEST as
+FFERPG-PAIR017-Forsaken.w3x and FFERPG-PAIR017-1.29.2.w3x (hash verified).
+The user reports PAIR016 working well and is preparing a public release. Dropping
+backpack items was the clearest automatic-close case. Native UI now restores an
+already open backpack through a short drop/use/unequip refresh window; B/Escape,
+selection changes and checkpoint rebuilding cancel restoration. Inventory/gameplay
+handlers are unchanged, verified against PAIR016. All gates passed (native 139;
+classic 239 with 10 expected skips), including five local UI regressions. In-game
+backpack drop/use acceptance is pending. The saved editor master is snapshotted by
+the builder; user edits made after the snapshot belong to the next build.
+
+Cleanup moved 186 obsolete build entries (77,239 files, about 17.26 GB) into
+../_delete/2026-10-16-obsolete-builds with a verified move manifest. This folder is
+for the user to delete. Required sources/tools/maps and crash diagnostics remain;
+PAIR016 and current/new build scratch remain. Historical old build-log locations
+now point into the manifest. See CLEANUP.md; do not assume experiments are unused.
+
 PAIR016 is the checked job behavior/stat pair, installed in the Warcraft TEST folder
 as FFERPG-PAIR016-Forsaken.w3x and FFERPG-PAIR016-1.29.2.w3x (hash verified).
 It covers Necromancer/Skeleton Champion moon markers, mana healing, 90-second

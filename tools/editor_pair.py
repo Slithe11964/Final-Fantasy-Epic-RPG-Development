@@ -471,7 +471,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from performance_runtime import refresh as refresh_performance
     from gameplay_runtime import refresh as refresh_gameplay
     from job_runtime import refresh as refresh_jobs
-    modules={lib:refresh_jobs(refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native),native=native)
+    from inventory_ui import refresh as refresh_inventory_ui
+    modules={lib:refresh_inventory_ui(refresh_jobs(refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native),native=native))
              for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
