@@ -381,9 +381,9 @@ function FRC_Read takes integer pid,integer position,item carried returns string
         return ""
     endif
     set id=LoadInteger(FRC_Map,0,GetItemTypeId(carried))
-    if (id == 0) then
-        set FRC_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("unknown item at position ",I2S(position)),"; nothing omitted."),243739446,pid,false)
-        return null
+    // Skip nonpersistent and foreign-bound items without changing live inventory.
+    if id==0 or (GetItemUserData(carried)!=0 and GetItemUserData(carried)!=pid+1) then
+        return ""
     endif
     set quantity=GetItemCharges(carried)
     if ((quantity < 0) or (quantity > 127)) then
@@ -392,9 +392,6 @@ function FRC_Read takes integer pid,integer position,item carried returns string
     endif
     if (GetItemUserData(carried) == (pid + 1)) then
         set bound="B"
-    elseif (GetItemUserData(carried) != 0) then
-        set FRC_Error[pid]=FSS_SetRoot(FSS_Concat(FSS_Concat("foreign binding at position ",I2S(position)),"."),243739446,pid,false)
-        return null
     endif
     set life=FSL_CaptureLife(pid,carried)
     if (FSS_Equals(life,null)) then
@@ -489,7 +486,7 @@ function FRC_Step takes integer pid returns nothing
             set FRC_Raw[index]=GetItemTypeId(carried)
             set FRC_Record[index]=FSS_SetRoot(payload,1935610165,index,false)
             set FRC_Body[pid]=FSS_SetRoot(FSS_Concat(FRC_Body[pid],payload),1472968661,pid,false)
-            if (carried != null) then
+            if payload!="" then
                 set FRC_Count[pid]=(FRC_Count[pid] + 1)
             endif
         elseif (((carried != FRC_Handle[index]) or (GetItemTypeId(carried) != FRC_Raw[index])) or (not FSS_Equals(payload,FRC_Record[index]))) then

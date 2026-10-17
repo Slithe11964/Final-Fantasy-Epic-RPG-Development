@@ -164,14 +164,40 @@ class CaptureTests(unittest.TestCase):
         self.start(); self.finish()
         self.assertTrue(self.e['FRC_Ready'][0])
 
-    def test_unknown_item_and_foreign_binding_are_never_omitted(self):
-        for update in ({'raw': raw('XXXX')}, {'binding': 2}, {'quantity': 128}):
-            with self.subTest(update=update):
-                self.setUp(); self.hero['quick'][0].update(update)
-                self.start(); self.finish()
-                self.assertFalse(self.e['FRC_Ready'][0])
-                self.assertIsNone(self.e['FRC_Result'][0])
-                self.assertTrue(self.e['FRC_Error'][0])
+    def test_unsaved_and_foreign_items_leave_empty_saved_slots_in_every_holder(self):
+        for location in ('quick', 'bag', 'equipment', 'gaya', 'house'):
+            for update in ({'raw': raw('XXXX'), 'quantity': 999}, {'binding': 2}):
+                with self.subTest(location=location, update=update):
+                    self.setUp()
+                    target = {'quick': self.hero['quick'][0], 'bag': self.hero['bag'][29],
+                              'equipment': self.hero['equipment'][3], 'gaya': self.gaya['quick'][5],
+                              'house': self.house['quick'][0]}[location]
+                    self.start(); self.finish()
+                    before = progression.snapshot(codec.decode(self.e['FRC_Result'][0]))['inventory']
+                    target.update(update)
+                    live = copy.deepcopy((self.hero, self.gaya, self.house))
+                    self.start(); self.finish()
+                    self.assertTrue(self.e['FRC_Ready'][0], self.e['FRC_Error'][0])
+                    records = progression.snapshot(codec.decode(self.e['FRC_Result'][0]))['inventory']
+                    holder_slot = {'quick': (1, 0), 'bag': (2, 29), 'equipment': (3, 3),
+                                   'gaya': (4, 5), 'house': (5, 0)}[location]
+                    self.assertEqual(records, [r for r in before if (r[2], r[3]) != holder_slot])
+                    self.assertEqual(live, (self.hero, self.gaya, self.house))
+
+    def test_all_occupied_slots_can_be_omitted_without_invalid_record_count(self):
+        for container in (self.hero['quick'], self.hero['bag'], self.hero['equipment'],
+                          self.gaya['quick'], self.house['quick']):
+            for item in container.values(): item['binding'] = 2
+        self.start(); self.finish()
+        self.assertTrue(self.e['FRC_Ready'][0], self.e['FRC_Error'][0])
+        self.assertEqual(progression.snapshot(codec.decode(self.e['FRC_Result'][0]))['inventory'], [])
+
+    def test_invalid_savable_quantity_still_aborts(self):
+        self.hero['quick'][0]['quantity'] = 128
+        self.start(); self.finish()
+        self.assertFalse(self.e['FRC_Ready'][0])
+        self.assertIsNone(self.e['FRC_Result'][0])
+        self.assertIn('quantity', self.e['FRC_Error'][0])
 
     def test_progression_change_and_reference_change_abort_read_only(self):
         self.start()

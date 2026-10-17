@@ -96,3 +96,29 @@ war3map.* and war3mapSkin.* tables, and drop fields whose value it treats as a d
 builder (editor_pair.relayout) places every field in the table the editor reference uses, keeps
 the reference's value for a dropped field, and takes the header from the reference when the save
 has none. To reset a field to its default, give it the default value explicitly.
+
+
+Save capture omission policy (PAIR020): tools/save_strings.py refreshes FRC_Read in
+both profiles from Forsaken-save-capture.j, retaining each profile's FRC_At storage
+adapter. An item absent from the permanent save registry or bound to another
+player emits no record. Only emitted records count in the inventory header;
+positions of other records remain unchanged. Live items are never modified.
+Registered eligible items still require valid charges, life and flags. The two-pass
+inventory/progression consistency checks remain active. This applies to -save,
+-savef and autosave because they use the same capture path. The serialized format
+and previously saved files are unchanged. Gameplay acceptance: hold monster parts,
+monographs and borrowed bound gear alongside owned gear; save, load in a fresh game,
+confirm only eligible items return in the same slots, with no save failure.
+
+Armory hints in the editor master:
+- Trigger Editor -> 05 Items crafting and shops -> Armory -> Armory_InitHints:
+  edit the matching ArmoryHint[index] string for the click message.
+- Object Editor -> Units: the matching missing-entry unit has rawcode zNNN,
+  where NNN is the same zero-padded index (for example z012). Edit its extended
+  tooltip for the hover hint as well. Keep its IDs and item mapping unchanged.
+  Reforged may expose display fields through skin data; edit the effective tooltip
+  shown by the editor. The paired builder merges the authored base/skin fields.
+- src/armory-hints.json is the source catalogue mapping item names to indexes and
+  hint text. Keep it aligned with the edited trigger and object text: build validation checks
+  those against the catalogue. The ordinary
+  paired build does not regenerate hints from this JSON over the editor master.

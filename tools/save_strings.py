@@ -75,6 +75,23 @@ def refresh_runtime(source):
         body=''.join(line+'\n' for line in body.splitlines() if not any(
             re.match(r'\s*(?:constant\s+)?\w+\s+'+name+r'\s*(?:=|$)',line) for name in names))
         source=source[:globals_.start(1)]+block[1]+body+source[globals_.end(1):]
+    if 'function FRC_Read takes' in source:
+        # Patch only eligibility/counting. Keep the classic SaveSlots_CanDrop
+        # adapter and any other profile-specific capture details intact.
+        pattern=r'^function FRC_Read takes[^\n]*\n.*?^endfunction'
+        def omit_unsaved(match):
+            reader=match[0]
+            reader=re.sub(r'    if \(?id\s*==\s*0\)? then\n.*?    endif',
+                '    // Skip nonpersistent and foreign-bound items without changing live inventory.\n'
+                '    if id==0 or (GetItemUserData(carried)!=0 and GetItemUserData(carried)!=pid+1) then\n'
+                '        return ""\n    endif',reader,count=1,flags=re.S)
+            reader=re.sub(r'    elseif \(?GetItemUserData\(carried\)\s*!=\s*0\)? then\n.*?        return null\n',
+                          '',reader,count=1,flags=re.S)
+            return reader
+        source=re.sub(pattern,omit_unsaved,source,flags=re.M|re.S)
+        # Omitted items produce no record and must not inflate the record count.
+        source=re.sub(r'if \(?carried\s*!=\s*null\)? then(\n\s*set FRC_Count)',
+                      r'if payload!="" then\1',source)
     if 'function FST_Request takes' in source:
         # Refresh reviewed transport functions even when an editor master still
         # embeds an older runtime. Native/classic sync adapters remain untouched.

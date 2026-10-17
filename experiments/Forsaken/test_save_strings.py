@@ -175,6 +175,55 @@ endfunction
         self.assertTrue(env['udg_HasLoadedCode'][0], fixture.messages)
         self.assertTrue(all(len(v) <= 960 for v in env['FSS_Store'].values() if isinstance(v, str)))
 
+    def test_editor_refresh_omits_items_without_replacing_profile_adapters(self):
+        from save_strings import refresh_runtime
+        reader = """function FRC_Read takes integer pid,integer position,item carried returns string
+    if (id == 0) then
+        set FRC_Error[pid]="unknown item"
+        return null
+    endif
+    if (GetItemUserData(carried) == (pid + 1)) then
+        set bound="B"
+    elseif (GetItemUserData(carried) != 0) then
+        set FRC_Error[pid]="foreign binding"
+        return null
+    endif
+    if ADAPTER(carried) then
+        set flags=2
+    endif
+    return record
+endfunction
+function FRC_Step takes integer pid returns nothing
+    if (carried != null) then
+        set FRC_Count[pid]=(FRC_Count[pid] + 1)
+    endif
+endfunction
+"""
+        for adapter in ('SaveSlots_CanDrop', 'BlzGetItemBooleanField'):
+            source = reader.replace('ADAPTER', adapter)
+            refreshed = refresh_runtime(source)
+            self.assertIn('if '+adapter+'(carried) then', refreshed)
+            self.assertIn('if id==0 or (GetItemUserData(carried)!=0 and GetItemUserData(carried)!=pid+1)', refreshed)
+            self.assertIn('if payload!="" then', refreshed)
+            self.assertNotIn('return null', refreshed)
+            self.assertEqual(refresh_runtime(refreshed), refreshed)
+
+    def test_bounded_capture_omits_unsupported_and_foreign_items(self):
+        import test_save_capture
+        original = test_save_capture.engine
+        with patch.object(test_save_capture, 'engine',
+                          lambda *a, **kw: original(*a, **kw, bounded=True)):
+            fixture = test_save_capture.CaptureTests()
+            fixture.setUp()
+        fixture.hero['quick'][0]['raw'] = 'XXXX'
+        fixture.hero['bag'][29]['binding'] = 2
+        fixture.start(); fixture.finish()
+        env = fixture.e
+        self.assertTrue(env['FRC_Ready'][0], materialize(env, env['FRC_Error'][0]))
+        import save_progression
+        records = save_progression.snapshot(codec.decode(materialize(env, env['FRC_Result'][0])))['inventory']
+        self.assertEqual([(r[2], r[3]) for r in records], [(3, 3), (4, 5), (5, 0), (5, 3)])
+
     def test_large_decode_has_bounded_work_in_each_execution_thread(self):
         # This models a work ceiling, not the engine's exact bytecode counter.
         # ATT's whole-profile scan exceeded this ceiling in the caller thread.

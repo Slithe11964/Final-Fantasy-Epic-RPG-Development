@@ -379,9 +379,10 @@ function FRC_Read takes integer pid,integer position,item carried returns string
         return ""
     endif
     set id=LoadInteger(FRC_Map,0,GetItemTypeId(carried))
-    if id==0 then
-        set FRC_Error[pid]="unknown item at position "+I2S(position)+"; nothing omitted."
-        return null
+    // Nonpersistent items and another player's bound gear leave a hole in the save.
+    // Capture is read-only: the live item is never moved, removed or unbound.
+    if id==0 or (GetItemUserData(carried)!=0 and GetItemUserData(carried)!=pid+1) then
+        return ""
     endif
     set quantity=GetItemCharges(carried)
     if quantity<0 or quantity>127 then
@@ -390,9 +391,6 @@ function FRC_Read takes integer pid,integer position,item carried returns string
     endif
     if GetItemUserData(carried)==pid+1 then
         set bound="B"
-    elseif GetItemUserData(carried)!=0 then
-        set FRC_Error[pid]="foreign binding at position "+I2S(position)+"."
-        return null
     endif
     set life=FSL_CaptureLife(pid,carried)
     if life==null then
@@ -487,7 +485,7 @@ function FRC_Step takes integer pid returns nothing
             set FRC_Raw[index]=GetItemTypeId(carried)
             set FRC_Record[index]=payload
             set FRC_Body[pid]=FRC_Body[pid]+payload
-            if carried!=null then
+            if payload!="" then
                 set FRC_Count[pid]=FRC_Count[pid]+1
             endif
         elseif carried!=FRC_Handle[index] or GetItemTypeId(carried)!=FRC_Raw[index] or payload!=FRC_Record[index] then
