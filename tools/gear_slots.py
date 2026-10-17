@@ -36,6 +36,10 @@ PASSIVE_CODES = frozenset(('AEev', 'AHab', 'AIab', 'AIas', 'AIat', 'AIde',
                            'AUau', 'AUav', 'Aasl', 'Atru', 'Arel'))
 BASE_CODES = ROOT / 'experiments/Forsaken/ability-base-codes.json'
 
+# Developer gear has equip rules but no persistent character-save identity.
+NONPERSISTENT_GEAR = frozenset({'I0BQ'})
+EXTRA_BONUSES = {'I0BQ': ('A034','A03F','A0IZ')}
+
 # Where each kind of entry lives in the generated hashtable: a slot kind and a bonus count
 # are keyed by item, the gear-ability marker by ability, and the bonuses themselves run from
 # BONUS_KEY upwards, one key per position.
@@ -206,6 +210,11 @@ def render(rows, casts=None):
         lines.append("    call SaveInteger(GearSlotTable,%d,'%s',1)" % (CAST_KEY, ability))
     for raw, ability in sorted((casts or {}).items()):
         lines.append("    call SaveInteger(GearSlotTable,%d,'%s','%s')" % (ITEM_CAST_KEY, raw, ability))
+    for raw, bonuses in EXTRA_BONUSES.items():
+        lines.append("    call SaveInteger(GearSlotTable,1,'%s',GEAR_PRIMARY)" % raw)
+        lines.append("    call SaveInteger(GearSlotTable,2,'%s',%d)" % (raw,len(bonuses)))
+        for index,ability in enumerate(bonuses):
+            lines.append("    call SaveInteger(GearSlotTable,%d,'%s','%s')" % (BONUS_KEY+index,raw,ability))
     lines += ['endfunction',
               '',
               '// No startup registration of its own: the backpack fills the table before it',

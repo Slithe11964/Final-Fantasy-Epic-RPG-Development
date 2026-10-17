@@ -1,4 +1,4 @@
-library TMeteor requires TAbil, TProf
+library TMeteor requires TAbil, TProf, TMyriad
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Meteor_Cast=null
@@ -21,35 +21,10 @@ function Trig_Meteor_Cast_IsHero takes nothing returns boolean
 endfunction
 
 function Trig_Meteor_Cast_Actions takes nothing returns nothing
-    local integer l_tempHandleId
-    local integer l_tempInteger
-    local real l_tempReal
-    if(Trig_Meteor_Cast_NoTargetUnit())then
-        set udg_TempPoint=GetSpellTargetLoc()
-    else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    endif
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    set l_tempInteger=$FA // $FA = 250
-    if(Trig_Meteor_Cast_IsHero())then
-        // Add half the caster's Intelligence, dropping any fraction.
-        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)/ 2))
-    endif
-    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
-    // Divide the spell's mana cost by 50 and drop the remainder to get this count.
-    set l_tempInteger=(BlzGetAbilityManaCost(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))/ 50)
-    // The remainder after dividing ((udg_MeteorDummyIndex) plus (1)) by (4).
-    set udg_MeteorDummyIndex=ModuloInteger((udg_MeteorDummyIndex+1),4)
-    call UnitAddAbilityBJ(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit())
-    call SetUnitAbilityLevelSwapped(udg_MeteorDummyAbility[udg_MeteorDummyIndex],GetLastCreatedUnit(),l_tempInteger)
-    call SetUnitState(GetLastCreatedUnit(),UNIT_STATE_MANA,GetUnitState(GetLastCreatedUnit(),UNIT_STATE_MAX_MANA))
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local unit caster=GetTriggerUnit()
+    local integer raw=GetSpellAbilityId()
+    call Rain_Start(caster,raw,IMaxBJ(1,GetUnitAbilityLevel(caster,raw)),BlzGetAbilityManaCost(raw,Abil_GetLevel(caster,raw)),GetSpellTargetX(),GetSpellTargetY())
+    set caster=null
 endfunction
 
 // World Editor calls InitTrig_Meteor automatically; it is intentionally empty. This module's

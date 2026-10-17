@@ -6,7 +6,7 @@ globals
 endglobals
 
 function Trig_Chocobo_Tame_Limit_Conditions takes nothing returns boolean
-    return(GetAbilityName(GetSpellAbilityId())=="Chocobo Tame")
+    return GetSpellAbilityId()=='A0A8' or GetSpellAbilityId()=='A0CT' or GetSpellAbilityId()=='A0CU' or GetSpellAbilityId()=='A0CV'
 endfunction
 
 function Trig_Chocobo_Tame_Limit_Filter_IsChocobo takes nothing returns boolean
@@ -41,7 +41,7 @@ function Trig_Chocobo_Tame_Limit_Actions takes nothing returns nothing
 endfunction
 
 function Trig_Chocobo_Tame_Breed_Conditions takes nothing returns boolean
-    return(GetAbilityName(GetSpellAbilityId())=="Chocobo Tame")
+    return GetSpellAbilityId()=='A0A8' or GetSpellAbilityId()=='A0CT' or GetSpellAbilityId()=='A0CU' or GetSpellAbilityId()=='A0CV'
 endfunction
 
 function Trig_Chocobo_Tame_Breed_HasSpellTarget takes nothing returns boolean
@@ -146,7 +146,7 @@ function Trig_Chocobo_Tame_Breed_IsTargetOwnedByCaster takes nothing returns boo
 endfunction
 
 function Trig_Chocobo_Tame_Breed_IsNotPramNutAgain takes nothing returns boolean
-    return(GetSpellAbilityId()!='A0A8') // 'A0A8': ability "Chocobo Tame"
+    return true
 endfunction
 
 function Trig_Chocobo_Tame_Breed_IsTargetWild takes nothing returns boolean
@@ -231,6 +231,7 @@ function Trig_Chocobo_Tame_Breed_Actions takes nothing returns nothing
                         call DestroyGroup(udg_TempGroup)
                         call SetUnitPositionLocFacingLocBJ(udg_BreedPartnerChocobo,udg_TempPoint,udg_TempPoint)
                         set udg_BreedTargetChocobo=GetSpellTargetUnit()
+                        set udg_ChocoboAbilityIndex=0
                         if(Trig_Chocobo_Tame_Breed_IsLuchilNutAgain())then
                             set udg_ChocoboAbilityIndex=1
                         else

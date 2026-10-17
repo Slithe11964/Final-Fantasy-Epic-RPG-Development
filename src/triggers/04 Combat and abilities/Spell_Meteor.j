@@ -1,4 +1,4 @@
-library TSpellMeteor requires TProf
+library TSpellMeteor requires TProf, TMyriad
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Spell_Meteor_Wide=null
@@ -17,29 +17,10 @@ function Trig_Spell_Meteor_Wide_IsCasterHero takes nothing returns boolean
 endfunction
 
 function Trig_Spell_Meteor_Wide_Actions takes nothing returns nothing
-    local integer l_tempHandleId
-    local integer l_tempInteger
-    local real l_tempReal
-    if(Trig_Spell_Meteor_Wide_IsPointCast())then
-        set udg_TempPoint=GetSpellTargetLoc()
-    else
-        set udg_TempPoint=GetUnitLoc(GetSpellTargetUnit())
-    endif
-    call CreateNUnitsAtLocFacingLocBJ(1,'h01B',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,udg_TempPoint) // 'h01B': unit "Proxy Dummy"
-    set l_tempHandleId=GetHandleIdBJ(GetLastCreatedUnit())
-    call SaveUnitHandleBJ(GetTriggerUnit(),0,l_tempHandleId,udg_ProxyDamageHash)
-    set l_tempInteger='d'
-    if(Trig_Spell_Meteor_Wide_IsCasterHero())then
-        set l_tempInteger=(l_tempInteger+(GetHeroStatBJ(bj_HEROSTAT_INT,GetTriggerUnit(),true)*2))
-    endif
-    set l_tempReal=Prof_InnerManaPower(GetTriggerUnit())
-    call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
-    call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    call UnitApplyTimedLifeBJ(15.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
-    call UnitAddAbilityBJ('A0W0',GetLastCreatedUnit()) // 'A0W0': ability "Wide Meteor"
-    call SetUnitState(GetLastCreatedUnit(),UNIT_STATE_MANA,GetUnitState(GetLastCreatedUnit(),UNIT_STATE_MAX_MANA))
-    call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
-    call RemoveLocation(udg_TempPoint)
+    local unit caster=GetTriggerUnit()
+    local integer raw=GetSpellAbilityId()
+    call Rain_Start(caster,raw,IMaxBJ(1,GetUnitAbilityLevel(caster,raw)),BlzGetAbilityManaCost(raw,Abil_GetLevel(caster,raw)),GetSpellTargetX(),GetSpellTargetY())
+    set caster=null
 endfunction
 
 function InitTrig_Spell_Meteor takes nothing returns nothing

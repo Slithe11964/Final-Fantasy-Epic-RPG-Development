@@ -220,8 +220,8 @@ class JobTests(unittest.TestCase):
                 UNIT_STATE_MANA='mp',UNIT_STATE_MAX_MANA='maxmp',GetUnitState=lambda *a:99999.,
                 BlzGetAbilityManaCost=lambda *a:300,GetUnitAbilityLevelSwapped=lambda *a:1,
                 Prof_GetLevel=lambda *a:0,Prof_InnerManaPower=lambda *a:1.,I2R=float,ModuloInteger=lambda a,b:a%b,
-                ShowUnitHide=hidden.append,IssuePointOrderLocBJ=lambda *a:orders.append(a))
-            execute(s,[fn],env)[fn]();self.assertEqual(hidden,[]);self.assertEqual(orders[0][1],'blizzard')
+                ShowUnitHide=hidden.append,IssuePointOrderLocBJ=lambda *a:orders.append(a),Rain_Start=lambda *a:orders.append(a))
+            execute(s,[fn],env)[fn]();self.assertEqual(hidden,[]);self.assertEqual(len(orders),1)
             self.assertEqual(refresh(s),s)
 
     def test_stat_rows_follow_current_rank_and_disappear_with_buff(self):

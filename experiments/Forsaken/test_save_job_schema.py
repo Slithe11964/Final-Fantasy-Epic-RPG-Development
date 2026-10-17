@@ -76,7 +76,8 @@ class JobSchemaTests(unittest.TestCase):
         self.parity(modern(0, 0), False)
         self.parity(modern(1, 0, current=23), False)
         self.parity(modern(1, 0, freelancer=49, free_tier=1), False)
-        self.parity(modern(1, 0, variant=4), False)
+        self.parity(modern(1, 0, variant=7), False)
+        for variant in range(1, 7):self.parity(modern(current=0, variant=variant))
 
     def test_required_schema_pair_and_core_completeness(self):
         good = modern()

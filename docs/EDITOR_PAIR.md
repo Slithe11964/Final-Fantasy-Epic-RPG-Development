@@ -124,3 +124,12 @@ Armory hints in the editor master:
   hint text. Keep it aligned with the edited trigger and object text: build validation checks
   those against the catalogue. The ordinary
   paired build does not regenerate hints from this JSON over the editor master.
+
+PAIR026 adds reviewed inventory/equipment maintenance through
+`tools/equipment_integrity.py`: shared armory membership, Pram breeding, six-form
+Freelancer capture/load and scripted rain effects, plus native-only quick-slot
+passive suspension, worn cloak/fishing adapters and item cooldown vetoes. Tables
+come from the edited master and the existing catalogue; item life/save identities
+are preserved. `tools/inventory_ui.py` applies linked bag/equipment presentation
+and removes the portrait fallback close control only in the native output. These
+remain automatic when building future edited masters. See EQUIPMENT_INTEGRITY.md.

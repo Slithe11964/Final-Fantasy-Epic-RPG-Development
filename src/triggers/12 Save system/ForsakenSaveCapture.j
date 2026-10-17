@@ -102,16 +102,22 @@ endfunction
 
 function FRC_FreeVariant takes unit hero returns integer
     local integer raw=GetUnitTypeId(hero)
-    if (hero == null) then
+    if hero==null then
         return 0
-    elseif (raw == 'H02L') then
+    elseif raw=='H02L' then
         return 1
-    elseif (raw == 'H02M') then
+    elseif raw=='H02M' then
         return 2
-    elseif (raw == 'H02N') then
+    elseif raw=='H02N' then
         return 3
+    elseif raw=='H02O' then
+        return 4
+    elseif raw=='H02P' then
+        return 5
+    elseif raw=='H02Q' then
+        return 6
     endif
-    return (- 1)
+    return -1
 endfunction
 
 function FRC_JobRaw takes integer slot returns integer
@@ -213,7 +219,7 @@ function FRC_Selected takes integer pid returns integer
         endif
         set i=(i + 1)
     endloop
-    if ((FRC_Hero[pid] == udg_FreelancerHero[(pid + 1)]) and (FRC_FreeVariant(FRC_Hero[pid]) > 0)) then
+    if FRC_FreeVariant(FRC_Hero[pid])>0 then
         return 0
     endif
     return (- 1)
@@ -240,6 +246,9 @@ function FRC_Section takes integer pid,integer sid returns string
     local player owner=Player(pid)
     local unit free=udg_FreelancerHero[(pid + 1)]
     local unit gaya=FRC_Gaya[pid]
+    if FRC_FreeVariant(FRC_Hero[pid])>0 then
+        set free=FRC_Hero[pid]
+    endif
     if (sid == 2) then
         loop
             exitwhen (i >= 22)

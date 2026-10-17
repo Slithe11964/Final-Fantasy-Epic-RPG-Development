@@ -1714,6 +1714,11 @@ function GearSlots_Init takes nothing returns nothing
     call SaveInteger(GearSlotTable,5,'sman','A04B')
     call SaveInteger(GearSlotTable,5,'sror','A0ZH')
     call SaveInteger(GearSlotTable,5,'stwp','A12Z')
+    call SaveInteger(GearSlotTable,1,'I0BQ',GEAR_PRIMARY)
+    call SaveInteger(GearSlotTable,2,'I0BQ',3)
+    call SaveInteger(GearSlotTable,10,'I0BQ','A034')
+    call SaveInteger(GearSlotTable,11,'I0BQ','A03F')
+    call SaveInteger(GearSlotTable,12,'I0BQ','A0IZ')
 endfunction
 
 // No startup registration of its own: the backpack fills the table before it

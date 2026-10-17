@@ -18,7 +18,7 @@ CORE2 = dict(CORE)
 CORE2[4] = ('freelancer', 999)
 CORE2[7] = ('meta_fragments', codec.MAX_INT)
 CORE2.update({12: ('freelancer_mastery', 3), 13: ('current_job', 22),
-              14: ('freelancer_variant', 3), 15: ('speedrun_mode', 1)})
+              14: ('freelancer_variant', 6), 15: ('speedrun_mode', 1)})
 
 
 def mastery_valid(level, tier):

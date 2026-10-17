@@ -259,6 +259,12 @@ function FFN_Allocate takes integer pid,boolean windowOpen returns boolean
         set freeRaw='H02M'
     elseif variant==3 then
         set freeRaw='H02N'
+    elseif variant==4 then
+        set freeRaw='H02O'
+    elseif variant==5 then
+        set freeRaw='H02P'
+    elseif variant==6 then
+        set freeRaw='H02Q'
     endif
     if selected==0 then
         set raw=freeRaw

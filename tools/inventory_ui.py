@@ -44,6 +44,12 @@ def refresh(source):
         'framehandle ForsakenBackpackHookRoot=null':'ForsakenBackpackHookRoot',
         'framehandle ForsakenBackpackNativeClose=null':'ForsakenBackpackNativeClose',
         'integer ForsakenBackpackScanBudget=0':'ForsakenBackpackScanBudget',
+        'framehandle ForsakenLinkedBag=null':'ForsakenLinkedBag',
+        'framehandle ForsakenLinkedBagClose=null':'ForsakenLinkedBagClose',
+        'framehandle ForsakenBagNativeClose=null':'ForsakenBagNativeClose',
+        'framehandle ForsakenBagHookRoot=null':'ForsakenBagHookRoot',
+        'integer ForsakenBagSearchBudget=0':'ForsakenBagSearchBudget',
+        'real ForsakenNextBagSearch=0.':'ForsakenNextBagSearch',
     }
     import re
     for declaration,name in declarations.items():

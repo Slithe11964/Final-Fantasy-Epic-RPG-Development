@@ -546,6 +546,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from damage_tooltips import catalogue as damage_catalogue,abilities as damage_abilities,scroll_objects, runtime as scroll_runtime
     damage_config=damage_catalogue(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'),edited.object_bytes('war3map.w3t'),edited.object_bytes('war3mapSkin.w3t'))
     modules={lib:scroll_runtime(s) for lib,s in modules.items()}
+    from equipment_integrity import catalogue as integrity_catalogue,refresh as integrity_refresh,object_items as integrity_items
+    integrity_config=integrity_catalogue(edited)
+    modules={lib:integrity_refresh(s,integrity_config,native=native) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -617,7 +620,7 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
             if data:replacements[name]=refresh_robe(data,ext)
     for name in ('war3map.w3t','war3mapSkin.w3t'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=scroll_objects(data,damage_config)
+        if data:replacements[name]=integrity_items(scroll_objects(data,damage_config),integrity_config,native=native)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

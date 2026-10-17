@@ -6,7 +6,22 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-17)
 
-PAIR025 is the latest test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
+PAIR026 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Native bag/equipment panes share persistent open/close intent;
+the portrait fallback close control is removed. Includes equipped-only native
+passives/regen display, Prototype classification, worn cloak/fishing adapters,
+synchronized gear/food cooldown vetoes, scripted Myriad/Meteor waves, nongear
+carrying levels, 280-entry armory guards, Pram breeding and six-form Freelancer
+capture/load. Existing nonpersistent developer gear is still omitted from saves.
+Both paired gates PASS: native191 and classic291 tests (10 expected skips), all
+compiler/editor/startup/content/save/armory/bazaar checks and classic conversion.
+Final archives, tool provenance, unchanged master and TEST hashes verified.
+Focused actual-JASS tests also cover all six Freelancer load variants. Actual
+Warcraft acceptance is pending, especially native frame discovery/linking, fishing,
+projectile visuals and multiplayer item cooldowns. See EQUIPMENT_INTEGRITY.md.
+The earlier large-character legacy Warcraft-menu reload issue remains separate.
+
+PAIR025 is the previous test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
 Adds rank-specific damage formulas for all requested abilities (40 families, 87 IDs),
 including Finisher outcomes/chances, all Noxious Mixture consumables, per-hit/wave/pulse
 amounts and combo/distance/HP scaling. Old numeric claims that contradicted scripted

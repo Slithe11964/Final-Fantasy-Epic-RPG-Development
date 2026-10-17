@@ -148,8 +148,10 @@ class MateriaTests(unittest.TestCase):
                    GetConvertedPlayerId=lambda p:p, GetManipulatedItem=lambda:'item',
                    IsPlayerInForce=lambda p,f:p in f, ITEM_TYPE_CAMPAIGN='campaign',
                    ITEM_TYPE_CHARGED='charged', GetItemUserData=lambda i:0,
-                   GetItemType=lambda i:'charged', GetItemTypeId=lambda i:'I025')
-        env=execute(source,['Armory_IsStorableMateria','Trig_Armory_Store_Item_ItemIsMine',
+                   GetItemType=lambda i:'charged', GetItemTypeId=lambda i:'I025',
+                   LoadInteger=lambda h,p,raw:next((i for i,r in MATERIA.items() if r==raw),0),
+                   LoadBoolean=lambda h,p,i:i in MATERIA)
+        env=execute(source,['Armory_CanStore','Armory_IsStorableMateria','Trig_Armory_Store_Item_ItemIsMine',
                             'Trig_Armory_Store_Item_Conditions'],env)
         for raw in MATERIA.values():
             env['GetItemTypeId']=lambda i,r=raw:r

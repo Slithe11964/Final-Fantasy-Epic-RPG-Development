@@ -2525,7 +2525,7 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
     local integer str=10
     local integer agi=10
     local integer intel=10
-    local integer variant=FFL_Val(pid,4,14)
+    local integer variant=ModuloInteger(FFL_Val(pid,4,14)-1,3)+1
     local integer jobIndex=(identity - 1)
     // 1.29.2: the bag and worn gear are the backpack pages (TSaveSlots), so the hero needs no
     // bag or equipment ability; the Backpack button is given to every player hero by TBackpack.

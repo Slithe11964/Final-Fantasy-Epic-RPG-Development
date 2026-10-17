@@ -878,7 +878,9 @@ function FSC_Core2Maximum takes integer identity returns integer
         return 999
     elseif (identity == 7) then
         return 2147483647
-    elseif ((identity == 12) or (identity == 14)) then
+    elseif (identity == 14) then
+        return 6
+    elseif (identity == 12) then
         return 3
     elseif (identity == 13) then
         return 22

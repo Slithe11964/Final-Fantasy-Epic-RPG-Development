@@ -219,7 +219,7 @@ class CaptureTests(unittest.TestCase):
         self.start(); self.e['FRC_Timeout']()
         self.assertFalse(self.e['FRC_Ready'][0])
         self.assertEqual(self.players[1], self.hero)
-        self.free['raw'] = raw('H02O')
+        self.free['raw'] = raw('HZZZ')
         self.start(); self.finish()
         self.assertFalse(self.e['FRC_Ready'][0])
         self.assertIn('variant', self.e['FRC_Error'][0])

@@ -181,7 +181,8 @@ def gear_catalog():
     found = re.findall(r"SaveInteger\(GearSlotTable,1,'(\w{4})',GEAR_(\w+)\)", text)
     if len(found) < 200:
         raise ValueError('GearSlots.j has an unexpected layout')
-    return {raw: dict(slot=KINDS[kind]) for raw, kind in found}
+    from gear_slots import NONPERSISTENT_GEAR
+    return {raw: dict(slot=KINDS[kind]) for raw, kind in found if raw not in NONPERSISTENT_GEAR}
 
 
 def replace_function(text, name, header, body):

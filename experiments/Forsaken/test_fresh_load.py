@@ -288,18 +288,22 @@ class FreshLoadTests(unittest.TestCase):
         self.assertEqual(self.e['FRC_Result'][0],self.f.base.encoded)
     def test_active_freelancer_remains_player_owned(self):
         import save_vnext as codec
-        envelope=codec.decode(self.f.base.encoded)
-        sections=tuple(codec.Section(section.id,section.version,section.required,
-            codec.pairs([(i,0 if i==13 else v) for i,v in codec.read_pairs(section.payload)]))
-            if section.id==4 else section for section in envelope.sections)
-        self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
-        self.assertTrue(self.apply(),self.messages);self.finish()
-        self.assertTrue(self.e['FRC_Ready'][0],self.e['FRC_Error'][0])
-        self.e['FFL_Tick']()
-        self.assertTrue(self.e['udg_HasLoadedCode'][0],self.messages)
-        hero=self.e['udg_PlayerHero'][1]
-        self.assertIs(self.e['udg_FreelancerHero'][1],hero)
-        self.assertEqual(hero['owner'],0)
+        for variant,raw in enumerate(['H02L','H02M','H02N','H02O','H02P','H02Q'],1):
+            with self.subTest(variant=variant):
+                self.setUp()
+                envelope=codec.decode(self.f.base.encoded)
+                sections=tuple(codec.Section(section.id,section.version,section.required,
+                    codec.pairs([(i,0 if i==13 else variant if i==14 else v) for i,v in codec.read_pairs(section.payload)]))
+                    if section.id==4 else section for section in envelope.sections)
+                self.f.base.encoded=codec.encode(codec.Envelope(envelope.account_hash,sections))
+                self.assertTrue(self.apply(),self.messages);self.finish()
+                self.assertTrue(self.e['FRC_Ready'][0],self.e['FRC_Error'][0])
+                self.e['FFL_Tick']()
+                self.assertTrue(self.e['udg_HasLoadedCode'][0],self.messages)
+                hero=self.e['udg_PlayerHero'][1]
+                self.assertIs(self.e['udg_FreelancerHero'][1],hero)
+                self.assertEqual(hero['owner'],0)
+                self.assertEqual(hero['raw'],raw)
 
     def test_mastered_load_restores_shrine_unlock_after_commit(self):
         import save_vnext as codec

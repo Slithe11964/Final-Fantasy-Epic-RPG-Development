@@ -85,6 +85,8 @@ class DamageTooltipTests(unittest.TestCase):
         self.assertEqual(runtime(s),s)
         n='Trig_Equip_Restrictions_GaiaLevelTooLow';current=['I073','Scroll of Shadows']
         env=mocks(s);env.update(GetManipulatedItem=lambda:'item',GetItemTypeId=lambda i:current[0],GetItemName=lambda i:current[1],
+            GetItemEquipmentType=lambda i:1 if current[0]=='gear' else 0,EQUIPMENT_TYPE_NONE=0,
+            ForsakenElementSources='sources',LoadBoolean=lambda *a:False,Forsaken_EventItem=lambda:'item',
             SubString=lambda s,a,b:s[a:b],IsPlayerInForce=lambda *a:True,GetOwningPlayer=lambda u:0,GetTriggerUnit=lambda:'hero',
             udg_PlayingPlayers='players',GetItemLifeBJ=lambda i:99.,I2R=float,GetHeroLevel=lambda u:1,
             udg_SpiritOfGaya={1:'gaya'},GetConvertedPlayerId=lambda p:1)

@@ -248,7 +248,7 @@ function FFL_PrepareHero takes integer pid,unit hero,integer identity,integer le
     local integer str=10
     local integer agi=10
     local integer intel=10
-    local integer variant=FFL_Val(pid,4,14)
+    local integer variant=ModuloInteger(FFL_Val(pid,4,14)-1,3)+1
     local integer jobIndex=identity-1
     // Normal Forsaken setup handlers are guarded during fresh creation.
     call UnitAddAbility(hero,'fBag')

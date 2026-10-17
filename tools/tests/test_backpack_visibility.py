@@ -27,6 +27,9 @@ class BackpackVisibilityTests(unittest.TestCase):
             ForsakenTalentRoot='talents',ForsakenPanelOpen=False,ForsakenFrameSearchRequested=False,
             ForsakenBackpackEvents=None,ForsakenBackpackCloseEvents=None,
             ForsakenBackpackHookRoot=None,ForsakenBackpackNativeClose=None,ForsakenBackpackScanBudget=0,
+            ForsakenLinkedBag=None,ForsakenLinkedBagClose=None,ForsakenBagNativeClose=None,
+            ForsakenBagHookRoot=None,ForsakenBagSearchBudget=0,ForsakenNextBagSearch=0.,
+            BlzGetOriginFrame=lambda *a:None,
             TimerGetElapsed=lambda t:now[0],BlzFrameIsVisible=lambda f:control['visible'],
             BlzFrameSetVisible=show,StringLength=lambda s:len(s or ''),StringCase=lambda s,b:(s or '').upper() if b else (s or '').lower(),
             SubString=lambda s,a,b:s[a:b],BlzFrameGetChildrenCount=lambda f:0,BlzFrameGetName=lambda f:f)
@@ -127,6 +130,23 @@ class BackpackVisibilityTests(unittest.TestCase):
         self.assertEqual(len(created),2)
         e['Forsaken_ResetBackpackControls']();e['Forsaken_RegisterBackpackActivity']()
         self.assertEqual(len(created),3);self.assertEqual(destroyed,['trigger1'])
+
+    def test_both_panes_open_and_close_together_without_portrait_close(self):
+        e,now,shown,selected,owner,c=self.runtime()
+        visible={'backpack':False,'bag':True}
+        e.update(ForsakenLinkedBag='bag',BlzFrameIsVisible=lambda f:visible.get(f,False),
+            BlzFrameSetVisible=lambda f,v:visible.__setitem__(f,v))
+        self.assertTrue(e['Forsaken_BackpackVisible']('backpack'))
+        self.assertTrue(visible['backpack']);self.assertTrue(visible['bag'])
+        e['Forsaken_CloseBackpack']()
+        self.assertFalse(visible['backpack']);self.assertFalse(visible['bag'])
+        now[0]+=1.;c['key']='backpack';e['Forsaken_BackpackAccess'](0,'hero')
+        self.assertTrue(e['Forsaken_BackpackVisible']('backpack'))
+        self.assertTrue(visible['backpack']);self.assertTrue(visible['bag'])
+        e['Forsaken_BackpackControls']('backpack','portrait',True)
+        self.assertFalse(visible['close'])
+        e['Forsaken_CloseBackpack']();now[0]+=1.
+        self.assertFalse(e['Forsaken_BackpackVisible']('backpack'))
 
     def test_native_only_integration_is_idempotent_and_orders_helpers_before_callers(self):
         s='library TEquip\nglobals\nendglobals\n'+(ROOT/'experiments/Forsaken/Forsaken-panels.j').read_text()+'\nendlibrary'
