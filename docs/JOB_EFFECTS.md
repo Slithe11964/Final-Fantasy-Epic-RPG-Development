@@ -70,3 +70,86 @@ while applying, expiring and removing its buff. Check a shield with ample and ne
 empty mana, including when protecting an ally. Multiplayer spell-event snapshots
 must remain synchronized. The separate classic large-character Warcraft checkpoint
 crash is not addressed by this job patch.
+
+
+PAIR022: master summons and effect text
+-------------------------------------
+Master-rank Animal Companion, Dragon Ally, Golem, Shiva, Ifrit, Cyclops,
+Bahamut, Neo Bahamut, Raise Dead (both skeleton types), and Battle Ward use
+isolated ordinary-unit templates with ulev=40. They keep lowercase raw IDs,
+stock nonhero bases, stats, abilities, models and classifications; no hero
+conversion or runtime hero-level setter is used. Lower rank templates and
+world/enemy uses of the originals are untouched. Bahamut Zero already has level
+40 at all ranks and remains unchanged. Summon tables use rank11, while Bahamut
+and Neo Bahamut use their actual maximum rank6. The paired object pass adds
+both main and skin template records after authored data merging; the master
+is unchanged. Reserved generated IDs sM00-sM0A are not save identities.
+
+Deathbringer's A10X execution check is strictly target level <40, independent
+of hero conversion. The execution rule is unchanged. Other level-based effects
+still use their own original conditions.
+
+Rage A070 uses Blo1=0.60 at rank1, 0.85 at rank6, 1.20 at master (rank11):
++60%, +85%, +120% attack speed. Self-Rage A025 uses bsk2=0.40, 0.65, 1.00:
++40%, +65%, +100%. Both old tooltip progressions incorrectly doubled these
+values; aub1/arut now match current-rank gameplay and the existing stat rows.
+No attack-speed or damage balance change.
+
+While B06L is active, Defenses shows Protection from lethal damage: Trance.
+While B06W is active, Defenses shows Mirage physical evasion +40 and physical
+hit chance x0.8. Mirage's physical-only hit calculation subtracts40 before its
+existing compression steps and then multiplies the remaining chance by0.8
+when the chance is at least2; this is not a universal +40% dodge chance.
+These bonuses are constant across ranks; Mirage duration scales with rank.
+Aim's master defense entry is explicitly +20%, with +30% at lower ranks.
+Rows disappear when their associated buffs end. Classic text stats and native
+panels use the same effect-row template.
+
+Validation: sixteen actual-JASS/object regression tests pass. Full paired gates
+and native/legacy archive verification are recorded in STAGES.md; in-game
+summon/UI acceptance remains separate from mocked execution.
+
+
+PAIR023: ordered stats, proficiencies and White Robe
+--------------------------------------------------
+Both profiles use the requested Damage/Defenses/Resistance/Other row ordering.
+Accuracy/Evasion omit "rating". Physical/Magical Block and defense percentages
+always include %. Flat damage appears only above zero; positive healing and mana
+efficiency include +. Legacy regeneration rows explicitly say Unavailable because
+1.29.2 has no safe live regeneration getter. Native short percent values get enough
+width to keep their percent sign visible.
+
+Defend displays 20% physical block, rising to 30% only while the existing
+udg_DefendingUnits Hold Position membership is active. The user revoked the
+suggested Sentinel connection; Sentinel has no additional block. Damage engine
+and order detection remain unchanged.
+
+White Robe grants 6 Staff proficiency (9 after High Proficiency), not a fixed
+Life damage percentage. Its item/equipped-variant/Armory text explains the 6
+levels and +30% of base spell power at full mana before other bonuses. Other
+bonuses displays the current relative increase from those levels, using the
+same mana-weighted Staff spell factor. Common Concentration/Mind Charge factors
+cancel in that relative calculation. No abilities, mana or gear are temporarily
+removed/modified to calculate it. Unequipping hides its effect row.
+
+Page5 lists effective proficiency levels for the displayed hero, including worn
+gear, passives and the existing Greatsword contribution. Axe training is explicitly
+labelled separately: the legacy R008 research is not an effective Prof_GetLevel
+weapon family. Both ordinary Axe and Heavens Forged Axe are retained. Native
+Back/Next buttons wrap all five pages and traverse the extra conditions view in
+both directions. Legacy uses -stats 1..5, -stats next and -stats back, with page
+state per player.
+
+Completed house research gains a zero-effect, non-item AIev passive icon using
+the master upgrade's max-rank icon and description (without purchase requirement).
+It does not increase the research limit or offer another purchase. A synchronized
+selection/research-finish/spell-finish listener reconciles the owner's actual
+house type/caps, including loaded research and house option switching. No
+periodic polling, local gameplay writes or changed save IDs.
+
+Native inventory/inspection covers Hunt Club as well as the scoreboard. Original
+Hunt show/hide requests set a shared desired flag; local UI cover uses that flag
+to restore only a board the game still wants displayed. Closing inventory after
+all hunts finish does not resurrect an empty board. Legacy board behavior stays
+unchanged. Presentation and focused execution tests are separate from actual
+engine acceptance.

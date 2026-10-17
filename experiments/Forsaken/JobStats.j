@@ -2,6 +2,8 @@
 function JSTAT_RenderJob takes unit hero,integer page,integer row returns integer
     local integer rank
     local real amount
+    local real robeManaScale
+    local integer robeStaff
     if page==0 then
         if JGET(hero,'B01F')>0 then
             call JROW(row,"Aim tech damage","+20% | +"+I2S(JGET(hero,'A0RH')*50))
@@ -37,6 +39,24 @@ function JSTAT_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
     elseif page==1 then
+        if JGET(hero,'A0PP')>0 then
+            set amount=20.
+            if IsUnitInGroup(hero,udg_DefendingUnits) then
+                set amount=30.
+            endif
+            call JROW(row,"Defend physical block",R2SW(amount,1,0)+"%")
+            set row=row+1
+        endif
+        if JGET(hero,'B06L')>0 then
+            call JROW(row,"Protection from lethal damage","Trance")
+            set row=row+1
+        endif
+        if JGET(hero,'B06W')>0 then
+            call JROW(row,"Mirage physical evasion","+40")
+            set row=row+1
+            call JROW(row,"Mirage physical hit chance","x0.8")
+            set row=row+1
+        endif
         if JGET(hero,'B01F')>0 then
             set amount=30.
             if JGET(hero,'A0RH')>=11 then
@@ -71,6 +91,23 @@ function JSTAT_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
     elseif page==3 then
+        if JGET(hero,'A07H')>0 then
+            set rank=6
+            if JGET(hero,'A136')>0 then
+                set rank=9
+            endif
+            set robeStaff=Prof_GetLevel(hero,'R004')
+            set robeManaScale=1.
+            if GetUnitState(hero,UNIT_STATE_MAX_MANA)>0. then
+                set robeManaScale=.5*GetUnitState(hero,UNIT_STATE_MANA)/GetUnitState(hero,UNIT_STATE_MAX_MANA)
+            endif
+            set amount=0.
+            if IsPlayerInForce(GetOwningPlayer(hero),udg_PlayingPlayers) then
+                set amount=100.*(.1*I2R(rank)*robeManaScale)/(1.+(1.+.1*I2R(robeStaff-rank))*robeManaScale)
+            endif
+            call JROW(row,"White Robe Life-spell power","+"+R2SW(amount,1,2)+"%")
+            set row=row+1
+        endif
         if JGET(hero,'B082')>0 then
             set rank=JobFX_Rank(hero,'B082','A1AA')
             set amount=I2R((rank+3)*10)

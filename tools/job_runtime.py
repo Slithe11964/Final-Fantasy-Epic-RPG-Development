@@ -17,6 +17,29 @@ def refresh(source,*,native=False):
         for name,body in functions((HERE/'JobEffects.j').read_text()).items():
             if name in functions(source):source=put(source,name,body)
             else:source=source.replace('function Abil_CopyOne',body+'\n\nfunction Abil_CopyOne',1)
+    if 'Trig_Spell_Tables_Init_Actions' in fs:
+        from job_objects import MASTER_SUMMONS
+        body=fs['Trig_Spell_Tables_Init_Actions']
+        for table,raw in [('AnimalCompanionUnit','n066'),('DragonSummonUnit','n07S'),
+                          ('GolemUnitType','e00T'),('ShivaUnitType','e00U'),
+                          ('IfritUnitType','n065'),('CyclopsUnitType','n064')]:
+            body=re.sub(r'(set udg_'+table+r'\[(?:\$B|11)\]=)\''+raw+r'\'',
+                        lambda m:m[1]+"'"+MASTER_SUMMONS[raw]+"'",body)
+        source=put(source,'Trig_Spell_Tables_Init_Actions',body)
+    for name,raw,clone,ability in [('Trig_Summon_Bahamut_Actions','n005','sM06','A146'),
+                                  ('Trig_Oracle_NeoBahamut_Actions','n00G','sM07','A147')]:
+        if name in fs:
+            body=fs[name]
+            if 'local integer masterSummonType' not in body:
+                body=body.replace('    local location l_tempPoint',
+                    "    local integer masterSummonType='"+raw+"'\n    local location l_tempPoint",1)
+                line="    call CreateNUnitsAtLoc(1,'"+raw+"',"
+                replacement=("    if GetUnitAbilityLevel(GetTriggerUnit(),'"+ability+"')>=6 then\n"
+                             "        set masterSummonType='"+clone+"'\n    endif\n"
+                             "    call CreateNUnitsAtLoc(1,masterSummonType,")
+                if line not in body:raise ValueError('summon creation changed: '+name)
+                body=body.replace(line,replacement,1)
+            source=put(source,name,body)
     if 'RegisterTriggers_Aim' in fs:
         body=fs['RegisterTriggers_Aim']
         body=replace_once(body,'    call Register_Aim_Cast()', '    call Register_Aim_Cast()\n    call JobFX_Register()')
@@ -132,4 +155,5 @@ endfunction'''
 '''
             body=body.replace('    return (mult-1.)*100.',extra+'    return (mult-1.)*100.')
             source=put(source,name,body)
-    return source
+    from stat_layout import refresh as refresh_layout
+    return refresh_layout(source,native=native)

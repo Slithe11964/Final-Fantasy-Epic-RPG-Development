@@ -5,6 +5,33 @@ from performance_runtime import put
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def refresh_hunt(source,*,native=False):
+    if not native:return source
+    from gameplay_runtime import dependency
+    fs=functions(source)
+    if 'Trig_Hunt_Setup_Actions' in fs:
+        if 'boolean HuntBoardWanted' not in source:source=source.replace('endglobals','    boolean HuntBoardWanted=false\nendglobals',1)
+        source=source.replace('call LeaderboardDisplayBJ(','call HuntBoard_Display(')
+        helper='''function HuntBoard_Display takes boolean show,leaderboard board returns nothing
+    if board==udg_HuntLeaderboard then
+        set HuntBoardWanted=show
+    endif
+    call LeaderboardDisplay(board,show)
+endfunction'''
+        if 'HuntBoard_Display' in fs:source=put(source,'HuntBoard_Display',helper)
+        else:source=source.replace('function Trig_Hunt_Setup_Actions takes',helper+'\n\nfunction Trig_Hunt_Setup_Actions takes',1)
+    elif 'call LeaderboardDisplayBJ(' in source:
+        source=dependency(source,'THuntBoard').replace('call LeaderboardDisplayBJ(','call HuntBoard_Display(')
+    if 'Forsaken_PollPanels' in fs:
+        source=dependency(source,'THuntBoard')
+        name='Forsaken_PollPanels';body=functions(source)[name]
+        if 'HuntBoardWanted and not ForsakenBoardCovered' not in body:
+            body=body.replace('    set ForsakenBoardCovered=visible or ForsakenInspectTarget!=null',
+                '    set ForsakenBoardCovered=visible or ForsakenInspectTarget!=null\n    if udg_HuntLeaderboard!=null then\n        call LeaderboardDisplay(udg_HuntLeaderboard,HuntBoardWanted and not ForsakenBoardCovered)\n    endif',1)
+        source=put(source,name,body)
+    return source
+
+
 def refresh(source):
     fs=functions(source)
     if 'Forsaken_PollPanels' not in fs:return source

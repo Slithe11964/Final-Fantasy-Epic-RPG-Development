@@ -1,13 +1,13 @@
 """Execute job resource changes, inventory searches and rank-aware presentation."""
 from collections import defaultdict
 from pathlib import Path
-import sys,unittest,re
+import sys,unittest,re,copy
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from test_armory_materia import execute
 from test_shared_context import mocks
 from jtok import functions
 from job_runtime import refresh
-from job_objects import refresh as objects
+from job_objects import refresh as objects, refresh_units, MASTER_SUMMONS
 from objdata import read_objects,write_objects,fields
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -17,6 +17,107 @@ def source(name):
 
 
 class JobTests(unittest.TestCase):
+    def test_master_templates_change_only_monster_level_and_keep_originals(self):
+        def mod(field,value,kind=0):
+            return dict(field=field,type=kind,level=None,data=None,value=value,end=0)
+        table=dict(version=2,original=[],custom=[dict(base='ninf',id=raw,
+            sets=[dict(flag=0,mods=[mod('ulev',12),mod('unam','Fixture '+raw,3),mod('uhpm',300)])])
+            for raw in MASTER_SUMMONS])
+        data=write_objects(table,2,'w3u');updated=refresh_units(data)
+        self.assertEqual(refresh_units(updated),updated)
+        result={o['id']:o for o in read_objects(updated,'w3u')['custom']}
+        for original in table['custom']:
+            self.assertEqual(result[original['id']],original)
+            clone=result[MASTER_SUMMONS[original['id']]]
+            self.assertTrue(clone['id'][0].islower());self.assertTrue(clone['base'][0].islower())
+            self.assertEqual(fields(clone)['ulev'],40)
+            expected=copy.deepcopy(original);expected['id']=clone['id']
+            expected['sets'][0]['mods']=[m for m in expected['sets'][0]['mods'] if m['field']!='ulev']
+            expected['sets'][0]['mods'].append(mod('ulev',40))
+            self.assertEqual(clone,expected)
+
+    def test_raise_dead_ward_master_fields_and_rank_aware_rage_tooltips(self):
+        def ability(raw,mods):
+            return dict(base='Arai',id=raw,sets=[dict(flag=0,mods=[dict(field=f,type=k,level=l,data=0,value=v,end=0)
+                for f,k,l,v in mods])])
+        table=dict(version=2,original=[],custom=[
+            ability('A0Z2',[(f,3,rank,raw) for rank in (1,10,11)
+                for f,raw in [('Rai3','u00P'),('Raiu','u00P'),('Rai4','u00R')]]),
+            ability('A07V',[('Hwe1',3,10,'o00G'),('Hwe1',3,11,'o00H')]),
+            ability('A070',[('aub1',3,rank,'Causes Hero to attack 240% faster and deal 10% increased damage.')
+                for rank in (1,6,11)]),
+            ability('A025',[('aub1',3,rank,'Causes Hero to attack 200% faster, but take 60% more damage.')
+                for rank in (1,6,11)])])
+        data=objects(write_objects(table,2,'w3a'));self.assertEqual(objects(data),data)
+        records={o['id']:fields(o) for o in read_objects(data,'w3a')['custom']}
+        for field,raw in [('Rai3','u00P'),('Raiu','u00P'),('Rai4','u00R')]:
+            self.assertEqual(records['A0Z2'][field,10],raw)
+            self.assertEqual(records['A0Z2'][field,11],MASTER_SUMMONS[raw])
+        self.assertEqual(records['A07V']['Hwe1',10],'o00G')
+        self.assertEqual(records['A07V']['Hwe1',11],'sM0A')
+        for raw,speeds in [('A070',(60,85,120)),('A025',(40,65,100))]:
+            for rank,speed in zip((1,6,11),speeds):
+                self.assertIn('attack '+str(speed)+'% faster',records[raw]['aub1',rank])
+
+    def test_master_rank_tables_keep_lower_rank_creatures(self):
+        s=refresh(source('Spell_Tables'));self.assertEqual(refresh(s),s)
+        env=mocks(s)
+        e=execute(s,['Trig_Spell_Tables_Init_Actions'],env)
+        e['Trig_Spell_Tables_Init_Actions']()
+        for table,raw in [('AnimalCompanionUnit','n066'),('DragonSummonUnit','n07S'),
+                          ('GolemUnitType','e00T'),('ShivaUnitType','e00U'),
+                          ('IfritUnitType','n065'),('CyclopsUnitType','n064')]:
+            self.assertEqual(e['udg_'+table][11],MASTER_SUMMONS[raw])
+            self.assertNotIn(e['udg_'+table][10],MASTER_SUMMONS.values())
+
+    def test_bahamut_creation_uses_level40_template_only_at_master_rank(self):
+        class Created(Exception):pass
+        for module,fn,ability,original,master in [
+                ('Summon_Bahamut','Trig_Summon_Bahamut_Actions','A146','n005','sM06'),
+                ('Oracle','Trig_Oracle_NeoBahamut_Actions','A147','n00G','sM07')]:
+            s=refresh(source(module));self.assertEqual(refresh(s),s)
+            for rank,expected in [(1,original),(5,original),(6,master)]:
+                env=mocks(s);created=[]
+                def create(count,raw,*args):
+                    created.append(raw);raise Created()
+                env.update(GetTriggerUnit=lambda:'caster',GetSpellAbilityUnit=lambda:'caster',
+                    GetUnitAbilityLevel=lambda u,a:rank,GetOwningPlayer=lambda u:0,bj_UNIT_FACING=0,
+                    CreateNUnitsAtLoc=create)
+                e=execute(s,[fn],env)
+                with self.assertRaises(Created):e[fn]()
+                self.assertEqual(created,[expected])
+
+    def test_deathbringer_cannot_execute_a_normal_level40_creature(self):
+        s=source('Damage')
+        line=next(l.strip().split(' //')[0] for l in s.splitlines() if "(u,'A10X')" in l and 'GetUnitLevel(t)<40' in l)
+        condition=line[len('if('):-len(')then')]
+        body='function CanExecute takes unit u,unit t returns boolean\n    return '+condition+'\nendfunction'
+        level=[39]
+        env=mocks(body);env.update(GetUnitAbilityLevel=lambda u,a:int(a=='A10X'),
+            Forsaken_ElementAbilityLevel=lambda u,a:int(a=='A10X'),
+            GetUnitLevel=lambda u:level[0] if u=='summon' else 99,GetRandomInt=lambda *a:1,
+            IsUnitType=lambda *a:False,UNIT_TYPE_HERO='hero',UNIT_TYPE_RESISTANT='resistant',
+            udg_EternityMode=False,udg_StoryBoss=None,udg_SummonedBoss=None)
+        e=execute(body,['CanExecute'],env)
+        self.assertTrue(e['CanExecute']('attacker','summon'))
+        level[0]=40;self.assertFalse(e['CanExecute']('attacker','summon'))
+
+    def test_trance_mirage_and_aim_defense_rows_match_live_buffs_in_both_profiles(self):
+        template=(ROOT/'experiments/Forsaken/JobStats.j').read_text()
+        for prefix,getter in [('Stats','GetUnitAbilityLevel'),('Forsaken','Forsaken_StatAbilityLevel')]:
+            s=template.replace('JSTAT',prefix).replace('JGET',getter).replace('JROW',prefix+'_Row')
+            active={'B06L':1,'B06W':1,'B01F':1,'A0RH':15};rows=[]
+            env=mocks(s);env.update({getter:lambda u,a:active.get(a,0),prefix+'_Row':lambda *a:rows.append(a),
+                'R2SW':lambda n,w,d:format(n,'.%df'%d)})
+            e=execute(s,[prefix+'_RenderJob'],env)
+            e[prefix+'_RenderJob']('hero',1,9)
+            self.assertIn((9,'Protection from lethal damage','Trance'),rows)
+            self.assertIn((10,'Mirage physical evasion','+40'),rows)
+            self.assertIn((11,'Mirage physical hit chance','x0.8'),rows)
+            self.assertIn((12,'Aim damage taken','+20%'),rows)
+            active.clear();rows.clear()
+            self.assertEqual(e[prefix+'_RenderJob']('hero',1,9),9);self.assertEqual(rows,[])
+
     def test_undead_healing_never_inverts_mana(self):
         s=source('Damage');env=mocks(s)
         env.update(DmgCtx_Amount={1:400.},DmgCtx_Target={1:'necro'},DmgCtx_Holy={1:False},

@@ -4,9 +4,23 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-16)
+## Where things stand (2026-10-17)
 
-PAIR021 is the latest test pair, installed in Warcraft Maps/Download/TEST.
+PAIR023 is the latest test pair, installed in Warcraft Maps/Download/TEST.
+It bundles PAIR022 master summon level40 nonhero templates, corrected Rage tooltips,
+Trance/Mirage/Aim rows, requested stat ordering/percentages and Hold Position-only
+Defend display (the user revoked connecting 30% to Sentinel). White Robe explains
+its +6 Staff proficiency and displays the current relative Life-power bonus.
+Maxed house research keeps read-only proficiency icons/descriptions. Page5 shows
+effective proficiencies; native Back/Next wraps five pages including conditions;
+classic supports -stats 5/next/back. Native Hunt Club hides/restores with inventory.
+Native 162 and classic 262 regressions (10 expected skips) plus all build gates PASS.
+Final archives and TEST hashes verified; editor master unchanged. Combat/save-read
+functions are unchanged from PAIR021, as are native equip/rebind/backpack handlers.
+In-game acceptance is pending. See JOB_EFFECTS.md and STAGES.md for mechanics.
+PAIR022 passed as an internal candidate but was superseded before installation.
+
+PAIR021 is the previous test pair, installed in Warcraft Maps/Download/TEST.
 The user reported a fresh native backpack closing within one second. The native
 UI now remembers open intent until B, Escape or explicit close, through idle and
 item refreshes; selection retains intent for the hero. A shared-startup close

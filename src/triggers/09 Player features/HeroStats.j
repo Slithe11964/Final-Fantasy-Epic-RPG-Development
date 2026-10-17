@@ -1,8 +1,8 @@
 library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots, TAbil
-// -stats: the hero's combat numbers as text, four pages, in both versions. Reforged's Forsaken
+// -stats: the hero's combat numbers as text, five pages, in both versions. Reforged's Forsaken
 // map shows the same numbers in its stat panel; the calculations below come from it (Forsaken
 // DZ), reading worn gear from the backpack's equipment pages instead of native equipment slots.
-// Regeneration is not shown: 1.29.2 cannot read a unit's regeneration rate.
+// Regeneration values are unavailable: 1.29.2 cannot read a unit's regeneration rate.
 globals
     trigger gg_trg_HeroStats_Command=null
     constant real STATS_ARMOR_FACTOR=0.02     // the map's armor defense constant
@@ -10,6 +10,7 @@ globals
     string array StatsElementName
     string array StatsLabel
     string array StatsValue
+    integer array StatsLastPage
 endglobals
 
 function Stats_Row takes integer row,string label,string value returns nothing
@@ -44,6 +45,9 @@ function Stats_PageName takes integer page returns string
         return "defenses"
     elseif page==2 then
         return "resistances"
+    endif
+    if page==4 then
+        return "proficiencies"
     endif
     return "other bonuses"
 endfunction
@@ -1169,6 +1173,8 @@ endfunction
 function Stats_RenderJob takes unit hero,integer page,integer row returns integer
     local integer rank
     local real amount
+    local real robeManaScale
+    local integer robeStaff
     if page==0 then
         if GetUnitAbilityLevel(hero,'B01F')>0 then
             call Stats_Row(row,"Aim tech damage","+20% | +"+I2S(GetUnitAbilityLevel(hero,'A0RH')*50))
@@ -1204,6 +1210,24 @@ function Stats_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
     elseif page==1 then
+        if GetUnitAbilityLevel(hero,'A0PP')>0 then
+            set amount=20.
+            if IsUnitInGroup(hero,udg_DefendingUnits) then
+                set amount=30.
+            endif
+            call Stats_Row(row,"Defend physical block",R2SW(amount,1,0)+"%")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B06L')>0 then
+            call Stats_Row(row,"Protection from lethal damage","Trance")
+            set row=row+1
+        endif
+        if GetUnitAbilityLevel(hero,'B06W')>0 then
+            call Stats_Row(row,"Mirage physical evasion","+40")
+            set row=row+1
+            call Stats_Row(row,"Mirage physical hit chance","x0.8")
+            set row=row+1
+        endif
         if GetUnitAbilityLevel(hero,'B01F')>0 then
             set amount=30.
             if GetUnitAbilityLevel(hero,'A0RH')>=11 then
@@ -1238,6 +1262,23 @@ function Stats_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
     elseif page==3 then
+        if GetUnitAbilityLevel(hero,'A07H')>0 then
+            set rank=6
+            if GetUnitAbilityLevel(hero,'A136')>0 then
+                set rank=9
+            endif
+            set robeStaff=Prof_GetLevel(hero,'R004')
+            set robeManaScale=1.
+            if GetUnitState(hero,UNIT_STATE_MAX_MANA)>0. then
+                set robeManaScale=.5*GetUnitState(hero,UNIT_STATE_MANA)/GetUnitState(hero,UNIT_STATE_MAX_MANA)
+            endif
+            set amount=0.
+            if IsPlayerInForce(GetOwningPlayer(hero),udg_PlayingPlayers) then
+                set amount=100.*(.1*I2R(rank)*robeManaScale)/(1.+(1.+.1*I2R(robeStaff-rank))*robeManaScale)
+            endif
+            call Stats_Row(row,"White Robe Life-spell power","+"+R2SW(amount,1,2)+"%")
+            set row=row+1
+        endif
         if GetUnitAbilityLevel(hero,'B082')>0 then
             set rank=JobFX_Rank(hero,'B082','A1AA')
             set amount=I2R((rank+3)*10)
@@ -1261,8 +1302,49 @@ function Stats_RenderJob takes unit hero,integer page,integer row returns intege
     return row
 endfunction
 
+function Stats_StatElementAt takes integer row returns integer
+    if row==2 then
+        return 4
+    elseif row==3 then
+        return 3
+    elseif row==4 then
+        return 6
+    elseif row==5 then
+        return 5
+    endif
+    return row+1
+endfunction
+
+
+function Stats_StatSignedPercent takes real value returns string
+    if value>0. then
+        return "+"+Stats_StatPercent(value)
+    endif
+    return Stats_StatPercent(value)
+endfunction
+
+function Stats_RenderProficiencies takes unit hero returns nothing
+    call Stats_Row(0,"Tools",I2S(Prof_GetLevel(hero,'R000')))
+    call Stats_Row(1,"Sword",I2S(Prof_GetLevel(hero,'R001')))
+    call Stats_Row(2,"Bow",I2S(Prof_GetLevel(hero,'R002')))
+    call Stats_Row(3,"Dagger",I2S(Prof_GetLevel(hero,'R00B')))
+    call Stats_Row(4,"Spear",I2S(Prof_GetLevel(hero,'R009')))
+    call Stats_Row(5,"Axe training",I2S(GetPlayerTechCount(GetOwningPlayer(hero),'R008',true)))
+    call Stats_Row(6,"Heavens Forged Axe",I2S(Prof_GetLevel(hero,'R00I')))
+    call Stats_Row(7,"Katana",I2S(Prof_GetLevel(hero,'R00A')))
+    call Stats_Row(8,"Greatsword",I2S(Prof_GetLevel(hero,'R00N')))
+    call Stats_Row(9,"Rod",I2S(Prof_GetLevel(hero,'R003')))
+    call Stats_Row(10,"Staff",I2S(Prof_GetLevel(hero,'R004')))
+    call Stats_Row(11,"Gun",I2S(Prof_GetLevel(hero,'R00M')))
+    call Stats_Row(12,"Inner Mana",I2S(Prof_GetLevel(hero,'R00L')))
+    call Stats_Row(13,"Leather Armor",I2S(Prof_GetLevel(hero,'R006')))
+    call Stats_Row(14,"Plate Armor",I2S(Prof_GetLevel(hero,'R005')))
+    call Stats_Row(15,"Mystic Armor",I2S(Prof_GetLevel(hero,'R007')))
+endfunction
+
 function Stats_Fill takes unit hero,integer page returns string
     local integer i=0
+    local integer statElementId
     local integer element=Element_GetOfUnit(hero,true)
     local integer playerIndex=GetPlayerId(GetOwningPlayer(hero))+1
     local string name
@@ -1278,31 +1360,42 @@ function Stats_Fill takes unit hero,integer page returns string
         set i=i+1
     endloop
     if page==1 then
-        call Stats_Row(0,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
-        call Stats_Row(1,"Magic Defense %",Stats_StatPenalty(Stats_StatPercent(Stats_StatEffectiveDefense(Stats_DefensePercent(udg_MagicDefense[playerIndex]),magicalDefense)),magicalDefense>1.))
-        call Stats_Row(2,"Armor",R2SW(BlzGetUnitArmor(hero),1,2))
-        call Stats_Row(3,"Armor defense %",Stats_StatPenalty(Stats_StatPercent(Stats_StatEffectiveDefense(Stats_StatArmorDefense(BlzGetUnitArmor(hero)),physicalDefense)),physicalDefense>1.))
-        call Stats_Row(4,"Evasion rating",Stats_StatPenalty(R2SW(Stats_Stat_GetEvasion(hero),1,2),GetUnitAbilityLevel(hero,'A1DB')>0))
-        call Stats_Row(5,"Physical block",Stats_StatPercent(Stats_StatBlock(hero,true)))
-        call Stats_Row(6,"Magical block",Stats_StatPercent(Stats_StatBlock(hero,false)))
+        call Stats_Row(0,"Evasion",Stats_StatPenalty(R2SW(Stats_Stat_GetEvasion(hero),1,2),GetUnitAbilityLevel(hero,'A1DB')>0))
+        call Stats_Row(1,"Armor",R2SW(BlzGetUnitArmor(hero),1,2))
+        call Stats_Row(2,"Armor Defense %",Stats_StatPenalty(Stats_StatPercent(Stats_StatEffectiveDefense(Stats_StatArmorDefense(BlzGetUnitArmor(hero)),physicalDefense)),physicalDefense>1.))
+        if hero==Player_GetHero(GetOwningPlayer(hero)) then
+            call Stats_Row(3,"Magic Defense",I2S(udg_MagicDefense[playerIndex]))
+            call Stats_Row(4,"Magic Defense %",Stats_StatPenalty(Stats_StatPercent(Stats_StatEffectiveDefense(Stats_DefensePercent(udg_MagicDefense[playerIndex]),magicalDefense)),magicalDefense>1.))
+        else
+            call Stats_Row(3,"Magic Defense","Native armor")
+            call Stats_Row(4,"Magic Defense %",Stats_StatPercent(Stats_StatArmorDefense(BlzGetUnitArmor(hero))))
+        endif
+        call Stats_Row(5,"Physical Block",Stats_StatPercent(Stats_StatBlock(hero,true)))
+        call Stats_Row(6,"Magical Block",Stats_StatPercent(Stats_StatBlock(hero,false)))
+        set i=7
         set value=0.
         if GetUnitAbilityLevel(hero,'A0RV')>0 or GetUnitAbilityLevel(hero,'A0EI')>0 then
             set value=25.
         elseif GetUnitAbilityLevel(hero,'A0RU')>0 then
             set value=10.
         endif
-        call Stats_Row(7,"Flat damage guard",R2SW(value,1,0))
-        if GetUnitAbilityLevel(hero,'A0T9')>0 and GetUnitState(hero,UNIT_STATE_LIFE)<=.3*GetUnitState(hero,UNIT_STATE_MAX_LIFE) then
-            call Stats_Row(8,"Damage taken","Halved")
+        if value>0. then
+            call Stats_Row(i,"Flat damage",R2SW(value,1,0))
+            set i=i+1
         endif
-        call Stats_RenderJob(hero,1,9)
+        if GetUnitAbilityLevel(hero,'A0T9')>0 and GetUnitState(hero,UNIT_STATE_LIFE)<=.3*GetUnitState(hero,UNIT_STATE_MAX_LIFE) then
+            call Stats_Row(i,"Damage taken","Halved")
+            set i=i+1
+        endif
+        call Stats_RenderJob(hero,1,i)
     elseif page==2 then
         set title="Resistances"
         set i=0
         loop
             exitwhen i>=6
-            set name=StatsElementName[i]
-            call Stats_Row(i,name+" resistance",Stats_StatPenalty(Stats_StatResistance(hero,i+1),GetUnitAbilityLevel(hero,'B057')>0))
+            set statElementId=Stats_StatElementAt(i)
+            set name=StatsElementName[statElementId-1]
+            call Stats_Row(i,name+" resistance",Stats_StatPenalty(Stats_StatResistance(hero,statElementId),GetUnitAbilityLevel(hero,'B057')>0))
             set i=i+1
         endloop
         set value=0.
@@ -1325,19 +1418,20 @@ function Stats_Fill takes unit hero,integer page returns string
         set i=0
         loop
             exitwhen i>=6
-            set name=StatsElementName[i]+" damage"
-            if element==i+1 then
+            set statElementId=Stats_StatElementAt(i)
+            set name=StatsElementName[statElementId-1]+" damage"
+            if element==statElementId then
                 set name="|cff00ff00"+name+"|r"
             endif
-            call Stats_Row(i,name,Stats_StatElementText(hero,i+1))
+            call Stats_Row(i+4,name,Stats_StatElementText(hero,statElementId))
             set i=i+1
         endloop
-        call Stats_Row(6,"Physical damage",Stats_StatPenalty(Stats_StatPercent(Stats_StatOutgoing(hero,true)),GetUnitAbilityLevel(hero,'B08W')>0 or GetUnitAbilityLevel(hero,'B06H')>0))
-        call Stats_Row(7,"Magical damage",Stats_StatPenalty(Stats_StatPercent(Stats_StatOutgoing(hero,false)),GetUnitAbilityLevel(hero,'B08X')>0 or GetUnitAbilityLevel(hero,'B06I')>0))
-        call Stats_Row(8,"Attack speed",Stats_StatPenalty(R2SW(Stats_StatAttackSpeed(hero),1,0)+"%",GetUnitAbilityLevel(hero,'Bslo')>0 or GetUnitAbilityLevel(hero,'B08Y')>0))
-        call Stats_Row(9,"Accuracy rating",Stats_StatPenalty(R2SW(Stats_StatAccuracy(hero),1,2),blind))
+        call Stats_Row(2,"Physical Damage",Stats_StatPenalty(Stats_StatPercent(Stats_StatOutgoing(hero,true)),GetUnitAbilityLevel(hero,'B08W')>0 or GetUnitAbilityLevel(hero,'B06H')>0))
+        call Stats_Row(3,"Magical Damage",Stats_StatPenalty(Stats_StatPercent(Stats_StatOutgoing(hero,false)),GetUnitAbilityLevel(hero,'B08X')>0 or GetUnitAbilityLevel(hero,'B06I')>0))
+        call Stats_Row(1,"Attack speed",Stats_StatPenalty(R2SW(Stats_StatAttackSpeed(hero),1,0)+"%",GetUnitAbilityLevel(hero,'Bslo')>0 or GetUnitAbilityLevel(hero,'B08Y')>0))
+        call Stats_Row(0,"Accuracy",Stats_StatPenalty(R2SW(Stats_StatAccuracy(hero),1,2),blind))
         if Stats_StatGun(hero) and GetUnitAbilityLevel(hero,'A0Y7')>0 then
-            call Stats_Row(9,"Accuracy rating","Perfect")
+            call Stats_Row(0,"Accuracy","Perfect")
         endif
         set i=10
         if GetUnitAbilityLevel(hero,'A0AP')>0 or GetUnitAbilityLevel(hero,'A15J')>0 then
@@ -1364,14 +1458,19 @@ function Stats_Fill takes unit hero,integer page returns string
         endif
         set i=Stats_RenderJob(hero,0,i)
         call Stats_RenderGearDamage(hero,i)
+    elseif page==4 then
+        set title="Proficiencies"
+        call Stats_RenderProficiencies(hero)
     else
         set title="Other bonuses"
-        call Stats_Row(0,"HP healing buffs",Stats_StatPercent(Stats_StatHealing(hero,false)))
-        call Stats_Row(1,"MP healing buffs",Stats_StatPercent(Stats_StatHealing(hero,true)))
+        call Stats_Row(0,"Health regen","Unavailable")
+        call Stats_Row(3,"Mana Regen","Unavailable")
+        call Stats_Row(1,"Health healing efficiency",Stats_StatSignedPercent(Stats_StatHealing(hero,false)))
         call Stats_Row(2,"Healing received",Stats_StatPenalty(Stats_StatPercent(Stats_StatHealingReceived(hero)),GetUnitAbilityLevel(hero,'B070')>0))
-        call Stats_Row(3,"Cooldown reduction",Stats_StatPenalty(Stats_StatPercent(Stats_StatCooldown(hero)),(GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0) and GetUnitAbilityLevel(hero,'B08T')==0 and GetUnitAbilityLevel(hero,'B00F')==0 and GetUnitAbilityLevel(hero,'B07F')==0 and GetUnitAbilityLevel(hero,'A0GJ')==0))
-        call Stats_Row(4,"Move speed",Stats_StatPenalty(R2SW(GetUnitMoveSpeed(hero),1,0),GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0 or GetUnitAbilityLevel(hero,'B05M')>0 or GetUnitAbilityLevel(hero,'B05N')>0))
-        call Stats_RenderGearOther(hero,Stats_RenderJob(hero,3,5))
+        call Stats_Row(4,"Mana efficiency",Stats_StatSignedPercent(Stats_StatHealing(hero,true)))
+        call Stats_Row(5,"Move speed",Stats_StatPenalty(R2SW(GetUnitMoveSpeed(hero),1,0),GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0 or GetUnitAbilityLevel(hero,'B05M')>0 or GetUnitAbilityLevel(hero,'B05N')>0))
+        call Stats_Row(6,"Cooldown reduction",Stats_StatPenalty(Stats_StatPercent(Stats_StatCooldown(hero)),(GetUnitAbilityLevel(hero,'B08Y')>0 or GetUnitAbilityLevel(hero,'Bslo')>0) and GetUnitAbilityLevel(hero,'B08T')==0 and GetUnitAbilityLevel(hero,'B00F')==0 and GetUnitAbilityLevel(hero,'B07F')==0 and GetUnitAbilityLevel(hero,'A0GJ')==0))
+        call Stats_RenderGearOther(hero,Stats_RenderJob(hero,3,7))
     endif
     set twoHandedWeapon=null
     return title
@@ -1384,16 +1483,17 @@ function Stats_Show takes player p,integer page returns nothing
     local string line=""
     local integer row=0
     local integer shown=0
-    local integer next=ModuloInteger(page+1,4)
+    local integer next=ModuloInteger(page+1,5)
     if hero==null then
         call DisplayTimedTextToPlayer(p,0.,0.,10.,"You need a hero to see its stats.")
         return
     endif
+    set StatsLastPage[GetPlayerId(p)]=page
     set title=Stats_Fill(hero,page)
     if GetLocalPlayer()==p then
         call ClearTextMessages()
     endif
-    call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cffffcc00"+title+" ("+I2S(page+1)+"/4)|r")
+    call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cffffcc00"+title+" ("+I2S(page+1)+"/5)|r")
     loop
         exitwhen row>=STATS_ROWS
         if StatsLabel[row]!="" then
@@ -1415,7 +1515,7 @@ function Stats_Show takes player p,integer page returns nothing
     if line!="" then
         call DisplayTimedTextToPlayer(p,0.,0.,30.,line)
     endif
-    call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cff808080-stats "+I2S(next+1)+" for "+Stats_PageName(next)+". Pages: 1 damage, 2 defenses, 3 resistances, 4 other.|r")
+    call DisplayTimedTextToPlayer(p,0.,0.,30.,"|cff808080-stats back / -stats next. Pages: 1 damage, 2 defenses, 3 resistances, 4 other, 5 proficiencies.|r")
     set hero=null
 endfunction
 
@@ -1540,7 +1640,12 @@ function Stats_OnCommand takes nothing returns nothing
     if StringLength(text)>7 then
         set page=S2I(SubString(text,7,StringLength(text)))-1
     endif
-    if page<0 or page>3 then
+    if text=="-stats next" then
+        set page=ModuloInteger(StatsLastPage[GetPlayerId(GetTriggerPlayer())]+1,5)
+    elseif text=="-stats back" then
+        set page=ModuloInteger(StatsLastPage[GetPlayerId(GetTriggerPlayer())]+4,5)
+    endif
+    if page<0 or page>4 then
         set page=0
     endif
     call Stats_Show(GetTriggerPlayer(),page)

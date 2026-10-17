@@ -8,13 +8,17 @@ function Trig_Summon_Bahamut_HasBahamut takes nothing returns boolean
 endfunction
 
 function Trig_Summon_Bahamut_Actions takes nothing returns nothing
+    local integer masterSummonType='n005'
     local location l_tempPoint
     local real l_tempReal
     if(Trig_Summon_Bahamut_HasBahamut())then
         call KillUnit(udg_BahamutSummon)
     endif
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'n005',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n005': unit "Bahamut"
+    if GetUnitAbilityLevel(GetTriggerUnit(),'A146')>=6 then
+        set masterSummonType='sM06'
+    endif
+    call CreateNUnitsAtLoc(1,masterSummonType,GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n005': unit "Bahamut"
     call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call RemoveLocation(l_tempPoint)

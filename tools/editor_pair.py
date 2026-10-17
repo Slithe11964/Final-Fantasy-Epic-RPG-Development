@@ -534,9 +534,12 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from performance_runtime import refresh as refresh_performance
     from gameplay_runtime import refresh as refresh_gameplay
     from job_runtime import refresh as refresh_jobs
-    from inventory_ui import refresh as refresh_inventory_ui
-    modules={lib:refresh_inventory_ui(refresh_jobs(refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native),native=native))
+    from inventory_ui import refresh as refresh_inventory_ui,refresh_hunt
+    modules={lib:refresh_hunt(refresh_inventory_ui(refresh_jobs(refresh_gameplay(refresh_performance(refresh_runtime(s) if lib.startswith(('TForsakenSave','TForsakenFreshLoad')) else s),native=native),native=native)),native=native)
              for lib,s in modules.items()}
+    from proficiency import catalogue,house_runtime,objects as proficiency_objects
+    proficiencies=catalogue(edited.object_bytes('war3map.w3q'),edited.object_bytes('war3mapSkin.w3q'),edited.object_bytes('war3map.w3u'))
+    modules={lib:house_runtime(s,proficiencies) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -596,7 +599,16 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from job_objects import refresh as refresh_job_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=refresh_job_objects(data)
+        if data:replacements[name]=proficiency_objects(refresh_job_objects(data),proficiencies)
+    from job_objects import refresh_units
+    for name in ('war3map.w3u','war3mapSkin.w3u'):
+        data=replacements.get(name) or profile.object_bytes(name)
+        if data:replacements[name]=refresh_units(data)
+    from job_objects import refresh_robe
+    for ext in ('w3u','w3t'):
+        for name in ('war3map.'+ext,'war3mapSkin.'+ext):
+            data=replacements.get(name) or profile.object_bytes(name)
+            if data:replacements[name]=refresh_robe(data,ext)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

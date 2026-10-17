@@ -320,13 +320,17 @@ function Trig_Oracle_NeoBahamut_HasNeoBahamut takes nothing returns boolean
 endfunction
 
 function Trig_Oracle_NeoBahamut_Actions takes nothing returns nothing
+    local integer masterSummonType='n00G'
     local location l_tempPoint
     local real l_tempReal
     if(Trig_Oracle_NeoBahamut_HasNeoBahamut())then
         call KillUnit(udg_NeoBahamutSummon)
     endif
     set l_tempPoint=GetUnitLoc(GetTriggerUnit())
-    call CreateNUnitsAtLoc(1,'n00G',GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n00G': unit "Neo Bahamut"
+    if GetUnitAbilityLevel(GetTriggerUnit(),'A147')>=6 then
+        set masterSummonType='sM07'
+    endif
+    call CreateNUnitsAtLoc(1,masterSummonType,GetOwningPlayer(GetSpellAbilityUnit()),l_tempPoint,bj_UNIT_FACING) // 'n00G': unit "Neo Bahamut"
     call AddSpecialEffectLocBJ(l_tempPoint,"Abilities\\Spells\\Items\\AIda\\AIdaCaster.mdl")
     call DestroyEffectBJ(GetLastCreatedEffectBJ())
     call RemoveLocation(l_tempPoint)
