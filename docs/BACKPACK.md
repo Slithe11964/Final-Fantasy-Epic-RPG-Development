@@ -1,12 +1,19 @@
 # Backpack and equipment (1.29.2 first)
 
-Forsaken PAIR017 adds a native-only visibility repair: if the hero's backpack was
-open before dropping, using or unequipping an item, a brief local restore window
-keeps it visible through the engine's inventory refresh. An already closed panel
-stays closed. B/Escape, changing selection, and checkpoint panel rebuilding cancel
-the restore. The state never branches shared inventory, item or unit operations.
-Five focused tests cover restoration, expiry, explicit key closing, player isolation
-and idempotent paired integration. Actual drop/use presentation needs engine testing.
+Forsaken PAIR021 replaces PAIR017's half-second item-action restore with persistent
+local open intent. Once opened, the backpack is restored after native UI refreshes
+until explicitly closed with B, Escape, or the close button. Selection changes do
+not discard intent: the panel resumes on returning to the hero. Initial closed
+state remains closed. A brief close suppression window handles the engine/hotkey
+ordering race; it is not a timeout on keeping the backpack open.
+
+One shared-startup close button overlays the native X when a close/cancel-named
+child is found; otherwise a Close bag button appears beside Talents. Child searches
+are bounded to 128 frames/depth six and cached per native panel. No trigger/event
+allocation occurs in local discovery, polling or callbacks. Item listeners are
+registered once and survive frame rebuilds without duplication. This presentation
+state never determines unit/item changes or synchronized packets. The master and
+1.29.2 inventory remain unchanged. In-game acceptance is still required.
 
 1.29.2 has no frame UI and no extended inventory native, so gear lives in holder units: a
 holder carries six inventory slots and the player's selection switches to it, leaving the

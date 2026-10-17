@@ -6,6 +6,25 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-16)
 
+PAIR021 is the latest test pair, installed in Warcraft Maps/Download/TEST.
+The user reported a fresh native backpack closing within one second. The native
+UI now remembers open intent until B, Escape or explicit close, through idle and
+item refreshes; selection retains intent for the hero. A shared-startup close
+control overlays a discovered native X or appears as Close bag beside Talents.
+No local handle allocations or gameplay writes were added. Item listeners are
+not duplicated on checkpoint UI rebuild. Ten focused UI tests, native 144 and
+classic 244 regressions (10 expected skips), compiler/map gates, archive and
+installation hashes PASS. Classic runtime is token-identical to PAIR020; native
+inventory/gameplay/save functions are unchanged. Fresh-game idle/drop/use/close
+and saved-game UI restoration still need actual engine acceptance.
+
+PAIR020 adds read-only omission of unregistered/nonpersistent and foreign-bound
+items from -save/-savef/autosave. These produce empty saved slots without moving
+or deleting live items; eligible items retain exact positions. Record counts use
+emitted records only. Capture/bounded-string tests and both paired gates passed.
+The master remains the user-edited authoring map; paired transforms carry these
+runtime fixes automatically without overwriting it.
+
 PAIR019 is the public release candidate: PAIR018 with the scenario name set to 0.9.7.4.
 PAIR018: the user's editor master (0.9.7.4 patch notes in
 Intro and the quest log, Reminder links, quest and map edits) plus PAIR017's backpack fix.

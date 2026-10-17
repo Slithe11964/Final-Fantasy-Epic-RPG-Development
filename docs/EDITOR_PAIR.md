@@ -83,11 +83,13 @@ snapshots are written on synchronized spell events and read by either UI. The jo
 object pass updates both main and skin records, including Undying's cooldown text
 and the inert Necromancer/Skeleton Champion marker bases. See JOB_EFFECTS.md.
 
-Native backpack visibility maintenance in tools/inventory_ui.py preserves an open
-panel across drop/use/unequip UI refreshes. Its short restore window is local
-presentation state only; it never controls shared inventory operations. B, Escape,
-selection changes and checkpoint panel rebuilding cancel the window. Classic keeps
-its own paged inventory. The maintenance tool is recorded in pair provenance.
+Native backpack visibility maintenance in tools/inventory_ui.py remembers local
+open intent until B, Escape or the close control. Item refreshes and idle/native
+hides no longer expire that intent; selection changes preserve it for the hero.
+The close control is registered at shared startup, with bounded/cached local frame
+queries for its placement. No gameplay writes or local handle allocations are
+introduced. Checkpoint frame rebuilding resets UI state; classic keeps its own
+paged inventory. The maintenance tool is recorded in pair provenance.
 
 ## Newer World Editor saves
 
