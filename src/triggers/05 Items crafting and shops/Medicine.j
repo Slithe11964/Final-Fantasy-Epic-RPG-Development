@@ -24,7 +24,7 @@ function Medicine_ApplyTimed takes unit t,boolean ph returns nothing
         endif
     endif
     call SetUnitAbilityLevel(t,'A0FM',l_level) // 'A0FM': ability "Hero Drink Powerup"
-    call Wait_Polled(60.)
+    call SupportBuff_Wait(t,60.)
     set l_level=GetUnitAbilityLevel(t,'A0FM') // 'A0FM': ability "Hero Drink Powerup"
     set l_bigLevel=GetUnitAbilityLevel(t,'A17Q') // 'A17Q': ability "Hero Drink Powerup"
     set l_level=l_level-l_amount

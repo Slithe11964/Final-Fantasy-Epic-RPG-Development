@@ -540,6 +540,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from proficiency import catalogue,house_runtime,objects as proficiency_objects
     proficiencies=catalogue(edited.object_bytes('war3map.w3q'),edited.object_bytes('war3mapSkin.w3q'),edited.object_bytes('war3map.w3u'))
     modules={lib:house_runtime(s,proficiencies) for lib,s in modules.items()}
+    from priest_master import plan as priest_plan,refresh as priest_refresh,objects as priest_objects
+    priest_config=priest_plan(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'))
+    modules={lib:priest_refresh(s,priest_config,native=native) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -599,7 +602,7 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from job_objects import refresh as refresh_job_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=proficiency_objects(refresh_job_objects(data),proficiencies)
+        if data:replacements[name]=priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config)
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)

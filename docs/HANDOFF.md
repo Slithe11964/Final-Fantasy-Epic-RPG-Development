@@ -6,7 +6,22 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-17)
 
-PAIR023 is the latest test pair, installed in Warcraft Maps/Download/TEST.
+PAIR024 is the latest test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
+Adds Priest Master choices Acid Rain, Refresh and Swiftmend. Refresh resets food/stat
+buffs; special hero effects gain 3 seconds of remaining duration, including existing
+Runic/Divine script timers. Esuna base cooldown20 retains normal cooldown modifiers.
+Swiftmend doubles Regen healing for half its current-rank duration; the numeric Regen
+tooltip explains the unchanged INT/Staff/target-STR formula. Native talent hover text
+and selected-talent ability descriptions are included; classic retains text dialogs.
+Both paired gates PASS: native173 tests, classic273 (10 expected skips), compilation,
+startup/content/save compatibility. Final runtime/object/profile separation, tool
+provenance, output hashes and unchanged editor master verified. Save transport,
+combat engine and native backpack/rebind functions are token-identical to PAIR023.
+Actual Warcraft acceptance of the new talents/buff replays is pending. Test each
+choice, reset, lower/master ranks, food/stat refresh, Runic +3 seconds and multiple
+players; see TALENTS.md. Runtime lives in TRegen to avoid classic dependency cycles.
+
+PAIR023 is the previous test pair, installed in Warcraft Maps/Download/TEST.
 It bundles PAIR022 master summon level40 nonhero templates, corrected Rage tooltips,
 Trance/Mirage/Aim rows, requested stat ordering/percentages and Hold Position-only
 Defend display (the user revoked connecting 30% to Sentinel). White Robe explains

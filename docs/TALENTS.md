@@ -9,15 +9,15 @@ Module `src/triggers/03 Jobs and progression/Talents.j`; objects added by `tools
   row 3 at ultimate mastery (level 99), row 4 at legendary master (level 100). Rows follow the
   Mastery ability `A02F` (levels 1-4; legendary bonus levels 5-9 count as 4).
 - One choice per row. Picks last for the current game (not saved). The Shrine of Individuality
-  (`n04U`) sells **Reset Talents** (`nTRt`, 1000 gold for testing, bottom-right slot): it clears the
+  (`n04U`) sells **Reset Talents** (`nTRt`, 1000 gold for testing, bottom-left slot): it clears the
   current job's picks only and refunds the gold if there was nothing to reset. The Legendary Bonus
-  Menu moved one slot left to make room.
+  Menu retains its bottom-right slot.
 - A talent only works while the hero's **current job** is the talent's job **and** the hero has the
   spell it changes: `Talent_Active(hero, job, row, choice, spell)`. A Freelancer or another job
   with the spell swapped in gets nothing; a mastered hero who swapped the spell out gets nothing.
 - The dialog (used by the 1.29.2 build) shows one row at a time: names and descriptions wrapped to
-  30 characters (dialogs do not wrap text), "Learn <name>" buttons, Next row, Close. Reforged has a
-  frame panel for now; the plan is to replace it with the Forsaken-style panel later.
+  30 characters (dialogs do not wrap text), "Learn <name>" buttons, Next row, Close. Forsaken/Reforged uses its native
+  panel, with hover descriptions for implemented Priest choices.
 
 ## Adding talents for a job
 
@@ -36,7 +36,10 @@ Module `src/triggers/03 Jobs and progression/Talents.j`; objects added by `tools
 | 1 | 1 | Deprotect | "Protect can be cast on an enemy." Dummy casts `tDpr` (Deprotect buff `B06J`, 15 s). |
 | 1 | 2 | Deshell | "Shell can be cast on an enemy." Dummy casts `tDsh` (Deshell buff `B06K`, 15 s). |
 | 1 | 3 | Blinding Light | "Enemies Cure affects are blinded." The enemy Cure is cast on: `tBln` (Blind `B00P`, 15 s); enemies the sphere passes: `tBl5` (5 s). Cast on an enemy it heals no one (`MissileNoDamage`). |
-| 2-4 | | not written yet | |
+| 2 | 1 | Acid Rain | Tranquility also deals magical damage to enemies in its healing radius, equal to 50% of the current rank's native healing value. |
+| 2 | 2 | Refresh | Esuna fully resets food/stat buffs; special hero effects gain 3 seconds of remaining duration. Base Esuna cooldown becomes 20 seconds, with normal cooldown modifiers. |
+| 2 | 3 | Swiftmend | Regen heals at twice the rate for half its rank-specific duration: master 30 seconds instead of 60. Same total healing with unchanged stats. |
+| 3-4 | | not written yet | |
 
 Protect, Shell and Cure list enemies as targets; without the talent, `Talents_GuardCast` stops the
 cast before it costs anything. Cure (`A00M`) used to be Holy Light-based, and Warcraft only lets
@@ -75,9 +78,67 @@ nobody says why.
 
 The Forsaken tree's Priest choices use the same Deprotect, Deshell and Blinding
 Light picks and spell effects as the normal talent module, including the Cure
-missile blind hook. Only the implemented first row is selectable; later Priest
+missile blind hook. The Beginner and Master Priest rows are selectable; later Priest
 rows remain unavailable. Earned points follow levels 1, 50, 99 and legendary 100;
 the panel shows unspent and total points. Shrine Reset Talents clears only the
 current job's picks, preserving the hero and gear. Reset sits bottom-left, with
 Legendary Bonus restored to bottom-right.
 Picks remain per game. Other jobs retain their existing preview behavior.
+
+
+## PAIR024 shared Master implementation
+
+The maintained transform is tools/priest_master.py; the shared runtime fragment is
+experiments/Forsaken/PriestMaster.j. The pair builder reads rank data and base spell
+text from the saved editor master and adds generated buff-proxy objects to both main
+and skin ability tables. Spell runtime lives in TRegen, above the inventory/proficiency dependencies; TTalents
+keeps choice data and UI only. TCooldown reads a cast-time base-cooldown override,
+avoiding a legacy inventory/talent dependency cycle.
+The authoring master is never overwritten. No save identity
+or talent-persistence format is changed.
+
+Acid Rain derives Etq1 (per-pulse healing), Etq2 (pulse period), area and duration
+from A0OM. Current native healing is 500 HP/sec at rank1 and 4000 at rank6, so base
+rain damage is 250 and 2000 HP/sec respectively, before target damage modifiers.
+The rain runs only while its caster is alive, channeling Tranquility and still has
+the active Priest choice. It ends on finish, interruption, death or loss of the
+choice; its timer pauses when no rain remains. Allies and magic-immune/dead targets
+are excluded. It does not replace or reduce Tranquility's healing.
+
+Refresh follows the user's revised rules. Haste, Protect, Shell, Bravery, Faith,
+Regen, Growth, Sharp Eye, Mirage, Praise, Blessing of Might, Surge, Rage and timed
+food/stat effects reset to their original current-rank duration. Special effect IDs
+B06L/B082/B052/B06N/B076/B051/B07R/B07S/B018/B04B (Trance, Dark Power, Infinity,
+Mind Charge, Inner Fire, Divine Shield, Runic effects, Holy Power and Drain Attack)
+gain exactly 3 seconds of remaining duration. It does not revive expired buffs.
+Original spell/rank metadata is captured in synchronized spell events; Protect,
+Shell and Haste player wrappers are excluded so their actual proxy casts supply
+the correct rank/duration. Replays use separate free copies and preserve the
+existing buff rank. These copies do not invoke the original gameplay action.
+Combined source spells use separate per-buff proxies, so an expired companion buff
+is not recreated. Special native buff durations are governed by tracked deadlines;
+repeated Refresh extends those deadlines by 3 seconds, not the full duration.
+A new original cast cancels the old special expiry timer. Script Divine/Runic timers
+also gain 3 seconds without changing links, efficiency or accumulated power.
+Hero Drink's existing stacks wait until 60 seconds after the latest Refresh without
+adding another stack. Permanent/aura effects are not converted into timed buffs.
+The engine-free tests are separate from actual Warcraft acceptance of proxy orders,
+combined buffs, native duration replacement and checkpoint serialization.
+
+Swiftmend copies A00L with half duration at every rank and retains native heal data.
+The existing scripted Regen amount (including target Strength) doubles before other
+healing channels are added. Cast generations prevent a deferred short-duration
+application from replacing a newer Regen cast. A normal cast clears Swiftmend.
+Regen's unchanged formula is (25 + floor(caster INT/3)) * Staff power + target STR/4,
+with the existing 93.75%-100% tick roll and normal healing modifiers. Rank previously
+changed duration, not that per-second formula; the new tooltip states this and shows
+the current numeric caster contribution and current rank's duration. Swiftmend
+shows doubled contribution/Strength rate and halved duration.
+
+Forsaken talent buttons now have hover descriptions, and the selected talent is
+appended to the affected ability tooltip in both profiles. This includes Beginner
+Priest choices as well as the new Master row. Classic retains its text dialog.
+Tooltip writes are local presentation only; spell casts, buff records, damage and
+expiry timers are synchronized. Base tooltips are retained so a reset removes the
+appended talent text. Ability text uses the appropriate setter level offset for
+each client. Initialization tables are split into bounded ExecuteFunc batches.

@@ -2,7 +2,15 @@ library TCooldown requires TPlayerHero
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Cooldown_Scaling=null
+    hashtable CooldownTalentBase=InitHashtable()
 endglobals
+
+function Cooldown_Base takes unit caster,integer raw,integer level returns real
+    if HaveSavedReal(CooldownTalentBase,GetHandleId(caster),raw) then
+        return LoadReal(CooldownTalentBase,GetHandleId(caster),raw)
+    endif
+    return BlzGetAbilityCooldown(raw,level)
+endfunction
 
 function Trig_Cooldown_Scaling_Conditions takes nothing returns boolean
     return(GetUnitAbilityLevelSwapped('Avul',GetTriggerUnit())<=0)and(GetSpellAbilityId()!='A0S8')and(GetSpellAbilityId()!='A0S9')and(GetSpellAbilityId()!='A0SB')and(GetSpellAbilityId()!='A0SC')and(GetSpellAbilityId()!='A0SD')and(GetSpellAbilityId()!='A0SE')and(GetSpellAbilityId()!='A0R3')and(GetSpellAbilityId()!='A00Q')and(GetSpellAbilityId()!='A0Z2')and(GetSpellAbilityId()!='A197')and(GetSpellAbilityId()!='A0C7')and(GetSpellAbilityId()!='A0C6')and(GetSpellAbilityId()!='A12H')and(GetSpellAbilityId()!='A12G')and(GetSpellAbilityId()!='A11A')and(GetSpellAbilityId()!='A0D4')and(GetSpellAbilityId()!='A18N') // 'Avul': standard ability reference "Invulnerable"; 'A0S8': ability "Enfire"; 'A0S9': ability "Enfrost"; 'A0SB': ability "Enthunder"; 'A0SC': ability "Enwater"; 'A0SD': ability "Enstone"; 'A0SE': ability "Enaero"; 'A0R3': ability "Evade & Counter"; 'A00Q': ability "Frog"; 'A0Z2': ability "Raise Dead"; 'A197': ability "Momentum"; 'A0C7': ability "Spirit Potion"; 'A0C6': ability "Blood Ether"; 'A12H': ability "Fill Vial"; 'A12G': ability "Empty Vial"; 'A11A': ability "Essence Crystal"; 'A0D4': ability "Magic Urn"; 'A18N': ability "Firewood"
@@ -179,20 +187,20 @@ function Trig_Cooldown_Scaling_Actions takes nothing returns nothing
     endif
     if(Trig_Cooldown_Scaling_IsPlayerHero())then
         if(Trig_Cooldown_Scaling_UseLowerLevelHero())then
-            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(BlzGetAbilityCooldown(GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/(I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))+1000.))))
+            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(Cooldown_Base(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/(I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))+1000.))))
         else
             // Result 1: Agility of the triggering unit treated as a decimal-capable number.
             // Result 2: (result 1) plus (1000).
             // Result 3: (l_tempReal) divided by (result 2).
-            // Result 4: (BlzGetAbilityCooldown(GetSpellAbilityId(), GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the
+            // Result 4: (Cooldown_Base(GetTriggerUnit(),GetSpellAbilityId(), GetUnitAbilityLevelSwapped(GetSpellAbilityId(), the
             // triggering unit))) times (result 3).
-            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(BlzGetAbilityCooldown(GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))*(l_tempReal/(I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))+1000.))))
+            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(Cooldown_Base(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))*(l_tempReal/(I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,GetTriggerUnit(),true))+1000.))))
         endif
     else
         if(Trig_Cooldown_Scaling_UseLowerLevel())then
-            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(BlzGetAbilityCooldown(GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/ 1000.)))
+            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1),(Cooldown_Base(GetTriggerUnit(),GetSpellAbilityId(),(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())-1))*(l_tempReal/ 1000.)))
         else
-            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(BlzGetAbilityCooldown(GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))*(l_tempReal/ 1000.)))
+            call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()),(Cooldown_Base(GetTriggerUnit(),GetSpellAbilityId(),GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))*(l_tempReal/ 1000.)))
         endif
     endif
 endfunction

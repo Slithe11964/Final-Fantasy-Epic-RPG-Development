@@ -48,6 +48,7 @@ function Trig_Runic_Shield_Apply takes unit t,integer duration returns nothing
     call UnitApplyTimedLife(u,'BTLF',1.5) // 'BTLF': object name not found in map data
     call UnitAddAbility(u,'A17R') // 'A17R': ability "Runic Revenge"
     call IssueTargetOrderById(u,$D0085,t) // $D0085 = 852101
+    call SaveReal(udg_RunicHash,GetHandleId(t),9,I2R(duration)-8.)
     call TimerStart(tm,duration-8,false,function Trig_Runic_Shield_Expire)
     set u=null
     set t=null
