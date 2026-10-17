@@ -6,7 +6,20 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-17)
 
-PAIR024 is the latest test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
+PAIR025 is the latest test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
+Adds rank-specific damage formulas for all requested abilities (40 families, 87 IDs),
+including Finisher outcomes/chances, all Noxious Mixture consumables, per-hit/wave/pulse
+amounts and combo/distance/HP scaling. Old numeric claims that contradicted scripted
+values were corrected. Scroll of Shadows and 25 Curse-prefixed scrolls have no Gaya
+holding-level gate; curse tooltips distinguish resulting gear's equip requirement.
+Both paired gates PASS: native179 and classic279 tests (10 expected skips), compilation,
+startup/content/save compatibility. Every covered rank verified in final object layers.
+All non-tooltip object fields and every runtime function except the scroll level-check
+predicate are unchanged from PAIR024, including combat/save/inventory. Master unchanged;
+output/tool/TEST hashes match. Actual Warcraft tooltip layout and carrying acceptance
+remain pending. See DAMAGE_TOOLTIPS.md. No combat damage balance changes.
+
+PAIR024 is the previous test pair, installed and hash-verified in Warcraft Maps/Download/TEST.
 Adds Priest Master choices Acid Rain, Refresh and Swiftmend. Refresh resets food/stat
 buffs; special hero effects gain 3 seconds of remaining duration, including existing
 Runic/Divine script timers. Esuna base cooldown20 retains normal cooldown modifiers.

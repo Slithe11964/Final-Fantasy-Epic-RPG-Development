@@ -543,6 +543,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from priest_master import plan as priest_plan,refresh as priest_refresh,objects as priest_objects
     priest_config=priest_plan(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'))
     modules={lib:priest_refresh(s,priest_config,native=native) for lib,s in modules.items()}
+    from damage_tooltips import catalogue as damage_catalogue,abilities as damage_abilities,scroll_objects, runtime as scroll_runtime
+    damage_config=damage_catalogue(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'),edited.object_bytes('war3map.w3t'),edited.object_bytes('war3mapSkin.w3t'))
+    modules={lib:scroll_runtime(s) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -602,7 +605,7 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from job_objects import refresh as refresh_job_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config)
+        if data:replacements[name]=damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config)
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)
@@ -612,6 +615,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
         for name in ('war3map.'+ext,'war3mapSkin.'+ext):
             data=replacements.get(name) or profile.object_bytes(name)
             if data:replacements[name]=refresh_robe(data,ext)
+    for name in ('war3map.w3t','war3mapSkin.w3t'):
+        data=replacements.get(name) or profile.object_bytes(name)
+        if data:replacements[name]=scroll_objects(data,damage_config)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

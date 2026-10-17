@@ -152,7 +152,7 @@ function Trig_Equip_Restrictions_JobGatedItem takes nothing returns boolean
 endfunction
 
 function Trig_Equip_Restrictions_GaiaLevelTooLow takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetItemLifeBJ(GetManipulatedItem())>I2R(GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])))
+    return(GetItemTypeId(GetManipulatedItem())!='I073')and(SubString(GetItemName(GetManipulatedItem()),0,7)!="Curse: ")and(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetItemLifeBJ(GetManipulatedItem())>I2R(GetHeroLevel(udg_SpiritOfGaya[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])))
 endfunction
 
 function Trig_Equip_Restrictions_Actions takes nothing returns nothing
