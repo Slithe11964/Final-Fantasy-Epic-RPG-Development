@@ -25,7 +25,7 @@ class BackpackVisibilityTests(unittest.TestCase):
             return {'SimpleEquipmentPanel':'gear','EquipmentPanelBackdrop':'backdrop','SimpleEquipmentInventoryPanel':'bag'}.get(name)
         env=mocks(HELPER);env.update(
             ForsakenBackpackWanted=False,ForsakenBackpackWasVisible=False,ForsakenBackpackCloseUntil=0.,
-            ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenCachedEquipment='gear',ForsakenCachedBackdrop='backdrop',
+            ForsakenTalentsWanted=True,ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenCachedEquipment='gear',ForsakenCachedBackdrop='backdrop',
             ForsakenLinkedBag='bag',ForsakenInventoryHero='freelancer',ForsakenNextBagSearch=0.,
             ForsakenBackpackClose='close',ForsakenLinkedBagClose='bagclose',ForsakenTalentRoot='talents',
             ForsakenSelectedTarget='freelancer',ForsakenFrameSearchRequested=False,ForsakenBackpackNativeClose=None,ForsakenBagNativeClose=None,
@@ -40,7 +40,7 @@ class BackpackVisibilityTests(unittest.TestCase):
             ORIGIN_FRAME_COMMAND_BUTTON='command',BlzGetOriginFrame=lambda k,i:'command'+str(i),
             BlzFrameGetEnable=lambda f:True,BlzFrameClick=click,
             StringCase=lambda s,b:s.lower(),StringLength=len,SubString=lambda s,a,b:s[a:b],
-            BlzFrameGetChildrenCount=lambda f:0,BlzFrameGetName=lambda f:f)
+            BlzFrameGetChildrenCount=lambda f:0,BlzFrameGetName=lambda f:f,FRAMEPOINT_TOPRIGHT='topright')
         e=execute(HELPER,list(functions(HELPER)),env)
         return e,state,visible,looked,clicked
 
@@ -90,11 +90,20 @@ class BackpackVisibilityTests(unittest.TestCase):
             s['key']='B';e['Forsaken_BackpackAccess'](0,s['hero'])
             self.assertTrue(e['Forsaken_BackpackVisible']('gear'));self.assertTrue(v['gear'] and v['bag'])
 
-    def test_other_player_close_is_ignored_and_no_portrait_fallback_button(self):
+    def test_other_player_close_is_ignored_and_new_x_is_in_gear_header(self):
         e,s,v,looked,clicks=self.runtime();e['ForsakenBackpackWanted']=True;s['player']=1
         e['Forsaken_BackpackCloseAction']();self.assertTrue(e['ForsakenBackpackWanted'])
-        e['Forsaken_BackpackControls']('gear','portrait',True)
-        self.assertFalse(v['close']);self.assertFalse(v['bagclose'])
+        e['Forsaken_BackpackControls']('gear','backdrop',True)
+        self.assertTrue(v['close']);self.assertFalse(v['bagclose'])
+        e['Forsaken_CloseBackpack']();self.assertTrue(e['ForsakenTalentsWanted']);self.assertFalse(v['close'])
+
+    def test_armory_refresh_rebinds_only_the_open_owning_inventory(self):
+        e,s,v,looked,clicks=self.runtime()
+        e['Forsaken_RequestInventoryRefresh']('freelancer');self.assertEqual(e['ForsakenInventoryHero'],'freelancer')
+        e['ForsakenBackpackWanted']=True;e['Forsaken_RequestInventoryRefresh']('other');self.assertEqual(e['ForsakenInventoryHero'],'freelancer')
+        e['Forsaken_RequestInventoryRefresh']('freelancer');self.assertIsNone(e['ForsakenInventoryHero'])
+        self.assertTrue(e['ForsakenFrameSearchRequested']);self.assertTrue(e['Forsaken_BackpackVisible']('gear'))
+        self.assertTrue(v['gear'] and v['bag'])
 
     def test_binding_is_presentation_only_and_native_commands_are_limited(self):
         body=functions(HELPER)['Forsaken_BindInventory']

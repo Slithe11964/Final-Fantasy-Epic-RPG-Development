@@ -138,7 +138,9 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
     set FSC_End[ctx]=FSS_Length(payload)
     set FSC_Ok[ctx]=true
     set count=FSC_Read(ctx)
-    if (sid == 2) then
+    if sid==11 then
+        set maximum=38
+    elseif (sid == 2) then
         set maximum=22
     elseif ((sid == 4) or (sid == 6)) then
         set maximum=15
@@ -157,6 +159,9 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
         set identity=FSC_Read(ctx)
         set value=FSC_Read(ctx)
         if ((identity < 1) or (identity > maximum)) then
+            return false
+        endif
+        if sid==11 and value!=1 then
             return false
         endif
         if (sid == 2) then
@@ -206,13 +211,15 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
     call FSC_ClearSeen(ctx)
     set valid=FSC_Parse(ctx,encoded,FRC_Account(pid),true)
     if valid then
-        set valid=(FSC_Count[ctx] == 7)
+        set valid=((FSC_Count[ctx]==7 or FSC_Count[ctx]==8))
     endif
     loop
         exitwhen ((i >= FSC_Count[ctx]) or (not valid))
         set index=((ctx * 32) + i)
         set sid=FSC_Id[index]
-        if ((((((sid == 3) or (sid < 1)) or (sid > 8)) or (not FSC_Required[index])) or (((((sid == 2) or (sid == 4))) and (FSC_Version[index] != 2)))) or ((((sid != 2) and (sid != 4)) and (FSC_Version[index] != 1)))) then
+        if sid==11 and FSC_Version[index]==1 and not FSC_Required[index] then
+            set valid=FFP_ReadSection(pid,ctx,sid,FSC_Payload[index])
+        elseif ((((((sid == 3) or (sid < 1)) or (sid > 8)) or (not FSC_Required[index])) or (((((sid == 2) or (sid == 4))) and (FSC_Version[index] != 2)))) or ((((sid != 2) and (sid != 4)) and (FSC_Version[index] != 1)))) then
             set valid=false
         elseif (sid != 1) then
             set valid=FFP_ReadSection(pid,ctx,sid,FSC_Payload[index])

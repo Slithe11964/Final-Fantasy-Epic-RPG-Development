@@ -4,9 +4,30 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-17)
+## Where things stand (2026-10-18)
 
-PAIR028 is the latest test pair, installed and hash-verified in Warcraft
+PAIR029 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Adds -bazaarreveal, level99 current-job -legendary with green
+completed milestones, and per-player -spellcalculations on/off. Original spell
+prose remains; calculation sections cover 105 ability IDs including Curaga,
+Osmose and Drain. Acid Rain appears only when selected. Tooltip caches store only
+integer fingerprints, avoiding full long strings. Optional section11 saves 23
+completed job trials plus durable Wizard/Calculator elements and Summoner steps;
+fresh-load validation, two-pass capture, per-player recount and rollback included.
+Prior character saves remain accepted; use the updated pair for new saves.
+Native equipment aliases retain equip-slot metadata but permit ordinary-inventory
+drag. Carried quick gear still loses passives and retains actives/save identity.
+Gear-header X and Escape close the pair; Talents remembers its toggle across
+reopen; armory withdrawals request an owning-client native binding refresh.
+Both paired gates PASS: native208/classic308 regressions (10 expected skips),
+compiler/editor/startup/content/save/armory/bazaar checks and classic conversion.
+Final archives/input/tool/output/TEST hashes verified; editor master unchanged.
+Actual engine acceptance pending, especially Holy Book backpack-to-hero drag AND
+normal equipping, X/Escape/Talents persistence, cross-profile milestone save/load
+and independent two-player display toggles. See PLAYER_COMMANDS_AND_LEGENDARY.md.
+The older large-character legacy Warcraft-menu reload issue remains unresolved.
+
+PAIR028 is a previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Resolves the actual native inventory bag frame, links both
 panes, and rebinds the native preview when the selected hero changes. Fishing
 spots unlock from carried/loaded rods across all storage/Gaya; fishing requires

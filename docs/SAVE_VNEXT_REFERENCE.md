@@ -135,3 +135,13 @@ The isolated JASS implementation and compile evidence are now recorded in
 adapters, exact life conversion, failure rollback and
 real restart/multiplayer transport tests. No public capacity or preservation claim
 is warranted from these Python round trips alone.
+
+## PAIR029 legendary trial extension
+
+The paired runtime now recognizes optional section 11 schema 1 for up to 38
+unique boolean trial/milestone entries. Existing IDs and required sections are
+unchanged. Fresh-load plans accept prior profiles without this section and new
+profiles with it; player memberships/counters participate in transactional
+snapshot/restore. The older experimental reference vectors above retain their
+original meanings. See [PLAYER_COMMANDS_AND_LEGENDARY.md](PLAYER_COMMANDS_AND_LEGENDARY.md)
+for IDs, transient-attempt exclusions and version compatibility.

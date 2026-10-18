@@ -52,6 +52,7 @@ globals
     framehandle BazaarFrameNext=null
     framehandle BazaarFrameClose=null
     trigger BazaarFrameEscape=null
+    boolean array BazaarReveal
 endglobals
 
 function Bazaar_InitBrowserData takes nothing returns nothing
@@ -227,7 +228,7 @@ function Bazaar_RewardName takes integer recipe returns string
     local integer slot=4+2*LoadInteger(udg_BazaarRecipeHash,recipe,1)
     local integer last=slot+2*LoadInteger(udg_BazaarRecipeHash,recipe,2)
     local string name=""
-    if not BazaarRewardRevealed[recipe] then
+    if not BazaarRewardRevealed[recipe] and not BazaarReveal[GetPlayerId(GetLocalPlayer())] then
         return "???"
     endif
     loop
@@ -1721,6 +1722,30 @@ endfunction
 // World Editor calls InitTrig_Bazaar automatically; it is intentionally empty. This module's
 // triggers are created by RegisterTriggers_Bazaar (bottom of this module), which
 // MapBootstrap's Startup_RegisterTriggers runs at the right point during startup.
+function Bazaar_RevealCommand takes nothing returns nothing
+    local player p=GetTriggerPlayer()
+    local integer id=GetPlayerId(p)
+    set BazaarReveal[id]=true
+    call DisplayTimedTextToPlayer(p,0,0,15,"Bazaar recipe rewards revealed. Parts and preparation requirements still apply.")
+    if BazaarBrowserOpen[id] then
+        call Bazaar_ShowRecipe(p)
+    endif
+    set p=null
+endfunction
+
+
+function Bazaar_RegisterReveal takes nothing returns nothing
+    local trigger command=CreateTrigger()
+    local integer i=0
+    loop
+        exitwhen i>=8
+        call TriggerRegisterPlayerChatEvent(command,Player(i),"-bazaarreveal",true)
+        set i=i+1
+    endloop
+    call TriggerAddAction(command,function Bazaar_RevealCommand)
+    set command=null
+endfunction
+
 function InitTrig_Bazaar takes nothing returns nothing
 endfunction
 
@@ -1778,6 +1803,7 @@ function RegisterTriggers_Bazaar takes nothing returns nothing
     call Register_Bazaar_PawnMaterial()
     call Register_Bazaar_UpdateStock() // run by Quest_WolfFangs
     call Register_Bazaar_Sell_Bundle()
+    call Bazaar_RegisterReveal()
 endfunction
 
 endlibrary

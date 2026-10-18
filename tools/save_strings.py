@@ -120,7 +120,8 @@ def refresh_runtime(source):
     if 'function FST_Init takes' in source and 'call FSS_InitCollector()' not in source:
         source=source.replace('    call FSC_InitCharacters()','    call FSC_InitCharacters()\n    call FSS_InitCollector()',1)
     from performance_runtime import track_collection_mutations
-    return pin_persistent_strings(track_collection_mutations(source))
+    from legend_progress import refresh as refresh_legend_progress
+    return pin_persistent_strings(track_collection_mutations(refresh_legend_progress(source)))
 
 
 def isolate_reader(source, name):

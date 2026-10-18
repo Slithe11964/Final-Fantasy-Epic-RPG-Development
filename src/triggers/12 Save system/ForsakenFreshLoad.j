@@ -2333,6 +2333,55 @@ function FFL_Membership takes player owner,force target,boolean wanted returns n
     endif
 endfunction
 
+function FFL_LegendFlags takes integer pid,boolean snapshot,boolean restore returns boolean
+    local integer i=0
+    local integer weak=0
+    local integer nulls=0
+    local boolean flag
+    local player owner=Player(pid)
+    local force target
+    loop
+        exitwhen i>=38
+        if i<23 then
+            set target=udg_JobMasterForce[i]
+        elseif i<29 then
+            set target=udg_WeakElementForce[i-22]
+        elseif i<35 then
+            set target=udg_NullElementForce[i-28]
+        else
+            set target=udg_EidolonAwardForce[i-35]
+        endif
+        if snapshot then
+            call SaveBoolean(FFL_Before,pid*16+11,i,IsPlayerInForce(owner,target))
+        else
+            if restore then
+                set flag=LoadBoolean(FFL_Before,pid*16+11,i)
+            else
+                set flag=FFL_Val(pid,11,i+1)==1
+            endif
+            call FFL_Membership(owner,target,flag)
+            if IsPlayerInForce(owner,target)!=flag then
+                set target=null
+                set owner=null
+                return false
+            endif
+            if i>=23 and i<29 and flag then
+                set weak=weak+1
+            elseif i>=29 and i<35 and flag then
+                set nulls=nulls+1
+            endif
+        endif
+        set i=i+1
+    endloop
+    if not snapshot then
+        set udg_WeakElementCount[pid]=weak
+        set udg_NullElementCount[pid]=nulls
+    endif
+    set owner=null
+    set target=null
+    return true
+endfunction
+
 function FFL_Snapshot takes integer pid returns nothing
     local integer i=0
     local player owner=Player(pid)
@@ -2372,6 +2421,7 @@ function FFL_Snapshot takes integer pid returns nothing
     call SaveInteger(FFL_Before,((pid * 16) + 4),16,udg_ArmoryItemCount[(pid + 1)])
     call SaveBoolean(FFL_Before,((pid * 16) + 4),9,IsPlayerInForce(owner,udg_LegendaryGuardianForce))
     call SaveBoolean(FFL_Before,((pid * 16) + 4),11,IsPlayerInForce(owner,udg_CheaterForce))
+    call FFL_LegendFlags(pid,true,false)
     set FFL_SnapshotTaken[pid]=true
     set owner=null
 endfunction
@@ -2382,6 +2432,9 @@ function FFL_PlayerState takes integer pid,boolean restore returns boolean
     local integer count=0
     local boolean flag
     local player owner=Player(pid)
+    if not FFL_LegendFlags(pid,false,restore) then
+        return false
+    endif
     loop
         exitwhen (i >= 22)
         if restore then

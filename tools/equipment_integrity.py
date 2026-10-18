@@ -66,6 +66,15 @@ def object_items(data,config,*,native=False):
                 for m in st['mods']:
                     if m['field']=='utub' and 'breed' not in m['value'].lower():m['value']+='|nUse on your own chocobo near a partner to breed a basic chocobo.'
     if native:
+        # Equipment classification blocks native drag before an item-order event
+        # reaches JASS. Retain its equipment slot metadata for UnitEquipItem,
+        # but permit the item to enter normal inventory as ordinary cargo.
+        variants={m.get('variant') for m in config['mapping'].values()}|{m.get('offhand') for m in config['mapping'].values()}
+        for o in table['custom']:
+            if o['id'] in variants:
+                for st in o['sets']:
+                    st['mods'][:]=[m for m in st['mods'] if m['field']!='icla']
+                    st['mods'].append(dict(field='icla',type=3,level=None,data=None,value='Permanent',end=0))
         ids={o['id'] for o in table['custom']}
         for original,raw in config['quick'].items():
             if raw in ids:continue
@@ -215,6 +224,12 @@ endfunction"""
         body=functions(source)['Trig_Fishing_Cast_Conditions']
         if 'Fishing_WornCast' not in body:body=body.replace('    return(', '    return Fishing_WornCast(GetTriggerUnit(),GetSpellAbilityId()) and (',1)
         source=put(source,'Trig_Fishing_Cast_Conditions',body)
+    if native and 'Trig_Armory_Select_Actions' in functions(source):
+        source=dependency(source,'TEquip')
+        body=functions(source)['Trig_Armory_Select_Actions']
+        if 'Forsaken_RequestInventoryRefresh' not in body:
+            body=body.replace('                    call Collection_ForceRemovePlayerSimple','                    call Forsaken_RequestInventoryRefresh(Player_GetHero(GetOwningPlayer(GetTriggerUnit())))\n                    call Collection_ForceRemovePlayerSimple',1)
+        source=put(source,'Trig_Armory_Select_Actions',body)
     if native:source=native_refresh(source,config)
     return source
 

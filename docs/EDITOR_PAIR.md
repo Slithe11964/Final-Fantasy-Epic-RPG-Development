@@ -20,7 +20,11 @@ validation uses deterministic shared IDs. Reading/packet preparation does not en
 the shared scanner; checksum and profile validation run on synchronized receivers.
 Export checksums run before private writing. Native/classic sync adapters stay
 profile-specific. These runtime safeguards change neither the serialized codec
-nor the pinned master.
+nor the pinned master. PAIR029 additionally applies reviewed legendary-progress
+section 11 through `legend_progress.py`; `player_commands.py` and
+`spell_calculations.py` provide the shared commands and optional tooltip sections.
+See [PLAYER_COMMANDS_AND_LEGENDARY.md](PLAYER_COMMANDS_AND_LEGENDARY.md) for the
+format extension, compatibility and engine acceptance cases.
 
 Each profile gets a private source export and the normal compiler/content/regression
 gates. Native regression fixtures match the native implementation rather than

@@ -166,9 +166,10 @@ class PriestMasterTests(unittest.TestCase):
             TalentName=defaultdict(lambda:'Acid Rain'),TalentText=defaultdict(lambda:'50% healing as damage.'),
             PriestRainHealing={6:400.},PriestRainPeriod={6:.125},I2R=float,R2I=int,R2SW=lambda n,*a:format(n,'.0f'),
             Talent_Index=lambda *a:0,PriestTooltipOffset=0,PriestAbilityText='text',BlzSetAbilityExtendedTooltip=lambda *a:tips.append(a))
-        e=execute(s,['Priest_AbilityTalentTip'],env);e['Priest_AbilityTalentTip']('hero','A0OM',2,1)
+        env.update(SpellCalcData='calc',SpellCalcHidden=defaultdict(bool),GetPlayerId=lambda p:0,GetLocalPlayer=lambda:0,LoadInteger=lambda h,r,k:(2 if k==-1 else 1) if r=='A0OM' else 0)
+        e=execute(s,['SpellCalc_Tooltip','Priest_AbilityTalentTip'],env);e['Priest_AbilityTalentTip']('hero','A0OM',2,1)
         self.assertIn('Talent: Acid Rain',tips[-1][1]);self.assertEqual(tips[-1][2],5)
-        active[0]=False;e['Priest_AbilityTalentTip']('hero','A0OM',2,1);self.assertIn('3200 base HP/sec',tips[-1][1]);self.assertNotIn('Talent:',tips[-1][1])
+        active[0]=False;e['Priest_AbilityTalentTip']('hero','A0OM',2,1);self.assertIn('Original spell.',tips[-1][1]);self.assertNotIn('Talent:',tips[-1][1])
 
     def test_tranquility_uses_one_scripted_heal_and_rank_math_tooltips(self):
         out=objects(self.view.object_bytes('war3map.w3a'),self.config)
@@ -182,7 +183,8 @@ class PriestMasterTests(unittest.TestCase):
         env=mocks(s);env.update(GetUnitAbilityLevel=lambda *a:1,LoadStr=lambda *a:'Formula.',Talent_Active=lambda *a:False,
             BlzGetAbilityManaCost=lambda *a:100,GetHeroInt=lambda *a:90,Prof_StaffPower=lambda *a:2.,I2R=float,R2I=int,
             R2SW=lambda n,*a:format(n,'.0f'),PriestTooltipOffset=0,PriestAbilityText='text',BlzSetAbilityExtendedTooltip=lambda *a:tips.append(a))
-        e=execute(s,['Priest_AbilityTalentTip'],env)
+        env.update(SpellCalcData='calc',SpellCalcHidden=defaultdict(bool),GetPlayerId=lambda p:0,GetLocalPlayer=lambda:0,LoadInteger=lambda h,r,k:(2 if k==-1 else 1) if r=='A0OM' else 0)
+        e=execute(s,['SpellCalc_Tooltip','Priest_AbilityTalentTip'],env)
         for raw,number in [('A00M','1900 HP'),('A089','1140 HP'),('A0PC','144 queued HP')]:
             e['Priest_AbilityTalentTip']('hero',raw,0,0);self.assertIn(number,tips[-1][1])
 

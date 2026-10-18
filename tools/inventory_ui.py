@@ -37,6 +37,7 @@ def refresh(source):
     if 'Forsaken_PollPanels' not in fs:return source
     declarations={
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
+        'boolean ForsakenTalentsWanted=true':'ForsakenTalentsWanted',
         'real ForsakenBackpackCloseUntil=0.':'ForsakenBackpackCloseUntil',
         'trigger ForsakenBackpackEvents=null':'ForsakenBackpackEvents',
         'trigger ForsakenBackpackCloseEvents=null':'ForsakenBackpackCloseEvents',
@@ -108,5 +109,16 @@ def refresh(source):
     if 'OSKEY_B,0,true' not in body:
         line='        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)'
         body=body.replace(line,line+'\n        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)',1)
+    source=put(source,name,body)
+    name='Forsaken_PanelClick';body=functions(source).get(name)
+    if body:
+        body=body.replace('set ForsakenPanelOpen=not ForsakenPanelOpen','set ForsakenTalentsWanted=not ForsakenTalentsWanted\n            set ForsakenPanelOpen=ForsakenTalentsWanted')
+        body=body.replace('elseif BlzGetTriggerFrame()==ForsakenPanelClose then\n            set ForsakenPanelOpen=false','elseif BlzGetTriggerFrame()==ForsakenPanelClose then\n            set ForsakenTalentsWanted=false\n            set ForsakenPanelOpen=false')
+        source=put(source,name,body)
+    name='Forsaken_PollPanels';body=functions(source)[name]
+    body=body.replace('anchor,FRAMEPOINT_TOPRIGHT,-.010,-.010','anchor,FRAMEPOINT_TOPRIGHT,-.010,-.042')
+    marker='    call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)'
+    if 'set ForsakenPanelOpen=visible and ForsakenTalentsWanted' not in body:
+        body=body.replace(marker,'    if ForsakenInspectTarget==null then\n        set ForsakenPanelOpen=visible and ForsakenTalentsWanted\n    endif\n'+marker)
     source=put(source,name,body)
     return source

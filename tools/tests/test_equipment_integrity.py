@@ -225,6 +225,24 @@ class EquipmentIntegrityTests(unittest.TestCase):
             self.assertEqual(values[1,42],quick)
             self.assertEqual(native_refresh(updated,self.config),updated)
 
+    def test_native_equipment_class_allows_drag_without_losing_equip_slot(self):
+        import copy
+        from objdata import write_objects
+        from priest_master import setf
+        candidates=[r for r,o in self.config['items'].items() if 'Galbados' in str(fields(o).get(('unam',None),''))]
+        self.assertTrue(candidates)
+        for original in candidates:
+            if original not in self.config['mapping']:continue
+            variant=self.config['mapping'][original]['variant']
+            item=copy.deepcopy(self.config['items'][original]);item['id']=variant
+            for st in item['sets']:
+                st['mods']+=[dict(field='icla',type=3,level=None,data=None,value='Equipment',end=0),dict(field='iequ',type=3,level=None,data=None,value='Offhand',end=0)]
+            table=dict(version=2,original=[],custom=[item]);data=write_objects(table,2,'w3t')
+            out={o['id']:fields(o) for o in read_objects(object_items(data,self.config,native=True),'w3t')['custom']}
+            self.assertEqual(out[variant]['icla',None],'Permanent')
+            self.assertEqual(out[variant]['iequ',None],'Offhand')
+            self.assertEqual(out[variant].get(('iabi',None)),fields(self.config['items'][original]).get(('iabi',None)))
+
     def test_shared_transform_idempotent_and_freelancer_stats_group_variants(self):
         names=['Armory','ForsakenSaveCapture','ForsakenSaveCodec','ForsakenSaveFreshObjects','ForsakenFreshLoad','Myriad','Meteor','Chocobo_Taming']
         if any((ROOT/'src/triggers').rglob('GearSlots.j')):names.append('GearSlots')

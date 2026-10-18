@@ -549,6 +549,11 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from equipment_integrity import catalogue as integrity_catalogue,refresh as integrity_refresh,object_items as integrity_items
     integrity_config=integrity_catalogue(edited)
     modules={lib:integrity_refresh(s,integrity_config,native=native) for lib,s in modules.items()}
+    from player_commands import refresh as command_refresh,legend_data
+    commands=legend_data(edited)
+    from spell_calculations import catalogue as calculation_catalogue,runtime as calculation_runtime,objects as calculation_objects
+    calculations=calculation_catalogue(damage_config)
+    modules={lib:calculation_runtime(command_refresh(s,commands),calculations) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -608,7 +613,7 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from job_objects import refresh as refresh_job_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config)
+        if data:replacements[name]=calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations)
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)

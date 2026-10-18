@@ -200,16 +200,13 @@ function Forsaken_BackpackControls takes framehandle panel,framehandle anchor,bo
         set ForsakenBackpackScanBudget=128
         call Forsaken_HookBackpackClose(panel,0)
     endif
-    if visible then
-        if ForsakenBackpackNativeClose!=null then
-            // The control/event was created at shared startup. Only its presentation
-            // is moved locally over the native X; no local handle allocations.
-            call BlzFrameClearAllPoints(ForsakenBackpackClose)
-            call BlzFrameSetAllPoints(ForsakenBackpackClose,ForsakenBackpackNativeClose)
-            call BlzFrameSetText(ForsakenBackpackClose,"X")
-        endif
+    if visible and anchor!=null then
+        call BlzFrameClearAllPoints(ForsakenBackpackClose)
+        call BlzFrameSetSize(ForsakenBackpackClose,.026,.025)
+        call BlzFrameSetPoint(ForsakenBackpackClose,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.010,-.008)
+        call BlzFrameSetText(ForsakenBackpackClose,"X")
     endif
-    call BlzFrameSetVisible(ForsakenBackpackClose,visible and ForsakenBackpackNativeClose!=null)
+    call BlzFrameSetVisible(ForsakenBackpackClose,visible and anchor!=null)
     if visible and ForsakenLinkedBag!=null and ForsakenLinkedBag!=ForsakenBagHookRoot then
         set ForsakenBagHookRoot=ForsakenLinkedBag
         set gearClose=ForsakenBackpackNativeClose
@@ -273,5 +270,13 @@ function Forsaken_RegisterBackpackActivity takes nothing returns nothing
         call BlzFrameSetText(ForsakenLinkedBagClose,"X")
         call BlzFrameSetVisible(ForsakenLinkedBagClose,false)
         call BlzTriggerRegisterFrameEvent(ForsakenBackpackCloseEvents,ForsakenLinkedBagClose,FRAMEEVENT_CONTROL_CLICK)
+    endif
+endfunction
+
+function Forsaken_RequestInventoryRefresh takes unit hero returns nothing
+    if hero==Player_GetHero(GetLocalPlayer()) and ForsakenBackpackWanted then
+        set ForsakenInventoryHero=null
+        set ForsakenFrameSearchRequested=true
+        set ForsakenNextBagSearch=0.
     endif
 endfunction

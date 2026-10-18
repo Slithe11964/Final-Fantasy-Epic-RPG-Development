@@ -355,6 +355,38 @@ function FRC_Section takes integer pid,integer sid returns string
             set i=(i + 1)
         endloop
         return FSS_Concat(FSC_Uint(count),body)
+    elseif (sid == 11) then
+        loop
+            exitwhen i>=38
+            set tier=0
+            if i<23 then
+                if IsPlayerInForce(owner,udg_JobMasterForce[i]) then
+                    set tier=1
+                elseif i<22 then
+                    if FRC_Tier(pid,FRC_JobRaw(i))==3 then
+                        set tier=1
+                    endif
+                elseif free!=null and GetUnitAbilityLevel(free,'A02F')>=4 then
+                    set tier=1
+                endif
+            elseif i<29 then
+                if IsPlayerInForce(owner,udg_WeakElementForce[i-22]) then
+                    set tier=1
+                endif
+            elseif i<35 then
+                if IsPlayerInForce(owner,udg_NullElementForce[i-28]) then
+                    set tier=1
+                endif
+            elseif IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then
+                set tier=1
+            endif
+            if tier==1 then
+                set body=FSS_Concat(body,FRC_Pair(i+1,1))
+                set count=count+1
+            endif
+            set i=i+1
+        endloop
+        return FSS_Concat(FSC_Uint(count),body)
     endif
     return null
 endfunction
@@ -502,8 +534,11 @@ function FRC_Step takes integer pid returns nothing
             call FRC_Stop(pid,"inventory changed during capture")
             return
         endif
-    elseif (position < 65) then
+    elseif (position < 66) then
         set sid=(position - 56)
+        if sid==9 then
+            set sid=11
+        endif
         if (sid == 3) then
             set FRC_Position[pid]=(position + 1)
             return
@@ -549,6 +584,12 @@ function FRC_Step takes integer pid returns nothing
             endif
             set sid=(sid + 1)
         endloop
+        if not FSC_Add(pid,11,1,false,FRC_Payload[pid*16+11]) then
+            call FSC_Abort(pid)
+            set FRC_WriterOwned[pid]=false
+            call FRC_Stop(pid,"legendary progress section refused")
+            return
+        endif
         set encoded=FSC_Finish(pid,true)
         set FRC_WriterOwned[pid]=false
         if (FSS_Equals(encoded,null)) then

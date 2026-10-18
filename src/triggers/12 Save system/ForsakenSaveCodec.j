@@ -990,8 +990,32 @@ function FSC_Evidence takes integer ctx returns nothing
     endloop
 endfunction
 
+function FSC_LegendProgress takes integer ctx returns nothing
+    local integer count=FSC_Read(ctx)
+    local integer i=0
+    local integer identity
+    local integer value
+    call FlushChildHashtable(FSC_Seen,ctx*16+1)
+    if count>38 then
+        set FSC_Ok[ctx]=false
+    endif
+    loop
+        exitwhen i>=count or not FSC_Ok[ctx]
+        set identity=FSC_Read(ctx)
+        set value=FSC_Read(ctx)
+        if identity<1 or identity>38 or value!=1 then
+            set FSC_Ok[ctx]=false
+        elseif not FSC_Mark(ctx,1,identity) then
+            set FSC_Ok[ctx]=false
+        endif
+        set i=i+1
+    endloop
+endfunction
+
 function FSS_Call_FSC_ValidateSection_Impl takes integer ctx,integer sid,integer schemaVersion,boolean required,integer size returns nothing
-    if ((schemaVersion == 2) and (sid == 2)) then
+    if sid==11 and schemaVersion==1 then
+        call FSC_LegendProgress(ctx)
+    elseif ((schemaVersion == 2) and (sid == 2)) then
         call FSC_Jobs2(ctx)
     elseif ((schemaVersion == 2) and (sid == 4)) then
         call FSC_Pairs(ctx,sid,schemaVersion)
