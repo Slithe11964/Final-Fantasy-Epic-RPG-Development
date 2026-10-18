@@ -120,7 +120,7 @@ function JSTAT_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
         if JGET(hero,'B01A')>0 then
-            call JROW(row,"Mana Regen","10% / second")
+            call JROW(row,"Mana regen","10% / second")
             set row=row+1
         endif
         if JGET(hero,'B00X')>0 then

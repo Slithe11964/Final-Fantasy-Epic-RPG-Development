@@ -77,7 +77,7 @@ class StatLayoutTests(unittest.TestCase):
             self.assertEqual([v for l,v in rows[:6]],['resistance1','resistance2','resistance4','resistance3','resistance6','resistance5'])
             rows=fill(3)
             self.assertEqual([l for l,v in rows[:7]],['Health regen','Health healing efficiency','Healing received',
-                'Mana Regen','Mana efficiency','Move speed','Cooldown reduction'])
+                'Mana regen','Mana efficiency','Move speed','Cooldown reduction'])
             self.assertEqual(dict(rows)['Health healing efficiency'],'+50.00%')
             self.assertEqual(dict(rows)['Mana efficiency'],'+100.00%')
             self.assertEqual(refresh(s,native=native),s)

@@ -12,11 +12,11 @@ function NativeCD_PlayerCaster takes unit caster returns boolean
     return pid>=0 and pid<8 and (caster==Player_GetHero(Player(pid)) or caster==udg_SpiritOfGaya[pid+1])
 endfunction
 
-function NativeCD_Stop takes unit caster returns nothing
+function NativeCD_Stop takes unit caster,integer pool returns nothing
     call PauseUnit(caster,true)
     call IssueImmediateOrder(caster,"stop")
     call PauseUnit(caster,false)
-    call DisplayTimedTextToPlayer(GetOwningPlayer(caster),0,0,3,"|cffff0000These items share a cooldown and are still recovering.|r")
+    call DisplayTimedTextToPlayer(GetOwningPlayer(caster),0,0,3,"|cffff0000Shared item cooldown: "+R2SW(NativeCD_Left(caster,pool),1,1)+" seconds remaining.|r")
 endfunction
 
 function NativeCD_Channel takes nothing returns nothing
@@ -29,7 +29,9 @@ function NativeCD_Channel takes nothing returns nothing
         call SaveReal(NativeCDData,key,11,TimerGetElapsed(NativeCDClock))
         call SaveBoolean(NativeCDData,key,12,NativeCD_Left(caster,pool)>.01)
         if LoadBoolean(NativeCDData,key,12) then
-            call NativeCD_Stop(caster)
+            call NativeCD_Stop(caster,pool)
+        else
+            call SaveReal(NativeCDData,key,13,SharedItemCD_Duration(caster,raw))
         endif
     endif
     set caster=null
@@ -51,10 +53,22 @@ function NativeCD_Allowed takes nothing returns boolean
             call SaveInteger(NativeCDData,key,10,raw)
             call SaveReal(NativeCDData,key,11,TimerGetElapsed(NativeCDClock))
             call SaveBoolean(NativeCDData,key,12,not allowed)
+            if allowed then
+                call SaveReal(NativeCDData,key,13,SharedItemCD_Duration(caster,raw))
+            endif
         endif
     endif
     set caster=null
     return allowed
+endfunction
+
+// One admitted cast uses one duration, including items that apply Haste or Agility.
+function NativeCD_DurationForCast takes unit caster,integer raw returns real
+    local integer key=GetHandleId(caster)
+    if NativeCD_PlayerCaster(caster) and LoadInteger(NativeCDData,key,10)==raw and not LoadBoolean(NativeCDData,key,12) and TimerGetElapsed(NativeCDClock)-LoadReal(NativeCDData,key,11)<.01 then
+        return LoadReal(NativeCDData,key,13)
+    endif
+    return SharedItemCD_Duration(caster,raw)
 endfunction
 
 function NativeCD_Effect takes nothing returns nothing
@@ -64,10 +78,7 @@ function NativeCD_Effect takes nothing returns nothing
     local integer pid=GetPlayerId(GetOwningPlayer(caster))
     local real duration
     if pool>0 and NativeCD_PlayerCaster(caster) and NativeCD_Allowed() then
-        set duration=BlzGetUnitAbilityCooldownRemaining(caster,raw)
-        if duration<=0. then
-            set duration=BlzGetAbilityCooldown(raw,Abil_GetLevel(caster,raw))
-        endif
+        set duration=NativeCD_DurationForCast(caster,raw)
         call SaveReal(NativeCDData,pid,pool,RMaxBJ(LoadReal(NativeCDData,pid,pool),TimerGetElapsed(NativeCDClock)+duration))
     endif
     set caster=null
@@ -85,7 +96,7 @@ function NativeCD_Order takes nothing returns nothing
             set pool=2
         endif
         if pool>0 and NativeCD_Left(caster,pool)>.01 then
-            call NativeCD_Stop(caster)
+            call NativeCD_Stop(caster,pool)
         endif
     endif
     set used=null

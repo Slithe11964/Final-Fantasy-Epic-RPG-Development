@@ -92,13 +92,13 @@ endfunction
     end=body.index('    set twoHandedWeapon=null',start)
     regen=(f"""        if hero==Player_GetHero(GetOwningPlayer(hero)) then
             call {row}(0,"Health regen",R2SW(ForsakenHeroHPRegen[playerIndex],1,2))
-            call {row}(3,"Mana Regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
+            call {row}(3,"Mana regen",R2SW(ForsakenHeroMPRegen[playerIndex],1,2))
         else
             call {row}(0,"Health regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_HIT_POINTS_REGENERATION_RATE),1,2))
-            call {row}(3,"Mana Regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_MANA_REGENERATION),1,2))
+            call {row}(3,"Mana regen",R2SW(BlzGetUnitRealField(hero,UNIT_RF_MANA_REGENERATION),1,2))
         endif
 """ if native else f"""        call {row}(0,"Health regen","Unavailable")
-        call {row}(3,"Mana Regen","Unavailable")
+        call {row}(3,"Mana regen","Unavailable")
 """)
     other=f"""    elseif {page}==4 then
         set title="Proficiencies"

@@ -1291,7 +1291,7 @@ function Stats_RenderJob takes unit hero,integer page,integer row returns intege
             set row=row+1
         endif
         if GetUnitAbilityLevel(hero,'B01A')>0 then
-            call Stats_Row(row,"Mana Regen","10% / second")
+            call Stats_Row(row,"Mana regen","10% / second")
             set row=row+1
         endif
         if GetUnitAbilityLevel(hero,'B00X')>0 then
@@ -1329,17 +1329,16 @@ function Stats_RenderProficiencies takes unit hero returns nothing
     call Stats_Row(2,"Bow",I2S(Prof_GetLevel(hero,'R002')))
     call Stats_Row(3,"Dagger",I2S(Prof_GetLevel(hero,'R00B')))
     call Stats_Row(4,"Spear",I2S(Prof_GetLevel(hero,'R009')))
-    call Stats_Row(5,"Axe training",I2S(GetPlayerTechCount(GetOwningPlayer(hero),'R008',true)))
-    call Stats_Row(6,"Heavens Forged Axe",I2S(Prof_GetLevel(hero,'R00I')))
-    call Stats_Row(7,"Katana",I2S(Prof_GetLevel(hero,'R00A')))
-    call Stats_Row(8,"Greatsword",I2S(Prof_GetLevel(hero,'R00N')))
-    call Stats_Row(9,"Rod",I2S(Prof_GetLevel(hero,'R003')))
-    call Stats_Row(10,"Staff",I2S(Prof_GetLevel(hero,'R004')))
-    call Stats_Row(11,"Gun",I2S(Prof_GetLevel(hero,'R00M')))
-    call Stats_Row(12,"Inner Mana",I2S(Prof_GetLevel(hero,'R00L')))
-    call Stats_Row(13,"Leather Armor",I2S(Prof_GetLevel(hero,'R006')))
-    call Stats_Row(14,"Plate Armor",I2S(Prof_GetLevel(hero,'R005')))
-    call Stats_Row(15,"Mystic Armor",I2S(Prof_GetLevel(hero,'R007')))
+    call Stats_Row(5,"Axe",I2S(GetPlayerTechCount(GetOwningPlayer(hero),'R008',true)))
+    call Stats_Row(6,"Katana",I2S(Prof_GetLevel(hero,'R00A')))
+    call Stats_Row(7,"Greatsword",I2S(Prof_GetLevel(hero,'R00N')))
+    call Stats_Row(8,"Rod",I2S(Prof_GetLevel(hero,'R003')))
+    call Stats_Row(9,"Staff",I2S(Prof_GetLevel(hero,'R004')))
+    call Stats_Row(10,"Gun",I2S(Prof_GetLevel(hero,'R00M')))
+    call Stats_Row(11,"Inner Mana",I2S(Prof_GetLevel(hero,'R00L')))
+    call Stats_Row(12,"Leather Armor",I2S(Prof_GetLevel(hero,'R006')))
+    call Stats_Row(13,"Plate Armor",I2S(Prof_GetLevel(hero,'R005')))
+    call Stats_Row(14,"Mystic Armor",I2S(Prof_GetLevel(hero,'R007')))
 endfunction
 
 function Stats_Fill takes unit hero,integer page returns string
@@ -1464,7 +1463,7 @@ function Stats_Fill takes unit hero,integer page returns string
     else
         set title="Other bonuses"
         call Stats_Row(0,"Health regen","Unavailable")
-        call Stats_Row(3,"Mana Regen","Unavailable")
+        call Stats_Row(3,"Mana regen","Unavailable")
         call Stats_Row(1,"Health healing efficiency",Stats_StatSignedPercent(Stats_StatHealing(hero,false)))
         call Stats_Row(2,"Healing received",Stats_StatPenalty(Stats_StatPercent(Stats_StatHealingReceived(hero)),GetUnitAbilityLevel(hero,'B070')>0))
         call Stats_Row(4,"Mana efficiency",Stats_StatSignedPercent(Stats_StatHealing(hero,true)))

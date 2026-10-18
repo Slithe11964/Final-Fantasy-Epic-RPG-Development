@@ -95,10 +95,10 @@ class ProficiencyTests(unittest.TestCase):
                 'Prof_GetLevel':lambda u,r:queries.append((u,r)) or 17,'I2S':str,
                 'GetOwningPlayer':lambda u:2,'GetPlayerTechCount':lambda *a:10})
             e=execute(s,[prefix+'_RenderProficiencies'],env);e[prefix+'_RenderProficiencies']('inspected')
-            self.assertEqual(len(rows),16);self.assertEqual(len(queries),15)
-            self.assertTrue(all(u=='inspected' for u,r in queries))
+            self.assertEqual(len(rows),15);self.assertEqual(len(queries),14)
+            self.assertTrue(all(u=='inspected' for u,r in queries));self.assertNotIn('R00I',[r for u,r in queries]);self.assertNotIn('Heavens Forged Axe',[label for _,label,_ in rows])
             self.assertEqual(dict((l,v) for i,l,v in rows)['Staff'],'17')
-            self.assertEqual(dict((l,v) for i,l,v in rows)['Axe training'],'10')
+            self.assertEqual(dict((l,v) for i,l,v in rows)['Axe'],'10')
 
     def test_hunt_wanted_state_is_shared_but_visibility_is_local_presentation(self):
         s=(ROOT/'src/triggers/07 Hunts and encounters/Hunt_Board.j').read_text()

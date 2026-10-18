@@ -56,15 +56,15 @@ class EquipmentIntegrityTests(unittest.TestCase):
 
     def test_cooldown_veto_stops_script_effects_and_gaya_bypasses(self):
         s=(HERE/'SharedItemCooldown.j').read_text();store={};now=[0.];cast=['hero','book'];stops=[]
-        env=mocks(s);env.update(NativeCDData='cd',NativeCDClock='clock',GetHandleId=lambda u:100 if u=='hero' else 101,
+        env=mocks(s);env.update(NativeCDData='cd',NativeCDClock='clock',R2SW=lambda n,*a:format(n,'.1f'),GetHandleId=lambda u:100 if u=='hero' else 101,
             GetOwningPlayer=lambda u:0,GetPlayerId=lambda p:p,Player=lambda p:p,Player_GetHero=lambda p:'hero',udg_SpiritOfGaya={1:'gaya'},
             GetTriggerUnit=lambda:cast[0],GetSpellAbilityId=lambda:cast[1],TimerGetElapsed=lambda t:now[0],RMaxBJ=max,
             LoadInteger=lambda h,p,c:store.get((p,c),0),SaveInteger=lambda h,p,c,v:store.__setitem__((p,c),v),
             LoadReal=lambda h,p,c:store.get((p,c),0.),SaveReal=lambda h,p,c,v:store.__setitem__((p,c),v),
             LoadBoolean=lambda h,p,c:store.get((p,c),False),SaveBoolean=lambda h,p,c,v:store.__setitem__((p,c),v),
-            BlzGetUnitAbilityCooldownRemaining=lambda *a:12.,GetUnitAbilityLevel=lambda *a:1,IssueImmediateOrder=lambda *a:stops.append(a))
+            SharedItemCD_Duration=lambda *a:12.,BlzGetUnitAbilityCooldownRemaining=lambda *a:12.,GetUnitAbilityLevel=lambda *a:1,IssueImmediateOrder=lambda *a:stops.append(a))
         store[0,'book']=1;store[0,'otherbook']=1;store[0,'potion']=2
-        e=execute(s,['NativeCD_Pool','NativeCD_Left','NativeCD_PlayerCaster','NativeCD_Stop','NativeCD_Channel','NativeCD_Allowed','NativeCD_Effect'],env)
+        e=execute(s,['NativeCD_Pool','NativeCD_Left','NativeCD_PlayerCaster','NativeCD_Stop','NativeCD_Channel','NativeCD_Allowed','NativeCD_DurationForCast','NativeCD_Effect'],env)
         e['NativeCD_Channel']();self.assertTrue(e['NativeCD_Allowed']());e['NativeCD_Effect']()
         self.assertEqual(store[0,1],12.)
         for actor,raw in [('hero','otherbook'),('gaya','book'),('hero','book')]:
@@ -72,6 +72,13 @@ class EquipmentIntegrityTests(unittest.TestCase):
         self.assertEqual(len(stops),3)
         cast[:]=['hero','potion'];e['NativeCD_Channel']();self.assertTrue(e['NativeCD_Allowed']())
         now[0]=13.;cast[:]=['hero','book'];e['NativeCD_Channel']();self.assertTrue(e['NativeCD_Allowed']())
+
+    def test_duration_helper_does_not_gate_low_level_ability_library(self):
+        s=refresh(source('Abil'),self.config,native=True)
+        self.assertNotIn('TItemCooldown',s.splitlines()[0])
+        self.assertNotIn('Condition(function NativeCD_Allowed)',s)
+        self.assertIn('function SharedItemCD_Duration',s)
+        self.assertEqual(refresh(s,self.config,native=True),s)
 
     def test_prototype_equipment_metadata_and_passives(self):
         self.assertTrue({'A034','A03F','A0IZ'}<=self.config['passive'])

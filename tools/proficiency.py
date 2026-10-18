@@ -88,7 +88,7 @@ def house_runtime(source,entries):
 
 def stat_helper(prefix,row):
     lines=['function '+prefix+'_RenderProficiencies takes unit hero returns nothing']
-    for i,(raw,name) in enumerate(PROFS):
+    for i,(raw,name) in enumerate((raw,name) for raw,name in PROFS if raw!='R00I'):
         value="GetPlayerTechCount(GetOwningPlayer(hero),'R008',true)" if raw=='R008' else "Prof_GetLevel(hero,'"+raw+"')"
-        lines.append('    call '+row+'('+str(i)+',"'+('Axe training' if raw=='R008' else name)+'",I2S('+value+'))')
+        lines.append('    call '+row+'('+str(i)+',"'+name+'",I2S('+value+'))')
     return '\n'.join(lines+['endfunction'])

@@ -38,7 +38,7 @@ class PriestMasterTests(unittest.TestCase):
         base=View(p).modules['TEquip'];updated=refresh(base,self.config,native=True)
         self.assertEqual(refresh(updated,self.config,native=True),updated)
         fs=functions(updated);draw=fs['Forsaken_DrawPanels'];register=fs['Register_Forsaken_PanelAccess']
-        self.assertIn('I2S(rank)+" / 4 earned     Level "+mastery',draw)
+        self.assertIn('I2S(rank)+"/4|nLevel "+mastery',draw)
         self.assertIn('local string mastery="Novice"',draw)
         import re
         self.assertTrue(all(x=='""' for x in re.findall(r'BlzFrameSetText\(ForsakenTalentLabel\[node\],([^\n]*)\)',draw)))

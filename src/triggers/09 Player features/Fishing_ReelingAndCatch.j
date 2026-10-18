@@ -54,6 +54,7 @@ endfunction
 function Trig_Fishing_Tick_Actions takes nothing returns nothing
     if(Trig_Fishing_Tick_StateCasting())then
         set udg_GatherState[udg_TempInteger]=2
+        call DisplayTimedTextToPlayer(ConvertedPlayer(udg_TempInteger),0,0,6,"Wait for the ! bite indicator, then pull toward shore.")
         set udg_TempPoint=GetUnitLoc(udg_PlayerFishSpot[udg_TempInteger])
         if(Trig_Fishing_Tick_IsRandomDirSpot())then
             // Choose one of four directions: 0, 90, 180, or 270 degrees.
@@ -229,8 +230,8 @@ function Trig_Fishing_Input_Actions takes nothing returns nothing
     call PauseUnitBJ(false,GetTriggerUnit())
     set udg_TempInteger=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
     if(Trig_Fishing_Input_IsTooEarly())then
-        call RemoveItem(udg_GatherItem[udg_TempInteger])
-        call ConditionalTriggerExecute(gg_trg_Fishing_End)
+        call DisplayTimedTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,3,"Wait for the ! bite indicator, then pull toward shore.")
+        return
     else
         if(Trig_Fishing_Input_IsPullInput())then
             if(Trig_Fishing_Input_IsStageThree())then

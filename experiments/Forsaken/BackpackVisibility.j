@@ -24,7 +24,7 @@ endfunction
 function Forsaken_RequestBackpackToggle takes integer source returns nothing
     local real now=TimerGetElapsed(ForsakenPanelClock)
     // One physical hotkey can also dispatch a native command click.
-    if source!=ForsakenLastToggleSource and now-ForsakenLastToggleTime<.15 then
+    if now-ForsakenLastToggleTime<.05 or (source!=ForsakenLastToggleSource and now-ForsakenLastToggleTime<.15) then
         return
     endif
     set ForsakenLastToggleTime=now
@@ -42,7 +42,7 @@ function Forsaken_BackpackToggleAction takes nothing returns nothing
     local unit hero=Player_GetHero(GetTriggerPlayer())
     local framehandle control=BlzGetTriggerFrame()
     if GetLocalPlayer()==GetTriggerPlayer() and not ForsakenInventoryBinding and hero!=null and IsUnitSelected(hero,GetTriggerPlayer()) then
-        if (control==ForsakenBackpackCommand and GetUnitAbilityLevel(hero,'fBag')>0) or (control==ForsakenGearCommand and GetUnitAbilityLevel(hero,'fGer')>0) then
+        if control==ForsakenBackpackCommand and GetUnitAbilityLevel(hero,'ASpc')>0 then
             call Forsaken_RequestBackpackToggle(2)
         endif
     endif
@@ -99,21 +99,15 @@ endfunction
 function Forsaken_BindInventory takes unit hero returns nothing
     local boolean gearVisible=BlzFrameIsVisible(ForsakenCachedEquipment)
     local boolean bagVisible=BlzFrameIsVisible(ForsakenLinkedBag)
-    // Opening each native command refreshes the engine's owner, portrait and slots.
-    if gearVisible then
-        call Forsaken_NativeInventoryClick('fGer')
+    // ASpc is the visible Backpack controller; fBag/fGer supply passive data.
+    // Cycle the actual controller to refresh its owner, model and both panes.
+    if gearVisible or bagVisible then
+        call Forsaken_NativeInventoryClick('ASpc')
     endif
-    call Forsaken_NativeInventoryClick('fGer')
+    call Forsaken_NativeInventoryClick('ASpc')
     call Forsaken_ResolveInventory()
-    if not BlzFrameIsVisible(ForsakenCachedEquipment) then
-        call Forsaken_NativeInventoryClick('fGer')
-        call Forsaken_ResolveInventory()
-    endif
-    if bagVisible and BlzFrameIsVisible(ForsakenLinkedBag) then
-        call Forsaken_NativeInventoryClick('fBag')
-    endif
-    if not BlzFrameIsVisible(ForsakenLinkedBag) then
-        call Forsaken_NativeInventoryClick('fBag')
+    if not BlzFrameIsVisible(ForsakenCachedEquipment) or not BlzFrameIsVisible(ForsakenLinkedBag) then
+        call Forsaken_NativeInventoryClick('ASpc')
         call Forsaken_ResolveInventory()
     endif
     if BlzFrameIsVisible(ForsakenCachedEquipment) and BlzFrameIsVisible(ForsakenLinkedBag) then
@@ -139,9 +133,6 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
         return false
     endif
     set visible=BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)
-    if visible then
-        set ForsakenBackpackWanted=true
-    endif
     if ForsakenBackpackWanted and hero!=null then
         if ForsakenInventoryHero!=hero then
             if now>=ForsakenNextBagSearch then
@@ -285,10 +276,9 @@ endfunction
 function Forsaken_RegisterBackpackActivity takes nothing returns nothing
     if ForsakenBackpackToggleEvents==null then
         set ForsakenBackpackToggleEvents=CreateTrigger()
-        set ForsakenBackpackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('fBag')*4+BlzGetAbilityPosX('fBag'))
-        set ForsakenGearCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('fGer')*4+BlzGetAbilityPosX('fGer'))
+        set ForsakenBackpackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('ASpc')*4+BlzGetAbilityPosX('ASpc'))
+        set ForsakenGearCommand=null
         call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_CONTROL_CLICK)
-        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenGearCommand,FRAMEEVENT_CONTROL_CLICK)
         call TriggerAddAction(ForsakenBackpackToggleEvents,function Forsaken_BackpackToggleAction)
     endif
     if ForsakenBackpackEvents==null then

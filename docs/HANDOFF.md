@@ -6,7 +6,24 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-18)
 
-PAIR030 is the latest test pair, installed and hash-verified in Warcraft
+PAIR031 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Native shared item cooldowns snapshot one current-rank,
+adjusted duration for the visible cooldown and shared deadline; rejected casts
+do not extend it. The remaining-time message reports seconds. Native inventory
+binding now uses the actual ASpc Backpack controller; explicit close intent stays
+closed despite late native visibility. Move to hero supplies a synchronized,
+validated gear-to-empty-hero-slot picker below Talents. Native drag itself is not
+claimed repaired. Carried gear retains actives without equipped stat bonuses.
+The talent header is two lines: Points: 3/4 then Level Ultimate. Both profiles
+use Mana regen, omit the Heavens Forged Axe proficiency row, and label Axe training
+as Axe. Fishing prompts players to wait for ! and ignores premature directions.
+Paired compilation, regression, compatibility and final archive checks passed.
+Editor master is unchanged. Engine acceptance remains required for cooldowns,
+Move to hero, persistent closing, fishing guidance and independent multiplayer
+UI actions. See PAIR031_INVENTORY_FOLLOWUP.md. PAIR030 save and Acid Rain fixes
+below remain in both profiles.
+
+PAIR030 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Fixes PAIR029's older-save final readback comparison: existing
 payloads stay exact; the optional trial section alone permits missing defaults
 and already-Legendary trial inference. Real bounded codec rejects unrelated

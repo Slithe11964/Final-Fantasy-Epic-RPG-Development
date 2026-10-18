@@ -320,10 +320,11 @@ endfunction'''
     if native and 'Forsaken_DrawPanels' in functions(source):
         name='Forsaken_DrawPanels';body=functions(source)[name]
         body=body.replace('local string mastery="Normal"','local string mastery="Novice"')
-        if ' / 4 earned     Level ' not in body:
+        if ' / 4 earned     Level ' not in body and '/4|nLevel ' not in body:
             start=body.index('            if job==TALENT_JOB_PRIEST then',body.index('GetPlayerName(owner)'))
             end=body.index('        endif',body.index('            endif',start)+len('            endif'))
             body=body[:start]+'            call BlzFrameSetText(ForsakenTalentPoints,"Points: "+I2S(rank)+" / 4 earned     Level "+mastery)\n'+body[end:]
+        body=body.replace('I2S(rank)+" / 4 earned     Level "+mastery','I2S(rank)+"/4|nLevel "+mastery')
         body=re.sub(r'call BlzFrameSetText\(ForsakenTalentLabel\[node\],[^\n]*\)', 'call BlzFrameSetText(ForsakenTalentLabel[node],"")',body)
         # Eligibility is checked again by the click action. Enabled icons retain
         # mouseover tooltips even for selected, locked and inspection nodes.

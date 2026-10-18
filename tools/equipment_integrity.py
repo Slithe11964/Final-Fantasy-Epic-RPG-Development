@@ -206,6 +206,16 @@ endfunction'''
         body=functions(source)['Register_Fishing_Unlock']
         if 'TriggerRegisterTimerEvent(' not in body:body=body.replace('    call TriggerAddCondition','    call TriggerRegisterTimerEvent(gg_trg_Fishing_Unlock,1.,true)\n    call TriggerAddCondition',1)
         source=put(source,'Register_Fishing_Unlock',body)
+    if 'Trig_Fishing_Input_Actions' in fs:
+        body=functions(source)['Trig_Fishing_Input_Actions']
+        old='        call RemoveItem(udg_GatherItem[udg_TempInteger])\n        call ConditionalTriggerExecute(gg_trg_Fishing_End)'
+        if 'Wait for the ! bite indicator' not in body:
+            body=body.replace(old,'        call DisplayTimedTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,3,"Wait for the ! bite indicator, then pull toward shore.")\n        return',1)
+        source=put(source,'Trig_Fishing_Input_Actions',body)
+        body=functions(source)['Trig_Fishing_Tick_Actions']
+        if 'Wait for the ! bite indicator' not in body:
+            body=body.replace('        set udg_GatherState[udg_TempInteger]=2','        set udg_GatherState[udg_TempInteger]=2\n        call DisplayTimedTextToPlayer(ConvertedPlayer(udg_TempInteger),0,0,6,"Wait for the ! bite indicator, then pull toward shore.")',1)
+        source=put(source,'Trig_Fishing_Tick_Actions',body)
     if 'Trig_Fishing_Cast_Conditions' in fs:
         source=dependency(source,'TItemStack')
         helper="""function Fishing_WornCast takes unit hero,integer raw returns boolean
@@ -256,6 +266,20 @@ def native_refresh(source,c):
         body=body if 'Forsaken_SuspendStoredItem(UnitItemInSlot(holder,slot))' in body else body.replace('        call Forsaken_RestoreStoredItem(UnitItemInSlot(holder,slot))','        if LoadBoolean(ForsakenElementSources,2,GetItemTypeId(UnitItemInSlot(holder,slot))) then\n            call Forsaken_SuspendStoredItem(UnitItemInSlot(holder,slot))\n        else\n            call Forsaken_RestoreStoredItem(UnitItemInSlot(holder,slot))\n        endif')
         source=put(source,'Forsaken_SyncStoredEffects',body)
     if 'Forsaken_CarryOrder' in fs:
+        globals_,fragment=(HERE/'CarryTransferUI.j').read_text().split('// FUNCTIONS\n',1)
+        for line in globals_.splitlines():
+            name=line.strip().split('=')[0].split()[-1]
+            if not re.search(r'^\s*\w+ (?:array )?'+name+r'\b',source,re.M):source=source.replace('endglobals',line+'\nendglobals',1)
+        for name,body in functions(fragment).items():
+            if name in functions(source):source=put(source,name,body)
+            else:source=source.replace('function Forsaken_CarryReplacement takes',body+'\n\nfunction Forsaken_CarryReplacement takes',1)
+        body=functions(source)['Register_Forsaken_PanelAccess']
+        if 'CarryUI_Init()' not in body:body=body.replace('    call Forsaken_RegisterBackpackActivity()','    call Forsaken_RegisterBackpackActivity()\n    call CarryUI_Init()',1)
+        source=put(source,'Register_Forsaken_PanelAccess',body)
+        body=functions(source)['Forsaken_PollPanels']
+        if 'CarryUI_ShowAccess' not in body:body=body.replace('    set ForsakenBackpackWasVisible=visible','    call CarryUI_ShowAccess(visible and ForsakenInspectTarget==null,anchor)\n    set ForsakenBackpackWasVisible=visible',1)
+        source=put(source,'Forsaken_PollPanels',body)
+    if 'Forsaken_CarryOrder' in fs:
         body=fs['Forsaken_CarryOrder']
         if 'order>=852002' not in body:body=body.replace('    if order==852001',
             '    if order>=852002 and order<=852007 and holder==Player_GetHero(GetOwningPlayer(holder)) and gear!=null and LoadInteger(ForsakenGearTypes,4,GetItemTypeId(gear))!=0 then\n        set replacement=Forsaken_CarryReplacement(holder,gear,order-852002)\n    elseif order==852001',1)
@@ -265,7 +289,7 @@ def native_refresh(source,c):
             body=body.replace('if original!=null and variant!=0 and not LoadBoolean', 'if original!=null and variant!=0 and not (slot<6 and LoadBoolean(ForsakenGearTypes,51,GetHandleId(original))) and not LoadBoolean',1)
         source=put(source,'Forsaken_PrepareQuickGear',body)
         body=fs['Forsaken_CarryReplacement']
-        helper=(HERE/'CarryQuickSlot.j').read_text()
+        helper=functions((HERE/'CarryQuickSlot.j').read_text())['Integrity_CarryIntoSlot']
         if 'Integrity_CarryIntoSlot' in functions(source):source=put(source,'Integrity_CarryIntoSlot',helper.strip())
         else:source=source.replace('function Forsaken_CarryReplacement takes',helper+'\nfunction Forsaken_CarryReplacement takes',1)
         if 'return Integrity_CarryIntoSlot' not in body:
@@ -378,16 +402,40 @@ endfunction'''
             body=functions(source)[name]
             body=re.sub(r"GetUnitAbilityLevelSwapped\('(....)',(Player_GetHero\(GetEnumPlayer\(\)\))\)",r"Forsaken_ElementAbilityLevel(\2,'\1')",body)
             source=put(source,name,body)
+    if 'Abil_GetLevel' in fs:
+        source=dependency(source,'TPlayerHero')
+        if 'hashtable SharedItemCDTypes=' not in source:source=source.replace('endglobals','    hashtable SharedItemCDTypes=InitHashtable()\nendglobals',1)
+        helper=(HERE/'SharedItemDuration.j').read_text()
+        for name in functions(helper):
+            source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
+        source=source.replace('function InitTrig_Abil takes',helper.strip()+'\n\nfunction InitTrig_Abil takes',1)
+    if 'Trig_Cooldown_Scaling_Actions' in fs:
+        source=dependency(source,'TAbil')
+        body=functions(source)['Trig_Cooldown_Scaling_Actions']
+        body=body.replace('set l_tempReal=SharedItemCD_Duration(GetTriggerUnit(),GetSpellAbilityId())','set l_tempReal=NativeCD_DurationForCast(GetTriggerUnit(),GetSpellAbilityId())')
+        if 'NativeCD_DurationForCast' not in body:
+            body=body.replace('    set l_tempReal=1000.',"""    if SharedItemCD_IsItem(GetSpellAbilityId()) then
+        set l_tempReal=NativeCD_DurationForCast(GetTriggerUnit(),GetSpellAbilityId())
+        call BlzSetAbilityRealLevelField(GetSpellAbility(),ABILITY_RLF_COOLDOWN,Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()),l_tempReal)
+        call BlzSetUnitAbilityCooldown(GetTriggerUnit(),GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()),l_tempReal)
+        return
+    endif
+    set l_tempReal=1000.""",1)
+        source=put(source,'Trig_Cooldown_Scaling_Actions',body)
     if 'Register_Item_Cooldown_Start' in fs:
         fragment='function NativeCD_Data takes nothing returns nothing\n'
-        for raw,pool in sorted(c['pool'].items()):fragment+=f"    call SaveInteger(NativeCDData,0,'{raw}',{pool})\n"
+        for raw,pool in sorted(c['pool'].items()):fragment+=f"    call SaveInteger(NativeCDData,0,'{raw}',{pool})\n    call SaveBoolean(SharedItemCDTypes,0,'{raw}',true)\n"
         for raw,pool in sorted(c['item_pool'].items()):fragment+=f"    call SaveInteger(NativeCDData,1,'{raw}',{pool})\n"
         fragment+='endfunction\n'+(HERE/'SharedItemCooldown.j').read_text()
         source=add_helpers(source,'    hashtable NativeCDData=InitHashtable()\n    timer NativeCDClock=CreateTimer()',fragment)
+        for name in functions(fragment):source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
+        position=re.search(r'^function ',source,re.M).start()
+        source=source[:position]+'\n\n'.join(body.strip() for body in functions(fragment).values())+'\n\n'+source[position:]
+        source=re.sub(r'\n{3,}','\n\n',source)
         body=functions(source)['Register_Item_Cooldown_Start']
         if 'call NativeCD_Init()' not in body:body=body.replace('endfunction','    call NativeCD_Init()\nendfunction')
         source=put(source,'Register_Item_Cooldown_Start',body)
-    elif re.search(r"'(?:"+'|'.join(c['pool'])+r")'",source):
+    elif 'Abil_GetLevel' not in fs and re.search(r"'(?:"+'|'.join(c['pool'])+r")'",source):
         # Only spell-effect event registrations are gated; attacks, item pickup,
         # NPC casts and unrelated hero skills continue through unchanged.
         effect_vars=set(re.findall(r'TriggerRegister(?:AnyUnitEventBJ|PlayerUnitEventSimple|PlayerUnitEvent)\((\w+),[^\n]*EVENT_PLAYER_UNIT_SPELL_EFFECT',source))
@@ -397,4 +445,15 @@ endfunction'''
                 marker='    call TriggerAddCondition('+var+',Condition(function NativeCD_Allowed))'
                 if marker not in source:
                     source=re.sub(r'(^    call TriggerAddAction\('+var+r',)',marker+'\n'+r'\1',source,count=1,flags=re.M)
+    if 'Forsaken_CarryOrder' in fs:
+        # JASS requires callees and callback functions before their callers.
+        # HoldsItem is a native-only scan; place it and the new helpers before
+        # the existing poll/registration functions without moving game logic.
+        group=['Forsaken_HoldsItem','Integrity_CarryIntoSlot']+list(functions((HERE/'CarryTransferUI.j').read_text().split('// FUNCTIONS\n',1)[1]))
+        blocks=[]
+        for name in group:
+            blocks.append(functions(source)[name].strip())
+            source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
+        source=source.replace('function Forsaken_PollPanels takes','\n\n'.join(blocks)+'\n\nfunction Forsaken_PollPanels takes',1)
+        source=re.sub(r'\n{3,}','\n\n',source)
     return source
