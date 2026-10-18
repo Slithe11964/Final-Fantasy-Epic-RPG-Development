@@ -67,7 +67,7 @@ function CarryUI_ShowAccess takes boolean visible,framehandle anchor returns not
     call BlzFrameSetVisible(CarryUIButton,visible)
     if visible and anchor!=null then
         call BlzFrameClearAllPoints(CarryUIButton)
-        call BlzFrameSetPoint(CarryUIButton,FRAMEPOINT_TOPRIGHT,anchor,FRAMEPOINT_TOPRIGHT,-.010,-.076)
+        call BlzFrameSetPoint(CarryUIButton,FRAMEPOINT_BOTTOMRIGHT,anchor,FRAMEPOINT_BOTTOMRIGHT,-.010,.042)
     elseif not visible then
         call CarryUI_Close()
     endif

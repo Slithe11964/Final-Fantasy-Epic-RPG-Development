@@ -39,6 +39,10 @@ def refresh(source):
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
         'boolean ForsakenTalentsWanted=true':'ForsakenTalentsWanted',
         'boolean ForsakenInventoryBinding=false':'ForsakenInventoryBinding',
+        'boolean ForsakenBackpackKeyHeld=false':'ForsakenBackpackKeyHeld',
+        'integer ForsakenInventoryBindPhase=0':'ForsakenInventoryBindPhase',
+        'unit ForsakenInventoryBindHero=null':'ForsakenInventoryBindHero',
+        'real ForsakenInventoryBindUntil=0.':'ForsakenInventoryBindUntil',
         'real ForsakenLastToggleTime=-1.':'ForsakenLastToggleTime',
         'integer ForsakenLastToggleSource=0':'ForsakenLastToggleSource',
         'trigger ForsakenBackpackToggleEvents=null':'ForsakenBackpackToggleEvents',
@@ -115,6 +119,12 @@ def refresh(source):
     if 'OSKEY_B,0,true' not in body:
         line='        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)'
         body=body.replace(line,line+'\n        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)',1)
+    # A held key repeats key-down events. Releases with modifiers must also
+    # clear the latch (including Alt held while switching windows).
+    for modifier in range(16):
+        line=f'        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,{modifier},false)'
+        if line not in body:
+            body=body.replace('        set i=i+1',line+'\n        set i=i+1',1)
     source=put(source,name,body)
     name='Forsaken_PanelClick';body=functions(source).get(name)
     if body:

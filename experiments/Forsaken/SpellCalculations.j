@@ -5,9 +5,22 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
     local integer row=LoadInteger(SpellCalcData,raw,-1)
     local integer choice=LoadInteger(SpellCalcData,raw,-2)
     local real rate
+    local integer chakraRank
+    local integer multiplier
     if not SpellCalcHidden[GetPlayerId(GetLocalPlayer())] then
         set tip=tip+LoadStr(SpellCalcData,raw,100+rank)
-        if raw=='A00M' or raw=='A10K' then
+        if raw=='A01M' or raw=='A0O8' then
+            set chakraRank=GetUnitAbilityLevel(hero,'A01M')
+            if chakraRank<=0 then
+                set multiplier=8
+            elseif chakraRank>=11 then
+                set multiplier=15
+            else
+                set multiplier=chakraRank+2
+            endif
+            set amount=I2R((IMaxBJ(GetUnitLevel(hero)*3,GetHeroStr(hero,true))+300)*multiplier/2)
+            set tip=tip+"|nOn yourself: "+R2SW(amount,1,0)+" base HP and "+R2SW(amount*.25,1,0)+" base MP, before recovery modifiers."
+        elseif raw=='A00M' or raw=='A10K' then
             set amount=(I2R(mana)*5.+I2R(GetHeroInt(hero,true))*5.)*Prof_StaffPower(hero)
             set tip=tip+"|nCurrent caster: "+R2SW(amount,1,0)+" HP on impact; "+R2SW(amount*.25,1,0)+" HP along the path."
         elseif raw=='A04O' or raw=='A03O' or raw=='A05A' then
@@ -56,6 +69,11 @@ function SpellCalc_Update takes nothing returns nothing
             exitwhen i>=SpellCalcCount
             set raw=SpellCalcRaw[i]
             set rank=GetUnitAbilityLevel(hero,raw)
+            // Summon commands have their own single-rank tooltips. Update the
+            // local object text even though this hero does not own the command.
+            if rank<=0 and LoadInteger(SpellCalcData,raw,-3)==1 then
+                set rank=1
+            endif
             if rank>0 then
                 set tip=SpellCalc_Tooltip(hero,raw,rank)
                 if not HaveSavedInteger(SpellCalcLast,raw,rank) or LoadInteger(SpellCalcLast,raw,rank)!=StringHash(tip) or LoadInteger(SpellCalcLast,raw,rank+100)!=StringLength(tip) then

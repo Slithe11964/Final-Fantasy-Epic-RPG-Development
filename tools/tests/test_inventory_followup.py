@@ -13,6 +13,11 @@ from equipment_integrity import refresh
 HERE=ROOT/'experiments/Forsaken'
 
 class InventoryFollowupTests(unittest.TestCase):
+    def test_transfer_access_is_above_bottom_right_equipment_slots(self):
+        body=functions((HERE/'CarryTransferUI.j').read_text())['CarryUI_ShowAccess']
+        self.assertIn('FRAMEPOINT_BOTTOMRIGHT,anchor,FRAMEPOINT_BOTTOMRIGHT,-.010,.042',body)
+        self.assertNotIn('FRAMEPOINT_TOPRIGHT',body)
+
     def test_duration_uses_rank_base_and_identical_reductions_without_remaining_time(self):
         s=(HERE/'SharedItemDuration.j').read_text();buffs=set();agi=[1000.];seen=[];rank=[0]
         env=mocks(s);env.update(Abil_GetLevel=lambda *a:rank[0],GetUnitAbilityLevel=lambda u,r:int(r in buffs),

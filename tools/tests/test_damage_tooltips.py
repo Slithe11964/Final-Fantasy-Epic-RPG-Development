@@ -20,7 +20,7 @@ class DamageTooltipTests(unittest.TestCase):
         cls.config=catalogue(*(cls.view.object_bytes(n) for n in ['war3map.w3a','war3mapSkin.w3a','war3map.w3t','war3mapSkin.w3t']))
 
     def test_all_requested_skills_and_each_rank_have_damage_details(self):
-        self.assertEqual(len(set(KINDS.values())),40)
+        self.assertEqual(len(set(KINDS.values())),46)
         for name in ['war3map.w3a','war3mapSkin.w3a']:
             updated=abilities(self.view.object_bytes(name),self.config)
             self.assertEqual(abilities(updated,self.config),updated)
@@ -35,7 +35,7 @@ class DamageTooltipTests(unittest.TestCase):
 
     def test_numeric_mana_terms_follow_actual_rank_and_proxy_waves(self):
         c=self.config
-        for raw,mult in [('A0QS',2),('A13K',3),('A0QQ',4),('A18P',10),('A039',6)]:
+        for raw,mult in [('A0P7',5),('A0QS',2),('A13K',3),('A0QQ',4),('A18P',10),('A039',6)]:
             f=fields(c['abilities'][raw])
             for rank in [1,f.get(('alev',0),1)]:
                 self.assertIn(str(int(at(f,'amcs',rank,0))*mult),details(raw,rank,c))
@@ -52,6 +52,22 @@ class DamageTooltipTests(unittest.TestCase):
         self.assertNotIn('dealing 100 damage',objs['A19R']['aub1',1])
         self.assertIn('up to 15 hits',objs['A0QH']['aub1',11])
         self.assertIn('up to 15 enemy units',objs['A0QF']['aub1',11])
+
+    def test_summon_damage_uses_creature_stats_and_release_current_health(self):
+        c=self.config
+        for raw,mult in [('A13M',4),('A13X',4),('A13Y',4),('A13U',5),('A1F0',5),('A0RM',4),('A0TX',4)]:
+            mana=int(at(fields(c['abilities'][raw]),'amcs',1,0))
+            tip=details(raw,1,c);self.assertIn(str(mana*mult),tip)
+            self.assertIn('base attack damage',tip)
+        for raw in ['A0RK','A14J']:
+            mana=int(at(fields(c['abilities'][raw]),'amcs',1,0))
+            self.assertIn(str(mana//2)+' + floor(summon level / 3)',details(raw,1,c))
+        self.assertIn('Inner Mana spell power',details('A13Y',1,c))
+        self.assertIn('682 range',details('A13U',1,c))
+        self.assertIn('Cannot critically hit',details('A13U',1,c))
+        release=details('A15M',1,c)
+        for word in ['floor(its current HP','256 range','250 range','93.75%-100%','excluded from healing']:
+            self.assertIn(word,release)
 
     def test_no_damage_cost_or_target_data_changes(self):
         for name in ['war3map.w3a','war3mapSkin.w3a']:

@@ -1,6 +1,7 @@
 // Presentation state only. Never use these values to change units/items or send sync data.
 function Forsaken_CloseBackpack takes nothing returns nothing
     set ForsakenBackpackWanted=false
+    set ForsakenInventoryBindPhase=0
     set ForsakenBackpackCloseUntil=TimerGetElapsed(ForsakenPanelClock)+.3
     set ForsakenBackpackWasVisible=false
     set ForsakenPanelOpen=false
@@ -35,6 +36,8 @@ function Forsaken_RequestBackpackToggle takes integer source returns nothing
         set ForsakenBackpackWanted=true
         set ForsakenBackpackCloseUntil=0.
         set ForsakenFrameSearchRequested=true
+        set ForsakenInventoryBindPhase=0
+        set ForsakenNextBagSearch=now+.15
     endif
 endfunction
 
@@ -56,8 +59,15 @@ function Forsaken_BackpackAccess takes player viewer,unit hero returns nothing
     endif
     if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
         call Forsaken_CloseBackpack()
-    elseif BlzGetTriggerPlayerKey()==OSKEY_B and hero!=null and IsUnitSelected(hero,viewer) then
-        call Forsaken_RequestBackpackToggle(1)
+    elseif BlzGetTriggerPlayerKey()==OSKEY_B then
+        if not BlzGetTriggerPlayerIsKeyDown() then
+            set ForsakenBackpackKeyHeld=false
+        elseif not ForsakenBackpackKeyHeld then
+            set ForsakenBackpackKeyHeld=true
+            if hero!=null and IsUnitSelected(hero,viewer) then
+                call Forsaken_RequestBackpackToggle(1)
+            endif
+        endif
     endif
 endfunction
 
@@ -99,19 +109,47 @@ endfunction
 function Forsaken_BindInventory takes unit hero returns nothing
     local boolean gearVisible=BlzFrameIsVisible(ForsakenCachedEquipment)
     local boolean bagVisible=BlzFrameIsVisible(ForsakenLinkedBag)
-    // ASpc is the visible Backpack controller; fBag/fGer supply passive data.
-    // Cycle the actual controller to refresh its owner, model and both panes.
-    if gearVisible or bagVisible then
-        call Forsaken_NativeInventoryClick('ASpc')
+    local real now=TimerGetElapsed(ForsakenPanelClock)
+    if ForsakenInventoryBindHero!=hero then
+        set ForsakenInventoryBindHero=hero
+        set ForsakenInventoryBindPhase=0
     endif
-    call Forsaken_NativeInventoryClick('ASpc')
-    call Forsaken_ResolveInventory()
-    if not BlzFrameIsVisible(ForsakenCachedEquipment) or not BlzFrameIsVisible(ForsakenLinkedBag) then
-        call Forsaken_NativeInventoryClick('ASpc')
-        call Forsaken_ResolveInventory()
-    endif
-    if BlzFrameIsVisible(ForsakenCachedEquipment) and BlzFrameIsVisible(ForsakenLinkedBag) then
+    // A real user open already binds the selected hero. Do not click it shut.
+    if ForsakenInventoryBindPhase==0 and ForsakenInventoryHero==null and (gearVisible or bagVisible) then
         set ForsakenInventoryHero=hero
+        return
+    endif
+    if now<ForsakenNextBagSearch then
+        return
+    endif
+    if ForsakenInventoryBindPhase==0 then
+        if gearVisible or bagVisible then
+            call Forsaken_NativeInventoryClick('ASpc')
+            set ForsakenInventoryBindPhase=1
+        else
+            call Forsaken_NativeInventoryClick('ASpc')
+            set ForsakenInventoryBindPhase=2
+            set ForsakenInventoryBindUntil=now+1.
+        endif
+        set ForsakenNextBagSearch=now+.15
+    elseif ForsakenInventoryBindPhase==1 then
+        // Native commands can finish after BlzFrameClick returns. Yield a frame
+        // between close, open and resolution instead of cycling in one callback.
+        call Forsaken_NativeInventoryClick('ASpc')
+        set ForsakenInventoryBindPhase=2
+        set ForsakenInventoryBindUntil=now+1.
+        set ForsakenNextBagSearch=now+.15
+    elseif ForsakenInventoryBindPhase==2 then
+        call Forsaken_ResolveInventory()
+        if BlzFrameIsVisible(ForsakenCachedEquipment) or BlzFrameIsVisible(ForsakenLinkedBag) then
+            set ForsakenInventoryHero=hero
+            set ForsakenInventoryBindPhase=0
+        elseif now>=ForsakenInventoryBindUntil then
+            // Stop retrying. A deliberate open/refresh can try again.
+            set ForsakenInventoryBindPhase=3
+        else
+            set ForsakenNextBagSearch=now+.1
+        endif
     endif
 endfunction
 
@@ -135,15 +173,14 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
     set visible=BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)
     if ForsakenBackpackWanted and hero!=null then
         if ForsakenInventoryHero!=hero then
-            if now>=ForsakenNextBagSearch then
-                set ForsakenNextBagSearch=now+.25
-                call Forsaken_BindInventory(hero)
-                set panel=ForsakenCachedEquipment
-            endif
+            call Forsaken_BindInventory(hero)
+            set panel=ForsakenCachedEquipment
             // A failed native bind must never expose a previous hero's model/items.
             if ForsakenInventoryHero!=hero then
-                call BlzFrameSetVisible(panel,false)
-                call BlzFrameSetVisible(ForsakenLinkedBag,false)
+                if ForsakenInventoryBindPhase!=2 then
+                    call BlzFrameSetVisible(panel,false)
+                    call BlzFrameSetVisible(ForsakenLinkedBag,false)
+                endif
                 set hero=null
                 return false
             endif
@@ -165,7 +202,7 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
 endfunction
 
 function Forsaken_InventoryContext takes unit hero,player viewer returns boolean
-    if hero!=null and IsUnitSelected(hero,viewer) and (ForsakenSelectedTarget==null or ForsakenSelectedTarget==hero) then
+    if hero!=null and IsUnitSelected(hero,viewer) then
         return true
     endif
     // Keep intent, but never show a hero pane while another unit owns the card.
@@ -242,6 +279,9 @@ endfunction
 
 function Forsaken_ResetBackpackControls takes nothing returns nothing
     set ForsakenBackpackWanted=false
+    set ForsakenBackpackKeyHeld=false
+    set ForsakenInventoryBindPhase=0
+    set ForsakenInventoryBindHero=null
     set ForsakenLastToggleSource=0
     set ForsakenLastToggleTime=-1.
     if ForsakenBackpackToggleEvents!=null then
@@ -278,7 +318,9 @@ function Forsaken_RegisterBackpackActivity takes nothing returns nothing
         set ForsakenBackpackToggleEvents=CreateTrigger()
         set ForsakenBackpackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('ASpc')*4+BlzGetAbilityPosX('ASpc'))
         set ForsakenGearCommand=null
-        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_CONTROL_CLICK)
+        // Mouse-only input: a native hotkey or scripted BlzFrameClick must not
+        // become a second user toggle after the key handler or binding pass.
+        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_MOUSE_UP)
         call TriggerAddAction(ForsakenBackpackToggleEvents,function Forsaken_BackpackToggleAction)
     endif
     if ForsakenBackpackEvents==null then
@@ -307,6 +349,7 @@ endfunction
 function Forsaken_RequestInventoryRefresh takes unit hero returns nothing
     if hero==Player_GetHero(GetLocalPlayer()) and ForsakenBackpackWanted then
         set ForsakenInventoryHero=null
+        set ForsakenInventoryBindPhase=0
         set ForsakenFrameSearchRequested=true
         set ForsakenNextBagSearch=0.
     endif

@@ -1,31 +1,40 @@
 """One local tooltip writer; authored descriptions plus optional calculation sections."""
 from pathlib import Path
 import re
-from damage_tooltips import KINDS,MARK,FOOT,description,details
+from damage_tooltips import KINDS,SUMMONS,MARK,FOOT,description,details
 from priest_master import fields,at,setf
 from objdata import read_objects,write_objects
 from jtok import functions
 from performance_runtime import put
 from player_commands import quote
 
-HEALS={'A00M','A10K','A0OM','A0PC','A089','A06Q','A00L','A04O','A03O','A05A','A0Z3','A0DG','A03L','A0Z4','A07J'}
+HEALS={'A00M','A10K','A0OM','A0PC','A089','A06Q','A00L','A04O','A03O','A05A','A0Z3','A0DG','A03L','A0Z4','A07J','A01M','A0O8'}
+EFFECTS={'A0IG'}
 TALENTS={'A00G':(1,1),'A0TZ':(1,2),'A00M':(1,3),'A0OM':(2,1),'A0W9':(2,2),'A00L':(2,3)}
 HMARK='|n|n|cffffcc00Healing calculations|r|n'
+EMARK='|n|n|cffffcc00Evasion calculations|r|n'
 
 
 def catalogue(damage):
     result={}
-    for raw in sorted(set(KINDS)|HEALS|set(TALENTS)):
+    for raw in sorted(set(KINDS)|HEALS|EFFECTS|set(TALENTS)):
         if raw not in damage['abilities']:continue
         f=fields(damage['abilities'][raw]);ranks={}
         for rank in range(1,int(f.get(('alev',0),1))+1):
-            base=str(at(f,'aub1',rank,'')).split(MARK)[0].split(HMARK)[0]
+            base=str(at(f,'aub1',rank,'')).split(MARK)[0].split(HMARK)[0].split(EMARK)[0]
             calc=''
             if raw in KINDS:
                 base=description(raw,rank,base,damage);calc=MARK+details(raw,rank,damage)+FOOT
             mana=int(at(f,'amcs',rank,0))
+            if raw=='A0IG':
+                calc=EMARK+('Physical evasion +40. After normal low-hit-chance adjustments, incoming physical hit chance is multiplied by 0.8 (20% lower) when it is at least 2%. '
+                    f'Lasts {float(at(f,"adur",rank,6.)):g} seconds. Magical hit chance is unchanged; this is not a flat 40% dodge chance.')
             if raw in HEALS:
-                if raw in {'A00M','A10K'}:calc=f'(5 x {mana} mana cost + 5 x caster Intelligence) x Staff power HP on impact. Units along the path receive 25%. Target healing modifiers apply.'
+                if raw in {'A01M','A0O8'}:
+                    mult=str(15 if rank>=11 else rank+2) if raw=='A01M' else 'M'
+                    calc=f'Base HP restored = floor[(max(3 x target level, target Strength) + 300) x {mult} / 2]. Base MP restored = 25% of that HP amount. Target recovery modifiers apply after this calculation.'
+                    if raw=='A0O8':calc+=' M = learned Chakra rank + 2, or 15 at master rank; 8 if the caster has no learned Chakra.'
+                elif raw in {'A00M','A10K'}:calc=f'(5 x {mana} mana cost + 5 x caster Intelligence) x Staff power HP on impact. Units along the path receive 25%. Target healing modifiers apply.'
                 elif raw=='A0OM':
                     rate=float(at(f,'Etq1',rank,50.))/float(at(f,'Etq2',rank,.1))
                     base=re.sub(r'by [0-9,]+ HP per second',f'by {rate:g} HP per second',base)
@@ -63,6 +72,7 @@ def runtime(source,config):
             lines += [f"    call SaveStr(SpellCalcData,'{raw}',{rank},{quote(base)})",f"    call SaveStr(SpellCalcData,'{raw}',{100+rank},{quote(calc)})"]
         row,choice=TALENTS.get(raw,(0,0))
         lines += [f"    call SaveInteger(SpellCalcData,'{raw}',-1,{row})",f"    call SaveInteger(SpellCalcData,'{raw}',-2,{choice})"]
+        if raw in SUMMONS:lines.append(f"    call SaveInteger(SpellCalcData,'{raw}',-3,1)")
     lines.append('    set SpellCalcCount='+str(len(config)))
     chunks=[lines[i:i+100] for i in range(0,len(lines),100)]
     helpers='\n\n'.join('function SpellCalc_Data'+str(i)+' takes nothing returns nothing\n'+'\n'.join(chunk)+'\nendfunction' for i,chunk in enumerate(chunks))

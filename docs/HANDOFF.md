@@ -6,7 +6,22 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-18)
 
-PAIR031 is the latest test pair, installed and hash-verified in Warcraft
+PAIR032 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Follows the user's PAIR031 flickering report (temporarily
+improved by alt-tab). B input latches until release; mouse-up is separate from
+native/scripted command clicks. Already user-opened native panes are adopted;
+hero rebind waits between native close/open/resolve and stops on timeout instead
+of repeatedly clicking. Actual selection wins over stale selection-event cache.
+Move to hero is now at the lower right above ring/offhand. Both profiles gain
+optional current-rank calculations for Armor Breaker, Chakra, Mirage and summon
+Mega/Giga/Tera Flare, Hellfire, Final Smash, Diamond Dust and Release. Summon
+commands honor calculation visibility even when the hero lacks those abilities.
+All paired gates and final archive checks passed; editor master unchanged.
+Engine acceptance is pending, especially backpack B/mouse/held-key/alt-tab,
+linked panes after drop/use/job changes, lower transfer button and new tooltips.
+See PAIR032_BACKPACK_INPUT_AND_CALCULATIONS.md. No combat/save changes.
+
+PAIR031 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Native shared item cooldowns snapshot one current-rank,
 adjusted duration for the visible cooldown and shared deadline; rejected casts
 do not extend it. The remaining-time message reports seconds. Native inventory

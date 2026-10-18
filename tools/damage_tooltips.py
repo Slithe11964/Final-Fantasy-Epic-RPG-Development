@@ -10,6 +10,9 @@ from jtok import functions
 from performance_runtime import put
 
 GROUPS={
+ 'armor':'A0P7',
+ 'bahamut_flare':'A13M A13X A13Y', 'hellfire':'A0RK A14J',
+ 'final_smash':'A13U A1F0', 'diamond_dust':'A0RM A0TX', 'release':'A15M',
  'fan':'A0QS', 'knot':'A0SP A17D A0SQ', 'shock':'A13K A15A',
  'rapid':'A0AE', 'arrows':'A0QQ', 'myriad':'A0R0',
  'wave':'A01L A0ZN', 'rave':'A0QO', 'gaya':'A05P', 'gaya_limit':'A0TR',
@@ -28,6 +31,7 @@ GROUPS={
  'holy':'A04K A01V A0E5 A11X A0UE A0XI A0CY A11L', 'oblivion':'A0ZV',
 }
 KINDS={raw:kind for kind,raws in GROUPS.items() for raw in raws.split()}
+SUMMONS={raw for kind in ['bahamut_flare','hellfire','final_smash','diamond_dust','release'] for raw in GROUPS[kind].split()}
 MARK='|n|n|cffffcc00Damage details|r|n'
 FOOT='|nSTR/AGI/INT include bonuses. Mana fraction = current MP / maximum MP at cast time. Values are before damage bonuses, defenses and hit rolls; integer divisions round down.'
 
@@ -67,6 +71,17 @@ def spell(base,proficiency,weight=.5):
 def details(raw,rank,config):
     kind=KINDS[raw];a=config['abilities'];f=fields(a[raw]);mana=int(at(f,'amcs',rank,0))
     proxy=lambda r,k,level=1,default=0:at(fields(a[r]),k,level,default)
+    if kind=='armor':return 'Physical damage: '+technique(f'({mana*5} + 3 x STR)','Sword')+' Armor is reduced before this hit is resolved.'
+    if kind=='bahamut_flare':return ('Non-elemental damage to each enemy: '+spell(f'({mana*4} + 4 x D)','Inner Mana',1.)+
+        ' D = summoned creature base attack damage from its active weapon. If cast by a hero, replace 4 x D with 5 x INT.')
+    if kind=='hellfire':return (f'Fire damage per area pulse: {mana//2} + floor(summon level / 3) + floor(D / 3). '
+        'D = summoned creature base attack damage from its active weapon. Seven fire areas can hit separately. If cast by a hero, replace floor(D / 3) with INT.')
+    if kind=='final_smash':return (f'Earth physical damage to each enemy within 682 range: {mana*5} + 5 x D. '
+        'D = summoned creature base attack damage from its active weapon. Cannot critically hit. If cast by a hero, replace 5 x D with 6 x STR.')
+    if kind=='diamond_dust':return (f'Ice damage per cone hit or burn pulse: {mana*4} + floor(summon level / 4) + floor(D / 2). '
+        'D = summoned creature base attack damage from its active weapon. If cast by a hero, replace floor(D / 2) with 3 x INT.')
+    if kind=='release':return ('Sacrifices the corpse. Base spell damage to enemies within 256 range = floor(its current HP at release), before damage modifiers. '
+        'Allies within 250 range independently recover 93.75%-100% of floor(its current HP), capped by missing HP. Other exploding corpses are excluded from healing.')
     if kind=='fan':return 'Damage to each enemy: '+technique(f'({mana*2} + 4 x AGI)','Dagger')
     if kind=='knot':return 'Damage: '+technique(f'({mana*4} + floor(20% of current HP))','Tools')
     if kind=='shock':return 'Thunder damage to each enemy: '+technique(f'({mana*3} + 4 x STR)','combined Sword/Axe')+' Combined proficiency is effective Sword plus Axe proficiency.'

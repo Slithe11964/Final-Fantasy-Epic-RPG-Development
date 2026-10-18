@@ -5,7 +5,7 @@ import sys,unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from editor_pair import View
 from damage_tooltips import catalogue as damage_catalogue
-from spell_calculations import catalogue,HMARK,TALENTS,objects
+from spell_calculations import catalogue,HMARK,EMARK,TALENTS,objects
 from legend_progress import refresh
 from player_commands import legend_data,refresh as commands
 from jtok import functions
@@ -32,6 +32,7 @@ class PlayerCommandTests(unittest.TestCase):
         s=(ROOT/'experiments/Forsaken/SpellCalculations.j').read_text();active=[False];viewer=[0]
         env=mocks(s);env.update(SpellCalcData='tips',SpellCalcHidden=defaultdict(bool),
             GetPlayerId=lambda p:p,GetLocalPlayer=lambda:viewer[0],GetHeroInt=lambda *a:90,
+            GetHeroStr=lambda *a:100,GetUnitLevel=lambda *a:99,IMaxBJ=max,GetUnitAbilityLevel=lambda *a:1,
             BlzGetAbilityManaCost=lambda *a:100,Prof_StaffPower=lambda *a:2.,I2R=float,R2I=int,
             R2SW=lambda n,*a:format(n,'.0f'),PriestRegenDuration={1:12.},
             PriestRainHealing={1:50.,6:400.},PriestRainPeriod={1:.125,6:.125},
@@ -53,7 +54,7 @@ class PlayerCommandTests(unittest.TestCase):
 
     def test_toggle_is_per_player_and_hides_healing_and_damage_calculations(self):
         e,active,viewer=self.tooltip_runtime();e['SpellCalcHidden'][0]=True
-        for raw in ['A04O','A0Z3','A0Z4','A0QS','A00L']:
+        for raw in ['A04O','A0Z3','A0Z4','A0QS','A00L','A01M','A0O8','A0P7','A0IG','A13Y','A15M']:
             tip=e['SpellCalc_Tooltip']('hero',raw,1)
             self.assertNotIn('calculations',tip);self.assertNotIn('Damage details',tip)
             viewer[0]=1;tip=e['SpellCalc_Tooltip']('hero',raw,1)
@@ -68,6 +69,37 @@ class PlayerCommandTests(unittest.TestCase):
         updated=objects(self.view.object_bytes('war3map.w3a'),self.config)
         indexed={o['id']:fields(o) for o in read_objects(updated,'w3a')['custom']}
         self.assertIn(HMARK,indexed['A04O']['aub1',1]);self.assertNotIn('Acid Rain',indexed['A0OM']['aub1',6])
+
+    def test_chakra_target_formula_and_self_preview_follow_actual_learned_rank(self):
+        self.assertIn('x 3 / 2',self.config['A01M'][1][1])
+        self.assertIn('x 15 / 2',self.config['A01M'][11][1])
+        self.assertIn('Base MP restored = 25%',self.config['A01M'][11][1])
+        self.assertIn('8 if the caster has no learned Chakra',self.config['A0O8'][1][1])
+        e,_,_=self.tooltip_runtime()
+        for rank,wanted in [(0,2388),(1,895),(11,4477)]:
+            e['GetUnitAbilityLevel']=lambda *a:rank
+            self.assertIn('On yourself: '+str(wanted)+' base HP',e['SpellCalc_Tooltip']('hero','A0O8',1))
+
+    def test_mirage_uses_actual_hit_formula_and_rank_duration(self):
+        for rank,seconds in [(1,6),(11,30)]:
+            base,calc=self.config['A0IG'][rank]
+            self.assertIn('Gives the target unit afterimages',base)
+            self.assertTrue(calc.startswith(EMARK));self.assertIn('Physical evasion +40',calc)
+            self.assertIn('multiplied by 0.8',calc);self.assertIn('at least 2%',calc)
+            self.assertIn('Lasts '+str(seconds)+' seconds',calc)
+
+    def test_summon_calculations_toggle_even_when_hero_does_not_own_the_command(self):
+        e,_,_=self.tooltip_runtime();writes=[]
+        e.update(SpellCalcCount=1,SpellCalcRaw={0:'A13Y'},SpellCalcLast='last',PriestTooltipOffset=0,
+            GetUnitAbilityLevel=lambda *a:0,Player_GetHero=lambda *a:'hero',
+            LoadInteger=lambda h,r,k:1 if k==-3 else 0,
+            HaveSavedInteger=lambda *a:False,SaveInteger=lambda *a:None,
+            StringHash=hash,StringLength=len,BlzSetAbilityExtendedTooltip=lambda *a:writes.append(a))
+        s=(ROOT/'experiments/Forsaken/SpellCalculations.j').read_text()
+        e=execute(s,['SpellCalc_Update'],e);e['SpellCalc_Update']()
+        self.assertIn('Inner Mana spell power',writes[-1][1])
+        e['SpellCalcHidden'][0]=True;e['SpellCalc_Update']()
+        self.assertNotIn('Damage details',writes[-1][1]);self.assertIn('Bahamut Zero',writes[-1][1])
 
     def test_long_tooltips_cache_only_fingerprints_and_skip_unchanged_writes(self):
         s=(ROOT/'experiments/Forsaken/SpellCalculations.j').read_text();memo={};writes=[];text=['x'*1100]
