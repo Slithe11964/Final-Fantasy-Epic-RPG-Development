@@ -2198,12 +2198,12 @@ function Priest_RainTick takes nothing returns nothing
                         if IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
                             set udg_IsPureDamage=true
                             if Talent_Active(caster,12,2,1,'A0OM') then
-                                call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
                             else
-                                call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
                             endif
                         elseif Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
-                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
+                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
                         endif
                         // Damage events normally reset this. Also clear after
                         // invulnerable/ignored targets that may emit no event.
@@ -2234,7 +2234,9 @@ function Priest_RainEvent takes nothing returns nothing
             set PriestRainCaster[pid]=caster
             set PriestRainLeft[pid]=PriestRainDuration[rank]
             set PriestRainNext[pid]=PriestRainPeriod[rank]
-            call TimerStart(PriestRainTimer,.1,true,function Priest_RainTick)
+            if PriestRainCount==1 then
+                call TimerStart(PriestRainTimer,.1,true,function Priest_RainTick)
+            endif
         elseif PriestRainCaster[pid]==caster then
             set PriestRainCaster[pid]=null
             set PriestRainCount=PriestRainCount-1
@@ -3812,7 +3814,8 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
         set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         if raw=='A0OM' and not SpellCalcHidden[GetPlayerId(GetLocalPlayer())] then
             set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]*.5+.5))
-            set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec."
+            set tip=tip+"|nEach "+R2SW(PriestRainPeriod[rank],1,1)+" seconds: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP and "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base magic damage."
+            set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec, before target modifiers."
         endif
     endif
     return tip

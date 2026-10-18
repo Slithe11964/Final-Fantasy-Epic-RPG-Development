@@ -6,26 +6,35 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-18)
 
-PAIR029 is the latest test pair, installed and hash-verified in Warcraft
-Maps/Download/TEST. Adds -bazaarreveal, level99 current-job -legendary with green
-completed milestones, and per-player -spellcalculations on/off. Original spell
-prose remains; calculation sections cover 105 ability IDs including Curaga,
-Osmose and Drain. Acid Rain appears only when selected. Tooltip caches store only
-integer fingerprints, avoiding full long strings. Optional section11 saves 23
-completed job trials plus durable Wizard/Calculator elements and Summoner steps;
-fresh-load validation, two-pass capture, per-player recount and rollback included.
-Prior character saves remain accepted; use the updated pair for new saves.
-Native equipment aliases retain equip-slot metadata but permit ordinary-inventory
-drag. Carried quick gear still loses passives and retains actives/save identity.
-Gear-header X and Escape close the pair; Talents remembers its toggle across
-reopen; armory withdrawals request an owning-client native binding refresh.
-Both paired gates PASS: native208/classic308 regressions (10 expected skips),
-compiler/editor/startup/content/save/armory/bazaar checks and classic conversion.
-Final archives/input/tool/output/TEST hashes verified; editor master unchanged.
-Actual engine acceptance pending, especially Holy Book backpack-to-hero drag AND
-normal equipping, X/Escape/Talents persistence, cross-profile milestone save/load
-and independent two-player display toggles. See PLAYER_COMMANDS_AND_LEGENDARY.md.
+PAIR030 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Fixes PAIR029's older-save final readback comparison: existing
+payloads stay exact; the optional trial section alone permits missing defaults
+and already-Legendary trial inference. Real bounded codec rejects unrelated
+profile mutations. Existing local dev.txt (2,053 characters, seven sections)
+passed normalized readback without changing its file. Original saves stay intact.
+Section11 now also persists per-job Proof of Strength, IDs39..61. -legendary shows
+the solo level90+ boss proof and Spring of Life/Grand Crystal Spiritual Ritual.
+Native Backpack/B toggle shared intent; binding clicks are guarded. Talent icons
+have no overlaid names, hover boxes are inset/aligned within the panel, and the
+heading shows earned points /4 plus Novice/Master/Ultimate/Legendary. Locked icons
+remain hoverable; click eligibility remains enforced. Gear drags to empty hero
+slots allocate a carried alias directly, preserving properties and withholding
+passive stats. Acid Rain retains current-rank half-split pulses, master200 HP +
+200 base magic damage each0.1sec; Chaos attack type avoids native attack-table
+scaling, with map magic/healing modifiers retained. A second Priest does not
+restart the active shared timer. Tooltip shows both pulse and per-second amounts.
+Native215 tests (one reference-only skip), classic315 (11 expected skips), all
+compiler/editor/startup/content/save/armory/bazaar gates and conversion PASS.
+Final archives/master/tool/output/TEST hashes verified; editor master unchanged.
+Actual Warcraft acceptance still required: original -loadf, Backpack/B/X/Escape,
+Holy Book/Tournesol drag into empty quick slots plus normal equipping, icon hover,
+and measured Acid Rain with two Priests. See PAIR030_SAVE_UI_FIXES.md.
 The older large-character legacy Warcraft-menu reload issue remains unresolved.
+
+PAIR029 is superseded: its final byte comparison rejected older seven-section
+profiles after adding optional trial progress; PAIR030 corrects this. Other
+PAIR029 commands/calculation sections, persistent Talents preference and open
+armory refresh are retained. See PLAYER_COMMANDS_AND_LEGENDARY.md.
 
 PAIR028 is a previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Resolves the actual native inventory bag frame, links both

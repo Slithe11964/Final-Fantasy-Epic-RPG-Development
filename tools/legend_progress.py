@@ -4,6 +4,7 @@ Optional profile section 11 v1; older profiles omit it. Transient combo/timed
 attempts deliberately restart, while completed tasks and durable steps persist.
 """
 import re
+from pathlib import Path
 from jtok import functions
 from performance_runtime import put
 from gameplay_runtime import dependency
@@ -15,7 +16,7 @@ def refresh(source):
         body=fs['FRC_Section']
         addition='''    elseif (sid == 11) then
         loop
-            exitwhen i>=38
+            exitwhen i>=61
             set tier=0
             if i<23 then
                 if IsPlayerInForce(owner,udg_JobMasterForce[i]) then
@@ -35,7 +36,11 @@ def refresh(source):
                 if IsPlayerInForce(owner,udg_NullElementForce[i-28]) then
                     set tier=1
                 endif
-            elseif IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then
+            elseif i<38 then
+                if IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then
+                    set tier=1
+                endif
+            elseif IsPlayerInForce(owner,udg_QuestForce[i-38]) then
                 set tier=1
             endif
             if tier==1 then
@@ -71,14 +76,14 @@ def refresh(source):
     local integer identity
     local integer value
     call FlushChildHashtable(FSC_Seen,ctx*16+1)
-    if count>38 then
+    if count>61 then
         set FSC_Ok[ctx]=false
     endif
     loop
         exitwhen i>=count or not FSC_Ok[ctx]
         set identity=FSC_Read(ctx)
         set value=FSC_Read(ctx)
-        if identity<1 or identity>38 or value!=1 then
+        if identity<1 or identity>61 or value!=1 then
             set FSC_Ok[ctx]=false
         elseif not FSC_Mark(ctx,1,identity) then
             set FSC_Ok[ctx]=false
@@ -90,7 +95,7 @@ endfunction
 '''
         source=source.replace('function '+name+' takes',helper+'function '+name+' takes',1)
     if 'FFP_ReadSection' in fs and 'sid==11' not in fs['FFP_ReadSection']:
-        body=re.sub(r'^    if (.+) then',lambda m:'    if sid==11 then\n        set maximum=38\n    elseif '+m[1]+' then',fs['FFP_ReadSection'],count=1,flags=re.M)
+        body=re.sub(r'^    if (.+) then',lambda m:'    if sid==11 then\n        set maximum=61\n    elseif '+m[1]+' then',fs['FFP_ReadSection'],count=1,flags=re.M)
         body=re.sub(r'^        if (.+sid.+==.+2.+) then',lambda m:'        if sid==11 and value!=1 then\n            return false\n        endif\n        if '+m[1]+' then',body,count=1,flags=re.M)
         source=put(source,'FFP_ReadSection',body)
         body=re.sub(r'FSC_Count\[ctx\]\s*==\s*7','(FSC_Count[ctx]==7 or FSC_Count[ctx]==8)',fs['FFP_Build'])
@@ -105,15 +110,17 @@ endfunction
     local player owner=Player(pid)
     local force target
     loop
-        exitwhen i>=38
+        exitwhen i>=61
         if i<23 then
             set target=udg_JobMasterForce[i]
         elseif i<29 then
             set target=udg_WeakElementForce[i-22]
         elseif i<35 then
             set target=udg_NullElementForce[i-28]
-        else
+        elseif i<38 then
             set target=udg_EidolonAwardForce[i-35]
+        else
+            set target=udg_QuestForce[i-38]
         endif
         if snapshot then
             call SaveBoolean(FFL_Before,pid*16+11,i,IsPlayerInForce(owner,target))
@@ -156,4 +163,23 @@ endfunction
     endif
 '''+body[at:]
         source=put(source,'FFL_PlayerState',body)
+    # Upgrade already-refreshed editor modules as well as older references.
+    for name in ['FRC_Section','FSC_LegendProgress','FFP_ReadSection','FFL_LegendFlags']:
+        body=functions(source).get(name)
+        if not body:continue
+        body=body.replace('i>=38','i>=61').replace('count>38','count>61').replace('identity>38','identity>61').replace('set maximum=38','set maximum=61')
+        if name=='FRC_Section' and 'udg_QuestForce[i-38]' not in body:
+            body=body.replace('            elseif IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then\n                set tier=1\n            endif','            elseif i<38 then\n                if IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then\n                    set tier=1\n                endif\n            elseif IsPlayerInForce(owner,udg_QuestForce[i-38]) then\n                set tier=1\n            endif')
+        if name=='FFL_LegendFlags' and 'udg_QuestForce[i-38]' not in body:
+            body=body.replace('        else\n            set target=udg_EidolonAwardForce[i-35]\n        endif','        elseif i<38 then\n            set target=udg_EidolonAwardForce[i-35]\n        else\n            set target=udg_QuestForce[i-38]\n        endif')
+        source=put(source,name,body)
+    if 'FFL_Tick' in functions(source):
+        helper=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/LegendReadback.j').read_text()
+        for name,body in functions(helper).items():
+            if name in functions(source):source=put(source,name,body)
+            else:source=source.replace('function FFL_Tick takes',body+'\n\nfunction FFL_Tick takes',1)
+        body=functions(source)['FFL_Tick']
+        body=body.replace('FSS_Equals(FRC_Result[pid],FFP_Code[pid])','FFL_ReadbackMatches(pid,FRC_Result[pid],FFP_Code[pid])')
+        body=body.replace('FRC_Result[pid]==FFP_Code[pid]','FFL_ReadbackMatches(pid,FRC_Result[pid],FFP_Code[pid])')
+        source=put(source,'FFL_Tick',body)
     return source

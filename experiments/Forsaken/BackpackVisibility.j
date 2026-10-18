@@ -21,6 +21,35 @@ function Forsaken_BackpackCloseAction takes nothing returns nothing
     endif
 endfunction
 
+function Forsaken_RequestBackpackToggle takes integer source returns nothing
+    local real now=TimerGetElapsed(ForsakenPanelClock)
+    // One physical hotkey can also dispatch a native command click.
+    if source!=ForsakenLastToggleSource and now-ForsakenLastToggleTime<.15 then
+        return
+    endif
+    set ForsakenLastToggleTime=now
+    set ForsakenLastToggleSource=source
+    if ForsakenBackpackWanted then
+        call Forsaken_CloseBackpack()
+    else
+        set ForsakenBackpackWanted=true
+        set ForsakenBackpackCloseUntil=0.
+        set ForsakenFrameSearchRequested=true
+    endif
+endfunction
+
+function Forsaken_BackpackToggleAction takes nothing returns nothing
+    local unit hero=Player_GetHero(GetTriggerPlayer())
+    local framehandle control=BlzGetTriggerFrame()
+    if GetLocalPlayer()==GetTriggerPlayer() and not ForsakenInventoryBinding and hero!=null and IsUnitSelected(hero,GetTriggerPlayer()) then
+        if (control==ForsakenBackpackCommand and GetUnitAbilityLevel(hero,'fBag')>0) or (control==ForsakenGearCommand and GetUnitAbilityLevel(hero,'fGer')>0) then
+            call Forsaken_RequestBackpackToggle(2)
+        endif
+    endif
+    set hero=null
+    set control=null
+endfunction
+
 function Forsaken_BackpackAccess takes player viewer,unit hero returns nothing
     if GetTriggerEventId()==EVENT_PLAYER_UNIT_SELECTED or GetTriggerEventId()==EVENT_PLAYER_UNIT_DESELECTED then
         return
@@ -28,13 +57,7 @@ function Forsaken_BackpackAccess takes player viewer,unit hero returns nothing
     if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
         call Forsaken_CloseBackpack()
     elseif BlzGetTriggerPlayerKey()==OSKEY_B and hero!=null and IsUnitSelected(hero,viewer) then
-        if ForsakenBackpackWanted then
-            call Forsaken_CloseBackpack()
-        else
-            set ForsakenBackpackWanted=true
-            set ForsakenBackpackCloseUntil=0.
-            set ForsakenFrameSearchRequested=true
-        endif
+        call Forsaken_RequestBackpackToggle(1)
     endif
 endfunction
 
@@ -65,7 +88,9 @@ function Forsaken_NativeInventoryClick takes integer raw returns nothing
     if x>=0 and x<4 and y>=0 and y<3 then
         set control=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,y*4+x)
         if control!=null and BlzFrameIsVisible(control) and BlzFrameGetEnable(control) then
+            set ForsakenInventoryBinding=true
             call BlzFrameClick(control)
+            set ForsakenInventoryBinding=false
         endif
     endif
     set control=null
@@ -226,6 +251,14 @@ endfunction
 
 function Forsaken_ResetBackpackControls takes nothing returns nothing
     set ForsakenBackpackWanted=false
+    set ForsakenLastToggleSource=0
+    set ForsakenLastToggleTime=-1.
+    if ForsakenBackpackToggleEvents!=null then
+        call DestroyTrigger(ForsakenBackpackToggleEvents)
+        set ForsakenBackpackToggleEvents=null
+    endif
+    set ForsakenBackpackCommand=null
+    set ForsakenGearCommand=null
     set ForsakenBackpackCloseUntil=0.
     set ForsakenBackpackWasVisible=false
     set ForsakenBackpackHookRoot=null
@@ -250,6 +283,14 @@ function Forsaken_ResetBackpackControls takes nothing returns nothing
 endfunction
 
 function Forsaken_RegisterBackpackActivity takes nothing returns nothing
+    if ForsakenBackpackToggleEvents==null then
+        set ForsakenBackpackToggleEvents=CreateTrigger()
+        set ForsakenBackpackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('fBag')*4+BlzGetAbilityPosX('fBag'))
+        set ForsakenGearCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('fGer')*4+BlzGetAbilityPosX('fGer'))
+        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_CONTROL_CLICK)
+        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenGearCommand,FRAMEEVENT_CONTROL_CLICK)
+        call TriggerAddAction(ForsakenBackpackToggleEvents,function Forsaken_BackpackToggleAction)
+    endif
     if ForsakenBackpackEvents==null then
         set ForsakenBackpackEvents=CreateTrigger()
         call TriggerRegisterAnyUnitEventBJ(ForsakenBackpackEvents,EVENT_PLAYER_UNIT_DROP_ITEM)

@@ -139,7 +139,7 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
     set FSC_Ok[ctx]=true
     set count=FSC_Read(ctx)
     if sid==11 then
-        set maximum=38
+        set maximum=61
     elseif (sid == 2) then
         set maximum=22
     elseif ((sid == 4) or (sid == 6)) then

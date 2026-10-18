@@ -32,6 +32,20 @@ class PriestMasterTests(unittest.TestCase):
         self.assertTrue(e['Talent_Choose'](0,2,1));self.assertFalse(e['Talent_Choose'](0,2,2))
         e['Talent_ResetJob'](0);self.assertTrue(e['Talent_Choose'](0,2,3))
 
+    def test_native_icons_only_header_and_inset_hover_are_idempotent(self):
+        p=ROOT/'release/pairs/PAIR029/FFERPG-PAIR029-Forsaken.w3x'
+        if not p.exists():self.skipTest('native reference absent in isolated legacy workspace')
+        base=View(p).modules['TEquip'];updated=refresh(base,self.config,native=True)
+        self.assertEqual(refresh(updated,self.config,native=True),updated)
+        fs=functions(updated);draw=fs['Forsaken_DrawPanels'];register=fs['Register_Forsaken_PanelAccess']
+        self.assertIn('I2S(rank)+" / 4 earned     Level "+mastery',draw)
+        self.assertIn('local string mastery="Novice"',draw)
+        import re
+        self.assertTrue(all(x=='""' for x in re.findall(r'BlzFrameSetText\(ForsakenTalentLabel\[node\],([^\n]*)\)',draw)))
+        self.assertIn('TalentName[Talent_Index(job,node/3+1,column+1)]',draw)
+        self.assertIn('ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.006,-.17',register)
+        self.assertIn('BlzFrameSetSize(ForsakenTalentDescription[node],.197,.082)',register)
+
     def test_swift_engine_duration_halves_every_rank_without_changing_healing(self):
         blob=self.view.object_bytes('war3map.w3a');out=objects(blob,self.config)
         self.assertEqual(objects(out,self.config),out)
@@ -91,7 +105,7 @@ class PriestMasterTests(unittest.TestCase):
             GroupEnumUnitsInRange=lambda g,*a:g.extend(['enemy','ally','immune','dead']),
             FirstOfGroup=lambda g:g[0] if g else None,GroupRemoveUnit=lambda g,u:g.remove(u),
             IsUnitEnemy=lambda u,p:u!='ally',IsUnitAlly=lambda u,p:u=='ally',IsUnitType=lambda u,t:u=='immune' and t==0,UNIT_TYPE_MAGIC_IMMUNE=0,UNIT_TYPE_STRUCTURE=1,DAMAGE_TYPE_UNIVERSAL=1,
-            ATTACK_TYPE_NORMAL=0,DAMAGE_TYPE_MAGIC=0,WEAPON_TYPE_WHOKNOWS=0,
+            ATTACK_TYPE_CHAOS=2,ATTACK_TYPE_NORMAL=0,DAMAGE_TYPE_MAGIC=0,WEAPON_TYPE_WHOKNOWS=0,
             UnitDamageTarget=lambda c,u,n,*a:damage.append((u,n)),PauseTimer=lambda t:paused.append(t))
         e=execute(s,['Priest_RainTick'],env)
         e['UnitDamageTarget']=lambda c,u,n,*a:(damage.append((u,n)),flags.append((u,e['udg_IsPureDamage'])))
@@ -99,7 +113,9 @@ class PriestMasterTests(unittest.TestCase):
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),250.);self.assertEqual(sum(n for u,n in damage if u=='ally'),250.)
         self.assertTrue(all(flag==(u=='ally') for u,flag in flags));self.assertFalse(e['udg_IsPureDamage'])
         damage.clear();rank[0]=6
-        for _ in range(10):e['Priest_RainTick']()
+        for _ in range(10):
+            before=len(damage);e['Priest_RainTick']()
+            self.assertEqual(damage[before:],[('enemy',200.),('ally',200.)])
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),2000.)
         self.assertEqual(sum(n for u,n in damage if u=='ally'),2000.)
         damage.clear();active[0]=False

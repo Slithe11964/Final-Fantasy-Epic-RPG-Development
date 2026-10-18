@@ -53,6 +53,7 @@ function Legend_Command takes nothing returns nothing
             set done=true
         endif
         call DisplayTimedTextToPlayer(viewer,0,0,35,"|cffffcc00Legendary "+udg_JobName[job]+"|r")
+        call Legend_Line(viewer,"Proof of Strength: defeat a level 90+ boss solo on this job.",IsPlayerInForce(viewer,udg_QuestForce[job]) or GetUnitAbilityLevel(hero,'A02F')>=4)
         call Legend_Line(viewer,LegendTaskText[job],done)
         if job==11 or job==17 then
             set i=1
@@ -76,6 +77,7 @@ function Legend_Command takes nothing returns nothing
             call Legend_Line(viewer,"Ifrit: normal attack for at least 10,000 damage",done or IsPlayerInForce(viewer,udg_EidolonAwardForce[1]))
             call Legend_Line(viewer,"Cyclops: normal attack for at least 10,000 damage",done or IsPlayerInForce(viewer,udg_EidolonAwardForce[2]))
         endif
+        call Legend_Line(viewer,"Spiritual Ritual: bring a Grand Crystal into the Spring of Life after completing both proofs.",GetUnitAbilityLevel(hero,'A02F')>=4)
     endif
     set hero=null
     set viewer=null

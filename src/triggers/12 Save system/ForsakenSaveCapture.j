@@ -357,7 +357,7 @@ function FRC_Section takes integer pid,integer sid returns string
         return FSS_Concat(FSC_Uint(count),body)
     elseif (sid == 11) then
         loop
-            exitwhen i>=38
+            exitwhen i>=61
             set tier=0
             if i<23 then
                 if IsPlayerInForce(owner,udg_JobMasterForce[i]) then
@@ -377,7 +377,11 @@ function FRC_Section takes integer pid,integer sid returns string
                 if IsPlayerInForce(owner,udg_NullElementForce[i-28]) then
                     set tier=1
                 endif
-            elseif IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then
+            elseif i<38 then
+                if IsPlayerInForce(owner,udg_EidolonAwardForce[i-35]) then
+                    set tier=1
+                endif
+            elseif IsPlayerInForce(owner,udg_QuestForce[i-38]) then
                 set tier=1
             endif
             if tier==1 then

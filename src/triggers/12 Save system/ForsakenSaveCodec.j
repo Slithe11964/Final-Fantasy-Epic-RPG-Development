@@ -996,14 +996,14 @@ function FSC_LegendProgress takes integer ctx returns nothing
     local integer identity
     local integer value
     call FlushChildHashtable(FSC_Seen,ctx*16+1)
-    if count>38 then
+    if count>61 then
         set FSC_Ok[ctx]=false
     endif
     loop
         exitwhen i>=count or not FSC_Ok[ctx]
         set identity=FSC_Read(ctx)
         set value=FSC_Read(ctx)
-        if identity<1 or identity>38 or value!=1 then
+        if identity<1 or identity>61 or value!=1 then
             set FSC_Ok[ctx]=false
         elseif not FSC_Mark(ctx,1,identity) then
             set FSC_Ok[ctx]=false

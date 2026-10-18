@@ -83,7 +83,7 @@ class PlayerCommandTests(unittest.TestCase):
 
     def test_legend_validation_rejects_bad_flags_duplicates_and_bounds(self):
         s=source('ForsakenSaveCodec')
-        for values,wanted in [([2,1,1,38,1],True),([1,39,1],False),([1,1,2],False),([2,1,1,1,1],False),([39],False)]:
+        for values,wanted in [([2,1,1,38,1],True),([1,62,1],False),([1,1,2],False),([2,1,1,1,1],False),([62],False)]:
             queue=list(values);seen=set();ok=defaultdict(lambda:True)
             env=mocks(s);env.update(FSC_Ok=ok,FSC_Seen='seen',FSC_Read=lambda ctx:queue.pop(0) if queue else 0,
                 FlushChildHashtable=lambda *a:seen.clear(),FSC_Mark=lambda c,p,i:False if i in seen else (seen.add(i) or True))
@@ -112,7 +112,7 @@ class PlayerCommandTests(unittest.TestCase):
         s=source('ForsakenFreshLoad');membership={(0,'job2'),(0,'weak1'),(0,'weak6'),(0,'null2'),(0,'summon2')};before={};saved={3:1,24:1,29:1,31:1,38:1}
         env=mocks(s);env.update(Player=lambda p:p,udg_JobMasterForce={i:'job'+str(i) for i in range(23)},
             udg_WeakElementForce={i:'weak'+str(i) for i in range(1,7)},udg_NullElementForce={i:'null'+str(i) for i in range(1,7)},
-            udg_EidolonAwardForce={i:'summon'+str(i) for i in range(3)},FFL_Before='before',
+            udg_EidolonAwardForce={i:'summon'+str(i) for i in range(3)},udg_QuestForce={i:'proof'+str(i) for i in range(23)},FFL_Before='before',
             IsPlayerInForce=lambda p,f:(p,f) in membership,SaveBoolean=lambda h,p,c,v:before.__setitem__((p,c),v),
             LoadBoolean=lambda h,p,c:before.get((p,c),False),FFL_Val=lambda p,s,i:saved.get(i,0),
             FFL_Membership=lambda p,f,v:membership.add((p,f)) if v else membership.discard((p,f)),
@@ -142,7 +142,7 @@ class PlayerCommandTests(unittest.TestCase):
         s=source('Legendary');level=[98];lines=[]
         env=mocks(s);env.update(GetTriggerPlayer=lambda:0,GetEventPlayerChatString=lambda:'-legendary',
             Player_GetHero=lambda p:'wizard',Job_GetIndex=lambda u:11,GetHeroLevel=lambda u:level[0],
-            GetUnitAbilityLevel=lambda *a:3,udg_JobName={11:'Wizard'},LegendTaskText={11:'Hit all six elements.'},
+            GetUnitAbilityLevel=lambda *a:3,udg_QuestForce={11:'proof'},udg_JobName={11:'Wizard'},LegendTaskText={11:'Hit all six elements.'},
             LegendElementName={i:'Element'+str(i) for i in range(1,7)},
             udg_JobMasterForce={11:'job'},udg_WeakElementForce={i:'weak'+str(i) for i in range(1,7)},
             IsPlayerInForce=lambda p,f:f=='weak2',DisplayTimedTextToPlayer=lambda *a:lines.append(a[-1]))

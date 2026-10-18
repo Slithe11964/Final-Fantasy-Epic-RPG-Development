@@ -1,5 +1,10 @@
 # PAIR029 player commands and legendary progress
 
+Follow-up: PAIR029 has a confirmed final-readback compatibility regression for
+older seven-section saves. PAIR030 fixes it and extends Proof of Strength
+persistence; see [PAIR030_SAVE_UI_FIXES.md](PAIR030_SAVE_UI_FIXES.md). The native
+drag path below also needed the PAIR030 direct-slot placement follow-up.
+
 All changes are build transforms from the saved editor master. The master is not
 modified by this patch. Both profiles receive shared gameplay/save/command logic;
 native inventory presentation remains Forsaken-only.

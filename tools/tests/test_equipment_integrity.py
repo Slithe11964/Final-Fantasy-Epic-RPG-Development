@@ -212,6 +212,29 @@ class EquipmentIntegrityTests(unittest.TestCase):
             LoadBoolean=lambda h,p,i:p==51,ForsakenGearTypes='types',CreateItem=lambda *a:created.append(a))
         e=execute(native,['Forsaken_PrepareQuickGear'],env);e['Forsaken_PrepareQuickGear']('hero');self.assertEqual(created,[])
 
+    def test_direct_quick_placement_preserves_original_until_verified(self):
+        s=(HERE/'CarryQuickSlot.j').read_text()
+        for allowed,occupied in [(True,False),(False,False),(True,True)]:
+            slots={0:'other' if occupied else None};removed=[];props=[]
+            def add(hero,raw,slot):
+                if allowed:slots[slot]='quick'
+                return allowed
+            env=mocks(s);env.update(ForsakenConvertingGear=False,ForsakenGearTypes='types',ForsakenBagAbilities='passives',
+                Forsaken_HoldsItem=lambda *a:True,UnitItemInSlot=lambda h,i:slots.get(i),
+                LoadInteger=lambda *a:'q095',UnitAddItemToSlotById=add,GetItemTypeId=lambda i:'q095',
+                GetItemUserData=lambda i:42,GetWidgetLife=lambda i:145.25,GetItemPlayer=lambda i:0,GetItemCharges=lambda i:5,
+                GetHandleId=lambda i:i,SetItemUserData=lambda i,v:props.append(('data',v)),
+                SetWidgetLife=lambda i,v:props.append(('life',v)),SetItemPlayer=lambda *a:None,
+                SetItemCharges=lambda i,v:props.append(('charges',v)),UnitRemoveItem=lambda *a:removed.append(a[-1]),
+                RemoveItem=lambda i:removed.append(i),Forsaken_SyncStoredEffects=lambda h:props.append(('sync',h)))
+            e=execute(s,['Integrity_CarryIntoSlot'],env)
+            result=e['Integrity_CarryIntoSlot']('hero','original',0,'I081')
+            if allowed and not occupied:
+                self.assertEqual(result,'quick');self.assertEqual(removed,['original','original'])
+                self.assertEqual(props,[('data',42),('life',145.25),('charges',5),('sync','hero')])
+            else:self.assertEqual(result,'original');self.assertEqual(removed,[])
+            self.assertFalse(e['ForsakenConvertingGear'])
+
     def test_native_save_load_restores_quick_gear_aliases(self):
         from equipment_integrity import native_refresh
         from test_armory_materia import execute

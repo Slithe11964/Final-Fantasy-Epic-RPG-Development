@@ -11,7 +11,7 @@ HELPER=(ROOT/'experiments/Forsaken/BackpackVisibility.j').read_text()
 
 class BackpackVisibilityTests(unittest.TestCase):
     def runtime(self):
-        state=dict(now=10.,hero='freelancer',key='',player=0,preview='freelancer',allow=True)
+        state=dict(frame='command0',now=10.,hero='freelancer',key='',player=0,preview='freelancer',allow=True)
         visible={'gear':False,'bag':False,'command0':True,'command1':True}
         looked=[];clicked=[]
         def click(button):
@@ -24,6 +24,9 @@ class BackpackVisibilityTests(unittest.TestCase):
             looked.append(name)
             return {'SimpleEquipmentPanel':'gear','EquipmentPanelBackdrop':'backdrop','SimpleEquipmentInventoryPanel':'bag'}.get(name)
         env=mocks(HELPER);env.update(
+            ForsakenInventoryBinding=False,ForsakenLastToggleTime=-1.,ForsakenLastToggleSource=0,
+            ForsakenBackpackCommand='command0',ForsakenGearCommand='command1',
+            GetUnitAbilityLevel=lambda *a:1,BlzGetTriggerFrame=lambda:state['frame'],
             ForsakenBackpackWanted=False,ForsakenBackpackWasVisible=False,ForsakenBackpackCloseUntil=0.,
             ForsakenTalentsWanted=True,ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenCachedEquipment='gear',ForsakenCachedBackdrop='backdrop',
             ForsakenLinkedBag='bag',ForsakenInventoryHero='freelancer',ForsakenNextBagSearch=0.,
@@ -43,6 +46,24 @@ class BackpackVisibilityTests(unittest.TestCase):
             BlzFrameGetChildrenCount=lambda f:0,BlzFrameGetName=lambda f:f,FRAMEPOINT_TOPRIGHT='topright')
         e=execute(HELPER,list(functions(HELPER)),env)
         return e,state,visible,looked,clicked
+
+    def test_native_button_toggles_both_and_ignores_automatic_rebind_clicks(self):
+        e,s,v,looked,clicks=self.runtime()
+        e['Forsaken_BackpackToggleAction']();self.assertTrue(e['ForsakenBackpackWanted'])
+        e['Forsaken_BackpackVisible']('gear');self.assertTrue(v['gear'] and v['bag'])
+        s['now']+=1;e['Forsaken_BackpackToggleAction']()
+        self.assertFalse(e['ForsakenBackpackWanted']);self.assertFalse(v['gear'] or v['bag'])
+        e['ForsakenInventoryBinding']=True;e['Forsaken_BackpackToggleAction']()
+        self.assertFalse(e['ForsakenBackpackWanted'])
+
+    def test_keyboard_and_frame_duplicate_do_not_reverse_one_click(self):
+        for order in [(1,2),(2,1)]:
+            e,s,v,_,_=self.runtime()
+            for origin in order:e['Forsaken_RequestBackpackToggle'](origin)
+            self.assertTrue(e['ForsakenBackpackWanted'])
+            s['now']+=1
+            for origin in order:e['Forsaken_RequestBackpackToggle'](origin)
+            self.assertFalse(e['ForsakenBackpackWanted'])
 
     def test_closed_stays_closed_and_no_idle_search(self):
         e,s,v,looked,clicks=self.runtime()

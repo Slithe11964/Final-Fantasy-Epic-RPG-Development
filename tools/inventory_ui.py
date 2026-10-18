@@ -38,6 +38,12 @@ def refresh(source):
     declarations={
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
         'boolean ForsakenTalentsWanted=true':'ForsakenTalentsWanted',
+        'boolean ForsakenInventoryBinding=false':'ForsakenInventoryBinding',
+        'real ForsakenLastToggleTime=-1.':'ForsakenLastToggleTime',
+        'integer ForsakenLastToggleSource=0':'ForsakenLastToggleSource',
+        'trigger ForsakenBackpackToggleEvents=null':'ForsakenBackpackToggleEvents',
+        'framehandle ForsakenBackpackCommand=null':'ForsakenBackpackCommand',
+        'framehandle ForsakenGearCommand=null':'ForsakenGearCommand',
         'real ForsakenBackpackCloseUntil=0.':'ForsakenBackpackCloseUntil',
         'trigger ForsakenBackpackEvents=null':'ForsakenBackpackEvents',
         'trigger ForsakenBackpackCloseEvents=null':'ForsakenBackpackCloseEvents',

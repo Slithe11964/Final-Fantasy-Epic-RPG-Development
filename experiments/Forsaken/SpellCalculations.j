@@ -38,7 +38,8 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
         set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         if raw=='A0OM' and not SpellCalcHidden[GetPlayerId(GetLocalPlayer())] then
             set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]*.5+.5))
-            set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec."
+            set tip=tip+"|nEach "+R2SW(PriestRainPeriod[rank],1,1)+" seconds: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP and "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base magic damage."
+            set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec, before target modifiers."
         endif
     endif
     return tip

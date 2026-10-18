@@ -317,4 +317,23 @@ endfunction'''
         call BlzFrameSetTooltip(ForsakenTalentButton[node],ForsakenTalentTooltip[node])
         call BlzFrameSetVisible(ForsakenTalentTooltip[node],false)''',1)
         source=put(source,name,body)
+    if native and 'Forsaken_DrawPanels' in functions(source):
+        name='Forsaken_DrawPanels';body=functions(source)[name]
+        body=body.replace('local string mastery="Normal"','local string mastery="Novice"')
+        if ' / 4 earned     Level ' not in body:
+            start=body.index('            if job==TALENT_JOB_PRIEST then',body.index('GetPlayerName(owner)'))
+            end=body.index('        endif',body.index('            endif',start)+len('            endif'))
+            body=body[:start]+'            call BlzFrameSetText(ForsakenTalentPoints,"Points: "+I2S(rank)+" / 4 earned     Level "+mastery)\n'+body[end:]
+        body=re.sub(r'call BlzFrameSetText\(ForsakenTalentLabel\[node\],[^\n]*\)', 'call BlzFrameSetText(ForsakenTalentLabel[node],"")',body)
+        # Eligibility is checked again by the click action. Enabled icons retain
+        # mouseover tooltips even for selected, locked and inspection nodes.
+        body=re.sub(r'call BlzFrameSetEnable\(ForsakenTalentButton\[node\],[^\n]*\)', 'call BlzFrameSetEnable(ForsakenTalentButton[node],true)',body)
+        source=put(source,name,body)
+        name='Register_Forsaken_PanelAccess';body=functions(source)[name]
+        body=body.replace('BlzFrameSetSize(ForsakenTalentPoints,.15,.018)','BlzFrameSetSize(ForsakenTalentPoints,.205,.018)')
+        body=body.replace('ForsakenTalentButton[node],FRAMEPOINT_BOTTOMLEFT,0.,-.003','ForsakenTalentRoot,FRAMEPOINT_TOPLEFT,.006,-.17')
+        body=body.replace('BlzFrameSetSize(ForsakenTalentTooltip[node],.245,.115)','BlzFrameSetSize(ForsakenTalentTooltip[node],.233,.118)')
+        body=body.replace('FRAMEPOINT_TOPLEFT,.012,-.012','FRAMEPOINT_TOPLEFT,.018,-.018')
+        body=body.replace('BlzFrameSetSize(ForsakenTalentDescription[node],.221,.091)','BlzFrameSetSize(ForsakenTalentDescription[node],.197,.082)')
+        source=put(source,name,body)
     return source

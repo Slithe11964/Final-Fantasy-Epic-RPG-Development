@@ -265,6 +265,11 @@ def native_refresh(source,c):
             body=body.replace('if original!=null and variant!=0 and not LoadBoolean', 'if original!=null and variant!=0 and not (slot<6 and LoadBoolean(ForsakenGearTypes,51,GetHandleId(original))) and not LoadBoolean',1)
         source=put(source,'Forsaken_PrepareQuickGear',body)
         body=fs['Forsaken_CarryReplacement']
+        helper=(HERE/'CarryQuickSlot.j').read_text()
+        if 'Integrity_CarryIntoSlot' in functions(source):source=put(source,'Integrity_CarryIntoSlot',helper.strip())
+        else:source=source.replace('function Forsaken_CarryReplacement takes',helper+'\nfunction Forsaken_CarryReplacement takes',1)
+        if 'return Integrity_CarryIntoSlot' not in body:
+            body=body.replace('    set ForsakenConvertingGear=true','    if quickSlot>=0 then\n        return Integrity_CarryIntoSlot(holder,original,quickSlot,raw)\n    endif\n    set ForsakenConvertingGear=true',1)
         if 'ForsakenGearTypes,67,raw' not in body:
             body=body.replace('    set ForsakenConvertingGear=true','    if quickSlot>=0 and LoadInteger(ForsakenGearTypes,67,raw)!=0 then\n        set raw=LoadInteger(ForsakenGearTypes,67,raw)\n    endif\n    set ForsakenConvertingGear=true',1)
         if 'call Forsaken_SyncStoredEffects(holder)' not in body:
