@@ -81,24 +81,30 @@ class PriestMasterTests(unittest.TestCase):
         self.assertEqual(125.*60,250.*30)
 
     def test_acid_rain_current_rank_half_healing_enemy_filters_and_stops(self):
-        s=source('Regen');damage=[];paused=[];rank=[1];units=[]
+        s=source('Regen');damage=[];paused=[];rank=[1];units=[];active=[True];flags=[]
         env=mocks(s);env.update(PriestRainCaster=defaultdict(lambda:None,{0:'caster'}),PriestRainCount=1,
             PriestRainLeft=defaultdict(float,{0:15.}),PriestRainNext=defaultdict(float,{0:.1}),
             PriestRainHealing={1:50.,6:400.},PriestRainRadius={1:900.,6:900.},PriestRainPeriod={1:.1,6:.1},
             PriestRainEnemies={0:units},PriestRainTimer='rain',GetUnitAbilityLevel=lambda *a:rank[0],
             GetWidgetLife=lambda u:0. if u=='dead' else 100.,GetUnitCurrentOrder=lambda u:1,OrderId=lambda s:1,
-            Talent_Active=lambda *a:True,GetUnitX=lambda u:0.,GetUnitY=lambda u:0.,GetOwningPlayer=lambda u:0,
+            Talent_Active=lambda *a:active[0],GetUnitX=lambda u:0.,GetUnitY=lambda u:0.,GetOwningPlayer=lambda u:0,
             GroupEnumUnitsInRange=lambda g,*a:g.extend(['enemy','ally','immune','dead']),
             FirstOfGroup=lambda g:g[0] if g else None,GroupRemoveUnit=lambda g,u:g.remove(u),
-            IsUnitEnemy=lambda u,p:u!='ally',IsUnitType=lambda u,t:u=='immune',UNIT_TYPE_MAGIC_IMMUNE=0,
+            IsUnitEnemy=lambda u,p:u!='ally',IsUnitAlly=lambda u,p:u=='ally',IsUnitType=lambda u,t:u=='immune' and t==0,UNIT_TYPE_MAGIC_IMMUNE=0,UNIT_TYPE_STRUCTURE=1,DAMAGE_TYPE_UNIVERSAL=1,
             ATTACK_TYPE_NORMAL=0,DAMAGE_TYPE_MAGIC=0,WEAPON_TYPE_WHOKNOWS=0,
             UnitDamageTarget=lambda c,u,n,*a:damage.append((u,n)),PauseTimer=lambda t:paused.append(t))
         e=execute(s,['Priest_RainTick'],env)
+        e['UnitDamageTarget']=lambda c,u,n,*a:(damage.append((u,n)),flags.append((u,e['udg_IsPureDamage'])))
         for _ in range(10):e['Priest_RainTick']()
-        self.assertEqual(sum(n for u,n in damage),250.);self.assertEqual({u for u,n in damage},{'enemy'})
+        self.assertEqual(sum(n for u,n in damage if u=='enemy'),250.);self.assertEqual(sum(n for u,n in damage if u=='ally'),250.)
+        self.assertTrue(all(flag==(u=='ally') for u,flag in flags));self.assertFalse(e['udg_IsPureDamage'])
         damage.clear();rank[0]=6
         for _ in range(10):e['Priest_RainTick']()
-        self.assertEqual(sum(n for u,n in damage),2000.)
+        self.assertEqual(sum(n for u,n in damage if u=='enemy'),2000.)
+        self.assertEqual(sum(n for u,n in damage if u=='ally'),2000.)
+        damage.clear();active[0]=False
+        for _ in range(10):e['Priest_RainTick']()
+        self.assertEqual(sum(n for u,n in damage if u=='ally'),4000.);self.assertFalse(any(u=='enemy' for u,n in damage))
         e['GetUnitCurrentOrder']=lambda u:2;e['Priest_RainTick']()
         self.assertIsNone(e['PriestRainCaster'][0]);self.assertEqual(e['PriestRainCount'],0);self.assertIn('rain',paused)
 
@@ -122,7 +128,7 @@ class PriestMasterTests(unittest.TestCase):
         s=source('Regen');active=[True]
         env=mocks(s);env.update(Talent_Active=lambda *a:active[0],BlzGetAbilityCooldown=lambda *a:10.)
         e=execute(s,['Priest_CooldownBase'],env)
-        self.assertEqual(e['Priest_CooldownBase']('hero','A0W9',0),20.)
+        self.assertEqual(e['Priest_CooldownBase']('hero','A0W9',0),45.)
         self.assertEqual(e['Priest_CooldownBase']('hero','other',0),10.)
         active[0]=False;self.assertEqual(e['Priest_CooldownBase']('hero','A0W9',0),10.)
 
@@ -158,10 +164,27 @@ class PriestMasterTests(unittest.TestCase):
         s=source('Regen');tips=[];active=[True]
         env=mocks(s);env.update(GetUnitAbilityLevel=lambda *a:6,LoadStr=lambda *a:'Original spell.',Talent_Active=lambda *a:active[0],
             TalentName=defaultdict(lambda:'Acid Rain'),TalentText=defaultdict(lambda:'50% healing as damage.'),
+            PriestRainHealing={6:400.},PriestRainPeriod={6:.125},I2R=float,R2I=int,R2SW=lambda n,*a:format(n,'.0f'),
             Talent_Index=lambda *a:0,PriestTooltipOffset=0,PriestAbilityText='text',BlzSetAbilityExtendedTooltip=lambda *a:tips.append(a))
         e=execute(s,['Priest_AbilityTalentTip'],env);e['Priest_AbilityTalentTip']('hero','A0OM',2,1)
         self.assertIn('Talent: Acid Rain',tips[-1][1]);self.assertEqual(tips[-1][2],5)
-        active[0]=False;e['Priest_AbilityTalentTip']('hero','A0OM',2,1);self.assertEqual(tips[-1][1],'Original spell.')
+        active[0]=False;e['Priest_AbilityTalentTip']('hero','A0OM',2,1);self.assertIn('3200 base HP/sec',tips[-1][1]);self.assertNotIn('Talent:',tips[-1][1])
+
+    def test_tranquility_uses_one_scripted_heal_and_rank_math_tooltips(self):
+        out=objects(self.view.object_bytes('war3map.w3a'),self.config)
+        table={o['id']:o for o in read_objects(out,'w3a')['custom']}
+        for rank in range(1,7):
+            self.assertEqual(fields(table['A0OM'])['Etq1',rank],0.)
+            rate=at(fields(self.config['abilities']['A0OM']),'Etq1',rank)/at(fields(self.config['abilities']['A0OM']),'Etq2',rank)
+            self.assertIn('HP per second',fields(table['A0OM'])['aub1',rank])
+            if rank==6:self.assertEqual(round(rate*.5),2000)
+        s=source('Regen');tips=[]
+        env=mocks(s);env.update(GetUnitAbilityLevel=lambda *a:1,LoadStr=lambda *a:'Formula.',Talent_Active=lambda *a:False,
+            BlzGetAbilityManaCost=lambda *a:100,GetHeroInt=lambda *a:90,Prof_StaffPower=lambda *a:2.,I2R=float,R2I=int,
+            R2SW=lambda n,*a:format(n,'.0f'),PriestTooltipOffset=0,PriestAbilityText='text',BlzSetAbilityExtendedTooltip=lambda *a:tips.append(a))
+        e=execute(s,['Priest_AbilityTalentTip'],env)
+        for raw,number in [('A00M','1900 HP'),('A089','1140 HP'),('A0PC','144 queued HP')]:
+            e['Priest_AbilityTalentTip']('hero',raw,0,0);self.assertIn(number,tips[-1][1])
 
     def test_profile_transform_idempotent_and_initializer_bounded(self):
         for native in [False,True]:

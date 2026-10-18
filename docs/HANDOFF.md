@@ -6,7 +6,26 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-17)
 
-PAIR026 is the latest test pair, installed and hash-verified in Warcraft
+PAIR028 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Resolves the actual native inventory bag frame, links both
+panes, and rebinds the native preview when the selected hero changes. Fishing
+spots unlock from carried/loaded rods across all storage/Gaya; fishing requires
+a worn matching rod. Explicit quick-slot gear moves create ordinary carried
+copies with suspended passives and retained actives; native save/load restores
+those same copies. All276 canonical mappings verified in the final archive.
+Acid Rain converts half Tranquility healing to damage (master2000 base HP/sec +
+2000 magic damage/sec); healing flags clear after every target. Refresh base CD45.
+Cure/Pray/Tranquility/Blessing of Light show formulas and current-caster amounts.
+Both paired gates PASS: native196, classic296 tests (10 expected skips), all
+compiler/editor/startup/content/save/armory/bazaar checks and classic conversion.
+Final archive/input/tool/output/TEST hashes verified; editor master unchanged.
+PAIR027 was an internal candidate, superseded after its final audit found a
+quick-slot load binding issue. Actual engine acceptance remains pending: linked
+panes/current job model, rods, quick-slot actives without bonuses, healing split.
+See INVENTORY_PANEL_FISHING.md. The older legacy large-character Warcraft-menu
+reload crash remains separate and unresolved.
+
+PAIR026 is a previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Native bag/equipment panes share persistent open/close intent;
 the portrait fallback close control is removed. Includes equipped-only native
 passives/regen display, Prototype classification, worn cloak/fishing adapters,

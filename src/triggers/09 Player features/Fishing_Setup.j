@@ -1,8 +1,9 @@
-library TFishingSetup requires TGroup, TPlayerHero, optional TQuestFishyDeals
+library TFishingSetup requires TGroup, TPlayerHero, optional TQuestFishyDeals, TItemStack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Pole_Found=null
     trigger gg_trg_Fishing_Unlock=null
+    boolean FishingUnlocked=false
 endglobals
 
 function Trig_Fishing_Setup_HideFishingSpot takes nothing returns nothing
@@ -173,20 +174,64 @@ function Trig_Fishing_Unlock_IsFishingRod takes nothing returns boolean
     return(GetItemTypeId(GetManipulatedItem())=='I0EY')or(GetItemTypeId(GetManipulatedItem())=='I0EZ')or(GetItemTypeId(GetManipulatedItem())=='I0GB')or(GetItemTypeId(GetManipulatedItem())=='I0GC') // 'I0EY': item "Fishing Pole"; 'I0EZ': item "Muramata"; 'I0GB': item "Matamune"; 'I0GC': item "Lu Shang"
 endfunction
 
+function Fishing_Rod takes integer raw returns boolean
+    return raw=='I0EY' or raw=='I0EZ' or raw=='I0GB' or raw=='I0GC'
+endfunction
+
+
+function Fishing_CarryRod takes unit holder returns boolean
+    local integer i=0
+    if holder==null then
+        return false
+    endif
+    loop
+        exitwhen i>=Carry_Size(holder)
+        if Fishing_Rod(Carry_Type(Carry_At(holder,i))) then
+            return true
+        endif
+        set i=i+1
+    endloop
+    return false
+endfunction
+
+
+function Fishing_HasAnyRod takes nothing returns boolean
+    local integer i=0
+    if udg_FishingSpots==null or FishingUnlocked then
+        return false
+    endif
+    loop
+        exitwhen i>=8
+        if Fishing_CarryRod(Player_GetHero(Player(i))) or Fishing_CarryRod(udg_SpiritOfGaya[i+1]) then
+            return true
+        endif
+        set i=i+1
+    endloop
+    return false
+endfunction
+
 function Trig_Fishing_Unlock_Conditions takes nothing returns boolean
-    return(IsPlayerInForce(GetOwningPlayer(GetTriggerUnit()),udg_PlayingPlayers))and(GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit())))and(Trig_Fishing_Unlock_IsFishingRod())
+    return Fishing_HasAnyRod()
 endfunction
 
 function Trig_Fishing_Unlock_ShowFishingSpot takes nothing returns nothing
     call ShowUnitShow(GetEnumUnit())
 endfunction
 
-function Trig_Fishing_Unlock_Actions takes nothing returns nothing
-    call DisableTrigger(GetTriggeringTrigger())
+
+function Fishing_UnlockOnce takes nothing returns nothing
+    if FishingUnlocked or udg_FishingSpots==null then
+        return
+    endif
+    set FishingUnlocked=true
     call ForGroupBJ(udg_FishingSpots,function Trig_Fishing_Unlock_ShowFishingSpot)
-    call AddItemToStockBJ('I0HB',gg_unit_n02Y_0052,1,1) // 'I0HB': item "Information: Fishing"
+    call AddItemToStockBJ('I0HB',gg_unit_n02Y_0052,1,1)
     call EnableTrigger(gg_trg_Fishing_Cast)
-    call DestroyTrigger(GetTriggeringTrigger())
+    call DisableTrigger(gg_trg_Fishing_Unlock)
+endfunction
+
+function Trig_Fishing_Unlock_Actions takes nothing returns nothing
+    call Fishing_UnlockOnce()
 endfunction
 
 // Registration ownership; called at the original bootstrap positions.
@@ -213,6 +258,7 @@ endfunction
 function Register_Fishing_Unlock takes nothing returns nothing
     set gg_trg_Fishing_Unlock=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Fishing_Unlock,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterTimerEvent(gg_trg_Fishing_Unlock,1.,true)
     call TriggerAddCondition(gg_trg_Fishing_Unlock,Condition(function Trig_Fishing_Unlock_Conditions))
     call TriggerAddAction(gg_trg_Fishing_Unlock,function Trig_Fishing_Unlock_Actions)
 endfunction

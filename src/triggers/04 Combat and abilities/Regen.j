@@ -111,24 +111,36 @@ function Priest_MasterData0 takes nothing returns nothing
     call SaveStr(PriestAbilityText,'A0TZ',9,"Encloses the target in a protective shell, reducing all magic damage they take by 33% for 55 seconds.")
     call SaveStr(PriestAbilityText,'A0TZ',10,"Encloses the target in a protective shell, reducing all magic damage they take by 33% for 60 seconds.")
     call SaveStr(PriestAbilityText,'A0TZ',11,"Encloses the target in a protective shell, reducing all magic damage they take by 33% for 75 seconds.")
-    call SaveStr(PriestAbilityText,'A00M',1,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',2,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',3,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',4,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',5,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',6,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',7,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',8,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',9,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',10,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A00M',11,"|cffffcc00Life Spell|r|nThrows a healing sphere which restores moderate HP to the target unit. Units hit by the sphere on its path are healed by 25% of the full heal.")
-    call SaveStr(PriestAbilityText,'A0OM',1,"Channels a rain of healing energy that recovers all nearby allies by 500 HP per second. Lasts 15 seconds.")
-    call SaveStr(PriestAbilityText,'A0OM',2,"Channels a rain of healing energy that recovers all nearby allies by 1000 HP per second. Lasts 15 seconds.")
-    call SaveStr(PriestAbilityText,'A0OM',3,"Channels a rain of healing energy that recovers all nearby allies by 1500 HP per second. Lasts 15 seconds.")
-    call SaveStr(PriestAbilityText,'A0OM',4,"Channels a rain of healing energy that recovers all nearby allies by 2000 HP per second. Lasts 15 seconds.")
-    call SaveStr(PriestAbilityText,'A0OM',5,"Channels a rain of healing energy that recovers all nearby allies by 2500 HP per second. Lasts 15 seconds.")
-    call SaveStr(PriestAbilityText,'A0OM',6,"Channels a rain of healing energy that recovers all nearby allies by 4000 HP per second. Lasts 15 seconds.")
+    call SaveStr(PriestAbilityText,'A00M',1,"|cffffcc00Life Spell|r|nHeals [(5 x 80 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',2,"|cffffcc00Life Spell|r|nHeals [(5 x 110 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',3,"|cffffcc00Life Spell|r|nHeals [(5 x 140 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',4,"|cffffcc00Life Spell|r|nHeals [(5 x 170 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',5,"|cffffcc00Life Spell|r|nHeals [(5 x 200 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',6,"|cffffcc00Life Spell|r|nHeals [(5 x 230 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',7,"|cffffcc00Life Spell|r|nHeals [(5 x 260 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',8,"|cffffcc00Life Spell|r|nHeals [(5 x 290 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',9,"|cffffcc00Life Spell|r|nHeals [(5 x 320 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',10,"|cffffcc00Life Spell|r|nHeals [(5 x 350 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A00M',11,"|cffffcc00Life Spell|r|nHeals [(5 x 400 mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',1,"Channels 500 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 250 base HP/sec to allies and 250 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',2,"Channels 1000 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 500 base HP/sec to allies and 500 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',3,"Channels 1500 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 750 base HP/sec to allies and 750 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',4,"Channels 2000 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 1000 base HP/sec to allies and 1000 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',5,"Channels 2500 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 1250 base HP/sec to allies and 1250 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
+    call SaveStr(PriestAbilityText,'A0OM',6,"Channels 4000 base HP per second to nearby allies for 15 seconds. Acid Rain converts half: 2000 base HP/sec to allies and 2000 magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply.")
     call SaveStr(PriestAbilityText,'A0W9',1,"Cures all negative status ailments from the target.")
+    call SaveStr(PriestAbilityText,'A0PC',1,"Channels until cancelled. Every second, adds P = floor[(50 + floor(caster Intelligence / 4)) x Staff power] to nearby allies' queued HP recovery. HP ticks roll 93.75%-100%; queued MP recovery rolls 23.4375%-25%. Healing modifiers and other queued recovery apply.")
+    call SaveStr(PriestAbilityText,'A089',1,"|cffffcc00Life Spell|r|nRestores floor[(3 x 140 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',2,"|cffffcc00Life Spell|r|nRestores floor[(3 x 180 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',3,"|cffffcc00Life Spell|r|nRestores floor[(3 x 220 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',4,"|cffffcc00Life Spell|r|nRestores floor[(3 x 260 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',5,"|cffffcc00Life Spell|r|nRestores floor[(3 x 300 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',6,"|cffffcc00Life Spell|r|nRestores floor[(3 x 340 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',7,"|cffffcc00Life Spell|r|nRestores floor[(3 x 380 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',8,"|cffffcc00Life Spell|r|nRestores floor[(3 x 420 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',9,"|cffffcc00Life Spell|r|nRestores floor[(3 x 460 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',10,"|cffffcc00Life Spell|r|nRestores floor[(3 x 500 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
+    call SaveStr(PriestAbilityText,'A089',11,"|cffffcc00Life Spell|r|nRestores floor[(3 x 600 mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply.")
     call SaveInteger(PriestBuffTypes,'A00L',1,'pB00')
     call SaveInteger(PriestBuffClone,'A00L','B006','pB00')
     call SaveStr(PriestBuffTypes,'A00L',2,"rejuvination")
@@ -178,6 +190,10 @@ function Priest_MasterData0 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A00L',185,0.0)
     call SaveReal(PriestBuffTypes,'A00L',186,60.0)
     call SaveInteger(PriestBuffTypes,'A025',1,'pB01')
+endfunction
+
+
+function Priest_MasterData1 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A025','B00K','pB01')
     call SaveStr(PriestBuffTypes,'A025',2,"bloodlust")
     call SaveBoolean(PriestBuffTypes,'A025',3,false)
@@ -190,10 +206,6 @@ function Priest_MasterData0 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A025',41,0.0)
     call SaveReal(PriestBuffTypes,'A025',42,25.0)
     call SaveInteger(PriestBuffTypes,'A025',49,'B00K')
-endfunction
-
-
-function Priest_MasterData1 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A025',48,1)
     call SaveReal(PriestBuffTypes,'A025',57,0.0)
     call SaveReal(PriestBuffTypes,'A025',58,25.0)
@@ -342,6 +354,10 @@ function Priest_MasterData1 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A070',2,"frenzy")
     call SaveBoolean(PriestBuffTypes,'A070',3,false)
     call SaveInteger(PriestBuffTypes,'A070',17,'B00K')
+endfunction
+
+
+function Priest_MasterData2 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A070',16,1)
     call SaveReal(PriestBuffTypes,'A070',25,0.0)
     call SaveReal(PriestBuffTypes,'A070',26,15.0)
@@ -354,10 +370,6 @@ function Priest_MasterData1 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A070',57,0.0)
     call SaveReal(PriestBuffTypes,'A070',58,20.0)
     call SaveInteger(PriestBuffTypes,'A070',65,'B00K')
-endfunction
-
-
-function Priest_MasterData2 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A070',64,1)
     call SaveReal(PriestBuffTypes,'A070',73,0.0)
     call SaveReal(PriestBuffTypes,'A070',74,20.0)
@@ -506,6 +518,10 @@ function Priest_MasterData2 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0D9',41,0.0)
     call SaveReal(PriestBuffTypes,'A0D9',42,12.0)
     call SaveInteger(PriestBuffTypes,'A0D9',49,'B00F')
+endfunction
+
+
+function Priest_MasterData3 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0D9',48,1)
     call SaveReal(PriestBuffTypes,'A0D9',57,0.0)
     call SaveReal(PriestBuffTypes,'A0D9',58,14.0)
@@ -518,10 +534,6 @@ function Priest_MasterData2 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0D9',89,0.0)
     call SaveReal(PriestBuffTypes,'A0D9',90,18.0)
     call SaveInteger(PriestBuffTypes,'A0D9',97,'B00F')
-endfunction
-
-
-function Priest_MasterData3 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0D9',96,1)
     call SaveReal(PriestBuffTypes,'A0D9',105,0.0)
     call SaveReal(PriestBuffTypes,'A0D9',106,20.0)
@@ -670,6 +682,10 @@ function Priest_MasterData3 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0MZ',25,0.0)
     call SaveReal(PriestBuffTypes,'A0MZ',26,15.0)
     call SaveInteger(PriestBuffTypes,'A0N0',1,'pB1A')
+endfunction
+
+
+function Priest_MasterData4 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A0N0','B05A','pB1A')
     call SaveStr(PriestBuffTypes,'A0N0',2,"unholyfrenzy")
     call SaveBoolean(PriestBuffTypes,'A0N0',3,false)
@@ -682,10 +698,6 @@ function Priest_MasterData3 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A0PL',2,"roar")
     call SaveBoolean(PriestBuffTypes,'A0PL',3,true)
     call SaveInteger(PriestBuffTypes,'A0PL',17,'B04X')
-endfunction
-
-
-function Priest_MasterData4 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0PL',16,1)
     call SaveReal(PriestBuffTypes,'A0PL',25,1000.0)
     call SaveReal(PriestBuffTypes,'A0PL',26,60.0)
@@ -834,6 +846,10 @@ function Priest_MasterData4 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0R1',185,10.0)
     call SaveReal(PriestBuffTypes,'A0R1',186,15.0)
     call SaveInteger(PriestBuffTypes,'A0R4',1,'pB1F')
+endfunction
+
+
+function Priest_MasterData5 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A0R4','B08R','pB1F')
     call SaveStr(PriestBuffTypes,'A0R4',2,"frostarmor")
     call SaveBoolean(PriestBuffTypes,'A0R4',3,false)
@@ -846,10 +862,6 @@ function Priest_MasterData4 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0R4',41,0.0)
     call SaveReal(PriestBuffTypes,'A0R4',42,8.0)
     call SaveInteger(PriestBuffTypes,'A0R4',49,'B08R')
-endfunction
-
-
-function Priest_MasterData5 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0R4',48,1)
     call SaveReal(PriestBuffTypes,'A0R4',57,0.0)
     call SaveReal(PriestBuffTypes,'A0R4',58,10.0)
@@ -998,6 +1010,10 @@ function Priest_MasterData5 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0RZ',57,0.009999999776482582)
     call SaveReal(PriestBuffTypes,'A0RZ',58,10.0)
     call SaveInteger(PriestBuffTypes,'A0RZ',65,'B08S')
+endfunction
+
+
+function Priest_MasterData6 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0RZ',64,1)
     call SaveReal(PriestBuffTypes,'A0RZ',73,0.009999999776482582)
     call SaveReal(PriestBuffTypes,'A0RZ',74,10.0)
@@ -1010,10 +1026,6 @@ function Priest_MasterData5 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0RZ',105,0.009999999776482582)
     call SaveReal(PriestBuffTypes,'A0RZ',106,16.0)
     call SaveInteger(PriestBuffTypes,'A0RZ',113,'B08S')
-endfunction
-
-
-function Priest_MasterData6 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0RZ',112,1)
     call SaveReal(PriestBuffTypes,'A0RZ',121,0.009999999776482582)
     call SaveReal(PriestBuffTypes,'A0RZ',122,18.0)
@@ -1162,6 +1174,10 @@ function Priest_MasterData6 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A0Z9',25,0.0)
     call SaveReal(PriestBuffTypes,'A0Z9',26,15.0)
     call SaveInteger(PriestBuffTypes,'A0ZA',1,'pB2E')
+endfunction
+
+
+function Priest_MasterData7 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A0ZA','B05A','pB2E')
     call SaveStr(PriestBuffTypes,'A0ZA',2,"unholyfrenzy")
     call SaveBoolean(PriestBuffTypes,'A0ZA',3,false)
@@ -1174,10 +1190,6 @@ function Priest_MasterData6 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A0ZF',2,"cripple")
     call SaveBoolean(PriestBuffTypes,'A0ZF',3,false)
     call SaveInteger(PriestBuffTypes,'A0ZF',17,'B00F')
-endfunction
-
-
-function Priest_MasterData7 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A0ZF',16,1)
     call SaveReal(PriestBuffTypes,'A0ZF',25,0.0)
     call SaveReal(PriestBuffTypes,'A0ZF',26,45.0)
@@ -1326,6 +1338,10 @@ function Priest_MasterData7 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A162',2,"bloodlust")
     call SaveBoolean(PriestBuffTypes,'A162',3,false)
     call SaveInteger(PriestBuffTypes,'A162',17,'B00F')
+endfunction
+
+
+function Priest_MasterData8 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A162',16,1)
     call SaveReal(PriestBuffTypes,'A162',25,0.0)
     call SaveReal(PriestBuffTypes,'A162',26,15.0)
@@ -1338,10 +1354,6 @@ function Priest_MasterData7 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A162',57,0.0)
     call SaveReal(PriestBuffTypes,'A162',58,25.0)
     call SaveInteger(PriestBuffTypes,'A162',65,'B00F')
-endfunction
-
-
-function Priest_MasterData8 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A162',64,1)
     call SaveReal(PriestBuffTypes,'A162',73,0.0)
     call SaveReal(PriestBuffTypes,'A162',74,30.0)
@@ -1490,6 +1502,10 @@ function Priest_MasterData8 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A17H',2,"innerfire")
     call SaveBoolean(PriestBuffTypes,'A17H',3,false)
     call SaveInteger(PriestBuffTypes,'A17H',17,'B07I')
+endfunction
+
+
+function Priest_MasterData9 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A17H',16,1)
     call SaveReal(PriestBuffTypes,'A17H',25,0.0)
     call SaveReal(PriestBuffTypes,'A17H',26,15.0)
@@ -1502,10 +1518,6 @@ function Priest_MasterData8 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A17I',25,0.0)
     call SaveReal(PriestBuffTypes,'A17I',26,90.0)
     call SaveInteger(PriestBuffTypes,'A17J',1,'pB41')
-endfunction
-
-
-function Priest_MasterData9 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A17J','B07G','pB41')
     call SaveStr(PriestBuffTypes,'A17J',2,"frostarmor")
     call SaveBoolean(PriestBuffTypes,'A17J',3,false)
@@ -1654,6 +1666,10 @@ function Priest_MasterData9 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A1AA',2,"bloodlust")
     call SaveBoolean(PriestBuffTypes,'A1AA',3,false)
     call SaveInteger(PriestBuffTypes,'A1AA',17,'B082')
+endfunction
+
+
+function Priest_MasterData10 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A1AA',16,1)
     call SaveReal(PriestBuffTypes,'A1AA',25,0.0)
     call SaveReal(PriestBuffTypes,'A1AA',26,10.0)
@@ -1666,10 +1682,6 @@ function Priest_MasterData9 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A1AA',57,0.0)
     call SaveReal(PriestBuffTypes,'A1AA',58,14.0)
     call SaveInteger(PriestBuffTypes,'A1AA',65,'B082')
-endfunction
-
-
-function Priest_MasterData10 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A1AA',64,1)
     call SaveReal(PriestBuffTypes,'A1AA',73,0.0)
     call SaveReal(PriestBuffTypes,'A1AA',74,16.0)
@@ -1818,6 +1830,10 @@ function Priest_MasterData10 takes nothing returns nothing
     call SaveReal(PriestBuffTypes,'A1F1',25,0.0)
     call SaveReal(PriestBuffTypes,'A1F1',26,20.0)
     call SaveInteger(PriestBuffTypes,'A1F4',1,'pB5B')
+endfunction
+
+
+function Priest_MasterData11 takes nothing returns nothing
     call SaveInteger(PriestBuffClone,'A1F4','B006','pB5B')
     call SaveStr(PriestBuffTypes,'A1F4',2,"rejuvination")
     call SaveBoolean(PriestBuffTypes,'A1F4',3,false)
@@ -1830,10 +1846,6 @@ function Priest_MasterData10 takes nothing returns nothing
     call SaveStr(PriestBuffTypes,'A1F5',2,"bloodlust")
     call SaveBoolean(PriestBuffTypes,'A1F5',3,false)
     call SaveInteger(PriestBuffTypes,'A1F5',17,'B00F')
-endfunction
-
-
-function Priest_MasterData11 takes nothing returns nothing
     call SaveInteger(PriestBuffTypes,'A1F5',16,1)
     call SaveReal(PriestBuffTypes,'A1F5',25,0.0)
     call SaveReal(PriestBuffTypes,'A1F5',26,15.0)
@@ -1929,7 +1941,7 @@ endfunction
 
 function Priest_CooldownBase takes unit caster,integer raw,integer level returns real
     if raw=='A0W9' and Talent_Active(caster,12,2,2,'A0W9') then
-        return 20.
+        return 45.
     endif
     return BlzGetAbilityCooldown(raw,level)
 endfunction
@@ -1939,7 +1951,7 @@ function Priest_EsunaChannel takes nothing returns nothing
     local unit caster=GetTriggerUnit()
     if GetSpellAbilityId()=='A0W9' then
         if Talent_Active(caster,12,2,2,'A0W9') then
-            call SaveReal(CooldownTalentBase,GetHandleId(caster),'A0W9',20.)
+            call SaveReal(CooldownTalentBase,GetHandleId(caster),'A0W9',45.)
         else
             call RemoveSavedReal(CooldownTalentBase,GetHandleId(caster),'A0W9')
         endif
@@ -2163,7 +2175,7 @@ function Priest_RainTick takes nothing returns nothing
         exitwhen pid>=8
         set caster=PriestRainCaster[pid]
         if caster!=null then
-            if GetWidgetLife(caster)<=.405 or GetUnitCurrentOrder(caster)!=OrderId("tranquility") or PriestRainLeft[pid]<=.0001 or not Talent_Active(caster,12,2,1,'A0OM') then
+            if GetWidgetLife(caster)<=.405 or GetUnitCurrentOrder(caster)!=OrderId("tranquility") or PriestRainLeft[pid]<=.0001 then
                 set PriestRainCaster[pid]=null
                 set PriestRainCount=PriestRainCount-1
             else
@@ -2177,9 +2189,20 @@ function Priest_RainTick takes nothing returns nothing
                         set target=FirstOfGroup(PriestRainEnemies[pid])
                         exitwhen target==null
                         call GroupRemoveUnit(PriestRainEnemies[pid],target)
-                        if IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
+                        set udg_IsPureDamage=false
+                        if IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
+                            set udg_IsPureDamage=true
+                            if Talent_Active(caster,12,2,1,'A0OM') then
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                            else
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                            endif
+                        elseif Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
                             call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
                         endif
+                        // Damage events normally reset this. Also clear after
+                        // invulnerable/ignored targets that may emit no event.
+                        set udg_IsPureDamage=false
                     endloop
                 endif
             endif
@@ -2199,7 +2222,7 @@ function Priest_RainEvent takes nothing returns nothing
     local integer pid=GetPlayerId(GetOwningPlayer(caster))
     local integer rank=GetUnitAbilityLevel(caster,'A0OM')
     if pid>=0 and pid<8 and GetSpellAbilityId()=='A0OM' then
-        if GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_EFFECT and Talent_Active(caster,12,2,1,'A0OM') then
+        if GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_EFFECT then
             if PriestRainCaster[pid]==null then
                 set PriestRainCount=PriestRainCount+1
             endif
@@ -2222,9 +2245,29 @@ endfunction
 function Priest_AbilityTalentTip takes unit hero,integer raw,integer row,integer choice returns nothing
     local integer rank=GetUnitAbilityLevel(hero,raw)
     local string tip
+    local real amount
+    local integer mana
     if rank>0 then
         set tip=LoadStr(PriestAbilityText,raw,rank)
-        if Talent_Active(hero,12,row,choice,raw) then
+        set mana=BlzGetAbilityManaCost(raw,rank-1)
+        if raw=='A00M' then
+            set amount=(I2R(mana)*5.+I2R(GetHeroInt(hero,true))*5.)*Prof_StaffPower(hero)
+            set tip=tip+"|n|nCurrent caster: "+R2SW(amount,1,0)+" HP on impact; "+R2SW(amount*.25,1,0)+" HP along its path, before target modifiers."
+        elseif raw=='A0OM' then
+            set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]+.5))
+            if Talent_Active(hero,12,2,1,raw) then
+                set tip=tip+"|n|nCurrent rank: "+R2SW(amount*.5,1,0)+" base HP/sec and "+R2SW(amount*.5,1,0)+" magic damage/sec."
+            else
+                set tip=tip+"|n|nCurrent rank: "+R2SW(amount,1,0)+" base HP/sec."
+            endif
+        elseif raw=='A0PC' then
+            set amount=I2R(R2I(I2R(50+GetHeroInt(hero,true)/4)*Prof_StaffPower(hero)))
+            set tip=tip+"|n|nCurrent caster contributes "+R2SW(amount,1,0)+" queued HP per second; up to "+R2SW(amount*.25,1,0)+" MP per second before recovery rolls and modifiers."
+        elseif raw=='A089' then
+            set amount=I2R(R2I((I2R(mana)*3.+I2R(GetHeroInt(hero,true))*3.)*Prof_StaffPower(hero)))
+            set tip=tip+"|n|nCurrent caster: "+R2SW(amount,1,0)+" HP and "+R2SW(amount*.25,1,0)+" MP before target modifiers. Caster receives HP only."
+        endif
+        if row>0 and Talent_Active(hero,12,row,choice,raw) then
             set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         endif
         call BlzSetAbilityExtendedTooltip(raw,tip,rank-1+PriestTooltipOffset)
@@ -2246,6 +2289,8 @@ function Priest_RegenTooltip takes nothing returns nothing
         call Priest_AbilityTalentTip(hero,'A00M',1,3)
         call Priest_AbilityTalentTip(hero,'A0OM',2,1)
         call Priest_AbilityTalentTip(hero,'A0W9',2,2)
+        call Priest_AbilityTalentTip(hero,'A0PC',0,0)
+        call Priest_AbilityTalentTip(hero,'A089',0,0)
     endif
     if hero!=null and rank>0 then
         set rate=I2R(25+GetHeroInt(hero,true)/3)*Prof_StaffPower(hero)

@@ -25,7 +25,7 @@
 // FUNCTIONS
 function Priest_CooldownBase takes unit caster,integer raw,integer level returns real
     if raw=='A0W9' and Talent_Active(caster,12,2,2,'A0W9') then
-        return 20.
+        return 45.
     endif
     return BlzGetAbilityCooldown(raw,level)
 endfunction
@@ -34,7 +34,7 @@ function Priest_EsunaChannel takes nothing returns nothing
     local unit caster=GetTriggerUnit()
     if GetSpellAbilityId()=='A0W9' then
         if Talent_Active(caster,12,2,2,'A0W9') then
-            call SaveReal(CooldownTalentBase,GetHandleId(caster),'A0W9',20.)
+            call SaveReal(CooldownTalentBase,GetHandleId(caster),'A0W9',45.)
         else
             call RemoveSavedReal(CooldownTalentBase,GetHandleId(caster),'A0W9')
         endif
@@ -249,7 +249,7 @@ function Priest_RainTick takes nothing returns nothing
         exitwhen pid>=8
         set caster=PriestRainCaster[pid]
         if caster!=null then
-            if GetWidgetLife(caster)<=.405 or GetUnitCurrentOrder(caster)!=OrderId("tranquility") or PriestRainLeft[pid]<=.0001 or not Talent_Active(caster,12,2,1,'A0OM') then
+            if GetWidgetLife(caster)<=.405 or GetUnitCurrentOrder(caster)!=OrderId("tranquility") or PriestRainLeft[pid]<=.0001 then
                 set PriestRainCaster[pid]=null
                 set PriestRainCount=PriestRainCount-1
             else
@@ -263,9 +263,20 @@ function Priest_RainTick takes nothing returns nothing
                         set target=FirstOfGroup(PriestRainEnemies[pid])
                         exitwhen target==null
                         call GroupRemoveUnit(PriestRainEnemies[pid],target)
-                        if IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
+                        set udg_IsPureDamage=false
+                        if IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
+                            set udg_IsPureDamage=true
+                            if Talent_Active(caster,12,2,1,'A0OM') then
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                            else
+                                call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
+                            endif
+                        elseif Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
                             call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
                         endif
+                        // Damage events normally reset this. Also clear after
+                        // invulnerable/ignored targets that may emit no event.
+                        set udg_IsPureDamage=false
                     endloop
                 endif
             endif
@@ -284,7 +295,7 @@ function Priest_RainEvent takes nothing returns nothing
     local integer pid=GetPlayerId(GetOwningPlayer(caster))
     local integer rank=GetUnitAbilityLevel(caster,'A0OM')
     if pid>=0 and pid<8 and GetSpellAbilityId()=='A0OM' then
-        if GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_EFFECT and Talent_Active(caster,12,2,1,'A0OM') then
+        if GetTriggerEventId()==EVENT_PLAYER_UNIT_SPELL_EFFECT then
             if PriestRainCaster[pid]==null then
                 set PriestRainCount=PriestRainCount+1
             endif
@@ -306,9 +317,29 @@ endfunction
 function Priest_AbilityTalentTip takes unit hero,integer raw,integer row,integer choice returns nothing
     local integer rank=GetUnitAbilityLevel(hero,raw)
     local string tip
+    local real amount
+    local integer mana
     if rank>0 then
         set tip=LoadStr(PriestAbilityText,raw,rank)
-        if Talent_Active(hero,12,row,choice,raw) then
+        set mana=BlzGetAbilityManaCost(raw,rank-1)
+        if raw=='A00M' then
+            set amount=(I2R(mana)*5.+I2R(GetHeroInt(hero,true))*5.)*Prof_StaffPower(hero)
+            set tip=tip+"|n|nCurrent caster: "+R2SW(amount,1,0)+" HP on impact; "+R2SW(amount*.25,1,0)+" HP along its path, before target modifiers."
+        elseif raw=='A0OM' then
+            set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]+.5))
+            if Talent_Active(hero,12,2,1,raw) then
+                set tip=tip+"|n|nCurrent rank: "+R2SW(amount*.5,1,0)+" base HP/sec and "+R2SW(amount*.5,1,0)+" magic damage/sec."
+            else
+                set tip=tip+"|n|nCurrent rank: "+R2SW(amount,1,0)+" base HP/sec."
+            endif
+        elseif raw=='A0PC' then
+            set amount=I2R(R2I(I2R(50+GetHeroInt(hero,true)/4)*Prof_StaffPower(hero)))
+            set tip=tip+"|n|nCurrent caster contributes "+R2SW(amount,1,0)+" queued HP per second; up to "+R2SW(amount*.25,1,0)+" MP per second before recovery rolls and modifiers."
+        elseif raw=='A089' then
+            set amount=I2R(R2I((I2R(mana)*3.+I2R(GetHeroInt(hero,true))*3.)*Prof_StaffPower(hero)))
+            set tip=tip+"|n|nCurrent caster: "+R2SW(amount,1,0)+" HP and "+R2SW(amount*.25,1,0)+" MP before target modifiers. Caster receives HP only."
+        endif
+        if row>0 and Talent_Active(hero,12,row,choice,raw) then
             set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         endif
         call BlzSetAbilityExtendedTooltip(raw,tip,rank-1+PriestTooltipOffset)
@@ -329,6 +360,8 @@ function Priest_RegenTooltip takes nothing returns nothing
         call Priest_AbilityTalentTip(hero,'A00M',1,3)
         call Priest_AbilityTalentTip(hero,'A0OM',2,1)
         call Priest_AbilityTalentTip(hero,'A0W9',2,2)
+        call Priest_AbilityTalentTip(hero,'A0PC',0,0)
+        call Priest_AbilityTalentTip(hero,'A089',0,0)
     endif
     if hero!=null and rank>0 then
         set rate=I2R(25+GetHeroInt(hero,true)/3)*Prof_StaffPower(hero)

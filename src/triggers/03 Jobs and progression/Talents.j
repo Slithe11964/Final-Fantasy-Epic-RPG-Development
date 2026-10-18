@@ -616,9 +616,9 @@ function Talents_InitData takes nothing returns nothing
     set TalentName[Talent_Index(job,1,3)]="Blinding Light"
     set TalentText[Talent_Index(job,1,3)]="Enemies Cure affects are blinded."
     set TalentName[Talent_Index(job,2,1)]="Acid Rain"
-    set TalentText[Talent_Index(job,2,1)]="Tranquility also damages enemies in its healing radius for 50% of its current-rank healing value."
+    set TalentText[Talent_Index(job,2,1)]="Tranquility converts half its healing into damage: heals allies for 50% and damages enemies for 50% of its current-rank base healing in the same radius."
     set TalentName[Talent_Index(job,2,2)]="Refresh"
-    set TalentText[Talent_Index(job,2,2)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 20 seconds."
+    set TalentText[Talent_Index(job,2,2)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 45 seconds."
     set TalentName[Talent_Index(job,2,3)]="Swiftmend"
     set TalentText[Talent_Index(job,2,3)]="Regen delivers the same total healing in half the time: 30 seconds instead of 60 at master rank."
 endfunction

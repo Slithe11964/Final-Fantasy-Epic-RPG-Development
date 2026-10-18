@@ -1,5 +1,5 @@
 """Shared inventory interactions and strict native equipped/carry boundaries."""
-import json,re
+import copy,json,re
 from pathlib import Path
 from damage_tooltips import merged
 from priest_master import fields,at,setf
@@ -43,7 +43,12 @@ def catalogue(view):
         if p:item_pool[r]=p
         for alias in [mapping.get(r,{}).get('variant'),mapping.get(r,{}).get('offhand')]:
             if alias and p:item_pool[alias]=p
-    return dict(items=items,abilities=abilities,mapping=mapping,storable=storable,gear=gear,
+    quick={r:'q'+m['variant'][1:] for r,m in mapping.items() if m.get('variant')}
+    for raw in quick.values():
+        if raw in items:raise ValueError('reserved quick gear ID already used: '+raw)
+    for original,raw in quick.items():
+        if original in item_pool:item_pool[raw]=item_pool[original]
+    return dict(quick=quick,items=items,abilities=abilities,mapping=mapping,storable=storable,gear=gear,
                 passive=passive,pool=pool,item_pool=item_pool,gear_abilities=gear_abilities)
 
 
@@ -60,6 +65,16 @@ def object_items(data,config,*,native=False):
             for st in o['sets']:
                 for m in st['mods']:
                     if m['field']=='utub' and 'breed' not in m['value'].lower():m['value']+='|nUse on your own chocobo near a partner to breed a basic chocobo.'
+    if native:
+        ids={o['id'] for o in table['custom']}
+        for original,raw in config['quick'].items():
+            if raw in ids:continue
+            clone=copy.deepcopy(config['items'][original]);clone['id']=raw
+            for st in clone['sets']:
+                st['mods'][:]=[m for m in st['mods'] if m['field'] not in {'icla','iequ'}]
+                for key,value in [('icla','Permanent'),('iequ','')]:
+                    st['mods'].append(dict(field=key,type=3,level=None,data=None,value=value,end=0))
+            table['custom'].append(clone)
     return write_objects(table,table['version'],'w3t')
 
 
@@ -168,16 +183,78 @@ endfunction'''
     set caster=null
 endfunction'''
             source=put(source,name,body)
+    if 'Trig_Fishing_Unlock_Conditions' in fs:
+        source=dependency(source,'TItemStack')
+        if 'boolean FishingUnlocked=false' not in source:source=source.replace('endglobals','    boolean FishingUnlocked=false\nendglobals',1)
+        fragment=(HERE/'FishingInventory.j').read_text()
+        for name,body in functions(fragment).items():
+            if name in functions(source):source=put(source,name,body)
+            else:
+                anchor='function Trig_Fishing_Unlock_Conditions' if name!='Fishing_UnlockOnce' else 'function Trig_Fishing_Unlock_Actions'
+                source=source.replace(anchor,body+'\n\n'+anchor,1)
+        source=put(source,'Trig_Fishing_Unlock_Conditions','function Trig_Fishing_Unlock_Conditions takes nothing returns boolean\n    return Fishing_HasAnyRod()\nendfunction')
+        source=put(source,'Trig_Fishing_Unlock_Actions','function Trig_Fishing_Unlock_Actions takes nothing returns nothing\n    call Fishing_UnlockOnce()\nendfunction')
+        body=functions(source)['Register_Fishing_Unlock']
+        if 'TriggerRegisterTimerEvent(' not in body:body=body.replace('    call TriggerAddCondition','    call TriggerRegisterTimerEvent(gg_trg_Fishing_Unlock,1.,true)\n    call TriggerAddCondition',1)
+        source=put(source,'Register_Fishing_Unlock',body)
+    if 'Trig_Fishing_Cast_Conditions' in fs:
+        source=dependency(source,'TItemStack')
+        helper="""function Fishing_WornCast takes unit hero,integer raw returns boolean
+    if raw=='A0VB' then
+        return Carry_Worn(hero,'I0EY')
+    elseif raw=='A0VT' then
+        return Carry_Worn(hero,'I0EZ')
+    elseif raw=='A0VU' then
+        return Carry_Worn(hero,'I0GB')
+    elseif raw=='A0VV' then
+        return Carry_Worn(hero,'I0GC')
+    endif
+    return false
+endfunction"""
+        if 'Fishing_WornCast' not in functions(source):source=source.replace('function Trig_Fishing_Cast_Conditions',helper+'\n\nfunction Trig_Fishing_Cast_Conditions',1)
+        body=functions(source)['Trig_Fishing_Cast_Conditions']
+        if 'Fishing_WornCast' not in body:body=body.replace('    return(', '    return Fishing_WornCast(GetTriggerUnit(),GetSpellAbilityId()) and (',1)
+        source=put(source,'Trig_Fishing_Cast_Conditions',body)
     if native:source=native_refresh(source,config)
     return source
 
 
 def native_refresh(source,c):
     fs=functions(source)
+    if 'FRC_Init' in fs:
+        body=fs['FRC_Init']
+        for original,raw in c['quick'].items():
+            found=re.search(r"SaveInteger\(FRC_Map,0,'"+original+r"',([0-9]+)\)",body)
+            if found and "'"+raw+"'" not in body:body=body.replace('endfunction',f"    call SaveInteger(FRC_Map,0,'{raw}',{found[1]})\nendfunction")
+        source=put(source,'FRC_Init',body)
+    if 'FFP_Init' in fs:
+        body=fs['FFP_Init']
+        for original,raw in c['quick'].items():
+            # Native load bindings already use the equipment variant, while
+            # editor bindings use the canonical ID. Both must restore a
+            # carry-only copy in the hero's six quick slots.
+            for candidate in [original,c['mapping'][original]['variant']]:
+                body=re.sub(r"(SaveInteger\(FFP_Bindings,1,[0-9]+,)'"+candidate+r"'\)",lambda m:m[1]+"'"+raw+"')",body)
+        source=put(source,'FFP_Init',body)
     if 'Forsaken_SyncStoredEffects' in fs:
         body=fs['Forsaken_SyncStoredEffects']
         body=body if 'Forsaken_SuspendStoredItem(UnitItemInSlot(holder,slot))' in body else body.replace('        call Forsaken_RestoreStoredItem(UnitItemInSlot(holder,slot))','        if LoadBoolean(ForsakenElementSources,2,GetItemTypeId(UnitItemInSlot(holder,slot))) then\n            call Forsaken_SuspendStoredItem(UnitItemInSlot(holder,slot))\n        else\n            call Forsaken_RestoreStoredItem(UnitItemInSlot(holder,slot))\n        endif')
         source=put(source,'Forsaken_SyncStoredEffects',body)
+    if 'Forsaken_CarryOrder' in fs:
+        body=fs['Forsaken_CarryOrder']
+        if 'order>=852002' not in body:body=body.replace('    if order==852001',
+            '    if order>=852002 and order<=852007 and holder==Player_GetHero(GetOwningPlayer(holder)) and gear!=null and LoadInteger(ForsakenGearTypes,4,GetItemTypeId(gear))!=0 then\n        set replacement=Forsaken_CarryReplacement(holder,gear,order-852002)\n    elseif order==852001',1)
+        source=put(source,'Forsaken_CarryOrder',body)
+        body=fs['Forsaken_PrepareQuickGear']
+        if 'slot<6 and LoadBoolean(ForsakenGearTypes,51' not in body:
+            body=body.replace('if original!=null and variant!=0 and not LoadBoolean', 'if original!=null and variant!=0 and not (slot<6 and LoadBoolean(ForsakenGearTypes,51,GetHandleId(original))) and not LoadBoolean',1)
+        source=put(source,'Forsaken_PrepareQuickGear',body)
+        body=fs['Forsaken_CarryReplacement']
+        if 'ForsakenGearTypes,67,raw' not in body:
+            body=body.replace('    set ForsakenConvertingGear=true','    if quickSlot>=0 and LoadInteger(ForsakenGearTypes,67,raw)!=0 then\n        set raw=LoadInteger(ForsakenGearTypes,67,raw)\n    endif\n    set ForsakenConvertingGear=true',1)
+        if 'call Forsaken_SyncStoredEffects(holder)' not in body:
+            body=body.replace('    set ForsakenConvertingGear=false\n    return replacement','    if holder==Player_GetHero(GetOwningPlayer(holder)) then\n        call Forsaken_SyncStoredEffects(holder)\n    endif\n    set ForsakenConvertingGear=false\n    return replacement')
+        source=put(source,'Forsaken_CarryReplacement',body)
     if 'Forsaken_StoreHeroGear' in fs:
         source=put(source,'Forsaken_StoreHeroGear','function Forsaken_StoreHeroGear takes unit holder returns nothing\n    // Quick slots may carry gear; Forsaken_SyncStoredEffects suspends its passives.\nendfunction')
         body=fs['Trig_Equip_Restrictions_GaiaLevelTooLow']
@@ -187,6 +264,13 @@ def native_refresh(source,c):
         body=functions(source)['Register_Forsaken_Equipment']
         if 'function Integrity_GearData' not in source:
             lines=["    call SaveBoolean(ForsakenElementSources,2,'I0BQ',true)","    call SaveInteger(ForsakenElementSources,3,'I0BQ',1)"]
+            for original,raw in sorted(c['quick'].items()):
+                variant=c['mapping'][original]['variant']
+                lines.extend([f"    call SaveInteger(ForsakenGearTypes,67,'{original}','{raw}')",
+                    f"    call SaveInteger(ForsakenGearTypes,0,'{raw}','{variant}')",
+                    f"    call SaveInteger(ForsakenGearTypes,4,'{raw}','{original}')",
+                    f"    call SaveBoolean(ForsakenElementSources,2,'{raw}',true)",
+                    f"    call SaveInteger(ForsakenElementSources,3,'{raw}',1)"])
             for raw in sorted(c['gear_abilities']):lines.append("    call SaveBoolean(ForsakenElementSources,0,'"+raw+"',true)")
             for raw in str(fields(c['items']['I0BQ']).get(('iabi',None),'')).split(','):
                 if raw in c['passive']:lines.append("    call SaveBoolean(ForsakenBagPassiveTypes,0,'"+raw+"',true)")
@@ -203,6 +287,23 @@ def native_refresh(source,c):
         if 'call Integrity_RefreshWorn(holder)' not in body:body=body.replace('    call Forsaken_UpdatePanels(holder)','    call Integrity_RefreshWorn(holder)\n    call Forsaken_UpdatePanels(holder)',1)
         # The helper must precede EnableHero as well as the item-event callback.
         source=put(source,'Forsaken_EnableHero',body)
+        body=functions(source)['Forsaken_EnableHero']
+        if 'call Integrity_MarkQuick(holder)' not in body:body=body.replace('    call Forsaken_PrepareQuickGear(holder)','    call Integrity_MarkQuick(holder)\n    call Forsaken_PrepareQuickGear(holder)',1)
+        source=put(source,'Forsaken_EnableHero',body)
+        mark='''function Integrity_MarkQuick takes unit hero returns nothing
+    local integer i=0
+    local item carried
+    loop
+        exitwhen i>=6
+        set carried=UnitItemInSlot(hero,i)
+        if LoadInteger(ForsakenGearTypes,0,GetItemTypeId(carried))!=0 then
+            call SaveBoolean(ForsakenGearTypes,51,GetHandleId(carried),true)
+        endif
+        set i=i+1
+    endloop
+    set carried=null
+endfunction'''
+        if 'Integrity_MarkQuick' not in fs:source=source.replace('function Forsaken_EnableHero takes',mark+'\n\nfunction Forsaken_EnableHero takes',1)
         helper='''function Integrity_RefreshWorn takes unit hero returns nothing
     local integer i=0
     local integer raw

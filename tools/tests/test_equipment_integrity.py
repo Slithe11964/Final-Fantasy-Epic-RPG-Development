@@ -148,6 +148,83 @@ class EquipmentIntegrityTests(unittest.TestCase):
             self.assertEqual(e['udg_IsPhysicalAttack'],arrows);self.assertEqual(e['udg_DamageElement'],0)
             self.assertEqual(store[6],0);self.assertEqual(ended,['timer']);self.assertEqual(targets,[])
 
+    def test_fishing_load_bag_alias_gaya_reveal_and_equipped_only_cast(self):
+        from test_gameplay_inventory import GameplayTests,item
+        setup=refresh(source('Fishing_Setup'),self.config)
+        casting=refresh(source('Fishing_Casting'),self.config)
+        for classic in (False,True):
+            for where in ('quick','lastbag','worn','gaya'):
+                with self.subTest(classic=classic,where=where):
+                    env,quick,bags,gear=GameplayTests().inventory(classic)
+                    raw='I0EY' if classic else 'fRod'
+                    env['ForsakenGearTypes'][4,'fRod']='I0EY'
+                    rod=item(raw=raw)
+                    if where=='quick':quick['hero']=[rod]
+                    elif where=='gaya':quick['gaya']=[rod]
+                    elif where=='worn':
+                        if classic:quick['page0']=[rod]
+                        else:gear['hero']=[rod]
+                    elif classic:quick['page6']=[None]*5+[rod]
+                    else:bags['hero']=[None]*29+[rod]
+                    shown=[];enabled=[];disabled=[];stock=[]
+                    env.update(FishingUnlocked=False,udg_FishingSpots='spots',Player=lambda p:p,
+                        Player_GetHero=lambda p:'hero' if p==0 else None,udg_SpiritOfGaya=defaultdict(lambda:None,{1:'gaya'}),
+                        ForGroupBJ=lambda group,fn:shown.append(group),AddItemToStockBJ=lambda *a:stock.append(a),
+                        gg_unit_n02Y_0052='ruksel',gg_trg_Fishing_Cast='cast',gg_trg_Fishing_Unlock='unlock',
+                        EnableTrigger=enabled.append,DisableTrigger=disabled.append,
+                        Trig_Fishing_Unlock_ShowFishingSpot=lambda:None)
+                    names=['Fishing_Rod','Fishing_CarryRod','Fishing_HasAnyRod','Fishing_UnlockOnce']
+                    e=execute(setup,names,env)
+                    self.assertTrue(e['Fishing_HasAnyRod']())
+                    e['Fishing_UnlockOnce']();e['Fishing_UnlockOnce']()
+                    self.assertEqual(shown,['spots']);self.assertEqual(enabled,['cast']);self.assertEqual(disabled,['unlock'])
+                    self.assertEqual(len(stock),1)
+                    e=execute(casting,['Fishing_WornCast'],e)
+                    self.assertEqual(e['Fishing_WornCast']('hero','A0VB'),where=='worn')
+        self.assertIn('TriggerRegisterTimerEvent(gg_trg_Fishing_Unlock,1.,true)',functions(setup)['Register_Fishing_Unlock'])
+        self.assertIn('Fishing_WornCast',functions(casting)['Trig_Fishing_Cast_Conditions'])
+        for s in (setup,casting):self.assertEqual(refresh(s,self.config),s)
+
+    def test_native_gear_moves_to_quick_slots_without_being_reconverted(self):
+        updated=object_items(self.view.object_bytes('war3map.w3t'),self.config,native=True)
+        byid={o['id']:fields(o) for o in read_objects(updated,'w3t')['custom']}
+        for raw in ['I0I1','I081']:
+            self.assertEqual(byid[raw].get(('icla',None)),fields(self.config['items'][raw]).get(('icla',None)))
+            quick=self.config['quick'][raw]
+            self.assertEqual(byid[quick]['icla',None],'Permanent');self.assertEqual(byid[quick]['iequ',None],'')
+        p=ROOT/'release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEN.w3x'
+        if p.exists():base=View(p).modules['TEquip']
+        else:
+            base=source('Equip')
+            if 'Forsaken_CarryOrder' not in functions(base):return
+        native=refresh(base,self.config,native=True);orders=[];order=[852002]
+        env=mocks(native);env.update(GetIssuedOrderId=lambda:order[0],GetOrderTargetItem=lambda:'gear',GetOrderTargetUnit=lambda:None,
+            GetItemTypeId=lambda i:'f095' if i else 0,GetOwningPlayer=lambda u:0,Player_GetHero=lambda p:'hero',
+            GetHandleId=lambda u:1,ForsakenGearTypes='types',LoadInteger=lambda h,p,c:'I081' if p==4 else 0,
+            Forsaken_CarryReplacement=lambda h,i,s:orders.append((h,i,s)) or 'quick',OrderId=lambda s:0)
+        e=execute(native,['Forsaken_CarryOrder'],env)
+        for o in (852002,852007):order[0]=o;e['Forsaken_CarryOrder']('hero')
+        self.assertEqual(orders,[('hero','gear',0),('hero','gear',5)])
+        created=[]
+        env=mocks(native);env.update(ForsakenConvertingGear=False,UnitExtendedInventorySize=lambda h:0,
+            UnitItemInSlot=lambda h,i:'quick' if i==0 else None,GetItemTypeId=lambda i:'I081' if i else 0,
+            LoadInteger=lambda h,p,r:'f095' if r=='I081' else 0,GetHandleId=lambda i:1,
+            LoadBoolean=lambda h,p,i:p==51,ForsakenGearTypes='types',CreateItem=lambda *a:created.append(a))
+        e=execute(native,['Forsaken_PrepareQuickGear'],env);e['Forsaken_PrepareQuickGear']('hero');self.assertEqual(created,[])
+
+    def test_native_save_load_restores_quick_gear_aliases(self):
+        from equipment_integrity import native_refresh
+        from test_armory_materia import execute
+        from collections import defaultdict
+        raw='I081';variant=self.config['mapping'][raw]['variant'];quick=self.config['quick'][raw]
+        for current in [raw,variant,quick]:
+            base="function FFP_Init takes nothing returns nothing\n    call SaveInteger(FFP_Bindings,1,42,'%s')\nendfunction\n"%current
+            updated=native_refresh(base,self.config)
+            values={};env=mocks(updated);env.update(FFP_Bindings='bindings',SaveInteger=lambda h,p,c,v:values.__setitem__((p,c),v))
+            e=execute(updated,['FFP_Init'],env);e['FFP_Init']()
+            self.assertEqual(values[1,42],quick)
+            self.assertEqual(native_refresh(updated,self.config),updated)
+
     def test_shared_transform_idempotent_and_freelancer_stats_group_variants(self):
         names=['Armory','ForsakenSaveCapture','ForsakenSaveCodec','ForsakenSaveFreshObjects','ForsakenFreshLoad','Myriad','Meteor','Chocobo_Taming']
         if any((ROOT/'src/triggers').rglob('GearSlots.j')):names.append('GearSlots')

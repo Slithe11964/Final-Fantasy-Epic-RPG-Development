@@ -88,6 +88,17 @@ def plan(main,skin):
     return dict(buff_entries=expanded,abilities=index)
 
 
+def healing_description(config,raw,rank):
+    f=fields(config['abilities'][raw]);mana=int(at(f,'amcs',rank,0))
+    if raw=='A00M':return f"|cffffcc00Life Spell|r|nHeals [(5 x {mana} mana cost + 5 x caster Intelligence) x Staff power] HP on impact. Units along the path receive 25% of that heal. Target healing modifiers apply."
+    if raw=='A0OM':
+        rate=float(at(f,'Etq1',rank,50.))/float(at(f,'Etq2',rank,.1))
+        return f"Channels {rate:g} base HP per second to nearby allies for {float(at(f,'adur',rank,15.)):g} seconds. Acid Rain converts half: {rate/2:g} base HP/sec to allies and {rate/2:g} magic damage/sec to enemies in the same radius. Target healing/defense modifiers apply."
+    if raw=='A0PC':return "Channels until cancelled. Every second, adds P = floor[(50 + floor(caster Intelligence / 4)) x Staff power] to nearby allies' queued HP recovery. HP ticks roll 93.75%-100%; queued MP recovery rolls 23.4375%-25%. Healing modifiers and other queued recovery apply."
+    if raw=='A089':return f"|cffffcc00Life Spell|r|nRestores floor[(3 x {mana} mana cost + 3 x caster Intelligence) x Staff power] HP and 25% of that amount as MP to nearby allies. The caster receives HP only. Cleanses ailments. Target recovery modifiers apply."
+    return str(at(f,'aub1',rank,''))
+
+
 def objects(data,config):
     table=read_objects(data,'w3a');index={o['id']:o for o in table['custom']}
     for e in config['buff_entries']:
@@ -96,6 +107,11 @@ def objects(data,config):
         if old and old!=clone:raise ValueError('reserved Priest ability differs: '+clone['id'])
         if not old:table['custom'].append(copy.deepcopy(clone))
     for o in table['custom']:
+        if o['id'] in {'A00M','A0OM','A0PC','A089'}:
+            for rank in range(1,fields(config['abilities'][o['id']]).get(('alev',0),1)+1):
+                setf(o,'aub1',healing_description(config,o['id'],rank),rank)
+        if o['id']=='A0OM':
+            for rank in range(1,7):setf(o,'Etq1',0.,rank,data=1)
         if o['id']!='A00L':continue
         for st in o['sets']:
             for m in st['mods']:
@@ -114,10 +130,10 @@ def initializer(config):
     lines.append('    set PriestBuffCount='+str(len(POSITIVE)))
     regen=fields(config['abilities']['A00L'])
     for rank in range(1,12):lines.append(f"    set PriestRegenDuration[{rank}]={float(at(regen,'adur',rank,12.))}")
-    for raw in ['A00G','A0TZ','A00M','A0OM','A0W9']:
+    for raw in ['A00G','A0TZ','A00M','A0OM','A0W9','A0PC','A089']:
         f=fields(config['abilities'][raw])
         for rank in range(1,f.get(('alev',0),1)+1):
-            text=str(at(f,'aub1',rank,'')).replace('\\','\\\\').replace('"','\\"').replace('\n','|n').replace('\r','')
+            text=healing_description(config,raw,rank).replace('\\','\\\\').replace('"','\\"').replace('\n','|n').replace('\r','')
             lines.append("    call SaveStr(PriestAbilityText,'"+raw+"',"+str(rank)+',"'+text+'")')
     for e in config['buff_entries']:
         raw=e['raw'];f=fields(e['object']);clone=e['clone']['id']
@@ -158,17 +174,19 @@ def refresh(source,config,*,native=False):
         name='Talents_InitData';body=functions(source)[name]
         if '"Acid Rain"' not in body:
             body=body.replace('endfunction','''    set TalentName[Talent_Index(job,2,1)]="Acid Rain"
-    set TalentText[Talent_Index(job,2,1)]="Tranquility also damages enemies in its healing radius for 50% of its current-rank healing value."
+    set TalentText[Talent_Index(job,2,1)]="Tranquility converts half its healing into damage: heals allies for 50% and damages enemies for 50% of its current-rank base healing in the same radius."
     set TalentName[Talent_Index(job,2,2)]="Refresh"
-    set TalentText[Talent_Index(job,2,2)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 20 seconds."
+    set TalentText[Talent_Index(job,2,2)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 45 seconds."
     set TalentName[Talent_Index(job,2,3)]="Swiftmend"
     set TalentText[Talent_Index(job,2,3)]="Regen delivers the same total healing in half the time: 30 seconds instead of 60 at master rank."
 endfunction''')
         source=put(source,name,body)
         # Also update data carried by a previously prepared authoring source.
         body=functions(source)[name]
+        body=re.sub(r'(set TalentText\[Talent_Index\(job,2,1\)\]=)"[^"\n]*"',
+            r'\1"Tranquility converts half its healing into damage: heals allies for 50% and damages enemies for 50% of its current-rank base healing in the same radius."',body)
         body=re.sub(r'(set TalentText\[Talent_Index\(job,2,2\)\]=)"[^"\n]*"',
-            r'\1"Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 20 seconds."',body)
+            r'\1"Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 45 seconds."',body)
         source=put(source,name,body)
         name='Talents_Init';body=functions(source)[name]
         body=body.replace('    call Priest_MasterInit()\n','')

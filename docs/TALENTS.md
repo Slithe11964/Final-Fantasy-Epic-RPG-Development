@@ -142,3 +142,7 @@ Tooltip writes are local presentation only; spell casts, buff records, damage an
 expiry timers are synchronized. Base tooltips are retained so a reset removes the
 appended talent text. Ability text uses the appropriate setter level offset for
 each client. Initialization tables are split into bounded ExecuteFunc batches.
+
+## PAIR028 Priest Master correction
+
+Acid Rain converts half of Tranquility healing into damage rather than adding damage on top of full healing. The authored master rate is 400 HP/.1 seconds, so the split is 2000 base HP/sec and 2000 magic damage/sec. A single scripted healing pulse prevents native double-healing; existing healing engine modifiers apply. Refresh base cooldown is now 45 seconds, retaining normal cooldown scaling. Cure/Tranquility/Pray/Blessing of Light descriptions include current-rank formulas and local current-caster values. See INVENTORY_PANEL_FISHING.md for exact formulas and testing.

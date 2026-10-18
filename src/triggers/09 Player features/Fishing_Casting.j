@@ -1,4 +1,4 @@
-library TFishingCasting requires TAbil, TGroup, TPlayerHero
+library TFishingCasting requires TAbil, TGroup, TPlayerHero, TItemStack
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Fishing_Cast=null
@@ -10,8 +10,21 @@ function Trig_Fishing_Cast_IsStartFish takes nothing returns boolean
     return(GetSpellAbilityId()=='A0VB')or(GetSpellAbilityId()=='A0VT')or(GetSpellAbilityId()=='A0VU')or(GetSpellAbilityId()=='A0VV') // 'A0VB': ability "Start Fish"; 'A0VT': ability "Start Fish"; 'A0VU': ability "Start Fish"; 'A0VV': ability "Start Fish"
 endfunction
 
+function Fishing_WornCast takes unit hero,integer raw returns boolean
+    if raw=='A0VB' then
+        return Carry_Worn(hero,'I0EY')
+    elseif raw=='A0VT' then
+        return Carry_Worn(hero,'I0EZ')
+    elseif raw=='A0VU' then
+        return Carry_Worn(hero,'I0GB')
+    elseif raw=='A0VV' then
+        return Carry_Worn(hero,'I0GC')
+    endif
+    return false
+endfunction
+
 function Trig_Fishing_Cast_Conditions takes nothing returns boolean
-    return(Trig_Fishing_Cast_IsStartFish())and(GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit())))and(udg_GatherState[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]==0)
+    return Fishing_WornCast(GetTriggerUnit(),GetSpellAbilityId()) and (Trig_Fishing_Cast_IsStartFish())and(GetTriggerUnit()==Player_GetHero(GetOwningPlayer(GetTriggerUnit())))and(udg_GatherState[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]==0)
 endfunction
 
 function Trig_Fishing_Cast_IsFishingSpot takes nothing returns boolean

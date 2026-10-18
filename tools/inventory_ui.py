@@ -45,6 +45,7 @@ def refresh(source):
         'framehandle ForsakenBackpackNativeClose=null':'ForsakenBackpackNativeClose',
         'integer ForsakenBackpackScanBudget=0':'ForsakenBackpackScanBudget',
         'framehandle ForsakenLinkedBag=null':'ForsakenLinkedBag',
+        'unit ForsakenInventoryHero=null':'ForsakenInventoryHero',
         'framehandle ForsakenLinkedBagClose=null':'ForsakenLinkedBagClose',
         'framehandle ForsakenBagNativeClose=null':'ForsakenBagNativeClose',
         'framehandle ForsakenBagHookRoot=null':'ForsakenBagHookRoot',
@@ -53,8 +54,13 @@ def refresh(source):
     }
     import re
     for declaration,name in declarations.items():
-        if not re.search(r'^\s*(?:boolean|real|trigger|framehandle|integer) '+name+r'\s*(?:=|$)',source,re.M):
+        if not re.search(r'^\s*(?:boolean|real|trigger|framehandle|integer|unit) '+name+r'\s*(?:=|$)',source,re.M):
             source=source.replace('endglobals','    '+declaration+'\nendglobals',1)
+    if 'Forsaken_FindFrame' in fs:
+        body=functions(source)['Forsaken_FindFrame']
+        if 'set ForsakenLinkedBag=' not in body:
+            body=body.replace('        set ForsakenCachedBackdrop=Forsaken_FindFrameUncached("EquipmentPanelBackdrop")','        set ForsakenCachedBackdrop=Forsaken_FindFrameUncached("EquipmentPanelBackdrop")\n        set ForsakenLinkedBag=Forsaken_FindFrameUncached("SimpleEquipmentInventoryPanel")')
+        source=put(source,'Forsaken_FindFrame',body)
     # Replace the previous half-second restoration helpers, including older masters.
     helper=(ROOT/'experiments/Forsaken/BackpackVisibility.j').read_text()
     for name in set(functions(helper))|{'Forsaken_BackpackActivity','Forsaken_BackpackVisible','Forsaken_RegisterBackpackActivity'}:
@@ -72,6 +78,12 @@ def refresh(source):
     if 'call Forsaken_BackpackControls' not in body:
         body=body.replace('    set ForsakenBackpackWasVisible=visible',
                           '    call Forsaken_BackpackControls(nativePanel,anchor,visible and ForsakenInspectTarget==null)\n    set ForsakenBackpackWasVisible=visible')
+    if 'set nativePanel=ForsakenCachedEquipment' not in body:
+        body=body.replace('            set visible=Forsaken_BackpackVisible(nativePanel)',
+            '            set visible=Forsaken_BackpackVisible(nativePanel)\n            set nativePanel=ForsakenCachedEquipment\n            set anchor=ForsakenCachedBackdrop')
+    body=body.replace('elseif hero!=null and IsUnitSelected(hero,viewer) then','elseif Forsaken_InventoryContext(hero,viewer) then')
+    if 'call BlzFrameSetVisible(ForsakenLinkedBag,false)' not in body:
+        body=body.replace('    if ForsakenInspectTarget!=null then','    if ForsakenInspectTarget!=null then\n        call BlzFrameSetVisible(ForsakenCachedEquipment,false)\n        call BlzFrameSetVisible(ForsakenLinkedBag,false)',1)
     source=put(source,name,body)
     name='Forsaken_PanelAccess';body=functions(source)[name]
     # Remove PAIR017's cancellation on selection, which erased user intent.

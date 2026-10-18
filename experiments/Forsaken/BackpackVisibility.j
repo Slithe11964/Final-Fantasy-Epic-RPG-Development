@@ -49,83 +49,113 @@ function Forsaken_BackpackActivity takes nothing returns nothing
     set hero=null
 endfunction
 
-function Forsaken_BagName takes string name returns boolean
-    local integer i=0
-    local boolean bag=false
-    local boolean container=false
-    set name=StringCase(name,false)
-    loop
-        exitwhen i>=StringLength(name)
-        if SubString(name,i,i+3)=="bag" or SubString(name,i,i+8)=="backpack" or SubString(name,i,i+17)=="extendedinventory" then
-            set bag=true
-        endif
-        if SubString(name,i,i+5)=="panel" or SubString(name,i,i+9)=="container" then
-            set container=true
-        endif
-        if SubString(name,i,i+6)=="button" or SubString(name,i,i+4)=="slot" or SubString(name,i,i+4)=="icon" then
-            return false
-        endif
-        set i=i+1
-    endloop
-    return bag and container
+// These are the two actual engine panels, not the hero's six quick slots.
+function Forsaken_ResolveInventory takes nothing returns nothing
+    set ForsakenCachedEquipment=Forsaken_FindFrameUncached("SimpleEquipmentPanel")
+    set ForsakenCachedBackdrop=Forsaken_FindFrameUncached("EquipmentPanelBackdrop")
+    set ForsakenLinkedBag=Forsaken_FindFrameUncached("SimpleEquipmentInventoryPanel")
 endfunction
 
-function Forsaken_SearchBag takes framehandle root,integer depth returns framehandle
-    local integer i=0
-    local framehandle found=null
-    if root==null or depth>8 or ForsakenBagSearchBudget<=0 then
-        return null
-    endif
-    set ForsakenBagSearchBudget=ForsakenBagSearchBudget-1
-    if root!=ForsakenCachedEquipment and Forsaken_BagName(BlzFrameGetName(root)) then
-        return root
-    endif
-    loop
-        exitwhen i>=BlzFrameGetChildrenCount(root)
-        set found=Forsaken_SearchBag(BlzFrameGetChild(root,i),depth+1)
-        if found!=null then
-            return found
+// Let the engine bind its preview/items to the currently selected hero. Simply
+// showing a hidden model frame can display the previous job's cached preview.
+function Forsaken_NativeInventoryClick takes integer raw returns nothing
+    local integer x=BlzGetAbilityPosX(raw)
+    local integer y=BlzGetAbilityPosY(raw)
+    local framehandle control
+    if x>=0 and x<4 and y>=0 and y<3 then
+        set control=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,y*4+x)
+        if control!=null and BlzFrameIsVisible(control) and BlzFrameGetEnable(control) then
+            call BlzFrameClick(control)
         endif
-        set i=i+1
-    endloop
-    return null
+    endif
+    set control=null
+endfunction
+
+function Forsaken_BindInventory takes unit hero returns nothing
+    local boolean gearVisible=BlzFrameIsVisible(ForsakenCachedEquipment)
+    local boolean bagVisible=BlzFrameIsVisible(ForsakenLinkedBag)
+    // Opening each native command refreshes the engine's owner, portrait and slots.
+    if gearVisible then
+        call Forsaken_NativeInventoryClick('fGer')
+    endif
+    call Forsaken_NativeInventoryClick('fGer')
+    call Forsaken_ResolveInventory()
+    if not BlzFrameIsVisible(ForsakenCachedEquipment) then
+        call Forsaken_NativeInventoryClick('fGer')
+        call Forsaken_ResolveInventory()
+    endif
+    if bagVisible and BlzFrameIsVisible(ForsakenLinkedBag) then
+        call Forsaken_NativeInventoryClick('fBag')
+    endif
+    if not BlzFrameIsVisible(ForsakenLinkedBag) then
+        call Forsaken_NativeInventoryClick('fBag')
+        call Forsaken_ResolveInventory()
+    endif
+    if BlzFrameIsVisible(ForsakenCachedEquipment) and BlzFrameIsVisible(ForsakenLinkedBag) then
+        set ForsakenInventoryHero=hero
+    endif
 endfunction
 
 function Forsaken_BackpackVisible takes framehandle panel returns boolean
+    local unit hero=Player_GetHero(GetLocalPlayer())
     local boolean visible=false
-    if panel==null then
-        return false
+    local real now=TimerGetElapsed(ForsakenPanelClock)
+    if ForsakenLinkedBag==null then
+        set ForsakenLinkedBag=BlzGetFrameByName("SimpleEquipmentInventoryPanel",0)
     endif
-    if TimerGetElapsed(ForsakenPanelClock)<ForsakenBackpackCloseUntil then
+    if (ForsakenLinkedBag==null or panel==null or ForsakenInventoryHero!=hero) and (ForsakenBackpackWanted or BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)) then
+        call Forsaken_ResolveInventory()
+    endif
+    set panel=ForsakenCachedEquipment
+    if now<ForsakenBackpackCloseUntil then
         call BlzFrameSetVisible(panel,false)
-        if ForsakenLinkedBag!=null then
-            call BlzFrameSetVisible(ForsakenLinkedBag,false)
-        endif
+        call BlzFrameSetVisible(ForsakenLinkedBag,false)
+        set hero=null
         return false
     endif
-    if ForsakenLinkedBag==null and (ForsakenBackpackWanted or BlzFrameIsVisible(panel)) and TimerGetElapsed(ForsakenPanelClock)>=ForsakenNextBagSearch then
-        set ForsakenNextBagSearch=TimerGetElapsed(ForsakenPanelClock)+1.
-        set ForsakenBagSearchBudget=384
-        set ForsakenLinkedBag=Forsaken_SearchBag(BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0)
-    endif
-    set visible=BlzFrameIsVisible(panel)
-    if ForsakenLinkedBag!=null and BlzFrameIsVisible(ForsakenLinkedBag) then
-        set visible=true
-    endif
+    set visible=BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)
     if visible then
         set ForsakenBackpackWanted=true
-    elseif ForsakenBackpackWanted then
-        call BlzFrameSetVisible(panel,true)
-        set visible=true
     endif
-    // Both native panes follow the same explicit open/close intent.
-    if BlzFrameIsVisible(panel)!=visible then
-        call BlzFrameSetVisible(panel,visible)
+    if ForsakenBackpackWanted and hero!=null then
+        if ForsakenInventoryHero!=hero then
+            if now>=ForsakenNextBagSearch then
+                set ForsakenNextBagSearch=now+.25
+                call Forsaken_BindInventory(hero)
+                set panel=ForsakenCachedEquipment
+            endif
+            // A failed native bind must never expose a previous hero's model/items.
+            if ForsakenInventoryHero!=hero then
+                call BlzFrameSetVisible(panel,false)
+                call BlzFrameSetVisible(ForsakenLinkedBag,false)
+                set hero=null
+                return false
+            endif
+        endif
+        set visible=panel!=null and ForsakenLinkedBag!=null
+        if visible then
+            call BlzFrameSetVisible(panel,true)
+            call BlzFrameSetVisible(ForsakenLinkedBag,true)
+        endif
+    else
+        set visible=false
     endif
-    if ForsakenLinkedBag!=null then
-        call BlzFrameSetVisible(ForsakenLinkedBag,visible)
+    if not visible then
+        call BlzFrameSetVisible(panel,false)
+        call BlzFrameSetVisible(ForsakenLinkedBag,false)
     endif
+    set hero=null
     return visible
+endfunction
+
+function Forsaken_InventoryContext takes unit hero,player viewer returns boolean
+    if hero!=null and IsUnitSelected(hero,viewer) and (ForsakenSelectedTarget==null or ForsakenSelectedTarget==hero) then
+        return true
+    endif
+    // Keep intent, but never show a hero pane while another unit owns the card.
+    call BlzFrameSetVisible(ForsakenCachedEquipment,false)
+    call BlzFrameSetVisible(ForsakenLinkedBag,false)
+    return false
 endfunction
 
 function Forsaken_BackpackCloseName takes string name returns boolean
@@ -172,7 +202,7 @@ function Forsaken_BackpackControls takes framehandle panel,framehandle anchor,bo
     endif
     if visible then
         if ForsakenBackpackNativeClose!=null then
-            // The button/event was created at shared startup. Only its presentation
+            // The control/event was created at shared startup. Only its presentation
             // is moved locally over the native X; no local handle allocations.
             call BlzFrameClearAllPoints(ForsakenBackpackClose)
             call BlzFrameSetAllPoints(ForsakenBackpackClose,ForsakenBackpackNativeClose)
@@ -204,6 +234,7 @@ function Forsaken_ResetBackpackControls takes nothing returns nothing
     set ForsakenBackpackHookRoot=null
     set ForsakenBackpackNativeClose=null
     set ForsakenLinkedBag=null
+    set ForsakenInventoryHero=null
     set ForsakenBagNativeClose=null
     set ForsakenBagHookRoot=null
     set ForsakenNextBagSearch=0.
