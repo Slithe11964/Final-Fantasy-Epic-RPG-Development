@@ -5,6 +5,18 @@ from performance_runtime import put
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def objects(data,*,native=False):
+    """B is handled once by our UI; retain the native command for engine binding."""
+    if not native or not data:return data
+    from objdata import read_objects,write_objects
+    from priest_master import setf
+    table=read_objects(data,'w3a')
+    for group in ('original','custom'):
+        for obj in table[group]:
+            if (obj['id'] or obj['base'])=='ASpc':setf(obj,'ahky','',0)
+    return write_objects(table,table['version'],'w3a')
+
+
 def refresh_hunt(source,*,native=False):
     if not native:return source
     from gameplay_runtime import dependency
@@ -46,7 +58,9 @@ def refresh(source):
         'real ForsakenLastToggleTime=-1.':'ForsakenLastToggleTime',
         'integer ForsakenLastToggleSource=0':'ForsakenLastToggleSource',
         'trigger ForsakenBackpackToggleEvents=null':'ForsakenBackpackToggleEvents',
+        'trigger ForsakenBackpackDebugEvents=null':'ForsakenBackpackDebugEvents',
         'framehandle ForsakenBackpackCommand=null':'ForsakenBackpackCommand',
+        'framehandle ForsakenBackpackInput=null':'ForsakenBackpackInput',
         'framehandle ForsakenGearCommand=null':'ForsakenGearCommand',
         'real ForsakenBackpackCloseUntil=0.':'ForsakenBackpackCloseUntil',
         'trigger ForsakenBackpackEvents=null':'ForsakenBackpackEvents',
@@ -85,6 +99,8 @@ def refresh(source):
     at=source.index('function Forsaken_PanelAccess')
     source=source[:at]+helper.rstrip()+'\n\n'+source[at:]
     name='Forsaken_PollPanels';body=functions(source)[name]
+    if 'call Forsaken_BackpackInputControl(hero,viewer)' not in body:
+        body=body.replace('    if ForsakenInspectTarget!=null then','    call Forsaken_BackpackInputControl(hero,viewer)\n    if ForsakenInspectTarget!=null then',1)
     body=body.replace('set visible=BlzFrameIsVisible(nativePanel)','set visible=Forsaken_BackpackVisible(nativePanel)')
     if 'call Forsaken_BackpackControls' not in body:
         body=body.replace('    set ForsakenBackpackWasVisible=visible',

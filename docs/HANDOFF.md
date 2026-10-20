@@ -4,9 +4,26 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-18)
+## Where things stand (2026-10-19)
 
-PAIR032 is the latest test pair, installed and hash-verified in Warcraft
+PAIR033 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. User reports PAIR032 still fails to open by mouse and B,
+temporarily improves with alt-tab, and behaves as desired once visible. PAIR033
+uses one owned transparent input over the native Backpack button and clears only
+Forsaken's competing native ASpc B hotkey. Every explicit open invalidates the
+cached binding and waits for a real native result. Frame visibility and internal
+engine open state are modeled independently; one bounded retry reconciles a
+script-hidden but internally open panel. No poll click loop; failed open clears
+intent so the next press retries. -bagdebug privately reports UI state. Current
+layout, Talents preference, gear controls and item behavior remain unchanged.
+Full paired gates and final archive verification passed; both TEST copies match.
+Classic runtime is token-identical to PAIR032, and the editor master is unchanged.
+Engine acceptance remains essential: fresh PAIR033 plus -loadf, repeated mouse/B
+opens without alt-tab, then focus changes/drop/use/selection/job changes. If it
+still disappears, capture -bagdebug immediately afterward. See
+PAIR033_BACKPACK_OPENING.md. The older legacy checkpoint issue remains separate.
+
+PAIR032 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Follows the user's PAIR031 flickering report (temporarily
 improved by alt-tab). B input latches until release; mouse-up is separate from
 native/scripted command clicks. Already user-opened native panes are adopted;

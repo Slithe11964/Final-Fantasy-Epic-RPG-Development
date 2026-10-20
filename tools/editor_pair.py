@@ -611,9 +611,10 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     ability_data=replacements.get('war3map.w3a') or profile.object_bytes('war3map.w3a')
     replacements['war3map.w3a'],marker_art=clear_marker_art(ability_data)
     from job_objects import refresh as refresh_job_objects
+    from inventory_ui import objects as inventory_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations)
+        if data:replacements[name]=inventory_objects(calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations),native=native)
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)
