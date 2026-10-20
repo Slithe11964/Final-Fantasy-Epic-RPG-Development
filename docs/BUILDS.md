@@ -6,6 +6,11 @@ It produces the native Forsaken/Reforged map and the 1.29.2 map together, retain
 their separate inventory and UI implementations. The source-maintenance commands
 below remain available for project development; they are not the daily editor workflow.
 
+Native paired outputs automatically migrate the deprecated 3.0 inventory calls to
+their supported `Blz` names in both playable and editor scripts. Publication also
+checks compilation with the retiring native declarations removed. The legacy
+profile keeps its separate 1.29.2 APIs. See [3.0.1 compatibility](PAIR038_WARCRAFT_301_COMPATIBILITY.md).
+
 Run from the FFERPG repository in PowerShell:
 
 ```powershell

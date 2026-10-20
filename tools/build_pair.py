@@ -109,7 +109,7 @@ def main():
         report=dict(stage=args.stage,editor_input=str(source),editor_input_sha256=sha(saved),references=config,
                     relaid_object_fields=moved,
                     scenario_name=scenario_name(snapshot),outputs={},profiles={},
-                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','gameplay_runtime.py','world_visuals.py','job_runtime.py','job_objects.py','inventory_ui.py','save_strings.py','stat_layout.py','proficiency.py','priest_master.py','damage_tooltips.py','equipment_integrity.py','gear_slots.py','save_port.py','legend_progress.py','player_commands.py','spell_calculations.py','priest_ultimate.py','priest_legendary.py','priest_followup.py','channel_defaults.py','speedrun_inventory.py','armory_catalog.py')})
+                    tool_sha256={name:sha(ROOT/'tools'/name) for name in ('editor_pair.py','build_pair.py','performance_runtime.py','gameplay_runtime.py','world_visuals.py','job_runtime.py','job_objects.py','inventory_ui.py','save_strings.py','stat_layout.py','proficiency.py','priest_master.py','damage_tooltips.py','equipment_integrity.py','gear_slots.py','save_port.py','legend_progress.py','player_commands.py','spell_calculations.py','priest_ultimate.py','priest_legendary.py','priest_followup.py','channel_defaults.py','native_api.py','speedrun_inventory.py','armory_catalog.py')})
         aliases={raw:[v for v in (entry.get('variant'),entry.get('offhand')) if v]
                  for raw,entry in json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text(encoding='utf-8')).items()}
         print('Working copy:',scratch,flush=True)
@@ -161,6 +161,21 @@ def main():
                 filename=cfg['prefix']+args.stage+'.w3x'
                 built=work/'release'/filename
                 if profile=='Classic':built=built.parent/'1.29.2'/filename
+                if profile=='Forsaken':
+                    # Publish supported 3.0.1 names in BOTH script representations,
+                    # after all shared-profile adapters and their regressions.
+                    from native_api import finalize,future_header
+                    migrated=scratch/'Forsaken-supported-api.w3x'
+                    report['native_api']=dict(input_sha256=sha(built),renamed_calls=finalize(built,migrated))
+                    built=migrated
+                    future_common=scratch/'common-without-deprecated.j'
+                    future_common.write_text(future_header((ROOT/'tools/bin/common.j').read_text()),encoding='utf-8')
+                    api_log=scratch/'Forsaken-api-checks.txt'
+                    with api_log.open('wb') as stream:
+                        result=subprocess.run([sys.executable,str(ROOT/'tools/check_map.py'),str(built),'--common',str(future_common)],
+                                              cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+                    if result.returncode:raise Conflict('native API finalization failed; details: '+str(api_log))
+                    report['native_api']['deprecated_declarations_removed_compile']='PASS'
                 output='FFERPG-'+args.stage+'-'+('Forsaken' if profile=='Forsaken' else '1.29.2')+'.w3x'
                 shutil.copy2(built,ready/output)
                 shutil.copy2(work/'release'/('checks-r16-stage'+args.stage+'.txt'),ready/(profile+'-checks.txt'))

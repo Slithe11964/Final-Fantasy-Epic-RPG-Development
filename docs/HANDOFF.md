@@ -6,7 +6,26 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
-PAIR037 is the latest test pair, installed and hash-verified in Warcraft
+PAIR038 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. User reports PAIR019 also locks after the 3.0.1 client
+update. Installed 3.0.1.24371 headers/defaults were extracted read-only; official
+notes change rank>4 default handling. PAIR019's reported spells leave ranks>4
+sparse while base ANcl has 180-second follow-through and other abilities disabled.
+PAIR038 retains PAIR037's explicit authored Channel rank inheritance correction;
+Warcraft acceptance is still needed to confirm control restoration. It migrates
+95 calls across 11 deprecated inventory API names to supported Blz names in both
+published native scripts, automatically on every paired build. All 19 announced
+aliases are covered; final native/editor compilation passes with their old
+declarations removed. Classic keeps its own APIs. Installed headers now drive
+compiler checks; separate legacy headers still gate conversion. Native258 and
+classic362 tests pass (2/12 expected skips), plus four focused API tests. Final
+archive/API audits pass; both TEST copies verified; editor master/dev.txt and
+save format unchanged. Legacy large-profile menu checkpoint issue remains
+unresolved. See PAIR038_WARCRAFT_301_COMPATIBILITY.md. First acceptance: master
+Fan of Knives, Bahamut summons, Death Screech, Tornado, Dragon Breath, Rave Kick
+and Assault, including select-away/return and second casts.
+
+PAIR037 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Explicit Backpack close now persists until a deliberate
 Backpack/B reopen, suppressing native refreshes after combat/selection. Priest
 row2 is Acid Rain/Holy Bolts/Swiftmend; row3 Shielding/Blessed Rain/Prolonged
