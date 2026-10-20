@@ -1,4 +1,4 @@
-library TProf requires TPlayerHero, TBackpack
+library TProf requires TPlayerHero, TBackpack, TTalents
 globals
     // Variables only this module uses.
     constant integer udg_ProfIdUnarmed=$D // $D = 13
@@ -219,6 +219,13 @@ function Prof_InnerManaPower takes unit u returns real
 endfunction
 
 function InitTrig_Prof takes nothing returns nothing
+endfunction
+
+function Talent_LifeAttackPower takes unit hero returns real
+    if Talent_PriestChoice(hero,3) then
+        return (1.+Talent_HealingPower(hero))*Prof_StaffPower(hero)-1.
+    endif
+    return 0.
 endfunction
 
 endlibrary

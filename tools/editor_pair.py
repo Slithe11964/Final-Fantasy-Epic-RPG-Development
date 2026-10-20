@@ -546,7 +546,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     modules={lib:priest_refresh(s,priest_config,native=native) for lib,s in modules.items()}
     from priest_ultimate import refresh as ultimate_refresh
     modules={lib:ultimate_refresh(s,native=native) for lib,s in modules.items()}
-    from armory_catalog import runtime as armory_runtime,refresh_hint_objects
+    from priest_legendary import refresh as legendary_refresh,objects as legendary_objects
+    modules={lib:legendary_refresh(s,native=native) for lib,s in modules.items()}
+    from armory_catalog import runtime as armory_runtime,refresh_hint_objects,navigation_objects
     modules={lib:armory_runtime(s) for lib,s in modules.items()}
     from damage_tooltips import catalogue as damage_catalogue,abilities as damage_abilities,scroll_objects, runtime as scroll_runtime
     damage_config=damage_catalogue(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'),edited.object_bytes('war3map.w3t'),edited.object_bytes('war3mapSkin.w3t'))
@@ -619,7 +621,7 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from inventory_ui import objects as inventory_objects
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=inventory_objects(calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations),native=native)
+        if data:replacements[name]=legendary_objects(navigation_objects(inventory_objects(calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations),native=native)))
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)

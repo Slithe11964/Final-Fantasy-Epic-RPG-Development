@@ -1,4 +1,4 @@
-library THeroDeath requires TForce, TGroup, TPlayerHero, TWait
+library THeroDeath requires TForce, TGroup, TPlayerHero, TWait, TTalents
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Hero_Death_Revive=null
@@ -68,6 +68,9 @@ endfunction
 
 function Trig_Hero_Death_Revive_Actions takes nothing returns nothing
     local location l_tempPoint3
+    if Talent_TryRainRevive(GetTriggerUnit()) then
+        return
+    endif
     call DialogDisplay(GetOwningPlayer(GetTriggerUnit()),udg_WarpDialog,false)
     if(Trig_Hero_Death_Revive_MessagesAllowed())then
         if(Trig_Hero_Death_Revive_HasKiller())then

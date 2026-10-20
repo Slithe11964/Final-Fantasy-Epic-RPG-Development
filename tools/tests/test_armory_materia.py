@@ -192,7 +192,7 @@ class MateriaTests(unittest.TestCase):
         env['GetUnitPointValueByType']=lambda raw:8 if raw in ['m%03d'%i for i in MATERIA] else 0
         env['I2S']=str
         env=execute(ARMORY.read_text(),['Armory_CollectionText','Armory_InCategory',
-                    'Armory_ClearStock','Armory_ShowCategory','Trig_Armory_Select_Actions',
+                    'Armory_ClearStock','Armory_ShowCategory','Armory_IndexPages','Trig_Armory_Select_Actions',
                     'Trig_Armory_Select_CanWithdraw'],env)
         self.assertTrue(env['Armory_InCategory'](508,0))
         env['Armory_ShowCategory'](shop,8)

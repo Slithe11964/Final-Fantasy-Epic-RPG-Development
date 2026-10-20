@@ -6,7 +6,26 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
-PAIR035 is the latest test pair, installed and hash-verified in Warcraft
+PAIR036 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Native Backpack retains a confirmed binding to the same hero
+across closes/reopens, uses a real owned button after binding, and hides both
+panes without toggling the engine on close. Initial/new-hero binding stays native
+and bounded. Armory indexes category entries once, clears only visible stock per
+shop, and uses a separate single-rank Back ability. Holy Bolts now uses full
+Prof_StaffPower plus healing buffs/Rejuvenation, including White Robe and equipped
+Staff/house proficiency. Priest Legendary row: Healing Bolts (25% of actual basic
+health damage heals allies along its path), Tranquility of Life (death-location
+revival with full HP/MP), Prolonged Cleansing (ten seconds of repeated negative
+status cleansing after Esuna). Native row 4 icons/purchase checks and selected
+spell/Attack tooltip sections are included. All paired gates pass: native246/
+classic346 regressions, 1/11 expected skips; final archive/master/tool hashes and
+both TEST copies verified. dev.txt passes the read-only check and is unchanged.
+Editor master unchanged. Actual Warcraft acceptance remains required, especially
+repeat Backpack opens, White Robe withdrawal then Back, ordinary-unit resurrection
+and status protection. Legacy large-profile menu checkpoint issue remains unresolved.
+See PAIR036_PRIEST_LEGENDARY_AND_INVENTORY.md.
+
+PAIR035 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Speedrun imports omit all seven chocobo nuts/greens across
 all holders; final readback permits exactly those omissions and keeps retained
 items/metadata strict. The existing dev.txt passed a read-only bounded-codec check

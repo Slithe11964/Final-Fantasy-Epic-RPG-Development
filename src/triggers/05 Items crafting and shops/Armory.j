@@ -26,6 +26,12 @@ globals
     integer ArmoryCounterRevision=-1
     hashtable ArmoryNavigation=InitHashtable()
     timer array ArmoryNavigationTimer
+    integer array ArmoryVisibleStock
+    integer array ArmoryVisibleCount
+    unit array ArmoryStockShop
+    integer array ArmoryPageHead
+    integer array ArmoryPageNext
+    boolean ArmoryPagesReady=false
 endglobals
 
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
@@ -1271,18 +1277,39 @@ function Armory_InCategory takes integer index,integer category returns boolean
     return udg_SaveFlagUnitID[index]!=0 and GetUnitPointValueByType(udg_SaveFlagUnitID[index])==category
 endfunction
 
-function Armory_ClearStock takes unit shop returns nothing
-    local integer i=1
+function Armory_IndexPages takes nothing returns nothing
+    local integer i=udg_SaveFlagCount
+    local integer category
+    if ArmoryPagesReady then
+        return
+    endif
     loop
-        exitwhen i>udg_ArmoryStockMax
-        if udg_SaveFlagUnitID[i]!=0 then
-            call RemoveUnitFromStock(shop,udg_SaveFlagUnitID[i])
-        endif
+        exitwhen i<1
         if ArmoryMissingUnit[i]!=0 then
-            call RemoveUnitFromStock(shop,ArmoryMissingUnit[i])
+            set category=GetUnitPointValueByType(udg_SaveFlagUnitID[i])
+            if category>0 and category<=40 then
+                set ArmoryPageNext[i]=ArmoryPageHead[category]
+                set ArmoryPageHead[category]=i
+            endif
         endif
-        set i=i+1
+        set i=i-1
     endloop
+    set ArmoryPagesReady=true
+endfunction
+
+function Armory_ClearStock takes unit shop returns nothing
+    local integer pid=GetConvertedPlayerId(GetOwningPlayer(shop))
+    local integer i=0
+    if ArmoryStockShop[pid]==shop then
+        loop
+            exitwhen i>=ArmoryVisibleCount[pid]
+            call RemoveUnitFromStock(shop,ArmoryVisibleStock[pid*12+i])
+            set ArmoryVisibleStock[pid*12+i]=0
+            set i=i+1
+        endloop
+    endif
+    set ArmoryVisibleCount[pid]=0
+    set ArmoryStockShop[pid]=shop
 endfunction
 
 function Armory_ShowCategory takes unit shop,integer category returns nothing
@@ -1291,6 +1318,7 @@ function Armory_ShowCategory takes unit shop,integer category returns nothing
     local integer i=1
     local integer stockId
     local integer child=1
+    call Armory_IndexPages()
     call Armory_ClearStock(shop)
     loop
         exitwhen child>40
@@ -1303,19 +1331,26 @@ function Armory_ShowCategory takes unit shop,integer category returns nothing
         set child=child+1
     endloop
     set ArmoryCategory[playerIndex]=category
+    set i=ArmoryPageHead[category]
     loop
-        exitwhen i>udg_ArmoryStockMax
-        if i<=udg_SaveFlagCount and Armory_InCategory(i,category) then
-            set stockId=udg_SaveFlagUnitID[i]
-            if ArmoryMissingUnit[i]!=0 and not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
-                set stockId=ArmoryMissingUnit[i]
-            endif
-            call AddUnitToStock(shop,stockId,1,1)
+        exitwhen i==0
+        set stockId=udg_SaveFlagUnitID[i]
+        if not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+            set stockId=ArmoryMissingUnit[i]
         endif
-        set i=i+1
+        call AddUnitToStock(shop,stockId,1,1)
+        set ArmoryVisibleStock[playerIndex*12+ArmoryVisibleCount[playerIndex]]=stockId
+        set ArmoryVisibleCount[playerIndex]=ArmoryVisibleCount[playerIndex]+1
+        set i=ArmoryPageNext[i]
     endloop
     call UnitAddAbility(shop,'A0MX')
-    call SetUnitAbilityLevel(shop,'A0MX',category+1)
+    if category==0 then
+        call UnitRemoveAbility(shop,'aRBk')
+        call UnitAddAbility(shop,'A0MX')
+    else
+        call UnitRemoveAbility(shop,'A0MX')
+        call UnitAddAbility(shop,'aRBk')
+    endif
     set p=null
 endfunction
 
@@ -2023,7 +2058,7 @@ function Armory_QueueNavigation takes unit shop,integer category returns nothing
 endfunction
 
 function Trig_Armory_Back_Conditions takes nothing returns boolean
-    return(GetSpellAbilityId()=='A0MX') or Armory_CategoryFromAbility(GetSpellAbilityId())>0 // 'A0MX': ability "Cancel"
+    return(GetSpellAbilityId()=='A0MX') or GetSpellAbilityId()=='aRBk' or Armory_CategoryFromAbility(GetSpellAbilityId())>0 // 'A0MX': ability "Cancel"
 endfunction
 
 function Trig_Armory_Back_MatchesBackCategory takes nothing returns boolean

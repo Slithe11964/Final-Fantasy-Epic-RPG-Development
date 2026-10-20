@@ -66,6 +66,7 @@ def refresh(source):
         'trigger ForsakenBackpackDebugEvents=null':'ForsakenBackpackDebugEvents',
         'framehandle ForsakenBackpackCommand=null':'ForsakenBackpackCommand',
         'framehandle ForsakenBackpackInput=null':'ForsakenBackpackInput',
+        'framehandle ForsakenBackpackInputIcon=null':'ForsakenBackpackInputIcon',
         'framehandle ForsakenGearCommand=null':'ForsakenGearCommand',
         'real ForsakenBackpackCloseUntil=0.':'ForsakenBackpackCloseUntil',
         'trigger ForsakenBackpackEvents=null':'ForsakenBackpackEvents',

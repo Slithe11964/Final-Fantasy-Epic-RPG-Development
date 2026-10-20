@@ -56,6 +56,7 @@ globals
     boolean udg_DmgFlagMelee=false
     boolean udg_DmgFlagRedirected=false
     unit array DmgCtx_PriestShield
+    boolean array DmgCtx_PriestBasic
 endglobals
 
 function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing
@@ -1293,6 +1294,7 @@ function Trig_Damage_Engine_FreeContext takes integer c returns nothing
     set DmgCtx_TargetPlayer[c]=null
     set DmgCtx_Dummy[c]=null
     set DmgCtx_Tag[c]=null
+    set DmgCtx_PriestBasic[c]=false
     set DmgCtx_PriestShield[c]=null
     set DmgCtx_Depth=c-1
 endfunction
@@ -2902,6 +2904,9 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
     if l_amount>0. and not l_manaDamage and not l_heal then
         set l_amount=Talent_AbsorbShield(t,l_amount)
     endif
+    if DmgCtx_PriestBasic[c] and not l_heal and not l_manaDamage and l_amount>0. then
+        call Talent_HealingBolt(u,t,RMinBJ(l_amount,GetWidgetLife(t)))
+    endif
     // DPS meter for players.
     if(IsPlayerInForce(up,udg_PlayingPlayers)and l_amount>.0 and l_amount<1000000.)then
         call ConditionalTriggerExecute(gg_trg_Dps_Start)
@@ -2984,6 +2989,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     set DmgCtx_Element[c]=l_element
     set DmgCtx_ManaDamage[c]=l_manaDamage
     set DmgCtx_Holy[c]=l_holy
+    set DmgCtx_PriestBasic[c]=PriestBasicHit
+    set PriestBasicHit=false
     set DmgCtx_PriestShield[c]=PriestShieldHealSource
     set PriestShieldHealSource=null
     set DmgCtx_Heal[c]=l_heal
@@ -3092,6 +3099,10 @@ function Trig_Damage_Engine_Actions takes nothing returns nothing
     local unit triggeringUnit=GetTriggerUnit()
     local real l_amount=GetEventDamage()
     local integer l_dmgKind=0
+    local boolean priestBasic=false
+    if Talent_CleansingProtected(triggeringUnit) then
+        call Talent_CleanseStatus(triggeringUnit)
+    endif
     if(GetUnitAbilityLevel(triggeringUnit,'B04S')>0)or(GetUnitAbilityLevel(triggeringUnit,'B04R')>0)then // 'B04S': buff tooltip "Physical Damage"; 'B04R': buff tooltip "Physical Damage"
         set l_dmgKind=1
         call UnitRemoveAbility(triggeringUnit,'B04S') // 'B04S': buff tooltip "Physical Damage"
@@ -3109,8 +3120,9 @@ function Trig_Damage_Engine_Actions takes nothing returns nothing
         set udg_DmgArmorProbeResult=l_amount
         call BlzSetEventDamage(.0)
     else
-        if l_dmgKind==1 and not udg_IsPhysicalAttack and not udg_IsPureDamage then
-            set l_amount=l_amount*(1.+Talent_HolyBolts(u))
+        set priestBasic=l_dmgKind==1 and not udg_IsPhysicalAttack and not udg_IsPureDamage
+        if priestBasic then
+            set l_amount=l_amount*(1.+Talent_LifeAttackPower(u))
         endif
         if(l_dmgKind==0)then
             if udg_DmgFlagPure then
@@ -3125,6 +3137,7 @@ function Trig_Damage_Engine_Actions takes nothing returns nothing
                 set l_dmgKind=3
             endif
         endif
+        set PriestBasicHit=priestBasic
         set l_amount=Trig_Damage_Engine_CalcDamage(l_amount,u,triggeringUnit,(udg_DmgFlagUnavoidable<0),l_dmgKind,(udg_DmgFlagNoCrit<.0),udg_DamageElement,udg_DmgFlagManaDamage,udg_IgnoresReduction,udg_IsPureDamage,udg_DmgFlagRedirected,udg_DmgFlagHealUndead)
         call BlzSetEventDamage(l_amount)
         call UnitRemoveAbility(u,'B04O') // 'B04O': buff tooltip "Recovering"

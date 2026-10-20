@@ -3902,6 +3902,11 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
     elseif raw=='A0OM' and Talent_PriestChoice(hero,2) then
         set tip=tip+"|n|n|cffffcc00Talent: Blessed Rain|r|nAllies in Tranquility take 10% less damage while affected."
     endif
+    if raw=='A0OM' and Talent_LegendChoice(hero,2) then
+        set tip=tip+"|n|n|cffffcc00Talent: Tranquility of Life|r|nAllies killed inside the active rain revive where they died, with full HP and MP."
+    elseif raw=='A0W9' and Talent_LegendChoice(hero,3) then
+        set tip=tip+"|n|n|cffffcc00Talent: Prolonged Cleansing|r|nPrevents new negative status ailments for 10 seconds."
+    endif
     return tip
 endfunction
 
@@ -4074,6 +4079,9 @@ endfunction
 function Priest_MasterEsuna takes nothing returns nothing
     if GetSpellAbilityId()=='A0W9' and Talent_Active(GetTriggerUnit(),12,2,2,'A0W9') then
         call Priest_Refresh(GetSpellTargetUnit())
+    endif
+    if GetSpellAbilityId()=='A0W9' then
+        call Talent_ProlongedCleansing(GetTriggerUnit(),GetSpellTargetUnit())
     endif
 endfunction
 

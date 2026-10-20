@@ -25,7 +25,9 @@ def runtime(source):
     from performance_runtime import put
     fs=functions(source)
     if 'Armory_ShowCategory' not in fs:return source
-    for declaration in ['hashtable ArmoryNavigation=InitHashtable()', 'timer array ArmoryNavigationTimer']:
+    for declaration in ['hashtable ArmoryNavigation=InitHashtable()', 'timer array ArmoryNavigationTimer',
+                        'integer array ArmoryVisibleStock','integer array ArmoryVisibleCount','unit array ArmoryStockShop',
+                        'integer array ArmoryPageHead','integer array ArmoryPageNext','boolean ArmoryPagesReady=false']:
         name=declaration.split('=')[0].split()[-1]
         if not re.search(r'^\s*\w+\s+(?:array )?'+name+r'\b',source,re.M):
             source=source.replace('endglobals','    '+declaration+'\nendglobals',1)
@@ -66,11 +68,87 @@ endfunction'''
     # now changes this level only after Channel returns; navigation state still
     # belongs to the shop rather than the ability level.
     body=functions(source)['Armory_ShowCategory']
-    if "call UnitAddAbility(shop,'A0MX')" not in body:
-        body=body.replace("    call SetUnitAbilityLevel(shop,'A0MX',category+1)","    call UnitAddAbility(shop,'A0MX')\n    call SetUnitAbilityLevel(shop,'A0MX',category+1)")
-    elif "call SetUnitAbilityLevel(shop,'A0MX',category+1)" not in body:
+    if "call SetUnitAbilityLevel(shop,'A0MX',category+1)" not in body and "'aRBk'" not in body:
         body=body.replace("    call UnitAddAbility(shop,'A0MX')","    call UnitAddAbility(shop,'A0MX')\n    call SetUnitAbilityLevel(shop,'A0MX',category+1)")
-    return put(source,'Armory_ShowCategory',body)
+    source=put(source,'Armory_ShowCategory',body)
+    helper='''function Armory_IndexPages takes nothing returns nothing
+    local integer i=udg_SaveFlagCount
+    local integer category
+    if ArmoryPagesReady then
+        return
+    endif
+    loop
+        exitwhen i<1
+        if ArmoryMissingUnit[i]!=0 then
+            set category=GetUnitPointValueByType(udg_SaveFlagUnitID[i])
+            if category>0 and category<=40 then
+                set ArmoryPageNext[i]=ArmoryPageHead[category]
+                set ArmoryPageHead[category]=i
+            endif
+        endif
+        set i=i-1
+    endloop
+    set ArmoryPagesReady=true
+endfunction'''
+    if 'Armory_IndexPages' in functions(source):source=put(source,'Armory_IndexPages',helper)
+    else:source=source.replace('function Armory_ClearStock takes',helper+'\n\nfunction Armory_ClearStock takes',1)
+    source=put(source,'Armory_ClearStock','''function Armory_ClearStock takes unit shop returns nothing
+    local integer pid=GetConvertedPlayerId(GetOwningPlayer(shop))
+    local integer i=0
+    if ArmoryStockShop[pid]==shop then
+        loop
+            exitwhen i>=ArmoryVisibleCount[pid]
+            call RemoveUnitFromStock(shop,ArmoryVisibleStock[pid*12+i])
+            set ArmoryVisibleStock[pid*12+i]=0
+            set i=i+1
+        endloop
+    endif
+    set ArmoryVisibleCount[pid]=0
+    set ArmoryStockShop[pid]=shop
+endfunction''')
+    body=functions(source)['Armory_ShowCategory']
+    if 'call Armory_IndexPages()' not in body:body=body.replace('    call Armory_ClearStock(shop)','    call Armory_IndexPages()\n    call Armory_ClearStock(shop)',1)
+    body=body.replace('    set i=ArmoryPageHead[category]\n','')
+    start=body.index('    loop',body.index('    set ArmoryCategory[playerIndex]=category'))
+    end=body.index('    endloop',start)+len('    endloop')
+    body=body[:start]+'''    set i=ArmoryPageHead[category]
+    loop
+        exitwhen i==0
+        set stockId=udg_SaveFlagUnitID[i]
+        if not IsPlayerInForce(p,udg_SaveFlagForce[i]) then
+            set stockId=ArmoryMissingUnit[i]
+        endif
+        call AddUnitToStock(shop,stockId,1,1)
+        set ArmoryVisibleStock[playerIndex*12+ArmoryVisibleCount[playerIndex]]=stockId
+        set ArmoryVisibleCount[playerIndex]=ArmoryVisibleCount[playerIndex]+1
+        set i=ArmoryPageNext[i]
+    endloop'''+body[end:]
+    body=body.replace("    call SetUnitAbilityLevel(shop,'A0MX',category+1)",'''    if category==0 then
+        call UnitRemoveAbility(shop,'aRBk')
+        call UnitAddAbility(shop,'A0MX')
+    else
+        call UnitRemoveAbility(shop,'A0MX')
+        call UnitAddAbility(shop,'aRBk')
+    endif''')
+    source=put(source,'Armory_ShowCategory',body)
+    body=functions(source)['Trig_Armory_Back_Conditions']
+    if "=='aRBk'" not in body:body=body.replace("(GetSpellAbilityId()=='A0MX')","(GetSpellAbilityId()=='A0MX') or GetSpellAbilityId()=='aRBk'")
+    return put(source,'Trig_Armory_Back_Conditions',body)
+
+
+def navigation_objects(data):
+    """A dedicated single-rank Back avoids changing the active Channel rank."""
+    if not data:return data
+    from priest_master import setf
+    table=read_objects(data,'w3a')
+    original=next(o for o in table['custom'] if o['id']=='A0MX')
+    clone=copy.deepcopy(original);clone['id']='aRBk'
+    for group in clone['sets']:
+        group['mods'][:]=[m for m in group['mods'] if not m.get('level') or m['level']<=1]
+    for key,value in [('alev',1),('anam','Armory Back'),('aart',r'ReplaceableTextures\CommandButtons\BTNCancel.blp')]:setf(clone,key,value,0)
+    for key,value in [('atp1','Back'),('aub1','Return to the previous armory category.'),('Ncl1',0.),('Ncl2',0),('Ncl3',1),('Ncl4',0.),('Ncl5',0),('Ncl6','channel'),('acdn',0.),('adur',0.),('ahdu',0.)]:setf(clone,key,value,1,data=int(key[-1]) if key.startswith('Ncl') else 0)
+    table['custom'][:]=[o for o in table['custom'] if o['id']!='aRBk'];table['custom'].append(clone)
+    return write_objects(table,table['version'],'w3a')
 
 
 def set_field(obj, key, value):

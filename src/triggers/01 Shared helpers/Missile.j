@@ -36,6 +36,7 @@ globals
     integer MissileHitRuns=0
     unit PriestShieldHealSource=null
     boolean array PriestShieldMissile
+    boolean PriestBasicHit=false
 endglobals
 
 function Missile_RunOnLoop takes integer l_idx returns nothing

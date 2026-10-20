@@ -17,9 +17,6 @@ endfunction
 
 function Forsaken_CloseBackpack takes nothing returns nothing
     set ForsakenBackpackCloses=ForsakenBackpackCloses+1
-    if not ForsakenInventoryBinding and (BlzFrameIsVisible(ForsakenCachedEquipment) or BlzFrameIsVisible(ForsakenLinkedBag)) then
-        call Forsaken_NativeInventoryClick('ASpc')
-    endif
     set ForsakenBackpackWanted=false
     set ForsakenInventoryBindPhase=0
     set ForsakenBackpackCloseUntil=TimerGetElapsed(ForsakenPanelClock)+1.2
@@ -59,12 +56,16 @@ function Forsaken_RequestBackpackToggle takes integer source returns nothing
         set ForsakenBackpackWanted=true
         set ForsakenBackpackCloseUntil=0.
         set ForsakenFrameSearchRequested=true
-        // Every explicit open must bind through the engine, including the same
-        // hero after a scripted close. Cached visible frames are not open state.
-        set ForsakenInventoryHero=null
-        set ForsakenInventoryBindHero=Player_GetHero(GetLocalPlayer())
-        set ForsakenInventoryBindPhase=1
-        set ForsakenInventoryBindUntil=now+1.
+        // Reuse a confirmed binding until the hero changes. Hiding the panels
+        // does not invalidate the engine's existing preview and item binding.
+        if ForsakenInventoryHero==Player_GetHero(GetLocalPlayer()) and ForsakenCachedEquipment!=null and ForsakenLinkedBag!=null then
+            set ForsakenInventoryBindPhase=0
+        else
+            set ForsakenInventoryHero=null
+            set ForsakenInventoryBindHero=Player_GetHero(GetLocalPlayer())
+            set ForsakenInventoryBindPhase=1
+            set ForsakenInventoryBindUntil=now+1.
+        endif
         set ForsakenNextBagSearch=now+.05
     endif
 endfunction
@@ -73,7 +74,7 @@ function Forsaken_BackpackToggleAction takes nothing returns nothing
     local unit hero=Player_GetHero(GetTriggerPlayer())
     local framehandle control=BlzGetTriggerFrame()
     if GetLocalPlayer()==GetTriggerPlayer() and not ForsakenInventoryBinding and hero!=null and IsUnitSelected(hero,GetTriggerPlayer()) then
-        if control==ForsakenBackpackCommand and GetUnitAbilityLevel(hero,'ASpc')>0 then
+        if control==ForsakenBackpackInput and GetUnitAbilityLevel(hero,'ASpc')>0 then
             set ForsakenBackpackMouseEvents=ForsakenBackpackMouseEvents+1
             call Forsaken_RequestBackpackToggle(2)
         endif
@@ -184,7 +185,7 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
     endif
     set visible=BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)
     // Native opening is authoritative even if game focus swallowed our key/frame event.
-    if visible and not ForsakenBackpackWanted and ForsakenInventoryBindPhase==0 and hero!=null then
+    if visible and not ForsakenBackpackWanted and hero!=null then
         set ForsakenBackpackWanted=true
         set ForsakenInventoryHero=hero
         set ForsakenInventoryBindHero=hero
@@ -222,7 +223,7 @@ endfunction
 function Forsaken_BackpackInputControl takes unit hero,player viewer returns nothing
     local boolean show=hero!=null and IsUnitSelected(hero,viewer) and GetUnitAbilityLevel(hero,'ASpc')>0 and ForsakenInspectTarget==null
     if ForsakenBackpackInput!=null then
-        call BlzFrameSetVisible(ForsakenBackpackInput,show and BlzFrameIsVisible(ForsakenBackpackCommand))
+        call BlzFrameSetVisible(ForsakenBackpackInput,show and ForsakenInventoryHero==hero and BlzFrameIsVisible(ForsakenBackpackCommand))
     endif
 endfunction
 
@@ -320,6 +321,7 @@ function Forsaken_ResetBackpackControls takes nothing returns nothing
     if ForsakenBackpackInput!=null then
         call BlzDestroyFrame(ForsakenBackpackInput)
         set ForsakenBackpackInput=null
+        set ForsakenBackpackInputIcon=null
     endif
     set ForsakenBackpackCommand=null
     set ForsakenGearCommand=null
@@ -380,10 +382,17 @@ function Forsaken_RegisterBackpackActivity takes nothing returns nothing
         set ForsakenBackpackToggleEvents=CreateTrigger()
         set ForsakenBackpackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,BlzGetAbilityPosY('ASpc')*4+BlzGetAbilityPosX('ASpc'))
         set ForsakenGearCommand=null
-        // Observe the real native command. Do not place an input frame over it:
-        // the game owns mouse capture, keyboard focus and opening its inventory.
-        set ForsakenBackpackInput=null
-        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_MOUSE_UP)
+        // The native command handles the initial engine binding. Once confirmed,
+        // this owned button toggles presentation without invalidating that binding.
+        set ForsakenBackpackInput=BlzCreateFrame("ScriptDialogButton",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0,0)
+        call BlzFrameSetAllPoints(ForsakenBackpackInput,ForsakenBackpackCommand)
+        call BlzFrameSetText(ForsakenBackpackInput,"")
+        call BlzFrameSetLevel(ForsakenBackpackInput,60)
+        set ForsakenBackpackInputIcon=BlzCreateFrameByType("BACKDROP","BackpackControlIcon",ForsakenBackpackInput,"",0)
+        call BlzFrameSetAllPoints(ForsakenBackpackInputIcon,ForsakenBackpackInput)
+        call BlzFrameSetTexture(ForsakenBackpackInputIcon,BlzGetAbilityIcon('ASpc'),0,true)
+        call BlzFrameSetVisible(ForsakenBackpackInput,false)
+        call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackInput,FRAMEEVENT_CONTROL_CLICK)
         call TriggerAddAction(ForsakenBackpackToggleEvents,function Forsaken_BackpackToggleAction)
     endif
     if ForsakenBackpackEvents==null then
@@ -411,8 +420,6 @@ endfunction
 
 function Forsaken_RequestInventoryRefresh takes unit hero returns nothing
     if hero==Player_GetHero(GetLocalPlayer()) and ForsakenBackpackWanted then
-        set ForsakenInventoryHero=null
-        set ForsakenInventoryBindPhase=0
         set ForsakenFrameSearchRequested=true
         set ForsakenNextBagSearch=0.
     endif

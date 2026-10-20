@@ -20,26 +20,31 @@ SOURCE = ROOT / 'src/triggers/05 Items crafting and shops/Armory.j'
 def runtime():
     source = SOURCE.read_text(encoding='utf-8')
     env = mocks(source)
-    for name in ['ArmoryMissingUnit', 'ArmoryCategory', 'ArmoryCategoryAbility']:
+    for name in ['ArmoryMissingUnit', 'ArmoryCategory', 'ArmoryCategoryAbility','ArmoryPageHead','ArmoryPageNext','ArmoryVisibleCount','ArmoryVisibleStock']:
         env[name] = defaultdict(int)
     env['ArmoryHint'] = defaultdict(str)
+    env['ArmoryStockShop']=defaultdict(lambda:None)
+    env['ArmoryPagesReady']=False
     shop = {'owner': 1}
     stock = []
+    stock_by_shop={id(shop):stock}
+    def shop_stock(u):return stock_by_shop.setdefault(id(u),[])
     categories = {f'u{i}': 12 for i in range(1, 12)}
     flags = defaultdict(set)
     env.update(GetOwningPlayer=lambda u: u['owner'], GetConvertedPlayerId=lambda p: p,
                IsPlayerInForce=lambda p, force: p in force,
                GetUnitPointValueByType=lambda raw: categories.get(raw, 0),
-               RemoveUnitFromStock=lambda u, raw: stock.remove(raw) if raw in stock else None,
-               AddUnitToStock=lambda u, raw, a, b: stock.append(raw),
+               RemoveUnitFromStock=lambda u, raw: shop_stock(u).remove(raw) if raw in shop_stock(u) else None,
+               AddUnitToStock=lambda u, raw, a, b: shop_stock(u).append(raw),
                SetUnitAbilityLevel=lambda u, ability, level: u.update(back=level),
                udg_SaveFlagUnitID=defaultdict(int, {i: f'u{i}' for i in range(1, 12)}),
                udg_SaveFlagForce=flags, udg_SaveFlagCount=351, udg_ArmoryStockMax=540)
     names = ['Armory_InitHints', 'Armory_InCategory', 'Armory_ClearStock', 'Armory_ShowCategory',
-             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions', 'Armory_CategoryFromAbility', 'Armory_QueueNavigation','Armory_FinishNavigation']
+             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions', 'Armory_CategoryFromAbility', 'Armory_QueueNavigation','Armory_FinishNavigation','Armory_IndexPages']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(source, names, env)
     e['Armory_InitHints']()
+    e['stock_by_shop']=stock_by_shop
     # Synthetic unit identities keep the stock assertions readable.
     e['ArmoryMissingUnit'] = defaultdict(int, {i: hint_id(i) for i in range(1, 12)})
     e['GetTriggerUnit'] = lambda: shop
@@ -136,11 +141,29 @@ class ArmoryTests(unittest.TestCase):
         self.assertIn('u5', stock)
         second = {'owner': 2}
         e['Armory_ShowCategory'](second, 12)
-        self.assertIn('z005', stock)
-        self.assertNotIn('u5', stock)
+        self.assertIn('z005', e['stock_by_shop'][id(second)])
+        self.assertNotIn('u5', e['stock_by_shop'][id(second)])
+        self.assertIn('u5', stock)
         e['Armory_ShowCategory'](second, 0)
         self.assertEqual(e['ArmoryCategory'][1], 12)
         self.assertEqual(e['ArmoryCategory'][2], 0)
+
+    def test_withdraw_back_and_reopen_use_only_visible_stock_and_cached_index(self):
+        e,shop,stock,flags=runtime()
+        counts=[0]
+        original=e['GetUnitPointValueByType']
+        def category(raw):counts[0]+=1;return original(raw)
+        e['GetUnitPointValueByType']=category
+        for attempt in range(5):
+            e['Armory_ShowCategory'](shop,12)
+            self.assertEqual(len(stock),11)
+            flags[5].add(1)
+            e['Armory_ShowCategory'](shop,12)
+            self.assertIn('u5',stock)
+            self.assertNotIn('z005',stock)
+            e['Armory_ShowCategory'](shop,0)
+            self.assertEqual(stock,[])
+        self.assertEqual(counts[0],11)
 
     def test_hint_click_does_not_withdraw_or_change_saved_flags(self):
         e, shop, stock, flags = runtime()
@@ -164,7 +187,7 @@ class ArmoryTests(unittest.TestCase):
         self.assertEqual(e['ArmoryCategory'][1],12) # Channel event has not returned yet.
         e['Armory_FinishNavigation']()
         self.assertEqual(e['ArmoryCategory'][1], 1)
-        self.assertEqual(shop['back'],2) # Preserve the category's Back tooltip.
+        self.assertIn("UnitAddAbility(shop,'aRBk')",SOURCE.read_text())
 
     def test_withdrawal_replaces_stored_icon_with_hint_and_removes_one_flag(self):
         e, shop, stock, flags = runtime()

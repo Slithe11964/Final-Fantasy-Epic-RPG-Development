@@ -67,7 +67,7 @@ class PriestUltimateTests(unittest.TestCase):
         path=next((ROOT/'src/triggers').rglob('Damage.j'));s=path.read_text();f=functions(s)
         body=f['Trig_Damage_Engine_Step19_Apply'];shields=[]
         env=mocks(s)
-        for name in ['Amount','Source','Target','ManaDamage','Heal','Melee','Physical','FxCode','TargetHandle','SourcePlayer','TargetPlayer','Dummy','PriestShield']:
+        for name in ['Amount','Source','Target','ManaDamage','Heal','Melee','Physical','FxCode','TargetHandle','SourcePlayer','TargetPlayer','Dummy','PriestShield','PriestBasic']:
             env['DmgCtx_'+name]=defaultdict(lambda:None)
         env.update(GetWidgetLife=lambda u:900.,GetUnitState=lambda u,k:1000. if k=='max' else 900.,UNIT_STATE_MAX_LIFE='max',UNIT_STATE_LIFE='life',
             SetUnitState=lambda *a:None,Talent_PriestChoice=lambda u,c:u=='priest',Talent_AddShield=lambda t,n:shields.append(n),

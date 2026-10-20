@@ -157,3 +157,14 @@ each client. Initialization tables are split into bounded ExecuteFunc batches.
 ## PAIR028 Priest Master correction
 
 Acid Rain converts half of Tranquility healing into damage rather than adding damage on top of full healing. The authored master rate is 400 HP/.1 seconds, so the split is 2000 base HP/sec and 2000 magic damage/sec. A single scripted healing pulse prevents native double-healing; existing healing engine modifiers apply. Refresh base cooldown is now 45 seconds, retaining normal cooldown scaling. Cure/Tranquility/Pray/Blessing of Light descriptions include current-rank formulas and local current-caster values. See INVENTORY_PANEL_FISHING.md for exact formulas and testing.
+
+## PAIR036 Legendary choices and Life-power attacks
+
+Priest's fourth row offers Healing Bolts (25% of actual basic health damage heals
+allies along its path), Tranquility of Life (revive allies killed inside the active
+channel at their death position with full HP/MP), and Prolonged Cleansing (Esuna
+continuously clears negative ailments for ten seconds). The existing level-100
+mastery gate and one choice per row apply. Holy Bolts now uses the same full
+Staff/Life-power multiplier as healing spells, including White Robe and equipped
+Staff/house proficiency, plus the existing healing buffs and Rejuvenation.
+See [PAIR036 implementation and acceptance](PAIR036_PRIEST_LEGENDARY_AND_INVENTORY.md).
