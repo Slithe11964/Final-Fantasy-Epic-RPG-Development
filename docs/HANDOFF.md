@@ -4,9 +4,30 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-19)
+## Where things stand (2026-10-20)
 
-PAIR034 is the latest test pair, installed and hash-verified in Warcraft
+PAIR035 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Speedrun imports omit all seven chocobo nuts/greens across
+all holders; final readback permits exactly those omissions and keeps retained
+items/metadata strict. The existing dev.txt passed a read-only bounded-codec check
+with Silkis Greens/Zeio Nut removed; the file is unchanged. Hardcore remains
+save/load-disabled, and difficulty provenance is preserved. Native Backpack
+restores the real button/B hotkey without an input overlay, observes opening,
+closes both panes and the engine on X/Escape, and adds input counters to -bagdebug.
+Armory Back rebuilds after Channel returns and preserves category Back/Close
+labels. Repeated damage-calculation and armory-hint sentences are removed.
+Priest row 3 now offers Shielding (final Cure/Regen/Tranquility overheal stacks,
+30 seconds after last addition), Blessed Rain (10% damage reduction in active
+Tranquility) and Holy Bolts (healing increases boost basic attacks; Rejuvenation
+alone +50%, same attack type, native Attack tooltip). Food cannot inherit expired
+Regen's shield eligibility. All paired build gates passed (native 237/classic337
+regressions, 1/11 expected skips), final archive/master/tool/output hashes were
+verified, and both TEST installs match. Editor master unchanged. Actual Warcraft
+acceptance is still needed for backpack focus/opening, armory navigation, Speedrun
+placement and new combat talents. The separate older legacy large-profile menu
+checkpoint issue remains unresolved. See PAIR035_PRIEST_INVENTORY_AND_SPEEDRUN.md.
+
+PAIR034 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Normal, Eternity and Speedrun character loads are compatible
 in both directions; the saved Speedrun tag remains informational. The user
 explicitly confirmed Hardcore saving/loading must remain disabled. Preflight

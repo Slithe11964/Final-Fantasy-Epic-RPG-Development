@@ -21,10 +21,10 @@ def catalogue(damage):
         if raw not in damage['abilities']:continue
         f=fields(damage['abilities'][raw]);ranks={}
         for rank in range(1,int(f.get(('alev',0),1))+1):
-            base=str(at(f,'aub1',rank,'')).split(MARK)[0].split(HMARK)[0].split(EMARK)[0]
+            base=str(at(f,'aub1',rank,'')).replace(FOOT,'').split(MARK)[0].split(HMARK)[0].split(EMARK)[0]
             calc=''
             if raw in KINDS:
-                base=description(raw,rank,base,damage);calc=MARK+details(raw,rank,damage)+FOOT
+                base=description(raw,rank,base,damage);calc=MARK+details(raw,rank,damage)
             mana=int(at(f,'amcs',rank,0))
             if raw=='A0IG':
                 calc=EMARK+('Physical evasion +40. After normal low-hit-chance adjustments, incoming physical hit chance is multiplied by 0.8 (20% lower) when it is at least 2%. '

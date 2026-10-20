@@ -49,6 +49,36 @@ function FFL_ExpectedTrial takes integer pid,integer identity returns boolean
     return false
 endfunction
 
+// Compare every retained item's complete decoded record. Only the seven
+// chocobo consumables are omitted; all other items/slots/metadata stay strict.
+function FFL_SpeedrunInventoryReadback takes integer original,integer captured returns boolean
+    local integer i=0
+    local integer j=0
+    local integer left
+    local integer right
+    local integer identity
+    if not udg_SpeedrunMode then
+        return false
+    endif
+    loop
+        exitwhen i>=FSC_ItemCount[original]
+        set left=original*57+i
+        set identity=FSC_ItemId[left]
+        if identity<352 or identity>358 then
+            if j>=FSC_ItemCount[captured] then
+                return false
+            endif
+            set right=captured*57+j
+            if identity!=FSC_ItemId[right] or FSC_ItemHolder[left]!=FSC_ItemHolder[right] or FSC_ItemSlot[left]!=FSC_ItemSlot[right] or FSC_ItemQuantity[left]!=FSC_ItemQuantity[right] or FSC_ItemBound[left]!=FSC_ItemBound[right] or FSC_ItemHigh[left]!=FSC_ItemHigh[right] or FSC_ItemLow[left]!=FSC_ItemLow[right] or FSC_ItemFlags[left]!=FSC_ItemFlags[right] or FSC_ItemDormant[left]!=FSC_ItemDormant[right] or FSC_ItemComplete[left]!=FSC_ItemComplete[right] then
+                return false
+            endif
+            set j=j+1
+        endif
+        set i=i+1
+    endloop
+    return j==FSC_ItemCount[captured]
+endfunction
+
 function FFL_ReadbackBody takes integer pid,string actual,string expected returns boolean
     local integer original=pid+9
     local integer captured=pid+25
@@ -86,7 +116,12 @@ function FFL_ReadbackBody takes integer pid,string actual,string expected return
                 set FRC_Error[pid]=FSS_SetRoot("readback section metadata differs",243739446,pid,false)
                 return false
             endif
-            if not FSS_Equals(FSC_Payload[left],FSC_Payload[right]) and not (FSC_Id[left]==4 and FFL_CoreReadback(original,captured,FSC_Payload[left],FSC_Payload[right])) then
+            if FSC_Id[left]==1 and udg_SpeedrunMode then
+                if not FFL_SpeedrunInventoryReadback(original,captured) then
+                    set FRC_Error[pid]=FSS_SetRoot("readback Speedrun inventory differs",243739446,pid,false)
+                    return false
+                endif
+            elseif not FSS_Equals(FSC_Payload[left],FSC_Payload[right]) and not (FSC_Id[left]==4 and FFL_CoreReadback(original,captured,FSC_Payload[left],FSC_Payload[right])) then
                 set FRC_Error[pid]=FSS_SetRoot(FSS_Concat("readback section differs: ",I2S(FSC_Id[left])),243739446,pid,false)
                 return false
             endif
@@ -138,7 +173,7 @@ endfunction
 
 function FFL_ReadbackMatches takes integer pid,string actual,string expected returns boolean
     local boolean valid
-    if FSS_Equals(actual,expected) then
+    if not udg_SpeedrunMode and FSS_Equals(actual,expected) then
         return true
     endif
     call FSC_Clear(pid+9)

@@ -194,4 +194,5 @@ endfunction
         body=body.replace('FSS_Equals(FRC_Result[pid],FFP_Code[pid])','FFL_ReadbackMatches(pid,FRC_Result[pid],FFP_Code[pid])')
         body=body.replace('FRC_Result[pid]==FFP_Code[pid]','FFL_ReadbackMatches(pid,FRC_Result[pid],FFP_Code[pid])')
         source=put(source,'FFL_Tick',body)
-    return source
+    from speedrun_inventory import refresh as speedrun_refresh
+    return speedrun_refresh(source)

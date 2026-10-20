@@ -18,11 +18,11 @@ def sections(tier=2):
 
 
 class LegendReadbackTests(unittest.TestCase):
-    def runtime(self,flags=(),tier=2):
+    def runtime(self,flags=(),tier=2,speedrun=False):
         values={(11,i):1 for i in flags};values[10,1]=tier
         helper=(ROOT/'experiments/Forsaken/LegendReadback.j').read_text()
         extra='\nglobals\n    string array FRC_Error\nendglobals\n'+helper
-        e=engine(extra,dict(FRC_Account=lambda p:42,FFL_Val=lambda p,s,i:values.get((s,i),0)),bounded=True)
+        e=engine(extra,dict(udg_SpeedrunMode=speedrun,FRC_Account=lambda p:42,FFL_Val=lambda p,s,i:values.get((s,i),0)),bounded=True)
         e['FSC_Seen']={}
         return e
 
@@ -79,5 +79,18 @@ class LegendReadbackTests(unittest.TestCase):
         ss=sections();old=self.code(ss);e=self.runtime()
         for pairs in [[(i,2 if i==15 else v) for i,v in c.read_pairs(ss[2].payload)],c.read_pairs(ss[2].payload)+[(16,1)]]:
             self.assertFalse(e['FFL_CoreReadback'](9,25,ss[2].payload,c.pairs(pairs)))
+
+    def test_speedrun_omits_all_greens_and_nuts_but_requires_every_other_item(self):
+        def items(ss,records):return [c.Section(s.id,s.version,s.required,c.inventory(records) if s.id==1 else s.payload) for s in ss]
+        # Include quick slots, backpack, Gaya and house; retain a normal item.
+        metadata=((1,True,c.life_words(145.25)),(2,True,c.uint(0)))
+        excluded=[(i+1,identity,1 if i<6 else 5,i if i<6 else 0,1,False,metadata) for i,identity in enumerate(range(352,359))]
+        kept=(8,1,2,1,3,False,metadata)
+        old=self.code(items(sections(),excluded+[kept]))
+        actual=self.code(items(sections(),[(1,*kept[1:])]),[])
+        self.assertTrue(self.runtime(speedrun=True)['FFL_ReadbackMatches'](0,actual,old))
+        self.assertFalse(self.runtime()['FFL_ReadbackMatches'](0,actual,old))
+        self.assertFalse(self.runtime(speedrun=True)['FFL_ReadbackMatches'](0,self.code(items(sections(),[]),[]),old))
+        self.assertFalse(self.runtime(speedrun=True)['FFL_ReadbackMatches'](0,self.code(items(sections(),excluded+[kept]),[]),old))
 
 if __name__=='__main__':unittest.main()

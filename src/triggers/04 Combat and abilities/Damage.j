@@ -1,4 +1,4 @@
-library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait, TBackpack
+library TDamage requires TBattleLog, TBerserk, TElement, TGroup, TPlayerHero, TProf, TText, TUnit, TWait, TBackpack, TTalents
 globals
     // Per-hit context for Trig_Damage_Engine_CalcDamage (one slot per nested call, see DmgCtx_Depth).
     integer DmgCtx_Depth=0
@@ -55,6 +55,7 @@ globals
     item udg_TwoHandedItem=null
     boolean udg_DmgFlagMelee=false
     boolean udg_DmgFlagRedirected=false
+    unit array DmgCtx_PriestShield
 endglobals
 
 function Trig_Damage_Engine_FindTwoHandedItem takes unit u returns nothing
@@ -1292,6 +1293,7 @@ function Trig_Damage_Engine_FreeContext takes integer c returns nothing
     set DmgCtx_TargetPlayer[c]=null
     set DmgCtx_Dummy[c]=null
     set DmgCtx_Tag[c]=null
+    set DmgCtx_PriestShield[c]=null
     set DmgCtx_Depth=c-1
 endfunction
 
@@ -2633,6 +2635,9 @@ function Trig_Damage_Engine_Step18_FinalModifiers takes integer c returns nothin
     local real l_val=DmgCtx_Val[c]
     local real l_val2=DmgCtx_Val2[c]
     local unit l_dummy=DmgCtx_Dummy[c]
+    if l_amount>.0 and not l_heal and not l_manaDamage and Talent_BlessedRain(t) then
+        set l_amount=l_amount*.9
+    endif
     if l_amount>.0 then
         if(GetUnitAbilityLevel(u,'A03N')>0 and not l_pure and Trig_Damage_Engine_IsNight())then // 'A03N': ability "Night Might"
             // Multiply the current amount by 1.6: 100 becomes 160, before any later adjustments.
@@ -2862,6 +2867,9 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
             else
                 call Text_FloatingDamage(t,true,4,.0,false,0)
             endif
+            if Talent_PriestChoice(DmgCtx_PriestShield[c],1) and GetWidgetLife(t)>.405 then
+                call Talent_AddShield(t,RMaxBJ(0.,l_amount-RMaxBJ(0.,GetUnitState(t,UNIT_STATE_MAX_LIFE)-GetUnitState(t,UNIT_STATE_LIFE))))
+            endif
             call SetUnitState(t,UNIT_STATE_LIFE,GetUnitState(t,UNIT_STATE_LIFE)+l_amount)
             if(udg_HealCreditPlayer>0)then
                 if(udg_HealCreditPlayer==GetPlayerId(up)+1)then
@@ -2890,6 +2898,9 @@ function Trig_Damage_Engine_Step19_Apply takes integer c returns nothing
         set l_amount=.0
         call DestroyEffect(AddSpecialEffectTarget(Trig_Damage_Engine_BlockEffectPath(l_physical),t,"origin"))
         call Text_FloatingDamage(t,false,5,.0,false,0)
+    endif
+    if l_amount>0. and not l_manaDamage and not l_heal then
+        set l_amount=Talent_AbsorbShield(t,l_amount)
     endif
     // DPS meter for players.
     if(IsPlayerInForce(up,udg_PlayingPlayers)and l_amount>.0 and l_amount<1000000.)then
@@ -2973,6 +2984,8 @@ function Trig_Damage_Engine_CalcDamage takes real l_amount,unit u,unit t,boolean
     set DmgCtx_Element[c]=l_element
     set DmgCtx_ManaDamage[c]=l_manaDamage
     set DmgCtx_Holy[c]=l_holy
+    set DmgCtx_PriestShield[c]=PriestShieldHealSource
+    set PriestShieldHealSource=null
     set DmgCtx_Heal[c]=l_heal
     set DmgCtx_NoRedirect[c]=l_noRedirect
     set DmgCtx_HealUndead[c]=l_healUndead
@@ -3096,6 +3109,9 @@ function Trig_Damage_Engine_Actions takes nothing returns nothing
         set udg_DmgArmorProbeResult=l_amount
         call BlzSetEventDamage(.0)
     else
+        if l_dmgKind==1 and not udg_IsPhysicalAttack and not udg_IsPureDamage then
+            set l_amount=l_amount*(1.+Talent_HolyBolts(u))
+        endif
         if(l_dmgKind==0)then
             if udg_DmgFlagPure then
                 set l_dmgKind=4

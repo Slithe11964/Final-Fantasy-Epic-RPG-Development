@@ -8,6 +8,10 @@ This changes presentation, not damage, cooldowns, costs, targeting or save ident
 The saved editor master is not modified. Subsequent editor changes still flow into
 both builds; damage constants/wave counts are derived from its saved object fields.
 
+PAIR035 removes the repeated STR/AGI/INT, mana-fraction and rounding footer from
+all generated damage tooltips and dynamic calculation data. The explanations
+below remain developer reference; each ability retains its own calculation.
+
 STR, AGI and INT include bonuses. Technique proficiency is the effective value,
 including equipment/house bonuses. Spell power uses current MP / maximum MP at
 cast time, the listed proficiency weight, Mind Charge and Concentration. Integer

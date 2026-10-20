@@ -171,6 +171,36 @@ function FFP_ReadSection takes integer pid,integer ctx,integer sid,string payloa
     return FSC_Ok[ctx] and FSC_Pos[ctx]==FSC_End[ctx]
 endfunction
 
+function FFP_FilterSpeedrun takes integer pid returns nothing
+    local integer i=0
+    local integer kept=0
+    local integer src
+    local integer dst
+    local integer raw
+    if not udg_SpeedrunMode then
+        return
+    endif
+    loop
+        exitwhen i>=FFP_Count[pid]
+        set src=pid*57+i
+        set dst=pid*57+kept
+        set raw=FFP_Raw[src]
+        if raw!='I045' and raw!='I07F' and raw!='I07G' and raw!='I07H' and raw!='I027' and raw!='I07Q' and raw!='I0KE' then
+            set FFP_Raw[dst]=FFP_Raw[src]
+            set FFP_Holder[dst]=FFP_Holder[src]
+            set FFP_Slot[dst]=FFP_Slot[src]
+            set FFP_Quantity[dst]=FFP_Quantity[src]
+            set FFP_Bound[dst]=FFP_Bound[src]
+            set FFP_High[dst]=FFP_High[src]
+            set FFP_Low[dst]=FFP_Low[src]
+            set FFP_Flags[dst]=FFP_Flags[src]
+            set kept=kept+1
+        endif
+        set i=i+1
+    endloop
+    set FFP_Count[pid]=kept
+endfunction
+
 function FFP_Build takes integer pid,string encoded,boolean windowOpen returns boolean
     // Context25..32 is separate from accepted, decoder and writer contexts.
     local integer ctx=pid+25
@@ -259,6 +289,9 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
             endif
             set i=i+1
         endloop
+    endif
+    if valid then
+        call FFP_FilterSpeedrun(pid)
     endif
     call FSC_ClearSeen(ctx)
     call FSC_Clear(ctx)

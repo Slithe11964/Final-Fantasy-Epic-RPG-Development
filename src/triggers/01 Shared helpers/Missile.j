@@ -34,6 +34,8 @@ globals
     trigger MissileHitHook=null
     // How many times a missile has touched a unit, for diagnosing a hook that sees nothing.
     integer MissileHitRuns=0
+    unit PriestShieldHealSource=null
+    boolean array PriestShieldMissile
 endglobals
 
 function Missile_RunOnLoop takes integer l_idx returns nothing
@@ -81,6 +83,7 @@ function Missile_Allocate takes nothing returns integer
     set udg_MissileIsPure[l_idx]=false
     set udg_MissileTrueDamage[l_idx]=false
     set udg_MissileHealCredit[l_idx]=0
+    set PriestShieldMissile[l_idx]=false
     set udg_MissileHoming[l_idx]=false
     set udg_MissileModelEffect[l_idx]=null
     set udg_MissileTrailEffect[l_idx]=null
@@ -251,7 +254,11 @@ function Missile_DamageUnit takes integer l_idx,unit t,real damageAmount,real rd
                 if udg_MissileTrueDamage[l_idx]then
                     set udg_IgnoresReduction=true
                 endif
+                if PriestShieldMissile[l_idx] then
+                    set PriestShieldHealSource=udg_MissileCaster[l_idx]
+                endif
                 call UnitDamageTarget(udg_MissileCaster[l_idx],t,udg_MissileDamageDealt,true,false,udg_MissileAttackType[l_idx],l_dmgType,null)
+                set PriestShieldHealSource=null
             endif
         endif
     else
@@ -264,7 +271,11 @@ function Missile_DamageUnit takes integer l_idx,unit t,real damageAmount,real rd
                 set udg_IsPureDamage=true
                 set udg_IgnoresReduction=true
             endif
+            if PriestShieldMissile[l_idx] then
+                set PriestShieldHealSource=udg_MissileCaster[l_idx]
+            endif
             call UnitDamageTarget(udg_MissileCaster[l_idx],t,udg_MissileDamageDealt,true,false,udg_MissileAttackType[l_idx],l_dmgType,null)
+            set PriestShieldHealSource=null
         endif
     endif
 endfunction
@@ -351,7 +362,11 @@ function Missile_Impact takes nothing returns boolean
         if udg_MissileTrueDamage[l_idx]then
             set udg_IgnoresReduction=true
         endif
+        if PriestShieldMissile[l_idx] then
+            set PriestShieldHealSource=udg_MissileCaster[l_idx]
+        endif
         call UnitDamageTarget(udg_MissileCaster[l_idx],udg_MissileTarget[l_idx],udg_MissileImpactDamage[l_idx],true,false,udg_MissileAttackType[l_idx],l_dmgType,null)
+        set PriestShieldHealSource=null
     endif
     call DestroyEffect(AddSpecialEffect(udg_MissileImpactEffect[l_idx],udg_MissileX[l_idx],udg_MissileY[l_idx]))
     call DestroyEffect(AddSpecialEffect(udg_MissileImpactEffect2[l_idx],udg_MissileX[l_idx],udg_MissileY[l_idx]))

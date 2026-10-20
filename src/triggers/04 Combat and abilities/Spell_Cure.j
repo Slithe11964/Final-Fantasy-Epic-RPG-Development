@@ -36,6 +36,7 @@ function Trig_Spell_Cure_Actions takes nothing returns nothing
         set r=.0
     endif
     set d=Trig_Spell_Cure_MissileLaunchHeal(triggeringUnit,"Abilities\\Weapons\\WitchDoctorMissile\\WitchDoctorMissile.mdl","Abilities\\Spells\\Human\\Resurrect\\ResurrectTarget.mdl",spellTarget,.0,20.,128.,r*.25,r,true)
+    set PriestShieldMissile[d]=Talent_PriestChoice(triggeringUnit,1)
     if blinding then
         call Talent_MarkBlindingMissile(d,hostile)
         if hostile then

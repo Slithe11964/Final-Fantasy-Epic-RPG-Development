@@ -36,7 +36,7 @@ def runtime():
                udg_SaveFlagUnitID=defaultdict(int, {i: f'u{i}' for i in range(1, 12)}),
                udg_SaveFlagForce=flags, udg_SaveFlagCount=351, udg_ArmoryStockMax=540)
     names = ['Armory_InitHints', 'Armory_InCategory', 'Armory_ClearStock', 'Armory_ShowCategory',
-             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions', 'Armory_CategoryFromAbility']
+             'Trig_Armory_Select_Actions', 'Trig_Armory_Select_CanWithdraw', 'Trig_Armory_Back_Actions', 'Armory_CategoryFromAbility', 'Armory_QueueNavigation','Armory_FinishNavigation']
     with patch.object(harness, 'SELECTED', []):
         e = harness.load_engine(source, names, env)
     e['Armory_InitHints']()
@@ -46,6 +46,14 @@ def runtime():
     e['GetUnitTypeId'] = lambda u: u['raw']
     e['BlzGetUnitMaxMana'] = lambda u: u['index']
     e['Trig_Armory_Select_NotYourArmory'] = lambda: False
+    pending={}
+    e.update(ArmoryNavigation='nav',ArmoryNavigationTimer=defaultdict(lambda:None),
+             GetHandleId=lambda u:id(u),CreateTimer=lambda:object(),
+             SaveUnitHandle=lambda h,p,c,v:pending.__setitem__((p,c),v),
+             SaveInteger=lambda h,p,c,v:pending.__setitem__((p,c),v),
+             LoadUnitHandle=lambda h,p,c:pending.get((p,c)),LoadInteger=lambda h,p,c:pending.get((p,c),0),
+             TimerStart=lambda *a:None,GetExpiredTimer=lambda:e['ArmoryNavigationTimer'][1],
+             GetWidgetLife=lambda u:100.,IssueImmediateOrder=lambda *a:None)
     return e, shop, stock, flags
 
 
@@ -153,7 +161,10 @@ class ArmoryTests(unittest.TestCase):
         e['udg_ArmoryParentCategory'][12] = 1
         e['Trig_Armory_Back_IsTopLevel'] = lambda: False
         e['Trig_Armory_Back_Actions']()
+        self.assertEqual(e['ArmoryCategory'][1],12) # Channel event has not returned yet.
+        e['Armory_FinishNavigation']()
         self.assertEqual(e['ArmoryCategory'][1], 1)
+        self.assertEqual(shop['back'],2) # Preserve the category's Back tooltip.
 
     def test_withdrawal_replaces_stored_icon_with_hint_and_removes_one_flag(self):
         e, shop, stock, flags = runtime()

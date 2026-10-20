@@ -13,7 +13,7 @@ def objects(data,*,native=False):
     table=read_objects(data,'w3a')
     for group in ('original','custom'):
         for obj in table[group]:
-            if (obj['id'] or obj['base'])=='ASpc':setf(obj,'ahky','',0)
+            if (obj['id'] or obj['base'])=='ASpc':setf(obj,'ahky','B',0)
     return write_objects(table,table['version'],'w3a')
 
 
@@ -49,6 +49,11 @@ def refresh(source):
     if 'Forsaken_PollPanels' not in fs:return source
     declarations={
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
+        'integer ForsakenBackpackCloses=0':'ForsakenBackpackCloses',
+        'integer ForsakenBackpackRequests=0':'ForsakenBackpackRequests',
+        'integer ForsakenBackpackMouseEvents=0':'ForsakenBackpackMouseEvents',
+        'integer ForsakenBackpackKeyEvents=0':'ForsakenBackpackKeyEvents',
+        'integer ForsakenBackpackNativeClicks=0':'ForsakenBackpackNativeClicks',
         'boolean ForsakenTalentsWanted=true':'ForsakenTalentsWanted',
         'boolean ForsakenInventoryBinding=false':'ForsakenInventoryBinding',
         'boolean ForsakenBackpackKeyHeld=false':'ForsakenBackpackKeyHeld',

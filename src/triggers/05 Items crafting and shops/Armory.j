@@ -24,6 +24,8 @@ globals
     string array ArmoryHint
     integer array ArmoryCategory
     integer ArmoryCounterRevision=-1
+    hashtable ArmoryNavigation=InitHashtable()
+    timer array ArmoryNavigationTimer
 endglobals
 
 function Trig_Armory_Store_Item_CancelCodeLoad takes player p returns nothing
@@ -1312,6 +1314,7 @@ function Armory_ShowCategory takes unit shop,integer category returns nothing
         endif
         set i=i+1
     endloop
+    call UnitAddAbility(shop,'A0MX')
     call SetUnitAbilityLevel(shop,'A0MX',category+1)
     set p=null
 endfunction
@@ -1991,6 +1994,34 @@ function Armory_CategoryFromAbility takes integer abilityId returns integer
     return 0
 endfunction
 
+function Armory_FinishNavigation takes nothing returns nothing
+    local timer pending=GetExpiredTimer()
+    local integer key=GetHandleId(pending)
+    local unit shop=LoadUnitHandle(ArmoryNavigation,key,0)
+    local integer category=LoadInteger(ArmoryNavigation,key,1)
+    // Let the Channel event return before rebuilding its command card.
+    if shop!=null and GetWidgetLife(shop)>.405 then
+        call IssueImmediateOrder(shop,"stop")
+        call Armory_ShowCategory(shop,category)
+    endif
+    set shop=null
+    set pending=null
+endfunction
+
+
+function Armory_QueueNavigation takes unit shop,integer category returns nothing
+    local integer pid=GetConvertedPlayerId(GetOwningPlayer(shop))
+    local timer pending=ArmoryNavigationTimer[pid]
+    if pending==null then
+        set pending=CreateTimer()
+        set ArmoryNavigationTimer[pid]=pending
+    endif
+    call SaveUnitHandle(ArmoryNavigation,GetHandleId(pending),0,shop)
+    call SaveInteger(ArmoryNavigation,GetHandleId(pending),1,category)
+    call TimerStart(pending,.01,false,function Armory_FinishNavigation)
+    set pending=null
+endfunction
+
 function Trig_Armory_Back_Conditions takes nothing returns boolean
     return(GetSpellAbilityId()=='A0MX') or Armory_CategoryFromAbility(GetSpellAbilityId())>0 // 'A0MX': ability "Cancel"
 endfunction
@@ -2007,13 +2038,13 @@ function Trig_Armory_Back_Actions takes nothing returns nothing
     local integer playerIndex=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
     local integer category=Armory_CategoryFromAbility(GetSpellAbilityId())
     if category>0 then
-        call Armory_ShowCategory(GetTriggerUnit(),category)
-    elseif Trig_Armory_Back_IsTopLevel() then
+        call Armory_QueueNavigation(GetTriggerUnit(),category)
+    elseif ArmoryCategory[playerIndex]==0 then
         call SelectUnitForPlayerSingle(udg_PlayerHouse[playerIndex],GetOwningPlayer(GetTriggerUnit()))
         call ShowUnitHide(GetTriggerUnit())
         call KillUnit(GetTriggerUnit())
     else
-        call Armory_ShowCategory(GetTriggerUnit(),udg_ArmoryParentCategory[ArmoryCategory[playerIndex]])
+        call Armory_QueueNavigation(GetTriggerUnit(),udg_ArmoryParentCategory[ArmoryCategory[playerIndex]])
     endif
 endfunction
 

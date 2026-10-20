@@ -179,7 +179,7 @@ def abilities(data,config):
         for rank in range(1,levels+1):
             base=description(raw,rank,str(at(original,'aub1',rank,'' )).split(MARK)[0],config)
             # Keep authored effects, targeting and duration text; add precise rank data.
-            text=base+MARK+details(raw,rank,config)+FOOT
+            text=base.replace(FOOT,'')+MARK+details(raw,rank,config)
             setf(obj,'aub1',text,rank)
         learn=str(original.get(('arut',0),original.get(('arut',1),''))).split(MARK)[0]
         if learn:setf(obj,'arut',learn+'|n|nLearned-rank damage formulas are shown on the ability tooltip.',1)

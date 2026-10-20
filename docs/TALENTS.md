@@ -36,10 +36,21 @@ Module `src/triggers/03 Jobs and progression/Talents.j`; objects added by `tools
 | 1 | 1 | Deprotect | "Protect can be cast on an enemy." Dummy casts `tDpr` (Deprotect buff `B06J`, 15 s). |
 | 1 | 2 | Deshell | "Shell can be cast on an enemy." Dummy casts `tDsh` (Deshell buff `B06K`, 15 s). |
 | 1 | 3 | Blinding Light | "Enemies Cure affects are blinded." The enemy Cure is cast on: `tBln` (Blind `B00P`, 15 s); enemies the sphere passes: `tBl5` (5 s). Cast on an enemy it heals no one (`MissileNoDamage`). |
-| 2 | 1 | Acid Rain | Tranquility also deals magical damage to enemies in its healing radius, equal to 50% of the current rank's native healing value. |
-| 2 | 2 | Refresh | Esuna fully resets food/stat buffs; special hero effects gain 3 seconds of remaining duration. Base Esuna cooldown becomes 20 seconds, with normal cooldown modifiers. |
+| 2 | 1 | Acid Rain | Tranquility splits its current-rank healing equally between allied healing and enemy magic damage. At master rank each 0.1-second pulse heals 200 HP and deals 200 base magic damage. |
+| 2 | 2 | Refresh | Esuna fully resets food/stat buffs; special hero effects gain 3 seconds of remaining duration. Base Esuna cooldown becomes 45 seconds, with normal cooldown modifiers. |
 | 2 | 3 | Swiftmend | Regen heals at twice the rate for half its rank-specific duration: master 30 seconds instead of 60. Same total healing with unchanged stats. |
-| 3-4 | | not written yet | |
+| 3 | 1 | Shielding | Cure, Regen and Tranquility overhealing adds an equal damage shield; additions stack and reset its 30-second expiry. |
+| 3 | 2 | Blessed Rain | Allies in the current Tranquility take 10% less health damage while the Priest channels; multiple rains do not stack. |
+| 3 | 3 | Holy Bolts | Healing increases also increase basic-attack damage, preserving attack type. Rejuvenation alone gives +50%; the native Attack tooltip shows the current bonus. |
+| 4 | | not written yet | |
+
+The third row is maintained by `tools/priest_ultimate.py` and
+`experiments/Forsaken/PriestUltimate.j`; see
+[PAIR035 details](PAIR035_PRIEST_INVENTORY_AND_SPEEDRUN.md). Shielding captures only
+eligible heal events, separates Regen from queued food recovery, and uses final
+post-modifier overhealing. Ultimate passives require the current Priest job and
+the selected level-99 choice; individual heal/cast hooks still limit which spells
+can activate them.
 
 Protect, Shell and Cure list enemies as targets; without the talent, `Talents_GuardCast` stops the
 cast before it costs anything. Cure (`A00M`) used to be Holy Light-based, and Warcraft only lets

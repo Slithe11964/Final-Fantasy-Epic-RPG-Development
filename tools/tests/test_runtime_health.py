@@ -60,7 +60,7 @@ class RuntimeHealthTests(unittest.TestCase):
 
     def motion(self,name):
         s=(ROOT/'src/triggers/01 Shared helpers'/f'{name}.j').read_text();env=mocks(s)
-        env.update(ATTACK_TYPE_NORMAL=0,MissileTag=defaultdict(int),MissileNoDamage=defaultdict(bool),CreateGroup=lambda:set(),DestroyGroup=lambda g:g.clear(),CreateUnit=lambda *a:object(),
+        env.update(ATTACK_TYPE_NORMAL=0,MissileTag=defaultdict(int),MissileNoDamage=defaultdict(bool),PriestShieldMissile=defaultdict(bool),CreateGroup=lambda:set(),DestroyGroup=lambda g:g.clear(),CreateUnit=lambda *a:object(),
                    TimerStart=lambda *a:None,GetUnitX=lambda u:0.,GetUnitY=lambda u:0.,
                    GetOwningPlayer=lambda u:0,Atan2=lambda *a:0.,AddSpecialEffectTarget=lambda *a:object())
         env['udg_'+name+'FreeHead']=0;env['udg_'+name+'Count']=0;env['udg_'+name+'ActiveCount']=0

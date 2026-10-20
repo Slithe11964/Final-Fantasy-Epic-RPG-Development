@@ -55,6 +55,11 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
             set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec, before target modifiers."
         endif
     endif
+    if (raw=='A00M' or raw=='A10K' or raw=='A00L' or raw=='A0OM') and Talent_PriestChoice(hero,1) then
+        set tip=tip+"|n|n|cffffcc00Talent: Shielding|r|nHealing beyond maximum health adds to a damage shield. Expires 30 seconds after the latest addition."
+    elseif raw=='A0OM' and Talent_PriestChoice(hero,2) then
+        set tip=tip+"|n|n|cffffcc00Talent: Blessed Rain|r|nAllies in Tranquility take 10% less damage while affected."
+    endif
     return tip
 endfunction
 

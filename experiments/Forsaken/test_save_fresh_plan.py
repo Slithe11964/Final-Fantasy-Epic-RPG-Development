@@ -143,6 +143,7 @@ class FreshPlanTests(unittest.TestCase):
         inferno = self.change(4, lambda text: codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(text)]))
         self.e['udg_Difficulty'] = 5
         self.assertFalse(self.build())
+
         self.assertFalse(self.e['udg_HasLoadedCode'][0])
         self.assertTrue(self.build(inferno), self.e['FFP_Error'][0])
         self.assertTrue(self.e['FFP_Recheck'](0, True))
@@ -153,6 +154,17 @@ class FreshPlanTests(unittest.TestCase):
         for difficulty in (2, 3, 4):
             self.e['udg_Difficulty'] = difficulty
             self.assertTrue(self.build())
+
+    def test_speedrun_projects_all_greens_and_nuts_out_of_validated_plan(self):
+        metadata=((1,True,codec.life_words(145.25)),(2,True,codec.uint(0)))
+        records=[(i+1,identity,2,i,1,False,metadata) for i,identity in enumerate(range(352,359))]
+        records.append((8,1,1,0,3,False,metadata))
+        encoded=self.change(1,lambda text:codec.inventory(records))
+        self.e['udg_SpeedrunMode']=False
+        self.assertTrue(self.build(encoded),self.e['FFP_Error'][0]);self.assertEqual(self.e['FFP_Count'][0],8)
+        self.e['udg_SpeedrunMode']=True
+        self.assertTrue(self.build(encoded),self.e['FFP_Error'][0]);self.assertEqual(self.e['FFP_Count'][0],1)
+        self.assertEqual(self.e['FFP_Raw'][0],'pman');self.assertEqual(self.e['FFP_Quantity'][0],3)
 
     def test_difficulty_rules(self):
         # Simple-Hard saves load in Simple-Hard; Inferno saves load anywhere; Nightmare loads

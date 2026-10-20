@@ -4,6 +4,7 @@ The editor owns world content. Profile-specific source/object differences are th
 merged against a pinned editor reference; conflicting edits are errors, never discarded.
 """
 import copy
+import json
 from pathlib import Path
 import re
 import subprocess
@@ -543,6 +544,10 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from priest_master import plan as priest_plan,refresh as priest_refresh,objects as priest_objects
     priest_config=priest_plan(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'))
     modules={lib:priest_refresh(s,priest_config,native=native) for lib,s in modules.items()}
+    from priest_ultimate import refresh as ultimate_refresh
+    modules={lib:ultimate_refresh(s,native=native) for lib,s in modules.items()}
+    from armory_catalog import runtime as armory_runtime,refresh_hint_objects
+    modules={lib:armory_runtime(s) for lib,s in modules.items()}
     from damage_tooltips import catalogue as damage_catalogue,abilities as damage_abilities,scroll_objects, runtime as scroll_runtime
     damage_config=damage_catalogue(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'),edited.object_bytes('war3map.w3t'),edited.object_bytes('war3mapSkin.w3t'))
     modules={lib:scroll_runtime(s) for lib,s in modules.items()}
@@ -618,7 +623,11 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=refresh_units(data)
+        if data:
+            table=read_objects(refresh_units(data),'w3u')
+            hints=json.loads((Path(__file__).resolve().parents[1]/'src/armory-hints.json').read_text(encoding='utf-8'))
+            table=refresh_hint_objects(table,hints)
+            replacements[name]=write_objects(table,table['version'],'w3u')
     from job_objects import refresh_robe
     for ext in ('w3u','w3t'):
         for name in ('war3map.'+ext,'war3mapSkin.'+ext):

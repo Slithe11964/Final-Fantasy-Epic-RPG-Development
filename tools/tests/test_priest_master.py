@@ -99,7 +99,7 @@ class PriestMasterTests(unittest.TestCase):
         env=mocks(s);env.update(PriestRainCaster=defaultdict(lambda:None,{0:'caster'}),PriestRainCount=1,
             PriestRainLeft=defaultdict(float,{0:15.}),PriestRainNext=defaultdict(float,{0:.1}),
             PriestRainHealing={1:50.,6:400.},PriestRainRadius={1:900.,6:900.},PriestRainPeriod={1:.1,6:.1},
-            PriestRainEnemies={0:units},PriestRainTimer='rain',GetUnitAbilityLevel=lambda *a:rank[0],
+            PriestRainEnemies={0:units},PriestRainTimer='rain',TalentRainCaster=defaultdict(lambda:None),GetUnitAbilityLevel=lambda *a:rank[0],
             GetWidgetLife=lambda u:0. if u=='dead' else 100.,GetUnitCurrentOrder=lambda u:1,OrderId=lambda s:1,
             Talent_Active=lambda *a:active[0],GetUnitX=lambda u:0.,GetUnitY=lambda u:0.,GetOwningPlayer=lambda u:0,
             GroupEnumUnitsInRange=lambda g,*a:g.extend(['enemy','ally','immune','dead']),

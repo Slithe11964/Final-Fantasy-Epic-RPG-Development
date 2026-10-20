@@ -20,6 +20,59 @@ MATERIA = {71: ('I025', 'm071'), 100: ('I03F', 'm100'),
            103: ('I03N', 'm103'), 150: ('I07P', 'm150')}
 
 
+def runtime(source):
+    from jtok import functions
+    from performance_runtime import put
+    fs=functions(source)
+    if 'Armory_ShowCategory' not in fs:return source
+    for declaration in ['hashtable ArmoryNavigation=InitHashtable()', 'timer array ArmoryNavigationTimer']:
+        name=declaration.split('=')[0].split()[-1]
+        if not re.search(r'^\s*\w+\s+(?:array )?'+name+r'\b',source,re.M):
+            source=source.replace('endglobals','    '+declaration+'\nendglobals',1)
+    helper='''function Armory_FinishNavigation takes nothing returns nothing
+    local timer pending=GetExpiredTimer()
+    local integer key=GetHandleId(pending)
+    local unit shop=LoadUnitHandle(ArmoryNavigation,key,0)
+    local integer category=LoadInteger(ArmoryNavigation,key,1)
+    // Let the Channel event return before rebuilding its command card.
+    if shop!=null and GetWidgetLife(shop)>.405 then
+        call IssueImmediateOrder(shop,"stop")
+        call Armory_ShowCategory(shop,category)
+    endif
+    set shop=null
+    set pending=null
+endfunction
+
+function Armory_QueueNavigation takes unit shop,integer category returns nothing
+    local integer pid=GetConvertedPlayerId(GetOwningPlayer(shop))
+    local timer pending=ArmoryNavigationTimer[pid]
+    if pending==null then
+        set pending=CreateTimer()
+        set ArmoryNavigationTimer[pid]=pending
+    endif
+    call SaveUnitHandle(ArmoryNavigation,GetHandleId(pending),0,shop)
+    call SaveInteger(ArmoryNavigation,GetHandleId(pending),1,category)
+    call TimerStart(pending,.01,false,function Armory_FinishNavigation)
+    set pending=null
+endfunction'''
+    for name,body in functions(helper).items():
+        if name in functions(source):source=put(source,name,body)
+        else:source=source.replace('function Trig_Armory_Back_Conditions takes',body+'\n\nfunction Trig_Armory_Back_Conditions takes',1)
+    body=functions(source)['Trig_Armory_Back_Actions']
+    body=body.replace('elseif Trig_Armory_Back_IsTopLevel() then','elseif ArmoryCategory[playerIndex]==0 then')
+    body=body.replace('call Armory_ShowCategory(','call Armory_QueueNavigation(')
+    source=put(source,'Trig_Armory_Back_Actions',body)
+    # Preserve each category's authored Back/Close text. The queued spell path
+    # now changes this level only after Channel returns; navigation state still
+    # belongs to the shop rather than the ability level.
+    body=functions(source)['Armory_ShowCategory']
+    if "call UnitAddAbility(shop,'A0MX')" not in body:
+        body=body.replace("    call SetUnitAbilityLevel(shop,'A0MX',category+1)","    call UnitAddAbility(shop,'A0MX')\n    call SetUnitAbilityLevel(shop,'A0MX',category+1)")
+    elif "call SetUnitAbilityLevel(shop,'A0MX',category+1)" not in body:
+        body=body.replace("    call UnitAddAbility(shop,'A0MX')","    call UnitAddAbility(shop,'A0MX')\n    call SetUnitAbilityLevel(shop,'A0MX',category+1)")
+    return put(source,'Armory_ShowCategory',body)
+
+
 def set_field(obj, key, value):
     mods = obj['sets'][0]['mods']
     mods[:] = [m for m in mods if m['field'] != key]
@@ -108,8 +161,7 @@ def catalog_objects(table, catalog, flags, item_fields, extend=False):
         obj = copy.deepcopy(original[flags[key]])
         obj['id'] = hint_id(index)
         for field, value in dict(unam='Missing: ' + entry['name'], utip='? - Missing item',
-                                 utub='|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] +
-                                      '|n|nStore this item in your house to unlock it in the armory.',
+                                 utub='|cffffcc00Not stored|r|n|nHint: ' + entry['hint'],
                                  uico=ICON, ugol=0, ulum=0, ulev=0,
                                  ubpx=positions[key] % 4, ubpy=positions[key] // 4,
                                  umpm=index, usma=1, usrg=1).items():
@@ -130,7 +182,7 @@ def refresh_hint_objects(table, catalog):
             raise ValueError('missing hint object ' + raw + '; prepare armory objects first')
         if not entry['hint'].strip():
             raise ValueError('empty hint: ' + key)
-        tooltip='|cffffcc00Not stored|r|n|nHint: ' + entry['hint'] + '|n|nStore this item in your house to unlock it in the armory.'
+        tooltip='|cffffcc00Not stored|r|n|nHint: ' + entry['hint']
         if fields(units[raw]).get('utub') != tooltip:
             set_field(units[raw], 'utub', tooltip)
     return result
