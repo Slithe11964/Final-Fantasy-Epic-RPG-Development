@@ -1,4 +1,4 @@
-library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots, TAbil
+library THeroStats requires TBackpack, TDamage, TElement, TProf, TUnit, TPlayerHero, TArmory, TTitles, TSaveSlots, TAbil, TTalents
 // -stats: the hero's combat numbers as text, five pages, in both versions. Reforged's Forsaken
 // map shows the same numbers in its stat panel; the calculations below come from it (Forsaken
 // DZ), reading worn gear from the backpack's equipment pages instead of native equipment slots.
@@ -1372,6 +1372,10 @@ function Stats_Fill takes unit hero,integer page returns string
         call Stats_Row(5,"Physical Block",Stats_StatPercent(Stats_StatBlock(hero,true)))
         call Stats_Row(6,"Magical Block",Stats_StatPercent(Stats_StatBlock(hero,false)))
         set i=7
+        if Talent_ShieldAmount(hero)>0. then
+            call Stats_Row(i,"Shielding",R2SW(Talent_ShieldAmount(hero),1,0))
+            set i=i+1
+        endif
         set value=0.
         if GetUnitAbilityLevel(hero,'A0RV')>0 or GetUnitAbilityLevel(hero,'A0EI')>0 then
             set value=25.

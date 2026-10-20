@@ -2,6 +2,8 @@
 from pathlib import Path
 from collections import defaultdict
 import sys,unittest
+from unittest.mock import patch
+import test_quest_lifecycle as harness
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from priest_master import plan,objects,fields,at,refresh,initializer
 from objdata import read_objects
@@ -25,7 +27,7 @@ class PriestMasterTests(unittest.TestCase):
     def test_master_choices_gate_on_level50_mastery_and_are_exclusive(self):
         from test_talents import runtime
         e,heroes=runtime();hero=heroes[0]
-        for choice,name in [(1,'Acid Rain'),(2,'Refresh'),(3,'Swiftmend')]:
+        for choice,name in [(1,'Acid Rain'),(2,'Holy Bolts'),(3,'Swiftmend')]:
             self.assertEqual(e['TalentName'][e['Talent_Index'](12,2,choice)],name)
         self.assertFalse(e['Talent_Choose'](0,2,1))
         e['world']['mastery'][hero]=2
@@ -97,7 +99,7 @@ class PriestMasterTests(unittest.TestCase):
     def test_acid_rain_current_rank_half_healing_enemy_filters_and_stops(self):
         s=source('Regen');damage=[];paused=[];rank=[1];units=[];active=[True];flags=[]
         env=mocks(s);env.update(PriestRainCaster=defaultdict(lambda:None,{0:'caster'}),PriestRainCount=1,
-            PriestRainLeft=defaultdict(float,{0:15.}),PriestRainNext=defaultdict(float,{0:.1}),
+            PriestRainLeft=defaultdict(float,{0:15.}),PriestRainNext=defaultdict(float,{0:.1}),PriestRainDamageNext=defaultdict(float,{0:1.}),
             PriestRainHealing={1:50.,6:400.},PriestRainRadius={1:900.,6:900.},PriestRainPeriod={1:.1,6:.1},
             PriestRainEnemies={0:units},PriestRainTimer='rain',TalentRainCaster=defaultdict(lambda:None),GetUnitAbilityLevel=lambda *a:rank[0],
             GetWidgetLife=lambda u:0. if u=='dead' else 100.,GetUnitCurrentOrder=lambda u:1,OrderId=lambda s:1,
@@ -107,15 +109,17 @@ class PriestMasterTests(unittest.TestCase):
             IsUnitEnemy=lambda u,p:u!='ally',IsUnitAlly=lambda u,p:u=='ally',IsUnitType=lambda u,t:u=='immune' and t==0,UNIT_TYPE_MAGIC_IMMUNE=0,UNIT_TYPE_STRUCTURE=1,DAMAGE_TYPE_UNIVERSAL=1,
             ATTACK_TYPE_CHAOS=2,ATTACK_TYPE_NORMAL=0,DAMAGE_TYPE_MAGIC=0,WEAPON_TYPE_WHOKNOWS=0,
             UnitDamageTarget=lambda c,u,n,*a:damage.append((u,n)),PauseTimer=lambda t:paused.append(t))
-        e=execute(s,['Priest_RainTick'],env)
+        expression=harness.expression
+        with patch.object(harness,'expression',lambda text:expression(text).replace('//','/')):
+            e=execute(s,['Priest_RainTick'],env)
         e['UnitDamageTarget']=lambda c,u,n,*a:(damage.append((u,n)),flags.append((u,e['udg_IsPureDamage'])))
         for _ in range(10):e['Priest_RainTick']()
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),250.);self.assertEqual(sum(n for u,n in damage if u=='ally'),250.)
         self.assertTrue(all(flag==(u=='ally') for u,flag in flags));self.assertFalse(e['udg_IsPureDamage'])
         damage.clear();rank[0]=6
-        for _ in range(10):
+        for tick in range(10):
             before=len(damage);e['Priest_RainTick']()
-            self.assertEqual(damage[before:],[('enemy',200.),('ally',200.)])
+            self.assertEqual(damage[before:],[('enemy',2000.),('ally',200.)] if tick==9 else [('ally',200.)])
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),2000.)
         self.assertEqual(sum(n for u,n in damage if u=='ally'),2000.)
         damage.clear();active[0]=False

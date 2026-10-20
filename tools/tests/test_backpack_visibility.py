@@ -26,7 +26,7 @@ class BackpackVisibilityTests(unittest.TestCase):
             ForsakenBackpackKeyHeld=False,ForsakenInventoryBindPhase=0,ForsakenInventoryBindHero=None,ForsakenInventoryBindUntil=0.,
             ForsakenBackpackCommand='command4',ForsakenBackpackInput='input',ForsakenGearCommand=None,
             GetUnitAbilityLevel=lambda *a:1,BlzGetTriggerFrame=lambda:s['frame'],
-            ForsakenBackpackWanted=False,ForsakenBackpackWasVisible=False,ForsakenBackpackCloseUntil=0.,
+            ForsakenBackpackWanted=False,ForsakenBackpackExplicitlyClosed=False,ForsakenBackpackWasVisible=False,ForsakenBackpackCloseUntil=0.,
             ForsakenTalentsWanted=True,ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenCachedEquipment='gear',ForsakenCachedBackdrop='backdrop',
             ForsakenLinkedBag='bag',ForsakenInventoryHero=None,ForsakenNextBagSearch=0.,ForsakenInspectTarget=None,
             ForsakenBackpackClose='close',ForsakenLinkedBagClose='bagclose',ForsakenTalentRoot='talents',
@@ -119,6 +119,15 @@ class BackpackVisibilityTests(unittest.TestCase):
         self.assertTrue(v['gear'] and v['bag']);self.assertEqual(len(clicks),1)
         e['Forsaken_CloseBackpack']();settle();e['Forsaken_BackpackActivity']()
         self.assertFalse(poll(s['now']+.1))
+
+    def test_combat_native_refresh_cannot_reopen_an_explicitly_closed_bag(self):
+        e,s,v,clicks,_,_,poll,settle=self.runtime();self.native_press(e,s,clicks);settle()
+        e['Forsaken_CloseBackpack']();poll(s['now']+20.)
+        v.update(gear=True,bag=True)
+        self.assertFalse(poll(s['now']+.1));self.assertFalse(e['ForsakenBackpackWanted'])
+        self.assertFalse(v['gear'] or v['bag'])
+        self.native_press(e,s,clicks);self.assertTrue(settle())
+        self.assertFalse(e['ForsakenBackpackExplicitlyClosed'])
 
     def test_programmatic_and_other_players_notifications_cannot_toggle(self):
         e,s,v,_,_,_,_,_=self.runtime();e['ForsakenInventoryBinding']=True

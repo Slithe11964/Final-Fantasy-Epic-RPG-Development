@@ -561,6 +561,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     from spell_calculations import catalogue as calculation_catalogue,runtime as calculation_runtime,objects as calculation_objects
     calculations=calculation_catalogue(damage_config)
     modules={lib:calculation_runtime(command_refresh(s,commands),calculations) for lib,s in modules.items()}
+    from priest_followup import refresh as priest_followup
+    modules={lib:priest_followup(s,native=native) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -622,6 +624,9 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
         if data:replacements[name]=legendary_objects(navigation_objects(inventory_objects(calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations),native=native)))
+    from channel_defaults import complete as complete_channel_defaults
+    replacements['war3map.w3a'],channel_skin=complete_channel_defaults(replacements['war3map.w3a'],replacements.get('war3mapSkin.w3a'))
+    if channel_skin:replacements['war3mapSkin.w3a']=channel_skin
     from job_objects import refresh_units
     for name in ('war3map.w3u','war3mapSkin.w3u'):
         data=replacements.get(name) or profile.object_bytes(name)

@@ -18,6 +18,7 @@ endfunction
 function Forsaken_CloseBackpack takes nothing returns nothing
     set ForsakenBackpackCloses=ForsakenBackpackCloses+1
     set ForsakenBackpackWanted=false
+    set ForsakenBackpackExplicitlyClosed=true
     set ForsakenInventoryBindPhase=0
     set ForsakenBackpackCloseUntil=TimerGetElapsed(ForsakenPanelClock)+1.2
     set ForsakenBackpackWasVisible=false
@@ -54,6 +55,7 @@ function Forsaken_RequestBackpackToggle takes integer source returns nothing
         set ForsakenInventoryBinding=false
     else
         set ForsakenBackpackWanted=true
+        set ForsakenBackpackExplicitlyClosed=false
         set ForsakenBackpackCloseUntil=0.
         set ForsakenFrameSearchRequested=true
         // Reuse a confirmed binding until the hero changes. Hiding the panels
@@ -185,7 +187,7 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
     endif
     set visible=BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)
     // Native opening is authoritative even if game focus swallowed our key/frame event.
-    if visible and not ForsakenBackpackWanted and hero!=null then
+    if visible and not ForsakenBackpackWanted and not ForsakenBackpackExplicitlyClosed and hero!=null then
         set ForsakenBackpackWanted=true
         set ForsakenInventoryHero=hero
         set ForsakenInventoryBindHero=hero
@@ -305,6 +307,7 @@ endfunction
 
 function Forsaken_ResetBackpackControls takes nothing returns nothing
     set ForsakenBackpackWanted=false
+    set ForsakenBackpackExplicitlyClosed=false
     set ForsakenBackpackKeyHeld=false
     set ForsakenInventoryBindPhase=0
     set ForsakenInventoryBindHero=null

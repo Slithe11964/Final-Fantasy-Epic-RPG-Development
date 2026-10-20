@@ -32,6 +32,8 @@ globals
     integer SpellCalcCount=0
     boolean array SpellCalcHidden
     hashtable SpellCalcLast=InitHashtable()
+    real array PriestRainDamageNext
+    hashtable SpellCalcCasting=InitHashtable()
 endglobals
 
 function Priest_MasterData0 takes nothing returns nothing
@@ -1945,7 +1947,7 @@ function Priest_MasterData takes nothing returns nothing
 endfunction
 
 function Priest_CooldownBase takes unit caster,integer raw,integer level returns real
-    if raw=='A0W9' and Talent_Active(caster,12,2,2,'A0W9') then
+    if raw=='A0W9' and Talent_Active(caster,12,4,3,'A0W9') then
         return 45.
     endif
     return BlzGetAbilityCooldown(raw,level)
@@ -1955,7 +1957,7 @@ endfunction
 function Priest_EsunaChannel takes nothing returns nothing
     local unit caster=GetTriggerUnit()
     if GetSpellAbilityId()=='A0W9' then
-        if Talent_Active(caster,12,2,2,'A0W9') then
+        if Talent_Active(caster,12,4,3,'A0W9') then
             call SaveReal(CooldownTalentBase,GetHandleId(caster),'A0W9',45.)
         else
             call RemoveSavedReal(CooldownTalentBase,GetHandleId(caster),'A0W9')
@@ -2178,6 +2180,8 @@ function Priest_RainTick takes nothing returns nothing
     local integer rank
     local unit caster
     local unit target
+    local boolean healPulse
+    local boolean damagePulse
     loop
         exitwhen pid>=8
         set caster=PriestRainCaster[pid]
@@ -2189,9 +2193,17 @@ function Priest_RainTick takes nothing returns nothing
             else
                 set rank=GetUnitAbilityLevel(caster,'A0OM')
                 set PriestRainNext[pid]=PriestRainNext[pid]-.1
+                set PriestRainDamageNext[pid]=PriestRainDamageNext[pid]-.1
                 set PriestRainLeft[pid]=PriestRainLeft[pid]-.1
-                if PriestRainNext[pid]<=.0001 then
+                set healPulse=PriestRainNext[pid]<=.0001
+                set damagePulse=PriestRainDamageNext[pid]<=.0001
+                if damagePulse then
+                    set PriestRainDamageNext[pid]=PriestRainDamageNext[pid]+1.
+                endif
+                if healPulse then
                     set PriestRainNext[pid]=PriestRainNext[pid]+PriestRainPeriod[rank]
+                endif
+                if healPulse or damagePulse then
                     call GroupEnumUnitsInRange(PriestRainEnemies[pid],GetUnitX(caster),GetUnitY(caster),PriestRainRadius[rank],null)
                     loop
                         set target=FirstOfGroup(PriestRainEnemies[pid])
@@ -2199,7 +2211,7 @@ function Priest_RainTick takes nothing returns nothing
                         call GroupRemoveUnit(PriestRainEnemies[pid],target)
                         set PriestShieldHealSource=null
                         set udg_IsPureDamage=false
-                        if IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
+                        if healPulse and IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
                             set udg_IsPureDamage=true
                             if Talent_PriestChoice(caster,1) then
                                 set PriestShieldHealSource=caster
@@ -2209,8 +2221,8 @@ function Priest_RainTick takes nothing returns nothing
                             else
                                 call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
                             endif
-                        elseif Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
-                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
+                        elseif damagePulse and Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
+                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*(.5/PriestRainPeriod[rank]),false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
                         endif
                         set PriestShieldHealSource=null
                         // Damage events normally reset this. Also clear after
@@ -2244,6 +2256,7 @@ function Priest_RainEvent takes nothing returns nothing
             set TalentRainRadius[pid]=PriestRainRadius[rank]
             set PriestRainLeft[pid]=PriestRainDuration[rank]
             set PriestRainNext[pid]=PriestRainPeriod[rank]
+            set PriestRainDamageNext[pid]=1.
             if PriestRainCount==1 then
                 call TimerStart(PriestRainTimer,.1,true,function Priest_RainTick)
             endif
@@ -3431,8 +3444,8 @@ function SpellCalc_Data11 takes nothing returns nothing
     set SpellCalcRaw[80]='A0W9'
     call SaveStr(SpellCalcData,'A0W9',1,"Cures all negative status ailments from the target.")
     call SaveStr(SpellCalcData,'A0W9',101,"")
-    call SaveInteger(SpellCalcData,'A0W9',-1,2)
-    call SaveInteger(SpellCalcData,'A0W9',-2,2)
+    call SaveInteger(SpellCalcData,'A0W9',-1,4)
+    call SaveInteger(SpellCalcData,'A0W9',-2,3)
     set SpellCalcRaw[81]='A0X5'
     call SaveStr(SpellCalcData,'A0X5',1,"Deals non-elemental damage and slows movespeed on enemies around the target for 10 seconds.")
     call SaveStr(SpellCalcData,'A0X5',101,"|n|n|cffffcc00Damage details|r|nDamage per poison pulse: (200 + floor(INT / 2)) x Inner Mana spell power.|nInner Mana spell power = 1 + 100% x mana fraction x (1 + 10% x effective Inner Mana proficiency). Mind Charge doubles it; Concentration multiplies it by 1.5 at full mana. Pulse interval 0.5 seconds for 10 seconds.")
@@ -3893,7 +3906,7 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
         set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         if raw=='A0OM' and not SpellCalcHidden[GetPlayerId(GetLocalPlayer())] then
             set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]*.5+.5))
-            set tip=tip+"|nEach "+R2SW(PriestRainPeriod[rank],1,1)+" seconds: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP and "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base magic damage."
+            set tip=tip+"|nHealing: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP every "+R2SW(PriestRainPeriod[rank],1,1)+" seconds. Damage: "+R2SW(amount,1,0)+" base magic damage every 1 second."
             set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec, before target modifiers."
         endif
     endif
@@ -3904,7 +3917,7 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
     endif
     if raw=='A0OM' and Talent_LegendChoice(hero,2) then
         set tip=tip+"|n|n|cffffcc00Talent: Tranquility of Life|r|nAllies killed inside the active rain revive where they died, with full HP and MP."
-    elseif raw=='A0W9' and Talent_LegendChoice(hero,3) then
+    elseif raw=='A0W9' and Job_GetIndex(hero)==12 and Talent_Has(hero,3,3) then
         set tip=tip+"|n|n|cffffcc00Talent: Prolonged Cleansing|r|nPrevents new negative status ailments for 10 seconds."
     endif
     return tip
@@ -3917,6 +3930,10 @@ function SpellCalc_Update takes nothing returns nothing
     local integer raw
     local integer rank
     local string tip
+    if hero!=null and LoadInteger(SpellCalcCasting,GetHandleId(hero),0)!=0 then
+        set hero=null
+        return
+    endif
     if hero!=null then
         loop
             exitwhen i>=SpellCalcCount
@@ -3960,10 +3977,25 @@ function SpellCalc_Command takes nothing returns nothing
     set viewer=null
 endfunction
 
+function SpellCalc_CastBegin takes nothing returns nothing
+    call SaveInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0,GetSpellAbilityId())
+endfunction
+
+function SpellCalc_CastEnd takes nothing returns nothing
+    if LoadInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0)==GetSpellAbilityId() then
+        call RemoveSavedInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0)
+    endif
+endfunction
 
 function SpellCalc_Register takes nothing returns nothing
     local trigger command=CreateTrigger()
+    local trigger beginCast=CreateTrigger()
+    local trigger endCast=CreateTrigger()
     local integer i=0
+    call TriggerRegisterAnyUnitEventBJ(beginCast,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddAction(beginCast,function SpellCalc_CastBegin)
+    call TriggerRegisterAnyUnitEventBJ(endCast,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
+    call TriggerAddAction(endCast,function SpellCalc_CastEnd)
     loop
         exitwhen i>=8
         call TriggerRegisterPlayerChatEvent(command,Player(i),"-spellcalculations",false)
@@ -3971,6 +4003,8 @@ function SpellCalc_Register takes nothing returns nothing
     endloop
     call TriggerAddAction(command,function SpellCalc_Command)
     set command=null
+    set beginCast=null
+    set endCast=null
 endfunction
 
 
@@ -4063,6 +4097,7 @@ function SpellCalc_Data15 takes nothing returns nothing
     set SpellCalcCount=119
 endfunction
 
+
 function Priest_AbilityTalentTip takes unit hero,integer raw,integer row,integer choice returns nothing
     local integer rank=GetUnitAbilityLevel(hero,raw)
     if rank>0 then
@@ -4077,7 +4112,7 @@ endfunction
 
 
 function Priest_MasterEsuna takes nothing returns nothing
-    if GetSpellAbilityId()=='A0W9' and Talent_Active(GetTriggerUnit(),12,2,2,'A0W9') then
+    if GetSpellAbilityId()=='A0W9' and Talent_Active(GetTriggerUnit(),12,4,3,'A0W9') then
         call Priest_Refresh(GetSpellTargetUnit())
     endif
     if GetSpellAbilityId()=='A0W9' then

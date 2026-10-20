@@ -51,7 +51,7 @@ function SpellCalc_Tooltip takes unit hero,integer raw,integer rank returns stri
         set tip=tip+"|n|n|cffffcc00Talent: "+TalentName[Talent_Index(12,row,choice)]+"|r|n"+TalentText[Talent_Index(12,row,choice)]
         if raw=='A0OM' and not SpellCalcHidden[GetPlayerId(GetLocalPlayer())] then
             set amount=I2R(R2I(PriestRainHealing[rank]/PriestRainPeriod[rank]*.5+.5))
-            set tip=tip+"|nEach "+R2SW(PriestRainPeriod[rank],1,1)+" seconds: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP and "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base magic damage."
+            set tip=tip+"|nHealing: "+R2SW(PriestRainHealing[rank]*.5,1,0)+" base HP every "+R2SW(PriestRainPeriod[rank],1,1)+" seconds. Damage: "+R2SW(amount,1,0)+" base magic damage every 1 second."
             set tip=tip+"|nCurrent split: "+R2SW(amount,1,0)+" base HP/sec and "+R2SW(amount,1,0)+" magic damage/sec, before target modifiers."
         endif
     endif
@@ -74,6 +74,10 @@ function SpellCalc_Update takes nothing returns nothing
     local integer raw
     local integer rank
     local string tip
+    if hero!=null and LoadInteger(SpellCalcCasting,GetHandleId(hero),0)!=0 then
+        set hero=null
+        return
+    endif
     if hero!=null then
         loop
             exitwhen i>=SpellCalcCount
@@ -116,9 +120,25 @@ function SpellCalc_Command takes nothing returns nothing
     set viewer=null
 endfunction
 
+function SpellCalc_CastBegin takes nothing returns nothing
+    call SaveInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0,GetSpellAbilityId())
+endfunction
+
+function SpellCalc_CastEnd takes nothing returns nothing
+    if LoadInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0)==GetSpellAbilityId() then
+        call RemoveSavedInteger(SpellCalcCasting,GetHandleId(GetTriggerUnit()),0)
+    endif
+endfunction
+
 function SpellCalc_Register takes nothing returns nothing
     local trigger command=CreateTrigger()
+    local trigger beginCast=CreateTrigger()
+    local trigger endCast=CreateTrigger()
     local integer i=0
+    call TriggerRegisterAnyUnitEventBJ(beginCast,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddAction(beginCast,function SpellCalc_CastBegin)
+    call TriggerRegisterAnyUnitEventBJ(endCast,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
+    call TriggerAddAction(endCast,function SpellCalc_CastEnd)
     loop
         exitwhen i>=8
         call TriggerRegisterPlayerChatEvent(command,Player(i),"-spellcalculations",false)
@@ -126,4 +146,6 @@ function SpellCalc_Register takes nothing returns nothing
     endloop
     call TriggerAddAction(command,function SpellCalc_Command)
     set command=null
+    set beginCast=null
+    set endCast=null
 endfunction

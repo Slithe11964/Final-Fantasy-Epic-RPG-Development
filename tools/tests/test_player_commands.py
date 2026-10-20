@@ -90,7 +90,7 @@ class PlayerCommandTests(unittest.TestCase):
 
     def test_summon_calculations_toggle_even_when_hero_does_not_own_the_command(self):
         e,_,_=self.tooltip_runtime();writes=[]
-        e.update(SpellCalcCount=1,SpellCalcRaw={0:'A13Y'},SpellCalcLast='last',PriestTooltipOffset=0,
+        e.update(SpellCalcCount=1,SpellCalcRaw={0:'A13Y'},SpellCalcLast='last',SpellCalcCasting='casting',PriestTooltipOffset=0,
             GetUnitAbilityLevel=lambda *a:0,Player_GetHero=lambda *a:'hero',
             LoadInteger=lambda h,r,k:1 if k==-3 else 0,
             HaveSavedInteger=lambda *a:False,SaveInteger=lambda *a:None,
@@ -105,7 +105,7 @@ class PlayerCommandTests(unittest.TestCase):
         s=(ROOT/'experiments/Forsaken/SpellCalculations.j').read_text();memo={};writes=[];text=['x'*1100]
         env=mocks(s);env.update(Player_GetHero=lambda p:'hero',GetLocalPlayer=lambda:0,
             SpellCalcCount=1,SpellCalcRaw={0:'A0GZ'},GetUnitAbilityLevel=lambda *a:1,
-            SpellCalc_Tooltip=lambda *a:text[0],SpellCalcLast='last',PriestTooltipOffset=0,
+            SpellCalc_Tooltip=lambda *a:text[0],SpellCalcLast='last',SpellCalcCasting='casting',PriestTooltipOffset=0,
             HaveSavedInteger=lambda h,p,c:(p,c) in memo,LoadInteger=lambda h,p,c:memo.get((p,c),0),
             SaveInteger=lambda h,p,c,v:memo.__setitem__((p,c),v),StringHash=lambda s:sum(map(ord,s)),StringLength=len,
             BlzSetAbilityExtendedTooltip=lambda *a:writes.append(a))

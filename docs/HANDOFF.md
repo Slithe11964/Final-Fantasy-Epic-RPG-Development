@@ -6,7 +6,30 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
-PAIR036 is the latest test pair, installed and hash-verified in Warcraft
+PAIR037 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Explicit Backpack close now persists until a deliberate
+Backpack/B reopen, suppressing native refreshes after combat/selection. Priest
+row2 is Acid Rain/Holy Bolts/Swiftmend; row3 Shielding/Blessed Rain/Prolonged
+Cleansing; row4 Healing Bolts/Tranquility of Life/Refresh. Effect gates, cooldown
+and tooltip metadata follow the new slots. Holy/Healing Bolts use magic damage
+icons; Shielding uses Cure. Holy Bolts has the user's exact short description.
+Shielding's current pool appears in Defenses in both clients and beside the first
+hero health bar in Forsaken. Acid Rain heals on the authored pulse interval and
+damages once per second at half the authored HP/sec: master 200 HP/.1 seconds and
+2000 base magic damage/second. Channel object inheritance is materialized from
+earlier authored ranks across main/skin ability tables; active casts defer live
+calculation tooltip writes until matching cast-end. PAIR019 comparison found the
+reported Channel data unchanged and sparse in PAIR036, with live writes added
+later: this is a protected engine hypothesis, not an in-game diagnosis. Retest
+all reported high-rank summons, Death Screech, Tornado, Dragon Breath, Fan of
+Knives, Rave Kick and Assault for restored control, plus genuine channels.
+All paired gates pass: native258/classic358, 2/12 expected skips; final archive,
+master/tool hashes and both TEST copies verified. dev.txt read-only check passes,
+file unchanged. Editor master unchanged. PAIR036 armory behavior retained.
+Legacy large-profile menu checkpoint issue remains unresolved. See
+PAIR037_PRIEST_CASTING_AND_BACKPACK.md for exact changes and acceptance tests.
+
+PAIR036 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. Native Backpack retains a confirmed binding to the same hero
 across closes/reopens, uses a real owned button after binding, and hides both
 panes without toggling the engine on close. Initial/new-hero binding stays native

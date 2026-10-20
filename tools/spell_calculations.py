@@ -62,7 +62,7 @@ def objects(data,config):
 def runtime(source,config):
     fs=functions(source)
     if 'Priest_RegenTooltip' not in fs:return source
-    for decl in ['hashtable SpellCalcData=InitHashtable()','hashtable SpellCalcLast=InitHashtable()','integer array SpellCalcRaw','integer SpellCalcCount=0','boolean array SpellCalcHidden']:
+    for decl in ['hashtable SpellCalcData=InitHashtable()','hashtable SpellCalcLast=InitHashtable()','hashtable SpellCalcCasting=InitHashtable()','integer array SpellCalcRaw','integer SpellCalcCount=0','boolean array SpellCalcHidden']:
         name=decl.split('=')[0].split()[-1]
         if not re.search(r'^\s*\w+\s+(?:array )?'+name+r'\b',source,re.M):source=source.replace('endglobals','    '+decl+'\nendglobals',1)
     lines=[]
@@ -81,6 +81,11 @@ def runtime(source,config):
     for name,body in functions(helpers).items():
         if name in functions(source):source=put(source,name,body)
         else:source=source.replace('function Priest_AbilityTalentTip takes',body+'\n\nfunction Priest_AbilityTalentTip takes',1)
+    callbacks=[]
+    for name in ['SpellCalc_CastBegin','SpellCalc_CastEnd']:
+        callbacks.append(functions(source)[name].strip())
+        source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
+    source=re.sub(r'\n+function SpellCalc_Register takes',lambda m:'\n\n'+'\n\n'.join(callbacks)+'\n\nfunction SpellCalc_Register takes',source,count=1)
     source=put(source,'Priest_AbilityTalentTip','''function Priest_AbilityTalentTip takes unit hero,integer raw,integer row,integer choice returns nothing
     local integer rank=GetUnitAbilityLevel(hero,raw)
     if rank>0 then

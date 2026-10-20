@@ -49,6 +49,7 @@ def refresh(source):
     if 'Forsaken_PollPanels' not in fs:return source
     declarations={
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
+        'boolean ForsakenBackpackExplicitlyClosed=false':'ForsakenBackpackExplicitlyClosed',
         'integer ForsakenBackpackCloses=0':'ForsakenBackpackCloses',
         'integer ForsakenBackpackRequests=0':'ForsakenBackpackRequests',
         'integer ForsakenBackpackMouseEvents=0':'ForsakenBackpackMouseEvents',

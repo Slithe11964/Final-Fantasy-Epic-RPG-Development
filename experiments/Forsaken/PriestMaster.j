@@ -18,6 +18,7 @@
     unit array PriestRainCaster
     real array PriestRainLeft
     real array PriestRainNext
+    real array PriestRainDamageNext
     group array PriestRainEnemies
     timer PriestRainTimer=null
     integer PriestRainCount=0
@@ -245,6 +246,8 @@ function Priest_RainTick takes nothing returns nothing
     local integer rank
     local unit caster
     local unit target
+    local boolean healPulse
+    local boolean damagePulse
     loop
         exitwhen pid>=8
         set caster=PriestRainCaster[pid]
@@ -255,24 +258,32 @@ function Priest_RainTick takes nothing returns nothing
             else
                 set rank=GetUnitAbilityLevel(caster,'A0OM')
                 set PriestRainNext[pid]=PriestRainNext[pid]-.1
+                set PriestRainDamageNext[pid]=PriestRainDamageNext[pid]-.1
                 set PriestRainLeft[pid]=PriestRainLeft[pid]-.1
-                if PriestRainNext[pid]<=.0001 then
+                set healPulse=PriestRainNext[pid]<=.0001
+                set damagePulse=PriestRainDamageNext[pid]<=.0001
+                if damagePulse then
+                    set PriestRainDamageNext[pid]=PriestRainDamageNext[pid]+1.
+                endif
+                if healPulse then
                     set PriestRainNext[pid]=PriestRainNext[pid]+PriestRainPeriod[rank]
+                endif
+                if healPulse or damagePulse then
                     call GroupEnumUnitsInRange(PriestRainEnemies[pid],GetUnitX(caster),GetUnitY(caster),PriestRainRadius[rank],null)
                     loop
                         set target=FirstOfGroup(PriestRainEnemies[pid])
                         exitwhen target==null
                         call GroupRemoveUnit(PriestRainEnemies[pid],target)
                         set udg_IsPureDamage=false
-                        if IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
+                        if healPulse and IsUnitAlly(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_STRUCTURE) then
                             set udg_IsPureDamage=true
                             if Talent_Active(caster,12,2,1,'A0OM') then
                                 call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
                             else
                                 call UnitDamageTarget(caster,target,PriestRainHealing[rank],false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS)
                             endif
-                        elseif Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
-                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*.5,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
+                        elseif damagePulse and Talent_Active(caster,12,2,1,'A0OM') and IsUnitEnemy(target,GetOwningPlayer(caster)) and GetWidgetLife(target)>.405 and not IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE) then
+                            call UnitDamageTarget(caster,target,PriestRainHealing[rank]*(.5/PriestRainPeriod[rank]),false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
                         endif
                         // Damage events normally reset this. Also clear after
                         // invulnerable/ignored targets that may emit no event.
@@ -302,6 +313,7 @@ function Priest_RainEvent takes nothing returns nothing
             set PriestRainCaster[pid]=caster
             set PriestRainLeft[pid]=PriestRainDuration[rank]
             set PriestRainNext[pid]=PriestRainPeriod[rank]
+            set PriestRainDamageNext[pid]=1.
             if PriestRainCount==1 then
                 call TimerStart(PriestRainTimer,.1,true,function Priest_RainTick)
             endif

@@ -31,7 +31,7 @@ class PriestLegendaryTests(unittest.TestCase):
         e,heroes=runtime();hero=heroes[0]
         e['world']['mastery'][hero]=3;self.assertFalse(e['Talent_Choose'](0,4,1))
         e['world']['mastery'][hero]=4;self.assertTrue(e['Talent_Choose'](0,4,1));self.assertFalse(e['Talent_Choose'](0,4,2))
-        self.assertEqual([e['TalentName'][e['Talent_Index'](12,4,c)] for c in (1,2,3)],['Healing Bolts','Tranquility of Life','Prolonged Cleansing'])
+        self.assertEqual([e['TalentName'][e['Talent_Index'](12,4,c)] for c in (1,2,3)],['Healing Bolts','Tranquility of Life','Refresh'])
 
     def test_healing_bolts_heal_all_friendly_units_inside_attack_segment_only(self):
         s=self.source('Talents');memo={(0,0):'priest',(0,1):0.,(0,2):0.,(0,3):1000.,(0,4):0.,(0,5):250.}
@@ -67,7 +67,7 @@ class PriestLegendaryTests(unittest.TestCase):
     def test_prolonged_cleansing_refreshes_ten_second_expiry_and_does_not_clear_beneficial_buffs(self):
         s=self.source('Talents');memo={};members=set();starts=[];now=[50.];cleansed=[]
         env=mocks(s);env.update(TalentLegendState='legend',TalentLegendClock='clock',TalentCleansingTimer='clean',TalentCleansingUnits=members,
-            Talent_LegendChoice=lambda u,c:True,GetHandleId=lambda u:u,TimerGetElapsed=lambda t:now[0],
+            Job_GetIndex=lambda u:12,Talent_Has=lambda *a:True,GetHandleId=lambda u:u,TimerGetElapsed=lambda t:now[0],
             SaveReal=lambda h,p,c,v:memo.__setitem__((p,c),v),LoadReal=lambda h,p,c:memo.get((p,c),0.),
             GroupAddUnit=lambda g,u:g.add(u),TimerStart=lambda *a:starts.append(a),Talent_CleanseStatus=lambda u:cleansed.append(u))
         e=execute(s,['Talent_ProlongedCleansing','Talent_CleansingProtected'],env)

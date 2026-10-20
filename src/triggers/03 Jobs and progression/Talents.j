@@ -612,6 +612,9 @@ function Talents_GiveButton takes nothing returns nothing
 endfunction
 
 function Talent_PriestChoice takes unit hero,integer choice returns boolean
+    if choice==3 then
+        return hero!=null and Job_GetIndex(hero)==12 and Talent_Has(hero,2,2)
+    endif
     return hero!=null and Job_GetIndex(hero)==12 and Talent_Has(hero,3,choice)
 endfunction
 
@@ -626,6 +629,13 @@ function Talent_ShieldExpire takes nothing returns nothing
     set pending=null
 endfunction
 
+
+function Talent_ShieldAmount takes unit target returns real
+    if target==null or GetWidgetLife(target)<=.405 then
+        return 0.
+    endif
+    return RMaxBJ(0.,LoadReal(TalentShieldState,GetHandleId(target),0))
+endfunction
 
 function Talent_AddShield takes unit target,real amount returns nothing
     local integer key=GetHandleId(target)
@@ -793,7 +803,7 @@ endfunction
 
 
 function Talent_ProlongedCleansing takes unit caster,unit target returns nothing
-    if target!=null and Talent_LegendChoice(caster,3) then
+    if target!=null and (Job_GetIndex(caster)==12 and Talent_Has(caster,3,3)) then
         call SaveReal(TalentLegendState,GetHandleId(target),10,TimerGetElapsed(TalentLegendClock)+10.)
         call GroupAddUnit(TalentCleansingUnits,target)
         call Talent_CleanseStatus(target)
@@ -964,22 +974,22 @@ function Talents_InitData takes nothing returns nothing
     set TalentText[Talent_Index(job,1,3)]="Enemies Cure affects are blinded."
     set TalentName[Talent_Index(job,2,1)]="Acid Rain"
     set TalentText[Talent_Index(job,2,1)]="Tranquility converts half its healing into damage: heals allies for 50% and damages enemies for 50% of its current-rank base healing in the same radius."
-    set TalentName[Talent_Index(job,2,2)]="Refresh"
-    set TalentText[Talent_Index(job,2,2)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 45 seconds."
+    set TalentName[Talent_Index(job,2,2)]="Holy Bolts"
+    set TalentText[Talent_Index(job,2,2)]="All life spell power increases also increase basic-attack damage."
     set TalentName[Talent_Index(job,2,3)]="Swiftmend"
     set TalentText[Talent_Index(job,2,3)]="Regen delivers the same total healing in half the time: 30 seconds instead of 60 at master rank."
     set TalentName[Talent_Index(job,3,1)]="Shielding"
     set TalentText[Talent_Index(job,3,1)]="Cure, Regen and Tranquility turn healing beyond maximum health into an equal damage shield. Shields add together and expire 30 seconds after the latest addition."
     set TalentName[Talent_Index(job,3,2)]="Blessed Rain"
     set TalentText[Talent_Index(job,3,2)]="Allies in your Tranquility take 10% less damage while affected. Multiple Blessed Rains do not stack."
-    set TalentName[Talent_Index(job,3,3)]="Holy Bolts"
-    set TalentText[Talent_Index(job,3,3)]="All Life spell-power increases also increase basic-attack damage: Staff proficiency, equipped Staff bonuses, White Robe, healing buffs and Rejuvenation. Attack damage type is unchanged."
+    set TalentName[Talent_Index(job,3,3)]="Prolonged Cleansing"
+    set TalentText[Talent_Index(job,3,3)]="Esuna protects its target against new negative status ailments for 10 seconds."
     set TalentName[Talent_Index(job,4,1)]="Healing Bolts"
     set TalentText[Talent_Index(job,4,1)]="Basic attacks heal every living ally along their path for 25% of health damage actually dealt."
     set TalentName[Talent_Index(job,4,2)]="Tranquility of Life"
     set TalentText[Talent_Index(job,4,2)]="Allies killed inside your active Tranquility are revived where they died, with full health and mana."
-    set TalentName[Talent_Index(job,4,3)]="Prolonged Cleansing"
-    set TalentText[Talent_Index(job,4,3)]="Esuna protects its target against new negative status ailments for 10 seconds."
+    set TalentName[Talent_Index(job,4,3)]="Refresh"
+    set TalentText[Talent_Index(job,4,3)]="Esuna refreshes food and stat buffs already on its target; special hero effects gain 3 seconds instead. Base cooldown becomes 45 seconds."
 endfunction
 
 // Missile hits are evaluated through udg_MissileDamageTrig; hook in once startup has made it.

@@ -168,3 +168,15 @@ mastery gate and one choice per row apply. Holy Bolts now uses the same full
 Staff/Life-power multiplier as healing spells, including White Robe and equipped
 Staff/house proficiency, plus the existing healing buffs and Rejuvenation.
 See [PAIR036 implementation and acceptance](PAIR036_PRIEST_LEGENDARY_AND_INVENTORY.md).
+
+## PAIR037 current Priest layout
+
+Row 2 is Acid Rain / Holy Bolts / Swiftmend; row 3 is Shielding / Blessed Rain /
+Prolonged Cleansing; row 4 is Healing Bolts / Tranquility of Life / Refresh.
+The effect gates and Refresh's cooldown/tooltip metadata follow those positions.
+Holy Bolts reads “All life spell power increases also increase basic-attack damage.”
+Its icon and Healing Bolts' icon use the magic damage art; Shielding uses Cure.
+Remaining Shielding appears in Defenses in both profiles and beside the first
+hero health bar in Forsaken. Acid Rain keeps its healing pulse interval and now
+deals its full half-healing-per-second damage once each second.
+See [PAIR037 details and acceptance](PAIR037_PRIEST_CASTING_AND_BACKPACK.md).
