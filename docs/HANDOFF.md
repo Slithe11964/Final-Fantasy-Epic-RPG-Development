@@ -6,7 +6,22 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
-0.9.7.5 is the latest named build from the user's edited master, packaged in
+0.9.7.5a is the latest hotfix, packaged in release/0.9.7.5a and installed/hash-
+verified in Maps/Download/TEST. The 19:27 local report confirms a network desync
+after Backpack opening in multiplayer, on the exact native 0.9.7.5 release.
+Remove on-open native-child discovery and timer-generated command clicks;
+reserve known native panel handles at shared delayed startup, then use cached
+references for local visibility. The gear-header X still closes both panes;
+real native input binds a new hero, with a user retry hint if no opening arrives.
+Attack-tooltip origin frame is also cached at shared startup. New multi-client
+and transitive local UI safety regressions run in native builds. All paired
+gates pass: native266/classic366 tests, 2/13 expected skips, plus final helper,
+content and install audits. Master, gameplay/object values and portable saves
+unchanged; Classic MPQ body is byte-identical to 0.9.7.5. Original release kept.
+Real multiplayer acceptance is REQUIRED; automated checks do not reproduce the
+Warcraft network engine. See RELEASE_0.9.7.5a_BACKPACK_DESYNC.md.
+
+0.9.7.5 is the previous named build from the user's edited master, packaged in
 release/0.9.7.5 and installed/hash-verified in Maps/Download/TEST as
 FFERPG-0.9.7.5-Forsaken.w3x and FFERPG-0.9.7.5-1.29.2.w3x. Both filenames and
 map-list titles omit PAIR/stage labels. Internal build V0975 passes all paired

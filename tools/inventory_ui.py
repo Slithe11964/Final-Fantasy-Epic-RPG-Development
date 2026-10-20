@@ -66,6 +66,9 @@ def refresh(source):
         'trigger ForsakenBackpackToggleEvents=null':'ForsakenBackpackToggleEvents',
         'trigger ForsakenBackpackDebugEvents=null':'ForsakenBackpackDebugEvents',
         'framehandle ForsakenBackpackCommand=null':'ForsakenBackpackCommand',
+        'framehandle ForsakenAttackCommand=null':'ForsakenAttackCommand',
+        'framehandle array ForsakenNativeFrame':'ForsakenNativeFrame',
+        'integer array ForsakenNativeFrameCount':'ForsakenNativeFrameCount',
         'framehandle ForsakenBackpackInput=null':'ForsakenBackpackInput',
         'framehandle ForsakenBackpackInputIcon=null':'ForsakenBackpackInputIcon',
         'framehandle ForsakenGearCommand=null':'ForsakenGearCommand',
@@ -86,7 +89,7 @@ def refresh(source):
     }
     import re
     for declaration,name in declarations.items():
-        if not re.search(r'^\s*(?:boolean|real|trigger|framehandle|integer|unit) '+name+r'\s*(?:=|$)',source,re.M):
+        if not re.search(r'^\s*(?:boolean|real|trigger|framehandle|integer|unit) (?:array )?'+name+r'\s*(?:=|$)',source,re.M):
             source=source.replace('endglobals','    '+declaration+'\nendglobals',1)
     if 'Forsaken_FindFrame' in fs:
         body=functions(source)['Forsaken_FindFrame']

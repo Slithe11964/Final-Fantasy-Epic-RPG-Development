@@ -1,18 +1,65 @@
 // Presentation state only. Never use these values to change units/items or send sync data.
-function Forsaken_NativeInventoryClick takes integer raw returns nothing
-    local integer x=BlzGetAbilityPosX(raw)
-    local integer y=BlzGetAbilityPosY(raw)
-    local framehandle control
-    if x>=0 and x<4 and y>=0 and y<3 then
-        set control=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,y*4+x)
-        if control!=null and BlzFrameIsVisible(control) and BlzFrameGetEnable(control) then
-            set ForsakenBackpackNativeClicks=ForsakenBackpackNativeClicks+1
-            set ForsakenInventoryBinding=true
-            call BlzFrameClick(control)
-            set ForsakenInventoryBinding=false
-        endif
+// Reserve native frame handles on every client during shared startup. Never walk
+// a local player's live inventory hierarchy: getters can allocate handle IDs.
+function Forsaken_FindFrameUncached takes string name returns framehandle
+    local integer context=0
+    local framehandle found
+    local framehandle first=null
+    local integer frameKind=0
+    if name=="EquipmentPanelBackdrop" then
+        set frameKind=1
+    elseif name=="SimpleEquipmentInventoryPanel" then
+        set frameKind=2
     endif
-    set control=null
+    loop
+        exitwhen context>255
+        set found=BlzGetFrameByName(name,context)
+        if found!=null then
+            set ForsakenNativeFrame[frameKind*256+ForsakenNativeFrameCount[frameKind]]=found
+            set ForsakenNativeFrameCount[frameKind]=ForsakenNativeFrameCount[frameKind]+1
+            if first==null then
+                set first=found
+            endif
+        endif
+        set context=context+1
+    endloop
+    set found=null
+    return first
+endfunction
+
+function Forsaken_SelectCachedFrame takes integer frameKind,framehandle fallback returns framehandle
+    local integer i=0
+    local framehandle candidate
+    loop
+        exitwhen i>=ForsakenNativeFrameCount[frameKind]
+        set candidate=ForsakenNativeFrame[frameKind*256+i]
+        if BlzFrameIsVisible(candidate) then
+            return candidate
+        endif
+        set i=i+1
+    endloop
+    set candidate=null
+    return fallback
+endfunction
+
+function Forsaken_FindFrame takes string name returns framehandle
+    set ForsakenFrameSearchRequested=false
+    if name=="SimpleEquipmentPanel" then
+        set ForsakenCachedEquipment=Forsaken_SelectCachedFrame(0,ForsakenCachedEquipment)
+        return ForsakenCachedEquipment
+    elseif name=="SimpleEquipmentInventoryPanel" then
+        set ForsakenLinkedBag=Forsaken_SelectCachedFrame(2,ForsakenLinkedBag)
+        return ForsakenLinkedBag
+    elseif name=="EquipmentPanelBackdrop" then
+        set ForsakenCachedBackdrop=Forsaken_SelectCachedFrame(1,ForsakenCachedBackdrop)
+        return ForsakenCachedBackdrop
+    endif
+    return null
+endfunction
+
+function Forsaken_NativeInventoryClick takes integer raw returns nothing
+    // Native command activation belongs to the real mouse/hotkey input path.
+    // A timer-driven click could activate a different command card on one client.
 endfunction
 
 function Forsaken_CloseBackpack takes nothing returns nothing
@@ -117,6 +164,9 @@ endfunction
 
 // These are the two actual engine panels, not the hero's six quick slots.
 function Forsaken_ResolveInventory takes nothing returns nothing
+    set ForsakenNativeFrameCount[0]=0
+    set ForsakenNativeFrameCount[1]=0
+    set ForsakenNativeFrameCount[2]=0
     set ForsakenCachedEquipment=Forsaken_FindFrameUncached("SimpleEquipmentPanel")
     set ForsakenCachedBackdrop=Forsaken_FindFrameUncached("EquipmentPanelBackdrop")
     set ForsakenLinkedBag=Forsaken_FindFrameUncached("SimpleEquipmentInventoryPanel")
@@ -135,33 +185,21 @@ function Forsaken_BindInventory takes unit hero returns nothing
         return
     endif
     if ForsakenInventoryBindPhase==0 then
-        // SetVisible(false) does not close the engine's internal inventory.
-        // Invalidate the old presentation, dispatch once, then observe the
-        // engine result. Never infer success from a frame we showed ourselves.
+        // Wait for the real native input to bind the engine preview/items.
+        // Never dispatch command-card clicks from a local timer.
         call BlzFrameSetVisible(ForsakenCachedEquipment,false)
         call BlzFrameSetVisible(ForsakenLinkedBag,false)
-        call Forsaken_NativeInventoryClick('ASpc')
         set ForsakenInventoryBindPhase=1
         set ForsakenInventoryBindUntil=now+1.
         set ForsakenNextBagSearch=now+.1
     elseif ForsakenInventoryBindPhase==1 or ForsakenInventoryBindPhase==2 then
-        call Forsaken_ResolveInventory()
         if BlzFrameIsVisible(ForsakenCachedEquipment) or BlzFrameIsVisible(ForsakenLinkedBag) then
             set ForsakenInventoryHero=hero
             set ForsakenInventoryBindPhase=0
         elseif now>=ForsakenInventoryBindUntil then
-            if ForsakenInventoryBindPhase==1 then
-                // The first click may have closed an internally open panel
-                // left hidden by a previous scripted close. One retry opens it.
-                call Forsaken_NativeInventoryClick('ASpc')
-                set ForsakenInventoryBindPhase=2
-                set ForsakenInventoryBindUntil=now+1.
-                set ForsakenNextBagSearch=now+.1
-            else
-                set ForsakenInventoryBindPhase=3
-                set ForsakenBackpackWanted=false
-                call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,6,"Backpack did not open. Press B or click Backpack to retry.")
-            endif
+            set ForsakenInventoryBindPhase=3
+            set ForsakenBackpackWanted=false
+            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,6,"Backpack did not open. Press B or click Backpack to retry.")
         else
             set ForsakenNextBagSearch=now+.1
         endif
@@ -172,12 +210,7 @@ function Forsaken_BackpackVisible takes framehandle panel returns boolean
     local unit hero=Player_GetHero(GetLocalPlayer())
     local boolean visible=false
     local real now=TimerGetElapsed(ForsakenPanelClock)
-    if ForsakenLinkedBag==null then
-        set ForsakenLinkedBag=BlzGetFrameByName("SimpleEquipmentInventoryPanel",0)
-    endif
-    if (ForsakenLinkedBag==null or panel==null or ForsakenInventoryHero!=hero) and (ForsakenBackpackWanted or BlzFrameIsVisible(panel) or BlzFrameIsVisible(ForsakenLinkedBag)) then
-        call Forsaken_ResolveInventory()
-    endif
+    set ForsakenLinkedBag=Forsaken_FindFrame("SimpleEquipmentInventoryPanel")
     set panel=ForsakenCachedEquipment
     if now<ForsakenBackpackCloseUntil then
         call BlzFrameSetVisible(panel,false)
@@ -255,32 +288,11 @@ endfunction
 
 // Search a changed native panel once, rather than scanning its children every poll.
 function Forsaken_HookBackpackClose takes framehandle root,integer depth returns nothing
-    local integer child=0
-    local integer count
-    if root==null or depth>6 or ForsakenBackpackScanBudget<=0 then
-        return
-    endif
-    set ForsakenBackpackScanBudget=ForsakenBackpackScanBudget-1
-    if Forsaken_BackpackCloseName(BlzFrameGetName(root)) then
-        set ForsakenBackpackNativeClose=root
-        return
-    endif
-    set count=BlzFrameGetChildrenCount(root)
-    loop
-        exitwhen child>=count or ForsakenBackpackScanBudget<=0 or ForsakenBackpackNativeClose!=null
-        call Forsaken_HookBackpackClose(BlzFrameGetChild(root,child),depth+1)
-        set child=child+1
-    endloop
+    // Deliberately no traversal of native children on a local UI path.
+    set ForsakenBackpackNativeClose=null
 endfunction
 
 function Forsaken_BackpackControls takes framehandle panel,framehandle anchor,boolean visible returns nothing
-    local framehandle gearClose=null
-    if visible and panel!=ForsakenBackpackHookRoot then
-        set ForsakenBackpackHookRoot=panel
-        set ForsakenBackpackNativeClose=null
-        set ForsakenBackpackScanBudget=128
-        call Forsaken_HookBackpackClose(panel,0)
-    endif
     if visible and anchor!=null then
         call BlzFrameClearAllPoints(ForsakenBackpackClose)
         call BlzFrameSetSize(ForsakenBackpackClose,.026,.025)
@@ -288,21 +300,8 @@ function Forsaken_BackpackControls takes framehandle panel,framehandle anchor,bo
         call BlzFrameSetText(ForsakenBackpackClose,"X")
     endif
     call BlzFrameSetVisible(ForsakenBackpackClose,visible and anchor!=null)
-    if visible and ForsakenLinkedBag!=null and ForsakenLinkedBag!=ForsakenBagHookRoot then
-        set ForsakenBagHookRoot=ForsakenLinkedBag
-        set gearClose=ForsakenBackpackNativeClose
-        set ForsakenBackpackNativeClose=null
-        set ForsakenBackpackScanBudget=128
-        call Forsaken_HookBackpackClose(ForsakenLinkedBag,0)
-        set ForsakenBagNativeClose=ForsakenBackpackNativeClose
-        set ForsakenBackpackNativeClose=gearClose
-    endif
-    if visible and ForsakenBagNativeClose!=null then
-        call BlzFrameClearAllPoints(ForsakenLinkedBagClose)
-        call BlzFrameSetAllPoints(ForsakenLinkedBagClose,ForsakenBagNativeClose)
-    endif
-    call BlzFrameSetVisible(ForsakenLinkedBagClose,visible and ForsakenBagNativeClose!=null)
-    set gearClose=null
+    // The gear-header X closes both linked panes. No dynamic native-close lookup.
+    call BlzFrameSetVisible(ForsakenLinkedBagClose,false)
 endfunction
 
 function Forsaken_ResetBackpackControls takes nothing returns nothing
@@ -327,6 +326,7 @@ function Forsaken_ResetBackpackControls takes nothing returns nothing
         set ForsakenBackpackInputIcon=null
     endif
     set ForsakenBackpackCommand=null
+    set ForsakenAttackCommand=null
     set ForsakenGearCommand=null
     set ForsakenBackpackCloseUntil=0.
     set ForsakenBackpackWasVisible=false
@@ -372,6 +372,8 @@ endfunction
 
 function Forsaken_RegisterBackpackActivity takes nothing returns nothing
     local integer i=0
+    call Forsaken_ResolveInventory()
+    set ForsakenAttackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3)
     if ForsakenBackpackDebugEvents==null then
         set ForsakenBackpackDebugEvents=CreateTrigger()
         loop

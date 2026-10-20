@@ -75,6 +75,7 @@ endfunction'''
             source=put(source,name,body)
         if 'Forsaken_HolyBoltsTooltip' in fs:
             body=functions(source)['Forsaken_HolyBoltsTooltip']
+            body=body.replace('BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3)','ForsakenAttackCommand')
             body=re.sub(r'call BlzFrameSetText\(ForsakenHolyBoltsText,"\|cffffcc00Attack\|r\|nOrders your hero to attack\.\|n\|n\|cffffcc00Holy Bolts\|r\|n[^\n]*',
                 lambda m:'call BlzFrameSetText(ForsakenHolyBoltsText,"|cffffcc00Attack|r|nOrders your hero to attack.|n|n|cffffcc00Holy Bolts|r|n'+HOLY+'|nCurrent basic-attack damage: +"+R2SW(Talent_LifeAttackPower(hero)*100.,1,0)+"%.")',body)
             source=put(source,'Forsaken_HolyBoltsTooltip',body)

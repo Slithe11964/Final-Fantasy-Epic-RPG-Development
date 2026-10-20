@@ -21,6 +21,7 @@ class BackpackVisibilityTests(unittest.TestCase):
             looked.append(name)
             return {'SimpleEquipmentPanel':'gear','EquipmentPanelBackdrop':'backdrop','SimpleEquipmentInventoryPanel':'bag'}.get(name)
         env=mocks(HELPER);env.update(
+            ForsakenNativeFrame={},ForsakenNativeFrameCount={0:0,1:0,2:0},
             ForsakenBackpackCloses=0,ForsakenBackpackRequests=0,ForsakenBackpackMouseEvents=0,ForsakenBackpackKeyEvents=0,ForsakenBackpackNativeClicks=0,
             ForsakenInventoryBinding=False,ForsakenLastToggleTime=-1.,ForsakenLastToggleSource=0,
             ForsakenBackpackKeyHeld=False,ForsakenInventoryBindPhase=0,ForsakenInventoryBindHero=None,ForsakenInventoryBindUntil=0.,
@@ -93,13 +94,13 @@ class BackpackVisibilityTests(unittest.TestCase):
         for i in range(1,8):self.assertFalse(poll(10.+i*.1))
         self.assertTrue(settle());self.assertEqual(len(clicks),1)
 
-    def test_unavailable_binding_retries_once_then_waits_for_user(self):
+    def test_unavailable_binding_waits_for_real_user_retry(self):
         e,s,v,clicks,_,messages,poll,settle=self.runtime();s['allow']=False
         s['key']='B';e['Forsaken_BackpackAccess'](0,s['hero'])
         self.native_press(e,s,clicks);self.assertFalse(settle())
-        self.assertEqual(len(clicks),2);self.assertEqual(len(messages),1)
+        self.assertEqual(len(clicks),1);self.assertEqual(len(messages),1)
         for now in [30.,60.,600.]:self.assertFalse(poll(now))
-        self.assertEqual(len(clicks),2)
+        self.assertEqual(len(clicks),1)
         s['allow']=True;self.native_press(e,s,clicks);self.assertTrue(settle())
 
     def test_close_cancels_an_in_flight_open(self):
