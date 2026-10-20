@@ -5,7 +5,7 @@ globals
 endglobals
 
 function Trig_Reminder_Periodic_Actions takes nothing returns nothing
-    call DisplayTimedTextToForce(udg_PlayingPlayers,60.,"Looking for help related to this map?|r\r\n|Check out the Wiki: fferpg.wikia.com|r\r\n|Join our Discord:discord.gg/gYR4t3m3hK|r")
+    call DisplayTimedTextToForce(udg_PlayingPlayers,60.,"Looking for help related to this map?|r\r\nCheck out the Wiki: fferpg.wikia.com|r\r\nJoin our Discord:discord.gg/gYR4t3m3hK|r")
 endfunction
 
 // World Editor calls InitTrig_Reminder automatically; it is intentionally empty. This module's

@@ -6,6 +6,18 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
+0.9.7.5 is the latest named build from the user's edited master, packaged in
+release/0.9.7.5 and installed/hash-verified in Maps/Download/TEST as
+FFERPG-0.9.7.5-Forsaken.w3x and FFERPG-0.9.7.5-1.29.2.w3x. Both filenames and
+map-list titles omit PAIR/stage labels. Internal build V0975 passes all paired
+gates (native258/classic362 tests, 2/12 expected skips), including the native
+deprecated-API removal check. Final archives are identical to their checked
+builds after excluding the map-list header; both edited Intro and Reminder
+functions match the saved master. Input SHA256 is
+f7108fa827f36f0c73773308b0d464c468c14a2ff3b58b5afde25f492e4a4e7e.
+See release/0.9.7.5/release-report.json for final hashes and provenance. This
+build retains PAIR038's compatibility changes; no Warcraft gameplay was run.
+
 PAIR038 is the latest test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. User reports PAIR019 also locks after the 3.0.1 client
 update. Installed 3.0.1.24371 headers/defaults were extracted read-only; official
