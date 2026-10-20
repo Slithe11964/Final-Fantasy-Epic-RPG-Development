@@ -58,4 +58,26 @@ class LegendReadbackTests(unittest.TestCase):
             with self.subTest(section=sid):
                 self.assertFalse(e['FFL_ReadbackMatches'](0,self.code(changed,[]),old))
 
+    def test_speedrun_tag_is_informational_in_both_directions_and_old_profiles(self):
+        def tag(ss,value):
+            return [c.Section(s.id,s.version,s.required,c.pairs([(i,value if i==15 else v) for i,v in c.read_pairs(s.payload)]) if s.id==4 else s.payload) for s in ss]
+        for saved,current in [(0,1),(1,0),(0,0),(1,1)]:
+            for previous_flags in [None,[]]:
+                e=self.runtime();old=self.code(tag(sections(),saved),previous_flags)
+                actual=self.code(tag(sections(),current),[])
+                self.assertTrue(e['FFL_ReadbackMatches'](0,actual,old),(saved,current,previous_flags))
+                for ctx in (9,25):self.assertEqual(e['FSC_Count'][ctx],0)
+
+    def test_speedrun_exception_does_not_ignore_any_other_core_field(self):
+        ss=sections();e=self.runtime();old=self.code(ss)
+        for changed in range(1,15):
+            pairs=[(i,(1 if v==0 else 0) if i==changed else 1 if i==15 else v) for i,v in c.read_pairs(ss[2].payload)]
+            actual=[c.Section(s.id,s.version,s.required,c.pairs(pairs) if s.id==4 else s.payload) for s in ss]
+            self.assertFalse(e['FFL_ReadbackMatches'](0,self.code(actual,[]),old),changed)
+
+    def test_invalid_mode_and_extra_core_records_remain_rejected(self):
+        ss=sections();old=self.code(ss);e=self.runtime()
+        for pairs in [[(i,2 if i==15 else v) for i,v in c.read_pairs(ss[2].payload)],c.read_pairs(ss[2].payload)+[(16,1)]]:
+            self.assertFalse(e['FFL_CoreReadback'](9,25,ss[2].payload,c.pairs(pairs)))
+
 if __name__=='__main__':unittest.main()

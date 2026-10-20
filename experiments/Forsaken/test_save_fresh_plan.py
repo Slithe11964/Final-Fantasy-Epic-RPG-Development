@@ -117,11 +117,27 @@ class FreshPlanTests(unittest.TestCase):
             self.assertFalse(self.build(self.change(1, lambda _: codec.inventory(changed))))
         self.assertTrue(self.build())
 
-    def test_saved_mode_must_match_game(self):
-        self.e['udg_SpeedrunMode'] = True; self.assertFalse(self.build())
-        self.assertIn('Speedrun', self.e['FFP_Error'][0])
+    def test_saved_mode_is_interchangeable_but_difficulty_rules_remain(self):
+        self.e['udg_SpeedrunMode'] = True; self.assertTrue(self.build())
+        self.assertTrue(self.e['FFP_Recheck'](0, True))
         self.e['udg_SpeedrunMode'] = False; self.e['udg_Difficulty'] = 5
         self.assertFalse(self.build()); self.assertIn('Inferno', self.e['FFP_Error'][0])
+
+    def test_all_normal_eternity_speedrun_pairs_and_hardcore_recheck(self):
+        for saved_mode in ('normal','eternity','speedrun'):
+            encoded=self.change(4,lambda text:codec.pairs([(i,int(saved_mode=='speedrun') if i==15 else v) for i,v in codec.read_pairs(text)]))
+            for current in ('normal','eternity','speedrun'):
+                self.e['udg_SpeedrunMode']=current=='speedrun'
+                self.e['udg_EternityMode']=current=='eternity'
+                self.e['udg_HardcoreOff']=True
+                self.assertTrue(self.build(encoded),(saved_mode,current,self.e['FFP_Error'][0]))
+                self.assertTrue(self.e['FFP_Recheck'](0,True))
+                self.e['udg_SpeedrunMode']=not self.e['udg_SpeedrunMode']
+                self.assertTrue(self.e['FFP_Recheck'](0,True))
+                self.e['udg_HardcoreOff']=False
+                self.assertFalse(self.e['FFP_Recheck'](0,True))
+                self.assertFalse(self.build(encoded));self.assertIn('Hardcore',self.e['FFP_Error'][0])
+        self.e['udg_HardcoreOff']=True
 
     def test_inferno_tier_matches_vote_index_and_failed_attempt_allows_retry(self):
         inferno = self.change(4, lambda text: codec.pairs([(i, 3 if i == 1 else v) for i, v in codec.read_pairs(text)]))

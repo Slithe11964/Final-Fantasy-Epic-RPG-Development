@@ -278,9 +278,6 @@ function FFP_Build takes integer pid,string encoded,boolean windowOpen returns b
             // Nightmare loads any save. Only an Inferno game refuses a save made below Inferno.
             set FFP_Error[pid]="a save made below Inferno cannot be loaded in an Inferno game"
             set valid=false
-        elseif (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
-            set FFP_Error[pid]="saved Speedrun mode does not match this game"
-            set valid=false
         endif
     endif
     if not valid then
@@ -310,7 +307,7 @@ function FFP_Recheck takes integer pid,boolean windowOpen returns boolean
     if not FFP_Eligible(pid,windowOpen) then
         call FFP_Clear(pid)
         return false
-    elseif FFP_Account[pid]!=FRC_Account(pid) or FFP_Starter[pid]!=udg_PlayerHero[pid+1] or FFP_Gaya[pid]!=udg_SpiritOfGaya[pid+1] or FFP_House[pid]!=udg_PlayerHouse[pid+1] or FFP_GameDifficulty[pid]!=udg_Difficulty or (LoadInteger(FFP_Values,pid*16+4,15)==1)!=udg_SpeedrunMode then
+    elseif FFP_Account[pid]!=FRC_Account(pid) or FFP_Starter[pid]!=udg_PlayerHero[pid+1] or FFP_Gaya[pid]!=udg_SpiritOfGaya[pid+1] or FFP_House[pid]!=udg_PlayerHouse[pid+1] or FFP_GameDifficulty[pid]!=udg_Difficulty then
         set FFP_Error[pid]="player or game context changed before creation"
         call FFP_Clear(pid)
         return false

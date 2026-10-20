@@ -173,6 +173,18 @@ endfunction
         if name=='FFL_LegendFlags' and 'udg_QuestForce[i-38]' not in body:
             body=body.replace('        else\n            set target=udg_EidolonAwardForce[i-35]\n        endif','        elseif i<38 then\n            set target=udg_EidolonAwardForce[i-35]\n        else\n            set target=udg_QuestForce[i-38]\n        endif')
         source=put(source,name,body)
+    # Normal/Eternity/Speedrun share profiles. Keep the Hardcore eligibility
+    # gate and difficulty provenance; the saved Speedrun bit is informational.
+    if 'FFP_Build' in functions(source):
+        body=functions(source)['FFP_Build']
+        body=re.sub(r'^        elseif[^\n]*udg_SpeedrunMode[^\n]*then\n.*?            set valid=false\n','',body,flags=re.M|re.S)
+        if 'udg_SpeedrunMode' in body:raise ValueError('unrecognized Speedrun load gate')
+        source=put(source,'FFP_Build',body)
+        canonical=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/Forsaken-save-fresh-plan.j').read_text()
+        condition=next(line for line in functions(canonical)['FFP_Recheck'].splitlines() if line.startswith('    elseif FFP_Account'))
+        recheck=functions(source)['FFP_Recheck']
+        recheck=re.sub(r'^    elseif[^\n]*FFP_Account[^\n]* then$',lambda m:condition,recheck,count=1,flags=re.M)
+        source=put(source,'FFP_Recheck',recheck)
     if 'FFL_Tick' in functions(source):
         helper=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/LegendReadback.j').read_text()
         for name,body in functions(helper).items():

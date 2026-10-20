@@ -6,7 +6,22 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-19)
 
-PAIR033 is the latest test pair, installed and hash-verified in Warcraft
+PAIR034 is the latest test pair, installed and hash-verified in Warcraft
+Maps/Download/TEST. Normal, Eternity and Speedrun character loads are compatible
+in both directions; the saved Speedrun tag remains informational. The user
+explicitly confirmed Hardcore saving/loading must remain disabled. Preflight
+and creation recheck no longer require Speedrun mode to match. Final readback
+allows only boolean core field15 to differ, retaining strict section metadata,
+record count/order/IDs, all other core values and existing payloads. Difficulty
+provenance/Inferno restrictions, Hardcore/manual/autosave gates, capture writer
+and codec ranges are unchanged. All paired gates and final archive checks passed.
+The existing dev.txt passed a read-only Normal-to-Speedrun bounded-codec readback
+check without file modification. Editor master unchanged; PAIR033 UI retained.
+Actual Warcraft acceptance remains required: -loadf dev in fresh Speedrun, then
+resave/import in Normal/Eternity, and verify Hardcore and difficulty gates.
+See PAIR034_SAVE_MODE_COMPATIBILITY.md.
+
+PAIR033 is the previous test pair, installed and hash-verified in Warcraft
 Maps/Download/TEST. User reports PAIR032 still fails to open by mouse and B,
 temporarily improves with alt-tab, and behaves as desired once visible. PAIR033
 uses one owned transparent input over the native Backpack button and clears only

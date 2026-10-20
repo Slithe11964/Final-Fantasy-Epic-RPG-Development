@@ -3497,7 +3497,11 @@ function FFL_ReadbackBody takes integer pid,string actual,string expected return
                 return false
             endif
             set right=captured*32+j
-            if FSC_Version[left]!=FSC_Version[right] or FSC_Required[left]!=FSC_Required[right] or not FSS_Equals(FSC_Payload[left],FSC_Payload[right]) then
+            if FSC_Version[left]!=FSC_Version[right] or FSC_Required[left]!=FSC_Required[right] then
+                set FRC_Error[pid]=FSS_SetRoot("readback section metadata differs",243739446,pid,false)
+                return false
+            endif
+            if not FSS_Equals(FSC_Payload[left],FSC_Payload[right]) and not (FSC_Id[left]==4 and FFL_CoreReadback(original,captured,FSC_Payload[left],FSC_Payload[right])) then
                 set FRC_Error[pid]=FSS_SetRoot(FSS_Concat("readback section differs: ",I2S(FSC_Id[left])),243739446,pid,false)
                 return false
             endif
@@ -3563,6 +3567,44 @@ function FFL_ReadbackMatches takes integer pid,string actual,string expected ret
     call FSC_ClearSeen(pid+25)
     call FSC_Clear(pid+25)
     return valid
+endfunction
+
+function FFL_CoreReadback takes integer original,integer captured,string expected,string actual returns boolean
+    local integer count
+    local integer i=0
+    local integer identity
+    local integer wanted
+    local integer found
+    set FSC_Text[original]=FSS_SetRoot(expected,295637012,original,false)
+    set FSC_Text[captured]=FSS_SetRoot(actual,295637012,captured,false)
+    set FSC_Pos[original]=0
+    set FSC_Pos[captured]=0
+    set FSC_End[original]=FSS_Length(FSC_Text[original])
+    set FSC_End[captured]=FSS_Length(FSC_Text[captured])
+    set FSC_Ok[original]=true
+    set FSC_Ok[captured]=true
+    set count=FSC_Read(original)
+    if count!=FSC_Read(captured) then
+        return false
+    endif
+    loop
+        exitwhen i>=count
+        set identity=FSC_Read(original)
+        if identity!=FSC_Read(captured) then
+            return false
+        endif
+        set wanted=FSC_Read(original)
+        set found=FSC_Read(captured)
+        if identity==15 then
+            if wanted>1 or found>1 then
+                return false
+            endif
+        elseif wanted!=found then
+            return false
+        endif
+        set i=i+1
+    endloop
+    return FSC_Ok[original] and FSC_Ok[captured] and FSC_Pos[original]==FSC_End[original] and FSC_Pos[captured]==FSC_End[captured]
 endfunction
 
 function FFL_Tick takes nothing returns nothing
