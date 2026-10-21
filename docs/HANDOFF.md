@@ -6,7 +6,21 @@ logs up to 2026-10-10 are in [history/](history/).
 
 ## Where things stand (2026-10-20)
 
-0.9.7.5a is the latest hotfix, packaged in release/0.9.7.5a and installed/hash-
+0.9.7.5b (paired stage V0975B4) is the latest test build, packaged in
+release/0.9.7.5b and installed/hash-verified in Maps/Download/TEST. Manual
+Backpack intent now owns visibility; native ASpc command input replaces the
+overlay/timeout/native-adoption logic, and refreshes do not rebind or hide panes.
+Gear cooldowns use armory subcategories in both clients, with separate clocks
+for each materia type; all aliases and hero/Gaya carriers retain their group.
+Miracle accepts zero-level charged targets. Regen no longer stops after a
+shielding tick; Acid Rain resolves healing every0.1sec independently of1sec
+damage; shields are25% of overhealing and have a following gold world label.
+Healing text is left of damage. Paired gates pass: native272/classic372,
+2/13 expected skips, plus supported-API and final archive audits. Master and
+portable-save format unchanged. Real multiplayer/engine acceptance is pending.
+See [RELEASE_0.9.7.5b_BACKPACK_PRIEST_COOLDOWNS.md](RELEASE_0.9.7.5b_BACKPACK_PRIEST_COOLDOWNS.md).
+
+0.9.7.5a is the previous hotfix, packaged in release/0.9.7.5a and installed/hash-
 verified in Maps/Download/TEST. The 19:27 local report confirms a network desync
 after Backpack opening in multiplayer, on the exact native 0.9.7.5 release.
 Remove on-open native-child discovery and timer-generated command clicks;

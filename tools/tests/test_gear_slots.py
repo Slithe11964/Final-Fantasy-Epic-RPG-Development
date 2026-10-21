@@ -50,7 +50,7 @@ class GearSlotTable(unittest.TestCase):
     def test_backpack_uses_the_generated_names(self):
         source = (ROOT / 'src/triggers/05 Items crafting and shops/Backpack.j').read_text(encoding='utf-8')
         for name in ('GEAR_PRIMARY', 'GEAR_BOOTS', 'GEAR_RING', 'GEAR_TRINKET',
-                     'Gear_KindOf', 'Gear_BonusCount', 'Gear_Bonus(', 'Gear_IsGearAbility',
+                     'Gear_KindOf', 'Gear_BonusCount', 'Gear_Bonus(',
                      'GearSlots_Init'):
             self.assertIn(name, source, name)
 

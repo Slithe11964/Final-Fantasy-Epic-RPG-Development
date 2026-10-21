@@ -50,9 +50,46 @@ class EquipmentIntegrityTests(unittest.TestCase):
 
     def test_native_cooldown_covers_weapons_books_food_and_preserves_job_spells(self):
         p=self.config['pool']
-        for raw in ['A0QA','A0UX','A0VB','A0KB']:self.assertEqual(p[raw],1,raw)
+        for raw in ['A0QA','A0UX','A0VB','A0KB']:self.assertGreater(p[raw],2,raw)
         for raw in ['AIh1','AIm1','A164','A16D']:self.assertEqual(p[raw],2,raw)
         self.assertNotIn('A0PU',p);self.assertNotIn('A0A8',p)
+
+    def test_armory_cooldown_categories_and_aliases_match_both_clients(self):
+        c=self.config;p=c['item_pool']
+        self.assertEqual(p['I05U'],p['I05V']) # Elemental books
+        self.assertEqual(p['I01E'],p['I08N']) # Magical weapons: rod and staff
+        self.assertEqual(p['I00U'],p['I0LF']) # Physical weapons, including celestial
+        self.assertEqual(len({p['I05U'],p['I01E'],p['I00U'],p['I0I1']}),4)
+        for raw,m in c['mapping'].items():
+            if raw in p:
+                for alias in [m.get('variant'),m.get('offhand'),c['quick'].get(raw)]:
+                    if alias:self.assertEqual(p[raw],p[alias])
+        try:legacy_source=source('Backpack')
+        except StopIteration:return # Native profile has no legacy page-holder module.
+        s=refresh(legacy_source,c)
+        self.assertEqual(refresh(s,c),s)
+        self.assertIn('LoadInteger(BackpackCategoryTypes,70,spellId)',functions(s)['Backpack_PoolOf'])
+        self.assertIn('LoadTimerHandle(BackpackCategoryCooldown,pid,pool)',functions(s)['Backpack_PoolTimer'])
+
+    def test_materia_are_independent_of_each_other_gear_and_consumables(self):
+        c=self.config;seen=set()
+        for raw in c['materia']:
+            p=c['item_pool'][raw];self.assertNotIn(p,{1,2}|seen);seen.add(p)
+            for ability in str(fields(c['items'][raw]).get(('iabi',None),'')).split(','):
+                if ability in c['pool']:self.assertEqual(c['pool'][ability],p)
+        for native in (False,True):
+            updated=object_items(self.view.object_bytes('war3map.w3t'),c,native=native)
+            cats={o['id']:fields(o).get(('icid',None)) for o in read_objects(updated,'w3t')['custom'] if o['id'] in c['materia']}
+            self.assertEqual(len(cats),len(c['materia']));self.assertEqual(len(set(cats.values())),len(cats))
+            self.assertEqual(object_items(updated,c,native=native),updated)
+
+    def test_miracle_accepts_zero_level_charged_targets_from_gaya(self):
+        s=refresh(source('Miracle'),self.config);hits=[]
+        env=mocks(s);env.update(GetSpellAbilityId=lambda:'A0UQ',GetSpellTargetItem=lambda:'potion',GetItemType=lambda i:'charged',ITEM_TYPE_CHARGED='charged',
+            GetItemLevel=lambda i:0,GetItemCharges=lambda i:2,SetItemCharges=lambda i,n:hits.append((i,n)),GetTriggerUnit=lambda:'gaya')
+        e=execute(s,['Trig_Miracle_Piece_Use_Conditions','Trig_Miracle_Piece_Use_Actions'],env)
+        self.assertTrue(e['Trig_Miracle_Piece_Use_Conditions']());e['Trig_Miracle_Piece_Use_Actions']();self.assertEqual(hits,[('potion',1)])
+        e['GetItemCharges']=lambda i:0;self.assertFalse(e['Trig_Miracle_Piece_Use_Conditions']())
 
     def test_cooldown_veto_stops_script_effects_and_gaya_bypasses(self):
         s=(HERE/'SharedItemCooldown.j').read_text();store={};now=[0.];cast=['hero','book'];stops=[]
@@ -66,7 +103,7 @@ class EquipmentIntegrityTests(unittest.TestCase):
         store[0,'book']=1;store[0,'otherbook']=1;store[0,'potion']=2
         e=execute(s,['NativeCD_Pool','NativeCD_Left','NativeCD_PlayerCaster','NativeCD_Stop','NativeCD_Channel','NativeCD_Allowed','NativeCD_DurationForCast','NativeCD_Effect'],env)
         e['NativeCD_Channel']();self.assertTrue(e['NativeCD_Allowed']());e['NativeCD_Effect']()
-        self.assertEqual(store[0,1],12.)
+        self.assertEqual(store[32,1],12.)
         for actor,raw in [('hero','otherbook'),('gaya','book'),('hero','book')]:
             cast[:]=[actor,raw];e['NativeCD_Channel']();self.assertFalse(e['NativeCD_Allowed']())
         self.assertEqual(len(stops),3)

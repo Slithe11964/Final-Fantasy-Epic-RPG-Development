@@ -47,12 +47,12 @@ class InventoryFollowupTests(unittest.TestCase):
             BlzGetUnitAbilityCooldownRemaining=lambda *a:(_ for _ in ()).throw(AssertionError('stale native duration')))
         for ability in ['book','anotherbook']:store[0,ability]=1
         names=['NativeCD_Pool','NativeCD_Left','NativeCD_PlayerCaster','NativeCD_Stop','NativeCD_Channel','NativeCD_Allowed','NativeCD_DurationForCast','NativeCD_Effect']
-        e=execute(s,names,env);e['NativeCD_Channel']();duration[0]=6.;e['NativeCD_Effect']();self.assertEqual(store[0,1],112.);self.assertEqual(e['NativeCD_DurationForCast']('hero','book'),12.)
+        e=execute(s,names,env);e['NativeCD_Channel']();duration[0]=6.;e['NativeCD_Effect']();self.assertEqual(store[32,1],112.);self.assertEqual(e['NativeCD_DurationForCast']('hero','book'),12.)
         for time in [100.1,106.,111.9]:
             now[0]=time;actor[0]='gaya';raw[0]='anotherbook';e['NativeCD_Channel']();e['NativeCD_Effect']()
-            self.assertFalse(e['NativeCD_Allowed']());self.assertEqual(store[0,1],112.)
+            self.assertFalse(e['NativeCD_Allowed']());self.assertEqual(store[32,1],112.)
         now[0]=112.;actor[0]='hero';e['NativeCD_Channel']();self.assertTrue(e['NativeCD_Allowed']())
-        e['NativeCD_Effect']();self.assertEqual(store[0,1],118.)
+        e['NativeCD_Effect']();self.assertEqual(store[32,1],118.)
 
     def transfer(self,data='123:29:5:456:8',local=0):
         s=(HERE/'CarryTransferUI.j').read_text().split('// FUNCTIONS\n')[1];moves=[];messages=[];slots={}

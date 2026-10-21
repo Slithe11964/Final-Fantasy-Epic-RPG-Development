@@ -65,6 +65,8 @@ class PriestUltimateTests(unittest.TestCase):
 
     def test_overhealing_is_final_health_only_and_absorb_is_after_existing_shields(self):
         path=next((ROOT/'src/triggers').rglob('Damage.j'));s=path.read_text();f=functions(s)
+        from priest_followup import refresh as followup
+        s=followup(s);f=functions(s)
         body=f['Trig_Damage_Engine_Step19_Apply'];shields=[]
         env=mocks(s)
         for name in ['Amount','Source','Target','ManaDamage','Heal','Melee','Physical','FxCode','TargetHandle','SourcePlayer','TargetPlayer','Dummy','PriestShield','PriestBasic']:
@@ -76,7 +78,7 @@ class PriestUltimateTests(unittest.TestCase):
         e=execute(s,['Trig_Damage_Engine_Step19_Apply'],env)
         e['DmgCtx_Source'][1]='priest';e['DmgCtx_Target'][1]='target';e['DmgCtx_PriestShield'][1]='priest'
         e['DmgCtx_Heal'][1]=True;e['DmgCtx_Amount'][1]=400.;e['DmgCtx_FxCode'][1]=0;e['DmgCtx_Physical'][1]=False
-        e['Trig_Damage_Engine_Step19_Apply'](1);self.assertEqual(shields,[300.])
+        e['Trig_Damage_Engine_Step19_Apply'](1);self.assertEqual(shields,[75.])
         self.assertEqual(e['DmgCtx_Amount'][1],0.)
         e['DmgCtx_Heal'][1]=False;e['DmgCtx_Amount'][1]=500.
         e['Trig_Damage_Engine_Step19_Apply'](1);self.assertEqual(e['DmgCtx_Amount'][1],200.)

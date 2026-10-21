@@ -381,3 +381,15 @@ walk up to Minotaur after the fourth Eidolon; hand in an item kept only in the f
 bag slot; pick up Mine Mineral stacks of 2, 2 and 1; gather separate ground stacks;
 and equip/unequip Medicine and Sleipnir. Compilation and mocked-control-flow tests
 are separate from Warcraft gameplay acceptance. Existing save formats are retained.
+
+
+## Current policy — 0.9.7.5b
+
+The previous stage-by-stage sections are historical. Forsaken open/closed intent
+now changes only on manual Backpack/B/X/Escape input, and native cached panes
+refresh in place. Gear cooldowns follow armory subcategories in both clients:
+Physical Weapons, Magical Weapons, Elemental Books, Buff Tomes and the existing
+other leaf categories; each materia type is independent. Hero, Gaya, equipment
+and quick/storage aliases use the same category. See
+[the 0.9.7.5b notes](RELEASE_0.9.7.5b_BACKPACK_PRIEST_COOLDOWNS.md) for implementation,
+validation and outstanding in-game acceptance.

@@ -12,6 +12,38 @@ ROOT=Path(__file__).resolve().parents[2]
 class PriestFollowupTests(unittest.TestCase):
     def source(self,name):return next((ROOT/'src/triggers').rglob(name+'.j')).read_text()
 
+    def test_regen_shielding_keeps_target_queued_for_every_tick(self):
+        s=refresh(self.source('Regen'));heals=[];removed=[]
+        env=mocks(s);env.update(GetEnumUnit=lambda:'target',GetHandleId=lambda u:u,
+            LoadUnitHandle=lambda *a:'priest',LoadRealBJ=lambda *a:100.,LoadBoolean=lambda *a:False,
+            GetUnitLevel=lambda u:1,I2R=float,Talent_PriestChoice=lambda *a:True,ATTACK_TYPE_CHAOS=1,DAMAGE_TYPE_UNIVERSAL=2,
+            Trig_Regen_Periodic_IsNotPaused=lambda:True,Trig_Regen_Periodic_HasRegenBuff=lambda:True,
+            Trig_Regen_Periodic_HasNegateHeals=lambda:False,Trig_Regen_Periodic_IsEnumHero=lambda:False,
+            Trig_Regen_Periodic_IsHostileOwned=lambda:False,Trig_Regen_Periodic_LacksNegateHeals=lambda:True,
+            Trig_Regen_Periodic_HasStoredRegen=lambda:False,Trig_Regen_Periodic_HasRegenAmount=lambda:False,
+            Trig_Regen_Periodic_HasClarityBuff=lambda:False,GetRandomReal=lambda *a:16.,
+            UnitDamageTargetBJ=lambda *a:heals.append(a),GroupAddUnitSimple=lambda *a:removed.append(a))
+        e=execute(s,['Trig_Regen_Periodic_RegenUnit'],env)
+        for _ in range(3):e['Trig_Regen_Periodic_RegenUnit']()
+        self.assertEqual(len(heals),3);self.assertEqual(removed,[])
+
+    def test_world_shield_label_follows_target_and_is_cleaned_on_empty(self):
+        from collections import defaultdict
+        s=refresh(self.source('Talents'));store={};tags=[];destroyed=[];members=set();positions=[];labels=[]
+        env=mocks(s);env.update(TalentShieldState='shield',TalentShieldDisplayGroup='group',TalentShieldDisplayTimer='timer',
+            GetHandleId=lambda u:u,LoadReal=lambda h,p,c:store.get((p,c),0.),LoadTextTagHandle=lambda h,p,c:store.get((p,c)),
+            SaveTextTagHandle=lambda h,p,c,v:store.__setitem__((p,c),v),RemoveSavedHandle=lambda h,p,c:store.pop((p,c),None),
+            CreateTextTag=lambda:tags.append('tag') or 'tag',DestroyTextTag=destroyed.append,
+            GetUnitX=lambda u:400.,GetUnitY=lambda u:500.,GetUnitFlyHeight=lambda u:0.,GetWidgetLife=lambda u:100.,GetUnitTypeId=lambda u:1,
+            GetOwningPlayer=lambda u:0,GetLocalPlayer=lambda:0,IsUnitVisible=lambda *a:True,IsUnitHidden=lambda *a:False,
+            SetTextTagText=lambda *a:labels.append(a),SetTextTagPos=lambda *a:positions.append(a),I2S=str,R2I=int,
+            FirstOfGroup=lambda g:next(iter(members),None),GroupAddUnit=lambda g,u:members.add(u),GroupRemoveUnit=lambda g,u:members.discard(u))
+        e=execute(s,['Talent_ShieldDisplayClear','Talent_ShieldDisplayUpdate'],env)
+        store['target',0]=75.;e['Talent_ShieldDisplayUpdate']('target')
+        self.assertEqual(tags,['tag']);self.assertEqual(labels[-1][1],'Shield: 75');self.assertEqual(positions[-1][1:3],(280.,548.))
+        store['target',0]=0.;e['Talent_ShieldDisplayUpdate']('target')
+        self.assertEqual(destroyed,['tag']);self.assertEqual(members,set())
+
     def test_relocated_choices_unlock_at_their_new_rank_and_have_exact_text(self):
         from test_talents import runtime
         e,heroes=runtime();h=heroes[0];e['world']['mastery'][h]=2
@@ -57,7 +89,7 @@ class PriestFollowupTests(unittest.TestCase):
         self.assertIn("BlzGetAbilityIcon('A00M')",f['Forsaken_DrawPanels'])
         self.assertIn('ORIGIN_FRAME_HERO_HP_BAR',f['Register_Forsaken_PanelAccess'])
         self.assertNotIn('GetLocalPlayer',f['Register_Forsaken_PanelAccess'])
-        self.assertIn('Talent_ShieldAmount(hero)',f['Forsaken_ShieldReadout'])
+        self.assertIn('BlzFrameSetVisible(ForsakenShieldReadout,false)',f['Forsaken_ShieldReadout'])
         self.assertIn(HOLY,f['Forsaken_HolyBoltsTooltip'])
 
     def test_shared_transform_is_idempotent_and_stats_show_shielding(self):

@@ -17,6 +17,8 @@ def catalogue(view):
     mapping=json.loads((ROOT/'release/Forsaken/gear-slots-BS.json').read_text())
     hints=json.loads((ROOT/'src/armory-hints.json').read_text())
     storable={int(i):e['item'] for i,e in hints.items()}
+    units=merged(view.object_bytes('war3map.w3u'),view.object_bytes('war3mapSkin.w3u'),'w3u')
+    categories={e['item']:int(fields(units[e['unit']]).get(('upoi',None),0)) for e in hints.values()}
     gear={r for r,m in mapping.items() if m.get('slot')!='Inventory'}|{'I0BQ'}
     bases=json.loads((HERE/'ability-base-codes.json').read_text())
     passive_codes={'AEev','AHab','AIab','AIas','AIat','AIde','AIml','AImm','AIms','AIrm','AOac','AOae','AOcr','AUau','AUav','Aasl','Atru','Arel','AIi1'}
@@ -24,6 +26,7 @@ def catalogue(view):
     for r,o in abilities.items():
         if fields(o).get(('acod',0),bases.get(o['base'],o['base'])) in passive_codes:passive.add(r)
     pool={};item_pool={};gear_abilities=set()
+    materia={r for r,o in items.items() if re.search(r'Materia(?:\|r)?$',str(fields(o).get(('unam',None),'')))}
     consumable_src=next((ROOT/'src/triggers').rglob('Item_Cooldown.j')).read_text()
     known=set(re.findall(r"(?:\bid|GetSpellAbilityId\(\))\s*==\s*'(....)'",consumable_src))
     pool.update({raw:2 for raw in known})
@@ -34,7 +37,13 @@ def catalogue(view):
             if r in gear:gear_abilities.add(raw)
             if raw in abilities and raw not in passive:
                 actives.append(raw)
-        p=1 if r in gear or 'Materia' in str(f.get(('unam',None),'')) else 0
+        # Each materia has its own clock, including White Materia (also gear).
+        category=categories.get(r,11 if r=='I0BQ' else 39)
+        # Use the armory's weapon subcategories; other gear retains its leaf
+        # category (Elemental Books, Buff Tomes, Physical Shields, and so on).
+        if category==7 or 11<=category<=20:category=1
+        elif 21<=category<=23:category=2
+        p=int.from_bytes(r.encode('ascii'),'big') if r in materia else (100+category if r in gear else 0)
         # Foods and drinks have explicit shared-consumable IDs even when the editor
         # drops the inherited item class field.
         if any(x in known for x in actives):p=2
@@ -49,7 +58,7 @@ def catalogue(view):
     for original,raw in quick.items():
         if original in item_pool:item_pool[raw]=item_pool[original]
     return dict(quick=quick,items=items,abilities=abilities,mapping=mapping,storable=storable,gear=gear,
-                passive=passive,pool=pool,item_pool=item_pool,gear_abilities=gear_abilities)
+                passive=passive,pool=pool,item_pool=item_pool,gear_abilities=gear_abilities,materia=materia)
 
 
 def object_items(data,config,*,native=False):
@@ -84,6 +93,13 @@ def object_items(data,config,*,native=False):
                 for key,value in [('icla','Permanent'),('iequ','')]:
                     st['mods'].append(dict(field=key,type=3,level=None,data=None,value=value,end=0))
             table['custom'].append(clone)
+    for o in table['custom']:
+        p=config['item_pool'].get(o['id'],0)
+        if p>2:
+            # Engine grouping agrees with the script clocks, including every
+            # equipped/quick-slot alias. Materia use their canonical identity.
+            group=p.to_bytes(4,'big').decode('ascii') if p>1000000 else 'g'+format(p,'03X')
+            setf(o,'icid',group,None,data=None)
     return write_objects(table,table['version'],'w3t')
 
 
@@ -100,6 +116,55 @@ def add_helpers(source,globals_,fragment):
 
 def refresh(source,config,*,native=False):
     fs=functions(source)
+    if 'Backpack_PoolOf' in fs:
+        data='function Backpack_CategoryData takes nothing returns nothing\n'
+        data+=''.join(f"    call SaveInteger(BackpackCategoryTypes,70,'{r}',{p})\n" for r,p in sorted(config['pool'].items()))
+        data+=''.join(f"    call SaveInteger(BackpackCategoryTypes,71,'{r}',{p})\n" for r,p in sorted(config['item_pool'].items()))
+        data+='endfunction\n'
+        source=add_helpers(source,'    hashtable BackpackCategoryCooldown=InitHashtable()\n    hashtable BackpackCategoryTypes=InitHashtable()',data+'''function Backpack_PoolOf takes integer spellId returns integer
+    if spellId==0 then
+        return 0
+    elseif Item_Cooldown_IsConsumable(spellId) then
+        return 2
+    endif
+    return LoadInteger(BackpackCategoryTypes,70,spellId)
+endfunction
+
+function Backpack_PoolTimer takes integer pid,integer pool returns timer
+    local timer clock
+    if pool==2 then
+        return udg_SpellCooldownTimer[pid+1]
+    endif
+    set clock=LoadTimerHandle(BackpackCategoryCooldown,pid,pool)
+    if clock==null then
+        set clock=CreateTimer()
+        call SaveTimerHandle(BackpackCategoryCooldown,pid,pool,clock)
+    endif
+    set clock=null
+    return LoadTimerHandle(BackpackCategoryCooldown,pid,pool)
+endfunction''')
+        body=functions(source)['RegisterTriggers_Backpack']
+        if 'call Backpack_CategoryData()' not in body:body=body.replace('    call GearSlots_Init()','    call GearSlots_Init()\n    call Backpack_CategoryData()',1)
+        source=put(source,'RegisterTriggers_Backpack',body)
+        for name in ['Backpack_RefusePool','Backpack_OnItemCast']:
+            body=functions(source)[name]
+            if 'caster==udg_SpiritOfGaya[pid+1]' not in body:
+                body=body.replace('caster==Player_GetHero(p) or Backpack_PageOf(pid,caster)>=0','caster==Player_GetHero(p) or Backpack_PageOf(pid,caster)>=0 or caster==udg_SpiritOfGaya[pid+1]')
+                body=body.replace('caster==Player_GetHero(Player(pid)) or Backpack_PageOf(pid,caster)>=0','caster==Player_GetHero(Player(pid)) or Backpack_PageOf(pid,caster)>=0 or caster==udg_SpiritOfGaya[pid+1]')
+            body=body.replace('if pool==1 then','if pool!=2 then').replace('Your gear is recovering','Items in this category are recovering')
+            source=put(source,name,body)
+        body=functions(source)['Backpack_OnOrder']
+        body=body.replace('        set pool=Backpack_PoolOf(Gear_CastOf(GetItemTypeId(used)))',"        set pool=LoadInteger(BackpackCategoryTypes,71,GetItemTypeId(used))")
+        source=put(source,'Backpack_OnOrder',body)
+        body=functions(source)['Backpack_CooldownReport']
+        body=re.sub(r'"Gear recovering: "[^\n]+', '"Gear cooldowns are tracked by armory category; each materia has its own cooldown. Food and potions recovering: "+I2S(R2I(Backpack_PoolLeft(pid,2)+.99))+"s")',body)
+        source=put(source,'Backpack_CooldownReport',body)
+    if 'Trig_Miracle_Piece_Use_Conditions' in fs:
+        # Consumables no longer have a hold-level requirement. That metadata is
+        # not a validity check for Miracle's charged target, including Gaya casts.
+        body=fs['Trig_Miracle_Piece_Use_Conditions']
+        body=re.sub(r'and\(GetItemLevel\(GetSpellTargetItem\(\)\)>0\)','',body)
+        source=put(source,'Trig_Miracle_Piece_Use_Conditions',body)
     if 'FRC_FreeVariant' in fs:
         body='function FRC_FreeVariant takes unit hero returns integer\n    local integer raw=GetUnitTypeId(hero)\n    if hero==null then\n        return 0\n'
         for i,raw in enumerate(['H02L','H02M','H02N','H02O','H02P','H02Q'],1):body+=f"    elseif raw=='{raw}' then\n        return {i}\n"

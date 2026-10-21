@@ -67,6 +67,7 @@ class BackpackSyncTests(unittest.TestCase):
             for native in FORBIDDEN:e[native]=forbidden
         e,state,visibility,_,_,_,poll,_=clients[0]
         # The real engine mouse/hotkey input opens its panes; JASS only observes.
+        e['Forsaken_RequestBackpackToggle'](2)
         visibility.update(gear=True,bag=True)
         self.assertTrue(poll(10.1))
         e['Forsaken_BackpackControls']('gear','backdrop',True)

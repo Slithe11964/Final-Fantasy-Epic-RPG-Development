@@ -1,5 +1,6 @@
 """Final Priest talent layout and visible remaining overheal shield."""
 import re
+from pathlib import Path
 from jtok import functions
 from performance_runtime import put
 from gameplay_runtime import dependency
@@ -12,6 +13,30 @@ REFRESH='Esuna refreshes food and stat buffs already on its target; special hero
 
 def refresh(source,*,native=False):
     fs=functions(source)
+    if 'Text_FloatingDamage' in fs:
+        body=fs['Text_FloatingDamage']
+        if 'set x=x-80.' not in body:body=body.replace('    if mp then\n        call SetTextTagPos', '    if l_isHeal then\n        set x=x-80.\n    endif\n    if mp then\n        call SetTextTagPos',1)
+        source=put(source,'Text_FloatingDamage',body)
+    if 'Trig_Regen_Periodic_RegenUnit' in fs:
+        body=fs['Trig_Regen_Periodic_RegenUnit']
+        # A shielding heal consumes the accumulator. Zero does not mean the
+        # active Regen buff expired; otherwise it gets removed after tick one.
+        old='''            else
+                call GroupAddUnitSimple(GetEnumUnit(),udg_PendingEffectGroup)
+            endif'''
+        new='''            elseif not Trig_Regen_Periodic_HasRegenBuff() then
+                call GroupAddUnitSimple(GetEnumUnit(),udg_PendingEffectGroup)
+            endif'''
+        body=body.replace(old,new,1)
+        source=put(source,'Trig_Regen_Periodic_RegenUnit',body)
+    if 'Priest_RainTick' in fs:
+        source=dependency(source,'TDamage')
+        body=functions(source)['Priest_RainTick']
+        # Resolve healing directly through the existing heal pipeline on each
+        # script pulse; do not depend on a second native damage callback.
+        body=re.sub(r'call UnitDamageTarget\(caster,target,(PriestRainHealing\[rank\](?:\*\.5)?),false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNIVERSAL,WEAPON_TYPE_WHOKNOWS\)',
+                    r'call Trig_Damage_Engine_CalcDamage(\1,caster,target,false,3,false,0,false,false,true,false,false)',body)
+        source=put(source,'Priest_RainTick',body)
     if 'Talents_InitData' in fs:
         body=fs['Talents_InitData']
         for row,col,name,text in [(2,2,'Holy Bolts',HOLY),(3,3,'Prolonged Cleansing',CLEANSE),(4,3,'Refresh',REFRESH)]:
@@ -35,6 +60,31 @@ endfunction''')
 endfunction'''
         if 'Talent_ShieldAmount' in functions(source):source=put(source,'Talent_ShieldAmount',helper)
         else:source=source.replace('function Talent_AddShield takes',helper+'\n\nfunction Talent_AddShield takes',1)
+        source=declarations(source,['group TalentShieldDisplayGroup=CreateGroup()','timer TalentShieldDisplayTimer=CreateTimer()'])
+        fragment=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/PriestShieldDisplay.j').read_text()
+        for line in fragment.splitlines():
+            if line.startswith('//'):source=source.replace(line+'\n','')
+        for name in functions(fragment):
+            source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
+        source=source.replace('function Talent_ShieldExpire takes',fragment.strip()+'\n\nfunction Talent_ShieldExpire takes',1)
+        for name in ['Talent_ShieldExpire','Talent_ShieldDeath']:
+            body=functions(source)[name]
+            if 'Talent_ShieldDisplayClear(target)' not in body:
+                body=body.replace('    call FlushChildHashtable(TalentShieldState,GetHandleId(target))','    call Talent_ShieldDisplayClear(target)\n    call FlushChildHashtable(TalentShieldState,GetHandleId(target))')
+                if name=='Talent_ShieldDeath':body=body.replace('        call FlushChildHashtable(TalentShieldState,GetHandleId(target))','        call Talent_ShieldDisplayClear(target)\n        call FlushChildHashtable(TalentShieldState,GetHandleId(target))')
+            source=put(source,name,body)
+        for name in ['Talent_AddShield','Talent_AbsorbShield']:
+            body=functions(source)[name]
+            if 'Talent_ShieldDisplayUpdate(target)' not in body:
+                body=re.sub(r'(call SaveReal\(TalentShieldState,key,0,[^\n]+\))',r'\1\n        call Talent_ShieldDisplayUpdate(target)',body)
+            source=put(source,name,body)
+        body=functions(source)['Talents_InitData']
+        body=re.sub(r'(set TalentText\[Talent_Index\(job,3,1\)\]=)"[^"\n]*"',lambda m:m[1]+'"Cure, Regen and Tranquility convert 25% of overhealing into a damage shield. Shields stack and expire 30 seconds after the latest addition."',body)
+        source=put(source,'Talents_InitData',body)
+    if 'Trig_Damage_Engine_Step19_Apply' in fs:
+        body=functions(source)['Trig_Damage_Engine_Step19_Apply']
+        body=re.sub(r'call Talent_AddShield\(t,(RMaxBJ\(0\.,l_amount-RMaxBJ\(0\.,GetUnitState\(t,UNIT_STATE_MAX_LIFE\)-GetUnitState\(t,UNIT_STATE_LIFE\)\)\))\)',r'call Talent_AddShield(t,.25*\1)',body)
+        source=put(source,'Trig_Damage_Engine_Step19_Apply',body)
     if 'Talent_ProlongedCleansing' in fs:
         body=functions(source)['Talent_ProlongedCleansing'].replace('Talent_LegendChoice(caster,3)','(Job_GetIndex(caster)==12 and Talent_Has(caster,3,3))')
         source=put(source,'Talent_ProlongedCleansing',body)
@@ -81,10 +131,9 @@ endfunction'''
             source=put(source,'Forsaken_HolyBoltsTooltip',body)
         source=declarations(source,['framehandle ForsakenShieldReadout=null'])
         helper='''function Forsaken_ShieldReadout takes unit hero returns nothing
-    local real amount=Talent_ShieldAmount(hero)
-    call BlzFrameSetVisible(ForsakenShieldReadout,amount>0.)
-    if amount>0. then
-        call BlzFrameSetText(ForsakenShieldReadout,"|cffffcc00Shield: "+R2SW(amount,1,0)+"|r")
+    // Remaining shield is now a shared world texttag that follows its target.
+    if ForsakenShieldReadout!=null then
+        call BlzFrameSetVisible(ForsakenShieldReadout,false)
     endif
 endfunction'''
         if 'Forsaken_ShieldReadout' in functions(source):source=put(source,'Forsaken_ShieldReadout',helper)

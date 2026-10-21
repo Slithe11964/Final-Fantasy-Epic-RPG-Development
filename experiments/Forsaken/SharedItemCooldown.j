@@ -4,7 +4,7 @@ function NativeCD_Pool takes integer raw returns integer
 endfunction
 
 function NativeCD_Left takes unit caster,integer pool returns real
-    return RMaxBJ(0.,LoadReal(NativeCDData,GetPlayerId(GetOwningPlayer(caster)),pool)-TimerGetElapsed(NativeCDClock))
+    return RMaxBJ(0.,LoadReal(NativeCDData,32+GetPlayerId(GetOwningPlayer(caster)),pool)-TimerGetElapsed(NativeCDClock))
 endfunction
 
 function NativeCD_PlayerCaster takes unit caster returns boolean
@@ -16,7 +16,7 @@ function NativeCD_Stop takes unit caster,integer pool returns nothing
     call PauseUnit(caster,true)
     call IssueImmediateOrder(caster,"stop")
     call PauseUnit(caster,false)
-    call DisplayTimedTextToPlayer(GetOwningPlayer(caster),0,0,3,"|cffff0000Shared item cooldown: "+R2SW(NativeCD_Left(caster,pool),1,1)+" seconds remaining.|r")
+    call DisplayTimedTextToPlayer(GetOwningPlayer(caster),0,0,3,"|cffff0000Item cooldown: "+R2SW(NativeCD_Left(caster,pool),1,1)+" seconds remaining.|r")
 endfunction
 
 function NativeCD_Channel takes nothing returns nothing
@@ -79,7 +79,7 @@ function NativeCD_Effect takes nothing returns nothing
     local real duration
     if pool>0 and NativeCD_PlayerCaster(caster) and NativeCD_Allowed() then
         set duration=NativeCD_DurationForCast(caster,raw)
-        call SaveReal(NativeCDData,pid,pool,RMaxBJ(LoadReal(NativeCDData,pid,pool),TimerGetElapsed(NativeCDClock)+duration))
+        call SaveReal(NativeCDData,32+pid,pool,RMaxBJ(LoadReal(NativeCDData,32+pid,pool),TimerGetElapsed(NativeCDClock)+duration))
     endif
     set caster=null
 endfunction

@@ -119,8 +119,12 @@ def refresh(source):
         body=body.replace('            set visible=Forsaken_BackpackVisible(nativePanel)',
             '            set visible=Forsaken_BackpackVisible(nativePanel)\n            set nativePanel=ForsakenCachedEquipment\n            set anchor=ForsakenCachedBackdrop')
     body=body.replace('elseif hero!=null and IsUnitSelected(hero,viewer) then','elseif Forsaken_InventoryContext(hero,viewer) then')
-    if 'call BlzFrameSetVisible(ForsakenLinkedBag,false)' not in body:
-        body=body.replace('    if ForsakenInspectTarget!=null then','    if ForsakenInspectTarget!=null then\n        call BlzFrameSetVisible(ForsakenCachedEquipment,false)\n        call BlzFrameSetVisible(ForsakenLinkedBag,false)',1)
+    body=body.replace('        call BlzFrameSetVisible(ForsakenCachedEquipment,false)\n','')
+    body=body.replace('        call BlzFrameSetVisible(ForsakenLinkedBag,false)\n','')
+    # Enforce intent even while a different selection/inspection owns the card.
+    if '    call Forsaken_BackpackVisible(nativePanel)' not in body:
+        body=body.replace('    set ForsakenBackpackWasVisible=visible',
+                          '    call Forsaken_BackpackVisible(nativePanel)\n    set ForsakenBackpackWasVisible=visible')
     source=put(source,name,body)
     name='Forsaken_PanelAccess';body=functions(source)[name]
     # Remove PAIR017's cancellation on selection, which erased user intent.

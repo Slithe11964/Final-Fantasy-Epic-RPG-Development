@@ -98,6 +98,8 @@ class PriestMasterTests(unittest.TestCase):
 
     def test_acid_rain_current_rank_half_healing_enemy_filters_and_stops(self):
         s=source('Regen');damage=[];paused=[];rank=[1];units=[];active=[True];flags=[]
+        from priest_followup import refresh as followup
+        s=followup(s)
         env=mocks(s);env.update(PriestRainCaster=defaultdict(lambda:None,{0:'caster'}),PriestRainCount=1,
             PriestRainLeft=defaultdict(float,{0:15.}),PriestRainNext=defaultdict(float,{0:.1}),PriestRainDamageNext=defaultdict(float,{0:1.}),
             PriestRainHealing={1:50.,6:400.},PriestRainRadius={1:900.,6:900.},PriestRainPeriod={1:.1,6:.1},
@@ -113,6 +115,7 @@ class PriestMasterTests(unittest.TestCase):
         with patch.object(harness,'expression',lambda text:expression(text).replace('//','/')):
             e=execute(s,['Priest_RainTick'],env)
         e['UnitDamageTarget']=lambda c,u,n,*a:(damage.append((u,n)),flags.append((u,e['udg_IsPureDamage'])))
+        e['Trig_Damage_Engine_CalcDamage']=lambda n,c,u,*a:(damage.append((u,n)),flags.append((u,True)))
         for _ in range(10):e['Priest_RainTick']()
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),250.);self.assertEqual(sum(n for u,n in damage if u=='ally'),250.)
         self.assertTrue(all(flag==(u=='ally') for u,flag in flags));self.assertFalse(e['udg_IsPureDamage'])
