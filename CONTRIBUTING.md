@@ -13,18 +13,36 @@ A one-page guide for anyone changing the map. For where things are, read `docs/S
   Linux/macOS) in `tools/bin/` next to `common.j` and `blizzard.j`.
 - **Git** (optional, but recommended): it records each change, so a bad one can be undone.
 
-## The routine for every change
+## Development iterations (default)
+
+Keep routine requests focused and inexpensive. Read the affected code and relevant current
+documentation; do not repeatedly audit the whole project or reread historical handoffs.
+Run checks that exercise the changed behavior and compile-check changed playable scripts.
+Text-only documentation changes need no gameplay build. For save-format, synchronization,
+inventory ownership, or damage-engine changes, include the relevant compatibility/regression checks.
+Do not add brittle tests that merely assert source text is present.
+
+Build a playable test map when requested or needed to verify the change. Batch related edits
+before building. Reuse unchanged successful checks; after a failure, fix and rerun the affected
+checks before starting another complete build. Do not automatically build an unaffected client
+profile unless both maps were requested. Shared changes still belong in the master/build pipeline.
+
+Update handoffs and stage history at milestones or release preparation, not after every small
+iteration. Keep responses and tool output concise. Report exactly what was checked and any
+remaining gameplay validation; never label focused checks as a full release validation.
+
+## Release preparation (explicit release request)
 
 For edits to existing source modules, use `build.ps1` instead of manually assembling a playable map:
 `.\build.ps1 -Stage AB`. It runs the complete development
 gates and records a new map/report/manifest without overwriting outputs. See docs/BUILDS.md for
 requirements and the handling of new modules, object data, header/global changes and historical drift.
-Keep .j sources in CRLF. After every build, add one STAGES.md row (one sentence) and update HANDOFF.md only if the current state changed;
+Keep .j sources in CRLF. For a release, add one STAGES.md row (one sentence) and update HANDOFF.md only if the current state changed;
 play-test changed gameplay. Commit only the files belonging to your change.
 
 For World Editor changes:
 
-1. **Open the Reforged master** in `baseline/Reforged/` or the newest Reforged build in `release/`.
+1. **Open the Reforged master** at `editor/FFERPG-Editor-Master.w3x`. Follow `editor/README.md` for the paired build workflow.
 2. **Make the change and Save As** under a new name, for example `FFERPG_0.9.7.3-r16.w3x`. Never overwrite
    the only working copy.
 3. **Run the checks:**

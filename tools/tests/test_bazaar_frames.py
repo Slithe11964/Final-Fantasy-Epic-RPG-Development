@@ -19,12 +19,14 @@ def frame_runtime():
         return handle
     def prop(handle, key, value):
         frames[handle][key] = value
-    e.update(BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,BazaarFrameEscape=None,
+    e.update(BazaarFrameCraftHit=defaultdict(lambda:None), BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,BazaarFrameEscape=None,
              BazaarFrameNext=None, BazaarFramePrevious=None, BazaarFrameClose=None,
              GetLocalPlayer=lambda: 0, GetTriggerPlayer=lambda: 0,
              S2I=int, I2R=float, ModuloInteger=lambda a, b: a % b,
              BlzGetOriginFrame=lambda *args: 0,
-             BlzCreateFrame=create, BlzCreateFrameByType=create,
+             BlzGetFrameByName=lambda *args: 0,
+             BlzCreateFrame=create, BlzCreateFrameByType=create, BlzCreateSimpleFrame=create,
+             BlzLoadTOCFile=lambda *a:True,
              BlzFrameSetVisible=lambda h, v: prop(h, 'visible', v),
              BlzFrameSetText=lambda h, v: prop(h, 'text', v),
              BlzFrameSetSize=lambda h, x, y: prop(h, 'size', (x, y)),

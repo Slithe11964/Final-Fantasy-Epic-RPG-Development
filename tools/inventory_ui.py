@@ -121,10 +121,14 @@ def refresh(source):
     body=body.replace('elseif hero!=null and IsUnitSelected(hero,viewer) then','elseif Forsaken_InventoryContext(hero,viewer) then')
     body=body.replace('        call BlzFrameSetVisible(ForsakenCachedEquipment,false)\n','')
     body=body.replace('        call BlzFrameSetVisible(ForsakenLinkedBag,false)\n','')
-    # Enforce intent even while a different selection/inspection owns the card.
-    if '    call Forsaken_BackpackVisible(nativePanel)' not in body:
-        body=body.replace('    set ForsakenBackpackWasVisible=visible',
-                          '    call Forsaken_BackpackVisible(nativePanel)\n    set ForsakenBackpackWasVisible=visible')
+    body=body.replace('visible or ForsakenInspectTarget!=null or (nativePanel==null and hero!=null and IsUnitSelected(hero,viewer))','visible or ForsakenInspectTarget!=null')
+    # One visibility reconciliation per poll; never run it twice around controls.
+    body=body.replace('    call Forsaken_BackpackVisible(nativePanel)\n','')
+    body=body.replace('    local boolean visible=false','    local boolean visible=Forsaken_BackpackVisible(nativePanel)')
+    body=body.replace('            set visible=Forsaken_BackpackVisible(nativePanel)\n','')
+    # Cache/anchor locals were initialized before the native visibility snapshot.
+    body=body.replace('    call Forsaken_BackpackInputControl(hero,viewer)',
+                      '    set nativePanel=ForsakenCachedEquipment\n    set anchor=ForsakenCachedBackdrop\n    call Forsaken_BackpackInputControl(hero,viewer)') if '    set nativePanel=ForsakenCachedEquipment\n    set anchor=ForsakenCachedBackdrop\n    call Forsaken_BackpackInputControl' not in body else body
     source=put(source,name,body)
     name='Forsaken_PanelAccess';body=functions(source)[name]
     # Remove PAIR017's cancellation on selection, which erased user intent.

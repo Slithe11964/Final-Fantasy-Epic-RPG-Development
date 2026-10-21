@@ -203,6 +203,11 @@ def main():
         for flag, value in [('--allow-new', a.allow_new), ('--allow-removed', a.allow_removed)]:
             if value:
                 extra += [flag, value]
+        # Publish live archive blocks only, not accumulated superseded scripts.
+        from mpq import compact
+        packed = scratch / 'packed.w3x'
+        compact(str(ordered), str(packed))
+        ordered = packed
         run(ROOT / 'tools/check_map.py', ordered, '--baseline', base, *extra)
         run(ROOT / 'tools/check_sources.py', ordered)
         run(ROOT / 'tools/check_quests.py', '--map', ordered)

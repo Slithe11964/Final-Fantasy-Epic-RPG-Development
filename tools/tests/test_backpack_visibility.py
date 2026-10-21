@@ -1,4 +1,4 @@
-"""Manual visibility intent survives native refresh, delayed input and selection."""
+"""Native inventory is authoritative; custom controls cannot create another view."""
 from pathlib import Path
 import sys,unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -11,175 +11,99 @@ HELPER=(ROOT/'experiments/Forsaken/BackpackVisibility.j').read_text()
 
 class BackpackVisibilityTests(unittest.TestCase):
     def runtime(self):
-        s=dict(frame='command4',now=10.,hero='freelancer',key='',player=0,preview='freelancer',
-               allow=True,down=True,selected=True,engine=False,delay=.05)
-        v={'gear':False,'bag':False,'command4':True};pending=[];clicks=[];looked=[];messages=[]
-        def click(control):
-            clicks.append((s['now'],control))
-            if s['allow']:pending.append(s['now']+s['delay'])
-        def lookup(name):
-            looked.append(name)
-            return {'SimpleEquipmentPanel':'gear','EquipmentPanelBackdrop':'backdrop','SimpleEquipmentInventoryPanel':'bag'}.get(name)
+        s=dict(now=10.,hero='hero',player=0,key='B',down=True,selected=True)
+        v={'gear':False,'bag':False,'backdrop':False};clicks=[];looked=[];messages=[]
         env=mocks(HELPER);env.update(
-            ForsakenNativeFrame={},ForsakenNativeFrameCount={0:0,1:0,2:0},
-            ForsakenBackpackCloses=0,ForsakenBackpackRequests=0,ForsakenBackpackMouseEvents=0,ForsakenBackpackKeyEvents=0,ForsakenBackpackNativeClicks=0,
-            ForsakenInventoryBinding=False,ForsakenLastToggleTime=-1.,ForsakenLastToggleSource=0,
+            ForsakenNativeFrame={0:'gear',256:'backdrop',512:'bag'},ForsakenNativeFrameCount={0:1,1:1,2:1},
+            ForsakenBackpackCloses=0,ForsakenBackpackRequests=0,ForsakenBackpackMouseEvents=0,ForsakenBackpackKeyEvents=0,
+            ForsakenBackpackNativeClicks=0,ForsakenInventoryBinding=False,ForsakenLastToggleTime=-1.,ForsakenLastToggleSource=0,
             ForsakenBackpackKeyHeld=False,ForsakenInventoryBindPhase=0,ForsakenInventoryBindHero=None,ForsakenInventoryBindUntil=0.,
-            ForsakenBackpackCommand='command4',ForsakenBackpackInput='input',ForsakenGearCommand=None,
-            GetUnitAbilityLevel=lambda *a:1,BlzGetTriggerFrame=lambda:s['frame'],
-            ForsakenBackpackWanted=False,ForsakenBackpackExplicitlyClosed=False,ForsakenBackpackWasVisible=False,ForsakenBackpackCloseUntil=0.,
-            ForsakenTalentsWanted=True,ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenCachedEquipment='gear',ForsakenCachedBackdrop='backdrop',
-            ForsakenLinkedBag='bag',ForsakenInventoryHero=None,ForsakenNextBagSearch=0.,ForsakenInspectTarget=None,
-            ForsakenBackpackClose='close',ForsakenLinkedBagClose='bagclose',ForsakenTalentRoot='talents',
-            ForsakenSelectedTarget='freelancer',ForsakenFrameSearchRequested=False,ForsakenBackpackNativeClose=None,ForsakenBagNativeClose=None,
-            ForsakenBackpackHookRoot=None,ForsakenBagHookRoot=None,ForsakenBackpackScanBudget=0,
+            ForsakenBackpackWanted=False,ForsakenBackpackExplicitlyClosed=False,ForsakenBackpackWasVisible=False,
+            ForsakenBackpackCloseUntil=0.,ForsakenPanelOpen=False,ForsakenPanelClock='clock',ForsakenTalentsWanted=True,
+            ForsakenCachedEquipment=None,ForsakenCachedBackdrop=None,ForsakenLinkedBag=None,ForsakenInventoryHero=None,
+            ForsakenTalentToggle='toggle',ForsakenBackpackClose='close',ForsakenLinkedBagClose='bagclose',ForsakenTalentRoot='talents',
+            ForsakenInspectTarget=None,ForsakenBackpackCommand='command4',ForsakenBackpackInput=None,ForsakenNextBagSearch=0.,
             GetLocalPlayer=lambda:0,GetTriggerPlayer=lambda:s['player'],GetTriggerEventId=lambda:'key',
-            Player_GetHero=lambda p:s['hero'],IsUnitSelected=lambda *a:s['selected'],GetTriggerUnit=lambda:s['hero'],GetOwningPlayer=lambda u:0,
+            Player_GetHero=lambda p:s['hero'],IsUnitSelected=lambda *a:s['selected'],GetUnitAbilityLevel=lambda *a:1,
             BlzGetTriggerPlayerIsKeyDown=lambda:s['down'],BlzGetTriggerPlayerKey=lambda:s['key'],OSKEY_B='B',OSKEY_ESCAPE='escape',
             EVENT_PLAYER_UNIT_SELECTED='selected',EVENT_PLAYER_UNIT_DESELECTED='deselected',
             TimerGetElapsed=lambda t:s['now'],BlzFrameIsVisible=lambda f:v.get(f,False),
-            BlzFrameSetVisible=lambda f,value:v.__setitem__(f,value),Forsaken_FindFrameUncached=lookup,
-            BlzGetAbilityPosX=lambda raw:0,BlzGetAbilityPosY=lambda raw:1,ORIGIN_FRAME_COMMAND_BUTTON='command',
-            BlzGetOriginFrame=lambda k,i:'command'+str(i),BlzFrameGetEnable=lambda f:True,BlzFrameClick=click,
-            DisplayTimedTextToPlayer=lambda *a:messages.append(a[-1]),
-            StringCase=lambda text,b:text.lower(),StringLength=len,SubString=lambda text,a,b:text[a:b],
-            BlzFrameGetChildrenCount=lambda f:0,BlzFrameGetName=lambda f:f,FRAMEPOINT_TOPRIGHT='topright')
+            BlzFrameSetVisible=lambda f,value:v.__setitem__(f,value),FRAMEPOINT_TOPRIGHT='topright')
         e=execute(HELPER,list(functions(HELPER)),env)
         def poll(now):
-            s['now']=round(now,4)
-            while pending and pending[0]<=s['now']:
-                pending.pop(0);s['engine']=not s['engine'];v.update(gear=s['engine'],bag=s['engine'])
-                if s['engine']:s['preview']=s['hero']
-            return e['Forsaken_BackpackVisible']('gear')
-        def settle():
-            start=s['now']
-            for i in range(1,26):poll(start+i*.1)
-            return v['gear'] and v['bag']
+            s['now']=now
+            return e['Forsaken_BackpackVisible'](None)
+        def settle():return poll(s['now']+1.)
         return e,s,v,clicks,looked,messages,poll,settle
 
-    def native_press(self,e,s,clicks):
-        e['BlzFrameClick']('command4')
-        e['Forsaken_BackpackToggleAction']()
+    def test_input_does_not_manufacture_open_before_native_activation(self):
+        e,s,v,_,_,_,poll,_=self.runtime()
+        e['Forsaken_BackpackAccess'](0,s['hero'])
+        for now in [10.1,10.2,10.6]:self.assertFalse(poll(now))
+        self.assertFalse(v['gear'] or v['bag'] or v['backdrop'])
+        v.update(gear=True,bag=True,backdrop=True)
+        self.assertTrue(poll(10.7));self.assertTrue(e['ForsakenBackpackWanted'])
 
-    def test_native_mouse_and_b_open_without_a_synthetic_initial_click(self):
-        for key in [False,True]:
-            e,s,v,clicks,_,_,poll,settle=self.runtime()
-            if key:s['key']='B';e['Forsaken_BackpackAccess'](0,s['hero'])
-            self.native_press(e,s,clicks)
-            self.assertTrue(settle());self.assertTrue(e['ForsakenBackpackWanted']);self.assertEqual(len(clicks),1)
-            self.assertEqual(e['ForsakenInventoryHero'],s['hero'])
+    def test_mouse_works_even_when_native_button_does_not_forward_click_event(self):
+        e,s,v,_,_,_,poll,_=self.runtime()
+        # Actual client reports mouse=0. Native visibility must still be followed.
+        for opened in [True,False,True,False]:
+            v.update(gear=opened,bag=opened,backdrop=opened)
+            self.assertEqual(poll(s['now']+.1),opened)
+        self.assertEqual(e['ForsakenBackpackRequests'],0)
 
-    def test_native_visibility_never_adopts_unrequested_open(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime()
-        e['BlzFrameClick']('command4')
-        self.assertFalse(settle());self.assertFalse(e['ForsakenBackpackWanted'])
-        self.assertEqual(len(clicks),1)
+    def test_real_native_view_is_selected_instead_of_hidden_cached_copy(self):
+        e,s,v,_,_,_,poll,_=self.runtime()
+        e['ForsakenNativeFrame'].update({1:'livegear',257:'livebackdrop',513:'livebag'})
+        e['ForsakenNativeFrameCount'].update({0:2,1:2,2:2})
+        e['ForsakenCachedEquipment']='gear';e['ForsakenCachedBackdrop']='backdrop';e['ForsakenLinkedBag']='bag'
+        v.update(livegear=True,livebackdrop=True,livebag=True)
+        self.assertTrue(poll(10.1))
+        self.assertEqual(e['ForsakenCachedEquipment'],'livegear')
+        self.assertEqual(e['ForsakenLinkedBag'],'livebag')
+        self.assertFalse(v['gear'] or v['bag'] or v['backdrop'])
 
-    def test_repeated_native_open_close_and_x_stay_closed(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime()
-        for attempt in range(4):
-            s['now']+=2;self.native_press(e,s,clicks);self.assertTrue(settle())
-            if attempt%2:self.native_press(e,s,clicks)
-            else:e['Forsaken_CloseBackpack']()
-            self.assertFalse(settle());self.assertFalse(e['ForsakenBackpackWanted'])
-            self.assertTrue(e['ForsakenTalentsWanted'])
-        self.assertEqual(len(clicks),6)
+    def test_missing_parent_or_pane_never_exposes_custom_controls(self):
+        for missing in ['gear','bag','backdrop']:
+            e,s,v,_,_,_,poll,_=self.runtime();v.update(gear=True,bag=True,backdrop=True);v[missing]=False
+            visible=poll(10.1);self.assertFalse(visible)
+            e['Forsaken_BackpackControls'](None,None,visible)
+            self.assertFalse(v['close'])
 
-    def test_delayed_native_open_is_not_reclicked_in_flight(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();s['delay']=.8
-        self.native_press(e,s,clicks)
-        for i in range(1,8):self.assertTrue(poll(10.+i*.1))
-        self.assertTrue(settle());self.assertEqual(len(clicks),1)
-
-    def test_native_binding_timeout_cannot_cancel_manual_open(self):
-        e,s,v,clicks,_,messages,poll,settle=self.runtime();s['allow']=False
-        s['key']='B';e['Forsaken_BackpackAccess'](0,s['hero'])
-        self.native_press(e,s,clicks);self.assertTrue(settle())
-        self.assertEqual(len(clicks),1);self.assertEqual(len(messages),0)
-        for now in [30.,60.,600.]:self.assertTrue(poll(now))
-        self.assertEqual(len(clicks),1)
-        s['down']=False;e['Forsaken_BackpackAccess'](0,s['hero'])
-        self.native_press(e,s,clicks);self.assertFalse(settle())
-
-    def test_stable_open_does_not_rewrite_visibility_and_selection_cannot_hide(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();self.native_press(e,s,clicks);settle()
+    def test_slot_updates_do_not_touch_native_drag_or_cooldown_visibility(self):
+        e,s,v,_,_,_,poll,_=self.runtime();v.update(gear=True,bag=True,backdrop=True)
         writes=[];e['BlzFrameSetVisible']=lambda *a:writes.append(a)
-        s['selected']=False
-        self.assertTrue(e['Forsaken_InventoryContext'](s['hero'],0))
-        for now in [40.,60.,600.]:self.assertTrue(poll(now))
+        for now in [10.1,10.2,10.3,11.]:
+            e['Forsaken_BackpackActivity']();self.assertTrue(poll(now))
         self.assertEqual(writes,[])
 
-    def test_close_cancels_an_in_flight_open(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();s['delay']=.3
-        self.native_press(e,s,clicks);e['Forsaken_CloseBackpack']()
-        for now in [10.1,10.4,11.,11.3]:self.assertFalse(poll(now))
-        self.assertFalse(e['ForsakenBackpackWanted'])
+    def test_close_stays_closed_without_timer_or_item_event_reopening(self):
+        e,s,v,_,_,_,poll,_=self.runtime();v.update(gear=True,bag=True,backdrop=True);poll(10.1)
+        v['toggle']=True;e['Forsaken_CloseBackpack']()
+        self.assertFalse(v['toggle'])
+        for now in [10.2,11.,60.]:
+            e['Forsaken_BackpackActivity']();self.assertFalse(poll(now))
+        self.assertTrue(e['ForsakenTalentsWanted'])
+        v.update(gear=True,bag=True,backdrop=True) # subsequent real native opening
+        self.assertTrue(poll(61.))
 
-    def test_idle_closed_has_no_frame_search_or_native_clicks(self):
-        e,s,v,clicks,looked,_,poll,_=self.runtime();e['ForsakenInventoryHero']=None
-        for now in [10.,20.,100.]:self.assertFalse(poll(now))
-        self.assertEqual(clicks,[]);self.assertEqual(looked,[])
+    def test_key_and_mouse_notifications_do_not_double_toggle_engine(self):
+        e,s,v,_,_,_,poll,_=self.runtime()
+        e['Forsaken_BackpackAccess'](0,s['hero'])
+        s['now']=10.12;s['down']=False;e['Forsaken_BackpackAccess'](0,s['hero'])
+        e['Forsaken_BackpackToggleAction']()
+        self.assertEqual(e['ForsakenBackpackRequests'],1)
+        self.assertFalse(poll(10.2))
+        v.update(gear=True,bag=True,backdrop=True);self.assertTrue(poll(10.3))
 
-    def test_drop_use_and_native_partial_hide_restore_both_panels(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();self.native_press(e,s,clicks);settle()
-        v['gear']=False;e['Forsaken_BackpackActivity']();self.assertTrue(poll(s['now']+.1))
-        self.assertTrue(v['gear'] and v['bag']);self.assertEqual(len(clicks),1)
-        e['Forsaken_CloseBackpack']();settle();e['Forsaken_BackpackActivity']()
-        self.assertFalse(poll(s['now']+.1))
-
-    def test_combat_native_refresh_cannot_reopen_an_explicitly_closed_bag(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();self.native_press(e,s,clicks);settle()
-        e['Forsaken_CloseBackpack']();poll(s['now']+20.)
-        v.update(gear=True,bag=True)
-        self.assertFalse(poll(s['now']+.1));self.assertFalse(e['ForsakenBackpackWanted'])
-        self.assertFalse(v['gear'] or v['bag'])
-        self.native_press(e,s,clicks);self.assertTrue(settle())
-        self.assertFalse(e['ForsakenBackpackExplicitlyClosed'])
-
-    def test_programmatic_and_other_players_notifications_cannot_toggle(self):
-        e,s,v,_,_,_,_,_=self.runtime();e['ForsakenInventoryBinding']=True
-        e['Forsaken_BackpackToggleAction']();self.assertFalse(e['ForsakenBackpackWanted'])
-        e['ForsakenInventoryBinding']=False;s['player']=1
-        e['Forsaken_BackpackToggleAction']();self.assertFalse(e['ForsakenBackpackWanted'])
-
-    def test_key_latch_release_and_escape_close(self):
-        e,s,v,clicks,_,_,poll,settle=self.runtime();s['key']='B'
-        e['Forsaken_BackpackAccess'](0,s['hero']);self.native_press(e,s,clicks);settle()
-        e['Forsaken_BackpackAccess'](0,s['hero']);self.assertTrue(e['ForsakenBackpackWanted'])
-        s['down']=False;e['Forsaken_BackpackAccess'](0,s['hero']);self.assertFalse(e['ForsakenBackpackKeyHeld'])
-        s['key']='escape';e['Forsaken_BackpackAccess'](0,s['hero']);self.assertFalse(settle())
-
-    def test_real_native_button_is_registered_without_an_intercepting_overlay(self):
-        fs=functions(HELPER);register=fs['Forsaken_RegisterBackpackActivity']
-        self.assertIn("TriggerRegisterCommandEvent(ForsakenBackpackToggleEvents,'ASpc',\"\")",register)
-        self.assertNotIn('BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents',register)
-        self.assertNotIn('set ForsakenBackpackInput=BlzCreateFrame',register)
-        self.assertIn('BlzCreateFrame("ScriptDialogButton"',register);self.assertNotIn('GetLocalPlayer',register)
-        self.assertIn('BlzDestroyFrame(ForsakenBackpackInput)',fs['Forsaken_ResetBackpackControls'])
-        for forbidden in ['CreateUnit','CreateItem','IssueImmediateOrder','UnitAddAbility','SelectUnit','ForceUIKey']:
-            self.assertNotIn(forbidden,HELPER)
-
-    def test_transform_is_idempotent_with_overlay_poll_and_modifier_releases(self):
+    def test_transform_is_idempotent_and_polls_before_cached_panel_guard(self):
         source='library TEquip\nglobals\nendglobals\n'+(ROOT/'experiments/Forsaken/Forsaken-panels.j').read_text()+'\nendlibrary'
+        source=source.replace('visible or ForsakenInspectTarget!=null)','visible or ForsakenInspectTarget!=null or (nativePanel==null and hero!=null and IsUnitSelected(hero,viewer)))')
         result=refresh(source);self.assertEqual(refresh(result),result)
-        body=functions(result)['Forsaken_PollPanels'];self.assertIn('call Forsaken_BackpackInputControl(hero,viewer)',body)
-        self.assertIn('set nativePanel=ForsakenCachedEquipment',body)
+        body=functions(result)['Forsaken_PollPanels']
+        self.assertEqual(body.count('Forsaken_BackpackVisible(nativePanel)'),1)
+        self.assertNotIn('nativePanel==null and hero!=null',body)
+        self.assertLess(body.index('Forsaken_BackpackVisible(nativePanel)'),body.index('if nativePanel!=null'))
         for modifier in range(16):self.assertIn(f'OSKEY_B,{modifier},false)',functions(result)['Register_Forsaken_PanelAccess'])
-        self.assertEqual(refresh('library TBackpack\nendlibrary'),'library TBackpack\nendlibrary')
-
-    def test_native_only_object_hotkey_change_is_idempotent(self):
-        from objdata import read_objects,write_objects
-        from priest_master import fields
-        table={'version':2,'original':[dict(base='ASpc',id=None,sets=[dict(flag=0,mods=[dict(field='ahky',type=3,level=0,data=0,value='B',end=0)])])],'custom':[]}
-        data=write_objects(table,2,'w3a');self.assertEqual(objects(data),data)
-        updated=objects(data,native=True);self.assertEqual(objects(updated,native=True),updated)
-        obj=read_objects(updated,'w3a')['original'][0];self.assertEqual(fields(obj)['ahky',0],'B');self.assertEqual(obj['base'],'ASpc')
-
-    def test_debug_is_read_only_and_private_to_requester(self):
-        body=functions(HELPER)['Forsaken_BackpackDebug']
-        self.assertIn('if GetLocalPlayer()==viewer then',body)
-        self.assertIn('phase=',body);self.assertIn('bound=',body)
-        for mutation in ['BlzFrameSet','UnitAdd','Issue','Create','SyncData']:
-            self.assertNotIn(mutation,body)
 
 if __name__=='__main__':unittest.main()

@@ -52,8 +52,8 @@ class BackpackSyncTests(unittest.TestCase):
             self.assertEqual(len(queries),768)
             for attempt in range(100):
                 e['ForsakenFrameSearchRequested']=True
-                self.assertEqual(e['Forsaken_FindFrame']('SimpleEquipmentPanel'),'SimpleEquipmentPanel3')
-                self.assertEqual(e['Forsaken_FindFrame']('SimpleEquipmentInventoryPanel'),'SimpleEquipmentInventoryPanel3')
+                self.assertEqual(e['Forsaken_SelectCachedFrame'](0,None),'SimpleEquipmentPanel3' if visible else None)
+                self.assertEqual(e['Forsaken_SelectCachedFrame'](2,None),'SimpleEquipmentInventoryPanel3' if visible else None)
             self.assertEqual(len(queries),768);orders.append(queries)
         self.assertEqual(*orders)
         registration=functions(HELPER)['Forsaken_RegisterBackpackActivity']
@@ -68,12 +68,14 @@ class BackpackSyncTests(unittest.TestCase):
         e,state,visibility,_,_,_,poll,_=clients[0]
         # The real engine mouse/hotkey input opens its panes; JASS only observes.
         e['Forsaken_RequestBackpackToggle'](2)
-        visibility.update(gear=True,bag=True)
+        visibility.update(gear=True,bag=True,backdrop=True)
         self.assertTrue(poll(10.1))
         e['Forsaken_BackpackControls']('gear','backdrop',True)
         e['Forsaken_CloseBackpack']();self.assertFalse(poll(12.))
         state['now']=13.;e['Forsaken_RequestBackpackToggle'](2)
-        self.assertTrue(poll(13.1))
+        self.assertFalse(poll(13.1))
+        visibility.update(gear=True,bag=True,backdrop=True)
+        self.assertTrue(poll(13.2))
         other,_,other_visibility,*_=clients[1]
         self.assertFalse(other['ForsakenBackpackWanted'])
         self.assertFalse(other_visibility['gear'] or other_visibility['bag'])

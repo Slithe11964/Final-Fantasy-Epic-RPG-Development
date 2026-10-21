@@ -548,8 +548,10 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     modules={lib:ultimate_refresh(s,native=native) for lib,s in modules.items()}
     from priest_legendary import refresh as legendary_refresh,objects as legendary_objects
     modules={lib:legendary_refresh(s,native=native) for lib,s in modules.items()}
-    from armory_catalog import runtime as armory_runtime,refresh_hint_objects,navigation_objects
+    from armory_catalog import runtime as armory_runtime,refresh_hint_objects,navigation_objects,hint_runtime
     modules={lib:armory_runtime(s) for lib,s in modules.items()}
+    hints=json.loads((Path(__file__).resolve().parents[1]/'src/armory-hints.json').read_text(encoding='utf-8'))
+    modules={lib:hint_runtime(s,hints) if lib=='TArmory' else s for lib,s in modules.items()}
     from damage_tooltips import catalogue as damage_catalogue,abilities as damage_abilities,scroll_objects, runtime as scroll_runtime
     damage_config=damage_catalogue(edited.object_bytes('war3map.w3a'),edited.object_bytes('war3mapSkin.w3a'),edited.object_bytes('war3map.w3t'),edited.object_bytes('war3mapSkin.w3t'))
     modules={lib:scroll_runtime(s) for lib,s in modules.items()}
@@ -563,6 +565,10 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     modules={lib:calculation_runtime(command_refresh(s,commands),calculations) for lib,s in modules.items()}
     from priest_followup import refresh as priest_followup
     modules={lib:priest_followup(s,native=native) for lib,s in modules.items()}
+    from bazaar_layout import refresh as bazaar_layout
+    modules={lib:bazaar_layout(s,native=native) for lib,s in modules.items()}
+    from talent_selection_ui import refresh as talent_selection_ui
+    modules={lib:talent_selection_ui(s,native=native) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -642,7 +648,12 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
             if data:replacements[name]=refresh_robe(data,ext)
     for name in ('war3map.w3t','war3mapSkin.w3t'):
         data=replacements.get(name) or profile.object_bytes(name)
-        if data:replacements[name]=integrity_items(scroll_objects(data,damage_config),integrity_config,native=native)
+        if data:
+            from chocobo_tooltips import objects as chocobo_tooltips
+            replacements[name]=chocobo_tooltips(integrity_items(scroll_objects(data,damage_config),integrity_config,native=native))
+    if native:
+        for resource in ('BazaarPrepare.fdf','BazaarPrepare.toc'):
+            replacements['war3mapImported/'+resource]=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/BazaarPrepare'/resource).read_bytes()
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

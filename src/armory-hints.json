@@ -13,7 +13,7 @@
     "name": "Griever",
     "item": "I00H",
     "unit": "n0D9",
-    "hint": "Challenge Chaos and check the rewards unlocked by that battle.",
+    "hint": "Is it possible to merge the Forest Spirits?",
     "evidence": [
       "Boss_Chaos:91"
     ]
@@ -22,7 +22,7 @@
     "name": "Touph Ring",
     "item": "I00B",
     "unit": "n0DA",
-    "hint": "Challenge Orc Chieftain and check the rewards unlocked by that battle.",
+    "hint": "Rumors in town say that an Orc Chieftain wears this.",
     "evidence": [
       "Boss_OrcChieftain:15"
     ]
@@ -31,7 +31,7 @@
     "name": "Sprint Shoes",
     "item": "I00E",
     "unit": "n0DB",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -40,7 +40,7 @@
     "name": "Chimes of Piercing",
     "item": "I00J",
     "unit": "n0DC",
-    "hint": "Search the locked treasure vaults.",
+    "hint": "The mountains are rumored to have a secret vault.",
     "evidence": [
       "Loot:1143"
     ]
@@ -49,7 +49,7 @@
     "name": "Armguard",
     "item": "I00G",
     "unit": "n0DD",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -58,7 +58,7 @@
     "name": "Blue Amulet",
     "item": "I00K",
     "unit": "n0DE",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -77,7 +77,7 @@
     "name": "Greater Totem of Power",
     "item": "I00P",
     "unit": "n0DG",
-    "hint": "Check the stock of eaom.",
+    "hint": "Have you found an elven shop?",
     "evidence": [
       "eaom/usei"
     ]
@@ -86,7 +86,7 @@
     "name": "Jade Collar",
     "item": "I00F",
     "unit": "n0DH",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -95,7 +95,7 @@
     "name": "Blazer Gloves",
     "item": "I00C",
     "unit": "n0DI",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -104,7 +104,7 @@
     "name": "Steel Gorget",
     "item": "I00Q",
     "unit": "n0DJ",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -113,7 +113,7 @@
     "name": "Totem of Power",
     "item": "I00L",
     "unit": "n0DK",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -122,7 +122,7 @@
     "name": "Cat's Bell",
     "item": "I00R",
     "unit": "n0DL",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -161,7 +161,7 @@
     "name": "Magic Gloves",
     "item": "I037",
     "unit": "n0DP",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -170,7 +170,7 @@
     "name": "Death Skull",
     "item": "I039",
     "unit": "n0DQ",
-    "hint": "Challenge Zalera and check the rewards unlocked by that battle.",
+    "hint": "Stories are told of an evil lich that lives in the land, maybe you could take his skull?",
     "evidence": [
       "Boss_Zalera:166"
     ]
@@ -179,7 +179,7 @@
     "name": "Growth Egg",
     "item": "I03I",
     "unit": "n0DR",
-    "hint": "Challenge Zalera and check the rewards unlocked by that battle.",
+    "hint": "Have you fought a Dark Knight?",
     "evidence": [
       "Boss_Zalera:226"
     ]
@@ -188,7 +188,7 @@
     "name": "Stalwart Belt",
     "item": "I04M",
     "unit": "n0DS",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "Curses can be quite useful.",
     "evidence": [
       "Recipe/udg_RecipeResult/I04M"
     ]
@@ -197,7 +197,7 @@
     "name": "Necklace of the Necromancer",
     "item": "I04L",
     "unit": "n0DT",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "Curses can be quite useful.",
     "evidence": [
       "Recipe/udg_RecipeResult/I04L"
     ]
@@ -206,7 +206,7 @@
     "name": "Leather Gorget",
     "item": "I04D",
     "unit": "n0DU",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -215,7 +215,7 @@
     "name": "Charming Banner",
     "item": "I063",
     "unit": "n0DV",
-    "hint": "Follow the Nimphrodel quest or event.",
+    "hint": "The dryad's are known to keep this as a family heirloom.",
     "evidence": [
       "Nimphrodel:225"
     ]
@@ -224,7 +224,7 @@
     "name": "Iron Duke",
     "item": "I08F",
     "unit": "n0DW",
-    "hint": "Look for a matching recipe in the bazaar.",
+    "hint": "That's a lot of monster parts to collect.",
     "evidence": [
       "Bazaar/udg_BazaarResultItem/I08F"
     ]
@@ -233,7 +233,7 @@
     "name": "Hidden Hero Medicine",
     "item": "I0A7",
     "unit": "n0DX",
-    "hint": "Follow the Almighty Shinra quest or event.",
+    "hint": "Shinra was seen using this in the Battle Arena.",
     "evidence": [
       "AlmightyShinra:436"
     ]
@@ -242,7 +242,7 @@
     "name": "Summoner's Horn",
     "item": "I0CN",
     "unit": "n0DY",
-    "hint": "Check the stock of eaom.",
+    "hint": "I've heard that a horn was sounded from a vault in the mountains.",
     "evidence": [
       "eaom/usei"
     ]
@@ -251,7 +251,7 @@
     "name": "Silver Glasses",
     "item": "I0CO",
     "unit": "n0DZ",
-    "hint": "Look for a matching recipe in the bazaar.",
+    "hint": "What is that disgusting monster in the Ancient Forest? It seems rare.",
     "evidence": [
       "Bazaar/udg_BazaarResultItem/I0CO"
     ]
@@ -260,7 +260,7 @@
     "name": "Speed Bracers",
     "item": "I0CP",
     "unit": "n0E0",
-    "hint": "Hunt or steal from Boco the Chocobo.",
+    "hint": "Boco is known to wear this. Is there a way to get it from him?",
     "evidence": [
       "MonsterData:1314"
     ]
@@ -269,7 +269,7 @@
     "name": "Setzer's Coin",
     "item": "I0D0",
     "unit": "n0E1",
-    "hint": "Search the locked treasure vaults.",
+    "hint": "Kesha has a vault somewhere around here.",
     "evidence": [
       "Loot:1041"
     ]
@@ -278,7 +278,7 @@
     "name": "Turtleshell Choker",
     "item": "I0DL",
     "unit": "n0E2",
-    "hint": "Search the locked treasure vaults.",
+    "hint": "The shipyard teleporter has been displaced. I wonder by what?",
     "evidence": [
       "Loot:1967"
     ]
@@ -287,7 +287,7 @@
     "name": "Cameo Belt",
     "item": "I0DR",
     "unit": "n0E3",
-    "hint": "Look for a matching recipe in the bazaar.",
+    "hint": "Frakir is hunting Tonberry, maybe he has it?",
     "evidence": [
       "Bazaar/udg_BazaarResultItem/I0DR"
     ]
@@ -296,7 +296,7 @@
     "name": "Memento Ring",
     "item": "I0DS",
     "unit": "n0E4",
-    "hint": "Help Relm and Shadow resolve the Lost Memories quest.",
+    "hint": "If you anger Shadow, Relm might give you this keepsake.",
     "evidence": [
       "Quest_LostMemories:208"
     ]
@@ -305,7 +305,7 @@
     "name": "Jackboots",
     "item": "I0FD",
     "unit": "n0E5",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "Curses can be quite useful.",
     "evidence": [
       "Recipe/udg_RecipeResult/I0FD"
     ]
@@ -314,7 +314,7 @@
     "name": "Orb of Fire",
     "item": "I0FW",
     "unit": "n0E6",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Fire Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0FW"
     ]
@@ -323,7 +323,7 @@
     "name": "Orb of Frost",
     "item": "I0FX",
     "unit": "n0E7",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Frost Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0FX"
     ]
@@ -332,7 +332,7 @@
     "name": "Orb of Lightning",
     "item": "I0FY",
     "unit": "n0E8",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Lightning Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0FY"
     ]
@@ -341,7 +341,7 @@
     "name": "Orb of Water",
     "item": "I0FZ",
     "unit": "n0E9",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Water Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0FZ"
     ]
@@ -350,7 +350,7 @@
     "name": "Orb of Earth",
     "item": "I0G0",
     "unit": "n0EA",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Earth Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0G0"
     ]
@@ -359,7 +359,7 @@
     "name": "Orb of Wind",
     "item": "I0G1",
     "unit": "n0EB",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given a Wind Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0G1"
     ]
@@ -368,7 +368,7 @@
     "name": "Force of Nature",
     "item": "I0G6",
     "unit": "n0EC",
-    "hint": "Challenge Ozma and check the rewards unlocked by that battle.",
+    "hint": "A recent adventurer said the last elemental held a Horn of Madain Sari. What could this be used for?",
     "evidence": [
       "Boss_Ozma:313"
     ]
@@ -377,7 +377,7 @@
     "name": "Death Skull X",
     "item": "I0GD",
     "unit": "n0EE",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "The elves seem to fear a king of the underworld. Who could that be?",
     "evidence": [
       "Recipe/udg_RecipeResult/I0GD"
     ]
@@ -386,7 +386,7 @@
     "name": "Stopwatch",
     "item": "I0GJ",
     "unit": "n0EF",
-    "hint": "Check the stock of Earth the Pandaren Merchant.",
+    "hint": "Earth the Pandaren Merchant sells this in town.",
     "evidence": [
       "n00C/usei"
     ]
@@ -395,7 +395,7 @@
     "name": "Prominent Cloak",
     "item": "I0HT",
     "unit": "n0EG",
-    "hint": "Follow the Ultros quest or event.",
+    "hint": "Have you helped Sarai deal with her problem?",
     "evidence": [
       "Ultros:77"
     ]
@@ -404,7 +404,7 @@
     "name": "Hunter's Cloak",
     "item": "I0IB",
     "unit": "n0EH",
-    "hint": "Complete hunts and check the Hunt Club reward shop.",
+    "hint": "Hunt Club will reward you for participating in many hunts.",
     "evidence": [
       "Hunt_Board/udg_HuntRewardItem/I0IB"
     ]
@@ -413,7 +413,7 @@
     "name": "White Materia",
     "item": "I0EC",
     "unit": "n0EI",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "Have you found an elven shop?",
     "evidence": [
       "Recipe/udg_RecipeResult/I0EC"
     ]
@@ -422,7 +422,7 @@
     "name": "Rabite's Foot",
     "item": "I0JX",
     "unit": "n0JQ",
-    "hint": "Complete hunts from the hunt board.",
+    "hint": "Maybe if you keep killing all the rabbit's you'll eventually get this.",
     "evidence": [
       "Hunt_Board:241"
     ]
@@ -431,7 +431,7 @@
     "name": "Bag of Tricks",
     "item": "I0K1",
     "unit": "n0JT",
-    "hint": "Destroy the vulnerable neutral buildings around the map.",
+    "hint": "I can't remember which creature stored this in their tent.",
     "evidence": [
       "BagOfTricks:28-54"
     ]
@@ -440,7 +440,7 @@
     "name": "Flag of Competition",
     "item": "I0K2",
     "unit": "n0JW",
-    "hint": "Follow the Target Practice quest or event.",
+    "hint": "This one requires multiplayer: Two people have to post record times in target practice.",
     "evidence": [
       "TargetPractice:252"
     ]
@@ -469,7 +469,7 @@
     "name": "Firefly",
     "item": "I0KA",
     "unit": "n0K4",
-    "hint": "Break destructibles around the map to uncover Fireflies.",
+    "hint": "Cause as much destruction in town as you can. And somewhere in town the storage might have this.",
     "evidence": [
       "Firefly:19-33"
     ]
@@ -478,7 +478,7 @@
     "name": "Rosetta Stone",
     "item": "I0KC",
     "unit": "n0K6",
-    "hint": "Challenge Shemhazai and check the rewards unlocked by that battle.",
+    "hint": "There's this ominous fountain that the Orcs seem defensive of.",
     "evidence": [
       "Boss_Shemhazai:49"
     ]
@@ -487,7 +487,7 @@
     "name": "Hero's Badge",
     "item": "I0KB",
     "unit": "n0K5",
-    "hint": "Follow the Ice Age quest or event.",
+    "hint": "Complete the story.",
     "evidence": [
       "IceAge:354"
     ]
@@ -496,7 +496,7 @@
     "name": "Ring of Rejuvenation",
     "item": "I0KD",
     "unit": "n0KC",
-    "hint": "Search treasure chests while exploring.",
+    "hint": "For some reason Eidolons want to hold onto this.",
     "evidence": [
       "Loot:445"
     ]
@@ -505,7 +505,7 @@
     "name": "Blank Orb",
     "item": "I0A9",
     "unit": "n0M0",
-    "hint": "Look for a matching recipe in the bazaar.",
+    "hint": "Do you fear the reaper? Maybe you could take this from him? You can also check the bazaar.",
     "evidence": [
       "Bazaar/udg_BazaarResultItem/I0A9"
     ]
@@ -514,7 +514,7 @@
     "name": "Sleipnir",
     "item": "I04A",
     "unit": "n0MR",
-    "hint": "Challenge Odin and check the rewards unlocked by that battle.",
+    "hint": "The Northern God is known to ride Sleipnir.",
     "evidence": [
       "Boss_Odin:169"
     ]
@@ -523,7 +523,7 @@
     "name": "Genji Gloves",
     "item": "I0B0",
     "unit": "n0MS",
-    "hint": "Find its crafting recipe and gather the required ingredients.",
+    "hint": "Samurai's are obscessed with getting the perfect gloves.",
     "evidence": [
       "Recipe/udg_RecipeResult/I0B0"
     ]
@@ -532,7 +532,7 @@
     "name": "Orb of Cetra",
     "item": "I0C8",
     "unit": "n0MX",
-    "hint": "Ask Bali about forging this gear.",
+    "hint": "Bali will offer advice on possible crafts if given an Omni Gem.",
     "evidence": [
       "Forge/udg_ForgeRecipeResult/I0C8"
     ]
@@ -541,7 +541,7 @@
     "name": "Yatagarasu",
     "item": "I0GF",
     "unit": "n0ND",
-    "hint": "Complete hunts from the hunt board.",
+    "hint": "Inferno+ Required: Frakir has been hunting an elusive owl.",
     "evidence": [
       "Hunt_Board:255"
     ]

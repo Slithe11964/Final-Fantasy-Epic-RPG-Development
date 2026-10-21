@@ -4,21 +4,25 @@ Read this first. Keep it short: it says where things stand, not what happened. B
 notes go in one row of [STAGES.md](STAGES.md); details go in the doc for that feature. The long
 logs up to 2026-10-10 are in [history/](history/).
 
-## Where things stand (2026-10-20)
+## Where things stand (2026-10-21)
 
-0.9.7.5b (paired stage V0975B4) is the latest test build, packaged in
-release/0.9.7.5b and installed/hash-verified in Maps/Download/TEST. Manual
-Backpack intent now owns visibility; native ASpc command input replaces the
-overlay/timeout/native-adoption logic, and refreshes do not rebind or hide panes.
-Gear cooldowns use armory subcategories in both clients, with separate clocks
-for each materia type; all aliases and hero/Gaya carriers retain their group.
-Miracle accepts zero-level charged targets. Regen no longer stops after a
-shielding tick; Acid Rain resolves healing every0.1sec independently of1sec
-damage; shields are25% of overhealing and have a following gold world label.
-Healing text is left of damage. Paired gates pass: native272/classic372,
-2/13 expected skips, plus supported-API and final archive audits. Master and
-portable-save format unchanged. Real multiplayer/engine acceptance is pending.
-See [RELEASE_0.9.7.5b_BACKPACK_PRIEST_COOLDOWNS.md](RELEASE_0.9.7.5b_BACKPACK_PRIEST_COOLDOWNS.md).
+0.9.7.5c (paired stage V0975C2) is the latest public package in release/0.9.7.5c.
+Both profiles pass full paired gates; see RELEASE_0.9.7.5c.md for counts/hashes.
+The editor master is unchanged. src/armory-hints.json is authoritative for both
+hint tooltips and click messages in the paired builder (53 updated entries).
+Backpack follows cached native panel visibility without forced alternate panes;
+item changes do not recreate the display or its cooldown overlays. Bazaar keeps
+its original layout and native console, with shared-startup SIMPLEBUTTON click
+surfaces and menu-button hover. Selected talents have gold borders.
+Acid Rain is 1-second healing/damage, 2,000 each at master; skip invulnerable
+Gaya in direct healing to avoid aborting the pulse before enemy damage.
+Shielding is 25% overheal, independently expiring 30-second FIFO contributions,
+white VFX and raised/left world text. Cure uses PriestMissile. Greens/nuts omit
+obsolete Not Savable labels. Published MPQs are compacted, approximately12MB.
+Recent native changes were confirmed by user gameplay testing. Final public
+files still need real-client/multiplayer acceptance; legacy large-import native
+Warcraft checkpoint reload remains a separate unresolved report. Save format
+unchanged. Routine work uses focused checks; explicit releases run both gates.
 
 0.9.7.5a is the previous hotfix, packaged in release/0.9.7.5a and installed/hash-
 verified in Maps/Download/TEST. The 19:27 local report confirms a network desync

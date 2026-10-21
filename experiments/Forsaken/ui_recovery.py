@@ -55,13 +55,7 @@ def panel_source(source):
     if source.count(old) != 1:
         raise ValueError('DW panel registration changed')
     source = source.replace(old, '    call TimerStart(CreateTimer(),0.,false,function Forsaken_StartPanels)', 1)
-    # Newer native UI layouts may not expose the same equipment-panel frame name.
-    old = '    call BlzFrameSetVisible(ForsakenTalentToggle,visible or ForsakenInspectTarget!=null)'
-    new = ('    call BlzFrameSetVisible(ForsakenTalentToggle,visible or ForsakenInspectTarget!=null or '
-           '(nativePanel==null and hero!=null and IsUnitSelected(hero,viewer)))')
-    if source.count(old) != 1:
-        raise ValueError('DW panel visibility changed')
-    source = source.replace(old, new, 1)
+    # Inventory extensions follow the live panel; no standalone talent fallback.
     helpers = '''function Forsaken_StartPanels takes nothing returns nothing
     call Register_Forsaken_PanelAccess()
     call DestroyTimer(GetExpiredTimer())

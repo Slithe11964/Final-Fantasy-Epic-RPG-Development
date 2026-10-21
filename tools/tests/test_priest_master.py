@@ -122,7 +122,7 @@ class PriestMasterTests(unittest.TestCase):
         damage.clear();rank[0]=6
         for tick in range(10):
             before=len(damage);e['Priest_RainTick']()
-            self.assertEqual(damage[before:],[('enemy',2000.),('ally',200.)] if tick==9 else [('ally',200.)])
+            self.assertEqual(damage[before:],[('enemy',2000.),('ally',2000.)] if tick==9 else [])
         self.assertEqual(sum(n for u,n in damage if u=='enemy'),2000.)
         self.assertEqual(sum(n for u,n in damage if u=='ally'),2000.)
         damage.clear();active[0]=False

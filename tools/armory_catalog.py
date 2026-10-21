@@ -162,9 +162,7 @@ def hint_id(index):
     return 'z%03d' % index
 
 
-def sync_hint_source(catalog):
-    path = ROOT / 'src/triggers/05 Items crafting and shops/Armory.j'
-    source = path.read_text(encoding='utf-8')
+def hint_runtime(source, catalog):
     lines = ['function Armory_InitHints takes nothing returns nothing']
     for index, entry in sorted(catalog.items(), key=lambda pair: int(pair[0])):
         lines.append(f"    set ArmoryMissingUnit[{index}]='{hint_id(int(index))}'")
@@ -174,6 +172,12 @@ def sync_hint_source(catalog):
                             lambda match: '\n'.join(lines), source, flags=re.S)
     if count != 1:
         raise ValueError('expected one Armory_InitHints function')
+    return source
+
+
+def sync_hint_source(catalog):
+    path = ROOT / 'src/triggers/05 Items crafting and shops/Armory.j'
+    source = hint_runtime(path.read_text(encoding='utf-8'), catalog)
     path.write_bytes(source.replace('\n', '\r\n').encode('utf-8'))
 
 

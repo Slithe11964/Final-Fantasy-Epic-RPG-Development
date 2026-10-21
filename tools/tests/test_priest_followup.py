@@ -29,9 +29,11 @@ class PriestFollowupTests(unittest.TestCase):
 
     def test_world_shield_label_follows_target_and_is_cleaned_on_empty(self):
         from collections import defaultdict
-        s=refresh(self.source('Talents'));store={};tags=[];destroyed=[];members=set();positions=[];labels=[]
+        s=refresh(self.source('Talents'));store={};tags=[];destroyed=[];members=set();positions=[];labels=[];effects=[];effect_deaths=[]
         env=mocks(s);env.update(TalentShieldState='shield',TalentShieldDisplayGroup='group',TalentShieldDisplayTimer='timer',
             GetHandleId=lambda u:u,LoadReal=lambda h,p,c:store.get((p,c),0.),LoadTextTagHandle=lambda h,p,c:store.get((p,c)),
+            LoadEffectHandle=lambda h,p,c:store.get((p,c)),SaveEffectHandle=lambda h,p,c,v:store.__setitem__((p,c),v),
+            AddSpecialEffectTarget=lambda *a:effects.append(a) or 'barrier',DestroyEffect=effect_deaths.append,
             SaveTextTagHandle=lambda h,p,c,v:store.__setitem__((p,c),v),RemoveSavedHandle=lambda h,p,c:store.pop((p,c),None),
             CreateTextTag=lambda:tags.append('tag') or 'tag',DestroyTextTag=destroyed.append,
             GetUnitX=lambda u:400.,GetUnitY=lambda u:500.,GetUnitFlyHeight=lambda u:0.,GetWidgetLife=lambda u:100.,GetUnitTypeId=lambda u:1,
@@ -40,9 +42,12 @@ class PriestFollowupTests(unittest.TestCase):
             FirstOfGroup=lambda g:next(iter(members),None),GroupAddUnit=lambda g,u:members.add(u),GroupRemoveUnit=lambda g,u:members.discard(u))
         e=execute(s,['Talent_ShieldDisplayClear','Talent_ShieldDisplayUpdate'],env)
         store['target',0]=75.;e['Talent_ShieldDisplayUpdate']('target')
-        self.assertEqual(tags,['tag']);self.assertEqual(labels[-1][1],'Shield: 75');self.assertEqual(positions[-1][1:3],(280.,548.))
+        self.assertEqual(tags,['tag']);self.assertEqual(labels[-1][1],'Shield: 75');self.assertEqual(positions[-1][1:3],(220.,580.))
+        self.assertEqual(positions[-1][3],155.)
+        e['Talent_ShieldDisplayUpdate']('target');self.assertEqual(len(effects),1)
+        self.assertIn('DivineShieldTarget.mdl',effects[0][0])
         store['target',0]=0.;e['Talent_ShieldDisplayUpdate']('target')
-        self.assertEqual(destroyed,['tag']);self.assertEqual(members,set())
+        self.assertEqual(destroyed,['tag']);self.assertEqual(members,set());self.assertEqual(effect_deaths,['barrier'])
 
     def test_relocated_choices_unlock_at_their_new_rank_and_have_exact_text(self):
         from test_talents import runtime

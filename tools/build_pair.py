@@ -75,7 +75,7 @@ def native_tests(work):
     sys.path.insert(0,str(ROOT/'experiments/Forsaken'))
     from build_save_roundtrip import align_bt_tests
     align_bt_tests(work)
-    for name in ('test_talents.py','test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py','test_quest_unlocks.py','test_gameplay_inventory.py','test_quest_events.py','test_world_access.py','test_job_effects.py','test_backpack_visibility.py','test_backpack_sync.py','test_native_api.py','test_stat_layout.py','test_proficiency.py','test_priest_master.py','test_priest_ultimate.py','test_priest_legendary.py','test_priest_followup.py','test_channel_defaults.py','test_damage_tooltips.py','test_equipment_integrity.py','test_player_commands.py','test_legend_readback.py','test_inventory_followup.py'):
+    for name in ('test_talents.py','test_armory_catalog.py','test_bazaar_browser.py','test_bazaar_frames.py','test_bazaar_reopen.py','test_quest_unlocks.py','test_gameplay_inventory.py','test_quest_events.py','test_world_access.py','test_job_effects.py','test_backpack_visibility.py','test_backpack_sync.py','test_native_api.py','test_stat_layout.py','test_proficiency.py','test_priest_master.py','test_priest_ultimate.py','test_priest_legendary.py','test_priest_followup.py','test_channel_defaults.py','test_damage_tooltips.py','test_equipment_integrity.py','test_player_commands.py','test_legend_readback.py','test_inventory_followup.py','test_priest_timing.py','test_bazaar_layout.py','test_talent_selection_ui.py'):
         shutil.copy2(ROOT/'tools/tests'/name,work/'tools/tests'/name)
     fixture=work/'tools/tests/test_chronicles_secrets.py'
     old="        self.assertNotIn('Chronicles unlocked:', next(v[2] for v in e['writes'] if v[:2] == ('body', 'cSec')))"
@@ -176,6 +176,14 @@ def main():
                                               cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
                     if result.returncode:raise Conflict('native API finalization failed; details: '+str(api_log))
                     report['native_api']['deprecated_declarations_removed_compile']='PASS'
+                # Final adapters append replacement blocks. Remove obsolete archive
+                # space before publishing; compact verifies decoded file contents.
+                from mpq import compact
+                packed=scratch/(profile+'-packed.w3x')
+                before_size=built.stat().st_size
+                compact(str(built),str(packed))
+                built=packed
+                report.setdefault('archive_compaction',{})[profile]=dict(before_bytes=before_size,after_bytes=built.stat().st_size)
                 output='FFERPG-'+args.stage+'-'+('Forsaken' if profile=='Forsaken' else '1.29.2')+'.w3x'
                 shutil.copy2(built,ready/output)
                 shutil.copy2(work/'release'/('checks-r16-stage'+args.stage+'.txt'),ready/(profile+'-checks.txt'))

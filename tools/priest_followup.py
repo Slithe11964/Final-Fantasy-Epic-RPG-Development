@@ -153,4 +153,5 @@ endfunction'''
         body=functions(source)['Forsaken_RebuildPanels']
         if 'BlzDestroyFrame(ForsakenShieldReadout)' not in body:body=body.replace('    call Forsaken_ResetBackpackControls()','    call BlzDestroyFrame(ForsakenShieldReadout)\n    set ForsakenShieldReadout=null\n    call Forsaken_ResetBackpackControls()',1)
         source=put(source,'Forsaken_RebuildPanels',body)
-    return source
+    from priest_timing import refresh as timing_refresh
+    return timing_refresh(source)

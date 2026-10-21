@@ -1,5 +1,18 @@
 # Repeatable source builds
 
+## Development versus release checks
+
+Routine development uses focused checks under [CONTRIBUTING.md](../CONTRIBUTING.md).
+The complete gates described below apply to release preparation and to these existing full
+build commands. These commands still run their configured gates; this policy does not introduce
+a fast-build flag or disable validation inside a builder. Avoid invoking a full paired build
+for every small edit; batch changes and run relevant checks first. If a test build uses narrower
+validation, identify it as a development build and state which checks were run.
+Full paired validation, release notes, stage history, handoffs, and installation/archive audits
+belong at release milestones. Keep targeted compatibility checks for risky changes during development.
+
+## Full build workflow
+
 For daily World Editor editing, use the [single-master paired workflow](../editor/README.md):
 edit `editor/FFERPG-Editor-Master.w3x`, save in Reforged, then run `.\build-pair.ps1`.
 It produces the native Forsaken/Reforged map and the 1.29.2 map together, retaining
