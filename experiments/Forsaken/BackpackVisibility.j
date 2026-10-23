@@ -61,6 +61,28 @@ function Forsaken_NativeInventoryClick takes integer raw returns nothing
     // A timer-driven click could activate a different command card on one client.
 endfunction
 
+// Hide every already-reserved native pane, including partial/old contexts.
+// Never show an inactive cached pane: only the native command binds a live view.
+function Forsaken_HideInventory takes nothing returns nothing
+    local integer kind=0
+    local integer index
+    local framehandle pane
+    loop
+        exitwhen kind>=3
+        set index=0
+        loop
+            exitwhen index>=ForsakenNativeFrameCount[kind]
+            set pane=ForsakenNativeFrame[kind*256+index]
+            if pane!=null and BlzFrameIsVisible(pane) then
+                call BlzFrameSetVisible(pane,false)
+            endif
+            set index=index+1
+        endloop
+        set kind=kind+1
+    endloop
+    set pane=null
+endfunction
+
 function Forsaken_CloseBackpack takes nothing returns nothing
     set ForsakenBackpackCloses=ForsakenBackpackCloses+1
     set ForsakenBackpackWanted=false
@@ -69,25 +91,34 @@ function Forsaken_CloseBackpack takes nothing returns nothing
     set ForsakenBackpackCloseUntil=TimerGetElapsed(ForsakenPanelClock)+1.2
     set ForsakenBackpackWasVisible=false
     set ForsakenPanelOpen=false
-    if ForsakenCachedBackdrop!=null then
-        call BlzFrameSetVisible(ForsakenCachedBackdrop,false)
-    endif
-    if ForsakenCachedEquipment!=null then
-        call BlzFrameSetVisible(ForsakenCachedEquipment,false)
-    endif
-    if ForsakenLinkedBag!=null then
-        call BlzFrameSetVisible(ForsakenLinkedBag,false)
-    endif
+    call Forsaken_HideInventory()
     call BlzFrameSetVisible(ForsakenTalentToggle,false)
     call BlzFrameSetVisible(ForsakenTalentRoot,false)
     call BlzFrameSetVisible(ForsakenBackpackClose,false)
     call BlzFrameSetVisible(ForsakenLinkedBagClose,false)
 endfunction
 
+// X uses the same real UI key path as B, so the engine closes its inventory
+// controller too. Hiding frames alone leaves that controller reopening them.
 function Forsaken_BackpackCloseAction takes nothing returns nothing
-    if GetLocalPlayer()==GetTriggerPlayer() then
+    local player viewer=GetTriggerPlayer()
+    local unit hero=Player_GetHero(viewer)
+    local boolean held=ForsakenBackpackKeyHeld
+    if GetLocalPlayer()==viewer then
+        if ForsakenBackpackWanted and hero!=null and hero==ForsakenInventoryHero and IsUnitSelected(hero,viewer) and GetUnitAbilityLevel(hero,'ASpc')>0 and not ForsakenBackpackChatOpen and ForsakenBackpackCommand!=null and BlzFrameIsVisible(ForsakenBackpackCommand) and BlzFrameGetEnable(ForsakenBackpackCommand) then
+            // This runs once in the player's click callback, never in a poll.
+            // Suppress both synthetic key-down and ability notifications so
+            // one click cannot toggle twice or leave the B key latched down.
+            set ForsakenLastToggleTime=TimerGetElapsed(ForsakenPanelClock)
+            set ForsakenLastToggleSource=3
+            set ForsakenBackpackKeyHeld=true
+            call ForceUIKey("B")
+            set ForsakenBackpackKeyHeld=held
+        endif
         call Forsaken_CloseBackpack()
     endif
+    set hero=null
+    set viewer=null
 endfunction
 
 
@@ -101,44 +132,69 @@ endfunction
 
 function Forsaken_RequestBackpackToggle takes integer source returns nothing
     local real now=TimerGetElapsed(ForsakenPanelClock)
-    if now-ForsakenLastToggleTime<.25 then
+    if InventoryCinematicActive then
+        return
+    endif
+    if now-ForsakenLastToggleTime<.25 and source!=ForsakenLastToggleSource then
         return
     endif
     set ForsakenBackpackRequests=ForsakenBackpackRequests+1
     set ForsakenLastToggleTime=now
     set ForsakenLastToggleSource=source
-    // Observe real input; do not toggle another presentation state on top of
-    // the engine's own toggle. Key and mouse may notify in either order.
-    set ForsakenBackpackExplicitlyClosed=false
+    set ForsakenBackpackWanted=not ForsakenBackpackWanted
+    set ForsakenBackpackExplicitlyClosed=not ForsakenBackpackWanted
     set ForsakenInventoryBindPhase=1
-    set ForsakenInventoryBindUntil=now+1.
+    set ForsakenInventoryBindUntil=now+.2
 endfunction
 
 function Forsaken_BackpackToggleAction takes nothing returns nothing
-    local unit hero=Player_GetHero(GetTriggerPlayer())
-    if GetLocalPlayer()==GetTriggerPlayer() and not ForsakenInventoryBinding and hero!=null and IsUnitSelected(hero,GetTriggerPlayer()) then
-        if GetUnitAbilityLevel(hero,'ASpc')>0 then
+    local player viewer=GetTriggerPlayer()
+    local unit hero=Player_GetHero(viewer)
+    local boolean clicked=false
+    local integer source=2
+    if GetLocalPlayer()==viewer and not ForsakenBackpackKeyHeld and not InventoryCinematicActive then
+        if GetTriggerEventId()==EVENT_GAME_CUSTOM_UI_FRAME then
+            set clicked=BlzGetTriggerFrame()==ForsakenBackpackCommand
+        else
+            set source=4
+            set clicked=GetSpellAbilityId()=='ASpc' and GetTriggerUnit()==hero
+        endif
+        if clicked then
             set ForsakenBackpackMouseEvents=ForsakenBackpackMouseEvents+1
-            call Forsaken_RequestBackpackToggle(2)
+            call Forsaken_RequestBackpackToggle(source)
         endif
     endif
+    set viewer=null
     set hero=null
 endfunction
 
 function Forsaken_BackpackAccess takes player viewer,unit hero returns nothing
+    if InventoryCinematicActive then
+        return
+    endif
     if GetTriggerEventId()==EVENT_PLAYER_UNIT_SELECTED or GetTriggerEventId()==EVENT_PLAYER_UNIT_DESELECTED then
         return
     endif
-    if BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
+    if BlzGetTriggerPlayerKey()==OSKEY_RETURN then
+        set ForsakenBackpackChatOpen=not ForsakenBackpackChatOpen
+    elseif BlzGetTriggerPlayerKey()==OSKEY_ESCAPE then
+        if ForsakenBackpackChatOpen then
+            set ForsakenBackpackChatOpen=false
+            return
+        endif
         call Forsaken_CloseBackpack()
-        set ForsakenBackpackExplicitlyClosed=false
     elseif BlzGetTriggerPlayerKey()==OSKEY_B then
+        // ForceUIKey may dispatch key-down after the click callback returns,
+        // and does not provide a matching release. Do not latch that echo.
+        if ForsakenLastToggleSource==3 and TimerGetElapsed(ForsakenPanelClock)-ForsakenLastToggleTime<.25 then
+            return
+        endif
         set ForsakenBackpackKeyEvents=ForsakenBackpackKeyEvents+1
         if not BlzGetTriggerPlayerIsKeyDown() then
             set ForsakenBackpackKeyHeld=false
         elseif not ForsakenBackpackKeyHeld then
             set ForsakenBackpackKeyHeld=true
-            if hero!=null and IsUnitSelected(hero,viewer) then
+            if not ForsakenBackpackChatOpen and hero!=null and IsUnitSelected(hero,viewer) then
                 call Forsaken_RequestBackpackToggle(1)
             endif
         endif
@@ -167,19 +223,37 @@ endfunction
 // showing a hidden model frame can display the previous job's cached preview.
 
 function Forsaken_BackpackVisible takes framehandle panel returns boolean
-    local boolean visible=false
-    // Poll visibility of reserved handles, not frame names/hierarchies. Native
-    // activation can finish after the input callback; never select hidden fallback
-    // frames or manufacture an open view by showing their inner children.
-    set ForsakenCachedEquipment=Forsaken_SelectCachedFrame(0,null)
-    set ForsakenCachedBackdrop=Forsaken_SelectCachedFrame(1,null)
-    set ForsakenLinkedBag=Forsaken_SelectCachedFrame(2,null)
-    set visible=ForsakenCachedEquipment!=null and ForsakenCachedBackdrop!=null and ForsakenLinkedBag!=null
-    if visible then
-        set ForsakenInventoryHero=Player_GetHero(GetLocalPlayer())
+    local framehandle gear=Forsaken_SelectCachedFrame(0,null)
+    local framehandle backdrop=Forsaken_SelectCachedFrame(1,null)
+    local framehandle bag=Forsaken_SelectCachedFrame(2,null)
+    local boolean visible=gear!=null and backdrop!=null and bag!=null
+    local real now=TimerGetElapsed(ForsakenPanelClock)
+    local unit hero=Player_GetHero(GetLocalPlayer())
+    if InventoryCinematicActive then
+        call Forsaken_HideInventory()
+        set visible=false
+    elseif ForsakenBackpackExplicitlyClosed then
+        call Forsaken_HideInventory()
+        set visible=false
+    elseif visible then
+        // Observe the engine's live trio. Never manufacture an open state by
+        // showing cached frames; that produces the static copy without clocks.
+        set ForsakenCachedEquipment=gear
+        set ForsakenCachedBackdrop=backdrop
+        set ForsakenLinkedBag=bag
+        set ForsakenInventoryHero=hero
+        set ForsakenBackpackWanted=true
+    elseif now>=ForsakenInventoryBindUntil then
+        // B/mouse have already closed the real native view. Do not restore it.
+        set ForsakenBackpackWanted=false
+    endif
+    if now>=ForsakenInventoryBindUntil then
         set ForsakenInventoryBindPhase=0
     endif
-    set ForsakenBackpackWanted=visible
+    set gear=null
+    set backdrop=null
+    set bag=null
+    set hero=null
     return visible
 endfunction
 
@@ -226,6 +300,11 @@ function Forsaken_BackpackControls takes framehandle panel,framehandle anchor,bo
 endfunction
 
 function Forsaken_ResetBackpackControls takes nothing returns nothing
+    if ForsakenBackpackChatEvents!=null then
+        call DestroyTrigger(ForsakenBackpackChatEvents)
+        set ForsakenBackpackChatEvents=null
+    endif
+    set ForsakenBackpackChatOpen=false
     set ForsakenBackpackWanted=false
     set ForsakenBackpackExplicitlyClosed=false
     set ForsakenBackpackKeyHeld=false
@@ -291,9 +370,24 @@ function Forsaken_BackpackDebug takes nothing returns nothing
     set viewer=null
 endfunction
 
+function Forsaken_BackpackChatSubmitted takes nothing returns nothing
+    if GetLocalPlayer()==GetTriggerPlayer() then
+        set ForsakenBackpackChatOpen=false
+    endif
+endfunction
+
 function Forsaken_RegisterBackpackActivity takes nothing returns nothing
     local integer i=0
     call Forsaken_ResolveInventory()
+    if ForsakenBackpackChatEvents==null then
+        set ForsakenBackpackChatEvents=CreateTrigger()
+        call TriggerAddAction(ForsakenBackpackChatEvents,function Forsaken_BackpackChatSubmitted)
+        loop
+            exitwhen i>=8
+            call TriggerRegisterPlayerChatEvent(ForsakenBackpackChatEvents,Player(i),"",false)
+            set i=i+1
+        endloop
+    endif
     set ForsakenAttackCommand=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,3)
     if ForsakenBackpackDebugEvents==null then
         set ForsakenBackpackDebugEvents=CreateTrigger()
@@ -312,6 +406,7 @@ function Forsaken_RegisterBackpackActivity takes nothing returns nothing
         // an ability order, so TriggerRegisterCommandEvent misses mouse clicks.
         // Registration is shared; the callback changes local presentation only.
         call BlzTriggerRegisterFrameEvent(ForsakenBackpackToggleEvents,ForsakenBackpackCommand,FRAMEEVENT_CONTROL_CLICK)
+        call TriggerRegisterAnyUnitEventBJ(ForsakenBackpackToggleEvents,EVENT_PLAYER_UNIT_SPELL_CAST)
         call TriggerAddAction(ForsakenBackpackToggleEvents,function Forsaken_BackpackToggleAction)
     endif
     if ForsakenBackpackEvents==null then

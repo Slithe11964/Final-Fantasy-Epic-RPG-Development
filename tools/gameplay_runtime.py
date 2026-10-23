@@ -30,6 +30,9 @@ endfunction""")
         source=put(source,'Trig_Item_Stack_Pickup_Actions',"""function Trig_Item_Stack_Pickup_Actions takes nothing returns nothing
     call ItemStack_MergeUnit(GetTriggerUnit(),GetManipulatedItem())
 endfunction""")
+    if 'Trig_Item_Stack_Pickup_Actions' in fs:
+        from maidens_eye import refresh as carried_eye
+        source=carried_eye(source)
     if 'Trig_Gaya_GatherItems_CollectItemToHouse' in fs:
         source=dependency(source,'TItemStack')
         body=functions(source)['Trig_Gaya_GatherItems_Actions']
@@ -96,7 +99,7 @@ endfunction""")
             at=source.index('function Trig_Travel_Dialog_Click_Actions')
             helpers='\n\n'.join(b for n,b in functions(template).items() if n.startswith(('Travel_Hide','Travel_Show','Travel_Refresh')))
             source=source[:at]+helpers+'\n\n'+source[at:]
-        for name in ['Trig_Travel_Dialog_Click_Actions','Register_Travel_Dialog_Click']:
+        for name in ['Travel_Hide','Travel_Show','Travel_Refresh','Trig_Travel_Dialog_Click_Actions','Register_Travel_Dialog_Click']:
             source=put(source,name,functions(template)[name])
     if 'Warp_OnEnterPoint' in fs:
         source=put(source,'Warp_HideDialog',"""function Warp_HideDialog takes nothing returns nothing
@@ -109,6 +112,9 @@ endfunction""")
         source=put(source,'Trig_Quest_52_Scorching_TravelDialog_Rebuild',"""function Trig_Quest_52_Scorching_TravelDialog_Rebuild takes nothing returns nothing
     call Travel_Refresh()
 endfunction""")
+    if any(name in fs for name in ('Trig_Item_Stack_Pickup_Actions','Trig_HolyAnkh_Waygate_Conditions','Trig_Gate_WinterKey_Unlock_Cond_HasWinterKey','Trig_FillVial_Cast_Actions')):
+        from quest_carry import refresh as quest_keys
+        source=quest_keys(source)
     # Classic already uses Gear_Carried across its quests. Adapt native quick-only lookups.
     entries=json.loads((ROOT/'src/trigger-list.json').read_text(encoding='utf-8'))
     questlibs={e.get('library') for e in entries if e['folder']=='06 Quests and story'}

@@ -52,6 +52,19 @@ class PriestLegendaryTests(unittest.TestCase):
         self.assertEqual(hits,[('ally',250.),('edge',250.)]);self.assertEqual(destroyed,['group','timer'])
         self.assertFalse(e['udg_IsPureDamage']);self.assertFalse(e['udg_DmgFlagPure'])
 
+    def test_rain_never_revives_its_caster_but_other_priests_can_be_allies(self):
+        s=(ROOT/'experiments/Forsaken/PriestLegendary.j').read_text().split('// FUNCTIONS\n',1)[1]
+        casters=defaultdict(lambda:None,{0:'caster',1:'other'})
+        env=mocks(s);env.update(TalentRainCaster=casters,TalentRainRadius=defaultdict(lambda:600.),
+            GetPlayerId=lambda p:p,GetOwningPlayer=lambda u:0 if u=='caster' else 1,
+            Talent_LegendChoice=lambda u,c:u is not None,GetWidgetLife=lambda u:100.,
+            GetUnitCurrentOrder=lambda u:1,OrderId=lambda s:1,IsUnitAlly=lambda *a:True,
+            IsUnitType=lambda *a:False,UNIT_TYPE_STRUCTURE=0,GetUnitX=lambda u:0.,GetUnitY=lambda u:0.)
+        e=execute(s,['Talent_RainCanRevive'],env)
+        self.assertFalse(e['Talent_RainCanRevive']('caster'))
+        casters[1]=None
+        self.assertTrue(e['Talent_RainCanRevive']('other'))
+
     def test_rain_revives_hero_at_death_position_with_full_health_and_mana(self):
         s=self.source('Talents');restores=[];revives=[]
         env=mocks(s);env.update(Talent_RainCanRevive=lambda u:True,IsUnitType=lambda *a:True,UNIT_TYPE_HERO=0,

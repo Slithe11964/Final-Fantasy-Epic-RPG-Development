@@ -1,9 +1,4 @@
-Texture "BazaarPrepareHover" {
-    File "UI\Widgets\EscMenu\Human\human-options-button-highlight.blp",
-    AlphaMode "ADD",
-}
 Frame "SIMPLEBUTTON" "BazaarPrepareHitbox" {
     Width 0.215,
-    Height 0.033,
-    UseHighlight "BazaarPrepareHover",
+    Height 0.028,
 }

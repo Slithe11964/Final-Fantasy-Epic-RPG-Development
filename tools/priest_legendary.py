@@ -24,7 +24,7 @@ def refresh(source,*,native=False):
         if '"Healing Bolts"' not in body:body=body.replace('endfunction','''    set TalentName[Talent_Index(job,4,1)]="Healing Bolts"
     set TalentText[Talent_Index(job,4,1)]="Basic attacks heal every living ally along their path for 25% of health damage actually dealt."
     set TalentName[Talent_Index(job,4,2)]="Tranquility of Life"
-    set TalentText[Talent_Index(job,4,2)]="Allies killed inside your active Tranquility are revived where they died, with full health and mana."
+    set TalentText[Talent_Index(job,4,2)]="Other allies (not the caster) killed inside your active Tranquility are revived where they died, with full health and mana."
     set TalentName[Talent_Index(job,4,3)]="Prolonged Cleansing"
     set TalentText[Talent_Index(job,4,3)]="Esuna protects its target against new negative status ailments for 10 seconds."
 endfunction''')

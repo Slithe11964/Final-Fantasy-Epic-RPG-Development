@@ -100,7 +100,8 @@ def object_items(data,config,*,native=False):
             # equipped/quick-slot alias. Materia use their canonical identity.
             group=p.to_bytes(4,'big').decode('ascii') if p>1000000 else 'g'+format(p,'03X')
             setf(o,'icid',group,None,data=None)
-    return write_objects(table,table['version'],'w3t')
+    from quest_carry import objects as quest_objects
+    return quest_objects(write_objects(table,table['version'],'w3t'))
 
 
 def add_helpers(source,globals_,fragment):
@@ -488,11 +489,17 @@ endfunction'''
     set l_tempReal=1000.""",1)
         source=put(source,'Trig_Cooldown_Scaling_Actions',body)
     if 'Register_Item_Cooldown_Start' in fs:
+        name='Trig_Item_Cooldown_Start_Actions'
+        if name in functions(source):
+            body=functions(source)[name].replace('BlzGetAbilityCooldown(GetSpellAbilityId(),Abil_GetLevel(GetTriggerUnit(),GetSpellAbilityId()))','NativeCD_DurationForCast(GetTriggerUnit(),GetSpellAbilityId())')
+            source=put(source,name,body)
         fragment='function NativeCD_Data takes nothing returns nothing\n'
         for raw,pool in sorted(c['pool'].items()):fragment+=f"    call SaveInteger(NativeCDData,0,'{raw}',{pool})\n    call SaveBoolean(SharedItemCDTypes,0,'{raw}',true)\n"
         for raw,pool in sorted(c['item_pool'].items()):fragment+=f"    call SaveInteger(NativeCDData,1,'{raw}',{pool})\n"
         fragment+='endfunction\n'+(HERE/'SharedItemCooldown.j').read_text()
         source=add_helpers(source,'    hashtable NativeCDData=InitHashtable()\n    timer NativeCDClock=CreateTimer()',fragment)
+        from priest_ultimate import declarations
+        source=declarations(source,['timer NativeCDCommitTimer=CreateTimer()','integer NativeCDCommitCount=0','unit array NativeCDCommitCaster','integer array NativeCDCommitRaw','real array NativeCDCommitDuration','real array NativeCDCommitTime','boolean array NativeCDCommitCategory'])
         for name in functions(fragment):source=re.sub(r'^function '+name+r' takes[^\n]*\n.*?^endfunction\n*','',source,flags=re.M|re.S)
         position=re.search(r'^function ',source,re.M).start()
         source=source[:position]+'\n\n'.join(body.strip() for body in functions(fragment).values())+'\n\n'+source[position:]

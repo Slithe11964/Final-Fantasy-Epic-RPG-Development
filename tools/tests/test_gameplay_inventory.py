@@ -100,9 +100,9 @@ class GameplayTests(unittest.TestCase):
         self.assertFalse(e['Carry_Worn']('hero','I0A7'))
 
     def test_complete_travel_pages_are_ordered_and_independent_for_players(self):
-        source=(HERE/'TravelPages.j').read_text();dialogs=defaultdict(list);serial=[0];event={};moved=[]
+        source=(HERE/'TravelPages.j').read_text();dialogs=defaultdict(list);serial=[0];event={};moved=[];hotkeys={}
         def add(dialog,text,hotkey):
-            serial[0]+=1;button=serial[0];dialogs[dialog].append((button,text));return button
+            serial[0]+=1;button=serial[0];dialogs[dialog].append((button,text));hotkeys[button]=hotkey;return button
         env=dict(TravelDialog={0:'p0',1:'p1'},TravelChoice=defaultdict(lambda:None),
             TravelPage=defaultdict(int),TravelVisible=defaultdict(bool),
             TravelOrder=dict(enumerate([1,2,3,5,12,6,4,8,7,10,9,11,13],1)),
@@ -120,10 +120,16 @@ class GameplayTests(unittest.TestCase):
             PanCameraToTimed=lambda *a:None)
         e=execute(source,['Travel_Hide','Travel_Show','Trig_Travel_Dialog_Click_Actions'],env)
         e['Travel_Show'](0,0)
-        self.assertEqual([t for _,t in dialogs['p0']],['Kalm','Guardia','Barrens','Northern','Shipyard','Central','Farm','Loth','Naga','Dark Dragon','Next page','Cancel'])
+        self.assertEqual([t for _,t in dialogs['p0']],['Kalm','Guardia','Barrens','Northern','Shipyard','Central','Farm','Loth','Naga','Dark Dragon Marsh [J]','Next page [D]','Cancel [Esc]'])
         first=list(dialogs['p0']);e['Travel_Show'](1,1)
-        self.assertEqual([t for _,t in dialogs['p1']],['Icy','Elysium','Arena','Previous page','Cancel'])
+        self.assertEqual([t for _,t in dialogs['p1']],['Icy','Elysium','Arena of Darkness [O]','Previous page [A]','Cancel [Esc]'])
         self.assertEqual(dialogs['p0'],first)
+        self.assertEqual(hotkeys[e['TravelChoice'][14]],68)
+        self.assertEqual(hotkeys[e['TravelChoice'][16+15]],65)
+        self.assertEqual(hotkeys[e['TravelChoice'][0]],512)
+        event.update(player=1,button=e['TravelChoice'][16]);e['Trig_Travel_Dialog_Click_Actions']()
+        self.assertFalse(e['TravelVisible'][1]);self.assertTrue(e['TravelVisible'][0]);self.assertFalse(moved)
+        e['Travel_Show'](1,1)
         event.update(player=0,button=e['TravelChoice'][12]);e['Trig_Travel_Dialog_Click_Actions']()
         event.update(player=1,button=e['TravelChoice'][16+13]);e['Trig_Travel_Dialog_Click_Actions']()
         self.assertEqual(moved,[(('hero',0),120),(('hero',1),130)])

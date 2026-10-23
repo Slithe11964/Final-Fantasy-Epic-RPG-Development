@@ -5,7 +5,7 @@ endfunction
 function SharedItemCD_Duration takes unit caster,integer raw returns real
     local real scale=1000.
     local integer level=Abil_GetLevel(caster,raw)
-    if GetUnitAbilityLevel(caster,'Avul')>0 or raw=='A0C6' or raw=='A0C7' then
+    if GetUnitAbilityLevel(caster,'Avul')>0 then
         return RMaxBJ(0.,BlzGetAbilityCooldown(raw,level))
     endif
     if GetUnitAbilityLevel(caster,'A1C3')>0 then

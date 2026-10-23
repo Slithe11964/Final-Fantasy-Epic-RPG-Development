@@ -12,7 +12,7 @@ FORBIDDEN={
     'BlzFrameGetChildrenCount','BlzCreateFrame','BlzCreateFrameByType',
     'BlzCreateSimpleFrame','BlzDestroyFrame','BlzFrameClick','CreateTrigger',
     'DestroyTrigger','CreateGroup','CreateTimer','InitHashtable','CreateUnit',
-    'CreateItem','GetRandomInt','GetRandomReal','IssueImmediateOrder',
+    'CreateImage','DestroyImage','CreateItem','GetRandomInt','GetRandomReal','IssueImmediateOrder',
     'IssuePointOrder','IssueTargetOrder','UnitAddAbility','UnitRemoveAbility',
     'SetUnitState','SetWidgetLife','SetPlayerTechResearched'}
 
@@ -75,10 +75,27 @@ class BackpackSyncTests(unittest.TestCase):
         state['now']=13.;e['Forsaken_RequestBackpackToggle'](2)
         self.assertFalse(poll(13.1))
         visibility.update(gear=True,bag=True,backdrop=True)
-        self.assertTrue(poll(13.2))
+        self.assertTrue(poll(13.3))
         other,_,other_visibility,*_=clients[1]
         self.assertFalse(other['ForsakenBackpackWanted'])
         self.assertFalse(other_visibility['gear'] or other_visibility['bag'])
+
+    def test_other_players_open_cannot_close_local_bag_or_change_manual_intent(self):
+        e,state,visibility,_,_,_,poll,_=fixtures.BackpackVisibilityTests().runtime()
+        e['Player_GetHero']=lambda p:'hero'+str(p)
+        owner=[0]
+        e['GetOwningPlayer']=lambda u:owner[0]
+        e['GetTriggerUnit']=lambda:'hero'+str(owner[0])
+        visibility.update(gear=True,bag=True,backdrop=True)
+        self.assertTrue(poll(10.))
+        before=e['ForsakenBackpackRequests']
+        owner[0]=1
+        e['Forsaken_BackpackToggleAction']()
+        # Another player's callback cannot change this client's native panes.
+        self.assertTrue(poll(11.))
+        self.assertTrue(e['ForsakenBackpackWanted'])
+        self.assertEqual(e['ForsakenBackpackRequests'],before)
+        self.assertTrue(visibility['gear'] and visibility['bag'] and visibility['backdrop'])
 
     def test_binding_and_close_controls_do_not_walk_native_children_or_click(self):
         fs=functions(HELPER)

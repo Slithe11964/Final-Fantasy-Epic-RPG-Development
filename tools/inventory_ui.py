@@ -46,9 +46,22 @@ endfunction'''
 
 def refresh(source):
     fs=functions(source)
+    if 'Cine_Enter' in fs and 'Cine_Exit' in fs:
+        import re
+        if 'boolean InventoryCinematicActive=' not in source:
+            source=source.replace('endglobals','    boolean InventoryCinematicActive=false\nendglobals',1)
+        for name,mode in [('Cine_Enter','true'),('Cine_Exit','false')]:
+            body=functions(source)[name]
+            if 'set InventoryCinematicActive=' not in body:
+                body=re.sub(r'(?m)^(\s*set udg_InCinematicMode\s*=\s*'+mode+r'[^\S\n]*)$',r'\1\n    set InventoryCinematicActive='+mode,body)
+            source=put(source,name,body)
+        return source
     if 'Forsaken_PollPanels' not in fs:return source
+    source=source.replace('udg_InCinematicMode or bj_cineModeAlreadyIn','InventoryCinematicActive')
     declarations={
         'boolean ForsakenBackpackWanted=false':'ForsakenBackpackWanted',
+        'boolean ForsakenBackpackChatOpen=false':'ForsakenBackpackChatOpen',
+        'trigger ForsakenBackpackChatEvents=null':'ForsakenBackpackChatEvents',
         'boolean ForsakenBackpackExplicitlyClosed=false':'ForsakenBackpackExplicitlyClosed',
         'integer ForsakenBackpackCloses=0':'ForsakenBackpackCloses',
         'integer ForsakenBackpackRequests=0':'ForsakenBackpackRequests',
@@ -153,6 +166,9 @@ def refresh(source):
     if 'OSKEY_B,0,true' not in body:
         line='        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_ESCAPE,0,true)'
         body=body.replace(line,line+'\n        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_B,0,true)',1)
+    for modifier in range(16):
+        line=f'        call BlzTriggerRegisterPlayerKeyEvent(gg_trg_Forsaken_PanelAccess,Player(i),OSKEY_RETURN,{modifier},true)'
+        if line not in body:body=body.replace('        set i=i+1',line+'\n        set i=i+1',1)
     # A held key repeats key-down events. Releases with modifiers must also
     # clear the latch (including Alt held while switching windows).
     for modifier in range(16):
@@ -166,6 +182,23 @@ def refresh(source):
         body=body.replace('elseif BlzGetTriggerFrame()==ForsakenPanelClose then\n            set ForsakenPanelOpen=false','elseif BlzGetTriggerFrame()==ForsakenPanelClose then\n            set ForsakenTalentsWanted=false\n            set ForsakenPanelOpen=false')
         source=put(source,name,body)
     name='Forsaken_PollPanels';body=functions(source)[name]
+    if 'if InventoryCinematicActive then' not in body:
+        guard='''    if InventoryCinematicActive then
+        call BlzFrameSetVisible(ForsakenTalentToggle,false)
+        call BlzFrameSetVisible(ForsakenTalentRoot,false)
+        call BlzFrameSetVisible(ForsakenInspectRoot,false)
+        call BlzFrameSetVisible(ForsakenInspectButton,false)
+        call BlzFrameSetVisible(ForsakenBackpackClose,false)
+        call BlzFrameSetVisible(ForsakenLinkedBagClose,false)
+        set anchor=null
+        set nativePanel=null
+        set hero=null
+        set viewer=null
+        return
+    endif
+'''
+        pos=body.index('    set nativePanel=ForsakenCachedEquipment')
+        body=body[:pos]+guard+body[pos:]
     body=body.replace('anchor,FRAMEPOINT_TOPRIGHT,-.010,-.010','anchor,FRAMEPOINT_TOPRIGHT,-.010,-.042')
     marker='    call BlzFrameSetVisible(ForsakenTalentRoot,ForsakenPanelOpen and not ForsakenPanelNeedsRefresh)'
     if 'set ForsakenPanelOpen=visible and ForsakenTalentsWanted' not in body:

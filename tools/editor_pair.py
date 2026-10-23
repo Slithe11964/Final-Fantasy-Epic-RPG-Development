@@ -569,6 +569,12 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     modules={lib:bazaar_layout(s,native=native) for lib,s in modules.items()}
     from talent_selection_ui import refresh as talent_selection_ui
     modules={lib:talent_selection_ui(s,native=native) for lib,s in modules.items()}
+    from equipment_quickcast import refresh as quickcast_ui
+    modules={lib:quickcast_ui(s,integrity_config,native=native) for lib,s in modules.items()}
+    from channel_casting import refresh as channel_casting_refresh
+    modules={lib:channel_casting_refresh(s) for lib,s in modules.items()}
+    from runtime_stability import refresh as stability_refresh
+    modules={lib:stability_refresh(s,native=native) for lib,s in modules.items()}
     derived={}
     if native and (any(base.object_bytes(n)!=edited.object_bytes(n) for n in
                       ('war3map.w3a','war3map.w3t','war3map.w3u','war3mapSkin.w3a','war3mapSkin.w3t','war3mapSkin.w3u')) or
@@ -630,6 +636,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     for name in ('war3map.w3a','war3mapSkin.w3a'):
         data=replacements.get(name) or profile.object_bytes(name)
         if data:replacements[name]=legendary_objects(navigation_objects(inventory_objects(calculation_objects(damage_abilities(priest_objects(proficiency_objects(refresh_job_objects(data),proficiencies),priest_config),damage_config),calculations),native=native)))
+    from maidens_eye import objects as maiden_eye_ability
+    replacements['war3map.w3a']=maiden_eye_ability(replacements['war3map.w3a'])
     from channel_defaults import complete as complete_channel_defaults
     replacements['war3map.w3a'],channel_skin=complete_channel_defaults(replacements['war3map.w3a'],replacements.get('war3mapSkin.w3a'))
     if channel_skin:replacements['war3mapSkin.w3a']=channel_skin
@@ -654,6 +662,11 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
     if native:
         for resource in ('BazaarPrepare.fdf','BazaarPrepare.toc'):
             replacements['war3mapImported/'+resource]=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/BazaarPrepare'/resource).read_bytes()
+    if native:
+        for resource in ('QuickGear.fdf','QuickGear.toc'):
+            replacements['war3mapImported/'+resource]=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/QuickGearUI'/resource).read_bytes()
+        from quickgear_wheel import add_assets as add_wheel_assets
+        add_wheel_assets(replacements,profile.archive)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

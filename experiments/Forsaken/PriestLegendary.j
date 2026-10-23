@@ -56,6 +56,9 @@ function Talent_RainCanRevive takes unit target returns boolean
     local unit caster
     local real dx
     local real dy
+    if target==TalentRainCaster[GetPlayerId(GetOwningPlayer(target))] then
+        return false
+    endif
     loop
         exitwhen pid>=8
         set caster=TalentRainCaster[pid]

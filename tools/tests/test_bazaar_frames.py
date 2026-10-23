@@ -19,18 +19,22 @@ def frame_runtime():
         return handle
     def prop(handle, key, value):
         frames[handle][key] = value
-    e.update(BazaarFrameCraftHit=defaultdict(lambda:None), BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,BazaarFrameEscape=None,
+    e.update(BazaarFrameCraftHover=defaultdict(lambda:None),BazaarFrameCraftHit=defaultdict(lambda:None),
+             BlzGetTriggerFrameEvent=lambda:'FRAMEEVENT_CONTROL_CLICK', BazaarUseFrames=True, BazaarFrameRoot=None, BazaarFrameHeading=None,BazaarFrameEscape=None,
              BazaarFrameNext=None, BazaarFramePrevious=None, BazaarFrameClose=None,
              GetLocalPlayer=lambda: 0, GetTriggerPlayer=lambda: 0,
              S2I=int, I2R=float, ModuloInteger=lambda a, b: a % b,
              BlzGetOriginFrame=lambda *args: 0,
              BlzGetFrameByName=lambda *args: 0,
              BlzCreateFrame=create, BlzCreateFrameByType=create, BlzCreateSimpleFrame=create,
+             BlzFrameGetChild=lambda h,index:create('HIGHLIGHT',h,index),
              BlzLoadTOCFile=lambda *a:True,
              BlzFrameSetVisible=lambda h, v: prop(h, 'visible', v),
              BlzFrameSetText=lambda h, v: prop(h, 'text', v),
              BlzFrameSetSize=lambda h, x, y: prop(h, 'size', (x, y)),
              BlzFrameSetAbsPoint=lambda h, p, x, y: prop(h, 'abs', (p, x, y)),
+             BlzFrameSetAllPoints=lambda h,parent:prop(h,'allpoints',parent),
+             BlzFrameSetTexture=lambda h,path,*a:prop(h,'texture',path),
              BlzFrameSetPoint=lambda h, *args: prop(h, 'point', args),
              BlzSendSyncData=lambda prefix, packet: packets.append((prefix, packet)),
              CreateTrigger=lambda: {'events': [], 'actions': []},
@@ -39,7 +43,7 @@ def frame_runtime():
     for constant in ['ORIGIN_FRAME_GAME_UI', 'FRAMEPOINT_CENTER', 'FRAMEPOINT_TOP',
                      'FRAMEPOINT_TOPLEFT', 'FRAMEPOINT_TOPRIGHT', 'FRAMEPOINT_BOTTOM',
                      'FRAMEPOINT_BOTTOMLEFT', 'FRAMEEVENT_CONTROL_CLICK',
-                     'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT',
+                     'FRAMEEVENT_MOUSE_ENTER','FRAMEEVENT_MOUSE_LEAVE', 'TEXT_JUSTIFY_MIDDLE', 'TEXT_JUSTIFY_CENTER', 'TEXT_JUSTIFY_TOP', 'TEXT_JUSTIFY_LEFT',
                      'EVENT_PLAYER_END_CINEMATIC']:
         e[constant] = constant
     names = ['Bazaar_AllIngredients', 'Bazaar_MarkPageText', 'Bazaar_IngredientPageText', 'BazaarFrame_Show', 'BazaarFrame_Hide',

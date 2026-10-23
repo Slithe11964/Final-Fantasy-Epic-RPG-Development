@@ -15,17 +15,18 @@ class BazaarLayoutTests(unittest.TestCase):
             e,_,_,_,_,frames,_=fixtures.frame_runtime()
         for slot in range(3):
             card=frames[e['BazaarFrameCard'][slot]];button=frames[e['BazaarFrameCraft'][slot]]
-            self.assertEqual(card['size'],(.245,.425))
-            self.assertEqual(button['size'],(.215,.033))
-            self.assertEqual(button['point'][-1],.007)
+            self.assertEqual(card['size'],(.245,.375))
+            self.assertEqual(button['size'],(.215,.028))
+            self.assertEqual(button['point'][-1],.008)
             self.assertEqual(frames[e['BazaarFrameParts'][slot]]['size'],(.189,.235))
         self.assertNotIn('BlzGetFrameByName("ConsoleUIBackdrop",0)',updated)
         for slot in range(3):
             hit=frames[e['BazaarFrameCraftHit'][slot]]
             card=frames[e['BazaarFrameCard'][slot]]
-            self.assertEqual(hit['size'],(.215,.033))
+            self.assertEqual(hit['size'],(.215,.028))
+            self.assertEqual(frames[e['BazaarFrameCraftHover'][slot]]['kind'],'HIGHLIGHT')
             self.assertAlmostEqual(hit['abs'][1],card['abs'][1]+.245/2)
-            self.assertAlmostEqual(hit['abs'][2],card['abs'][2]-.425+.007)
+            self.assertAlmostEqual(hit['abs'][2],card['abs'][2]-.375+.008)
         e['BazaarFrame_Show'](0)
         self.assertTrue(all(frames[e['BazaarFrameCraftHit'][s]]['visible'] for s in range(3)))
         e['BazaarFrame_Hide'](0)
@@ -33,6 +34,24 @@ class BazaarLayoutTests(unittest.TestCase):
         self.assertNotIn('BlzFrameSetVisible(origin,false)',updated)
         self.assertEqual(refresh(updated,native=True),updated)
         self.assertEqual(refresh(original,native=False),original)
+
+    def test_hover_covers_full_prepare_area_without_sync_or_spending(self):
+        updated=refresh(fixtures.SOURCE.read_text(),native=True)
+        class Source:
+            def read_text(self,**kwargs):return updated
+        with patch.object(fixtures,'SOURCE',Source()):
+            e,data,pool,money,created,frames,packets=fixtures.frame_runtime()
+        e['BazaarFrame_Show'](0)
+        for slot in range(3):
+            e['BlzGetTriggerFrame']=lambda slot=slot:e['BazaarFrameCraftHit'][slot]
+            for event,visible in [('FRAMEEVENT_MOUSE_ENTER',True),('FRAMEEVENT_MOUSE_LEAVE',False)]:
+                e['BlzGetTriggerFrameEvent']=lambda event=event:event
+                e['BazaarFrame_OnClick']()
+                self.assertEqual(frames[e['BazaarFrameCraftHover'][slot]]['visible'],visible)
+        self.assertFalse(packets or created)
+        top=[frames[e[name]]['abs'][2] for name in ['BazaarFramePrevious','BazaarFrameNext','BazaarFrameClose']]
+        self.assertEqual(top,[.55,.55,.55])
+        self.assertEqual(frames[e['BazaarFramePrice'][0]]['point'][-1],.042)
 
     def test_click_areas_send_existing_validated_recipe_packets_only(self):
         updated=refresh(fixtures.SOURCE.read_text(),native=True)

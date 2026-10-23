@@ -1,0 +1,25 @@
+Frame "SIMPLEFRAME" "QuickGearDock" {
+    Width 0.040,
+    Height 0.086,
+}
+Frame "SIMPLEBUTTON" "QuickGearItemButton" {
+    Width 0.040,
+    Height 0.040,
+    Texture "QuickGearItemImage" {
+        File "ReplaceableTextures\CommandButtons\BTNBackpack.blp",
+    }
+    String "QuickGearItemKey" {
+        Anchor TOPLEFT, 0.002, -0.001,
+        Font "Fonts\FRIZQT__.TTF", 0.010,
+        Text "",
+    }
+}
+Frame "SIMPLEFRAME" "QuickGearClockFace" {
+    Width 0.040,
+    Height 0.040,
+    Layer "BACKGROUND" {
+        Texture "QuickGearWheelTexture" {
+            File "war3mapImported\QuickGearWheelCD00.tga",
+        }
+    }
+}

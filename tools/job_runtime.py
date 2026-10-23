@@ -73,7 +73,7 @@ endfunction'''
             body=body.replace('    call ConditionalTriggerExecute(gg_trg_Chemist_TakeItem)', '    call ConditionalTriggerExecute(gg_trg_Chemist_TakeItem)\n    set l_tempItemId=udg_TempItemId')
         source=put(source,'Trig_Chemist_NoxiousMixture_Actions',body)
         source=source.replace('call Medicine_ApplyTimed(GetSpellTargetUnit(),true)','call Medicine_ApplyTimed(udg_TempUnit2,true)')
-    for name in ['Trig_Myriad_Arrows_Actions','Trig_Meteor_Cast_Actions','Trig_Spell_Meteor_Wide_Actions']:
+    for name in ['Trig_Myriad_Arrows_Actions','Trig_Meteor_Cast_Actions','Trig_Spell_Meteor_Wide_Actions','Trig_Spell_TerraBreak_Actions']:
         if name in fs:
             # h01B already has an invisible model and Locust. Hidden units cannot channel.
             body=fs[name]
