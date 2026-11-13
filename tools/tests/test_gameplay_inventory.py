@@ -111,7 +111,7 @@ class GameplayTests(unittest.TestCase):
             udg_TravelHotkey=defaultdict(int),GetPlayerId=lambda p:p,I2S=str,IMaxBJ=max,
             DialogClear=lambda d:dialogs[d].clear(),DialogSetMessage=lambda *a:None,
             DialogAddButton=add,DialogDisplay=lambda *a:None,
-            GetClickedButton=lambda:event['button'],GetTriggerPlayer=lambda:event['player'],
+            GetTriggerEventId=lambda:0,EVENT_PLAYER_END_CINEMATIC=1,GetClickedButton=lambda:event['button'],GetTriggerPlayer=lambda:event['player'],
             Player_GetHero=lambda p:('hero',p),GetLocalPlayer=lambda:0,
             udg_TravelX={i:i*10 for i in range(1,14)},udg_TravelY={i:i*20 for i in range(1,14)},
             udg_WarpEnterTrigger='warp',udg_InCinematicMode=False,

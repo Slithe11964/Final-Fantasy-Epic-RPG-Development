@@ -11,9 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mpq import MPQ
 from objdata import read_objects
 import backpack_catalog as catalog
+import talents_catalog
 
 ROOT = Path(__file__).resolve().parents[2]
-MAPS = sorted((ROOT / 'release').glob('FFERPG_*-stageAS*.w3x'))
+MAPS = [ROOT / 'tools/tests/fixtures/FFERPG_0.9.7.3-r16-stageAS.w3x']
 NEW_ABILITIES = {catalog.BACKPACK, catalog.RETURN}
 
 
@@ -44,6 +45,11 @@ class BackpackCatalogTests(unittest.TestCase):
         abilities = read_objects(self.archive.read('war3map.w3a'), 'w3a')
         units = read_objects(self.archive.read('war3map.w3u'), 'w3u')
         items = read_objects(self.archive.read('war3map.w3t'), 'w3t')
+        talents_catalog.prepare(abilities)
+        talents = next(obj for obj in abilities['custom'] if obj['id'] == catalog.TALENTS)
+        for group in talents['sets']:
+            for mod in group['mods']:
+                self.known.setdefault(('w3a', mod['field']), set()).add(mod['type'])
         catalog.prepare_abilities(abilities)
         catalog.prepare_holder(units)
         catalog.prepare_locked_item(items, None)

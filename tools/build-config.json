@@ -1,5 +1,5 @@
 {
-  "base": "baseline/Reforged/FFERPG_0.9.7.3-r16.w3x",
+  "base": "release/FFERPG_0.9.7.3-r16.w3x",
   "base_sha256": "45767f6608f38d1235360dcbb818a2da6812f26fb96edc062f734af871123da7",
   "prefix": "FFERPG_0.9.7.3-r16-stage",
   "title": "Final Fantasy Epic RPG 0.9.7.3-r16",

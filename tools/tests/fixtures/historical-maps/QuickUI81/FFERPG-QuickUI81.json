@@ -1,0 +1,110 @@
+{
+  "base": "C:\\Users\\jaked\\WarcraftMapExtractor\\FFERPG\\release\\development\\QuickUI80\\FFERPG-QuickUI80.w3x",
+  "output": "C:\\Users\\jaked\\WarcraftMapExtractor\\FFERPG\\release\\development\\QuickUI81\\FFERPG-QuickUI81.w3x",
+  "sha256": "24859742260a338836dacbe41553f882a65a248dcb15c679effcffd6f6ad219f",
+  "changed_modules": [
+    "TDamage",
+    "TRegen"
+  ],
+  "changed_functions": [
+    "DG_Area",
+    "SpellCalc_Data13",
+    "SpellCalc_Data2"
+  ],
+  "new_functions": [
+    "DG_AccuracyMultiplier"
+  ],
+  "armory_tooltips": [
+    [
+      "n0NA",
+      "Storm Lance"
+    ],
+    [
+      "n0LZ",
+      "Halberd of Justice"
+    ],
+    [
+      "n0LQ",
+      "Holy Lance"
+    ],
+    [
+      "n0LK",
+      "Longinus"
+    ],
+    [
+      "n0L1",
+      "Shimmering Spear"
+    ],
+    [
+      "n0JR",
+      "Heroic Lance"
+    ],
+    [
+      "n0I6",
+      "Short Lance"
+    ],
+    [
+      "n0I5",
+      "Wildfire Spear"
+    ],
+    [
+      "n0HM",
+      "Zodiac Spear"
+    ],
+    [
+      "n0HC",
+      "Trident"
+    ],
+    [
+      "n0GO",
+      "Poison Spear"
+    ],
+    [
+      "n0NA",
+      "Storm Lance"
+    ],
+    [
+      "n0LZ",
+      "Halberd of Justice"
+    ],
+    [
+      "n0LQ",
+      "Holy Lance"
+    ],
+    [
+      "n0LK",
+      "Longinus"
+    ],
+    [
+      "n0L1",
+      "Shimmering Spear"
+    ],
+    [
+      "n0JR",
+      "Heroic Lance"
+    ],
+    [
+      "n0I6",
+      "Short Lance"
+    ],
+    [
+      "n0I5",
+      "Wildfire Spear"
+    ],
+    [
+      "n0HM",
+      "Zodiac Spear"
+    ],
+    [
+      "n0HC",
+      "Trident"
+    ],
+    [
+      "n0GO",
+      "Poison Spear"
+    ]
+  ],
+  "sonic_maxrank": 11,
+  "formula": "max(0, 1 + 0.02 x (Accuracy - target Evasion))",
+  "notes": "House-only10%HP/MPpersecond; fountain unchanged. Drakes/Rise base damage including spear scaling multiplied by accuracy-evasion factor, clamped to zero to prevent negative damage healing. Sonic200MPmaxrank only; Jump300radius. Armoryunit+research+cappedproficiency tooltipcopies updated. No inventory/input/preview/timer changes. Dragoon-test only."
+}

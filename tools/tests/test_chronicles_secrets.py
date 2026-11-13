@@ -19,7 +19,7 @@ import savecode
 TITLES = ROOT / 'src/triggers/09 Player features/Titles.j'
 TITLE = TITLES.with_name('Title.j')
 LOOT = ROOT / 'src/triggers/05 Items crafting and shops/Loot.j'
-BASE = ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'
+BASE = ROOT / 'release/FFERPG_0.9.7.3-r16.w3x'
 ITEMS = ['I0EI', 'I0EF', 'I0EG', 'I0EJ', 'I0EH', 'I0EM', 'I0EK', 'I0EL', 'I0EO', 'I0EN']
 
 
@@ -55,7 +55,7 @@ def runtime():
              'Trig_Loot_MonsterDrop_HasItemOfType', 'Loot_HasMonographBonus',
              'Trig_Loot_MonsterDrop_Cond_MonographBonus', 'Trig_Loot_EssenceDrop_HasMonograph',
              'Trig_Loot_EssenceDrop_Cond_DoubleEssenceCharges', 'Trig_Loot_MonsterDrop_PickDropItem']
-    e.update(GetForLoopIndexA=lambda: live['bj_forLoopAIndex'],
+    e.update(udg_PlayerHouse=defaultdict(lambda:None,{1:(0,'house'),2:(1,'house')}),GetTriggerEventId=lambda:0,EVENT_PLAYER_UNIT_DROP_ITEM=1,GetForLoopIndexA=lambda: live['bj_forLoopAIndex'],
              GetLocalPlayer=lambda: live['viewer'],
              GetTriggerUnit=lambda: live['picked_unit'], GetManipulatedItem=lambda: live['picked_item'],
              GetItemTypeId=lambda item: item or '',
@@ -110,11 +110,40 @@ class ChronicleTests(unittest.TestCase):
         e['Chronicles_MonographPickup']()  # discarded by an earlier ownership check
         e['Chronicles_RecordMonograph'](0, 'I045')
         e['Chronicles_RecordMonograph'](2, ITEMS[0])  # not a playing player
-        self.assertFalse(e['ChroniclesMonographCount'])
+        self.assertEqual(e['ChroniclesMonographCount'][1],1)
         e['inventory'][(1, 'gaya')] = ITEMS[:6]
         e['Chronicles_CheckInventory'](1)
         self.assertEqual(e['ChroniclesMonographCount'][2], 6)
         self.assertNotIn(1, e['udg_TitleForce'][59])
+
+    def test_monographs_count_from_last_backpack_slot_and_are_not_lost_on_drop(self):
+        e=runtime()
+        holder=(0,'bag-last')
+        e['BackpackHolder'][6]=holder
+        e['inventory'][holder]=[None]*5+[ITEMS[0]]
+        e['Chronicles_CheckInventory'](0)
+        self.assertEqual(e['ChroniclesMonographCount'][1],1)
+        e['inventory'][holder]=[]
+        e['Chronicles_CheckInventory'](0)
+        self.assertEqual(e['ChroniclesMonographCount'][1],1)
+        e['picked_unit']=holder;e['picked_item']=ITEMS[1]
+        e['GetTriggerEventId']=lambda:1
+        e['Chronicles_MonographPickup']()
+        self.assertEqual(e['ChroniclesMonographCount'][1],2)
+
+    def test_native_last_bag_and_equipment_slots_and_house_are_counted(self):
+        e=runtime()
+        packed=MPQ(str(ROOT/'release/development/QuickUI35/FFERPG-QuickUI35-Forsaken.w3x'))
+        body=functions(packed.read('war3map.j').decode())['Chronicles_CheckInventory']
+        e.update(BlzUnitItemInBagSlot=lambda u,i:ITEMS[0] if i==29 else None,
+                 BlzUnitItemInEquipmentSlot=lambda u,i:ITEMS[1] if i==8 else None,
+                 ConvertLoadoutSlot=lambda i:i)
+        e['inventory'][(0,'house')]=[ITEMS[2]]
+        e=execute(body,['Chronicles_CheckInventory'],e)
+        e['Chronicles_CheckInventory'](0)
+        self.assertEqual(e['ChroniclesMonographCount'][1],3)
+        e['Chronicles_CheckInventory'](0)
+        self.assertEqual(e['ChroniclesMonographCount'][1],3)
 
     def test_counters_count_titles_not_weighted_ability_levels(self):
         e = runtime()

@@ -1,0 +1,17 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+
+Frame "BACKDROP" "TravelDialogBackdrop" {
+    DecorateFileNames,
+    BackdropTileBackground,
+    BackdropBackground "EscMenuBackground",
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize 0.048,
+    BackdropBackgroundSize 0.128,
+    BackdropBackgroundInsets 0.01 0.01 0.01 0.01,
+    BackdropEdgeFile "EscMenuBorder",
+    BackdropBlendAll,
+}
+
+Frame "TEXT" "TravelDialogTitle" INHERITS "EscMenuTitleTextTemplate" {
+    UseActiveContext,
+}

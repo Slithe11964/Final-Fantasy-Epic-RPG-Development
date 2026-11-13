@@ -1,0 +1,14 @@
+{
+  "source": "C:\\Users\\jaked\\WarcraftMapExtractor\\FFERPG\\editor\\FFERPG-Editor-Master.w3x",
+  "source_sha256": "f7108fa827f36f0c73773308b0d464c468c14a2ff3b58b5afde25f492e4a4e7e",
+  "output": "C:\\Users\\jaked\\WarcraftMapExtractor\\FFERPG\\editor\\FFERPG-Editor-Recovery01.w3x",
+  "output_sha256": "fd557d37f0a43b7e010bc8cf3b5d6b1cd3656ef4f6ed8703c8e3502120b777c5",
+  "trigger_count": 747,
+  "variable_count": 576,
+  "changed": [
+    "WTG version7 / WCT version1 containers",
+    "map-list header"
+  ],
+  "preserved": "All trigger code, states and variables; runtime, objects, terrain, units, doodads, scenario, imports and other named resources byte-identical.",
+  "acceptance": "Opening in World Editor is unverified. Diagnostic recovery copy; master unchanged."
+}

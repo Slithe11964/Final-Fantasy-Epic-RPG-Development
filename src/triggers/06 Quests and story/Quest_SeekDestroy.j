@@ -19,7 +19,7 @@ function QuestSeekDestroy_Started takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
+
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
     set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
@@ -30,7 +30,7 @@ function QuestSeekDestroy_Started takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
+
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
     set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)
@@ -41,7 +41,7 @@ function QuestSeekDestroy_Started takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SeekerLeaders)
     call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-    call UnitAddAbilityBJ('A102',GetLastCreatedUnit()) // 'A102': ability "!Teleport"
+
     // A random whole number from 1 through LoadIntegerBJ(4, 2, udg_SpawnDataHashRef).
     set l_tempPoint=GetRandomLocInRect(LoadRectHandleBJ(GetRandomInt(1,LoadIntegerBJ(4,2,udg_SpawnDataHashRef)),4,udg_SpawnRectHashRef))
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",l_tempPoint)

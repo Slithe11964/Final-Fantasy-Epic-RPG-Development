@@ -112,7 +112,7 @@ class PriestLegendaryTests(unittest.TestCase):
         for name in ['Talents','Prof','Damage','Hero_Death','Regen','Missile']:
             s=self.source(name);self.assertEqual(refresh(refresh(s)),refresh(s),name)
         reference=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not reference.exists():reference=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not reference.exists():reference=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         v=View(reference);data=objects(v.object_bytes('war3map.w3a'));self.assertEqual(objects(data),data)
         obj=next(o for o in read_objects(data,'w3a')['custom'] if o['id']=='pRiv');self.assertEqual(obj['base'],'AHre')
 

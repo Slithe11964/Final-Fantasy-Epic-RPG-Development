@@ -126,7 +126,7 @@ function Trig_DefiledFountain_BulbPickup_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Thunderbloom Bulb to Feanor.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Thunderbloom Bulb to Feanor.")
     call DestroyForce(l_tempForce)
     call ExecuteFunc("QuestFountain_BulbTaken") // the quest log: "Bring the Thunderbloom Bulb to Feanor."
     set l_tempForce=null

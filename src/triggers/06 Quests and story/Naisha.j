@@ -66,7 +66,7 @@ function Trig_Naisha_Recruit_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     call CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED,"|cff00ffffNaisha","Naisha, night elf huntress from the world of Azeroth, is on the search for clues on where her fellow night elf sisters may have gone, and on how to get back to her own world. Use her strength to reach places and people she may be able to get information from! Be careful so that she does not die.","ReplaceableTextures\\CommandButtons\\BTNHuntress.blp")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Naisha|r")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00Naisha|r")
     set udg_SideQuest[17]=GetLastCreatedQuestBJ()
     call DisplayTimedTextToForce(GetPlayersAll(),15.,"Naisha joins your party.")
     call PauseUnitBJ(false,gg_unit_ensh_0057)
@@ -177,7 +177,7 @@ endfunction
 function Trig_Naisha_Death_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     call DisplayTextToForce(GetPlayersAll(),"Naisha is dead.")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Naisha|r")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00Naisha|r")
     call QuestSetFailedBJ(udg_SideQuest[17],true)
     set udg_QuestsTotal=(udg_QuestsTotal-1)
     call DisableTrigger(gg_trg_Naisha_ArriveLothlorien)
@@ -260,7 +260,7 @@ function Trig_Naisha_ArriveLothlorien_Actions takes nothing returns nothing
     call SetUnitFacingToFaceUnitTimed(udg_NaishaUnit,gg_unit_e007_0154,0)
     call SetUnitOwner(udg_NaishaUnit,Player(9),true)
     set udg_NaishaTownUnit=udg_NaishaUnit
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Naisha|r")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00Naisha|r")
     call QuestSetCompletedBJ(udg_SideQuest[17],true)
     set udg_QuestsCompleted=(udg_QuestsCompleted+1)
     call SaveIntegerBJ(1,2,$7F,udg_GameStateHash) // $7F = 127

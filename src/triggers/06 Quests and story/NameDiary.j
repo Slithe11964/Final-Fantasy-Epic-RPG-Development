@@ -344,7 +344,7 @@ function Trig_NameDiary_Chronicle_Actions takes nothing returns nothing
     endif
     set udg_DiaryEntry[udg_TempInteger]=udg_TempString
     set udg_DiaryNameCount=(udg_DiaryNameCount+1)
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,("Wrote the name '"+(udg_TempString+"' into the diary!")))
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,("Wrote the name '"+(udg_TempString+"' into the diary!")))
     call DestroyForce(l_tempForce)
     call QuestItemSetDescriptionBJ(udg_QuestReq[5],("Names chronicled: "+(I2S(udg_DiaryNameCount)+"/26")))
     set udg_TempString="Timmy wants you to chronicle names from people all over the world in his diary. Get at least one for each letter of the alphabet!|n"

@@ -39,12 +39,21 @@
     framehandle array QuickGearCooldownPanel
     integer array QuickGearClockPool
     image array QuickGearPreviewImage
+    image QuickGearTargetImage=null
+    image array QuickGearRune
+    integer QuickGearPath=0
+    integer QuickGearFrameGeneration=0
+    framehandle QuickGearCursor=null
+    boolean QuickGearNativePreview=false
+    framehandle array QuickGearNativeButton
+    trigger QuickGearNativeClicks=null
     real array QuickGearPreviewRadius
     integer QuickGearPreviewCount=0
     integer QuickGearPreview=0
     real QuickGearMouseX=0.
     real QuickGearMouseY=0.
     boolean QuickGearMouseKnown=false
+    boolean QuickGearTargetPreview=false
     framehandle array QuickGearWheelPanel
     framehandle array QuickGearWheelImage
     framehandle array QuickGearNativeWheel
@@ -236,23 +245,100 @@ function QuickGear_InitPreviews takes nothing returns nothing
         endif
         set index=index+1
     endloop
+    set index=1
+    loop
+        exitwhen index>96
+        set QuickGearRune[index]=CreateImage("DragoonRune.tga",24.,24.,0.,0.,0.,0.,0.,0.,0.,2)
+        call SetImageRenderAlways(QuickGearRune[index],true)
+        call SetImageAboveWater(QuickGearRune[index],true,true)
+        call ShowImage(QuickGearRune[index],false)
+        set index=index+1
+    endloop
+    // Unit-target gear needs feedback too. This is a local-only reticle at the
+    // cursor; point-target gear continues to use its authored area indicator.
+    set QuickGearTargetImage=CreateImage("DragoonRune.tga",64.,64.,0.,0.,0.,0.,0.,0.,0.,2)
+    if GetHandleId(QuickGearTargetImage)!=-1 then
+        call SetImageRenderAlways(QuickGearTargetImage,false)
+        call ShowImage(QuickGearTargetImage,false)
+        call SetImageAboveWater(QuickGearTargetImage,true,true)
+    endif
 endfunction
 
 
 
 function QuickGear_ClearPreview takes nothing returns nothing
+    local integer index=1
+    loop
+        exitwhen index>96
+        call ShowImage(QuickGearRune[index],false)
+        set index=index+1
+    endloop
+    set QuickGearPath=0
+    set QuickGearNativePreview=false
+    if QuickGearCursor!=null then
+        call BlzFrameSetVisible(QuickGearCursor,false)
+    endif
+    call BlzEnableCursor(true)
     if QuickGearPreview>0 then
         if GetHandleId(QuickGearPreviewImage[QuickGearPreview])!=-1 then
             call SetImageRenderAlways(QuickGearPreviewImage[QuickGearPreview],false)
             call ShowImage(QuickGearPreviewImage[QuickGearPreview],false)
         endif
     endif
+    if QuickGearTargetImage!=null and GetHandleId(QuickGearTargetImage)!=-1 then
+        call SetImageRenderAlways(QuickGearTargetImage,false)
+        call ShowImage(QuickGearTargetImage,false)
+    endif
+    set QuickGearTargetPreview=false
     set QuickGearPreview=0
 endfunction
 
 
 
 function QuickGear_MovePreview takes nothing returns nothing
+    local unit hero=Player_GetHero(GetLocalPlayer())
+    local integer index=1
+    local real angle=0.
+    local real direction=0.
+    local real distance=0.
+    local real width=0.
+    local real x=0.
+    local real y=0.
+    local real side=0.
+    if QuickGearTargetPreview and QuickGearCursor!=null then
+        call BlzFrameSetAbsPoint(QuickGearCursor,FRAMEPOINT_CENTER,.8*I2R(BlzGetMouseScreenPosX())/I2R(BlzGetLocalClientWidth()),.6*(1.-I2R(BlzGetMouseScreenPosY())/I2R(BlzGetLocalClientHeight())))
+        call BlzFrameSetVisible(QuickGearCursor,true)
+        call BlzEnableCursor(false)
+    endif
+    if QuickGearPath>0 and hero!=null and QuickGearMouseKnown and not InventoryCinematicActive then
+        set angle=Atan2(QuickGearMouseY-GetUnitY(hero),QuickGearMouseX-GetUnitX(hero))
+        loop
+            exitwhen index>96
+            if QuickGearPath==1 then
+                // Water_Touches: 800 travel, half-width 100 growing to 300.
+                set distance=800.*I2R(ModuloInteger(index-1,32))/31.
+                set width=100.+200.*distance/800.
+                set side=0.
+                if index>64 then
+                    set side=width
+                elseif index>32 then
+                    set side=-width
+                endif
+                set direction=angle
+            else
+                // Blizzaga's authored three launch angles: -11.25, +11.25,
+                // +33.75 degrees. Last damaging pulse is at distance 1000.
+                set distance=1000.*I2R(ModuloInteger(index-1,32))/31.
+                set direction=angle+(-11.25+22.5*I2R((index-1)/32))*bj_DEGTORAD
+                set side=0.
+            endif
+            set x=GetUnitX(hero)+distance*Cos(direction)-side*Sin(direction)
+            set y=GetUnitY(hero)+distance*Sin(direction)+side*Cos(direction)
+            call SetImagePosition(QuickGearRune[index],x-12.,y-12.,0.)
+            call ShowImage(QuickGearRune[index],true)
+            set index=index+1
+        endloop
+    endif
     if QuickGearPreview>0 and QuickGearMouseKnown and not InventoryCinematicActive then
         if GetHandleId(QuickGearPreviewImage[QuickGearPreview])!=-1 then
             call SetImagePosition(QuickGearPreviewImage[QuickGearPreview],QuickGearMouseX-QuickGearPreviewRadius[QuickGearPreview],QuickGearMouseY-QuickGearPreviewRadius[QuickGearPreview],0.)
@@ -260,6 +346,7 @@ function QuickGear_MovePreview takes nothing returns nothing
             call ShowImage(QuickGearPreviewImage[QuickGearPreview],true)
         endif
     endif
+    set hero=null
 endfunction
 
 
@@ -280,10 +367,13 @@ function QuickGear_Request takes integer slot returns nothing
             set QuickGearPendingHero=GetUnitTypeId(hero)
             set QuickGearPendingItem=raw
             set QuickGearPendingMark=GetItemUserData(carried)
-            if LoadInteger(QuickGearData,1,raw)>=2 then
+            set QuickGearTargetPreview=true
+            set QuickGearPath=LoadInteger(QuickGearData,2,cast)
+            if LoadInteger(QuickGearData,1,raw)>=2 and QuickGearPath==0 then
                 set QuickGearPreview=LoadInteger(QuickGearData,32+IMaxBJ(1,GetUnitAbilityLevel(hero,cast)),cast)
                 call QuickGear_MovePreview()
             endif
+            call QuickGear_MovePreview()
 
         endif
     endif
@@ -304,7 +394,9 @@ function QuickGear_Mouse takes nothing returns nothing
         call QuickGear_MovePreview()
         return
     endif
-    if GetLocalPlayer()==GetTriggerPlayer() and QuickGearPending>=0 then
+    if GetLocalPlayer()==GetTriggerPlayer() and QuickGearNativePreview then
+        call QuickGear_ClearPreview()
+    elseif GetLocalPlayer()==GetTriggerPlayer() and QuickGearPending>=0 then
         if BlzGetTriggerPlayerMouseButton()==MOUSE_BUTTON_TYPE_RIGHT then
             set QuickGearPending=-1
             call QuickGear_ClearPreview()
@@ -319,6 +411,43 @@ function QuickGear_Mouse takes nothing returns nothing
         endif
     endif
     set target=null
+endfunction
+
+function QuickGear_NativePath takes integer cast returns nothing
+    call QuickGear_ClearPreview()
+    set QuickGearPending=-1
+    set QuickGearPath=LoadInteger(QuickGearData,2,cast)
+    set QuickGearNativePreview=QuickGearPath>0
+    if QuickGearNativePreview then
+        call QuickGear_MovePreview()
+    endif
+endfunction
+
+function QuickGear_NativeClick takes nothing returns nothing
+    local integer index=0
+    local integer cast=0
+    local unit hero=Player_GetHero(GetLocalPlayer())
+    local item carried=null
+    if GetLocalPlayer()==GetTriggerPlayer() and hero!=null then
+        loop
+            exitwhen index>=18
+            if BlzGetTriggerFrame()==QuickGearNativeButton[index] then
+                if index<6 then
+                    set carried=UnitItemInSlot(hero,index)
+                    set cast=LoadInteger(QuickGearData,0,GetItemTypeId(carried))
+                else
+                    set cast=LoadInteger(QuickGearData,6,index-6)
+                    if GetUnitAbilityLevel(hero,cast)<=0 then
+                        set cast=0
+                    endif
+                endif
+                call QuickGear_NativePath(cast)
+            endif
+            set index=index+1
+        endloop
+    endif
+    set carried=null
+    set hero=null
 endfunction
 
 
@@ -431,6 +560,12 @@ function QuickGear_Input takes nothing returns nothing
     if key==ConvertOsKeyType(QuickGearOffhandKey[GetPlayerId(GetTriggerPlayer())]) then
         set slot=1
     elseif key!=ConvertOsKeyType(QuickGearWeaponKey[GetPlayerId(GetTriggerPlayer())]) then
+        if BlzGetTriggerPlayerIsKeyDown() and not QuickGearChatOpen and not TravelVisible[GetPlayerId(GetTriggerPlayer())] then
+            set slot=LoadInteger(QuickGearData,5,GetHandleId(key))
+            if slot!=0 and GetUnitAbilityLevel(Player_GetHero(GetLocalPlayer()),slot)>0 then
+                call QuickGear_NativePath(slot)
+            endif
+        endif
         return
     endif
     if TravelVisible[GetPlayerId(GetTriggerPlayer())] then
@@ -495,8 +630,10 @@ function QuickGear_Draw takes unit hero,player viewer returns nothing
         set carried=QuickGear_Item(hero,slot)
         set QuickGearCast[slot]=LoadInteger(QuickGearData,0,GetItemTypeId(carried))
         set QuickGearActive[slot]=carried!=null and QuickGearCast[slot]!=0
+        set QuickGearLastRaw[slot]=GetItemTypeId(carried)
         call BlzFrameSetVisible(QuickGearButton[slot],QuickGearActive[slot])
-        if QuickGearActive[slot] then
+        call BlzFrameSetVisible(QuickGearIcon[slot],QuickGearActive[slot])
+        if QuickGearActive[slot] and QuickGearIcon[slot]!=null then
             call BlzFrameSetTexture(QuickGearIcon[slot],BlzGetItemIconPath(carried),0,true)
         endif
         set QuickGearLastSeconds[slot]=-1
@@ -504,6 +641,22 @@ function QuickGear_Draw takes unit hero,player viewer returns nothing
     endloop
     call QuickGear_UpdateCooldowns(hero)
     set carried=null
+endfunction
+
+function QuickGear_EquipmentChanged takes unit hero returns boolean
+    local integer slot=0
+    local item carried
+    loop
+        exitwhen slot>=2
+        set carried=QuickGear_Item(hero,slot)
+        if GetItemTypeId(carried)!=QuickGearLastRaw[slot] then
+            set carried=null
+            return true
+        endif
+        set slot=slot+1
+    endloop
+    set carried=null
+    return false
 endfunction
 
 
@@ -582,7 +735,11 @@ function QuickGear_Poll takes nothing returns nothing
     local real now=TimerGetElapsed(NativeCDClock)
     if pid>=8 then
         call BlzFrameSetVisible(QuickGearRoot,false)
+        call BlzFrameSetVisible(QuickGearIcon[0],false)
+        call BlzFrameSetVisible(QuickGearIcon[1],false)
     elseif FFL_Phase[pid]!=0 or FFN_State[pid]!=0 or hero==null then
+        call BlzFrameSetVisible(QuickGearIcon[0],false)
+        call BlzFrameSetVisible(QuickGearIcon[1],false)
         if QuickGearShown then
             call BlzFrameSetVisible(QuickGearRoot,false)
             set QuickGearShown=false
@@ -595,7 +752,9 @@ function QuickGear_Poll takes nothing returns nothing
         if not QuickGearReady or QuickGearHero!=hero then
             set QuickGearRetryUntil=now+1.
         endif
-        if not QuickGearReady or QuickGearHero!=hero or QuickGearSeenRevision!=QuickGearRevision[pid] or (not QuickGearActive[0] and not QuickGearActive[1] and now<QuickGearRetryUntil) then
+        // Read the two live slots every poll. Saved UI caches and equip events
+        // are insufficient after a checkpoint recreates the equipment frames.
+        if true then
             call QuickGear_Draw(hero,viewer)
             set QuickGearHero=hero
             set QuickGearSeenRevision=QuickGearRevision[pid]
@@ -607,7 +766,7 @@ function QuickGear_Poll takes nothing returns nothing
             set QuickGearSeenCooldownRevision=cooldownRevision
         endif
         set show=not InventoryCinematicActive and IsUnitSelected(hero,viewer) and (QuickGearActive[0] or QuickGearActive[1])
-        if not show then
+        if InventoryCinematicActive or not IsUnitSelected(hero,viewer) then
             set QuickGearPending=-1
             call QuickGear_ClearPreview()
         endif
@@ -615,8 +774,12 @@ function QuickGear_Poll takes nothing returns nothing
             call BlzFrameSetVisible(QuickGearRoot,show)
         endif
         set QuickGearShown=show
+        if QuickGearPending>=0 or QuickGearNativePreview then
+            call QuickGear_MovePreview()
+        endif
         loop
             exitwhen slot>=2
+            call BlzFrameSetVisible(QuickGearIcon[slot],show and QuickGearActive[slot])
             if BlzFrameIsVisible(QuickGearButton[slot])!=QuickGearActive[slot] then
                 call BlzFrameSetVisible(QuickGearButton[slot],QuickGearActive[slot])
             endif
@@ -652,6 +815,17 @@ function QuickGear_Reset takes nothing returns nothing
     call QuickGear_ClearPreview()
     set slot=1
     loop
+        exitwhen slot>96
+        call DestroyImage(QuickGearRune[slot])
+        set QuickGearRune[slot]=null
+        set slot=slot+1
+    endloop
+    if QuickGearCursor!=null then
+        call BlzDestroyFrame(QuickGearCursor)
+        set QuickGearCursor=null
+    endif
+    set slot=1
+    loop
         exitwhen slot>QuickGearPreviewCount
         if GetHandleId(QuickGearPreviewImage[slot])!=-1 then
             call DestroyImage(QuickGearPreviewImage[slot])
@@ -659,6 +833,10 @@ function QuickGear_Reset takes nothing returns nothing
         set QuickGearPreviewImage[slot]=null
         set slot=slot+1
     endloop
+    if QuickGearTargetImage!=null then
+        call DestroyImage(QuickGearTargetImage)
+        set QuickGearTargetImage=null
+    endif
     set slot=0
     set QuickGearMouseKnown=false
     call PauseTimer(QuickGearUITimer)
@@ -671,6 +849,8 @@ function QuickGear_Reset takes nothing returns nothing
     call DestroyTrigger(QuickGearChat)
     call DestroyTrigger(QuickGearBindings)
     call DestroyTrigger(QuickGearChanges)
+    call DestroyTrigger(QuickGearNativeClicks)
+    set QuickGearNativeClicks=null
     set QuickGearClick=null
     set QuickGearKeys=null
     set QuickGearMouse=null
@@ -695,6 +875,7 @@ function QuickGear_Reset takes nothing returns nothing
             set QuickGearNativeWheel[slot]=null
         endif
         call BlzDestroyFrame(QuickGearButton[slot])
+        call BlzDestroyFrame(QuickGearIcon[slot])
 
         set QuickGearButton[slot]=null
         set QuickGearNumberImage[slot]=null
@@ -725,7 +906,14 @@ function QuickGear_Init takes nothing returns nothing
         return
     endif
     // ITEM CATALOGUE
+    set QuickGearFrameGeneration=QuickGearFrameGeneration+1
     call QuickGear_InitPreviews()
+    set QuickGearCursor=BlzCreateFrameByType("BACKDROP","QuickGearTargetCursor",origin,"",0)
+    call BlzFrameSetTexture(QuickGearCursor,"QuickGearTarget.tga",0,true)
+    call BlzFrameSetSize(QuickGearCursor,.028,.028)
+    call BlzFrameSetLevel(QuickGearCursor,200)
+    call BlzFrameSetEnable(QuickGearCursor,false)
+    call BlzFrameSetVisible(QuickGearCursor,false)
     call BlzLoadTOCFile("war3mapImported\\QuickGear.toc")
     set QuickGearRoot=BlzCreateSimpleFrame("QuickGearDock",origin,900)
     set QuickGearAnchor=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,7)
@@ -742,6 +930,7 @@ function QuickGear_Init takes nothing returns nothing
     set QuickGearChat=CreateTrigger()
     set QuickGearBindings=CreateTrigger()
     set QuickGearChanges=CreateTrigger()
+    set QuickGearNativeClicks=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(QuickGearChanges,EVENT_PLAYER_UNIT_EQUIP_ITEM)
     call TriggerRegisterAnyUnitEventBJ(QuickGearChanges,EVENT_PLAYER_UNIT_UNEQUIP_ITEM)
     call TriggerAddAction(QuickGearChanges,function QuickGear_Changed)
@@ -751,6 +940,19 @@ function QuickGear_Init takes nothing returns nothing
     call TriggerAddAction(QuickGearBindings,function QuickGear_Bindings)
     call TriggerAddAction(QuickGearMouse,function QuickGear_Mouse)
     call TriggerAddAction(QuickGearSync,function QuickGear_Receive)
+    set slot=0
+    loop
+        exitwhen slot>=18
+        if slot<6 then
+            set QuickGearNativeButton[slot]=BlzGetOriginFrame(ORIGIN_FRAME_ITEM_BUTTON,slot)
+        else
+            set QuickGearNativeButton[slot]=BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON,slot-6)
+        endif
+        call BlzTriggerRegisterFrameEvent(QuickGearNativeClicks,QuickGearNativeButton[slot],FRAMEEVENT_CONTROL_CLICK)
+        set slot=slot+1
+    endloop
+    set slot=0
+    call TriggerAddAction(QuickGearNativeClicks,function QuickGear_NativeClick)
     loop
         exitwhen pid>=8
         call BlzTriggerRegisterPlayerSyncEvent(QuickGearSync,Player(pid),"FFQuickGear",false)
@@ -760,6 +962,8 @@ function QuickGear_Init takes nothing returns nothing
         call TriggerRegisterPlayerChatEvent(QuickGearBindings,Player(pid),"-gearhotkey",false)
         if QuickGearWeaponKey[pid]==0 then
             set QuickGearWeaponKey[pid]=70
+        endif
+        if QuickGearOffhandKey[pid]==0 then
             set QuickGearOffhandKey[pid]=71
         endif
         set keycode=48
@@ -782,13 +986,18 @@ function QuickGear_Init takes nothing returns nothing
     endloop
     loop
         exitwhen slot>=2
-        set QuickGearButton[slot]=BlzCreateSimpleFrame("QuickGearItemButton",QuickGearRoot,slot+900)
+        set QuickGearButton[slot]=BlzCreateSimpleFrame("QuickGearItemButton",QuickGearRoot,slot+900+10*QuickGearFrameGeneration)
         call BlzFrameSetSize(QuickGearButton[slot],.040,.040)
         call BlzFrameSetPoint(QuickGearButton[slot],FRAMEPOINT_TOPLEFT,QuickGearRoot,FRAMEPOINT_TOPLEFT,0.,-I2R(slot)*.046)
         call BlzFrameSetLevel(QuickGearButton[slot],121)
         // Resolve special children on every client during shared startup.
-        set QuickGearIcon[slot]=BlzGetFrameByName("QuickGearItemImage",slot+900)
-        set QuickGearLabel[slot]=BlzGetFrameByName("QuickGearItemKey",slot+900)
+        // Ordinary backdrop handles survive texture changes correctly; named
+        // simple-texture lookups can retain the previous checkpoint's children.
+        set QuickGearIcon[slot]=BlzCreateFrameByType("BACKDROP","QuickGearLiveIcon",origin,"",slot+10*QuickGearFrameGeneration)
+        call BlzFrameSetAllPoints(QuickGearIcon[slot],QuickGearButton[slot])
+        call BlzFrameSetLevel(QuickGearIcon[slot],121)
+        call BlzFrameSetEnable(QuickGearIcon[slot],false)
+        set QuickGearLabel[slot]=BlzGetFrameByName("QuickGearItemKey",slot+900+10*QuickGearFrameGeneration)
         set QuickGearShownKey[slot]=-1
         set QuickGearWheelPanel[slot]=BlzCreateSimpleFrame("QuickGearClockFace",QuickGearRoot,940+slot)
         set QuickGearWheelImage[slot]=BlzGetFrameByName("QuickGearWheelTexture",940+slot)

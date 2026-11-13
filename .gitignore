@@ -6,18 +6,44 @@ __pycache__/
 build/
 *.tmp
 
-!baseline/Reforged/FFERPG_0.9.7.3-r16.w3x
-!baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x
+!release/FFERPG_0.9.7.3-r16.w3x
+!release/FFERPG_0.9.7.3-r16-1.29.w3x
 release/*
 !release/.gitkeep
-# Inputs every pair build needs, and the latest public pair
-!release/FFERPG_0.9.7.3-r16-stageATV.w3x
+# Inputs for release builds
 !release/Forsaken/
 release/Forsaken/*
 !release/Forsaken/FFERPG_0.9.7.3-r16-ForsakenEN.w3x
 !release/Forsaken/gear-slots-BS.json
 !release/pairs/
 release/pairs/*
-!release/pairs/PAIR019/
+
 # The map authors edit in World Editor
 !editor/FFERPG-Editor-Master.w3x
+
+/delete/
+
+# Local diagnostic reports may contain player and system data.
+/ReportedCrashes/
+/tools/build-inputs/crash-analysis-deps/
+/tools/build-inputs/crash-tools/
+# Locally installed font binaries.
+/tools/build-inputs/fonts/*.ttf
+
+# Checked-in release checkpoints and reproducible test inputs.
+!release/0.9.7.5*/
+release/0.9.7.5*/*
+!release/0.9.7.5*/FFERPG-0.9.7.5*.w3x
+release/0.9.7.5*/*-Save*.w3x
+!release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x
+!release/build-inputs/
+!release/build-inputs/*.w3x
+!tools/tests/fixtures/**/*.w3x
+!release/development/
+release/development/*
+!release/development/B17/
+release/development/B17/*
+!release/development/B17/FFERPG-B17.w3x
+!release/development/V46/
+release/development/V46/*
+!release/development/V46/FFERPG-V46.w3x

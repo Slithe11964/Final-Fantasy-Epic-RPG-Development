@@ -1,0 +1,265 @@
+﻿city,city_name,model_id,path,x,y,scale,angle
+1,Human market town,2871,buildings\human\townhall\townhall.mdx,0,1900,0.9,270.0
+1,Human market town,2872,buildings\human\arcanesanctum\arcanesanctum.mdx,1700,1900,0.7,270.0
+1,Human market town,2873,buildings\human\blacksmith\blacksmith.mdx,-1700,1900,0.7,270.0
+1,Human market town,2874,doodads\cityscape\props\city_fountain\city_fountain.mdx,0,0,0.9,270.0
+1,Human market town,451,doodads\cityscape\structures\citybuildingrow_0\citybuildingrow_0.mdx,-1750,1100,0.85,90.0
+1,Human market town,452,doodads\cityscape\structures\citybuildingrow_1\citybuildingrow_1.mdx,-1750,250,0.85,90.0
+1,Human market town,453,doodads\cityscape\structures\citybuildingrow_2\citybuildingrow_2.mdx,-1750,-650,0.85,90.0
+1,Human market town,451,doodads\cityscape\structures\citybuildingrow_0\citybuildingrow_0.mdx,-1750,-1550,0.85,90.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,-400,-1500,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,-400,-700,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,-400,700,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,-400,1500,1.0,270.0
+1,Human market town,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,-680,-350,0.9,90.0
+1,Human market town,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,-680,350,0.9,90.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,-950,-1300,0.8,90.0
+1,Human market town,417,doodads\cityscape\props\marketitemproduce\marketitemproduce.mdx,-950,-1400,0.8,270.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,-950,-650,0.8,90.0
+1,Human market town,419,doodads\cityscape\props\marketitemtextiles\marketitemtextiles.mdx,-950,-750,0.8,270.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,-950,650,0.8,90.0
+1,Human market town,415,doodads\cityscape\props\marketitembaubles\marketitembaubles.mdx,-950,550,0.8,270.0
+1,Human market town,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2200,-2100,1.3,270.0
+1,Human market town,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2200,2100,1.3,270.0
+1,Human market town,451,doodads\cityscape\structures\citybuildingrow_0\citybuildingrow_0.mdx,1750,1100,0.85,270.0
+1,Human market town,452,doodads\cityscape\structures\citybuildingrow_1\citybuildingrow_1.mdx,1750,250,0.85,270.0
+1,Human market town,453,doodads\cityscape\structures\citybuildingrow_2\citybuildingrow_2.mdx,1750,-650,0.85,270.0
+1,Human market town,451,doodads\cityscape\structures\citybuildingrow_0\citybuildingrow_0.mdx,1750,-1550,0.85,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,400,-1500,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,400,-700,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,400,700,1.0,270.0
+1,Human market town,2875,doodads\cityscape\props\lanternpost\lanternpost0.mdx,400,1500,1.0,270.0
+1,Human market town,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,680,-350,0.9,270.0
+1,Human market town,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,680,350,0.9,270.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,950,-1300,0.8,270.0
+1,Human market town,417,doodads\cityscape\props\marketitemproduce\marketitemproduce.mdx,950,-1400,0.8,270.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,950,-650,0.8,270.0
+1,Human market town,419,doodads\cityscape\props\marketitemtextiles\marketitemtextiles.mdx,950,-750,0.8,270.0
+1,Human market town,421,doodads\cityscape\props\marketstalllarge\marketstalllarge.mdx,950,650,0.8,270.0
+1,Human market town,415,doodads\cityscape\props\marketitembaubles\marketitembaubles.mdx,950,550,0.8,270.0
+1,Human market town,2877,doodads\cityscape\plants\citybush\citybush.mdx,2200,-2100,1.3,270.0
+1,Human market town,2877,doodads\cityscape\plants\citybush\citybush.mdx,2200,2100,1.3,270.0
+1,Human market town,410,doodads\cityscape\props\citymaingate\citymaingate.mdx,0,-2450,0.85,270.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2400,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2400,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1800,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1800,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1200,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1200,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-600,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,0,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,600,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1200,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1200,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1800,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1800,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2400,2600,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2400,-2500,0.9,0.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-1900,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-1900,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-1300,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-1300,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-700,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-700,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-100,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-100,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,500,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,500,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,1100,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,1100,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,1700,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,1700,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,2300,0.9,90.0
+1,Human market town,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,2300,0.9,90.0
+2,Elven arcane district,939,doodads\silvermoon\structures\largesilvermoontower\largesilvermoontower.mdx,0,1800,0.75,270.0
+2,Elven arcane district,2872,buildings\human\arcanesanctum\arcanesanctum.mdx,-1700,1450,0.8,270.0
+2,Elven arcane district,214,buildings\other\dalaranguardtower\dalaranguardtower.mdx,1700,1450,1.0,270.0
+2,Elven arcane district,2874,doodads\cityscape\props\city_fountain\city_fountain.mdx,0,0,0.9,270.0
+2,Elven arcane district,2878,buildings\other\elvenfishvillagebuilding0\elvenfishvillagebuilding0.mdx,-1750,600,0.9,90.0
+2,Elven arcane district,2879,buildings\other\elvenfishvillagebuilding1\elvenfishvillagebuilding1.mdx,-1750,-350,0.9,90.0
+2,Elven arcane district,2880,buildings\other\elvenfishvillagebuilding2\elvenfishvillagebuilding2.mdx,-1750,-1300,0.9,90.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,-450,-1800,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,-450,-900,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,-450,900,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,-450,1800,0.9,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,-1150,-1500,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,-1150,-700,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,-1150,700,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,-1150,1500,1.0,270.0
+2,Elven arcane district,926,doodads\silvermoon\prop\highelfcreststandingbanners\highelfcreststandingbanners.mdx,-350,-2300,1.0,270.0
+2,Elven arcane district,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,-700,-400,0.8,90.0
+2,Elven arcane district,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,-700,400,0.8,90.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2400,-2100,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2400,-1000,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2400,1000,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,-2400,2100,1.3,270.0
+2,Elven arcane district,2878,buildings\other\elvenfishvillagebuilding0\elvenfishvillagebuilding0.mdx,1750,600,0.9,270.0
+2,Elven arcane district,2879,buildings\other\elvenfishvillagebuilding1\elvenfishvillagebuilding1.mdx,1750,-350,0.9,270.0
+2,Elven arcane district,2880,buildings\other\elvenfishvillagebuilding2\elvenfishvillagebuilding2.mdx,1750,-1300,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,450,-1800,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,450,-900,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,450,900,0.9,270.0
+2,Elven arcane district,2881,doodads\cityscape\props\crystallamp\crystallamp.mdx,450,1800,0.9,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,1150,-1500,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,1150,-700,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,1150,700,1.0,270.0
+2,Elven arcane district,927,doodads\silvermoon\prop\tulips\silvermoon_tulips_00.mdx,1150,1500,1.0,270.0
+2,Elven arcane district,926,doodads\silvermoon\prop\highelfcreststandingbanners\highelfcreststandingbanners.mdx,350,-2300,1.0,270.0
+2,Elven arcane district,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,700,-400,0.8,270.0
+2,Elven arcane district,2876,doodads\cityscape\props\citystonebench\citystonebench.mdx,700,400,0.8,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,2400,-2100,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,2400,-1000,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,2400,1000,1.3,270.0
+2,Elven arcane district,2877,doodads\cityscape\plants\citybush\citybush.mdx,2400,2100,1.3,270.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2400,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2400,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1800,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1800,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1200,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-1200,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-600,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,0,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,600,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1200,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1200,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1800,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,1800,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2400,2600,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2400,-2500,0.9,0.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-1900,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-1900,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-1300,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-1300,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-700,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-700,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,-100,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,-100,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,500,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,500,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,1100,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,1100,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,1700,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,1700,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,-2700,2300,0.9,90.0
+2,Elven arcane district,442,doodads\cityscape\structures\city_lowwall\city_lowwall.mdx,2700,2300,0.9,90.0
+3,Orc frontier settlement,2882,buildings\orc\greathall\greathall.mdx,0,1800,0.9,270.0
+3,Orc frontier settlement,2883,buildings\orc\orcbarracks\orcbarracks.mdx,-1750,1400,0.8,270.0
+3,Orc frontier settlement,2884,buildings\orc\beastiary\beastiary.mdx,1750,1400,0.8,270.0
+3,Orc frontier settlement,2885,buildings\orc\warmill\warmill.mdx,-1750,150,0.8,270.0
+3,Orc frontier settlement,2886,buildings\orc\spiritlodge\spiritlodge.mdx,1750,150,0.8,270.0
+3,Orc frontier settlement,2887,buildings\orc\voodoolounge\voodoolounge.mdx,-1750,-1300,0.8,270.0
+3,Orc frontier settlement,2888,buildings\orc\taurentotem\taurentotem.mdx,1750,-1300,0.8,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,-850,-1800,0.75,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,-850,-800,0.75,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,-850,800,0.75,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,-360,-2100,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,-360,-450,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,-360,450,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,-360,2100,1.1,270.0
+3,Orc frontier settlement,2891,buildings\orc\watchtower\watchtower.mdx,-2100,-2100,0.9,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,850,-1800,0.75,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,850,-800,0.75,270.0
+3,Orc frontier settlement,2889,buildings\orc\trollburrow\trollburrow.mdx,850,800,0.75,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,360,-2100,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,360,-450,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,360,450,1.1,270.0
+3,Orc frontier settlement,2890,doodads\lordaeronsummer\props\torchhuman\torchhuman0.mdx,360,2100,1.1,270.0
+3,Orc frontier settlement,2891,buildings\orc\watchtower\watchtower.mdx,2100,-2100,0.9,270.0
+3,Orc frontier settlement,352,doodads\barrens\terrain\orgrimmargate_completed\orgrimmargate_completed.mdx,0,-2500,0.7,270.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2400,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2400,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-1800,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-1800,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-1200,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-1200,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-600,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,0,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,600,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,1200,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,1200,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,1800,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,1800,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2400,2600,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2400,-2500,0.7,0.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,-1900,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,-1900,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,-1300,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,-1300,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,-700,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,-700,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,-100,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,-100,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,500,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,500,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,1100,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,1100,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,1700,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,1700,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,-2700,2300,0.7,90.0
+3,Orc frontier settlement,355,doodads\barrens\terrain\orgrimmarwallsegment_completed\orgrimmarwallsegment_completed.mdx,2700,2300,0.7,90.0
+3,Orc frontier settlement,417,doodads\cityscape\props\marketitemproduce\marketitemproduce.mdx,550,-400,0.8,270.0
+4,Undead fortress and graveyard,2892,buildings\undead\necropolis\necropolis.mdx,0,1900,0.8,270.0
+4,Undead fortress and graveyard,278,buildings\undead\templeofthedamned\templeofthedamned.mdx,-1750,1450,0.8,270.0
+4,Undead fortress and graveyard,273,buildings\undead\boneyard\boneyard.mdx,1750,1450,0.8,270.0
+4,Undead fortress and graveyard,274,buildings\undead\crypt\crypt.mdx,-1750,100,0.8,270.0
+4,Undead fortress and graveyard,277,buildings\undead\slaughterhouse\slaughterhouse.mdx,1750,100,0.8,270.0
+4,Undead fortress and graveyard,2893,buildings\undead\graveyard\graveyard.mdx,-1700,-1300,0.8,270.0
+4,Undead fortress and graveyard,2894,buildings\undead\tombofrelics\tombofrelics.mdx,1700,-1300,0.8,270.0
+4,Undead fortress and graveyard,2895,buildings\undead\ziggurat\ziggurat.mdx,-900,600,0.8,270.0
+4,Undead fortress and graveyard,2895,buildings\undead\ziggurat\ziggurat.mdx,900,600,0.8,270.0
+4,Undead fortress and graveyard,412,doodads\cityscape\props\fountainruined\fountainruined.mdx,0,-100,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,-400,-2000,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,-400,-1000,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,-400,900,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,-400,2100,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,-1100,-2100,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,-1100,-900,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,-1100,200,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,-1100,1800,0.9,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,-2450,-2000,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,-2450,-700,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,-2450,700,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,-2450,2000,0.8,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,400,-2000,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,400,-1000,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,400,900,0.9,270.0
+4,Undead fortress and graveyard,2896,doodads\icecrown\props\icetorch\icetorch.mdx,400,2100,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,1100,-2100,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,1100,-900,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,1100,200,0.9,270.0
+4,Undead fortress and graveyard,406,doodads\cityscape\props\citygrave\citygrave0.mdx,1100,1800,0.9,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,2450,-2000,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,2450,-700,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,2450,700,0.8,270.0
+4,Undead fortress and graveyard,288,doodads\ashenvale\plants\ashencanopytree\ruinscanopytree0.mdx,2450,2000,0.8,270.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2400,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2400,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-1800,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-1800,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-1200,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-1200,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-600,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,0,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,600,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,1200,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,1200,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,1800,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,1800,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2400,2600,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2400,-2500,0.9,0.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,-1900,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,-1900,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,-1300,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,-1300,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,-700,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,-700,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,-100,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,-100,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,500,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,500,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,1100,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,1100,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,1700,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,1700,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,-2700,2300,0.9,90.0
+4,Undead fortress and graveyard,2897,doodads\barrens\structures\ruinedwall\ruinedwall.mdx,2700,2300,0.9,90.0

@@ -1,0 +1,3084 @@
+{
+  "mapping": {
+    "uabo": 2,
+    "n00H": 5,
+    "Nbbc": 4,
+    "nbld": 1,
+    "nass": 1,
+    "H00Y": 7,
+    "U00Q": 8,
+    "U00C": 9,
+    "ncpn": 7,
+    "N02Z": 8,
+    "O00B": 2,
+    "O00A": 2,
+    "H021": 5,
+    "H01N": 4,
+    "H01Z": 2,
+    "H01Y": 8,
+    "H01X": 2,
+    "H01W": 2,
+    "H01U": 4,
+    "H01V": 4,
+    "U00B": 5,
+    "E00D": 2,
+    "H01T": 8,
+    "H01S": 8,
+    "E00C": 8,
+    "Hgam": 2,
+    "H01L": 3,
+    "H01K": 4,
+    "H01J": 4,
+    "H01I": 5,
+    "N02I": 4,
+    "E002": 8,
+    "Uvng": 4,
+    "U006": 1,
+    "H00W": 4,
+    "e009": 5,
+    "n023": 6,
+    "N022": 5,
+    "n01Z": 9,
+    "H00X": 7,
+    "n00F": 4,
+    "Hvsh": 6,
+    "Ocb2": 4,
+    "Ocbh": 4,
+    "Nman": 5,
+    "N03D": 3,
+    "Opgh": 4,
+    "n014": 2,
+    "U00O": 7,
+    "Uwar": 5,
+    "ncnk": 2,
+    "nhrq": 2,
+    "nstw": 2,
+    "nmrm": 2,
+    "nowk": 2,
+    "nrzg": 2,
+    "nggr": 2,
+    "U00N": 6,
+    "U00M": 8,
+    "U00L": 8,
+    "U00K": 5,
+    "U00J": 5,
+    "U00I": 2,
+    "U00H": 9,
+    "U00G": 5,
+    "U00F": 5,
+    "U00E": 4,
+    "O00I": 5,
+    "H02W": 6,
+    "U000": 5,
+    "U019": 2,
+    "u01M": 7,
+    "n0MC": 8,
+    "nenf": 1,
+    "nrog": 1,
+    "nban": 1,
+    "nbrg": 1,
+    "n016": 5,
+    "ngno": 5,
+    "ngna": 5,
+    "ngns": 5,
+    "ngnw": 5,
+    "ngnv": 5,
+    "ncer": 2,
+    "ncea": 2,
+    "ncks": 2,
+    "nmrr": 2,
+    "nrzb": 2,
+    "nrzm": 2,
+    "nhrh": 2,
+    "ngst": 2,
+    "ngrk": 5,
+    "nomg": 4,
+    "nogm": 4,
+    "nogr": 4,
+    "n0B1": 1,
+    "n0BS": 1,
+    "n0BL": 1,
+    "n03U": 2,
+    "n01M": 2,
+    "n03Y": 2,
+    "n0A4": 3,
+    "n02P": 3,
+    "n03B": 5,
+    "n0A7": 4,
+    "n03Z": 4,
+    "n04L": 4,
+    "n0A5": 5,
+    "n0C8": 5,
+    "n0MZ": 5,
+    "n0A9": 6,
+    "n02Q": 6,
+    "n03W": 7,
+    "n0A6": 7,
+    "n04H": 8,
+    "n0A8": 8,
+    "n0AZ": 4,
+    "n0B0": 6,
+    "n0CM": 7,
+    "U01Q": 8,
+    "n0LR": 7,
+    "n0MA": 8,
+    "n0NE": 8,
+    "n04J": 3,
+    "E00X": 7,
+    "U015": 7,
+    "E00Z": 7,
+    "N0LU": 7,
+    "N03R": 7,
+    "N03Q": 7,
+    "N03O": 7,
+    "U01T": 7,
+    "N03K": 7,
+    "U01N": 7,
+    "E01J": 7,
+    "u00R": 4,
+    "n019": 7,
+    "n0KZ": 2,
+    "n0L0": 2,
+    "n0CC": 9,
+    "n02D": 8,
+    "n026": 8,
+    "n025": 8,
+    "n029": 8,
+    "n028": 8,
+    "n027": 8,
+    "n02C": 8,
+    "n02A": 8,
+    "n0CG": 8
+  },
+  "hunts": {
+    "n0B1": {
+      "index": 1,
+      "area": 1,
+      "rect": "gg_rct_591",
+      "point": [
+        18528.0,
+        -11360.0
+      ]
+    },
+    "n0BS": {
+      "index": 2,
+      "area": 1,
+      "rect": "gg_rct_620",
+      "point": [
+        13936.0,
+        -8112.0
+      ]
+    },
+    "n0BL": {
+      "index": 3,
+      "area": 1,
+      "rect": "gg_rct_619",
+      "point": [
+        11888.0,
+        -11632.0
+      ]
+    },
+    "n03U": {
+      "index": 4,
+      "area": 2,
+      "rect": "gg_rct_607",
+      "point": [
+        27904.0,
+        -13824.0
+      ]
+    },
+    "n01M": {
+      "index": 5,
+      "area": 2,
+      "rect": "gg_rct_610",
+      "point": [
+        25600.0,
+        -16448.0
+      ]
+    },
+    "n03Y": {
+      "index": 6,
+      "area": 2,
+      "rect": "gg_rct_611",
+      "point": [
+        18848.0,
+        -15776.0
+      ]
+    },
+    "n0A4": {
+      "index": 7,
+      "area": 3,
+      "rect": "gg_rct_627",
+      "point": [
+        5872.0,
+        -13008.0
+      ]
+    },
+    "n02P": {
+      "index": 8,
+      "area": 3,
+      "rect": "gg_rct_618",
+      "point": [
+        8096.0,
+        -10976.0
+      ]
+    },
+    "n03B": {
+      "index": 9,
+      "area": 5,
+      "rect": "gg_rct_608",
+      "point": [
+        -1536.0,
+        -1088.0
+      ]
+    },
+    "n0A7": {
+      "index": 10,
+      "area": 4,
+      "rect": "gg_rct_628",
+      "point": [
+        6064.0,
+        -2608.0
+      ]
+    },
+    "n03Z": {
+      "index": 11,
+      "area": 4,
+      "rect": "gg_rct_612",
+      "point": [
+        6112.0,
+        -5888.0
+      ]
+    },
+    "n04L": {
+      "index": 12,
+      "area": 4,
+      "rect": "gg_rct_621",
+      "point": [
+        13248.0,
+        2304.0
+      ]
+    },
+    "n0A5": {
+      "index": 13,
+      "area": 5,
+      "rect": "gg_rct_629",
+      "point": [
+        11824.0,
+        -18064.0
+      ]
+    },
+    "n0C8": {
+      "index": 14,
+      "area": 5,
+      "rect": "gg_rct_616",
+      "point": [
+        14112.0,
+        -16128.0
+      ]
+    },
+    "n0MZ": {
+      "index": 15,
+      "area": 5,
+      "rect": "gg_rct_617",
+      "point": [
+        1440.0,
+        -16192.0
+      ]
+    },
+    "n0A9": {
+      "index": 16,
+      "area": 6,
+      "rect": "gg_rct_625",
+      "point": [
+        3472.0,
+        -28080.0
+      ]
+    },
+    "n02Q": {
+      "index": 17,
+      "area": 6,
+      "rect": "gg_rct_613",
+      "point": [
+        1568.0,
+        -23648.0
+      ]
+    },
+    "n03W": {
+      "index": 18,
+      "area": 7,
+      "rect": "gg_rct_609",
+      "point": [
+        13504.0,
+        -21856.0
+      ]
+    },
+    "n0A6": {
+      "index": 19,
+      "area": 7,
+      "rect": "gg_rct_624",
+      "point": [
+        16592.0,
+        -23856.0
+      ]
+    },
+    "n04H": {
+      "index": 20,
+      "area": 8,
+      "rect": "gg_rct_384",
+      "point": [
+        18800.0,
+        48.0
+      ]
+    },
+    "n0A8": {
+      "index": 21,
+      "area": 8,
+      "rect": "gg_rct_695",
+      "point": [
+        26416.0,
+        2704.0
+      ]
+    },
+    "n0AZ": {
+      "index": 22,
+      "area": 4,
+      "rect": "gg_rct_614",
+      "point": [
+        12704.0,
+        96.0
+      ]
+    },
+    "n0B0": {
+      "index": 23,
+      "area": 6,
+      "rect": "gg_rct_615",
+      "point": [
+        6816.0,
+        -25472.0
+      ]
+    },
+    "n0CM": {
+      "index": 24,
+      "area": 7,
+      "rect": "gg_rct_644",
+      "point": [
+        16416.0,
+        -27936.0
+      ]
+    },
+    "U01Q": {
+      "index": 25,
+      "area": 8,
+      "rect": "gg_rct_579",
+      "point": [
+        27344.0,
+        -5968.0
+      ]
+    },
+    "n0LR": {
+      "index": 26,
+      "area": 7,
+      "rect": "gg_rct_692",
+      "point": [
+        22928.0,
+        -24336.0
+      ]
+    },
+    "n0MA": {
+      "index": 27,
+      "area": 8,
+      "rect": "gg_rct_626",
+      "point": [
+        27088.0,
+        -3984.0
+      ]
+    },
+    "n0NE": {
+      "index": 28,
+      "area": 8,
+      "rect": "gg_rct_714",
+      "point": [
+        24128.0,
+        -4416.0
+      ]
+    }
+  },
+  "evidence": {
+    "uabo": [
+      {
+        "area": 2,
+        "point": [
+          19318.9,
+          -16608.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 352.7000000000007
+      },
+      {
+        "area": 2,
+        "point": [
+          19446.0,
+          -16803.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 234.0
+      },
+      {
+        "area": 2,
+        "point": [
+          19116.9,
+          -16546.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 295.3540587159768
+      },
+      {
+        "area": 1,
+        "point": [
+          12420.5,
+          -14546.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1313.3082273404061
+      },
+      {
+        "area": 1,
+        "point": [
+          12757.6,
+          -14640.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1360.5397495112004
+      }
+    ],
+    "n00H": [
+      {
+        "area": 5,
+        "point": [
+          477.5,
+          -14785.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 681.5534388439397
+      }
+    ],
+    "Nbbc": [
+      {
+        "area": 4,
+        "point": [
+          5913.6,
+          -608.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 902.3999999999996
+      }
+    ],
+    "nbld": [
+      {
+        "area": 1,
+        "point": [
+          12914.9,
+          -11674.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 229.79999999999927
+      }
+    ],
+    "nass": [
+      {
+        "area": 1,
+        "point": [
+          12830.6,
+          -11477.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 426.89999999999964
+      }
+    ],
+    "H00Y": [
+      {
+        "area": 7,
+        "point": [
+          14478.4,
+          -24669.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 66.90000000000146
+      }
+    ],
+    "U00Q": [
+      {
+        "area": 8,
+        "point": [
+          21545.6,
+          -931.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1570.7848866092377
+      }
+    ],
+    "U00C": [
+      {
+        "area": 9,
+        "point": [
+          -645.4,
+          -20370.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 109.5
+      }
+    ],
+    "ncpn": [
+      {
+        "area": 7,
+        "point": [
+          26209.7,
+          -23716.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 6412.040712596889
+      }
+    ],
+    "N02Z": [
+      {
+        "area": 8,
+        "point": [
+          17760.9,
+          -1186.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 721.7243379573658
+      }
+    ],
+    "O00B": [
+      {
+        "area": 2,
+        "point": [
+          27998.3,
+          -20029.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3336.2662633548894
+      }
+    ],
+    "O00A": [
+      {
+        "area": 2,
+        "point": [
+          27992.6,
+          -19800.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3111.8409294178246
+      }
+    ],
+    "H021": [
+      {
+        "area": 5,
+        "point": [
+          674.7,
+          -13113.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 445.29999999999995
+      }
+    ],
+    "H01N": [
+      {
+        "area": 4,
+        "point": [
+          13266.9,
+          -3025.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 525.1000000000004
+      }
+    ],
+    "H01Z": [
+      {
+        "area": 2,
+        "point": [
+          22287.1,
+          -18501.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1313.7566060728286
+      }
+    ],
+    "H01Y": [
+      {
+        "area": 8,
+        "point": [
+          27887.0,
+          -7996.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3728.714348136634
+      }
+    ],
+    "H01X": [
+      {
+        "area": 2,
+        "point": [
+          27894.5,
+          -8461.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3744.538201167135
+      }
+    ],
+    "H01W": [
+      {
+        "area": 2,
+        "point": [
+          27900.2,
+          -9480.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3150.4092892829026
+      }
+    ],
+    "H01U": [
+      {
+        "area": 4,
+        "point": [
+          8368.6,
+          -7382.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 425.60000000000036
+      }
+    ],
+    "H01V": [
+      {
+        "area": 4,
+        "point": [
+          4903.5,
+          -1839.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 181.35393571687382
+      }
+    ],
+    "U00B": [
+      {
+        "area": 5,
+        "point": [
+          3267.3,
+          -2478.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 401.5999999999999
+      }
+    ],
+    "E00D": [
+      {
+        "area": 2,
+        "point": [
+          24899.3,
+          -10872.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 103.29999999999927
+      }
+    ],
+    "H01T": [
+      {
+        "area": 8,
+        "point": [
+          25918.8,
+          -4250.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "H01S": [
+      {
+        "area": 8,
+        "point": [
+          25532.6,
+          -3973.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3.400000000001455
+      }
+    ],
+    "E00C": [
+      {
+        "area": 8,
+        "point": [
+          25626.4,
+          -4255.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "Hgam": [
+      {
+        "area": 2,
+        "point": [
+          19200.3,
+          -16760.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 479.7000000000007
+      }
+    ],
+    "H01L": [
+      {
+        "area": 3,
+        "point": [
+          3367.3,
+          -11616.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 794.9980691800457
+      }
+    ],
+    "H01K": [
+      {
+        "area": 4,
+        "point": [
+          8863.5,
+          132.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 823.5085549039549
+      }
+    ],
+    "H01J": [
+      {
+        "area": 4,
+        "point": [
+          10874.4,
+          467.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 179.60000000000002
+      }
+    ],
+    "H01I": [
+      {
+        "area": 5,
+        "point": [
+          15762.8,
+          -17150.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 114.79999999999927
+      }
+    ],
+    "N02I": [
+      {
+        "area": 4,
+        "point": [
+          16213.4,
+          -853.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 267.0
+      }
+    ],
+    "E002": [
+      {
+        "area": 8,
+        "point": [
+          27220.2,
+          -6112.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1792.6000000000004
+      }
+    ],
+    "Uvng": [
+      {
+        "area": 4,
+        "point": [
+          10654.3,
+          -2208.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 250.7911082953308
+      }
+    ],
+    "U006": [
+      {
+        "area": 5,
+        "point": [
+          12502.8,
+          -14755.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1414.074693925324
+      },
+      {
+        "area": 1,
+        "source": "Owner: Nilrem beside Guardia Forest",
+        "kind": "Confirmed area boss",
+        "distance": 0.0,
+        "point": null
+      }
+    ],
+    "H00W": [
+      {
+        "area": 4,
+        "point": [
+          8131.4,
+          -2512.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 349.8192676225825
+      }
+    ],
+    "e009": [
+      {
+        "area": 5,
+        "point": [
+          6180.6,
+          -14922.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 533.1000000000004
+      }
+    ],
+    "n023": [
+      {
+        "area": 6,
+        "point": [
+          8234.2,
+          -22942.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "N022": [
+      {
+        "area": 5,
+        "point": [
+          -885.4,
+          -3339.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1931.4
+      },
+      {
+        "area": 5,
+        "point": [
+          -832.0,
+          -3232.0
+        ],
+        "source": "Trig_AlmightyShinra_Cinematic_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1824.0
+      }
+    ],
+    "n01Z": [
+      {
+        "area": 9,
+        "point": [
+          -3090.9,
+          -27015.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 4415.194791852337
+      }
+    ],
+    "H00X": [
+      {
+        "area": 7,
+        "point": [
+          15070.3,
+          -24751.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "n00F": [
+      {
+        "area": 4,
+        "point": [
+          7711.9,
+          2918.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 134.80000000000018
+      }
+    ],
+    "Hvsh": [
+      {
+        "area": 6,
+        "point": [
+          4067.4,
+          -21798.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 57.70000000000073
+      }
+    ],
+    "Ocb2": [
+      {
+        "area": 4,
+        "point": [
+          12528.0,
+          389.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 320.37042622564275
+      }
+    ],
+    "Ocbh": [
+      {
+        "area": 4,
+        "point": [
+          12776.9,
+          368.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 558.772807140791
+      }
+    ],
+    "Nman": [
+      {
+        "area": 5,
+        "point": [
+          -3350.2,
+          -1373.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1398.1999999999998
+      }
+    ],
+    "N03D": [
+      {
+        "area": 3,
+        "point": [
+          5708.8,
+          -11111.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 412.1252236881406
+      }
+    ],
+    "Opgh": [
+      {
+        "area": 2,
+        "point": [
+          27673.6,
+          -21387.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 4581.566300949926
+      },
+      {
+        "area": 4,
+        "point": [
+          13984.0,
+          2976.0
+        ],
+        "source": "Trig_KalmSiege3_DemonArrive_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 192.0
+      }
+    ],
+    "n014": [
+      {
+        "area": 2,
+        "point": [
+          27671.6,
+          -18436.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1732.0
+      }
+    ],
+    "U00O": [
+      {
+        "area": 7,
+        "point": [
+          16408.2,
+          -26655.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 24.200000000000728
+      }
+    ],
+    "Uwar": [
+      {
+        "area": 5,
+        "point": [
+          3204.1,
+          -16146.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "ncnk": [
+      {
+        "area": 2,
+        "point": [
+          20681.0,
+          -18248.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1440.5835623107741
+      }
+    ],
+    "nhrq": [
+      {
+        "area": 2,
+        "point": [
+          20826.5,
+          -17984.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1223.8009070106148
+      }
+    ],
+    "nstw": [
+      {
+        "area": 2,
+        "point": [
+          20930.3,
+          -18350.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1602.7565286093827
+      }
+    ],
+    "nmrm": [
+      {
+        "area": 2,
+        "point": [
+          22777.2,
+          -18419.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1203.2999999999993
+      }
+    ],
+    "nowk": [
+      {
+        "area": 2,
+        "point": [
+          20984.1,
+          -18092.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1382.7878000618896
+      }
+    ],
+    "nrzg": [
+      {
+        "area": 2,
+        "point": [
+          21218.5,
+          -18070.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1475.934937590408
+      }
+    ],
+    "nggr": [
+      {
+        "area": 2,
+        "point": [
+          17654.7,
+          -17419.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1908.8764077330932
+      }
+    ],
+    "U00N": [
+      {
+        "area": 6,
+        "point": [
+          7399.5,
+          -19474.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 389.90205180275586
+      }
+    ],
+    "U00M": [
+      {
+        "area": 8,
+        "point": [
+          20883.2,
+          2763.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1868.7999999999993
+      }
+    ],
+    "U00L": [
+      {
+        "area": 8,
+        "point": [
+          20888.1,
+          2966.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1863.9000000000015
+      }
+    ],
+    "U00K": [
+      {
+        "area": 5,
+        "point": [
+          8428.0,
+          -16365.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 44.0
+      }
+    ],
+    "U00J": [
+      {
+        "area": 5,
+        "point": [
+          -612.8,
+          -3076.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1668.5
+      }
+    ],
+    "U00I": [
+      {
+        "area": 2,
+        "point": [
+          27377.9,
+          -22168.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 5298.348688034794
+      }
+    ],
+    "U00H": [
+      {
+        "area": 9,
+        "point": [
+          -2565.7,
+          -22827.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 619.7999999999993
+      }
+    ],
+    "U00G": [
+      {
+        "area": 5,
+        "point": [
+          1363.0,
+          -13117.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "U00F": [
+      {
+        "area": 5,
+        "point": [
+          5894.5,
+          -15780.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "U00E": [
+      {
+        "area": 4,
+        "point": [
+          15724.9,
+          -3541.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 670.0092685926068
+      },
+      {
+        "area": 4,
+        "point": [
+          6896.0,
+          2656.0
+        ],
+        "source": "Trig_KalmSiege2_SouthWave_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      }
+    ],
+    "O00I": [
+      {
+        "area": 5,
+        "point": [
+          8716.0,
+          -15481.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 180.0
+      }
+    ],
+    "H02W": [
+      {
+        "area": 6,
+        "point": [
+          5515.8,
+          -19753.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 0.0
+      }
+    ],
+    "U000": [
+      {
+        "area": 5,
+        "point": [
+          1306.0,
+          -16199.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 966.0
+      }
+    ],
+    "U019": [
+      {
+        "area": 2,
+        "point": [
+          27665.7,
+          -23140.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 6310.943081663787
+      }
+    ],
+    "u01M": [
+      {
+        "area": 7,
+        "point": [
+          20781.5,
+          -25312.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1920.4890653164366
+      }
+    ],
+    "n0MC": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1588.013176897472
+      }
+    ],
+    "nenf": [
+      {
+        "area": 1,
+        "point": [
+          12723.7,
+          -11613.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 290.60000000000036
+      },
+      {
+        "area": 1,
+        "point": [
+          13009.1,
+          -11466.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 437.7000000000007
+      }
+    ],
+    "nrog": [
+      {
+        "area": 1,
+        "point": [
+          12778.3,
+          -11727.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 177.0
+      },
+      {
+        "area": 1,
+        "point": [
+          13105.5,
+          -11597.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 306.10000000000036
+      }
+    ],
+    "nban": [
+      {
+        "area": 1,
+        "point": [
+          12964.3,
+          -11829.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 74.29999999999927
+      },
+      {
+        "area": 1,
+        "point": [
+          13063.1,
+          -11786.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 117.79999999999927
+      }
+    ],
+    "nbrg": [
+      {
+        "area": 1,
+        "point": [
+          12726.2,
+          -11470.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 434.0
+      },
+      {
+        "area": 1,
+        "point": [
+          12917.9,
+          -11271.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 632.7999999999993
+      }
+    ],
+    "n016": [
+      {
+        "area": 5,
+        "point": [
+          2051.5,
+          -387.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 252.7
+      },
+      {
+        "area": 5,
+        "point": [
+          1930.8,
+          1042.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1682.6
+      },
+      {
+        "area": 5,
+        "point": [
+          2217.4,
+          1060.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1700.5259803954775
+      },
+      {
+        "area": 5,
+        "point": [
+          -2387.8,
+          1802.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2560.388074101268
+      },
+      {
+        "area": 5,
+        "point": [
+          -2169.3,
+          2155.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2827.377473914652
+      },
+      {
+        "area": 5,
+        "point": [
+          -1035.3,
+          1549.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2125.5
+      },
+      {
+        "area": 5,
+        "point": [
+          -1198.9,
+          3338.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 3914.7
+      },
+      {
+        "area": 5,
+        "point": [
+          187.8,
+          1467.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2107.0
+      },
+      {
+        "area": 4,
+        "point": [
+          2870.4,
+          3577.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2932.922699288203
+      },
+      {
+        "area": 5,
+        "point": [
+          213.2,
+          3575.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 4203.626663965296
+      },
+      {
+        "area": 4,
+        "point": [
+          3357.6,
+          1572.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1954.4
+      }
+    ],
+    "ngno": [
+      {
+        "area": 5,
+        "point": [
+          167.9,
+          -14499.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 984.1
+      },
+      {
+        "area": 5,
+        "point": [
+          261.0,
+          -14779.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 895.6757002397687
+      },
+      {
+        "area": 5,
+        "point": [
+          251.8,
+          -15103.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 991.2961464668367
+      },
+      {
+        "area": 5,
+        "point": [
+          244.4,
+          -14938.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 941.4020182684973
+      }
+    ],
+    "ngna": [
+      {
+        "area": 5,
+        "point": [
+          62.3,
+          -14688.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1089.700371661862
+      },
+      {
+        "area": 5,
+        "point": [
+          125.9,
+          -15049.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1087.950260811587
+      },
+      {
+        "area": 5,
+        "point": [
+          63.0,
+          -14903.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1110.0400938704872
+      }
+    ],
+    "ngns": [
+      {
+        "area": 5,
+        "point": [
+          74.5,
+          -15289.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1234.167529146671
+      },
+      {
+        "area": 5,
+        "point": [
+          280.4,
+          -15341.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1089.2000734484004
+      },
+      {
+        "area": 5,
+        "point": [
+          -37.4,
+          -15042.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1241.0482867318256
+      }
+    ],
+    "ngnw": [
+      {
+        "area": 5,
+        "point": [
+          39.8,
+          -14406.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1112.2
+      },
+      {
+        "area": 5,
+        "point": [
+          599.6,
+          -15340.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 854.928072997957
+      },
+      {
+        "area": 5,
+        "point": [
+          192.2,
+          -14275.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 959.8
+      },
+      {
+        "area": 5,
+        "point": [
+          431.4,
+          -15312.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 953.8156897430445
+      }
+    ],
+    "ngnv": [
+      {
+        "area": 5,
+        "point": [
+          353.2,
+          -15004.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 859.1432534798836
+      },
+      {
+        "area": 5,
+        "point": [
+          204.6,
+          -14635.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 947.4
+      },
+      {
+        "area": 5,
+        "point": [
+          360.5,
+          -14512.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 791.5
+      },
+      {
+        "area": 5,
+        "point": [
+          534.6,
+          -15021.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 701.7632934259245
+      }
+    ],
+    "ncer": [
+      {
+        "area": 2,
+        "point": [
+          27791.4,
+          -18154.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1454.273000505751
+      },
+      {
+        "area": 2,
+        "point": [
+          27514.1,
+          -18135.4
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1393.367133960035
+      }
+    ],
+    "ncea": [
+      {
+        "area": 2,
+        "point": [
+          27446.7,
+          -18410.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1626.5321699861965
+      },
+      {
+        "area": 2,
+        "point": [
+          27901.4,
+          -18387.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1698.0950856768875
+      }
+    ],
+    "ncks": [
+      {
+        "area": 2,
+        "point": [
+          27441.1,
+          -18576.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1782.8053230793298
+      },
+      {
+        "area": 2,
+        "point": [
+          27578.5,
+          -18701.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1944.3422178207222
+      },
+      {
+        "area": 2,
+        "point": [
+          27749.7,
+          -18725.3
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 2022.5013671194383
+      },
+      {
+        "area": 2,
+        "point": [
+          27894.8,
+          -18561.7
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1870.077091993804
+      }
+    ],
+    "nmrr": [
+      {
+        "area": 2,
+        "point": [
+          22915.8,
+          -18400.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1184.9000000000015
+      },
+      {
+        "area": 2,
+        "point": [
+          22669.3,
+          -18363.5
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1147.5
+      },
+      {
+        "area": 2,
+        "point": [
+          22663.8,
+          -18518.2
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1302.2000000000007
+      }
+    ],
+    "nrzb": [
+      {
+        "area": 2,
+        "point": [
+          21165.9,
+          -18359.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1702.0071738979264
+      }
+    ],
+    "nrzm": [
+      {
+        "area": 2,
+        "point": [
+          20675.9,
+          -18438.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1627.4862733676116
+      }
+    ],
+    "nhrh": [
+      {
+        "area": 2,
+        "point": [
+          20822.5,
+          -18102.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1333.4700034121502
+      }
+    ],
+    "ngst": [
+      {
+        "area": 2,
+        "point": [
+          17562.0,
+          -17264.0
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1896.1276328348786
+      }
+    ],
+    "ngrk": [
+      {
+        "area": 5,
+        "point": [
+          17416.8,
+          -17323.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 1768.7999999999993
+      }
+    ],
+    "nomg": [
+      {
+        "area": 4,
+        "point": [
+          7908.8,
+          -2509.9
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 338.0999999999999
+      }
+    ],
+    "nogm": [
+      {
+        "area": 4,
+        "point": [
+          8324.5,
+          -2492.1
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 460.67457060271954
+      }
+    ],
+    "nogr": [
+      {
+        "area": 4,
+        "point": [
+          8105.4,
+          -2720.6
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 147.03169726286905
+      },
+      {
+        "area": 4,
+        "point": [
+          8291.3,
+          -2684.8
+        ],
+        "source": "CreateUnitsForPlayer11",
+        "kind": "Fixed hostile placement",
+        "distance": 306.38330568097143
+      }
+    ],
+    "n0B1": [
+      {
+        "area": 1,
+        "point": [
+          18528.0,
+          -11360.0
+        ],
+        "source": "Hunt board 1 / gg_rct_591",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0BS": [
+      {
+        "area": 1,
+        "point": [
+          13936.0,
+          -8112.0
+        ],
+        "source": "Hunt board 2 / gg_rct_620",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0BL": [
+      {
+        "area": 1,
+        "point": [
+          11888.0,
+          -11632.0
+        ],
+        "source": "Hunt board 3 / gg_rct_619",
+        "kind": "Rare hunt",
+        "distance": 323.9753077010654
+      }
+    ],
+    "n03U": [
+      {
+        "area": 2,
+        "point": [
+          27904.0,
+          -13824.0
+        ],
+        "source": "Hunt board 4 / gg_rct_607",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n01M": [
+      {
+        "area": 2,
+        "point": [
+          25600.0,
+          -16448.0
+        ],
+        "source": "Hunt board 5 / gg_rct_610",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n03Y": [
+      {
+        "area": 2,
+        "point": [
+          18848.0,
+          -15776.0
+        ],
+        "source": "Hunt board 6 / gg_rct_611",
+        "kind": "Rare hunt",
+        "distance": 320.0
+      }
+    ],
+    "n0A4": [
+      {
+        "area": 3,
+        "point": [
+          5872.0,
+          -13008.0
+        ],
+        "source": "Hunt board 7 / gg_rct_627",
+        "kind": "Rare hunt",
+        "distance": 16.0
+      }
+    ],
+    "n02P": [
+      {
+        "area": 3,
+        "point": [
+          8096.0,
+          -10976.0
+        ],
+        "source": "Hunt board 8 / gg_rct_618",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n03B": [
+      {
+        "area": 5,
+        "point": [
+          -1536.0,
+          -1088.0
+        ],
+        "source": "Hunt board 9 / gg_rct_608",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0A7": [
+      {
+        "area": 4,
+        "point": [
+          6064.0,
+          -2608.0
+        ],
+        "source": "Hunt board 10 / gg_rct_628",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n03Z": [
+      {
+        "area": 4,
+        "point": [
+          6112.0,
+          -5888.0
+        ],
+        "source": "Hunt board 11 / gg_rct_612",
+        "kind": "Rare hunt",
+        "distance": 430.5159695063587
+      }
+    ],
+    "n04L": [
+      {
+        "area": 4,
+        "point": [
+          13248.0,
+          2304.0
+        ],
+        "source": "Hunt board 12 / gg_rct_621",
+        "kind": "Rare hunt",
+        "distance": 96.0
+      }
+    ],
+    "n0A5": [
+      {
+        "area": 5,
+        "point": [
+          11824.0,
+          -18064.0
+        ],
+        "source": "Hunt board 13 / gg_rct_629",
+        "kind": "Rare hunt",
+        "distance": 151.7893276880822
+      }
+    ],
+    "n0C8": [
+      {
+        "area": 5,
+        "point": [
+          14112.0,
+          -16128.0
+        ],
+        "source": "Hunt board 14 / gg_rct_616",
+        "kind": "Rare hunt",
+        "distance": 256.0
+      }
+    ],
+    "n0MZ": [
+      {
+        "area": 5,
+        "point": [
+          1440.0,
+          -16192.0
+        ],
+        "source": "Hunt board 15 / gg_rct_617",
+        "kind": "Rare hunt",
+        "distance": 832.0
+      }
+    ],
+    "n0A9": [
+      {
+        "area": 6,
+        "point": [
+          3472.0,
+          -28080.0
+        ],
+        "source": "Hunt board 16 / gg_rct_625",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n02Q": [
+      {
+        "area": 6,
+        "point": [
+          1568.0,
+          -23648.0
+        ],
+        "source": "Hunt board 17 / gg_rct_613",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n03W": [
+      {
+        "area": 7,
+        "point": [
+          13504.0,
+          -21856.0
+        ],
+        "source": "Hunt board 18 / gg_rct_609",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0A6": [
+      {
+        "area": 7,
+        "point": [
+          16592.0,
+          -23856.0
+        ],
+        "source": "Hunt board 19 / gg_rct_624",
+        "kind": "Rare hunt",
+        "distance": 112.0
+      }
+    ],
+    "n04H": [
+      {
+        "area": 8,
+        "point": [
+          18800.0,
+          48.0
+        ],
+        "source": "Hunt board 20 / gg_rct_384",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0A8": [
+      {
+        "area": 8,
+        "point": [
+          26416.0,
+          2704.0
+        ],
+        "source": "Hunt board 21 / gg_rct_695",
+        "kind": "Rare hunt",
+        "distance": 1789.2836555448664
+      }
+    ],
+    "n0AZ": [
+      {
+        "area": 4,
+        "point": [
+          12704.0,
+          96.0
+        ],
+        "source": "Hunt board 22 / gg_rct_614",
+        "kind": "Rare hunt",
+        "distance": 480.0
+      }
+    ],
+    "n0B0": [
+      {
+        "area": 6,
+        "point": [
+          6816.0,
+          -25472.0
+        ],
+        "source": "Hunt board 23 / gg_rct_615",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0CM": [
+      {
+        "area": 7,
+        "point": [
+          16416.0,
+          -27936.0
+        ],
+        "source": "Hunt board 24 / gg_rct_644",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "U01Q": [
+      {
+        "area": 8,
+        "point": [
+          27344.0,
+          -5968.0
+        ],
+        "source": "Hunt board 25 / gg_rct_579",
+        "kind": "Rare hunt",
+        "distance": 1649.9406049915858
+      }
+    ],
+    "n0LR": [
+      {
+        "area": 7,
+        "point": [
+          22928.0,
+          -24336.0
+        ],
+        "source": "Hunt board 26 / gg_rct_692",
+        "kind": "Rare hunt",
+        "distance": 3734.894911506882
+      }
+    ],
+    "n0MA": [
+      {
+        "area": 8,
+        "point": [
+          27088.0,
+          -3984.0
+        ],
+        "source": "Hunt board 27 / gg_rct_626",
+        "kind": "Rare hunt",
+        "distance": 0.0
+      }
+    ],
+    "n0NE": [
+      {
+        "area": 8,
+        "point": [
+          24128.0,
+          -4416.0
+        ],
+        "source": "Hunt board 28 / gg_rct_714",
+        "kind": "Rare hunt",
+        "distance": 32.0
+      }
+    ],
+    "n04J": [
+      {
+        "area": 3,
+        "point": [
+          9696.0,
+          -11312.0
+        ],
+        "source": "Trig_Chocobo_Respawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      }
+    ],
+    "E00X": [
+      {
+        "area": 7,
+        "point": [
+          26688.0,
+          -27424.0
+        ],
+        "source": "Trig_Boss_BlackDevil_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 5571.309361362013
+      }
+    ],
+    "U015": [
+      {
+        "area": 7,
+        "point": [
+          26688.0,
+          -27424.0
+        ],
+        "source": "Trig_Boss_DarkFact_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 5571.309361362013
+      }
+    ],
+    "E00Z": [
+      {
+        "area": 7,
+        "point": [
+          26688.0,
+          -28352.0
+        ],
+        "source": "Trig_Boss_DemiFiend_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 5568.0
+      }
+    ],
+    "N0LU": [
+      {
+        "area": 7,
+        "point": [
+          26688.0,
+          -27424.0
+        ],
+        "source": "Trig_Boss_Gilgamesh_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 5571.309361362013
+      }
+    ],
+    "N03R": [
+      {
+        "area": 7,
+        "point": [
+          27328.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Judges_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 6208.0
+      }
+    ],
+    "N03Q": [
+      {
+        "area": 7,
+        "point": [
+          27328.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Judges_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 6208.0
+      }
+    ],
+    "N03O": [
+      {
+        "area": 7,
+        "point": [
+          27328.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Judges_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 6208.0
+      }
+    ],
+    "U01T": [
+      {
+        "area": 7,
+        "point": [
+          27328.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Ozma_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 6208.0
+      }
+    ],
+    "N03K": [
+      {
+        "area": 7,
+        "point": [
+          26048.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Penance_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 4928.0
+      }
+    ],
+    "U01N": [
+      {
+        "area": 7,
+        "point": [
+          26048.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Shinryu_Warmech_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 4928.0
+      }
+    ],
+    "E01J": [
+      {
+        "area": 7,
+        "point": [
+          27328.0,
+          -27968.0
+        ],
+        "source": "Trig_Boss_Shinryu_Warmech_Summon_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 6208.0
+      }
+    ],
+    "u00R": [
+      {
+        "area": 4,
+        "point": [
+          15712.0,
+          -3520.0
+        ],
+        "source": "Trig_KalmSiege3_DemonArrive_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 647.1599493170139
+      },
+      {
+        "area": 8,
+        "point": [
+          19120.0,
+          -6448.0
+        ],
+        "source": "Trig_KalmSiege3_Fail_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1768.5609969690047
+      }
+    ],
+    "n019": [
+      {
+        "area": 7,
+        "point": [
+          12432.0,
+          -22592.0
+        ],
+        "source": "Trig_Nimphrodel_Undomiel_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      }
+    ],
+    "n0KZ": [
+      {
+        "area": 2,
+        "point": [
+          24320.0,
+          -15056.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 536.6563145999495
+      }
+    ],
+    "n0L0": [
+      {
+        "area": 2,
+        "point": [
+          27360.0,
+          -16400.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      },
+      {
+        "area": 2,
+        "point": [
+          19632.0,
+          -11824.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      },
+      {
+        "area": 2,
+        "point": [
+          26384.0,
+          -14176.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      },
+      {
+        "area": 2,
+        "point": [
+          23792.0,
+          -10368.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      },
+      {
+        "area": 2,
+        "point": [
+          20112.0,
+          -16288.0
+        ],
+        "source": "QuestFieryWings_Started",
+        "kind": "Scripted world spawn",
+        "distance": 0.0
+      }
+    ],
+    "n0CC": [
+      {
+        "area": 9,
+        "point": [
+          -2352.0,
+          -22416.0
+        ],
+        "source": "Trig_Quest_GodDragon_Start_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 208.0
+      }
+    ],
+    "n02D": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n026": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n025": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n029": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n028": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n027": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n02C": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n02A": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ],
+    "n0CG": [
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      },
+      {
+        "area": 8,
+        "point": [
+          26475.2,
+          2394.1
+        ],
+        "source": "Trig_Valigarmanda_Wave_Spawn_Actions",
+        "kind": "Scripted world spawn",
+        "distance": 1588.013176897472
+      }
+    ]
+  }
+}

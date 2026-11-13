@@ -44,11 +44,13 @@ function Armory_VisitHouse takes nothing returns nothing
     endif
     set shop=udg_ArmoryUnit[visitor]
     if shop==null then
-        set shop=CreateUnit(viewer,'e01G',GetUnitX(hero),GetUnitY(hero),270.)
+        set shop=CreateUnit(viewer,'e01G',GetUnitX(house),GetUnitY(house),270.)
         set udg_ArmoryUnit[visitor]=shop
         call Collection_ForceAddPlayerSimple(viewer,udg_SaveFlagForce[0])
     endif
+    call SetUnitPosition(shop,GetUnitX(house),GetUnitY(house))
     set ArmoryViewOwner[visitor]=owner
+    call SetUnitVertexColor(shop,255,255,255,0)
     call ShowUnit(shop,true)
     call Armory_ShowCategory(shop,0)
     call SelectUnitForPlayerSingle(shop,viewer)

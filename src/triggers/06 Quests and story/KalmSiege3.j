@@ -74,22 +74,22 @@ function Trig_KalmSiege3_CidTalk_Actions takes nothing returns nothing
     if(Trig_KalmSiege3_CidTalk_CinematicsOn())then
         call Cine_Enter()
         call ForForce(udg_PlayingPlayers,function Trig_KalmSiege3_CidTalk_ApplyCamera)
-        call Text_Say(gg_unit_Hpb1_0013,"Greetings again. I've summoned you to speak once more about the Sieges our town has been facing.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"The enemy is surely gathering for another attack.",false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"Greetings again. I've summoned you to speak once more about the Sieges our town has been facing.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"The enemy is surely gathering for another attack.",null,null,0,false)
         if(Trig_KalmSiege3_CidTalk_NoSouthBeasts())then
-            call Text_Say(gg_unit_Hpb1_0013,"Indeed. The last siege caught us off guard quite a bit at the south gate, with all those monsters pouring in so suddenly while the battle at the north gate was ongoing.",false)
+            call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"Indeed. The last siege caught us off guard quite a bit at the south gate, with all those monsters pouring in so suddenly while the battle at the north gate was ongoing.",null,null,0,false)
         else
-            call Text_Say(gg_unit_Hpb1_0013,"Indeed. The last siege caught us off guard quite a bit at the south gate. Regular forest monsters would not have been a problem, but we were attacked by red-skinned beasts as well!",false)
-            call Text_Say(udg_Mid,"They looked a lot like Ao Madoushi. They may have been his kin once.",false)
-            call Text_Say(gg_unit_Hpb1_0013,"Good thinking, Mid. However what matters right now is that they are very much hostile to us, and will likely attack again.",false)
+            call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"Indeed. The last siege caught us off guard quite a bit at the south gate. Regular forest monsters would not have been a problem, but we were attacked by red-skinned beasts as well!",null,null,0,false)
+            call Text_Transmission(null,GetUnitName(udg_Mid),"They looked a lot like Ao Madoushi. They may have been his kin once.",null,null,0,false)
+            call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"Good thinking, Mid. However what matters right now is that they are very much hostile to us, and will likely attack again.",null,null,0,false)
         endif
-        call Text_Say(gg_unit_Hpb1_0013,"We won't be blindsided again. I'll guard the south gate when the time comes.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Sounds like a good plan. What about the demon who showed up?",false)
-        call Text_Say(gg_unit_Hpb1_0013,"Yes, we've figured out who that is as well. His name is Adrammelech, and he is the Zodiac Brave of Thunder. He seems to be their army commander of sorts.",false)
-        call Text_Say(udg_Mid,"It is strange that he attacks us without any backup. They'd have a stronger chance of destroying the town if other Zodiac Braves attacked us as well.",false)
-        call Text_Say(gg_unit_Hpb1_0013,"It is rather mystifying, but unfortunately speculating about their motivations is a luxury we cannot afford right now. Whatever their reasons may be, we must strike them back and keep the town safe no matter what.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Indeed we do. We'll take that demon down next time.",false)
-        call Text_Say(gg_unit_Hpb1_0013,"It is reassuring to hear you say that. I recall Meliadoul also wanted to speak with you. I'm sure the next siege is fast approaching. You'd best ready yourselves.",false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"We won't be blindsided again. I'll guard the south gate when the time comes.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"Sounds like a good plan. What about the demon who showed up?",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"Yes, we've figured out who that is as well. His name is Adrammelech, and he is the Zodiac Brave of Thunder. He seems to be their army commander of sorts.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(udg_Mid),"It is strange that he attacks us without any backup. They'd have a stronger chance of destroying the town if other Zodiac Braves attacked us as well.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"It is rather mystifying, but unfortunately speculating about their motivations is a luxury we cannot afford right now. Whatever their reasons may be, we must strike them back and keep the town safe no matter what.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"Indeed we do. We'll take that demon down next time.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hpb1_0013),"It is reassuring to hear you say that. I recall Meliadoul also wanted to speak with you. I'm sure the next siege is fast approaching. You'd best ready yourselves.",null,null,0,false)
         call Cine_ExitAction()
     endif
     set udg_StoryProgress=(udg_StoryProgress+1)
@@ -98,7 +98,7 @@ function Trig_KalmSiege3_CidTalk_Actions takes nothing returns nothing
     call GroupAddUnitSimple(gg_unit_Hvwd_0098,udg_BossUnits)
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_KalmSiege3_Start)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Meliadoul.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Meliadoul.")
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 
@@ -117,20 +117,20 @@ function Trig_KalmSiege3_Start_Actions takes nothing returns nothing
     if(Trig_KalmSiege3_Start_CinematicsOn())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"We've come. How are things looking?",false)
-        call Text_Say(gg_unit_Hvwd_0098,"The enemy has gathered a larger army than ever, and the golden demon is gearing up for battle himself. This will likely be the decisive battle.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"In addition to that, after being blindsided in the previous siege we've decided to scout for opposition on the south gate of Kalm and just as we feared, there's an army preparing to strike there as well. We are hopelessly outnumbered.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"We've recovered from the previous assault, but at this rate our defenses are not capable of fending off these assailants.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"It pains me to be so blunt, but we are dependent on your help. So please, help us once more.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"We will. We can't have this town fall either.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"... Thank you. Really. You are outsiders, but you've been our greatest ally in these trying times.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"Our plan is to still concentrate the main defense force on the north gate, as this is likely where the demon will strike. Cid and a squad of guards will defend the south gate.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"Where do you need us to help?",false)
-        call Text_Say(gg_unit_Hvwd_0098,"Unfortunately, on both sides. We can keep the enemy at bay, but we won't be able to fend them off without your help.",false)
-        call Text_Say(Player_GetHero(GetTriggerPlayer()),"That's not good... ideally we can finish this battle before it goes on too long by taking down the demon.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"Yes. If you can take down the demon himself, we may be able to turn the tide of battle. Though if he plans on overwhelming us at last I doubt he will leave us much choice but to take him head on.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"It's time. This will probably be the ultimate battle for Kalm. Make your final preparations now.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"In about |cffffcc0030 seconds|r, it will begin. We're counting on you.",false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"We've come. How are things looking?",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"The enemy has gathered a larger army than ever, and the golden demon is gearing up for battle himself. This will likely be the decisive battle.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"In addition to that, after being blindsided in the previous siege we've decided to scout for opposition on the south gate of Kalm and just as we feared, there's an army preparing to strike there as well. We are hopelessly outnumbered.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"We've recovered from the previous assault, but at this rate our defenses are not capable of fending off these assailants.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"It pains me to be so blunt, but we are dependent on your help. So please, help us once more.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"We will. We can't have this town fall either.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"... Thank you. Really. You are outsiders, but you've been our greatest ally in these trying times.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"Our plan is to still concentrate the main defense force on the north gate, as this is likely where the demon will strike. Cid and a squad of guards will defend the south gate.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"Where do you need us to help?",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"Unfortunately, on both sides. We can keep the enemy at bay, but we won't be able to fend them off without your help.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(Player_GetHero(GetTriggerPlayer())),"That's not good... ideally we can finish this battle before it goes on too long by taking down the demon.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"Yes. If you can take down the demon himself, we may be able to turn the tide of battle. Though if he plans on overwhelming us at last I doubt he will leave us much choice but to take him head on.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"It's time. This will probably be the ultimate battle for Kalm. Make your final preparations now.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"In about |cffffcc0030 seconds|r, it will begin. We're counting on you.",null,null,0,false)
         call Cine_ExitAction()
     endif
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Objects\\RandomObject\\RandomObject.mdl")
@@ -162,12 +162,12 @@ function Trig_KalmSiege3_Restart_Actions takes nothing returns nothing
     if(Trig_KalmSiege3_Restart_CinematicsOn())then
         call Cine_Enter()
         call Cam_PanToUnit(GetTriggerUnit(),0)
-        call Text_Say(gg_unit_Hvwd_0098,"It's time. This will probably be the ultimate battle for Kalm. Make your final preparations now.",false)
-        call Text_Say(gg_unit_Hvwd_0098,"In about |cffffcc0010 seconds|r, it will begin. We're counting on you.",false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"It's time. This will probably be the ultimate battle for Kalm. Make your final preparations now.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_Hvwd_0098),"In about |cffffcc0010 seconds|r, it will begin. We're counting on you.",null,null,0,false)
         call Cine_ExitAction()
     endif
     set udg_SpecialEffect[30]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hvwd_0098,"Objects\\RandomObject\\RandomObject.mdl")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defend Kalm from the siege starting in 10 seconds!\r\n\r\n- Meliadoul must survive!\r\n- Cid must survive!")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Defend Kalm from the siege starting in 10 seconds!\r\n\r\n- Meliadoul must survive!\r\n- Cid must survive!")
     call Quest_SetLog(QUEST_KALM_SIEGE_3,"Defend Kalm from the siege starting in 10 seconds!\r\n\r\nMeliadoul must survive!\r\nCid must survive!",false)
     call StartTimerBJ(udg_SiegeTimer,false,10.)
     set udg_SiegeTimerWindow=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Kalm Siege in ...")
@@ -190,30 +190,30 @@ function Trig_KalmSiege3_Begin_ScalingOff takes nothing returns boolean
     return(udg_EternityMode==false)
 endfunction
 
-function Trig_KalmSiege3_Begin_IsForestSlot takes nothing returns boolean
+function Trig_KalmSiege3_Begin_IsForestSlot takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (20).
     // The remainder after dividing (loop counter A) by (2).
-    return(ModuloInteger(GetForLoopIndexA(),20)>=$A)and(ModuloInteger(GetForLoopIndexA(),2)==1) // $A = 10
+    return(ModuloInteger(siegeIndex,20)>=$A)and(ModuloInteger(siegeIndex,2)==1) // $A = 10
 endfunction
 
-function Trig_KalmSiege3_Begin_IsShieldSlot takes nothing returns boolean
+function Trig_KalmSiege3_Begin_IsShieldSlot takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (9).
     // The remainder after dividing (loop counter A) by (9).
-    return(ModuloInteger(GetForLoopIndexA(),9)==0)or(ModuloInteger(GetForLoopIndexA(),9)==4)
+    return(ModuloInteger(siegeIndex,9)==0)or(ModuloInteger(siegeIndex,9)==4)
 endfunction
 
-function Trig_KalmSiege3_Begin_ShieldSlotCheck takes nothing returns boolean
-    return(Trig_KalmSiege3_Begin_IsShieldSlot())
+function Trig_KalmSiege3_Begin_ShieldSlotCheck takes integer siegeIndex returns boolean
+    return(Trig_KalmSiege3_Begin_IsShieldSlot(siegeIndex))
 endfunction
 
-function Trig_KalmSiege3_Begin_IsGhoulMasterSlot takes nothing returns boolean
+function Trig_KalmSiege3_Begin_IsGhoulMasterSlot takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (19).
-    return(udg_GhoulMasterDisabled==false)and(ModuloInteger(GetForLoopIndexA(),19)==1)
+    return(udg_GhoulMasterDisabled==false)and(ModuloInteger(siegeIndex,19)==1)
 endfunction
 
-function Trig_KalmSiege3_Begin_IsBoostedSouthSlot takes nothing returns boolean
+function Trig_KalmSiege3_Begin_IsBoostedSouthSlot takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (2).
-    return(ModuloInteger(GetForLoopIndexA(),2)==0)and(udg_EternityMode==false)
+    return(ModuloInteger(siegeIndex,2)==0)and(udg_EternityMode==false)
 endfunction
 
 function Trig_KalmSiege3_Begin_SendGuardPatrol takes nothing returns nothing
@@ -256,6 +256,8 @@ function Trig_KalmSiege3_Begin_SendGuardAttack takes nothing returns nothing
 endfunction
 
 function Trig_KalmSiege3_Begin_Actions takes nothing returns nothing
+    local integer siegeIndex=0
+    local integer siegeEnd=0
     if(Trig_KalmSiege3_Begin_CinematicBusy())then
         call StartTimerBJ(udg_SiegeTimer,false,.49)
         return
@@ -275,10 +277,10 @@ function Trig_KalmSiege3_Begin_Actions takes nothing returns nothing
     if(Trig_KalmSiege3_Begin_CinematicsOn())then
         call Cam_PanToUnit(udg_EngineerHero,2.)
         call Wait_Polled(2.5)
-        call Text_Say(udg_EngineerHero,"Fight for your lives, brothers and sisters!",false)
+        call Text_Transmission(null,GetUnitName(udg_EngineerHero),"Fight for your lives, brothers and sisters!",null,null,0,false)
         call Cam_PanToUnit(udg_RangerHero,2.)
         call Wait_Polled(2.5)
-        call Text_Say(udg_RangerHero,"Everyone! Protect our home with everything you've got!",false)
+        call Text_Transmission(null,GetUnitName(udg_RangerHero),"Everyone! Protect our home with everything you've got!",null,null,0,false)
     endif
     call Cine_ExitAction()
     if(Trig_KalmSiege3_Begin_RetryEnabled())then
@@ -294,58 +296,53 @@ function Trig_KalmSiege3_Begin_Actions takes nothing returns nothing
     call Music_SetTrack(40)
     call SetUnitLifePercentBJ(gg_unit_U00E_0222,'d')
     call SetUnitManaPercentBJ(gg_unit_U00E_0222,'d')
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
+    set siegeIndex=1
+    set siegeEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),4,udg_SpawnRectHashRef))
-        if(Trig_KalmSiege3_Begin_IsForestSlot())then
+        exitwhen siegeIndex>siegeEnd
+        set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(siegeIndex,4,udg_SpawnRectHashRef))
+        if(Trig_KalmSiege3_Begin_IsForestSlot(siegeIndex))then
             // The remainder after dividing (loop counter A) by (8).
-            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(GetForLoopIndexA(),8)],Player($B),udg_TempPoint,udg_TempPoint2) // $B = 11
+            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(siegeIndex,8)],Player($B),udg_TempPoint,udg_TempPoint2) // $B = 11
         else
             // The remainder after dividing (loop counter A) by (10).
-            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),udg_TempPoint,udg_TempPoint2) // $A = 10; $B = 11
-            if(Trig_KalmSiege3_Begin_ScalingOff())then
-                call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*$A),(1-1)) // $A = 10
-                call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*$A),1) // $A = 10
-                call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())*$A)) // $A = 10
-                call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
-            endif
+            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(siegeIndex,$A)],Player($B),udg_TempPoint,udg_TempPoint2) // $A = 10; $B = 11
+
         endif
         call RemoveLocation(udg_TempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SpecialUnits)
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),600.)
-        call Unit_ScaleToLevel60(bj_lastCreatedUnit)
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*3,0)
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*3,1)
+        call BlzSetUnitMaxHP(GetLastCreatedUnit(),BlzGetUnitMaxHP(GetLastCreatedUnit())*3)
+        call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
-        if(Trig_KalmSiege3_Begin_ShieldSlotCheck())then
+        if(Trig_KalmSiege3_Begin_ShieldSlotCheck(siegeIndex))then
             call UnitAddAbilityBJ('A0YK',GetLastCreatedUnit()) // 'A0YK': ability "Permanent Lightning Shield"
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ShockAuraUnitGroup)
         endif
-        if(Trig_KalmSiege3_Begin_IsGhoulMasterSlot())then
+        if(Trig_KalmSiege3_Begin_IsGhoulMasterSlot(siegeIndex))then
             call UnitAddAbilityBJ('A0RB',GetLastCreatedUnit()) // 'A0RB': ability "Ghoul Master"
             call UnitAddAbilityBJ('ACvp',GetLastCreatedUnit()) // 'ACvp': object name not found in map data
         endif
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=LoadIntegerBJ(1,2,udg_SpawnDataHashRef)
+    set siegeIndex=1
+    set siegeEnd=LoadIntegerBJ(1,2,udg_SpawnDataHashRef)
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),1,udg_SpawnRectHashRef))
+        exitwhen siegeIndex>siegeEnd
+        set udg_TempPoint=GetRectCenter(LoadRectHandleBJ(siegeIndex,1,udg_SpawnRectHashRef))
         // The remainder after dividing (loop counter A) by (8).
-        call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(GetForLoopIndexA(),8)],Player($B),udg_TempPoint,udg_TempPoint2) // $B = 11
+        call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(siegeIndex,8)],Player($B),udg_TempPoint,udg_TempPoint2) // $B = 11
         call RemoveLocation(udg_TempPoint)
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SummonedUnits)
-        call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-        if(Trig_KalmSiege3_Begin_IsBoostedSouthSlot())then
-            call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*20),(1-1))
-            call BlzSetUnitBaseDamage(GetLastCreatedUnit(),(BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*20),1)
-            call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())*20))
-            call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
-        endif
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*3,0)
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*3,1)
+        call BlzSetUnitMaxHP(GetLastCreatedUnit(),BlzGetUnitMaxHP(GetLastCreatedUnit())*3)
+        call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),600.)
         call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
     call Wait_Polled(.2)
     call ForGroupBJ(udg_AllyBrothersGroup,function Trig_KalmSiege3_Begin_SendGuardPatrol)
@@ -368,6 +365,8 @@ function Trig_KalmSiege3_DemonArrive_ChieftainAlive takes nothing returns boolea
 endfunction
 
 function Trig_KalmSiege3_DemonArrive_Actions takes nothing returns nothing
+    local integer siegeIndex=0
+    local integer siegeEnd=0
     local location l_tempPoint
     local location l_tempPoint2
     if(Trig_KalmSiege3_DemonArrive_CinematicBusy())then
@@ -393,10 +392,10 @@ function Trig_KalmSiege3_DemonArrive_Actions takes nothing returns nothing
         call Wait_Polled(.5)
         call ShowUnitShow(gg_unit_U00E_0222)
         call Wait_Polled(1.)
-        call Text_Say(udg_RangerHero,"You again!",false)
-        call Text_Say(gg_unit_U00E_0222,"Humans. You've been nothing but a plague since you came to this world.",false)
-        call Text_Say(gg_unit_U00E_0222,"You are unfit to live in our world. I, Adrammelech, the Zodiac Brave of Thunder, will rectify this, and wipe your race off the face of this world!",false)
-        call Text_Say(udg_RangerHero,"Here he comes! Strike him down with all we have!",false)
+        call Text_Transmission(null,GetUnitName(udg_RangerHero),"You again!",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_U00E_0222),"Humans. You've been nothing but a plague since you came to this world.",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(gg_unit_U00E_0222),"You are unfit to live in our world. I, Adrammelech, the Zodiac Brave of Thunder, will rectify this, and wipe your race off the face of this world!",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(udg_RangerHero),"Here he comes! Strike him down with all we have!",null,null,0,false)
         call Cine_ExitAction()
     else
         call ShowUnitShow(gg_unit_U00E_0222)
@@ -405,22 +404,23 @@ function Trig_KalmSiege3_DemonArrive_Actions takes nothing returns nothing
     call SetUnitInvulnerable(gg_unit_U00E_0222,false)
     call GroupAddUnitSimple(gg_unit_U00E_0222,udg_QuestUnits)
     set l_tempPoint2=GetUnitLoc(gg_unit_U00E_0222)
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=6
+    set siegeIndex=1
+    set siegeEnd=6
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256,(I2R(GetForLoopIndexA())*60.))
+        exitwhen siegeIndex>siegeEnd
+        set l_tempPoint=Loc_PolarOffset(l_tempPoint2,256,(I2R(siegeIndex)*60.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00R',Player($B),l_tempPoint,l_tempPoint2) // 'u00R': unit "Shambling Corpse"; $B = 11
         call RemoveLocation(l_tempPoint)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SpecialUnits)
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),600.)
-        call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-        call SetUnitLifePercentBJ(GetLastCreatedUnit(),50.)
-        call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 2))
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*3,0)
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*3,1)
+        call BlzSetUnitMaxHP(GetLastCreatedUnit(),BlzGetUnitMaxHP(GetLastCreatedUnit())*3)
+        call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         call UnitAddAbilityBJ('A0ZU',GetLastCreatedUnit()) // 'A0ZU': ability "Double Vulnerable"
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
     call RemoveLocation(l_tempPoint2)
     if(Trig_KalmSiege3_DemonArrive_ChieftainAlive())then
@@ -467,9 +467,10 @@ function Trig_KalmSiege3_DemonSummon_Actions takes nothing returns nothing
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SpecialUnits)
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),600.)
-        call Unit_ScaleToLevel60(bj_lastCreatedUnit)
-        call SetUnitLifePercentBJ(GetLastCreatedUnit(),50.)
-        call BlzSetUnitMaxHP(GetLastCreatedUnit(),(BlzGetUnitMaxHP(GetLastCreatedUnit())/ 2))
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*3,0)
+        call BlzSetUnitBaseDamage(GetLastCreatedUnit(),BlzGetUnitBaseDamage(GetLastCreatedUnit(),1)*3,1)
+        call BlzSetUnitMaxHP(GetLastCreatedUnit(),BlzGetUnitMaxHP(GetLastCreatedUnit())*3)
+        call SetUnitLifePercentBJ(GetLastCreatedUnit(),'d')
         call UnitAddAbilityBJ('A0ZU',GetLastCreatedUnit()) // 'A0ZU': ability "Double Vulnerable"
         call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
         call RemoveLocation(udg_TempPoint2)
@@ -714,15 +715,15 @@ function Trig_KalmSiege3_Complete_Actions takes nothing returns nothing
     call Cine_Enter()
     if(Trig_KalmSiege3_Complete_CinematicsOn())then
         call Cam_PanToUnit(gg_unit_U00E_0222,0)
-        call Text_Say(gg_unit_U00E_0222,"You... pests... won't get away with this...",false)
+        call Text_Transmission(null,GetUnitName(gg_unit_U00E_0222),"You... pests... won't get away with this...",null,null,0,false)
         if(Trig_KalmSiege3_Complete_KilledByPlayer())then
             set udg_CinematicActor=Player_GetHero(GetOwningPlayer(GetKillingUnitBJ()))
         else
             set udg_CinematicActor=Player_GetHero(ForcePickRandomPlayer(udg_PlayingPlayers))
         endif
-        call Text_Say(udg_CinematicActor,"He's down...",false)
-        call Text_Say(udg_RangerHero,"We've... done it. We struck him down!",false)
-        call Text_Say(udg_RangerHero,"We are in your eternal gratitude. If it weren't for your help, this town would be a pile of ashes by now.",false)
+        call Text_Transmission(null,GetUnitName(udg_CinematicActor),"He's down...",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(udg_RangerHero),"We've... done it. We struck him down!",null,null,0,false)
+        call Text_Transmission(null,GetUnitName(udg_RangerHero),"We are in your eternal gratitude. If it weren't for your help, this town would be a pile of ashes by now.",null,null,0,false)
     endif
     call Reward_Give(8000,6000,udg_RangerHero)
     call CinematicFadeBJ(bj_CINEFADETYPE_FADEOUT,1.,"ReplaceableTextures\\CameraMasks\\White_mask.blp",0,0,0,0)
@@ -804,17 +805,19 @@ function Trig_KalmSiege3_Fail_IsDemonHidden takes nothing returns boolean
     return(IsUnitHiddenBJ(gg_unit_U00E_0222))
 endfunction
 
-function Trig_KalmSiege3_Fail_IsThirdSlot takes nothing returns boolean
+function Trig_KalmSiege3_Fail_IsThirdSlot takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (3).
-    return(ModuloInteger(GetForLoopIndexA(),3)==0)
+    return(ModuloInteger(siegeIndex,3)==0)
 endfunction
 
-function Trig_KalmSiege3_Fail_IsThirdSlotSouth takes nothing returns boolean
+function Trig_KalmSiege3_Fail_IsThirdSlotSouth takes integer siegeIndex returns boolean
     // The remainder after dividing (loop counter A) by (3).
-    return(ModuloInteger(GetForLoopIndexA(),3)==0)
+    return(ModuloInteger(siegeIndex,3)==0)
 endfunction
 
 function Trig_KalmSiege3_Fail_Actions takes nothing returns nothing
+    local integer siegeIndex=0
+    local integer siegeEnd=0
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
     call Music_ClearTrack(40)
@@ -862,30 +865,30 @@ function Trig_KalmSiege3_Fail_Actions takes nothing returns nothing
     call IssuePointOrderLocBJ(gg_unit_U00E_0222,"attack",l_tempPoint)
     call RemoveLocation(l_tempPoint)
     set udg_TempPoint2=GetUnitLoc(gg_unit_U00E_0222)
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=6
+    set siegeIndex=1
+    set siegeEnd=6
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        set l_tempPoint=Loc_PolarOffset(udg_TempPoint2,256,(I2R(GetForLoopIndexA())*60.))
+        exitwhen siegeIndex>siegeEnd
+        set l_tempPoint=Loc_PolarOffset(udg_TempPoint2,256,(I2R(siegeIndex)*60.))
         call CreateNUnitsAtLocFacingLocBJ(1,'u00R',Player($B),l_tempPoint,udg_TempPoint2) // 'u00R': unit "Shambling Corpse"; $B = 11
         call RemoveLocation(l_tempPoint)
         call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdl")
         call DestroyEffectBJ(GetLastCreatedEffectBJ())
         call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
         call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
     call RemoveLocation(udg_TempPoint2)
-    set udg_RaidPowerLevel=70
+    set udg_RaidPowerLevel=16
     set udg_TempPoint2=GetRectCenter(gg_rct_588)
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
+    set siegeIndex=1
+    set siegeEnd=LoadIntegerBJ(4,2,udg_SpawnDataHashRef)
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        if(Trig_KalmSiege3_Fail_IsThirdSlot())then
-            set l_tempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),4,udg_SpawnRectHashRef))
+        exitwhen siegeIndex>siegeEnd
+        if(Trig_KalmSiege3_Fail_IsThirdSlot(siegeIndex))then
+            set l_tempPoint=GetRectCenter(LoadRectHandleBJ(siegeIndex,4,udg_SpawnRectHashRef))
             // The remainder after dividing (loop counter A) by (10).
-            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(GetForLoopIndexA(),$A)],Player($B),l_tempPoint,udg_TempPoint2) // $A = 10; $B = 11
+            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeNorthUnitType[ModuloInteger(siegeIndex,$A)],Player($B),l_tempPoint,udg_TempPoint2) // $A = 10; $B = 11
             call RemoveLocation(l_tempPoint)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*udg_RaidPowerLevel)/ 4),(1-1))
@@ -895,18 +898,18 @@ function Trig_KalmSiege3_Fail_Actions takes nothing returns nothing
             call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)
             call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
         endif
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
     call RemoveLocation(udg_TempPoint2)
     set udg_TempPoint2=GetRectCenter(gg_rct_635)
-    set bj_forLoopAIndex=1
-    set bj_forLoopAIndexEnd=LoadIntegerBJ(1,2,udg_SpawnDataHashRef)
+    set siegeIndex=1
+    set siegeEnd=LoadIntegerBJ(1,2,udg_SpawnDataHashRef)
     loop
-        exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-        if(Trig_KalmSiege3_Fail_IsThirdSlotSouth())then
-            set l_tempPoint=GetRectCenter(LoadRectHandleBJ(GetForLoopIndexA(),1,udg_SpawnRectHashRef))
+        exitwhen siegeIndex>siegeEnd
+        if(Trig_KalmSiege3_Fail_IsThirdSlotSouth(siegeIndex))then
+            set l_tempPoint=GetRectCenter(LoadRectHandleBJ(siegeIndex,1,udg_SpawnRectHashRef))
             // The remainder after dividing (loop counter A) by (8).
-            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(GetForLoopIndexA(),8)],Player($B),l_tempPoint,udg_TempPoint2) // $B = 11
+            call CreateNUnitsAtLocFacingLocBJ(1,udg_SiegeSouthUnitType[ModuloInteger(siegeIndex,8)],Player($B),l_tempPoint,udg_TempPoint2) // $B = 11
             call RemoveLocation(l_tempPoint)
             call GroupAddUnitSimple(GetLastCreatedUnit(),udg_EscortUnits)
             call BlzSetUnitBaseDamage(GetLastCreatedUnit(),((BlzGetUnitBaseDamage(GetLastCreatedUnit(),0)*udg_RaidPowerLevel)/ 4),(1-1))
@@ -916,7 +919,7 @@ function Trig_KalmSiege3_Fail_Actions takes nothing returns nothing
             call SetUnitAcquireRangeBJ(GetLastCreatedUnit(),800.)
             call IssuePointOrderLocBJ(GetLastCreatedUnit(),"attack",udg_TempPoint2)
         endif
-        set bj_forLoopAIndex=bj_forLoopAIndex+1
+        set siegeIndex=siegeIndex+1
     endloop
     call RemoveLocation(udg_TempPoint2)
     call DestroyTrigger(GetTriggeringTrigger())

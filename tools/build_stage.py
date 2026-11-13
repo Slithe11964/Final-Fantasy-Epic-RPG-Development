@@ -74,7 +74,9 @@ def tree_hash(*folders):
     # because the Forsaken probe builder rewrites its title/prefix in its scratch copy.
     h = hashlib.sha256(platform.python_version().encode())
     for folder in folders:
-        for f in sorted((ROOT / folder).rglob('*')):
+        path = ROOT / folder
+        files = [path] if path.is_file() else sorted(path.rglob('*'))
+        for f in files:
             if f.is_file() and '__pycache__' not in f.parts and f.name != 'build-config.json':
                 h.update(str(f.relative_to(ROOT)).replace('\\', '/').encode() + b'\0' + f.read_bytes())
     return h.hexdigest()
@@ -162,7 +164,7 @@ def main():
         # inputs already passed (usually the previous build), skip them; the output map is
         # still fully checked below.
         passed = set() if a.full_checks else cache_load()
-        inputs = tree_hash('tools', 'src', 'baseline')
+        inputs = tree_hash('tools', 'src', 'release/FFERPG_0.9.7.3-r16.w3x', 'release/FFERPG_0.9.7.3-r16-1.29.w3x')
         base_key = 'base:' + sha(base) + ':' + inputs
         tests_key = 'tests:' + inputs
         if base_key in passed:
@@ -225,7 +227,7 @@ def main():
             # Reforged-only native outside the known add-ons (frame panels) stops the build here.
             classic_final = final.parent / '1.29.2' / final.name
             refuse_existing((classic_final,))
-            template = ROOT / 'baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x'
+            template = ROOT / 'release/FFERPG_0.9.7.3-r16-1.29.w3x'
             os.environ['PATH'] = str(ROOT / 'tools/bin') + os.pathsep + os.environ.get('PATH', '')
             run(ROOT / 'tools/downgrade.py', ready, scratch / 'classic.w3x', '--w3i-template', template,
                 '--fill-from', config.get('classic_fill_from',template), '--name', config.get('classic_title',final.stem), '--fferpg-visuals',

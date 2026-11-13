@@ -85,7 +85,7 @@ function Trig_HydraEgg_Pickup_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Hydra Egg to Captain Jack.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Hydra Egg to Captain Jack.")
     call DestroyForce(l_tempForce)
     call Quest_SetLog(QUEST_HYDRA_EGG,"Bring the Hydra Egg to Captain Jack.",false)
     call EnableTrigger(gg_trg_HydraEgg_Deliver)

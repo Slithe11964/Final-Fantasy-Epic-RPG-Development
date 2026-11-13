@@ -23,7 +23,7 @@ class PlayerCommandTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         reference=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not reference.exists():reference=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not reference.exists():reference=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         cls.view=View(reference)
         v=cls.view
         cls.config=catalogue(damage_catalogue(v.object_bytes('war3map.w3a'),v.object_bytes('war3mapSkin.w3a'),v.object_bytes('war3map.w3t'),v.object_bytes('war3mapSkin.w3t')))

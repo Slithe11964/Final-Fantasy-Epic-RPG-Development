@@ -77,10 +77,8 @@ function Trig_Quest_SaveTimmy_Init_Cond_IsCampMonster takes nothing returns bool
 endfunction
 
 function Trig_Quest_SaveTimmy_Init_Enum_BuffCampUnit takes nothing returns nothing
-    call BlzSetUnitMaxHP(GetEnumUnit(),(BlzGetUnitMaxHP(GetEnumUnit())*3))
+    call BlzSetUnitMaxHP(GetEnumUnit(),(BlzGetUnitMaxHP(GetEnumUnit())*2))
     call SetUnitLifePercentBJ(GetEnumUnit(),'d')
-    call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),0)*3),(1-1))
-    call BlzSetUnitBaseDamage(GetEnumUnit(),(BlzGetUnitBaseDamage(GetEnumUnit(),1)*3),1)
 endfunction
 
 function Trig_Quest_SaveTimmy_Init_Actions takes nothing returns nothing

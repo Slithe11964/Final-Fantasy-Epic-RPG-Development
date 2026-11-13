@@ -203,7 +203,7 @@ function Trig_ArenaResources_ShipLost_Actions takes nothing returns nothing
         call Cine_ExitAction()
     endif
     // the announcement and the new log text differ, so the announcement is shown here
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Limma to try again.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Limma to try again.")
     call Quest_SetLog(QUEST_ARENA_RESOURCES,"The ship has been destroyed! Talk to Limma once again.",false)
     call RemoveUnit(udg_SupplyShip)
     call SetUnitOwner(gg_unit_e008_0132,Player(8),false)

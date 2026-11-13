@@ -21,7 +21,7 @@ class EquipmentIntegrityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         p=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not p.exists():p=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not p.exists():p=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         cls.view=View(p);cls.config=catalogue(cls.view)
 
     def test_all_six_freelancer_forms_and_active_job_detection(self):

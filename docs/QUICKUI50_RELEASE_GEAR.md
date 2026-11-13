@@ -1,0 +1,9 @@
+# QuickUI50 released F/G restoration and independent wave runes
+
+The owner reports that F/G disappeared in UI49 and explicitly requests the working 0.9.7.5e implementation. UI50 restores its QuickGear functions, globals and imported UI assets directly from the retained named release. A packaged audit requires token-identical functions, identical declarations and byte-identical QuickGear assets. Later Gear_* native-click helpers, artificial cursor and icon rewrites are absent. The ordinary equipment_quickcast.refresh build entry point now uses this released implementation; failed experiments remain separate.
+
+Wateraga/Book of Depths indicators are added independently through the confirmed Dragoon renderer. The existing DG_Rune images, DG_MouseX/Y input and DG_UIUpdate timer draw one center line ending at Water_Launch's fixed 800-unit travel distance. Ice Wand U uses three lines with Spell_Blizzaga's existing launch angles and its last damaging wave centers. No F/G function is edited to implement the overlay. F/G preview activation reads its existing pending item state; native inventory click observers also identify items in quick slots, equipment and the extended bag. Shared startup reserves all observer handles; local callbacks only read state and draw images.
+
+The owner confirms Aqualung, Sonic Thrust's 5-unit push and the shrine purple working in UI49. Their functions and all gameplay object tables remain identical in UI50. 1000 Cuts retains the requested 5% Dagger proficiency multiplier and matching tooltips.
+
+Focused checks verify cursor-following rune endpoints, Wateraga bag activation, the restored F/G pending-state observer, local UI read-only behavior, exact released F/G parity, and unchanged confirmed gameplay. Compiler/editor/startup/save/content checks pass. Actual UI50 rune activation in Warcraft still needs owner acceptance; source/modeled checks do not establish client acceptance.

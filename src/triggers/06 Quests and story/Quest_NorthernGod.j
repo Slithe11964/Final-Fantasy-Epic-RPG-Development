@@ -40,7 +40,7 @@ function Trig_Quest_NorthernGod_Judgment_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetTriggerPlayer()),". . .",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Decide whether Alberich deserves judgment: attack him, or leave and let him go.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Decide whether Alberich deserves judgment: attack him, or leave and let him go.")
     set udg_QuestsTotal=(udg_QuestsTotal+1)
     set udg_SpecialEffect[90]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h037_0257,"Objects\\RandomObject\\RandomObject.mdl")
     call StartTimerBJ(udg_SharedDelayTimer5,false,8.)

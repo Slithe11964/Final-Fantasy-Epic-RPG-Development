@@ -9,32 +9,29 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import gear_slots
 
 
-def latest_map():
-    maps = sorted((ROOT / 'release').glob('FFERPG_*-stage*.w3x'))
-    return maps[-1] if maps else None
+PRODUCTION_MAP = ROOT / "release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x"
+CATALOGUE_FIXTURE = ROOT / "tools/tests/fixtures/FFERPG_0.9.7.3-r16-stageATV.w3x"
 
 
 class GearSlotTable(unittest.TestCase):
     def test_generated_file_is_current(self):
-        """Regenerating from the newest release must reproduce the checked-in file."""
-        base = latest_map()
-        if base is None:
-            self.skipTest('no release map to generate from')
+        """Regenerating from the catalogue fixture must reproduce the checked-in file."""
+        base = CATALOGUE_FIXTURE
         rows = gear_slots.classify(base)
         self.assertEqual(len(rows), 276, 'the reviewed gear set is 276 items')
         self.assertEqual(gear_slots.render(rows, gear_slots.item_casts(base)).encode('utf-8'),
                          gear_slots.OUT.read_bytes(),
-                         'run tools/gear_slots.py against the newest release map')
+                         'run tools/gear_slots.py against the catalogue fixture')
 
     def test_every_kind_is_known(self):
-        kinds = {kind for _, _, kind, _, _ in gear_slots.classify(latest_map())}
+        kinds = {kind for _, _, kind, _, _ in gear_slots.classify(PRODUCTION_MAP)}
         self.assertTrue(kinds <= set(gear_slots.KINDS), kinds)
         self.assertEqual(set(gear_slots.LABELS), set(gear_slots.KINDS))
 
     def test_items_that_cast_name_their_spell(self):
         """Clicking an item is judged by the spell it casts, so the items the shared cooldowns
         are about must each name one."""
-        casts = gear_slots.item_casts(latest_map())
+        casts = gear_slots.item_casts(PRODUCTION_MAP)
         self.assertEqual(casts.get('I025'), 'A0Q2')   # Wateraga Materia
         self.assertEqual(casts.get('I05X'), 'A08X')   # Book of Depths
         self.assertEqual(casts.get('I0HX'), 'A0FW')   # Tome of Life

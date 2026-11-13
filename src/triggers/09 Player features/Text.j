@@ -5,6 +5,75 @@ globals
     string array udg_IntStringCache
 endglobals
 
+function QuestText_Message takes force f, integer messageType, string message returns nothing
+    // No placeholder/blank text can reach the engine's notification renderer.
+    if message==null or message=="" or message==" " or message=="(null)" then
+        return
+    endif
+    if (IsPlayerInForce(GetLocalPlayer(), f)) then
+        // Use only local code (no net traffic) within this block to avoid desyncs.
+
+        if (messageType == bj_QUESTMESSAGE_DISCOVERED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_QUEST, message)
+            call StartSound(bj_questDiscoveredSound)
+            call FlashQuestDialogButton()
+
+        elseif (messageType == bj_QUESTMESSAGE_UPDATED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_QUESTUPDATE, message)
+            call StartSound(bj_questUpdatedSound)
+            call FlashQuestDialogButton()
+
+        elseif (messageType == bj_QUESTMESSAGE_COMPLETED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_QUESTDONE, message)
+            call StartSound(bj_questCompletedSound)
+            call FlashQuestDialogButton()
+
+        elseif (messageType == bj_QUESTMESSAGE_FAILED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_QUESTFAILED, message)
+            call StartSound(bj_questFailedSound)
+            call FlashQuestDialogButton()
+
+        elseif (messageType == bj_QUESTMESSAGE_REQUIREMENT) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_QUESTREQUIREMENT, message)
+
+        elseif (messageType == bj_QUESTMESSAGE_MISSIONFAILED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_MISSIONFAILED, message)
+            call StartSound(bj_questFailedSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_HINT) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_HINT, message)
+            call StartSound(bj_questHintSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_ALWAYSHINT) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_ALWAYSHINT, message)
+            call StartSound(bj_questHintSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_SECRET) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_SECRET, message)
+            call StartSound(bj_questSecretSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_UNITACQUIRED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_UNITACQUIRED, message)
+            call StartSound(bj_questHintSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_UNITAVAILABLE) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_UNITAVAILABLE, message)
+            call StartSound(bj_questHintSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_ITEMACQUIRED) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_ITEMACQUIRED, message)
+            call StartSound(bj_questItemAcquiredSound)
+
+        elseif (messageType == bj_QUESTMESSAGE_WARNING) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, bj_TEXT_DELAY_WARNING, message)
+            call StartSound(bj_questWarningSound)
+
+        else
+            // Unrecognized message type - ignore the request.
+        endif
+    endif
+endfunction
+
 function Text_Transmission takes unit l_speaker,string l_name,string l_msg,string l_skipText,sound l_snd,real l_dur,boolean l_forced returns nothing
     local real l_chars
     local integer i

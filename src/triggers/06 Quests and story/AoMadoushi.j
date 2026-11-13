@@ -1,4 +1,4 @@
-library TAoMadoushi requires TBackpack
+library TAoMadoushi requires TBackpack, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_AoMadoushi_Hide=null
@@ -26,7 +26,7 @@ function Trig_AoMadoushi_Summon_Actions takes nothing returns nothing
     set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Othr_0106,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call ShowUnitShow(gg_unit_Othr_0106)
     set udg_CidQuestStage=$B // $B = 11
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Ao Madoushi.")
+    call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Ao Madoushi.")
     call ExecuteFunc("QuestAoMadoushi_Summoned")
     call EnableTrigger(gg_trg_Quest_AoMadoushi_Talk)
     call DestroyTrigger(GetTriggeringTrigger())

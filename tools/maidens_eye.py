@@ -4,6 +4,7 @@ import re
 from jtok import functions
 from performance_runtime import put
 from objdata import read_objects,write_objects
+from priest_master import setf
 ROOT=Path(__file__).resolve().parents[1]
 
 def refresh(source):
@@ -30,8 +31,10 @@ def objects(data):
     found=[o for group in ('original','custom') for o in table[group] if (o['id'] or o['base'])=='aMEy']
     if found:
         if len(found)!=1 or found[0]['base']!='Atru':raise ValueError('Maiden Eye ability ID collision')
-        return data
+        setf(found[0],'abpx',0,0)
+        setf(found[0],'abpy',-11,0)
+        return write_objects(table,table['version'],'w3a')
     mods=[dict(field=key,type=kind,level=0,data=0,value=value,end=0) for key,kind,value in
-          [('anam',3,'Maiden Eye - carried sight'),('aher',0,0),('aite',0,1),('alev',0,1)]]
+          [('anam',3,'Maiden Eye - carried sight'),('aher',0,0),('aite',0,1),('alev',0,1),('abpx',0,0),('abpy',0,-11)]]
     table['custom'].append(dict(base='Atru',id='aMEy',sets=[dict(flag=0,mods=mods)]))
     return write_objects(table,table['version'],'w3a')

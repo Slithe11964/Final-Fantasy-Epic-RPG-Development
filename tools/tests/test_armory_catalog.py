@@ -102,7 +102,7 @@ class ArmoryTests(unittest.TestCase):
         self.assertEqual(updates[-1][2], 1)
 
     def test_hint_refresh_changes_tooltip_only_and_refuses_missing_objects(self):
-        archive = MPQ(str(ROOT/'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
+        archive = MPQ(str(ROOT/'release/FFERPG_0.9.7.3-r16.w3x'))
         table = read_objects(archive.read('war3map.w3u'), 'w3u')
         proxy = copy.deepcopy(next(o for o in table['custom'] if o['id'] == 'n0D8'))
         proxy['id'] = 'z012'
@@ -124,7 +124,7 @@ class ArmoryTests(unittest.TestCase):
             refresh_hint_objects({'original': [], 'custom': []}, changed)
 
     def test_original_baseline_without_hint_objects_is_rejected(self):
-        errors = check(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x')
+        errors = check(ROOT / 'release/FFERPG_0.9.7.3-r16.w3x')
         self.assertTrue(any('missing' in error for error in errors))
 
     def test_single_panel_shows_all_eleven_entries(self):
@@ -217,7 +217,7 @@ class ArmoryTests(unittest.TestCase):
         self.assertFalse(errors)
         flags = {k: v[-1] for k, v in flags.items()}
         catalog = json.loads((ROOT / 'src/armory-hints.json').read_text())
-        archive = MPQ(str(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
+        archive = MPQ(str(ROOT / 'release/FFERPG_0.9.7.3-r16.w3x'))
         table = read_objects(archive.read('war3map.w3u'), 'w3u')
         items = read_objects(archive.read('war3map.w3t'), 'w3t')
         item_fields = {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in items[g]}

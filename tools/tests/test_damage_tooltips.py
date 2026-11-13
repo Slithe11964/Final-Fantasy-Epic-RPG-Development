@@ -15,7 +15,7 @@ class DamageTooltipTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         p=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not p.exists():p=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not p.exists():p=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         cls.view=View(p)
         cls.config=catalogue(*(cls.view.object_bytes(n) for n in ['war3map.w3a','war3mapSkin.w3a','war3map.w3t','war3mapSkin.w3t']))
 

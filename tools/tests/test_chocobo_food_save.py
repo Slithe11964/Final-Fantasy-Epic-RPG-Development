@@ -123,7 +123,7 @@ class ChocoboFoodSaveTests(unittest.TestCase):
             self.assertFalse(queue)
 
     def test_reviewed_food_policy_rejects_changed_mode_filter(self):
-        current,errors=snapshot(ROOT/'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x')
+        current,errors=snapshot(ROOT/'release/FFERPG_0.9.7.3-r16.w3x')
         self.assertFalse(errors)
         self.assertEqual(compare(current,CONTRACT),[])
         changed=copy.deepcopy(current)

@@ -295,7 +295,7 @@ function Trig_Cine_StoneBreaks_Actions takes nothing returns nothing
         call RemoveUnit(udg_ZodiacStone)
     endif
     call ConditionalTriggerExecute(gg_trg_World_AfterDemonAppears)
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
+    call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
     call ExecuteFunc("QuestAoMadoushi_StoneBroke")
     call GroupAddUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
     call EnableTrigger(gg_trg_Quest_AoMadoushi_Report)
@@ -828,7 +828,7 @@ function Trig_Cine_StoneBreaks_Alt_Actions takes nothing returns nothing
             call StartTimerBJ(udg_CidResearchTimer,false,60.)
         else
             if(Trig_Cine_StoneBreaks_Alt_ShouldSendToSage())then
-                call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
+                call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Visit Ao Madoushi")
                 call ExecuteFunc("QuestAoMadoushi_StoneBroke")
                 call GroupAddUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
                 call EnableTrigger(gg_trg_Quest_AoMadoushi_Report)

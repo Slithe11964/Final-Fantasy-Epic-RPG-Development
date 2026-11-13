@@ -1,0 +1,11 @@
+# h Hotfix03 / V4 loading isolation test
+
+The owner reports h crashed while loading. Newest local report (2026-11-06 13:18:57) records a NETWORK DESYNC on turn 616 in modern h, six players, SD graphics. This is not an ACCESS_VIOLATION. The older noon access violation identifies rejected h Hotfix01, not the final h. The report does not attribute a JASS function or prove inventory polling caused this. Owner subsequently confirms the desync happened AFTER entering the character load code, not while the map itself was loading. This narrows reproduction to profile restoration, but does not prove the root cause.
+
+Isolation candidate only: Inventory94_Blocked now stops UI/input/preview inventory reads while ANY player has FFP_Locked or FFL phase 2/3/5/6 (load/verification/rollback). Inventory71_Reconcile skips the affected player's gear maintenance under the same lock/phases, resuming on the existing tick after completion/failure. Saving phase 1 does not suppress previews. The predicate uses shared load state, not owner-local selection/UI state. No new timers, state arrays, gameplay writes or sync messages. Existing UI cleanup and cursor logic retained.
+
+Exactly two existing functions changed, one read-only helper added. Editor source paired. All other archive resources, including creatures/jobs/items/spells/assets/save codec, are byte-identical to each respective baseline. Production h candidate from final h; development V4 from V3 retaining full development content. Existing h/V3/master/classic preserved. Classic has no Inventory94/native gear UI and was not changed by this experiment.
+
+Four executable tests pass: all eight clients block/recover for every load phase; profile locks respected and saving excluded; no scan/maintenance for locked hero while other heroes still reconcile; exact patch scope and identical helper behavior across both maps. Both playable/editor/startup/global/text checks and save compatibility (358 items,22 jobs) pass. Native multiplayer reproduction NOT performed and cause/fix NOT confirmed.
+
+Installed TEST: FFERPG-0.9.7.5h-Hotfix03.w3x and FFERPG-V4.w3x. Reproduce the same multiplayer loading sequence before promotion. Autosave20/10 retained. Builders tools/load_quiet_h03.py/tools/build_load_h03.py; tests tools/tests/test_load_quiet_h03.py.

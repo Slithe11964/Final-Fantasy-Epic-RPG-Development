@@ -122,12 +122,15 @@ def main():
             ready=scratch/'paired-output';ready.mkdir()
             for profile in ('Forsaken','Classic'):
                 work=scratch/profile/'FFERPG';work.mkdir(parents=True)
-                for folder in ('src','tools','baseline','experiments'):
+                for folder in ('src','tools','experiments'):
                     shutil.copytree(ROOT/folder,work/folder,ignore=shutil.ignore_patterns('__pycache__'))
                 for name in ('build.ps1','make_129.ps1'):shutil.copy2(ROOT/name,work/name)
                 target=scratch/(profile+'.w3x')
                 export_tree(target,work)
                 (work/'release').mkdir()
+                for baseline in ('release/FFERPG_0.9.7.3-r16.w3x', 'release/FFERPG_0.9.7.3-r16-1.29.w3x'):
+                    (work/baseline).parent.mkdir(exist_ok=True)
+                    shutil.copy2(ROOT/baseline, work/baseline)
                 # Catalogue regressions inspect an existing source map in the private workspace.
                 shutil.copy2(editor,work/'release'/editor.name)
                 (work/'release/Forsaken').mkdir()
@@ -144,7 +147,7 @@ def main():
                 cfg['editor_scenario']=True
                 if profile=='Classic':
                     fallback=scratch/'classic-fill.w3x'
-                    template=work/'baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x'
+                    template=work/'release/FFERPG_0.9.7.3-r16-1.29.w3x'
                     report['classic_reset_fields']=classic_fallback(editor,snapshot,template,fallback)
                     cfg['classic_fill_from']=str(fallback)
                 cfg_path.write_text(json.dumps(cfg,indent=2)+'\n',encoding='utf-8')

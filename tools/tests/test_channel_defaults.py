@@ -40,7 +40,7 @@ class ChannelDefaultsTests(unittest.TestCase):
     def test_actual_reported_master_spells_have_explicit_completion_fields(self):
         from mpq import MPQ
         p=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not p.exists():p=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not p.exists():p=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         arc=MPQ(str(p));main,skin=complete(arc.read('war3map.w3a'),arc.read('war3mapSkin.w3a'))
         table={o['id']:o for o in read_objects(main,'w3a')['custom']}
         for raw in ['A0QS','A147','A146','A148','A12Y','A00A','A149','A11R','A0SL','A0QO','A14L']:
@@ -56,7 +56,7 @@ class ChannelDefaultsTests(unittest.TestCase):
     def test_nonchannel_abilities_are_unchanged(self):
         from mpq import MPQ
         p=ROOT/'editor/FFERPG-Editor-Master.w3x'
-        if not p.exists():p=next((ROOT/'release').glob('*stageATV.w3x'))
+        if not p.exists():p=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x')
         source=MPQ(str(p)).read('war3map.w3a');out,_=complete(source)
         old=read_objects(source,'w3a');new=read_objects(out,'w3a')
         for group in ['original','custom']:

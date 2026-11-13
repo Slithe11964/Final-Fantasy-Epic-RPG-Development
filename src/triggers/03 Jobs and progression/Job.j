@@ -667,9 +667,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
     endif
     if(Trig_Job_Change_OldMasteryAtLeast4())then
         if(Trig_Job_Change_OldMasteryIsFour())then
-            call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,$A) // $A = 10
-            call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,$A) // $A = 10
-            call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_SUB,$A) // $A = 10
+            // All Stats +10 belongs to this cached job, including while inactive.
         else
             call UnitRemoveAbilityBJ(udg_MasteryBonusAbility[GetUnitAbilityLevelSwapped('A02F',Player_GetHero(udg_TempPlayer))],Player_GetHero(udg_TempPlayer)) // 'A02F': ability "Mastery"
         endif
@@ -744,9 +742,7 @@ function Trig_Job_Change_Actions takes nothing returns nothing
     else
         if(Trig_Job_Change_NewMasteryAtLeast4())then
             if(Trig_Job_Change_NewMasteryIsFour())then
-                call ModifyHeroStat(bj_HEROSTAT_STR,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,$A) // $A = 10
-                call ModifyHeroStat(bj_HEROSTAT_AGI,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,$A) // $A = 10
-                call ModifyHeroStat(bj_HEROSTAT_INT,Player_GetHero(udg_TempPlayer),bj_MODIFYMETHOD_ADD,$A) // $A = 10
+                // Constructors/loaders already include the selected +10.
             else
                 call UnitAddAbilityBJ(udg_MasteryBonusAbility[GetUnitAbilityLevelSwapped('A02F',Player_GetHero(udg_TempPlayer))],Player_GetHero(udg_TempPlayer)) // 'A02F': ability "Mastery"
             endif

@@ -83,7 +83,7 @@ function Trig_TargetPractice_Begin_Actions takes nothing returns nothing
     endif
     call DisableTrigger(GetTriggeringTrigger())
     set udg_TargetPracticePlayer=GetOwningPlayer(GetSoldUnit())
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_ITEMACQUIRED,(udg_PlayerName[GetConvertedPlayerId(udg_TargetPracticePlayer)]+" has begun Aisha's Target Practice!"))
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_ITEMACQUIRED,(udg_PlayerName[GetConvertedPlayerId(udg_TargetPracticePlayer)]+" has begun Aisha's Target Practice!"))
     call UnitRemoveAbilityBJ('Aneu',gg_unit_e017_0018) // 'Aneu': standard ability reference "Neutral Building"
     call StartTimerBJ(udg_TargetPracticeTimer,false,120.)
     set udg_TargetPracticeDialog=CreateTimerDialogBJ(GetLastCreatedTimerBJ(),"Target Practice")

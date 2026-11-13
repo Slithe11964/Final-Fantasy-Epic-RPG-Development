@@ -1,4 +1,4 @@
-library TTitle requires TForce, TPlayerHero
+library TTitle requires TForce, TPlayerHero, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Title_Grant=null
@@ -33,7 +33,7 @@ function Trig_Title_Grant_Actions takes nothing returns nothing
         call ForceAddPlayerSimple(udg_TempPlayer,udg_TitleForce[udg_TempInteger])
         set udg_TempForce=Force_OfPlayer(udg_TempPlayer)
         call DisplayTimedTextToForce(udg_TempForce,30,("|cffffcc00You have attained the title of|r |cff00ff00"+udg_TitleName[udg_TempInteger]))
-        call QuestMessageBJ(udg_TempForce,bj_QUESTMESSAGE_ITEMACQUIRED,udg_BonusText[udg_TempInteger])
+        call QuestText_Message(udg_TempForce,bj_QUESTMESSAGE_ITEMACQUIRED,udg_BonusText[udg_TempInteger])
         call DestroyForce(udg_TempForce)
     endif
     call SetPlayerAbilityAvailableBJ(true,'A0AR',udg_TempPlayer) // 'A0AR': ability "Hero Chronicles"

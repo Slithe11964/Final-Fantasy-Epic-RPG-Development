@@ -102,7 +102,7 @@ function Trig_DragonEgg_PickUp_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Dragon Egg to Kiemarl.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Dragon Egg to Kiemarl.")
     call DestroyForce(l_tempForce)
     call Quest_SetLog(QUEST_DRAGON_EGG,"Bring the Dragon Egg to Kiemarl.",false)
     call EnableTrigger(gg_trg_DragonEgg_Reward)

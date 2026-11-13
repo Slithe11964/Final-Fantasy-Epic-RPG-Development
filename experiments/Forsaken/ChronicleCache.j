@@ -18,8 +18,8 @@ function Chronicles_Tick takes nothing returns nothing
         set owner=Player(i)
         set hero=Player_GetHero(owner)
         set spirit=udg_SpiritOfGaya[i+1]
+        call Chronicles_CheckInventory(owner)
         if ChroniclesCachedInventory[i]!=CollectionInventoryRevision[i] or ChroniclesCachedTitles[i]!=CollectionTitleRevision[i] or ChroniclesCachedSpeed[i]!=udg_SpeedrunLevel[i+1] or ChroniclesCachedHero[i]!=hero or ChroniclesCachedSpirit[i]!=spirit then
-            call Chronicles_CheckInventory(owner)
             call Chronicles_RestoreSecrets(owner)
             set ChroniclesCachedInventory[i]=CollectionInventoryRevision[i]
             set ChroniclesCachedTitles[i]=CollectionTitleRevision[i]

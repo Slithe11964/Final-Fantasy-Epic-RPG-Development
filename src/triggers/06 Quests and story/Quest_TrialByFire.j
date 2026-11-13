@@ -73,7 +73,7 @@ function Trig_Quest_TrialByFire_Begin_Actions takes nothing returns nothing
         call Quest_StepDone(QUEST_TRIAL_BY_FIRE,GetOwningPlayer(GetBuyingUnit()),GetBuyingUnit())
     else
         // bought again after the quest failed or was done: the old trigger showed the update anyway
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Survive against McBurn for 30 seconds.")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Survive against McBurn for 30 seconds.")
         call QuestSetDescriptionBJ(Quest_LogEntry(QUEST_TRIAL_BY_FIRE),"Survive against McBurn for 30 seconds.")
     endif
     call Music_SetTrack(33)

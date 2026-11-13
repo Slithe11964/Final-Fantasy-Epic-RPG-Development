@@ -207,7 +207,7 @@ function Trig_Quest_ZodiacAge_GateBlocked_Actions takes nothing returns nothing
         if(Trig_Quest_ZodiacAge_GateBlocked_Cond_HashmalumNotMet())then
             call Quest_SetLog(QUEST_ZODIAC_AGE,"Ask Celeborn about the gate.",false)
         endif
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Celeborn about the gate.")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Celeborn about the gate.")
         call GroupAddUnitSimple(gg_unit_Emns_0156,udg_QuestUnits)
         set udg_SpecialEffect[43]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Emns_0156,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
         call EnableTrigger(gg_trg_Quest_ZodiacAge_AskCeleborn)
@@ -258,7 +258,7 @@ function Trig_Quest_ZodiacAge_AskCeleborn_Actions takes nothing returns nothing
     if(Trig_Quest_ZodiacAge_AskCeleborn_Cond_HashmalumNotMet())then
         call Quest_SetLog(QUEST_ZODIAC_AGE,"Ask Talon if he knows about the queen. Talon is a Wizard in Lothlorien who seems to be closed off towards the rulers Celeborn and Galadriel.",false)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Talon if he knows about the queen.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Ask Talon if he knows about the queen.")
     call GroupAddUnitSimple(gg_unit_e015_0238,udg_QuestUnits)
     set udg_SpecialEffect[43]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_e015_0238,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_ZodiacAge_AskTalon)
@@ -313,7 +313,7 @@ function Trig_Quest_ZodiacAge_AskTalon_Actions takes nothing returns nothing
     if(Trig_Quest_ZodiacAge_AskTalon_Cond_HashmalumNotMet())then
         call Quest_SetLog(QUEST_ZODIAC_AGE,"Find something to make Talon talk.",false)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find something to make Talon talk.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find something to make Talon talk.")
     call EnableTrigger(gg_trg_Quest_ZodiacAge_ShowPendant)
     set udg_ZodiacQuestStage=4
     if(Trig_Quest_ZodiacAge_AskTalon_Cond_PendantNpcStage1())then
@@ -408,7 +408,7 @@ function Trig_Quest_ZodiacAge_ShowPendant_Actions takes nothing returns nothing
     if(Trig_Quest_ZodiacAge_ShowPendant_Cond_HashmalumNotMet())then
         call Quest_SetLog(QUEST_ZODIAC_AGE,"Speak with Talon at the northern gate to the Icy Realm.",false)
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Speak with Talon at the northern gate to the Icy Realm.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Speak with Talon at the northern gate to the Icy Realm.")
     set l_tempPoint=GetRectCenter(gg_rct_636)
     call SetUnitPositionLocFacingBJ(gg_unit_e015_0238,l_tempPoint,.0)
     call RemoveLocation(l_tempPoint)

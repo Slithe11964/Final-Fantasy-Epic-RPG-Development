@@ -56,6 +56,8 @@ function Travel_Show takes player owner,integer page returns nothing
     local integer count=0
     local integer raw
     local integer total=0
+    local integer hotkey
+    local string label
     local integer key=pid*16
     loop
         exitwhen i>udg_TravelCount
@@ -77,7 +79,16 @@ function Travel_Show takes player owner,integer page returns nothing
         set raw=TravelOrder[i]
         if udg_WarpUnlocked[raw] then
             if count>=page*10 and count<(page+1)*10 then
-                set TravelChoice[key+raw]=DialogAddButton(TravelDialog[pid],udg_TravelName[raw],udg_TravelHotkey[raw])
+                set hotkey=udg_TravelHotkey[raw]
+                set label=udg_TravelName[raw]
+                if total>10 and raw==10 then
+                    set hotkey=74
+                    set label="Dark Dragon Marsh [J]"
+                elseif total>10 and raw==13 then
+                    set hotkey=79
+                    set label="Arena of Darkness [O]"
+                endif
+                set TravelChoice[key+raw]=DialogAddButton(TravelDialog[pid],label,hotkey)
             endif
             set count=count+1
         endif
@@ -86,12 +97,12 @@ function Travel_Show takes player owner,integer page returns nothing
     set TravelChoice[key+14]=null
     set TravelChoice[key+15]=null
     if (page+1)*10<total then
-        set TravelChoice[key+14]=DialogAddButton(TravelDialog[pid],"Next page",512)
+        set TravelChoice[key+14]=DialogAddButton(TravelDialog[pid],"Next page [D]",68)
     endif
     if page>0 then
-        set TravelChoice[key+15]=DialogAddButton(TravelDialog[pid],"Previous page",512)
+        set TravelChoice[key+15]=DialogAddButton(TravelDialog[pid],"Previous page [A]",65)
     endif
-    set TravelChoice[key]=DialogAddButton(TravelDialog[pid],"Cancel",512)
+    set TravelChoice[key]=DialogAddButton(TravelDialog[pid],"Cancel [Esc]",512)
     set TravelVisible[pid]=true
     call DialogDisplay(owner,TravelDialog[pid],true)
 endfunction
@@ -115,6 +126,13 @@ function Trig_Travel_Dialog_Click_Actions takes nothing returns nothing
     local integer pid=GetPlayerId(owner)
     local integer key=pid*16
     local unit hero=Player_GetHero(owner)
+    if GetTriggerEventId()==EVENT_PLAYER_END_CINEMATIC then
+        call Travel_Hide(owner)
+        set clicked=null
+        set owner=null
+        set hero=null
+        return
+    endif
     if clicked!=null and clicked==TravelChoice[key+14] then
         call Travel_Show(owner,TravelPage[pid]+1)
     elseif clicked!=null and clicked==TravelChoice[key+15] then
@@ -167,6 +185,7 @@ function Register_Travel_Dialog_Click takes nothing returns nothing
     set TravelOrder[13]=13
     loop
         exitwhen pid>=8
+        call TriggerRegisterPlayerEvent(gg_trg_Travel_Dialog_Click,Player(pid),EVENT_PLAYER_END_CINEMATIC)
         set TravelDialog[pid]=DialogCreate()
         call TriggerRegisterDialogEvent(gg_trg_Travel_Dialog_Click,TravelDialog[pid])
         set pid=pid+1

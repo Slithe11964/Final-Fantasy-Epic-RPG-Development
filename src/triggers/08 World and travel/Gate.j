@@ -110,7 +110,7 @@ function Trig_Gate_Codeword_Demesne_Actions takes nothing returns nothing
     endif
     if(Trig_Gate_Codeword_Demesne_Cond_QuestStarted())then
         call DestroyEffectBJ(udg_SpecialEffect[43])
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Venture forth into the Icy Realm.")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Venture forth into the Icy Realm.")
         call QuestSetDescriptionBJ(udg_MainQuest[18],"Venture forth into the Icy Realm.")
         if(Trig_Gate_Codeword_Demesne_Cond_StageAskCeleborn())then
             call GroupRemoveUnitSimple(gg_unit_Emns_0156,udg_QuestUnits)
@@ -200,7 +200,7 @@ function Trig_Gate_WinterKey_Unlock_Actions takes nothing returns nothing
         call RemoveItem(Gear_Carried(GetTriggerUnit(),'I0IM')) // 'I0IM': item "Winter Key"
         call DisplayTextToForce(GetPlayersAll(),(udg_PlayerName[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+" used the Winter Key to unlock the south gate to the Icy Realm."))
         if(Trig_Gate_WinterKey_Unlock_Cond_QuestActive())then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Confront Hashmalum.")
+            call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Confront Hashmalum.")
             call QuestSetDescriptionBJ(udg_MainQuest[18],"Confront Hashmalum.")
         endif
         call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_LTg2_0021)

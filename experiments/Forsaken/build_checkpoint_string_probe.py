@@ -44,7 +44,7 @@ def main():
         if name.lower() not in {'war3map.j', 'war3map.wtg', 'war3map.wct', '(attributes)', '(listfile)'}:
             if old.read(name) != new.read(name):
                 raise ValueError('unexpected archive change: ' + name)
-    template = ROOT / 'baseline/1.29.2/FFERPG_0.9.7.3-r16.w3x'
+    template = ROOT / 'release/FFERPG_0.9.7.3-r16-1.29.w3x'
     env = dict(os.environ)
     env['PATH'] = str(ROOT / 'tools/bin') + os.pathsep + env.get('PATH', '')
     converted = subprocess.run([sys.executable, str(ROOT / 'tools/downgrade.py'),

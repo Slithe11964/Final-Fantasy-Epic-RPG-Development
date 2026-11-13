@@ -79,7 +79,7 @@ function Trig_Boss_Mateus_Intro_Actions takes nothing returns nothing
         // written directly, as before: this also changed the entry when the quest was already done
         call QuestSetDescriptionBJ(udg_MainQuest[18],"Destroy Mateus and Demesne.")
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Mateus and Demesne.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Destroy Mateus and Demesne.")
     call StartTimerBJ(udg_JobLevelTimer,false,.01)
     call EnableTrigger(gg_trg_Boss_Demesne_CoverSwap)
     call EnableTrigger(gg_trg_Boss_Mateus_CoverSwap)

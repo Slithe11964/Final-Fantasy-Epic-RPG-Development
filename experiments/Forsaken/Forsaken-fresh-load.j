@@ -1,4 +1,4 @@
-library TForsakenFreshLoad requires TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine, TTitle, TJobLevels, TTitles
+library TForsakenFreshLoad requires THeroEndlessGrowth, TForsakenSaveFreshObjects, TForsakenSaveTransport, TLoad, TShrine, TTitle, TJobLevels, TTitles
 globals
     hashtable FFL_Before=null
     integer array FFL_Phase
@@ -801,7 +801,7 @@ function FFL_Apply takes integer pid returns boolean
 endfunction
 
 // The legacy loader re-runs each owned title's unlock effects and counts mastered jobs as food.
-// Title stats are not reapplied: the saved hero attributes already include them.
+// Fresh hero title stats are applied once by FFL_RestoreUnlocks after commit.
 // Title flags and Chronicle levels are restored without replaying Title_Grant.
 // Restore its display availability separately, after the new character is committed.
 function FFL_RestoreChronicles takes integer pid returns nothing
@@ -839,6 +839,8 @@ function FFL_RestoreUnlocks takes integer pid returns nothing
     local player owner=Player(pid)
     local integer i=0
     local integer mastered=0
+    local player previousPlayer=udg_TempPlayer
+    local integer previousTitle=udg_TempInteger
     loop
         exitwhen i>=udg_JobCount
         if Job_GetSavedLevel(owner,udg_JobUnitType[i])>=99 then
@@ -865,7 +867,13 @@ function FFL_RestoreUnlocks takes integer pid returns nothing
     // Recount every player's total job level now; the periodic update skips Legendary Guardians.
     call EnableTrigger(gg_trg_JobLevels_Init)
     call StartTimerBJ(udg_JobLevelTimer,false,.01)
+    // Use the identical growth/title path as a real job switch, including NG+.
+    set udg_TempPlayer=owner
+    call Trig_Hero_EndlessGrowth_Actions()
+    set udg_TempPlayer=previousPlayer
+    set udg_TempInteger=previousTitle
     call FFL_RestoreChronicles(pid)
+    set previousPlayer=null
     set owner=null
 endfunction
 

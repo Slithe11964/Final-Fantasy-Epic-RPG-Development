@@ -1,0 +1,10 @@
+Frame "TEXT" "GearGroundError61" {
+    Width 0.64,
+    Height 0.035,
+    FrameFont "MasterFont", 0.018, "",
+    FontColor 1.0 0.86 0.0 1.0,
+    FontShadowColor 0.0 0.0 0.0 1.0,
+    FontShadowOffset 0.001 -0.001,
+    FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,
+}

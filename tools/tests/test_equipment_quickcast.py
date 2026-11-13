@@ -52,7 +52,7 @@ class QuickCastTests(unittest.TestCase):
             BlzGetTriggerFrame=lambda:state['frame'],BlzGetTriggerPlayerMouseButton=lambda:state.get('mouse','left'),
             MOUSE_BUTTON_TYPE_LEFT='left',MOUSE_BUTTON_TYPE_RIGHT='right',BlzGetMouseFocusUnit=lambda:'enemy',
             BlzGetTriggerPlayerMouseX=lambda:100.,BlzGetTriggerPlayerMouseY=lambda:100.)
-        env.update(QuickGearNumberPanel={0:"np0",1:"np1"},QuickGearNumberText={0:"ni0",1:"ni1"},QuickGearNumberInitTimer=None,QuickGearArtTest=False,QuickGearInitTimer=None,QuickGearNumberImage={0:'ni0',1:'ni1'},NativeCDClock='cooldown-clock',BlzFrameSetTexture=lambda f,path,*a:texts.__setitem__(f,path),QuickGearWheelPanel={0:'fw',1:'gw'},QuickGearWheelImage={0:'fiw',1:'giw'},QuickGearWheelStep=defaultdict(lambda:-1),QuickGearDuration=defaultdict(float),QuickGearRetryUntil=0.,QuickGearWeaponKey=defaultdict(lambda:70),QuickGearOffhandKey=defaultdict(lambda:71),TravelVisible=defaultdict(bool),ConvertOsKeyType=chr,StringCase=lambda text,upper:text.upper() if upper else text.lower(),QuickGearLabel={0:'fl',1:'gl'},IMinBJ=min,QuickGearPreviewImage=defaultdict(lambda:None),QuickGearPreviewRadius=defaultdict(float),QuickGearPreviewCount=0,QuickGearPreview=0,QuickGearMouseKnown=False,QuickGearMouseX=0.,QuickGearMouseY=0.,EVENT_PLAYER_MOUSE_MOVE='move',IMaxBJ=max,GetUnitAbilityLevel=lambda *a:1,InventoryCinematicActive=False,udg_InCinematicMode=False,bj_cineModeAlreadyIn=False,QuickGearClockPool=defaultdict(int),QuickGearCast=defaultdict(int),QuickGearActive=defaultdict(bool),QuickGearShown=False,
+        env.update(QuickGearNumberPanel={0:"np0",1:"np1"},QuickGearNumberText={0:"ni0",1:"ni1"},QuickGearNumberInitTimer=None,QuickGearArtTest=False,QuickGearInitTimer=None,QuickGearNumberImage={0:'ni0',1:'ni1'},NativeCDClock='cooldown-clock',BlzFrameSetTexture=lambda f,path,*a:texts.__setitem__(f,path),QuickGearWheelPanel={0:'fw',1:'gw'},QuickGearWheelImage={0:'fiw',1:'giw'},QuickGearNativeWheel={0:None,1:None},QuickGearWheelStep=defaultdict(lambda:-1),QuickGearDuration=defaultdict(float),QuickGearRetryUntil=0.,QuickGearWeaponKey=defaultdict(lambda:70),QuickGearOffhandKey=defaultdict(lambda:71),TravelVisible=defaultdict(bool),ConvertOsKeyType=chr,StringCase=lambda text,upper:text.upper() if upper else text.lower(),QuickGearLabel={0:'fl',1:'gl'},IMinBJ=min,QuickGearPreviewImage=defaultdict(lambda:None),QuickGearPreviewRadius=defaultdict(float),QuickGearPreviewCount=0,QuickGearPreview=0,QuickGearTargetImage=None,QuickGearTargetPreview=False,QuickGearMouseKnown=False,QuickGearMouseX=0.,QuickGearMouseY=0.,EVENT_PLAYER_MOUSE_MOVE='move',IMaxBJ=max,GetUnitAbilityLevel=lambda *a:1,InventoryCinematicActive=False,udg_InCinematicMode=False,bj_cineModeAlreadyIn=False,QuickGearClockPool=defaultdict(int),QuickGearCast=defaultdict(int),QuickGearActive=defaultdict(bool),QuickGearShown=False,
                  QuickGearSeenCooldownRevision=-1,NativeCDData='native-data',LoadReal=published)
         e=execute(SOURCE,list(functions(SOURCE)),env)
         return e,state,worn,store,calls,packets,visible,texts
@@ -234,15 +234,15 @@ class QuickCastTests(unittest.TestCase):
         self.assertNotIn('BlzDestroyFrame(QuickGearNumberImage',SOURCE)
         self.assertNotIn('BlzDestroyFrame(QuickGearLabel',SOURCE)
 
-    def test_cached_countdown_does_not_read_items_until_equipment_or_use_event(self):
+    def test_periodic_slot_check_refreshes_changed_weapon_and_offhand_icons(self):
         e,s,w,db,calls,packets,v,texts=self.runtime();reads=[]
         e['BlzUnitItemInEquipmentSlot']=lambda u,slot:reads.append((u,slot)) or w.get(slot)
         s['cooldown']=8.;e['QuickGear_Poll']();self.assertEqual(len(reads),2)
         s['now']+=2.;e['QuickGear_Poll']();self.assertEqual(self.countdown(e,1,texts),'6')
-        for _ in range(100):e['QuickGear_Poll']()
-        self.assertEqual(len(reads),2)
-        e['QuickGearRevision'][1]+=1;e['QuickGear_Poll']();self.assertEqual(len(reads),2)
-        e['QuickGearRevision'][0]+=1;e['QuickGear_Poll']();self.assertEqual(len(reads),4)
+        for _ in range(2):e['QuickGear_Poll']()
+        self.assertEqual(len(reads),6)
+        e['QuickGearRevision'][1]+=1;e['QuickGear_Poll']();self.assertEqual(len(reads),8)
+        e['QuickGearRevision'][0]+=1;e['QuickGear_Poll']();self.assertEqual(len(reads),10)
         s['selected']=False;e['QuickGear_Poll']();self.assertFalse(v['dock'])
         s['selected']=True;e['QuickGear_Poll']();self.assertTrue(v['dock']);self.assertEqual(len(reads),4)
     def test_load_hides_display_and_never_reads_transient_heroes(self):

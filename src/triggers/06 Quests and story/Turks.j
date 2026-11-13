@@ -1,4 +1,4 @@
-library TTurks requires TForce, TPlayerHero, TUnit
+library TTurks requires TForce, TPlayerHero, TUnit, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Turks_Give_Flute=null
@@ -53,7 +53,7 @@ function Trig_Turks_Give_Flute_Actions takes nothing returns nothing
         call GroupAddUnitSimple(gg_unit_Othr_0106,udg_QuestUnits)
         call EnableTrigger(gg_trg_AoMadoushi_Summon)
         set udg_CidQuestStage=$A // $A = 10
-        call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Find Ao Madoushi's hut and play the flute to make him appear.")
+        call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Find Ao Madoushi's hut and play the flute to make him appear.")
         call ExecuteFunc("QuestAoMadoushi_FluteTaken")
         set udg_TempPoint=GetRandomLocInRect(gg_rct_189)
         call CreateNUnitsAtLoc(1,'n00V',Player($B),udg_TempPoint,GetRandomDirectionDeg()) // 'n00V': unit "Ancient Bear"; $B = 11

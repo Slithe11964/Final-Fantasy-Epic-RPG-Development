@@ -76,6 +76,9 @@ def load_engine(extra_source='', extra_names=(), extra_env=None):
     env['QuestEngine_BeginPending'] = lambda: begin(env['QuestPendingQuest'])
     env['ExecuteFunc'] = lambda name: env[name]()
     env.update(extra_env or {})
+    # Shared quest renderer replaces the native spacer-producing helper.
+    if 'QuestText_Message' not in (extra_env or {}):
+        env['QuestText_Message']=env['QuestMessageBJ']
 
     # Runtime collection observers add presentation invalidation around these natives.
     for collection_native in ('ForceAddPlayer','ForceRemovePlayer','ForceAddPlayerSimple','ForceRemovePlayerSimple','ForceClear'):

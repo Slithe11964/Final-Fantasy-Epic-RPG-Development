@@ -120,7 +120,7 @@ endfunction
 
 function Trig_Quest_FireGolem_HeartTaken_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Fire Golem's heart to Alma.")
+    call QuestText_Message(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Fire Golem's heart to Alma.")
     call Quest_SetLog(QUEST_FIRE_GOLEM,"Bring the Fire Golem's heart to Alma.",false)
     call EnableTrigger(gg_trg_Quest_FireGolem_Complete)
     call DestroyTrigger(GetTriggeringTrigger())

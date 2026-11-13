@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CascLib</id>
+    <version>1.0.23</version>
+    <authors>TOM_RUS</authors>
+    <projectUrl>https://github.com/WoW-Tools/CascLib</projectUrl>
+    <description>Package Description</description>
+    <copyright>Copyright © TOM_RUS 2014-2022</copyright>
+    <repository url="https://github.com/WoW-Tools/CascLib.git" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="MimeKitLite" version="3.4.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0">
+        <dependency id="MimeKitLite" version="3.4.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="MimeKitLite" version="3.4.3" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

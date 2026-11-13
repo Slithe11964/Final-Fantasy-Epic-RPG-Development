@@ -1,4 +1,4 @@
-library TArtifact requires TQuestEngine, TForce
+library TArtifact requires TQuestEngine, TForce, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Artifact_Ping=null
@@ -38,7 +38,7 @@ endfunction
 
 function Trig_Artifact_PickedUp_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
-    call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the artifact to Cid.")
+    call QuestText_Message(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the artifact to Cid.")
     // the "Find Artifact" text changes for everyone (the announcement above is only for that player)
     call Quest_SetLog(QUEST_FIND_ARTIFACT,"Bring mysterious artifact to Cid.",false)
     call EnableTrigger(gg_trg_Cid_Berserk_Start)

@@ -325,7 +325,7 @@ function Quest_AnnounceStart takes integer q returns nothing
         return
     endif
     set QuestStartAnnounced[q]=true
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00"+QuestName[q]+"|r")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_DISCOVERED,"New Quest Received: |cffffcc00"+QuestName[q]+"|r")
 endfunction
 
 // ---- running steps ----
@@ -459,9 +459,9 @@ function QuestEngine_Finish takes integer q,integer s,player p,unit u returns no
         endif
     elseif l_step<QuestSteps[q] then
         if QuestStepMessage[s]!="" then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,QuestStepMessage[s])
+            call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,QuestStepMessage[s])
         elseif QuestStepLog[s]!="" then
-            call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,QuestStepLog[s])
+            call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,QuestStepLog[s])
         endif
         if QuestStepLog[s]!="" then
             call QuestSetDescriptionBJ(Quest_LogEntry(q),QuestStepLog[s])
@@ -491,7 +491,7 @@ function QuestEngine_Finish takes integer q,integer s,player p,unit u returns no
             set k=k+1
         endloop
         set l_quest=Quest_LogEntry(q)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00"+QuestName[q]+"|r")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00"+QuestName[q]+"|r")
         call QuestSetCompletedBJ(l_quest,true)
         if QuestCompletionItem[q]!=null then
             call QuestItemSetDescriptionBJ(QuestCompletionItem[q],QuestCompletionItemText[q])
@@ -594,7 +594,7 @@ function QuestEngine_PickupAction takes nothing returns nothing
     local integer q=s/QUEST_MAX_STEPS
     local player p=GetOwningPlayer(GetManipulatingUnit())
     set QuestStepPickupTrigger[s]=null
-    call QuestMessageBJ(bj_FORCE_PLAYER[GetPlayerId(p)],bj_QUESTMESSAGE_UPDATED,QuestStepPickupNote[s])
+    call QuestText_Message(bj_FORCE_PLAYER[GetPlayerId(p)],bj_QUESTMESSAGE_UPDATED,QuestStepPickupNote[s])
     call QuestSetDescriptionBJ(Quest_LogEntry(q),QuestStepPickupNote[s])
     if QuestStepPickupHook[s]!="" then
         set QuestDoneQuest=q
@@ -762,7 +762,7 @@ function Quest_SetLog takes integer q,string l_text,boolean l_announce returns n
         return
     endif
     if l_announce then
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_text)
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_text)
     endif
     call QuestSetDescriptionBJ(Quest_LogEntry(q),l_text)
 endfunction
@@ -792,7 +792,7 @@ function Quest_Fail takes integer q returns nothing
         set QuestActiveMarker[q]=null
         set QuestActiveMarkerUnit[q]=null
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00"+QuestName[q]+"|r")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_FAILED,"Quest Failed: |cffffcc00"+QuestName[q]+"|r")
     call QuestSetFailedBJ(Quest_LogEntry(q),true)
 endfunction
 

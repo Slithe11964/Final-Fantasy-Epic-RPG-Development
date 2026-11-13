@@ -1,4 +1,4 @@
-library TQuestWorldLiberation requires TQuestEngine, TPlayerHero, TReward
+library TQuestWorldLiberation requires TQuestEngine, TPlayerHero, TReward, TText
 // Main quest "World Liberation" (udg_MainQuest[8]), written for the quest engine (QuestEngine module,
 // docs/QUEST_ENGINE.md). After Zalera falls, the party must defeat all 12 Zodiac Braves. Boss_Zalera starts
 // it (through QuestWorldLiberation_Start); every Zodiac Brave's death runs gg_trg_Quest_WorldLiberation_Count,
@@ -113,7 +113,7 @@ function Trig_Quest_WorldLiberation_Reward_Actions takes nothing returns nothing
     call DisableTrigger(GetTriggeringTrigger())
     if not Quest_IsDone(QUEST_WORLD_LIBERATION) then
         // the engine already announced it when the quest was done (see Count)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00World Liberation|r")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_COMPLETED,"Quest Completed: |cffffcc00World Liberation|r")
     endif
     call DisplayTimedTextToForce(udg_PlayingPlayers,10.,"|cffffcc00All players get 10000 exp and Celestium.|r")
     call Reward_Give(0,$2710,null) // $2710 = 10000

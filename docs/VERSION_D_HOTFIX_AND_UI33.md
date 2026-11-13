@@ -1,0 +1,19 @@
+# Version D hotfix and QuickUI33 (2026-10-25)
+
+Original release/0.9.7.5d remains immutable. Tested candidates are release/development/VersionDHotfix03 (Forsaken and 1.29.2) and release/development/QuickUI33 (Forsaken, based directly on QuickUI30 and retaining 1000 Cuts). Hotfix01/02 and QuickUI31/32 are intermediate, uninstalled candidates.
+
+- Kalm Siege II opening/restart: retain every dialogue line and timing, but use portrait-free transmissions to avoid the model portrait path during the reported crashing conversation. This is a defensive workaround, not a confirmed diagnosis. Real-client replay is required.
+- Fresh-load Chronicles: apply owned, unblocked title stat bonuses after successful commit, including arms collection damage/armor. Record membership in each bonus group to prevent repeated application on the same hero. Save format stores job levels/flags, not final attribute totals; the old comment claiming stats were already restored was incorrect. Failed-load preparation/readback stays unchanged.
+- Teleporter Escape: register the synchronized player end-cinematic event on the existing dialog trigger; hide only that player's dialog and return before destination processing. Existing Cancel and paging remain.
+- Armory world clutter: make both own-armory and visitor-armory shop proxy units transparent when opened. These units still exist for the command card and shops; this addresses their visible world models, not their lifetime. No local unit creation or gameplay mutations.
+- Divine Shield: A0RY is based on Drunken Haze (ANdh), but only Silence fields Nsi2/Nsi3 had been cleared. Explicitly zero Drunken Haze native miss chance Ndh1 and movement penalty Ndh2 at ranks 1..11 in both object tables. This prevents the inherited engine miss roll affecting shielded gun/ammo users, including ranged Freelancer. Scripted accuracy and shield absorption are unchanged. Persistent correction is also in tools/job_objects.py.
+
+Validation: all three playable and editor scripts compile; startup/source/global consistency and native text safety pass; all three save compatibility checks pass (358 items, 22 jobs, G/H fixtures). Three new behavioral regressions and 16 existing job-effect tests pass. Archive readback and unrelated-resource equality pass; ability changes are restricted to Divine Shield's Ndh1/Ndh2. Original inputs untouched. TEST installs were SHA256 verified. Actual Warcraft/multiplayer acceptance pending.
+
+Acceptance: replay Kalm II opening with cinematics enabled; load an existing profile and compare stats before/after switching away and back (including collection damage/armor); Escape the teleporter on both pages with two players; inspect own/visited armories; shield a ranged Freelancer with gun/ammo and attack an evasive target before/after casting.
+
+## House-anchored armory correction (Hotfix04 / QuickUI34)
+
+The owner's armory shop is created/repositioned at udg_PlayerHouse, remains visible there, and no longer opens at an arbitrary triggering unit. Inspection never creates a shop at the visiting hero: the independent read-only interface is created/repositioned at the inspected house and remains transparent. Repeated visits reuse that interface; each visitor keeps separate navigation, and switching back to one's own collection restores the visible interface to one's own house. A missing owned house cancels opening safely. This supersedes the Hotfix03 transparency-only workaround.
+
+Version D Hotfix04 (both clients) and QuickUI34 are installed/hash-verified in TEST. All previous Hotfix03/QuickUI33 fixes are retained. Both runtime and editor compilation, startup/source/global checks and archive equality pass for all three outputs. Focused two-visitor testing verifies creation/repositioning at the inspected house coordinates even while the hero is elsewhere, and no extra creation on repeat inspection. In-game acceptance pending.

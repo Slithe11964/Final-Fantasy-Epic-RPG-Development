@@ -31,7 +31,7 @@ function Trig_Quest_Engineer_GetAdvice_Actions takes nothing returns nothing
     endif
     set udg_QuestItem[29]=UnitAddItemByIdSwapped('I042',Player_GetHero(GetTriggerPlayer())) // 'I042': item "Engineering Advice"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Engineering Advice to Mid.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring the Engineering Advice to Mid.")
     call QuestItemSetDescriptionBJ(udg_QuestReq[$A],"Bring the Engineering Advice to Mid.") // $A = 10
     call DestroyTrigger(GetTriggeringTrigger())
 endfunction

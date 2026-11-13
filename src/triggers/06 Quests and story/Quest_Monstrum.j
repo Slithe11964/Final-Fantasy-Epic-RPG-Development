@@ -1,4 +1,4 @@
-library TQuestMonstrum requires TQuestEngine, TReward
+library TQuestMonstrum requires TQuestEngine, TReward, TText
 // Side quest "Monstrum of the Sea", run by the quest engine (QuestEngine module, docs/QUEST_ENGINE.md).
 // The Nebra Monstrum (Monstrum module) ambushes a hero carrying the Grattheos Charm; the quest starts then
 // and is done when the Monstrum dies. Does not count toward the story.
@@ -61,13 +61,13 @@ endfunction
 function QuestMonstrum_Reappeared takes nothing returns nothing
     // the log text and the announcement differ, so the announcement is shown here
     call Quest_SetLog(QUEST_MONSTRUM,"The Nebra Monstrum has reappeared! Kill it!",false)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra Monstrum.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra Monstrum.")
 endfunction
 
 // Called by Monstrum_Phase_Check (through ExecuteFunc) when the Monstrum dives away.
 function QuestMonstrum_Dived takes nothing returns nothing
     call Quest_SetLog(QUEST_MONSTRUM,"The Nebra Monstrum has dived down under! Find it again!",false)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra Monstrum again.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra Monstrum again.")
 endfunction
 
 // World Editor calls InitTrig_Quest_Monstrum automatically; it is intentionally empty (the quest engine

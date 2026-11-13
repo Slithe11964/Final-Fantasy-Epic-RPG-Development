@@ -117,6 +117,9 @@ class FreshLoadTests(unittest.TestCase):
         catalog=json.loads((HERE.parents[1]/'release/Forsaken/gear-slots-BS.json').read_text())
         source=(HERE/'Forsaken-save-life.j').read_text()+'\n'+capture_source(f.base.fixture.aliases)+'\n'+fresh_plan_source(f.base.fixture.registry,catalog)+'\n'+(HERE/'Forsaken-save-fresh-objects.j').read_text()+'\n'+(HERE/'Forsaken-save-transport.j').read_text()+'\n'+(HERE/'Forsaken-fresh-load.j').read_text()
         self.e=engine(source,env);self.e['FFP_Init']();self.e['FRC_Init']();self.e['FFL_Before']={}
+        self.e.update(Trig_Hero_EndlessGrowth_Actions=lambda:None,udg_TitleStatsBlocked=JassArray(bool),udg_BonusGroup=JassArray(list),gg_trg_Title_ApplyStats='titlestats',
+            Player_GetHero=lambda p:self.e['udg_PlayerHero'][p+1],
+            IsUnitInGroup=lambda u,g:any(v is u for v in g),GroupAddUnit=lambda g,u:g.append(u))
         for alias,identity in f.base.fixture.aliases.items():self.e['FRC_Map'][(0,alias)]=identity
         self.e['FST_Result'][0]=f.base.encoded
     def apply(self):

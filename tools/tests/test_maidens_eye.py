@@ -55,6 +55,7 @@ class MaidenEyeTests(unittest.TestCase):
         updated=objects(data);self.assertEqual(objects(updated),updated)
         added=read_objects(updated,'w3a')['custom'][0];self.assertEqual(added['base'],'Atru')
         self.assertNotIn('aare',fields(added));self.assertEqual(fields(added)['aite'],1)
+        self.assertEqual((fields(added)['abpx'],fields(added)['abpy']),(0,-11))
         source=next((ROOT/'src/triggers').rglob('Item_Stack.j')).read_text()
         self.assertEqual(refresh(refresh(source)),refresh(source))
 

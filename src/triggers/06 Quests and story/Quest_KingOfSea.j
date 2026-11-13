@@ -59,14 +59,14 @@ function QuestKingOfSea_Summoned takes nothing returns nothing
     else
         // the log text and the announcement differ, so the announcement is shown here
         call Quest_SetLog(QUEST_KING_OF_SEA,"Kill the Nebra King!",false)
-        call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra King.")
+        call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Kill the Nebra King.")
     endif
 endfunction
 
 // Called by NebraKing_Escape (through ExecuteFunc) when the Nebra King dives away.
 function QuestKingOfSea_Escaped takes nothing returns nothing
     call Quest_SetLog(QUEST_KING_OF_SEA,"The Nebra King has disappeared! Find him again!",false)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra King again.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Find the Nebra King again.")
 endfunction
 
 function Trig_Quest_KingOfSea_Reward_Conditions takes nothing returns boolean

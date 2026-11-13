@@ -157,7 +157,7 @@ function Trig_Quest_AoMadoushi_Talk_Actions takes nothing returns nothing
         call Wait_Polled(4.)
         call Music_SetZoneTrack(6)
     else
-        call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring the Zodiac Stone to Ao Madoushi.")
+        call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Bring the Zodiac Stone to Ao Madoushi.")
         call Quest_SetLog(QUEST_AO_MADOUSHI,"Hurry and bring the Zodiac Stone to Ao Madoushi.",false)
         call GroupAddUnitSimple(udg_ZodiacStone,udg_QuestUnits)
         call EnableTrigger(gg_trg_Cine_StoneBreaks)

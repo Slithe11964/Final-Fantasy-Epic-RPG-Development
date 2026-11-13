@@ -39,7 +39,7 @@ endfunction
 function Trig_Quest_EyeOfJenova_PickUp_Actions takes nothing returns nothing
     local location l_tempPoint
     call DisableTrigger(GetTriggeringTrigger())
-    call QuestMessageBJ(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Eye of Jenova to Ao Madoushi.")
+    call QuestText_Message(Force_OfPlayer(GetOwningPlayer(GetManipulatingUnit())),bj_QUESTMESSAGE_UPDATED,"Bring the Eye of Jenova to Ao Madoushi.")
     // the text changes for everyone (the announcement above is only for that player)
     call Quest_SetLog(QUEST_EYE_OF_JENOVA,"Bring the Eye of Jenova to Ao Madoushi.",false)
     call EnableTrigger(gg_trg_Quest_EyeOfJenova_Deliver)
@@ -112,7 +112,7 @@ function Trig_Quest_EyeOfJenova_Deliver_Actions takes nothing returns nothing
     call Quest_StepDone(QUEST_EYE_OF_JENOVA,GetOwningPlayer(GetTriggerUnit()),GetTriggerUnit())
     call Music_SetZoneTrack(7)
     call Wait_Polled(4.)
-    call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Cid.")
+    call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Talk to Cid.")
     set udg_SpecialEffect[21]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Hpb1_0013,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call EnableTrigger(gg_trg_Quest_NightElves_Start)
     call GroupAddUnitSimple(gg_unit_Hpb1_0013,udg_QuestUnits)

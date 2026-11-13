@@ -47,6 +47,8 @@ endfunction""")
         name='RegisterTriggers_Armory_Part2';body=functions(source)[name]
         if 'call Armory_RegisterVisits()' not in body:body=body.replace('endfunction','    call Armory_RegisterVisits()\nendfunction')
         source=put(source,name,body)
+        from armory_visit_progress import refresh as refresh_armory_visit_progress
+        source=refresh_armory_visit_progress(source)
     if 'Trig_Title_ArmsCollection_Actions' in fs:
         source=dependency(source,'TArmory')
         body=functions(source)['Trig_Title_ArmsCollection_Actions']

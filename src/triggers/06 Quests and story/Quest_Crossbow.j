@@ -1,4 +1,4 @@
-library TQuestCrossbow requires TForce, TGroup
+library TQuestCrossbow requires TForce, TGroup, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_Quest_Crossbow_NeedEnemies=null
@@ -62,8 +62,8 @@ function Trig_Quest_Crossbow_Tested_Actions takes nothing returns nothing
     call DestroyTrigger(gg_trg_Quest_Crossbow_NeedEnemies)
     set udg_CrossbowAdviceGiven=true
     set udg_ItemUseReplacement=udg_QuestItem[28]
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"You have sufficiently tested the Prototype Crossbow.")
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Report the test results to Mid.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"You have sufficiently tested the Prototype Crossbow.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Report the test results to Mid.")
     call QuestItemSetDescriptionBJ(udg_QuestReq[9],"Report the test results to Mid.")
     call SetItemPawnable(udg_QuestItem[28],false)
     call DestroyTrigger(GetTriggeringTrigger())

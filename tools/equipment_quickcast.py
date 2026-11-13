@@ -12,7 +12,7 @@ def catalogue(config):
     result={}
     instant={'AIgo','AIha','Absk'}
     unit={'AHdr','AHhb','AHtb','ANdh','AUfa','Acri','Arej','Auhf'}
-    for raw in sorted(config['gear']):
+    for raw in sorted(config['gear']|config.get('materia',set())):
         obj=config['items'].get(raw)
         if not obj:continue
         for ability in str(fields(obj).get(('iabi',None),'')).split(','):
@@ -25,12 +25,21 @@ def catalogue(config):
             elif base=='AOws':mode=2
             else:raise ValueError('Review equipped-item target mode: '+raw+'/'+ability+'/'+base)
             result[raw]=(ability,mode)
-            for alias in (config['mapping'].get(raw,{}).get('variant'),config['mapping'].get(raw,{}).get('offhand')):
+            for alias in (config['mapping'].get(raw,{}).get('variant'),config['mapping'].get(raw,{}).get('offhand'),config.get('quick',{}).get(raw)):
                 if alias:result[alias]=(ability,mode)
             break
     return result
 
 def refresh(source,config,*,native=False):
+    # Owner rejected UI47..49 and explicitly restored the working release.
+    # Keep future normal builds on that implementation until asked otherwise.
+    if not native:return source
+    from release_gear import refresh as released_refresh
+    from gear_recovery53 import refresh as load_refresh
+    return load_refresh(released_refresh(source))
+
+
+def experimental_refresh(source,config,*,native=False):
     if not native or 'Forsaken_PollPanels' not in functions(source):return source
     # Full-number images cover every authored gear cooldown, including Slowra.
     # Fail future builds explicitly instead of silently displaying a capped timer.
@@ -41,6 +50,7 @@ def refresh(source,config,*,native=False):
     source=dependency(dependency(source,'TItemCooldown'),'TTravel')
     fragment=(ROOT/'experiments/Forsaken/EquipmentQuickCast.j').read_text()
     declarations,fragment=fragment.split('// FUNCTIONS\n',1)
+    declarations='\n'.join(line for line in declarations.splitlines() if re.match(r'^\s*\w+\s+(?:array\s+)?QuickGear\w+',line))
     for line in declarations.splitlines():
         if not line.strip():continue
         name=line.split('=')[0].split()[-1]
@@ -50,6 +60,14 @@ def refresh(source,config,*,native=False):
     lines=[]
     for raw,(ability,mode) in sorted(catalogue(config).items()):
         lines.extend([f"    call SaveInteger(QuickGearData,0,'{raw}','{ability}')",f"    call SaveInteger(QuickGearData,1,'{raw}',{mode})"])
+    for ability in ('A08X','A0Q0','A0Q1','A0Q2','A0SM','A0TP','A0SA','A150'):
+        lines.append(f"    call SaveInteger(QuickGearData,2,'{ability}',1)")
+    lines.append("    call SaveInteger(QuickGearData,2,'A0UY',2)")
+    f=fields(config['abilities']['A0Q2'])
+    hotkey=str(f.get(('ahky',0),''))
+    if len(hotkey)==1:lines.append(f"    call SaveInteger(QuickGearData,5,{ord(hotkey.upper())},'A0Q2')")
+    position=int(f.get(('abpx',0),0))+4*int(f.get(('abpy',0),0))
+    lines.append(f"    call SaveInteger(QuickGearData,6,{position},'A0Q2')")
     init=init.replace('    // ITEM CATALOGUE','\n'.join(lines))
     fragment=put(fragment,'QuickGear_Init',init)
     # Match the authored AoE at each rank; unit-only tomes get no ground circle.

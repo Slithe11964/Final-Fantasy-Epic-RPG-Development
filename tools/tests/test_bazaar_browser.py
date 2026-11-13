@@ -85,7 +85,7 @@ def ingredients(data, recipe):
 
 class BazaarBrowserTests(unittest.TestCase):
     def test_prepared_objects_and_prices_agree(self):
-        archive = MPQ(str(ROOT / 'baseline/Reforged/FFERPG_0.9.7.3-r16.w3x'))
+        archive = MPQ(str(ROOT / 'release/FFERPG_0.9.7.3-r16.w3x'))
         table = read_objects(archive.read('war3map.w3u'), 'w3u')
         items = read_objects(archive.read('war3map.w3t'), 'w3t')
         item_fields = {o['id'] or o['base']: fields(o) for g in ('original', 'custom') for o in items[g]}

@@ -38,6 +38,14 @@ def refresh(data):
     if not data:return data
     table=read_objects(data,'w3a')
     for obj in table['custom']:
+        if obj['id']=='A0RY':
+            # Installed AbilityMetaData: ANdh uses Nsi1..4, not Ndh fields.
+            for entry in obj['sets']:
+                entry['mods'][:]=[m for m in entry['mods'] if m['field'] not in ('Ndh1','Ndh2','Nsi1','Nsi2','Nsi3','Nsi4')]
+                for rank in range(1,12):
+                    entry['mods'].append(dict(field='Nsi1',type=0,level=rank,data=1,value=0,end=0))
+                    for field,data_index in [('Nsi2',2),('Nsi3',3),('Nsi4',4)]:
+                        entry['mods'].append(dict(field=field,type=2,level=rank,data=data_index,value=0.,end=0))
         raw=obj['id']
         if raw in MARKERS:obj['base']='AIev'
         for entry in obj['sets']:

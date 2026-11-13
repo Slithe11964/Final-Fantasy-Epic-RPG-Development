@@ -1,0 +1,15 @@
+# QuickUI85: native house recovery, Eclipse and house upgrade text
+
+Dragoon test only, fromUI84. Owner reports MASTER Holy Swordsman Eclipse shows ice effect but no damage on Scarecrow, and house10%stilllooks slow.
+
+Confirmed house object-data defect: hH79/hM79 custom DataA recovery values and DataB percentage flags were written at pointer0. Installed AbilityMetaData requires Oar1/Arm1 pointer1, Oar2/Arm2 pointer2. They therefore inherited native ACnr/ANre DataA.01 and percenttrue instead of the requested.10. Both clones now encode.10 at pointer1 and true at pointer2. Both house forms already reference these clones. Radius350/native targets remain; original Fountain of Restoration abilities A001/A00F untouched. Expected own hero recovery10%maximumHP/MPpersecond; native validation pending. Upstream house79/balance81recipes corrected without rebuilding their historical outputs.
+
+Removed extra per-proficiency-point line from all10R009researchranks, cappedpF04andWTS. Requested prose remains Increases mana regen and reduces enemies chance to block. Actual5%perProfmana and1pointblock mechanics unchanged.
+
+Eclipse uses A04N native AUim/Impale ice wave and replaces its native100 damage signal with stored (2*MPcost+5*STR+2*INT)*(1+.1*HybridProf), physical ice proxy damage. Native Impale temporarily makes affected units invulnerable, potentially rejecting the reissued proxy hit. A04N now explicitly sets Uim6 Airborne Targets Vulnerable true at data6 across11ranks. The h01B proxy lifetime increases2->12seconds so death cleanup cannot erase its source/calculation while the max-rank wave/stun resolves. Original damage, signal, art, range, stun, targets and cast behavior preserved. Concrete candidate, not a reproduced/confirmed native fix. OWNER MUST RETEST MASTER ECLIPSE ON SCARECROW.
+
+Primary authored ability behavior reference: https://github.com/Cokemonkey11/wc3-ability-doc/blob/main/sources/screwthetrees-wc3-editor-ability-insight-document/2023-11-14.md#impale (Impale section aroundline3466): target invulnerability and channel behavior; it does not establish this map's failure cause. Local AbilityMetaData confirms Uim6field/data6 and recovery pointers; proxy cleanup on death verified in map source.
+
+Four focused tests cover real native recovery field pointers/percent flags/range/fountain preservation,11Eclipse vulnerability flags/preserved nativevalues, MASTER formula+caster/type storage/proxy12slifetime, all concise tooltipcopies and unchanged recent gameplay. Full compile/editor/pair/startup/globals/text/content/save/archive pass. Native game acceptance pending; no inventory/input/preview/timer changes, no bag cross-close fix. Mainrelease/classic/master unchanged.
+
+The first uninstalled candidate regenerated unrelated Holy Swordsman inlining and was preserved under build/candidates/fixes85-first. The final candidate patches only the compiled Eclipse proxy lifetime; all other playable functions are token-identical. Editor source has the matching lifetime edit.

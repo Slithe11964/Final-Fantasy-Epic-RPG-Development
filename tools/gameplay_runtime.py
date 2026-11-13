@@ -101,6 +101,9 @@ endfunction""")
             source=source[:at]+helpers+'\n\n'+source[at:]
         for name in ['Travel_Hide','Travel_Show','Travel_Refresh','Trig_Travel_Dialog_Click_Actions','Register_Travel_Dialog_Click']:
             source=put(source,name,functions(template)[name])
+        if native:
+            from build_travel_escape_fix import patch as travel_escape
+            source=travel_escape(source)
     if 'Warp_OnEnterPoint' in fs:
         source=put(source,'Warp_HideDialog',"""function Warp_HideDialog takes nothing returns nothing
     call Travel_Hide(GetEnumPlayer())
@@ -142,4 +145,7 @@ endfunction""")
         if 'TBackpack' not in source.splitlines()[0]:
             source=dependency(source,'TEquip')
             source=source.replace("GetUnitAbilityLevelSwapped('A1C3',GetTriggerUnit())","Forsaken_ElementAbilityLevel(GetTriggerUnit(),'A1C3')")
+    if native and ('Travel_InitDestinations' in fs or 'QuickGear_Input' in fs):
+        from build_travel_panel import patch as travel_panel
+        source=travel_panel(source)
     return source

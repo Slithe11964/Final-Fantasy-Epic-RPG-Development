@@ -2,7 +2,7 @@
 import re
 from jtok import functions,tokens
 
-SECRETS = '|cff00ff00Keg Hunter|r|n|n-increases rare drops in all areas'
+SECRETS = '|cff00ff00Barrel Collector|r|n|n-Increases rare drops in all areas'
 
 
 def startup_baseline(original, candidate):

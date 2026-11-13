@@ -1,0 +1,8 @@
+Frame "SIMPLEFRAME" "BagCast63Root" {
+    Width 0.3,
+    Height 0.2408,
+}
+Frame "SIMPLEBUTTON" "BagCast63Button" {
+    Width 0.04,
+    Height 0.04,
+}

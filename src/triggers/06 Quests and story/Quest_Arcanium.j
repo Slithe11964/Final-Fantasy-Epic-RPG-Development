@@ -64,7 +64,7 @@ function Trig_Quest_Arcanium_Taken_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Arcanium to Bali Forgefire.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Arcanium to Bali Forgefire.")
     call DestroyForce(l_tempForce)
     call Quest_SetLog(QUEST_ARCANIUM,"Bring the Arcanium to Bali Forgefire.",false)
     call EnableTrigger(gg_trg_Quest_Arcanium_Complete)

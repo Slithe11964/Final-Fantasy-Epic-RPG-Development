@@ -71,19 +71,26 @@ function Chronicles_RecordMonograph takes player p,integer raw returns nothing
     endif
     set previousPlayer=null
 endfunction
-
 function Chronicles_MonographPickup takes nothing returns nothing
     local unit u=GetTriggerUnit()
     local player p=GetOwningPlayer(u)
-    if u==Player_GetHero(p) or u==udg_SpiritOfGaya[GetPlayerId(p)+1] then
-        if UnitHasItem(u,GetManipulatedItem()) then
+    local integer pid=GetPlayerId(p)
+    local integer page=0
+    local boolean carried=false
+    if pid>=0 and pid<8 then
+        set carried=u==Player_GetHero(p) or u==udg_SpiritOfGaya[pid+1] or u==udg_PlayerHouse[pid+1]
+        loop
+            exitwhen page>=BACKPACK_PAGES or carried
+            set carried=u==BackpackHolder[pid*8+page]
+            set page=page+1
+        endloop
+        if carried and (UnitHasItem(u,GetManipulatedItem()) or GetTriggerEventId()==EVENT_PLAYER_UNIT_DROP_ITEM) then
             call Chronicles_RecordMonograph(p,GetItemTypeId(GetManipulatedItem()))
         endif
     endif
     set u=null
     set p=null
 endfunction
-
 function Chronicles_CheckInventory takes player p returns nothing
     local integer i=0
     local unit hero=Player_GetHero(p)
@@ -99,7 +106,12 @@ function Chronicles_CheckInventory takes player p returns nothing
         call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(spirit,i)))
         set i=i+1
     endloop
-    // Monographs carried in the backpack count too.
+    set i=0
+    loop
+        exitwhen i>=6
+        call Chronicles_RecordMonograph(p,GetItemTypeId(UnitItemInSlot(udg_PlayerHouse[GetPlayerId(p)+1],i)))
+        set i=i+1
+    endloop
     set i=0
     loop
         exitwhen i>=BACKPACK_PAGES*BACKPACK_SLOTS
@@ -169,7 +181,7 @@ function Chronicles_RefreshTooltips takes nothing returns nothing
             set key=category*64+level
             set tooltip=ChroniclesTooltipBase[key]+"|n|n|cffffcc00Chronicles unlocked:|r "+progress
             if category==12 then
-                set tooltip=tooltip+"|nMonographs held this game: "+I2S(found)+" / 10"
+                set tooltip=tooltip+"|nMonographs collected this game: "+I2S(found)+" / 10"
             endif
             if tooltip!=ChroniclesTooltipShown[key] then
                 call BlzSetAbilityTooltip(udg_ChronicleAbility[category],ChroniclesNameBase[key],level+ChroniclesTooltipOffset)
@@ -204,8 +216,8 @@ function Chronicles_Tick takes nothing returns nothing
         set owner=Player(i)
         set hero=Player_GetHero(owner)
         set spirit=udg_SpiritOfGaya[i+1]
+        call Chronicles_CheckInventory(owner)
         if ChroniclesCachedInventory[i]!=CollectionInventoryRevision[i] or ChroniclesCachedTitles[i]!=CollectionTitleRevision[i] or ChroniclesCachedSpeed[i]!=udg_SpeedrunLevel[i+1] or ChroniclesCachedHero[i]!=hero or ChroniclesCachedSpirit[i]!=spirit then
-            call Chronicles_CheckInventory(owner)
             call Chronicles_RestoreSecrets(owner)
             set ChroniclesCachedInventory[i]=CollectionInventoryRevision[i]
             set ChroniclesCachedTitles[i]=CollectionTitleRevision[i]
@@ -534,7 +546,7 @@ function Trig_Titles_Init_Actions takes nothing returns nothing
     set udg_TitleName[56]="Arms Completionist"
     set udg_TitleName[57]="Arms Connoisseur"
     set udg_TitleName[58]="Arms Expert"
-    set udg_TitleName[59]="Keg Hunter"
+    set udg_TitleName[59]="Barrel Collector"
     set bj_forLoopAIndex=$A // $A = 10
     set bj_forLoopAIndexEnd=75
     loop
@@ -978,6 +990,7 @@ endfunction
 function Register_Titles_MonographPickup takes nothing returns nothing
     set gg_trg_Titles_MonographPickup=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_Titles_MonographPickup,EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_Titles_MonographPickup,EVENT_PLAYER_UNIT_DROP_ITEM)
     call TriggerAddAction(gg_trg_Titles_MonographPickup,function Chronicles_MonographPickup)
 endfunction
 

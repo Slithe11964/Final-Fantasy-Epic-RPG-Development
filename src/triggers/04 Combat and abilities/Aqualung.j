@@ -17,7 +17,7 @@ function Trig_Aqualung_Cast_NoTargetUnit takes nothing returns boolean
 endfunction
 
 function Trig_Aqualung_Cast_IsCasterHero takes nothing returns boolean
-    return(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO))!=null
+    return IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO)
 endfunction
 
 function Trig_Aqualung_Cast_Actions takes nothing returns nothing
@@ -39,11 +39,11 @@ function Trig_Aqualung_Cast_Actions takes nothing returns nothing
     set l_tempReal=Prof_RodPower(GetTriggerUnit())
     call SaveRealBJ((I2R(l_tempInteger)*l_tempReal),1,l_tempHandleId,udg_ProxyDamageHash)
     call SaveIntegerBJ(3,2,l_tempHandleId,udg_ProxyDamageHash)
-    call ShowUnitHide(GetLastCreatedUnit())
-    call UnitApplyTimedLifeBJ(6.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call UnitAddAbilityBJ('A0M4',GetLastCreatedUnit()) // 'A0M4': ability "Water-elemental Damage"
     call UnitAddAbilityBJ('A0C5',GetLastCreatedUnit()) // 'A0C5': ability "Aqualung"
     call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",udg_TempPoint)
+    // The invisible model needs no HideUnit, which would cancel channeling.
+    call UnitApplyTimedLifeBJ(12.,'BTLF',GetLastCreatedUnit()) // 'BTLF': object name not found in map data
     call RemoveLocation(udg_TempPoint)
 endfunction
 

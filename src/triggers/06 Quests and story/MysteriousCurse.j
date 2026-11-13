@@ -44,7 +44,7 @@ endfunction
 
 // A quest-log update whose announcement (l_message) is shorter than the new log text (l_text).
 function MysteriousCurse_SetLog takes string l_message,string l_text returns nothing
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_message)
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,l_message)
     call Quest_SetLog(QUEST_MYSTERIOUS_CURSE,l_text,false)
 endfunction
 

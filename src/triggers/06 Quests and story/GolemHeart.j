@@ -1,4 +1,4 @@
-library TGolemHeart requires TForce
+library TGolemHeart requires TForce, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_GolemHeart_Ping=null
@@ -31,7 +31,7 @@ function Trig_GolemHeart_Pickup_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Mithril Golem's heart to Alma.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Mithril Golem's heart to Alma.")
     call DestroyForce(l_tempForce)
     call ExecuteFunc("MithrilGolem_HeartTaken") // the quest log: "Bring the Mithril Golem's heart to Alma."
     call EnableTrigger(gg_trg_MithrilGolem_Activate)

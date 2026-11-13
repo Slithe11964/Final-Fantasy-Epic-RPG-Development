@@ -15,7 +15,7 @@ NEXT_PAGE_ICON = r'ReplaceableTextures\CommandButtons\BTNMove.blp'
 # Written the way every other Chronicle entry is: level 1 is the entry before anything is
 # earned, level 2 the earned title in green with its rewards as a list, without a full stop.
 KEG_LOCKED = 'No titles attained.'
-KEG_EARNED = '|cff00ff00Keg Hunter|r|n|n- Increases rare drops in all areas'
+KEG_EARNED = '|cff00ff00Barrel Collector|r|n|n-Increases rare drops in all areas'
 
 
 # The Secrets book reads like the other Chronicle entries: the title in green, then its reward.
@@ -24,7 +24,7 @@ SECRETS_TEXT = KEG_EARNED
 
 def keg_text(obj):
     for level, text in ((1, KEG_LOCKED), (2, KEG_EARNED)):
-        set_field(obj, 'atp1', 'Keg Hunter', level)
+        set_field(obj, 'atp1', 'Barrel Collector', level)
         set_field(obj, 'aub1', text, level)
 
 
@@ -76,7 +76,7 @@ def prepare(table):
     keg = copy.deepcopy(objects['A10C'])
     keg['id'] = 'cKeg'
     keg['sets'][0]['mods'] = [m for m in keg['sets'][0]['mods'] if m['level'] <= 2]
-    for key, value in [('anam', 'Keg Hunter'), ('alev', 2), ('abpx', 0), ('abpy', 0),
+    for key, value in [('anam', 'Barrel Collector'), ('alev', 2), ('abpx', 0), ('abpy', 0),
                        ('aart', r'ReplaceableTextures\CommandButtons\BTNBarrel.blp')]:
         set_field(keg, key, value)
     keg_text(keg)
@@ -111,7 +111,7 @@ def main():
             files['war3mapSkin.w3a'] = write_objects(skin, skin['version'], 'w3a')
     args.out.parent.mkdir(parents=True, exist_ok=True)
     write_files(str(args.base), str(args.out), files)
-    print('Prepared Chronicles: ten original entries + Next page; Time Trial and Secrets on page two; Keg Hunter inside Secrets.')
+    print('Prepared Chronicles: ten original entries + Next page; Time Trial and Secrets on page two; Barrel Collector inside Secrets.')
 
 
 if __name__ == '__main__':

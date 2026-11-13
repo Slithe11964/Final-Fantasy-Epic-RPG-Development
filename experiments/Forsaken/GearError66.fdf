@@ -1,0 +1,11 @@
+Frame "TEXT" "GearGroundError66" {
+    LayerStyle "IGNORETRACKEVENTS",
+    Width 0.72,
+    Height 0.055,
+    FrameFont "MasterFont", 0.037, "",
+    FontColor 1.0 0.8 0.0 1.0,
+    FontShadowColor 0.0 0.0 0.0 1.0,
+    FontShadowOffset 0.001 -0.001,
+    FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,
+}

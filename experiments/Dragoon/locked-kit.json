@@ -1,0 +1,20 @@
+{
+  "owner_approved_date": "2026-10-26",
+  "jump": {
+    "status": "locked",
+    "approved_build": "Dragoon06",
+    "cooldown": 15,
+    "note": "Preserve approved06 trajectory, height, travel timing, damage and landing effect. Owner requested airborne action lock, instant landing-point facing, steady animation and safe unlock in10.",
+    "facing_fix_build": "Dragoon10",
+    "ui42_owner_revision": "Enemy target following, ranked original damage and standard CDR; approved arc retained."
+  },
+  "rise": {
+    "status": "locked",
+    "approved_behavior_build": "Dragoon07",
+    "final_build": "Dragoon10",
+    "max_cast_range": 800,
+    "radius": 300,
+    "note": "Owner revised cast range to800 after prior1000 approval; preserve approved07 native targeting rune, ready glow, visual, proc gate, damage and stun.",
+    "ui42_owner_revision": "STR Flare-based damage with Spear scaling and standard CDR; swapped button position; range800/radius300 and visual retained."
+  }
+}

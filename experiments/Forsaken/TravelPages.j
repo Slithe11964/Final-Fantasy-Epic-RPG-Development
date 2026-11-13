@@ -6,11 +6,15 @@ globals
     integer array TravelOrder
 endglobals
 
+
+
 function Travel_Hide takes player owner returns nothing
     local integer pid=GetPlayerId(owner)
     call DialogDisplay(owner,TravelDialog[pid],false)
     set TravelVisible[pid]=false
 endfunction
+
+
 
 function Travel_Show takes player owner,integer page returns nothing
     local integer pid=GetPlayerId(owner)
@@ -87,6 +91,13 @@ function Trig_Travel_Dialog_Click_Actions takes nothing returns nothing
     local integer pid=GetPlayerId(owner)
     local integer key=pid*16
     local unit hero=Player_GetHero(owner)
+    if GetTriggerEventId()==EVENT_PLAYER_END_CINEMATIC then
+        call Travel_Hide(owner)
+        set clicked=null
+        set owner=null
+        set hero=null
+        return
+    endif
     if clicked!=null and clicked==TravelChoice[key+14] then
         call Travel_Show(owner,TravelPage[pid]+1)
     elseif clicked!=null and clicked==TravelChoice[key+15] then
@@ -133,6 +144,7 @@ function Register_Travel_Dialog_Click takes nothing returns nothing
     set TravelOrder[13]=13
     loop
         exitwhen pid>=8
+        call TriggerRegisterPlayerEvent(gg_trg_Travel_Dialog_Click,Player(pid),EVENT_PLAYER_END_CINEMATIC)
         set TravelDialog[pid]=DialogCreate()
         call TriggerRegisterDialogEvent(gg_trg_Travel_Dialog_Click,TravelDialog[pid])
         set pid=pid+1

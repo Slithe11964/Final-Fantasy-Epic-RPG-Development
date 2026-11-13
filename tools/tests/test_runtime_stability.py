@@ -48,19 +48,25 @@ class StabilityTests(unittest.TestCase):
         self.assertIn(0,titles[56]);self.assertEqual(len(awards),1)
         e['Armory_CheckCompletion'](1);self.assertNotIn(1,titles[56])
     def test_visitors_use_their_own_shop_and_cannot_withdraw(self):
-        s,e,flags,titles,awards=self.armory();state=dict(viewer=0,selected='house1');shops={};shown=[];selections=[]
+        s,e,flags,titles,awards=self.armory();state=dict(viewer=0,selected='house1');shops={};shown=[];selections=[];created=[];positions=[]
         e.update(Player=lambda p:p,GetPlayerId=lambda p:p,GetTriggerPlayer=lambda:state['viewer'],
             GetTriggerUnit=lambda:state['selected'],GetOwningPlayer=lambda u:1 if u=='house1' else 2,
             udg_PlayerHouse={2:'house1',3:'locked'},Player_GetHero=lambda p:'hero'+str(p),
             udg_ArmoryUnit=defaultdict(lambda:None),ArmoryViewOwner=defaultdict(int),
-            GetUnitX=lambda u:0.,GetUnitY=lambda u:0.,Collection_ForceAddPlayerSimple=lambda p,f:f.add(p),
+            GetUnitX=lambda u:500. if u=='house1' else -1000.,GetUnitY=lambda u:700. if u=='house1' else -900.,SetUnitPosition=lambda u,x,y:positions.append((u,x,y)),SetUnitVertexColor=lambda *a:None,Collection_ForceAddPlayerSimple=lambda p,f:f.add(p),
             ForceAddPlayerSimple=lambda p,f:f.add(p),ShowUnit=lambda *a:None,Armory_ShowCategory=lambda *a:shown.append(a),
             SelectUnitForPlayerSingle=lambda *a:selections.append(a),GetPlayerName=lambda p:str(p),DisplayTimedTextToPlayer=lambda *a:None)
-        e['CreateUnit']=lambda p,*a:shops.setdefault(p,'shop'+str(p))
+        def create(p,raw,x,y,facing):
+            created.append((p,x,y));return shops.setdefault(p,'shop'+str(p))
+        e['CreateUnit']=create
         e=execute(s,['Armory_VisitHouse'],e);e['Armory_VisitHouse']()
         self.assertEqual(e['ArmoryViewOwner'][1],2);self.assertEqual(selections,[('shop0',0)])
         state['viewer']=2;e['Armory_VisitHouse']()
         self.assertEqual(e['ArmoryViewOwner'][3],2);self.assertEqual(e['udg_ArmoryUnit'][1],'shop0')
+        self.assertEqual(created,[(0,500.,700.),(2,500.,700.)])
+        self.assertEqual(positions,[('shop0',500.,700.),('shop2',500.,700.)])
+        e['Armory_VisitHouse']()
+        self.assertEqual(len(created),2,'repeat browsing reuses the existing interface at the house')
         before={k:set(v) for k,v in flags.items()};stock=[]
         e.update(GetConvertedPlayerId=lambda p:p+1,GetOwningPlayer=lambda u:0,
             GetTriggerUnit=lambda:'shop0',GetSoldUnit=lambda:'stock',BlzGetUnitMaxMana=lambda u:12,

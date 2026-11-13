@@ -20,7 +20,7 @@ def source(name):return next((ROOT/'src/triggers').rglob(name+'.j')).read_text()
 class PriestMasterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        reference=next((ROOT/'release').glob('*stageATV.w3x')) if not (ROOT/'editor/FFERPG-Editor-Master.w3x').exists() else ROOT/'editor/FFERPG-Editor-Master.w3x'
+        reference=(ROOT/'release/0.9.7.5h/FFERPG-0.9.7.5h-Save01.w3x') if not (ROOT/'editor/FFERPG-Editor-Master.w3x').exists() else ROOT/'editor/FFERPG-Editor-Master.w3x'
         cls.view=View(reference)
         cls.config=plan(cls.view.object_bytes('war3map.w3a'),cls.view.object_bytes('war3mapSkin.w3a'))
 

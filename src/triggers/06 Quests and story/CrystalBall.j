@@ -1,4 +1,4 @@
-library TCrystalBall requires TForce
+library TCrystalBall requires TForce, TText
 globals
     // Trigger variables. Each is created by the matching Register_* function in this module.
     trigger gg_trg_CrystalBall_Drop=null
@@ -48,7 +48,7 @@ function Trig_CrystalBall_Pickup_Actions takes nothing returns nothing
     local force l_tempForce
     call DisableTrigger(GetTriggeringTrigger())
     set l_tempForce=Force_OfPlayer(GetOwningPlayer(GetTriggerUnit()))
-    call QuestMessageBJ(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Crystal Ball to Undomiel.")
+    call QuestText_Message(l_tempForce,bj_QUESTMESSAGE_UPDATED,"Bring the Crystal Ball to Undomiel.")
     call DestroyForce(l_tempForce)
     call ExecuteFunc("Nimphrodel_BallTaken") // the quest log: "Bring the Crystal Ball to Undomiel."
     call EnableTrigger(gg_trg_Nimphrodel_Complete)

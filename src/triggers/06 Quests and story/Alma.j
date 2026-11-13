@@ -47,7 +47,7 @@ function Trig_Alma_Missing_Notice_Actions takes nothing returns nothing
         call Text_Say(Player_GetHero(GetOwningPlayer(GetTriggerUnit())),"Hmm that's unusual. I wonder if Ramza has any idea where she is.",false)
         call Cine_ExitAction()
     endif
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Ramza.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Talk to Ramza.")
     call EnableTrigger(gg_trg_Quest_LightOfJudgment_Start)
     set udg_SpecialEffect[50]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_Eill_0119,"Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdl")
     call GroupAddUnitSimple(gg_unit_Eill_0119,udg_BossUnits)

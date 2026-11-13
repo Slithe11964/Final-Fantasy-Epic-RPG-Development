@@ -1,0 +1,13 @@
+Frame "SIMPLEFRAME" "GearTargetCursor60" {
+    UseActiveContext,
+    Width 0.028,
+    Height 0.028,
+    Texture "GearTargetTexture60" {
+        File "UI\Cursor\HumanCursor.dds",
+        Width 0.028,
+        Height 0.028,
+        TexCoord 0, 0.125, 0.25, 0.5,
+        AlphaMode "BLEND",
+        Anchor CENTER, 0, 0,
+    }
+}

@@ -667,6 +667,8 @@ def prepare(base_path,edited_path,profile_path,out_path,*,native=False,aliases=N
             replacements['war3mapImported/'+resource]=(Path(__file__).resolve().parents[1]/'experiments/Forsaken/QuickGearUI'/resource).read_bytes()
         from quickgear_wheel import add_assets as add_wheel_assets
         add_wheel_assets(replacements,profile.archive)
+        from build_travel_dialog_style import add_assets as add_travel_assets
+        add_travel_assets(replacements,profile.archive)
     replacements['war3map.w3i']=info
     write_files(str(profile_path),str(out_path),replacements)
     from add_header import read_header,build_header

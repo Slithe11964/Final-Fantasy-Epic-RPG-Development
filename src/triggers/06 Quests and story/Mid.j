@@ -75,7 +75,7 @@ function Trig_Mid_Freed_Actions takes nothing returns nothing
     call RemoveLocation(l_tempPoint)
     if(Trig_Mid_Freed_FindMidDiscovered())then
         // "Find Mid" was given by Cid: only the text changes (the announcement differs from the text)
-        call QuestMessageBJ(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Cid")
+        call QuestText_Message(udg_PlayingPlayers,bj_QUESTMESSAGE_UPDATED,"Return to Cid")
         call Quest_SetLog(QUEST_FIND_MID,"Return to Cid in Kalm.",false)
     else
         call DisableTrigger(gg_trg_Cid_Talk_FindMid)
@@ -158,7 +158,7 @@ function Trig_Mid_Letter_Give_Actions takes nothing returns nothing
     set udg_SpecialEffect[87]=AddSpecialEffectTargetUnitBJ("overhead",gg_unit_h00R_0256,"Objects\\RandomObject\\RandomObject.mdl")
     set udg_QuestItem[26]=UnitAddItemByIdSwapped('I0KP',Player_GetHero(GetTriggerPlayer())) // 'I0KP': item "Letter from Mid"
     call SetItemInvulnerableBJ(GetLastCreatedItem(),true)
-    call QuestMessageBJ(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring Mid's letter to Giott in the Barrens.")
+    call QuestText_Message(GetPlayersAll(),bj_QUESTMESSAGE_UPDATED,"Bring Mid's letter to Giott in the Barrens.")
     call EnableTrigger(gg_trg_Mid_Letter_Ping)
     call EnableTrigger(gg_trg_Giott_Letter_Deliver)
     call DestroyTrigger(GetTriggeringTrigger())

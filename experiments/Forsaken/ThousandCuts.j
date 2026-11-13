@@ -1,5 +1,6 @@
 globals
     hashtable CutsData=InitHashtable()
+    timer CutsClock=CreateTimer()
     timer CutsTimer=null
     real CutsNow=0.
     boolean CutsTimerRunning=false
@@ -7,6 +8,9 @@ globals
     unit array CutsTarget
     boolean array CutsActive
     boolean array CutsRipping
+    // A second cast only rips when this thief deliberately made it in range.
+    // This keeps another thief's state and walk-away channel events from firing a rip.
+    boolean array CutsRipRequested
     boolean array CutsRestore
     integer array CutsFirst
     integer array CutsLast
@@ -14,18 +18,32 @@ globals
     integer array CutsRank
     real array CutsRipUntil
     real array CutsRipDamage
+    real array CutsNextMana
     texttag array CutsCounter
 endglobals
 
-function Cuts_BaseTotal takes integer rank returns real
-    if rank>=6 then
-        return 6000.
-    endif
-    return 2500.+500.*I2R(IMaxBJ(1,rank))
+function Cuts_Damage takes unit caster,integer count returns real
+    return I2R(count)*(100.+.3*I2R(GetHeroAgi(caster,true)))*(1.+.05*I2R(Prof_GetLevel(caster,'R00B')))
 endfunction
 
-function Cuts_Damage takes unit caster,integer count returns real
-    return I2R(count)/40.*(Cuts_BaseTotal(GetUnitAbilityLevel(caster,'A0KY'))+16.*I2R(GetHeroAgi(caster,true)))*(1.+.1*I2R(Prof_GetLevel(caster,'R00B')))
+function Cuts_CanRip takes integer pid returns boolean
+    local real dx
+    local real dy
+    if CutsCaster[pid]==null or CutsTarget[pid]==null then
+        return false
+    endif
+    set dx=GetUnitX(CutsCaster[pid])-GetUnitX(CutsTarget[pid])
+    set dy=GetUnitY(CutsCaster[pid])-GetUnitY(CutsTarget[pid])
+    return dx*dx+dy*dy<=62500. // 250 range: return to the victim before ripping.
+endfunction
+
+function Cuts_IsBehind takes unit caster,unit target returns boolean
+    local real angle=Atan2(GetUnitY(caster)-GetUnitY(target),GetUnitX(caster)-GetUnitX(target))*bj_RADTODEG
+    local real difference=RAbsBJ(angle-GetUnitFacing(target))
+    if difference>180. then
+        set difference=360.-difference
+    endif
+    return difference>90.
 endfunction
 
 function Cuts_Label takes integer pid returns nothing
@@ -57,6 +75,7 @@ function Cuts_Clear takes integer pid returns nothing
     set CutsLast[pid]=0
     set CutsCount[pid]=0
     set CutsRipping[pid]=false
+    set CutsRipRequested[pid]=false
     set blade=null
 endfunction
 
@@ -80,8 +99,8 @@ function Cuts_Position takes integer pid returns nothing
         set angle=2.35+I2R(ModuloInteger(i-1,40))*.17
         set x=GetUnitX(CutsTarget[pid])+58.*Cos(angle)
         set y=GetUnitY(CutsTarget[pid])+58.*Sin(angle)
-        set z=GetUnitFlyHeight(CutsTarget[pid])+40.+I2R(ModuloInteger(i,6))*18.
-        call BlzSetSpecialEffectPosition(blade,x+(GetUnitX(CutsCaster[pid])-x)*fraction,y+(GetUnitY(CutsCaster[pid])-y)*fraction,z+(75.-z)*fraction)
+        set z=BlzGetUnitZ(CutsTarget[pid])+40.+I2R(ModuloInteger(i,6))*18.
+        call BlzSetSpecialEffectPosition(blade,x+(GetUnitX(CutsCaster[pid])-x)*fraction,y+(GetUnitY(CutsCaster[pid])-y)*fraction,z+(BlzGetUnitZ(CutsCaster[pid])+75.-z)*fraction)
         call BlzSetSpecialEffectYaw(blade,angle+bj_PI)
         set i=i+1
     endloop
@@ -119,7 +138,7 @@ function Cuts_OnHit takes unit caster,unit target returns nothing
     if CutsTarget[pid]!=null and CutsTarget[pid]!=target then
         return
     endif
-    set CutsNow=TimerGetElapsed(NativeCDClock)
+    set CutsNow=TimerGetElapsed(CutsClock)
     call Cuts_Expire(pid)
     if CutsTarget[pid]==null then
         set CutsTarget[pid]=target
@@ -149,6 +168,9 @@ function Cuts_FinishRip takes integer pid returns nothing
     // Clear first: rip damage must never add another dagger or hit twice.
     call Cuts_Clear(pid)
     if GetWidgetLife(caster)>.405 and GetWidgetLife(target)>.405 and IsUnitEnemy(target,GetOwningPlayer(caster)) and not BlzIsUnitInvulnerable(target) then
+        if Cuts_IsBehind(caster,target) then
+            set damage=damage*1.25
+        endif
         set rip=CreateSoundFromLabel("MetalHeavySliceFlesh",false,true,true,10,10)
         call SetSoundVolume(rip,127)
         call SetSoundPosition(rip,GetUnitX(target),GetUnitY(target),75.)
@@ -166,13 +188,35 @@ function Cuts_FinishRip takes integer pid returns nothing
     set rip=null
 endfunction
 
+function Cuts_Drain takes integer pid returns boolean
+    local unit caster=CutsCaster[pid]
+    local integer rank=GetUnitAbilityLevel(caster,'A0KY')-1
+    loop
+        exitwhen CutsNow+.00001<CutsNextMana[pid]
+        if GetUnitState(caster,UNIT_STATE_MANA)<20. then
+            call NativeCD_Queue(caster,'A0KY',SharedItemCD_Duration(caster,'A0KY'),false)
+            call Cuts_Clear(pid)
+            set CutsActive[pid]=false
+            set CutsRestore[pid]=false
+            call BlzSetAbilityIntegerLevelField(BlzGetUnitAbility(caster,'A0KY'),ABILITY_ILF_MANA_COST,rank,0)
+            set CutsCaster[pid]=null
+            set caster=null
+            return false
+        endif
+        call SetUnitState(caster,UNIT_STATE_MANA,GetUnitState(caster,UNIT_STATE_MANA)-20.)
+        set CutsNextMana[pid]=CutsNextMana[pid]+1.
+    endloop
+    set caster=null
+    return true
+endfunction
+
 function Cuts_Tick takes nothing returns nothing
     local integer pid=0
     local unit caster
     local ability entry
     local integer rank
     local boolean running=false
-    set CutsNow=TimerGetElapsed(NativeCDClock)
+    set CutsNow=TimerGetElapsed(CutsClock)
     loop
         exitwhen pid>=8
         set caster=CutsCaster[pid]
@@ -187,7 +231,7 @@ function Cuts_Tick takes nothing returns nothing
                 if CutsRestore[pid] or CutsRank[pid]!=rank then
                     set entry=BlzGetUnitAbility(caster,'A0KY')
                     if CutsActive[pid] then
-                        call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,0)
+                        call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,300)
                     else
                         call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,BlzGetAbilityManaCost('A0KY',rank))
                     endif
@@ -210,8 +254,10 @@ function Cuts_Tick takes nothing returns nothing
                         call Cuts_FinishRip(pid)
                     endif
                 elseif CutsActive[pid] then
-                    call Cuts_Expire(pid)
-                    call Cuts_Position(pid)
+                    if Cuts_Drain(pid) then
+                        call Cuts_Expire(pid)
+                        call Cuts_Position(pid)
+                    endif
                 endif
                 if not CutsActive[pid] and not CutsRipping[pid] and not CutsRestore[pid] then
                     set CutsCaster[pid]=null
@@ -241,11 +287,12 @@ function Cuts_Cast takes nothing returns nothing
         return
     endif
     set entry=BlzGetUnitAbility(caster,'A0KY')
-    set CutsNow=TimerGetElapsed(NativeCDClock)
+    set CutsNow=TimerGetElapsed(CutsClock)
     if GetTriggerEventId()!=EVENT_PLAYER_UNIT_SPELL_EFFECT then
-        if CutsActive[pid] and CutsCaster[pid]==caster then
+        if CutsActive[pid] and CutsCaster[pid]==caster and Cuts_CanRip(pid) then
+            set CutsRipRequested[pid]=true
             set cooldown=SharedItemCD_Duration(caster,'A0KY')
-            call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,0)
+            call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,300)
         else
             call BlzSetAbilityIntegerLevelField(entry,ABILITY_ILF_MANA_COST,rank,BlzGetAbilityManaCost('A0KY',rank))
         endif
@@ -253,21 +300,25 @@ function Cuts_Cast takes nothing returns nothing
         call BlzSetUnitAbilityCooldown(caster,'A0KY',rank,cooldown)
     else
         if CutsActive[pid] and CutsCaster[pid]==caster then
-            call Cuts_Expire(pid)
-            set CutsActive[pid]=false
-            set cooldown=SharedItemCD_Duration(caster,'A0KY')
-            call NativeCD_Queue(caster,'A0KY',cooldown,false)
-            if CutsCount[pid]>0 then
-                set CutsRipping[pid]=true
-                set CutsRipUntil[pid]=CutsNow+.25
-                set CutsRipDamage[pid]=Cuts_Damage(caster,CutsCount[pid])
-            else
-                call Cuts_Clear(pid)
+            if CutsRipRequested[pid] then
+                call Cuts_Expire(pid)
+                set CutsActive[pid]=false
+                set cooldown=SharedItemCD_Duration(caster,'A0KY')
+                call NativeCD_Queue(caster,'A0KY',cooldown,false)
+                if CutsCount[pid]>0 then
+                    set CutsRipping[pid]=true
+                    set CutsRipUntil[pid]=CutsNow+.25
+                    set CutsRipDamage[pid]=Cuts_Damage(caster,CutsCount[pid])
+                else
+                    call Cuts_Clear(pid)
+                endif
             endif
         elseif not CutsRipping[pid] then
             call Cuts_Clear(pid)
             set CutsCaster[pid]=caster
             set CutsActive[pid]=true
+            set CutsRipRequested[pid]=false
+            set CutsNextMana[pid]=CutsNow+1.
             call UnitRemoveAbility(caster,'B04D')
             call UnitRemoveAbility(caster,'BEia')
             call NativeCD_Queue(caster,'A0KY',0.,false)
@@ -285,6 +336,7 @@ endfunction
 function Cuts_Init takes nothing returns nothing
     local trigger cast=CreateTrigger()
     set CutsTimer=CreateTimer()
+    call TimerStart(CutsClock,1000000.,false,null)
     call TriggerRegisterAnyUnitEventBJ(cast,EVENT_PLAYER_UNIT_SPELL_CHANNEL)
     call TriggerRegisterAnyUnitEventBJ(cast,EVENT_PLAYER_UNIT_SPELL_CAST)
     call TriggerRegisterAnyUnitEventBJ(cast,EVENT_PLAYER_UNIT_SPELL_EFFECT)

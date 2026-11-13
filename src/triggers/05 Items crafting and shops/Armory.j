@@ -1914,14 +1914,20 @@ function Trig_Armory_Open_NoArmoryYet takes nothing returns boolean
 endfunction
 
 function Trig_Armory_Open_Actions takes nothing returns nothing
+    if udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]==null then
+        return
+    endif
     if(Trig_Armory_Open_NoArmoryYet())then
-        set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
+        set udg_TempPoint=GetUnitLoc(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
         call CreateNUnitsAtLoc(1,'e01G',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,bj_UNIT_FACING) // 'e01G': unit "Armory"
         call RemoveLocation(udg_TempPoint)
         set udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetLastCreatedUnit()
         call Armory_ShowCategory(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],0)
         call Collection_ForceAddPlayerSimple(GetOwningPlayer(GetTriggerUnit()),udg_SaveFlagForce[0])
     endif
+    call SetUnitPosition(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetUnitX(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]),GetUnitY(udg_PlayerHouse[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]))
+    call SetUnitVertexColor(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],255,255,255,255)
+    call ShowUnit(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],true)
     call SelectUnitForPlayerSingle(udg_ArmoryUnit[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],GetOwningPlayer(GetTriggerUnit()))
 endfunction
 
